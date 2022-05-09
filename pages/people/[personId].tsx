@@ -43,7 +43,7 @@ const Person: NextPage<Props> = ({ person }) => {
 						</h1>
 
 						<div className="inline-flex flex-wrap items-center gap-x-6 mb-5">
-							{person.type.length > 0 && (
+							{person.type?.length > 0 && (
 								<div className="w-full inline-flex py-3 sm:w-auto">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -68,7 +68,7 @@ const Person: NextPage<Props> = ({ person }) => {
 								</div>
 							)}
 
-							{person.companies.length > 0 && (
+							{person.companies?.length > 0 && (
 								<div className="w-full inline-flex py-3 sm:w-auto">
 									<svg
 										xmlns="http://www.w3.org/2000/svg"

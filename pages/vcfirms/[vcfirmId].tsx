@@ -111,6 +111,8 @@ const VCFirm: NextPage<Props> = (props) => {
 							{vcfirm.investments.map((round: any, index: number) => (
 								<tr key={index}>
 									{round.name}
+									{ round.investmentRound[0] ? <>
+									
 									<td className="p-2">{round.investmentRound[0].round}</td>
 									<td className="p-2">
 										<Link
@@ -131,7 +133,7 @@ const VCFirm: NextPage<Props> = (props) => {
 											day: "2-digit",
 											year: "numeric",
 										})}
-									</td>
+									</td></> : <td colSpan={4}>Missing Data</td> }
 								</tr>
 							))}
 						</tbody>
