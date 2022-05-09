@@ -40,7 +40,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 				</ElemHeading>
 
 				<div className="bg-gray-50 rounded-t-8xl relative z-10">
-					<div className="max-w-6xl mx-auto min-h-screen py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+					<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 						<div className="w-full flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 gap-5">
 							{companies.map((company) => (
 								<Link key={company.id} href={`/companies/${company.slug}`}>

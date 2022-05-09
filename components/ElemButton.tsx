@@ -21,7 +21,7 @@ type Props = {
 };
 
 export const ElemButton: FC<PropsWithChildren<Props>> = ({
-	className,
+	className = "",
 	loading = false,
 	arrow = false,
 	arrowLeft = false,

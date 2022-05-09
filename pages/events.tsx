@@ -26,26 +26,8 @@ const Events: NextPage<Props> = (props) => {
 				</ElemHeading>
 
 				<div className="bg-gray-50 rounded-t-8xl relative z-10">
-					<div
-						className="
-          max-w-6xl
-          mx-auto
-          min-h-screen
-          py-12
-          px-4
-          sm:px-6
-          lg:py-16 lg:px-8
-        "
-					>
-						<div
-							className="
-            w-full
-            flex flex-col
-            sm:grid sm:grid-cols-3
-            lg:grid-cols-4
-            gap-5
-          "
-						>
+					<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+						<div className="w-full flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-5">
 							{props.events.map((event) => (
 								<div
 									key={event.id}

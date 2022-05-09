@@ -54,11 +54,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<meta name="twitter:description" content={metaDescription} />
 				<meta name="twitter:image" content={socialImage} />
 			</Head>
-			<TheNavbar />
-			<main className="overflow-hidden min-h-screen">
-				{pageLoading ? <ElemSpinner /> : <Component {...pageProps} />}
-			</main>
-			<TheFooter />
+			<div className="flex flex-col min-h-screen">
+				<TheNavbar />
+				<main className="overflow-hidden grow">
+					{pageLoading ? <ElemSpinner /> : <Component {...pageProps} />}
+				</main>
+				<TheFooter />
+			</div>
 		</>
 	);
 }
