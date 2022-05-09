@@ -21,6 +21,12 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const vcfirm = props.vcfirm;
 
+
+	if (!vcfirm) {
+		return <h1>Not Found</h1>
+	}
+
+
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 			<div onClick={goBack}>
@@ -180,9 +186,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   `);
 
+	if (!vcFirms.vcFirms[0]) {
+		return {
+			notFound: true,
+		}
+	}
+	
 	return {
 		props: {
-			vcfirm: vcFirms.vcFirms[0] || null,
+			vcfirm: vcFirms.vcFirms[0],
 		},
 	};
 };

@@ -80,6 +80,10 @@ const Company: NextPage<Props> = (props) => {
 	// 	},
 	// ];
 
+	if (!company) {
+		return <h1>Not Found</h1>
+	}
+
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 			{/* <section>
@@ -351,6 +355,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
   }
 `);
+
+	if (!companies.companies[0]) {
+		return {
+      notFound: true,
+    }
+	}
 
 	return {
 		props: {

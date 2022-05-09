@@ -141,9 +141,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
 `)
 
+  if (!events[0]) {
+    return {
+			notFound: true,
+    }
+  }
+
   return {
     props: {
-      event: events[0] || null
+      event: events[0]
     },
   }
 }

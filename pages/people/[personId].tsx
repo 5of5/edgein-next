@@ -14,6 +14,10 @@ const Person: NextPage<Props> = ({ person }) => {
 
 	const goBack = () => router.back();
 
+	if (!person) {
+		return <h1>Not Found</h1>
+	}
+
 	return (
 		<div className="min-h-screen">
 			<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
@@ -223,9 +227,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
   }
   `);
 
+	if (!people[0]) {
+		return {
+			notFound: true,
+		}
+	}
+	
 	return {
 		props: {
-			person: people[0] || null,
+			person: people[0],
 		},
 	};
 };
