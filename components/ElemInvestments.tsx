@@ -20,9 +20,9 @@ export const ElemInvestments: React.FC<Props> = ({ heading, investments }) => {
 			{heading && <h2 className="text-4xl font-bold">{heading}</h2>}
 
 			<ElemTable
-				className="table-auto w-full  py-1 my-1"
+				className="w-full flex flex-row flex-no-wrap py-1 my-1 sm:table sm:table-auto"
 				columns={[
-					{ label: "Funding Type" },
+					{ label: "Round" },
 					{ label: "Money Raised" },
 					{ label: "Date" },
 					{ label: "Investors" },
@@ -31,23 +31,29 @@ export const ElemInvestments: React.FC<Props> = ({ heading, investments }) => {
 				{investments.map((round: any, index: number) => (
 					<tr
 						key={round.id}
-						className={index % 2 === 0 ? "bg-white" : "TableRow bg-white"}
+						className={`${
+							index % 2 === 0 ? "" : ""
+						} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 					>
-						<td className="px-2 py-4 whitespace-nowrap text-center">
+						<th className="text-left px-4 pt-4 sm:hidden">Round</th>
+						<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
 							{round.round}
 						</td>
-						<td className="px-2 py-4 whitespace-nowrap text-center">
+						<th className="text-left px-4 pt-4 sm:hidden">Money Raised</th>
+						<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
 							<span>$</span>
 							{convertAmountRaised(round.amount)}
 						</td>
-						<td className="px-2 py-4 whitespace-nowrap text-center">
+						<th className="text-left px-4 pt-4 sm:hidden">Date</th>
+						<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
 							{formatDate(round.date, {
 								month: "short",
 								day: "2-digit",
 								year: "numeric",
 							})}
 						</td>
-						<td className="md:grid sm:grid-cols-2 gap-5 px-2 py-4">
+						<th className="text-left px-4 pt-4 sm:hidden">Investors</th>
+						<td className="align-top px-4 pb-4 grid grid-cols-2 lg:grid-cols-3 gap-5 sm:p-4">
 							{round.investments.map((investment: any) => {
 								const theInvestors = investment.people;
 								const theVCFirms = investment.vcFirms;
@@ -85,7 +91,7 @@ export const ElemInvestments: React.FC<Props> = ({ heading, investments }) => {
 														<a className="vcfirm flex items-center hover:opacity-70">
 															<ElemPhoto
 																photos={firm.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 shadow-md"
 																imgClass="object-fit max-w-full max-h-full"
 																imgAlt={firm.vcFirm}
 															/>

@@ -17,11 +17,11 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 	return (
 		<table className={className}>
 			<thead>
-				<tr>
+				<tr className="hidden sm:table-row">
 					{columns.map((col: any, index: number) => (
 						<th
 							key={index}
-							className="p-2 uppercase font-bold text-sm text-left"
+							className="px-4 py-2 whitespace-nowrap font-bold text-left"
 						>
 							{col.label}
 						</th>
@@ -29,7 +29,9 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 				</tr>
 			</thead>
 
-			<tbody className="bg-white rounded-xl">{children}</tbody>
+			<tbody className="bg-white divide-y-2 divide-dark-100 flex-1 sm:flex-none">
+				{children}
+			</tbody>
 		</table>
 	);
 };

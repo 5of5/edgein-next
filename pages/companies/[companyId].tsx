@@ -6,8 +6,8 @@ import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemFounderGrid } from "../../components/ElemFounderGrid";
 import { ElemInvestments } from "../../components/ElemInvestments";
 import { ElemTeamGrid } from "../../components/ElemTeamGrid";
-import { Table } from "../../components/Table";
-import { ElemTable } from "../../components/ElemTable";
+// import { Table } from "../../components/Table";
+// import { ElemTable } from "../../components/ElemTable";
 import { convertToInternationalCurrencySystem, runGraphQl } from "../../utils";
 
 type Props = {
@@ -22,63 +22,63 @@ const Company: NextPage<Props> = (props) => {
 
 	const company = props.company;
 
-	const investments = company.investmentRounds;
+	// const investments = company.investmentRounds;
 
 	// ["Funding Type", "Money Raised", "Date", "Investors"];
-	const columns = [
-		{ label: "Funding Type", accessor: "funding_type", sortable: false },
-		{ label: "Money Raised", accessor: "money_raised", sortable: true },
-		{ label: "Date", accessor: "date", sortable: true },
-		{ label: "Investors", accessor: "investors", sortable: false },
-		{ label: "Just Testing", accessor: "investors", sortable: false },
-	];
+	// const columns = [
+	// 	{ label: "Funding Type", accessor: "funding_type", sortable: false },
+	// 	{ label: "Money Raised", accessor: "money_raised", sortable: true },
+	// 	{ label: "Date", accessor: "date", sortable: true },
+	// 	{ label: "Investors", accessor: "investors", sortable: false },
+	// 	{ label: "Just Testing", accessor: "investors", sortable: false },
+	// ];
 
-	const data = [
-		{
-			id: 1,
-			funding_type: "Seed",
-			money_raised: "3395000",
-			date: "2022-01-26",
-			investors:
-				"Andreessen Horowitz, Ben Horowitz, Greylock, True Ventures, DCM Ventures, Slow Ventures, Naval Ravikant, Craft Ventures",
-		},
-		{
-			id: 2,
-			funding_type: "Early VC",
-			money_raised: "1395000",
-			date: "",
-			investors:
-				"True Ventures, DCM Ventures, Slow Ventures, Naval Ravikant, Craft Ventures",
-		},
-		{
-			id: 3,
-			funding_type: "Seed",
-			money_raised: "2395000",
-			date: "2021-06-23",
-			investors: "DCM Ventures, Slow Ventures, Naval Ravikant",
-		},
-		{
-			id: 4,
-			funding_type: "Seed",
-			money_raised: "4512000",
-			date: "2021-06-07",
-			investors: "Ben Horowitz, Greylock, True Ventures, DCM Ventures",
-		},
-		{
-			id: 5,
-			funding_type: "Early VC",
-			money_raised: "768000",
-			date: "2021-07-05",
-			investors: "Greylock, True Ventures",
-		},
-		{
-			id: 6,
-			funding_type: "Early VC",
-			money_raised: "5008000",
-			date: "2021-03-09",
-			investors: "True Ventures",
-		},
-	];
+	// const data = [
+	// 	{
+	// 		id: 1,
+	// 		funding_type: "Seed",
+	// 		money_raised: "3395000",
+	// 		date: "2022-01-26",
+	// 		investors:
+	// 			"Andreessen Horowitz, Ben Horowitz, Greylock, True Ventures, DCM Ventures, Slow Ventures, Naval Ravikant, Craft Ventures",
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		funding_type: "Early VC",
+	// 		money_raised: "1395000",
+	// 		date: "",
+	// 		investors:
+	// 			"True Ventures, DCM Ventures, Slow Ventures, Naval Ravikant, Craft Ventures",
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		funding_type: "Seed",
+	// 		money_raised: "2395000",
+	// 		date: "2021-06-23",
+	// 		investors: "DCM Ventures, Slow Ventures, Naval Ravikant",
+	// 	},
+	// 	{
+	// 		id: 4,
+	// 		funding_type: "Seed",
+	// 		money_raised: "4512000",
+	// 		date: "2021-06-07",
+	// 		investors: "Ben Horowitz, Greylock, True Ventures, DCM Ventures",
+	// 	},
+	// 	{
+	// 		id: 5,
+	// 		funding_type: "Early VC",
+	// 		money_raised: "768000",
+	// 		date: "2021-07-05",
+	// 		investors: "Greylock, True Ventures",
+	// 	},
+	// 	{
+	// 		id: 6,
+	// 		funding_type: "Early VC",
+	// 		money_raised: "5008000",
+	// 		date: "2021-03-09",
+	// 		investors: "True Ventures",
+	// 	},
+	// ];
 
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
@@ -147,7 +147,7 @@ const Company: NextPage<Props> = (props) => {
 									href={company.whitePaper}
 									target="_blank"
 									className="inline-flex hover:opacity-70"
-									rel="noreferrer"
+									rel="noopener noreferrer"
 								>
 									<svg
 										xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +223,7 @@ const Company: NextPage<Props> = (props) => {
 								href={company.website}
 								target="_blank"
 								className="mr-4"
-								rel="noreferrer"
+								rel="noopener noreferrer"
 							>
 								<ElemButton btn="primary" arrow>
 									Visit website
@@ -234,7 +234,7 @@ const Company: NextPage<Props> = (props) => {
 							href={company.companyLinkedIn}
 							target="_blank"
 							className="flex items-center justify-center w-9 h-9 mr-4 rounded-full text-primary-500 hover:text-white hover:bg-primary-500 border border-primary-500 "
-							rel="noreferrer"
+							rel="noopener noreferrer"
 						>
 							<svg
 								className="h-6 w-6"
@@ -335,14 +335,14 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		  name
           people {
             id
+			slug
             name
 			picture
-            slug
           }
           vcFirms {
             id
+			slug
             vcFirm
-            slug
             logo
           }
 

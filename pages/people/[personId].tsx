@@ -114,7 +114,7 @@ const Person: NextPage<Props> = ({ person }) => {
 										href={`mailto:${person.email}`}
 										target="_blank"
 										className="font-medium hover:opacity-60"
-										rel="noreferrer"
+										rel="noopener noreferrer"
 									>
 										{person.email}
 									</a>
@@ -138,7 +138,7 @@ const Person: NextPage<Props> = ({ person }) => {
 										href={person.linkedin}
 										target="_blank"
 										className="font-medium hover:opacity-60"
-										rel="noreferrer"
+										rel="noopener noreferrer"
 									>
 										LinkedIn
 									</a>

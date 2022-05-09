@@ -101,6 +101,7 @@ body {
 .TableRow{
   position: relative;
   z-index: 0;
+  @apply bg-white rounded-md;
 }
 .TableRow::after {
   display: block;
@@ -108,9 +109,12 @@ body {
   top: 0;
   height: 100%;
   content: "";
-  left: 4px;
-  right: 4px;
+  left: 0;
+  right: 0;
   z-index: -1;
   border-radius: 4px;
-  @apply bg-gray-50;
+  box-sizing: border-box;
+  border: 4px solid white;
+  
+  @apply  rounded-2xl bg-gray-50;
 }

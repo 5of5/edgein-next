@@ -38,7 +38,7 @@ const VCFirms: NextPage<Props> = (props) => {
 											<ElemPhoto
 												photos={vcfirm.logo}
 												wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-												imgClass="object-fit max-w-full max-h-full rounded-md"
+												imgClass="object-fit max-w-full max-h-full"
 												imgAlt={vcfirm.title}
 											/>
 											<div className="pl-3">
