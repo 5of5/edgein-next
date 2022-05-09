@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Fonts */
+@layer base {
+  @font-face {
+    font-family: "Metropolis";
+    src: url('./fonts/Metropolis-Regular.woff2') format('woff2'),
+      url('./fonts/Metropolis-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Metropolis";
+    src: url('./fonts/Metropolis-Medium.woff2') format('woff2'),
+      url('./fonts/Metropolis-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: medium;
+  }
+
+  @font-face {
+    font-family: "Metropolis";
+    src: url('./fonts/Metropolis-Bold.woff2') format('woff2'),
+      url('./fonts/Metropolis-Bold.woff') format('woff');
+    font-weight: bold;
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-3000 {
+    animation-delay: 3s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .animation-delay-5000 {
+    animation-delay: 5s;
+  }
+}
+
+
+html,
+body {
+  /* Typography */
+  font-family: theme('fontFamily.sans');
+  /* font optimization */
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: #F2F5FA;
+   @apply text-dark-500 overscroll-y-none;
+}
+
+.hamburger-inner{
+  /* transition-timing-function:cubic-bezier(.55,.055,.675,.19);
+  transition-duration:.075s; */
+  @apply ease-in-out duration-75;
+}
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after { 
+  @apply absolute h-0.5 w-[26px] bg-current rounded-[1px] transition-transform;
+}
+.hamburger-inner::before,
+.hamburger-inner::after{
+  @apply block;
+  content: "";
+}
+.hamburger-inner::before{
+  @apply top-[7px];
+  transition:top .075s .12s ease, opacity .075s ease;
+}
+.hamburger-inner::after{
+  @apply bottom-[7px];
+  transition:bottom .075s .12s ease,transform .075s cubic-bezier(.55,.055,.675,.19);
+}
+.nav-toggle-active .hamburger-inner{
+  @apply delay-150 ease-linear rotate-45;
+}
+.nav-toggle-active .hamburger-inner::before{
+  @apply top-0 opacity-0;
+  transition:top .075s ease, opacity .075s .12s ease;
+}
+.nav-toggle-active .hamburger-inner::after{
+  @apply bottom-0 rotate-90;
+  transition:bottom .075s ease, transform .075s .12s cubic-bezier(.215,.61,.355,1);
+}
+
+.TableRow{
+  position: relative;
+  z-index: 0;
+}
+.TableRow::after {
+  display: block;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  content: "";
+  left: 4px;
+  right: 4px;
+  z-index: -1;
+  border-radius: 4px;
+  @apply bg-gray-50;
+}
