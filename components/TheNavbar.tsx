@@ -56,8 +56,8 @@ export const TheNavbar = () => {
 	};
 
 	return (
-		<header className=" overflow-y-visible z-30 px-4 py-2 lg:py-4 sm:px-6">
-			<div className="max-w-6xl mx-auto">
+		<header className="overflow-y-visible z-30">
+			<div className="max-w-6xl mx-auto px-4 py-2 sm:px-6 lg:px-8 lg:py-4">
 				<nav
 					className={`flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
 						isActive ? "nav-toggle-active" : ""

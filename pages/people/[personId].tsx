@@ -3,7 +3,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
-import { runGraphQl } from "../../utils";
+import { ElemTable } from "../../components/ElemTable";
+import {
+	runGraphQl,
+	formatDate,
+	convertToInternationalCurrencySystem,
+} from "../../utils";
 
 type Props = {
 	person: Record<string, any>;
@@ -144,29 +149,118 @@ const Person: NextPage<Props> = ({ person }) => {
 						)}
 					</div>
 
-					<div className="w-full flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-						{person.companies.map((company: any) => (
-							<Link
-								key={company.id}
-								href={`/companies/${company.slug}`}
-								passHref
-							>
-								<a className="block overflow-hidden md:h-full bg-white p-6 rounded-lg transition-all hover:shadow-md hover:-translate-y-1">
-									<ElemPhoto
-										photos={company.logo}
-										wrapClass="flex items-center justify-center h-28"
-										imgClass="object-fit max-w-full max-h-full"
-										imgAlt={company.title}
-									/>
-									<h3 className="font-bold text-center text-xl mt-2">
-										{company.title}
-									</h3>
-								</a>
-							</Link>
-						))}
-					</div>
+					{person.companies.length > 0 && (
+						<div className="w-full flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+							{person.companies.map((company: any) => (
+								<Link
+									key={company.id}
+									href={`/companies/${company.slug}`}
+									passHref
+								>
+									<a className="block overflow-hidden md:h-full bg-white p-6 rounded-lg transition-all hover:shadow-md hover:-translate-y-1">
+										<ElemPhoto
+											photos={company.logo}
+											wrapClass="flex items-center justify-center h-28"
+											imgClass="object-fit max-w-full max-h-full"
+											imgAlt={company.title}
+										/>
+										<h3 className="font-bold text-center text-xl mt-2">
+											{company.title}
+										</h3>
+									</a>
+								</Link>
+							))}
+						</div>
+					)}
 				</div>
 			</div>
+
+			{person.investments.length > 0 && (
+				<div className="mt-16">
+					<h2 className="text-4xl font-bold">Investment Rounds</h2>
+
+					<ElemTable
+						className="w-full flex flex-row flex-no-wrap py-1 my-1 sm:table sm:table-auto"
+						columns={[
+							{ label: "Round" },
+							{ label: "Money Raised" },
+							{ label: "Date" },
+							{ label: "Company" },
+						]}
+					>
+						{person.investments.map((round: any, index: number) => {
+							const theRound = round.investmentRound[0];
+
+							return (
+								<tr
+									key={index}
+									className={`${
+										index % 2 === 0 ? "bg-gray-50" : ""
+									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
+								>
+									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
+									</td>
+									<th className="text-left px-4 pt-4 sm:hidden">
+										Money Raised
+									</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.amount ? (
+											<>
+												<span>$</span>
+												{convertAmountRaised(theRound.amount)}
+											</>
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
+									<th className="text-left px-4 pt-4 sm:hidden">Date</th>
+									<td
+										className="px-4 pb-4 whitespace-nowrap sm:p-4"
+										// colSpan={4}
+									>
+										{theRound.date ? (
+											formatDate(theRound.date, {
+												month: "short",
+												day: "2-digit",
+												year: "numeric",
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
+									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.company.length > 0 ? (
+											theRound.company.map((company: any) => {
+												return (
+													<Link
+														href={`/companies/${company.slug}`}
+														key={company.id}
+													>
+														<a className="investor flex items-center hover:opacity-70">
+															<ElemPhoto
+																photos={company.logo}
+																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={company.title}
+															/>
+															{company.title}
+														</a>
+													</Link>
+												);
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
+								</tr>
+							);
+						})}
+					</ElemTable>
+				</div>
+			)}
 		</div>
 	);
 };
@@ -204,19 +298,34 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	} = await runGraphQl(`
   {
     people(slug: "${context.params?.personId}") {
-      id
-      name
-      picture
-      type
-      email
-      linkedIn
-      companies {
-        id
-        title
-        slug
-        logo
-      }
-    }
+		id
+		name
+		picture
+		type
+		email
+		linkedIn
+		companies {
+			id
+			title
+			slug
+			logo
+		}
+		investments {
+			name
+			investmentRound {
+				id
+				date
+				round
+				amount
+				company {
+					id
+					slug
+					title
+					logo
+				}
+			}
+		}
+	}
   }
   `);
 
@@ -234,3 +343,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export default Person;
+
+function convertAmountRaised(theAmount: any) {
+	return convertToInternationalCurrencySystem(theAmount);
+}
