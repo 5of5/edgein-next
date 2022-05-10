@@ -54,7 +54,7 @@ export default function Login() {
 						<input
 							name="email"
 							type="email"
-							className="w-full mt-1 px-3 py-3 placeholder-slate-300 text-slate-600 relative bg-white rounded text-sm border border-slate-300 outline-none focus:outline-none focus:ring"
+							className="w-full mt-1 px-3 py-3 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
 						/>
 					</div>
 					<div className="text-right sm:col-span-2">

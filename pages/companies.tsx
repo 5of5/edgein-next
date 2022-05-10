@@ -13,7 +13,7 @@ type Props = {
 };
 
 const Companies: NextPage<Props> = ({ companies }) => {
-	const [search, setSearch] = React.useState('')
+	const [search, setSearch] = React.useState("");
 
 	return (
 		<div>
@@ -37,34 +37,68 @@ const Companies: NextPage<Props> = ({ companies }) => {
 
 				<div className="bg-gray-50 rounded-t-8xl relative z-10">
 					<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-						<div className="py-4">
-							Search: <input value={search} onChange={(e) => setSearch(e.target.value)} />
-						</div>
-						<div className="w-full flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-							{companies.filter(company => !search || company.title?.toLowerCase().includes(search.toLowerCase())).map((company) => (
-								<Link key={company.id} href={`/companies/${company.slug}`}>
-									<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col justify-between md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
-										<div className="flex flex-row w-full mb-4">
-											<ElemPhoto
-												photos={company.logo}
-												wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-												imgClass="object-fit max-w-full max-h-full"
-												imgAlt={company.title}
+						<div className="w-full flex flex-col py-4 sm:grid sm:gap-5 sm:grid-cols-2 md:grid-cols-3">
+							<form>
+								<label className="relative block" htmlFor="search">
+									<span className="sr-only">Search</span>
+									<span className="absolute z-10 inset-y-0 left-2 flex items-center pl-2">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											className="h-5 w-5"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+											strokeWidth="2"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
 											/>
+										</svg>
+									</span>
+									<input
+										name="search"
+										value={search}
+										placeholder="Quick Search..."
+										onChange={(e) => setSearch(e.target.value)}
+										className="w-full py-1.5 pl-10 pr-3 text-dark-500 text-lg relative bg-white rounded-full border border-slate-300 outline-none placeholder:text-dark-300 focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100"
+									/>
+								</label>
+							</form>
+						</div>
 
-											<div className="flex items-center justify-center pl-2">
-												<h3 className="text-2xl font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
-													{company.title}
-												</h3>
+						<div className="w-full flex flex-col sm:grid sm:grid-cols-2 sm:gap-5 md:grid-cols-3">
+							{companies
+								.filter(
+									(company) =>
+										!search ||
+										company.title?.toLowerCase().includes(search.toLowerCase())
+								)
+								.map((company) => (
+									<Link key={company.id} href={`/companies/${company.slug}`}>
+										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col justify-between md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
+											<div className="flex flex-row w-full mb-4">
+												<ElemPhoto
+													photos={company.logo}
+													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+													imgClass="object-fit max-w-full max-h-full"
+													imgAlt={company.title}
+												/>
+
+												<div className="flex items-center justify-center pl-2">
+													<h3 className="text-2xl font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
+														{company.title}
+													</h3>
+												</div>
 											</div>
-										</div>
 
-										<div className="flex items-start h-full">
-											<p className="mb-4 text-gray-400">{company.overview}</p>
-										</div>
-									</a>
-								</Link>
-							))}
+											<div className="flex items-start h-full">
+												<p className="mb-4 text-gray-400">{company.overview}</p>
+											</div>
+										</a>
+									</Link>
+								))}
 						</div>
 					</div>
 				</div>

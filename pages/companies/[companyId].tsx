@@ -81,7 +81,7 @@ const Company: NextPage<Props> = (props) => {
 	// ];
 
 	if (!company) {
-		return <h1>Not Found</h1>
+		return <h1>Not Found</h1>;
 	}
 
 	return (
@@ -262,18 +262,19 @@ const Company: NextPage<Props> = (props) => {
 			)}
 
 			{company.teamMembers.length > 0 && (
-				<div className="mt-20">
-					<ElemTeamGrid heading="Team Members" people={company.teamMembers} />
-				</div>
+				<ElemTeamGrid
+					className="mt-20"
+					heading="Team Members"
+					people={company.teamMembers}
+				/>
 			)}
 
 			{company.investmentRounds.length > 0 && (
-				<div className="mt-20">
-					<ElemInvestments
-						heading="Investments"
-						investments={company.investmentRounds}
-					/>
-				</div>
+				<ElemInvestments
+					className="mt-20"
+					heading="Investments"
+					investments={company.investmentRounds}
+				/>
 			)}
 		</div>
 	);
@@ -358,8 +359,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	if (!companies.companies[0]) {
 		return {
-      notFound: true,
-    }
+			notFound: true,
+		};
 	}
 
 	return {

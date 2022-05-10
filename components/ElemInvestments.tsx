@@ -2,21 +2,21 @@ import React from "react";
 import { ElemTable } from "./ElemTable";
 import { ElemPhoto } from "./ElemPhoto";
 import Link from "next/link";
-import {
-	convertToInternationalCurrencySystem,
-	formatDate,
-	slugify,
-	kebabCase,
-} from "../utils";
+import { convertToInternationalCurrencySystem, formatDate } from "../utils";
 
 type Props = {
-	heading: string;
+	className?: string;
+	heading?: string;
 	investments: Record<string, any>[];
 };
 
-export const ElemInvestments: React.FC<Props> = ({ heading, investments }) => {
+export const ElemInvestments: React.FC<Props> = ({
+	className,
+	heading,
+	investments,
+}) => {
 	return (
-		<div className="mt-20">
+		<section className={className}>
 			{heading && <h2 className="text-4xl font-bold">{heading}</h2>}
 
 			<ElemTable
@@ -32,25 +32,35 @@ export const ElemInvestments: React.FC<Props> = ({ heading, investments }) => {
 					<tr
 						key={round.id}
 						className={`${
-							index % 2 === 0 ? "" : ""
+							index % 2 === 0 ? "bg-gray-50" : ""
 						} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 					>
 						<th className="text-left px-4 pt-4 sm:hidden">Round</th>
 						<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
-							{round.round}
+							{round.round ? <>{round.round}</> : <>&mdash;</>}
 						</td>
 						<th className="text-left px-4 pt-4 sm:hidden">Money Raised</th>
 						<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
-							<span>$</span>
-							{convertAmountRaised(round.amount)}
+							{round.amount ? (
+								<>
+									<span>$</span>
+									{convertAmountRaised(round.amount)}
+								</>
+							) : (
+								<>&mdash;</>
+							)}
 						</td>
 						<th className="text-left px-4 pt-4 sm:hidden">Date</th>
 						<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
-							{formatDate(round.date, {
-								month: "short",
-								day: "2-digit",
-								year: "numeric",
-							})}
+							{round.date ? (
+								formatDate(round.date, {
+									month: "short",
+									day: "2-digit",
+									year: "numeric",
+								})
+							) : (
+								<>&mdash;</>
+							)}
 						</td>
 						<th className="text-left px-4 pt-4 sm:hidden">Investors</th>
 						<td className="align-top px-4 pb-4 grid grid-cols-2 lg:grid-cols-3 gap-5 sm:p-4">
@@ -107,7 +117,7 @@ export const ElemInvestments: React.FC<Props> = ({ heading, investments }) => {
 					</tr>
 				))}
 			</ElemTable>
-		</div>
+		</section>
 	);
 };
 const convertAmountRaised = (theAmount: number) => {

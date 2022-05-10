@@ -1,8 +1,10 @@
+import React from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
+import { ElemTable } from "../../components/ElemTable";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -21,11 +23,9 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const vcfirm = props.vcfirm;
 
-
 	if (!vcfirm) {
-		return <h1>Not Found</h1>
+		return <h1>Not Found</h1>;
 	}
-
 
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
@@ -39,7 +39,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				<div className="col-span-1">
 					<ElemPhoto
 						photos={vcfirm.logo}
-						wrapClass="flex items-center justify-center shrink-0 p-6 h-72 lg:h-96 bg-white rounded-lg shadow-md"
+						wrapClass="flex items-center justify-center shrink-0 p-6 h-72 lg:h-88 bg-white rounded-lg shadow-md"
 						imgClass="object-contain w-full h-full rounded-md"
 						imgAlt={vcfirm.vcFirm}
 					/>
@@ -88,56 +88,90 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			</div>
 
-			{vcfirm.investments && (
+			{vcfirm.investments.length > 0 && (
 				<div className="mt-16">
 					<h2 className="text-4xl font-bold">Investment Rounds</h2>
 
-					<table className="mt-3 table-auto border-collapse w-full">
-						<thead>
-							<tr>
-								{["Funding Round", "Company Name", "Amount", "Date"].map(
-									(col, index) => (
-										<th
-											key={index}
-											className="p-2 uppercase font-bold text-sm text-left"
-										>
-											{col}
-										</th>
-									)
-								)}
-							</tr>
-						</thead>
-						<tbody className="bg-white rounded-lg shadow-md">
-							{vcfirm.investments.map((round: any, index: number) => (
-								<tr key={index}>
-									{round.name}
-									{ round.investmentRound[0] ? <>
-									
-									<td className="p-2">{round.investmentRound[0].round}</td>
-									<td className="p-2">
-										<Link
-											href={`/companies/${round.investmentRound[0].company.slug}`}
-										>
-											<a className="hover:text-primary-500">
-												{round.investmentRound[0].company.title}
-											</a>
-										</Link>
+					<ElemTable
+						className="w-full flex flex-row flex-no-wrap py-1 my-1 sm:table sm:table-auto"
+						columns={[
+							{ label: "Round" },
+							{ label: "Money Raised" },
+							{ label: "Date" },
+							{ label: "Company" },
+						]}
+					>
+						{vcfirm.investments.map((round: any, index: number) => {
+							const theRound = round.investmentRound[0];
+
+							return (
+								<tr
+									key={index}
+									className={`${
+										index % 2 === 0 ? "bg-gray-50" : ""
+									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
+								>
+									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
 									</td>
-									<td className="p-2">
-										{round.investmentRound[0].amount && <span>$</span>}
-										{convertAmountRaised(round.investmentRound[0].amount)}
+									<th className="text-left px-4 pt-4 sm:hidden">
+										Money Raised
+									</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.amount ? (
+											<>
+												<span>$</span>
+												{convertAmountRaised(theRound.amount)}
+											</>
+										) : (
+											<>&mdash;</>
+										)}
 									</td>
-									<td className="p-2">
-										{formatDate(round.investmentRound[0].date, {
-											month: "short",
-											day: "2-digit",
-											year: "numeric",
-										})}
-									</td></> : <td colSpan={4}>Missing Data</td> }
+									<th className="text-left px-4 pt-4 sm:hidden">Date</th>
+									<td
+										className="px-4 pb-4 whitespace-nowrap sm:p-4"
+										// colSpan={4}
+									>
+										{theRound.date ? (
+											formatDate(theRound.date, {
+												month: "short",
+												day: "2-digit",
+												year: "numeric",
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
+									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.company.length > 0 ? (
+											theRound.company.map((company: any) => {
+												return (
+													<Link
+														href={`/companies/${company.slug}`}
+														key={company.id}
+													>
+														<a className="investor flex items-center hover:opacity-70">
+															<ElemPhoto
+																photos={company.logo}
+																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={company.title}
+															/>
+															{company.title}
+														</a>
+													</Link>
+												);
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
 								</tr>
-							))}
-						</tbody>
-					</table>
+							);
+						})}
+					</ElemTable>
 				</div>
 			)}
 		</div>
@@ -191,9 +225,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	if (!vcFirms.vcFirms[0]) {
 		return {
 			notFound: true,
-		}
+		};
 	}
-	
+
 	return {
 		props: {
 			vcfirm: vcFirms.vcFirms[0],

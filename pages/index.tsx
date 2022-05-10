@@ -68,18 +68,7 @@ const Home: NextPage = () => {
 				<section className="bg-gray-50 rounded-t-8xl relative z-10">
 					<div className="max-w-6xl mx-auto py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
 						<div className="pb-12 lg:pb-20">
-							<h2
-								className="
-                relative
-                max-w-3xl
-                text-3xl
-                font-bold
-                text-dark-500
-                border-l-4 border-primary-500
-                pl-6
-                lg:text-4xl
-              "
-							>
+							<h2 className="relative max-w-3xl text-3xl font-bold text-dark-500 border-l-4 border-primary-500 pl-6 lg:text-4xl">
 								Actionable intelligence, strategic analysis, personalized market
 								mapping and concierge benefits.
 							</h2>
@@ -96,14 +85,14 @@ const Home: NextPage = () => {
 									connections, and gain competitor insights to stay one step
 									ahead at all times.
 								</p>
-								<ElemButton
+								{/* <ElemButton
 									className="pl-0 pr-0"
 									href="/"
 									btn="transparent"
 									arrow
 								>
 									Learn more
-								</ElemButton>
+								</ElemButton> */}
 							</div>
 							<div className="bg-white text-dark-500 rounded-lg p-7 mb-12 lg:mb-0">
 								<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
@@ -115,17 +104,17 @@ const Home: NextPage = () => {
 									diligence, plus an exclusive concierge team for executive
 									email and calendaring support.
 								</p>
-								<ElemButton
+								{/* <ElemButton
 									className="pl-0 pr-0"
 									href="/"
 									btn="transparent"
 									arrow
 								>
 									Learn more
-								</ElemButton>
+								</ElemButton> */}
 							</div>
 
-							<div className="col-span-2 p-16 py-12 bg-white text-dark-500 rounded-xl lg:py-16">
+							{/* <div className="col-span-2 p-16 py-12 bg-white text-dark-500 rounded-xl lg:py-16">
 								<div className="max-w-lg mx-auto text-center">
 									<h2 className="mb-4 text-3xl font-lb font-bold sm:text-4xl">
 										Access the EdgeIn WhitePaper, Join in the Fun!
@@ -137,10 +126,8 @@ const Home: NextPage = () => {
 										Access
 									</ElemButton>
 								</div>
-							</div>
+							</div> */}
 						</div>
-
-						{/* <VoronoiTreemap /> */}
 					</div>
 				</section>
 			</div>

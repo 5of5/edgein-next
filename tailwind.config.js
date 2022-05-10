@@ -83,6 +83,9 @@ module.exports = {
         '8xl': '4rem',
         '14xl': '7rem',
       },
+      spacing: {
+        '88': '22rem',
+      },
       width: {
         'full2': '200%',
       },

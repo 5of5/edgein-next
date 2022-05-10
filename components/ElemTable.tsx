@@ -7,7 +7,7 @@ type Props = {
 };
 
 export const ElemTable: FC<PropsWithChildren<Props>> = ({
-	className,
+	className = "",
 	columns,
 	// data,
 	children,
@@ -15,17 +15,26 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 	// const items = Object.entries(data);
 
 	return (
-		<table className={className}>
+		<table className={className + " shadow-md"}>
 			<thead>
 				<tr className="hidden sm:table-row">
-					{columns.map((col: any, index: number) => (
-						<th
-							key={index}
-							className="px-4 py-2 whitespace-nowrap font-bold text-left"
-						>
-							{col.label}
-						</th>
-					))}
+					{columns.map((col: any, index: number, arr: Array<object>) => {
+						let tableHeaderClasses;
+						if (index === 0) {
+							tableHeaderClasses = "rounded-tl-lg";
+						} else if (index === arr.length - 1) {
+							tableHeaderClasses = "rounded-tr-lg";
+						}
+
+						return (
+							<th
+								key={index}
+								className={`${tableHeaderClasses} px-4 py-2 whitespace-nowrap font-bold text-left bg-white`}
+							>
+								{col.label}
+							</th>
+						);
+					})}
 				</tr>
 			</thead>
 
