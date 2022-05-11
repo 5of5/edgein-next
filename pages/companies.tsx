@@ -6,6 +6,7 @@ import React from "react";
 import { ElemButton } from "../components/ElemButton";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
+import { InputSearch } from "../components/InputSearch";
 import { runGraphQl } from "../utils";
 
 type Props = {
@@ -38,34 +39,15 @@ const Companies: NextPage<Props> = ({ companies }) => {
 				<div className="bg-gray-50 rounded-t-8xl relative z-10">
 					<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 						<div className="w-full flex flex-col py-5 sm:grid sm:gap-5 sm:grid-cols-2 md:grid-cols-3">
-							<form>
-								<label className="relative block" htmlFor="search">
-									<span className="sr-only">Search</span>
-									<span className="absolute z-10 inset-y-0 left-1 flex items-center pl-2">
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="h-5 w-5"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke="currentColor"
-											strokeWidth="2"
-										>
-											<path
-												strokeLinecap="round"
-												strokeLinejoin="round"
-												d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-											/>
-										</svg>
-									</span>
-									<input
-										name="search"
-										value={search}
-										placeholder="Quick Search..."
-										onChange={(e) => setSearch(e.target.value)}
-										className="w-full py-1.5 pl-10 pr-3 text-dark-500 text-lg relative bg-white shadow-md rounded-md border border-transparent border-gray-300 outline-none placeholder:text-dark-300 focus:bg-white focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100"
-									/>
-								</label>
-							</form>
+							<InputSearch
+								label="Search"
+								name="search"
+								value={search}
+								placeholder="Quick Search..."
+								onChange={(e: {
+									target: { value: React.SetStateAction<string> };
+								}) => setSearch(e.target.value)}
+							/>
 						</div>
 
 						<div className="w-full flex flex-col sm:grid sm:grid-cols-2 sm:gap-5 md:grid-cols-3">

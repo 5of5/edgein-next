@@ -17,10 +17,10 @@ export const ElemInvestments: React.FC<Props> = ({
 }) => {
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-4xl font-bold">{heading}</h2>}
+			{heading && <h2 className="text-3xl font-bold">{heading}</h2>}
 
 			<ElemTable
-				className="w-full flex flex-row flex-no-wrap py-1 my-1 sm:table sm:table-auto"
+				className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
 				columns={[
 					{ label: "Round" },
 					{ label: "Money Raised" },
@@ -32,7 +32,7 @@ export const ElemInvestments: React.FC<Props> = ({
 					<tr
 						key={round.id}
 						className={`${
-							index % 2 === 0 ? "bg-gray-50" : ""
+							index % 2 === 0 ? "sm:bg-gray-50" : ""
 						} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 					>
 						<th className="text-left px-4 pt-4 sm:hidden">Round</th>

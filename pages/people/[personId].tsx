@@ -70,6 +70,29 @@ const Person: NextPage<Props> = ({ person }) => {
 							</div>
 						)}
 
+						{person.investments.length > 0 && (
+							<div className="inline-flex py-3">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									className="h-6 w-6 mr-1 text-primary-500"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth="2"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+									/>
+								</svg>
+								<span className="font-bold mr-1">
+									{person.investments.length}
+								</span>
+								Investment Round{person.investments.length > 1 && "s"}
+							</div>
+						)}
+
 						{person.companies?.length > 0 && (
 							<div className="w-full inline-flex py-3 sm:w-auto">
 								<svg
@@ -177,10 +200,10 @@ const Person: NextPage<Props> = ({ person }) => {
 
 			{person.investments.length > 0 && (
 				<div className="mt-16">
-					<h2 className="text-4xl font-bold">Investment Rounds</h2>
+					<h2 className="text-3xl font-bold">Investment Rounds</h2>
 
 					<ElemTable
-						className="w-full flex flex-row flex-no-wrap py-1 my-1 sm:table sm:table-auto"
+						className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
 						columns={[
 							{ label: "Round" },
 							{ label: "Money Raised" },
@@ -195,7 +218,7 @@ const Person: NextPage<Props> = ({ person }) => {
 								<tr
 									key={index}
 									className={`${
-										index % 2 === 0 ? "bg-gray-50" : ""
+										index % 2 === 0 ? "sm:bg-gray-50" : ""
 									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 								>
 									<th className="text-left px-4 pt-4 sm:hidden">Round</th>

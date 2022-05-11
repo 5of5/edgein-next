@@ -7,7 +7,6 @@ import { ElemFounderGrid } from "../../components/ElemFounderGrid";
 import { ElemInvestments } from "../../components/ElemInvestments";
 import { ElemTeamGrid } from "../../components/ElemTeamGrid";
 // import { Table } from "../../components/Table";
-// import { ElemTable } from "../../components/ElemTable";
 import { convertToInternationalCurrencySystem, runGraphQl } from "../../utils";
 
 type Props = {
@@ -294,7 +293,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl(`          {
+	const { data: companies } = await runGraphQl(`{
     companies(slug: "${context.params?.companyId}") {
       id
       title

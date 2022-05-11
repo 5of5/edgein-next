@@ -100,7 +100,7 @@ export const TheNavbar = () => {
 							onClick={toggleNav}
 							className="hamburger relative w-8 h-[22px] ml-2 p-[3px] border-0 bg-none cursor-pointer inline-block lg:hidden"
 						>
-							<span className="hamburger-inner block -mt-px top-1/2"></span>
+							<span className="hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-75 before:block before:content-[''] after:block after:content-['']"></span>
 							<span className="sr-only">Toggle menu</span>
 						</button>
 					</div>

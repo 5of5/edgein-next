@@ -49,6 +49,34 @@ const VCFirm: NextPage<Props> = (props) => {
 						{vcfirm.vcFirm}
 					</h1>
 
+					<div className="inline-flex flex-wrap items-center gap-x-6">
+						{vcfirm.investments.length > 0 && (
+							<a
+								href="#investmentRounds"
+								className="inline-flex py-3 hover:opacity-70"
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									className="h-6 w-6 mr-1 text-primary-500"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor"
+									strokeWidth="2"
+								>
+									<path
+										strokeLinecap="round"
+										strokeLinejoin="round"
+										d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+									/>
+								</svg>
+								<span className="font-bold mr-1">
+									{vcfirm.investments.length}
+								</span>
+								Investment Round{vcfirm.investments.length > 1 && "s"}
+							</a>
+						)}
+					</div>
+
 					<div className="my-5 flex flex-row items-center">
 						{vcfirm.website && (
 							<a
@@ -89,11 +117,11 @@ const VCFirm: NextPage<Props> = (props) => {
 			</div>
 
 			{vcfirm.investments.length > 0 && (
-				<div className="mt-16">
-					<h2 className="text-4xl font-bold">Investment Rounds</h2>
+				<div className="mt-16" id="investmentRounds">
+					<h2 className="text-3xl font-bold">Investment Rounds</h2>
 
 					<ElemTable
-						className="w-full flex flex-row flex-no-wrap py-1 my-1 sm:table sm:table-auto"
+						className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
 						columns={[
 							{ label: "Round" },
 							{ label: "Money Raised" },
@@ -108,7 +136,7 @@ const VCFirm: NextPage<Props> = (props) => {
 								<tr
 									key={index}
 									className={`${
-										index % 2 === 0 ? "bg-gray-50" : ""
+										index % 2 === 0 ? "sm:bg-gray-50" : ""
 									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 								>
 									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
@@ -152,7 +180,7 @@ const VCFirm: NextPage<Props> = (props) => {
 														href={`/companies/${company.slug}`}
 														key={company.id}
 													>
-														<a className="investor flex items-center hover:opacity-70">
+														<a className="investor inline-flex items-center hover:opacity-70">
 															<ElemPhoto
 																photos={company.logo}
 																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
