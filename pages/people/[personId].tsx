@@ -71,7 +71,10 @@ const Person: NextPage<Props> = ({ person }) => {
 						)}
 
 						{person.investments.length > 0 && (
-							<div className="inline-flex py-3">
+							<a
+								href="#investmentRounds"
+								className="inline-flex py-3 hover:opacity-70"
+							>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									className="h-6 w-6 mr-1 text-primary-500"
@@ -90,7 +93,7 @@ const Person: NextPage<Props> = ({ person }) => {
 									{person.investments.length}
 								</span>
 								Investment Round{person.investments.length > 1 && "s"}
-							</div>
+							</a>
 						)}
 
 						{person.companies?.length > 0 && (
@@ -199,7 +202,7 @@ const Person: NextPage<Props> = ({ person }) => {
 			</div>
 
 			{person.investments.length > 0 && (
-				<div className="mt-16">
+				<div className="mt-16" id="investmentRounds">
 					<h2 className="text-3xl font-bold">Investment Rounds</h2>
 
 					<ElemTable

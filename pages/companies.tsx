@@ -31,9 +31,9 @@ const Companies: NextPage<Props> = ({ companies }) => {
 					title="Web3 Companies"
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				>
-					<ElemButton href="/" btn="dark" arrow>
+					{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
 						Submit company
-					</ElemButton>
+					</ElemButton> */}
 				</ElemHeading>
 
 				<div className="bg-gray-50 rounded-t-8xl relative z-10">

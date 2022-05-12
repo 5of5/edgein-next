@@ -27,9 +27,9 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 					title="VC Firms"
 					subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 				>
-					<ElemButton href="/" btn="dark" arrow>
+					{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
 						Submit VC Firm
-					</ElemButton>
+					</ElemButton> */}
 				</ElemHeading>
 
 				<div className="bg-gray-50 rounded-t-8xl relative z-10">

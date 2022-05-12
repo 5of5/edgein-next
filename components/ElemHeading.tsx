@@ -91,7 +91,7 @@ export const ElemHeading: React.FC<PropsWithChildren<Props>> = ({
 					{subtitle && (
 						<p className="max-w-2xl mt-5 text-xl text-dark-400">{subtitle}</p>
 					)}
-					<slot></slot>
+					{children}
 				</div>
 			</div>
 		</section>
