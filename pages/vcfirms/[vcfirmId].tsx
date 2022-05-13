@@ -72,7 +72,7 @@ const VCFirm: NextPage<Props> = (props) => {
 								<span className="font-bold mr-1">
 									{vcfirm.investments.length}
 								</span>
-								Investment Round{vcfirm.investments.length > 1 && "s"}
+								Investment{vcfirm.investments.length > 1 && "s"}
 							</a>
 						)}
 					</div>
@@ -115,30 +115,60 @@ const VCFirm: NextPage<Props> = (props) => {
 					</div>
 				</div>
 			</div>
+			{/* Object.entries(vcfirm.investments).length !== 0 */}
 
-			{vcfirm.investments.length > 0 && (
+			{Object.keys(vcfirm.investments).length > 0 && (
 				<div className="mt-16" id="investmentRounds">
-					<h2 className="text-3xl font-bold">Investment Rounds</h2>
+					<h2 className="text-3xl font-bold">Investments</h2>
 
 					<ElemTable
 						className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
 						columns={[
+							{ label: "Company" },
 							{ label: "Round" },
 							{ label: "Money Raised" },
 							{ label: "Date" },
-							{ label: "Company" },
 						]}
 					>
 						{vcfirm.investments.map((round: any, index: number) => {
 							const theRound = round.investmentRound[0];
 
+							if (!theRound) {
+								return;
+							}
+
 							return (
 								<tr
 									key={index}
 									className={`${
-										index % 2 === 0 ? "sm:bg-gray-50" : ""
+										index % 2 === 0 ? "" : ""
 									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 								>
+									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{Object.keys(theRound.company).length > 0 ? (
+											theRound.company.map((company: any) => {
+												return (
+													<Link
+														href={`/companies/${company.slug}`}
+														key={company.id}
+													>
+														<a className="investor inline-flex items-center hover:opacity-70">
+															<ElemPhoto
+																photos={company.logo}
+																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={company.title}
+															/>
+															{company.title}
+														</a>
+													</Link>
+												);
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
 									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
 									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
 										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
@@ -166,31 +196,6 @@ const VCFirm: NextPage<Props> = (props) => {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",
-											})
-										) : (
-											<>&mdash;</>
-										)}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
-										{theRound.company.length > 0 ? (
-											theRound.company.map((company: any) => {
-												return (
-													<Link
-														href={`/companies/${company.slug}`}
-														key={company.id}
-													>
-														<a className="investor inline-flex items-center hover:opacity-70">
-															<ElemPhoto
-																photos={company.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={company.title}
-															/>
-															{company.title}
-														</a>
-													</Link>
-												);
 											})
 										) : (
 											<>&mdash;</>

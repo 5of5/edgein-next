@@ -3,7 +3,6 @@ import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { ElemButton } from "../components/ElemButton";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";

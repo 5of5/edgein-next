@@ -82,7 +82,7 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl(
-		"{ vcFirms { id, vcFirm, slug, logo}}"
+		'{ vcFirms(_order_by: {vcFirm: "asc"}, _filter: {slug: {_ne: ""}})  { id, vcFirm, slug, logo}}'
 	);
 
 	return {

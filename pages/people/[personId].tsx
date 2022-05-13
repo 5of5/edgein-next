@@ -92,7 +92,7 @@ const Person: NextPage<Props> = ({ person }) => {
 								<span className="font-bold mr-1">
 									{person.investments.length}
 								</span>
-								Investment Round{person.investments.length > 1 && "s"}
+								Investment{person.investments.length > 1 && "s"}
 							</a>
 						)}
 
@@ -203,15 +203,15 @@ const Person: NextPage<Props> = ({ person }) => {
 
 			{person.investments.length > 0 && (
 				<div className="mt-16" id="investmentRounds">
-					<h2 className="text-3xl font-bold">Investment Rounds</h2>
+					<h2 className="text-3xl font-bold">Investments</h2>
 
 					<ElemTable
 						className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
 						columns={[
+							{ label: "Company" },
 							{ label: "Round" },
 							{ label: "Money Raised" },
 							{ label: "Date" },
-							{ label: "Company" },
 						]}
 					>
 						{person.investments.map((round: any, index: number) => {
@@ -221,9 +221,34 @@ const Person: NextPage<Props> = ({ person }) => {
 								<tr
 									key={index}
 									className={`${
-										index % 2 === 0 ? "sm:bg-gray-50" : ""
+										index % 2 === 0 ? "" : ""
 									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 								>
+									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
+									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+										{theRound.company.length > 0 ? (
+											theRound.company.map((company: any) => {
+												return (
+													<Link
+														href={`/companies/${company.slug}`}
+														key={company.id}
+													>
+														<a className="investor flex items-center hover:opacity-70">
+															<ElemPhoto
+																photos={company.logo}
+																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={company.title}
+															/>
+															{company.title}
+														</a>
+													</Link>
+												);
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</td>
 									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
 									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
 										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
@@ -251,31 +276,6 @@ const Person: NextPage<Props> = ({ person }) => {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",
-											})
-										) : (
-											<>&mdash;</>
-										)}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
-										{theRound.company.length > 0 ? (
-											theRound.company.map((company: any) => {
-												return (
-													<Link
-														href={`/companies/${company.slug}`}
-														key={company.id}
-													>
-														<a className="investor flex items-center hover:opacity-70">
-															<ElemPhoto
-																photos={company.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={company.title}
-															/>
-															{company.title}
-														</a>
-													</Link>
-												);
 											})
 										) : (
 											<>&mdash;</>

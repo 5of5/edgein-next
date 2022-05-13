@@ -32,7 +32,7 @@ export const ElemInvestments: React.FC<Props> = ({
 					<tr
 						key={round.id}
 						className={`${
-							index % 2 === 0 ? "sm:bg-gray-50" : ""
+							index % 2 === 0 ? "" : ""
 						} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 					>
 						<th className="text-left px-4 pt-4 sm:hidden">Round</th>
@@ -68,13 +68,36 @@ export const ElemInvestments: React.FC<Props> = ({
 								const theInvestors = investment.people;
 								const theVCFirms = investment.vcFirms;
 
+								//const investmentItemsLength = theInvestors.length + theVCFirms.length;
+
 								// const investorsAndFirms = { ...theInvestors, ...theVCFirms };
 								// console.log(investorsAndFirms);
 
 								return (
 									// Note: Need to use full Fragment syntax to add a key to a fragment
-									<React.Fragment key={investment.id}>
-										{theInvestors.length > 0 &&
+
+									<div
+										key={investment.id}
+										className="border border-dark-100 space-y-4 rounded-lg p-4"
+									>
+										{Object.keys(theVCFirms).length > 0 &&
+											theVCFirms.map((firm: any) => {
+												return (
+													<Link href={`/vcfirms/${firm.slug}`} key={firm.id}>
+														<a className="vcfirm flex items-center hover:opacity-70">
+															<ElemPhoto
+																photos={firm.logo}
+																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 shadow-md"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={firm.vcFirm}
+															/>
+															{firm.vcFirm}
+														</a>
+													</Link>
+												);
+											})}
+
+										{Object.keys(theInvestors).length > 0 &&
 											theInvestors.map((investor: any) => {
 												return (
 													<Link
@@ -93,24 +116,7 @@ export const ElemInvestments: React.FC<Props> = ({
 													</Link>
 												);
 											})}
-
-										{theVCFirms.length > 0 &&
-											theVCFirms.map((firm: any) => {
-												return (
-													<Link href={`/vcfirms/${firm.slug}`} key={firm.id}>
-														<a className="vcfirm flex items-center hover:opacity-70">
-															<ElemPhoto
-																photos={firm.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 shadow-md"
-																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={firm.vcFirm}
-															/>
-															{firm.vcFirm}
-														</a>
-													</Link>
-												);
-											})}
-									</React.Fragment>
+									</div>
 								);
 							})}
 						</td>

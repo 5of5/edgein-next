@@ -1,18 +1,19 @@
-import type { GetStaticProps, NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
+
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { ElemButton } from "../components/ElemButton";
 import { ElemHeading } from "../components/ElemHeading";
+import { ElemButton } from "../components/ElemButton";
 import { InputSearch } from "../components/InputSearch";
 import { runGraphQl, formatDate } from "../utils";
 
 type Props = {
 	events: Record<string, any>[];
-	sortEvents: Record<string, any>[];
+	//sortEvents: Record<string, any>[];
 };
 
-const Events: NextPage<Props> = ({ events, sortEvents }) => {
+const Events: NextPage<Props> = ({ events }) => {
 	const [search, setSearch] = React.useState("");
 
 	return (
@@ -45,7 +46,7 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 						</div>
 
 						<div className="w-full flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-5">
-							{sortEvents
+							{events
 								.filter(
 									(event) =>
 										!search ||
@@ -159,22 +160,22 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: events } = await runGraphQl(
-		'{ events(_filter: {slug: {_ne: ""}}) { id, slug, event, date, startDate, endDate location }}'
+		'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
 	);
 
-	const sortEvents = events.events.sort(
-		(
-			a: { startDate: string | number | Date },
-			b: { startDate: string | number | Date }
-		) => {
-			return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-		}
-	);
+	// const sortEvents = events.events.sort(
+	// 	(
+	// 		a: { startDate: string | number | Date },
+	// 		b: { startDate: string | number | Date }
+	// 	) => {
+	// 		return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+	// 	}
+	// );
 
 	return {
 		props: {
 			events: events.events,
-			sortEvents,
+			//sortEvents,
 		},
 	};
 };

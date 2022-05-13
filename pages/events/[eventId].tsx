@@ -1,19 +1,19 @@
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
-import { runGraphQl, formatDate } from "../../utils";
+import { runGraphQl, formatDate, truncateWords } from "../../utils";
 
 type Props = {
 	event: Record<string, any>;
 };
 
-const Event: NextPage<Props> = (props) => {
+const Event: NextPage<Props> = ({ event }) => {
 	const router = useRouter();
 	const { eventId } = router.query;
 
-	const goBack = () => router.back();
+	// const goBack = () => router.back();
 
-	const event = props.event;
+	//const event = props.event;
 
 	if (!event) {
 		return <h1>Not Found</h1>;
@@ -34,32 +34,34 @@ const Event: NextPage<Props> = (props) => {
 						<div className="col-span-1">
 							<div className="p-6 flex flex-col h-full justify-between">
 								<div>
-									<div>
-										<time
-											className="inline-block text-center shadow-md rounded-md border border-gray-50 px-3 py-1"
-											dateTime="2022-04-10"
-										>
-											<p className="uppercase">
-												{formatDate(event.startDate, {
-													month: "short",
-												})}
-											</p>
-											<p className="text-xl">
-												{formatDate(event.startDate, {
-													day: "2-digit",
-												})}
-											</p>
-										</time>
-									</div>
+									{event.startDate && (
+										<div>
+											<time
+												className="inline-block text-center shadow-md rounded-md border border-gray-50 px-3 py-1"
+												dateTime={event.startDate}
+											>
+												<p className="uppercase">
+													{formatDate(event.startDate, {
+														month: "short",
+													})}
+												</p>
+												<p className="text-xl">
+													{formatDate(event.startDate, {
+														day: "2-digit",
+													})}
+												</p>
+											</time>
+										</div>
+									)}
 									<h1 className="text-3xl my-4 font-bold">{event.event}</h1>
 
-									<p className="text-dark-400">
-										My event summary... Lorem ipsum dolor sit amet, consectetur
-										adipiscing elit, sed do eiusmod tempor incididunt ut labore
-										et dolore magna aliqua
-									</p>
+									{event.description && (
+										<p className="text-dark-400">
+											{truncateWords(event.description)}
+										</p>
+									)}
 								</div>
-								<div className="mt-auto text-lg text-dark-400">$99</div>
+								{/* <div className="mt-auto text-lg text-dark-400">$99</div> */}
 							</div>
 						</div>
 					</div>
@@ -67,7 +69,7 @@ const Event: NextPage<Props> = (props) => {
 					<div className="flex flex-col p-3 border-y border-gray-200 md:grid md:grid-cols-3 gap-5 items-center">
 						<div className="col-span-2">
 							{/* Event size */}
-							{event.description && (
+							{event.eventSizeAttendeesSponsorExhibition && (
 								<>{event.eventSizeAttendeesSponsorExhibition}</>
 							)}
 						</div>
@@ -108,14 +110,14 @@ const Event: NextPage<Props> = (props) => {
 									)}
 								</p>
 							) : (
-								<p>&mdash;</p>
+								<p className="empty">TBD</p>
 							)}
 
-							{event.location && (
-								<>
-									<h3 className="font-bold mt-6">Location</h3>
-									<p>{event.location}</p>
-								</>
+							<h3 className="font-bold mt-6">Location</h3>
+							{event.location ? (
+								<p>{event.location}</p>
+							) : (
+								<p className="empty">TBD</p>
 							)}
 						</div>
 					</div>
@@ -178,29 +180,5 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		},
 	};
 };
-
-// export const getStaticProps: GetStaticProps = async (context) => {
-// 	const {
-// 		data: { events },
-// 	} = await runGraphQl(`{
-// 		  events(id: "${context.params?.theeventId}") {
-// 			id
-// 			slug
-// 		  }
-// 		}
-// 	  `);
-
-// 	if (!events[0]) {
-// 		return {
-// 			notFound: true,
-// 		};
-// 	}
-
-// 	return {
-// 		props: {
-// 			event: events[0],
-// 		},
-// 	};
-// };
 
 export default Event;
