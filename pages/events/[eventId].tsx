@@ -67,7 +67,7 @@ const Event: NextPage<Props> = (props) => {
 					<div className="flex flex-col p-3 border-y border-gray-200 md:grid md:grid-cols-3 gap-5 items-center">
 						<div className="col-span-2">
 							{/* Event size */}
-							{event.description.length > 0 && (
+							{event.description && (
 								<>{event.eventSizeAttendeesSponsorExhibition}</>
 							)}
 						</div>
