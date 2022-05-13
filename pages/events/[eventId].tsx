@@ -1,46 +1,34 @@
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
-import { runGraphQl } from "../../utils";
+import { runGraphQl, formatDate } from "../../utils";
 
 type Props = {
 	event: Record<string, any>;
 };
 
-const Event: NextPage<Props> = ({ event }) => {
+const Event: NextPage<Props> = (props) => {
 	const router = useRouter();
 	const { eventId } = router.query;
+
+	const goBack = () => router.back();
+
+	const event = props.event;
+
+	if (!event) {
+		return <h1>Not Found</h1>;
+	}
 
 	return (
 		<div>
 			<div className="absolute w-full z-0 bg-gray-200 overflow-hidden">
-				<div
-					className="
-        relative
-        text-white
-        object-cover
-        h-96
-        w-full
-        blur-lg
-        brightness-90
-      "
-				>
+				<div className="relative text-white object-cover h-96 w-full blur-lg brightness-90">
 					Event image as bg
 				</div>
 			</div>
 
 			<div className="relative z-10 pt-10 mb-44 px-4 sm:px-6 lg:px-8">
-				<div
-					className="
-        max-w-6xl
-        mx-auto
-        bg-white
-        rounded-lg
-        shadow-sm
-        rounded-tl-lg rounded-tr-lg
-        overflow-hidden
-      "
-				>
+				<div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm rounded-tl-lg rounded-tr-lg overflow-hidden">
 					<div className="flex flex-col md:grid md:grid-cols-3">
 						<div className="col-span-2 h-72 sm:h-96">Event image</div>
 						<div className="col-span-1">
@@ -48,14 +36,23 @@ const Event: NextPage<Props> = ({ event }) => {
 								<div>
 									<div>
 										<time
-											className="inline-block text-center"
+											className="inline-block text-center shadow-md rounded-md border border-gray-50 px-3 py-1"
 											dateTime="2022-04-10"
 										>
-											<p className="uppercase">Jun</p>
-											<p className="text-xl">26</p>
+											<p className="uppercase">
+												{formatDate(event.startDate, {
+													month: "short",
+												})}
+											</p>
+											<p className="text-xl">
+												{formatDate(event.startDate, {
+													day: "2-digit",
+												})}
+											</p>
 										</time>
 									</div>
-									<h1 className="text-3xl my-4 font-bold">My Event</h1>
+									<h1 className="text-3xl my-4 font-bold">{event.event}</h1>
+
 									<p className="text-dark-400">
 										My event summary... Lorem ipsum dolor sit amet, consectetur
 										adipiscing elit, sed do eiusmod tempor incididunt ut labore
@@ -67,17 +64,13 @@ const Event: NextPage<Props> = ({ event }) => {
 						</div>
 					</div>
 
-					<div
-						className="
-          flex flex-col
-          p-3
-          border-y border-gray-200
-          md:grid md:grid-cols-3
-          gap-5
-          items-center
-        "
-					>
-						<div className="col-span-2">Event size</div>
+					<div className="flex flex-col p-3 border-y border-gray-200 md:grid md:grid-cols-3 gap-5 items-center">
+						<div className="col-span-2">
+							{/* Event size */}
+							{event.description.length > 0 && (
+								<>{event.eventSizeAttendeesSponsorExhibition}</>
+							)}
+						</div>
 						<div className="col-span-1">
 							<ElemButton btn="dark" arrow>
 								Link to event website
@@ -85,41 +78,59 @@ const Event: NextPage<Props> = ({ event }) => {
 						</div>
 					</div>
 
-					<div className="flex flex-col md:grid md:grid-cols-3 gap-5 pt-14 px-3">
+					<div className="flex flex-col md:grid md:grid-cols-3 gap-5 py-14 px-6">
 						<div className="col-span-2 text-xl text-gray-500">
-							Details... Lorem ipsum dolor sit amet, consectetur adipiscing
+							{/* Details... Lorem ipsum dolor sit amet, consectetur adipiscing
 							elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-							aliqua.
+							aliqua. */}
+							{event.description && <>{event.description}</>}
 						</div>
 
 						<div className="col-span-1">
-							<h3 className="font-bold">Date and time</h3>
-							<p>Friday June 26, 4:00pm - Sunday June 28, 10pm</p>
+							<h3 className="font-bold">Dates</h3>
+							{event.startDate ? (
+								<p>
+									{formatDate(event.startDate, {
+										weekday: "long",
+										month: "long",
+										day: "2-digit",
+									})}
 
-							<h3 className="font-bold mt-6">Location</h3>
-							<p>San Francisco</p>
+									{event.endDate && (
+										<>
+											<span className="px-1">&ndash;</span>
+											{formatDate(event.endDate, {
+												weekday: "long",
+												month: "long",
+												day: "2-digit",
+											})}
+										</>
+									)}
+								</p>
+							) : (
+								<p>&mdash;</p>
+							)}
+
+							{event.location && (
+								<>
+									<h3 className="font-bold mt-6">Location</h3>
+									<p>{event.location}</p>
+								</>
+							)}
 						</div>
 					</div>
 
-					<div className="mt-14 pt-6 px-6 border-y border-gray-200">
+					{/* <div className="mt-14 py-6 px-6">
 						<h2 className="text-3xl font-bold">Speakers</h2>
 						<div className="flex flex-col md:grid md:grid-cols-4 gap-5 mt-3 w-full">
-							<div
-								className="
-              border border-dark-100
-              p-6
-              rounded-lg
-              transition-all
-              hover:bg-white hover:shadow-md hover:-translate-y-1
-            "
-							>
+							<div className="border border-dark-100 p-6 rounded-lg transition-all hover:bg-white hover:shadow-md hover:-translate-y-1">
 								Speaker image
 								<h3 className="font-bold text-center text-xl mt-2">
 									Speaker Name
 								</h3>
 							</div>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		</div>
@@ -133,23 +144,29 @@ export async function getStaticPaths() {
 
 	return {
 		paths: events
-			.filter((event: { id: string }) => event.id)
-			.map((event: { id: string }) => ({ params: { eventId: event.id } })),
+			.filter((ev: { slug: string }) => ev.slug)
+			.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
 		fallback: true, // false or 'blocking'
 	};
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: events } = await runGraphQl(`{
-    events(id: "${context.params?.eventId}") {
+    events(slug: "${context.params?.eventId}") {
       id
       event
+	  description
+      slug
       date
+	  startDate
+	  endDate
+	  eventSizeAttendeesSponsorExhibition
+	  location
     }
   }
 `);
 
-	if (!events[0]) {
+	if (!events.events[0]) {
 		return {
 			notFound: true,
 		};
@@ -157,9 +174,33 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			event: events[0],
+			event: events.events[0],
 		},
 	};
 };
+
+// export const getStaticProps: GetStaticProps = async (context) => {
+// 	const {
+// 		data: { events },
+// 	} = await runGraphQl(`{
+// 		  events(id: "${context.params?.theeventId}") {
+// 			id
+// 			slug
+// 		  }
+// 		}
+// 	  `);
+
+// 	if (!events[0]) {
+// 		return {
+// 			notFound: true,
+// 		};
+// 	}
+
+// 	return {
+// 		props: {
+// 			event: events[0],
+// 		},
+// 	};
+// };
 
 export default Event;

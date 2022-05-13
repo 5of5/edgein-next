@@ -77,7 +77,7 @@ export const ElemHeading: React.FC<PropsWithChildren<Props>> = ({
       "
 			></div>
 
-			<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+			<div className="max-w-6xl mx-auto py-12 px-4 relative z-10 sm:px-6 lg:py-16 lg:px-8">
 				<div>
 					{title ? (
 						<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
