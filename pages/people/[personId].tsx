@@ -139,14 +139,17 @@ const Person: NextPage<Props> = ({ person }) => {
 										d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
 									/>
 								</svg>
-								<a
+								<span className="font-medium hover:opacity-60 cursor-not-allowed">
+									&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;
+								</span>
+								{/* <a
 									href={`mailto:${person.email}`}
 									target="_blank"
 									className="font-medium hover:opacity-60"
 									rel="noopener noreferrer"
 								>
 									{person.email}
-								</a>
+								</a> */}
 							</div>
 						)}
 
