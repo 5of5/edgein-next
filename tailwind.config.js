@@ -78,6 +78,10 @@ module.exports = {
         blue,
         dark,
         gray,
+        transparent: 'transparent',
+      },
+      borderWidth: {
+        '6': '6px',
       },
       borderRadius: {
         '8xl': '4rem',

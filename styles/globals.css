@@ -63,7 +63,6 @@ body {
    @apply text-dark-500 overscroll-y-none;
 }
 
-
 .hamburger-inner,
 .hamburger-inner::before,
 .hamburger-inner::after { 
@@ -88,4 +87,61 @@ body {
 .nav-toggle-active .hamburger-inner::after{
   @apply bottom-0 rotate-90;
   transition:bottom .075s ease, transform .075s .12s cubic-bezier(.215,.61,.355,1);
+}
+
+/* Tooltip */
+.Tooltip-Wrapper{
+  @apply relative inline-block;
+}
+
+.Tooltip-Tip {
+  @apply absolute rounded-sm left-1/2 -translate-x-1/2 p-3 bg-dark-500 text-gray-200 z-[100] whitespace-normal max-w-md;
+  @apply max-w-xs w-max;
+}
+
+/* CSS border triangles */
+ .Tooltip-Tip::before {
+  margin-left: calc(6px * -1);
+  @apply content-[''] left-1/2 border-transparent h-0 w-0 absolute cursor-none border-6;
+}
+
+/* Absolute positioning */
+.Tooltip-Tip.top {
+  top: calc(60px * -1);
+}
+
+/* CSS border triangles */
+.Tooltip-Tip.top::before {
+  @apply top-full border-t-dark-500;
+}
+
+/* Absolute positioning */
+.Tooltip-Tip.right {
+  left: calc(100% + 6px);
+  @apply top-1/2 translate-x-0 -translate-y-1/2;
+}
+/* CSS border triangles */
+.Tooltip-Tip.right::before {
+  left: calc(6px * -1);
+  @apply top-1/2 translate-x-0 -translate-y-1/2 border-r-dark-500;
+}
+
+/* Absolute positioning */
+ .Tooltip-Tip.bottom {
+  bottom: calc(60px * -1);
+}
+/* CSS border triangles */
+.Tooltip-Tip.bottom::before {
+  @apply bottom-full border-b-dark-500;
+}
+
+/* Absolute positioning */
+.Tooltip-Tip.left {
+  right: calc(100% + 6px);
+  @apply left-auto top-1/2 translate-x-0 -translate-y-1/2;
+}
+/* CSS border triangles */
+.Tooltip-Tip.left::before {
+  right: calc(6px * -2);
+  @apply left-auto top-1/2 translate-x-0 -translate-y-1/2 border-l-dark-500;
 }

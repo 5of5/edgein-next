@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import { ElemFigureIntro } from "../components/ElemFigureIntro";
 import { ElemButton } from "../components/ElemButton";
+import { ElemTooltip } from "../components/ElemTooltip";
 import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
@@ -22,25 +23,7 @@ const Home: NextPage = () => {
 					<figure className="absolute z-0 -bottom-44 -left-6 w-5/12 h-96 bg-[#F72784] rounded-full opacity-20 mix-blend-multiply filter blur-2xl transform-gpu animate-blob "></figure>
 					<figure className="absolute z-0 -bottom-36 left-1/4 w-5/12 h-96 bg-[#7209B8] rounded-full opacity-20 mix-blend-multiply filter blur-3xl transform-gpu animate-blob animation-delay-5000 "></figure>
 					<figure className="absolute z-0 -bottom-20 left-1/2 w-5/12 h-96 bg-[#0815EC] rounded-full opacity-10 mix-blend-multiply filter blur-xl transform-gpu animate-blob animation-delay-2000 "></figure>
-					<figure
-						className="
-          absolute
-          z-0
-          -bottom-40
-          -right-20
-          w-5/12
-          h-96
-          rounded-full
-          bg-[#1BE6FF]
-          opacity-20
-          mix-blend-multiply
-          filter
-          blur-xl
-          transform-gpu
-          animate-blob
-          animation-delay-4000
-        "
-					></figure>
+					<figure className="absolute z-0 -bottom-40 -right-20 w-5/12 h-96 rounded-full bg-[#1BE6FF] opacity-20 mix-blend-multiply filter blur-xl transform-gpu animate-blob animation-delay-4000 "></figure>
 					<div className="z-10 max-w-6xl mx-auto py-32 px-4 sm:px-6 lg:py-44 lg:px-8">
 						<div className="flex flex-col md:grid md:grid-cols-5 gap-5 my-8">
 							<div className="col-span-3 flex flex-col justify-center">
@@ -130,6 +113,60 @@ const Home: NextPage = () => {
 						</div>
 					</div>
 				</section>
+				{/* <section className="max-w-6xl mx-auto py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+					<div className="grid grid-cols-5 gap-6">
+						<ElemTooltip
+							className="bg-red-500"
+							content="The Top Tooltip"
+							direction="top"
+						>
+							<div>Top</div>
+						</ElemTooltip>
+						<ElemTooltip
+							className="bg-red-500"
+							content="Lorem Ipsum is simply dummy text."
+							direction="top"
+						>
+							<div>
+								Top
+								<br />
+								With
+								<br />
+								Lots
+								<br />
+								of
+								<br />
+								content
+								<br />
+								blah
+								<br />
+								blah
+								<br />
+							</div>
+						</ElemTooltip>
+						<ElemTooltip
+							className="bg-yellow-500"
+							content="The Right Tooltip"
+							direction="right"
+						>
+							<div>Right</div>
+						</ElemTooltip>
+						<ElemTooltip
+							className="bg-green-500"
+							content="The Bottom Tooltip"
+							direction="bottom"
+						>
+							<div>Bottom</div>
+						</ElemTooltip>
+						<ElemTooltip
+							className="bg-blue-500"
+							content="The Left Tooltip"
+							direction="left"
+						>
+							<div>Left</div>
+						</ElemTooltip>
+					</div>
+				</section> */}
 			</div>
 		</div>
 	);
