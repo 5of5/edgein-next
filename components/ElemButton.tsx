@@ -18,6 +18,7 @@ type Props = {
 	size?: "md" | "sm" | "xs" | "lg" | "";
 	href?: string;
 	disabled?: boolean;
+	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const ElemButton: FC<PropsWithChildren<Props>> = ({
@@ -31,6 +32,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	href = "",
 	disabled = false,
 	children,
+	onClick,
 }) => {
 	let btnClass = "";
 	// button styles
@@ -91,7 +93,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   `;
 
 	var component = (
-		<button className={componentClassName + className}>
+		<button className={componentClassName + className} onClick={onClick}>
 			{/* { loading && 
 <Transition name="fade">
 <div className="absolute left-0 w-full flex items-center justify-center">

@@ -37,7 +37,7 @@ const Home: NextPage = () => {
 									unparalleled edge in Web3.
 								</p>
 								<div className="mt-8">
-									<ElemButton className="inline-block" href="/" btn="primary">
+									<ElemButton className="inline-block" href="/login" btn="primary">
 										Start now
 									</ElemButton>
 								</div>

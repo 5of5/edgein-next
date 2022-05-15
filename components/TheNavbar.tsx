@@ -3,8 +3,11 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
 import { ElemButton } from "./ElemButton";
+import useAuth from "../hooks/useAuth";
+import { Magic } from "magic-sdk";
 
 export const TheNavbar = () => {
+	const { user } = useAuth()
 	const siteNav = [
 		{
 			path: "/companies",
@@ -31,6 +34,13 @@ export const TheNavbar = () => {
 	];
 
 	// const ref = useRef(null);
+
+	const logout = () => {
+		const magic = new Magic(
+			process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || ""
+		)
+    magic.user.logout()
+	}
 
 	const [isActive, setActive] = useState<any>(false);
 
@@ -93,9 +103,15 @@ export const TheNavbar = () => {
 					</ul>
 
 					<div className="flex items-center lg:ml-6">
-						<ElemButton href="/" btn="primary" arrow>
-							Start Now
-						</ElemButton>
+						{ user ?
+							<ElemButton onClick={logout} btn="primary">
+								Logout
+							</ElemButton>					
+						:
+							<ElemButton href="/login" btn="primary" arrow>
+								Start Now
+							</ElemButton>
+						}
 						<button
 							onClick={toggleNav}
 							className="hamburger relative w-8 h-[22px] ml-2 p-[3px] border-0 bg-none cursor-pointer inline-block lg:hidden"
