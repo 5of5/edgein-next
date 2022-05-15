@@ -25,7 +25,7 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 			<div>
 				<ElemHeading
 					title="VC Firms"
-					subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+					subtitle="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."
 				>
 					{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
 						Submit VC Firm
