@@ -1,5 +1,6 @@
 import { serialize } from "cookie"
-import { NextApiResponse } from "next"
+import type { NextApiResponse } from 'next'
+import { jwtVerify } from 'jose'
 
 const TOKEN_NAME = "api_token"
 const MAX_AGE = 60 * 60 * 8
@@ -27,4 +28,24 @@ function getAuthToken(cookies: Record<string, string>) {
   return cookies[TOKEN_NAME]
 }
 
-export default { setTokenCookie, getAuthToken }
+async function getUser(token: string) {
+  if (!token) {
+    return false
+  }
+  const verified = await jwtVerify(
+    token,
+    new TextEncoder().encode(process.env.ENCRYPTION_SECRET)
+  )
+  let payload = verified.payload
+  
+  if (!payload) {
+    return false
+  }
+  let user = payload.user as string
+  if (user.startsWith('{')) {
+    user = JSON.parse(user)
+  }
+  return user
+}
+
+export default { setTokenCookie, getAuthToken, getUser }

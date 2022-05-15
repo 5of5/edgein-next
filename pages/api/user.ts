@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import Iron from '@hapi/iron'
 import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let user;
   try {
-    user = await Iron.unseal(CookieService.getAuthToken(req.cookies), process.env.ENCRYPTION_SECRET || '', Iron.defaults)
+    user = CookieService.getUser(CookieService.getAuthToken(req.cookies))
   } catch (error) {
     res.status(401).end()
   }

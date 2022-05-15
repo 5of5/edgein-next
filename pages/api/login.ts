@@ -1,7 +1,8 @@
 import {Magic} from '@magic-sdk/admin'
-import Iron from '@hapi/iron'
 import CookieService from '../../utils/cookie'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { nanoid } from 'nanoid'
+import { SignJWT } from 'jose'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
@@ -12,7 +13,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await new Magic(process.env.MAGIC_SECRET_KEY).users.getMetadataByToken(did || '')
 
   // Author a couple of cookies to persist a user's session
-  const token = await Iron.seal(user, process.env.ENCRYPTION_SECRET || '', Iron.defaults)
+  const token = await new SignJWT({user: JSON.stringify(user)})
+  .setProtectedHeader({ alg: 'HS256' })
+  .setJti(nanoid())
+  .setIssuedAt()
+  .setExpirationTime('2h')
+  .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
   CookieService.setTokenCookie(res, token)
 
   res.end()

@@ -153,7 +153,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: events } = await runGraphQl(`{
+  const gql = `{
     events(slug: "${context.params?.eventId}") {
       id
       event
@@ -166,9 +166,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	  location
     }
   }
-`);
+`
+	const { data: events } = await runGraphQl(gql);
 
-	if (!events.events[0]) {
+	if (!(events && events.events && events.events[0])) {
 		return {
 			notFound: true,
 		};
