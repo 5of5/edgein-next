@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 
 export const TheNavbar = () => {
-	const { user } = useAuth()
+	const { user } = useAuth();
 	const siteNav = [
 		{
 			path: "/companies",
@@ -36,11 +36,9 @@ export const TheNavbar = () => {
 	// const ref = useRef(null);
 
 	const logout = () => {
-		const magic = new Magic(
-			process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || ""
-		)
-    magic.user.logout()
-	}
+		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
+		magic.user.logout();
+	};
 
 	const [isActive, setActive] = useState<any>(false);
 
@@ -69,7 +67,7 @@ export const TheNavbar = () => {
 		<header className="overflow-y-visible z-30">
 			<div className="max-w-6xl mx-auto px-4 py-2 sm:px-6 lg:px-8 lg:py-4">
 				<nav
-					className={`flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
+					className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
 						isActive ? "nav-toggle-active" : ""
 					}`}
 					aria-label="Global"
@@ -103,15 +101,15 @@ export const TheNavbar = () => {
 					</ul>
 
 					<div className="flex items-center lg:ml-6">
-						{ user ?
+						{user ? (
 							<ElemButton onClick={logout} btn="primary">
 								Logout
-							</ElemButton>					
-						:
+							</ElemButton>
+						) : (
 							<ElemButton href="/login" btn="primary" arrow>
 								Start Now
 							</ElemButton>
-						}
+						)}
 						<button
 							onClick={toggleNav}
 							className="hamburger relative w-8 h-[22px] ml-2 p-[3px] border-0 bg-none cursor-pointer inline-block lg:hidden"

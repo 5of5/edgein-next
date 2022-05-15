@@ -20,7 +20,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 	const showTip = () => {
 		timeout = setTimeout(() => {
 			setActive(true);
-		}, delay || 300);
+		}, delay || 200);
 	};
 
 	const hideTip = () => {
@@ -28,27 +28,15 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 		setActive(false);
 	};
 
-	// let directionClasses = "";
-
-	// if (direction === "top") {
-	// 	directionClasses = "bottom-6";
-	// } else if (direction === "bottom") {
-	// 	directionClasses = "top-0";
-	// } else {
-	// 	directionClasses = "left";
-	// }
-
 	return (
-		<div>
-			<div
-				className={`${className} Tooltip-Wrapper`}
-				// When to show the tooltip
-				onMouseEnter={showTip}
-				onMouseLeave={hideTip}
-			>
-				{children}
-				{active && <div className={`Tooltip-Tip ${direction} `}>{content}</div>}
-			</div>
+		<div
+			className={`${className} Tooltip-Wrapper`}
+			// When to show the tooltip
+			onMouseEnter={showTip}
+			onMouseLeave={hideTip}
+		>
+			{children}
+			{active && <div className={`Tooltip-Tip ${direction} `}>{content}</div>}
 		</div>
 	);
 };
