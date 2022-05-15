@@ -30,7 +30,9 @@ const Event: NextPage<Props> = ({ event }) => {
 			<div className="relative z-10 pt-10 mb-44 px-4 sm:px-6 lg:px-8">
 				<div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm rounded-tl-lg rounded-tr-lg overflow-hidden">
 					<div className="flex flex-col md:grid md:grid-cols-3">
-						<div className="col-span-2 h-72 sm:h-96">Event image</div>
+						<div className="col-span-2 h-72 sm:h-96">
+							<div className="object-contain w-full h-full bg-dark-700"></div>
+						</div>
 						<div className="col-span-1">
 							<div className="p-6 flex flex-col h-full justify-between">
 								<div>
@@ -75,7 +77,7 @@ const Event: NextPage<Props> = ({ event }) => {
 						</div>
 						<div className="col-span-1">
 							<ElemButton btn="dark" arrow>
-								Link to event website
+								Event website
 							</ElemButton>
 						</div>
 					</div>

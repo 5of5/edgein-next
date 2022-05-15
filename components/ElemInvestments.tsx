@@ -78,7 +78,7 @@ export const ElemInvestments: React.FC<Props> = ({
 
 									<div
 										key={investment.id}
-										className="border border-dark-100 space-y-4 rounded-lg p-4"
+										className="h-fit border border-dark-100 space-y-4 rounded-lg p-4"
 									>
 										{Object.keys(theVCFirms).length > 0 &&
 											theVCFirms.map((firm: any) => {
