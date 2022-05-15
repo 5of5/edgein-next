@@ -15,16 +15,18 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
-  let user;
-  try {
-    user = await CookieService.getUser(CookieService.getAuthToken(req.cookies))
-    console.log({user})
-    if (!user) {
-      return NextResponse.redirect(new URL('/', req.url))
-    }
-  } catch (error) {
-    console.log(error)
-    return NextResponse.redirect(new URL('/', req.url))
-  }
   return NextResponse.next()
+
+  // let user;
+  // try {
+  //   user = await CookieService.getUser(CookieService.getAuthToken(req.cookies))
+  //   console.log({user})
+  //   if (!user) {
+  //     return NextResponse.redirect(new URL('/login/', req.url))
+  //   }
+  // } catch (error) {
+  //   console.log(error)
+  //   return NextResponse.redirect(new URL('/login/', req.url))
+  // }
+  // return NextResponse.next()
 }
