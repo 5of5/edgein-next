@@ -82,9 +82,6 @@ const Event: NextPage<Props> = ({ event }) => {
 
 					<div className="flex flex-col md:grid md:grid-cols-3 gap-5 py-14 px-6">
 						<div className="col-span-2 text-xl text-gray-500">
-							{/* Details... Lorem ipsum dolor sit amet, consectetur adipiscing
-							elit, sed do eiusmod tempor incididunt ut labore et dolore magna
-							aliqua. */}
 							{event.description && <>{event.description}</>}
 						</div>
 
@@ -153,7 +150,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const gql = `{
+	const gql = `{
     events(slug: "${context.params?.eventId}") {
       id
       event
@@ -166,7 +163,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	  location
     }
   }
-`
+`;
 	const { data: events } = await runGraphQl(gql);
 
 	if (!(events && events.events && events.events[0])) {

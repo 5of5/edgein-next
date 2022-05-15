@@ -24,7 +24,7 @@ const Events: NextPage<Props> = ({ events }) => {
 			<div>
 				<ElemHeading
 					title="Events"
-					subtitle="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+					subtitle="Don't miss a beat. Here's your lineup for all of the industry's must attend events."
 				>
 					{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
 						Submit event
