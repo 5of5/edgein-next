@@ -23,7 +23,6 @@ const Companies: NextPage<Props> = ({ companies }) => {
 					name="description"
 					content="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				/>
-				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<div>
 				<ElemHeading
@@ -70,12 +69,15 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												<div className="flex items-center justify-center pl-2">
 													<h3 className="text-2xl font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
 														{company.title}
+														<div className="text-xs inline-flex items-center font-bold leading-sm uppercase ml-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
+															{company.layer}
+														</div>
 													</h3>
 												</div>
 											</div>
 
-											<div className="flex items-start h-full">
-												<p className="mb-4 text-gray-400">{company.overview}</p>
+											<div className="h-full">
+												<p className="text-gray-400">{company.overview}</p>
 											</div>
 										</a>
 									</Link>
@@ -90,7 +92,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {title: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, slug, logo, overview }}'
+		'{ companies(_order_by: {title: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview }}'
 	);
 
 	return {

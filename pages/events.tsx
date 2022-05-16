@@ -20,6 +20,10 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 		<div>
 			<Head>
 				<title>Events - EdgeIn.io</title>
+				<meta
+					name="description"
+					content="Don't miss a beat. Here's your lineup for all of the industry's must attend events."
+				/>
 			</Head>
 			<div>
 				<ElemHeading
