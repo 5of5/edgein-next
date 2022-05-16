@@ -7,7 +7,7 @@ import useAuth from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 
 export const TheNavbar = () => {
-	const { user } = useAuth();
+	const { user, error, loading } = useAuth();
 	const siteNav = [
 		{
 			path: "/companies",

@@ -43,7 +43,11 @@ async function getUser(token: string) {
   }
   let user = payload.user as string
   if (user.startsWith('{')) {
-    user = JSON.parse(user)
+    try {
+      user = JSON.parse(user)
+    } catch (e) {
+      return false
+    }
   }
   return user
 }

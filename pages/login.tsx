@@ -18,7 +18,7 @@ export default function Login() {
 		const did = await magic.auth.loginWithMagicLink({ email });
 
 		// Once we have the did from magic, login with our own API
-		const authRequest = await fetch("/api/login", {
+		const authRequest = await fetch("/api/login/", {
 			method: "POST",
 			headers: { Authorization: `Bearer ${did}` },
 		});
