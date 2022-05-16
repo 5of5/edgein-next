@@ -10,10 +10,10 @@ import { runGraphQl, formatDate } from "../utils";
 
 type Props = {
 	events: Record<string, any>[];
-	//sortEvents: Record<string, any>[];
+	sortEvents: Record<string, any>[];
 };
 
-const Events: NextPage<Props> = ({ events }) => {
+const Events: NextPage<Props> = ({ events, sortEvents }) => {
 	const [search, setSearch] = React.useState("");
 
 	return (
@@ -46,7 +46,7 @@ const Events: NextPage<Props> = ({ events }) => {
 						</div>
 
 						<div className="w-full flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-5">
-							{events
+							{sortEvents
 								.filter(
 									(event) =>
 										!search ||
@@ -163,19 +163,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
 	);
 
-	// const sortEvents = events.events.sort(
-	// 	(
-	// 		a: { startDate: string | number | Date },
-	// 		b: { startDate: string | number | Date }
-	// 	) => {
-	// 		return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-	// 	}
-	// );
+	const sortEvents = events.events.sort(
+		(
+			a: { startDate: string | number | Date },
+			b: { startDate: string | number | Date }
+		) => {
+			return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+		}
+	);
 
 	return {
 		props: {
 			events: events.events,
-			//sortEvents,
+			sortEvents,
 		},
 	};
 };

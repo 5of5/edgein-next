@@ -56,8 +56,8 @@ const Home: NextPage = () => {
 					<div className="max-w-6xl mx-auto py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
 						<div className="pb-12 lg:pb-20">
 							<h2 className="relative max-w-3xl text-3xl font-bold text-dark-500 border-l-4 border-primary-500 pl-6 lg:text-4xl">
-								Actionable intelligence, strategic analysis, personalized market
-								mapping and concierge benefits.
+								Actionable intelligence, strategic analysis and data
+								sovereignty.
 							</h2>
 						</div>
 
@@ -87,9 +87,8 @@ const Home: NextPage = () => {
 								</h3>
 								<p className="mb-4 text-md text-dark-400 lg:text-lg">
 									One login for all of the portfolio performance metrics you
-									need, web3 investment opportunities, comprehensive due
-									diligence, plus an exclusive concierge team for executive
-									email and calendaring support.
+									need, web3 investment opportunities and comprehensive due
+									diligence.
 								</p>
 								{/* <ElemButton
 									className="pl-0 pr-0"
