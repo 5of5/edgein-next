@@ -27,7 +27,10 @@ export const truncateWords = (string: string, wordCount?: number): string => {
 	if (!wordCount) {
 		wordCount = 25;
 	}
-	return string
+
+	const stringWordCount = string.split(" ").length;
+
+	return stringWordCount > wordCount
 		? string.split(" ").splice(0, wordCount).join(" ") + "..."
 		: string;
 };
