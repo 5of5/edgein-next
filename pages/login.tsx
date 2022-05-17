@@ -23,7 +23,8 @@ export default function Login() {
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
-			router.push("/?loggedin");
+			// Next.js middleware needs a full refresh rather than router.push
+			location.href = "/?loggedin";
 		} else {
 			/* handle errors */
 		}
