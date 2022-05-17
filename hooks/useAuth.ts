@@ -1,4 +1,5 @@
 import useSWR from "swr";
+import { useSWRConfig } from 'swr'
 
 function fetcher(route: string) {
   /* our token cookie gets sent with this request */
@@ -7,8 +8,14 @@ function fetcher(route: string) {
     .then((user) => user || null);
 }
 
-export default function useAuth() {
-  const { data: user, error, mutate } = useSWR("/api/user/", fetcher);
+export function useClearAuth() {
+  const { cache } = useSWRConfig()
+  cache.get('/api/user/')
+  cache.delete('/api/user/')
+}
+
+export function useAuth() {
+  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher, {revalidateOnMount: true});
   const loading = user === undefined;
 
   return {

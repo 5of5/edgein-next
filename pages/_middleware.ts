@@ -25,7 +25,7 @@ export async function middleware(req: NextRequest) {
 	let user;
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-		console.log({ user });
+		console.log({ user: 'found' });
 		if (!user) {
       return NextResponse.redirect(new URL(`/login/?redirect=${url.pathname.replace(/\//g, '')}`, req.url))
 		}

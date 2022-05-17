@@ -1,12 +1,14 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
 import { ElemButton } from "./ElemButton";
-import useAuth from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
+import { useRouter } from "next/router";
 
 export const TheNavbar = () => {
+	const router = useRouter();
 	const { user, error, loading } = useAuth();
 	const siteNav = [
 		{
@@ -21,43 +23,25 @@ export const TheNavbar = () => {
 			path: "/events",
 			name: "Events",
 		},
-		// submenu: [
-		//   {
-		//     path: "/item",
-		//     name: "First Item",
-		//   },
-		//   {
-		//     path: "/item2",
-		//     name: "Second Item",
-		//   },
-		// ],
 	];
 
-	// const ref = useRef(null);
-
-	const logout = () => {
+	const logout = async () => {
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 		magic.user.logout();
+		const authRequest = await fetch("/api/logout/", {
+			method: "POST",
+		});
+		if (authRequest.ok) {
+			// We successfully logged in, our API
+			// set authorization cookies and now we
+			// can redirect to the dashboard!
+			router.push("/login/?loggedout");
+		} else {
+			/* handle errors */
+		}
 	};
 
 	const [isActive, setActive] = useState<any>(false);
-
-	// useEffect(() => {
-	// 	const checkIfClickedOutside = (e: any) => {
-	// 		// If the menu is open and the clicked target is not within the menu,
-	// 		// then close the menu
-	// 		if (isActive && ref.current && !ref.current.contains(e.target)) {
-	// 			setActive(false);
-	// 		}
-	// 	};
-
-	// 	document.addEventListener("mousedown", checkIfClickedOutside);
-
-	// 	return () => {
-	// 		// Cleanup the event listener
-	// 		document.removeEventListener("mousedown", checkIfClickedOutside);
-	// 	};
-	// }, [isActive]);
 
 	const toggleNav = () => {
 		setActive((isActive: any) => !isActive);

@@ -24,6 +24,13 @@ function setTokenCookie(res: NextApiResponse, token: string) {
   ])
 }
 
+function clearTokenCookie(res: NextApiResponse) {
+  res.setHeader('Set-Cookie', [
+    `${TOKEN_NAME}=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+    `authed=deleted; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+  ]);
+}
+
 function getAuthToken(cookies: Record<string, string>) {
   return cookies[TOKEN_NAME]
 }
@@ -52,4 +59,4 @@ async function getUser(token: string) {
   return user
 }
 
-export default { setTokenCookie, getAuthToken, getUser }
+export default { setTokenCookie, getAuthToken, getUser, clearTokenCookie }
