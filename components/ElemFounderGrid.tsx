@@ -22,7 +22,7 @@ export const ElemFounderGrid: React.FC<Props> = ({
 							href={`/people/${profile.slug}`}
 							photos={profile.picture}
 							heading={profile.name}
-							text={profile.type}
+							text={profile.type.join(", ")}
 						/>
 					);
 				})}

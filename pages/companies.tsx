@@ -6,7 +6,7 @@ import React from "react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
-import { runGraphQl } from "../utils";
+import { runGraphQl, truncateWords, slugify } from "../utils";
 
 type Props = {
 	companies: Record<string, any>[];
@@ -14,6 +14,10 @@ type Props = {
 
 const Companies: NextPage<Props> = ({ companies }) => {
 	const [search, setSearch] = React.useState("");
+
+	const [selectedOption, setSelectedOption] = React.useState("");
+	const getLayers = companies.map((com) => com.layer);
+	const companyLayers = [...Array.from(new Set(getLayers))].sort();
 
 	return (
 		<div>
@@ -46,6 +50,21 @@ const Companies: NextPage<Props> = ({ companies }) => {
 									target: { value: React.SetStateAction<string> };
 								}) => setSearch(e.target.value)}
 							/>
+
+							{/* <label className="relative block" htmlFor="Layer">
+								<span className="sr-only">Layers</span>
+								<select
+									value={selectedOption}
+									onChange={(e: {
+										target: { value: React.SetStateAction<string> };
+									}) => setSelectedOption(e.target.value)}
+									className="h-10 w-full py-1.5 pr-3 px-3 text-dark-500 text-lg relative bg-white rounded-md border border-transparent outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100"
+								>
+									{companyLayers.map((opt, index) => (
+										<option key={slugify(opt)}>{opt}</option>
+									))}
+								</select>
+							</label> */}
 						</div>
 
 						<div className="w-full flex flex-col sm:grid sm:grid-cols-2 sm:gap-5 md:grid-cols-3">
@@ -54,6 +73,13 @@ const Companies: NextPage<Props> = ({ companies }) => {
 									(company) =>
 										!search ||
 										company.title?.toLowerCase().includes(search.toLowerCase())
+								)
+								.filter(
+									(company) =>
+										!selectedOption ||
+										company.layer
+											?.toLowerCase()
+											.includes(selectedOption.toLowerCase())
 								)
 								.map((company) => (
 									<Link key={company.id} href={`/companies/${company.slug}`}>
@@ -69,16 +95,21 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												<div className="flex items-center justify-center pl-2">
 													<h3 className="text-2xl font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
 														{company.title}
-														<div className="text-xs inline-flex items-center font-bold leading-sm uppercase ml-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
-															{company.layer}
-														</div>
 													</h3>
 												</div>
 											</div>
 
-											<div className="h-full">
-												<p className="text-gray-400">{company.overview}</p>
+											<div>
+												<div className="text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
+													{company.layer}
+												</div>
 											</div>
+
+											{company.overview && (
+												<div className="h-full text-gray-400">
+													{truncateWords(company.overview)}
+												</div>
+											)}
 										</a>
 									</Link>
 								))}

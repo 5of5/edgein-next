@@ -20,7 +20,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 				<ElemPhoto
 					photos={photos}
 					wrapClass="flex items-center justify-center w-32 h-32 mx-auto rounded-full overflow-hidden"
-					imgClass="object-fit h-full w-full"
+					imgClass="object-fit"
 					imgAlt={heading}
 				/>
 				{heading && (
