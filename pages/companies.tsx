@@ -102,7 +102,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								)
 								.map((company) => (
 									<Link key={company.id} href={`/companies/${company.slug}`}>
-										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col justify-between md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
+										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
 											<div className="flex flex-row w-full mb-4">
 												<ElemPhoto
 													photos={company.logo}
@@ -118,11 +118,13 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												</div>
 											</div>
 
-											<div>
-												<div className="text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
-													{company.layer}
+											{company.layer && (
+												<div>
+													<div className="text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
+														{company.layer}
+													</div>
 												</div>
-											</div>
+											)}
 
 											{company.overview && (
 												<div className="h-full text-gray-400">
