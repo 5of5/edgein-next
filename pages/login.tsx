@@ -3,10 +3,6 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import { ElemButton } from "../components/ElemButton";
 
-interface FormElements extends HTMLCollection {
-	email: HTMLInputElement;
-}
-
 export default function Login() {
 	const router = useRouter();
 	const [email, setEmail] = useState("");
@@ -27,7 +23,7 @@ export default function Login() {
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
-			router.push("/");
+			router.push("/?loggedin");
 		} else {
 			/* handle errors */
 		}
