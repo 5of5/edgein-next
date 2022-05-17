@@ -6,6 +6,7 @@ import React from "react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
+import { Select } from "../components/Select";
 import { runGraphQl, truncateWords, slugify } from "../utils";
 
 type Props = {
@@ -16,8 +17,14 @@ const Companies: NextPage<Props> = ({ companies }) => {
 	const [search, setSearch] = React.useState("");
 
 	const [selectedOption, setSelectedOption] = React.useState("");
-	const getLayers = companies.map((com) => com.layer);
-	const companyLayers = [...Array.from(new Set(getLayers))].sort();
+
+	const getAllLayers = companies.map((com) => com.layer);
+	const getUniqueLayers = [...Array.from(new Set(getAllLayers))].sort();
+
+	// const companyLayers = getUniqueLayers.map((str, index) => ({
+	// 	value: str,
+	// 	id: index + 1,
+	// }));
 
 	return (
 		<div>
@@ -51,7 +58,19 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								}) => setSearch(e.target.value)}
 							/>
 
-							{/* <label className="relative block" htmlFor="Layer">
+							{/* 
+							<Select
+								label="Layer"
+								name="Layer"
+								value={selectedOption}
+								placeholder="Just a Placeholder..."
+								onChange={(e: {
+									target: { value: React.SetStateAction<string> };
+								}) => setSelectedOption(e.target.value)}
+								options={getUniqueLayers}
+							/>
+
+							<label className="relative block" htmlFor="Layer">
 								<span className="sr-only">Layers</span>
 								<select
 									value={selectedOption}
