@@ -1,10 +1,8 @@
 import { Magic } from "magic-sdk";
-import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import { ElemButton } from "../components/ElemButton";
 
 export default function Login() {
-	const router = useRouter();
 	const [email, setEmail] = useState("");
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -24,7 +22,14 @@ export default function Login() {
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
 			// Next.js middleware needs a full refresh rather than router.push
-			location.href = "/?loggedin";
+			const search = location.search;
+			const params = new URLSearchParams(search);
+			const redirect = params.get('redirect'); // bar
+			if (redirect && redirect.startsWith('/')) {
+				location.href = redirect;
+			} else {
+				location.href = "/?loggedin";
+			}
 		} else {
 			/* handle errors */
 		}
