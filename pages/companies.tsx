@@ -1,30 +1,36 @@
 import type { NextPage, GetStaticProps } from "next";
-
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
+import { Listbox, Transition } from "@headlessui/react";
+
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
-import { Select } from "../components/Select";
-import { runGraphQl, truncateWords, slugify } from "../utils";
+import { runGraphQl, truncateWords } from "../utils";
 
 type Props = {
 	companies: Record<string, any>[];
 };
 
 const Companies: NextPage<Props> = ({ companies }) => {
+	// Search Box
 	const [search, setSearch] = React.useState("");
 
-	const [selectedOption, setSelectedOption] = React.useState("");
-
+	// Company Layers
 	const getAllLayers = companies.map((com) => com.layer);
-	const getUniqueLayers = [...Array.from(new Set(getAllLayers))].sort();
 
-	// const companyLayers = getUniqueLayers.map((str, index) => ({
-	// 	value: str,
-	// 	id: index + 1,
-	// }));
+	const getUniqueLayers = [...Array.from(new Set(getAllLayers))]
+		.sort()
+		.reverse();
+
+	const companyLayers = getUniqueLayers.map((str, index) => ({
+		id: index,
+		name: str,
+		label: str === null ? "All Layers" : str,
+	}));
+
+	const [selectedLayer, setSelectedLayer] = React.useState(companyLayers[0]);
 
 	return (
 		<div>
@@ -58,32 +64,64 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								}) => setSearch(e.target.value)}
 							/>
 
-							{/* 
-							<Select
-								label="Layer"
-								name="Layer"
-								value={selectedOption}
-								placeholder="Just a Placeholder..."
-								onChange={(e: {
-									target: { value: React.SetStateAction<string> };
-								}) => setSelectedOption(e.target.value)}
-								options={getUniqueLayers}
-							/>
+							<Listbox value={selectedLayer} onChange={setSelectedLayer}>
+								{({ open }) => (
+									<>
+										<div className="relative">
+											<Listbox.Button className="relative w-full text-dark-500 bg-white border border-transparent text-lg rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
+												<span className="block truncate">
+													{selectedLayer.label}
+												</span>
+												<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+													<IconSelector />
+												</span>
+											</Listbox.Button>
 
-							<label className="relative block" htmlFor="Layer">
-								<span className="sr-only">Layers</span>
-								<select
-									value={selectedOption}
-									onChange={(e: {
-										target: { value: React.SetStateAction<string> };
-									}) => setSelectedOption(e.target.value)}
-									className="h-10 w-full py-1.5 pr-3 px-3 text-dark-500 text-lg relative bg-white rounded-md border border-transparent outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100"
-								>
-									{companyLayers.map((opt, index) => (
-										<option key={slugify(opt)}>{opt}</option>
-									))}
-								</select>
-							</label> */}
+											<Transition
+												show={open}
+												as={React.Fragment}
+												leave="transition ease-in duration-100"
+												leaveFrom="opacity-100"
+												leaveTo="opacity-0"
+											>
+												<Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-xl max-h-60 rounded-md py-1 text-lg overflow-auto focus:outline-none">
+													{companyLayers.map((option: any) => (
+														<Listbox.Option
+															key={option.id}
+															value={option}
+															className={({ active }) =>
+																`${
+																	active
+																		? "text-primary-500 bg-primary-100"
+																		: "text-dark-500"
+																} cursor-default select-none relative py-2 pl-3 pr-9`
+															}
+														>
+															{({ selected }) => (
+																<>
+																	<span
+																		className={`${
+																			selected ? "font-semibold" : "font-normal"
+																		} block truncate`}
+																	>
+																		{option.label}
+																	</span>
+
+																	{selected ? (
+																		<span className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
+																			<IconCheck />
+																		</span>
+																	) : null}
+																</>
+															)}
+														</Listbox.Option>
+													))}
+												</Listbox.Options>
+											</Transition>
+										</div>
+									</>
+								)}
+							</Listbox>
 						</div>
 
 						<div className="w-full flex flex-col sm:grid sm:grid-cols-2 sm:gap-5 md:grid-cols-3">
@@ -95,10 +133,8 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								)
 								.filter(
 									(company) =>
-										!selectedOption ||
-										company.layer
-											?.toLowerCase()
-											.includes(selectedOption.toLowerCase())
+										!selectedLayer.name ||
+										company.layer?.includes(selectedLayer.name)
 								)
 								.map((company) => (
 									<Link key={company.id} href={`/companies/${company.slug}`}>
@@ -153,5 +189,37 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		},
 	};
 };
+
+const IconSelector = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		className="h-5 w-5 text-gray-400"
+		aria-hidden="true"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		strokeWidth="2"
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+		/>
+	</svg>
+);
+
+const IconCheck = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		className="h-5 w-5"
+		aria-hidden="true"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		strokeWidth="2"
+	>
+		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+	</svg>
+);
 
 export default Companies;
