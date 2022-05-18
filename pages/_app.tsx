@@ -1,5 +1,6 @@
 import "../styles/globals.scss";
 import React from "react";
+import TagManager from "react-gtm-module";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -11,6 +12,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
 	const router = useRouter();
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
+
+	//google
+	React.useEffect(() => {
+		TagManager.initialize({ gtmId: "GTM-THZHN4X" });
+	}, []);
 
 	React.useEffect(() => {
 		const handleStart = () => {

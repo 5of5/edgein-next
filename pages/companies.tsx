@@ -6,6 +6,7 @@ import React from "react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
+import { Select } from "../components/Select";
 import { runGraphQl, truncateWords, slugify } from "../utils";
 
 type Props = {
@@ -16,8 +17,14 @@ const Companies: NextPage<Props> = ({ companies }) => {
 	const [search, setSearch] = React.useState("");
 
 	const [selectedOption, setSelectedOption] = React.useState("");
-	const getLayers = companies.map((com) => com.layer);
-	const companyLayers = [...Array.from(new Set(getLayers))].sort();
+
+	const getAllLayers = companies.map((com) => com.layer);
+	const getUniqueLayers = [...Array.from(new Set(getAllLayers))].sort();
+
+	// const companyLayers = getUniqueLayers.map((str, index) => ({
+	// 	value: str,
+	// 	id: index + 1,
+	// }));
 
 	return (
 		<div>
@@ -51,7 +58,19 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								}) => setSearch(e.target.value)}
 							/>
 
-							{/* <label className="relative block" htmlFor="Layer">
+							{/* 
+							<Select
+								label="Layer"
+								name="Layer"
+								value={selectedOption}
+								placeholder="Just a Placeholder..."
+								onChange={(e: {
+									target: { value: React.SetStateAction<string> };
+								}) => setSelectedOption(e.target.value)}
+								options={getUniqueLayers}
+							/>
+
+							<label className="relative block" htmlFor="Layer">
 								<span className="sr-only">Layers</span>
 								<select
 									value={selectedOption}
@@ -83,7 +102,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								)
 								.map((company) => (
 									<Link key={company.id} href={`/companies/${company.slug}`}>
-										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col justify-between md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
+										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
 											<div className="flex flex-row w-full mb-4">
 												<ElemPhoto
 													photos={company.logo}
@@ -99,11 +118,13 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												</div>
 											</div>
 
-											<div>
-												<div className="text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
-													{company.layer}
+											{company.layer && (
+												<div>
+													<div className="text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 bg-primary-100 text-primary-500 rounded-full">
+														{company.layer}
+													</div>
 												</div>
-											</div>
+											)}
 
 											{company.overview && (
 												<div className="h-full text-gray-400">
