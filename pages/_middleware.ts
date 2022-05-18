@@ -20,6 +20,10 @@ export async function middleware(req: NextRequest) {
 		return NextResponse.next();
 	}
 
+  if (url.searchParams.get('revalidation_auth') !== process.env.REVALIDATION_AUTH_TOKEN) {
+		return NextResponse.next();
+  }
+
   console.log({ pathname: url.pathname });
 
 	let user;
