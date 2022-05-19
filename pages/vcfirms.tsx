@@ -34,9 +34,9 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 					</ElemButton> */}
 				</ElemHeading>
 
-				<div className="bg-gray-50 rounded-t-8xl relative z-10">
-					<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8 ">
-						<div className="w-full flex flex-col py-5 sm:grid sm:gap-5 sm:grid-cols-2 md:grid-cols-3">
+				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
+					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
+						<div className="w-full flex flex-col py-5 gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 							<InputSearch
 								label="Search"
 								name="search"
@@ -48,7 +48,7 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 							/>
 						</div>
 
-						<div className="w-full flex flex-col sm:grid sm:grid-cols-2 sm:gap-5 md:grid-cols-3">
+						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 							{vcFirms
 								.filter(
 									(vcfirm) =>

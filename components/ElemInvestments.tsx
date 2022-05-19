@@ -70,8 +70,8 @@ export const ElemInvestments: React.FC<Props> = ({
 
 								//const investmentItemsLength = theInvestors.length + theVCFirms.length;
 
-								// const investorsAndFirms = { ...theInvestors, ...theVCFirms };
-								// console.log(investorsAndFirms);
+								// const firmsAndPeople = [{ ...theInvestors, ...theVCFirms }];
+								// console.log(firmsAndPeople);
 
 								return (
 									// Note: Need to use full Fragment syntax to add a key to a fragment
