@@ -43,7 +43,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = "text-white bg-dark-700 hover:opacity-60";
 	} else if (btn === "primary") {
 		btnClass =
-			"text-white from-blue-500 via-primary-500 to-primary-400 bg-gradient-to-r";
+			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r";
 	} else if (btn === "transparent") {
 		btnClass = "text-primary-500 bg-transparent hover:text-dark-500";
 	} else if (btn === "ol-white") {

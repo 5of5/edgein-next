@@ -47,16 +47,30 @@ const gray = {
 }
 
 const blue = {
-  50: "#f4f4ff",
-  100: "#e8e9ff",
-  200: "#c6c8ff",
-  300: "#a3a7ff",
-  400: "#5f64ff",
-  500: "#1A22FF",
-  600: "#171fe6",
-  700: "#141abf",
-  800: "#101499",
-  900: "#0d117d"
+  50: "#EFF6FF",
+  100: "#DBEAFE",
+  200: "#BFDBFE",
+  300: "#93C5FD",
+  400: "#60A5FA",
+  500: "#3B82F6",
+  600: "#2563EB",
+  700: "#1D4ED8",
+  800: "#1B01FE",
+  900: "#1E3A8A"
+}
+
+
+const yellow = {
+  50: "#FEFBEB",
+  100: "#FEF8DD",
+  200: "#FCF0B5",
+  300: "#FBE993",
+  400: "#F9E371",
+  500: "#F8DA4B",
+  600: "#F6CF0E",
+  700: "#BB9D07",
+  800: "#7B6705",
+  900: "#403602"
 }
 
 module.exports = {
@@ -75,9 +89,10 @@ module.exports = {
       colors: {
         ...colors,
         primary,
-        blue,
         dark,
         gray,
+        blue,
+        yellow,
         transparent: 'transparent',
       },
       borderWidth: {
