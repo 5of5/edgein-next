@@ -35,8 +35,8 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 					</ElemButton> */}
 				</ElemHeading>
 
-				<div className="bg-gray-50 rounded-t-8xl relative z-10">
-					<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
+					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
 						<div className="w-full flex flex-col py-5 sm:grid sm:gap-5 sm:grid-cols-3 lg:grid-cols-4">
 							<InputSearch
 								label="Search"
@@ -49,7 +49,7 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 							/>
 						</div>
 
-						<div className="w-full flex flex-col sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-5">
+						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-3 lg:grid-cols-4">
 							{sortEvents
 								.filter(
 									(event) =>

@@ -162,7 +162,7 @@ const Home: NextPage = () => {
 							<div>Bottom</div>
 						</ElemTooltip>
 						<ElemTooltip
-							className="bg-blue-500"
+							className="bg-blue-800"
 							content="The Left Tooltip"
 							direction="left"
 						>

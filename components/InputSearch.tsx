@@ -21,20 +21,7 @@ export const InputSearch: React.FC<PropsWithChildren<Props>> = ({
 		<label className="relative block" htmlFor="search">
 			<span className="sr-only">{label}</span>
 			<span className="absolute z-10 inset-y-0 left-1 flex items-center pl-2">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					className="h-5 w-5"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					strokeWidth="2"
-				>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-					/>
-				</svg>
+				<IconSearch />
 			</span>
 			<input
 				type="search"
@@ -46,4 +33,21 @@ export const InputSearch: React.FC<PropsWithChildren<Props>> = ({
 			/>
 		</label>
 	</div>
+);
+
+const IconSearch = () => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		className="h-5 w-5"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		strokeWidth="2"
+	>
+		<path
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+		/>
+	</svg>
 );

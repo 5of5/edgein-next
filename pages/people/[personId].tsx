@@ -204,7 +204,7 @@ const Person: NextPage<Props> = ({ person }) => {
 				</div>
 			</div>
 
-			{person.investments.length > 0 && (
+			{person.investments[0]?.investmentRound.length > 0 && (
 				<div className="mt-16" id="investmentRounds">
 					<h2 className="text-3xl font-bold">Investments</h2>
 

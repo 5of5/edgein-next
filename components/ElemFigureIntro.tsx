@@ -6,7 +6,7 @@ export const ElemFigureIntro = () => {
         enter-class="translate-x-full opacity-0"
         enter-to-class="translate-x-0 opacity-100"
       > */}
-			<div className="grid grid-cols-2 gap-3 w-96 p-4 z-10 rounded-[40px] bg-white/50 blue-xl box-border border border-white/50 -skew-x-6 shadow-card-large transition duration-500 ease-in">
+			<div className="grid grid-cols-2 gap-3 w-96 p-4 z-10 rounded-[40px] bg-white/50 box-border border border-white/50 -skew-x-6 shadow-card-large transition duration-500 ease-in">
 				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
 				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
 				<div className="col-span-2 h-44 rounded-[26px] bg-dark-100"></div>

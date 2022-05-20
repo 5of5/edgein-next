@@ -111,16 +111,18 @@ const Company: NextPage<Props> = (props) => {
 					</h1>
 
 					{company.layer && (
-						<div className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full">
-							{company.layer}
+						<div className="mb-5">
+							<div className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full">
+								{company.layer}
+							</div>
 						</div>
 					)}
 
 					{company.overview && (
-						<p className="text-lg my-5">{company.overview}</p>
+						<p className="text-lg mb-5">{company.overview}</p>
 					)}
 
-					<div className="inline-flex flex-wrap items-center gap-x-6">
+					<div className="mb-5 inline-flex flex-wrap items-center gap-x-6">
 						{company.investorAmount && (
 							<div className="inline-flex py-3">
 								<svg
@@ -220,7 +222,7 @@ const Company: NextPage<Props> = (props) => {
 						)}
 					</div>
 
-					<div className="my-5 flex flex-row items-center">
+					<div className="mb-5 flex flex-row items-center">
 						{company.website && (
 							<a
 								href={company.website}
