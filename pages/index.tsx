@@ -1,7 +1,8 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import { ElemFigureIntro } from "../components/ElemFigureIntro";
+import { FigureIntroSplash } from "../components/FigureIntroSplash";
+import { FigureBlurredBg } from "../components/FigureBlurredBg";
 import { ElemButton } from "../components/ElemButton";
 import { ElemTooltip } from "../components/ElemTooltip";
 import styles from "../styles/Home.module.css";
@@ -20,38 +21,37 @@ const Home: NextPage = () => {
 
 			<div>
 				<section className="relative">
-					<figure className="absolute z-0 -bottom-44 -left-6 w-5/12 h-96 bg-[#F72784] rounded-full opacity-20 mix-blend-multiply filter blur-2xl transform-gpu animate-blob "></figure>
-					<figure className="absolute z-0 -bottom-36 left-1/4 w-5/12 h-96 bg-[#7209B8] rounded-full opacity-20 mix-blend-multiply filter blur-3xl transform-gpu animate-blob animation-delay-5000 "></figure>
-					<figure className="absolute z-0 -bottom-20 left-1/2 w-5/12 h-96 bg-[#0815EC] rounded-full opacity-10 mix-blend-multiply filter blur-xl transform-gpu animate-blob animation-delay-2000 "></figure>
-					<figure className="absolute z-0 -bottom-40 -right-20 w-5/12 h-96 rounded-full bg-[#1BE6FF] opacity-20 mix-blend-multiply filter blur-xl transform-gpu animate-blob animation-delay-4000 "></figure>
-					<div className="z-10 max-w-6xl mx-auto py-32 px-4 sm:px-6 lg:py-44 lg:px-8">
+					<FigureBlurredBg />
+					<div className="relative z-10 max-w-6xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:px-8 lg:py-44">
 						<div className="flex flex-col md:grid md:grid-cols-5 gap-5 my-8">
 							<div className="col-span-3 flex flex-col justify-center">
 								<h1 className="font-bold text-5xl lg:text-6xl">
 									Web3-focused data intelligence for success.
 								</h1>
-								<p className="max-w-lg mt-5 text-xl text-dark-400">
+								<h2 className="max-w-lg mt-5 text-xl text-dark-400">
 									EdgeIn combines highly refined automated processes, the
 									personalization of human intelligence, and the meaningful
 									utility of blockchain technologies, to give you an
 									unparalleled edge in Web3.
-								</p>
+								</h2>
 								<div className="mt-8">
 									<ElemButton
 										className="inline-block"
 										href="/login"
 										btn="primary"
+										arrow
 									>
 										Start now
 									</ElemButton>
 								</div>
 							</div>
-							<div className="col-span-2 flex flex-col justify-center">
-								<ElemFigureIntro />
+							<div className="relative col-span-2 flex flex-col justify-center">
+								<FigureIntroSplash />
 							</div>
 						</div>
 					</div>
 				</section>
+
 				<section className="bg-gray-50 rounded-t-8xl relative z-10">
 					<div className="max-w-6xl mx-auto py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
 						<div className="pb-12 lg:pb-20">

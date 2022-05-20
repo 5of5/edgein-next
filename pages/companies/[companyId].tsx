@@ -7,7 +7,11 @@ import { ElemFounderGrid } from "../../components/ElemFounderGrid";
 import { ElemInvestments } from "../../components/ElemInvestments";
 import { ElemTeamGrid } from "../../components/ElemTeamGrid";
 // import { Table } from "../../components/Table";
-import { convertToInternationalCurrencySystem, runGraphQl } from "../../utils";
+import {
+	runGraphQl,
+	getLayerClass,
+	convertToInternationalCurrencySystem,
+} from "../../utils";
 
 type Props = {
 	company: Record<string, any>;
@@ -110,16 +114,21 @@ const Company: NextPage<Props> = (props) => {
 						{company.title}
 					</h1>
 
+					{company.overview && (
+						<p className="text-lg mb-5">{company.overview}</p>
+					)}
+
 					{company.layer && (
-						<div className="mb-5">
-							<div className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full">
+						<div className="mb-5 self-start">
+							<div
+								className={`${getLayerClass(
+									company.layer
+								)} inline-flex text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+							>
+								{/* className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full" */}
 								{company.layer}
 							</div>
 						</div>
-					)}
-
-					{company.overview && (
-						<p className="text-lg mb-5">{company.overview}</p>
 					)}
 
 					<div className="mb-5 inline-flex flex-wrap items-center gap-x-6">

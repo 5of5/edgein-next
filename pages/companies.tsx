@@ -7,7 +7,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
-import { runGraphQl, truncateWords } from "../utils";
+import { runGraphQl, truncateWords, getLayerClass } from "../utils";
 
 type Props = {
 	companies: Record<string, any>[];
@@ -154,21 +154,19 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												</div>
 											</div>
 
-											{company.layer && (
-												<div>
-													<div
-														className={`${getLayerClass(
-															company.layer
-														)} text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 rounded-full`}
-													>
-														{company.layer}
-													</div>
+											{company.overview && (
+												<div className="text-gray-400">
+													{truncateWords(company.overview)}
 												</div>
 											)}
 
-											{company.overview && (
-												<div className="h-full text-gray-400">
-													{truncateWords(company.overview)}
+											{company.layer && (
+												<div
+													className={`${getLayerClass(
+														company.layer
+													)} self-start text-xs font-bold leading-sm uppercase mt-4 px-3 py-1 rounded-full`}
+												>
+													{company.layer}
 												</div>
 											)}
 										</a>
@@ -193,29 +191,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		},
 	};
 };
-
-function getLayerClass(layer: string) {
-	if (!layer) return layer;
-	//theLayer = str.replace(/\s/g, '').toLowerCase();
-
-	let layerClass = "";
-	if (layer === "Layer 0") {
-		layerClass = "bg-primary-100 text-primary-500";
-	} else if (layer === "Layer 1") {
-		layerClass = "bg-cyan-100 text-cyan-500";
-	} else if (layer === "Layer 2") {
-		layerClass = "bg-pink-100 text-pink-500";
-	} else if (layer === "Layer 3") {
-		layerClass = "bg-blue-100 text-blue-500";
-	} else if (layer === "Layer 4") {
-		layerClass = "bg-emerald-100 text-emerald-500";
-	} else if (layer === "Layer 5") {
-		layerClass = "bg-yellow-100 text-yellow-700";
-	} else {
-		layerClass = "bg-gray-100 text-gray-500";
-	}
-	return layerClass;
-}
 
 const IconSelector = () => (
 	<svg
