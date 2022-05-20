@@ -28,7 +28,12 @@ export const ElemInvestments: React.FC<Props> = ({
 					{ label: "Investors" },
 				]}
 			>
-				{investments.map((round: any, index: number) => (
+				{investments.map((round: any, index: number) => {
+					const vcsWithPartner = round.investments.filter((investment: any) => investment.people?.length && investment.vcFirms?.length)
+					const vcs = round.investments.filter((investment: any) => !investment.people?.length && investment.vcFirms?.length)
+					const angels = round.investments.filter((investment: any) => investment.people?.length && !investment.vcFirms?.length)
+					
+					return (
 					<tr
 						key={round.id}
 						className={`${
@@ -121,7 +126,7 @@ export const ElemInvestments: React.FC<Props> = ({
 							})}
 						</td>
 					</tr>
-				))}
+				)})}
 			</ElemTable>
 		</section>
 	);
