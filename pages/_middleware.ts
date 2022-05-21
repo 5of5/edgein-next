@@ -29,6 +29,7 @@ export async function middleware(req: NextRequest) {
 
 	console.log({ pathname: url.pathname });
 
+	// UNCOMMENT BEFORE COMMIT
 	// let user;
 	// try {
 	// 	user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
@@ -44,5 +45,6 @@ export async function middleware(req: NextRequest) {
 	// 		new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 	// 	);
 	// }
+
 	return NextResponse.next();
 }

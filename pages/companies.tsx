@@ -73,7 +73,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 													{selectedLayer.label}
 												</span>
 												<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-													<IconSelector />
+													<IconSelector className="h-5 w-5 text-gray-400" />
 												</span>
 											</Listbox.Button>
 
@@ -109,7 +109,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 
 																	{selected ? (
 																		<span className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
-																			<IconCheck />
+																			<IconCheck className="h-5 w-5" />
 																		</span>
 																	) : null}
 																</>
@@ -192,28 +192,30 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	};
 };
 
-const IconSelector = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		className="h-5 w-5 text-gray-400"
-		aria-hidden="true"
-		fill="none"
-		viewBox="0 0 24 24"
-		stroke="currentColor"
-		strokeWidth="2"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-		/>
-	</svg>
-);
+const IconSelector = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden="true"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			strokeWidth="2"
+			className={className}
+		>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+			/>
+		</svg>
+	);
+};
 
-const IconCheck = () => (
+const IconCheck = ({ className }: { className?: string }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
-		className="h-5 w-5"
+		className={className}
 		aria-hidden="true"
 		fill="none"
 		viewBox="0 0 24 24"
