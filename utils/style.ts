@@ -2,6 +2,7 @@
  * Define style classes for company layers globally
  * @param layer - string to manipulate
  */
+
 export function getLayerClass(layer: string) {
 	if (!layer) return layer;
 	//theLayer = str.replace(/\s/g, '').toLowerCase();

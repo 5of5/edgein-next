@@ -7,7 +7,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
-import { runGraphQl, truncateWords, getLayerClass } from "../utils";
+import { runGraphQl, truncateWords } from "../utils";
 
 type Props = {
 	companies: Record<string, any>[];
@@ -223,5 +223,27 @@ const IconCheck = () => (
 		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
 	</svg>
 );
+
+function getLayerClass(layer: string) {
+	if (!layer) return layer;
+
+	let layerClass = "";
+	if (layer === "Layer 0") {
+		layerClass = "bg-primary-100 text-primary-500";
+	} else if (layer === "Layer 1") {
+		layerClass = "bg-cyan-100 text-cyan-500";
+	} else if (layer === "Layer 2") {
+		layerClass = "bg-pink-100 text-pink-500";
+	} else if (layer === "Layer 3") {
+		layerClass = "bg-blue-100 text-blue-500";
+	} else if (layer === "Layer 4") {
+		layerClass = "bg-emerald-100 text-emerald-500";
+	} else if (layer === "Layer 5") {
+		layerClass = "bg-yellow-100 text-yellow-700";
+	} else {
+		layerClass = "bg-gray-100 text-gray-500";
+	}
+	return layerClass;
+}
 
 export default Companies;

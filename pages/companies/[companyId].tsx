@@ -6,12 +6,7 @@ import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemFounderGrid } from "../../components/ElemFounderGrid";
 import { ElemInvestments } from "../../components/ElemInvestments";
 import { ElemTeamGrid } from "../../components/ElemTeamGrid";
-// import { Table } from "../../components/Table";
-import {
-	runGraphQl,
-	getLayerClass,
-	convertToInternationalCurrencySystem,
-} from "../../utils";
+import { runGraphQl, convertToInternationalCurrencySystem } from "../../utils";
 
 type Props = {
 	company: Record<string, any>;
@@ -25,76 +20,12 @@ const Company: NextPage<Props> = (props) => {
 
 	const company = props.company;
 
-	// const investments = company.investmentRounds;
-
-	// ["Funding Type", "Money Raised", "Date", "Investors"];
-	// const columns = [
-	// 	{ label: "Funding Type", accessor: "funding_type", sortable: false },
-	// 	{ label: "Money Raised", accessor: "money_raised", sortable: true },
-	// 	{ label: "Date", accessor: "date", sortable: true },
-	// 	{ label: "Investors", accessor: "investors", sortable: false },
-	// 	{ label: "Just Testing", accessor: "investors", sortable: false },
-	// ];
-
-	// const data = [
-	// 	{
-	// 		id: 1,
-	// 		funding_type: "Seed",
-	// 		money_raised: "3395000",
-	// 		date: "2022-01-26",
-	// 		investors:
-	// 			"Andreessen Horowitz, Ben Horowitz, Greylock, True Ventures, DCM Ventures, Slow Ventures, Naval Ravikant, Craft Ventures",
-	// 	},
-	// 	{
-	// 		id: 2,
-	// 		funding_type: "Early VC",
-	// 		money_raised: "1395000",
-	// 		date: "",
-	// 		investors:
-	// 			"True Ventures, DCM Ventures, Slow Ventures, Naval Ravikant, Craft Ventures",
-	// 	},
-	// 	{
-	// 		id: 3,
-	// 		funding_type: "Seed",
-	// 		money_raised: "2395000",
-	// 		date: "2021-06-23",
-	// 		investors: "DCM Ventures, Slow Ventures, Naval Ravikant",
-	// 	},
-	// 	{
-	// 		id: 4,
-	// 		funding_type: "Seed",
-	// 		money_raised: "4512000",
-	// 		date: "2021-06-07",
-	// 		investors: "Ben Horowitz, Greylock, True Ventures, DCM Ventures",
-	// 	},
-	// 	{
-	// 		id: 5,
-	// 		funding_type: "Early VC",
-	// 		money_raised: "768000",
-	// 		date: "2021-07-05",
-	// 		investors: "Greylock, True Ventures",
-	// 	},
-	// 	{
-	// 		id: 6,
-	// 		funding_type: "Early VC",
-	// 		money_raised: "5008000",
-	// 		date: "2021-03-09",
-	// 		investors: "True Ventures",
-	// 	},
-	// ];
-
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
 
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-			{/* <section>
-				<h2 className="text-3xl font-bold">Table Test</h2>
-
-				<Table {...{ data, columns }} />
-			</section> */}
-
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
@@ -120,7 +51,11 @@ const Company: NextPage<Props> = (props) => {
 
 					{company.layer && (
 						<div className="mb-5 self-start">
-							<div className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full">
+							<div
+								className={`${getLayerClass(
+									company.layer
+								)} inline-flex text-xs items-center font-bold leading-sm uppercase px-3 py-1 mr-1 rounded-full`}
+							>
 								{company.layer}
 							</div>
 						</div>
@@ -380,5 +315,27 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const convertAmountRaised = (theAmount: number) => {
 	return convertToInternationalCurrencySystem(theAmount);
 };
+
+function getLayerClass(layer: string) {
+	if (!layer) return layer;
+
+	let layerClass = "";
+	if (layer === "Layer 0") {
+		layerClass = "bg-primary-100 text-primary-500";
+	} else if (layer === "Layer 1") {
+		layerClass = "bg-cyan-100 text-cyan-500";
+	} else if (layer === "Layer 2") {
+		layerClass = "bg-pink-100 text-pink-500";
+	} else if (layer === "Layer 3") {
+		layerClass = "bg-blue-100 text-blue-500";
+	} else if (layer === "Layer 4") {
+		layerClass = "bg-emerald-100 text-emerald-500";
+	} else if (layer === "Layer 5") {
+		layerClass = "bg-yellow-100 text-yellow-700";
+	} else {
+		layerClass = "bg-gray-100 text-gray-500";
+	}
+	return layerClass;
+}
 
 export default Company;
