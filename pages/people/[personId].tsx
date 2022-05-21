@@ -303,7 +303,6 @@ export async function getStaticPaths() {
     people( 
       _order_by: {name: "asc"},
       _filter: {slug: {_ne: ""}},
-    
     ){ 
         id, 
         name, 
