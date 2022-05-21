@@ -120,12 +120,7 @@ const Company: NextPage<Props> = (props) => {
 
 					{company.layer && (
 						<div className="mb-5 self-start">
-							<div
-								className={`${getLayerClass(
-									company.layer
-								)} inline-flex text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
-							>
-								{/* className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full" */}
+							<div className="text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 mr-1 bg-primary-200 text-primary-500 rounded-full">
 								{company.layer}
 							</div>
 						</div>
