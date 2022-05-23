@@ -88,3 +88,7 @@ export const convertToInternationalCurrencySystem = (amount: number) => {
 		? Math.abs(Number(amount)) / 1.0e3 + "K"
 		: Math.abs(Number(amount));
 };
+
+export const numberWithCommas = (num: number) => {
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+};

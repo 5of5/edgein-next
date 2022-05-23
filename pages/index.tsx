@@ -22,8 +22,8 @@ const Home: NextPage = () => {
 			<div>
 				<section className="relative">
 					<FigureBlurredBg />
-					<div className="relative z-10 max-w-6xl mx-auto py-24 px-4 sm:px-6 sm:py-32 lg:px-8 lg:py-44">
-						<div className="flex flex-col md:grid md:grid-cols-5 gap-5 my-8">
+					<div className="relative z-10 max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-28">
+						<div className="flex flex-col items-center lg:items-start lg:grid lg:grid-cols-5 gap-5 my-8">
 							<div className="col-span-3 flex flex-col justify-center">
 								<h1 className="font-bold text-5xl lg:text-6xl">
 									Web3-focused data intelligence for success.
@@ -46,7 +46,7 @@ const Home: NextPage = () => {
 								</div>
 							</div>
 							<div className="relative col-span-2 flex flex-col justify-center">
-								<FigureIntroSplash />
+								<FigureIntroSplash className="hidden lg:block relative" />
 							</div>
 						</div>
 					</div>
@@ -62,7 +62,7 @@ const Home: NextPage = () => {
 						</div>
 
 						<div className="block md:w-full md:grid md:grid-cols-2 gap-8">
-							<div className="bg-white rounded-lg p-7 mb-12 lg:mb-0">
+							<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
 								<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 									For founders
 								</h3>
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
 									Learn more
 								</ElemButton> */}
 							</div>
-							<div className="bg-white text-dark-500 rounded-lg p-7 mb-12 lg:mb-0">
+							<div className="bg-white text-dark-500 rounded-3xl p-7 mb-12 lg:mb-0">
 								<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
 									For investors
 								</h3>
@@ -100,16 +100,17 @@ const Home: NextPage = () => {
 								</ElemButton> */}
 							</div>
 
-							{/* <div className="col-span-2 p-16 py-12 bg-white text-dark-500 rounded-xl lg:py-16">
+							{/* <div className="col-span-2 p-16 py-12 bg-white text-dark-500 rounded-3xl lg:py-16">
 								<div className="max-w-lg mx-auto text-center">
 									<h2 className="mb-4 text-3xl font-lb font-bold sm:text-4xl">
 										Access the EdgeIn WhitePaper, Join in the Fun!
 									</h2>
 									<p className="mb-4 text-md text-dark-400 sm:text-sm lg:text-lg">
-										Create an account instantly and start exploring.
+										Explore the daily-updated web3 database of company, VC firm,
+										team, and investment information.
 									</p>
-									<ElemButton href="/" btn="primary" arrow>
-										Access
+									<ElemButton href="/login" btn="primary" arrow>
+										Request Access
 									</ElemButton>
 								</div>
 							</div> */}

@@ -6,7 +6,11 @@ import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemFounderGrid } from "../../components/ElemFounderGrid";
 import { ElemInvestments } from "../../components/ElemInvestments";
 import { ElemTeamGrid } from "../../components/ElemTeamGrid";
-import { runGraphQl, convertToInternationalCurrencySystem } from "../../utils";
+import {
+	runGraphQl,
+	convertToInternationalCurrencySystem,
+	numberWithCommas,
+} from "../../utils";
 
 type Props = {
 	company: Record<string, any>;
@@ -100,9 +104,11 @@ const Company: NextPage<Props> = (props) => {
 								/>
 								<div>
 									<span className="font-bold mr-1">
-										{company.totalEmployees}
+										{numberWithCommas(company.totalEmployees)}
+
+										{/* {company.totalEmployees} */}
 									</span>
-									Total Employee Count
+									Employees
 								</div>
 							</div>
 						)}

@@ -148,7 +148,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												/>
 
 												<div className="flex items-center justify-center pl-2">
-													<h3 className="text-2xl font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
+													<h3 className="text-2xl line-clamp-2 font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
 														{company.title}
 													</h3>
 												</div>
