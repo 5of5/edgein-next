@@ -7,7 +7,7 @@ import { convertToInternationalCurrencySystem, formatDate } from "../utils";
 type Props = {
 	className?: string;
 	heading?: string;
-	investments: Array<any>[];
+	investments: Record<string, any>;
 };
 
 export const ElemInvestments: React.FC<Props> = ({
@@ -15,12 +15,6 @@ export const ElemInvestments: React.FC<Props> = ({
 	heading,
 	investments,
 }) => {
-	const sortInvestmentsByRecentDate = investments
-		.sort((a: any, b: any) => {
-			return new Date(a.date).getTime() - new Date(b.date).getTime();
-		})
-		.reverse();
-
 	return (
 		<section className={className}>
 			{heading && <h2 className="text-3xl font-bold">{heading}</h2>}
@@ -34,7 +28,7 @@ export const ElemInvestments: React.FC<Props> = ({
 					{ label: "Investors" },
 				]}
 			>
-				{sortInvestmentsByRecentDate.map((round: any, index: number) => {
+				{investments.map((round: any, index: number) => {
 					const vcsWithPartner = round.investments.filter(
 						(investment: any) =>
 							investment.people?.length && investment.vcFirms?.length

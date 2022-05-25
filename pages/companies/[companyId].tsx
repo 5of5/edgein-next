@@ -14,6 +14,7 @@ import {
 
 type Props = {
 	company: Record<string, any>;
+	sortRounds: Record<string, any>;
 };
 
 const Company: NextPage<Props> = (props) => {
@@ -27,6 +28,8 @@ const Company: NextPage<Props> = (props) => {
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
+
+	const sortedInvestmentRounds = props.sortRounds;
 
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
@@ -180,11 +183,11 @@ const Company: NextPage<Props> = (props) => {
 				/>
 			)}
 
-			{company.investmentRounds.length > 0 && (
+			{sortedInvestmentRounds.length > 0 && (
 				<ElemInvestments
 					className="mt-20"
 					heading="Investments"
-					investments={company.investmentRounds}
+					investments={sortedInvestmentRounds}
 				/>
 			)}
 		</div>
@@ -275,9 +278,21 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
+	const sortRounds = companies.companies[0].investmentRounds
+		.sort(
+			(
+				a: { date: string | number | Date },
+				b: { date: string | number | Date }
+			) => {
+				return new Date(a.date).getTime() - new Date(b.date).getTime();
+			}
+		)
+		.reverse();
+
 	return {
 		props: {
 			company: companies.companies[0],
+			sortRounds,
 		},
 	};
 };
