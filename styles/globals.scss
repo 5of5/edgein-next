@@ -125,7 +125,7 @@ Mobile hamburger button
 /***************** 
 Tooltip 
 ******************/
-$tooltip-margin: 54px;
+$tooltip-margin: 34px;
 $tooltip-arrow-size: 6px;
 
 /* Tooltip */
@@ -133,7 +133,7 @@ $tooltip-arrow-size: 6px;
   @apply relative inline-block;
 
   .Tooltip-Tip {
-    @apply absolute left-1/2 -translate-x-1/2 p-3 bg-dark-500 text-gray-100 z-[100] rounded-md whitespace-normal max-w-xs w-max;
+    @apply absolute left-1/2 -translate-x-1/2 px-2 py-0.5 bg-dark-500 text-gray-100 z-[100] rounded-md whitespace-normal max-w-xs w-max;
 
     /* CSS border triangles */
     &::before {
