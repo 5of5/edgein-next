@@ -9,7 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   base('email_attempts').create([
     {
       "fields": {
-        "email": req.body.email
+        "email": req.body.email,
+        "date": new Date().toISOString(),
       }
     },
   ], function(err: Airtable.Error, records?: Airtable.Records<Airtable.FieldSet>) {
