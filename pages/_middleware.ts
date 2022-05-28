@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
 			`/terms/`,
 			`/api/login/`,
 			`/api/user/`,
+			`/api/login_attempt/`,
 		].includes(url.pathname)
 	) {
 		return NextResponse.next();

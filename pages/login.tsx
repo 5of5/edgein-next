@@ -7,6 +7,15 @@ export default function Login() {
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
+		await fetch("/api/login_attempt/", {
+			method: "POST",
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({email})
+		});
+
 		// the Magic code
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 		const did = await magic.auth.loginWithMagicLink({ email });
