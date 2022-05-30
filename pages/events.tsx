@@ -167,14 +167,18 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
 	);
 
-	const sortEvents = events.events.sort(
-		(
-			a: { startDate: string | number | Date },
-			b: { startDate: string | number | Date }
-		) => {
-			return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
-		}
-	);
+	const sortEvents = events.events
+		.slice()
+		.sort(
+			(
+				a: { startDate: string | number | Date },
+				b: { startDate: string | number | Date }
+			) => {
+				return (
+					new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+				);
+			}
+		);
 
 	return {
 		props: {
