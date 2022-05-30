@@ -73,7 +73,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 													{selectedLayer.label}
 												</span>
 												<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-													<IconSelector />
+													<IconSelector className="h-5 w-5 text-gray-400" />
 												</span>
 											</Listbox.Button>
 
@@ -109,7 +109,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 
 																	{selected ? (
 																		<span className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
-																			<IconCheck />
+																			<IconCheck className="h-5 w-5" />
 																		</span>
 																	) : null}
 																</>
@@ -148,27 +148,25 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												/>
 
 												<div className="flex items-center justify-center pl-2">
-													<h3 className="text-2xl font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
+													<h3 className="text-2xl line-clamp-2 font-bold text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60">
 														{company.title}
 													</h3>
 												</div>
 											</div>
 
-											{company.layer && (
-												<div>
-													<div
-														className={`${getLayerClass(
-															company.layer
-														)} text-xs inline-flex items-center font-bold leading-sm uppercase mb-2 px-3 py-1 rounded-full`}
-													>
-														{company.layer}
-													</div>
+											{company.overview && (
+												<div className="text-gray-400">
+													{truncateWords(company.overview)}
 												</div>
 											)}
 
-											{company.overview && (
-												<div className="h-full text-gray-400">
-													{truncateWords(company.overview)}
+											{company.layer && (
+												<div
+													className={`${getLayerClass(
+														company.layer
+													)} self-start text-xs font-bold leading-sm uppercase mt-4 px-3 py-1 rounded-full`}
+												>
+													{company.layer}
 												</div>
 											)}
 										</a>
@@ -194,9 +192,42 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	};
 };
 
+const IconSelector = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			aria-hidden="true"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			strokeWidth="2"
+			className={className}
+		>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+			/>
+		</svg>
+	);
+};
+
+const IconCheck = ({ className }: { className?: string }) => (
+	<svg
+		xmlns="http://www.w3.org/2000/svg"
+		className={className}
+		aria-hidden="true"
+		fill="none"
+		viewBox="0 0 24 24"
+		stroke="currentColor"
+		strokeWidth="2"
+	>
+		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+	</svg>
+);
+
 function getLayerClass(layer: string) {
 	if (!layer) return layer;
-	//theLayer = str.replace(/\s/g, '').toLowerCase();
 
 	let layerClass = "";
 	if (layer === "Layer 0") {
@@ -216,37 +247,5 @@ function getLayerClass(layer: string) {
 	}
 	return layerClass;
 }
-
-const IconSelector = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		className="h-5 w-5 text-gray-400"
-		aria-hidden="true"
-		fill="none"
-		viewBox="0 0 24 24"
-		stroke="currentColor"
-		strokeWidth="2"
-	>
-		<path
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-		/>
-	</svg>
-);
-
-const IconCheck = () => (
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		className="h-5 w-5"
-		aria-hidden="true"
-		fill="none"
-		viewBox="0 0 24 24"
-		stroke="currentColor"
-		strokeWidth="2"
-	>
-		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-	</svg>
-);
 
 export default Companies;

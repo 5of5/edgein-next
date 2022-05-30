@@ -13,6 +13,7 @@ import {
 
 type Props = {
 	vcfirm: Record<string, any>;
+	sortByDateAscInvestments: Record<string, any>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
@@ -26,6 +27,10 @@ const VCFirm: NextPage<Props> = (props) => {
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
 	}
+
+	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+
+	//console.log(props.sortByDateAscInvestments);
 
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
@@ -115,9 +120,8 @@ const VCFirm: NextPage<Props> = (props) => {
 					</div>
 				</div>
 			</div>
-			{/* Object.entries(vcfirm.investments).length !== 0 */}
 
-			{Object.keys(vcfirm.investments).length > 0 && (
+			{Object.keys(sortedInvestmentRounds).length > 0 && (
 				<div className="mt-16" id="investmentRounds">
 					<h2 className="text-3xl font-bold">Investments</h2>
 
@@ -130,9 +134,8 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Date" },
 						]}
 					>
-						{vcfirm.investments.map((round: any, index: number) => {
-							const theRound = round.investmentRound[0];
-
+						{/* vcfirm.investments */}
+						{sortedInvestmentRounds.map((theRound: any, index: number) => {
 							if (!theRound) {
 								return;
 							}
@@ -261,9 +264,38 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
+	const getInvestments = vcFirms.vcFirms[0].investments.map((round: any) => {
+		if (
+			typeof round.investmentRound[0] === "object" &&
+			round.investmentRound[0] != "undefined"
+		) {
+			return round.investmentRound[0];
+		} else {
+			return null;
+		}
+	});
+
+	const sortByDateAscInvestments = getInvestments
+		.slice()
+		.sort(
+			(
+				a: { date: string | number | Date },
+				b: { date: string | number | Date }
+			) => {
+				const distantFuture = new Date(8640000000000000);
+				console.log(distantFuture);
+
+				let dateA = a ? new Date(a.date) : distantFuture;
+				let dateB = b ? new Date(b.date) : distantFuture;
+				return dateA.getTime() - dateB.getTime();
+			}
+		)
+		.reverse();
+
 	return {
 		props: {
 			vcfirm: vcFirms.vcFirms[0],
+			sortByDateAscInvestments,
 		},
 	};
 };

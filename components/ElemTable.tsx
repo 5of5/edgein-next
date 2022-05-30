@@ -15,7 +15,7 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 	// const items = Object.entries(data);
 
 	return (
-		<table className={className + " shadow-md"}>
+		<table className={className}>
 			<thead>
 				<tr className="hidden sm:table-row">
 					{columns.map((col: any, index: number, arr: Array<object>) => {

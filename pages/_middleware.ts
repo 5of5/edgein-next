@@ -21,22 +21,30 @@ export async function middleware(req: NextRequest) {
 		return NextResponse.next();
 	}
 
-  if (url.searchParams.get('revalidation_auth') === process.env.REVALIDATION_AUTH_TOKEN) {
+	if (
+		url.searchParams.get("revalidation_auth") ===
+		process.env.REVALIDATION_AUTH_TOKEN
+	) {
 		return NextResponse.next();
-  }
+	}
 
-  console.log({ pathname: url.pathname });
+	console.log({ pathname: url.pathname });
 
 	let user;
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-		console.log({ user: 'found' });
+		console.log({ user: "found" });
 		if (!user) {
-      return NextResponse.redirect(new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url))
+			return NextResponse.redirect(
+				new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
+			);
 		}
 	} catch (error) {
 		console.log(error);
-    return NextResponse.redirect(new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url))
+		return NextResponse.redirect(
+			new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
+		);
 	}
+
 	return NextResponse.next();
 }

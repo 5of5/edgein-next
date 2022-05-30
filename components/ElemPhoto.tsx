@@ -25,6 +25,7 @@ export const ElemPhoto: React.FC<Props> = ({
 								src={photo.url}
 								className={imgClass}
 								alt={imgAlt}
+								title={imgAlt}
 							/>
 						);
 					})}

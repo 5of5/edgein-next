@@ -178,8 +178,8 @@ const Person: NextPage<Props> = ({ person }) => {
 						)}
 					</div>
 
-					{person.companies.length > 0 && (
-						<div className="w-full flex flex-col md:grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+					{person.companies?.length > 0 && (
+						<div className="w-full flex flex-col sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
 							{person.companies.map((company: any) => (
 								<Link
 									key={company.id}
@@ -218,74 +218,76 @@ const Person: NextPage<Props> = ({ person }) => {
 						]}
 					>
 						{person.investments.map((round: any, index: number) => {
-							const theRound = round.investmentRound[0];
+							const theRound = round?.investmentRound[0];
 
-							return (
-								<tr
-									key={index}
-									className={`${
-										index % 2 === 0 ? "" : ""
-									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
-								>
-									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
-										{theRound.company.length > 0 ? (
-											theRound.company.map((company: any) => {
-												return (
-													<Link
-														href={`/companies/${company.slug}`}
-														key={company.id}
-													>
-														<a className="investor flex items-center hover:opacity-70">
-															<ElemPhoto
-																photos={company.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={company.title}
-															/>
-															{company.title}
-														</a>
-													</Link>
-												);
-											})
-										) : (
-											<>&mdash;</>
-										)}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
-										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">
-										Money Raised
-									</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
-										{theRound.amount ? (
-											<>
-												<span>$</span>
-												{convertAmountRaised(theRound.amount)}
-											</>
-										) : (
-											<>&mdash;</>
-										)}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">Date</th>
-									<td
-										className="px-4 pb-4 whitespace-nowrap sm:p-4"
-										// colSpan={4}
+							if (theRound) {
+								return (
+									<tr
+										key={index}
+										className={`${
+											index % 2 === 0 ? "" : ""
+										} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
 									>
-										{theRound.date ? (
-											formatDate(theRound.date, {
-												month: "short",
-												day: "2-digit",
-												year: "numeric",
-											})
-										) : (
-											<>&mdash;</>
-										)}
-									</td>
-								</tr>
-							);
+										<th className="text-left px-4 pt-4 sm:hidden">Company</th>
+										<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+											{theRound.company?.length > 0 ? (
+												theRound.company.map((company: any) => {
+													return (
+														<Link
+															href={`/companies/${company.slug}`}
+															key={company.id}
+														>
+															<a className="investor flex items-center hover:opacity-70">
+																<ElemPhoto
+																	photos={company.logo}
+																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+																	imgClass="object-fit max-w-full max-h-full"
+																	imgAlt={company.title}
+																/>
+																{company.title}
+															</a>
+														</Link>
+													);
+												})
+											) : (
+												<>&mdash;</>
+											)}
+										</td>
+										<th className="text-left px-4 pt-4 sm:hidden">Round</th>
+										<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+											{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
+										</td>
+										<th className="text-left px-4 pt-4 sm:hidden">
+											Money Raised
+										</th>
+										<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+											{theRound.amount ? (
+												<>
+													<span>$</span>
+													{convertAmountRaised(theRound.amount)}
+												</>
+											) : (
+												<>&mdash;</>
+											)}
+										</td>
+										<th className="text-left px-4 pt-4 sm:hidden">Date</th>
+										<td
+											className="px-4 pb-4 whitespace-nowrap sm:p-4"
+											// colSpan={4}
+										>
+											{theRound.date ? (
+												formatDate(theRound.date, {
+													month: "short",
+													day: "2-digit",
+													year: "numeric",
+												})
+											) : (
+												<>&mdash;</>
+											)}
+										</td>
+									</tr>
+								);
+							}
 						})}
 					</ElemTable>
 				</div>
@@ -301,7 +303,6 @@ export async function getStaticPaths() {
     people( 
       _order_by: {name: "asc"},
       _filter: {slug: {_ne: ""}},
-    
     ){ 
         id, 
         name, 
