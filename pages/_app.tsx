@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 			</Head>
 			<div className="flex flex-col min-h-screen">
 				<TheNavbar />
-				<main className="overflow-hidden grow">
+				<main className="overflow-hidden grow selection:bg-primary-200">
 					{pageLoading ? <ElemSpinner /> : <Component {...pageProps} />}
 				</main>
 				<TheFooter />

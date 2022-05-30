@@ -71,12 +71,12 @@ export const TheNavbar = () => {
 						onClick={toggleNav}
 						className={`${
 							isActive ? "opacity-100 z-40" : "z-0 opacity-0 lg:opacity-100"
-						} absolute flex flex-col left-4 right-4 top-14 h-auto bg-white shadow-2xl rounded-lg transition duration-150 in-hoverTransition items-center justify-center text-base lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
+						} absolute flex flex-col left-4 right-4 top-14 h-auto bg-white shadow-2xl rounded-lg transition duration-150 in-hoverTransition items-center justify-center text-base group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
 					>
 						{siteNav.map((navItem, i) => (
 							<li key={i}>
 								<Link href={navItem.path}>
-									<a className="inline-block mx-1 px-5 py-3 font-semibold transition duration-150 in-hoverTransition hover:text-primary-500">
+									<a className="inline-block mx-1 px-5 py-3 font-semibold transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100">
 										{navItem.name}
 									</a>
 								</Link>

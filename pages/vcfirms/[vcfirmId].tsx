@@ -13,6 +13,7 @@ import {
 
 type Props = {
 	vcfirm: Record<string, any>;
+	sortByDateAscInvestments: Record<string, any>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
@@ -26,6 +27,10 @@ const VCFirm: NextPage<Props> = (props) => {
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
 	}
+
+	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+
+	//console.log(props.sortByDateAscInvestments);
 
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
@@ -115,7 +120,6 @@ const VCFirm: NextPage<Props> = (props) => {
 					</div>
 				</div>
 			</div>
-			{/* Object.entries(vcfirm.investments).length !== 0 */}
 
 			{Object.keys(vcfirm.investments).length > 0 && (
 				<div className="mt-16" id="investmentRounds">
@@ -130,12 +134,13 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Date" },
 						]}
 					>
-						{vcfirm.investments.map((round: any, index: number) => {
-							const theRound = round.investmentRound[0];
+						{/* vcfirm.investments */}
+						{sortedInvestmentRounds.map((theRound: any, index: number) => {
+							// const theRound = round.investmentRound[0];
 
-							if (!theRound) {
-								return;
-							}
+							// if (!theRound) {
+							// 	return;
+							// }
 
 							return (
 								<tr
@@ -261,9 +266,27 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
+	const getInvestments = vcFirms.vcFirms[0].investments.map((round: any) => {
+		const theRound = round.investmentRound[0];
+		return theRound;
+	});
+
+	const sortByDateAscInvestments = getInvestments
+		.slice()
+		.sort(
+			(
+				a: { date: string | number | Date },
+				b: { date: string | number | Date }
+			) => {
+				return new Date(a.date).getTime() - new Date(b.date).getTime();
+			}
+		)
+		.reverse();
+
 	return {
 		props: {
 			vcfirm: vcFirms.vcFirms[0],
+			sortByDateAscInvestments,
 		},
 	};
 };

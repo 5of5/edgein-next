@@ -279,6 +279,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	}
 
 	const sortRounds = companies.companies[0].investmentRounds
+		.slice()
 		.sort(
 			(
 				a: { date: string | number | Date },
