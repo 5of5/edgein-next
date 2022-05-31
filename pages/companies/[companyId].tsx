@@ -3,8 +3,11 @@ import React from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
-import { ElemFounderGrid } from "../../components/ElemFounderGrid";
-import { ElemInvestments } from "../../components/ElemInvestments";
+import { ElemCredibility } from "../../components/Company/ElemCredibility";
+import { ElemVelocity } from "../../components/Company/ElemVelocity";
+import { ElemTags } from "../../components/ElemTags";
+import { ElemFounderGrid } from "../../components/Company/ElemFounderGrid";
+import { ElemInvestments } from "../../components/Company/ElemInvestments";
 import { ElemTeamGrid } from "../../components/ElemTeamGrid";
 import {
 	runGraphQl,
@@ -31,6 +34,12 @@ const Company: NextPage<Props> = (props) => {
 
 	const sortedInvestmentRounds = props.sortRounds;
 
+	// Company tags
+	const companyTags = [];
+	if (company.layer?.length > 0) {
+		companyTags.unshift(company.layer);
+	}
+
 	return (
 		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 			<div onClick={goBack}>
@@ -47,26 +56,29 @@ const Company: NextPage<Props> = (props) => {
 						imgAlt={company.title}
 					/>
 				</div>
-				<div className="w-full col-span-2 p-2">
+				<div className="w-full col-span-2">
 					<h1 className="text-4xl md:text-6xl font-bold my-5">
 						{company.title}
 					</h1>
-
 					{company.overview && (
 						<p className="text-lg mb-5">{company.overview}</p>
 					)}
 
-					{company.layer && (
-						<div className="mb-5 self-start">
-							<div
-								className={`${getLayerClass(
-									company.layer
-								)} inline-flex text-xs items-center font-bold leading-sm uppercase px-3 py-1 mr-1 rounded-full`}
-							>
-								{company.layer}
-							</div>
-						</div>
-					)}
+					{/* <div className="flex flex-col md:grid md:grid-cols-5 gap-1 my-2">
+						<ElemCredibility
+							className="col-span-3"
+							heading="Credibility"
+							marketVerified={undefined}
+							githubVerified={company.github}
+							linkedInVerified={company.companyLinkedIn}
+						/>
+						<ElemVelocity
+							className="col-span-2 flex flex-col"
+							heading="Velocity"
+							employeeListings={65}
+							tokenExchangeValue={-2.31}
+						/>
+					</div> */}
 
 					<div className="mb-5 inline-flex flex-wrap items-center gap-x-6">
 						{company.investorAmount && (
@@ -129,7 +141,6 @@ const Company: NextPage<Props> = (props) => {
 							</div>
 						)}
 					</div>
-
 					<div className="mb-5 flex flex-row items-center">
 						{company.website && (
 							<a
@@ -171,8 +182,16 @@ const Company: NextPage<Props> = (props) => {
 				</div>
 			</div>
 
+			{companyTags.length > 0 && (
+				<ElemTags className="mt-20" heading="Tags" tags={companyTags} />
+			)}
+
 			{company.founder.length > 0 && (
-				<ElemFounderGrid heading="Founders" people={company.founder} />
+				<ElemFounderGrid
+					className="mt-20"
+					heading="Founders"
+					people={company.founder}
+				/>
 			)}
 
 			{company.teamMembers.length > 0 && (
@@ -214,7 +233,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       title
       slug
       logo
-      layer
+	  layer
       overview
       investorAmount
       whitePaper
@@ -301,28 +320,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 const convertAmountRaised = (theAmount: number) => {
 	return convertToInternationalCurrencySystem(theAmount);
 };
-
-function getLayerClass(layer: string) {
-	if (!layer) return layer;
-
-	let layerClass = "";
-	if (layer === "Layer 0") {
-		layerClass = "bg-primary-100 text-primary-500";
-	} else if (layer === "Layer 1") {
-		layerClass = "bg-cyan-100 text-cyan-500";
-	} else if (layer === "Layer 2") {
-		layerClass = "bg-pink-100 text-pink-500";
-	} else if (layer === "Layer 3") {
-		layerClass = "bg-blue-100 text-blue-500";
-	} else if (layer === "Layer 4") {
-		layerClass = "bg-emerald-100 text-emerald-500";
-	} else if (layer === "Layer 5") {
-		layerClass = "bg-yellow-100 text-yellow-700";
-	} else {
-		layerClass = "bg-gray-100 text-gray-500";
-	}
-	return layerClass;
-}
 
 type IconProps = {
 	className?: string;

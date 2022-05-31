@@ -1,8 +1,8 @@
 import React from "react";
-import { ElemTable } from "./ElemTable";
-import { ElemPhoto } from "./ElemPhoto";
+import { ElemTable } from "../ElemTable";
+import { ElemPhoto } from "../ElemPhoto";
 import Link from "next/link";
-import { convertToInternationalCurrencySystem, formatDate } from "../utils";
+import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
 
 type Props = {
 	className?: string;

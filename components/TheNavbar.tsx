@@ -76,7 +76,7 @@ export const TheNavbar = () => {
 						{siteNav.map((navItem, i) => (
 							<li key={i}>
 								<Link href={navItem.path}>
-									<a className="inline-block mx-1 px-5 py-3 font-semibold transition duration-150 in-hoverTransition group-hover:opacity-30 hover:!opacity-100">
+									<a className="inline-block mx-1 px-5 py-3 font-semibold transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100">
 										{navItem.name}
 									</a>
 								</Link>

@@ -1,4 +1,4 @@
-import { ElemPersonCard } from "../components/ElemPersonCard";
+import { ElemPersonCard } from "../ElemPersonCard";
 
 type Props = {
 	className?: string;
