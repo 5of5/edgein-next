@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 type Props = {
 	className?: string;
+	mini?: boolean;
 	heading?: string;
 	marketVerified?: string;
 	githubVerified?: string;
@@ -10,6 +11,7 @@ type Props = {
 
 export const ElemCredibility: React.FC<Props> = ({
 	className,
+	mini = false,
 	heading,
 	marketVerified = null,
 	githubVerified = null,
@@ -35,54 +37,35 @@ export const ElemCredibility: React.FC<Props> = ({
 
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-3xl font-bold">{heading}</h2>}
-
-			<div className="flex flex-col md:grid md:grid-cols-3 gap-1 mt-2 overflow-hidden">
+			{heading && <h2 className="text-3xl font-bold mb-2">{heading}</h2>}
+			<div className="flex flex-col md:grid md:grid-cols-3 gap-1 overflow-visible">
 				{credibilityItems.map((item: any, index: number) => {
 					return (
 						<div
 							key={index}
-							className="flex flex-col items-center justify-center h-full pt-4 pb-2 bg-white rounded-lg"
+							className={`${
+								mini
+									? ""
+									: "pt-4 pb-2 flex flex-col items-center justify-center h-full bg-white rounded-lg"
+							}`}
 						>
-							<div className="relative flex items-center justify-center w-12 h-12 bg-white rounded-lg border border-dark-100">
-								<IconBadgeVerified className="absolute -top-3 -right-3 h-7 w-7 text-green-500" />
-								{/* <IconMarket className="h-8 w-8" /> */}
-								<item.icon className="h-8 w-8" />
+							<div
+								className={`${
+									mini ? "w-8 h-8" : " w-12 h-12"
+								} relative flex items-center justify-center bg-white rounded-lg border border-dark-100`}
+							>
+								<IconBadgeVerified
+									className={`${
+										mini ? "-top-2 -right-2 h-5 w-5" : "-top-3 -right-3 h-7 w-7"
+									} absolute text-green-500`}
+								/>
+								<item.icon className={`${mini ? "w-6 h-6" : "h-8 w-8"}`} />
 							</div>
 
-							<div className="mt-1 text-center">{item.text}</div>
+							{!mini && <div className="mt-1 text-center">{item.text}</div>}
 						</div>
 					);
 				})}
-
-				{/* {marketVerified && (
-					<div className="flex flex-col items-center justify-center h-full pt-4 pb-2 bg-white rounded-lg">
-						<div className="relative flex items-center justify-center w-12 h-12 bg-white rounded-lg border border-dark-100">
-							<IconBadgeVerified className="absolute -top-3 -right-3 h-7 w-7 text-green-500" />
-							<IconMarket className="h-8 w-8" />
-						</div>
-						<div className="mt-1 text-center">Market Verified</div>
-					</div>
-				)}
-				{githubVerified && (
-					<div className="flex flex-col items-center justify-center h-full pt-4 pb-2 bg-white rounded-lg">
-						<div className="relative flex items-center justify-center w-12 h-12 bg-white rounded-lg border border-dark-100">
-							<IconBadgeVerified className="absolute -top-3 -right-3 h-7 w-7 text-green-500" />
-							<IconGithub className="h-8 w-8" />
-						</div>
-						<div className="mt-1 text-center">Github Verified</div>
-					</div>
-				)}
-
-				{linkedInVerified && (
-					<div className="flex flex-col items-center justify-center h-full pt-4 pb-2 bg-white rounded-lg">
-						<div className="relative flex items-center justify-center w-12 h-12 bg-white rounded-lg border border-dark-100">
-							<IconBadgeVerified className="absolute -top-3 -right-3 h-7 w-7 text-green-500" />
-							<IconLinkedIn className="h-8 w-8" />
-						</div>
-						<div className="mt-1 text-center">LinkedIn Verified</div>
-					</div>
-				)} */}
 			</div>
 		</section>
 	);

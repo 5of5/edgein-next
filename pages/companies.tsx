@@ -3,10 +3,11 @@ import Head from "next/head";
 import Link from "next/link";
 import React from "react";
 import { Listbox, Transition } from "@headlessui/react";
-
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
+import { ElemCredibility } from "../components/Company/ElemCredibility";
+import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { runGraphQl, truncateWords } from "../utils";
 
 type Props = {
@@ -101,7 +102,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 																<>
 																	<span
 																		className={`${
-																			selected ? "font-semibold" : "font-normal"
+																			selected ? "font-medium" : "font-normal"
 																		} block truncate`}
 																	>
 																		{option.label}
@@ -155,7 +156,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 											</div>
 
 											{company.overview && (
-												<div className="text-gray-400">
+												<div className="text-gray-400 grow">
 													{truncateWords(company.overview)}
 												</div>
 											)}
@@ -169,6 +170,22 @@ const Companies: NextPage<Props> = ({ companies }) => {
 													{company.layer}
 												</div>
 											)}
+
+											{/* <div className="flex flex-col md:grid md:grid-cols-4 gap-1 mt-2">
+												<ElemCredibility
+													mini={true}
+													className="col-span-2"
+													marketVerified={company.marketVerified}
+													githubVerified={company.github}
+													linkedInVerified={company.companyLinkedIn}
+												/>
+												<ElemVelocity
+													mini={true}
+													className="col-span-2"
+													employeeListings={company.velocityLinkedIn}
+													tokenExchangeValue={company.velocityToken}
+												/>
+											</div> */}
 										</a>
 									</Link>
 								))}
@@ -182,7 +199,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {title: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview }}'
+		'{ companies(_order_by: {title: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
 	);
 
 	return {
