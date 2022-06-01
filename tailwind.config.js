@@ -116,11 +116,13 @@ module.exports = {
       minHeight: {
         '48': '12rem',
       },
+      maxWidth: {
+        '36': '9rem',
+      },
       scale: {
         '102': '1.02',
       },
       boxShadow: {
-        // '3xl': '0 35px 35px rgba(0, 0, 0, 0.25)',
         'right-bottom': [
           '5.5px 2.9px 3px rgba(0, 0, 0, 0.038)',
           '15.2px 7.9px 8.4px rgba(0, 0, 0, 0.055)',

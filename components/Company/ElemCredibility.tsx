@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { FunctionComponent } from "react";
+import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
 	className?: string;
@@ -21,7 +22,7 @@ export const ElemCredibility: React.FC<Props> = ({
 		return null;
 	}
 
-	let credibilityItems: { text: string; icon: any }[] = [];
+	let credibilityItems: { text: string; icon: FunctionComponent }[] = [];
 
 	if (marketVerified) {
 		credibilityItems.push({ text: "Market Verified", icon: IconMarket });
@@ -38,8 +39,23 @@ export const ElemCredibility: React.FC<Props> = ({
 	return (
 		<section className={className}>
 			{heading && <h2 className="text-3xl font-bold mb-2">{heading}</h2>}
-			<div className="flex flex-col md:grid md:grid-cols-3 gap-1 overflow-visible">
+			<div className="grid grid-cols-3 gap-1 overflow-visible">
 				{credibilityItems.map((item: any, index: number) => {
+					const credibilityItem = (
+						<div
+							className={`${
+								mini ? "w-8 h-8" : "w-12 h-12"
+							} relative flex items-center justify-center bg-white rounded-lg border border-dark-100`}
+						>
+							<IconVerified
+								className={`${
+									mini ? "-top-2 -right-2 h-5 w-5" : "-top-3 -right-3 h-7 w-7"
+								} absolute text-green-500`}
+							/>
+							<item.icon className={`${mini ? "w-6 h-6" : "h-8 w-8"}`} />
+						</div>
+					);
+
 					return (
 						<div
 							key={index}
@@ -49,20 +65,14 @@ export const ElemCredibility: React.FC<Props> = ({
 									: "pt-4 pb-2 flex flex-col items-center justify-center h-full bg-white rounded-lg"
 							}`}
 						>
-							<div
-								className={`${
-									mini ? "w-8 h-8" : " w-12 h-12"
-								} relative flex items-center justify-center bg-white rounded-lg border border-dark-100`}
-							>
-								<IconBadgeVerified
-									className={`${
-										mini ? "-top-2 -right-2 h-5 w-5" : "-top-3 -right-3 h-7 w-7"
-									} absolute text-green-500`}
-								/>
-								<item.icon className={`${mini ? "w-6 h-6" : "h-8 w-8"}`} />
-							</div>
-
-							{!mini && <div className="mt-1 text-center">{item.text}</div>}
+							{mini ? (
+								<ElemTooltip content={item.text}>{credibilityItem}</ElemTooltip>
+							) : (
+								<>
+									{credibilityItem}
+									<div className="mt-1 text-center">{item.text}</div>
+								</>
+							)}
 						</div>
 					);
 				})}
@@ -76,7 +86,7 @@ type IconProps = {
 	title?: string;
 };
 
-const IconBadgeVerified: React.FC<IconProps> = ({
+const IconVerified: React.FC<IconProps> = ({
 	className,
 	title = "Verified",
 }) => {

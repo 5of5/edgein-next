@@ -4,7 +4,7 @@ type Props = {
 	className?: any;
 	delay?: number;
 	direction?: string;
-	content?: string;
+	content?: any;
 };
 
 export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
@@ -30,13 +30,21 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<div
-			className={`${className} Tooltip-Wrapper`}
+			className={`${className} Tooltip-Wrapper cursor-pointer`}
 			// When to show the tooltip
 			onMouseEnter={showTip}
 			onMouseLeave={hideTip}
+			// onTouchStart={showTip}
+			// onTouchEnd={hideTip}
 		>
 			{children}
-			{active && <div className={`Tooltip-Tip ${direction} `}>{content}</div>}
+			{active && (
+				<div
+					className={`Tooltip-Tip ${direction} font-medium text-sm text-center`}
+				>
+					{content}
+				</div>
+			)}
 		</div>
 	);
 };

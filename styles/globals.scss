@@ -100,28 +100,6 @@ Mobile hamburger button
   }
 }
 
-
-// .hamburger-inner::before{
-//   @apply top-[7px];
-//   transition:top .075s .12s ease, opacity .075s ease;
-// }
-// .hamburger-inner::after{
-//   @apply bottom-[7px];
-//   transition:bottom .075s .12s ease,transform .075s cubic-bezier(.55,.055,.675,.19);
-// }
-/* Nav Toggle Active */
-// .nav-toggle-active .hamburger-inner{
-//   @apply delay-150 ease-linear rotate-45;
-// }
-// .nav-toggle-active .hamburger-inner::before{
-//   @apply top-0 opacity-0;
-//   transition:top .075s ease, opacity .075s .12s ease;
-// }
-// .nav-toggle-active .hamburger-inner::after{
-//   @apply bottom-0 rotate-90;
-//   transition:bottom .075s ease, transform .075s .12s cubic-bezier(.215,.61,.355,1);
-// }
-
 /***************** 
 Tooltip 
 ******************/
@@ -133,7 +111,7 @@ $tooltip-arrow-size: 6px;
   @apply relative inline-block;
 
   .Tooltip-Tip {
-    @apply absolute left-1/2 -translate-x-1/2 px-2 py-0.5 bg-dark-500 text-gray-100 z-[100] rounded-md whitespace-normal max-w-xs w-max;
+    @apply absolute w-max max-w-36 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-gray-900 text-gray-100 z-[100] rounded-md;
 
     /* CSS border triangles */
     &::before {
@@ -143,7 +121,8 @@ $tooltip-arrow-size: 6px;
 
     /* Top absolute positioning */
     &.top {
-      top: calc($tooltip-margin * -1);
+      //top: calc($tooltip-margin * -1);
+      @apply -top-2 -translate-y-full;
       /* CSS border triangle */
       &::before {
         @apply top-full border-t-dark-500;

@@ -139,7 +139,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								)
 								.map((company) => (
 									<Link key={company.id} href={`/companies/${company.slug}`}>
-										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
+										<a className="bg-white rounded-lg cursor-pointer p-7 md:p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
 											<div className="flex flex-row w-full mb-4">
 												<ElemPhoto
 													photos={company.logo}
@@ -161,7 +161,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												</div>
 											)}
 
-											{company.layer && (
+											{/* {company.layer && (
 												<div
 													className={`${getLayerClass(
 														company.layer
@@ -169,9 +169,9 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												>
 													{company.layer}
 												</div>
-											)}
+											)} */}
 
-											{/* <div className="flex flex-col md:grid md:grid-cols-4 gap-1 mt-2">
+											<div className="flex flex-col md:grid md:grid-cols-4 gap-1 mt-4">
 												<ElemCredibility
 													mini={true}
 													className="col-span-2"
@@ -185,7 +185,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 													employeeListings={company.velocityLinkedIn}
 													tokenExchangeValue={company.velocityToken}
 												/>
-											</div> */}
+											</div>
 										</a>
 									</Link>
 								))}
@@ -243,26 +243,26 @@ const IconCheck = ({ className }: { className?: string }) => (
 	</svg>
 );
 
-function getLayerClass(layer: string) {
-	if (!layer) return layer;
+// function getLayerClass(layer: string) {
+// 	if (!layer) return layer;
 
-	let layerClass = "";
-	if (layer === "Layer 0") {
-		layerClass = "bg-primary-100 text-primary-500";
-	} else if (layer === "Layer 1") {
-		layerClass = "bg-cyan-100 text-cyan-500";
-	} else if (layer === "Layer 2") {
-		layerClass = "bg-pink-100 text-pink-500";
-	} else if (layer === "Layer 3") {
-		layerClass = "bg-blue-100 text-blue-500";
-	} else if (layer === "Layer 4") {
-		layerClass = "bg-emerald-100 text-emerald-500";
-	} else if (layer === "Layer 5") {
-		layerClass = "bg-yellow-100 text-yellow-700";
-	} else {
-		layerClass = "bg-gray-100 text-gray-500";
-	}
-	return layerClass;
-}
+// 	let layerClass = "";
+// 	if (layer === "Layer 0") {
+// 		layerClass = "bg-primary-100 text-primary-500";
+// 	} else if (layer === "Layer 1") {
+// 		layerClass = "bg-cyan-100 text-cyan-500";
+// 	} else if (layer === "Layer 2") {
+// 		layerClass = "bg-pink-100 text-pink-500";
+// 	} else if (layer === "Layer 3") {
+// 		layerClass = "bg-blue-100 text-blue-500";
+// 	} else if (layer === "Layer 4") {
+// 		layerClass = "bg-emerald-100 text-emerald-500";
+// 	} else if (layer === "Layer 5") {
+// 		layerClass = "bg-yellow-100 text-yellow-700";
+// 	} else {
+// 		layerClass = "bg-gray-100 text-gray-500";
+// 	}
+// 	return layerClass;
+// }
 
 export default Companies;

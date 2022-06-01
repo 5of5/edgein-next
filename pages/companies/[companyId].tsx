@@ -41,13 +41,13 @@ const Company: NextPage<Props> = (props) => {
 	}
 
 	return (
-		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
 				</ElemButton>
 			</div>
-			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 my-8">
+			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 mt-6">
 				<div className="col-span-1">
 					<ElemPhoto
 						photos={company.logo}
@@ -64,131 +64,132 @@ const Company: NextPage<Props> = (props) => {
 						<p className="text-lg mb-5">{company.overview}</p>
 					)}
 
-					{/* <div className="flex flex-col md:grid md:grid-cols-5 gap-1 my-2">
+					<div className="flex flex-col md:grid grid-cols-5 gap-1 mt-6">
 						<ElemCredibility
-							className="col-span-3"
+							className="col-span-3 mt-16 md:mt-0"
 							heading="Credibility"
-							marketVerified={undefined}
+							marketVerified={company.marketVerified}
 							githubVerified={company.github}
 							linkedInVerified={company.companyLinkedIn}
 						/>
 						<ElemVelocity
-							className="col-span-2 flex flex-col"
+							className="col-span-2 flex flex-col mt-16 md:mt-0"
 							heading="Velocity"
-							employeeListings={65}
-							tokenExchangeValue={-2.31}
+							employeeListings={company.velocityLinkedIn}
+							tokenExchangeValue={company.velocityToken}
 						/>
-					</div> */}
+					</div>
+				</div>
+			</div>
+			<div className="mt-12">
+				<h2 className="text-3xl font-bold">Key Info</h2>
+				<div className="inline-flex flex-wrap items-center gap-x-6">
+					{company.website && (
+						<a
+							href={company.website}
+							target="_blank"
+							rel="noopener noreferrer"
+							title={`${company.title} Website`}
+						>
+							<ElemButton btn="primary" arrow>
+								Visit website
+							</ElemButton>
+						</a>
+					)}
 
-					<div className="mb-5 inline-flex flex-wrap items-center gap-x-6">
-						{company.investorAmount && (
-							<div className="inline-flex py-3">
-								<IconCash
-									title="Total Funding Raised"
+					{company.investorAmount && (
+						<div className="inline-flex py-3">
+							<IconCash
+								title="Total Funding Raised"
+								className="h-6 w-6 mr-1 text-primary-500"
+							/>
+							<span className="font-bold mr-1">
+								{convertAmountRaised(company.investorAmount)}
+							</span>
+							Total Funding Raised
+						</div>
+					)}
+
+					{company.whitePaper && (
+						<div className="inline-flex py-3">
+							<a
+								href={company.whitePaper}
+								target="_blank"
+								className="inline-flex hover:opacity-70"
+								rel="noopener noreferrer"
+							>
+								<IconDocumentDownload
+									title="White Paper"
 									className="h-6 w-6 mr-1 text-primary-500"
 								/>
+								<span>White Paper</span>
+							</a>
+						</div>
+					)}
+
+					{company.totalEmployees && (
+						<div className="inline-flex py-3">
+							<IconUsers
+								title="Total Employee Count"
+								className="h-6 w-6 mr-1 text-primary-500"
+							/>
+							<div>
 								<span className="font-bold mr-1">
-									{convertAmountRaised(company.investorAmount)}
+									{numberWithCommas(company.totalEmployees)}
+
+									{/* {company.totalEmployees} */}
 								</span>
-								Total Funding Raised
+								Employees
 							</div>
-						)}
+						</div>
+					)}
 
-						{company.whitePaper && (
-							<div className="inline-flex py-3">
-								<a
-									href={company.whitePaper}
-									target="_blank"
-									className="inline-flex hover:opacity-70"
-									rel="noopener noreferrer"
-								>
-									<IconDocumentDownload
-										title="White Paper"
-										className="h-6 w-6 mr-1 text-primary-500"
-									/>
-									<span>White Paper</span>
-								</a>
+					{company.yearFounded && (
+						<div className="inline-flex py-3">
+							<IconFlag
+								title="Year Founded"
+								className="h-6 w-6 mr-1 text-primary-500"
+							/>
+							<div>
+								<span className="font-bold mr-1">{company.yearFounded}</span>
+								Founded
 							</div>
-						)}
+						</div>
+					)}
 
-						{company.totalEmployees && (
-							<div className="inline-flex py-3">
-								<IconUsers
-									title="Total Employee Count"
-									className="h-6 w-6 mr-1 text-primary-500"
-								/>
-								<div>
-									<span className="font-bold mr-1">
-										{numberWithCommas(company.totalEmployees)}
-
-										{/* {company.totalEmployees} */}
-									</span>
-									Employees
-								</div>
-							</div>
-						)}
-
-						{company.yearFounded && (
-							<div className="inline-flex py-3">
-								<IconFlag
-									title="Year Founded"
-									className="h-6 w-6 mr-1 text-primary-500"
-								/>
-								<div>
-									<span className="font-bold mr-1">{company.yearFounded}</span>
-									Founded
-								</div>
-							</div>
-						)}
-					</div>
-					<div className="mb-5 flex flex-row items-center">
-						{company.website && (
-							<a
-								href={company.website}
-								target="_blank"
-								className="mr-4"
-								rel="noopener noreferrer"
-								title={`${company.title} Website`}
-							>
-								<ElemButton btn="primary" arrow>
-									Visit website
-								</ElemButton>
-							</a>
-						)}
-						{company.companyLinkedIn && (
-							<a
-								href={company.companyLinkedIn}
-								target="_blank"
-								className="flex items-center justify-center w-9 h-9 mr-4 rounded-full text-primary-500 hover:text-white hover:bg-primary-500 border border-primary-500 "
-								rel="noopener noreferrer"
-							>
-								<IconLinkedIn
-									title={`${company.title} LinkedIn`}
-									className="h-6 w-6"
-								/>
-							</a>
-						)}
-						{company.github && (
-							<a
-								href={company.github}
-								target="_blank"
-								className="flex items-center justify-center w-9 h-9 mr-4 rounded-full text-primary-500 hover:text-white hover:bg-primary-500 border border-primary-500 "
-								rel="noopener noreferrer"
-							>
-								<IconGithub className="h-6 w-6" />
-							</a>
-						)}
-					</div>
+					{company.companyLinkedIn && (
+						<a
+							href={company.companyLinkedIn}
+							target="_blank"
+							className="flex items-center justify-center w-9 h-9 rounded-full text-primary-500 hover:text-white hover:bg-primary-500 border border-primary-500 "
+							rel="noopener noreferrer"
+						>
+							<IconLinkedIn
+								title={`${company.title} LinkedIn`}
+								className="h-6 w-6"
+							/>
+						</a>
+					)}
+					{company.github && (
+						<a
+							href={company.github}
+							target="_blank"
+							className="flex items-center justify-center w-9 h-9 rounded-full text-primary-500 hover:text-white hover:bg-primary-500 border border-primary-500 "
+							rel="noopener noreferrer"
+						>
+							<IconGithub className="h-6 w-6" />
+						</a>
+					)}
 				</div>
 			</div>
 
 			{companyTags.length > 0 && (
-				<ElemTags className="mt-20" heading="Tags" tags={companyTags} />
+				<ElemTags className="mt-12" heading="Tags" tags={companyTags} />
 			)}
 
 			{company.founder.length > 0 && (
 				<ElemFounderGrid
-					className="mt-20"
+					className="mt-12"
 					heading="Founders"
 					people={company.founder}
 				/>
@@ -196,7 +197,7 @@ const Company: NextPage<Props> = (props) => {
 
 			{company.teamMembers.length > 0 && (
 				<ElemTeamGrid
-					className="mt-20"
+					className="mt-12"
 					heading="Team Members"
 					people={company.teamMembers}
 				/>
@@ -204,7 +205,7 @@ const Company: NextPage<Props> = (props) => {
 
 			{sortedInvestmentRounds.length > 0 && (
 				<ElemInvestments
-					className="mt-20"
+					className="mt-12"
 					heading="Investments"
 					investments={sortedInvestmentRounds}
 				/>
@@ -240,14 +241,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
       totalEmployees
       yearFounded
 	  website
+	  marketVerified
       companyLinkedIn
 	  github
+	  velocityLinkedIn
+	  velocityToken
       founder {
         id
         slug
         name
         type
-        email
         picture
       }
       teamMembers {
@@ -256,7 +259,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
           id
           slug
           name
-          email
           picture
         }
         function

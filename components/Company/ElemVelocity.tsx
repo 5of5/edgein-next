@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import { ElemTooltip } from "../ElemTooltip";
 import { numberWithCommas } from "../../utils";
 
 type Props = {
@@ -21,24 +22,24 @@ export const ElemVelocity: React.FC<Props> = ({
 	}
 
 	let velocityItems: {
+		icon?: FunctionComponent;
 		text: string;
 		number: number;
-		icon?: FunctionComponent;
 	}[] = [];
 
 	if (employeeListings) {
 		velocityItems.push({
+			icon: IconEmployees,
 			text: "Employee Listings",
 			number: employeeListings,
-			icon: IconEmployees,
 		});
 	}
 
 	if (tokenExchangeValue) {
 		velocityItems.push({
+			icon: IconTokenValue,
 			text: "Token Exchange Value",
 			number: tokenExchangeValue,
-			icon: IconTokenValue,
 		});
 	}
 
@@ -54,22 +55,32 @@ export const ElemVelocity: React.FC<Props> = ({
 				} flex grow`}
 			>
 				{velocityItems.map((item: any, index: number) => {
+					const badge = (
+						<div
+							className={`${
+								item.number > 0
+									? "bg-green-100 text-green-500"
+									: "bg-red-100 text-red-500"
+							} flex items-center text-sm font-bold leading-sm uppercase px-2 py-1 rounded-full`}
+						>
+							{mini && <item.icon className="h-4 w-4 mr-0.5" />}
+
+							<div>{numberWithCommas(item.number)}</div>
+							{item.number > 0 && <IconArrowUp className="h-4 w-4" />}
+							{item.number < 0 && <IconArrowDown className="h-4 w-4" />}
+						</div>
+					);
+
 					return (
 						<div key={index} className="flex items-center justify-between">
-							{!mini && <div>{item.text}</div>}
-							<div
-								className={`${
-									item.number > 0
-										? "bg-green-100 text-green-500"
-										: "bg-red-100 text-red-500"
-								} flex items-center text-sm font-bold leading-sm uppercase px-2 py-1 rounded-full`}
-							>
-								{mini && <item.icon className="h-4 w-4 mr-0.5" />}
-
-								<div>{numberWithCommas(item.number)}</div>
-								{item.number > 0 && <IconArrowUp className="h-4 w-4" />}
-								{item.number < 0 && <IconArrowDown className="h-4 w-4" />}
-							</div>
+							{mini ? (
+								<ElemTooltip content={item.text}>{badge}</ElemTooltip>
+							) : (
+								<>
+									<div>{item.text}</div>
+									{badge}
+								</>
+							)}
 						</div>
 					);
 				})}
