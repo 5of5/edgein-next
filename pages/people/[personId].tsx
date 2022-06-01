@@ -123,7 +123,7 @@ const Person: NextPage<Props> = ({ person }) => {
 							</div>
 						)}
 
-						{person.email && (
+						{person.workEmail && (
 							<div className="w-full inline-flex py-3 sm:w-auto">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -143,12 +143,12 @@ const Person: NextPage<Props> = ({ person }) => {
 									&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;
 								</span>
 								{/* <a
-									href={`mailto:${person.email}`}
+									href={`mailto:${person.workEmail}`}
 									target="_blank"
 									className="font-medium hover:opacity-60"
 									rel="noopener noreferrer"
 								>
-									{person.email}
+									{person.workEmail}
 								</a> */}
 							</div>
 						)}
@@ -332,7 +332,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		name
 		picture
 		type
-		email
+		workEmail
 		linkedIn
 		companies {
 			id
