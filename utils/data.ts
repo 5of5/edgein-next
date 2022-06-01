@@ -16,7 +16,9 @@ export const runGraphQl = async (graphql: string) => {
 	)
 		.then(async (r) => {
 			if (r.status !== 200) {
-				console.log("error with response 1", r);
+				const json = await r.json();
+				console.log("error with response 1", json, r);
+				return json
 			}
 			try {
 				const json = await r.json();
