@@ -171,7 +171,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 												</div>
 											)} */}
 
-											<div className="flex flex-col md:grid md:grid-cols-4 gap-1 mt-4">
+											<div className="grid grid-cols-4 gap-1 mt-4">
 												<ElemCredibility
 													mini={true}
 													className="col-span-2"

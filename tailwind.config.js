@@ -118,6 +118,8 @@ module.exports = {
       },
       maxWidth: {
         '36': '9rem',
+        '64': '16rem',
+        '96': '24rem',
       },
       scale: {
         '102': '1.02',

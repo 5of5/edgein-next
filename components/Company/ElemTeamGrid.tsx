@@ -1,5 +1,5 @@
 import React from "react";
-import { ElemPersonCard } from "../components/ElemPersonCard";
+import { ElemPersonCard } from "../ElemPersonCard";
 
 type Props = {
 	className?: string;
@@ -14,7 +14,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 }) => {
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-3xl font-bold">{heading}</h2>}
+			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-3 w-full">
 				{people.map((teamMember) => {
 					return (

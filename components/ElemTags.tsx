@@ -9,7 +9,7 @@ type Props = {
 export const ElemTags: React.FC<Props> = ({ className, heading, tags }) => {
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-3xl font-bold">{heading}</h2>}
+			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 			<ul className="flex space-x-2 mt-4">
 				{tags.map((tag: any, index: number) => {
 					return (

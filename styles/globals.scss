@@ -111,7 +111,7 @@ $tooltip-arrow-size: 6px;
   @apply relative inline-block;
 
   .Tooltip-Tip {
-    @apply absolute w-max max-w-36 left-1/2 -translate-x-1/2 px-2 py-0.5 bg-gray-900 text-gray-100 z-[100] rounded-md;
+    @apply absolute left-1/2 -translate-x-1/2 px-2 py-0.5 bg-gray-900 text-gray-100 z-[100] rounded-md;
 
     /* CSS border triangles */
     &::before {
