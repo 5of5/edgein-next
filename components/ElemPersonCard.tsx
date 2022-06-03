@@ -37,7 +37,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 					<ElemPhoto
 						photos={photos}
 						wrapClass="shrink-0 flex items-center justify-center w-20 h-20 rounded-full overflow-hidden"
-						imgClass=""
+						imgClass="object-cover w-20 h-20"
 						imgAlt={heading}
 					/>
 					<div className="overflow-hidden px-2">
