@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
+import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
 import {
 	convertToInternationalCurrencySystem,
@@ -33,7 +34,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	//console.log(props.sortByDateAscInvestments);
 
 	return (
-		<div className="max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
@@ -54,76 +55,18 @@ const VCFirm: NextPage<Props> = (props) => {
 						{vcfirm.vcFirm}
 					</h1>
 
-					<div className="inline-flex flex-wrap items-center gap-x-6">
-						{vcfirm.investments.length > 0 && (
-							<a
-								href="#investmentRounds"
-								className="inline-flex py-3 hover:opacity-70"
-							>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									className="h-6 w-6 mr-1 text-primary-500"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
-									strokeWidth="2"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-									/>
-								</svg>
-								<span className="font-bold mr-1">
-									{vcfirm.investments.length}
-								</span>
-								Investment{vcfirm.investments.length > 1 && "s"}
-							</a>
-						)}
-					</div>
-
-					<div className="my-5 flex flex-row items-center">
-						{vcfirm.website && (
-							<a
-								href={vcfirm.website}
-								target="_blank"
-								className="mr-4"
-								rel="noreferrer"
-							>
-								<ElemButton btn="primary" arrow>
-									Visit website
-								</ElemButton>
-							</a>
-						)}
-
-						{vcfirm.linkedIn && (
-							<a
-								href={vcfirm.linkedIn}
-								target="_blank"
-								className="flex items-center justify-center w-9 h-9 mr-4 rounded-full text-primary-500 hover:text-white hover:bg-primary-500 border border-primary-500 "
-								rel="noreferrer"
-							>
-								<svg
-									className="h-6 w-6"
-									viewBox="0 0 24 24"
-									fill="none"
-									xmlns="http://www.w3.org/2000/svg"
-								>
-									<title>{vcfirm.vcFirm} LinkedIn</title>
-									<path
-										d="M4.20805 9.10047H7.7241V19.6814H4.20805V9.10047ZM5.98961 4C4.78621 4 4 4.79004 4 5.82699C4 6.84262 4.7632 7.65562 5.94359 7.65562H5.96602C7.19242 7.65562 7.95617 6.84258 7.95617 5.82699C7.93316 4.79004 7.19246 4 5.98961 4V4ZM16.357 8.85191C14.4906 8.85191 13.6545 9.87848 13.188 10.5984V9.10047H9.67094C9.7175 10.0931 9.67094 19.6814 9.67094 19.6814H13.188V13.7723C13.188 13.4558 13.2111 13.1405 13.3036 12.9137C13.5582 12.282 14.1369 11.6277 15.1076 11.6277C16.3811 11.6277 16.8897 12.5984 16.8897 14.0202V19.6814H20.4062V13.6141C20.4062 10.3641 18.6718 8.85191 16.357 8.85191V8.85191Z"
-										fill="currentColor"
-									></path>
-								</svg>
-							</a>
-						)}
-					</div>
+					<ElemKeyInfo
+						heading=""
+						website={vcfirm.website}
+						linkedIn={vcfirm.linkedIn}
+						investmentsLength={vcfirm.investments?.length}
+					/>
 				</div>
 			</div>
 
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
 				<div className="mt-16" id="investmentRounds">
-					<h2 className="text-3xl font-bold">Investments</h2>
+					<h2 className="text-2xl font-bold">Investments</h2>
 
 					<ElemTable
 						className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"

@@ -5,6 +5,7 @@ import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemCompaniesGrid } from "../../components/Person/ElemCompaniesGrid";
+import { ElemVcfirmsGrid } from "../../components/Person/ElemVcfirmsGrid";
 import { ElemTable } from "../../components/ElemTable";
 import {
 	runGraphQl,
@@ -60,7 +61,7 @@ const Person: NextPage<Props> = ({ person }) => {
 						heading=""
 						roles={person.type}
 						linkedIn={person.linkedIn}
-						investmentsLength={person.investments.length}
+						investmentsLength={person.investments?.length}
 						companies={person.companies}
 						emails={personEmails}
 					/>
@@ -72,6 +73,14 @@ const Person: NextPage<Props> = ({ person }) => {
 					className="mt-12"
 					heading="Companies"
 					companies={person.companies}
+				/>
+			)}
+
+			{person.vcFirms?.length > 0 && (
+				<ElemVcfirmsGrid
+					className="mt-12"
+					heading="VC Firms"
+					vcfirms={person.vcFirms}
 				/>
 			)}
 
@@ -177,12 +186,7 @@ export async function getStaticPaths() {
     ){ 
         id, 
         name, 
-        slug, 
-        picture, 
-        type,
-		linkedIn
-		workEmail
-		personalEmail
+        slug,
       }
     }`);
 
@@ -204,8 +208,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     people(slug: "${context.params?.personId}") {
 		id
 		name
+		slug
 		picture
 		type
+		personalEmail
 		workEmail
 		linkedIn
 		companies {
@@ -229,6 +235,12 @@ export const getStaticProps: GetStaticProps = async (context) => {
 					logo
 				}
 			}
+		}
+		vcFirms{
+			id
+			vcFirm
+			slug
+			logo
 		}
 	}
   }
