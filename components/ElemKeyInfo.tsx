@@ -1,5 +1,7 @@
-import React from "react";
+import React, { Fragment } from "react";
+import Link from "next/link";
 import { ElemButton } from "./ElemButton";
+
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
@@ -13,6 +15,10 @@ type Props = {
 	whitePaper?: string;
 	totalEmployees?: number;
 	yearFounded?: string;
+	roles?: Array<string>;
+	companies?: Array<string>;
+	investmentsLength?: number;
+	emails?: Array<Object>;
 	linkedIn?: string;
 	github?: string;
 };
@@ -25,6 +31,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	whitePaper,
 	totalEmployees,
 	yearFounded,
+	roles = [],
+	companies = [],
+	investmentsLength = 0,
+	emails = [],
 	linkedIn,
 	github,
 }) => {
@@ -102,11 +112,68 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</div>
 				)}
 
+				{roles.length > 0 && (
+					<div className="inline-flex py-3">
+						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
+						<div>
+							{roles.map((role: any, i: number) => [
+								i > 0 && ", ",
+								<Fragment key={i}>{role}</Fragment>,
+							])}
+						</div>
+					</div>
+				)}
+
+				{companies.length > 0 && (
+					<div className="inline-flex py-3">
+						<IconCompanies
+							title="Companies"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<div>
+							{companies.map((company: any, i: number) => [
+								i > 0 && ", ",
+								<Link key={company.id} href={`/companies/${company.slug}`}>
+									<a className="hover:opacity-70">{company.title}</a>
+								</Link>,
+							])}
+						</div>
+					</div>
+				)}
+
+				{investmentsLength > 0 && (
+					<a href="#investments" className="inline-flex py-3 hover:opacity-70">
+						<IconCash
+							title="Investments"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<span className="font-bold mr-1">{investmentsLength}</span>
+						Investment{investmentsLength > 1 && "s"}
+					</a>
+				)}
+
+				{emails.length > 0 && (
+					<div className="inline-flex py-3">
+						<IconRole title="Email" className="h-6 w-6 mr-1 text-primary-500" />
+						<div>
+							{emails.map((email: any, i: number) => [
+								i > 0 && ", ",
+								<span key={i} className="hover:opacity-70 cursor-not-allowed">
+									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+								</span>,
+								// <Link key={i} href={`mailto:${email}`}>
+								// 	<a className="hover:opacity-70">{email}</a>
+								// </Link>,
+							])}
+						</div>
+					</div>
+				)}
+
 				{linkedIn && (
 					<a
 						href={linkedIn}
 						target="_blank"
-						className="inline-flex hover:opacity-70"
+						className="inline-flex py-3 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconLinkedIn
@@ -121,7 +188,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<a
 						href={github}
 						target="_blank"
-						className="inline-flex hover:opacity-70"
+						className="inline-flex py-3 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconGithub
@@ -268,6 +335,49 @@ const IconGithub: React.FC<IconProps> = ({ className, title = "Github" }) => {
 				d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
 				clipRule="evenodd"
 			></path>
+		</svg>
+	);
+};
+
+const IconRole: React.FC<IconProps> = ({ className, title = "Role" }) => {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<title>{title}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
+			/>
+		</svg>
+	);
+};
+
+const IconCompanies: React.FC<IconProps> = ({
+	className,
+	title = "Companies",
+}) => {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<title>{title}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+			/>
 		</svg>
 	);
 };
