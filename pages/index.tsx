@@ -117,60 +117,6 @@ const Home: NextPage = () => {
 						</div>
 					</div>
 				</section>
-				{/* <section className="max-w-6xl mx-auto py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-					<div className="grid grid-cols-5 gap-6">
-						<ElemTooltip
-							className="bg-red-500"
-							content="The Top Tooltip"
-							direction="top"
-						>
-							<div>Top</div>
-						</ElemTooltip>
-						<ElemTooltip
-							className="bg-red-500"
-							content="Lorem Ipsum is simply dummy text."
-							direction="top"
-						>
-							<div>
-								Top
-								<br />
-								With
-								<br />
-								Lots
-								<br />
-								of
-								<br />
-								content
-								<br />
-								blah
-								<br />
-								blah
-								<br />
-							</div>
-						</ElemTooltip>
-						<ElemTooltip
-							className="bg-yellow-500"
-							content="The Right Tooltip"
-							direction="right"
-						>
-							<div>Right</div>
-						</ElemTooltip>
-						<ElemTooltip
-							className="bg-green-500"
-							content="The Bottom Tooltip"
-							direction="bottom"
-						>
-							<div>Bottom</div>
-						</ElemTooltip>
-						<ElemTooltip
-							className="bg-blue-800"
-							content="The Left Tooltip"
-							direction="left"
-						>
-							<div>Left</div>
-						</ElemTooltip>
-					</div>
-				</section> */}
 			</div>
 		</div>
 	);

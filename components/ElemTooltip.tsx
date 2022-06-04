@@ -30,7 +30,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 		setActive(false);
 	};
 
-	// button sizes
+	// Sizes
 	let sizeClasses = "max-w-36";
 	if (size === "md") {
 		sizeClasses = "max-w-64";
@@ -50,7 +50,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 			{children}
 			{active && (
 				<div
-					className={`Tooltip-Tip ${direction} ${sizeClasses} w-max font-medium text-sm text-center`}
+					className={`Tooltip-Tip ${direction} ${sizeClasses} w-max font-medium text-sm text-center break-words`}
 				>
 					{content}
 				</div>

@@ -1,7 +1,8 @@
+import React, { useEffect } from "react";
 import type { NextPage, GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
@@ -15,8 +16,21 @@ type Props = {
 };
 
 const Companies: NextPage<Props> = ({ companies }) => {
+	const router = useRouter();
+
 	// Search Box
 	const [search, setSearch] = React.useState("");
+
+	const searchCompanies = (e: {
+		target: { value: React.SetStateAction<string> };
+	}) => {
+		setSearch(e.target.value);
+
+		// Change url on search
+		// router.push(`/companies/?search=${e.target.value}`, undefined, {
+		// 	shallow: true,
+		// });
+	};
 
 	// Company Layers
 	const getAllLayers = companies.map((com) => com.layer);
@@ -60,9 +74,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								name="search"
 								value={search}
 								placeholder="Quick Search..."
-								onChange={(e: {
-									target: { value: React.SetStateAction<string> };
-								}) => setSearch(e.target.value)}
+								onChange={searchCompanies}
 							/>
 
 							<Listbox value={selectedLayer} onChange={setSelectedLayer}>
@@ -125,7 +137,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 							</Listbox>
 						</div>
 
-						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2  md:grid-cols-3">
+						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 							{companies
 								.filter(
 									(company) =>
@@ -139,7 +151,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 								)
 								.map((company) => (
 									<Link key={company.id} href={`/companies/${company.slug}`}>
-										<a className="bg-white rounded-lg cursor-pointer p-7 md:p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
+										<a className="bg-white rounded-lg cursor-pointer p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
 											<div className="flex flex-row w-full mb-4">
 												<ElemPhoto
 													photos={company.logo}

@@ -103,8 +103,8 @@ Mobile hamburger button
 /***************** 
 Tooltip 
 ******************/
-$tooltip-margin: 34px;
-$tooltip-arrow-size: 6px;
+// $tooltip-margin: 34px;
+// $tooltip-arrow-size: 6px;
 
 /* Tooltip */
 .Tooltip-Wrapper{
@@ -115,8 +115,8 @@ $tooltip-arrow-size: 6px;
 
     /* CSS border triangles */
     &::before {
-      margin-left: calc($tooltip-arrow-size * -1);
-      @apply content-[''] left-1/2 border-transparent h-0 w-0 absolute cursor-none border-6;
+      //margin-left:  calc($tooltip-arrow-size * -1);
+      @apply content-[''] left-1/2 border-transparent h-0 w-0 absolute cursor-none border-6 -ml-1.5;
     }
 
     /* Top absolute positioning */
@@ -131,18 +131,19 @@ $tooltip-arrow-size: 6px;
     
     /* Right absolute positioning */
     &.right {
-      left: calc(100% + $tooltip-arrow-size);
-      @apply top-1/2 translate-x-0 -translate-y-1/2;
+      // left: calc(100% + $tooltip-arrow-size);
+      @apply left-full translate-x-2 top-1/2 -translate-y-1/2;
       /* CSS border triangle */
       &::before {
-        left: calc($tooltip-arrow-size * -1);
-        @apply top-1/2 translate-x-0 -translate-y-1/2 border-r-dark-500;
+        //left: calc($tooltip-arrow-size * -1);
+        @apply top-1/2 translate-x-0 -translate-y-1/2 border-r-dark-500 -left-1.5;
       }
     }
 
     /* Bottom absolute positioning */
     &.bottom {
-      bottom: calc($tooltip-margin * -1);
+      @apply -bottom-2 translate-y-full;
+      //bottom: calc($tooltip-margin * -1);
       /* CSS border triangle */
       &::before {
         @apply bottom-full border-b-dark-500;
@@ -151,12 +152,12 @@ $tooltip-arrow-size: 6px;
 
     /* Left absolute positioning */
     &.left {
-      right: calc(100% + $tooltip-arrow-size);
-      @apply left-auto top-1/2 translate-x-0 -translate-y-1/2;
+      @apply -left-2 -translate-x-full top-1/2 -translate-y-1/2;
+      //right: calc(100% + $tooltip-arrow-size);
       /* CSS border triangle */
       &::before {
-        right: calc($tooltip-arrow-size * -2);
-        @apply left-auto top-1/2 translate-x-0 -translate-y-1/2 border-l-dark-500;
+       // right: calc($tooltip-arrow-size * -2);
+        @apply left-auto top-1/2 translate-x-0 -translate-y-1/2 border-l-dark-500 -right-3;
       }
     }
   }
