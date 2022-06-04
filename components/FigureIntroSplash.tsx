@@ -8,7 +8,7 @@ export const FigureIntroSplash = (props: { className?: string }) => {
         enter-class="translate-x-full opacity-0"
         enter-to-class="translate-x-0 opacity-100"
       > */}
-			<div className="relative z-10 grid grid-cols-2 gap-3 w-96 p-4  rounded-[40px] bg-white/75 box-border border border-white/50 -skew-x-6 shadow-card-large transition duration-500 ease-in">
+			<div className="relative z-10 grid grid-cols-2 gap-3 w-96 p-4 rounded-[40px] bg-white/75 box-border border border-white/50 -skew-x-6 transition duration-500 ease-in shadow-[0_30px_60px_-12px_rgba(50,50,93,0.25),_0_18px_36px_-18px_rgba(0,0,0,0.3)]">
 				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
 				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
 				<div className="col-span-2 h-44 rounded-[26px] bg-dark-100"></div>
@@ -19,7 +19,7 @@ export const FigureIntroSplash = (props: { className?: string }) => {
         enter-class="translate-x-36 scale-0"
         enter-to-class="translate-x-0 scale-100"
       > */}
-			<div className="absolute z-10 -left-16 top-1/2 -translate-y-3/4 w-2/3 rounded-xl bg-[#f6f9fc] border border-white/50 -skew-x-6 shadow-card-large p-1.5 transition delay-500 duration-300 ease-in">
+			<div className="absolute z-10 -left-16 top-1/2 -translate-y-3/4 w-2/3 rounded-xl bg-[#f6f9fc] border border-white/50 -skew-x-6 p-1.5 transition delay-500 duration-300 ease-in shadow-[0_30px_60px_-12px_rgba(50,50,93,0.25),_0_18px_36px_-18px_rgba(0,0,0,0.3)]">
 				<div className="flex h-full w-full bg-white rounded-lg p-1.5">
 					<div className="mr-2 h-20 w-20 rounded-full overflow-hidden relative bg-dark-100"></div>
 					<div className="flex flex-col justify-between">
