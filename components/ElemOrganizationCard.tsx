@@ -33,7 +33,7 @@ export const ElemOrganizationCard: React.FC<Props> = ({
 					</div>
 				</div>
 
-				{text.length > 0 && (
+				{text?.length > 0 && (
 					<div className="mt-4 text-gray-400 grow">{truncateWords(text)}</div>
 				)}
 			</a>
