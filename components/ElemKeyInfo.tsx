@@ -112,7 +112,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</div>
 				)}
 
-				{roles.length > 0 && (
+				{roles && roles.length > 0 && (
 					<div className="inline-flex py-3">
 						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
 						<div>
@@ -124,7 +124,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</div>
 				)}
 
-				{companies.length > 0 && (
+				{companies && companies.length > 0 && (
 					<div className="inline-flex py-3">
 						<IconCompanies
 							title="Companies"
@@ -152,7 +152,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</a>
 				)}
 
-				{emails.length > 0 && (
+				{emails && emails.length > 0 && (
 					<div className="inline-flex py-3">
 						<IconEmail
 							title="Email"
