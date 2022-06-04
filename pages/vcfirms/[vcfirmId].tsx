@@ -31,8 +31,6 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
-	//console.log(props.sortByDateAscInvestments);
-
 	return (
 		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
@@ -226,7 +224,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				b: { date: string | number | Date }
 			) => {
 				const distantFuture = new Date(8640000000000000);
-				console.log(distantFuture);
 
 				let dateA = a ? new Date(a.date) : distantFuture;
 				let dateB = b ? new Date(b.date) : distantFuture;
