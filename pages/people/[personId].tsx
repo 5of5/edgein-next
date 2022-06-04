@@ -76,6 +76,14 @@ const Person: NextPage<Props> = ({ person }) => {
 				/>
 			)}
 
+			{person.teamMembers[0]?.company?.length > 0 && (
+				<ElemCompaniesGrid
+					className="mt-12"
+					heading="Companies"
+					companies={person.teamMembers[0]?.company}
+				/>
+			)}
+
 			{person.vcFirms?.length > 0 && (
 				<ElemVcfirmsGrid
 					className="mt-12"
@@ -214,6 +222,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		personalEmail
 		workEmail
 		linkedIn
+		teamMembers{
+			company {
+				id
+				slug
+				title
+				logo
+				overview
+			}
+		}
 		companies {
 			id
 			title
