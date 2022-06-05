@@ -3,21 +3,19 @@ import { FC, PropsWithChildren } from "react";
 type Props = {
 	className?: string;
 	columns: Record<string, any>[];
-	// data?: Record<string, any>[];
 };
 
 export const ElemTable: FC<PropsWithChildren<Props>> = ({
 	className = "",
 	columns,
-	// data,
 	children,
 }) => {
-	// const items = Object.entries(data);
-
 	return (
-		<table className={className}>
+		<table
+			className={`${className} flex flex-row flex-no-wrap md:table md:table-auto`}
+		>
 			<thead>
-				<tr className="hidden sm:table-row">
+				<tr className="hidden md:table-row">
 					{columns.map((col: any, index: number, arr: Array<object>) => {
 						let tableHeaderClasses;
 						if (index === 0) {
@@ -30,6 +28,7 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 							<th
 								key={index}
 								className={`${tableHeaderClasses} px-4 py-2 whitespace-nowrap font-bold text-left bg-white border-b-2 border-dark-100`}
+								colSpan={col.colSpan ? col.colSpan : 1}
 							>
 								{col.label}
 							</th>
@@ -38,7 +37,7 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 				</tr>
 			</thead>
 
-			<tbody className="bg-white divide-y divide-dark-100 flex-1 sm:flex-none">
+			<tbody className="bg-white divide-y divide-dark-100 flex-1 md:flex-none mb-96">
 				{children}
 			</tbody>
 		</table>

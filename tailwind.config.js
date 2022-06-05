@@ -95,52 +95,14 @@ module.exports = {
         yellow,
         transparent: 'transparent',
       },
-      borderWidth: {
-        '6': '6px',
-      },
       borderRadius: {
         '8xl': '4rem',
-        '14xl': '7rem',
       },
       spacing: {
         '88': '22rem',
       },
-      width: {
-        'full2': '200%',
-      },
-      maxWidth: {
-        '1/4': '25%',
-        '1/2': '50%',
-        '3/4': '75%',
-      },
-      minHeight: {
-        '48': '12rem',
-      },
-      maxWidth: {
-        '36': '9rem',
-        '64': '16rem',
-        '96': '24rem',
-      },
       scale: {
         '102': '1.02',
-      },
-      boxShadow: {
-        'right-bottom': [
-          '5.5px 2.9px 3px rgba(0, 0, 0, 0.038)',
-          '15.2px 7.9px 8.4px rgba(0, 0, 0, 0.055)',
-          '36.5px 19px 20.2px rgba(0, 0, 0, 0.072)',
-          '121px 63px 67px rgba(0, 0, 0, 0.11)'
-        ],
-        'light-to-dark': [
-          '-10px -10px 15px rgba(255, 255, 255, 0.5)',
-          '10px 10px 15px rgba(70, 70, 70, 0.12)',
-          'inset -10px -10px 15px rgba(255, 255, 255, 0.5)',
-          'inset 10px 10px 15px rgba(70, 70, 70, 0.12)'
-        ],
-        'card-large': [
-          '0 30px 60px -12px rgba(50,50,93,0.25)',
-          '0 18px 36px -18px rgba(0,0,0,0.3)'
-        ],
       },
       // animation: {
       //   blob: 'blob 10s infinite',

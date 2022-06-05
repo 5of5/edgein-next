@@ -6,6 +6,7 @@ import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
+import { ElemTableCell } from "../../components/ElemTableCell";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -63,11 +64,11 @@ const VCFirm: NextPage<Props> = (props) => {
 			</div>
 
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
-				<div className="mt-16" id="investmentRounds">
+				<div className="mt-16" id="investments">
 					<h2 className="text-2xl font-bold">Investments</h2>
 
 					<ElemTable
-						className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
+						className="mt-3 w-full"
 						columns={[
 							{ label: "Company" },
 							{ label: "Round" },
@@ -75,7 +76,6 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Date" },
 						]}
 					>
-						{/* vcfirm.investments */}
 						{sortedInvestmentRounds.map((theRound: any, index: number) => {
 							if (!theRound) {
 								return;
@@ -86,10 +86,9 @@ const VCFirm: NextPage<Props> = (props) => {
 									key={index}
 									className={`${
 										index % 2 === 0 ? "" : ""
-									} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
+									} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
-									<th className="text-left px-4 pt-4 sm:hidden">Company</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+									<ElemTableCell header="Company">
 										{Object.keys(theRound.company).length > 0 ? (
 											theRound.company.map((company: any) => {
 												return (
@@ -112,15 +111,11 @@ const VCFirm: NextPage<Props> = (props) => {
 										) : (
 											<>&mdash;</>
 										)}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">Round</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+									</ElemTableCell>
+									<ElemTableCell header="Round">
 										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">
-										Money Raised
-									</th>
-									<td className="px-4 pb-4 whitespace-nowrap sm:p-4">
+									</ElemTableCell>
+									<ElemTableCell header="Money Raised">
 										{theRound.amount ? (
 											<>
 												<span>$</span>
@@ -129,12 +124,8 @@ const VCFirm: NextPage<Props> = (props) => {
 										) : (
 											<>&mdash;</>
 										)}
-									</td>
-									<th className="text-left px-4 pt-4 sm:hidden">Date</th>
-									<td
-										className="px-4 pb-4 whitespace-nowrap sm:p-4"
-										// colSpan={4}
-									>
+									</ElemTableCell>
+									<ElemTableCell header="Date">
 										{theRound.date ? (
 											formatDate(theRound.date, {
 												month: "short",
@@ -144,7 +135,7 @@ const VCFirm: NextPage<Props> = (props) => {
 										) : (
 											<>&mdash;</>
 										)}
-									</td>
+									</ElemTableCell>
 								</tr>
 							);
 						})}

@@ -1,5 +1,6 @@
 import React from "react";
 import { ElemTable } from "../ElemTable";
+import { ElemTableCell } from "../ElemTableCell";
 import { ElemPhoto } from "../ElemPhoto";
 import Link from "next/link";
 import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
@@ -20,7 +21,7 @@ export const ElemInvestments: React.FC<Props> = ({
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 
 			<ElemTable
-				className="mt-3 w-full flex flex-row flex-no-wrap sm:table sm:table-auto"
+				className="mt-3 w-full"
 				columns={[
 					{ label: "Round" },
 					{ label: "Money Raised" },
@@ -28,46 +29,44 @@ export const ElemInvestments: React.FC<Props> = ({
 					{ label: "Investors" },
 				]}
 			>
-				{investments.map((round: any, index: number) => {
-					const vcsWithPartner = round.investments.filter(
+				{investments?.map((item: any, index: number) => {
+					const vcsWithPartner = item.investments.filter(
 						(investment: any) =>
 							investment.people?.length && investment.vcFirms?.length
 					);
-					const vcs = round.investments.filter(
+					const vcs = item.investments.filter(
 						(investment: any) =>
 							!investment.people?.length && investment.vcFirms?.length
 					);
-					const angels = round.investments.filter(
+					const angels = item.investments.filter(
 						(investment: any) =>
 							investment.people?.length && !investment.vcFirms?.length
 					);
-
 					return (
 						<tr
-							key={round.id}
+							key={item.id}
 							className={`${
 								index % 2 === 0 ? "" : ""
-							} flex flex-col flex-no wrap overflow-hidden sm:table-row`}
+							} flex flex-col flex-nowrap overflow-hidden md:table-row`}
 						>
-							<th className="text-left px-4 pt-4 sm:hidden">Round</th>
-							<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
-								{round.round ? <>{round.round}</> : <>&mdash;</>}
-							</td>
-							<th className="text-left px-4 pt-4 sm:hidden">Money Raised</th>
-							<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
-								{round.amount ? (
+							<ElemTableCell header="Round">
+								{item.round ? <>{item.round}</> : <>&mdash;</>}
+							</ElemTableCell>
+
+							<ElemTableCell header="Money Raised">
+								{item.amount ? (
 									<>
 										<span>$</span>
-										{convertAmountRaised(round.amount)}
+										{convertAmountRaised(item.amount)}
 									</>
 								) : (
 									<>&mdash;</>
 								)}
-							</td>
-							<th className="text-left px-4 pt-4 sm:hidden">Date</th>
-							<td className="align-top px-4 pb-4 whitespace-nowrap sm:p-4">
-								{round.date ? (
-									formatDate(round.date, {
+							</ElemTableCell>
+
+							<ElemTableCell header="Date">
+								{item.date ? (
+									formatDate(item.date, {
 										month: "short",
 										day: "2-digit",
 										year: "numeric",
@@ -75,9 +74,12 @@ export const ElemInvestments: React.FC<Props> = ({
 								) : (
 									<>&mdash;</>
 								)}
-							</td>
-							<th className="text-left px-4 pt-4 sm:hidden">Investors</th>
-							<td className="align-top px-4 pb-4 grid grid-cols-2 lg:grid-cols-3 gap-5 sm:p-4">
+							</ElemTableCell>
+
+							<ElemTableCell
+								className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal"
+								header="Investors"
+							>
 								{vcsWithPartner.map((investment: any) => {
 									return (
 										<div
@@ -185,7 +187,7 @@ export const ElemInvestments: React.FC<Props> = ({
 										</div>
 									);
 								})}
-							</td>
+							</ElemTableCell>
 						</tr>
 					);
 				})}
