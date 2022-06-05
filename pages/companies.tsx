@@ -204,7 +204,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			companies: companies.companies,
+			companies: companies.companies.slice(0, 2000),
 		},
 	};
 };
