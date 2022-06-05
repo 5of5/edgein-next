@@ -98,31 +98,6 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 			{arrowLeft && <IconArrowLeft className="h-3 w-6" />}
 			{children}
 			{arrow && <IconArrow className="h-3 w-6" />}
-			{arrow && (
-				<svg
-					viewBox="0 0 6 10"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-					className="h-3 w-6 group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition"
-				>
-					<path
-						className="transition duration-150 in-hoverTransition group-hover:translate-x-0.5"
-						d="M1 1.36365L5 5.00001L1 8.63637"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-					/>
-					<path
-						className="opacity-0 group-hover:opacity-100"
-						d="M5 5H1"
-						stroke="currentColor"
-						strokeWidth="2"
-						strokeLinecap="round"
-						strokeLinejoin="round"
-					/>
-				</svg>
-			)}
 		</button>
 	);
 
