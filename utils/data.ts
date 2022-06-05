@@ -1,7 +1,6 @@
 export const runGraphQl = async (graphql: string) => {
 	return await fetch(
-		"https://api.baseql.com/airtable/graphql/appGMS1MPd9iiHrMt",
-		//'http://localhost:3001/airtable/graphql/appGMS1MPd9iiHrMt',
+		`${process.env.BASEQL_API}/airtable/graphql/appGMS1MPd9iiHrMt`,
 		{
 			method: "POST",
 			headers: {

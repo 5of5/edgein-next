@@ -130,8 +130,7 @@ export async function getStaticPaths() {
 	return {
 		paths: companies
 			.filter((comp: { slug: string }) => comp.slug)
-			.map((comp: { slug: string }) => ({ params: { companyId: comp.slug } }))
-			.slice(0, 2000),
+			.map((comp: { slug: string }) => ({ params: { companyId: comp.slug } })),
 		fallback: true, // false or 'blocking'
 	};
 }
