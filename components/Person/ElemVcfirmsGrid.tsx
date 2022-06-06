@@ -19,7 +19,7 @@ export const ElemVcfirmsGrid: React.FC<Props> = ({
 					return (
 						<ElemOrganizationCard
 							key={vcfirm.id}
-							href={`/vcfirms/${vcfirm.slug}`}
+							href={`/investors/${vcfirm.slug}`}
 							photos={vcfirm.logo}
 							heading={vcfirm.vcFirm}
 						/>
