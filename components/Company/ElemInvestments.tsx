@@ -115,8 +115,8 @@ export const ElemInvestments: React.FC<Props> = ({
 															<a className="investor flex items-center hover:opacity-70">
 																<ElemPhoto
 																	photos={investor.picture}
-																	wrapClass="flex items-center w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
-																	imgClass="object-fit h-full w-full"
+																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
+																	imgClass="object-cover w-12 h-12"
 																	imgAlt={investor.name}
 																/>
 																<span className="line-clamp-2">
@@ -173,8 +173,8 @@ export const ElemInvestments: React.FC<Props> = ({
 															<a className="investor flex items-center hover:opacity-70">
 																<ElemPhoto
 																	photos={investor.picture}
-																	wrapClass="flex items-center w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
-																	imgClass="object-fit h-full w-full"
+																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
+																	imgClass="object-cover w-12 h-12"
 																	imgAlt={investor.name}
 																/>
 																<span className="line-clamp-2">
