@@ -16,13 +16,13 @@ export const TheNavbar = () => {
 			name: "Companies",
 		},
 		{
-			path: "/vcfirms",
-			name: "VC Firms",
+			path: "/investors",
+			name: "Investors",
 		},
-		{
-			path: "/events",
-			name: "Events",
-		},
+		// {
+		// 	path: "/events",
+		// 	name: "Events",
+		// },
 	];
 
 	const logout = async () => {
