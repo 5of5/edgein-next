@@ -89,7 +89,10 @@ export const ElemInvestments: React.FC<Props> = ({
 											{Object.keys(investment.vcFirms).length > 0 &&
 												investment.vcFirms.map((firm: any) => {
 													return (
-														<Link href={`/vcfirms/${firm.slug}`} key={firm.id}>
+														<Link
+															href={`/investors/${firm.slug}`}
+															key={firm.id}
+														>
 															<a className="vcfirm flex items-center hover:opacity-70">
 																<ElemPhoto
 																	photos={firm.logo}
@@ -138,7 +141,10 @@ export const ElemInvestments: React.FC<Props> = ({
 											{Object.keys(investment.vcFirms).length > 0 &&
 												investment.vcFirms.map((firm: any) => {
 													return (
-														<Link href={`/vcfirms/${firm.slug}`} key={firm.id}>
+														<Link
+															href={`/investors/${firm.slug}`}
+															key={firm.id}
+														>
 															<a className="vcfirm flex items-center hover:opacity-70">
 																<ElemPhoto
 																	photos={firm.logo}
