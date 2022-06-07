@@ -211,7 +211,7 @@ const Companies: NextPage<Props> = ({ companies }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {title: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
+		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
 	);
 
 	return {
