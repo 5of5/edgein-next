@@ -40,7 +40,9 @@ export const ElemCredibility: React.FC<Props> = ({
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold mb-2">{heading}</h2>}
 			<div
-				className={`grid grid-cols-${credibilityItems.length} gap-2 overflow-visible`}
+				className={`grid gap-2 overflow-visible ${
+					mini ? `grid-cols-${credibilityItems.length}` : "grid-cols-3"
+				}`}
 			>
 				{credibilityItems.map((item: any, index: number) => {
 					const credibilityItem = (
