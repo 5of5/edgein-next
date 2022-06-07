@@ -76,21 +76,11 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = btnClass + " opacity-40 cursor-not-allowed";
 	}
 
-	const componentClassName = `
-  relative
-  inline-flex
-  items-center
-  font-bold
-  focus:outline-none focus:ring-0
-  hover:opacity-60
-  transition
-  duration-150
-  in-hoverTransition
-  group
-  ${btnClass}
-  ${roundedFull ? "rounded-full" : ""}
-  ${arrow || arrowLeft ? "justify-between" : "justify-center"}
-  `;
+	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 hover:opacity-60 transition duration-150 in-hoverTransition group
+		${btnClass}
+		${roundedFull ? "rounded-full" : ""}
+		${arrow || arrowLeft ? "justify-between" : "justify-center"}
+	`;
 
 	var component = (
 		<button className={componentClassName + className} onClick={onClick}>
