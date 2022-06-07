@@ -18,7 +18,7 @@ const Investors: NextPage<Props> = ({ vcFirms }) => {
 	return (
 		<div>
 			<Head>
-				<title>Investors - EdgeIn.io</title>
+				<title>Web3 Investors - EdgeIn.io</title>
 				<meta
 					name="description"
 					content="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."

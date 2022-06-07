@@ -13,9 +13,10 @@ import { runGraphQl, truncateWords } from "../utils";
 
 type Props = {
 	companies: Record<string, any>[];
+	companyLayers: any[];
 };
 
-const Companies: NextPage<Props> = ({ companies }) => {
+const Companies: NextPage<Props> = ({ companies, companyLayers }) => {
 	const router = useRouter();
 
 	// Search Box
@@ -33,18 +34,6 @@ const Companies: NextPage<Props> = ({ companies }) => {
 	};
 
 	// Company Layers
-	const getAllLayers = companies.map((com) => com.layer);
-
-	const getUniqueLayers = [...Array.from(new Set(getAllLayers))]
-		.sort()
-		.reverse();
-
-	const companyLayers = getUniqueLayers.map((str, index) => ({
-		id: index,
-		name: str,
-		label: str === null ? "All Layers" : str,
-	}));
-
 	const [selectedLayer, setSelectedLayer] = React.useState(companyLayers[0]);
 
 	return (
@@ -82,12 +71,14 @@ const Companies: NextPage<Props> = ({ companies }) => {
 									<>
 										<div className="relative">
 											<Listbox.Button className="relative w-full text-dark-500 bg-white border border-transparent text-lg rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
-												<span className="block truncate">
-													{selectedLayer.label}
-												</span>
-												<span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+												<div className="truncate">
+													{selectedLayer?.name
+														? selectedLayer.name
+														: "All Layers"}
+												</div>
+												<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 													<IconSelector className="h-5 w-5 text-gray-400" />
-												</span>
+												</div>
 											</Listbox.Button>
 
 											<Transition
@@ -112,19 +103,19 @@ const Companies: NextPage<Props> = ({ companies }) => {
 														>
 															{({ selected }) => (
 																<>
-																	<span
+																	<div
 																		className={`${
-																			selected ? "font-medium" : "font-normal"
-																		} block truncate`}
+																			selected ? "font-bold" : "font-normal"
+																		} truncate`}
 																	>
-																		{option.label}
-																	</span>
+																		{option.name ? option.name : "All Layers"}
+																	</div>
 
-																	{selected ? (
-																		<span className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
+																	{selected && (
+																		<div className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
 																			<IconCheck className="h-5 w-5" />
-																		</span>
-																	) : null}
+																		</div>
+																	)}
 																</>
 															)}
 														</Listbox.Option>
@@ -214,9 +205,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
 	);
 
+	const getAllLayers = companies.companies.map(
+		(comp: { layer: any }) => comp.layer
+	);
+
+	const getUniqueLayers = [...Array.from(new Set(getAllLayers))]
+		.sort()
+		.reverse();
+
+	const companyLayers = getUniqueLayers.map((str, index) => ({
+		id: index,
+		name: str,
+	}));
+
 	return {
 		props: {
 			companies: companies.companies,
+			companyLayers,
 		},
 	};
 };
@@ -254,27 +259,5 @@ const IconCheck = ({ className }: { className?: string }) => (
 		<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
 	</svg>
 );
-
-// function getLayerClass(layer: string) {
-// 	if (!layer) return layer;
-
-// 	let layerClass = "";
-// 	if (layer === "Layer 0") {
-// 		layerClass = "bg-primary-100 text-primary-500";
-// 	} else if (layer === "Layer 1") {
-// 		layerClass = "bg-cyan-100 text-cyan-500";
-// 	} else if (layer === "Layer 2") {
-// 		layerClass = "bg-pink-100 text-pink-500";
-// 	} else if (layer === "Layer 3") {
-// 		layerClass = "bg-blue-100 text-blue-500";
-// 	} else if (layer === "Layer 4") {
-// 		layerClass = "bg-emerald-100 text-emerald-500";
-// 	} else if (layer === "Layer 5") {
-// 		layerClass = "bg-yellow-100 text-yellow-700";
-// 	} else {
-// 		layerClass = "bg-gray-100 text-gray-500";
-// 	}
-// 	return layerClass;
-// }
 
 export default Companies;
