@@ -95,7 +95,7 @@ export const TheNavbar = () => {
 							</ElemButton>
 						) : (
 							<ElemButton href="/login" btn="primary" arrow>
-								Start Now
+								Log In
 							</ElemButton>
 						)}
 						<button
