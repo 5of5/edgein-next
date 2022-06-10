@@ -3,12 +3,14 @@ import React, { PropsWithChildren, Fragment } from "react";
 
 type Props = {
 	value?: any;
+	placeholder?: any;
 	onChange?: any;
 	options: Record<string, any>[];
 };
 
 export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 	value,
+	placeholder = "",
 	options,
 	onChange,
 }) => {
@@ -19,7 +21,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 					<div className="relative">
 						<Listbox.Button className="relative w-full text-dark-500 bg-white border border-transparent text-lg rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
 							<div className="truncate">
-								{value?.name ? value.name : "All Layers"}
+								{value?.name ? value.name : placeholder}
 								<span className="text-gray-400 text-sm">
 									{value?.details && value.details}
 								</span>
@@ -55,11 +57,11 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 													className={`${
 														selected ? "font-bold" : "font-normal"
 													} truncate align-bottom`}
-													title={`${option.name ? option.name : "All Layers"}${
+													title={`${option.name ? option.name : placeholder}${
 														option.details ? option.details : ""
 													}`}
 												>
-													{option.name ? option.name : "All Layers"}
+													{option.name ? option.name : placeholder}
 													<span className="text-gray-400 text-sm">
 														{option.details ? option.details : ""}
 													</span>

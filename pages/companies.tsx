@@ -71,6 +71,7 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 
 							<InputSelect
 								value={selectedLayer}
+								placeholder="All Layers"
 								onChange={setSelectedLayer}
 								options={companyLayers}
 							/>
@@ -104,69 +105,73 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 								.filter(
 									(company) =>
 										!search ||
-										company.title?.toLowerCase().includes(search.toLowerCase())
-									// || company.coins
-									// 	?.toLowerCase()
-									// 	.includes(search.toLowerCase())
+										company.title
+											?.toLowerCase()
+											.includes(search.toLowerCase()) ||
+										getCoinTicker(company.coins)
+											?.toLowerCase()
+											.includes(search.toLowerCase())
 								)
 								.filter(
 									(company) =>
 										!selectedLayer.name ||
 										company.layer?.includes(selectedLayer.name)
 								)
-								.map((company) => (
-									<Link key={company.id} href={`/companies/${company.slug}`}>
-										<a
-											className={`flex flex-col ${
-												toggleViewMode ? "md:flex-row" : ""
-											} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
-										>
-											<div
-												className={`flex shrink-0 mb-4 ${
-													toggleViewMode
-														? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
-														: "w-full"
-												}`}
+								.map((company) => {
+									return (
+										<Link key={company.id} href={`/companies/${company.slug}`}>
+											<a
+												className={`flex flex-col ${
+													toggleViewMode ? "md:flex-row" : ""
+												} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
 											>
-												<ElemPhoto
-													photos={company.logo}
-													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-													imgClass="object-fit max-w-full max-h-full"
-													imgAlt={company.title}
-												/>
-
-												<div className="flex items-center justify-center pl-2 md:overflow-hidden">
-													<h3
-														className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
-														title={company.title}
-													>
-														{company.title}
-													</h3>
-												</div>
-												{company.coins?.map((coin: any, i: number) => {
-													return (
-														<span
-															key={i}
-															className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-sm font-bold leading-sm uppercase text-dark-400 bg-gray-50"
-															title={`Token: ${coin.ticker}`}
-														>
-															{coin.ticker}
-														</span>
-													);
-												})}
-											</div>
-
-											{company.overview && (
 												<div
-													className={`text-gray-400 grow ${
-														toggleViewMode && "flex items-center max-w-sm mr-4"
+													className={`flex shrink-0 mb-4 ${
+														toggleViewMode
+															? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
+															: "w-full"
 													}`}
 												>
-													{truncateWords(company.overview, 18)}
-												</div>
-											)}
+													<ElemPhoto
+														photos={company.logo}
+														wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={company.title}
+													/>
 
-											{/* {company.layer && (
+													<div className="flex items-center justify-center pl-2 md:overflow-hidden">
+														<h3
+															className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
+															title={company.title}
+														>
+															{company.title}
+														</h3>
+													</div>
+													{company.coins?.map((coin: any, i: number) => {
+														return (
+															<span
+																key={i}
+																className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-sm font-bold leading-sm uppercase text-dark-400 bg-gray-50"
+																title={`Token: ${coin.ticker}`}
+															>
+																{coin.ticker}
+															</span>
+														);
+													})}
+												</div>
+
+												{company.overview && (
+													<div
+														className={`text-gray-400 grow ${
+															toggleViewMode &&
+															"flex items-center max-w-sm mr-4"
+														}`}
+													>
+														{truncateWords(company.overview, 18)}
+													</div>
+												)}
+
+												{/* {company.layer && (
 												<div
 													className={`${getLayerClass(
 														company.layer
@@ -176,34 +181,35 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 												</div>
 											)} */}
 
-											<div
-												className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${
-													toggleViewMode
-														? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
-														: ""
-												}`}
-											>
-												<ElemCredibility
-													mini={true}
-													className={`pr-4 ${
-														toggleViewMode ? "md:pr-0 lg:pr-4" : ""
+												<div
+													className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${
+														toggleViewMode
+															? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
+															: ""
 													}`}
-													marketVerified={company.marketVerified}
-													githubVerified={company.github}
-													linkedInVerified={company.companyLinkedIn}
-												/>
-												<ElemVelocity
-													mini={true}
-													className={`${
-														toggleViewMode ? "md:pt-2 lg:pt-0" : ""
-													}`}
-													employeeListings={company.velocityLinkedIn}
-													tokenExchangeValue={company.velocityToken}
-												/>
-											</div>
-										</a>
-									</Link>
-								))}
+												>
+													<ElemCredibility
+														mini={true}
+														className={`pr-4 ${
+															toggleViewMode ? "md:pr-0 lg:pr-4" : ""
+														}`}
+														marketVerified={company.marketVerified}
+														githubVerified={company.github}
+														linkedInVerified={company.companyLinkedIn}
+													/>
+													<ElemVelocity
+														mini={true}
+														className={`${
+															toggleViewMode ? "md:pt-2 lg:pt-0" : ""
+														}`}
+														employeeListings={company.velocityLinkedIn}
+														tokenExchangeValue={company.velocityToken}
+													/>
+												</div>
+											</a>
+										</Link>
+									);
+								})}
 						</div>
 					</div>
 				</div>
@@ -257,6 +263,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			companyLayers,
 		},
 	};
+};
+
+const getCoinTicker = (coins: any) => {
+	let ticker = "";
+
+	coins?.map((coin: { ticker: any }) => {
+		ticker = coin.ticker;
+	});
+
+	return ticker;
 };
 
 type IconProps = {
