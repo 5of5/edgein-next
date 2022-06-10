@@ -209,7 +209,8 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 													return (
 														<span
 															key={i}
-															className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-sm font-medium leading-sm uppercase text-dark-400 bg-gray-50"
+															className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-sm font-bold leading-sm uppercase text-dark-400 bg-gray-50"
+															title={`Token: ${coin.ticker}`}
 														>
 															{coin.ticker}
 														</span>
@@ -290,19 +291,19 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		let layerDetails = null;
 
 		if (str === "Layer 0") {
-			layerDetails = " – Programming Language";
+			layerDetails = " – Native Code";
 		} else if (str === "Layer 1") {
-			layerDetails = " – Blockchain";
+			layerDetails = " – Programmable Blockchains / Networks";
 		} else if (str === "Layer 2") {
-			layerDetails = " – Side Chains / Oracle";
+			layerDetails = " – Nodes / Node Providers / Data Platforms";
 		} else if (str === "Layer 3") {
-			layerDetails = " – API";
+			layerDetails = " – API's / API Providers / Systems";
 		} else if (str === "Layer 4") {
-			layerDetails = " – Helpers / Wallets / Extensions";
+			layerDetails = " – Decentralized Platforms / Contract/Modeling";
 		} else if (str === "Layer 5") {
-			layerDetails = "";
+			layerDetails = " - Applications";
 		} else if (str === "Layer 6") {
-			layerDetails = " – Application";
+			layerDetails = " – Interoperable Digital Assets / NFT's";
 		}
 
 		return {
