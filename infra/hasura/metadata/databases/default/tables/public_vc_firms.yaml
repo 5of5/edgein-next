@@ -1,0 +1,18 @@
+table:
+  schema: public
+  name: vc_firms
+array_relationships:
+  - name: investments
+    using:
+      foreign_key_constraint_on:
+        column: vc_firm_id
+        table:
+          schema: public
+          name: investments
+  - name: investors
+    using:
+      foreign_key_constraint_on:
+        column: vc_firm_id
+        table:
+          schema: public
+          name: investors

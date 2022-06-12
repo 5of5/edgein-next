@@ -1,0 +1,13 @@
+table:
+  schema: public
+  name: investments
+object_relationships:
+  - name: investment_round
+    using:
+      foreign_key_constraint_on: round_id
+  - name: person
+    using:
+      foreign_key_constraint_on: person_id
+  - name: vc_firm
+    using:
+      foreign_key_constraint_on: vc_firm_id

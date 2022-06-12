@@ -1,0 +1,25 @@
+table:
+  schema: public
+  name: people
+array_relationships:
+  - name: investments
+    using:
+      foreign_key_constraint_on:
+        column: person_id
+        table:
+          schema: public
+          name: investments
+  - name: investors
+    using:
+      foreign_key_constraint_on:
+        column: person_id
+        table:
+          schema: public
+          name: investors
+  - name: team_members
+    using:
+      foreign_key_constraint_on:
+        column: person_id
+        table:
+          schema: public
+          name: team_members
