@@ -7,6 +7,7 @@ import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
+import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { runGraphQl, truncateWords } from "../utils";
@@ -149,13 +150,15 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 													</div>
 													{company.coins?.map((coin: any, i: number) => {
 														return (
-															<span
+															<ElemTooltip
 																key={i}
-																className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-sm font-bold leading-sm uppercase text-dark-400 bg-gray-50"
-																title={`Token: ${coin.ticker}`}
+																content={`Token: ${coin.ticker}`}
+																className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
 															>
-																{coin.ticker}
-															</span>
+																<span className=" text-sm font-bold leading-sm uppercase">
+																	{coin.ticker}
+																</span>
+															</ElemTooltip>
 														);
 													})}
 												</div>

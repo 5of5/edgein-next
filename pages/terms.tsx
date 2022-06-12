@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Head from "next/head";
 import Link from "next/link";
 
 type Props = {};
@@ -6,6 +7,13 @@ type Props = {};
 const Terms: NextPage<Props> = (props) => {
 	return (
 		<main className="min-h-[80vh]">
+			<Head>
+				<title>Terms of use - EdgeIn.io</title>
+				<meta
+					name="description"
+					content="These are the terms governing your use of this website (“Site”). To the extent that you have been directed to these terms from another EdgeIn.io website that may be hosted on a different domain, please note that these terms will also govern your use of such site. If in doubt as to whether a particular Site is governed by these terms, please contact legal@edgein.io"
+				/>
+			</Head>
 			<section className="relative bg-gradient-to-r from-[#1B01FE] via-[#FE33D0] to-[#F8DA4B]">
 				<div className="py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 					<div className="mx-auto prose prose-xl">
