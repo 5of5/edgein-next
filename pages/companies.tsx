@@ -266,6 +266,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 const getCoinTicker = (coins: any) => {
+	if (!coins) {
+		return "";
+	}
+
 	let ticker = "";
 
 	coins?.map((coin: { ticker: any }) => {
