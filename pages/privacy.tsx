@@ -1,10 +1,18 @@
 import type { NextPage } from "next";
+import Head from "next/head";
 
 type Props = {};
 
 const Privacy: NextPage<Props> = (props) => {
 	return (
 		<main className="min-h-[80vh]">
+			<Head>
+				<title>Privacy - EdgeIn.io</title>
+				<meta
+					name="description"
+					content="EdgeIn.io Inc. (EdgeIn, “we”, “us” or “our”) is committed to protecting the privacy of personal information (i.e., any information relating to an identified or identifiable natural person) who visit the EdgeIn.io website (the “Site”). Amendments to this Privacy Policy will be posted to the Site and will be effective when posted. Your continued use of the Site following the posting of any amendment to this Privacy Policy shall constitute your acceptance of such amendment."
+				/>
+			</Head>
 			<section className="relative bg-gradient-to-r from-[#1B01FE] via-[#FE33D0] to-[#F8DA4B]">
 				<div className="py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 					<div className="mx-auto prose prose-xl">

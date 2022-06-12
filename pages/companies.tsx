@@ -1,12 +1,13 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { Listbox, Transition } from "@headlessui/react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
+import { InputSelect } from "../components/InputSelect";
+import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { runGraphQl, truncateWords } from "../utils";
@@ -69,70 +70,16 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 								onChange={searchCompanies}
 							/>
 
-							<Listbox value={selectedLayer} onChange={setSelectedLayer}>
-								{({ open }) => (
-									<>
-										<div className="relative">
-											<Listbox.Button className="relative w-full text-dark-500 bg-white border border-transparent text-lg rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
-												<div className="truncate">
-													{selectedLayer?.name
-														? selectedLayer.name
-														: "All Layers"}
-												</div>
-												<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-													<IconSelector className="h-5 w-5 text-gray-400" />
-												</div>
-											</Listbox.Button>
+							<InputSelect
+								value={selectedLayer}
+								placeholder="All Layers"
+								onChange={setSelectedLayer}
+								options={companyLayers}
+							/>
 
-											<Transition
-												show={open}
-												as={Fragment}
-												leave="transition ease-in duration-100"
-												leaveFrom="opacity-100"
-												leaveTo="opacity-0"
-											>
-												<Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-xl max-h-60 rounded-md py-1 text-lg overflow-auto focus:outline-none">
-													{companyLayers.map((option: any) => (
-														<Listbox.Option
-															key={option.id}
-															value={option}
-															className={({ active }) =>
-																`${
-																	active
-																		? "text-primary-500 bg-primary-100"
-																		: "text-dark-500"
-																} cursor-default select-none relative py-2 pl-3 pr-9`
-															}
-														>
-															{({ selected }) => (
-																<>
-																	<div
-																		className={`${
-																			selected ? "font-bold" : "font-normal"
-																		} truncate`}
-																	>
-																		{option.name ? option.name : "All Layers"}
-																	</div>
-
-																	{selected && (
-																		<div className="absolute z-50 inset-y-0 right-0 flex items-center pr-4 text-primary-500">
-																			<IconCheck className="h-5 w-5" />
-																		</div>
-																	)}
-																</>
-															)}
-														</Listbox.Option>
-													))}
-												</Listbox.Options>
-											</Transition>
-										</div>
-									</>
-								)}
-							</Listbox>
-
-							<div className="hidden ml-auto md:flex items-center border border-white rounded-md hover:ring hover:ring-primary-100">
+							<div className="hidden ml-auto md:block">
 								<div
-									className="px-4 py-2 cursor-pointer bg-white hover:text-primary-500"
+									className="px-4 py-2 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
 									onClick={() => setToggleViewMode(!toggleViewMode)}
 								>
 									{toggleViewMode ? (
@@ -159,55 +106,75 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 								.filter(
 									(company) =>
 										!search ||
-										company.title?.toLowerCase().includes(search.toLowerCase())
+										company.title
+											?.toLowerCase()
+											.includes(search.toLowerCase()) ||
+										getCoinTicker(company.coins)
+											?.toLowerCase()
+											.includes(search.toLowerCase())
 								)
 								.filter(
 									(company) =>
 										!selectedLayer.name ||
 										company.layer?.includes(selectedLayer.name)
 								)
-								.map((company) => (
-									<Link key={company.id} href={`/companies/${company.slug}`}>
-										<a
-											className={`flex flex-col ${
-												toggleViewMode ? "md:flex-row" : ""
-											} mx-auto w-full p-7 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
-										>
-											<div
-												className={`flex shrink-0 mb-4 ${
-													toggleViewMode
-														? "items-center mr-4 md:w-56 md:mb-0 lg:w-64"
-														: "w-full"
-												}`}
+								.map((company) => {
+									return (
+										<Link key={company.id} href={`/companies/${company.slug}`}>
+											<a
+												className={`flex flex-col ${
+													toggleViewMode ? "md:flex-row" : ""
+												} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
 											>
-												<ElemPhoto
-													photos={company.logo}
-													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-													imgClass="object-fit max-w-full max-h-full"
-													imgAlt={company.title}
-												/>
-
-												<div className="flex items-center justify-center pl-2 md:overflow-hidden">
-													<h3
-														className="text-2xl line-clamp-2 font-bold inline-block min-w-0 break-words text-dark-500 sm:text-lg lg:text-2xl group-hover:opacity-60"
-														title={company.title}
-													>
-														{company.title}
-													</h3>
-												</div>
-											</div>
-
-											{company.overview && (
 												<div
-													className={`text-gray-400 grow ${
-														toggleViewMode && "flex items-center mr-4 max-w-md"
+													className={`flex shrink-0 mb-4 ${
+														toggleViewMode
+															? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
+															: "w-full"
 													}`}
 												>
-													{truncateWords(company.overview)}
-												</div>
-											)}
+													<ElemPhoto
+														photos={company.logo}
+														wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={company.title}
+													/>
 
-											{/* {company.layer && (
+													<div className="flex items-center justify-center pl-2 md:overflow-hidden">
+														<h3
+															className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
+															title={company.title}
+														>
+															{company.title}
+														</h3>
+													</div>
+													{company.coins?.map((coin: any, i: number) => {
+														return (
+															<ElemTooltip
+																key={i}
+																content={`Token: ${coin.ticker}`}
+																className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
+															>
+																<span className=" text-sm font-bold leading-sm uppercase">
+																	{coin.ticker}
+																</span>
+															</ElemTooltip>
+														);
+													})}
+												</div>
+
+												{company.overview && (
+													<div
+														className={`text-gray-400 grow ${
+															toggleViewMode &&
+															"flex items-center max-w-sm mr-4"
+														}`}
+													>
+														{truncateWords(company.overview, 18)}
+													</div>
+												)}
+
+												{/* {company.layer && (
 												<div
 													className={`${getLayerClass(
 														company.layer
@@ -217,34 +184,35 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 												</div>
 											)} */}
 
-											<div
-												className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${
-													toggleViewMode
-														? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
-														: ""
-												}`}
-											>
-												<ElemCredibility
-													mini={true}
-													className={`pr-4 ${
-														toggleViewMode ? "md:pr-0 lg:pr-4" : ""
+												<div
+													className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${
+														toggleViewMode
+															? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
+															: ""
 													}`}
-													marketVerified={company.marketVerified}
-													githubVerified={company.github}
-													linkedInVerified={company.companyLinkedIn}
-												/>
-												<ElemVelocity
-													mini={true}
-													className={`${
-														toggleViewMode ? "md:pt-2 lg:pt-0" : ""
-													}`}
-													employeeListings={company.velocityLinkedIn}
-													tokenExchangeValue={company.velocityToken}
-												/>
-											</div>
-										</a>
-									</Link>
-								))}
+												>
+													<ElemCredibility
+														mini={true}
+														className={`pr-4 ${
+															toggleViewMode ? "md:pr-0 lg:pr-4" : ""
+														}`}
+														marketVerified={company.marketVerified}
+														githubVerified={company.github}
+														linkedInVerified={company.companyLinkedIn}
+													/>
+													<ElemVelocity
+														mini={true}
+														className={`${
+															toggleViewMode ? "md:pt-2 lg:pt-0" : ""
+														}`}
+														employeeListings={company.velocityLinkedIn}
+														tokenExchangeValue={company.velocityToken}
+													/>
+												</div>
+											</a>
+										</Link>
+									);
+								})}
 						</div>
 					</div>
 				</div>
@@ -255,7 +223,7 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
+		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, coins { ticker }, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
 	);
 
 	const getAllLayers = companies.companies.map(
@@ -266,10 +234,31 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		.sort()
 		.reverse();
 
-	const companyLayers = getUniqueLayers.map((str, index) => ({
-		id: index,
-		name: str,
-	}));
+	const companyLayers = getUniqueLayers.map((str: any, index: any) => {
+		let layerDetails = null;
+
+		if (str === "Layer 0") {
+			layerDetails = " – Native Code";
+		} else if (str === "Layer 1") {
+			layerDetails = " – Programmable Blockchains / Networks";
+		} else if (str === "Layer 2") {
+			layerDetails = " – Nodes / Node Providers / Data Platforms";
+		} else if (str === "Layer 3") {
+			layerDetails = " – API's / API Providers / Systems";
+		} else if (str === "Layer 4") {
+			layerDetails = " – Decentralized Platforms / Contract/Modeling";
+		} else if (str === "Layer 5") {
+			layerDetails = " - Applications";
+		} else if (str === "Layer 6") {
+			layerDetails = " – Interoperable Digital Assets / NFT's";
+		}
+
+		return {
+			id: index,
+			name: str,
+			details: layerDetails,
+		};
+	});
 
 	return {
 		props: {
@@ -279,48 +268,23 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	};
 };
 
+const getCoinTicker = (coins: any) => {
+	if (!coins) {
+		return "";
+	}
+
+	let ticker = "";
+
+	coins?.map((coin: { ticker: any }) => {
+		ticker = coin.ticker;
+	});
+
+	return ticker;
+};
+
 type IconProps = {
 	className?: string;
 	title?: string;
-};
-
-const IconSelector: React.FC<IconProps> = ({
-	className,
-	title = "Selector",
-}) => {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-			className={`${className}`}
-			stroke="currentColor"
-			strokeWidth="2"
-		>
-			<title>{title}</title>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-			/>
-		</svg>
-	);
-};
-
-const IconCheck: React.FC<IconProps> = ({ className, title = "Check" }) => {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-			className={`${className}`}
-			stroke="currentColor"
-			strokeWidth="2"
-		>
-			<title>{title}</title>
-			<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-		</svg>
-	);
 };
 
 const IconGrid: React.FC<IconProps> = ({ className, title = "Arrow" }) => {

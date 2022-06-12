@@ -54,9 +54,23 @@ const Company: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="w-full col-span-2">
-					<h1 className="text-4xl md:text-6xl font-bold my-5">
-						{company.title}
-					</h1>
+					<div className="flex shrink-0">
+						<h1 className="flex text-4xl md:text-6xl font-bold my-5">
+							{company.title}
+						</h1>
+						{company.coins?.map((coin: any) => {
+							return (
+								<span
+									key={coin.id}
+									className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
+									title={`Token: ${coin.ticker}`}
+								>
+									{coin.ticker}
+								</span>
+							);
+						})}
+					</div>
+
 					{company.overview && (
 						<p className="text-lg mb-5">{company.overview}</p>
 					)}
@@ -140,6 +154,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     companies(slug: "${context.params?.companyId}") {
       id
       title
+	  coins {
+		id
+		ticker
+	  }
       slug
       logo
 	  layer

@@ -74,13 +74,13 @@ const Person: NextPage<Props> = (props) => {
 				</div>
 			</div>
 
-			{person.companies?.length > 0 && (
+			{/* {person.companies?.length > 0 && (
 				<ElemCompaniesGrid
 					className="mt-12"
 					heading="Companies"
 					companies={person.companies}
 				/>
-			)}
+			)} */}
 
 			{person.teamMembers[0]?.company?.length > 0 && (
 				<ElemCompaniesGrid
@@ -230,13 +230,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				logo
 				overview
 			}
-		}
-		companies {
-			id
-			title
-			slug
-			logo
-			overview
 		}
 		investments {
 			name

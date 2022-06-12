@@ -111,7 +111,10 @@ const IconVerified: React.FC<IconProps> = ({
 	);
 };
 
-const IconMarket: React.FC<IconProps> = ({ className, title = "Market" }) => {
+const IconMarket: React.FC<IconProps> = ({
+	className,
+	title = "Market Verified",
+}) => {
 	return (
 		<svg
 			className={className}
@@ -131,7 +134,10 @@ const IconMarket: React.FC<IconProps> = ({ className, title = "Market" }) => {
 	);
 };
 
-const IconGithub: React.FC<IconProps> = ({ className, title = "Github" }) => {
+const IconGithub: React.FC<IconProps> = ({
+	className,
+	title = "Github Verified",
+}) => {
 	return (
 		<svg
 			className={className}
@@ -151,7 +157,7 @@ const IconGithub: React.FC<IconProps> = ({ className, title = "Github" }) => {
 
 const IconLinkedIn: React.FC<IconProps> = ({
 	className,
-	title = "LinkedIn",
+	title = "LinkedIn Verified",
 }) => {
 	return (
 		<svg

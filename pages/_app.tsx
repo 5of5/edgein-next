@@ -2,6 +2,7 @@ import "../styles/globals.scss";
 import React from "react";
 import TagManager from "react-gtm-module";
 import type { AppProps } from "next/app";
+import Script from "next/script";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { ElemSpinner } from "../components/ElemSpinner";
@@ -60,6 +61,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<meta name="twitter:description" content={metaDescription} />
 				<meta name="twitter:image" content={socialImage} />
 			</Head>
+			<Script
+				src="https://aggle.net/js?pid=J9GEZNSN8"
+				strategy="afterInteractive"
+			></Script>
 			<div className="flex flex-col min-h-screen">
 				{ pageProps.noLayout ? 
 					<Component {...pageProps} />
