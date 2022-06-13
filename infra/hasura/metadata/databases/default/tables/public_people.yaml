@@ -23,3 +23,50 @@ array_relationships:
         table:
           schema: public
           name: team_members
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - id
+        - picture
+        - external_id
+        - github
+        - linkedin
+        - name
+        - personal_email
+        - slug
+        - type
+        - work_email
+      backend_only: false
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - picture
+        - external_id
+        - github
+        - linkedin
+        - name
+        - personal_email
+        - slug
+        - type
+        - work_email
+      filter: {}
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - picture
+        - external_id
+        - github
+        - linkedin
+        - name
+        - personal_email
+        - slug
+        - type
+        - work_email
+      filter: {}
+      check: {}

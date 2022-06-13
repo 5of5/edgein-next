@@ -13,3 +13,41 @@ array_relationships:
         table:
           schema: public
           name: investments
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - company_id
+        - id
+        - amount
+        - valuation
+        - external_id
+        - round
+        - round_date
+      backend_only: false
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - company_id
+        - id
+        - amount
+        - valuation
+        - external_id
+        - round
+        - round_date
+      filter: {}
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - company_id
+        - id
+        - amount
+        - valuation
+        - external_id
+        - round
+        - round_date
+      filter: {}
+      check: {}

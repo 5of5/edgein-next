@@ -16,3 +16,86 @@ array_relationships:
         table:
           schema: public
           name: team_members
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - id
+        - logo
+        - total_employees
+        - careers_page
+        - coins
+        - company_linkedin
+        - external_id
+        - github
+        - investor_amount
+        - layer
+        - layer_detail
+        - market_verified
+        - name
+        - notes
+        - overview
+        - slug
+        - total_valuation
+        - velocity_linkedin
+        - velocity_token
+        - website
+        - white_paper
+        - year_founded
+      backend_only: false
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - logo
+        - total_employees
+        - careers_page
+        - coins
+        - company_linkedin
+        - external_id
+        - github
+        - investor_amount
+        - layer
+        - layer_detail
+        - market_verified
+        - name
+        - notes
+        - overview
+        - slug
+        - total_valuation
+        - velocity_linkedin
+        - velocity_token
+        - website
+        - white_paper
+        - year_founded
+      filter: {}
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - careers_page
+        - coins
+        - company_linkedin
+        - external_id
+        - github
+        - id
+        - investor_amount
+        - layer
+        - layer_detail
+        - logo
+        - market_verified
+        - name
+        - notes
+        - overview
+        - slug
+        - total_employees
+        - total_valuation
+        - velocity_linkedin
+        - velocity_token
+        - website
+        - white_paper
+        - year_founded
+      filter: {}
+      check: {}
