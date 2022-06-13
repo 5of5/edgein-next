@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
-	value,
+	value, //{title: "", description: ""}
 	placeholder = "",
 	options,
 	onChange,
@@ -21,9 +21,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 					<div className="relative">
 						<Listbox.Button className="relative w-full text-dark-500 bg-white border border-transparent text-lg rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
 							<div className="truncate">
-								{value?.name ? value.name : placeholder}
+								{value?.title ? value.title : placeholder}
 								<span className="text-gray-400 text-sm">
-									{value?.details && value.details}
+									{value?.description && value.description}
 								</span>
 							</div>
 							<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -57,13 +57,13 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 													className={`${
 														selected ? "font-bold" : "font-normal"
 													} truncate align-bottom`}
-													title={`${option.name ? option.name : placeholder}${
-														option.details ? option.details : ""
+													title={`${option.title ? option.title : placeholder}${
+														option.description ? option.description : ""
 													}`}
 												>
-													{option.name ? option.name : placeholder}
+													{option.title ? option.title : placeholder}
 													<span className="text-gray-400 text-sm">
-														{option.details ? option.details : ""}
+														{option.description ? option.description : ""}
 													</span>
 												</div>
 
