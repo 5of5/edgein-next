@@ -21,7 +21,7 @@ export const InputSearch: React.FC<PropsWithChildren<Props>> = ({
 }) => {
 	// Sizes
 	let iconClasses = "h-5 w-5";
-	let inputClasses = "text-lg py-1.5 pl-10";
+	let inputClasses = "py-1.5 pl-10";
 	if (size === "md") {
 		iconClasses = "h-6 w-6";
 		inputClasses = "text-xl py-2 pl-10";

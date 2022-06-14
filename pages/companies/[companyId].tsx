@@ -100,6 +100,7 @@ const Company: NextPage<Props> = (props) => {
 				totalFundingRaised={company.investorAmount}
 				whitePaper={company.whitePaper}
 				totalEmployees={company.totalEmployees}
+				careerPage={company.careerPage}
 				yearFounded={company.yearFounded}
 				linkedIn={company.companyLinkedIn}
 				github={company.github}
@@ -169,6 +170,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	  website
 	  marketVerified
       companyLinkedIn
+	  careerPage
 	  github
 	  velocityLinkedIn
 	  velocityToken
