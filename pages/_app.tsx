@@ -8,11 +8,13 @@ import { useRouter } from "next/router";
 import { ElemSpinner } from "../components/ElemSpinner";
 import { TheNavbar } from "../components/TheNavbar";
 import { TheFooter } from "../components/TheFooter";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
 	const router = useRouter();
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
+	const queryClient = new QueryClient();
 
 	//google
 	React.useEffect(() => {
@@ -66,6 +68,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				strategy="afterInteractive"
 			></Script>
 			<div className="flex flex-col min-h-screen">
+		    <QueryClientProvider client={queryClient}>
 				{ pageProps.noLayout ? 
 					<Component {...pageProps} />
 				:
@@ -77,6 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						<TheFooter />
 					</>
 				}
+				</QueryClientProvider>
 			</div>
 		</>
 	);
