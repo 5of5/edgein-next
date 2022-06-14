@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { ElemHeading } from "../components/ElemHeading";
-import { ElemPhoto } from "../components/ElemPhoto";
+import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
+import { ElemPhoto } from "../components/ElemPhoto";
 import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
@@ -77,9 +78,9 @@ const Companies: NextPage<Props> = ({
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-						<div className="w-full flex flex-col py-5 sm:flex-row sm:space-x-3">
+						<ElemFiltersWrap className="filters-wrap">
 							<InputSearch
-								className="grow shrink basis-0 max-w-[16rem]"
+								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								label="Search"
 								name="search"
 								value={search}
@@ -88,20 +89,20 @@ const Companies: NextPage<Props> = ({
 							/>
 
 							<InputSelect
-								className="grow shrink basis-0 max-w-[16rem]"
+								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								value={selectedLayer}
 								onChange={setSelectedLayer}
 								options={companyLayers}
 							/>
 
 							<InputSelect
-								className="grow shrink basis-0 max-w-[16rem]"
+								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								value={selectedAmountRaised}
 								onChange={setSelectedAmountRaised}
 								options={amountRaised}
 							/>
 
-							<div className="hidden !ml-auto md:block">
+							<div className="hidden md:block md:shrink md:basis-0 md:!ml-auto">
 								<div
 									className="px-4 py-1.5 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
 									onClick={() => setToggleViewMode(!toggleViewMode)}
@@ -119,47 +120,7 @@ const Companies: NextPage<Props> = ({
 									)}
 								</div>
 							</div>
-						</div>
-						{/* <div className="w-full flex flex-col py-5 gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-							<InputSearch
-								label="Search"
-								name="search"
-								value={search}
-								placeholder="Quick Search..."
-								onChange={searchCompanies}
-							/>
-
-							<InputSelect
-								value={selectedLayer}
-								onChange={setSelectedLayer}
-								options={companyLayers}
-							/>
-
-							<InputSelect
-								value={selectedAmountRaised}
-								onChange={setSelectedAmountRaised}
-								options={amountRaised}
-							/>
-
-							<div className="hidden ml-auto md:block">
-								<div
-									className="px-4 py-2 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
-									onClick={() => setToggleViewMode(!toggleViewMode)}
-								>
-									{toggleViewMode ? (
-										<div className="flex items-center text-lg">
-											<IconGrid className="h-5 w-5 mr-1" />
-											Grid
-										</div>
-									) : (
-										<div className="flex items-center text-lg">
-											<IconList className="h-5 w-5 mr-1" />
-											List
-										</div>
-									)}
-								</div>
-							</div>
-						</div> */}
+						</ElemFiltersWrap>
 
 						<div
 							className={`grid gap-5 grid-cols-1 md:grid-cols-${
@@ -344,8 +305,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	const companyLayers = setCompanyLayersDetails.filter((o) => o.title);
 
-	//console.log(result);
-
 	// Amount Raised Filter
 	const getAmountRaised = [
 		...Array.from(
@@ -485,7 +444,3 @@ const getCoinTicker = (coins: any) => {
 
 	return ticker;
 };
-
-// function inRange(value: number, min: number, max: number) {
-// 	return value >= min && value <= max;
-// }
