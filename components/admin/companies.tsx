@@ -17,7 +17,10 @@ export const CompanyList = () => (
     </List>
 );
 
-const CompanyTitle = ({ record }) => {
+interface CompanyTitleProps {
+  record?: Record<string, string>;
+}
+const CompanyTitle = ({ record }: CompanyTitleProps) => {
     return <span>Company {record ? `"${record.name}"` : ''}</span>;
 };
 
