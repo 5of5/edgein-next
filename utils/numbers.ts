@@ -92,3 +92,11 @@ export const convertToInternationalCurrencySystem = (amount: number) => {
 export const numberWithCommas = (num: number) => {
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
+
+export const inRange = (value: number, min: number, max: number) => {
+	return value >= min && value <= max;
+};
+
+// function inRange(value: number, min: number, max: number) {
+// 	return value >= min && value <= max;
+// }

@@ -7,7 +7,7 @@ import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { runGraphQl } from "../utils";
+import { runGraphQl, inRange } from "../utils";
 
 type Props = {
 	vcFirms: Record<string, any>[];
@@ -65,17 +65,23 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 							{vcFirms
 								.filter(
 									(vcfirm) =>
+										!search ||
+										vcfirm.vcFirm?.toLowerCase().includes(search.toLowerCase())
+								)
+								.filter(
+									(vcfirm) =>
 										!selectedInvestmentCount.number ||
 										(vcfirm.investments?.length >=
 											selectedInvestmentCount.rangeStart &&
 											vcfirm.investments?.length <=
 												selectedInvestmentCount.rangeEnd)
 								)
-								.filter(
-									(vcfirm) =>
-										!search ||
-										vcfirm.vcFirm?.toLowerCase().includes(search.toLowerCase())
-								)
+								// sort list by number of investments
+								// .sort(
+								// 	(a: any, b: any) =>
+								// 		a.investments?.length - b.investments?.length
+								// )
+								// .reverse()
 								.map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
 										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 flex flex-col justify-between mx-auto w-full max-w-md group transition duration-300 ease-in-out transform  hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:p-7 md:h-full">
@@ -120,7 +126,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		'{ vcFirms(_order_by: {vcFirm: "asc"}, _filter: {slug: {_ne: ""}})  { id, vcFirm, slug, logo, investments {id, name} }}'
 	);
 
-	const countInvestmentsPerCompany = [
+	// Number of Investments Filter
+	const getNumberOfInvestments = [
 		...Array.from(
 			new Set(
 				vcFirms.vcFirms.map((investor: { investments: any }, index: any) => {
@@ -155,7 +162,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 					return {
 						id: index,
 						title: text,
-						number: investmentsCount ? investmentsCount : 0,
+						number: investmentsCount,
 						rangeStart: rangeStart,
 						rangeEnd: rangeEnd,
 					};
@@ -166,7 +173,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	const investmentGroups: any[] = [];
 
-	const uniqueInvestmentGroups = countInvestmentsPerCompany
+	const uniqueInvestmentGroups = getNumberOfInvestments
 		.filter((group: any) => {
 			const isDuplicate = investmentGroups.includes(group.title);
 
@@ -212,7 +219,3 @@ const IconCash: React.FC<IconProps> = ({ className, title }) => {
 		</svg>
 	);
 };
-
-function inRange(value: number, min: number, max: number) {
-	return value >= min && value <= max;
-}

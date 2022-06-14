@@ -10,14 +10,25 @@ import { InputSelect } from "../components/InputSelect";
 import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
-import { runGraphQl, truncateWords } from "../utils";
+import {
+	runGraphQl,
+	truncateWords,
+	inRange,
+	convertToInternationalCurrencySystem,
+} from "../utils";
+import Company from "./companies/[companyId]";
 
 type Props = {
 	companies: Record<string, any>[];
 	companyLayers: any[];
+	amountRaised: Record<string, any>[];
 };
 
-const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
+const Companies: NextPage<Props> = ({
+	companyLayers,
+	companies,
+	amountRaised,
+}) => {
 	const router = useRouter();
 
 	// Search Box
@@ -34,8 +45,13 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 		// });
 	};
 
-	// Company Layers
+	// Company Layers Filter
 	const [selectedLayer, setSelectedLayer] = useState(companyLayers[0]);
+
+	// Amount Raised Filter
+	const [selectedAmountRaised, setSelectedAmountRaised] = useState(
+		amountRaised[0]
+	);
 
 	// Layout Grid/List
 	const [toggleViewMode, setToggleViewMode] = useState(false);
@@ -61,7 +77,50 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-						<div className="w-full flex flex-col py-5 gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
+						<div className="w-full flex flex-col py-5 sm:flex-row sm:space-x-3">
+							<InputSearch
+								className="grow shrink basis-0 max-w-[16rem]"
+								label="Search"
+								name="search"
+								value={search}
+								placeholder="Quick Search..."
+								onChange={searchCompanies}
+							/>
+
+							<InputSelect
+								className="grow shrink basis-0 max-w-[16rem]"
+								value={selectedLayer}
+								onChange={setSelectedLayer}
+								options={companyLayers}
+							/>
+
+							<InputSelect
+								className="grow shrink basis-0 max-w-[16rem]"
+								value={selectedAmountRaised}
+								onChange={setSelectedAmountRaised}
+								options={amountRaised}
+							/>
+
+							<div className="hidden !ml-auto md:block">
+								<div
+									className="px-4 py-1.5 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
+									onClick={() => setToggleViewMode(!toggleViewMode)}
+								>
+									{toggleViewMode ? (
+										<div className="flex items-center">
+											<IconGrid className="h-5 w-5 mr-1" />
+											Grid
+										</div>
+									) : (
+										<div className="flex items-center">
+											<IconList className="h-5 w-5 mr-1" />
+											List
+										</div>
+									)}
+								</div>
+							</div>
+						</div>
+						{/* <div className="w-full flex flex-col py-5 gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 							<InputSearch
 								label="Search"
 								name="search"
@@ -72,9 +131,14 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 
 							<InputSelect
 								value={selectedLayer}
-								placeholder="All Layers"
 								onChange={setSelectedLayer}
 								options={companyLayers}
+							/>
+
+							<InputSelect
+								value={selectedAmountRaised}
+								onChange={setSelectedAmountRaised}
+								options={amountRaised}
 							/>
 
 							<div className="hidden ml-auto md:block">
@@ -95,7 +159,7 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 									)}
 								</div>
 							</div>
-						</div>
+						</div> */}
 
 						<div
 							className={`grid gap-5 grid-cols-1 md:grid-cols-${
@@ -116,7 +180,15 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 								.filter(
 									(company) =>
 										!selectedLayer.title ||
+										selectedLayer.title === "All Layers" ||
 										company.layer?.includes(selectedLayer.title)
+								)
+								.filter(
+									(company) =>
+										!selectedAmountRaised.number ||
+										(company.investorAmount >=
+											selectedAmountRaised.rangeStart &&
+											company.investorAmount <= selectedAmountRaised.rangeEnd)
 								)
 								.map((company) => {
 									return (
@@ -173,6 +245,10 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 														{truncateWords(company.overview, 18)}
 													</div>
 												)}
+												{/* <span>
+													Amount Raised: $
+													{convertToInternationalCurrencySystem(company.investorAmount)}
+												</span> */}
 
 												{/* {company.layer && (
 												<div
@@ -183,7 +259,6 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 													{company.layer}
 												</div>
 											)} */}
-
 												<div
 													className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${
 														toggleViewMode
@@ -223,63 +298,139 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, layer, coins { ticker }, slug, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
+		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, slug, layer, coins { ticker }, investorAmount, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
 	);
 
-	const getAllLayers = companies.companies.map(
-		(comp: { layer: any }) => comp.layer
-	);
+	// Layers Filter
+	const getUniqueLayers = [
+		...Array.from(
+			new Set(companies.companies.map((comp: { layer: any }) => comp.layer))
+		),
+	].sort();
 
-	const getUniqueLayers = [...Array.from(new Set(getAllLayers))]
-		.sort()
-		.reverse();
+	const setCompanyLayersDetails = getUniqueLayers.map(
+		(str: any, index: any) => {
+			let layerDetails = null;
 
-	const companyLayers = getUniqueLayers.map((str: any, index: any) => {
-		let layerDetails = null;
+			if (str === "Layer 0") {
+				layerDetails = "Native Code";
+			} else if (str === "Layer 1") {
+				layerDetails = "Programmable Blockchains / Networks";
+			} else if (str === "Layer 2") {
+				layerDetails = "Nodes / Node Providers / Data Platforms";
+			} else if (str === "Layer 3") {
+				layerDetails = "API's / API Providers / Systems";
+			} else if (str === "Layer 4") {
+				layerDetails = "Decentralized Platforms / Contract/Modeling";
+			} else if (str === "Layer 5") {
+				layerDetails = "Applications";
+			} else if (str === "Layer 6") {
+				layerDetails = "Interoperable Digital Assets / NFT's";
+			}
 
-		if (str === "Layer 0") {
-			layerDetails = " – Native Code";
-		} else if (str === "Layer 1") {
-			layerDetails = " – Programmable Blockchains / Networks";
-		} else if (str === "Layer 2") {
-			layerDetails = " – Nodes / Node Providers / Data Platforms";
-		} else if (str === "Layer 3") {
-			layerDetails = " – API's / API Providers / Systems";
-		} else if (str === "Layer 4") {
-			layerDetails = " – Decentralized Platforms / Contract/Modeling";
-		} else if (str === "Layer 5") {
-			layerDetails = " - Applications";
-		} else if (str === "Layer 6") {
-			layerDetails = " – Interoperable Digital Assets / NFT's";
+			return {
+				id: index,
+				title: str,
+				description: layerDetails,
+			};
 		}
+	);
 
-		return {
-			id: index,
-			title: str,
-			description: layerDetails,
-		};
+	setCompanyLayersDetails.unshift({
+		id: 9999,
+		title: "All Layers",
+		description: null,
 	});
+
+	const companyLayers = setCompanyLayersDetails.filter((o) => o.title);
+
+	//console.log(result);
+
+	// Amount Raised Filter
+	const getAmountRaised = [
+		...Array.from(
+			new Set(
+				companies.companies.map(
+					(comp: { investorAmount: number }, index: any) => {
+						const amount = comp.investorAmount || 0;
+
+						let text = null;
+						let rangeStart = null;
+						let rangeEnd = null;
+
+						if (amount === 0) {
+							text = "All Funding Amounts";
+							rangeStart = 0;
+							rangeEnd = 0;
+						} else if (amount < 10e5) {
+							text = "Less than $1M";
+							rangeStart = 0;
+							rangeEnd = 10e5 - 1; //999999
+						} else if (amount === 10e5) {
+							text = "$1M";
+							rangeStart = 10e5;
+							rangeEnd = 10e5;
+						} else if (inRange(amount, 10e5 + 1, 10e6)) {
+							text = "$1M-$10M";
+							rangeStart = 10e5 + 1;
+							rangeEnd = 10e6;
+						} else if (inRange(amount, 10e6 + 1, 20e6)) {
+							text = "$11M-$20M";
+							rangeStart = 10e6 + 1;
+							rangeEnd = 20e6;
+						} else if (inRange(amount, 20e6 + 1, 50e6)) {
+							text = "$21M-$50M";
+							rangeStart = 20e6 + 1;
+							rangeEnd = 50e6;
+						} else if (inRange(amount, 50e6 + 1, 10e7)) {
+							text = "$51M-$100M";
+							rangeStart = 50e6 + 1;
+							rangeEnd = 10e7;
+						} else if (inRange(amount, 10e7 + 1, 20e7)) {
+							text = "$101M-$200M";
+							rangeStart = 10e7 + 1;
+							rangeEnd = 20e7;
+						} else if (amount > 20e7) {
+							text = "$200M+";
+							rangeStart = 20e7;
+							rangeEnd = 90e14;
+						}
+
+						return {
+							id: index,
+							title: text,
+							//description: "",
+							number: amount,
+							rangeStart: rangeStart,
+							rangeEnd: rangeEnd,
+						};
+					}
+				)
+			)
+		),
+	];
+
+	const amountRaisedGroups: any[] = [];
+
+	const uniqueAmountRaisedGroups = getAmountRaised
+		.filter((group: any) => {
+			const isDuplicate = amountRaisedGroups.includes(group.title);
+
+			if (!isDuplicate) {
+				amountRaisedGroups.push(group.title);
+				return true;
+			}
+			return false;
+		})
+		.sort((a: any, b: any) => a.number - b.number);
 
 	return {
 		props: {
 			companies: companies.companies,
 			companyLayers,
+			amountRaised: uniqueAmountRaisedGroups,
 		},
 	};
-};
-
-const getCoinTicker = (coins: any) => {
-	if (!coins) {
-		return "";
-	}
-
-	let ticker = "";
-
-	coins?.map((coin: { ticker: any }) => {
-		ticker = coin.ticker;
-	});
-
-	return ticker;
 };
 
 type IconProps = {
@@ -320,3 +471,21 @@ const IconList: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
 };
 
 export default Companies;
+
+const getCoinTicker = (coins: any) => {
+	if (!coins) {
+		return "";
+	}
+
+	let ticker = "";
+
+	coins?.map((coin: { ticker: any }) => {
+		ticker = coin.ticker;
+	});
+
+	return ticker;
+};
+
+// function inRange(value: number, min: number, max: number) {
+// 	return value >= min && value <= max;
+// }
