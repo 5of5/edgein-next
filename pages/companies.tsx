@@ -115,8 +115,8 @@ const Companies: NextPage<Props> = ({ companyLayers, companies }) => {
 								)
 								.filter(
 									(company) =>
-										!selectedLayer.name ||
-										company.layer?.includes(selectedLayer.name)
+										!selectedLayer.title ||
+										company.layer?.includes(selectedLayer.title)
 								)
 								.map((company) => {
 									return (
@@ -255,8 +255,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 		return {
 			id: index,
-			name: str,
-			details: layerDetails,
+			title: str,
+			description: layerDetails,
 		};
 	});
 
