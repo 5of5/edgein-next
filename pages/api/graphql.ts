@@ -2,20 +2,23 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
+  if (!user) {
+    return res.status(401).end()
+  }
+  const headers: {Authorization: string} | {'x-hasura-admin-secret': string} = user.email.endsWith('@5of5.vc') || user.email === 'ed@acutulus.co' ?
+  {'x-hasura-admin-secret': process.env.HASURA_SECRET ?? "" }
+    : 
+  { Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}` }
   const opts = {
     method: "POST",
-    body: req.body,
-    headers: { Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}` },
+    body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
+    headers      
   }
-  const proxyRes = await fetch("http://localhost:8080/v1/graphql", opts);
+  console.log(opts)
+  const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);
 
   const json = await proxyRes.json();
-
-  if (json.errors) {
-    const { message } = json.errors[0];
-
-    throw new Error(message);
-  }
 
   res.send(json)
 }

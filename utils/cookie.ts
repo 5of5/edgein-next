@@ -5,6 +5,10 @@ import { jwtVerify } from 'jose'
 const TOKEN_NAME = "api_token"
 const MAX_AGE = 60 * 60 * 8
 
+interface User {
+  email: string
+}
+
 function createCookie(name: string, data: any, options = {}) {
   return serialize(name, data, {
     maxAge: MAX_AGE,
@@ -37,7 +41,7 @@ function getAuthToken(cookies: Record<string, string>) {
 
 async function getUser(token: string) {
   if (!token) {
-    return false
+    return null
   }
   const verified = await jwtVerify(
     token,
@@ -46,14 +50,15 @@ async function getUser(token: string) {
   let payload = verified.payload
   
   if (!payload) {
-    return false
+    return null
   }
-  let user = payload.user as string
-  if (user.startsWith('{')) {
+  let userStr = payload.user as string
+  let user: User | null = null
+  if (userStr.startsWith('{')) {
     try {
-      user = JSON.parse(user)
+      user = JSON.parse(userStr)
     } catch (e) {
-      return false
+      return null
     }
   }
   return user

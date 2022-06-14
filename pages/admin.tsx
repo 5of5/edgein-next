@@ -14,12 +14,8 @@ const AdminApp = () => {
   useEffect(() => {
     const buildDataProvider = async () => {
       const myClientWithAuth = new ApolloClient({
-        uri: 'http://localhost:8080/v1/graphql',
+        uri: "/api/graphql",
         cache: new InMemoryCache(),
-        headers: {
-          'x-hasura-admin-secret': process.env.HASURA_SECRET ?? "",
-          // 'Authorization': `Bearer xxxx`,
-        },
       });      
       const dataProvider = await buildHasuraProvider({
         client: myClientWithAuth
