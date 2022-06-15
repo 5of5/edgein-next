@@ -1,5 +1,5 @@
 
-import Airtable from 'airtable'
+import Airtable, { FieldSet, RecordData } from 'airtable'
 
 Airtable.configure({
   endpointUrl: 'https://api.airtable.com',
@@ -7,8 +7,8 @@ Airtable.configure({
 });
 const base = Airtable.base(process.env.AIRTABLE_BASE ?? "");
 
-export const getAirtableTable = (baseName) => {
-  const array = []
+export const getAirtableTable = (baseName: string) => {
+  const array: Record<string, any>[] = []
   return new Promise<Record<string, any>[]>((resolve) => {
     base(baseName).select({
       // Selecting the first 3 records in Grid view:
@@ -31,8 +31,8 @@ export const getAirtableTable = (baseName) => {
   })
 }
 
-export const updateAirtable = async (baseName, records) => {
-  const updateChunk = (chunk) => {
+export const updateAirtable = async (baseName: string, records: RecordData<Partial<FieldSet>>[]) => {
+  const updateChunk = (chunk: RecordData<Partial<FieldSet>>[]) => {
     return new Promise(resolve => {
       base(baseName).update(chunk, function(err, records) {
         if (err) {
@@ -40,7 +40,7 @@ export const updateAirtable = async (baseName, records) => {
           resolve(false)
           return;
         }
-        console.log('Updated', records.length)
+        console.log('Updated', records?.length)
         // records.forEach(function (record) {
         //   console.log(record.getId());
         // });
@@ -48,7 +48,7 @@ export const updateAirtable = async (baseName, records) => {
       });
     });
   }
-  async function sleep(millis) {
+  async function sleep(millis: number) {
     return new Promise(resolve => setTimeout(resolve, millis));
   }
   const chunkSize = 10;
