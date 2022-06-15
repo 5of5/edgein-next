@@ -23,12 +23,14 @@ type Props = {
 	companies: Record<string, any>[];
 	companyLayers: any[];
 	amountRaised: Record<string, any>[];
+	totalEmployees: Record<string, any>[];
 };
 
 const Companies: NextPage<Props> = ({
 	companyLayers,
 	companies,
 	amountRaised,
+	totalEmployees,
 }) => {
 	const router = useRouter();
 
@@ -52,6 +54,11 @@ const Companies: NextPage<Props> = ({
 	// Amount Raised Filter
 	const [selectedAmountRaised, setSelectedAmountRaised] = useState(
 		amountRaised[0]
+	);
+
+	// Total Employees Filter
+	const [selectedTotalEmployees, setSelectedTotalEmployees] = useState(
+		totalEmployees[0]
 	);
 
 	// Layout Grid/List
@@ -102,7 +109,14 @@ const Companies: NextPage<Props> = ({
 								options={amountRaised}
 							/>
 
-							<div className="hidden md:block md:shrink md:basis-0 md:!ml-auto">
+							<InputSelect
+								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+								value={selectedTotalEmployees}
+								onChange={setSelectedTotalEmployees}
+								options={totalEmployees}
+							/>
+
+							<div className="hidden md:block md:shrink md:basis-0 ">
 								<div
 									className="px-4 py-1.5 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
 									onClick={() => setToggleViewMode(!toggleViewMode)}
@@ -150,6 +164,13 @@ const Companies: NextPage<Props> = ({
 										(company.investorAmount >=
 											selectedAmountRaised.rangeStart &&
 											company.investorAmount <= selectedAmountRaised.rangeEnd)
+								)
+								.filter(
+									(company) =>
+										!selectedTotalEmployees.number ||
+										(company.totalEmployees >=
+											selectedTotalEmployees.rangeStart &&
+											company.totalEmployees <= selectedTotalEmployees.rangeEnd)
 								)
 								.map((company) => {
 									return (
@@ -211,6 +232,8 @@ const Companies: NextPage<Props> = ({
 													{convertToInternationalCurrencySystem(company.investorAmount)}
 												</span> */}
 
+												{/* <span>Total Employees: #{company.totalEmployees}</span> */}
+
 												{/* {company.layer && (
 												<div
 													className={`${getLayerClass(
@@ -259,7 +282,7 @@ const Companies: NextPage<Props> = ({
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, slug, layer, coins { ticker }, investorAmount, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
+		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, slug, layer, coins { ticker }, investorAmount, totalEmployees, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
 	);
 
 	// Layers Filter
@@ -383,11 +406,90 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		})
 		.sort((a: any, b: any) => a.number - b.number);
 
+	// Total Employees Filter
+	const getEmployeesCount = [
+		...Array.from(
+			new Set(
+				companies.companies.map(
+					(comp: { totalEmployees: number }, index: any) => {
+						const count = comp.totalEmployees || 0;
+
+						let text = null;
+						let rangeStart = null;
+						let rangeEnd = null;
+
+						if (count === 0) {
+							text = "Number of Employees";
+							rangeStart = 0;
+							rangeEnd = 0;
+						} else if (count < 10) {
+							text = "Less than 10 Employees";
+							rangeStart = 0;
+							rangeEnd = 9;
+						} else if (inRange(count, 10, 15)) {
+							text = "10-15 Employees";
+							rangeStart = 10;
+							rangeEnd = 15;
+						} else if (inRange(count, 16, 30)) {
+							text = "16-20 Employees";
+							rangeStart = 16;
+							rangeEnd = 30;
+						} else if (inRange(count, 31, 100)) {
+							text = "31-100 Employees";
+							rangeStart = 31;
+							rangeEnd = 100;
+						} else if (inRange(count, 101, 200)) {
+							text = "101-200 Employees";
+							rangeStart = 101;
+							rangeEnd = 200;
+						} else if (inRange(count, 201, 500)) {
+							text = "201-500 Employees";
+							rangeStart = 201;
+							rangeEnd = 500;
+						} else if (inRange(count, 501, 1000)) {
+							text = "501-1000 Employees";
+							rangeStart = 501;
+							rangeEnd = 1000;
+						} else if (count > 1000) {
+							text = "1000+ Employees";
+							rangeStart = 1001;
+							rangeEnd = 90e14;
+						}
+
+						return {
+							id: index,
+							title: text,
+							//description: "",
+							number: count,
+							rangeStart: rangeStart,
+							rangeEnd: rangeEnd,
+						};
+					}
+				)
+			)
+		),
+	];
+
+	const employeeGroups: any[] = [];
+
+	const uniqueEmployeeGroups = getEmployeesCount
+		.filter((group: any) => {
+			const isDuplicate = employeeGroups.includes(group.title);
+
+			if (!isDuplicate) {
+				employeeGroups.push(group.title);
+				return true;
+			}
+			return false;
+		})
+		.sort((a: any, b: any) => a.number - b.number);
+
 	return {
 		props: {
 			companies: companies.companies,
 			companyLayers,
 			amountRaised: uniqueAmountRaisedGroups,
+			totalEmployees: uniqueEmployeeGroups,
 		},
 	};
 };
