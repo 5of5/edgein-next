@@ -16,18 +16,11 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 		>
 			<thead>
 				<tr className="hidden md:table-row">
-					{columns.map((col: any, index: number, arr: Array<object>) => {
-						let tableHeaderClasses;
-						if (index === 0) {
-							tableHeaderClasses = "rounded-tl-lg";
-						} else if (index === arr.length - 1) {
-							tableHeaderClasses = "rounded-tr-lg";
-						}
-
+					{columns.map((col: any, index: number) => {
 						return (
 							<th
 								key={index}
-								className={`${tableHeaderClasses} px-4 py-2 whitespace-nowrap font-bold text-left bg-white border-b-2 border-dark-100`}
+								className="px-4 py-2 whitespace-nowrap font-bold text-left bg-white border-b-2 border-dark-100 first:rounded-tl-lg last:rounded-tr-lg"
 								colSpan={col.colSpan ? col.colSpan : 1}
 							>
 								{col.label}
