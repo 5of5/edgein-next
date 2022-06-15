@@ -9,8 +9,8 @@ import { keyBy, compact } from 'lodash'
 const runTable = async (client: Client, mapping: Mapping) => {
   console.log(`Moving airtable ${mapping.airtable} to postgres ${mapping.table}`)
   const airtableRecords = await getAirtableTable(mapping.airtable)
-  const references = {}
-  const referenceTables = compact(mapping.mappings.map(map => map.reference))
+  const references: Record<string, Record<string, any>[]> = {}
+  const referenceTables: string[] = compact(mapping.mappings.map(map => map.reference))
   if (referenceTables && referenceTables.length > 0) {
     for (let index = 0; index < referenceTables.length; index++) {
       const reference = referenceTables[index]
