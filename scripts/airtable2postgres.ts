@@ -20,7 +20,7 @@ const runTable = async (client: Client, mapping: Mapping) => {
     }  
   }
   const recordsToInsert = airtableRecords.map(c => {
-    const ret = {}
+    const ret: Record<string, any> = {}
     mapping.mappings.forEach(map => {
       if (map.unwrap) {
         ret[map.to] = c[map.from]?.[0]
