@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 // import { ElemButton } from "../components/ElemButton";
 import { ElemHeading } from "../components/ElemHeading";
+import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
@@ -44,8 +45,9 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-						<div className="w-full flex flex-col py-5 gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
+						<ElemFiltersWrap className="filters-wrap">
 							<InputSearch
+								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								label="Search"
 								name="search"
 								value={search}
@@ -55,11 +57,12 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 								}) => setSearch(e.target.value)}
 							/>
 							<InputSelect
+								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								value={selectedInvestmentCount}
 								onChange={setSelectedInvestmentCount}
 								options={numberOfInvestments}
 							/>
-						</div>
+						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 							{vcFirms
