@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { ElemHeading } from "../components/ElemHeading";
 import { useGetCompaniesQuery } from "../graphql/types";
 import { useTable } from 'react-table';
+import { ElemButton } from "../components/ElemButton";
   
 type Props = {
 };
 
 const CompaniesTable: NextPage<Props> = () => {
-  const companiesData = useGetCompaniesQuery() 
+  const [page, setPage] = useState<number>(0)
+  const limit = 50
+  const offset = limit * page
+
+  const filters = {}
+
+  const {
+    data: companiesData,
+    error,
+    isLoading
+  } = useGetCompaniesQuery({
+    offset,
+    limit,
+  }) 
   
    const columns = React.useMemo(
        () => [
@@ -25,7 +39,7 @@ const CompaniesTable: NextPage<Props> = () => {
        []
    )
   
-  const companies = companiesData?.data?.companies || []
+  const companies = companiesData?.companies || []
 
    const {
      getTableProps,
@@ -35,7 +49,7 @@ const CompaniesTable: NextPage<Props> = () => {
      prepareRow,
    } = useTable({ columns, data: companies })
   
-  if (companiesData?.isLoading) {
+  if (isLoading) {
     return <h1>Loading</h1>
   }
 
@@ -113,6 +127,8 @@ const CompaniesTable: NextPage<Props> = () => {
                 })}
                 </tbody>
               </table>
+              <ElemButton disabled={page === 0} onClick={() => { setPage((prev) => prev - 1)}}>Prev</ElemButton>
+              <ElemButton onClick={() => { setPage((prev) => prev + 1)}}>Next</ElemButton>
 						</div>
 					</div>
 				</div>
