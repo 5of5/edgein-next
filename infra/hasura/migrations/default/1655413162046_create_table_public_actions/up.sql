@@ -1,0 +1,1 @@
+CREATE TABLE "public"."actions" ("user" text NOT NULL, "action" text NOT NULL, "page" text NOT NULL, "properties" jsonb NOT NULL, "id" serial NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );

@@ -107,7 +107,7 @@ type IconProps = {
 	title?: string;
 };
 
-const IconSpinner: React.FC<IconProps> = ({ className, title = "Loading" }) => {
+export const IconSpinner: React.FC<IconProps> = ({ className, title = "Loading" }) => {
 	return (
 		<svg
 			className={className}
