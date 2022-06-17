@@ -13,9 +13,10 @@ import {
 	formatDate,
 	convertToInternationalCurrencySystem,
 } from "../../utils";
+import { GetCompaniesQuery, GetPersonDocument, GetPersonQuery, People } from "../../graphql/types";
 
 type Props = {
-	person: Record<string, any>;
+	person: People;
 	sortByDateAscInvestments: Record<string, any>;
 };
 
@@ -34,12 +35,12 @@ const Person: NextPage<Props> = (props) => {
 
 	let personEmails: {}[] = [];
 
-	if (person.workEmail?.length > 0) {
-		personEmails.push(person.workEmail);
+	if (person.work_email) {
+		personEmails.push(person.work_email);
 	}
 
-	if (person.personalEmail?.length > 0) {
-		personEmails.push(person.personalEmail);
+	if (person.personal_email) {
+		personEmails.push(person.personal_email);
 	}
 
 	return (
@@ -53,7 +54,7 @@ const Person: NextPage<Props> = (props) => {
 			<div className="flex-col sm:grid sm:grid-cols-4 gap-5 my-8">
 				<div className="col-span-1">
 					<ElemPhoto
-						photos={person.picture}
+						photo={person.picture}
 						wrapClass="flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden"
 						imgClass="object-fit min-w-full min-h-full"
 						imgAlt={person.name}
@@ -66,9 +67,8 @@ const Person: NextPage<Props> = (props) => {
 					<ElemKeyInfo
 						heading=""
 						roles={person.type}
-						linkedIn={person.linkedIn}
+						linkedIn={person.linkedin}
 						investmentsLength={person.investments?.length}
-						companies={person.companies}
 						emails={personEmails}
 					/>
 				</div>
@@ -82,21 +82,21 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-			{person.teamMembers[0]?.company?.length > 0 && (
+			{person.team_members[0]?.company && (
 				<ElemCompaniesGrid
 					className="mt-12"
 					heading="Companies"
-					companies={person.teamMembers[0]?.company}
+					companies={[person.team_members[0]?.company]}
 				/>
 			)}
 
-			{person.vcFirms?.length > 0 && (
+			{/* {person.vc.length > 0 && (
 				<ElemVcfirmsGrid
 					className="mt-12"
 					heading="VC Firms"
 					vcfirms={person.vcFirms}
 				/>
-			)}
+			)} */}
 
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
 				<div className="mt-16" id="investments">
@@ -133,7 +133,7 @@ const Person: NextPage<Props> = (props) => {
 													>
 														<a className="investor flex items-center hover:opacity-70">
 															<ElemPhoto
-																photos={company.logo}
+																photo={company.logo}
 																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
 																imgClass="object-fit max-w-full max-h-full"
 																imgAlt={company.title}
@@ -186,8 +186,8 @@ const Person: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const {
-		data: { people },
-	} = await runGraphQl(`{ 
+		data: people,
+	} = await runGraphQl<GetPersonQuery>(`{ 
     people( 
       _order_by: {name: "asc"},
       _filter: {slug: {_ne: ""}},
@@ -199,9 +199,9 @@ export async function getStaticPaths() {
     }`);
 
 	return {
-		paths: people
-			.filter((person: { slug: string }) => person.slug)
-			.map((person: { slug: string }) => ({
+		paths: people?.people?.
+			filter((person) => person.slug)
+			.map((person) => ({
 				params: { personId: person.slug },
 			})),
 		fallback: true, // false or 'blocking'
@@ -210,59 +210,16 @@ export async function getStaticPaths() {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const {
-		data: { people },
-	} = await runGraphQl(`
-  {
-    people(slug: "${context.params?.personId}") {
-		id
-		name
-		slug
-		picture
-		type
-		personalEmail
-		workEmail
-		linkedIn
-		teamMembers{
-			company {
-				id
-				slug
-				title
-				logo
-				overview
-			}
-		}
-		investments {
-			name
-			investmentRound {
-				id
-				date
-				round
-				amount
-				company {
-					id
-					slug
-					title
-					logo
-				}
-			}
-		}
-		vcFirms{
-			id
-			vcFirm
-			slug
-			logo
-		}
-	}
-  }
-  `);
+		data: people,
+	} = await runGraphQl<GetPersonQuery>(GetPersonDocument, {slug: context.params?.personId});
 
-	if (!people[0]) {
+	if (!people?.people?.[0]) {
 		return {
 			notFound: true,
 		};
 	}
 
-	const getInvestments = people[0].investments.map((round: any) => {
+	const getInvestments = people.people[0].investments.map((round: any) => {
 		if (
 			typeof round.investmentRound[0] === "object" &&
 			round.investmentRound[0] != "undefined"
@@ -291,7 +248,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			person: people[0],
+			person: people.people[0],
 			sortByDateAscInvestments,
 		},
 	};

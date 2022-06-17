@@ -6,8 +6,8 @@ type Props = {
 	className?: string;
 	mini?: boolean;
 	heading?: string;
-	employeeListings?: number;
-	tokenExchangeValue?: number;
+	employeeListings?: string | null;
+	tokenExchangeValue?: string | null;
 };
 
 export const ElemVelocity: React.FC<Props> = ({
@@ -31,7 +31,7 @@ export const ElemVelocity: React.FC<Props> = ({
 		velocityItems.push({
 			icon: IconEmployees,
 			text: "Employee Listings",
-			number: employeeListings,
+			number: Number(employeeListings),
 		});
 	}
 
@@ -39,7 +39,7 @@ export const ElemVelocity: React.FC<Props> = ({
 		velocityItems.push({
 			icon: IconTokenValue,
 			text: "Token Exchange Value",
-			number: tokenExchangeValue,
+			number: Number(tokenExchangeValue),
 		});
 	}
 

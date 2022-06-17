@@ -9,6 +9,7 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { runGraphQl, inRange } from "../utils";
+import { GetVcFirmsQuery } from "../graphql/types";
 
 type Props = {
 	vcFirms: Record<string, any>[];
@@ -90,7 +91,7 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 flex flex-col justify-between mx-auto w-full max-w-md group transition duration-300 ease-in-out transform  hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:p-7 md:h-full">
 											<div className="w-full flex items-center">
 												<ElemPhoto
-													photos={vcfirm.logo}
+													photo={vcfirm.logo}
 													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 													imgClass="object-fit max-w-full max-h-full"
 													imgAlt={vcfirm.vcFirm}
@@ -125,15 +126,27 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl(
-		'{ vcFirms(_order_by: {vcFirm: "asc"}, _filter: {slug: {_ne: ""}})  { id, vcFirm, slug, logo, investments {id, name} }}'
+	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
+`
+{
+  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+    logo
+    investments {
+      id
+    }
+  }
+}
+`
 	);
 
 	// Number of Investments Filter
 	const getNumberOfInvestments = [
 		...Array.from(
 			new Set(
-				vcFirms.vcFirms.map((investor: { investments: any }, index: any) => {
+				vcFirms?.vc_firms?.map((investor: { investments: any }, index: any) => {
 					const investmentsCount = investor.investments?.length || 0;
 
 					let text = null;
@@ -190,7 +203,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			vcFirms: vcFirms.vcFirms,
+			vcFirms: vcFirms?.vc_firms,
 			numberOfInvestments: uniqueInvestmentGroups,
 		},
 	};

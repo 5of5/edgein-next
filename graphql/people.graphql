@@ -1,0 +1,35 @@
+query GetPerson($slug: String!) {
+  people(where: {slug: {_eq: $slug}}) {
+    id
+    name
+    slug
+    picture
+    type
+    personal_email
+    work_email
+    linkedin
+    team_members {
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+      }
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+        }
+      }
+    }
+  }
+}	

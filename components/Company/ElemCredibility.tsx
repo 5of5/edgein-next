@@ -5,9 +5,9 @@ type Props = {
 	className?: string;
 	mini?: boolean;
 	heading?: string;
-	marketVerified?: string;
-	githubVerified?: string;
-	linkedInVerified?: string;
+	marketVerified?: string | null;
+	githubVerified?: string | null;
+	linkedInVerified?: string | null;
 };
 
 export const ElemCredibility: React.FC<Props> = ({

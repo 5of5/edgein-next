@@ -3,7 +3,7 @@ import React from "react";
 type Props = {
 	className?: string;
 	heading?: string;
-	tags: Record<string, any>[];
+	tags: (string | null)[];
 };
 
 export const ElemTags: React.FC<Props> = ({ className, heading, tags }) => {

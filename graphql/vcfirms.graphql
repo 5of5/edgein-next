@@ -1,0 +1,36 @@
+query GetVCFirm($slug: String!) {
+  vc_firms(where: {slug: {_eq: $slug}}) {
+    id
+    name
+    slug
+    logo
+    website
+    linkedin
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+        }
+      }
+    }
+  }
+}
+
+query GetVCFirms($limit: Int, $offset: Int) {
+  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}, limit: $limit, offset: $offset) {
+    id
+    name
+    slug
+    logo
+    investments {
+      id
+    }
+  }
+}

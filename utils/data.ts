@@ -1,15 +1,16 @@
-export const runGraphQl = async (graphql: string) => {
+export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>):Promise<{ data?: QueryType, errors?: any }> => {
 	return await fetch(
-		`${process.env.BASEQL_API}/airtable/graphql/appGMS1MPd9iiHrMt`,
+		process.env.GRAPHQL_ENDPOINT ?? "",
 		{
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
-				Authorization: `Bearer ${process.env.BASEQL_KEY}`,
+				'x-hasura-admin-secret': process.env.DEV_MODE ? process.env.HASURA_SECRET ?? "" : ""
 			},
 			body: JSON.stringify({
-				query: graphql,
+				query,
+				variables
 			}),
 		}
 	)
@@ -21,8 +22,10 @@ export const runGraphQl = async (graphql: string) => {
 			}
 			try {
 				const json = await r.json();
-				// console.log('response', json)
 				if (json.message && json.message === "Not Authorized") {
+					console.log("error with response 1.5", json);
+				}
+				if (json.errors) {
 					console.log("error with response 1.5", json);
 				}
 				return json;

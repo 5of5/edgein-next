@@ -15,12 +15,11 @@ import {
 	runGraphQl,
 	truncateWords,
 	inRange,
-	convertToInternationalCurrencySystem,
 } from "../utils";
-import Company from "./companies/[companyId]";
+import { GetCompaniesDocument, GetCompaniesQuery } from "../graphql/types";
 
 type Props = {
-	companies: Record<string, any>[];
+	companies: GetCompaniesQuery['companies'];
 	companyLayers: any[];
 	amountRaised: Record<string, any>[];
 	totalEmployees: Record<string, any>[];
@@ -145,10 +144,10 @@ const Companies: NextPage<Props> = ({
 								.filter(
 									(company) =>
 										!search ||
-										company.title
+										company.name
 											?.toLowerCase()
 											.includes(search.toLowerCase()) ||
-										getCoinTicker(company.coins)
+										getCoinTicker(company.coin)
 											?.toLowerCase()
 											.includes(search.toLowerCase())
 								)
@@ -161,16 +160,16 @@ const Companies: NextPage<Props> = ({
 								.filter(
 									(company) =>
 										!selectedAmountRaised.number ||
-										(company.investorAmount >=
+										((company.investor_amount || 0) >=
 											selectedAmountRaised.rangeStart &&
-											company.investorAmount <= selectedAmountRaised.rangeEnd)
+											(company.investor_amount || 0) <= selectedAmountRaised.rangeEnd)
 								)
 								.filter(
 									(company) =>
 										!selectedTotalEmployees.number ||
-										(company.totalEmployees >=
+										(company.total_employees >=
 											selectedTotalEmployees.rangeStart &&
-											company.totalEmployees <= selectedTotalEmployees.rangeEnd)
+											company.total_employees <= selectedTotalEmployees.rangeEnd)
 								)
 								.map((company) => {
 									return (
@@ -188,33 +187,30 @@ const Companies: NextPage<Props> = ({
 													}`}
 												>
 													<ElemPhoto
-														photos={company.logo}
+														photo={company.logo}
 														wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={company.title}
+														imgAlt={company.name}
 													/>
 
 													<div className="flex items-center justify-center pl-2 md:overflow-hidden">
 														<h3
 															className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
-															title={company.title}
+															title={company.name ?? ""}
 														>
-															{company.title}
+															{company.name}
 														</h3>
 													</div>
-													{company.coins?.map((coin: any, i: number) => {
-														return (
+													{company.coin &&
 															<ElemTooltip
-																key={i}
-																content={`Token: ${coin.ticker}`}
+																content={`Token: ${company.coin.ticker}`}
 																className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
 															>
 																<span className=" text-sm font-bold leading-sm uppercase">
-																	{coin.ticker}
+																	{company.coin.ticker}
 																</span>
 															</ElemTooltip>
-														);
-													})}
+													}
 												</div>
 
 												{company.overview && (
@@ -255,17 +251,17 @@ const Companies: NextPage<Props> = ({
 														className={`pr-4 ${
 															toggleViewMode ? "md:pr-0 lg:pr-4" : ""
 														}`}
-														marketVerified={company.marketVerified}
+														marketVerified={company.market_verified}
 														githubVerified={company.github}
-														linkedInVerified={company.companyLinkedIn}
+														linkedInVerified={company.company_linkedin}
 													/>
 													<ElemVelocity
 														mini={true}
 														className={`${
 															toggleViewMode ? "md:pt-2 lg:pt-0" : ""
 														}`}
-														employeeListings={company.velocityLinkedIn}
-														tokenExchangeValue={company.velocityToken}
+														employeeListings={company.velocity_linkedin}
+														tokenExchangeValue={company.velocity_token}
 													/>
 												</div>
 											</a>
@@ -281,9 +277,7 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl(
-		'{ companies(_order_by: {slug: "asc"}, _filter: {slug: {_ne: ""}}) { id, title, slug, layer, coins { ticker }, investorAmount, totalEmployees, logo, overview, github, companyLinkedIn, marketVerified, velocityLinkedIn, velocityToken }}'
-	);
+	const { data: companies } = await runGraphQl(GetCompaniesDocument);
 
 	// Layers Filter
 	const getUniqueLayers = [

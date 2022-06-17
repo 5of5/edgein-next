@@ -7,13 +7,13 @@ import { ElemCredibility } from "../../components/Company/ElemCredibility";
 import { ElemVelocity } from "../../components/Company/ElemVelocity";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTags } from "../../components/ElemTags";
-import { ElemFounderGrid } from "../../components/Company/ElemFounderGrid";
 import { ElemInvestments } from "../../components/Company/ElemInvestments";
 import { ElemTeamGrid } from "../../components/Company/ElemTeamGrid";
 import { runGraphQl } from "../../utils";
+import { Companies, GetCompanyDocument } from "../../graphql/types";
 
 type Props = {
-	company: Record<string, any>;
+	company: Companies;
 	sortRounds: Record<string, any>;
 };
 
@@ -33,7 +33,7 @@ const Company: NextPage<Props> = (props) => {
 
 	// Company tags
 	const companyTags = [];
-	if (company.layer?.length > 0) {
+	if (company.layer) {
 		companyTags.unshift(company.layer);
 	}
 
@@ -47,28 +47,26 @@ const Company: NextPage<Props> = (props) => {
 			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 mt-6">
 				<div className="col-span-1">
 					<ElemPhoto
-						photos={company.logo}
+						photo={company.logo}
 						wrapClass="flex items-center justify-center shrink-0 p-6 h-72 bg-white rounded-lg shadow-md lg:h-96"
 						imgClass="object-contain w-full h-full"
-						imgAlt={company.title}
+						imgAlt={company.name}
 					/>
 				</div>
 				<div className="w-full col-span-2">
 					<div className="flex shrink-0">
 						<h1 className="flex text-4xl md:text-6xl font-bold my-5">
-							{company.title}
+							{company.name}
 						</h1>
-						{company.coins?.map((coin: any) => {
-							return (
+						{company.coin &&
 								<span
-									key={coin.id}
+									key={company.coin.id}
 									className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
-									title={`Token: ${coin.ticker}`}
+									title={`Token: ${company.coin.ticker}`}
 								>
-									{coin.ticker}
+									{company.coin.ticker}
 								</span>
-							);
-						})}
+}
 					</div>
 
 					{company.overview && (
@@ -79,15 +77,15 @@ const Company: NextPage<Props> = (props) => {
 						<ElemCredibility
 							className="col-span-3 mt-16 md:mt-0"
 							heading="Credibility"
-							marketVerified={company.marketVerified}
+							marketVerified={company.market_verified}
 							githubVerified={company.github}
-							linkedInVerified={company.companyLinkedIn}
+							linkedInVerified={company.company_linkedin}
 						/>
 						<ElemVelocity
 							className="col-span-2 flex flex-col mt-16 md:mt-0"
 							heading="Velocity"
-							employeeListings={company.velocityLinkedIn}
-							tokenExchangeValue={company.velocityToken}
+							employeeListings={company.velocity_linkedin}
+							tokenExchangeValue={company.velocity_token}
 						/>
 					</div>
 				</div>
@@ -97,12 +95,12 @@ const Company: NextPage<Props> = (props) => {
 				className="mt-12"
 				heading="Key Info"
 				website={company.website}
-				totalFundingRaised={company.investorAmount}
-				whitePaper={company.whitePaper}
-				totalEmployees={company.totalEmployees}
-				careerPage={company.careerPage}
-				yearFounded={company.yearFounded}
-				linkedIn={company.companyLinkedIn}
+				totalFundingRaised={company.investor_amount}
+				whitePaper={company.white_paper}
+				totalEmployees={company.total_employees}
+				careerPage={company.careers_page}
+				yearFounded={company.year_founded}
+				linkedIn={company.company_linkedin}
 				github={company.github}
 			/>
 
@@ -110,13 +108,13 @@ const Company: NextPage<Props> = (props) => {
 				<ElemTags className="mt-12" heading="Tags" tags={companyTags} />
 			)}
 
-			{company.founder.length > 0 && (
+			{/* {company.founder.length > 0 && (
 				<ElemFounderGrid
 					className="mt-12"
 					heading="Founders"
 					people={company.founder}
 				/>
-			)}
+			)} */}
 
 			{company.teamMembers.length > 0 && (
 				<ElemTeamGrid
@@ -140,7 +138,7 @@ const Company: NextPage<Props> = (props) => {
 export async function getStaticPaths() {
 	const {
 		data: { companies },
-	} = await runGraphQl("{ companies { slug }}");
+	} = await runGraphQl(`{ companies(where: {slug: {_neq: ""}}) { slug }}`);
 
 	return {
 		paths: companies
@@ -151,75 +149,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl(`{
-    companies(slug: "${context.params?.companyId}") {
-      id
-      title
-	  coins {
-		id
-		ticker
-	  }
-      slug
-      logo
-	  layer
-      overview
-      investorAmount
-      whitePaper
-      totalEmployees
-      yearFounded
-	  website
-	  marketVerified
-      companyLinkedIn
-	  careerPage
-	  github
-	  velocityLinkedIn
-	  velocityToken
-      founder {
-        id
-        slug
-        name
-        type
-        picture
-      }
-      teamMembers {
-        id
-        person {
-          id
-          slug
-          name
-          picture
-        }
-        function
-        startDate
-        endDate
-      }
-      investmentRounds {
-        id
-        date
-        name
-        round
-        amount
-        investments {
-          id
-		  name
-          people {
-            id
-			slug
-            name
-			picture
-          }
-          vcFirms {
-            id
-			slug
-            vcFirm
-            logo
-          }
-
-        }
-      }
-    }
-  }
-`);
+	const { data: companies } = await runGraphQl(GetCompanyDocument, {slug: context.params?.companyId});
 
 	if (!companies.companies[0]) {
 		return {
@@ -227,8 +157,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
-	const sortRounds = companies.companies[0].investmentRounds
-		.slice()
+	const sortRounds = companies.companies[0].investmentRounds?.
+		slice()
 		.sort(
 			(
 				a: { date: string | number | Date },
@@ -237,7 +167,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				return new Date(a.date).getTime() - new Date(b.date).getTime();
 			}
 		)
-		.reverse();
+		.reverse() || [];
 
 	return {
 		props: {

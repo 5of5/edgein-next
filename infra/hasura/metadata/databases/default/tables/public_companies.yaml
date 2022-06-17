@@ -1,6 +1,16 @@
 table:
   schema: public
   name: companies
+object_relationships:
+  - name: coin
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: coins
+        insertion_order: null
+        column_mapping:
+          coin_id: id
 array_relationships:
   - name: investment_rounds
     using:
@@ -25,7 +35,7 @@ insert_permissions:
         - logo
         - total_employees
         - careers_page
-        - coins
+        - coin_id
         - company_linkedin
         - external_id
         - github
@@ -52,7 +62,7 @@ select_permissions:
         - logo
         - total_employees
         - careers_page
-        - coins
+        - coin_id
         - company_linkedin
         - external_id
         - github
@@ -76,7 +86,7 @@ update_permissions:
     permission:
       columns:
         - careers_page
-        - coins
+        - coin_id
         - company_linkedin
         - external_id
         - github
