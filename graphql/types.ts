@@ -4779,12 +4779,22 @@ export type GetCompaniesQueryVariables = Exact<{
 
 export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, investor_amount: string | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', ticker: string } | null }> };
 
+export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null }> };
+
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
 export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string | null, picture: any | null, type: string | null, personal_email: string | null, work_email: string | null, linkedin: string | null, team_members: Array<{ __typename?: 'team_members', company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
+
+export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string | null }> };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -4800,6 +4810,11 @@ export type GetVcFirmsQueryVariables = Exact<{
 
 
 export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, investments: Array<{ __typename?: 'investments', id: number }> }> };
+
+export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null }> };
 
 
 export const GetCompanyDocument = `
@@ -4927,6 +4942,34 @@ useGetCompaniesQuery.getKey = (variables?: GetCompaniesQueryVariables) => variab
 ;
 
 useGetCompaniesQuery.fetcher = (variables?: GetCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, variables, options);
+export const GetCompaniesPathsDocument = `
+    query GetCompaniesPaths {
+  companies(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+  }
+}
+    `;
+export const useGetCompaniesPathsQuery = <
+      TData = GetCompaniesPathsQuery,
+      TError = Error
+    >(
+      variables?: GetCompaniesPathsQueryVariables,
+      options?: UseQueryOptions<GetCompaniesPathsQuery, TError, TData>
+    ) =>
+    useQuery<GetCompaniesPathsQuery, TError, TData>(
+      variables === undefined ? ['GetCompaniesPaths'] : ['GetCompaniesPaths', variables],
+      fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables),
+      options
+    );
+useGetCompaniesPathsQuery.document = GetCompaniesPathsDocument;
+
+
+useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables) => variables === undefined ? ['GetCompaniesPaths'] : ['GetCompaniesPaths', variables];
+;
+
+useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
@@ -4983,6 +5026,34 @@ useGetPersonQuery.getKey = (variables: GetPersonQueryVariables) => ['GetPerson',
 ;
 
 useGetPersonQuery.fetcher = (variables: GetPersonQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonQuery, GetPersonQueryVariables>(GetPersonDocument, variables, options);
+export const GetPersonsPathDocument = `
+    query GetPersonsPath {
+  people(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+  }
+}
+    `;
+export const useGetPersonsPathQuery = <
+      TData = GetPersonsPathQuery,
+      TError = Error
+    >(
+      variables?: GetPersonsPathQueryVariables,
+      options?: UseQueryOptions<GetPersonsPathQuery, TError, TData>
+    ) =>
+    useQuery<GetPersonsPathQuery, TError, TData>(
+      variables === undefined ? ['GetPersonsPath'] : ['GetPersonsPath', variables],
+      fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables),
+      options
+    );
+useGetPersonsPathQuery.document = GetPersonsPathDocument;
+
+
+useGetPersonsPathQuery.getKey = (variables?: GetPersonsPathQueryVariables) => variables === undefined ? ['GetPersonsPath'] : ['GetPersonsPath', variables];
+;
+
+useGetPersonsPathQuery.fetcher = (variables?: GetPersonsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
@@ -5065,3 +5136,31 @@ useGetVcFirmsQuery.getKey = (variables?: GetVcFirmsQueryVariables) => variables 
 ;
 
 useGetVcFirmsQuery.fetcher = (variables?: GetVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsQuery, GetVcFirmsQueryVariables>(GetVcFirmsDocument, variables, options);
+export const GetVcFirmsPathDocument = `
+    query GetVCFirmsPath {
+  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+  }
+}
+    `;
+export const useGetVcFirmsPathQuery = <
+      TData = GetVcFirmsPathQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsPathQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsPathQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsPathQuery, TError, TData>(
+      variables === undefined ? ['GetVCFirmsPath'] : ['GetVCFirmsPath', variables],
+      fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables),
+      options
+    );
+useGetVcFirmsPathQuery.document = GetVcFirmsPathDocument;
+
+
+useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => variables === undefined ? ['GetVCFirmsPath'] : ['GetVCFirmsPath', variables];
+;
+
+useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);

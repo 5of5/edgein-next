@@ -189,8 +189,7 @@ export async function getStaticPaths() {
 		data: people,
 	} = await runGraphQl<GetPersonQuery>(`{ 
     people( 
-      _order_by: {name: "asc"},
-      _filter: {slug: {_ne: ""}},
+			where: {slug: {_neq: ""}}, order_by: {slug: asc}
     ){ 
         id, 
         name, 
@@ -219,12 +218,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
-	const getInvestments = people.people[0].investments.map((round: any) => {
+	const getInvestments = people.people[0].investments.map((round) => {
 		if (
-			typeof round.investmentRound[0] === "object" &&
-			round.investmentRound[0] != "undefined"
+			typeof round.investment_round === "object"
 		) {
-			return round.investmentRound[0];
+			return round.investment_round
 		} else {
 			return null;
 		}
@@ -234,13 +232,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		.slice()
 		.sort(
 			(
-				a: { date: string | number | Date },
-				b: { date: string | number | Date }
+				a,
+				b
 			) => {
 				const distantFuture = new Date(8640000000000000);
 
-				let dateA = a ? new Date(a.date) : distantFuture;
-				let dateB = b ? new Date(b.date) : distantFuture;
+				let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+				let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
 				return dateA.getTime() - dateB.getTime();
 			}
 		)

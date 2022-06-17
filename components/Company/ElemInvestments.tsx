@@ -95,7 +95,7 @@ export const ElemInvestments: React.FC<Props> = ({
 														>
 															<a className="vcfirm flex items-center hover:opacity-70">
 																<ElemPhoto
-																	photos={firm.logo}
+																	photo={firm.logo}
 																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 shadow-md"
 																	imgClass="object-fit max-w-full max-h-full"
 																	imgAlt={firm.vcFirm}
@@ -117,7 +117,7 @@ export const ElemInvestments: React.FC<Props> = ({
 														>
 															<a className="investor flex items-center hover:opacity-70">
 																<ElemPhoto
-																	photos={investor.picture}
+																	photo={investor.picture}
 																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
 																	imgClass="object-cover w-12 h-12"
 																	imgAlt={investor.name}
@@ -147,7 +147,7 @@ export const ElemInvestments: React.FC<Props> = ({
 														>
 															<a className="vcfirm flex items-center hover:opacity-70">
 																<ElemPhoto
-																	photos={firm.logo}
+																	photo={firm.logo}
 																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 shadow-md"
 																	imgClass="object-fit max-w-full max-h-full"
 																	imgAlt={firm.vcFirm}
@@ -178,7 +178,7 @@ export const ElemInvestments: React.FC<Props> = ({
 														>
 															<a className="investor flex items-center hover:opacity-70">
 																<ElemPhoto
-																	photos={investor.picture}
+																	photo={investor.picture}
 																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
 																	imgClass="object-cover w-12 h-12"
 																	imgAlt={investor.name}

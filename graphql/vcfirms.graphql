@@ -34,3 +34,11 @@ query GetVCFirms($limit: Int, $offset: Int) {
     }
   }
 }
+
+query GetVCFirmsPath {
+  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+  }
+}

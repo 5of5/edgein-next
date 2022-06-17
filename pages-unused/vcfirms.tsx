@@ -2,10 +2,10 @@ import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { ElemButton } from "../components/ElemButton";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
+import { GetVcFirmsQuery } from "../graphql/types";
 import { runGraphQl } from "../utils";
 
 type Props = {
@@ -60,7 +60,7 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 flex flex-col justify-between mx-auto w-full max-w-md group transition duration-300 ease-in-out transform  hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:p-7 md:h-full">
 											<div className="w-full flex items-center">
 												<ElemPhoto
-													photos={vcfirm.logo}
+													photo={vcfirm.logo}
 													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 													imgClass="object-fit max-w-full max-h-full"
 													imgAlt={vcfirm.vcFirm}
@@ -83,13 +83,13 @@ const VCFirms: NextPage<Props> = ({ vcFirms }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl(
-		'{ vcFirms(_order_by: {vcFirm: "asc"}, _filter: {slug: {_ne: ""}})  { id, vcFirm, slug, logo}}'
+	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
+		'{ vc_firms(_order_by: {vcFirm: "asc"}, _filter: {slug: {_ne: ""}})  { id, vcFirm, slug, logo}}'
 	);
 
 	return {
 		props: {
-			vcFirms: vcFirms.vcFirms,
+			vcFirms: vcFirms?.vc_firms,
 		},
 	};
 };

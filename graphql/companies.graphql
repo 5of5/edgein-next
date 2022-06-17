@@ -77,3 +77,11 @@ query GetCompanies($limit: Int, $offset: Int) {
     velocity_token
   }
 }
+
+query GetCompaniesPaths {
+  companies(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+  }
+}

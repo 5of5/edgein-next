@@ -163,16 +163,17 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: events } = await runGraphQl(
-		'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
-	);
+	// const { data: events } = await runGraphQl<{events:Record<string, any>[]}>(
+	// 	'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
+	// );
+	const events:{events:Record<string, any>[]} = {events:[]}
 
-	const sortEvents = events.events
+	const sortEvents = events?.events
 		.slice()
 		.sort(
 			(
-				a: { startDate: string | number | Date },
-				b: { startDate: string | number | Date }
+				a,
+				b
 			) => {
 				return (
 					new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
@@ -182,7 +183,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			events: events.events,
+			events: events?.events,
 			sortEvents,
 		},
 	};

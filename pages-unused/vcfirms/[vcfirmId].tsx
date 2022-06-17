@@ -12,6 +12,7 @@ import {
 	formatDate,
 	runGraphQl,
 } from "../../utils";
+import { GetVcFirmDocument, GetVcFirmQuery, GetVcFirmsPathDocument, GetVcFirmsPathQuery } from "../../graphql/types";
 
 type Props = {
 	vcfirm: Record<string, any>;
@@ -43,7 +44,7 @@ const VCFirm: NextPage<Props> = (props) => {
 			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 my-8">
 				<div className="col-span-1">
 					<ElemPhoto
-						photos={vcfirm.logo}
+						photo={vcfirm.logo}
 						wrapClass="flex items-center justify-center shrink-0 p-6 h-72 lg:h-88 bg-white rounded-lg shadow-md"
 						imgClass="object-contain w-full h-full rounded-md"
 						imgAlt={vcfirm.vcFirm}
@@ -98,7 +99,7 @@ const VCFirm: NextPage<Props> = (props) => {
 													>
 														<a className="investor inline-flex items-center hover:opacity-70">
 															<ElemPhoto
-																photos={company.logo}
+																photo={company.logo}
 																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
 																imgClass="object-fit max-w-full max-h-full"
 																imgAlt={company.title}
@@ -148,13 +149,13 @@ const VCFirm: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const {
-		data: { vcFirms },
-	} = await runGraphQl("{ vcFirms { vcFirm, slug, logo}}");
+		data: vcFirms,
+	} = await runGraphQl<GetVcFirmsPathQuery>(GetVcFirmsPathDocument);
 
 	return {
-		paths: vcFirms
-			.filter((vcfirm: { slug: string }) => vcfirm.slug)
-			.map((vcfirm: { slug: string }) => ({
+		paths: vcFirms?.vc_firms?.
+			filter((vcfirm) => vcfirm.slug)
+			.map((vcfirm) => ({
 				params: { vcfirmId: vcfirm.slug },
 			})),
 		fallback: true, // false or 'blocking'
@@ -162,41 +163,15 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl(`
-  {
-      vcFirms(slug: "${context.params?.vcfirmId}") {
-          id
-          vcFirm
-          slug
-          logo
-          website
-          linkedIn
-          investments {
-              name
-              investmentRound {
-                  id
-                  date
-                  round
-                  amount
-                  company {
-                      id
-                      slug
-                      title
-                      logo
-                  }
-              }
-          }
-      }
-  }
-  `);
+	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(GetVcFirmDocument);
 
-	if (!vcFirms.vcFirms[0]) {
+	if (!vcFirms?.vc_firms) {
 		return {
 			notFound: true,
 		};
 	}
 
-	const getInvestments = vcFirms.vcFirms[0].investments.map((round: any) => {
+	const getInvestments = vcFirms?.vc_firms[0].investments.map((round: any) => {
 		if (
 			typeof round.investmentRound[0] === "object" &&
 			round.investmentRound[0] != "undefined"
@@ -225,7 +200,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			vcfirm: vcFirms.vcFirms[0],
+			vcfirm: vcFirms.vc_firms[0],
 			sortByDateAscInvestments,
 		},
 	};

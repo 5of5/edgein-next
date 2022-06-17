@@ -16,7 +16,6 @@ type Props = {
 	totalEmployees?: number;
 	yearFounded?: string | null;
 	roles?: string | null;
-	companies?: Array<string>;
 	investmentsLength?: number;
 	emails?: Array<Object>;
 	linkedIn?: string | null;
@@ -33,7 +32,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	totalEmployees,
 	yearFounded,
 	roles = [],
-	companies = [],
 	investmentsLength = 0,
 	emails = [],
 	linkedIn,
@@ -134,23 +132,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
 						<div>
 								{roles}
-						</div>
-					</div>
-				)}
-
-				{companies && companies.length > 0 && (
-					<div className="inline-flex py-3">
-						<IconCompanies
-							title="Companies"
-							className="h-6 w-6 mr-1 text-primary-500"
-						/>
-						<div>
-							{companies.map((company: any, i: number) => [
-								i > 0 && ", ",
-								<Link key={company.id} href={`/companies/${company.slug}`}>
-									<a className="hover:opacity-70">{company.title}</a>
-								</Link>,
-							])}
 						</div>
 					</div>
 				)}

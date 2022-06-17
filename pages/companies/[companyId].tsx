@@ -10,7 +10,7 @@ import { ElemTags } from "../../components/ElemTags";
 import { ElemInvestments } from "../../components/Company/ElemInvestments";
 import { ElemTeamGrid } from "../../components/Company/ElemTeamGrid";
 import { runGraphQl } from "../../utils";
-import { Companies, GetCompanyDocument } from "../../graphql/types";
+import { Companies, GetCompaniesPathsQuery, GetCompaniesQuery, GetCompanyDocument, GetCompanyQuery } from "../../graphql/types";
 
 type Props = {
 	company: Companies;
@@ -137,34 +137,34 @@ const Company: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const {
-		data: { companies },
-	} = await runGraphQl(`{ companies(where: {slug: {_neq: ""}}) { slug }}`);
+		data: companies,
+	} = await runGraphQl<GetCompaniesPathsQuery>(`{ companies(where: {slug: {_neq: ""}}) { slug }}`);
 
 	return {
-		paths: companies
-			.filter((comp: { slug: string }) => comp.slug)
-			.map((comp: { slug: string }) => ({ params: { companyId: comp.slug } })),
+		paths: companies?.companies?.
+			filter((comp) => comp.slug)
+			.map((comp) => ({ params: { companyId: comp.slug } })),
 		fallback: true, // false or 'blocking'
 	};
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl(GetCompanyDocument, {slug: context.params?.companyId});
+	const { data: companies } = await runGraphQl<GetCompanyQuery>(GetCompanyDocument, {slug: context.params?.companyId});
 
-	if (!companies.companies[0]) {
+	if (!companies?.companies[0]) {
 		return {
 			notFound: true,
 		};
 	}
 
-	const sortRounds = companies.companies[0].investmentRounds?.
+	const sortRounds = companies.companies[0].investment_rounds?.
 		slice()
 		.sort(
 			(
-				a: { date: string | number | Date },
-				b: { date: string | number | Date }
+				a,
+				b
 			) => {
-				return new Date(a.date).getTime() - new Date(b.date).getTime();
+				return new Date(a.round_date ?? "").getTime() - new Date(b.round_date ?? "").getTime();
 			}
 		)
 		.reverse() || [];

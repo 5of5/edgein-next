@@ -277,12 +277,12 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl(GetCompaniesDocument);
+	const { data: companies } = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument);
 
 	// Layers Filter
 	const getUniqueLayers = [
 		...Array.from(
-			new Set(companies.companies.map((comp: { layer: any }) => comp.layer))
+			new Set(companies?.companies.map((comp: { layer: any }) => comp.layer))
 		),
 	].sort();
 
@@ -326,9 +326,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const getAmountRaised = [
 		...Array.from(
 			new Set(
-				companies.companies.map(
-					(comp: { investorAmount: number }, index: any) => {
-						const amount = comp.investorAmount || 0;
+				companies?.companies.map(
+					(comp, index: any) => {
+						const amount = Number(comp?.investor_amount) || 0;
 
 						let text = null;
 						let rangeStart = null;
@@ -404,9 +404,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const getEmployeesCount = [
 		...Array.from(
 			new Set(
-				companies.companies.map(
-					(comp: { totalEmployees: number }, index: any) => {
-						const count = comp.totalEmployees || 0;
+				companies?.companies.map(
+					(comp, index: any) => {
+						const count = Number(comp.total_employees) || 0;
 
 						let text = null;
 						let rangeStart = null;
@@ -480,7 +480,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			companies: companies.companies,
+			companies: companies?.companies,
 			companyLayers,
 			amountRaised: uniqueAmountRaisedGroups,
 			totalEmployees: uniqueEmployeeGroups,

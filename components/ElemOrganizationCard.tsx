@@ -20,7 +20,7 @@ export const ElemOrganizationCard: React.FC<Props> = ({
 			<a className="bg-white rounded-lg cursor-pointer p-7 flex flex-col md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300">
 				<div className="flex w-full">
 					<ElemPhoto
-						photos={photos}
+						photo={photos}
 						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 						imgClass="object-fit max-w-full max-h-full"
 						imgAlt={heading}
