@@ -6,7 +6,7 @@ import { ElemButton, IconSpinner } from "../components/ElemButton";
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const [finishingLogin, setFinishingLogin] = useState(location.href.includes('email=return'));
+	const [finishingLogin, setFinishingLogin] = useState(window.location.href.includes('email=return'));
 
 	const login = async (did: string | null, redirect?: string | null) => {
 		// Once we have the did from magic, login with our own API

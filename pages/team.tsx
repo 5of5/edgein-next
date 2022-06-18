@@ -33,7 +33,7 @@ const Team: NextPage<Props> = ({ team }) => {
 									className="bg-white border border-dark-500 border-opacity-10 rounded-lg overflow-hidden flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out md:h-full"
 								>
 									<ElemPhoto
-										photos={person.image}
+										photo={person.image}
 										wrapClass="w-full aspect-square overflow-hidden group-hover:opacity-90"
 										imgClass="object-cover w-full aspect-square"
 										imgAlt={person.name}
