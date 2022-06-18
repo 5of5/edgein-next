@@ -8,8 +8,39 @@ export interface Mapping {
     type: string
     unwrap?: boolean
     reference?: string
+    referenceColumn?: string
   }[]
 }
+
+export const coinsMapping: Mapping = {
+    "table": "public.coins",
+    "airtable": "Coins",
+    "key": "external_id",
+    "mappings": [
+        {
+            "to": "ticker",
+            "from": "Ticker",
+            "type": "standard"
+        },
+        {
+            "to": "name",
+            "from": "Name",
+            "type": "standard"
+        },
+        {
+            "to": "blockchain_id",
+            "from": "Blockchain",
+            "type": "standard",
+            "reference": "blockchains",
+            "referenceColumn": "name",
+        },
+        {
+            "to": "external_id",
+            "from": "_recordId",
+            "type": "standard"
+        },  
+    ]
+}  
 
 export const companiesMapping: Mapping = {
   "table": "public.companies",
@@ -40,6 +71,12 @@ export const companiesMapping: Mapping = {
           "to": "total_employees",
           "from": "Total Employees",
           "type": "standard"
+      },
+      {
+        "to": "coin_id",
+        "from": "Coins",
+        "type": "standard",
+        "reference": "coins",
       },
       {
           "to": "github",
@@ -89,11 +126,6 @@ export const companiesMapping: Mapping = {
       {
           "to": "velocity_linkedin",
           "from": "Velocity LinkedIn",
-          "type": "standard"
-      },
-      {
-          "to": "coins",
-          "from": "Coins",
           "type": "standard"
       },
       {

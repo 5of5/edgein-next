@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
-import { companiesMapping, investmentRoundsMapping, investmentsMapping, peopleMapping, vcFirmMapping, teamMembersMapping, Mapping } from './mapping'
+import { companiesMapping, investmentRoundsMapping, investmentsMapping, peopleMapping, vcFirmMapping, teamMembersMapping, Mapping, coinsMapping } from './mapping'
 import { getClient, upsertBatch } from './postgres_helpers'
 import { getAirtableTable } from './airtable_helpers'
 import { Client } from 'pg';
@@ -10,35 +10,43 @@ const runTable = async (client: Client, mapping: Mapping) => {
   console.log(`Moving airtable ${mapping.airtable} to postgres ${mapping.table}`)
   const airtableRecords = await getAirtableTable(mapping.airtable)
   const references: Record<string, Record<string, any>[]> = {}
-  const referenceTables: string[] = compact(mapping.mappings.map(map => map.reference))
+  const referenceTables: { table: string, key: string}[] = compact(mapping.mappings.map(map => map.reference ? ({ table: map.reference, key: map.referenceColumn || 'external_id'}) : undefined))
   if (referenceTables && referenceTables.length > 0) {
     for (let index = 0; index < referenceTables.length; index++) {
       const reference = referenceTables[index]
-      console.log(`Fetching all ${reference}`)
-      const query = await client.query(`SELECT * FROM ${reference}`)
-      references[reference] = keyBy(query.rows, 'external_id')
+      console.log(`Fetching all ${reference.table}`)
+      const query = await client.query(`SELECT * FROM ${reference.table}`)
+      references[reference.table] = keyBy(query.rows, reference.key)
     }  
   }
   const recordsToInsert = airtableRecords.map(c => {
     const ret: Record<string, any> = {}
     mapping.mappings.forEach(map => {
+      let val = c[map.from]
       if (map.unwrap) {
-        ret[map.to] = c[map.from]?.[0]
-      } else if (map.reference) {
-        const obj = references[map.reference][c[map.from]]
-        ret[map.to] = obj?.id
-      } else {
-        ret[map.to] = c[map.from]
+        val = val?.[0]
       }
+      if (map.reference) {
+        const obj = references[map.reference][val]
+        val = obj?.id
+      }
+      ret[map.to] = val
     })
     return ret
   })
   await upsertBatch(client, mapping.table, mapping.key, recordsToInsert)
 }
 
-
 const run = (async () => {
-  const mappings = [companiesMapping, peopleMapping, vcFirmMapping, investmentRoundsMapping, investmentsMapping, teamMembersMapping]
+  const mappings = [
+    coinsMapping,
+    companiesMapping, 
+    peopleMapping, 
+    vcFirmMapping, 
+    investmentRoundsMapping, 
+    investmentsMapping,
+    teamMembersMapping,
+  ]
   const client = await getClient()
   for (let index = 0; index < mappings.length; index++) {
     const mapping = mappings[index]
