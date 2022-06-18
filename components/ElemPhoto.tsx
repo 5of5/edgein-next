@@ -1,4 +1,3 @@
-import Link from "next/link";
 import React, { Fragment } from "react";
 
 type Props = {
