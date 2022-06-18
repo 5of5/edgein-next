@@ -84,7 +84,7 @@ const Companies: NextPage<Props> = ({
 				</ElemHeading>
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
+					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
 						<ElemFiltersWrap className="filters-wrap">
 							<InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"

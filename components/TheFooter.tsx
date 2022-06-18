@@ -10,8 +10,8 @@ export const TheFooter = () => {
 			{ name: "For investors", href: "#" },
 		],
 		company: [
-			{ name: "About", href: "https://www.5of5.vc/about" },
-			{ name: "Team", href: "https://www.5of5.vc/people" },
+			// { name: "About", href: "https://www.5of5.vc/about" },
+			{ name: "Team", href: "/team" },
 		],
 		resources: [
 			{ name: "Contact", href: "https://www.5of5.vc/contact" },
