@@ -1,8 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
-import Link from "next/link";
-// import { ElemButton } from "../components/ElemButton";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemPhoto } from "../components/ElemPhoto";
 

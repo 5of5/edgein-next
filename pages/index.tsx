@@ -19,7 +19,8 @@ const Home: NextPage = () => {
 			</Head>
 
 			<section className="relative">
-				<FigureBlurredBg />
+				<figure className="absolute -left-96 -top-44 z-0 bg-gray-100 rounded-full h-[30rem] w-[30rem] lg:h-[40rem] lg:w-[40rem]"></figure>
+				<FigureBlurredBg className="-bottom-16 sm:-bottom-44" />
 				<div className="relative z-10 max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-28">
 					<div className="flex flex-col items-center lg:items-start lg:grid lg:grid-cols-5 gap-5 my-8">
 						<div className="col-span-3 flex flex-col justify-center">
