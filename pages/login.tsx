@@ -1,11 +1,12 @@
 import { Magic } from "magic-sdk";
 import { FormEvent, useEffect, useState } from "react";
-import { ElemButton } from "../components/ElemButton";
+import { ElemButton, IconSpinner } from "../components/ElemButton";
 
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
+	const [finishingLogin, setFinishingLogin] = useState(location.href.includes('email=return'));
 
 	const login = async (did: string | null, redirect?: string | null) => {
 		// Once we have the did from magic, login with our own API
@@ -36,7 +37,7 @@ export default function Login() {
 	useEffect(() => {
 		if (location.href.includes('email=return')) {
 			(async () => {
-				setIsLoading(true);
+				setFinishingLogin(true);
 				const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 				const search = location.search;
 				const params = new URLSearchParams(search);
@@ -76,6 +77,13 @@ export default function Login() {
 	return (
 		<div className="max-w-xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 			<div className="bg-white rounded-2xl shadow-2xl p-6">
+				{ finishingLogin ?
+				<>
+				<h1 className="text-3xl lg:text-4xl font-bold">
+					Redirecting...
+					<IconSpinner className="animate-spin mt-2 h-5 w-5" />
+				</h1>
+				</> : <>
 				<h1 className="text-3xl lg:text-4xl font-bold">Log In</h1>
 				<p className="mt-5 text-xl text-dark-400">
 					{"We're glad you're here."}
@@ -104,6 +112,7 @@ export default function Login() {
 						<ElemButton btn="primary" loading={isLoading}>Log in</ElemButton>
 					</div>
 				</form>
+				</>}
 			</div>
 		</div>
 	);

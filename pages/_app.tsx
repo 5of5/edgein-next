@@ -68,18 +68,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 				strategy="afterInteractive"
 			></Script>
 			<div className="flex flex-col min-h-screen">
-		    <QueryClientProvider client={queryClient}>
-				{ pageProps.noLayout ? 
-					<Component {...pageProps} />
-				:
-					<>
-						<TheNavbar />
-						<main className="overflow-hidden grow selection:bg-primary-200">
-							{pageLoading ? <ElemSpinner /> : <Component {...pageProps} />}
-						</main>
-						<TheFooter />
-					</>
-				}
+				<QueryClientProvider client={queryClient}>
+					{pageProps.noLayout ? (
+						<Component {...pageProps} />
+					) : (
+						<>
+							<TheNavbar />
+							<main className="overflow-hidden grow selection:bg-primary-200">
+								{pageLoading ? <ElemSpinner /> : <Component {...pageProps} />}
+							</main>
+							<TheFooter />
+						</>
+					)}
 				</QueryClientProvider>
 			</div>
 		</>
