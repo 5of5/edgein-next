@@ -1,12 +1,14 @@
 import { Magic } from "magic-sdk";
+import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { ElemButton, IconSpinner } from "../components/ElemButton";
 
 
 export default function Login() {
+	const router = useRouter()
 	const [email, setEmail] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const [finishingLogin, setFinishingLogin] = useState(location.href.includes('email=return'));
+	const [finishingLogin, setFinishingLogin] = useState(Boolean(router.query.email));
 
 	const login = async (did: string | null, redirect?: string | null) => {
 		// Once we have the did from magic, login with our own API
@@ -20,13 +22,12 @@ export default function Login() {
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
 			// Next.js middleware needs a full refresh rather than router.push
-			const search = location.search;
-			const params = new URLSearchParams(search);
-			const redirectUrl = params.get('redirect') || redirect;
+			
+			const redirectUrl = Array.isArray( router.query.redirect) ? router.query.redirect[0] : router.query.redirect || redirect;
 			if (redirectUrl && redirectUrl.startsWith('/')) {
-				location.href = redirectUrl;
+				router.push(redirectUrl)
 			} else {
-				location.href = "/?loggedin";
+				router.push("/?loggedin")
 			}
 		} else {
 			/* handle errors */
@@ -35,18 +36,16 @@ export default function Login() {
 	} 
 	
 	useEffect(() => {
-		if (location.href.includes('email=return')) {
+		if (router.query.email) {
 			(async () => {
 				setFinishingLogin(true);
 				const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-				const search = location.search;
-				const params = new URLSearchParams(search);
-				const redirect = params.get('redirect');
+				const redirectUrl = Array.isArray( router.query.redirect) ? router.query.redirect[0] : router.query.redirect;
 				const did = await magic.auth.loginWithCredential()
-				await login(did, redirect)	
+				await login(did, redirectUrl)	
 			})();
 		}
-	}, [])
+	}, [router.query.email])
 	
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
