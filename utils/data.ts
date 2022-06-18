@@ -6,7 +6,7 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
-				'x-hasura-admin-secret': process.env.DEV_MODE ? process.env.HASURA_SECRET ?? "" : ""
+				'x-hasura-admin-secret': process.env.HASURA_SECRET ?? ""
 			},
 			body: JSON.stringify({
 				query,
@@ -23,17 +23,17 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 			try {
 				const json = await r.json();
 				if (json.message && json.message === "Not Authorized") {
-					console.log("error with response 1.5", json);
+					console.log("error with response 2", json);
 				}
 				if (json.errors) {
-					console.log("error with response 1.5", json);
+					console.log("error with response 3", json);
 				}
 				return json;
 			} catch (e) {
-				console.log("error with response 2", r);
+				console.log("error with response 4", r);
 			}
 		})
 		.catch((e) => {
-			console.log("error with response 3", e);
+			console.log("error with response 5", e);
 		});
 };
