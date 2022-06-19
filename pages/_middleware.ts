@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
 			`/login/`,
 			`/privacy/`,
 			`/terms/`,
+			`/teams/`,
 			`/api/login/`,
 			`/api/user/`,
 			`/api/login_attempt/`,
