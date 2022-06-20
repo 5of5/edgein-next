@@ -16,6 +16,7 @@ export async function middleware(req: NextRequest) {
 			`/login/`,
 			`/privacy/`,
 			`/terms/`,
+			`/teams/`,
 			`/api/login/`,
 			`/api/user/`,
 			`/api/login_attempt/`,
@@ -62,7 +63,7 @@ export async function middleware(req: NextRequest) {
 		].includes(url.pathname)
 	) {
 		mutate({
-			mutation: gql`
+			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {
 					insert_actions_one(
 						object: $object
