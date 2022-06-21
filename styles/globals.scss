@@ -45,8 +45,10 @@
   .animation-delay-5000 {
     animation-delay: 5s;
   }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
 }
-
 
 html,
 body {

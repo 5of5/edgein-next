@@ -77,11 +77,7 @@ const Companies: NextPage<Props> = ({
 				<ElemHeading
 					title="Web3 Companies"
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
-				>
-					{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
-						Submit company
-					</ElemButton> */}
-				</ElemHeading>
+				></ElemHeading>
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">

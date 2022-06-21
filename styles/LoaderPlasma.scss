@@ -1,0 +1,26 @@
+
+@keyframes plasma {
+  0% {
+    transform: scale(6) translate3d(20px, 0, 0);
+  }
+  50% {
+    transform: scale(1) translate3d(-60px, 0, 0);
+  }
+  100% {
+    transform: scale(6) translate3d(20px, 0, 0);
+  }
+}
+
+.plasma{
+  .bubble:before{
+    transform:translate3d(20px, 0, 0);
+  }
+  @for $i from 1 through 6 {
+    .bubble:nth-child(#{$i}) {
+      transform: translate(-50%, -50%) rotate(60deg * $i);
+    }
+    .bubble:nth-child(#{$i}):before {
+      animation: plasma 3s+ ($i/2) linear 0.25s * $i infinite;
+    }
+  }
+}

@@ -44,7 +44,7 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 				</ElemHeading>
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
+					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
 						<ElemFiltersWrap className="filters-wrap">
 							<InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
@@ -79,15 +79,15 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 											vcfirm.investments?.length <=
 												selectedInvestmentCount.rangeEnd)
 								)
-								// sort list by number of investments
-								// .sort(
-								// 	(a: any, b: any) =>
-								// 		a.investments?.length - b.investments?.length
-								// )
-								// .reverse()
+								//sort list by number of investments
+								.sort(
+									(a: any, b: any) =>
+										a.investments?.length - b.investments?.length
+								)
+								.reverse()
 								.map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
-										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 flex flex-col justify-between mx-auto w-full max-w-md group transition duration-300 ease-in-out transform  hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:p-7 md:h-full">
+										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out transform hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:p-7 md:h-full">
 											<div className="w-full flex items-center">
 												<ElemPhoto
 													photos={vcfirm.logo}
@@ -95,13 +95,28 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 													imgClass="object-fit max-w-full max-h-full"
 													imgAlt={vcfirm.vcFirm}
 												/>
-												<div className="w-full">
-													<h3 className="ml-3 text-2xl font-bold text-dark-700 break-words w-16 min-w-full sm:text-lg lg:text-xl group-hover:opacity-60">
+												<div className="w-full ml-3 space-y-1 overflow-hidden">
+													<h3
+														className="inline text-2xl align-middle line-clamp-1 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
+														title={vcfirm.vcFirm}
+													>
 														{vcfirm.vcFirm}
 													</h3>
+													{vcfirm.investments?.length > 0 && (
+														<div className="inline-flex hover:opacity-70">
+															<IconCash
+																title="Investments"
+																className="h-6 w-6 mr-1 text-primary-500"
+															/>
+															<span className="font-bold mr-1">
+																{vcfirm.investments.length}
+															</span>
+															Investment{vcfirm.investments?.length > 1 && "s"}
+														</div>
+													)}
 												</div>
 											</div>
-											{vcfirm.investments?.length > 0 && (
+											{/* {vcfirm.investments?.length > 0 && (
 												<div className="inline-flex mt-4 hover:opacity-70">
 													<IconCash
 														title="Investments"
@@ -112,7 +127,7 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 													</span>
 													Investment{vcfirm.investments?.length > 1 && "s"}
 												</div>
-											)}
+											)} */}
 										</a>
 									</Link>
 								))}
