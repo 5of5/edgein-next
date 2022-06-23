@@ -97,7 +97,6 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 												/>
 												<div className="w-full ml-3 space-y-1 overflow-hidden">
 													<h3
-														//class="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
 														className="inline text-2xl align-middle line-clamp-1 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
 														title={vcfirm.vcFirm}
 													>
@@ -117,18 +116,6 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 													)}
 												</div>
 											</div>
-											{/* {vcfirm.investments?.length > 0 && (
-												<div className="inline-flex mt-4 hover:opacity-70">
-													<IconCash
-														title="Investments"
-														className="h-6 w-6 mr-1 text-primary-500"
-													/>
-													<span className="font-bold mr-1">
-														{vcfirm.investments.length}
-													</span>
-													Investment{vcfirm.investments?.length > 1 && "s"}
-												</div>
-											)} */}
 										</a>
 									</Link>
 								))}
