@@ -12,6 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  bigint: any;
   date: any;
   jsonb: any;
   numeric: any;
@@ -324,163 +325,176 @@ export type Actions_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
-/** columns and relationships of "blockchain" */
-export type Blockchain = {
-  __typename?: 'blockchain';
+/** Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'. */
+export type Bigint_Comparison_Exp = {
+  _eq: InputMaybe<Scalars['bigint']>;
+  _gt: InputMaybe<Scalars['bigint']>;
+  _gte: InputMaybe<Scalars['bigint']>;
+  _in: InputMaybe<Array<Scalars['bigint']>>;
+  _is_null: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['bigint']>;
+  _lte: InputMaybe<Scalars['bigint']>;
+  _neq: InputMaybe<Scalars['bigint']>;
+  _nin: InputMaybe<Array<Scalars['bigint']>>;
+};
+
+/** columns and relationships of "blockchains" */
+export type Blockchains = {
+  __typename?: 'blockchains';
   id: Scalars['Int'];
   name: Scalars['String'];
 };
 
-/** aggregated selection of "blockchain" */
-export type Blockchain_Aggregate = {
-  __typename?: 'blockchain_aggregate';
-  aggregate: Maybe<Blockchain_Aggregate_Fields>;
-  nodes: Array<Blockchain>;
+/** aggregated selection of "blockchains" */
+export type Blockchains_Aggregate = {
+  __typename?: 'blockchains_aggregate';
+  aggregate: Maybe<Blockchains_Aggregate_Fields>;
+  nodes: Array<Blockchains>;
 };
 
-/** aggregate fields of "blockchain" */
-export type Blockchain_Aggregate_Fields = {
-  __typename?: 'blockchain_aggregate_fields';
-  avg: Maybe<Blockchain_Avg_Fields>;
+/** aggregate fields of "blockchains" */
+export type Blockchains_Aggregate_Fields = {
+  __typename?: 'blockchains_aggregate_fields';
+  avg: Maybe<Blockchains_Avg_Fields>;
   count: Scalars['Int'];
-  max: Maybe<Blockchain_Max_Fields>;
-  min: Maybe<Blockchain_Min_Fields>;
-  stddev: Maybe<Blockchain_Stddev_Fields>;
-  stddev_pop: Maybe<Blockchain_Stddev_Pop_Fields>;
-  stddev_samp: Maybe<Blockchain_Stddev_Samp_Fields>;
-  sum: Maybe<Blockchain_Sum_Fields>;
-  var_pop: Maybe<Blockchain_Var_Pop_Fields>;
-  var_samp: Maybe<Blockchain_Var_Samp_Fields>;
-  variance: Maybe<Blockchain_Variance_Fields>;
+  max: Maybe<Blockchains_Max_Fields>;
+  min: Maybe<Blockchains_Min_Fields>;
+  stddev: Maybe<Blockchains_Stddev_Fields>;
+  stddev_pop: Maybe<Blockchains_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Blockchains_Stddev_Samp_Fields>;
+  sum: Maybe<Blockchains_Sum_Fields>;
+  var_pop: Maybe<Blockchains_Var_Pop_Fields>;
+  var_samp: Maybe<Blockchains_Var_Samp_Fields>;
+  variance: Maybe<Blockchains_Variance_Fields>;
 };
 
 
-/** aggregate fields of "blockchain" */
-export type Blockchain_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<Blockchain_Select_Column>>;
+/** aggregate fields of "blockchains" */
+export type Blockchains_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Blockchains_Select_Column>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
 /** aggregate avg on columns */
-export type Blockchain_Avg_Fields = {
-  __typename?: 'blockchain_avg_fields';
+export type Blockchains_Avg_Fields = {
+  __typename?: 'blockchains_avg_fields';
   id: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "blockchain". All fields are combined with a logical 'AND'. */
-export type Blockchain_Bool_Exp = {
-  _and: InputMaybe<Array<Blockchain_Bool_Exp>>;
-  _not: InputMaybe<Blockchain_Bool_Exp>;
-  _or: InputMaybe<Array<Blockchain_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "blockchains". All fields are combined with a logical 'AND'. */
+export type Blockchains_Bool_Exp = {
+  _and: InputMaybe<Array<Blockchains_Bool_Exp>>;
+  _not: InputMaybe<Blockchains_Bool_Exp>;
+  _or: InputMaybe<Array<Blockchains_Bool_Exp>>;
   id: InputMaybe<Int_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "blockchain" */
-export enum Blockchain_Constraint {
+/** unique or primary key constraints on table "blockchains" */
+export enum Blockchains_Constraint {
   /** unique or primary key constraint */
   BlockchainPkey = 'blockchain_pkey'
 }
 
-/** input type for incrementing numeric columns in table "blockchain" */
-export type Blockchain_Inc_Input = {
+/** input type for incrementing numeric columns in table "blockchains" */
+export type Blockchains_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
 };
 
-/** input type for inserting data into table "blockchain" */
-export type Blockchain_Insert_Input = {
+/** input type for inserting data into table "blockchains" */
+export type Blockchains_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
-export type Blockchain_Max_Fields = {
-  __typename?: 'blockchain_max_fields';
+export type Blockchains_Max_Fields = {
+  __typename?: 'blockchains_max_fields';
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
-export type Blockchain_Min_Fields = {
-  __typename?: 'blockchain_min_fields';
+export type Blockchains_Min_Fields = {
+  __typename?: 'blockchains_min_fields';
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
 };
 
-/** response of any mutation on the table "blockchain" */
-export type Blockchain_Mutation_Response = {
-  __typename?: 'blockchain_mutation_response';
+/** response of any mutation on the table "blockchains" */
+export type Blockchains_Mutation_Response = {
+  __typename?: 'blockchains_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<Blockchain>;
+  returning: Array<Blockchains>;
 };
 
-/** input type for inserting object relation for remote table "blockchain" */
-export type Blockchain_Obj_Rel_Insert_Input = {
-  data: Blockchain_Insert_Input;
+/** input type for inserting object relation for remote table "blockchains" */
+export type Blockchains_Obj_Rel_Insert_Input = {
+  data: Blockchains_Insert_Input;
   /** upsert condition */
-  on_conflict: InputMaybe<Blockchain_On_Conflict>;
+  on_conflict: InputMaybe<Blockchains_On_Conflict>;
 };
 
-/** on_conflict condition type for table "blockchain" */
-export type Blockchain_On_Conflict = {
-  constraint: Blockchain_Constraint;
-  update_columns: Array<Blockchain_Update_Column>;
-  where: InputMaybe<Blockchain_Bool_Exp>;
+/** on_conflict condition type for table "blockchains" */
+export type Blockchains_On_Conflict = {
+  constraint: Blockchains_Constraint;
+  update_columns: Array<Blockchains_Update_Column>;
+  where: InputMaybe<Blockchains_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "blockchain". */
-export type Blockchain_Order_By = {
+/** Ordering options when selecting data from "blockchains". */
+export type Blockchains_Order_By = {
   id: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: blockchain */
-export type Blockchain_Pk_Columns_Input = {
+/** primary key columns input for table: blockchains */
+export type Blockchains_Pk_Columns_Input = {
   id: Scalars['Int'];
 };
 
-/** select columns of table "blockchain" */
-export enum Blockchain_Select_Column {
+/** select columns of table "blockchains" */
+export enum Blockchains_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
   Name = 'name'
 }
 
-/** input type for updating data in table "blockchain" */
-export type Blockchain_Set_Input = {
+/** input type for updating data in table "blockchains" */
+export type Blockchains_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
-export type Blockchain_Stddev_Fields = {
-  __typename?: 'blockchain_stddev_fields';
+export type Blockchains_Stddev_Fields = {
+  __typename?: 'blockchains_stddev_fields';
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
-export type Blockchain_Stddev_Pop_Fields = {
-  __typename?: 'blockchain_stddev_pop_fields';
+export type Blockchains_Stddev_Pop_Fields = {
+  __typename?: 'blockchains_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
-export type Blockchain_Stddev_Samp_Fields = {
-  __typename?: 'blockchain_stddev_samp_fields';
+export type Blockchains_Stddev_Samp_Fields = {
+  __typename?: 'blockchains_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
-export type Blockchain_Sum_Fields = {
-  __typename?: 'blockchain_sum_fields';
+export type Blockchains_Sum_Fields = {
+  __typename?: 'blockchains_sum_fields';
   id: Maybe<Scalars['Int']>;
 };
 
-/** update columns of table "blockchain" */
-export enum Blockchain_Update_Column {
+/** update columns of table "blockchains" */
+export enum Blockchains_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
@@ -488,20 +502,20 @@ export enum Blockchain_Update_Column {
 }
 
 /** aggregate var_pop on columns */
-export type Blockchain_Var_Pop_Fields = {
-  __typename?: 'blockchain_var_pop_fields';
+export type Blockchains_Var_Pop_Fields = {
+  __typename?: 'blockchains_var_pop_fields';
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
-export type Blockchain_Var_Samp_Fields = {
-  __typename?: 'blockchain_var_samp_fields';
+export type Blockchains_Var_Samp_Fields = {
+  __typename?: 'blockchains_var_samp_fields';
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
-export type Blockchain_Variance_Fields = {
-  __typename?: 'blockchain_variance_fields';
+export type Blockchains_Variance_Fields = {
+  __typename?: 'blockchains_variance_fields';
   id: Maybe<Scalars['Float']>;
 };
 
@@ -509,8 +523,9 @@ export type Blockchain_Variance_Fields = {
 export type Coins = {
   __typename?: 'coins';
   /** An object relationship */
-  blockchain: Maybe<Blockchain>;
-  blockchain_id: Scalars['Int'];
+  blockchain: Maybe<Blockchains>;
+  blockchain_id: Maybe<Scalars['Int']>;
+  external_id: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
   ticker: Scalars['String'];
@@ -558,8 +573,9 @@ export type Coins_Bool_Exp = {
   _and: InputMaybe<Array<Coins_Bool_Exp>>;
   _not: InputMaybe<Coins_Bool_Exp>;
   _or: InputMaybe<Array<Coins_Bool_Exp>>;
-  blockchain: InputMaybe<Blockchain_Bool_Exp>;
+  blockchain: InputMaybe<Blockchains_Bool_Exp>;
   blockchain_id: InputMaybe<Int_Comparison_Exp>;
+  external_id: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   ticker: InputMaybe<String_Comparison_Exp>;
@@ -567,6 +583,8 @@ export type Coins_Bool_Exp = {
 
 /** unique or primary key constraints on table "coins" */
 export enum Coins_Constraint {
+  /** unique or primary key constraint */
+  CoinsExternalIdKey = 'coins_external_id_key',
   /** unique or primary key constraint */
   CoinsPkey = 'coins_pkey'
 }
@@ -579,8 +597,9 @@ export type Coins_Inc_Input = {
 
 /** input type for inserting data into table "coins" */
 export type Coins_Insert_Input = {
-  blockchain: InputMaybe<Blockchain_Obj_Rel_Insert_Input>;
+  blockchain: InputMaybe<Blockchains_Obj_Rel_Insert_Input>;
   blockchain_id: InputMaybe<Scalars['Int']>;
+  external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
   ticker: InputMaybe<Scalars['String']>;
@@ -590,6 +609,7 @@ export type Coins_Insert_Input = {
 export type Coins_Max_Fields = {
   __typename?: 'coins_max_fields';
   blockchain_id: Maybe<Scalars['Int']>;
+  external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   ticker: Maybe<Scalars['String']>;
@@ -599,6 +619,7 @@ export type Coins_Max_Fields = {
 export type Coins_Min_Fields = {
   __typename?: 'coins_min_fields';
   blockchain_id: Maybe<Scalars['Int']>;
+  external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   ticker: Maybe<Scalars['String']>;
@@ -629,8 +650,9 @@ export type Coins_On_Conflict = {
 
 /** Ordering options when selecting data from "coins". */
 export type Coins_Order_By = {
-  blockchain: InputMaybe<Blockchain_Order_By>;
+  blockchain: InputMaybe<Blockchains_Order_By>;
   blockchain_id: InputMaybe<Order_By>;
+  external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   ticker: InputMaybe<Order_By>;
@@ -646,6 +668,8 @@ export enum Coins_Select_Column {
   /** column name */
   BlockchainId = 'blockchain_id',
   /** column name */
+  ExternalId = 'external_id',
+  /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
@@ -656,6 +680,7 @@ export enum Coins_Select_Column {
 /** input type for updating data in table "coins" */
 export type Coins_Set_Input = {
   blockchain_id: InputMaybe<Scalars['Int']>;
+  external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
   ticker: InputMaybe<Scalars['String']>;
@@ -693,6 +718,8 @@ export type Coins_Sum_Fields = {
 export enum Coins_Update_Column {
   /** column name */
   BlockchainId = 'blockchain_id',
+  /** column name */
+  ExternalId = 'external_id',
   /** column name */
   Id = 'id',
   /** column name */
@@ -737,7 +764,7 @@ export type Companies = {
   investment_rounds: Array<Investment_Rounds>;
   /** An aggregate relationship */
   investment_rounds_aggregate: Investment_Rounds_Aggregate;
-  investor_amount: Maybe<Scalars['String']>;
+  investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   logo: Maybe<Scalars['jsonb']>;
@@ -845,6 +872,7 @@ export type Companies_Avg_Fields = {
   __typename?: 'companies_avg_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -861,7 +889,7 @@ export type Companies_Bool_Exp = {
   github: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investment_rounds: InputMaybe<Investment_Rounds_Bool_Exp>;
-  investor_amount: InputMaybe<String_Comparison_Exp>;
+  investor_amount: InputMaybe<Bigint_Comparison_Exp>;
   layer: InputMaybe<String_Comparison_Exp>;
   layer_detail: InputMaybe<String_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
@@ -907,6 +935,7 @@ export type Companies_Delete_Key_Input = {
 export type Companies_Inc_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  investor_amount: InputMaybe<Scalars['bigint']>;
   total_employees: InputMaybe<Scalars['numeric']>;
 };
 
@@ -920,7 +949,7 @@ export type Companies_Insert_Input = {
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   investment_rounds: InputMaybe<Investment_Rounds_Arr_Rel_Insert_Input>;
-  investor_amount: InputMaybe<Scalars['String']>;
+  investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -948,7 +977,7 @@ export type Companies_Max_Fields = {
   external_id: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
-  investor_amount: Maybe<Scalars['String']>;
+  investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
@@ -974,7 +1003,7 @@ export type Companies_Min_Fields = {
   external_id: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
-  investor_amount: Maybe<Scalars['String']>;
+  investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
@@ -1109,7 +1138,7 @@ export type Companies_Set_Input = {
   external_id: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
-  investor_amount: InputMaybe<Scalars['String']>;
+  investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -1132,6 +1161,7 @@ export type Companies_Stddev_Fields = {
   __typename?: 'companies_stddev_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -1140,6 +1170,7 @@ export type Companies_Stddev_Pop_Fields = {
   __typename?: 'companies_stddev_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -1148,6 +1179,7 @@ export type Companies_Stddev_Samp_Fields = {
   __typename?: 'companies_stddev_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -1156,6 +1188,7 @@ export type Companies_Sum_Fields = {
   __typename?: 'companies_sum_fields';
   coin_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  investor_amount: Maybe<Scalars['bigint']>;
   total_employees: Maybe<Scalars['numeric']>;
 };
 
@@ -1212,6 +1245,7 @@ export type Companies_Var_Pop_Fields = {
   __typename?: 'companies_var_pop_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -1220,6 +1254,7 @@ export type Companies_Var_Samp_Fields = {
   __typename?: 'companies_var_samp_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -1228,6 +1263,7 @@ export type Companies_Variance_Fields = {
   __typename?: 'companies_variance_fields';
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
 };
 
@@ -2458,10 +2494,10 @@ export type Mutation_Root = {
   delete_actions: Maybe<Actions_Mutation_Response>;
   /** delete single row from the table: "actions" */
   delete_actions_by_pk: Maybe<Actions>;
-  /** delete data from the table: "blockchain" */
-  delete_blockchain: Maybe<Blockchain_Mutation_Response>;
-  /** delete single row from the table: "blockchain" */
-  delete_blockchain_by_pk: Maybe<Blockchain>;
+  /** delete data from the table: "blockchains" */
+  delete_blockchains: Maybe<Blockchains_Mutation_Response>;
+  /** delete single row from the table: "blockchains" */
+  delete_blockchains_by_pk: Maybe<Blockchains>;
   /** delete data from the table: "coins" */
   delete_coins: Maybe<Coins_Mutation_Response>;
   /** delete single row from the table: "coins" */
@@ -2498,10 +2534,10 @@ export type Mutation_Root = {
   insert_actions: Maybe<Actions_Mutation_Response>;
   /** insert a single row into the table: "actions" */
   insert_actions_one: Maybe<Actions>;
-  /** insert data into the table: "blockchain" */
-  insert_blockchain: Maybe<Blockchain_Mutation_Response>;
-  /** insert a single row into the table: "blockchain" */
-  insert_blockchain_one: Maybe<Blockchain>;
+  /** insert data into the table: "blockchains" */
+  insert_blockchains: Maybe<Blockchains_Mutation_Response>;
+  /** insert a single row into the table: "blockchains" */
+  insert_blockchains_one: Maybe<Blockchains>;
   /** insert data into the table: "coins" */
   insert_coins: Maybe<Coins_Mutation_Response>;
   /** insert a single row into the table: "coins" */
@@ -2538,10 +2574,10 @@ export type Mutation_Root = {
   update_actions: Maybe<Actions_Mutation_Response>;
   /** update single row of the table: "actions" */
   update_actions_by_pk: Maybe<Actions>;
-  /** update data of the table: "blockchain" */
-  update_blockchain: Maybe<Blockchain_Mutation_Response>;
-  /** update single row of the table: "blockchain" */
-  update_blockchain_by_pk: Maybe<Blockchain>;
+  /** update data of the table: "blockchains" */
+  update_blockchains: Maybe<Blockchains_Mutation_Response>;
+  /** update single row of the table: "blockchains" */
+  update_blockchains_by_pk: Maybe<Blockchains>;
   /** update data of the table: "coins" */
   update_coins: Maybe<Coins_Mutation_Response>;
   /** update single row of the table: "coins" */
@@ -2590,13 +2626,13 @@ export type Mutation_RootDelete_Actions_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_BlockchainArgs = {
-  where: Blockchain_Bool_Exp;
+export type Mutation_RootDelete_BlockchainsArgs = {
+  where: Blockchains_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Blockchain_By_PkArgs = {
+export type Mutation_RootDelete_Blockchains_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -2712,16 +2748,16 @@ export type Mutation_RootInsert_Actions_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_BlockchainArgs = {
-  objects: Array<Blockchain_Insert_Input>;
-  on_conflict: InputMaybe<Blockchain_On_Conflict>;
+export type Mutation_RootInsert_BlockchainsArgs = {
+  objects: Array<Blockchains_Insert_Input>;
+  on_conflict: InputMaybe<Blockchains_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_Blockchain_OneArgs = {
-  object: Blockchain_Insert_Input;
-  on_conflict: InputMaybe<Blockchain_On_Conflict>;
+export type Mutation_RootInsert_Blockchains_OneArgs = {
+  object: Blockchains_Insert_Input;
+  on_conflict: InputMaybe<Blockchains_On_Conflict>;
 };
 
 
@@ -2864,18 +2900,18 @@ export type Mutation_RootUpdate_Actions_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_BlockchainArgs = {
-  _inc: InputMaybe<Blockchain_Inc_Input>;
-  _set: InputMaybe<Blockchain_Set_Input>;
-  where: Blockchain_Bool_Exp;
+export type Mutation_RootUpdate_BlockchainsArgs = {
+  _inc: InputMaybe<Blockchains_Inc_Input>;
+  _set: InputMaybe<Blockchains_Set_Input>;
+  where: Blockchains_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Blockchain_By_PkArgs = {
-  _inc: InputMaybe<Blockchain_Inc_Input>;
-  _set: InputMaybe<Blockchain_Set_Input>;
-  pk_columns: Blockchain_Pk_Columns_Input;
+export type Mutation_RootUpdate_Blockchains_By_PkArgs = {
+  _inc: InputMaybe<Blockchains_Inc_Input>;
+  _set: InputMaybe<Blockchains_Set_Input>;
+  pk_columns: Blockchains_Pk_Columns_Input;
 };
 
 
@@ -3456,12 +3492,12 @@ export type Query_Root = {
   actions_aggregate: Actions_Aggregate;
   /** fetch data from the table: "actions" using primary key columns */
   actions_by_pk: Maybe<Actions>;
-  /** fetch data from the table: "blockchain" */
-  blockchain: Array<Blockchain>;
-  /** fetch aggregated fields from the table: "blockchain" */
-  blockchain_aggregate: Blockchain_Aggregate;
-  /** fetch data from the table: "blockchain" using primary key columns */
-  blockchain_by_pk: Maybe<Blockchain>;
+  /** fetch data from the table: "blockchains" */
+  blockchains: Array<Blockchains>;
+  /** fetch aggregated fields from the table: "blockchains" */
+  blockchains_aggregate: Blockchains_Aggregate;
+  /** fetch data from the table: "blockchains" using primary key columns */
+  blockchains_by_pk: Maybe<Blockchains>;
   /** fetch data from the table: "coins" */
   coins: Array<Coins>;
   /** fetch aggregated fields from the table: "coins" */
@@ -3536,25 +3572,25 @@ export type Query_RootActions_By_PkArgs = {
 };
 
 
-export type Query_RootBlockchainArgs = {
-  distinct_on: InputMaybe<Array<Blockchain_Select_Column>>;
+export type Query_RootBlockchainsArgs = {
+  distinct_on: InputMaybe<Array<Blockchains_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Blockchain_Order_By>>;
-  where: InputMaybe<Blockchain_Bool_Exp>;
+  order_by: InputMaybe<Array<Blockchains_Order_By>>;
+  where: InputMaybe<Blockchains_Bool_Exp>;
 };
 
 
-export type Query_RootBlockchain_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Blockchain_Select_Column>>;
+export type Query_RootBlockchains_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Blockchains_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Blockchain_Order_By>>;
-  where: InputMaybe<Blockchain_Bool_Exp>;
+  order_by: InputMaybe<Array<Blockchains_Order_By>>;
+  where: InputMaybe<Blockchains_Bool_Exp>;
 };
 
 
-export type Query_RootBlockchain_By_PkArgs = {
+export type Query_RootBlockchains_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -3750,12 +3786,12 @@ export type Subscription_Root = {
   actions_aggregate: Actions_Aggregate;
   /** fetch data from the table: "actions" using primary key columns */
   actions_by_pk: Maybe<Actions>;
-  /** fetch data from the table: "blockchain" */
-  blockchain: Array<Blockchain>;
-  /** fetch aggregated fields from the table: "blockchain" */
-  blockchain_aggregate: Blockchain_Aggregate;
-  /** fetch data from the table: "blockchain" using primary key columns */
-  blockchain_by_pk: Maybe<Blockchain>;
+  /** fetch data from the table: "blockchains" */
+  blockchains: Array<Blockchains>;
+  /** fetch aggregated fields from the table: "blockchains" */
+  blockchains_aggregate: Blockchains_Aggregate;
+  /** fetch data from the table: "blockchains" using primary key columns */
+  blockchains_by_pk: Maybe<Blockchains>;
   /** fetch data from the table: "coins" */
   coins: Array<Coins>;
   /** fetch aggregated fields from the table: "coins" */
@@ -3830,25 +3866,25 @@ export type Subscription_RootActions_By_PkArgs = {
 };
 
 
-export type Subscription_RootBlockchainArgs = {
-  distinct_on: InputMaybe<Array<Blockchain_Select_Column>>;
+export type Subscription_RootBlockchainsArgs = {
+  distinct_on: InputMaybe<Array<Blockchains_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Blockchain_Order_By>>;
-  where: InputMaybe<Blockchain_Bool_Exp>;
+  order_by: InputMaybe<Array<Blockchains_Order_By>>;
+  where: InputMaybe<Blockchains_Bool_Exp>;
 };
 
 
-export type Subscription_RootBlockchain_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Blockchain_Select_Column>>;
+export type Subscription_RootBlockchains_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Blockchains_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Blockchain_Order_By>>;
-  where: InputMaybe<Blockchain_Bool_Exp>;
+  order_by: InputMaybe<Array<Blockchains_Order_By>>;
+  where: InputMaybe<Blockchains_Bool_Exp>;
 };
 
 
-export type Subscription_RootBlockchain_By_PkArgs = {
+export type Subscription_RootBlockchains_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -4769,15 +4805,16 @@ export type GetCompanyQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: string | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  where: Companies_Bool_Exp;
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, investor_amount: string | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', ticker: string } | null }> };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', ticker: string } | null }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -4897,13 +4934,8 @@ useGetCompanyQuery.getKey = (variables: GetCompanyQueryVariables) => ['GetCompan
 
 useGetCompanyQuery.fetcher = (variables: GetCompanyQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyQuery, GetCompanyQueryVariables>(GetCompanyDocument, variables, options);
 export const GetCompaniesDocument = `
-    query GetCompanies($limit: Int, $offset: Int) {
-  companies(
-    where: {slug: {_neq: ""}}
-    order_by: {slug: asc}
-    limit: $limit
-    offset: $offset
-  ) {
+    query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
+  companies(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
     id
     name
     slug
@@ -4927,21 +4959,21 @@ export const useGetCompaniesQuery = <
       TData = GetCompaniesQuery,
       TError = Error
     >(
-      variables?: GetCompaniesQueryVariables,
+      variables: GetCompaniesQueryVariables,
       options?: UseQueryOptions<GetCompaniesQuery, TError, TData>
     ) =>
     useQuery<GetCompaniesQuery, TError, TData>(
-      variables === undefined ? ['GetCompanies'] : ['GetCompanies', variables],
+      ['GetCompanies', variables],
       fetcher<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, variables),
       options
     );
 useGetCompaniesQuery.document = GetCompaniesDocument;
 
 
-useGetCompaniesQuery.getKey = (variables?: GetCompaniesQueryVariables) => variables === undefined ? ['GetCompanies'] : ['GetCompanies', variables];
+useGetCompaniesQuery.getKey = (variables: GetCompaniesQueryVariables) => ['GetCompanies', variables];
 ;
 
-useGetCompaniesQuery.fetcher = (variables?: GetCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, variables, options);
+useGetCompaniesQuery.fetcher = (variables: GetCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, variables, options);
 export const GetCompaniesPathsDocument = `
     query GetCompaniesPaths {
   companies(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {

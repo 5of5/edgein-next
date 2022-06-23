@@ -12,22 +12,23 @@ import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import {
-	runGraphQl,
 	truncateWords,
-	inRange,
 } from "../utils";
-import { GetCompaniesDocument, GetCompaniesQuery } from "../graphql/types";
+import { Companies_Bool_Exp, String_Comparison_Exp, useGetCompaniesQuery } from "../graphql/types";
+import { useDebounce } from "../hooks/useDebounce";
 
 type Props = {
-	companies: GetCompaniesQuery['companies'];
-	companyLayers: any[];
-	amountRaised: Record<string, any>[];
-	totalEmployees: Record<string, any>[];
+	companyLayers: TextFilter[];
+	amountRaised: NumericFilter[];
+	totalEmployees: NumericFilter[];
 };
+
+type DeepPartial<T> = T extends object ? {
+	[P in keyof T]?: DeepPartial<T[P]>;
+} : T;
 
 const Companies: NextPage<Props> = ({
 	companyLayers,
-	companies,
 	amountRaised,
 	totalEmployees,
 }) => {
@@ -35,6 +36,7 @@ const Companies: NextPage<Props> = ({
 
 	// Search Box
 	const [search, setSearch] = useState("");
+	const debouncedSearchTerm = useDebounce(search, 500);
 
 	const searchCompanies = (e: {
 		target: { value: React.SetStateAction<string> };
@@ -62,6 +64,37 @@ const Companies: NextPage<Props> = ({
 
 	// Layout Grid/List
 	const [toggleViewMode, setToggleViewMode] = useState(false);
+
+	const [page, setPage] = useState<number>(0)
+  const limit = 50
+  const offset = limit * page
+
+
+  const filters: DeepPartial<Companies_Bool_Exp> = {
+		_and: [{slug: {_neq: ""}}],
+	}
+	if (debouncedSearchTerm !== "") {
+		filters._and?.push({ _or: [{name: { _ilike: `%${debouncedSearchTerm}%`} }, { coin: { ticker: { _ilike: `%${debouncedSearchTerm}%`} } }]})
+	}
+	if (selectedLayer.value) {
+		filters._and?.push({ layer: { _eq: selectedLayer.value} })
+	}
+	if (selectedAmountRaised.rangeEnd !== 0) {
+		filters._and?.push({_and: [{ investor_amount: { _gt: selectedAmountRaised.rangeStart}}, { investor_amount: { _lte: selectedAmountRaised.rangeEnd}}]})
+	}
+	if (selectedTotalEmployees.rangeEnd !== 0) {
+		filters._and?.push({_and: [{ total_employees: { _gt: selectedTotalEmployees.rangeStart}}, { total_employees: { _lte: selectedTotalEmployees.rangeEnd}}]})
+	}
+
+  const {
+    data: companies,
+    error,
+    isLoading
+  } = useGetCompaniesQuery({
+    offset,
+    limit,
+		where: filters as Companies_Bool_Exp
+  }) 
 
 	return (
 		<div>
@@ -140,37 +173,8 @@ const Companies: NextPage<Props> = ({
 								toggleViewMode ? "1" : "2"
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
-							{companies
-								.filter(
-									(company) =>
-										!search ||
-										company.name
-											?.toLowerCase()
-											.includes(search.toLowerCase()) ||
-										getCoinTicker(company.coin)
-											?.toLowerCase()
-											.includes(search.toLowerCase())
-								)
-								.filter(
-									(company) =>
-										!selectedLayer.title ||
-										selectedLayer.title === "All Layers" ||
-										company.layer?.includes(selectedLayer.title)
-								)
-								.filter(
-									(company) =>
-										!selectedAmountRaised.number ||
-										((company.investor_amount || 0) >=
-											selectedAmountRaised.rangeStart &&
-											(company.investor_amount || 0) <= selectedAmountRaised.rangeEnd)
-								)
-								.filter(
-									(company) =>
-										!selectedTotalEmployees.number ||
-										(company.total_employees >=
-											selectedTotalEmployees.rangeStart &&
-											company.total_employees <= selectedTotalEmployees.rangeEnd)
-								)
+							{ isLoading ? <h4>Loading...</h4> :
+							companies?.companies
 								.map((company) => {
 									return (
 										<Link key={company.id} href={`/companies/${company.slug}`}>
@@ -277,213 +281,11 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument);
-
-	// Layers Filter
-	const getUniqueLayers = [
-		...Array.from(
-			new Set(companies?.companies.map((comp: { layer: any }) => comp.layer))
-		),
-	].sort();
-
-	const setCompanyLayersDetails = getUniqueLayers.map(
-		(str: any, index: any) => {
-			let layerDetails = null;
-
-			if (str === "Layer 0") {
-				layerDetails = "Native Code";
-			} else if (str === "Layer 1") {
-				layerDetails = "Programmable Blockchains / Networks";
-			} else if (str === "Layer 2") {
-				layerDetails = "Nodes / Node Providers / Data Platforms";
-			} else if (str === "Layer 3") {
-				layerDetails = "API's / API Providers / Systems";
-			} else if (str === "Layer 4") {
-				layerDetails = "Decentralized Platforms / Contract/Modeling";
-			} else if (str === "Layer 5") {
-				layerDetails = "Applications";
-			} else if (str === "Layer 6") {
-				layerDetails = "Interoperable Digital Assets / NFT's";
-			}
-
-			return {
-				id: index,
-				title: str,
-				description: layerDetails,
-			};
-		}
-	);
-
-	setCompanyLayersDetails.unshift({
-		id: 9999,
-		title: "All Layers",
-		description: null,
-	});
-
-	const companyLayers = setCompanyLayersDetails.filter((o) => o.title);
-
-	// Amount Raised Filter
-	const getAmountRaised = [
-		...Array.from(
-			new Set(
-				companies?.companies.map(
-					(comp, index: any) => {
-						const amount = Number(comp?.investor_amount) || 0;
-
-						let text = null;
-						let rangeStart = null;
-						let rangeEnd = null;
-
-						if (amount === 0) {
-							text = "All Funding Amounts";
-							rangeStart = 0;
-							rangeEnd = 0;
-						} else if (amount < 10e5) {
-							text = "Less than $1M";
-							rangeStart = 0;
-							rangeEnd = 10e5 - 1; //999999
-						} else if (amount === 10e5) {
-							text = "$1M";
-							rangeStart = 10e5;
-							rangeEnd = 10e5;
-						} else if (inRange(amount, 10e5 + 1, 10e6)) {
-							text = "$1M-$10M";
-							rangeStart = 10e5 + 1;
-							rangeEnd = 10e6;
-						} else if (inRange(amount, 10e6 + 1, 20e6)) {
-							text = "$11M-$20M";
-							rangeStart = 10e6 + 1;
-							rangeEnd = 20e6;
-						} else if (inRange(amount, 20e6 + 1, 50e6)) {
-							text = "$21M-$50M";
-							rangeStart = 20e6 + 1;
-							rangeEnd = 50e6;
-						} else if (inRange(amount, 50e6 + 1, 10e7)) {
-							text = "$51M-$100M";
-							rangeStart = 50e6 + 1;
-							rangeEnd = 10e7;
-						} else if (inRange(amount, 10e7 + 1, 20e7)) {
-							text = "$101M-$200M";
-							rangeStart = 10e7 + 1;
-							rangeEnd = 20e7;
-						} else if (amount > 20e7) {
-							text = "$200M+";
-							rangeStart = 20e7;
-							rangeEnd = 90e14;
-						}
-
-						return {
-							id: index,
-							title: text,
-							//description: "",
-							number: amount,
-							rangeStart: rangeStart,
-							rangeEnd: rangeEnd,
-						};
-					}
-				)
-			)
-		),
-	];
-
-	const amountRaisedGroups: any[] = [];
-
-	const uniqueAmountRaisedGroups = getAmountRaised
-		.filter((group: any) => {
-			const isDuplicate = amountRaisedGroups.includes(group.title);
-
-			if (!isDuplicate) {
-				amountRaisedGroups.push(group.title);
-				return true;
-			}
-			return false;
-		})
-		.sort((a: any, b: any) => a.number - b.number);
-
-	// Total Employees Filter
-	const getEmployeesCount = [
-		...Array.from(
-			new Set(
-				companies?.companies.map(
-					(comp, index: any) => {
-						const count = Number(comp.total_employees) || 0;
-
-						let text = null;
-						let rangeStart = null;
-						let rangeEnd = null;
-
-						if (count === 0) {
-							text = "Number of Employees";
-							rangeStart = 0;
-							rangeEnd = 0;
-						} else if (count < 10) {
-							text = "Less than 10 Employees";
-							rangeStart = 0;
-							rangeEnd = 9;
-						} else if (inRange(count, 10, 15)) {
-							text = "10-15 Employees";
-							rangeStart = 10;
-							rangeEnd = 15;
-						} else if (inRange(count, 16, 30)) {
-							text = "16-20 Employees";
-							rangeStart = 16;
-							rangeEnd = 30;
-						} else if (inRange(count, 31, 100)) {
-							text = "31-100 Employees";
-							rangeStart = 31;
-							rangeEnd = 100;
-						} else if (inRange(count, 101, 200)) {
-							text = "101-200 Employees";
-							rangeStart = 101;
-							rangeEnd = 200;
-						} else if (inRange(count, 201, 500)) {
-							text = "201-500 Employees";
-							rangeStart = 201;
-							rangeEnd = 500;
-						} else if (inRange(count, 501, 1000)) {
-							text = "501-1000 Employees";
-							rangeStart = 501;
-							rangeEnd = 1000;
-						} else if (count > 1000) {
-							text = "1000+ Employees";
-							rangeStart = 1001;
-							rangeEnd = 90e14;
-						}
-
-						return {
-							id: index,
-							title: text,
-							//description: "",
-							number: count,
-							rangeStart: rangeStart,
-							rangeEnd: rangeEnd,
-						};
-					}
-				)
-			)
-		),
-	];
-
-	const employeeGroups: any[] = [];
-
-	const uniqueEmployeeGroups = getEmployeesCount
-		.filter((group: any) => {
-			const isDuplicate = employeeGroups.includes(group.title);
-
-			if (!isDuplicate) {
-				employeeGroups.push(group.title);
-				return true;
-			}
-			return false;
-		})
-		.sort((a: any, b: any) => a.number - b.number);
-
 	return {
 		props: {
-			companies: companies?.companies,
-			companyLayers,
-			amountRaised: uniqueAmountRaisedGroups,
-			totalEmployees: uniqueEmployeeGroups,
+			companyLayers: LayersFilters,
+			amountRaised: AmountRaisedFilters,
+			totalEmployees: EmployeesFilters,
 		},
 	};
 };
@@ -540,3 +342,133 @@ const getCoinTicker = (coins: any) => {
 
 	return ticker;
 };
+
+interface TextFilter {
+	title: string
+	description?: string
+	value: string
+}
+
+interface NumericFilter {
+	title: string
+	description?: string
+	rangeStart: number
+	rangeEnd: number
+}
+
+
+const LayersFilters: TextFilter[] = [
+	{
+		title:  "All Layers",
+		value:  "",
+    },
+  {
+		title:  "Layer 0",
+		value:  "Layer 0",
+			description: "Native Code",
+    },{	
+      title:  "Layer 1",
+      value:  "Layer 1",
+			description:  "Programmable Blockchains / Networks",
+    },{			
+      title:  "Layer 2",
+      value:  "Layer 2",
+			description:  "Nodes / Node Providers / Data Platforms",
+    },{	
+      title:  "Layer 2",
+      value:  "Layer 2",
+			description:  "API's / API Providers / Systems",
+    },{	
+      title:  "Layer 4",
+      value:  "Layer 4",
+			description:  "Decentralized Platforms / Contract/Modeling",
+    },{	
+      title:  "Layer 5",
+      value:  "Layer 5",
+			description:  "Applications",
+    },{	
+      title:  "Layer 6",
+      value:  "Layer 6",
+			description:  "Interoperable Digital Assets / NFT's",
+		}
+]
+// Amount Raised Filter
+const AmountRaisedFilters: NumericFilter[] = [
+{
+						title: "All Funding Amounts",
+						rangeStart : 0,
+						rangeEnd : 0,
+},{
+  						title: "Less than $1M",
+						rangeStart : 0,
+						rangeEnd : 10e5 - 1, //999999
+          },{
+						title: "$1M",
+						rangeStart : 10e5,
+						rangeEnd : 10e5,
+          },{
+						title: "$1M-$10M",
+						rangeStart : 10e5 + 1,
+						rangeEnd : 10e6,
+          },{
+						title: "$11M-$20M",
+						rangeStart : 10e6 + 1,
+						rangeEnd : 20e6,
+          },{
+						title: "$21M-$50M",
+						rangeStart : 20e6 + 1,
+						rangeEnd : 50e6,
+          },{
+						title: "$51M-$100M",
+						rangeStart : 50e6 + 1,
+						rangeEnd : 10e7,
+          },{
+						title: "$101M-$200M",
+						rangeStart : 10e7 + 1,
+						rangeEnd : 20e7,
+          },{
+						title: "$200M+",
+						rangeStart : 20e7,
+						rangeEnd : 90e14,
+					}
+        ]
+// Total Employees Filter
+const EmployeesFilters: NumericFilter[] = [
+{
+						title: "Number of Employees",
+						rangeStart : 0,
+						rangeEnd : 0,
+},{
+						title: "Less than 10 Employees",
+						rangeStart : 0,
+						rangeEnd : 9,
+					},{
+						title: "10-15 Employees",
+						rangeStart : 10,
+						rangeEnd : 15,
+					},{
+						title: "16-30 Employees",
+						rangeStart : 16,
+						rangeEnd : 30,
+					},{
+						title: "31-100 Employees",
+						rangeStart : 31,
+						rangeEnd : 100,
+					},{
+						title: "101-200 Employees",
+						rangeStart : 101,
+						rangeEnd : 200,
+					},{
+						title: "201-500 Employees",
+						rangeStart : 201,
+						rangeEnd : 500,
+					},{
+						title: "501-1000 Employees",
+						rangeStart : 501,
+						rangeEnd : 1000,
+					},{
+						title: "1000+ Employees",
+						rangeStart : 1001,
+						rangeEnd : 90e14,
+					}
+]
