@@ -107,9 +107,9 @@ const Companies: NextPage<Props> = ({
 								options={totalEmployees}
 							/>
 
-							<div className="hidden md:block md:shrink md:basis-0 ">
+							<div className="hidden md:block md:shrink md:basis-0">
 								<div
-									className="px-4 py-1.5 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
+									className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
 									onClick={() => setToggleViewMode(!toggleViewMode)}
 								>
 									{toggleViewMode ? (

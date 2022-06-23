@@ -43,7 +43,7 @@ export const InputSearch: React.FC<PropsWithChildren<Props>> = ({
 					value={value}
 					placeholder={placeholder}
 					onChange={onChange}
-					className={`${inputClasses} w-full pr-3 text-dark-500 relative bg-white rounded-md border border-transparent outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100`}
+					className={`${inputClasses} w-full pr-3 text-dark-500 relative bg-white rounded-md border border-dark-500/10 outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100`}
 				/>
 			</label>
 		</div>

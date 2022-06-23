@@ -33,7 +33,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 				</a>
 			</Link> */}
 			<Link href={href}>
-				<a className="flex items-center bg-white p-1 rounded-full transition-all group hover:shadow-md hover:-translate-y-0.5">
+				<a className="flex items-center border border-dark-500/10 bg-white p-1 rounded-full transition-all group hover:shadow-md hover:-translate-y-0.5">
 					<ElemPhoto
 						photos={photos}
 						wrapClass="shrink-0 flex items-center justify-center w-20 h-20 rounded-full overflow-hidden"

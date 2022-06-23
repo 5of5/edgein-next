@@ -41,7 +41,9 @@ export const ElemCredibility: React.FC<Props> = ({
 			{heading && <h2 className="text-2xl font-bold mb-2">{heading}</h2>}
 			<div
 				className={`grid gap-2 overflow-visible ${
-					mini ? `grid-cols-${credibilityItems.length}` : "grid-cols-3"
+					mini
+						? `grid-cols-${credibilityItems.length}`
+						: "grid-cols-3 bg-white rounded-lg border border-dark-500/10"
 				}`}
 			>
 				{credibilityItems.map((item: any, index: number) => {
@@ -49,7 +51,7 @@ export const ElemCredibility: React.FC<Props> = ({
 						<div
 							className={`${
 								mini ? "w-8 h-8" : "w-12 h-12"
-							} relative flex items-center justify-center bg-white rounded-lg border border-dark-100`}
+							} relative flex items-center justify-center bg-white rounded-lg border border-dark-500/10`}
 						>
 							<IconVerified
 								className={`${
@@ -74,7 +76,9 @@ export const ElemCredibility: React.FC<Props> = ({
 							) : (
 								<>
 									{credibilityItem}
-									<div className="mt-1 text-center">{item.text}</div>
+									<div className="mt-1 text-center text-xs font-semibold uppercase">
+										{item.text}
+									</div>
 								</>
 							)}
 						</div>

@@ -87,7 +87,7 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 								.reverse()
 								.map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
-										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out transform hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:p-7 md:h-full">
+										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-5 flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out transform hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
 											<div className="w-full flex items-center">
 												<ElemPhoto
 													photos={vcfirm.logo}
@@ -97,7 +97,8 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 												/>
 												<div className="w-full ml-3 space-y-1 overflow-hidden">
 													<h3
-														className="inline text-2xl align-middle line-clamp-1 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
+														//class="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
+														className="inline text-2xl align-middle line-clamp-1 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
 														title={vcfirm.vcFirm}
 													>
 														{vcfirm.vcFirm}

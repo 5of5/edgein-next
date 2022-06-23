@@ -44,47 +44,72 @@ const Company: NextPage<Props> = (props) => {
 					Back
 				</ElemButton>
 			</div>
-			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 mt-6">
-				<div className="col-span-1">
+
+			<div className="flex flex-col md:grid md:grid-cols-11 gap-4 mt-6">
+				<div className="col-span-3">
 					<ElemPhoto
 						photos={company.logo}
-						wrapClass="flex items-center justify-center shrink-0 p-6 h-72 bg-white rounded-lg shadow-md lg:h-96"
+						wrapClass="flex items-center justify-center aspect-square shrink-0 p-6 bg-white rounded-lg border border-dark-500/10"
 						imgClass="object-contain w-full h-full"
 						imgAlt={company.title}
 					/>
 				</div>
-				<div className="w-full col-span-2">
-					<div className="flex shrink-0">
-						<h1 className="flex text-4xl md:text-6xl font-bold my-5">
-							{company.title}
-						</h1>
-						{company.coins?.map((coin: any) => {
-							return (
-								<span
-									key={coin.id}
-									className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
-									title={`Token: ${coin.ticker}`}
-								>
-									{coin.ticker}
-								</span>
-							);
-						})}
+				<div className="w-full col-span-8">
+					<div className="flex flex-col md:grid grid-cols-8 gap-4">
+						<div className="col-span-5 mt-16 md:mt-0">
+							<div className="flex shrink-0">
+								<h1 className="flex text-4xl md:text-5xl font-bold">
+									{company.title}
+								</h1>
+								{company.coins?.map((coin: any) => {
+									return (
+										<span
+											key={coin.id}
+											className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
+											title={`Token: ${coin.ticker}`}
+										>
+											{coin.ticker}
+										</span>
+									);
+								})}
+							</div>
+
+							{company.overview && (
+								<p className="text-lg mt-3">{company.overview}</p>
+							)}
+						</div>
+
+						{/* <section className="col-span-3 flex flex-col mt-16 md:mt-0">
+							<h2 className="text-2xl font-bold">Token Info</h2>
+							<div className="flex-col justify-center flex space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10">
+								<div className="flex items-center space-x-2">
+									<div className="text-xs font-semibold uppercase">
+										Price (USD):
+									</div>
+									<div className="text-sm font-semibold uppercase text-red-500">
+										$40.35
+									</div>
+								</div>
+								<div className="flex items-center space-x-2">
+									<div className="text-xs font-semibold uppercase">
+										Market Cap
+									</div>
+									<div className="text-sm font-semibold uppercase">$168.1M</div>
+								</div>
+							</div>
+						</section> */}
 					</div>
 
-					{company.overview && (
-						<p className="text-lg mb-5">{company.overview}</p>
-					)}
-
-					<div className="flex flex-col md:grid grid-cols-5 gap-1 mt-6">
+					<div className="flex flex-col md:grid grid-cols-8 gap-4 mt-6">
 						<ElemCredibility
-							className="col-span-3 mt-16 md:mt-0"
+							className="col-span-5 mt-16 md:mt-0"
 							heading="Credibility"
 							marketVerified={company.marketVerified}
 							githubVerified={company.github}
 							linkedInVerified={company.companyLinkedIn}
 						/>
 						<ElemVelocity
-							className="col-span-2 flex flex-col mt-16 md:mt-0"
+							className="col-span-3 flex flex-col mt-16 md:mt-0"
 							heading="Velocity"
 							employeeListings={company.velocityLinkedIn}
 							tokenExchangeValue={company.velocityToken}
