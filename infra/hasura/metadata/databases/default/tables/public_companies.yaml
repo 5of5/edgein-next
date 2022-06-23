@@ -81,6 +81,7 @@ select_permissions:
         - white_paper
         - year_founded
       filter: {}
+      limit: 50
 update_permissions:
   - role: user
     permission:

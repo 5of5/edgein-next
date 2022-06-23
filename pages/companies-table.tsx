@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { ElemHeading } from "../components/ElemHeading";
-import { useGetCompaniesQuery } from "../graphql/types";
+import { Companies_Bool_Exp, useGetCompaniesQuery } from "../graphql/types";
 import { useTable } from 'react-table';
 import { ElemButton } from "../components/ElemButton";
   
@@ -23,6 +23,7 @@ const CompaniesTable: NextPage<Props> = () => {
   } = useGetCompaniesQuery({
     offset,
     limit,
+		where: {} as Companies_Bool_Exp,
   }) 
   
    const columns = React.useMemo(
