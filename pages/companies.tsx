@@ -11,12 +11,7 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
-import {
-	runGraphQl,
-	truncateWords,
-	inRange,
-	convertToInternationalCurrencySystem,
-} from "../utils";
+import { runGraphQl, truncateWords, inRange } from "../utils";
 import Company from "./companies/[companyId]";
 
 type Props = {
@@ -223,12 +218,6 @@ const Companies: NextPage<Props> = ({
 														{truncateWords(company.overview, 18)}
 													</div>
 												)}
-												{/* <span>
-													Amount Raised: $
-													{convertToInternationalCurrencySystem(company.investorAmount)}
-												</span> */}
-
-												{/* <span>Total Employees: #{company.totalEmployees}</span> */}
 
 												{/* {company.layer && (
 												<div
