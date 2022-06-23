@@ -23,6 +23,7 @@ export default function Login() {
 			// can redirect to the dashboard!
 			// Next.js middleware needs a full refresh rather than router.push
 			
+			debugger;
 			const redirectUrl = Array.isArray( router.query.redirect) ? router.query.redirect[0] : router.query.redirect || redirect;
 			if (redirectUrl && redirectUrl.startsWith('/')) {
 				router.push(redirectUrl)
@@ -30,6 +31,7 @@ export default function Login() {
 				router.push("/?loggedin")
 			}
 		} else {
+			console.log(authRequest)
 			/* handle errors */
 			setIsLoading(false);
 		}
