@@ -103,6 +103,7 @@ module.exports = {
       },
       scale: {
         '102': '1.02',
+        '600': '6',
       },
       // animation: {
       //   blob: 'blob 10s infinite',
