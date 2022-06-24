@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -19,7 +19,7 @@ import {
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 
-const FakeElemCompany = () => {
+const FakeElemCompany: FC = () => {
 	return (
 		<div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
 			<div className="flex items-center shrink-0 mb-4 w-full">
@@ -209,6 +209,21 @@ const Companies: NextPage<Props> = ({
 							</div>
 						</ElemFiltersWrap>
 
+						{companies?.companies.length === 0 && (
+							<>
+								<div className="flex items-center justify-center max-w-xl mx-auto min-h-[40vh] py-12 px-4">
+									<div className="bg-white rounded-2xl border border-dark-500/10 p-6 text-center">
+										<h2 className="text-3xl lg:text-4xl font-bold">
+											No results found
+										</h2>
+										<p className="mt-2 text-xl text-dark-400">
+											Please check spelling or try different filters.
+										</p>
+									</div>
+								</div>
+							</>
+						)}
+
 						<div
 							className={`grid gap-5 grid-cols-1 md:grid-cols-${
 								toggleViewMode ? "1" : "2"
@@ -216,7 +231,7 @@ const Companies: NextPage<Props> = ({
 						>
 							{isLoading ? (
 								<>
-									{Array.from({ length: 12 }, (_, i) => (
+									{Array.from({ length: 9 }, (_, i) => (
 										<FakeElemCompany key={i} />
 									))}
 								</>
