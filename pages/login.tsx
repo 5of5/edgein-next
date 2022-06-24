@@ -34,6 +34,8 @@ export default function Login() {
 			} else {
 				router.push("/?loggedin");
 			}
+			//Trigger page refresh after logged in
+			window.location.reload();
 		} else {
 			console.log(authRequest);
 			/* handle errors */
