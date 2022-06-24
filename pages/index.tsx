@@ -5,8 +5,10 @@ import { FigureIntroSplash } from "../components/FigureIntroSplash";
 import { FigureBlurredBg } from "../components/FigureBlurredBg";
 import { ElemButton } from "../components/ElemButton";
 // import styles from "../styles/Home.module.css";
+import { useAuth } from "../hooks/useAuth";
 
 const Home: NextPage = () => {
+	const { user, error, loading } = useAuth();
 	return (
 		<>
 			<Head>
@@ -34,14 +36,15 @@ const Home: NextPage = () => {
 								edge in Web3.
 							</h2>
 							<div className="mt-8">
-								<ElemButton
-									className="inline-block"
-									href="/login"
-									btn="primary"
-									arrow
-								>
-									Start now
-								</ElemButton>
+								{user ? (
+									<ElemButton href="/companies" btn="primary">
+										Explore
+									</ElemButton>
+								) : (
+									<ElemButton href="/login" btn="primary" arrow>
+										Log In
+									</ElemButton>
+								)}
 							</div>
 						</div>
 						<div className="relative col-span-2 flex flex-col justify-center">
