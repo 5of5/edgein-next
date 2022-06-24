@@ -12,6 +12,7 @@
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.7",
+		"@formspark/use-formspark": "^0.1.39",
 		"@graphql-codegen/cli": "^2.6.2",
 		"@graphql-codegen/introspection": "^2.1.1",
 		"@graphql-codegen/typescript-react-query": "^3.5.14",

@@ -51,7 +51,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 			"text-white bg-transparent focus:ring-primary-800 border-white hover:bg-white hover:text-primary-500";
 	} else if (btn === "ol-primary") {
 		btnClass =
-			"text-primary-500 bg-transparent focus:ring-primary-800 border-primary-500 hover:bg-primary-500 hover:text-white";
+			"text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:border-primary-700 hover:bg-primary-100";
 	} else {
 		btnClass =
 			"border-white bg-white hover:bg-gray-50 hover:text-primary-500 focus:ring-primary-500";
@@ -83,7 +83,11 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	`;
 
 	var component = (
-		<button className={componentClassName + className} onClick={onClick}>
+		<button
+			className={componentClassName + className}
+			onClick={onClick}
+			type="submit"
+		>
 			{loading && <IconSpinner className="animate-spin -ml-1 mr-3 h-5 w-5" />}
 			{arrowLeft && <IconArrowLeft className="h-3 w-6" />}
 			{children}
@@ -107,7 +111,10 @@ type IconProps = {
 	title?: string;
 };
 
-export const IconSpinner: React.FC<IconProps> = ({ className, title = "Loading" }) => {
+export const IconSpinner: React.FC<IconProps> = ({
+	className,
+	title = "Loading",
+}) => {
 	return (
 		<svg
 			className={className}

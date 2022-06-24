@@ -1,3 +1,4 @@
+import "../styles/LoaderPlasma.scss";
 import "../styles/globals.scss";
 import React from "react";
 import TagManager from "react-gtm-module";
@@ -5,7 +6,7 @@ import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { ElemSpinner } from "../components/ElemSpinner";
+import { LoaderPlasma } from "../components/LoaderPlasma";
 import { TheNavbar } from "../components/TheNavbar";
 import { TheFooter } from "../components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -35,7 +36,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 	}, [router]);
 
 	// Global Meta
-
 	const metaTitle = "Web3-focused data intelligence for success - EdgeIn.io";
 	const metaDescription =
 		"Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
@@ -74,8 +74,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 					) : (
 						<>
 							<TheNavbar />
+
 							<main className="overflow-hidden grow selection:bg-primary-200">
-								{pageLoading ? <ElemSpinner /> : <Component {...pageProps} />}
+								{pageLoading ? <LoaderPlasma /> : <Component {...pageProps} />}
 							</main>
 							<TheFooter />
 						</>

@@ -16,24 +16,8 @@ export const ElemPersonCard: React.FC<Props> = ({
 }) => {
 	return (
 		<div>
-			{/* <Link href={href}>
-				<a className="block bg-white p-6 rounded-lg transition-all group hover:shadow-md hover:-translate-y-1 ">
-					<ElemPhoto
-						photos={photos}
-						wrapClass="flex items-center justify-center w-32 h-32 mx-auto rounded-full overflow-hidden"
-						imgClass="object-fit"
-						imgAlt={heading}
-					/>
-					{heading && (
-						<h3 className="font-bold text-center text-xl mt-2 group-hover:opacity-60">
-							{heading}
-						</h3>
-					)}
-					{text && <div className="text-center text-xs">{text}</div>}
-				</a>
-			</Link> */}
 			<Link href={href}>
-				<a className="flex items-center bg-white p-1 rounded-full transition-all group hover:shadow-md hover:-translate-y-0.5">
+				<a className="flex items-center border border-dark-500/10 bg-white p-1 rounded-full transition-all group hover:shadow-md hover:-translate-y-0.5">
 					<ElemPhoto
 						photo={photo}
 						wrapClass="shrink-0 flex items-center justify-center w-20 h-20 rounded-full overflow-hidden"

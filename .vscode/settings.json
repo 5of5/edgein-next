@@ -1,4 +1,11 @@
 {
-	"cSpell.words": ["edgein", "headlessui", "overscroll", "vcfirm", "vcfirms"],
+	"cSpell.words": [
+		"edgein",
+		"headlessui",
+		"loggedin",
+		"overscroll",
+		"vcfirm",
+		"vcfirms"
+	],
 	"css.lint.unknownAtRules": "ignore"
 }

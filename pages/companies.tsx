@@ -109,11 +109,7 @@ const Companies: NextPage<Props> = ({
 				<ElemHeading
 					title="Web3 Companies"
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
-				>
-					{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
-						Submit company
-					</ElemButton> */}
-				</ElemHeading>
+				></ElemHeading>
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
@@ -148,9 +144,9 @@ const Companies: NextPage<Props> = ({
 								options={totalEmployees}
 							/>
 
-							<div className="hidden md:block md:shrink md:basis-0 ">
+							<div className="hidden md:block md:shrink md:basis-0">
 								<div
-									className="px-4 py-1.5 cursor-pointer rounded-md bg-white hover:text-primary-500 hover:ring hover:ring-primary-100"
+									className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
 									onClick={() => setToggleViewMode(!toggleViewMode)}
 								>
 									{toggleViewMode ? (
@@ -227,12 +223,6 @@ const Companies: NextPage<Props> = ({
 														{truncateWords(company.overview, 18)}
 													</div>
 												)}
-												{/* <span>
-													Amount Raised: $
-													{convertToInternationalCurrencySystem(company.investorAmount)}
-												</span> */}
-
-												{/* <span>Total Employees: #{company.totalEmployees}</span> */}
 
 												{/* {company.layer && (
 												<div

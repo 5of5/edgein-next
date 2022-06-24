@@ -1,6 +1,6 @@
 import CookieService from "../utils/cookie";
 import { NextResponse, NextRequest } from "next/server";
-import gql from 'graphql-tag';
+import gql from "graphql-tag";
 import { mutate } from "../graphql/hasuraAdmin";
 
 export async function middleware(req: NextRequest) {
@@ -14,13 +14,14 @@ export async function middleware(req: NextRequest) {
 		[
 			`/`,
 			`/login/`,
+			`/waitlist/`,
 			`/privacy/`,
 			`/terms/`,
 			`/team/`,
 			`/api/login/`,
 			`/api/user/`,
 			`/api/login_attempt/`,
-			'/favicon.ico'
+			"/favicon.ico",
 		].includes(url.pathname) ||
 		process.env.DEV_MODE
 	) {
@@ -57,11 +58,7 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (
-		![
-			`/api/graphql/`,
-		].includes(url.pathname)
-	) {
+	if (![`/api/graphql/`].includes(url.pathname)) {
 		mutate({
 			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {
@@ -74,13 +71,13 @@ export async function middleware(req: NextRequest) {
 			`,
 			variables: {
 				object: {
-					action: 'View',
+					action: "View",
 					page: url.pathname,
 					properties: {},
-					user: user.email
-				}
-			}
-		})
+					user: user.email,
+				},
+			},
+		});
 	}
 
 	return NextResponse.next();

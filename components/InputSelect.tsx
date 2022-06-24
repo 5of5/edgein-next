@@ -22,7 +22,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 				{({ open }) => (
 					<>
 						<div className="relative">
-							<Listbox.Button className="relative w-full text-dark-500 bg-white border border-transparent rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
+							<Listbox.Button className="relative w-full text-dark-500 bg-white border border-dark-500/10 rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
 								<div className="truncate">
 									{value?.title ? value.title : placeholder}
 									<span className="text-gray-400 text-sm ml-2">
@@ -41,7 +41,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 								leaveFrom="opacity-100"
 								leaveTo="opacity-0"
 							>
-								<Listbox.Options className="absolute z-10 mt-1 w-full bg-white divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+								<Listbox.Options className="absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
 									{options.map((option: any) => (
 										<Listbox.Option
 											key={option.id}

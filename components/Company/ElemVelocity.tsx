@@ -62,7 +62,7 @@ export const ElemVelocity: React.FC<Props> = ({
 				className={`${
 					mini
 						? "space-x-2 justify-end"
-						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white rounded-lg"
+						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10"
 				} flex grow`}
 			>
 				{velocityItems.map((item: any, index: number) => {
@@ -72,7 +72,7 @@ export const ElemVelocity: React.FC<Props> = ({
 								item.number > 0
 									? "bg-green-100 text-green-500"
 									: "bg-red-100 text-red-500"
-							} flex items-center text-sm font-bold leading-sm uppercase px-2 py-1 rounded-full`}
+							} flex items-center text-sm font-bold leading-sm uppercase px-2 py-0.5 rounded-full`}
 						>
 							{mini && <item.icon className="h-4 w-4 mr-0.5" />}
 
@@ -83,12 +83,14 @@ export const ElemVelocity: React.FC<Props> = ({
 					);
 
 					return (
-						<div key={index} className="flex items-center justify-between">
+						<div key={index} className="flex items-center space-x-2">
 							{mini ? (
 								<ElemTooltip content={item.text}>{badge}</ElemTooltip>
 							) : (
 								<>
-									<div>{item.text}</div>
+									<div className="text-xs font-semibold uppercase">
+										{item.text}
+									</div>
 									{badge}
 								</>
 							)}
