@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
@@ -22,7 +22,7 @@ export const ElemCredibility: React.FC<Props> = ({
 		return null;
 	}
 
-	let credibilityItems: { text: string; icon: FunctionComponent }[] = [];
+	let credibilityItems: { text: string; icon: React.FC<IconProps> }[] = [];
 
 	if (marketVerified) {
 		credibilityItems.push({ text: "Market Verified", icon: IconMarket });
@@ -46,7 +46,7 @@ export const ElemCredibility: React.FC<Props> = ({
 						: "grid-cols-3 bg-white rounded-lg border border-dark-500/10"
 				}`}
 			>
-				{credibilityItems.map((item: any, index: number) => {
+				{credibilityItems.map((item, index: number) => {
 					const credibilityItem = (
 						<div
 							className={`${

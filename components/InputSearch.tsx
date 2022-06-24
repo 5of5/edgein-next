@@ -6,7 +6,7 @@ type Props = {
 	name?: string;
 	value?: string;
 	placeholder?: string;
-	onChange?: any;
+	onChange?: React.ChangeEventHandler<HTMLInputElement>;
 	size?: "md" | "lg" | "";
 };
 

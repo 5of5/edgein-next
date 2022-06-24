@@ -12,11 +12,11 @@ import {
 	formatDate,
 	runGraphQl,
 } from "../../utils";
-import { GetVcFirmQuery, Vc_Firms } from "../../graphql/types";
+import { GetVcFirmQuery, Investment_Rounds, Vc_Firms } from "../../graphql/types";
 
 type Props = {
 	vcfirm: Vc_Firms;
-	sortByDateAscInvestments: Record<string, any>;
+	sortByDateAscInvestments: Array<Investment_Rounds>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
@@ -76,7 +76,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Date" },
 						]}
 					>
-						{sortedInvestmentRounds.map((theRound: any, index: number) => {
+						{sortedInvestmentRounds.map((theRound, index: number) => {
 							if (!theRound) {
 								return;
 							}
@@ -99,9 +99,9 @@ const VCFirm: NextPage<Props> = (props) => {
 																photo={theRound.company.logo}
 																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
 																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={theRound.company.title}
+																imgAlt={theRound.company.name}
 															/>
-															{theRound.company.title}
+															{theRound.company.name}
 														</a>
 													</Link>
 												
@@ -123,8 +123,8 @@ const VCFirm: NextPage<Props> = (props) => {
 										)}
 									</ElemTableCell>
 									<ElemTableCell header="Date">
-										{theRound.date ? (
-											formatDate(theRound.date, {
+										{theRound.round_date ? (
+											formatDate(theRound.round_date, {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",
@@ -192,10 +192,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
-	const getInvestments = vc_firms.vc_firms[0].investments.map((round: any) => {
+	const getInvestments = vc_firms.vc_firms[0].investments.map((round) => {
 		if (
 			typeof round.investment_round === "object" &&
-			round.investment_round != "undefined"
+			round.investment_round
 		) {
 			return round.investment_round;
 		} else {
@@ -207,13 +207,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		.slice()
 		.sort(
 			(
-				a: { date: string | number | Date },
-				b: { date: string | number | Date }
+				a,
+				b
 			) => {
 				const distantFuture = new Date(8640000000000000);
 
-				let dateA = a ? new Date(a.date) : distantFuture;
-				let dateB = b ? new Date(b.date) : distantFuture;
+				let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+				let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
 				return dateA.getTime() - dateB.getTime();
 			}
 		)

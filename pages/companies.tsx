@@ -319,20 +319,6 @@ const IconList: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
 
 export default Companies;
 
-const getCoinTicker = (coins: any) => {
-	if (!coins) {
-		return "";
-	}
-
-	let ticker = "";
-
-	coins?.map((coin: { ticker: any }) => {
-		ticker = coin.ticker;
-	});
-
-	return ticker;
-};
-
 interface TextFilter {
 	title: string
 	description?: string
