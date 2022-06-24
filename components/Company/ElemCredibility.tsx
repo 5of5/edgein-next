@@ -76,7 +76,7 @@ export const ElemCredibility: React.FC<Props> = ({
 							) : (
 								<>
 									{credibilityItem}
-									<div className="mt-1 text-center text-xs font-semibold uppercase">
+									<div className="mt-1 text-center text-xs font-semibold uppercase tracking-wide">
 										{item.text}
 									</div>
 								</>

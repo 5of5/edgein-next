@@ -83,18 +83,16 @@ const Company: NextPage<Props> = (props) => {
 							<h2 className="text-2xl font-bold">Token Info</h2>
 							<div className="flex-col justify-center flex space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10">
 								<div className="flex items-center space-x-2">
-									<div className="text-xs font-semibold uppercase">
+									<div className="text-xs font-semibold uppercase tracking-wide">
 										Price (USD):
 									</div>
-									<div className="text-sm font-semibold uppercase text-red-500">
-										$40.35
-									</div>
+									<div className=" text-red-500">$40.35</div>
 								</div>
 								<div className="flex items-center space-x-2">
-									<div className="text-xs font-semibold uppercase">
-										Market Cap
+									<div className="text-xs font-semibold uppercase tracking-wide">
+										Market Cap:
 									</div>
-									<div className="text-sm font-semibold uppercase">$168.1M</div>
+									<div className="">$168.1M</div>
 								</div>
 							</div>
 						</section> */}

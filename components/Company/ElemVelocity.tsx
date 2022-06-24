@@ -88,7 +88,7 @@ export const ElemVelocity: React.FC<Props> = ({
 								<ElemTooltip content={item.text}>{badge}</ElemTooltip>
 							) : (
 								<>
-									<div className="text-xs font-semibold uppercase">
+									<div className="text-xs font-semibold uppercase tracking-wide">
 										{item.text}
 									</div>
 									{badge}
