@@ -12,7 +12,7 @@ import { runGraphQl, inRange } from "../utils";
 import { GetVcFirmsQuery } from "../graphql/types";
 
 type Props = {
-	vcFirms: Record<string, any>[];
+	vcFirms: GetVcFirmsQuery['vc_firms'];
 	numberOfInvestments: Record<string, any>[];
 };
 
@@ -70,7 +70,7 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 								.filter(
 									(vcfirm) =>
 										!search ||
-										vcfirm.vcFirm?.toLowerCase().includes(search.toLowerCase())
+										vcfirm.name?.toLowerCase().includes(search.toLowerCase())
 								)
 								.filter(
 									(vcfirm) =>
@@ -94,14 +94,14 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 													photo={vcfirm.logo}
 													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 													imgClass="object-fit max-w-full max-h-full"
-													imgAlt={vcfirm.vcFirm}
+													imgAlt={vcfirm.name}
 												/>
 												<div className="w-full ml-3 space-y-1 overflow-hidden">
 													<h3
 														className="inline text-2xl align-middle line-clamp-1 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
-														title={vcfirm.vcFirm}
+														title={vcfirm.name ?? ""}
 													>
-														{vcfirm.vcFirm}
+														{vcfirm.name}
 													</h3>
 													{vcfirm.investments?.length > 0 && (
 														<div className="inline-flex hover:opacity-70">
