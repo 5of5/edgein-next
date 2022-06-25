@@ -25,38 +25,39 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 
 	// Search Box
 	const [search, setSearch] = useState("");
-	const debouncedSearchTerm = useDebounce(search, 500);
+	// const debouncedSearchTerm = useDebounce(search, 500);
 
 	// Investments Count
 	const [selectedInvestmentCount, setSelectedInvestmentCount] = useState(
 		numberOfInvestments[0]
 	);
 
-	const [page, setPage] = useState<number>(0)
-  const limit = 50
-  const offset = limit * page
+	// const [page, setPage] = useState<number>(0)
+  // const limit = 50
+  // const offset = limit * page
 
-  const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{slug: {_neq: ""}}],
-	}
-	if (debouncedSearchTerm !== "") {
-		filters._and?.push({ _or: [{name: { _ilike: `%${debouncedSearchTerm}%`} }]})
-	}
+  // const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
+	// 	_and: [{slug: {_neq: ""}}],
+	// }
+	// if (debouncedSearchTerm !== "") {
+	// 	filters._and?.push({name: { _ilike: `%${debouncedSearchTerm}%`} })
+	// }
 
-  const {
-    data: vcFirmsData,
-    error,
-    isLoading
-  } = useGetVcFirmsQuery({
-    offset,
-    limit,
-		where: filters as Vc_Firms_Bool_Exp
-  }) 
+  // const {
+  //   data: vcFirmsData,
+  //   error,
+  //   isLoading
+  // } = useGetVcFirmsQuery({
+  //   offset,
+  //   limit,
+	// 	where: filters as Vc_Firms_Bool_Exp
+  // }) 
 
-	if (!isLoading && initialLoad) {
-		setInitialLoad(false)
-	}
-	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
+	// if (!isLoading && initialLoad) {
+	// 	setInitialLoad(false)
+	// }
+	// const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
+	const vcFirms = initialVCFirms
 
 	return (
 		<div>
@@ -99,15 +100,20 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-						 { isLoading && !initialLoad ? <h4>Loading...</h4> :
+						 { !initialLoad ? <h4>Loading...</h4> :
 
 							vcFirms?.
 								filter(
 									(vcfirm) =>
-										(vcfirm.investments?.length >=
+										!search ||
+										vcfirm.name?.toLowerCase().includes(search.toLowerCase())
+								)
+								.filter(
+									(vcfirm) =>
+										(selectedInvestmentCount.rangeEnd === 0 || (vcfirm.investments?.length >=
 											selectedInvestmentCount.rangeStart &&
 											vcfirm.investments?.length <=
-												selectedInvestmentCount.rangeEnd)
+												selectedInvestmentCount.rangeEnd))
 								)
 								//sort list by number of investments
 								.sort(
@@ -150,7 +156,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 									</Link>
 								))}
 						</div>
-						<Pagination count={vcFirmCount} page={page} rowsPerPage={limit} onPageChange={setPage} />
+						{/* <Pagination count={vcFirmCount} page={page} rowsPerPage={limit} onPageChange={setPage} /> */}
 					</div>
 				</div>
 			</div>
@@ -164,7 +170,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	return {
 		props: {
 			vcFirmCount: vcFirms?.vc_firms.length,
-			initialVCFirms: vcFirms?.vc_firms.slice(0, 50),
+			initialVCFirms: vcFirms?.vc_firms,
 			numberOfInvestments: InvestmentsFilters,
 		},
 	};

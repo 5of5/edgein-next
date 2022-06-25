@@ -15,7 +15,6 @@ import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
-	String_Comparison_Exp,
 	useGetCompaniesQuery,
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
@@ -56,7 +55,7 @@ type Props = {
 	totalEmployees: NumericFilter[];
 };
 
-type DeepPartial<T> = T extends object
+export type DeepPartial<T> = T extends object
 	? {
 			[P in keyof T]?: DeepPartial<T[P]>;
 	  }
