@@ -108,6 +108,9 @@ module.exports = {
       // animation: {
       //   blob: 'blob 10s infinite',
       // },
+      animation: {
+        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
       keyframes: {
         blob: {
           '0%, 100%': {
@@ -129,7 +132,7 @@ module.exports = {
       },
       transitionProperty: {
         'transform': 'transform',
-      }
+      },
     },
   },
   plugins: [

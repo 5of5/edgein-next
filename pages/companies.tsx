@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -10,13 +10,43 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
+import { runGraphQl, truncateWords } from "../utils";
 import {
-	runGraphQl,
-	truncateWords,
-} from "../utils";
-import { Companies_Bool_Exp, GetCompaniesDocument, GetCompaniesQuery, useGetCompaniesQuery } from "../graphql/types";
+	Companies_Bool_Exp,
+	GetCompaniesDocument,
+	GetCompaniesQuery,
+	String_Comparison_Exp,
+	useGetCompaniesQuery,
+} from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
+
+const FakeElemCompany: FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 mb-4 w-full">
+				<div className="aspect-square rounded-lg bg-slate-200 w-16 h-16"></div>
+				<div className="flex-1 ml-2 h-6 max-w-full bg-slate-200 rounded"></div>
+			</div>
+			<div className="flex-1 space-y-4 py-1">
+				<div className="h-2 bg-slate-200 rounded"></div>
+				<div className="h-2 bg-slate-200 rounded"></div>
+				<div className="h-2 bg-slate-200 rounded w-2/3"></div>
+			</div>
+			<div className="mt-8 grid grid-cols-2 gap-4">
+				<div className="flex items-center space-x-2">
+					<div className="aspect-square rounded-lg h-7 bg-slate-200"></div>
+					<div className="aspect-square rounded-lg h-7 bg-slate-200"></div>
+					<div className="aspect-square rounded-lg h-7 bg-slate-200"></div>
+				</div>
+				<div className="flex items-center justify-end space-x-2">
+					<div className="rounded-full h-6 w-12 bg-slate-200"></div>
+					<div className="rounded-full h-6 w-12 bg-slate-200"></div>
+				</div>
+			</div>
+		</div>
+	);
+};
 
 type Props = {
 	companiesCount: number
@@ -26,9 +56,11 @@ type Props = {
 	totalEmployees: NumericFilter[];
 };
 
-export type DeepPartial<T> = T extends object ? {
-	[P in keyof T]?: DeepPartial<T[P]>;
-} : T;
+type DeepPartial<T> = T extends object
+	? {
+			[P in keyof T]?: DeepPartial<T[P]>;
+	  }
+	: T;
 
 const Companies: NextPage<Props> = ({
 	companiesCount,
@@ -70,36 +102,50 @@ const Companies: NextPage<Props> = ({
 	// Layout Grid/List
 	const [toggleViewMode, setToggleViewMode] = useState(false);
 
-	const [page, setPage] = useState<number>(0)
-  const limit = 50
-  const offset = limit * page
+	const [page, setPage] = useState<number>(0);
+	const limit = 50;
+	const offset = limit * page;
 
-
-  const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{slug: {_neq: ""}}],
-	}
+	const filters: DeepPartial<Companies_Bool_Exp> = {
+		_and: [{ slug: { _neq: "" } }],
+	};
 	if (debouncedSearchTerm !== "") {
-		filters._and?.push({ _or: [{name: { _ilike: `%${debouncedSearchTerm}%`} }, { coin: { ticker: { _ilike: `%${debouncedSearchTerm}%`} } }]})
+		filters._and?.push({
+			_or: [
+				{ name: { _ilike: `%${debouncedSearchTerm}%` } },
+				{ coin: { ticker: { _ilike: `%${debouncedSearchTerm}%` } } },
+			],
+		});
 	}
 	if (selectedLayer.value) {
-		filters._and?.push({ layer: { _eq: selectedLayer.value} })
+		filters._and?.push({ layer: { _eq: selectedLayer.value } });
 	}
 	if (selectedAmountRaised.rangeEnd !== 0) {
-		filters._and?.push({_and: [{ investor_amount: { _gt: selectedAmountRaised.rangeStart}}, { investor_amount: { _lte: selectedAmountRaised.rangeEnd}}]})
+		filters._and?.push({
+			_and: [
+				{ investor_amount: { _gt: selectedAmountRaised.rangeStart } },
+				{ investor_amount: { _lte: selectedAmountRaised.rangeEnd } },
+			],
+		});
 	}
 	if (selectedTotalEmployees.rangeEnd !== 0) {
-		filters._and?.push({_and: [{ total_employees: { _gt: selectedTotalEmployees.rangeStart}}, { total_employees: { _lte: selectedTotalEmployees.rangeEnd}}]})
+		filters._and?.push({
+			_and: [
+				{ total_employees: { _gt: selectedTotalEmployees.rangeStart } },
+				{ total_employees: { _lte: selectedTotalEmployees.rangeEnd } },
+			],
+		});
 	}
 
-  const {
-    data: companiesData,
-    error,
-    isLoading
-  } = useGetCompaniesQuery({
-    offset,
-    limit,
-		where: filters as Companies_Bool_Exp
-  }) 
+	const {
+		data: companiesData,
+		error,
+		isLoading,
+	} = useGetCompaniesQuery({
+		offset,
+		limit,
+		where: filters as Companies_Bool_Exp,
+	});
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false)
@@ -174,14 +220,34 @@ const Companies: NextPage<Props> = ({
 							</div>
 						</ElemFiltersWrap>
 
+						{companies?.length === 0 && (
+							<>
+								<div className="flex items-center justify-center max-w-xl mx-auto min-h-[40vh] py-12 px-4">
+									<div className="bg-white rounded-2xl border border-dark-500/10 p-6 text-center">
+										<h2 className="text-3xl lg:text-4xl font-bold">
+											No results found
+										</h2>
+										<p className="mt-2 text-xl text-dark-400">
+											Please check spelling or try different filters.
+										</p>
+									</div>
+								</div>
+							</>
+						)}
+
 						<div
 							className={`grid gap-5 grid-cols-1 md:grid-cols-${
 								toggleViewMode ? "1" : "2"
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
-							{ isLoading && !initialLoad ? <h4>Loading...</h4> :
-							companies?.
-								map((company) => {
+							{isLoading && !initialLoad ? (
+								<>
+									{Array.from({ length: 9 }, (_, i) => (
+										<FakeElemCompany key={i} />
+									))}
+								</>
+							) : (
+								companies?.map((company) => {
 									return (
 										<Link key={company.id} href={`/companies/${company.slug}`}>
 											<a
@@ -211,16 +277,16 @@ const Companies: NextPage<Props> = ({
 															{company.name}
 														</h3>
 													</div>
-													{company.coin &&
-															<ElemTooltip
-																content={`Token: ${company.coin.ticker}`}
-																className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
-															>
-																<span className=" text-sm font-bold leading-sm uppercase">
-																	{company.coin.ticker}
-																</span>
-															</ElemTooltip>
-													}
+													{company.coin && (
+														<ElemTooltip
+															content={`Token: ${company.coin.ticker}`}
+															className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
+														>
+															<span className=" text-sm font-bold leading-sm uppercase">
+																{company.coin.ticker}
+															</span>
+														</ElemTooltip>
+													)}
 												</div>
 
 												{company.overview && (
@@ -271,7 +337,8 @@ const Companies: NextPage<Props> = ({
 											</a>
 										</Link>
 									);
-								})}
+								})
+							)}
 						</div>
 						<Pagination count={companiesCount} page={page} rowsPerPage={limit} onPageChange={setPage} />
 					</div>
@@ -335,131 +402,152 @@ const IconList: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
 export default Companies;
 
 interface TextFilter {
-	title: string
-	description?: string
-	value: string
+	title: string;
+	description?: string;
+	value: string;
 }
 
 export interface NumericFilter {
-	title: string
-	description?: string
-	rangeStart: number
-	rangeEnd: number
+	title: string;
+	description?: string;
+	rangeStart: number;
+	rangeEnd: number;
 }
-
 
 const LayersFilters: TextFilter[] = [
 	{
-		title:  "All Layers",
-		value:  "",
-    },
-  {
-		title:  "Layer 0",
-		value:  "Layer 0",
-			description: "Native Code",
-    },{	
-      title:  "Layer 1",
-      value:  "Layer 1",
-			description:  "Programmable Blockchains / Networks",
-    },{			
-      title:  "Layer 2",
-      value:  "Layer 2",
-			description:  "Nodes / Node Providers / Data Platforms",
-    },{	
-      title:  "Layer 2",
-      value:  "Layer 2",
-			description:  "API's / API Providers / Systems",
-    },{	
-      title:  "Layer 4",
-      value:  "Layer 4",
-			description:  "Decentralized Platforms / Contract/Modeling",
-    },{	
-      title:  "Layer 5",
-      value:  "Layer 5",
-			description:  "Applications",
-    },{	
-      title:  "Layer 6",
-      value:  "Layer 6",
-			description:  "Interoperable Digital Assets / NFT's",
-		}
-]
+		title: "All Layers",
+		value: "",
+	},
+	{
+		title: "Layer 0",
+		value: "Layer 0",
+		description: "Native Code",
+	},
+	{
+		title: "Layer 1",
+		value: "Layer 1",
+		description: "Programmable Blockchains / Networks",
+	},
+	{
+		title: "Layer 2",
+		value: "Layer 2",
+		description: "Nodes / Node Providers / Data Platforms",
+	},
+	{
+		title: "Layer 2",
+		value: "Layer 2",
+		description: "API's / API Providers / Systems",
+	},
+	{
+		title: "Layer 4",
+		value: "Layer 4",
+		description: "Decentralized Platforms / Contract/Modeling",
+	},
+	{
+		title: "Layer 5",
+		value: "Layer 5",
+		description: "Applications",
+	},
+	{
+		title: "Layer 6",
+		value: "Layer 6",
+		description: "Interoperable Digital Assets / NFT's",
+	},
+];
 // Amount Raised Filter
 const AmountRaisedFilters: NumericFilter[] = [
-					{
-						title: "All Funding Amounts",
-						rangeStart : 0,
-						rangeEnd : 0,
-					},{
-  					title: "Less than $1M",
-						rangeStart : 0,
-						rangeEnd : 10e5 - 1, //999999
-          },{
-						title: "$1M",
-						rangeStart : 10e5,
-						rangeEnd : 10e5,
-          },{
-						title: "$1M-$10M",
-						rangeStart : 10e5 + 1,
-						rangeEnd : 10e6,
-          },{
-						title: "$11M-$20M",
-						rangeStart : 10e6 + 1,
-						rangeEnd : 20e6,
-          },{
-						title: "$21M-$50M",
-						rangeStart : 20e6 + 1,
-						rangeEnd : 50e6,
-          },{
-						title: "$51M-$100M",
-						rangeStart : 50e6 + 1,
-						rangeEnd : 10e7,
-          },{
-						title: "$101M-$200M",
-						rangeStart : 10e7 + 1,
-						rangeEnd : 20e7,
-          },{
-						title: "$200M+",
-						rangeStart : 20e7,
-						rangeEnd : 90e14,
-					}
-        ]
+	{
+		title: "All Funding Amounts",
+		rangeStart: 0,
+		rangeEnd: 0,
+	},
+	{
+		title: "Less than $1M",
+		rangeStart: 0,
+		rangeEnd: 10e5 - 1, //999999
+	},
+	{
+		title: "$1M",
+		rangeStart: 10e5,
+		rangeEnd: 10e5,
+	},
+	{
+		title: "$1M-$10M",
+		rangeStart: 10e5 + 1,
+		rangeEnd: 10e6,
+	},
+	{
+		title: "$11M-$20M",
+		rangeStart: 10e6 + 1,
+		rangeEnd: 20e6,
+	},
+	{
+		title: "$21M-$50M",
+		rangeStart: 20e6 + 1,
+		rangeEnd: 50e6,
+	},
+	{
+		title: "$51M-$100M",
+		rangeStart: 50e6 + 1,
+		rangeEnd: 10e7,
+	},
+	{
+		title: "$101M-$200M",
+		rangeStart: 10e7 + 1,
+		rangeEnd: 20e7,
+	},
+	{
+		title: "$200M+",
+		rangeStart: 20e7,
+		rangeEnd: 90e14,
+	},
+];
 // Total Employees Filter
 const EmployeesFilters: NumericFilter[] = [
-{
-						title: "Number of Employees",
-						rangeStart : 0,
-						rangeEnd : 0,
-},{
-						title: "Less than 10 Employees",
-						rangeStart : 0,
-						rangeEnd : 9,
-					},{
-						title: "10-15 Employees",
-						rangeStart : 10,
-						rangeEnd : 15,
-					},{
-						title: "16-30 Employees",
-						rangeStart : 16,
-						rangeEnd : 30,
-					},{
-						title: "31-100 Employees",
-						rangeStart : 31,
-						rangeEnd : 100,
-					},{
-						title: "101-200 Employees",
-						rangeStart : 101,
-						rangeEnd : 200,
-					},{
-						title: "201-500 Employees",
-						rangeStart : 201,
-						rangeEnd : 500,
-					},{
-						title: "501-1000 Employees",
-						rangeStart : 501,
-						rangeEnd : 1000,
-					},{
-						title: "1000+ Employees",
-						rangeStart : 1001,
-						rangeEnd : 90e14,
-					}
-]
+	{
+		title: "Number of Employees",
+		rangeStart: 0,
+		rangeEnd: 0,
+	},
+	{
+		title: "Less than 10 Employees",
+		rangeStart: 0,
+		rangeEnd: 9,
+	},
+	{
+		title: "10-15 Employees",
+		rangeStart: 10,
+		rangeEnd: 15,
+	},
+	{
+		title: "16-30 Employees",
+		rangeStart: 16,
+		rangeEnd: 30,
+	},
+	{
+		title: "31-100 Employees",
+		rangeStart: 31,
+		rangeEnd: 100,
+	},
+	{
+		title: "101-200 Employees",
+		rangeStart: 101,
+		rangeEnd: 200,
+	},
+	{
+		title: "201-500 Employees",
+		rangeStart: 201,
+		rangeEnd: 500,
+	},
+	{
+		title: "501-1000 Employees",
+		rangeStart: 501,
+		rangeEnd: 1000,
+	},
+	{
+		title: "1000+ Employees",
+		rangeStart: 1001,
+		rangeEnd: 90e14,
+	},
+];
