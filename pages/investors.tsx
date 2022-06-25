@@ -53,7 +53,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 		where: filters as Vc_Firms_Bool_Exp
   }) 
 
-	if (!isLoading) {
+	if (!isLoading && initialLoad) {
 		setInitialLoad(false)
 	}
 	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
@@ -99,7 +99,9 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-							{vcFirms?.
+						 { isLoading && !initialLoad ? <h4>Loading...</h4> :
+
+							vcFirms?.
 								filter(
 									(vcfirm) =>
 										(vcfirm.investments?.length >=
@@ -157,7 +159,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(GetVcFirmsDocument);
+	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(GetVcFirmsDocument, {where: {slug: {_neq: ""}}});
 		
 	return {
 		props: {

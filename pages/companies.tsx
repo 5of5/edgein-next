@@ -101,7 +101,7 @@ const Companies: NextPage<Props> = ({
 		where: filters as Companies_Bool_Exp
   }) 
 
-	if (!isLoading) {
+	if (!isLoading && initialLoad) {
 		setInitialLoad(false)
 	}
 	const companies = initialLoad ? initialCompanies : companiesData?.companies
@@ -179,7 +179,7 @@ const Companies: NextPage<Props> = ({
 								toggleViewMode ? "1" : "2"
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
-							{ isLoading ? <h4>Loading...</h4> :
+							{ isLoading && !initialLoad ? <h4>Loading...</h4> :
 							companies?.
 								map((company) => {
 									return (
@@ -282,7 +282,7 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument);
+	const { data: companies } = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument, {where: {slug: {_neq: ""}}});
 		
 	return {
 		props: {
