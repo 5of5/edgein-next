@@ -4843,6 +4843,7 @@ export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __ty
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  where: Vc_Firms_Bool_Exp;
 }>;
 
 
@@ -5132,13 +5133,8 @@ useGetVcFirmQuery.getKey = (variables: GetVcFirmQueryVariables) => ['GetVCFirm',
 
 useGetVcFirmQuery.fetcher = (variables: GetVcFirmQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmQuery, GetVcFirmQueryVariables>(GetVcFirmDocument, variables, options);
 export const GetVcFirmsDocument = `
-    query GetVCFirms($limit: Int, $offset: Int) {
-  vc_firms(
-    where: {slug: {_neq: ""}}
-    order_by: {slug: asc}
-    limit: $limit
-    offset: $offset
-  ) {
+    query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
+  vc_firms(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
     id
     name
     slug
@@ -5153,21 +5149,21 @@ export const useGetVcFirmsQuery = <
       TData = GetVcFirmsQuery,
       TError = Error
     >(
-      variables?: GetVcFirmsQueryVariables,
+      variables: GetVcFirmsQueryVariables,
       options?: UseQueryOptions<GetVcFirmsQuery, TError, TData>
     ) =>
     useQuery<GetVcFirmsQuery, TError, TData>(
-      variables === undefined ? ['GetVCFirms'] : ['GetVCFirms', variables],
+      ['GetVCFirms', variables],
       fetcher<GetVcFirmsQuery, GetVcFirmsQueryVariables>(GetVcFirmsDocument, variables),
       options
     );
 useGetVcFirmsQuery.document = GetVcFirmsDocument;
 
 
-useGetVcFirmsQuery.getKey = (variables?: GetVcFirmsQueryVariables) => variables === undefined ? ['GetVCFirms'] : ['GetVCFirms', variables];
+useGetVcFirmsQuery.getKey = (variables: GetVcFirmsQueryVariables) => ['GetVCFirms', variables];
 ;
 
-useGetVcFirmsQuery.fetcher = (variables?: GetVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsQuery, GetVcFirmsQueryVariables>(GetVcFirmsDocument, variables, options);
+useGetVcFirmsQuery.fetcher = (variables: GetVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsQuery, GetVcFirmsQueryVariables>(GetVcFirmsDocument, variables, options);
 export const GetVcFirmsPathDocument = `
     query GetVCFirmsPath {
   vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {

@@ -12,18 +12,33 @@ import {
 	ReferenceField,
 	ReferenceInput,
 	SelectInput,
+	DateInput,
+	SelectField,
+	NumberInput,
+	DateField,
+	NumberField,
 } from "react-admin";
-import BookIcon from "@mui/icons-material/Book";
-export const companyIcon = BookIcon;
 
 export const InvestmentRoundsList = () => (
 	<List>
 		<Datagrid>
 			<TextField source="id" />
-			<TextField source="round" />
 			<ReferenceField label="Company" source="company_id" reference="companies">
 				<TextField source="name" />
 			</ReferenceField>
+			<DateField source="round_date" />
+			<SelectField source="round" choices={[
+					{
+						id:"Seed",
+						name: "Seed"
+					},
+					{
+						id:"Series A",
+						name: "Series A"
+					},
+			]} />
+			<NumberField source="amount" />
+			<NumberField source="valuation" />
 			<EditButton />
 		</Datagrid>
 	</List>
@@ -41,10 +56,22 @@ export const InvestmentRoundsEdit = () => (
 	<Edit title={<InvestmentRoundsTitle />}>
 		<SimpleForm>
 			<TextInput disabled source="id" />
-			<TextInput source="round" />
-			<ReferenceField label="Company" source="company_id" reference="companies">
-				<TextField source="name" />
-			</ReferenceField>
+			<ReferenceInput label="Company" source="company_id" reference="companies">
+        <SelectInput optionText="name" />
+			</ReferenceInput>
+			<DateInput source="round_date" />
+			<SelectInput source="round" choices={[
+					{
+						id:"Seed",
+						name: "Seed"
+					},
+					{
+						id:"Series A",
+						name: "Series A"
+					},
+			]} />
+			<NumberInput source="amount" />
+			<NumberInput source="valuation" />
 		</SimpleForm>
 	</Edit>
 );
@@ -52,10 +79,22 @@ export const InvestmentRoundsEdit = () => (
 export const InvestmentRoundsCreate = () => (
 	<Create title="Create a Investment Round">
 		<SimpleForm>
-			<TextInput source="round" />
 			<ReferenceInput label="Company" source="company_id" reference="companies">
-				<SelectInput optionText="name" />
+        <SelectInput optionText="name" />
 			</ReferenceInput>
+			<DateInput source="round_date" />
+			<SelectField source="round" choices={[
+					{
+						id:"Seed",
+						name: "Seed"
+					},
+					{
+						id:"Series A",
+						name: "Series A"
+					},
+			]} />
+			<NumberInput source="amount" />
+			<NumberInput source="valuation" />
 		</SimpleForm>
 	</Create>
 );

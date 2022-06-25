@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
 import { ElemHeading } from "../components/ElemHeading";
@@ -12,28 +11,34 @@ import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import {
+	runGraphQl,
 	truncateWords,
 } from "../utils";
-import { Companies_Bool_Exp, String_Comparison_Exp, useGetCompaniesQuery } from "../graphql/types";
+import { Companies_Bool_Exp, GetCompaniesDocument, GetCompaniesQuery, useGetCompaniesQuery } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
+import { Pagination } from "../components/Pagination";
 
 type Props = {
+	companiesCount: number
+	initialCompanies: GetCompaniesQuery['companies']
 	companyLayers: TextFilter[];
 	amountRaised: NumericFilter[];
 	totalEmployees: NumericFilter[];
 };
 
-type DeepPartial<T> = T extends object ? {
+export type DeepPartial<T> = T extends object ? {
 	[P in keyof T]?: DeepPartial<T[P]>;
 } : T;
 
 const Companies: NextPage<Props> = ({
+	companiesCount,
+	initialCompanies,
 	companyLayers,
 	amountRaised,
 	totalEmployees,
 }) => {
-	const router = useRouter();
-
+	const [initialLoad, setInitialLoad] = useState(true);
+	
 	// Search Box
 	const [search, setSearch] = useState("");
 	const debouncedSearchTerm = useDebounce(search, 500);
@@ -87,7 +92,7 @@ const Companies: NextPage<Props> = ({
 	}
 
   const {
-    data: companies,
+    data: companiesData,
     error,
     isLoading
   } = useGetCompaniesQuery({
@@ -95,6 +100,11 @@ const Companies: NextPage<Props> = ({
     limit,
 		where: filters as Companies_Bool_Exp
   }) 
+
+	if (!isLoading) {
+		setInitialLoad(false)
+	}
+	const companies = initialLoad ? initialCompanies : companiesData?.companies
 
 	return (
 		<div>
@@ -170,8 +180,8 @@ const Companies: NextPage<Props> = ({
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
 							{ isLoading ? <h4>Loading...</h4> :
-							companies?.companies
-								.map((company) => {
+							companies?.
+								map((company) => {
 									return (
 										<Link key={company.id} href={`/companies/${company.slug}`}>
 											<a
@@ -263,6 +273,7 @@ const Companies: NextPage<Props> = ({
 									);
 								})}
 						</div>
+						<Pagination count={companiesCount} page={page} rowsPerPage={limit} onPageChange={setPage} />
 					</div>
 				</div>
 			</div>
@@ -271,8 +282,12 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+	const { data: companies } = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument);
+		
 	return {
 		props: {
+			companiesCount: companies?.companies.length,
+			initialCompanies: companies?.companies.slice(0, 50),
 			companyLayers: LayersFilters,
 			amountRaised: AmountRaisedFilters,
 			totalEmployees: EmployeesFilters,
@@ -325,7 +340,7 @@ interface TextFilter {
 	value: string
 }
 
-interface NumericFilter {
+export interface NumericFilter {
 	title: string
 	description?: string
 	rangeStart: number
@@ -370,12 +385,12 @@ const LayersFilters: TextFilter[] = [
 ]
 // Amount Raised Filter
 const AmountRaisedFilters: NumericFilter[] = [
-{
+					{
 						title: "All Funding Amounts",
 						rangeStart : 0,
 						rangeEnd : 0,
-},{
-  						title: "Less than $1M",
+					},{
+  					title: "Less than $1M",
 						rangeStart : 0,
 						rangeEnd : 10e5 - 1, //999999
           },{

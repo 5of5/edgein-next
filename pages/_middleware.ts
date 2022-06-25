@@ -19,8 +19,10 @@ export async function middleware(req: NextRequest) {
 			`/team/`,
 			`/api/login/`,
 			`/api/user/`,
+			`/admin/app/`,
+			`/404/`,
 			`/api/login_attempt/`,
-			"/favicon.ico",
+			`/favicon.ico`,
 		].includes(url.pathname) ||
 		process.env.DEV_MODE
 	) {

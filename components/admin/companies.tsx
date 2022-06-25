@@ -1,6 +1,6 @@
 // in posts.js
 import * as React from "react";
-import { List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 export const companyIcon = BookIcon;
 
@@ -9,9 +9,55 @@ export const CompanyList = () => (
         <Datagrid>
             <TextField source="id" />
             <TextField source="name" />
-            <TextField source="layer" />
-            <TextField source="average_note" />
-            <TextField source="views" />
+            <TextField source="slug" />
+            <SelectField source="layer" choices={[
+                {
+                    id:"Layer 0",
+                    name: "Layer 0 - Native Code"
+                },
+                {
+                    id:"Layer 1",
+                    name: "Layer 1 - Programmable Blockchains / Networks"
+                },
+                {
+                    id:"Layer 2",
+                    name: "Layer 2 - Nodes / Node Providers / Data Platforms"
+                },
+                {
+                    id:"Layer 3",
+                    name: "Layer 3 - API's / API Providers / Systems"
+                },
+                {
+                    id:"Layer 4",
+                    name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
+                },
+                {
+                    id:"Layer 5",
+                    name: "Layer 5 - Applications"
+                },
+                {
+                    id:"Layer 6",
+                    name: "Layer 6 - Interoperable Digital Assets / NFT's"
+                },
+            ]} />
+            <TextField source="layer_detail" />
+            <ReferenceField label="Coin" source="coin_id" reference="coins">
+				<TextField source="name" />
+			</ReferenceField>
+            <NumberField source="total_employees" />
+            <TextField source="github" />
+            <TextField source="notes" />
+            <TextField source="overview" />
+            <TextField source="website" />
+            <TextField source="careers_page" />
+            <TextField source="company_linkedin" />
+            <TextField source="year_founded" />
+            <TextField source="investor_amount" />
+            <TextField source="total_valuation" />
+            <TextField source="white_paper" />
+            <TextField source="market_verified" />
+            <TextField source="velocity_linkedin" />
+            <TextField source="velocity_token" />
             <EditButton />
         </Datagrid>
     </List>
@@ -29,7 +75,55 @@ export const CompanyEdit = () => (
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="name" />
-            <TextInput source="layer" />
+            <TextInput source="slug" />
+            <SelectField source="layer" choices={[
+                {
+                    id:"Layer 0",
+                    name: "Layer 0 - Native Code"
+                },
+                {
+                    id:"Layer 1",
+                    name: "Layer 1 - Programmable Blockchains / Networks"
+                },
+                {
+                    id:"Layer 2",
+                    name: "Layer 2 - Nodes / Node Providers / Data Platforms"
+                },
+                {
+                    id:"Layer 3",
+                    name: "Layer 3 - API's / API Providers / Systems"
+                },
+                {
+                    id:"Layer 4",
+                    name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
+                },
+                {
+                    id:"Layer 5",
+                    name: "Layer 5 - Applications"
+                },
+                {
+                    id:"Layer 6",
+                    name: "Layer 6 - Interoperable Digital Assets / NFT's"
+                },
+            ]} />
+            <TextInput source="layer_detail" />
+            <ReferenceInput label="Coin" source="coin_id" reference="coins">
+                <SelectInput optionText="name" />
+			</ReferenceInput>
+            <NumberField source="total_employees" />
+            <TextInput source="github" />
+            <TextInput source="notes" />
+            <TextInput source="overview" />
+            <TextInput source="website" />
+            <TextInput source="careers_page" />
+            <TextInput source="company_linkedin" />
+            <TextInput source="year_founded" />
+            <TextInput source="investor_amount" />
+            <TextInput source="total_valuation" />
+            <TextInput source="white_paper" />
+            <TextInput source="market_verified" />
+            <TextInput source="velocity_linkedin" />
+            <TextInput source="velocity_token" />
         </SimpleForm>
     </Edit>
 );
@@ -37,11 +131,56 @@ export const CompanyEdit = () => (
 export const CompanyCreate = () => (
     <Create title="Create a Company">
         <SimpleForm>
-            <TextInput source="title" />
-            <TextInput source="teaser" options={{ multiline: true }} />
-            <TextInput multiline source="body" />
-            <TextInput label="Publication date" source="published_at" />
-            <TextInput source="average_note" />
+        <TextInput source="name" />
+            <TextInput source="slug" />
+            <SelectField source="layer" choices={[
+                {
+                    id:"Layer 0",
+                    name: "Layer 0 - Native Code"
+                },
+                {
+                    id:"Layer 1",
+                    name: "Layer 1 - Programmable Blockchains / Networks"
+                },
+                {
+                    id:"Layer 2",
+                    name: "Layer 2 - Nodes / Node Providers / Data Platforms"
+                },
+                {
+                    id:"Layer 3",
+                    name: "Layer 3 - API's / API Providers / Systems"
+                },
+                {
+                    id:"Layer 4",
+                    name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
+                },
+                {
+                    id:"Layer 5",
+                    name: "Layer 5 - Applications"
+                },
+                {
+                    id:"Layer 6",
+                    name: "Layer 6 - Interoperable Digital Assets / NFT's"
+                },
+            ]} />
+            <TextInput source="layer_detail" />
+            <ReferenceInput label="Coin" source="coin_id" reference="coins">
+                <SelectInput optionText="name" />
+			</ReferenceInput>
+            <NumberField source="total_employees" />
+            <TextInput source="github" />
+            <TextInput source="notes" />
+            <TextInput source="overview" />
+            <TextInput source="website" />
+            <TextInput source="careers_page" />
+            <TextInput source="company_linkedin" />
+            <TextInput source="year_founded" />
+            <TextInput source="investor_amount" />
+            <TextInput source="total_valuation" />
+            <TextInput source="white_paper" />
+            <TextInput source="market_verified" />
+            <TextInput source="velocity_linkedin" />
+            <TextInput source="velocity_token" />
         </SimpleForm>
     </Create>
 );

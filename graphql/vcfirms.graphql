@@ -23,8 +23,8 @@ query GetVCFirm($slug: String!) {
   }
 }
 
-query GetVCFirms($limit: Int, $offset: Int) {
-  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}, limit: $limit, offset: $offset) {
+query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
+  vc_firms(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
     id
     name
     slug
