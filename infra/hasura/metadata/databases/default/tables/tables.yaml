@@ -1,4 +1,6 @@
 - "!include public_actions.yaml"
+- "!include public_blockchains.yaml"
+- "!include public_coins.yaml"
 - "!include public_companies.yaml"
 - "!include public_investment_rounds.yaml"
 - "!include public_investments.yaml"

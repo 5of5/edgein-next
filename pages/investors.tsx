@@ -8,21 +8,56 @@ import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { runGraphQl, inRange } from "../utils";
+import { GetVcFirmsDocument, GetVcFirmsQuery, useGetVcFirmsQuery, Vc_Firms_Bool_Exp } from "../graphql/types";
+import { DeepPartial, NumericFilter } from "./companies";
+import { useDebounce } from "../hooks/useDebounce";
+import { Pagination } from "../components/Pagination";
+import { runGraphQl } from "../utils";
 
 type Props = {
-	vcFirms: Record<string, any>[];
-	numberOfInvestments: Record<string, any>[];
+	vcFirmCount: number
+	initialVCFirms: GetVcFirmsQuery['vc_firms']
+	numberOfInvestments: NumericFilter[];
 };
 
-const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
+const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInvestments }) => {
+	const [initialLoad, setInitialLoad] = useState(true);
+
 	// Search Box
 	const [search, setSearch] = useState("");
+	// const debouncedSearchTerm = useDebounce(search, 500);
 
 	// Investments Count
 	const [selectedInvestmentCount, setSelectedInvestmentCount] = useState(
 		numberOfInvestments[0]
 	);
+
+	// const [page, setPage] = useState<number>(0)
+  // const limit = 50
+  // const offset = limit * page
+
+  // const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
+	// 	_and: [{slug: {_neq: ""}}],
+	// }
+	// if (debouncedSearchTerm !== "") {
+	// 	filters._and?.push({name: { _ilike: `%${debouncedSearchTerm}%`} })
+	// }
+
+  // const {
+  //   data: vcFirmsData,
+  //   error,
+  //   isLoading
+  // } = useGetVcFirmsQuery({
+  //   offset,
+  //   limit,
+	// 	where: filters as Vc_Firms_Bool_Exp
+  // }) 
+
+	// if (!isLoading && initialLoad) {
+	// 	setInitialLoad(false)
+	// }
+	// const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
+	const vcFirms = initialVCFirms
 
 	return (
 		<div>
@@ -65,19 +100,20 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-							{vcFirms
-								.filter(
+						 { !initialLoad ? <h4>Loading...</h4> :
+
+							vcFirms?.
+								filter(
 									(vcfirm) =>
 										!search ||
-										vcfirm.vcFirm?.toLowerCase().includes(search.toLowerCase())
+										vcfirm.name?.toLowerCase().includes(search.toLowerCase())
 								)
 								.filter(
 									(vcfirm) =>
-										!selectedInvestmentCount.number ||
-										(vcfirm.investments?.length >=
+										(selectedInvestmentCount.rangeEnd === 0 || (vcfirm.investments?.length >=
 											selectedInvestmentCount.rangeStart &&
 											vcfirm.investments?.length <=
-												selectedInvestmentCount.rangeEnd)
+												selectedInvestmentCount.rangeEnd))
 								)
 								//sort list by number of investments
 								.sort(
@@ -90,17 +126,17 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-5 flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out transform hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
 											<div className="w-full flex items-center">
 												<ElemPhoto
-													photos={vcfirm.logo}
+													photo={vcfirm.logo}
 													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 													imgClass="object-fit max-w-full max-h-full"
-													imgAlt={vcfirm.vcFirm}
+													imgAlt={vcfirm.name}
 												/>
 												<div className="w-full ml-3 space-y-1 overflow-hidden">
 													<h3
 														className="inline text-2xl align-middle line-clamp-1 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
-														title={vcfirm.vcFirm}
+														title={vcfirm.name ?? ""}
 													>
-														{vcfirm.vcFirm}
+														{vcfirm.name}
 													</h3>
 													{vcfirm.investments?.length > 0 && (
 														<div className="inline-flex hover:opacity-70">
@@ -120,6 +156,7 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 									</Link>
 								))}
 						</div>
+						{/* <Pagination count={vcFirmCount} page={page} rowsPerPage={limit} onPageChange={setPage} /> */}
 					</div>
 				</div>
 			</div>
@@ -128,73 +165,13 @@ const Investors: NextPage<Props> = ({ vcFirms, numberOfInvestments }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl(
-		'{ vcFirms(_order_by: {vcFirm: "asc"}, _filter: {slug: {_ne: ""}})  { id, vcFirm, slug, logo, investments {id, name} }}'
-	);
-
-	// Number of Investments Filter
-	const getNumberOfInvestments = [
-		...Array.from(
-			new Set(
-				vcFirms.vcFirms.map((investor: { investments: any }, index: any) => {
-					const investmentsCount = investor.investments?.length || 0;
-
-					let text = null;
-					let rangeStart = null;
-					let rangeEnd = null;
-
-					if (investmentsCount === 0) {
-						text = "Number of Investments";
-						rangeStart = 0;
-						rangeEnd = 0;
-					} else if (inRange(investmentsCount, 1, 5)) {
-						text = "5 or less Investments";
-						rangeStart = 1;
-						rangeEnd = 5;
-					} else if (inRange(investmentsCount, 6, 15)) {
-						text = "6-15 Investments";
-						rangeStart = 6;
-						rangeEnd = 15;
-					} else if (inRange(investmentsCount, 16, 25)) {
-						text = "16-25 Investments";
-						rangeStart = 16;
-						rangeEnd = 25;
-					} else if (investmentsCount > 25) {
-						text = "25+ Investments";
-						rangeStart = 25;
-						rangeEnd = 9999999999999;
-					}
-
-					return {
-						id: index,
-						title: text,
-						number: investmentsCount,
-						rangeStart: rangeStart,
-						rangeEnd: rangeEnd,
-					};
-				})
-			)
-		),
-	];
-
-	const investmentGroups: any[] = [];
-
-	const uniqueInvestmentGroups = getNumberOfInvestments
-		.filter((group: any) => {
-			const isDuplicate = investmentGroups.includes(group.title);
-
-			if (!isDuplicate) {
-				investmentGroups.push(group.title);
-				return true;
-			}
-			return false;
-		})
-		.sort((a: any, b: any) => a.number - b.number);
-
+	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(GetVcFirmsDocument, {where: {slug: {_neq: ""}}});
+		
 	return {
 		props: {
-			vcFirms: vcFirms.vcFirms,
-			numberOfInvestments: uniqueInvestmentGroups,
+			vcFirmCount: vcFirms?.vc_firms.length,
+			initialVCFirms: vcFirms?.vc_firms,
+			numberOfInvestments: InvestmentsFilters,
 		},
 	};
 };
@@ -225,3 +202,27 @@ const IconCash: React.FC<IconProps> = ({ className, title }) => {
 		</svg>
 	);
 };
+
+// Total Investments Filter
+const InvestmentsFilters: NumericFilter[] = [{
+	title: "Number of Investments", 
+	rangeStart:  0, 
+	rangeEnd:  0, 
+		},{
+	title: "5 or less Investments", 
+	rangeStart:  1, 
+	rangeEnd:  5, 
+	},{
+		title: "6-15 Investments", 
+	rangeStart:  6, 
+	rangeEnd:  15, 
+	},{
+		title: "16-25 Investments", 
+	rangeStart:  16, 
+	rangeEnd:  25, 
+	},{
+		title: "25+ Investments", 
+	rangeStart:  25, 
+	rangeEnd:  9999999999999
+	}
+	]

@@ -19,8 +19,10 @@ export async function middleware(req: NextRequest) {
 			`/team/`,
 			`/api/login/`,
 			`/api/user/`,
+			`/admin/app/`,
+			`/404/`,
 			`/api/login_attempt/`,
-			"/favicon.ico",
+			`/favicon.ico`,
 		].includes(url.pathname) ||
 		process.env.DEV_MODE
 	) {
@@ -33,7 +35,6 @@ export async function middleware(req: NextRequest) {
 	) {
 		return NextResponse.next();
 	}
-
 	let user;
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
@@ -43,7 +44,6 @@ export async function middleware(req: NextRequest) {
 			);
 		}
 	} catch (error) {
-		console.log(error);
 		return NextResponse.redirect(
 			new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 		);

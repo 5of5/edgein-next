@@ -1,7 +1,7 @@
 import React, { useState, FC, PropsWithChildren } from "react";
 
 type Props = {
-	className?: any;
+	className?: string;
 	delay?: number;
 	direction?: "top" | "right" | "bottom" | "left";
 	size?: "md" | "lg" | "";

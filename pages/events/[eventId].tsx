@@ -139,16 +139,20 @@ const Event: NextPage<Props> = ({ event }) => {
 };
 
 export async function getStaticPaths() {
-	const {
-		data: { events },
-	} = await runGraphQl("{ events { slug }}");
-
 	return {
-		paths: events
-			.filter((ev: { slug: string }) => ev.slug)
-			.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
+		paths: [],
 		fallback: true, // false or 'blocking'
-	};
+	}
+	// const {
+	// 	data: events,
+	// } = await runGraphQl<{events?:{slug:string}[]}>("{ events { slug }}");
+
+	// return {
+	// 	paths: events?.events?.
+	// 		filter((ev: { slug: string }) => ev.slug)
+	// 		.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
+	// 	fallback: true, // false or 'blocking'
+	// };
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
@@ -166,7 +170,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     }
   }
 `;
-	const { data: events } = await runGraphQl(gql);
+	const { data: events } = await runGraphQl<{events:Record<string, any>[]}>(gql);
 
 	if (!(events && events.events && events.events[0])) {
 		return {

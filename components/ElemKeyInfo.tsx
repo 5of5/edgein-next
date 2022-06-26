@@ -10,18 +10,17 @@ import {
 type Props = {
 	className?: string;
 	heading?: string;
-	website?: string;
-	totalFundingRaised?: number;
-	whitePaper?: string;
+	website?: string | null;
+	totalFundingRaised?: string | null;
+	whitePaper?: string | null;
 	totalEmployees?: number;
-	yearFounded?: string;
-	roles?: Array<string>;
-	companies?: Array<string>;
+	yearFounded?: string | null;
+	roles?: string | null;
 	investmentsLength?: number;
 	emails?: Array<Object>;
-	linkedIn?: string;
-	github?: string;
-	careerPage?: string;
+	linkedIn?: string | null;
+	github?: string | null;
+	careerPage?: string | null;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -33,7 +32,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	totalEmployees,
 	yearFounded,
 	roles = [],
-	companies = [],
 	investmentsLength = 0,
 	emails = [],
 	linkedIn,
@@ -64,7 +62,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
 						<span className="font-bold mr-1">
-							{convertToInternationalCurrencySystem(totalFundingRaised)}
+							{convertToInternationalCurrencySystem(Number(totalFundingRaised))}
 						</span>
 						Total Funding Raised
 					</div>
@@ -133,27 +131,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<div className="inline-flex py-3">
 						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
 						<div>
-							{roles.map((role: any, i: number) => [
-								i > 0 && ", ",
-								<Fragment key={i}>{role}</Fragment>,
-							])}
-						</div>
-					</div>
-				)}
-
-				{companies && companies.length > 0 && (
-					<div className="inline-flex py-3">
-						<IconCompanies
-							title="Companies"
-							className="h-6 w-6 mr-1 text-primary-500"
-						/>
-						<div>
-							{companies.map((company: any, i: number) => [
-								i > 0 && ", ",
-								<Link key={company.id} href={`/companies/${company.slug}`}>
-									<a className="hover:opacity-70">{company.title}</a>
-								</Link>,
-							])}
+								{roles}
 						</div>
 					</div>
 				)}

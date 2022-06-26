@@ -1,10 +1,11 @@
 import React from "react";
+import { Team_Members } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
 
 type Props = {
 	className?: string;
 	heading?: string;
-	people: Record<string, any>[];
+	people: Team_Members[];
 };
 
 export const ElemTeamGrid: React.FC<Props> = ({
@@ -19,15 +20,13 @@ export const ElemTeamGrid: React.FC<Props> = ({
 				{people.map((teamMember) => {
 					return (
 						<React.Fragment key={teamMember.id}>
-							{teamMember.person.map((profile: any) => (
-								<ElemPersonCard
-									key={profile.id}
-									href={`/people/${profile.slug}`}
-									photos={profile.picture}
-									heading={profile.name}
-									text={teamMember.function}
-								/>
-							))}
+							{ teamMember.person && <ElemPersonCard
+								key={teamMember.person.id}
+								href={`/people/${teamMember.person.slug}`}
+								photo={teamMember.person.picture}
+								heading={teamMember.person.name}
+								text={teamMember.function}
+							/> }
 						</React.Fragment>
 					);
 				})}

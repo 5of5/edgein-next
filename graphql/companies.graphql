@@ -1,0 +1,87 @@
+query GetCompany($slug: String!) {
+  companies(where: {slug: {_eq: $slug}}) {
+    id
+    name
+    coin {
+      id
+      ticker
+    }
+    slug
+    logo
+    layer
+    overview
+    investor_amount
+    white_paper
+    total_employees
+    year_founded
+    website
+    market_verified
+    company_linkedin
+    careers_page
+    github
+    velocity_linkedin
+    velocity_token
+    teamMembers {
+      id
+      person {
+        id
+        slug
+        name
+        picture
+      }
+      function
+      start_date
+      end_date
+    }
+    investment_rounds {
+      id
+      round_date
+      round
+      amount
+      investments {
+        id
+        person {
+          id
+          slug
+          name
+          picture
+        }
+        vc_firm {
+          id
+          slug
+          name
+          logo
+        }
+      }
+    }
+  }
+}
+
+query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
+  companies(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
+    id
+    name
+    slug
+    layer
+    coin {
+      ticker
+    }
+    investor_amount
+    total_employees
+    logo
+    overview
+    github
+    company_linkedin
+    market_verified
+    velocity_linkedin
+    velocity_token
+  }
+}
+
+query GetCompaniesPaths {
+  companies(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
+    id
+    name
+    slug
+  }
+}

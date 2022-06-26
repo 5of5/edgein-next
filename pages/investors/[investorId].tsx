@@ -12,15 +12,15 @@ import {
 	formatDate,
 	runGraphQl,
 } from "../../utils";
+import { GetVcFirmQuery, Investment_Rounds, Vc_Firms } from "../../graphql/types";
 
 type Props = {
-	vcfirm: Record<string, any>;
-	sortByDateAscInvestments: Record<string, any>;
+	vcfirm: Vc_Firms;
+	sortByDateAscInvestments: Array<Investment_Rounds>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
 	const router = useRouter();
-	const { investorId } = router.query;
 
 	const goBack = () => router.back();
 
@@ -43,21 +43,21 @@ const VCFirm: NextPage<Props> = (props) => {
 			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 my-8">
 				<div className="col-span-1">
 					<ElemPhoto
-						photos={vcfirm.logo}
+						photo={vcfirm.logo}
 						wrapClass="flex items-center justify-center shrink-0 p-6 h-72 lg:h-88 bg-white rounded-lg shadow-md"
 						imgClass="object-contain w-full h-full rounded-md"
-						imgAlt={vcfirm.vcFirm}
+						imgAlt={vcfirm.name}
 					/>
 				</div>
 				<div className="w-full col-span-2 p-2">
 					<h1 className="text-4xl md:text-6xl font-bold my-5">
-						{vcfirm.vcFirm}
+						{vcfirm.name}
 					</h1>
 
 					<ElemKeyInfo
 						heading=""
 						website={vcfirm.website}
-						linkedIn={vcfirm.linkedIn}
+						linkedIn={vcfirm.linkedin}
 						investmentsLength={vcfirm.investments?.length}
 					/>
 				</div>
@@ -76,7 +76,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Date" },
 						]}
 					>
-						{sortedInvestmentRounds.map((theRound: any, index: number) => {
+						{sortedInvestmentRounds.map((theRound, index: number) => {
 							if (!theRound) {
 								return;
 							}
@@ -89,25 +89,22 @@ const VCFirm: NextPage<Props> = (props) => {
 									} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
 									<ElemTableCell header="Company">
-										{Object.keys(theRound.company).length > 0 ? (
-											theRound.company.map((company: any) => {
-												return (
+										{theRound.company ? (
 													<Link
-														href={`/companies/${company.slug}`}
-														key={company.id}
+														href={`/companies/${theRound.company.slug}`}
+														key={theRound.company.id}
 													>
 														<a className="investor inline-flex items-center hover:opacity-70">
 															<ElemPhoto
-																photos={company.logo}
+																photo={theRound.company.logo}
 																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
 																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={company.title}
+																imgAlt={theRound.company.name}
 															/>
-															{company.title}
+															{theRound.company.name}
 														</a>
 													</Link>
-												);
-											})
+												
 										) : (
 											<>&mdash;</>
 										)}
@@ -126,8 +123,8 @@ const VCFirm: NextPage<Props> = (props) => {
 										)}
 									</ElemTableCell>
 									<ElemTableCell header="Date">
-										{theRound.date ? (
-											formatDate(theRound.date, {
+										{theRound.round_date ? (
+											formatDate(theRound.round_date, {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",
@@ -148,13 +145,13 @@ const VCFirm: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const {
-		data: { vcFirms },
-	} = await runGraphQl("{ vcFirms { vcFirm, slug, logo}}");
+		data: vcFirms,
+	} = await runGraphQl<GetVcFirmQuery>(`{vc_firms(where: {slug: {_neq: ""}}) { name, slug, logo}}`);
 
 	return {
-		paths: vcFirms
-			.filter((vcfirm: { slug: string }) => vcfirm.slug)
-			.map((vcfirm: { slug: string }) => ({
+		paths: vcFirms?.vc_firms?.
+			filter((vcfirm) => vcfirm.slug)
+			.map((vcfirm) => ({
 				params: { investorId: vcfirm.slug },
 			})),
 		fallback: true, // false or 'blocking'
@@ -162,46 +159,45 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl(`
-  {
-      vcFirms(slug: "${context.params?.investorId}") {
-          id
-          vcFirm
-          slug
-          logo
-          website
-          linkedIn
-          investments {
-              name
-              investmentRound {
-                  id
-                  date
-                  round
-                  amount
-                  company {
-                      id
-                      slug
-                      title
-                      logo
-                  }
-              }
-          }
-      }
-  }
-  `);
+	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(`
+	{
+		vc_firms(where: {slug: {_eq: "${context.params?.investorId}"}}) {
+			id
+			name
+			slug
+			logo
+			website
+			linkedin
+			investments {
+				investment_round {
+					id
+					round_date
+					round
+					amount
+					company {
+						id
+						slug
+						name
+						logo
+					}
+				}
+			}
+		}
+	}	
+	`);
 
-	if (!vcFirms.vcFirms[0]) {
+	if (!vc_firms?.vc_firms[0]) {
 		return {
 			notFound: true,
 		};
 	}
 
-	const getInvestments = vcFirms.vcFirms[0].investments.map((round: any) => {
+	const getInvestments = vc_firms.vc_firms[0].investments.map((round) => {
 		if (
-			typeof round.investmentRound[0] === "object" &&
-			round.investmentRound[0] != "undefined"
+			typeof round.investment_round === "object" &&
+			round.investment_round
 		) {
-			return round.investmentRound[0];
+			return round.investment_round;
 		} else {
 			return null;
 		}
@@ -211,13 +207,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		.slice()
 		.sort(
 			(
-				a: { date: string | number | Date },
-				b: { date: string | number | Date }
+				a,
+				b
 			) => {
 				const distantFuture = new Date(8640000000000000);
 
-				let dateA = a ? new Date(a.date) : distantFuture;
-				let dateB = b ? new Date(b.date) : distantFuture;
+				let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+				let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
 				return dateA.getTime() - dateB.getTime();
 			}
 		)
@@ -225,7 +221,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
-			vcfirm: vcFirms.vcFirms[0],
+			vcfirm: vc_firms.vc_firms[0],
 			sortByDateAscInvestments,
 		},
 	};

@@ -16,7 +16,7 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 		>
 			<thead>
 				<tr className="hidden md:table-row">
-					{columns.map((col: any, index: number) => {
+					{columns.map((col, index: number) => {
 						return (
 							<th
 								key={index}

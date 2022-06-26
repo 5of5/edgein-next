@@ -3,14 +3,14 @@ import { ElemPhoto } from "../components/ElemPhoto";
 
 type Props = {
 	href?: string;
-	photos: Record<string, any>[];
-	heading?: string;
-	text?: string;
+	photo: Record<string, any>;
+	heading?: string | null;
+	text?: string | null;
 };
 
 export const ElemPersonCard: React.FC<Props> = ({
 	href = "",
-	photos,
+	photo,
 	heading,
 	text,
 }) => {
@@ -19,7 +19,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 			<Link href={href}>
 				<a className="flex items-center border border-dark-500/10 bg-white p-1 rounded-full transition-all group hover:shadow-md hover:-translate-y-0.5">
 					<ElemPhoto
-						photos={photos}
+						photo={photo}
 						wrapClass="shrink-0 flex items-center justify-center w-20 h-20 rounded-full overflow-hidden"
 						imgClass="object-cover w-20 h-20"
 						imgAlt={heading}

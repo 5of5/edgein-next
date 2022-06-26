@@ -1,16 +1,15 @@
-import Link from "next/link";
 import React, { Fragment } from "react";
 
 type Props = {
-	photos: Record<string, any>[];
+	photo: Record<string, any>;
 	wrapClass?: string;
 	imgClass?: string;
-	imgAlt?: string;
+	imgAlt?: string | null;
 	placeholder?: string;
 };
 
 export const ElemPhoto: React.FC<Props> = ({
-	photos,
+	photo,
 	wrapClass,
 	imgAlt,
 	imgClass,
@@ -18,19 +17,15 @@ export const ElemPhoto: React.FC<Props> = ({
 }) => {
 	return (
 		<div className={wrapClass}>
-			{photos ? (
+			{photo ? (
 				<Fragment>
-					{photos.map((photo) => {
-						return (
-							<img
-								key={photo.id}
-								src={photo.url}
-								className={imgClass}
-								alt={imgAlt}
-								title={imgAlt}
-							/>
-						);
-					})}
+					<img
+						key={photo.id}
+						src={photo.url}
+						className={imgClass}
+						alt={imgAlt ?? ""}
+						title={imgAlt ?? ""}
+					/>
 				</Fragment>
 			) : placeholder === "user" ? (
 				<Fragment>

@@ -3,7 +3,7 @@ import type { NextApiResponse } from 'next'
 import { jwtVerify } from 'jose'
 
 const TOKEN_NAME = "api_token"
-const MAX_AGE = 60 * 60 * 8
+const MAX_AGE = 60 * 60 * 24 * 90
 
 interface User {
   email: string

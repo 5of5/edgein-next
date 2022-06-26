@@ -28,7 +28,7 @@ export const ElemFounderGrid: React.FC<Props> = ({
 						<ElemPersonCard
 							key={profile.id}
 							href={`/people/${profile.slug}`}
-							photos={profile.picture}
+							photo={profile.picture}
 							heading={profile.name}
 							text={getTypes}
 						/>

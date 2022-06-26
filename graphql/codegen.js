@@ -22,7 +22,7 @@ module.exports = {
         },
     ],
     overwrite: true,
-    documents: ['./infra/**/*.graphql'],
+    documents: ['./graphql/**/*.graphql'],
     generates: {
         'graphql/types.ts': {
             plugins: [
