@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   .setProtectedHeader({ alg: 'HS256' })
   .setJti(nanoid())
   .setIssuedAt()
-  .setExpirationTime('1d')
+  .setExpirationTime('90d')
   .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
   CookieService.setTokenCookie(res, token)
 
