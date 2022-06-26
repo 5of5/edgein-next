@@ -14,6 +14,7 @@ import { TeamMembersList, TeamMembersEdit, TeamMembersCreate } from '../../compo
 import { VcFirmCreate, VcFirmEdit, VcFirmList } from '../../components/admin/vcFirms';
 import { BlockchainsList, BlockchainsEdit, BlockchainsCreate } from '../../components/admin/blockchains';
 import { CoinsList, CoinsEdit, CoinsCreate } from '../../components/admin/coins';
+import { ActionsList } from '../../components/admin/actions';
 
 const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(null);
@@ -89,6 +90,10 @@ const AdminApp = () => {
         list={InvestorsList}
         edit={InvestorsEdit}
         create={InvestorCreate}
+      />
+      <Resource
+        name="actions"
+        list={ActionsList}
       />
     </Admin>
   );

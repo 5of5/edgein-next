@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 import { fetcher } from './fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -4800,6 +4800,16 @@ export type Vc_Firms_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+export type InsertActionMutationVariables = Exact<{
+  action: Scalars['String'];
+  page: Scalars['String'];
+  properties: Scalars['jsonb'];
+  user: Scalars['String'];
+}>;
+
+
+export type InsertActionMutation = { __typename?: 'mutation_root', insert_actions_one: { __typename?: 'actions', id: number } | null };
+
 export type GetCompanyQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -4855,6 +4865,25 @@ export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null }> };
 
 
+export const InsertActionDocument = `
+    mutation InsertAction($action: String!, $page: String!, $properties: jsonb!, $user: String!) {
+  insert_actions_one(
+    object: {action: $action, page: $page, properties: $properties, user: $user}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertActionMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertActionMutation, TError, InsertActionMutationVariables, TContext>) =>
+    useMutation<InsertActionMutation, TError, InsertActionMutationVariables, TContext>(
+      ['InsertAction'],
+      (variables?: InsertActionMutationVariables) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables)(),
+      options
+    );
+useInsertActionMutation.fetcher = (variables: InsertActionMutationVariables, options?: RequestInit['headers']) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables, options);
 export const GetCompanyDocument = `
     query GetCompany($slug: String!) {
   companies(where: {slug: {_eq: $slug}}) {

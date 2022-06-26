@@ -16,9 +16,11 @@ import {
 	GetCompaniesDocument,
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
+	useInsertActionMutation,
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
+import { useAuth } from "../hooks/useAuth";
 
 const FakeElemCompany: FC = () => {
 	return (
@@ -69,9 +71,11 @@ const Companies: NextPage<Props> = ({
 	totalEmployees,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
-	
+	const { user } = useAuth();
+
 	// Search Box
 	const [search, setSearch] = useState("");
+	const [savedEmptySearches, setSavedEmptySearches] = useState<string[]>([]);
 	const debouncedSearchTerm = useDebounce(search, 500);
 
 	const searchCompanies = (e: {
@@ -145,6 +149,23 @@ const Companies: NextPage<Props> = ({
 		limit,
 		where: filters as Companies_Bool_Exp,
 	});
+
+	const { mutate: insertAction } = useInsertActionMutation()
+
+	if (!isLoading && debouncedSearchTerm !== '' && companiesData?.companies.length === 0 && !savedEmptySearches.includes(debouncedSearchTerm)) {
+		insertAction({
+			action: "Empty Search",
+			page: location.pathname,
+			properties: {
+				search: debouncedSearchTerm,
+				layer: selectedLayer.value,
+				investor_amount: selectedAmountRaised.rangeStart,
+				total_employees: selectedTotalEmployees.rangeStart,
+			},
+			user: user?.email ?? "",
+		})
+		setSavedEmptySearches(prev => prev.includes(debouncedSearchTerm) ? prev : [...prev, debouncedSearchTerm])
+	}
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false)
