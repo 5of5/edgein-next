@@ -30,12 +30,12 @@ export default function Login() {
 				? router.query.redirect[0]
 				: router.query.redirect || redirect;
 			if (redirectUrl && redirectUrl.startsWith("/")) {
-				router.push(redirectUrl);
+				window.location.href = redirectUrl;
 			} else {
-				router.push("/?loggedin");
+				window.location.href = "/?loggedin";
 			}
-			//Trigger page refresh after logged in
-			window.location.reload();
+			// Trigger page refresh after logged in
+			// window.location.reload();
 		} else {
 			console.log(authRequest);
 			/* handle errors */
