@@ -58,7 +58,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	}
 
 	// button sizes
-	let sizeClasses = "py-1.5 px-5";
+	let sizeClasses = "py-1.5 px-4";
 	if (size === "md") {
 		sizeClasses = "px-5 py-2 min-w-32 justify-center";
 	} else if (size === "sm") {
@@ -146,7 +146,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
 }) => {
 	return (
 		<svg
-			viewBox="0 0 6 10"
+			viewBox="0 0 10 10"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			className={`${className} group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition`}
@@ -175,7 +175,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
 const IconArrow: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
 	return (
 		<svg
-			viewBox="0 0 6 10"
+			viewBox="0 0 10 10"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			className={`${className} group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition`}

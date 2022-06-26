@@ -50,8 +50,8 @@ const FakeElemCompany: FC = () => {
 };
 
 type Props = {
-	companiesCount: number
-	initialCompanies: GetCompaniesQuery['companies']
+	companiesCount: number;
+	initialCompanies: GetCompaniesQuery["companies"];
 	companyLayers: TextFilter[];
 	amountRaised: NumericFilter[];
 	totalEmployees: NumericFilter[];
@@ -88,6 +88,8 @@ const Companies: NextPage<Props> = ({
 		// 	shallow: true,
 		// });
 	};
+
+	const figureSearch = "/figure-search.png";
 
 	// Company Layers Filter
 	const [selectedLayer, setSelectedLayer] = useState(companyLayers[0]);
@@ -150,9 +152,14 @@ const Companies: NextPage<Props> = ({
 		where: filters as Companies_Bool_Exp,
 	});
 
-	const { mutate: insertAction } = useInsertActionMutation()
+	const { mutate: insertAction } = useInsertActionMutation();
 
-	if (!isLoading && debouncedSearchTerm !== '' && companiesData?.companies.length === 0 && !savedEmptySearches.includes(debouncedSearchTerm)) {
+	if (
+		!isLoading &&
+		debouncedSearchTerm !== "" &&
+		companiesData?.companies.length === 0 &&
+		!savedEmptySearches.includes(debouncedSearchTerm)
+	) {
 		insertAction({
 			action: "Empty Search",
 			page: location.pathname,
@@ -163,14 +170,16 @@ const Companies: NextPage<Props> = ({
 				total_employees: selectedTotalEmployees.rangeStart,
 			},
 			user: user?.email ?? "",
-		})
-		setSavedEmptySearches(prev => prev.includes(debouncedSearchTerm) ? prev : [...prev, debouncedSearchTerm])
+		});
+		setSavedEmptySearches((prev) =>
+			prev.includes(debouncedSearchTerm) ? prev : [...prev, debouncedSearchTerm]
+		);
 	}
 
 	if (!isLoading && initialLoad) {
-		setInitialLoad(false)
+		setInitialLoad(false);
 	}
-	const companies = initialLoad ? initialCompanies : companiesData?.companies
+	const companies = initialLoad ? initialCompanies : companiesData?.companies;
 
 	return (
 		<div>
@@ -242,12 +251,17 @@ const Companies: NextPage<Props> = ({
 
 						{companies?.length === 0 && (
 							<>
-								<div className="flex items-center justify-center max-w-xl mx-auto min-h-[40vh] py-12 px-4">
-									<div className="bg-white rounded-2xl border border-dark-500/10 p-6 text-center">
-										<h2 className="text-3xl lg:text-4xl font-bold">
+								<div className="flex items-center justify-center  mx-auto min-h-[40vh]">
+									<div className="w-full max-w-2xl py-8 bg-white rounded-2xl border border-dark-500/10 text-center">
+										{/* <img
+											className="-mt-44 w-96 mx-auto"
+											src={figureSearch}
+											alt="Not found"
+										/> */}
+										<h2 className="mt-2 text-3xl font-bold">
 											No results found
 										</h2>
-										<p className="mt-2 text-xl text-dark-400">
+										<p className="mt-1 text-lg text-dark-400">
 											Please check spelling or try different filters.
 										</p>
 									</div>
@@ -360,7 +374,13 @@ const Companies: NextPage<Props> = ({
 								})
 							)}
 						</div>
-						<Pagination count={companiesCount} page={page} rowsPerPage={limit} onPageChange={setPage} />
+						<Pagination
+							className="mt-6"
+							count={companiesCount}
+							page={page}
+							rowsPerPage={limit}
+							onPageChange={setPage}
+						/>
 					</div>
 				</div>
 			</div>
@@ -369,8 +389,11 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl<GetCompaniesQuery>(GetCompaniesDocument, {where: {slug: {_neq: ""}}});
-		
+	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
+		GetCompaniesDocument,
+		{ where: { slug: { _neq: "" } } }
+	);
+
 	return {
 		props: {
 			companiesCount: companies?.companies.length,
