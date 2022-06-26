@@ -43,7 +43,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = "text-white bg-dark-700 hover:opacity-60";
 	} else if (btn === "primary") {
 		btnClass =
-			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r";
+			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-60";
 	} else if (btn === "transparent") {
 		btnClass = "text-primary-500 bg-transparent hover:text-dark-500";
 	} else if (btn === "ol-white") {
@@ -76,7 +76,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = btnClass + " opacity-40 cursor-not-allowed";
 	}
 
-	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 hover:opacity-60 transition duration-150 in-hoverTransition group
+	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition duration-150 in-hoverTransition group
 		${btnClass}
 		${roundedFull ? "rounded-full" : ""}
 		${arrow || arrowLeft ? "justify-between" : "justify-center"}
