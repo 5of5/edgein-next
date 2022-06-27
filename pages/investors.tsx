@@ -38,7 +38,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 
 	useEffect(() => {
 		setPage(0);
-		if (initialLoad) {
+		if (initialLoad && debouncedSearchTerm !== "" && selectedInvestmentCount.rangeEnd !== 0) {
 			setInitialLoad(false)
 		}	
 	// eslint-disable-next-line react-hooks/exhaustive-deps

@@ -113,7 +113,11 @@ const Companies: NextPage<Props> = ({
 
 	useEffect(() => {
 		setPage(0);
-		if (initialLoad) {
+		if (initialLoad && 
+				debouncedSearchTerm !== "" &&
+				selectedLayer.value !== "" &&
+				selectedAmountRaised.rangeEnd !== 0 && 
+				selectedTotalEmployees.rangeEnd !== 0) { 
 			setInitialLoad(false)
 		}	
 	// eslint-disable-next-line react-hooks/exhaustive-deps
