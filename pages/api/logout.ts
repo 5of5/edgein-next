@@ -6,7 +6,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   CookieService.clearTokenCookie(res)
 
-  res.end()
+  res.send({success: true})
 }
 
 export default handler
