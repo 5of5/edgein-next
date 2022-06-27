@@ -43,7 +43,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = "text-white bg-dark-700 hover:opacity-60";
 	} else if (btn === "primary") {
 		btnClass =
-			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r";
+			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-60";
 	} else if (btn === "transparent") {
 		btnClass = "text-primary-500 bg-transparent hover:text-dark-500";
 	} else if (btn === "ol-white") {
@@ -58,7 +58,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	}
 
 	// button sizes
-	let sizeClasses = "py-1.5 px-5";
+	let sizeClasses = "py-1.5 px-4";
 	if (size === "md") {
 		sizeClasses = "px-5 py-2 min-w-32 justify-center";
 	} else if (size === "sm") {
@@ -76,7 +76,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = btnClass + " opacity-40 cursor-not-allowed";
 	}
 
-	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 hover:opacity-60 transition duration-150 in-hoverTransition group
+	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition duration-150 in-hoverTransition group
 		${btnClass}
 		${roundedFull ? "rounded-full" : ""}
 		${arrow || arrowLeft ? "justify-between" : "justify-center"}
@@ -146,7 +146,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
 }) => {
 	return (
 		<svg
-			viewBox="0 0 6 10"
+			viewBox="0 0 10 10"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			className={`${className} group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition`}
@@ -175,7 +175,7 @@ const IconArrowLeft: React.FC<IconProps> = ({
 const IconArrow: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
 	return (
 		<svg
-			viewBox="0 0 6 10"
+			viewBox="0 0 10 10"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
 			className={`${className} group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition`}

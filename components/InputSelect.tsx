@@ -42,9 +42,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 								leaveTo="opacity-0"
 							>
 								<Listbox.Options className="absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
-									{options.map((option: any) => (
+									{options.map((option: any, index: number) => (
 										<Listbox.Option
-											key={option.id}
+											key={index}
 											value={option}
 											className={({ active }) =>
 												`${
