@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -25,39 +25,54 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 
 	// Search Box
 	const [search, setSearch] = useState("");
-	// const debouncedSearchTerm = useDebounce(search, 500);
+	const debouncedSearchTerm = useDebounce(search, 500);
 
 	// Investments Count
 	const [selectedInvestmentCount, setSelectedInvestmentCount] = useState(
 		numberOfInvestments[0]
 	);
 
-	// const [page, setPage] = useState<number>(0)
-  // const limit = 50
-  // const offset = limit * page
+	const [page, setPage] = useState<number>(0)
+  const limit = 50
+  const offset = limit * page
 
-  // const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-	// 	_and: [{slug: {_neq: ""}}],
-	// }
-	// if (debouncedSearchTerm !== "") {
-	// 	filters._and?.push({name: { _ilike: `%${debouncedSearchTerm}%`} })
-	// }
+	useEffect(() => {
+		setPage(0);
+		if (initialLoad) {
+			setInitialLoad(false)
+		}	
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouncedSearchTerm, selectedInvestmentCount])
 
-  // const {
-  //   data: vcFirmsData,
-  //   error,
-  //   isLoading
-  // } = useGetVcFirmsQuery({
-  //   offset,
-  //   limit,
-	// 	where: filters as Vc_Firms_Bool_Exp
-  // }) 
+  const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
+		_and: [{slug: {_neq: ""}}],
+	}
+	if (debouncedSearchTerm !== "") {
+		filters._and?.push({name: { _ilike: `%${debouncedSearchTerm}%`} })
+	}
+	if (selectedInvestmentCount.rangeEnd !== 0) {
+		filters._and?.push({
+			_and: [
+				{ num_of_investments: { _gt: selectedInvestmentCount.rangeStart } },
+				{ num_of_investments: { _lte: selectedInvestmentCount.rangeEnd } },
+			],
+		});
+	}
 
-	// if (!isLoading && initialLoad) {
-	// 	setInitialLoad(false)
-	// }
-	// const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
-	const vcFirms = initialVCFirms
+  const {
+    data: vcFirmsData,
+    error,
+    isLoading
+  } = useGetVcFirmsQuery({
+    offset,
+    limit,
+		where: filters as Vc_Firms_Bool_Exp
+  }) 
+
+	if (!isLoading && initialLoad) {
+		setInitialLoad(false)
+	}
+	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
 
 	return (
 		<div>
@@ -100,28 +115,10 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-						 { !initialLoad ? <h4>Loading...</h4> :
+						 { isLoading && !initialLoad ? <h4>Loading...</h4> :
 
 							vcFirms?.
-								filter(
-									(vcfirm) =>
-										!search ||
-										vcfirm.name?.toLowerCase().includes(search.toLowerCase())
-								)
-								.filter(
-									(vcfirm) =>
-										(selectedInvestmentCount.rangeEnd === 0 || (vcfirm.investments?.length >=
-											selectedInvestmentCount.rangeStart &&
-											vcfirm.investments?.length <=
-												selectedInvestmentCount.rangeEnd))
-								)
-								//sort list by number of investments
-								.sort(
-									(a: any, b: any) =>
-										a.investments?.length - b.investments?.length
-								)
-								.reverse()
-								.map((vcfirm) => (
+								map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
 										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-5 flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out transform hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
 											<div className="w-full flex items-center">
@@ -138,16 +135,16 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 													>
 														{vcfirm.name}
 													</h3>
-													{vcfirm.investments?.length > 0 && (
+													{vcfirm.num_of_investments || 0 > 0 && (
 														<div className="inline-flex hover:opacity-70">
 															<IconCash
 																title="Investments"
 																className="h-6 w-6 mr-1 text-primary-500"
 															/>
 															<span className="font-bold mr-1">
-																{vcfirm.investments.length}
+																{vcfirm.num_of_investments}
 															</span>
-															Investment{vcfirm.investments?.length > 1 && "s"}
+															Investment{vcfirm.num_of_investments || 0 > 1 && "s"}
 														</div>
 													)}
 												</div>
@@ -156,7 +153,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 									</Link>
 								))}
 						</div>
-						{/* <Pagination count={vcFirmCount} page={page} rowsPerPage={limit} onPageChange={setPage} /> */}
+						<Pagination count={vcFirmCount} page={page} rowsPerPage={limit} onPageChange={setPage} />
 					</div>
 				</div>
 			</div>

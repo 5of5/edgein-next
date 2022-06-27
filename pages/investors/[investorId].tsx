@@ -228,6 +228,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 };
 
 export default VCFirm;
-function convertAmountRaised(theAmount: any) {
+function convertAmountRaised(theAmount: number) {
 	return convertToInternationalCurrencySystem(theAmount);
 }

@@ -22,7 +22,7 @@ export const ElemVelocity: React.FC<Props> = ({
 	}
 
 	let velocityItems: {
-		icon?: FunctionComponent;
+		icon?: React.FC<IconProps>;
 		text: string;
 		number: number;
 	}[] = [];
@@ -65,7 +65,7 @@ export const ElemVelocity: React.FC<Props> = ({
 						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10"
 				} flex grow`}
 			>
-				{velocityItems.map((item: any, index: number) => {
+				{velocityItems.map((item, index: number) => {
 					const badge = (
 						<div
 							className={`${
@@ -74,7 +74,7 @@ export const ElemVelocity: React.FC<Props> = ({
 									: "bg-red-100 text-red-500"
 							} flex items-center text-sm font-bold leading-sm uppercase px-2 py-0.5 rounded-full`}
 						>
-							{mini && <item.icon className="h-4 w-4 mr-0.5" />}
+							{mini && item.icon && <item.icon className="h-4 w-4 mr-0.5" />}
 
 							<div>{numberWithCommas(item.number)}</div>
 							{item.number > 0 && <IconArrowUp className="h-4 w-4" />}

@@ -44,7 +44,7 @@ export const TheNavbar = () => {
 	const [isActive, setActive] = useState(false);
 
 	const toggleNav = () => {
-		setActive((isActive: any) => !isActive);
+		setActive((isActive) => !isActive);
 	};
 
 	return (

@@ -10,11 +10,11 @@ import { ElemTags } from "../../components/ElemTags";
 import { ElemInvestments } from "../../components/Company/ElemInvestments";
 import { ElemTeamGrid } from "../../components/Company/ElemTeamGrid";
 import { runGraphQl } from "../../utils";
-import { Companies, GetCompaniesPathsQuery, GetCompaniesQuery, GetCompanyDocument, GetCompanyQuery } from "../../graphql/types";
+import { Companies, GetCompaniesPathsQuery, GetCompaniesQuery, GetCompanyDocument, GetCompanyQuery, Investment_Rounds } from "../../graphql/types";
 
 type Props = {
 	company: Companies;
-	sortRounds: Record<string, any>;
+	sortRounds: Investment_Rounds[];
 };
 
 const Company: NextPage<Props> = (props) => {
