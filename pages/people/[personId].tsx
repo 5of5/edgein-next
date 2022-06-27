@@ -13,11 +13,11 @@ import {
 	formatDate,
 	convertToInternationalCurrencySystem,
 } from "../../utils";
-import { GetCompaniesQuery, GetPersonDocument, GetPersonQuery, People } from "../../graphql/types";
+import { GetCompaniesQuery, GetPersonDocument, GetPersonQuery, Investment_Rounds, People } from "../../graphql/types";
 
 type Props = {
 	person: People;
-	sortByDateAscInvestments: Record<string, any>;
+	sortByDateAscInvestments: Investment_Rounds[];
 };
 
 const Person: NextPage<Props> = (props) => {
@@ -33,7 +33,7 @@ const Person: NextPage<Props> = (props) => {
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
-	let personEmails: {}[] = [];
+	let personEmails: string[] = [];
 
 	if (person.work_email) {
 		personEmails.push(person.work_email);
@@ -111,7 +111,7 @@ const Person: NextPage<Props> = (props) => {
 							{ label: "Date" },
 						]}
 					>
-						{sortedInvestmentRounds.map((theRound: any, index: number) => {
+						{sortedInvestmentRounds.map((theRound, index: number) => {
 							if (!theRound) {
 								return;
 							}
@@ -124,25 +124,21 @@ const Person: NextPage<Props> = (props) => {
 									} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
 									<ElemTableCell header="Company">
-										{theRound.company?.length > 0 ? (
-											theRound.company.map((company: any) => {
-												return (
+										{theRound.company ? (
 													<Link
-														href={`/companies/${company.slug}`}
-														key={company.id}
+														href={`/companies/${theRound.company.slug}`}
+														key={theRound.company.id}
 													>
 														<a className="investor flex items-center hover:opacity-70">
 															<ElemPhoto
-																photo={company.logo}
+																photo={theRound.company.logo}
 																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
 																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={company.title}
+																imgAlt={theRound.company.name}
 															/>
-															{company.title}
+															{theRound.company.name}
 														</a>
 													</Link>
-												);
-											})
 										) : (
 											<>&mdash;</>
 										)}
@@ -164,8 +160,8 @@ const Person: NextPage<Props> = (props) => {
 									</ElemTableCell>
 
 									<ElemTableCell header="Date">
-										{theRound.date ? (
-											formatDate(theRound.date, {
+										{theRound.round_date ? (
+											formatDate(theRound.round_date, {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",
@@ -254,6 +250,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 export default Person;
 
-function convertAmountRaised(theAmount: any) {
+function convertAmountRaised(theAmount: number) {
 	return convertToInternationalCurrencySystem(theAmount);
 }

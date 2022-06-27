@@ -17,7 +17,7 @@ type Props = {
 	yearFounded?: string | null;
 	roles?: string | null;
 	investmentsLength?: number;
-	emails?: Array<Object>;
+	emails?: string[];
 	linkedIn?: string | null;
 	github?: string | null;
 	careerPage?: string | null;
@@ -154,7 +154,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
 						<div>
-							{emails.map((email: any, i: number) => [
+							{emails.map((_email, i: number) => [
 								i > 0 && ", ",
 								<span key={i} className="hover:opacity-70 cursor-not-allowed">
 									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;

@@ -15,7 +15,7 @@ export const ElemVcfirmsGrid: React.FC<Props> = ({
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 			<div className="flex flex-col gap-5 mt-3 w-full sm:grid sm:grid-cols-2 md:grid-cols-3">
-				{vcfirms.map((vcfirm: any) => {
+				{vcfirms.map((vcfirm) => {
 					return (
 						<ElemOrganizationCard
 							key={vcfirm.id}

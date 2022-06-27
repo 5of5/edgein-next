@@ -55,6 +55,7 @@ export default function Login() {
 				await login(did, redirectUrl);
 			})();
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.query.email]);
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {

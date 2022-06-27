@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
@@ -108,6 +108,14 @@ const Companies: NextPage<Props> = ({
 	const [page, setPage] = useState<number>(0);
 	const limit = 50;
 	const offset = limit * page;
+
+	useEffect(() => {
+		setPage(0);
+		if (initialLoad) {
+			setInitialLoad(false)
+		}	
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouncedSearchTerm, selectedAmountRaised, selectedLayer, selectedTotalEmployees])
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" } }],

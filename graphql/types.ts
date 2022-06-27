@@ -4495,6 +4495,8 @@ export type Vc_Firms = {
   linkedin: Maybe<Scalars['String']>;
   logo: Maybe<Scalars['jsonb']>;
   name: Maybe<Scalars['String']>;
+  /** A computed field, executes function "vc_firms_num_of_investments" */
+  num_of_investments: Maybe<Scalars['Int']>;
   slug: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
 };
@@ -4598,6 +4600,7 @@ export type Vc_Firms_Bool_Exp = {
   linkedin: InputMaybe<String_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
+  num_of_investments: InputMaybe<Int_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   website: InputMaybe<String_Comparison_Exp>;
 };
@@ -4697,6 +4700,7 @@ export type Vc_Firms_Order_By = {
   linkedin: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
+  num_of_investments: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   website: InputMaybe<Order_By>;
 };
@@ -4857,7 +4861,7 @@ export type GetVcFirmsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, investments: Array<{ __typename?: 'investments', id: number }> }> };
+export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, num_of_investments: number | null }> };
 
 export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -5163,14 +5167,17 @@ useGetVcFirmQuery.getKey = (variables: GetVcFirmQueryVariables) => ['GetVCFirm',
 useGetVcFirmQuery.fetcher = (variables: GetVcFirmQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmQuery, GetVcFirmQueryVariables>(GetVcFirmDocument, variables, options);
 export const GetVcFirmsDocument = `
     query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
-  vc_firms(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
+  vc_firms(
+    where: $where
+    order_by: {num_of_investments: desc}
+    limit: $limit
+    offset: $offset
+  ) {
     id
     name
     slug
     logo
-    investments {
-      id
-    }
+    num_of_investments
   }
 }
     `;
