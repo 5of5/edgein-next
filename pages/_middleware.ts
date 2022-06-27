@@ -5,6 +5,7 @@ import { mutate } from "../graphql/hasuraAdmin";
 
 export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
+	console.log({url})
 
 	// Prevent security issues – users should not be able to canonically access
 	// the pages/sites folder and its respective contents. This can also be done
@@ -22,10 +23,11 @@ export async function middleware(req: NextRequest) {
 			`/admin/app/`,
 			`/404/`,
 			`/api/login_attempt/`,
-			`/favicon.ico`,
+			"/favicon.ico",
 		].includes(url.pathname) ||
 		process.env.DEV_MODE
 	) {
+		console.log('pass-thur', url.pathname)
 		return NextResponse.next();
 	}
 
@@ -39,11 +41,13 @@ export async function middleware(req: NextRequest) {
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
+			console.log('no-user', url.pathname)
 			return NextResponse.redirect(
 				new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 			);
 		}
 	} catch (error) {
+		console.log(error);
 		return NextResponse.redirect(
 			new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 		);
@@ -71,5 +75,6 @@ export async function middleware(req: NextRequest) {
 		});
 	}
 
+	console.log('pass-thur')
 	return NextResponse.next();
 }
