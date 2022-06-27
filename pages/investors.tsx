@@ -115,7 +115,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-						 { isLoading && !initialLoad ? <h4>Loading...</h4> :
+						 { error ?  <h4>Error loading investors</h4> : isLoading && !initialLoad ? <h4>Loading...</h4> :
 
 							vcFirms?.
 								map((vcfirm) => (

@@ -282,7 +282,7 @@ const Companies: NextPage<Props> = ({
 								toggleViewMode ? "1" : "2"
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
-							{isLoading && !initialLoad ? (
+							{error ?  <h4>Error loading investors</h4> : isLoading && !initialLoad ? (
 								<>
 									{Array.from({ length: 9 }, (_, i) => (
 										<FakeElemCompany key={i} />
