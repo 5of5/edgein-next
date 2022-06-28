@@ -1,6 +1,5 @@
 import CookieService from "../utils/cookie";
 import { NextResponse, NextRequest } from "next/server";
-import gql from "graphql-tag";
 import { mutate } from "../graphql/hasuraAdmin";
 
 export async function middleware(req: NextRequest) {
@@ -23,8 +22,8 @@ export async function middleware(req: NextRequest) {
 			`/admin/app/`,
 			`/404/`,
 			`/api/login_attempt/`,
-			"/favicon.ico",
 		].includes(url.pathname) ||
+		url.pathname.endsWith('.png') || url.pathname.endsWith('.jpg') || url.pathname.endsWith('.ico') ||
 		process.env.DEV_MODE
 	) {
 		console.log('pass-thur', url.pathname)
@@ -44,6 +43,11 @@ export async function middleware(req: NextRequest) {
 			console.log('no-user', url.pathname)
 			return NextResponse.redirect(
 				new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
+			);
+		}
+		if (!user.email.endsWith('5of5.vc') && url.pathname.includes('/admin/')) {
+			return NextResponse.redirect(
+				new URL(`/404?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 			);
 		}
 	} catch (error) {
