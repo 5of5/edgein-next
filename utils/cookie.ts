@@ -35,7 +35,7 @@ function clearTokenCookie(res: NextApiResponse) {
   ]);
 }
 
-function getAuthToken(cookies: Record<string, string> | any) {
+function getAuthToken(cookies: Record<string, string>) {
   return cookies[TOKEN_NAME]
 }
 
