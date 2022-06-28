@@ -8,19 +8,28 @@ import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { GetVcFirmsDocument, GetVcFirmsQuery, useGetVcFirmsQuery, Vc_Firms_Bool_Exp } from "../graphql/types";
+import {
+	GetVcFirmsDocument,
+	GetVcFirmsQuery,
+	useGetVcFirmsQuery,
+	Vc_Firms_Bool_Exp,
+} from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 
 type Props = {
-	vcFirmCount: number
-	initialVCFirms: GetVcFirmsQuery['vc_firms']
+	vcFirmCount: number;
+	initialVCFirms: GetVcFirmsQuery["vc_firms"];
 	numberOfInvestments: NumericFilter[];
 };
 
-const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInvestments }) => {
+const Investors: NextPage<Props> = ({
+	vcFirmCount,
+	initialVCFirms,
+	numberOfInvestments,
+}) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	// Search Box
@@ -32,23 +41,27 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 		numberOfInvestments[0]
 	);
 
-	const [page, setPage] = useState<number>(0)
-  const limit = 50
-  const offset = limit * page
+	const [page, setPage] = useState<number>(0);
+	const limit = 50;
+	const offset = limit * page;
 
 	useEffect(() => {
 		setPage(0);
-		if (initialLoad && debouncedSearchTerm !== "" && selectedInvestmentCount.rangeEnd !== 0) {
-			setInitialLoad(false)
-		}	
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedSearchTerm, selectedInvestmentCount])
+		if (
+			initialLoad &&
+			debouncedSearchTerm !== "" &&
+			selectedInvestmentCount.rangeEnd !== 0
+		) {
+			setInitialLoad(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [debouncedSearchTerm, selectedInvestmentCount]);
 
-  const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{slug: {_neq: ""}}],
-	}
+	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
+		_and: [{ slug: { _neq: "" } }],
+	};
 	if (debouncedSearchTerm !== "") {
-		filters._and?.push({name: { _ilike: `%${debouncedSearchTerm}%`} })
+		filters._and?.push({ name: { _ilike: `%${debouncedSearchTerm}%` } });
 	}
 	if (selectedInvestmentCount.rangeEnd !== 0) {
 		filters._and?.push({
@@ -59,20 +72,20 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 		});
 	}
 
-  const {
-    data: vcFirmsData,
-    error,
-    isLoading
-  } = useGetVcFirmsQuery({
-    offset,
-    limit,
-		where: filters as Vc_Firms_Bool_Exp
-  }) 
+	const {
+		data: vcFirmsData,
+		error,
+		isLoading,
+	} = useGetVcFirmsQuery({
+		offset,
+		limit,
+		where: filters as Vc_Firms_Bool_Exp,
+	});
 
 	if (!isLoading && initialLoad) {
-		setInitialLoad(false)
+		setInitialLoad(false);
 	}
-	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
+	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms;
 
 	return (
 		<div>
@@ -115,10 +128,12 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-						 { error ?  <h4>Error loading investors</h4> : isLoading && !initialLoad ? <h4>Loading...</h4> :
-
-							vcFirms?.
-								map((vcfirm) => (
+							{error ? (
+								<h4>Error loading investors</h4>
+							) : isLoading && !initialLoad ? (
+								<h4>Loading...</h4>
+							) : (
+								vcFirms?.map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
 										<a className="bg-white rounded-lg overflow-hidden cursor-pointer p-5 flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out transform hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
 											<div className="w-full flex items-center">
@@ -135,7 +150,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 													>
 														{vcfirm.name}
 													</h3>
-													{vcfirm.num_of_investments || 0 > 0 && (
+													{(vcfirm.num_of_investments || 0 > 0) && (
 														<div className="inline-flex hover:opacity-70">
 															<IconCash
 																title="Investments"
@@ -144,16 +159,23 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 															<span className="font-bold mr-1">
 																{vcfirm.num_of_investments}
 															</span>
-															Investment{vcfirm.num_of_investments || 0 > 1 && "s"}
+															Investment
+															{vcfirm.num_of_investments || (0 > 1 && "s")}
 														</div>
 													)}
 												</div>
 											</div>
 										</a>
 									</Link>
-								))}
+								))
+							)}
 						</div>
-						<Pagination count={vcFirmCount} page={page} rowsPerPage={limit} onPageChange={setPage} />
+						<Pagination
+							count={vcFirmCount}
+							page={page}
+							rowsPerPage={limit}
+							onPageChange={setPage}
+						/>
 					</div>
 				</div>
 			</div>
@@ -162,8 +184,11 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(GetVcFirmsDocument, {where: {slug: {_neq: ""}}});
-		
+	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
+		GetVcFirmsDocument,
+		{ where: { slug: { _neq: "" } } }
+	);
+
 	return {
 		props: {
 			vcFirmCount: vcFirms?.vc_firms.length,
@@ -201,25 +226,30 @@ const IconCash: React.FC<IconProps> = ({ className, title }) => {
 };
 
 // Total Investments Filter
-const InvestmentsFilters: NumericFilter[] = [{
-	title: "Number of Investments", 
-	rangeStart:  0, 
-	rangeEnd:  0, 
-		},{
-	title: "5 or less Investments", 
-	rangeStart:  1, 
-	rangeEnd:  5, 
-	},{
-		title: "6-15 Investments", 
-	rangeStart:  6, 
-	rangeEnd:  15, 
-	},{
-		title: "16-25 Investments", 
-	rangeStart:  16, 
-	rangeEnd:  25, 
-	},{
-		title: "25+ Investments", 
-	rangeStart:  25, 
-	rangeEnd:  9999999999999
-	}
-	]
+const InvestmentsFilters: NumericFilter[] = [
+	{
+		title: "Number of Investments",
+		rangeStart: 0,
+		rangeEnd: 0,
+	},
+	{
+		title: "5 or less Investments",
+		rangeStart: 1,
+		rangeEnd: 5,
+	},
+	{
+		title: "6-15 Investments",
+		rangeStart: 6,
+		rangeEnd: 15,
+	},
+	{
+		title: "16-25 Investments",
+		rangeStart: 16,
+		rangeEnd: 25,
+	},
+	{
+		title: "25+ Investments",
+		rangeStart: 25,
+		rangeEnd: 9999999999999,
+	},
+];
