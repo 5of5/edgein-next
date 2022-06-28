@@ -93,9 +93,6 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 								onSubmit={onSubmit}
 							>
 								<div className="group mb-2 sm:col-span-2">
-									{/* <label htmlFor="name" className="font-bold">
-										Name {"(optional)"}
-									</label> */}
 									<InputText
 										label="Name (optional)"
 										name="name"
@@ -104,21 +101,6 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 									/>
 								</div>
 								<div className="group mb-2 sm:col-span-2">
-									{/* <label
-										htmlFor="message"
-										className="font-bold text-gray-400 cursor-text"
-									>
-										What missing data would you like to see?
-									</label>
-
-									<textarea
-										className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none resize-none hover:ring-primary-100 focus:outline-none focus:border-primary-500 hover:ring focus:ring focus:ring-primary-100"
-										name="message"
-										value={message}
-										rows={4}
-										onChange={(e) => setMessage(e.target.value)}
-										required
-									/> */}
 									<InputTextarea
 										label="What missing data would you like to see?"
 										name="message"

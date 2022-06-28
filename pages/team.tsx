@@ -36,7 +36,7 @@ const Team: NextPage<Props> = ({ team }) => {
 									<div className="relative aspect-square">
 										<Image
 											src={person.image}
-											alt="Picture of the author"
+											alt={person.image}
 											layout="fill"
 											objectFit="contain"
 										/>
