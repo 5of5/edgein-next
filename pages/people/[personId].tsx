@@ -13,7 +13,13 @@ import {
 	formatDate,
 	convertToInternationalCurrencySystem,
 } from "../../utils";
-import { GetCompaniesQuery, GetPersonDocument, GetPersonQuery, Investment_Rounds, People } from "../../graphql/types";
+import {
+	GetCompaniesQuery,
+	GetPersonDocument,
+	GetPersonQuery,
+	Investment_Rounds,
+	People,
+} from "../../graphql/types";
 
 type Props = {
 	person: People;
@@ -125,20 +131,20 @@ const Person: NextPage<Props> = (props) => {
 								>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
-													<Link
-														href={`/companies/${theRound.company.slug}`}
-														key={theRound.company.id}
-													>
-														<a className="investor flex items-center hover:opacity-70">
-															<ElemPhoto
-																photo={theRound.company.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={theRound.company.name}
-															/>
-															{theRound.company.name}
-														</a>
-													</Link>
+											<Link
+												href={`/companies/${theRound.company.slug}`}
+												key={theRound.company.id}
+											>
+												<a className="investor flex items-center hover:opacity-70">
+													<ElemPhoto
+														photo={theRound.company.logo}
+														wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={theRound.company.name}
+													/>
+													{theRound.company.name}
+												</a>
+											</Link>
 										) : (
 											<>&mdash;</>
 										)}
@@ -181,9 +187,7 @@ const Person: NextPage<Props> = (props) => {
 };
 
 export async function getStaticPaths() {
-	const {
-		data: people,
-	} = await runGraphQl<GetPersonQuery>(`{ 
+	const { data: people } = await runGraphQl<GetPersonQuery>(`{ 
     people( 
 			where: {slug: {_neq: ""}}, order_by: {slug: asc}
     ){ 
@@ -194,8 +198,8 @@ export async function getStaticPaths() {
     }`);
 
 	return {
-		paths: people?.people?.
-			filter((person) => person.slug)
+		paths: people?.people
+			?.filter((person) => person.slug)
 			.map((person) => ({
 				params: { personId: person.slug },
 			})),
@@ -204,9 +208,9 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const {
-		data: people,
-	} = await runGraphQl<GetPersonQuery>(GetPersonDocument, {slug: context.params?.personId});
+	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {
+		slug: context.params?.personId,
+	});
 
 	if (!people?.people?.[0]) {
 		return {
@@ -215,10 +219,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	}
 
 	const getInvestments = people.people[0].investments.map((round) => {
-		if (
-			typeof round.investment_round === "object"
-		) {
-			return round.investment_round
+		if (typeof round.investment_round === "object") {
+			return round.investment_round;
 		} else {
 			return null;
 		}
@@ -226,18 +228,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	const sortByDateAscInvestments = getInvestments
 		.slice()
-		.sort(
-			(
-				a,
-				b
-			) => {
-				const distantFuture = new Date(8640000000000000);
+		.sort((a, b) => {
+			const distantFuture = new Date(8640000000000000);
 
-				let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
-				let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
-				return dateA.getTime() - dateB.getTime();
-			}
-		)
+			let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+			let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
+			return dateA.getTime() - dateB.getTime();
+		})
 		.reverse();
 
 	return {

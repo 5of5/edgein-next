@@ -1,7 +1,8 @@
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
-import { ElemButton, IconSpinner } from "../components/ElemButton";
+import { IconSpinner } from "../components/Icons";
+import { ElemButton } from "../components/ElemButton";
 import Link from "next/link";
 
 export default function Login() {
@@ -38,7 +39,7 @@ export default function Login() {
 			// window.location.reload();
 		} else {
 			console.log(authRequest);
-			alert('Error Logging In')
+			alert("Error Logging In");
 			/* handle errors */
 			setIsLoading(false);
 		}
@@ -56,7 +57,7 @@ export default function Login() {
 				await login(did, redirectUrl);
 			})();
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.query.email]);
 
 	const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -84,8 +85,8 @@ export default function Login() {
 			});
 			await login(did);
 		} catch (e) {
-			console.log(e)
-			alert('Error Logging In')
+			console.log(e);
+			alert("Error Logging In");
 			setIsLoading(false);
 		}
 	};
