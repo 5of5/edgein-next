@@ -150,19 +150,20 @@ const Investors: NextPage<Props> = ({
 													>
 														{vcfirm.name}
 													</h3>
-													{(vcfirm.num_of_investments || 0 > 0) && (
-														<div className="inline-flex hover:opacity-70">
-															<IconCash
-																title="Investments"
-																className="h-6 w-6 mr-1 text-primary-500"
-															/>
-															<span className="font-bold mr-1">
-																{vcfirm.num_of_investments}
-															</span>
-															Investment
-															{vcfirm.num_of_investments || (0 > 1 && "s")}
-														</div>
-													)}
+													{vcfirm.num_of_investments !== null &&
+														vcfirm.num_of_investments > 0 && (
+															<div className="inline-flex hover:opacity-70">
+																<IconCash
+																	title="Investments"
+																	className="h-6 w-6 mr-1 text-primary-500"
+																/>
+																<span className="font-bold mr-1">
+																	{vcfirm.num_of_investments}
+																</span>
+																Investment
+																{vcfirm.num_of_investments > 1 && "s"}
+															</div>
+														)}
 												</div>
 											</div>
 										</a>
