@@ -13,18 +13,12 @@ const Privacy: NextPage<Props> = (props) => {
 					content="EdgeIn.io Inc. (EdgeIn, “we”, “us” or “our”) is committed to protecting the privacy of personal information (i.e., any information relating to an identified or identifiable natural person) who visit the EdgeIn.io website (the “Site”). Amendments to this Privacy Policy will be posted to the Site and will be effective when posted. Your continued use of the Site following the posting of any amendment to this Privacy Policy shall constitute your acceptance of such amendment."
 				/>
 			</Head>
-			<section className="relative bg-gradient-to-r from-[#1B01FE] via-[#FE33D0] to-[#F8DA4B]">
-				<div className="py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-					<div className="mx-auto prose prose-xl">
-						<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold text-white">
-							Privacy Policy
-						</h1>
-					</div>
-				</div>
-			</section>
 
 			<div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
 				<div className="mx-auto prose prose-xl">
+					<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold ">
+						Privacy Policy
+					</h1>
 					<h2 className="">Overview</h2>
 					<p>
 						EdgeIn.io Inc. (EdgeIn, “we”, “us” or “our”) is committed to

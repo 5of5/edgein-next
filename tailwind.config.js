@@ -105,14 +105,14 @@ module.exports = {
         '102': '1.02',
         '600': '6',
       },
-      // animation: {
-      //   blob: 'blob 10s infinite',
-      // },
       animation: {
+        //blob: 'blob 10s infinite',
         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'fade-in-up': 'fade-in-up 0.3s ease-out',
+        'fade-in-down': 'fade-in-down 0.3s ease-out',
       },
       keyframes: {
-        blob: {
+        'blob': {
           '0%, 100%': {
             transform: 'translate(0, 0) scale(1)',
           },
@@ -124,6 +124,26 @@ module.exports = {
           },
           '75%': {
             transform: 'translate(-20px, -15px) scale(0.9)',
+          },
+        },
+        'fade-in-down': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(-40px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
+          },
+        },
+        'fade-in-up': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(40px)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)'
           },
         },
       },

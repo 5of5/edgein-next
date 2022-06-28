@@ -42,9 +42,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 		"Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
 	const socialImage = "/social.jpg";
 
-	// Current Route
-	const { asPath } = useRouter();
-
 	return (
 		<>
 			<Head>
@@ -81,7 +78,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 							<main className="overflow-hidden grow selection:bg-primary-200">
 								{pageLoading ? <LoaderPlasma /> : <Component {...pageProps} />}
 							</main>
-							{/* {asPath === "/companies/" && <ElemFeedback />} */}
+
+							{(router.asPath.includes("/companies/") ||
+								router.asPath.includes("/investors/")) && <ElemFeedback />}
 							<TheFooter />
 						</>
 					)}

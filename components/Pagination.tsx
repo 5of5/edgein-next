@@ -32,6 +32,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 				{page * rowsPerPage > 0 && (
 					<ElemButton
 						onClick={() => onPageChange((prev) => prev - 1)}
+						btn="white"
 						arrowLeft
 					>
 						Prev
@@ -40,6 +41,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 				<ElemButton
 					onClick={() => onPageChange((prev) => prev + 1)}
 					className="ml-3"
+					btn="white"
 					arrow
 				>
 					Next

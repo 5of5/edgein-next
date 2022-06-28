@@ -14,18 +14,12 @@ const Terms: NextPage<Props> = (props) => {
 					content="These are the terms governing your use of this website (“Site”). To the extent that you have been directed to these terms from another EdgeIn.io website that may be hosted on a different domain, please note that these terms will also govern your use of such site. If in doubt as to whether a particular Site is governed by these terms, please contact legal@edgein.io"
 				/>
 			</Head>
-			<section className="relative bg-gradient-to-r from-[#1B01FE] via-[#FE33D0] to-[#F8DA4B]">
-				<div className="py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-					<div className="mx-auto prose prose-xl">
-						<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold text-white">
-							Terms of use
-						</h1>
-					</div>
-				</div>
-			</section>
 
 			<div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
 				<div className="mx-auto prose prose-xl">
+					<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold ">
+						Terms of use
+					</h1>
 					<h2 className="">Overview</h2>
 					<p>
 						These are the terms governing your use of this website (“Site”). To
