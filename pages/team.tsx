@@ -1,8 +1,9 @@
 import React from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
+import Image from "next/image";
+
 import { ElemHeading } from "../components/ElemHeading";
-import { ElemPhoto } from "../components/ElemPhoto";
 
 type Props = {
 	team: Record<string, any>[];
@@ -32,13 +33,14 @@ const Team: NextPage<Props> = ({ team }) => {
 									key={index}
 									className="bg-white border border-dark-500 border-opacity-10 rounded-lg overflow-hidden flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out md:h-full"
 								>
-									<ElemPhoto
-										photo={person.image}
-										wrapClass="w-full aspect-square overflow-hidden group-hover:opacity-90"
-										imgClass="object-cover w-full aspect-square"
-										imgAlt={person.name}
-										placeholder="user"
-									/>
+									<div className="relative aspect-square">
+										<Image
+											src={person.image}
+											alt="Picture of the author"
+											layout="fill"
+											objectFit="contain"
+										/>
+									</div>
 									<div className="leading-6 font-medium px-4 py-4">
 										<h3 className="flex items-center font-bold text-lg text-primary-500">
 											{person.name}
@@ -72,12 +74,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
 	const team = [
 		{
-			image: [
-				{
-					id: 1,
-					url: redg,
-				},
-			],
+			image: redg,
 			name: "Redg Snodgrass",
 			role: "Founder & CEO",
 			description:
@@ -85,12 +82,7 @@ export const getStaticProps: GetStaticProps = async () => {
 			linkedin: "https://www.linkedin.com/in/redgiesnodgrass/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: ashley,
-				},
-			],
+			image: ashley,
 			name: "Ashley Brown",
 			role: "Co-Founder & COO",
 			description:
@@ -98,12 +90,7 @@ export const getStaticProps: GetStaticProps = async () => {
 			linkedin: "https://www.linkedin.com/in/brownashleyk/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: raymond,
-				},
-			],
+			image: raymond,
 			name: "Raymond L. Aleman",
 			role: "Co-Founder & Chief Design",
 			description:
@@ -111,96 +98,56 @@ export const getStaticProps: GetStaticProps = async () => {
 			linkedin: "https://www.linkedin.com/in/raylopezaleman/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: ed,
-				},
-			],
+			image: ed,
 			name: "Ed Parsons",
 			role: "Chief Technology Advisor",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/efparsons/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: ben,
-				},
-			],
+			image: ben,
 			name: "Benjamin Andrew Pollack",
 			role: "Head of Product",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/benpollack/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: dahn,
-				},
-			],
+			image: dahn,
 			name: "Dahn Tamir",
 			role: "Head of Data",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/dahntamir/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: jhen,
-				},
-			],
+			image: jhen,
 			name: "Jhen de Leon",
 			role: "Chief of Staff",
 			//description: "",
 			//linkedin: "",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: rocky,
-				},
-			],
+			image: rocky,
 			name: "Rocky Rimando",
 			role: "Virtual Strategic Analyst Lead",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/rocky-rimando/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: osman,
-				},
-			],
+			image: osman,
 			name: "Osman Pulgar",
 			role: "Virtual Strategic Analyst",
 			//description: "",
 			//linkedin: maybe? "https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: jonnelle,
-				},
-			],
+			image: jonnelle,
 			name: "Jonnelle Gueco",
 			role: "Virtual Strategic Analyst",
 			//description: "",
 			//linkedin: maybe? "https://www.linkedin.com/in/jonnelle-gueco-826343200/",
 		},
 		{
-			image: [
-				{
-					id: 1,
-					url: patricia,
-				},
-			],
+			image: patricia,
 			name: "Patricia Pulgar",
 			role: "Virtual Strategic Analyst",
 			//description: "",

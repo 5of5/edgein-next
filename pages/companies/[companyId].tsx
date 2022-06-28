@@ -10,7 +10,14 @@ import { ElemTags } from "../../components/ElemTags";
 import { ElemInvestments } from "../../components/Company/ElemInvestments";
 import { ElemTeamGrid } from "../../components/Company/ElemTeamGrid";
 import { runGraphQl } from "../../utils";
-import { Companies, GetCompaniesPathsQuery, GetCompaniesQuery, GetCompanyDocument, GetCompanyQuery, Investment_Rounds } from "../../graphql/types";
+import {
+	Companies,
+	GetCompaniesPathsQuery,
+	GetCompaniesQuery,
+	GetCompanyDocument,
+	GetCompanyQuery,
+	Investment_Rounds,
+} from "../../graphql/types";
 import { ElemFounderGrid } from "../../components/Company/ElemFounderGrid";
 
 type Props = {
@@ -38,10 +45,10 @@ const Company: NextPage<Props> = (props) => {
 		companyTags.unshift(company.layer);
 	}
 
-	const founders = company.teamMembers.filter(tm => tm.founder)
-	const teamMembers = company.teamMembers.filter(tm => !tm.founder)
+	const founders = company.teamMembers.filter((tm) => tm.founder);
+	const teamMembers = company.teamMembers.filter((tm) => !tm.founder);
 
-	console.log(company.teamMembers)
+	console.log(company.teamMembers);
 
 	return (
 		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
@@ -67,20 +74,18 @@ const Company: NextPage<Props> = (props) => {
 								<h1 className="flex text-4xl md:text-5xl font-bold">
 									{company.name}
 								</h1>
-								{company.coin && 
-										<span
-											key={company.coin.id}
-											className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
-											title={`Token: ${company.coin.ticker}`}
-										>
-											{company.coin.ticker}
-										</span>
-								}
+								{company.coin && (
+									<span
+										key={company.coin.id}
+										className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
+										title={`Token: ${company.coin.ticker}`}
+									>
+										{company.coin.ticker}
+									</span>
+								)}
 							</div>
 
-							{company.overview && (
-								<p className="text-lg mt-3">{company.overview}</p>
-							)}
+							{company.overview && <p className="mt-1">{company.overview}</p>}
 						</div>
 
 						{/* <section className="col-span-3 flex flex-col mt-16 md:mt-0">
@@ -165,20 +170,23 @@ const Company: NextPage<Props> = (props) => {
 };
 
 export async function getStaticPaths() {
-	const {
-		data: companies,
-	} = await runGraphQl<GetCompaniesPathsQuery>(`{ companies(where: {slug: {_neq: ""}}) { slug }}`);
+	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
+		`{ companies(where: {slug: {_neq: ""}}) { slug }}`
+	);
 
 	return {
-		paths: companies?.companies?.
-			filter((comp) => comp.slug)
+		paths: companies?.companies
+			?.filter((comp) => comp.slug)
 			.map((comp) => ({ params: { companyId: comp.slug } })),
 		fallback: true, // false or 'blocking'
 	};
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl<GetCompanyQuery>(GetCompanyDocument, {slug: context.params?.companyId});
+	const { data: companies } = await runGraphQl<GetCompanyQuery>(
+		GetCompanyDocument,
+		{ slug: context.params?.companyId }
+	);
 
 	if (!companies?.companies[0]) {
 		return {
@@ -186,17 +194,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
-	const sortRounds = companies.companies[0].investment_rounds?.
-		slice()
-		.sort(
-			(
-				a,
-				b
-			) => {
-				return new Date(a.round_date ?? "").getTime() - new Date(b.round_date ?? "").getTime();
-			}
-		)
-		.reverse() || [];
+	const sortRounds =
+		companies.companies[0].investment_rounds
+			?.slice()
+			.sort((a, b) => {
+				return (
+					new Date(a.round_date ?? "").getTime() -
+					new Date(b.round_date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	return {
 		props: {
