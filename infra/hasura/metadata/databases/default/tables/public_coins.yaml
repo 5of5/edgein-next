@@ -11,3 +11,35 @@ object_relationships:
         insertion_order: null
         column_mapping:
           blockchain_id: id
+insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+        - blockchain_id
+        - external_id
+        - id
+        - name
+        - ticker
+      backend_only: false
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - blockchain_id
+        - id
+        - external_id
+        - name
+        - ticker
+      filter: {}
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - blockchain_id
+        - id
+        - external_id
+        - name
+        - ticker
+      filter: {}
+      check: {}
