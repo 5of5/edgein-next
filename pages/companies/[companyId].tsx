@@ -41,6 +41,8 @@ const Company: NextPage<Props> = (props) => {
 	const founders = company.teamMembers.filter(tm => tm.founder)
 	const teamMembers = company.teamMembers.filter(tm => !tm.founder)
 
+	console.log(company.teamMembers)
+
 	return (
 		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>

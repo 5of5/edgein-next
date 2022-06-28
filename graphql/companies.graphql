@@ -32,6 +32,7 @@ query GetCompany($slug: String!) {
       function
       start_date
       end_date
+      founder
     }
     investment_rounds {
       id
