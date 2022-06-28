@@ -11,6 +11,7 @@ import { ElemInvestments } from "../../components/Company/ElemInvestments";
 import { ElemTeamGrid } from "../../components/Company/ElemTeamGrid";
 import { runGraphQl } from "../../utils";
 import { Companies, GetCompaniesPathsQuery, GetCompaniesQuery, GetCompanyDocument, GetCompanyQuery, Investment_Rounds } from "../../graphql/types";
+import { ElemFounderGrid } from "../../components/Company/ElemFounderGrid";
 
 type Props = {
 	company: Companies;
@@ -36,6 +37,9 @@ const Company: NextPage<Props> = (props) => {
 	if (company.layer) {
 		companyTags.unshift(company.layer);
 	}
+
+	const founders = company.teamMembers.filter(tm => tm.founder)
+	const teamMembers = company.teamMembers.filter(tm => !tm.founder)
 
 	return (
 		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
@@ -131,19 +135,19 @@ const Company: NextPage<Props> = (props) => {
 				<ElemTags className="mt-12" heading="Tags" tags={companyTags} />
 			)}
 
-			{/* {company.founder.length > 0 && (
+			{founders.length > 0 && (
 				<ElemFounderGrid
 					className="mt-12"
 					heading="Founders"
-					people={company.founder}
+					people={founders}
 				/>
-			)} */}
+			)}
 
-			{company.teamMembers.length > 0 && (
+			{teamMembers.length > 0 && (
 				<ElemTeamGrid
 					className="mt-12"
 					heading="Team Members"
-					people={company.teamMembers}
+					people={teamMembers}
 				/>
 			)}
 

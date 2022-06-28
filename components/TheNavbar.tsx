@@ -35,7 +35,7 @@ export const TheNavbar = () => {
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
-			router.push("/login/?loggedout");
+			location.href = "/login/?loggedout";
 		} else {
 			/* handle errors */
 		}

@@ -38,6 +38,7 @@ export default function Login() {
 			// window.location.reload();
 		} else {
 			console.log(authRequest);
+			alert('Error Logging In')
 			/* handle errors */
 			setIsLoading(false);
 		}
@@ -83,6 +84,8 @@ export default function Login() {
 			});
 			await login(did);
 		} catch (e) {
+			console.log(e)
+			alert('Error Logging In')
 			setIsLoading(false);
 		}
 	};

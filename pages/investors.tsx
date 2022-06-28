@@ -38,7 +38,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 
 	useEffect(() => {
 		setPage(0);
-		if (initialLoad) {
+		if (initialLoad && debouncedSearchTerm !== "" && selectedInvestmentCount.rangeEnd !== 0) {
 			setInitialLoad(false)
 		}	
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,7 +115,7 @@ const Investors: NextPage<Props> = ({ vcFirmCount, initialVCFirms, numberOfInves
 						</ElemFiltersWrap>
 
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
-						 { isLoading && !initialLoad ? <h4>Loading...</h4> :
+						 { error ?  <h4>Error loading investors</h4> : isLoading && !initialLoad ? <h4>Loading...</h4> :
 
 							vcFirms?.
 								map((vcfirm) => (

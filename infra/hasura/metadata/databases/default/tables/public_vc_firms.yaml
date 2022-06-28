@@ -46,6 +46,8 @@ select_permissions:
         - name
         - slug
         - website
+      computed_fields:
+        - num_of_investments
       filter: {}
 update_permissions:
   - role: user

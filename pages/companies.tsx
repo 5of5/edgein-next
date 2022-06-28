@@ -113,7 +113,11 @@ const Companies: NextPage<Props> = ({
 
 	useEffect(() => {
 		setPage(0);
-		if (initialLoad) {
+		if (initialLoad && 
+				debouncedSearchTerm !== "" &&
+				selectedLayer.value !== "" &&
+				selectedAmountRaised.rangeEnd !== 0 && 
+				selectedTotalEmployees.rangeEnd !== 0) { 
 			setInitialLoad(false)
 		}	
 	// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -282,7 +286,7 @@ const Companies: NextPage<Props> = ({
 								toggleViewMode ? "1" : "2"
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
-							{isLoading && !initialLoad ? (
+							{error ?  <h4>Error loading companies</h4> : isLoading && !initialLoad ? (
 								<>
 									{Array.from({ length: 9 }, (_, i) => (
 										<FakeElemCompany key={i} />
