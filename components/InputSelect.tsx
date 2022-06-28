@@ -1,5 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import React, { PropsWithChildren, Fragment } from "react";
+import { IconSelector, IconCheck } from "../components/Icons";
 
 type Props = {
 	className?: string;
@@ -86,49 +87,5 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 				)}
 			</Listbox>
 		</div>
-	);
-};
-
-type IconProps = {
-	className?: string;
-	title?: string;
-};
-
-const IconSelector: React.FC<IconProps> = ({
-	className,
-	title = "Selector",
-}) => {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-			className={`${className}`}
-			stroke="currentColor"
-			strokeWidth="2"
-		>
-			<title>{title}</title>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M8 9l4-4 4 4m0 6l-4 4-4-4"
-			/>
-		</svg>
-	);
-};
-
-const IconCheck: React.FC<IconProps> = ({ className, title = "Check" }) => {
-	return (
-		<svg
-			viewBox="0 0 24 24"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-			className={`${className}`}
-			stroke="currentColor"
-			strokeWidth="2"
-		>
-			<title>{title}</title>
-			<path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-		</svg>
 	);
 };
