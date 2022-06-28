@@ -85,7 +85,9 @@ const Company: NextPage<Props> = (props) => {
 								)}
 							</div>
 
-							{company.overview && <p className="mt-1">{company.overview}</p>}
+							{company.overview && (
+								<p className="mt-1 line-clamp-3">{company.overview}</p>
+							)}
 						</div>
 
 						{/* <section className="col-span-3 flex flex-col mt-16 md:mt-0">
