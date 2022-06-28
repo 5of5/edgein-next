@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useFormspark } from "@formspark/use-formspark";
 import type { NextPage } from "next";
 import { ElemButton } from "../components/ElemButton";
+import { InputText } from "../components/InputText";
 
 const Waitlist: NextPage = ({}) => {
 	const [submit, submitting] = useFormspark({
@@ -18,7 +19,7 @@ const Waitlist: NextPage = ({}) => {
 			email: email,
 			_email: {
 				from: name,
-				subject: "EdgeIn - Waitlist",
+				subject: "Waitlist - EdgeIn",
 				template: {
 					title: false,
 					footer: false,
@@ -51,33 +52,24 @@ const Waitlist: NextPage = ({}) => {
 								onSubmit={onSubmit}
 							>
 								<div className="group mb-2 sm:col-span-2">
-									<label htmlFor="name">Full Name</label>
-									<input
-										className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+									<InputText
+										label="Full Name"
 										type="text"
 										name="name"
 										value={name}
 										onChange={(e) => setName(e.target.value)}
 										placeholder="e.g. John Edge"
-										autoComplete="name"
 										required
 									/>
 								</div>
 								<div className="group mb-2 sm:col-span-2">
-									<label
-										htmlFor="email"
-										className="text-gray-400 cursor-text group-focus-within:text-primary-500"
-									>
-										Email
-									</label>
-									<input
-										className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+									<InputText
+										label="Email"
 										type="email"
 										name="email"
 										value={email}
 										onChange={(e) => setEmail(e.target.value)}
 										placeholder="example@email.com"
-										autoComplete="email"
 										required
 									/>
 								</div>

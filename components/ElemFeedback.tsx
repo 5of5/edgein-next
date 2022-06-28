@@ -43,7 +43,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 			email: message,
 			_email: {
 				from: name,
-				subject: "EdgeIn - Feedback",
+				subject: "Feedback - EdgeIn",
 				template: {
 					title: false,
 					footer: false,
