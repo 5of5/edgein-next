@@ -11,6 +11,7 @@ import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { runGraphQl, truncateWords } from "../utils";
+import { IconGrid, IconList } from "../components/Icons";
 import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
@@ -113,15 +114,22 @@ const Companies: NextPage<Props> = ({
 
 	useEffect(() => {
 		setPage(0);
-		if (initialLoad && 
-				debouncedSearchTerm !== "" &&
-				selectedLayer.value !== "" &&
-				selectedAmountRaised.rangeEnd !== 0 && 
-				selectedTotalEmployees.rangeEnd !== 0) { 
-			setInitialLoad(false)
-		}	
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedSearchTerm, selectedAmountRaised, selectedLayer, selectedTotalEmployees])
+		if (
+			initialLoad &&
+			debouncedSearchTerm !== "" &&
+			selectedLayer.value !== "" &&
+			selectedAmountRaised.rangeEnd !== 0 &&
+			selectedTotalEmployees.rangeEnd !== 0
+		) {
+			setInitialLoad(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		debouncedSearchTerm,
+		selectedAmountRaised,
+		selectedLayer,
+		selectedTotalEmployees,
+	]);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" } }],
@@ -286,7 +294,9 @@ const Companies: NextPage<Props> = ({
 								toggleViewMode ? "1" : "2"
 							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
-							{error ?  <h4>Error loading companies</h4> : isLoading && !initialLoad ? (
+							{error ? (
+								<h4>Error loading companies</h4>
+							) : isLoading && !initialLoad ? (
 								<>
 									{Array.from({ length: 9 }, (_, i) => (
 										<FakeElemCompany key={i} />
@@ -415,43 +425,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			totalEmployees: EmployeesFilters,
 		},
 	};
-};
-
-type IconProps = {
-	className?: string;
-	title?: string;
-};
-
-const IconGrid: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
-	return (
-		<svg
-			viewBox="0 0 20 20"
-			fill="currentColor"
-			xmlns="http://www.w3.org/2000/svg"
-			className={`${className}`}
-		>
-			<title>{title}</title>
-			<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-		</svg>
-	);
-};
-
-const IconList: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
-	return (
-		<svg
-			viewBox="0 0 20 20"
-			fill="currentColor"
-			xmlns="http://www.w3.org/2000/svg"
-			className={`${className}`}
-		>
-			<title>{title}</title>
-			<path
-				fillRule="evenodd"
-				d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-				clipRule="evenodd"
-			/>
-		</svg>
-	);
 };
 
 export default Companies;
