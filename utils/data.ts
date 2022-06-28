@@ -26,7 +26,7 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 					console.log("error with response 2", json);
 				}
 				if (json.errors) {
-					console.log("error with response 3", json);
+					console.log("error with response 3", query, variables, json.errors[0], json.errors);
 				}
 				return json;
 			} catch (e) {
