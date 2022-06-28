@@ -603,6 +603,6 @@ const EmployeesFilters: NumericFilter[] = [
 	{
 		title: "1000+ Employees",
 		rangeStart: 1001,
-		rangeEnd: 90e14,
+		rangeEnd: 1000000000,
 	},
 ];

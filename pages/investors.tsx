@@ -220,6 +220,6 @@ const InvestmentsFilters: NumericFilter[] = [{
 	},{
 		title: "25+ Investments", 
 	rangeStart:  25, 
-	rangeEnd:  9999999999999
+	rangeEnd:  1000000000
 	}
 	]
