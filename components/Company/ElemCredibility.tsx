@@ -1,6 +1,7 @@
 import React from "react";
 import { ElemTooltip } from "../ElemTooltip";
 import {
+	IconProps,
 	IconBadgeCheck,
 	IconGithub,
 	IconLinkedIn,
