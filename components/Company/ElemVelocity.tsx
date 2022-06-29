@@ -2,6 +2,7 @@ import React from "react";
 import { ElemTooltip } from "../ElemTooltip";
 import { numberWithCommas } from "../../utils";
 import {
+	IconProps,
 	IconUsers,
 	IconCurrencyDollar,
 	IconQuestionMarkCircle,
