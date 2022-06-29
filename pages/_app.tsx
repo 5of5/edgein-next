@@ -40,29 +40,44 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const metaTitle = "Web3-focused data intelligence for success - EdgeIn.io";
 	const metaDescription =
 		"Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
-	const socialImage = "/social.jpg";
 
 	return (
 		<>
 			<Head>
 				<title>{metaTitle}</title>
-				<meta name="description" content={metaDescription} />
+				<meta name="description" content={metaDescription} key="description" />
 				<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
 				<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 				<meta
 					name="robots"
 					content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
 				/>
-				<meta property="og:title" content={metaTitle} />
-				<meta property="og:description" content={metaDescription} />
-				<meta property="og:url" content="https://www.edgein.io/" />
-				<meta property="og:type" content="website" />
-				<meta property="og:image" content={socialImage} />
-				<meta name="twitter:card" content="summary_large_image" />
-				<meta name="twitter:site" content="@edgeinio" />
-				<meta name="twitter:title" content={metaTitle} />
-				<meta name="twitter:description" content={metaDescription} />
-				<meta name="twitter:image" content={socialImage} />
+				<meta property="og:title" content={metaTitle} key="og-title" />
+				<meta
+					property="og:description"
+					content={metaDescription}
+					key="og-description"
+				/>
+				<meta property="og:url" content="https://www.edgein.io/" key="og-url" />
+				<meta property="og:type" content="website" key="og-type" />
+				<meta
+					property="og:image"
+					content="https://edgein.io/social.jpg"
+					key="og-image"
+				/>
+				<meta name="twitter:card" content="summary_large_image" key="tw-card" />
+				<meta name="twitter:site" content="@edgeinio" key="tw-site" />
+				<meta name="twitter:title" content={metaTitle} key="tw-title" />
+				<meta
+					name="twitter:description"
+					content={metaDescription}
+					key="tw-description"
+				/>
+				<meta
+					name="twitter:image"
+					content="https://edgein.io/social.jpg"
+					key="tw-social"
+				/>
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"

@@ -41,7 +41,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 		if (e) e.preventDefault();
 		await submit({
 			name: name,
-			email: message,
+			message: message,
 			_email: {
 				from: name,
 				subject: "Feedback - EdgeIn",

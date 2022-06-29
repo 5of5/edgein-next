@@ -4,7 +4,7 @@ import { mutate } from "../graphql/hasuraAdmin";
 
 export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
-	console.log({url})
+	console.log({ url });
 
 	// Prevent security issues – users should not be able to canonically access
 	// the pages/sites folder and its respective contents. This can also be done
@@ -14,6 +14,7 @@ export async function middleware(req: NextRequest) {
 			`/`,
 			`/login/`,
 			`/waitlist/`,
+			`/contact/`,
 			`/privacy/`,
 			`/terms/`,
 			`/team/`,
@@ -23,10 +24,12 @@ export async function middleware(req: NextRequest) {
 			`/404/`,
 			`/api/login_attempt/`,
 		].includes(url.pathname) ||
-		url.pathname.endsWith('.png') || url.pathname.endsWith('.jpg') || url.pathname.endsWith('.ico') ||
+		url.pathname.endsWith(".png") ||
+		url.pathname.endsWith(".jpg") ||
+		url.pathname.endsWith(".ico") ||
 		process.env.DEV_MODE
 	) {
-		console.log('pass-thur', url.pathname)
+		console.log("pass-thur", url.pathname);
 		return NextResponse.next();
 	}
 
@@ -40,12 +43,12 @@ export async function middleware(req: NextRequest) {
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
-			console.log('no-user', url.pathname)
+			console.log("no-user", url.pathname);
 			return NextResponse.redirect(
 				new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 			);
 		}
-		if (!user.email.endsWith('5of5.vc') && url.pathname.includes('/admin/')) {
+		if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
 			return NextResponse.redirect(
 				new URL(`/404?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 			);
@@ -79,6 +82,6 @@ export async function middleware(req: NextRequest) {
 		});
 	}
 
-	console.log('pass-thur')
+	console.log("pass-thur");
 	return NextResponse.next();
 }

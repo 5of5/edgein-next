@@ -14,7 +14,7 @@ export const TheFooter = () => {
 			{ name: "Team", href: "/team" },
 		],
 		resources: [
-			{ name: "Contact", href: "https://www.5of5.vc/contact" },
+			{ name: "Contact", href: "/contact" },
 			{ name: "Press", href: "mailto:press@5of5.vc" },
 		],
 		legal: [

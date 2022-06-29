@@ -10,7 +10,7 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
-import { runGraphQl, truncateWords } from "../utils";
+import { runGraphQl } from "../utils";
 import { IconGrid, IconList } from "../components/Icons";
 import {
 	Companies_Bool_Exp,
@@ -208,6 +208,7 @@ const Companies: NextPage<Props> = ({
 				<meta
 					name="description"
 					content="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
+					key="description"
 				/>
 			</Head>
 			<div>
@@ -308,7 +309,7 @@ const Companies: NextPage<Props> = ({
 										<Link key={company.id} href={`/companies/${company.slug}`}>
 											<a
 												className={`flex flex-col ${
-													toggleViewMode ? "md:flex-row" : ""
+													toggleViewMode ? "md:flex-row md:items-center" : ""
 												} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
 											>
 												<div
@@ -344,15 +345,15 @@ const Companies: NextPage<Props> = ({
 														</ElemTooltip>
 													)}
 												</div>
-
 												{company.overview && (
 													<div
-														className={`text-gray-400 grow ${
-															toggleViewMode &&
-															"flex items-center max-w-sm mr-4"
+														className={`grow ${
+															toggleViewMode && "max-w-sm mr-4"
 														}`}
 													>
-														{truncateWords(company.overview, 18)}
+														<div className="text-gray-400 line-clamp-3">
+															{company.overview}
+														</div>
 													</div>
 												)}
 
