@@ -58,7 +58,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={metaDescription}
 					key="og-description"
 				/>
-				<meta property="og:url" content="https://www.edgein.io/" key="og-url" />
+				<meta property="og:url" content="https://edgein.io/" key="og-url" />
 				<meta property="og:type" content="website" key="og-type" />
 				<meta
 					property="og:image"

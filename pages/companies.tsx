@@ -210,6 +210,16 @@ const Companies: NextPage<Props> = ({
 					content="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 					key="description"
 				/>
+				<meta
+					property="og:title"
+					content="Web3 Companies - EdgeIn.io"
+					key="og-title"
+				/>
+				<meta
+					property="og:description"
+					content="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
+					key="og-description"
+				/>
 			</Head>
 			<div>
 				<ElemHeading

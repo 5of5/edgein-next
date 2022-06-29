@@ -45,6 +45,7 @@ const Contact: NextPage = () => {
 				<meta
 					name="description"
 					content="Request a company profile, tell us about you, or simply get in touch. Our team would love to hear from you!"
+					key="description"
 				/>
 			</Head>
 			<div>
