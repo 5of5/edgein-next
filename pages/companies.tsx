@@ -459,8 +459,8 @@ const LayersFilters: TextFilter[] = [
 		description: "Nodes / Node Providers / Data Platforms",
 	},
 	{
-		title: "Layer 2",
-		value: "Layer 2",
+		title: "Layer 3",
+		value: "Layer 3",
 		description: "API's / API Providers / Systems",
 	},
 	{
