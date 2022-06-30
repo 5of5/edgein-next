@@ -11,15 +11,6 @@ const Home: NextPage = () => {
 	const { user, error, loading } = useAuth();
 	return (
 		<>
-			<Head>
-				<title>Web3-focused data intelligence for success - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="Web3 data intelligence for reliable analysis, powerful insights, and tailored strategies for success."
-				/>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
-
 			<section className="relative">
 				<figure className="absolute -left-96 -top-44 z-0 bg-gray-100 rounded-full h-[30rem] w-[30rem] lg:h-[40rem] lg:w-[40rem]"></figure>
 				<FigureBlurredBg className="-bottom-16 sm:-bottom-44" />

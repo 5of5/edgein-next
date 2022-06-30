@@ -18,13 +18,6 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 
 	return (
 		<div>
-			<Head>
-				<title>Events - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="Don't miss a beat. Here's your lineup for all of the industry's must attend events."
-				/>
-			</Head>
 			<div>
 				<ElemHeading
 					title="Events"
@@ -166,23 +159,17 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	// const { data: events } = await runGraphQl<{events:Record<string, any>[]}>(
 	// 	'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
 	// );
-	const events:{events:Record<string, any>[]} = {events:[]}
+	const events: { events: Record<string, any>[] } = { events: [] };
 
-	const sortEvents = events?.events
-		.slice()
-		.sort(
-			(
-				a,
-				b
-			) => {
-				return (
-					new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
-				);
-			}
-		);
+	const sortEvents = events?.events.slice().sort((a, b) => {
+		return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+	});
 
 	return {
 		props: {
+			metaTitle: "Web3 Events - EdgeIn.io",
+			metaDescription:
+				"Don't miss a beat. Here's your lineup for all of the industry's must attend events.",
 			events: events?.events,
 			sortEvents,
 		},

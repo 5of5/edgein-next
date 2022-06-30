@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormspark } from "@formspark/use-formspark";
-import type { NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import { ElemButton } from "../components/ElemButton";
 import { InputText } from "../components/InputText";
 
@@ -85,6 +85,15 @@ const Waitlist: NextPage = ({}) => {
 			</div>
 		</div>
 	);
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+	return {
+		props: {
+			metaTitle: "Join the waiting list - EdgeIn.io",
+			description: "Explore Web3 data intelligence and contribute.",
+		},
+	};
 };
 
 export default Waitlist;

@@ -207,8 +207,21 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			})
 			.reverse() || [];
 
+	let metaTitle = null;
+	if (companies.companies[0].name) {
+		metaTitle =
+			companies.companies[0].name +
+			" Company Profile: Credibility, Velocity & Investors - EdgeIn.io";
+	}
+	let metaDescription = null;
+	if (companies.companies[0].overview) {
+		metaDescription = companies.companies[0].overview;
+	}
+
 	return {
 		props: {
+			metaTitle,
+			metaDescription,
 			company: companies.companies[0],
 			sortRounds,
 		},

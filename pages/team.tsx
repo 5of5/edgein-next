@@ -12,13 +12,6 @@ type Props = {
 const Team: NextPage<Props> = ({ team }) => {
 	return (
 		<div>
-			<Head>
-				<title>Team - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="Get to know the people leading data insights for the web3 community"
-				/>
-			</Head>
 			<div>
 				<ElemHeading
 					title="Meet the EdgeIn Team"
@@ -157,6 +150,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
 	return {
 		props: {
+			metaTitle: "Meet the EdgeIn Team - EdgeIn.io",
+			metaDescription:
+				"Get to know the people leading data insights for the web3 community",
 			team,
 		},
 	};

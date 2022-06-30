@@ -12,7 +12,11 @@ import {
 	formatDate,
 	runGraphQl,
 } from "../../utils";
-import { GetVcFirmQuery, Investment_Rounds, Vc_Firms } from "../../graphql/types";
+import {
+	GetVcFirmQuery,
+	Investment_Rounds,
+	Vc_Firms,
+} from "../../graphql/types";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -50,9 +54,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="w-full col-span-2 p-2">
-					<h1 className="text-4xl md:text-6xl font-bold my-5">
-						{vcfirm.name}
-					</h1>
+					<h1 className="text-4xl md:text-6xl font-bold my-5">{vcfirm.name}</h1>
 
 					<ElemKeyInfo
 						heading=""
@@ -90,21 +92,20 @@ const VCFirm: NextPage<Props> = (props) => {
 								>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
-													<Link
-														href={`/companies/${theRound.company.slug}`}
-														key={theRound.company.id}
-													>
-														<a className="investor inline-flex items-center hover:opacity-70">
-															<ElemPhoto
-																photo={theRound.company.logo}
-																wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-																imgClass="object-fit max-w-full max-h-full"
-																imgAlt={theRound.company.name}
-															/>
-															{theRound.company.name}
-														</a>
-													</Link>
-												
+											<Link
+												href={`/companies/${theRound.company.slug}`}
+												key={theRound.company.id}
+											>
+												<a className="investor inline-flex items-center hover:opacity-70">
+													<ElemPhoto
+														photo={theRound.company.logo}
+														wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={theRound.company.name}
+													/>
+													{theRound.company.name}
+												</a>
+											</Link>
 										) : (
 											<>&mdash;</>
 										)}
@@ -144,13 +145,13 @@ const VCFirm: NextPage<Props> = (props) => {
 };
 
 export async function getStaticPaths() {
-	const {
-		data: vcFirms,
-	} = await runGraphQl<GetVcFirmQuery>(`{vc_firms(where: {slug: {_neq: ""}}) { name, slug, logo}}`);
+	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(
+		`{vc_firms(where: {slug: {_neq: ""}}) { name, slug, logo}}`
+	);
 
 	return {
-		paths: vcFirms?.vc_firms?.
-			filter((vcfirm) => vcfirm.slug)
+		paths: vcFirms?.vc_firms
+			?.filter((vcfirm) => vcfirm.slug)
 			.map((vcfirm) => ({
 				params: { investorId: vcfirm.slug },
 			})),
@@ -193,10 +194,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	}
 
 	const getInvestments = vc_firms.vc_firms[0].investments.map((round) => {
-		if (
-			typeof round.investment_round === "object" &&
-			round.investment_round
-		) {
+		if (typeof round.investment_round === "object" && round.investment_round) {
 			return round.investment_round;
 		} else {
 			return null;
@@ -205,22 +203,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	const sortByDateAscInvestments = getInvestments
 		.slice()
-		.sort(
-			(
-				a,
-				b
-			) => {
-				const distantFuture = new Date(8640000000000000);
+		.sort((a, b) => {
+			const distantFuture = new Date(8640000000000000);
 
-				let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
-				let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
-				return dateA.getTime() - dateB.getTime();
-			}
-		)
+			let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+			let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
+			return dateA.getTime() - dateB.getTime();
+		})
 		.reverse();
+
+	let metaTitle = null;
+	if (vc_firms.vc_firms[0].name) {
+		metaTitle =
+			vc_firms.vc_firms[0].name + " Investor Profile & Funding - EdgeIn.io";
+	}
 
 	return {
 		props: {
+			metaTitle,
 			vcfirm: vc_firms.vc_firms[0],
 			sortByDateAscInvestments,
 		},

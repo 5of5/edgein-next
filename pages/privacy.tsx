@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 
 type Props = {};
@@ -6,14 +6,6 @@ type Props = {};
 const Privacy: NextPage<Props> = (props) => {
 	return (
 		<main className="min-h-[80vh]">
-			<Head>
-				<title>Privacy - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="EdgeIn.io Inc. (EdgeIn, “we”, “us” or “our”) is committed to protecting the privacy of personal information (i.e., any information relating to an identified or identifiable natural person) who visit the EdgeIn.io website (the “Site”). Amendments to this Privacy Policy will be posted to the Site and will be effective when posted. Your continued use of the Site following the posting of any amendment to this Privacy Policy shall constitute your acceptance of such amendment."
-				/>
-			</Head>
-
 			<div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
 				<div className="mx-auto prose prose-xl">
 					<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold ">
@@ -329,6 +321,14 @@ const Privacy: NextPage<Props> = (props) => {
 			</div>
 		</main>
 	);
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+	return {
+		props: {
+			metaTitle: "Privacy - EdgeIn.io",
+		},
+	};
 };
 
 export default Privacy;

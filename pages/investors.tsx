@@ -90,13 +90,6 @@ const Investors: NextPage<Props> = ({
 
 	return (
 		<div>
-			<Head>
-				<title>Web3 Investors - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."
-				/>
-			</Head>
 			<div>
 				<ElemHeading
 					title="Investors"
@@ -193,6 +186,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
+			metaTitle: "Web3 Investors - EdgeIn.io",
+			metaDescription:
+				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
 			vcFirmCount: vcFirms?.vc_firms.length,
 			initialVCFirms: vcFirms?.vc_firms,
 			numberOfInvestments: InvestmentsFilters,
@@ -227,6 +223,6 @@ const InvestmentsFilters: NumericFilter[] = [
 	{
 		title: "25+ Investments",
 		rangeStart: 25,
-		rangeEnd:  1000000000
+		rangeEnd: 1000000000,
 	},
 ];

@@ -36,10 +36,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 		router.events.on("routeChangeError", handleComplete);
 	}, [router]);
 
-	// Global Meta
-	const metaTitle = "Web3-focused data intelligence for success - EdgeIn.io";
-	const metaDescription =
-		"Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
+	// Meta
+	let metaTitle = pageProps.metaTitle
+		? pageProps.metaTitle
+		: "Web3-focused data intelligence for success - EdgeIn.io";
+	let metaDescription = pageProps.metaDescription
+		? pageProps.metaDescription
+		: "Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
+	let metaImage = pageProps.metaImage ? pageProps.metaImage : `/social.jpg`;
 
 	return (
 		<>
@@ -60,11 +64,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				/>
 				<meta property="og:url" content="https://edgein.io/" key="og-url" />
 				<meta property="og:type" content="website" key="og-type" />
-				<meta
-					property="og:image"
-					content="https://edgein.io/social.jpg"
-					key="og-image"
-				/>
+				<meta property="og:image" content={metaImage} key="og-image" />
 				<meta name="twitter:card" content="summary_large_image" key="tw-card" />
 				<meta name="twitter:site" content="@edgeinio" key="tw-site" />
 				<meta name="twitter:title" content={metaTitle} key="tw-title" />
@@ -73,11 +73,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={metaDescription}
 					key="tw-description"
 				/>
-				<meta
-					name="twitter:image"
-					content="https://edgein.io/social.jpg"
-					key="tw-social"
-				/>
+				<meta name="twitter:image" content={metaImage} key="tw-social" />
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"

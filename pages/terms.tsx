@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -7,14 +7,6 @@ type Props = {};
 const Terms: NextPage<Props> = (props) => {
 	return (
 		<main className="min-h-[80vh]">
-			<Head>
-				<title>Terms of use - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="These are the terms governing your use of this website (“Site”). To the extent that you have been directed to these terms from another EdgeIn.io website that may be hosted on a different domain, please note that these terms will also govern your use of such site. If in doubt as to whether a particular Site is governed by these terms, please contact legal@edgein.io"
-				/>
-			</Head>
-
 			<div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
 				<div className="mx-auto prose prose-xl">
 					<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold ">
@@ -440,6 +432,14 @@ const Terms: NextPage<Props> = (props) => {
 			</div>
 		</main>
 	);
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+	return {
+		props: {
+			metaTitle: "Terms of Use  - EdgeIn.io",
+		},
+	};
 };
 
 export default Terms;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { NextPage } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { InputText } from "@/components/InputText";
@@ -40,14 +40,6 @@ const Contact: NextPage = () => {
 
 	return (
 		<div>
-			<Head>
-				<title>Contact - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="Request a company profile, tell us about you, or simply get in touch. Our team would love to hear from you!"
-					key="description"
-				/>
-			</Head>
 			<div>
 				<div className="relative overflow-hidden min-h-[70vh] bg-gray-50 py-20 sm:py-32">
 					<div className="absolute top-0 left-1/2 -translate-x-[30%] -translate-y-[5%]">
@@ -131,6 +123,16 @@ const Contact: NextPage = () => {
 			</div>
 		</div>
 	);
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+	return {
+		props: {
+			metaTitle: "Contact - EdgeIn.io",
+			metaDescription:
+				"Request a company profile, tell us about you, or simply get in touch. Our team would love to hear from you!",
+		},
+	};
 };
 
 export default Contact;

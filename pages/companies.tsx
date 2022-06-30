@@ -203,24 +203,6 @@ const Companies: NextPage<Props> = ({
 
 	return (
 		<div>
-			<Head>
-				<title>Web3 Companies - EdgeIn.io</title>
-				<meta
-					name="description"
-					content="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
-					key="description"
-				/>
-				<meta
-					property="og:title"
-					content="Web3 Companies - EdgeIn.io"
-					key="og-title"
-				/>
-				<meta
-					property="og:description"
-					content="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
-					key="og-description"
-				/>
-			</Head>
 			<div>
 				<ElemHeading
 					title="Web3 Companies"
@@ -429,6 +411,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
 	return {
 		props: {
+			metaTitle: "Web3 Companies - EdgeIn.io",
+			metaDescription:
+				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
 			companiesCount: companies?.companies.length,
 			initialCompanies: companies?.companies.slice(0, 50),
 			companyLayers: LayersFilters,
