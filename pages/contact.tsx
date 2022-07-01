@@ -5,6 +5,8 @@ import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemButton } from "@/components/ElemButton";
+import { IconPaperAirplane } from "@/components/Icons";
+
 import { useFormspark } from "@formspark/use-formspark";
 
 import backgroundImage from "@/images/background-shapes1.jpg";
@@ -65,8 +67,9 @@ const Contact: NextPage = () => {
 							</div>
 							<div className="relative rounded-2xl bg-white p-6 shadow-xl shadow-slate-900/10">
 								{formSent ? (
-									<div className="flex items-center justify-center sm:h-full">
-										<h2 className="text-2xl lg:text-3xl font-bold text-center">
+									<div className="flex flex-col items-center justify-center sm:h-full">
+										<IconPaperAirplane className="mx-auto h-12 w-12 text-slate-300" />
+										<h2 className="text-2xl font-bold text-center mt-5 lg:text-3xl ">
 											Message Sent!
 										</h2>
 									</div>

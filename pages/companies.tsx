@@ -11,7 +11,7 @@ import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { runGraphQl } from "../utils";
-import { IconGrid, IconList } from "../components/Icons";
+import { IconGrid, IconList, IconSearch } from "../components/Icons";
 import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
@@ -89,8 +89,6 @@ const Companies: NextPage<Props> = ({
 		// 	shallow: true,
 		// });
 	};
-
-	const figureSearch = "/figure-search.png";
 
 	// Company Layers Filter
 	const [selectedLayer, setSelectedLayer] = useState(companyLayers[0]);
@@ -266,12 +264,8 @@ const Companies: NextPage<Props> = ({
 							<>
 								<div className="flex items-center justify-center  mx-auto min-h-[40vh]">
 									<div className="w-full max-w-2xl py-8 bg-white rounded-2xl border border-dark-500/10 text-center">
-										{/* <img
-											className="-mt-44 w-96 mx-auto"
-											src={figureSearch}
-											alt="Not found"
-										/> */}
-										<h2 className="mt-2 text-3xl font-bold">
+										<IconSearch className="mx-auto h-12 w-12 text-slate-300" />
+										<h2 className="mt-5 text-3xl font-bold">
 											No results found
 										</h2>
 										<p className="mt-1 text-lg text-dark-400">

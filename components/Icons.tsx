@@ -462,3 +462,26 @@ export const IconCompanies: React.FC<IconProps> = ({
 		</svg>
 	);
 };
+
+export const IconPaperAirplane: React.FC<IconProps> = ({
+	className,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			strokeWidth="2"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<title>{title ? title : "Paper Plane"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+			/>
+		</svg>
+	);
+};
