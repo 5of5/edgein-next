@@ -23,8 +23,11 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 		>
 			<div className="hidden sm:block">
 				<p className="">
-					Showing <span className="font-medium">{page * rowsPerPage}</span> to{" "}
-					<span className="font-medium">{(page + 1) * rowsPerPage}</span> of{" "}
+					Showing{" "}
+					<span className="font-medium">
+						{page === 0 ? 1 : page * rowsPerPage}
+					</span>{" "}
+					to <span className="font-medium">{(page + 1) * rowsPerPage}</span> of{" "}
 					<span className="font-medium">{count}</span> results
 				</p>
 			</div>
