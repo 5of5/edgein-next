@@ -14,14 +14,18 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 	className = "",
 	heading,
 }) => {
-	// Show/Hide Feedback Form
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
+	const [feedbackSent, setFeedbackSent] = useState(false);
 
 	// On componentDidMount set the timer
 	useEffect(() => {
 		const timeId = setTimeout(() => {
 			// Show form after 3 seconds
 			setToggleFeedbackForm(true);
+		}, 3000);
+
+		setTimeout(function () {
+			setFeedbackSent(false);
 		}, 3000);
 
 		return () => {
@@ -35,13 +39,13 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 	});
 	const [name, setName] = useState("");
 	const [message, setMessage] = useState("");
-	const [feedbackSent, setFeedbackSent] = useState(false);
 
 	const onSubmit = async (e: { preventDefault: () => void }) => {
 		if (e) e.preventDefault();
 		await submit({
 			name: name,
 			message: message,
+			page: window.location.href,
 			_email: {
 				from: name,
 				subject: "Feedback - EdgeIn",
@@ -53,6 +57,12 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 		});
 
 		setFeedbackSent(true);
+		setTimeout(() => {
+			setFeedbackSent(false);
+			setName("");
+			setMessage("");
+			setToggleFeedbackForm(false);
+		}, 3000);
 	};
 
 	return (
