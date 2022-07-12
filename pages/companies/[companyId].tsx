@@ -45,8 +45,8 @@ const Company: NextPage<Props> = (props) => {
 		companyTags.unshift(company.layer);
 	}
 
-	const founders = company.teamMembers.filter((tm) => tm.founder);
-	const teamMembers = company.teamMembers.filter((tm) => !tm.founder);
+	// const founders = company.teamMembers.filter((tm) => tm.founder);
+	// const teamMembers = company.teamMembers.filter((tm) => !tm.founder);
 
 	return (
 		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
@@ -69,17 +69,17 @@ const Company: NextPage<Props> = (props) => {
 					<div className="flex flex-col md:grid grid-cols-8 gap-4">
 						<div className="col-span-5 mt-16 md:mt-0">
 							<div className="flex shrink-0">
-								<h1 className="flex text-4xl md:text-5xl font-bold">
+								<h1 className="inline-block self-end font-bold text-4xl md:text-5xl">
 									{company.name}
 								</h1>
 								{company.coin && (
-									<span
+									<div
 										key={company.coin.id}
-										className="ml-2 inline-block self-center align-middle whitespace-nowrap px-2 py-1.5 rounded-md text-base font-bold leading-sm uppercase text-dark-400 border border-dark-100"
+										className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap text-lg leading-sm uppercase"
 										title={`Token: ${company.coin.ticker}`}
 									>
 										{company.coin.ticker}
-									</span>
+									</div>
 								)}
 							</div>
 
@@ -142,7 +142,7 @@ const Company: NextPage<Props> = (props) => {
 				<ElemTags className="mt-12" heading="Tags" tags={companyTags} />
 			)}
 
-			{founders.length > 0 && (
+			{/* {founders.length > 0 && (
 				<ElemFounderGrid
 					className="mt-12"
 					heading="Founders"
@@ -155,6 +155,14 @@ const Company: NextPage<Props> = (props) => {
 					className="mt-12"
 					heading="Team Members"
 					people={teamMembers}
+				/>
+			)} */}
+
+			{company.teamMembers.length > 0 && (
+				<ElemTeamGrid
+					className="mt-12"
+					heading="Team Members"
+					people={company.teamMembers}
 				/>
 			)}
 

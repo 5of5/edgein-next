@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
-import Link from "next/link";
-import { ElemButton } from "./ElemButton";
 import {
+	IconLink,
 	IconCash,
 	IconDocumentDownload,
 	IconUsers,
@@ -11,7 +10,6 @@ import {
 	IconBriefcase,
 	IconRole,
 	IconEmail,
-	//IconCompanies,
 } from "./Icons";
 
 import {
@@ -50,6 +48,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	github,
 	careerPage,
 }) => {
+	const websiteName = website
+		?.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")
+		.replace(/\/$/, "");
+
 	return (
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
@@ -59,12 +61,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<a
 						href={website}
 						target="_blank"
+						className="inline-flex hover:opacity-70"
 						rel="noopener noreferrer"
 						title={website}
 					>
-						<ElemButton btn="primary" arrow>
-							Website
-						</ElemButton>
+						<IconLink
+							title={website}
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						{websiteName}
 					</a>
 				)}
 				{totalFundingRaised && (

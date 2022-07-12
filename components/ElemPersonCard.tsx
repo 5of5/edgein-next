@@ -6,6 +6,7 @@ type Props = {
 	photo: Record<string, any>;
 	heading?: string | null;
 	text?: string | null;
+	founder?: boolean | null;
 };
 
 export const ElemPersonCard: React.FC<Props> = ({
@@ -13,6 +14,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 	photo,
 	heading,
 	text,
+	founder,
 }) => {
 	return (
 		<div>
@@ -33,9 +35,16 @@ export const ElemPersonCard: React.FC<Props> = ({
 								{heading}
 							</h3>
 						)}
-						{text && (
-							<p className="text-sm truncate" title={text}>
-								{text}
+
+						{(founder || text) && (
+							<p className="text-sm truncate">
+								{founder && (
+									<span title="Founder" className="font-bold text-primary-500">
+										Founder
+									</span>
+								)}
+								{founder && text && `, `}
+								{text && <span title={text}>{text}</span>}
 							</p>
 						)}
 					</div>
