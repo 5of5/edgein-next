@@ -21,7 +21,7 @@ export const ElemCompaniesGrid: React.FC<Props> = ({
 							key={company.id}
 							href={`/companies/${company.slug}`}
 							photos={company.logo}
-							heading={company.title}
+							heading={company.name}
 							text={company.overview}
 						/>
 					);

@@ -122,7 +122,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 			)}
 
 			<ElemButton
-				className="absolute right-4 bottom-4 shadow-lg"
+				className="absolute right-4 bottom-4 shadow-lg hover:border-primary-500"
 				btn="white"
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>
