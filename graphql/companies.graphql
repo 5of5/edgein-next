@@ -21,6 +21,11 @@ query GetCompany($slug: String!) {
     github
     velocity_linkedin
     velocity_token
+    tags
+    date_added
+    ico_start
+    ico_end
+    audit_file
     teamMembers {
       id
       person {

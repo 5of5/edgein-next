@@ -752,13 +752,17 @@ export type Coins_Variance_Fields = {
 /** columns and relationships of "companies" */
 export type Companies = {
   __typename?: 'companies';
+  audit_file: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   /** An object relationship */
   coin: Maybe<Coins>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
+  date_added: Maybe<Scalars['date']>;
   external_id: Scalars['String'];
   github: Maybe<Scalars['String']>;
+  ico_end: Maybe<Scalars['date']>;
+  ico_start: Maybe<Scalars['date']>;
   id: Scalars['Int'];
   /** An array relationship */
   investment_rounds: Array<Investment_Rounds>;
@@ -773,6 +777,7 @@ export type Companies = {
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
+  tags: Maybe<Scalars['jsonb']>;
   /** An array relationship */
   teamMembers: Array<Team_Members>;
   /** An aggregate relationship */
@@ -809,6 +814,12 @@ export type CompaniesInvestment_Rounds_AggregateArgs = {
 
 /** columns and relationships of "companies" */
 export type CompaniesLogoArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "companies" */
+export type CompaniesTagsArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
@@ -865,6 +876,7 @@ export type Companies_Aggregate_FieldsCountArgs = {
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Companies_Append_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -881,12 +893,16 @@ export type Companies_Bool_Exp = {
   _and: InputMaybe<Array<Companies_Bool_Exp>>;
   _not: InputMaybe<Companies_Bool_Exp>;
   _or: InputMaybe<Array<Companies_Bool_Exp>>;
+  audit_file: InputMaybe<String_Comparison_Exp>;
   careers_page: InputMaybe<String_Comparison_Exp>;
   coin: InputMaybe<Coins_Bool_Exp>;
   coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
+  date_added: InputMaybe<Date_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
+  ico_end: InputMaybe<Date_Comparison_Exp>;
+  ico_start: InputMaybe<Date_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investment_rounds: InputMaybe<Investment_Rounds_Bool_Exp>;
   investor_amount: InputMaybe<Bigint_Comparison_Exp>;
@@ -898,6 +914,7 @@ export type Companies_Bool_Exp = {
   notes: InputMaybe<String_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
+  tags: InputMaybe<Jsonb_Comparison_Exp>;
   teamMembers: InputMaybe<Team_Members_Bool_Exp>;
   total_employees: InputMaybe<Numeric_Comparison_Exp>;
   total_valuation: InputMaybe<String_Comparison_Exp>;
@@ -919,16 +936,19 @@ export enum Companies_Constraint {
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Companies_Delete_At_Path_Input = {
   logo: InputMaybe<Array<Scalars['String']>>;
+  tags: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Companies_Delete_Elem_Input = {
   logo: InputMaybe<Scalars['Int']>;
+  tags: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Companies_Delete_Key_Input = {
   logo: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "companies" */
@@ -941,12 +961,16 @@ export type Companies_Inc_Input = {
 
 /** input type for inserting data into table "companies" */
 export type Companies_Insert_Input = {
+  audit_file: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin: InputMaybe<Coins_Obj_Rel_Insert_Input>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
+  date_added: InputMaybe<Scalars['date']>;
   external_id: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
+  ico_end: InputMaybe<Scalars['date']>;
+  ico_start: InputMaybe<Scalars['date']>;
   id: InputMaybe<Scalars['Int']>;
   investment_rounds: InputMaybe<Investment_Rounds_Arr_Rel_Insert_Input>;
   investor_amount: InputMaybe<Scalars['bigint']>;
@@ -958,6 +982,7 @@ export type Companies_Insert_Input = {
   notes: InputMaybe<Scalars['String']>;
   overview: InputMaybe<Scalars['String']>;
   slug: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['jsonb']>;
   teamMembers: InputMaybe<Team_Members_Arr_Rel_Insert_Input>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
@@ -971,11 +996,15 @@ export type Companies_Insert_Input = {
 /** aggregate max on columns */
 export type Companies_Max_Fields = {
   __typename?: 'companies_max_fields';
+  audit_file: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
+  date_added: Maybe<Scalars['date']>;
   external_id: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
+  ico_end: Maybe<Scalars['date']>;
+  ico_start: Maybe<Scalars['date']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
@@ -997,11 +1026,15 @@ export type Companies_Max_Fields = {
 /** aggregate min on columns */
 export type Companies_Min_Fields = {
   __typename?: 'companies_min_fields';
+  audit_file: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
+  date_added: Maybe<Scalars['date']>;
   external_id: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
+  ico_end: Maybe<Scalars['date']>;
+  ico_start: Maybe<Scalars['date']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
@@ -1045,12 +1078,16 @@ export type Companies_On_Conflict = {
 
 /** Ordering options when selecting data from "companies". */
 export type Companies_Order_By = {
+  audit_file: InputMaybe<Order_By>;
   careers_page: InputMaybe<Order_By>;
   coin: InputMaybe<Coins_Order_By>;
   coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
+  date_added: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   github: InputMaybe<Order_By>;
+  ico_end: InputMaybe<Order_By>;
+  ico_start: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   investment_rounds_aggregate: InputMaybe<Investment_Rounds_Aggregate_Order_By>;
   investor_amount: InputMaybe<Order_By>;
@@ -1062,6 +1099,7 @@ export type Companies_Order_By = {
   notes: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
+  tags: InputMaybe<Order_By>;
   teamMembers_aggregate: InputMaybe<Team_Members_Aggregate_Order_By>;
   total_employees: InputMaybe<Order_By>;
   total_valuation: InputMaybe<Order_By>;
@@ -1080,10 +1118,13 @@ export type Companies_Pk_Columns_Input = {
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Companies_Prepend_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
+  tags: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "companies" */
 export enum Companies_Select_Column {
+  /** column name */
+  AuditFile = 'audit_file',
   /** column name */
   CareersPage = 'careers_page',
   /** column name */
@@ -1091,9 +1132,15 @@ export enum Companies_Select_Column {
   /** column name */
   CompanyLinkedin = 'company_linkedin',
   /** column name */
+  DateAdded = 'date_added',
+  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Github = 'github',
+  /** column name */
+  IcoEnd = 'ico_end',
+  /** column name */
+  IcoStart = 'ico_start',
   /** column name */
   Id = 'id',
   /** column name */
@@ -1115,6 +1162,8 @@ export enum Companies_Select_Column {
   /** column name */
   Slug = 'slug',
   /** column name */
+  Tags = 'tags',
+  /** column name */
   TotalEmployees = 'total_employees',
   /** column name */
   TotalValuation = 'total_valuation',
@@ -1132,11 +1181,15 @@ export enum Companies_Select_Column {
 
 /** input type for updating data in table "companies" */
 export type Companies_Set_Input = {
+  audit_file: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
+  date_added: InputMaybe<Scalars['date']>;
   external_id: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
+  ico_end: InputMaybe<Scalars['date']>;
+  ico_start: InputMaybe<Scalars['date']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
@@ -1147,6 +1200,7 @@ export type Companies_Set_Input = {
   notes: InputMaybe<Scalars['String']>;
   overview: InputMaybe<Scalars['String']>;
   slug: InputMaybe<Scalars['String']>;
+  tags: InputMaybe<Scalars['jsonb']>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
   velocity_linkedin: InputMaybe<Scalars['String']>;
@@ -1195,15 +1249,23 @@ export type Companies_Sum_Fields = {
 /** update columns of table "companies" */
 export enum Companies_Update_Column {
   /** column name */
+  AuditFile = 'audit_file',
+  /** column name */
   CareersPage = 'careers_page',
   /** column name */
   CoinId = 'coin_id',
   /** column name */
   CompanyLinkedin = 'company_linkedin',
   /** column name */
+  DateAdded = 'date_added',
+  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Github = 'github',
+  /** column name */
+  IcoEnd = 'ico_end',
+  /** column name */
+  IcoStart = 'ico_start',
   /** column name */
   Id = 'id',
   /** column name */
@@ -1224,6 +1286,8 @@ export enum Companies_Update_Column {
   Overview = 'overview',
   /** column name */
   Slug = 'slug',
+  /** column name */
+  Tags = 'tags',
   /** column name */
   TotalEmployees = 'total_employees',
   /** column name */
@@ -4819,7 +4883,7 @@ export type GetCompanyQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -4912,6 +4976,11 @@ export const GetCompanyDocument = `
     github
     velocity_linkedin
     velocity_token
+    tags
+    date_added
+    ico_start
+    ico_end
+    audit_file
     teamMembers {
       id
       person {
