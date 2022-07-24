@@ -9,7 +9,7 @@ async function hasuraMutate<TResult = any>(
     }),
     headers:   {
       'x-hasura-role': 'admin',
-      'x-hasura-admin-secret': process.env.HASURA_SECRET ?? ""
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
     }        
   }
   const res = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);

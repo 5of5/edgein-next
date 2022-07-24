@@ -5,13 +5,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
   let headers: {Authorization: string} | {'x-hasura-admin-secret': string}
   if (process.env.DEV_MODE) {
-    headers  = {'x-hasura-admin-secret': process.env.HASURA_SECRET ?? "" }
+    headers  = {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
   } else {
     if (!user) {
       return res.status(401).end()
     }
     headers  = user.email.endsWith('@5of5.vc') || process.env.DEV_MODE ?
-    {'x-hasura-admin-secret': process.env.HASURA_SECRET ?? "" }
+    {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
       : 
     { Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}` }
   }

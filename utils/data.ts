@@ -6,7 +6,7 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 			headers: {
 				"Content-Type": "application/json",
 				Accept: "application/json",
-				'x-hasura-admin-secret': process.env.HASURA_SECRET ?? ""
+				'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
 			},
 			body: JSON.stringify({
 				query,
