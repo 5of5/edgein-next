@@ -4,12 +4,12 @@ import { companiesMapping, investmentRoundsMapping, investmentsMapping, peopleMa
 import { getClient, upsertBatch } from './postgres_helpers'
 import { getAirtableTable } from './airtable_helpers'
 import { Client } from 'pg';
-import { keyBy, compact } from 'lodash'
+import { keyBy, compact, Dictionary } from 'lodash'
 
 const runTable = async (client: Client, mapping: Mapping) => {
   console.log(`Moving airtable ${mapping.airtable} to postgres ${mapping.table}`)
   const airtableRecords = await getAirtableTable(mapping.airtable)
-  const references: Record<string, Record<string, any>[]> = {}
+  const references: Record<string, Dictionary<any>> = {}
   const referenceTables: { table: string, key: string}[] = compact(mapping.mappings.map(map => map.reference ? ({ table: map.reference, key: map.referenceColumn || 'external_id'}) : undefined))
   if (referenceTables && referenceTables.length > 0) {
     for (let index = 0; index < referenceTables.length; index++) {
