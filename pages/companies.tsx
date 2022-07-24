@@ -3,12 +3,13 @@ import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { ElemHeading } from "../components/ElemHeading";
+import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { ElemTooltip } from "../components/ElemTooltip";
-import { ElemCredibility } from "../components/Company/ElemCredibility";
+import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { runGraphQl } from "../utils";
 import { IconGrid, IconList, IconSearch } from "../components/Icons";
@@ -208,7 +209,12 @@ const Companies: NextPage<Props> = ({
 				></ElemHeading>
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
+					<div className="max-w-6xl mx-auto px-4 pt-4 sm:px-6 lg:px-8 lg:pt-10">
+						{companies && <ElemRecentCompanies heading="Recently Added" />}
+					</div>
+
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
+						<h2 className="text-2xl font-bold">All Companies</h2>
 						<ElemFiltersWrap className="filters-wrap">
 							<InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
@@ -388,7 +394,8 @@ const Companies: NextPage<Props> = ({
 							count={companiesCount}
 							page={page}
 							rowsPerPage={limit}
-							onPageChange={setPage}
+							onClickPrev={() => setPage((prev) => prev - 1)}
+							onClickNext={() => setPage((prev) => prev + 1)}
 						/>
 					</div>
 				</div>

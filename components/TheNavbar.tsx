@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
 import { ElemButton } from "./ElemButton";
+import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
@@ -89,10 +90,11 @@ export const TheNavbar = () => {
 					</ul>
 
 					<div className="flex items-center lg:ml-6">
+						{/* <ElemButton onClick={logout} btn="primary">
+							Logout
+						 </ElemButton> */}
 						{user ? (
-							<ElemButton onClick={logout} btn="primary">
-								Logout
-							</ElemButton>
+							<UserMenu />
 						) : (
 							<ElemButton href="/login" btn="primary" arrow>
 								Log In
