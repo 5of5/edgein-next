@@ -6,7 +6,8 @@ type Props = {
 	page: number;
 	rowsPerPage: number;
 	count: number;
-	onPageChange: React.Dispatch<React.SetStateAction<number>>;
+	onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const Pagination: React.FC<PropsWithChildren<Props>> = ({
@@ -14,7 +15,8 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 	page,
 	rowsPerPage,
 	count,
-	onPageChange,
+	onClickPrev,
+	onClickNext,
 }) => {
 	return (
 		<nav
@@ -22,31 +24,17 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 			aria-label="Pagination"
 		>
 			<div className="hidden sm:block">
-				<p className="">
-					Showing{" "}
-					<span className="font-medium">
-						{page === 0 ? 1 : page * rowsPerPage}
-					</span>{" "}
-					to <span className="font-medium">{(page + 1) * rowsPerPage}</span> of{" "}
-					<span className="font-medium">{count}</span> results
-				</p>
+				Results: {page === 0 ? 1 : page * rowsPerPage}
+				{" - "}
+				{(page + 1) * rowsPerPage} of {count}
 			</div>
 			<div className="flex-1 flex justify-between sm:justify-end">
 				{page * rowsPerPage > 0 && (
-					<ElemButton
-						onClick={() => onPageChange((prev) => prev - 1)}
-						btn="white"
-						arrowLeft
-					>
+					<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
 						Prev
 					</ElemButton>
 				)}
-				<ElemButton
-					onClick={() => onPageChange((prev) => prev + 1)}
-					className="ml-3"
-					btn="white"
-					arrow
-				>
+				<ElemButton onClick={onClickNext} className="sm:ml-3" btn="white" arrow>
 					Next
 				</ElemButton>
 			</div>

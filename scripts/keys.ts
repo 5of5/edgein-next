@@ -1,7 +1,7 @@
 import fs from 'fs';
 const fsPromises = fs.promises;
 
-const ignoreList = [] // ['tickers', 'market_data']
+const ignoreList: string[] = [] // ['tickers', 'market_data']
 
 const objectDeepKeys = (obj: Record<string, any>, keys: Record<string, number | string> = {}, parentPath: string = '') => {
   for (const key of Object.keys(obj)) {
@@ -17,7 +17,7 @@ const objectDeepKeys = (obj: Record<string, any>, keys: Record<string, number | 
     }
     if (typeof obj[key] === 'object' && obj[key] !== null) {
       if (Array.isArray(obj)) {
-        objectDeepKeys(obj[key], keys, parentPath)
+        objectDeepKeys(obj[parseInt(key)], keys, parentPath)
       } else {
         objectDeepKeys(obj[key], keys, path)
       }
@@ -27,7 +27,7 @@ const objectDeepKeys = (obj: Record<string, any>, keys: Record<string, number | 
   return keys
 }
 
-async function readFiles(dirname, onFileContent) {
+async function readFiles(dirname: string, onFileContent: (filename: string, content: string) => void) {
   const filenames = await fsPromises.readdir(dirname)
   for (var i = 0; i < filenames.length; i++) {
     const filename = filenames[i]
@@ -46,12 +46,12 @@ async function main() {
       console.log('Error parsing', filename, err)
     }
   })
-  let sortable = [];
+  let sortable: any[] = [];
   for (var val in keys) {
       sortable.push([val, keys[val]]);
   }
 
-  sortable.sort(function(a, b) {
+  sortable.sort(function(a: any, b: any) {
       return b[1] - a[1];
   });
   sortable.map(i => console.log(i[0], i[1]))

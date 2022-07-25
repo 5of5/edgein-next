@@ -8,7 +8,7 @@ import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { IconCash } from "../components/Icons";
+import { IconCash, IconSearch } from "../components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -121,6 +121,22 @@ const Investors: NextPage<Props> = ({
 							/>
 						</ElemFiltersWrap>
 
+						{vcFirms?.length === 0 && (
+							<>
+								<div className="flex items-center justify-center  mx-auto min-h-[40vh]">
+									<div className="w-full max-w-2xl py-8 bg-white rounded-2xl border border-dark-500/10 text-center">
+										<IconSearch className="mx-auto h-12 w-12 text-slate-300" />
+										<h2 className="mt-5 text-3xl font-bold">
+											No results found
+										</h2>
+										<p className="mt-1 text-lg text-dark-400">
+											Please check spelling or try different filters.
+										</p>
+									</div>
+								</div>
+							</>
+						)}
+
 						<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 							{error ? (
 								<h4>Error loading investors</h4>
@@ -169,7 +185,8 @@ const Investors: NextPage<Props> = ({
 							count={vcFirmCount}
 							page={page}
 							rowsPerPage={limit}
-							onPageChange={setPage}
+							onClickPrev={() => setPage((prev) => prev - 1)}
+							onClickNext={() => setPage((prev) => prev + 1)}
 						/>
 					</div>
 				</div>

@@ -5,7 +5,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
-import { CohortCarousel } from "@/components/Company/CohortCarousel";
+import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
@@ -14,7 +14,6 @@ import { runGraphQl } from "@/utils";
 import {
 	Companies,
 	GetCompaniesPathsQuery,
-	GetCompaniesQuery,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
@@ -23,7 +22,6 @@ import {
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
-	cohort: [];
 };
 
 const Company: NextPage<Props> = (props) => {
@@ -45,6 +43,9 @@ const Company: NextPage<Props> = (props) => {
 	if (company.layer) {
 		companyTags.unshift(company.layer);
 	}
+	if (company.tags) {
+		company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
+	}
 
 	return (
 		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
@@ -53,7 +54,6 @@ const Company: NextPage<Props> = (props) => {
 					Back
 				</ElemButton>
 			</div>
-
 			<div className="flex flex-col md:grid md:grid-cols-11 gap-4 mt-6">
 				<div className="col-span-3">
 					<ElemPhoto
@@ -123,9 +123,7 @@ const Company: NextPage<Props> = (props) => {
 				</div>
 			</div>
 
-			{/* <div className="2xl:container 2xl:mx-auto">
-				<CohortCarousel heading="Cohort" items={props.cohort} />
-			</div> */}
+			{/* <ElemCohort className="mt-12" heading="Cohort" /> */}
 
 			<ElemKeyInfo
 				className="mt-12"
@@ -139,11 +137,9 @@ const Company: NextPage<Props> = (props) => {
 				linkedIn={company.company_linkedin}
 				github={company.github}
 			/>
-
 			{companyTags.length > 0 && (
 				<ElemTags className="mt-12" heading="Tags" tags={companyTags} />
 			)}
-
 			{company.teamMembers.length > 0 && (
 				<ElemTeamGrid
 					className="mt-12"
@@ -151,7 +147,6 @@ const Company: NextPage<Props> = (props) => {
 					people={company.teamMembers}
 				/>
 			)}
-
 			{sortedInvestmentRounds.length > 0 && (
 				<ElemInvestments
 					className="mt-12"
@@ -188,54 +183,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		};
 	}
 
-	const cohort = [
-		{
-			name: "Hedera Hashgraph",
-			link: "https://edgein.io/companies/hedera-hashgraph/",
-			logo: "https://dl.airtable.com/.attachments/fce938e192e72db2515285ff96c4aea2/414fa724/HederaHashgraph.png?ts=1657339834&userId=usr7CWMWLCRhTmk83&cs=9e33367782a31f68",
-		},
-		{
-			name: "Chia",
-			link: "https://edgein.io/companies/chia/",
-			logo: "https://dl.airtable.com/.attachments/508707dd1145ee9d6d65b1295ba138c1/1055a61d/chia-network-logo.svg?ts=1657339828&userId=usr7CWMWLCRhTmk83&cs=7f561c09ba15ad5e",
-		},
-		{
-			name: "1inchExchange",
-			link: "https://edgein.io/companies/1inch-exchange/",
-			logo: "https://dl.airtable.com/.attachments/34e368fd317131769710df6ea41d06be/b5f411e8/1inch-logo.svg?ts=1657685624&userId=usr7CWMWLCRhTmk83&cs=89099fda53bb46b6",
-		},
-		{
-			name: "Chia",
-			link: "https://edgein.io/companies/chia/",
-			logo: "https://dl.airtable.com/.attachments/508707dd1145ee9d6d65b1295ba138c1/1055a61d/chia-network-logo.svg?ts=1657339828&userId=usr7CWMWLCRhTmk83&cs=7f561c09ba15ad5e",
-		},
-		{
-			name: "Hedera Hashgraph",
-			link: "https://edgein.io/companies/hedera-hashgraph/",
-			logo: "https://dl.airtable.com/.attachments/fce938e192e72db2515285ff96c4aea2/414fa724/HederaHashgraph.png?ts=1657339834&userId=usr7CWMWLCRhTmk83&cs=9e33367782a31f68",
-		},
-		{
-			name: "Chia",
-			link: "https://edgein.io/companies/chia/",
-			logo: "https://dl.airtable.com/.attachments/508707dd1145ee9d6d65b1295ba138c1/1055a61d/chia-network-logo.svg?ts=1657339828&userId=usr7CWMWLCRhTmk83&cs=7f561c09ba15ad5e",
-		},
-		{
-			name: "Hedera Hashgraph",
-			link: "https://edgein.io/companies/hedera-hashgraph/",
-			logo: "https://dl.airtable.com/.attachments/fce938e192e72db2515285ff96c4aea2/414fa724/HederaHashgraph.png?ts=1657339834&userId=usr7CWMWLCRhTmk83&cs=9e33367782a31f68",
-		},
-		{
-			name: "Chia",
-			link: "https://edgein.io/companies/chia/",
-			logo: "https://dl.airtable.com/.attachments/508707dd1145ee9d6d65b1295ba138c1/1055a61d/chia-network-logo.svg?ts=1657339828&userId=usr7CWMWLCRhTmk83&cs=7f561c09ba15ad5e",
-		},
-		{
-			name: "1inchExchange",
-			link: "https://edgein.io/companies/1inch-exchange/",
-			logo: "https://dl.airtable.com/.attachments/34e368fd317131769710df6ea41d06be/b5f411e8/1inch-logo.svg?ts=1657685624&userId=usr7CWMWLCRhTmk83&cs=89099fda53bb46b6",
-		},
-	];
-
 	const sortRounds =
 		companies.companies[0].investment_rounds
 			?.slice()
@@ -263,7 +210,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle,
 			metaDescription,
 			company: companies.companies[0],
-			cohort,
 			sortRounds,
 		},
 	};
