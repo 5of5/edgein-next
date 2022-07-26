@@ -25,6 +25,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 						wrapClass="shrink-0 flex items-center justify-center w-20 h-20 rounded-full overflow-hidden"
 						imgClass="object-cover w-20 h-20"
 						imgAlt={heading}
+						placeholder="user"
 					/>
 					<div className="overflow-hidden px-2">
 						{heading && (
