@@ -80,7 +80,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 				<div className="absolute top left flex justify-between w-full h-full">
 					<button
 						onClick={movePrev}
-						className="bg-gradient-to-r from-white w-10 h-full rounded-lg group z-10 p-0 m-0 disabled:opacity-0"
+						className="cursor-pointer bg-gradient-to-r from-white w-10 h-full rounded-lg group z-10 p-0 m-0 disabled:opacity-0"
 						disabled={isDisabled("prev")}
 					>
 						<div className="flex items-center justify-center bg-white border border-dark-500/10 rounded-full w-10 h-10 ml-1 opacity-75 transition-all ease-in-out duration-300 group-hover:opacity-100 group-hover:border-primary-500 group-hover:text-primary-500">
@@ -91,7 +91,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 
 					<button
 						onClick={moveNext}
-						className="bg-gradient-to-l from-white w-10 h-full rounded-lg group z-10 p-0 m-0 transition-all ease-in-out duration-300 disabled:opacity-0"
+						className="cursor-pointer bg-gradient-to-l from-white w-10 h-full rounded-lg group z-10 p-0 m-0 transition-all ease-in-out duration-300 disabled:opacity-0"
 						disabled={isDisabled("next")}
 					>
 						<div className="flex items-center justify-center bg-white border border-dark-500/10 rounded-full w-10 h-10 -ml-1 opacity-75 transition-all ease-in-out duration-300 group-hover:opacity-100 group-hover:border-primary-500 group-hover:text-primary-500">
