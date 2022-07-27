@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: '../.env.aws' });
 import { companiesMapping, investmentRoundsMapping, investmentsMapping, peopleMapping, vcFirmMapping, teamMembersMapping, Mapping, coinsMapping } from './mapping'
 import { getClient, upsertBatch } from './postgres_helpers'
 import { getAirtableTable } from './airtable_helpers'
