@@ -33,15 +33,9 @@ export const UserMenu = () => {
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
 				<Menu.Button as="div">
-					<ElemButton
-						btn="white"
-						className="px-2 font-medium group hover:border-primary-500"
-					>
+					<ElemButton btn="white" className="px-2 font-medium group">
 						<IconUserCircle className="h-6 w-6" aria-hidden="true" />
-						<IconChevronDown
-							className="ml-1 h-5 w-5 group-hover:text-primary-500"
-							aria-hidden="true"
-						/>
+						<IconChevronDown className="ml-1 h-5 w-5" aria-hidden="true" />
 					</ElemButton>
 				</Menu.Button>
 			</div>

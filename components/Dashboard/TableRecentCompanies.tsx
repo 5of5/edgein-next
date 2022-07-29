@@ -269,9 +269,11 @@ export const TableRecentCompanies: React.FC<PropsWithChildren<Props>> = ({
 						</table>
 					</div>
 					<Pagination
-						count={companiesCount}
+						className="mt-6"
+						shownItems={page?.length}
+						totalItems={companiesCount}
 						page={pageIndex}
-						rowsPerPage={pageSize}
+						itemsPerPage={pageSize}
 						onClickPrev={() => previousPage()}
 						onClickNext={() => nextPage()}
 					/>

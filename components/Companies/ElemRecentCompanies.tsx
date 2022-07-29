@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -7,27 +8,6 @@ import {
 	Companies_Bool_Exp,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
-
-const FakeElemRecentCompany: FC = () => {
-	return (
-		<div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
-			<div className="flex items-center shrink-0 mb-4 w-full">
-				<div className="aspect-square rounded-lg bg-slate-200 w-16 h-16"></div>
-				<div className="flex-1 ml-2 h-6 max-w-full bg-slate-200 rounded"></div>
-			</div>
-			<div className="flex-1 space-y-4 py-1">
-				<div className="h-2 bg-slate-200 rounded"></div>
-				<div className="h-2 bg-slate-200 rounded"></div>
-				<div className="h-2 bg-slate-200 rounded w-2/3"></div>
-			</div>
-			<div className="mt-8 grid grid-cols-2 gap-4">
-				<div className="flex items-center space-x-2">
-					<div className="aspect-square rounded-lg h-2 w-2/3 bg-slate-200"></div>
-				</div>
-			</div>
-		</div>
-	);
-};
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -78,7 +58,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 								key={i}
 								className="shrink-0 p-3 basis-full sm:basis-1/2 lg:basis-1/3"
 							>
-								<FakeElemRecentCompany />
+								<PlaceholderRecentCompanyCard />
 							</div>
 						))}
 					</div>
