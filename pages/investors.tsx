@@ -3,12 +3,14 @@ import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 // import { ElemButton } from "../components/ElemButton";
+import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { IconCash, IconSearch } from "../components/Icons";
+import { ElemButton } from "@/components/ElemButton";
+import { IconCash, IconSearch, IconAnnotation } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -24,12 +26,14 @@ type Props = {
 	vcFirmCount: number;
 	initialVCFirms: GetVcFirmsQuery["vc_firms"];
 	numberOfInvestments: NumericFilter[];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Investors: NextPage<Props> = ({
 	vcFirmCount,
 	initialVCFirms,
 	numberOfInvestments,
+	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 
@@ -129,9 +133,18 @@ const Investors: NextPage<Props> = ({
 										<h2 className="mt-5 text-3xl font-bold">
 											No results found
 										</h2>
-										<p className="mt-1 text-lg text-dark-400">
-											Please check spelling or try different filters.
-										</p>
+										<div className="mt-1 text-lg text-dark-400">
+											Please check spelling, try different filters, or tell us
+											about missing data.
+										</div>
+										<ElemButton
+											onClick={() => setToggleFeedbackForm(true)}
+											btn="white"
+											className="mt-3"
+										>
+											<IconAnnotation className="h-6 w-6 mr-1" />
+											Tell us about missing data
+										</ElemButton>
 									</div>
 								</div>
 							</>
@@ -141,7 +154,11 @@ const Investors: NextPage<Props> = ({
 							{error ? (
 								<h4>Error loading investors</h4>
 							) : isLoading && !initialLoad ? (
-								<h4>Loading...</h4>
+								<>
+									{Array.from({ length: 15 }, (_, i) => (
+										<PlaceholderInvestorCard key={i} />
+									))}
+								</>
 							) : (
 								vcFirms?.map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
@@ -182,9 +199,10 @@ const Investors: NextPage<Props> = ({
 							)}
 						</div>
 						<Pagination
-							count={vcFirmCount}
+							shownItems={vcFirms?.length}
+							totalItems={vcFirmCount}
 							page={page}
-							rowsPerPage={limit}
+							itemsPerPage={limit}
 							onClickPrev={() => setPage((prev) => prev - 1)}
 							onClickNext={() => setPage((prev) => prev + 1)}
 						/>

@@ -3,6 +3,7 @@ import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { ElemHeading } from "../components/ElemHeading";
+import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { InputSearch } from "../components/InputSearch";
@@ -11,8 +12,14 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
 import { ElemVelocity } from "../components/Company/ElemVelocity";
+import { ElemButton } from "@/components/ElemButton";
 import { runGraphQl } from "../utils";
-import { IconGrid, IconList, IconSearch } from "../components/Icons";
+import {
+	IconGrid,
+	IconList,
+	IconSearch,
+	IconAnnotation,
+} from "@/components/Icons";
 import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
@@ -24,39 +31,13 @@ import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 
-const FakeElemCompany: FC = () => {
-	return (
-		<div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
-			<div className="flex items-center shrink-0 mb-4 w-full">
-				<div className="aspect-square rounded-lg bg-slate-200 w-16 h-16"></div>
-				<div className="flex-1 ml-2 h-6 max-w-full bg-slate-200 rounded"></div>
-			</div>
-			<div className="flex-1 space-y-4 py-1">
-				<div className="h-2 bg-slate-200 rounded"></div>
-				<div className="h-2 bg-slate-200 rounded"></div>
-				<div className="h-2 bg-slate-200 rounded w-2/3"></div>
-			</div>
-			<div className="mt-8 grid grid-cols-2 gap-4">
-				<div className="flex items-center space-x-2">
-					<div className="aspect-square rounded-lg h-7 bg-slate-200"></div>
-					<div className="aspect-square rounded-lg h-7 bg-slate-200"></div>
-					<div className="aspect-square rounded-lg h-7 bg-slate-200"></div>
-				</div>
-				<div className="flex items-center justify-end space-x-2">
-					<div className="rounded-full h-6 w-12 bg-slate-200"></div>
-					<div className="rounded-full h-6 w-12 bg-slate-200"></div>
-				</div>
-			</div>
-		</div>
-	);
-};
-
 type Props = {
 	companiesCount: number;
 	initialCompanies: GetCompaniesQuery["companies"];
 	companyLayers: TextFilter[];
 	amountRaised: NumericFilter[];
 	totalEmployees: NumericFilter[];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export type DeepPartial<T> = T extends object
@@ -71,6 +52,7 @@ const Companies: NextPage<Props> = ({
 	companyLayers,
 	amountRaised,
 	totalEmployees,
+	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 	const { user } = useAuth();
@@ -268,15 +250,24 @@ const Companies: NextPage<Props> = ({
 
 						{companies?.length === 0 && (
 							<>
-								<div className="flex items-center justify-center  mx-auto min-h-[40vh]">
-									<div className="w-full max-w-2xl py-8 bg-white rounded-2xl border border-dark-500/10 text-center">
+								<div className="flex items-center justify-center mx-auto min-h-[40vh]">
+									<div className="w-full max-w-2xl p-8 bg-white rounded-2xl border border-dark-500/10 text-center">
 										<IconSearch className="mx-auto h-12 w-12 text-slate-300" />
 										<h2 className="mt-5 text-3xl font-bold">
 											No results found
 										</h2>
-										<p className="mt-1 text-lg text-dark-400">
-											Please check spelling or try different filters.
-										</p>
+										<div className="mt-1 text-lg text-dark-400">
+											Please check spelling, try different filters, or tell us
+											about missing data.
+										</div>
+										<ElemButton
+											onClick={() => setToggleFeedbackForm(true)}
+											btn="white"
+											className="mt-3"
+										>
+											<IconAnnotation className="h-6 w-6 mr-1" />
+											Tell us about missing data
+										</ElemButton>
 									</div>
 								</div>
 							</>
@@ -292,7 +283,7 @@ const Companies: NextPage<Props> = ({
 							) : isLoading && !initialLoad ? (
 								<>
 									{Array.from({ length: 9 }, (_, i) => (
-										<FakeElemCompany key={i} />
+										<PlaceholderCompanyCard key={i} />
 									))}
 								</>
 							) : (
@@ -391,9 +382,10 @@ const Companies: NextPage<Props> = ({
 						</div>
 						<Pagination
 							className="mt-6"
-							count={companiesCount}
+							shownItems={companies?.length}
+							totalItems={companiesCount}
 							page={page}
-							rowsPerPage={limit}
+							itemsPerPage={limit}
 							onClickPrev={() => setPage((prev) => prev - 1)}
 							onClickNext={() => setPage((prev) => prev + 1)}
 						/>

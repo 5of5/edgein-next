@@ -8,13 +8,17 @@ import { useFormspark } from "@formspark/use-formspark";
 type Props = {
 	className?: string;
 	heading?: string;
+	toggleFeedbackForm: boolean;
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 	className = "",
 	heading,
+	toggleFeedbackForm,
+	setToggleFeedbackForm,
 }) => {
-	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
+	//const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false); //set globally
 	const [feedbackSent, setFeedbackSent] = useState(false);
 
 	// On componentDidMount set the timer
@@ -31,7 +35,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 		return () => {
 			clearTimeout(timeId);
 		};
-	}, []);
+	}, [setToggleFeedbackForm]);
 
 	// Feedback Form
 	const [submit, submitting] = useFormspark({
@@ -122,7 +126,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 			)}
 
 			<ElemButton
-				className="absolute right-4 bottom-4 shadow-lg hover:border-primary-500"
+				className="absolute right-4 bottom-4 shadow-lg"
 				btn="white"
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>

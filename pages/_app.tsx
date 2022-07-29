@@ -1,6 +1,6 @@
 import "../styles/LoaderPlasma.scss";
 import "../styles/globals.scss";
-import React from "react";
+import React, { useState } from "react";
 import TagManager from "react-gtm-module";
 import type { AppProps } from "next/app";
 import Script from "next/script";
@@ -17,6 +17,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 	const queryClient = new QueryClient();
+
+	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
 
 	//google
 	React.useEffect(() => {
@@ -87,11 +89,23 @@ function MyApp({ Component, pageProps }: AppProps) {
 						<>
 							<TheNavbar />
 							<main className="overflow-hidden grow selection:bg-primary-200">
-								{pageLoading ? <LoaderPlasma /> : <Component {...pageProps} />}
+								{pageLoading ? (
+									<LoaderPlasma />
+								) : (
+									<Component
+										{...pageProps}
+										setToggleFeedbackForm={setToggleFeedbackForm}
+									/>
+								)}
 							</main>
 
 							{(router.asPath.includes("/companies/") ||
-								router.asPath.includes("/investors/")) && <ElemFeedback />}
+								router.asPath.includes("/investors/")) && (
+								<ElemFeedback
+									toggleFeedbackForm={toggleFeedbackForm}
+									setToggleFeedbackForm={setToggleFeedbackForm}
+								/>
+							)}
 							<TheFooter />
 						</>
 					)}
@@ -103,14 +117,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 						__html: `
 						(function(w,d, s, id) {if(typeof(w.webpushr)!=='undefined') return;w.webpushr=w.webpushr||function(){(w.webpushr.q=w.webpushr.q||[]).push(arguments)};var js, fjs = d.getElementsByTagName(s)[0];js = d.createElement(s); js.id = id;js.async=1;js.src = "https://cdn.webpushr.com/app.min.js";
 						fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
-						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`
+						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/>
 			</div>
 		</>
 	);
 }
-
-
 
 export default MyApp;

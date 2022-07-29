@@ -4,8 +4,9 @@ import { ElemButton } from "./ElemButton";
 type Props = {
 	className?: string;
 	page: number;
-	rowsPerPage: number;
-	count: number;
+	itemsPerPage: number;
+	shownItems?: number;
+	totalItems: number;
 	onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
@@ -13,30 +14,53 @@ type Props = {
 export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 	className,
 	page,
-	rowsPerPage,
-	count,
+	itemsPerPage,
+	shownItems = 0,
+	totalItems,
 	onClickPrev,
 	onClickNext,
 }) => {
+	const shownItemsStart = page === 0 ? 1 : page * itemsPerPage;
+	const shownItemsEnd =
+		shownItems < itemsPerPage ? shownItems : (page + 1) * itemsPerPage;
+
 	return (
 		<nav
 			className={`${className} py-3 flex items-center justify-between`}
 			aria-label="Pagination"
 		>
 			<div className="hidden sm:block">
-				Results: {page === 0 ? 1 : page * rowsPerPage}
-				{" - "}
-				{(page + 1) * rowsPerPage} of {count}
+				{shownItems === 0 ? (
+					<></>
+				) : shownItems < itemsPerPage ? (
+					<span>
+						Results: {shownItemsEnd} of {totalItems}
+					</span>
+				) : (
+					<span>
+						Results: {shownItemsStart}
+						{" - "}
+						{shownItemsEnd} of {totalItems}
+					</span>
+				)}
 			</div>
 			<div className="flex-1 flex justify-between sm:justify-end">
-				{page * rowsPerPage > 0 && (
+				{page * itemsPerPage > 0 && (
 					<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
 						Prev
 					</ElemButton>
 				)}
-				<ElemButton onClick={onClickNext} className="sm:ml-3" btn="white" arrow>
-					Next
-				</ElemButton>
+
+				{shownItemsEnd >= itemsPerPage && (
+					<ElemButton
+						onClick={onClickNext}
+						className="sm:ml-3"
+						btn="white"
+						arrow
+					>
+						Next
+					</ElemButton>
+				)}
 			</div>
 		</nav>
 	);

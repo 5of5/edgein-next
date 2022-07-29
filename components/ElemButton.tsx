@@ -53,10 +53,10 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 			"text-white bg-transparent focus:ring-primary-800 border-white hover:bg-white hover:text-primary-500";
 	} else if (btn === "white") {
 		btnClass =
-			"text-dark-500 bg-white border border-dark-500/10 focus:ring-primary-800 hover:text-primary-500";
+			"text-dark-500 bg-white border border-dark-500/10 focus:ring-primary-800 hover:text-primary-500 hover:border-primary-500";
 	} else if (btn === "ol-primary") {
 		btnClass =
-			"text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:border-primary-700 hover:bg-primary-100";
+			"text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100";
 	} else {
 		btnClass =
 			"border-white bg-white hover:bg-gray-50 hover:text-primary-500 focus:ring-primary-500";
