@@ -79,10 +79,7 @@ export default function Login() {
 			const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 			const did = await magic.auth.loginWithMagicLink({
 				email,
-				redirectURI:
-					location.href.indexOf("?") !== -1
-						? `${location.href}&email=return`
-						: `${location.href}?email=return`,
+				redirectURI: location.href
 			});
 			await login(did);
 		} catch (e) {
