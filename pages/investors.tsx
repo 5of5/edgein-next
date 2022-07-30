@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-// import { ElemButton } from "../components/ElemButton";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
+import { ElemNewFunds } from "@/components/Investors/ElemNewFunds";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { ElemPhoto } from "../components/ElemPhoto";
@@ -105,8 +105,12 @@ const Investors: NextPage<Props> = ({
 				</ElemHeading>
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
+					<div className="max-w-6xl mx-auto px-4 pt-4 sm:px-6 lg:px-8 lg:pt-10">
+						{vcFirms && <ElemNewFunds heading="New Funds" />}
+					</div>
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
-						<ElemFiltersWrap className="filters-wrap">
+						<h2 className="text-2xl font-bold">All Investors</h2>
+						<ElemFiltersWrap className="filters-wrap pt-2">
 							<InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								label="Search"
