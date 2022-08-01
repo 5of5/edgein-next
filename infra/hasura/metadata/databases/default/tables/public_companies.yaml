@@ -12,6 +12,15 @@ object_relationships:
         column_mapping:
           coin_id: id
 array_relationships:
+  - name: follows
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: follows_companies
+        insertion_order: null
+        column_mapping:
+          id: resource_id
   - name: investment_rounds
     using:
       foreign_key_constraint_on:
@@ -58,22 +67,27 @@ select_permissions:
   - role: user
     permission:
       columns:
-        - id
-        - logo
-        - total_employees
+        - audit_file
         - careers_page
         - coin_id
         - company_linkedin
+        - date_added
         - external_id
         - github
+        - ico_end
+        - ico_start
+        - id
         - investor_amount
         - layer
         - layer_detail
+        - logo
         - market_verified
         - name
         - notes
         - overview
         - slug
+        - tags
+        - total_employees
         - total_valuation
         - velocity_linkedin
         - velocity_token

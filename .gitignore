@@ -1,7 +1,9 @@
 proxy/airtable
 scripts/backup
 scripts/ignore
+scripts/.env
 infra/docker-compose-aws.yml
+infra/secret
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -31,7 +33,6 @@ yarn-error.log*
 
 # local env files
 .env*.local
-.env
 
 # vercel
 .vercel

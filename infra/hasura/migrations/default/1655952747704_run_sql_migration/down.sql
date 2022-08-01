@@ -1,3 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- ALTER TABLE companies ALTER COLUMN investor_amount TYPE int8 USING investor_amount::int8;
