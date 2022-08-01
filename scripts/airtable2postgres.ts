@@ -5,6 +5,7 @@ import { getClient, upsertBatch } from './postgres_helpers'
 import { getAirtableTable } from './airtable_helpers'
 import { Client } from 'pg';
 import { keyBy, compact, Dictionary } from 'lodash'
+import slugify from 'slugify'
 
 const runTable = async (client: Client, mapping: Mapping) => {
   console.log(`Moving airtable ${mapping.airtable} to postgres ${mapping.table}`)
@@ -32,6 +33,9 @@ const runTable = async (client: Client, mapping: Mapping) => {
       }
       if (map.whitespace === 'strip' && typeof val === 'string') {
         val = val.trim()
+      }
+      if (map.type === 'slug' && typeof val === 'string') {
+        val = slugify(val, { lower: true, strict: true, trim: true } )
       }
       if (map.type === 'json') {
         val = JSON.stringify(val)

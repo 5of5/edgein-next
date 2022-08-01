@@ -51,8 +51,7 @@ export const companiesMapping: Mapping = {
       {
           "to": "slug",
           "from": "slug",
-          "type": "standard",
-          "whitespace": "strip",
+          "type": "slug",
       },
       {
           "to": "layer",
@@ -182,8 +181,7 @@ export const peopleMapping: Mapping = {
       {
           "to": "slug",
           "from": "slug",
-          "type": "standard",
-          "whitespace": "strip",
+          "type": "slug",
       },
       {
           "to": "work_email",
@@ -222,8 +220,7 @@ export const vcFirmMapping: Mapping = {
       {
           "to": "slug",
           "from": "slug",
-          "type": "standard",
-          "whitespace": "strip",
+          "type": "slug",
       },
       {
           "to": "website",
