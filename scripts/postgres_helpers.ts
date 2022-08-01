@@ -30,11 +30,16 @@ export const upsert = async (client: Client, table: string, primaryKey: string, 
   }
 }
 
+async function sleep(millis: number) {
+  return new Promise(resolve => setTimeout(resolve, millis));
+}
+
 export const upsertBatch = async (client: Client, table: string, primaryKey: string, objects: Record<string, any>[]) => {
-  console.log('Starting batch')
+  console.log('Starting batch', objects.length)
   for (let index = 0; index < objects.length; index++) {
     const object = objects[index]
-    console.log(`Running query ${index+1}\r`)
+    process.stdout.write(`Running query ${index+1}/${objects.length} ${Math.round(((index+1)/objects.length)*100)}%  \r`)
     await upsert(client, table, primaryKey, object)
   }
+  process.stdout.write(`Finished ${table} ${objects.length}/${objects.length} 100%`)
 }

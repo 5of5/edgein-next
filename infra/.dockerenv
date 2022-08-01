@@ -1,0 +1,3 @@
+
+HASURA_ADMIN_SECRET=devsecret
+HASURA_JWT_SECRET={"type":"HS256", "key": "you-should-create-your-own-secret-to-use-for-encryption"}

@@ -9,6 +9,7 @@ export interface Mapping {
     unwrap?: boolean
     reference?: string
     referenceColumn?: string
+    whitespace?: 'strip'
   }[]
 }
 
@@ -50,7 +51,7 @@ export const companiesMapping: Mapping = {
       {
           "to": "slug",
           "from": "slug",
-          "type": "standard"
+          "type": "slug",
       },
       {
           "to": "layer",
@@ -61,6 +62,31 @@ export const companiesMapping: Mapping = {
           "to": "layer_detail",
           "from": "Layer Detail",
           "type": "standard"
+      },
+      {
+        "to": "date_added",
+        "from": "Date Added",
+        "type": "standard"
+      },
+      {
+        "to": "ico_start",
+        "from": "Start ICO",
+        "type": "standard"
+      },
+      {
+        "to": "ico_end",
+        "from": "End ICO",
+        "type": "standard"
+      },
+      {
+        "to": "audit_file",
+        "from": "Audit",
+        "type": "standard"
+      },
+      {
+        "to": "tags",
+        "from": "Tags",
+        "type": "json"
       },
       {
           "to": "name",
@@ -155,7 +181,7 @@ export const peopleMapping: Mapping = {
       {
           "to": "slug",
           "from": "slug",
-          "type": "standard"
+          "type": "slug",
       },
       {
           "to": "work_email",
@@ -194,7 +220,7 @@ export const vcFirmMapping: Mapping = {
       {
           "to": "slug",
           "from": "slug",
-          "type": "standard"
+          "type": "slug",
       },
       {
           "to": "website",
@@ -314,6 +340,11 @@ export const teamMembersMapping: Mapping = {
           "to": "title",
           "from": "Title",
           "type": "standard"
+      },
+      {
+        "to": "founder",
+        "from": "Founder",
+        "type": "standard"
       },
       {
           "to": "company_id",
