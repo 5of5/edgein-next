@@ -106,7 +106,7 @@ const Investors: NextPage<Props> = ({
 
 				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl mx-auto px-4 pt-4 sm:px-6 lg:px-8 lg:pt-10">
-						{vcFirms && <ElemNewFunds heading="New Funds" />}
+						{vcFirms && <ElemNewFunds heading="Recent Investments" />}
 					</div>
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
 						<h2 className="text-2xl font-bold">All Investors</h2>
