@@ -10,7 +10,7 @@ export const ElemFiltersWrap: React.FC<PropsWithChildren<Props>> = ({
 }) => {
 	return (
 		<section
-			className={`w-full flex flex-col py-5 space-y-3 md:flex-row md:space-y-0 md:space-x-3 ${className}`}
+			className={`w-full flex flex-col py-3 space-y-3 md:flex-row md:space-y-0 md:space-x-3 ${className}`}
 		>
 			{children}
 		</section>

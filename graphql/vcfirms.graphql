@@ -1,42 +1,66 @@
 query GetVCFirm($slug: String!) {
-  vc_firms(where: {slug: {_eq: $slug}}) {
-    id
-    name
-    slug
-    logo
-    website
-    linkedin
-    investments {
-      investment_round {
-        id
-        round_date
-        round
-        amount
-        company {
-          id
-          slug
-          name
-          logo
-        }
-      }
-    }
-  }
+	vc_firms(where: { slug: { _eq: $slug } }) {
+		id
+		name
+		slug
+		logo
+		website
+		linkedin
+		investments {
+			investment_round {
+				id
+				round_date
+				round
+				amount
+				company {
+					id
+					slug
+					name
+					logo
+				}
+			}
+		}
+	}
 }
 
 query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
-  vc_firms(where: $where, order_by: {num_of_investments: desc}, limit: $limit, offset: $offset) {
-    id
-    name
-    slug
-    logo
-    num_of_investments
-  }
+	vc_firms(
+		where: $where
+		order_by: { num_of_investments: desc }
+		limit: $limit
+		offset: $offset
+	) {
+		id
+		name
+		slug
+		logo
+		num_of_investments
+	}
+}
+
+query GetVCFirmsRecentInvestments(
+	$limit: Int
+	$offset: Int
+	$where: vc_firms_bool_exp!
+) {
+	vc_firms(
+		where: $where
+		order_by: { latest_investments: desc_nulls_last }
+		limit: $limit
+		offset: $offset
+	) {
+		id
+		name
+		slug
+		logo
+		latest_investments
+	}
 }
 
 query GetVCFirmsPath {
-  vc_firms(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
-    id
-    name
-    slug
-  }
+	vc_firms(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+		id
+		name
+		slug
+	}
 }
