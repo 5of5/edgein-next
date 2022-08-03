@@ -17,6 +17,11 @@ array_relationships:
           schema: public
           name: investors
 computed_fields:
+  - name: latest_investments
+    definition:
+      function:
+        schema: public
+        name: vc_firms_latest_investments
   - name: num_of_investments
     definition:
       function:
