@@ -1,5 +1,6 @@
 import useSWR from "swr";
 import { useSWRConfig } from 'swr'
+import { hotjar } from 'react-hotjar';
 
 function fetcher(route: string) {
   /* our token cookie gets sent with this request */
@@ -16,7 +17,14 @@ export function useClearAuth() {
 
 export function useAuth() {
   const { data: user, error, isValidating } = useSWR("/api/user/", fetcher, {revalidateOnMount: true});
-  const loading = user === undefined;
+  const loading = isValidating;
+  if (user) {
+    try { 
+      hotjar.identify(user.publicAddress, { email: user.email });
+    } catch(e) {
+
+    }
+  }
 
   return {
     user,
