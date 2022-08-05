@@ -2,6 +2,9 @@ table:
   schema: public
   name: list_members
 object_relationships:
+  - name: list
+    using:
+      foreign_key_constraint_on: list_id
   - name: user
     using:
       manual_configuration:
