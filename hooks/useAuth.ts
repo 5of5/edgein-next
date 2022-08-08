@@ -20,7 +20,7 @@ export function useAuth() {
   const loading = isValidating;
   if (user) {
     try { 
-      hotjar.identify(user.publicAddress, { email: user.email });
+      hotjar.identify(user.publicAddress, { email: user.email, role: user.role });
     } catch(e) {
 
     }
