@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 
-+// create an authenticated link for accessing graphql
+// create an authenticated link for accessing graphql
 const getHeaders = (token?: string) => {
   let headers = {}
 
