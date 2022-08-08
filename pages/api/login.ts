@@ -29,9 +29,77 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   .setIssuedAt()
   .setExpirationTime('90d')
   .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
+  
+   // upser user after login
+  upsertUser(user, token)
+
   CookieService.setTokenCookie(res, token)
 
   res.send({success: true})
 }
+
+
+// create an authenticated link for accessing graphql
+const getHeaders = (token?: string) => {
+  let headers = {}
+
+  // get the authentication token from process if it exists
+  if (process.env.DEV_MODE) {
+    headers = { 'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
+  } else {
+    headers = { Authorization: token ? `Bearer ${token}` : '' }
+  }
+
+  // return the headers
+  return headers
+}
+
+// userts user to local db using graphql
+const upsertUser = async (user: any, token?: string) => {
+
+  // extract name from email
+  const emailFragments = user.email.split('@')
+
+  // prepare gql query
+  const usertQuery = `
+    mutation upsert_users {
+      insert_users (
+        objects: [
+          {
+            external_id: "${user.issuer}",
+            email: "${user.email}",
+            display_name: "${emailFragments[0]}",
+            role: "user"
+          }
+        ],
+        on_conflict: {
+          constraint: users_email_key,
+          update_columns: [external_id]
+        }
+      ) {
+        returning {
+          id
+          display_name
+          email
+        }
+      }
+    }
+  `
+
+  const opts = {
+    method: 'POST',
+    body: JSON.stringify({ operationName: 'upsert_users', query: usertQuery, variables: null }),
+    headers: getHeaders(token)
+  }
+
+  try {
+    await fetch(process.env.GRAPHQL_ENDPOINT || '', opts)
+  }
+  catch (e) {
+      
+  }
+  
+}
+
 
 export default handler
