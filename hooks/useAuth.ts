@@ -22,7 +22,7 @@ export function useAuth() {
     try { 
       hotjar.identify(user.publicAddress, { email: user.email, role: user.role });
     } catch(e) {
-
+         // hotjar not loaded
     }
   }
 
