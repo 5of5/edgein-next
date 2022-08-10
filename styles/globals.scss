@@ -84,6 +84,13 @@ body {
    @apply bg-gray-50 text-dark-500 overscroll-y-none;
 }
 
+.ReactModal__Overlay {
+  position: fixed;
+  inset: 0px;
+  background-color: rgba(255, 255, 255, 0.75);
+  z-index: 100;
+}
+
 /***************** 
 Mobile hamburger button
 ******************/

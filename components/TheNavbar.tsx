@@ -7,10 +7,16 @@ import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
+import  LoginModal  from "./LoginModal";
+import ForgotPasswordModal from "./ForgotPasswordModal";
 
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
+
+	const [showLoginPopup, setShowLoginPopup] = useState(false)
+	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false)
+
 	const siteNav = [
 		{
 			path: "/companies",
@@ -48,8 +54,26 @@ export const TheNavbar = () => {
 		setActive((isActive) => !isActive);
 	};
 
+	const onForgotPassword = () => {
+		setShowLoginPopup(false)
+		setShowForgotPasswordPopup(true)
+	}
+
+	const onBackFromForgotPassword = () => {
+		setShowLoginPopup(true)
+		setShowForgotPasswordPopup(false)
+	}
+
+	const onModalClose = () => {
+		setShowLoginPopup(false)
+		setShowForgotPasswordPopup(false)
+	}
+
 	return (
+		<>
+		
 		<header className="overflow-y-visible z-30">
+			
 			<div className="max-w-6xl mx-auto px-4 py-2 sm:px-6 lg:px-8 lg:py-4">
 				<nav
 					className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
@@ -96,7 +120,7 @@ export const TheNavbar = () => {
 						{user ? (
 							<UserMenu />
 						) : (
-							<ElemButton href="/login" btn="primary" arrow>
+							<ElemButton onClick={() => setShowLoginPopup(true)}  btn="primary" arrow>
 								Log In
 							</ElemButton>
 						)}
@@ -111,5 +135,8 @@ export const TheNavbar = () => {
 				</nav>
 			</div>
 		</header>
+		<LoginModal onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose}/>
+		<ForgotPasswordModal show={showForgotPasswordPopup} onClose = {onModalClose} onBack={onBackFromForgotPassword}/>
+	</>
 	);
 };
