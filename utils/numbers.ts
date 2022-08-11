@@ -1,12 +1,13 @@
 export const formatDate = (
 	dateString: string | number,
-	options?: object
+	options?: Intl.DateTimeFormatOptions
 ): string => {
 	if (!dateString) {
 		return "";
 	}
 
-	const date = new Date(dateString);
+	var date = new Date(dateString)
+	date = new Date(date.getTime() + (date.getTimezoneOffset() * 60000))
 
 	if (!options) {
 		return date.toLocaleDateString("en-us", {
