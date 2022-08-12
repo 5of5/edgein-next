@@ -79,6 +79,7 @@ const Company: NextPage<Props> = (props) => {
 										{company.coin.ticker}
 									</div>
 								)}
+								<ElemButton onClick={reaction('rocket')}>Rocket</ElemButton>
 							</div>
 
 							{company.overview && (
