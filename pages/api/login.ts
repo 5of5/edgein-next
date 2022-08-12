@@ -4,6 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { nanoid } from 'nanoid'
 import { SignJWT } from 'jose'
 import { mutate } from '@/graphql/hasuraAdmin'
+import { User } from '@/models/User'
 
 const hasuraClaims = {
   "https://hasura.io/jwt/claims": {
@@ -69,7 +70,7 @@ const upsertUser = async (user: any) => {
       }
     })
 
-    return data.data.insert_users.returning[0]
+    return data.data.insert_users.returning[0] as User
   } catch (e) {
     throw e
   }
