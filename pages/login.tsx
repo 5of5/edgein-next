@@ -31,7 +31,7 @@ export default function Login() {
 			const redirectUrl = Array.isArray(router.query.redirect)
 				? router.query.redirect[0]
 				: router.query.redirect || redirect;
-			if (redirectUrl && redirectUrl.startsWith("/")) {
+			if (redirectUrl && redirectUrl.startsWith("/") && !redirectUrl.startsWith("/login")) {
 				window.location.href = redirectUrl;
 			} else {
 				window.location.href = "/?loggedin";

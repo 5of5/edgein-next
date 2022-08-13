@@ -4,17 +4,19 @@ import CookieService from '../../utils/cookie'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let user;
   try {
-    user = await CookieService.getUser(CookieService.getAuthToken(req.cookies))
-  } catch (error) {
-    res.status(401).end()
-  }
+    const token = CookieService.getAuthToken(req.cookies)
+    user = await CookieService.getUser(token)
 
-  // now we have access to the data inside of user
-  // and we could make database calls or just send back what we have
-  // in the token.
-  if (user) {
-    res.json(user)
-  } else {
+    // now we have access to the data inside of user
+    // and we could make database calls or just send back what we have
+    // in the token.
+    if (user) {
+      res.json(user)
+    } else {
+      res.status(401).end()
+    }
+
+  } catch (error) {
     res.status(401).end()
   }
 }
