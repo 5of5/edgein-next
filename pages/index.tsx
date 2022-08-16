@@ -86,7 +86,7 @@ const Home: NextPage = () => {
 						<>
 							<form
 								className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-5 sm:gap-x-4"
-								onSubmit={onSubmit}
+								onSubmit= {() => {}} //{onSubmit}
 							>
 								<div className="group mb-6 sm:col-span-3">
 									<InputText
