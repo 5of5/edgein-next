@@ -57,7 +57,6 @@ export const getStaticProps: GetStaticProps = async () => {
 	const ashley = "/ashley-brown.jpg";
 	const raymond = "/raymond-l-aleman.jpg";
 	const ed = "/ed-parsons.jpg";
-	const ben = "/ben-pollack.png";
 	const dahn = "/dahn-tamir.jpg";
 	const jhen = "/jhen-de-leon.jpg";
 	const rocky = "/rocky-rimando.png";
@@ -96,13 +95,6 @@ export const getStaticProps: GetStaticProps = async () => {
 			role: "Chief Technology Advisor",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/efparsons/",
-		},
-		{
-			image: ben,
-			name: "Benjamin Andrew Pollack",
-			role: "Head of Product",
-			//description: "",
-			linkedin: "https://www.linkedin.com/in/benpollack/",
 		},
 		{
 			image: dahn,

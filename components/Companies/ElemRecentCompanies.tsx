@@ -26,7 +26,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
-	const limit = itemsLimit ? itemsLimit : 21;
+	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {

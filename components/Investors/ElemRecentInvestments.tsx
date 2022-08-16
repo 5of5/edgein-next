@@ -21,12 +21,12 @@ type Props = {
 	itemsLimit?: number;
 };
 
-export const ElemNewFunds: FC<Props> = ({
+export const ElemRecentInvestments: FC<Props> = ({
 	className = "",
 	heading,
 	itemsLimit,
 }) => {
-	const limit = itemsLimit ? itemsLimit : 21;
+	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
