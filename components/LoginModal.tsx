@@ -79,11 +79,9 @@ export default function LoginModal(props) {
     //     }
     // };
 
-    const handleSubmit = async () => {
+    const onLogin = async () => {
         // event.preventDefault();
         // setIsLoading(true);
-
-
         try {
             const response = await fetch("/api/check_email/", {
                 method: "POST",
@@ -93,24 +91,43 @@ export default function LoginModal(props) {
                 },
                 body: JSON.stringify({ email }),
             }).then(res => res.json());
-            // console.log("response ==", response)
             if (response.nextStep && response.nextStep === "SIGNUP") {
                 setIsSignUp(true);
                 console.log("continue signup=", response)
             } else if (response.nextStep && response.nextStep === "LOGIN") {
 
             } 
-            // the Magic code
-            // const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-            // const did = await magic.auth.loginWithMagicLink({
-            //     email,
-            //     redirectURI: location.href
-            // });
-            // await login(did);
+           
         } catch (e) {
             setIsWaitlisted(true)
             console.log(e);
-            // alert("Error Logging In");
+            setIsLoading(false);
+        }
+    };
+
+    const onSignUp = async () => {
+        // event.preventDefault();
+        // setIsLoading(true);
+        try {
+            const response = await fetch("/api/register/", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            }).then(res => res.json());
+            console.log("signnnup response =", response)
+            // if (response.nextStep && response.nextStep === "SIGNUP") {
+            //     setIsSignUp(true);
+            //     console.log("continue signup=", response)
+            // } else if (response.nextStep && response.nextStep === "LOGIN") {
+
+            // } 
+           
+        } catch (e) {
+            //setIsWaitlisted(true)
+            console.log(e);
             setIsLoading(false);
         }
     };
@@ -194,7 +211,7 @@ export default function LoginModal(props) {
                                         I forgot my password
                                         </button>
                                     <div className="text-right sm:col-span-3">
-                                        <ElemButton onClick={handleSubmit} btn="primary" loading={isLoading}>
+                                        <ElemButton onClick={isSignUp ? onSignUp : onLogin} btn="primary" loading={isLoading}>
                                             {(isSignUp) ? 'Sign Up' : 'Log In'}
                                         </ElemButton>
                                     </div>

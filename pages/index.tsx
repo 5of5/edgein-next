@@ -69,16 +69,11 @@ const Home: NextPage = () => {
 							<FigureIntroSplash className="hidden lg:block relative" />
 						</div>
 					</div>
-					<div className="bg-white rounded-2xl border border-dark-500/10 p-6 w-[30rem]">
-					{/* <h1 className="text-3xl lg:text-4xl font-bold">
-						{formSent
-							? `You're on the list,!`
-							: "Join the waiting list"}
-					</h1> */}
+					{/* <div className="bg-white rounded-2xl border border-dark-500/10 p-6 w-[30rem]">
+					
 					<p className="mt-2 text-xl text-dark-400">
 						{formSent &&
 							 `your email ${email} has been added to our list.  we'll be in touch soon!`
-							//: "Explore Web3 data intelligence and contribute."
 						}
 					</p>
 
@@ -107,7 +102,7 @@ const Home: NextPage = () => {
 							</form>
 						</>
 					)}
-				</div>
+				</div> */}
 						
 				</div>
 			</section>
