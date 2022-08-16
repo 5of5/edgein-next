@@ -10,10 +10,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email = req.body.email;
   const password = req.body.password;
   var data = JSON.stringify({
-    "client_id": process.env.AUTH0_CLIENT_ID,
-    "email": email,
-    "password": password,
-    "connection": "Username-Password-Authentication"
+    client_id: process.env.AUTH0_CLIENT_ID,
+    email,
+    password,
+    user_metadata: { role: "user" },
+    connection: "Username-Password-Authentication"
   });
   
   var config = {
@@ -28,8 +29,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       result = await axios(config);
       // upsert user info
       await upsertUser(result.data);
-    } catch (e) {
-      return res.status(404).send(`Invalid Detail`)
+    } catch (ex) {
+      return res.status(ex.response.status).send(ex.response.data.description)
     }
 
   res.send({ success: true, result: result.data });
