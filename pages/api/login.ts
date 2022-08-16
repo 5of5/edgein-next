@@ -3,7 +3,8 @@ import CookieService from '../../utils/cookie'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { nanoid } from 'nanoid'
 import { SignJWT } from 'jose'
-import { doGraphQlQuery } from '@/utils/hasura-helpers'
+import { mutate } from '@/graphql/hasuraAdmin'
+import { User } from '@/models/User'
 
 const hasuraClaims = {
   "https://hasura.io/jwt/claims": {
@@ -23,16 +24,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const did = bearer?.pop()?.trim()
   const user = await new Magic(process.env.MAGIC_SECRET_KEY).users.getMetadataByToken(did || '')
 
+  // upsert user after login
+  const localUser = await upsertUser(user)
+
   // Author a couple of cookies to persist a user's session
-  const token = await new SignJWT({ user: JSON.stringify(user), ...hasuraClaims })
+  const token = await new SignJWT({ user: JSON.stringify({...user, role: localUser.role}), ...hasuraClaims })
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(nanoid())
     .setIssuedAt()
     .setExpirationTime('90d')
     .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
-
-  // upser user after login
-  upsertUser(user, token)
 
   CookieService.setTokenCookie(res, token)
 
@@ -40,42 +41,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 // userts user to local db using graphql
-const upsertUser = async (user: any, token?: string) => {
+const upsertUser = async (user: any) => {
 
   // extract name from email
   const emailFragments = user.email.split('@')
 
   // prepare gql query
   const usertQuery = `
-    mutation upsert_users {
-      insert_users (
-        objects: [
-          {
-            external_id: "${user.issuer}",
-            email: "${user.email}",
-            display_name: "${emailFragments[0]}",
-            role: "user"
-          }
-        ],
-        on_conflict: {
-          constraint: users_email_key,
-          update_columns: [external_id]
-        }
-      ) {
+    mutation upsert_users($external_id: String, $email: String, $display_name: String, $role: String) {
+      insert_users(objects: [{external_id: $external_id, email: $email, display_name: $display_name, role: $role}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
         returning {
           id
           display_name
           email
+          role
         }
       }
     }
   `
   try {
-    await doGraphQlQuery({
-      operationName: 'upsert_users',
-      query: usertQuery,
-      variables: null
-    }, token || '')
+    const data = await mutate({
+      mutation: usertQuery,
+      variables: {
+        external_id: user.issuer,
+        email: user.email,
+        display_name: emailFragments[0],
+        role: 'user',
+      }
+    })
+
+    return data.data.insert_users.returning[0] as User
   } catch (e) {
     throw e
   }

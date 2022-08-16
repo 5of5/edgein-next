@@ -1,4 +1,5 @@
-import { doGraphQlQuery } from '@/utils/hasura-helpers';
+import { User } from '@/models/User'
+import { query, mutate } from '@/graphql/hasuraAdmin'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,38 +28,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const queryForAllowedEmailCheck = async (email: string) => {
   // prepare gql query
   const fetchQuery = `
-    query query_allowed_emails {
-      allowed_emails(where: {email: {_eq: "${email}"}}, limit: 1) {
-        id
-        email
-      }
+  query query_allowed_emails($email: String) {
+    allowed_emails(where: {email: {_eq: $email}}, limit: 1) {
+      id
+      email
     }
+  }
   `
-
   try {
-    const user = await doGraphQlQuery({
-      operationName: 'query_allowed_emails',
+    const data = await query({
       query: fetchQuery,
-      variables: null
-    }, '')
-
-    return user.data.allowed_emails[0];
-  } catch (e) {
-    throw e
+      variables: { email }
+    })
+    return data.data.allowed_emails[0] as User
+  } catch (ex) {
+    throw ex;
   }
 }
 
 const mutateForWaitlistEmail = async (email: string) => {
-  // prepare gql query
-  const fetchQuery = `
-    mutation upsert_waitlist_email {
-      insert_waitlist_emails (
-        objects: [
-          {
-            email: "${email}"
-          }
-        ]
-      ) {
+
+    // prepare gql query
+    const upsertWaitListEmail = `
+    mutation upsert_waitlist_email($email: String) {
+      insert_waitlist_emails(objects: [{email: $email}], on_conflict: {constraint: waitlist_emails_email_key, update_columns: [email]}) {
         returning {
           id
           email
@@ -66,42 +59,35 @@ const mutateForWaitlistEmail = async (email: string) => {
       }
     }
   `
-
   try {
-    const test = await doGraphQlQuery({
-      operationName: 'upsert_waitlist_email',
-      query: fetchQuery,
-      variables: null
-    }, '');
-    // TODO: check on email unique contratints
-    console.log(test);
+    const data = await mutate({
+      mutation: upsertWaitListEmail,
+      variables: { email }
+    });
   } catch (e) {
     throw e
   }
 }
 
 const queryForExistingUsers = async (email: string) => {
-  // prepare gql query
-  const fetchQuery = `
-    query query_users {
-      users(where: {email: {_eq: "${email}"}}, limit: 1) {
+    // prepare gql query
+    const fetchQuery = `
+    query query_users($email: String) {
+      users(where: {email: {_eq: $email}}, limit: 1) {
         id
         email
       }
     }
-  `
-
-  try {
-    const user = await doGraphQlQuery({
-      operationName: 'query_users',
-      query: fetchQuery,
-      variables: null
-    }, '')
-
-    return user.data.users[0];
-  } catch (e) {
-    throw e
-  }
+    `
+    try {
+      const data = await query({
+        query: fetchQuery,
+        variables: { email }
+      })
+      return data.data.users[0] as User
+    } catch (ex) {
+      throw ex;
+    }
 }
 
 export default handler
