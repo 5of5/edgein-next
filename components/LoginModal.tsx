@@ -51,41 +51,13 @@ export default function LoginModal(props) {
         Boolean(router.query.email)
     );
 
-    // const login = async (did: string | null, redirect?: string | null) => {
-    //     // Once we have the did from magic, login with our own API
-    //     const authRequest = await fetch("/api/login/", {
-    //         method: "POST",
-    //         headers: { Authorization: `Bearer ${did}` },
-    //     });
-
-    //     if (authRequest.ok) {
-    //         // We successfully logged in, our API
-    //         // set authorization cookies and now we
-    //         // can redirect to the dashboard!
-    //         // Next.js middleware needs a full refresh rather than router.push
-
-    //         debugger;
-    //         const redirectUrl = Array.isArray(router.query.redirect)
-    //             ? router.query.redirect[0]
-    //             : router.query.redirect || redirect;
-    //         if (redirectUrl && redirectUrl.startsWith("/")) {
-    //             window.location.href = redirectUrl;
-    //         } else {
-    //             window.location.href = "/?loggedin";
-    //         }
-    //         // Trigger page refresh after logged in
-    //         // window.location.reload();
-    //     } else {
-    //         console.log(authRequest);
-    //         alert("Error Logging In");
-    //         /* handle errors */
-    //         setIsLoading(false);
-    //     }
-    // };
-
     const onLogin = async () => {
         // event.preventDefault();
         // setIsLoading(true);
+        if(!email || !password){
+            alert("Enter both email and password")
+            return
+        }
         try {
             const response = await fetch("/api/check_email/", {
                 method: "POST",
@@ -148,16 +120,16 @@ export default function LoginModal(props) {
                     <>
                         <ElemLogo
                             mode="icon"
-                            className="text-center h-8 w-30 scale-95 scheme-standard "
+                            className="text-center h-8 w-30 scale-95 mx-32 mb-10"
                         />
                         <h1 className="text-center text-2xl lg:text-3xl font-bold">Welcome to EdgeIn</h1>
                         <div className="text-center sm:col-span-3 mt-5">
-                            <ElemButton className="w-full" onClick={() => { }} btn="ol-primary" >
-                                Continue with LinkedIn
-                            </ElemButton>
+                        <ElemButton roundedFull={false} className="w-full rounded-md text-blue-md border border-slate-300" onClick={() => { }} btn="ol-primary" >
+                                        Continue with LinkedIn
+                                </ElemButton>
                         </div>
                         <div className="text-center sm:col-span-3 mt-5">
-                            <span>----------<b>or</b>-----------</span>
+                        <span className="text-gray-300 text-sm text-light">----------------------------<b className="text-dark-600">{` or `}</b>----------------------------</span>
                         </div>
                         <div
                             className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0"

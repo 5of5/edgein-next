@@ -23,7 +23,8 @@ export const UserMenu = () => {
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
-			location.href = "/login/?loggedout";
+			// location.href = "/login/?loggedout";
+			location.href = "/?loggedout";
 		} else {
 			/* handle errors */
 		}

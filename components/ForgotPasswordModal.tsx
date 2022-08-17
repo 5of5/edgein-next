@@ -32,6 +32,10 @@ export default function ForgotPasswordModal(props) {
     const [isMailSent, setIsMailSent] = useState(false)
 
     const handleSubmit = async () => {
+        if(!email){
+            alert("Enter email!")
+            return;
+        }
         try {
             const response = await fetch("/api/change_password/", {
                 method: "POST",
@@ -41,7 +45,6 @@ export default function ForgotPasswordModal(props) {
                 },
                 body: JSON.stringify({ email}),
             }).then(res => res.json());
-            console.log("signnnup response =", response)
             if (response.success === true) {
                 setIsMailSent(true)
             }
