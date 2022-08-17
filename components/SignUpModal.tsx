@@ -32,6 +32,18 @@ export default function SignUpModal(props) {
 
     const [isBrowser, setIsBrowser] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("")
+    const [isSignUp, setIsSignUp] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    // const [isWaitlisted, setIsWaitlisted] = useState(false)
+    const [isRegistered, setIsRegistered] = useState(false)
+    const [emailError, setEmailError] = useState('')
+    const [nameError, setNameError] = useState('')
+    // const [finishingLogin, setFinishingLogin] = useState(
+    //     Boolean(router.query.email)
+    // );
 
     const validate = (value: string) => {
         setPassword(value)
@@ -45,6 +57,23 @@ export default function SignUpModal(props) {
         }
     }
 
+    const validateEmail = (value: string) => {
+        setEmail(value)
+        if (validator.isEmail(email)) {
+            setEmailError('')
+        } else {
+            setEmailError('Enter valid Email!')
+        }
+    }
+
+    const validateName = (value: string) => {
+        setName(value)
+        if (value.length > 0) {
+            setNameError('')
+        } else {
+            setNameError('Enter Name!')
+        }
+    }
 
     useEffect(() => {
         setIsBrowser(true);
@@ -53,18 +82,12 @@ export default function SignUpModal(props) {
         setIsSignUp(false)
         // setIsWaitlisted(false)
         setIsRegistered(false)
+        setErrorMessage('')
+        setEmailError('')
+        setNameError('')
     }, [props.show]);
 
-    const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("")
-    const [isSignUp, setIsSignUp] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-    // const [isWaitlisted, setIsWaitlisted] = useState(false)
-    const [isRegistered, setIsRegistered] = useState(false)
-    // const [finishingLogin, setFinishingLogin] = useState(
-    //     Boolean(router.query.email)
-    // );
+
 
     const onLogin = () => {
         // event.preventDefault();
@@ -73,14 +96,13 @@ export default function SignUpModal(props) {
     };
 
     const onSignUp = async () => {
-       if(!name || !email || !password){
-           alert("Enter name email and  password!")
-           return;
-       }
-       if(errorMessage.length > 0){
-           alert("Enter a valid Password")
-           return
-       }
+        validateEmail(email)
+        validateName(name)
+        validate(password)
+        if (!name || !email || !password) {
+            return;
+        }
+        
         try {
             const response = await fetch("/api/register/", {
                 method: "POST",
@@ -162,20 +184,23 @@ export default function SignUpModal(props) {
                                             type="text"
                                             value={name}
                                             disabled={isLoading}
-                                            onChange={(event) => setName(event ?.target.value)}
+                                            onChange={(event) => validateName(event ?.target.value)}
                                             placeholder="Name"
                                             className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
                                         />
+                                        {nameError === '' ? null :
+                                            <span className="w-full text-start text-sm">{nameError}</span>}
                                         <input
                                             name="email"
                                             type="email"
                                             value={email}
                                             disabled={isLoading}
-                                            onChange={(event) => setEmail(event ?.target.value)}
+                                            onChange={(event) => validateEmail(event ?.target.value)}
                                             placeholder="Email"
                                             className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
                                         />
-
+                                        {emailError === '' ? null :
+                                            <span className="w-full text-start text-sm">{emailError}</span>}
                                         <input
                                             name="password"
                                             type="password"

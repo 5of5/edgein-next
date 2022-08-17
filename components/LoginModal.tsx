@@ -8,6 +8,7 @@ import Link from "next/link";
 import ReactDOM from "react-dom";
 import Modal from 'react-modal';
 import { ElemLogo } from "./ElemLogo";
+import validator from 'validator'
 
 Modal.setAppElement('#modal-root');
 
@@ -17,7 +18,7 @@ const customStyles = {
         left: '50%',
         right: 'auto',
         bottom: 'auto',
-       // marginRight: '-50%',
+        // marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
         zindex: 100000,
         opacity: 1,
@@ -31,7 +32,6 @@ export default function LoginModal(props) {
 
     const [isBrowser, setIsBrowser] = useState(false);
 
-
     useEffect(() => {
         setIsBrowser(true);
         setEmail('');
@@ -39,6 +39,8 @@ export default function LoginModal(props) {
         setIsSignUp(false)
         setIsWaitlisted(false)
         setIsRegistered(false)
+        setEmailError('')
+        setErrorMessage('')
     }, [props.show]);
 
     const [email, setEmail] = useState("");
@@ -47,16 +49,38 @@ export default function LoginModal(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [isWaitlisted, setIsWaitlisted] = useState(false)
     const [isRegistered, setIsRegistered] = useState(false)
-    const [finishingLogin, setFinishingLogin] = useState(
-        Boolean(router.query.email)
-    );
+    const [emailError, setEmailError] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const validatePasssword = (value: string) => {
+        setPassword(value)
+        if (validator.isStrongPassword(value, {
+            minLength: 8, minLowercase: 1,
+            minUppercase: 1, minNumbers: 1, minSymbols: 1
+        })) {
+            setErrorMessage('')
+        } else {
+            setErrorMessage('Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, a special character')
+        }
+    }
+
+    const validateEmail = (value: string) => {
+        setEmail(value)
+        if (validator.isEmail(email)) {
+            setEmailError('')
+        } else {
+            setEmailError('Enter valid Email!')
+        }
+    }
 
     const onLogin = async () => {
         // event.preventDefault();
         // setIsLoading(true);
-        if(!email || !password){
-            alert("Enter both email and password")
-            return
+        validateEmail(email);
+        validatePasssword(password)
+
+        if (emailError || errorMessage || !email || !password) {
+            return;
         }
         try {
             const response = await fetch("/api/check_email/", {
@@ -73,8 +97,8 @@ export default function LoginModal(props) {
             } else if (response.nextStep && response.nextStep === "LOGIN") {
                 const url = `https://dev-h9qh-dn9.us.auth0.com/authorize?response_type=code&client_id=GQJNcsXDPCbPFo2OGCc1p3sAmY6T0b8p&connection=Username-Password-Authentication&redirect_uri=http://localhost:3000/&scope=openid%20profile%20email%20offline_access`;
                 window.location.href = url;
-            } 
-           
+            }
+
         } catch (e) {
             setIsWaitlisted(true)
             console.log(e);
@@ -110,70 +134,72 @@ export default function LoginModal(props) {
                             <>
                                 {/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
                                 <p className="mt-2 text-md text-dark-400 text-center">
-                                {`Your email ${email} has been added to our list.  We'll be in touch soon!`}
+                                    {`Your email ${email} has been added to our list.  We'll be in touch soon!`}
                                 </p>
                             </>
 
                         )
-                        :
-                    
-                    <>
-                        <ElemLogo
-                            mode="icon"
-                            className="text-center h-8 w-30 scale-95 mx-32 mb-10"
-                        />
-                        <h1 className="text-center text-2xl lg:text-3xl font-bold">Welcome to EdgeIn</h1>
-                        <div className="text-center sm:col-span-3 mt-5">
-                        <ElemButton roundedFull={false} className="w-full rounded-md text-blue-md border border-slate-300" onClick={() => { }} btn="ol-primary" >
+                            :
+
+                            <>
+                                <ElemLogo
+                                    mode="icon"
+                                    className="text-center h-8 w-30 scale-95 mx-32 mb-10"
+                                />
+                                <h1 className="text-center text-2xl lg:text-3xl font-bold">Welcome to EdgeIn</h1>
+                                <div className="text-center sm:col-span-3 mt-5">
+                                    <ElemButton roundedFull={false} className="w-full rounded-md text-blue-md border border-slate-300" onClick={() => { }} btn="ol-primary" >
                                         Continue with LinkedIn
                                 </ElemButton>
-                        </div>
-                        <div className="text-center sm:col-span-3 mt-5">
-                        <span className="text-gray-300 text-sm text-light">----------------------------<b className="text-dark-600">{` or `}</b>----------------------------</span>
-                        </div>
-                        <div
-                            className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0"
-                        >
-                            <div className="group sm:col-span-1">
-                                <input
-                                    name="email"
-                                    type="email"
-                                    value={email}
-                                    disabled={isLoading}
-                                    onChange={(event) => setEmail(event ?.target.value)}
-                                    placeholder="Email"
-                                    className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
-                                />
+                                </div>
+                                <div className="text-center sm:col-span-3 mt-5">
+                                    <span className="text-gray-300 text-sm text-light">----------------------------<b className="text-dark-600">{` or `}</b>----------------------------</span>
+                                </div>
+                                <div
+                                    className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0"
+                                >
+                                    <div className="group sm:col-span-1">
+                                        <input
+                                            name="email"
+                                            type="email"
+                                            value={email}
+                                            disabled={isLoading}
+                                            onChange={(event) => validateEmail(event ?.target.value)}
+                                            placeholder="Email"
+                                            className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+                                        />
+                                        {emailError === '' ? null :
+                                            <span className="w-full text-start text-sm">{emailError}</span>}
+                                        <input
+                                            name="password"
+                                            type="password"
+                                            value={password}
+                                            disabled={isLoading}
+                                            onChange={(event) => validatePasssword(event ?.target.value)}
+                                            placeholder="Password"
+                                            className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+                                        />
+                                        {errorMessage === '' ? null :
+                                            <span className="w-full text-start text-sm">{errorMessage}</span>}
+                                    </div>
 
-                                <input
-                                    name="password"
-                                    type="password"
-                                    value={password}
-                                    disabled={isLoading}
-                                    onChange={(event) => setPassword(event ?.target.value)}
-                                    placeholder="Password"
-                                    className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
-                                />
-
-                            </div>
-
-                            <div className="text-center sm:col-span-3">
-                                <ElemButton className="w-full" onClick={onLogin} btn="primary" loading={isLoading}>
-                                   Login
+                                    <div className="text-center sm:col-span-3">
+                                        <ElemButton className="w-full" onClick={onLogin} btn="primary" loading={isLoading}>
+                                            Login
                                 </ElemButton>
-                            </div>
-                            <div className="text-center sm:col-span-3">
-                                <ElemButton className="w-full text-blue-500 text-sm font-light" onClick={onForgotPassword} btn="transparent" loading={isLoading}>
-                                   Forgot Password?
+                                    </div>
+                                    <div className="text-center sm:col-span-3">
+                                        <ElemButton className="w-full text-blue-500 text-sm font-light" onClick={onForgotPassword} btn="transparent" loading={isLoading}>
+                                            Forgot Password?
                                 </ElemButton>
-                            </div>
-                            <div className="text-center sm:col-span-3">
-                                <ElemButton className="w-full" onClick={onSignUp} btn="ol-primary" loading={isLoading}>
-                                    Create an account
+                                    </div>
+                                    <div className="text-center sm:col-span-3">
+                                        <ElemButton className="w-full" onClick={onSignUp} btn="ol-primary" loading={isLoading}>
+                                            Create an account
                                 </ElemButton>
-                            </div>
-                        </div>
-                    </>
+                                    </div>
+                                </div>
+                            </>
                     }
                 </div>
             </div>
@@ -195,7 +221,7 @@ export default function LoginModal(props) {
     //                     <>
     //                         <h1 className="text-3xl lg:text-4xl font-bold">
     //                             Redirecting...
-	// 							<IconSpinner className="animate-spin mt-2 h-5 w-5" />
+    // 							<IconSpinner className="animate-spin mt-2 h-5 w-5" />
     //                         </h1>
     //                     </>
     //                 ) : ( */}
@@ -219,7 +245,7 @@ export default function LoginModal(props) {
     //                         (
     //                             <>
     //                             <h1 className="text-3xl lg:text-4xl font-bold">{(isSignUp) ? 'Sign Up' : 'Log In'}</h1>
-    
+
     //                             <div
     //                                 className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-3 sm:gap-x-8"
     //                             >
@@ -265,7 +291,7 @@ export default function LoginModal(props) {
     //                         </>
     //                         )
     //                     }
-                       
+
     //                 </>
     //                 {/* )} */}
     //             </div>
