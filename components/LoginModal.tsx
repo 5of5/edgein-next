@@ -52,17 +52,6 @@ export default function LoginModal(props) {
     const [emailError, setEmailError] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
 
-    const validatePasssword = (value: string) => {
-        setPassword(value)
-        if (validator.isStrongPassword(value, {
-            minLength: 8, minLowercase: 1,
-            minUppercase: 1, minNumbers: 1, minSymbols: 1
-        })) {
-            setErrorMessage('')
-        } else {
-            setErrorMessage('Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, a special character')
-        }
-    }
 
     const validateEmail = (value: string) => {
         setEmail(value)
@@ -74,12 +63,9 @@ export default function LoginModal(props) {
     }
 
     const onLogin = async () => {
-        // event.preventDefault();
-        // setIsLoading(true);
         validateEmail(email);
-        validatePasssword(password)
 
-        if (emailError || errorMessage || !email || !password) {
+        if (emailError || !email) {
             return;
         }
         try {
@@ -170,17 +156,7 @@ export default function LoginModal(props) {
                                         />
                                         {emailError === '' ? null :
                                             <span className="w-full text-start text-sm">{emailError}</span>}
-                                        <input
-                                            name="password"
-                                            type="password"
-                                            value={password}
-                                            disabled={isLoading}
-                                            onChange={(event) => validatePasssword(event ?.target.value)}
-                                            placeholder="Password"
-                                            className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
-                                        />
-                                        {errorMessage === '' ? null :
-                                            <span className="w-full text-start text-sm">{errorMessage}</span>}
+                                       
                                     </div>
 
                                     <div className="text-center sm:col-span-3">
