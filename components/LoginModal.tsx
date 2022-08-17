@@ -121,7 +121,7 @@ export default function LoginModal(props) {
                             <>
                                 {/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
                                 <p className="mt-2 text-md text-dark-400 text-center">
-                                    {`Your email ${email} has been added to our list.  We'll be in touch soon!`}
+                                    {`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`}
                                 </p>
                             </>
 
