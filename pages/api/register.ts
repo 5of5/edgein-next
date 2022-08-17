@@ -6,13 +6,11 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
 
-  // check email exist in allowedEmail table or not
-  const email = req.body.email;
-  const password = req.body.password;
   var data = JSON.stringify({
     client_id: process.env.AUTH0_CLIENT_ID,
-    email,
-    password,
+    email: req.body.email,
+    password: req.body.password,
+    name: req.body.name,
     user_metadata: { role: "user" },
     connection: "Username-Password-Authentication"
   });
@@ -42,11 +40,12 @@ const upsertUser = async (auth0Data: any) => {
   // prepare gql query
   // TODO: in conflict constraint
   const usertQuery = `
-    mutation upsert_users($external_id: String, $email: String, $role: String) {
-      insert_users(objects: [{external_id: $external_id, email: $email, role: $role}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
+    mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String) {
+      insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
         returning {
           id
           email
+          display_name
           role
         }
       }
@@ -58,7 +57,8 @@ const upsertUser = async (auth0Data: any) => {
       variables: {
         external_id: auth0Data._id,
         email: auth0Data.email,
-        role: 'user', // todo
+        display_name: auth0Data.name,
+        role: 'user',
       }
     })
 
