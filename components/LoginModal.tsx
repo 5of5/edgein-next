@@ -55,7 +55,7 @@ export default function LoginModal(props) {
 
     const validateEmail = (value: string) => {
         setEmail(value)
-        if (validator.isEmail(email)) {
+        if (validator.isEmail(value)) {
             setEmailError('')
         } else {
             setEmailError('Enter valid Email!')
