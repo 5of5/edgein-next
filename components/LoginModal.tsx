@@ -134,14 +134,14 @@ export default function LoginModal(props) {
                                     className="text-center h-8 w-30 scale-95 mx-32 mb-10"
                                 />
                                 <h1 className="text-center text-2xl lg:text-3xl font-bold">Welcome to EdgeIn</h1>
-                                <div className="text-center sm:col-span-3 mt-5">
+                                {/* <div className="text-center sm:col-span-3 mt-5">
                                     <ElemButton roundedFull={false} className="w-full rounded-md text-blue-md border border-slate-300" onClick={() => { }} btn="ol-primary" >
                                         Continue with LinkedIn
                                 </ElemButton>
-                                </div>
-                                <div className="text-center sm:col-span-3 mt-5">
+                                </div> */}
+                                {/* <div className="text-center sm:col-span-3 mt-5">
                                     <span className="text-gray-300 text-sm text-light">----------------------------<b className="text-dark-600">{` or `}</b>----------------------------</span>
-                                </div>
+                                </div> */}
                                 <div
                                     className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0"
                                 >
@@ -183,98 +183,6 @@ export default function LoginModal(props) {
         </Modal>
     )
 
-    // return (
-    //     <Modal
-    //         isOpen={props.show}
-    //         // onAfterOpen={afterOpenModal}
-    //         onRequestClose={onClose}
-    //         style={customStyles}
-    //         contentLabel="Login Modal"
-    //     >
-    //         {/* <div className="mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]"> */}
-    //         <div className="relative max-w-xl mx-auto ">
-    //             <div className="bg-white rounded-2xl  p-6">
-    //                 {/* {finishingLogin ? (
-    //                     <>
-    //                         <h1 className="text-3xl lg:text-4xl font-bold">
-    //                             Redirecting...
-    // 							<IconSpinner className="animate-spin mt-2 h-5 w-5" />
-    //                         </h1>
-    //                     </>
-    //                 ) : ( */}
-    //                 <>
-    //                     <div className="group sm:col-span-1 flex" style={{ justifyContent: 'right' }}>
-    //                         <button onClick={onClose}>Close</button>
-    //                     </div>
-    //                     {
-    //                         isWaitlisted ? (
-    //                             <p className="mt-2 text-xl text-dark-400">
-    //                                 {`Your email ${email} has been added to our list.  We'll be in touch soon!`}
-    //                             </p>
-    //                         )
-    //                         :
-    //                         isRegistered ? (
-    //                             <p className="mt-2 text-xl text-dark-400">
-    //                                 {`User has been successfully registered. Please Login!`}
-    //                             </p>
-    //                         )
-    //                         : 
-    //                         (
-    //                             <>
-    //                             <h1 className="text-3xl lg:text-4xl font-bold">{(isSignUp) ? 'Sign Up' : 'Log In'}</h1>
-
-    //                             <div
-    //                                 className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-3 sm:gap-x-8"
-    //                             >
-    //                                 <div className="group sm:col-span-3">
-    //                                     <label
-    //                                         htmlFor="email"
-    //                                         className="text-gray-400 cursor-text group-focus-within:text-primary-500"
-    //                                     >
-    //                                         Email
-    //                                     </label>
-    //                                     <input
-    //                                         name="email"
-    //                                         type="email"
-    //                                         value={email}
-    //                                         disabled={isLoading}
-    //                                         onChange={(event) => setEmail(event ?.target.value)}
-    //                                         placeholder="example@email.com"
-    //                                         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
-    //                                     />
-    //                                     {
-    //                                         (isSignUp) && (
-    //                                             <input
-    //                                                 name="password"
-    //                                                 type="password"
-    //                                                 value={password}
-    //                                                 disabled={isLoading}
-    //                                                 onChange={(event) => setPassword(event ?.target.value)}
-    //                                                 placeholder="********"
-    //                                                 className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
-    //                                             />
-    //                                         )
-    //                                     }
-    //                                 </div>
-    //                                 <button onClick={onForgotPassword}>
-    //                                     I forgot my password
-    //                                     </button>
-    //                                 <div className="text-right sm:col-span-3">
-    //                                     <ElemButton onClick={isSignUp ? onSignUp : onLogin} btn="primary" loading={isLoading}>
-    //                                         {(isSignUp) ? 'Sign Up' : 'Log In'}
-    //                                     </ElemButton>
-    //                                 </div>
-    //                             </div>
-    //                         </>
-    //                         )
-    //                     }
-
-    //                 </>
-    //                 {/* )} */}
-    //             </div>
-    //         </div>
-    //         {/* </div> */}
-    //     </Modal>
-    // )
+   
 
 }

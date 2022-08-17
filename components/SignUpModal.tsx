@@ -167,14 +167,14 @@ export default function SignUpModal(props) {
                                     className="text-center h-8  scale-90 self-center  mx-32 mb-10"
                                 />
                                 <h1 className="text-center text-2xl lg:text-3xl font-bold">Welcome to EdgeIn</h1>
-                                <div className="text-center sm:col-span-3 mt-5">
+                                {/* <div className="text-center sm:col-span-3 mt-5">
                                     <ElemButton roundedFull={false} className="w-full rounded-md text-blue-md border border-slate-300" onClick={() => { }} btn="ol-primary" >
                                         Continue with LinkedIn
                                 </ElemButton>
-                                </div>
-                                <div className="text-center sm:col-span-3 mt-5">
+                                </div> */}
+                                {/* <div className="text-center sm:col-span-3 mt-5">
                                     <span className="text-gray-300 text-sm text-light">----------------------------<b className="text-dark-600">{` or `}</b>----------------------------</span>
-                                </div>
+                                </div> */}
                                 <div
                                     className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0"
                                 >
