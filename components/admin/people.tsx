@@ -18,6 +18,7 @@ export const PeopleList = () => (
 			<TextField source="name" />
 			<TextField source="slug" />
 			<TextField source="github" />
+			<TextInput source="title" />
 			<TextField source="type" />
 			<TextField source="personal_email" />
 			<TextField source="work_email" />
@@ -42,6 +43,7 @@ export const PeopleEdit = () => (
 			<TextInput source="name" />
 			<TextInput source="slug" />
 			<TextInput source="github" />
+			<TextInput source="title" />
 			<TextInput source="type" />
 			<TextInput source="personal_email" />
 			<TextInput source="work_email" />
