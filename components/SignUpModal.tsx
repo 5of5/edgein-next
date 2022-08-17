@@ -33,7 +33,7 @@ export default function SignUpModal(props) {
     const [isBrowser, setIsBrowser] = useState(false);
     const [errorMessage, setErrorMessage] = useState('')
     const [name, setName] = useState("");
-    const [email, setEmail] = useState("");
+    const [email, setEmail] = useState(props.emailFromLogin ? props.emailFromLogin : "");
     const [password, setPassword] = useState("")
     const [isSignUp, setIsSignUp] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -77,7 +77,7 @@ export default function SignUpModal(props) {
 
     useEffect(() => {
         setIsBrowser(true);
-        setEmail('');
+        setEmail(props.emailFromLogin ? props.emailFromLogin : "");
         setPassword('')
         setIsSignUp(false)
         // setIsWaitlisted(false)
@@ -194,7 +194,7 @@ export default function SignUpModal(props) {
                                             name="email"
                                             type="email"
                                             value={email}
-                                            disabled={isLoading}
+                                            disabled={isLoading || props.emailFromLogin}
                                             onChange={(event) => validateEmail(event ?.target.value)}
                                             placeholder="Email"
                                             className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"

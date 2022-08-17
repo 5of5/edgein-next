@@ -18,6 +18,7 @@ export const TheNavbar = () => {
 	const [showLoginPopup, setShowLoginPopup] = useState(false)
 	const [showSignUp, setShowSignUp] = useState(false)
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false)
+	const [emailFromLogin, setEmailFromLogin] = useState('')
 
 	const siteNav = [
 		{
@@ -104,7 +105,8 @@ export const TheNavbar = () => {
 		setShowSignUp(false)
 	}
 
-	const showSignUpModal = () => {
+	const showSignUpModal = (email: string) => {
+		setEmailFromLogin(email ? email : '')
 		setShowLoginPopup(false)
 		setShowForgotPasswordPopup(false)
 		setShowSignUp(true)
@@ -182,7 +184,7 @@ export const TheNavbar = () => {
 				</div>
 			</header>
 			<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
-			<SignUpModal onLogin={showLoginModal} show={showSignUp} onClose={onModalClose}/>
+			<SignUpModal emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose}/>
 			<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
 		</>
 	);

@@ -79,7 +79,8 @@ export default function LoginModal(props) {
             }).then(res => res.json());
             if (response.nextStep && response.nextStep === "SIGNUP") {
                 setIsSignUp(true);
-                console.log("continue signup=", response)
+                onSignUp(email)
+                //console.log("continue signup=", response)
             } else if (response.nextStep && response.nextStep === "LOGIN") {
                 const url = `https://dev-h9qh-dn9.us.auth0.com/authorize?response_type=code&client_id=GQJNcsXDPCbPFo2OGCc1p3sAmY6T0b8p&connection=Username-Password-Authentication&redirect_uri=http://localhost:3000/&scope=openid%20profile%20email%20offline_access`;
                 window.location.href = url;
@@ -92,8 +93,8 @@ export default function LoginModal(props) {
         }
     };
 
-    const onSignUp = () => {
-        props.onSignUp()
+    const onSignUp = (email:  string) => {
+        props.onSignUp(email)
     };
 
     const onClose = () => {
