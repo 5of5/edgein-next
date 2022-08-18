@@ -171,7 +171,7 @@ export default function LoginModal(props) {
                                 </ElemButton>
                                     </div>
                                     <div className="text-center sm:col-span-3">
-                                        <ElemButton className="w-full" onClick={onSignUp} btn="ol-primary" loading={isLoading}>
+                                        <ElemButton className="w-full" onClick={()=>onSignUp('')} btn="ol-primary" loading={isLoading}>
                                             Create an account
                                 </ElemButton>
                                     </div>
