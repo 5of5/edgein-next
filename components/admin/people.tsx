@@ -9,7 +9,11 @@ import {
 	TextField,
 	EditButton,
 	TextInput,
+	required,
+	minLength,
+	email,
 } from "react-admin";
+import uniqid from 'uniqid';
 
 export const PeopleList = () => (
 	<List>
@@ -32,6 +36,10 @@ interface TitleProps {
 	record?: Record<string, string>;
 }
 
+const validateName = [required(), minLength(3)];
+const validateSlug = [required(), minLength(3)];
+const validateEmail = email()
+
 const PeopleTitle = ({ record }: TitleProps) => {
 	return <span>Person {record ? `"${record.name}"` : ""}</span>;
 };
@@ -39,14 +47,14 @@ const PeopleTitle = ({ record }: TitleProps) => {
 export const PeopleEdit = () => (
 	<Edit title={<PeopleTitle />}>
 		<SimpleForm>
-      <TextInput disabled source="id" />
-			<TextInput source="name" />
-			<TextInput source="slug" />
+			<TextInput disabled source="id" />
+			<TextInput source="name" validate={validateName} />
+			<TextInput source="slug" validate={validateSlug} />
 			<TextInput source="github" />
 			<TextInput source="title" />
 			<TextInput source="type" />
-			<TextInput source="personal_email" />
-			<TextInput source="work_email" />
+			<TextInput source="personal_email" validate={validateEmail} />
+			<TextInput source="work_email" validate={validateEmail} />
 			<TextInput source="linkedin" />
 		</SimpleForm>
 	</Edit>
@@ -54,13 +62,14 @@ export const PeopleEdit = () => (
 
 export const PeopleCreate = () => (
 	<Create title="Create a Person">
-		<SimpleForm>
-			<TextInput source="name" />
-			<TextInput source="slug" />
+		<SimpleForm defaultValues={{ external_id: uniqid() }}>
+			<TextInput source="name" validate={validateName} />
+			<TextInput source="slug" validate={validateSlug} />
 			<TextInput source="github" />
+			<TextInput source="title" />
 			<TextInput source="type" />
-			<TextInput source="personal_email" />
-			<TextInput source="work_email" />
+			<TextInput source="personal_email" validate={validateEmail} />
+			<TextInput source="work_email" validate={validateEmail} />
 			<TextInput source="linkedin" />
 		</SimpleForm>
 	</Create>
