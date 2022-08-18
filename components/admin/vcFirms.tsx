@@ -9,7 +9,10 @@ import {
 	TextField,
 	EditButton,
 	TextInput,
+	required,
+	minLength
 } from "react-admin";
+import uniqid from 'uniqid';
 
 export const VcFirmList = () => (
 	<List>
@@ -32,12 +35,15 @@ const VcFirmTitle = ({ record }: TitleProps) => {
 	return <span>Vc Firm {record ? `"${record.name}"` : ""}</span>;
 };
 
+const validateName = [required(), minLength(3)];
+const validateSlug = [required(), minLength(3)];
+
 export const VcFirmEdit = () => (
 	<Edit title={<VcFirmTitle />}>
 		<SimpleForm>
       <TextInput disabled source="id" />
-			<TextInput source="name" />
-			<TextInput source="slug" />
+			<TextInput source="name" validate={validateName} />
+			<TextInput source="slug" validate={validateSlug} />
 			<TextInput source="website" />
 			<TextInput source="linkedin" />
 		</SimpleForm>
@@ -46,9 +52,9 @@ export const VcFirmEdit = () => (
 
 export const VcFirmCreate = () => (
 	<Create title="Create a VC Firm">
-		<SimpleForm>
-			<TextInput source="name" />
-			<TextInput source="slug" />
+		<SimpleForm defaultValues={{ external_id: uniqid() }}>
+			<TextInput source="name" validate={validateName} />
+			<TextInput source="slug" validate={validateSlug} />
 			<TextInput source="website" />
 			<TextInput source="linkedin" />
 		</SimpleForm>
