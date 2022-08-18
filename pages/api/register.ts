@@ -1,14 +1,21 @@
 import axios from "axios";
 import { User } from '@/models/User'
-import { mutate } from '@/graphql/hasuraAdmin'
+import { query, mutate } from '@/graphql/hasuraAdmin'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
 
+  // check email exist in allowedEmail table or not
+  const email = req.body.email;
+  const isEmailAllowed = await queryForAllowedEmailCheck(email)
+
+  // when email does not exist in the allowed emails
+  if (!isEmailAllowed) return res.status(404).send(`Invalid Email`)
+
   var data = JSON.stringify({
     client_id: process.env.AUTH0_CLIENT_ID,
-    email: req.body.email,
+    email,
     password: req.body.password,
     name: req.body.name,
     user_metadata: { role: "user" },
@@ -32,6 +39,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
   res.send({ success: true, result: result.data });
+}
+
+// queries local user using graphql endpoint
+const queryForAllowedEmailCheck = async (email: string) => {
+  // prepare gql query
+  const fetchQuery = `
+  query query_allowed_emails($email: String) {
+    allowed_emails(where: {email: {_eq: $email}}, limit: 1) {
+      id
+      email
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { email }
+    })
+    return data.data.allowed_emails[0] as User
+  } catch (ex) {
+    throw ex;
+  }
 }
 
 // upsert user to local db using graphql
