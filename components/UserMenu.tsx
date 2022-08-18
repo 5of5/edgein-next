@@ -18,13 +18,13 @@ export const UserMenu = () => {
 		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
-		});
-		if (authRequest.ok) {
+		}).then(res => res.json());
+		if (authRequest.success) {
+			
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
-			// location.href = "/login/?loggedout";
-			location.href = "/?loggedout";
+			location.href =authRequest.logoutLink;
 		} else {
 			/* handle errors */
 		}
