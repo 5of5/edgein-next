@@ -1,10 +1,13 @@
 // in posts.js
 import * as React from "react";
-import { List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput } from 'react-admin';
+import { List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import uniqid from 'uniqid';
-import { toLower } from "lodash";
 export const companyIcon = BookIcon;
+
+const validateName = [required(), minLength(3)];
+const validateSlug = [required(), minLength(3)];
+const validateYearFounded = [number(), minValue(1900), maxValue(2099)];
 
 export const CompanyList = () => (
   <List>
@@ -76,8 +79,8 @@ export const CompanyEdit = () => (
   <Edit title={<CompanyTitle />}>
     <SimpleForm>
       <TextInput disabled source="id" />
-      <TextInput source="name" />
-      <TextInput source="slug" />
+      <TextInput source="name" validate={validateName} />
+      <TextInput source="slug" validate={validateSlug} />
       <SelectField source="layer" choices={[
         {
           id: "Layer 0",
@@ -119,8 +122,8 @@ export const CompanyEdit = () => (
       <TextInput source="website" />
       <TextInput source="careers_page" />
       <TextInput source="company_linkedin" />
-      <TextInput source="year_founded" />
-      <NumberInput source="investor_amount" min="1900" max="2099" />
+      <NumberInput source="year_founded" min="1900" max="2099" validate={validateYearFounded}/>
+      <NumberInput source="investor_amount" />
       <NumberInput source="total_valuation" />
       <TextInput source="white_paper" />
       <TextInput source="market_verified" />
@@ -131,20 +134,11 @@ export const CompanyEdit = () => (
 );
 
 export const CompanyCreate = () => {
-  const [slug, setSlug] = React.useState('');
-  
-  const onChangeHandler = (event: any) => {
-    if (event.target.name === 'name') {
-      console.log(toLower(event.target.value).replace(' ', '-'))
-      setSlug(toLower(event.target.value).replace(' ', '-'))
-    }
-  }
-
   return (
     <Create title="Create a Company">
-      <SimpleForm onChange={onChangeHandler} defaultValues={{external_id: uniqid()}}>
-        <TextInput source="name" />
-        <TextInput source="slug" defaultValue={slug} onChange={(event) => setSlug(event.target.value)} />
+      <SimpleForm defaultValues={{ external_id: uniqid() }}>
+        <TextInput source="name" validate={validateName} />
+        <TextInput source="slug" validate={validateSlug} />
         <SelectField source="layer" choices={[
           {
             id: "Layer 0",
@@ -186,9 +180,9 @@ export const CompanyCreate = () => {
         <TextInput source="website" />
         <TextInput source="careers_page" />
         <TextInput source="company_linkedin" />
-        <NumberInput source="year_founded" min="1900" max="2099" />
+        <NumberInput source="year_founded" min="1900" max="2099" validate={validateYearFounded}/>
         <NumberInput source="investor_amount" />
-        <TextInput source="total_valuation" />
+        <NumberInput source="total_valuation" />
         <TextInput source="white_paper" />
         <TextInput source="market_verified" />
         <TextInput source="velocity_linkedin" />
