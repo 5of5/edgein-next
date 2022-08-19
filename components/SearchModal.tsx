@@ -152,12 +152,7 @@ export default function SearchModal(props) {
             <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:min-h-[40vh] lg:max-h-[2vh]">
                 <div className="bg-white rounded-2xl center">
                     <InstantSearch searchClient={searchClient} indexName="companies">
-                        <SearchBox 
-                        className={{
-                            form:"min-w-full md:max-w-2xl",
-                            input: "grid min-w-full"
-                        }}
-                        placeholder="Search" />
+                        <SearchBox placeholder="Search" />
                         <Configure
                             analytics={false}
                             // filters="free_shipping:true"
