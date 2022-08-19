@@ -65,13 +65,13 @@ const Company: NextPage<Props> = (props) => {
 	}
 
 	return (
-		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
+		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
 				</ElemButton>
 			</div>
-			<div className="flex flex-col md:grid md:grid-cols-11 gap-4 mt-6">
+			<div className="flex flex-col gap-4 mt-6 md:grid md:grid-cols-11">
 				<div className="col-span-3">
 					<ElemPhoto
 						photo={company.logo}
@@ -81,10 +81,10 @@ const Company: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="w-full col-span-8">
-					<div className="flex flex-col md:grid grid-cols-8 gap-4">
+					<div className="flex flex-col grid-cols-8 gap-4 md:grid">
 						<div className="col-span-5 mt-16 md:mt-0">
 							<div className="flex shrink-0">
-								<h1 className="inline-block self-end font-bold text-4xl md:text-5xl">
+								<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 									{company.name}
 								</h1>
 								{company.coin && (
@@ -96,7 +96,10 @@ const Company: NextPage<Props> = (props) => {
 										{company.coin.ticker}
 									</div>
 								)}
-								<ElemButton onClick={handleReactionClick('rocket')}>Rocket {company.sentiment?.rocket || 0}</ElemButton>
+								<ElemButton onClick={handleReactionClick('rocket')} className="mx-2">🚀 {company.sentiment?.rocket || 0}</ElemButton>
+								<ElemButton onClick={handleReactionClick('lit')} className="mr-2">🔥 {company.sentiment?.lit || 0}</ElemButton>
+								<ElemButton onClick={handleReactionClick('thumbsup')} className="mr-2">👍 {company.sentiment?.thumbsup || 0}</ElemButton>
+								<ElemButton onClick={handleReactionClick('poo')} className="">💩 {company.sentiment?.poo || 0}</ElemButton>
 							</div>
 
 							{company.overview && (
@@ -104,17 +107,17 @@ const Company: NextPage<Props> = (props) => {
 							)}
 						</div>
 
-						{/* <section className="col-span-3 flex flex-col mt-16 md:mt-0">
+						{/* <section className="flex flex-col col-span-3 mt-16 md:mt-0">
 							<h2 className="text-2xl font-bold">Token Info</h2>
-							<div className="flex-col justify-center flex space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10">
+							<div className="flex flex-col justify-center p-3 mt-2 space-y-3 bg-white border rounded-lg border-dark-500/10">
 								<div className="flex items-center space-x-2">
-									<div className="text-xs font-semibold uppercase tracking-wide">
+									<div className="text-xs font-semibold tracking-wide uppercase">
 										Price (USD):
 									</div>
-									<div className=" text-red-500">$40.35</div>
+									<div className="text-red-500 ">$40.35</div>
 								</div>
 								<div className="flex items-center space-x-2">
-									<div className="text-xs font-semibold uppercase tracking-wide">
+									<div className="text-xs font-semibold tracking-wide uppercase">
 										Market Cap:
 									</div>
 									<div className="">$168.1M</div>
@@ -123,7 +126,7 @@ const Company: NextPage<Props> = (props) => {
 						</section> */}
 					</div>
 
-					<div className="flex flex-col md:grid grid-cols-8 gap-4 mt-6">
+					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
 						<ElemCredibility
 							className="col-span-5 mt-16 md:mt-0"
 							heading="Credibility"
@@ -132,7 +135,7 @@ const Company: NextPage<Props> = (props) => {
 							linkedInVerified={company.company_linkedin}
 						/>
 						<ElemVelocity
-							className="col-span-3 flex flex-col mt-16 md:mt-0"
+							className="flex flex-col col-span-3 mt-16 md:mt-0"
 							heading="Velocity"
 							employeeListings={company.velocity_linkedin}
 							tokenExchangeValue={company.velocity_token}
