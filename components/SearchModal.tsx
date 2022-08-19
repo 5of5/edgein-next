@@ -100,7 +100,7 @@ function PeopleHit({ hit }: PeopleHitProps) {
     );
 }
 
-export default function SearchModal(props) {
+export default function SearchModal(props:any) {
     const router = useRouter();
 
     const [isBrowser, setIsBrowser] = useState(false);
