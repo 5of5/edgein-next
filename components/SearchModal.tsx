@@ -12,7 +12,7 @@ import { Hit as AlgoliaHit } from 'instantsearch.js';
 import {
     InstantSearch, SearchBox, Hits,
     HitsPerPage, Highlight,
-    InfiniteHits, Index
+    InfiniteHits, Index, Configure
 } from 'react-instantsearch-hooks-web';
 
 const searchClient = algoliasearch('TFBKEVTOJD', 'c1067c8b29709544620c3ca4d0702ebc');
@@ -46,7 +46,7 @@ type InvestorsHitProps = {
         person_name: string;
         vc_firm_name: string;
         person_picture: string;
-        vc_firm_logo : string
+        vc_firm_logo: string
     }>;
 };
 
@@ -68,7 +68,7 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
             <span className="Hit-price">{hit.overview}</span> */}
             <img src={hit.logo} alt={hit.logo} />
             <h1><b>{hit.name}</b></h1>
-            <p>{hit.overview}</p>
+            <p>{hit.overview.substr(0, 100)}</p>
         </div>
     );
 }
@@ -144,16 +144,33 @@ export default function SearchModal(props) {
                 <div className="bg-white rounded-2xl center">
                     <InstantSearch searchClient={searchClient} indexName="companies">
                         <SearchBox placeholder="Search" />
+                        <Configure
+                            analytics={false}
+                            // filters="free_shipping:true"
+                            hitsPerPage={3}
+                        />
                         {/* <InfiniteHits showPrevious={false} hitComponent={Hit} /> */}
                         <Index indexName="companies">
-                            <Hits hitComponent={CompaniesHit}/>
+                            <InfiniteHits  
+                            classNames={{loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center"}} 
+                            limit={3} 
+                            showPrevious={false} 
+                            hitComponent={CompaniesHit} />
                         </Index>
 
                         <Index indexName="investors">
-                            <Hits hitComponent={InvestorsHit}/>
+                            <InfiniteHits 
+                            classNames={{loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center"}} 
+                            limit={3} 
+                            showPrevious={false} 
+                             hitComponent={InvestorsHit} />
                         </Index>
                         <Index indexName="people">
-                            <Hits hitComponent={PeopleHit}/>
+                            <InfiniteHits 
+                            classNames={{loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center"}} 
+                            limit={3} 
+                            showPrevious={false} 
+                            hitComponent={PeopleHit} />
                         </Index>
                     </InstantSearch>
                 </div>
