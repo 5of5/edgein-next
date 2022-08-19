@@ -27,36 +27,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     code,
     redirect_uri
   });
-  var config = {
-    method: 'post',
-    url: `${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`,
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    data : data
-  };
   
   try {
-    const result = await axios(config)
+    const result = await axios({
+      method: 'post',
+      url: `${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      data : data
+    })
     if (!result.data) {
       return res.status(404).send(`Invalid Request`)
     }
   
     // get the user info from auth0
-    var userInfoConfig = {
+    const userInfo = await axios({
       method: 'get',
       url: `${process.env.AUTH0_ISSUER_BASE_URL}/userinfo`,
       headers: { 
         'Authorization': `Bearer ${result.data.access_token}`, 
       }
-    };
-    
-    const userInfo = await axios(userInfoConfig)
+    })
   
     if (userInfo.data && userInfo.data.email) {
       // get the user info from the user table
-      const { email, role, external_id } = await queryForUserInfo(userInfo.data.email);
+      const { id, email, role, external_id } = await queryForUserInfo(userInfo.data.email);
   
         // Author a couple of cookies to persist a user's session
-      const token = await new SignJWT({ user: JSON.stringify({email, role, publicAddress: external_id}), ...hasuraClaims })
+      const token = await new SignJWT({ user: JSON.stringify({id, email, role, publicAddress: external_id}), ...hasuraClaims })
       .setProtectedHeader({ alg: 'HS256' })
       .setJti(nanoid())
       .setIssuedAt()
@@ -78,6 +75,7 @@ const queryForUserInfo = async (email: string) => {
   const fetchQuery = `
   query query_users($email: String) {
     users(where: {email: {_eq: $email}}, limit: 1) {
+      id
       email
       role
       external_id
