@@ -38,6 +38,7 @@ type CompaniesHitProps = {
         name: string;
         overview: string;
         logo: string;
+        slug: string;
     }>;
 };
 
@@ -46,7 +47,8 @@ type InvestorsHitProps = {
         person_name: string;
         vc_firm_name: string;
         person_picture: string;
-        vc_firm_logo: string
+        vc_firm_logo: string;
+        slug: string;
     }>;
 };
 
@@ -56,6 +58,7 @@ type PeopleHitProps = {
         work_email: string;
         personal_email: string;
         picture: string;
+        slug: string;
     }>;
 };
 
@@ -63,12 +66,14 @@ type PeopleHitProps = {
 function CompaniesHit({ hit }: CompaniesHitProps) {
     return (
         <div className="m-10">
-            {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
-            {/* <span className="Hit-price">{hit.name}</span>
+            <a href={`/companies/${hit.slug}`}>
+                {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
+                {/* <span className="Hit-price">{hit.name}</span>
             <span className="Hit-price">{hit.overview}</span> */}
-            <img src={hit.logo} alt={hit.logo} />
-            <h1><b>{hit.name}</b></h1>
-            <p>{hit.overview.substr(0, 100)}</p>
+                <img src={hit.logo} alt={hit.logo} />
+                <h1><b>{hit.name}</b></h1>
+                <p>{hit.overview.substr(0, 100)}</p>
+            </a>
         </div>
     );
 }
@@ -76,12 +81,14 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 function InvestorsHit({ hit }: InvestorsHitProps) {
     return (
         <div className="m-10">
+             <a href={`/investors/${hit.slug}`}>
             {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
             {/* <span className="Hit-price">{hit.name}</span>
             <span className="Hit-price">{hit.overview}</span> */}
             <img src={hit.vc_firm_logo} alt={hit.vc_firm_logo} />
             <h1><b>{hit.vc_firm_name}</b></h1>
             <p>{hit.person_name}</p>
+            </a>
         </div>
     );
 }
@@ -89,13 +96,15 @@ function InvestorsHit({ hit }: InvestorsHitProps) {
 function PeopleHit({ hit }: PeopleHitProps) {
     return (
         <div className="m-10">
-            {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
-            {/* <span className="Hit-price">{hit.name}</span>
+             <a href={`/people/${hit.slug}`}>
+                {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
+                {/* <span className="Hit-price">{hit.name}</span>
             <span className="Hit-price">{hit.overview}</span> */}
-            <img src={hit.picture} alt={hit.picture} />
-            <h1><b>{hit.name}</b></h1>
-            <p>{hit.work_email}</p>
-            <p>{hit.personal_email}</p>
+                <img src={hit.picture} alt={hit.picture} />
+                <h1><b>{hit.name}</b></h1>
+                <p>{hit.work_email}</p>
+                <p>{hit.personal_email}</p>
+            </a>
         </div>
     );
 }
@@ -151,26 +160,26 @@ export default function SearchModal(props:any) {
                         />
                         {/* <InfiniteHits showPrevious={false} hitComponent={Hit} /> */}
                         <Index indexName="companies">
-                            <InfiniteHits  
-                            classNames={{loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center"}} 
-                            limit={3} 
-                            showPrevious={false} 
-                            hitComponent={CompaniesHit} />
+                            <InfiniteHits
+                                classNames={{ loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center" }}
+                                //limit={3} 
+                                showPrevious={false}
+                                hitComponent={CompaniesHit} />
                         </Index>
 
                         <Index indexName="investors">
-                            <InfiniteHits 
-                            classNames={{loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center"}} 
-                            limit={3} 
-                            showPrevious={false} 
-                             hitComponent={InvestorsHit} />
+                            <InfiniteHits
+                                classNames={{ loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center" }}
+                                //limit={3} 
+                                showPrevious={false}
+                                hitComponent={InvestorsHit} />
                         </Index>
                         <Index indexName="people">
-                            <InfiniteHits 
-                            classNames={{loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center"}} 
-                            limit={3} 
-                            showPrevious={false} 
-                            hitComponent={PeopleHit} />
+                            <InfiniteHits
+                                classNames={{ loadMore: "w-full text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100 rounded-full px-5 py-2 min-w-32 justify-center" }}
+                                //limit={3} 
+                                showPrevious={false}
+                                hitComponent={PeopleHit} />
                         </Index>
                     </InstantSearch>
                 </div>
