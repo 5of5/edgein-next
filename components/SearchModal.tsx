@@ -9,9 +9,11 @@ import ReactDOM from "react-dom";
 import Modal from 'react-modal';
 import algoliasearch from 'algoliasearch/lite';
 import { Hit as AlgoliaHit } from 'instantsearch.js';
-import { InstantSearch, SearchBox, Hits,
-    HitsPerPage,Highlight,
-    InfiniteHits, } from 'react-instantsearch-hooks-web';
+import {
+    InstantSearch, SearchBox, Hits,
+    HitsPerPage, Highlight,
+    InfiniteHits,
+} from 'react-instantsearch-hooks-web';
 
 const searchClient = algoliasearch('0C9BYZPIV4', '8a8df05cd1111b26b9f20f3d0a2c615a');
 
@@ -37,23 +39,26 @@ type HitProps = {
         overview: string;
         logo: object;
     }>;
-  };
+};
 
-  function Hit({ hit }: HitProps) {
+function Hit({ hit }: HitProps) {
     return (
-      <div className="m-10"> 
-        <Highlight hit={hit} attribute="name" className="Hit-label" />
-        <span className="Hit-price">{hit.name}</span>
-        <span className="Hit-price">{hit.overview}</span>
-      </div>
+        <div className="m-10">
+            {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
+            {/* <span className="Hit-price">{hit.name}</span>
+            <span className="Hit-price">{hit.overview}</span> */}
+            <img src={hit.logo.url} alt={hit.logo.filename} />
+            <h1><b>{hit.name}</b></h1>
+            <p>{hit.overview}</p>
+        </div>
     );
-  }
+}
 
 export default function SearchModal(props) {
     const router = useRouter();
 
     const [isBrowser, setIsBrowser] = useState(false);
-    
+
 
     useEffect(() => {
         setIsBrowser(true);
@@ -92,7 +97,7 @@ export default function SearchModal(props) {
             <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
                 <div className="bg-white rounded-2xl center">
                     <InstantSearch searchClient={searchClient} indexName="instant_search">
-                        <SearchBox placeholder="Search"/>
+                        <SearchBox placeholder="Search" />
                         <InfiniteHits showPrevious={false} hitComponent={Hit} />
                     </InstantSearch>
                 </div>
