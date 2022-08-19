@@ -7,10 +7,13 @@ import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
+import { InputSearch } from "./InputSearch";
+import SearchModal from "./SearchModal";
 
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
+	const [showSearchModal, setShowSearchModal] = useState(false)
 	const siteNav = [
 		{
 			path: "/companies",
@@ -54,7 +57,7 @@ export const TheNavbar = () => {
 				<nav
 					className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
 						isActive ? "nav-toggle-active" : ""
-					}`}
+						}`}
 					aria-label="Global"
 				>
 					<div className="flex-none lg:mr-6">
@@ -67,13 +70,13 @@ export const TheNavbar = () => {
 							</a>
 						</Link>
 					</div>
-
+					<InputSearch placeholder={"Search"} onChange={() => {setShowSearchModal(true)}}/>
 					<ul
 						className={`${
 							isActive
 								? "flex h-auto opacity-100 translate-y-0"
 								: "h-0 opacity-0 overflow-hidden -translate-y-6 lg:h-auto lg:opacity-100 lg:translate-y-0"
-						} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
+							} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
 					>
 						{siteNav.map((navItem, i) => (
 							<li key={i}>
@@ -96,10 +99,10 @@ export const TheNavbar = () => {
 						{user ? (
 							<UserMenu />
 						) : (
-							<ElemButton href="/login" btn="primary" arrow>
-								Log In
+								<ElemButton href="/login" btn="primary" arrow>
+									Log In
 							</ElemButton>
-						)}
+							)}
 						<button
 							onClick={toggleNav}
 							className="hamburger relative w-8 h-[22px] ml-2 p-[3px] border-0 bg-none cursor-pointer inline-block lg:hidden"
@@ -108,6 +111,7 @@ export const TheNavbar = () => {
 							<span className="sr-only">Toggle menu</span>
 						</button>
 					</div>
+					<SearchModal show={showSearchModal} onClose={() => setShowSearchModal(false)}/>
 				</nav>
 			</div>
 		</header>
