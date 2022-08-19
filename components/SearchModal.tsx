@@ -12,10 +12,10 @@ import { Hit as AlgoliaHit } from 'instantsearch.js';
 import {
     InstantSearch, SearchBox, Hits,
     HitsPerPage, Highlight,
-    InfiniteHits,
+    InfiniteHits, Index
 } from 'react-instantsearch-hooks-web';
 
-const searchClient = algoliasearch('0C9BYZPIV4', '8a8df05cd1111b26b9f20f3d0a2c615a');
+const searchClient = algoliasearch('TFBKEVTOJD', 'c1067c8b29709544620c3ca4d0702ebc');
 
 Modal.setAppElement('#modal-root');
 
@@ -33,23 +33,69 @@ const customStyles = {
         overlay: { backgroundColor: 'red', opacity: 1 }
     },
 };
-type HitProps = {
+type CompaniesHitProps = {
     hit: AlgoliaHit<{
         name: string;
         overview: string;
-        logo: object;
+        logo: string;
     }>;
 };
 
-function Hit({ hit }: HitProps) {
+type InvestorsHitProps = {
+    hit: AlgoliaHit<{
+        person_name: string;
+        vc_firm_name: string;
+        person_picture: string;
+        vc_firm_logo : string
+    }>;
+};
+
+type PeopleHitProps = {
+    hit: AlgoliaHit<{
+        name: string;
+        work_email: string;
+        personal_email: string;
+        picture: string;
+    }>;
+};
+
+
+function CompaniesHit({ hit }: CompaniesHitProps) {
     return (
         <div className="m-10">
             {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
             {/* <span className="Hit-price">{hit.name}</span>
             <span className="Hit-price">{hit.overview}</span> */}
-            <img src={hit.logo.url} alt={hit.logo.filename} />
+            <img src={hit.logo} alt={hit.logo} />
             <h1><b>{hit.name}</b></h1>
             <p>{hit.overview}</p>
+        </div>
+    );
+}
+
+function InvestorsHit({ hit }: InvestorsHitProps) {
+    return (
+        <div className="m-10">
+            {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
+            {/* <span className="Hit-price">{hit.name}</span>
+            <span className="Hit-price">{hit.overview}</span> */}
+            <img src={hit.vc_firm_logo} alt={hit.vc_firm_logo} />
+            <h1><b>{hit.vc_firm_name}</b></h1>
+            <p>{hit.person_name}</p>
+        </div>
+    );
+}
+
+function PeopleHit({ hit }: PeopleHitProps) {
+    return (
+        <div className="m-10">
+            {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
+            {/* <span className="Hit-price">{hit.name}</span>
+            <span className="Hit-price">{hit.overview}</span> */}
+            <img src={hit.picture} alt={hit.picture} />
+            <h1><b>{hit.name}</b></h1>
+            <p>{hit.work_email}</p>
+            <p>{hit.personal_email}</p>
         </div>
     );
 }
@@ -94,11 +140,21 @@ export default function SearchModal(props) {
             style={customStyles}
             contentLabel="Login Modal"
         >
-            <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
+            <div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:min-h-[40vh] lg:max-h-[2vh]">
                 <div className="bg-white rounded-2xl center">
-                    <InstantSearch searchClient={searchClient} indexName="instant_search">
+                    <InstantSearch searchClient={searchClient} indexName="companies">
                         <SearchBox placeholder="Search" />
-                        <InfiniteHits showPrevious={false} hitComponent={Hit} />
+                        {/* <InfiniteHits showPrevious={false} hitComponent={Hit} /> */}
+                        <Index indexName="companies">
+                            <Hits hitComponent={CompaniesHit}/>
+                        </Index>
+
+                        <Index indexName="investors">
+                            <Hits hitComponent={InvestorsHit}/>
+                        </Index>
+                        <Index indexName="people">
+                            <Hits hitComponent={PeopleHit}/>
+                        </Index>
                     </InstantSearch>
                 </div>
             </div>
