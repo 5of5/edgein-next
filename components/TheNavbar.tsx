@@ -9,6 +9,7 @@ import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
 import { InputSearch } from "./InputSearch";
 import SearchModal from "./SearchModal";
+import { InputSearchNavbar } from "./InputSearchNavbar";
 
 export const TheNavbar = () => {
 	const router = useRouter();
@@ -70,7 +71,7 @@ export const TheNavbar = () => {
 							</a>
 						</Link>
 					</div>
-					<InputSearch placeholder={"Search"} onChange={() => {setShowSearchModal(true)}}/>
+					<InputSearchNavbar placeholder={"Search"} onClick={() => {setShowSearchModal(true)}}/>
 					<ul
 						className={`${
 							isActive
