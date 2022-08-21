@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -28,7 +28,24 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const goBack = () => router.back();
 
-	const vcfirm = props.vcfirm;
+	const [vcfirm, setVcfirm] = useState(props.vcfirm);
+
+	const handleReactionClick = (sentiment: string) => async () => {
+		const resp = await fetch("/api/reaction/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ 
+				company: vcfirm.id,
+				sentiment,
+				pathname: location.pathname 
+				}),
+		});
+		const newSentiment = await resp.json()
+		setVcfirm({...vcfirm, sentiment: newSentiment})
+	}
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
@@ -55,7 +72,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 				<div className="w-full col-span-2 p-2">
 					<h1 className="text-4xl md:text-6xl font-bold my-5">{vcfirm.name}</h1>
-
+					<ElemButton onClick={handleReactionClick('rocket')}>Rocket {vcfirm.sentiment?.rocket || 0}</ElemButton>
 					<ElemKeyInfo
 						heading=""
 						website={vcfirm.website}
