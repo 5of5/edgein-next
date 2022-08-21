@@ -38,10 +38,10 @@ const VCFirm: NextPage<Props> = (props) => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ 
-				company: vcfirm.id,
+				vcfirm: vcfirm.id,
 				sentiment,
 				pathname: location.pathname 
-				}),
+			}),
 		});
 		const newSentiment = await resp.json()
 		setVcfirm({...vcfirm, sentiment: newSentiment})

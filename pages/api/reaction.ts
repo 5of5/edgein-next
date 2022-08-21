@@ -6,7 +6,7 @@ const increaseResourceSentiment = async (resourceType: 'companies' | 'vc_firms',
   if (resourceType === 'companies') {
     return await increamentCompaniesSentiment(resourceId, token, sentimentType, shouldInc, res);
   } else {
-    return increamentVCFirmsSentiment(resourceId, token, sentimentType, shouldInc, res);
+    return await increamentVCFirmsSentiment(resourceId, token, sentimentType, shouldInc, res);
   }
 }
 
@@ -88,7 +88,7 @@ const increamentVCFirmsSentiment = async (vcFirmId: string, token: string, senti
       variables: {"vcFirmId": vcFirmId, sentiment}
     }, token)
 
-    await res.unstable_revalidate(`/vcfirms/${vcfirm.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`)
+    await res.unstable_revalidate(`/investors/${vcfirm.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}`)
   }
 
   return sentiment
@@ -163,7 +163,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }, token)
 
-  const sentiment = increaseResourceSentiment(resourceType, resourceId, token, sentimentType, Boolean(insert_follows_one), res)
+  const sentiment = await increaseResourceSentiment(resourceType, resourceId, token, sentimentType, Boolean(insert_follows_one), res)
 
   // create action
   mutate({
