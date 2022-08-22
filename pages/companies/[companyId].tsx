@@ -18,6 +18,7 @@ import {
 	GetCompanyQuery,
 	Investment_Rounds,
 } from "../../graphql/types";
+import { IconCrap, IconHot, IconLike } from "@/components/Icons";
 
 type Props = {
 	company: Companies;
@@ -43,14 +44,14 @@ const Company: NextPage<Props> = (props) => {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ 
+			body: JSON.stringify({
 				company: company.id,
 				sentiment,
-				pathname: location.pathname 
-				}),
+				pathname: location.pathname
+			}),
 		});
 		const newSentiment = await resp.json()
-		setCompany({...company, sentiment: newSentiment})
+		setCompany({ ...company, sentiment: newSentiment })
 	}
 
 	const sortedInvestmentRounds = props.sortRounds;
@@ -96,10 +97,6 @@ const Company: NextPage<Props> = (props) => {
 										{company.coin.ticker}
 									</div>
 								)}
-								<ElemButton onClick={handleReactionClick('rocket')} className="mx-2">🚀 {company.sentiment?.rocket || 0}</ElemButton>
-								<ElemButton onClick={handleReactionClick('lit')} className="mr-2">🔥 {company.sentiment?.lit || 0}</ElemButton>
-								<ElemButton onClick={handleReactionClick('thumbsup')} className="mr-2">👍 {company.sentiment?.thumbsup || 0}</ElemButton>
-								<ElemButton onClick={handleReactionClick('poo')} className="">💩 {company.sentiment?.poo || 0}</ElemButton>
 							</div>
 
 							{company.overview && (
@@ -126,20 +123,44 @@ const Company: NextPage<Props> = (props) => {
 						</section> */}
 					</div>
 
+					{
+						(company.market_verified || company.github || company.company_linkedin || company.velocity_linkedin || company.velocity_token) &&
+						<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+							<ElemCredibility
+								className="col-span-5 mt-16 md:mt-0"
+								heading="Credibility"
+								marketVerified={company.market_verified}
+								githubVerified={company.github}
+								linkedInVerified={company.company_linkedin}
+							/>
+							<ElemVelocity
+								className="flex flex-col col-span-3 mt-16 md:mt-0"
+								heading="Velocity"
+								employeeListings={company.velocity_linkedin}
+								tokenExchangeValue={company.velocity_token}
+							/>
+						</div>
+					}
+
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-						<ElemCredibility
-							className="col-span-5 mt-16 md:mt-0"
-							heading="Credibility"
-							marketVerified={company.market_verified}
-							githubVerified={company.github}
-							linkedInVerified={company.company_linkedin}
-						/>
-						<ElemVelocity
-							className="flex flex-col col-span-3 mt-16 md:mt-0"
-							heading="Velocity"
-							employeeListings={company.velocity_linkedin}
-							tokenExchangeValue={company.velocity_token}
-						/>
+						<ElemButton
+							onClick={handleReactionClick('hot')}
+							className="mr-2"
+						>
+							<IconHot className="mr-1" /> {company.sentiment?.hot || 0}
+						</ElemButton>
+						<ElemButton
+							onClick={handleReactionClick('like')}
+							className="mr-2"
+						>
+							<IconLike className="mr-1" />{company.sentiment?.like || 0}
+						</ElemButton>
+						<ElemButton
+							onClick={handleReactionClick('crap')}
+							className=""
+						>
+							<IconCrap className="mr-1" /> {company.sentiment?.crap || 0}
+						</ElemButton>
 					</div>
 				</div>
 			</div>
@@ -197,7 +218,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetCompanyDocument,
 		{ slug: context.params?.companyId }
 	);
-
+	console.log(companies);
 	if (!companies?.companies[0]) {
 		return {
 			notFound: true,
