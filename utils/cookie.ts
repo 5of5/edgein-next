@@ -1,14 +1,10 @@
 import { serialize } from "cookie"
 import type { NextApiResponse } from 'next'
 import { jwtVerify } from 'jose'
+import { User } from "@/models/User"
 
 const TOKEN_NAME = "api_token"
 const MAX_AGE = 60 * 60 * 24 * 90
-
-interface User {
-  id: number
-  email: string
-}
 
 function createCookie(name: string, data: any, options = {}) {
   return serialize(name, data, {
