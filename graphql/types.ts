@@ -1936,6 +1936,213 @@ export type Follows_Variance_Fields = {
   resource_id: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "follows_vc_firms" */
+export type Follows_Vc_Firms = {
+  __typename?: 'follows_vc_firms';
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  vc_firm: Maybe<Vc_Firms>;
+};
+
+/** aggregated selection of "follows_vc_firms" */
+export type Follows_Vc_Firms_Aggregate = {
+  __typename?: 'follows_vc_firms_aggregate';
+  aggregate: Maybe<Follows_Vc_Firms_Aggregate_Fields>;
+  nodes: Array<Follows_Vc_Firms>;
+};
+
+/** aggregate fields of "follows_vc_firms" */
+export type Follows_Vc_Firms_Aggregate_Fields = {
+  __typename?: 'follows_vc_firms_aggregate_fields';
+  avg: Maybe<Follows_Vc_Firms_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Follows_Vc_Firms_Max_Fields>;
+  min: Maybe<Follows_Vc_Firms_Min_Fields>;
+  stddev: Maybe<Follows_Vc_Firms_Stddev_Fields>;
+  stddev_pop: Maybe<Follows_Vc_Firms_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Follows_Vc_Firms_Stddev_Samp_Fields>;
+  sum: Maybe<Follows_Vc_Firms_Sum_Fields>;
+  var_pop: Maybe<Follows_Vc_Firms_Var_Pop_Fields>;
+  var_samp: Maybe<Follows_Vc_Firms_Var_Samp_Fields>;
+  variance: Maybe<Follows_Vc_Firms_Variance_Fields>;
+};
+
+
+/** aggregate fields of "follows_vc_firms" */
+export type Follows_Vc_Firms_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Follows_Vc_Firms_Avg_Fields = {
+  __typename?: 'follows_vc_firms_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "follows_vc_firms". All fields are combined with a logical 'AND'. */
+export type Follows_Vc_Firms_Bool_Exp = {
+  _and: InputMaybe<Array<Follows_Vc_Firms_Bool_Exp>>;
+  _not: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+  _or: InputMaybe<Array<Follows_Vc_Firms_Bool_Exp>>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  list_id: InputMaybe<Int_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "follows_vc_firms" */
+export type Follows_Vc_Firms_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "follows_vc_firms" */
+export type Follows_Vc_Firms_Insert_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Follows_Vc_Firms_Max_Fields = {
+  __typename?: 'follows_vc_firms_max_fields';
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Follows_Vc_Firms_Min_Fields = {
+  __typename?: 'follows_vc_firms_min_fields';
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "follows_vc_firms" */
+export type Follows_Vc_Firms_Mutation_Response = {
+  __typename?: 'follows_vc_firms_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Follows_Vc_Firms>;
+};
+
+/** Ordering options when selecting data from "follows_vc_firms". */
+export type Follows_Vc_Firms_Order_By = {
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+  vc_firm: InputMaybe<Vc_Firms_Order_By>;
+};
+
+/** select columns of table "follows_vc_firms" */
+export enum Follows_Vc_Firms_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListId = 'list_id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "follows_vc_firms" */
+export type Follows_Vc_Firms_Set_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Follows_Vc_Firms_Stddev_Fields = {
+  __typename?: 'follows_vc_firms_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Follows_Vc_Firms_Stddev_Pop_Fields = {
+  __typename?: 'follows_vc_firms_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Follows_Vc_Firms_Stddev_Samp_Fields = {
+  __typename?: 'follows_vc_firms_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Follows_Vc_Firms_Sum_Fields = {
+  __typename?: 'follows_vc_firms_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate var_pop on columns */
+export type Follows_Vc_Firms_Var_Pop_Fields = {
+  __typename?: 'follows_vc_firms_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Follows_Vc_Firms_Var_Samp_Fields = {
+  __typename?: 'follows_vc_firms_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Follows_Vc_Firms_Variance_Fields = {
+  __typename?: 'follows_vc_firms_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "investment_rounds" */
 export type Investment_Rounds = {
   __typename?: 'investment_rounds';
@@ -3705,6 +3912,8 @@ export type Mutation_Root = {
   delete_follows_by_pk: Maybe<Follows>;
   /** delete data from the table: "follows_companies" */
   delete_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** delete data from the table: "follows_vc_firms" */
+  delete_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** delete data from the table: "investment_rounds" */
   delete_investment_rounds: Maybe<Investment_Rounds_Mutation_Response>;
   /** delete single row from the table: "investment_rounds" */
@@ -3765,6 +3974,10 @@ export type Mutation_Root = {
   insert_follows_companies_one: Maybe<Follows_Companies>;
   /** insert a single row into the table: "follows" */
   insert_follows_one: Maybe<Follows>;
+  /** insert data into the table: "follows_vc_firms" */
+  insert_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
+  /** insert a single row into the table: "follows_vc_firms" */
+  insert_follows_vc_firms_one: Maybe<Follows_Vc_Firms>;
   /** insert data into the table: "investment_rounds" */
   insert_investment_rounds: Maybe<Investment_Rounds_Mutation_Response>;
   /** insert a single row into the table: "investment_rounds" */
@@ -3823,6 +4036,8 @@ export type Mutation_Root = {
   update_follows_by_pk: Maybe<Follows>;
   /** update data of the table: "follows_companies" */
   update_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** update data of the table: "follows_vc_firms" */
+  update_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** update data of the table: "investment_rounds" */
   update_investment_rounds: Maybe<Investment_Rounds_Mutation_Response>;
   /** update single row of the table: "investment_rounds" */
@@ -3925,6 +4140,12 @@ export type Mutation_RootDelete_Follows_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Follows_CompaniesArgs = {
   where: Follows_Companies_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Follows_Vc_FirmsArgs = {
+  where: Follows_Vc_Firms_Bool_Exp;
 };
 
 
@@ -4115,6 +4336,18 @@ export type Mutation_RootInsert_Follows_Companies_OneArgs = {
 export type Mutation_RootInsert_Follows_OneArgs = {
   object: Follows_Insert_Input;
   on_conflict: InputMaybe<Follows_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Follows_Vc_FirmsArgs = {
+  objects: Array<Follows_Vc_Firms_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Follows_Vc_Firms_OneArgs = {
+  object: Follows_Vc_Firms_Insert_Input;
 };
 
 
@@ -4349,6 +4582,14 @@ export type Mutation_RootUpdate_Follows_CompaniesArgs = {
   _inc: InputMaybe<Follows_Companies_Inc_Input>;
   _set: InputMaybe<Follows_Companies_Set_Input>;
   where: Follows_Companies_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Follows_Vc_FirmsArgs = {
+  _inc: InputMaybe<Follows_Vc_Firms_Inc_Input>;
+  _set: InputMaybe<Follows_Vc_Firms_Set_Input>;
+  where: Follows_Vc_Firms_Bool_Exp;
 };
 
 
@@ -4963,6 +5204,10 @@ export type Query_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** fetch data from the table: "follows_vc_firms" */
+  follows_vc_firms: Array<Follows_Vc_Firms>;
+  /** fetch aggregated fields from the table: "follows_vc_firms" */
+  follows_vc_firms_aggregate: Follows_Vc_Firms_Aggregate;
   /** An array relationship */
   investment_rounds: Array<Investment_Rounds>;
   /** An aggregate relationship */
@@ -5150,6 +5395,24 @@ export type Query_RootFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+export type Query_RootFollows_Vc_FirmsArgs = {
+  distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_Vc_Firms_Order_By>>;
+  where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+};
+
+
+export type Query_RootFollows_Vc_Firms_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_Vc_Firms_Order_By>>;
+  where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
 };
 
 
@@ -5395,6 +5658,10 @@ export type Subscription_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** fetch data from the table: "follows_vc_firms" */
+  follows_vc_firms: Array<Follows_Vc_Firms>;
+  /** fetch aggregated fields from the table: "follows_vc_firms" */
+  follows_vc_firms_aggregate: Follows_Vc_Firms_Aggregate;
   /** An array relationship */
   investment_rounds: Array<Investment_Rounds>;
   /** An aggregate relationship */
@@ -5582,6 +5849,24 @@ export type Subscription_RootFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollows_Vc_FirmsArgs = {
+  distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_Vc_Firms_Order_By>>;
+  where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollows_Vc_Firms_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_Vc_Firms_Order_By>>;
+  where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
 };
 
 
@@ -6461,6 +6746,7 @@ export type Vc_Firms = {
   name: Maybe<Scalars['String']>;
   /** A computed field, executes function "vc_firms_num_of_investments" */
   num_of_investments: Maybe<Scalars['Int']>;
+  sentiment: Maybe<Scalars['jsonb']>;
   slug: Maybe<Scalars['String']>;
   website: Maybe<Scalars['String']>;
 };
@@ -6511,6 +6797,12 @@ export type Vc_FirmsLogoArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsSentimentArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
 /** aggregated selection of "vc_firms" */
 export type Vc_Firms_Aggregate = {
   __typename?: 'vc_firms_aggregate';
@@ -6544,6 +6836,7 @@ export type Vc_Firms_Aggregate_FieldsCountArgs = {
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Vc_Firms_Append_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
+  sentiment: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -6566,6 +6859,7 @@ export type Vc_Firms_Bool_Exp = {
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   num_of_investments: InputMaybe<Int_Comparison_Exp>;
+  sentiment: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   website: InputMaybe<String_Comparison_Exp>;
 };
@@ -6581,16 +6875,19 @@ export enum Vc_Firms_Constraint {
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Vc_Firms_Delete_At_Path_Input = {
   logo: InputMaybe<Array<Scalars['String']>>;
+  sentiment: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Vc_Firms_Delete_Elem_Input = {
   logo: InputMaybe<Scalars['Int']>;
+  sentiment: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Vc_Firms_Delete_Key_Input = {
   logo: InputMaybe<Scalars['String']>;
+  sentiment: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "vc_firms" */
@@ -6607,6 +6904,7 @@ export type Vc_Firms_Insert_Input = {
   linkedin: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
+  sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   website: InputMaybe<Scalars['String']>;
 };
@@ -6667,6 +6965,7 @@ export type Vc_Firms_Order_By = {
   logo: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   num_of_investments: InputMaybe<Order_By>;
+  sentiment: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   website: InputMaybe<Order_By>;
 };
@@ -6679,6 +6978,7 @@ export type Vc_Firms_Pk_Columns_Input = {
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Vc_Firms_Prepend_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
+  sentiment: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "vc_firms" */
@@ -6694,6 +6994,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  Sentiment = 'sentiment',
+  /** column name */
   Slug = 'slug',
   /** column name */
   Website = 'website'
@@ -6706,6 +7008,7 @@ export type Vc_Firms_Set_Input = {
   linkedin: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
+  sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   website: InputMaybe<Scalars['String']>;
 };
@@ -6746,6 +7049,8 @@ export enum Vc_Firms_Update_Column {
   Logo = 'logo',
   /** column name */
   Name = 'name',
+  /** column name */
+  Sentiment = 'sentiment',
   /** column name */
   Slug = 'slug',
   /** column name */
@@ -6827,7 +7132,7 @@ export type GetVcFirmQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, website: string | null, linkedin: string | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
 
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -7158,6 +7463,7 @@ export const GetVcFirmDocument = `
     logo
     website
     linkedin
+    sentiment
     investments {
       investment_round {
         id
