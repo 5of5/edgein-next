@@ -52,6 +52,7 @@ type CompaniesHitProps = {
   }>;
 };
 
+
 type InvestorsHitProps = {
   hit: AlgoliaHit<{
     person_name: string;
@@ -187,13 +188,14 @@ export default function SearchModal(props: any) {
             <SearchBox
               placeholder="Search"
               classNames={{
-                submitIcon: "hidden",
-                resetIcon: "hidden",
+                submitIcon: "hidden",  
+                resetIcon:"hidden",        
+                loadingIndicator:"hidden",                                       
                 input:
                   " w-full bg-transaparent text-dark-500  rounded-md  outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
               }}
             />
-            <hr className="max-w-8xl -ml-10 -mr-8 "></hr>
+            <hr className="max-w-8xl mt-3 -ml-10 -mr-8 "></hr>
             <Configure
               analytics={false}
               // filters="free_shipping:true"
