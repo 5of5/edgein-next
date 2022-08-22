@@ -1,7 +1,6 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
+import { Lists } from '@/graphql/types';
 import { User } from '@/models/User';
-import { List } from 'lodash';
-import type { NextApiRequest, NextApiResponse } from 'next'
 
 export const increaseResourceSentiment = async (resourceType: 'companies' | 'vc_firms', resourceId: string, token: string, sentimentType: string, shouldInc: boolean) => {
   if (resourceType === 'companies') {
@@ -125,7 +124,7 @@ export const upsertList = async (listname: string, user: User, token: string) =>
   return list
 }
 
-const upsertFollow = async (list: List, resourceId: string, resourceType: string, user: User, token: string) => {
+const upsertFollow = async (list: Lists, resourceId: string, resourceType: string, user: User, token: string) => {
   const { data: { insert_follows_one }} = await mutate({
     mutation: `
     mutation upsert_follows($listId: Int, $resourceId: Int, $resourceType: String, $userId: Int) {

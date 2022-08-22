@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // insert follow
   const follow = await upsertFollow()
 
-  const { sentiment, revalidatePath } = await increaseResourceSentiment(resourceType, resourceId, token, sentimentType, Boolean(insert_follows_one))
+  const { sentiment, revalidatePath } = await increaseResourceSentiment(resourceType, resourceId, token, sentimentType, Boolean(follow))
   if (revalidatePath) {
     await res.unstable_revalidate(revalidatePath)
   }
