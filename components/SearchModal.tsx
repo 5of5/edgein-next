@@ -31,6 +31,7 @@ Modal.setAppElement("#modal-root");
 
 const customStyles = {
   content: {
+   position:"absolute",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -41,6 +42,8 @@ const customStyles = {
     opacity: 1,
     borderRadius: 20,
     overlay: { backgroundColor: "red", opacity: 1 },
+    width:"50%",
+    height:"550px"
   },
 };
 type CompaniesHitProps = {
@@ -51,7 +54,6 @@ type CompaniesHitProps = {
     slug: string;
   }>;
 };
-
 
 type InvestorsHitProps = {
   hit: AlgoliaHit<{
@@ -114,9 +116,7 @@ function InvestorsHit({ hit }: InvestorsHitProps) {
           <h1 className=" mt-2 ml-2 text-xs">
             <b>{hit.vc_firm_name}</b>
           </h1>
-          <p className="ml-5 mt-2 text-xs text-ellipsis overflow-hidden ... ">
-            {hit.person_name}
-          </p>
+          <p className="ml-5 mt-2 text-xs">{hit.person_name}</p>
         </div>
       </a>
     </div>
@@ -132,7 +132,7 @@ function PeopleHit({ hit }: PeopleHitProps) {
           {/* <span className="Hit-price">{hit.name}</span>
               <span className="Hit-price">{hit.overview}</span> */}
           <img
-            className="w-12 h-12 border-solid border-2 border-gray-200 rounded-md"
+            className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
             src={hit.picture}
             alt={hit.picture}
           />
@@ -181,6 +181,7 @@ export default function SearchModal(props: any) {
       onRequestClose={onClose}
       style={customStyles}
       contentLabel="Login Modal"
+    
     >
       <div className="max-w-6xl sm:px-3 lg:min-h-[40vh] lg:max-h-[2vh]">
         <div className="bg-white rounded-2xl center">
@@ -188,9 +189,9 @@ export default function SearchModal(props: any) {
             <SearchBox
               placeholder="Search"
               classNames={{
-                submitIcon: "hidden",  
-                resetIcon:"hidden",        
-                loadingIndicator:"hidden",                                       
+                submitIcon: "hidden",
+                resetIcon: "hidden",
+                loadingIndicator: "hidden",
                 input:
                   " w-full bg-transaparent text-dark-500  rounded-md  outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
               }}
@@ -207,7 +208,7 @@ export default function SearchModal(props: any) {
               <InfiniteHits
                 classNames={{
                   loadMore:
-                    "w-full text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "w-full mb-5 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={CompaniesHit}
@@ -219,7 +220,7 @@ export default function SearchModal(props: any) {
               <InfiniteHits
                 classNames={{
                   loadMore:
-                    "w-full text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "w-full mb-5 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={InvestorsHit}
@@ -230,7 +231,7 @@ export default function SearchModal(props: any) {
               <InfiniteHits
                 classNames={{
                   loadMore:
-                    "w-full mb-3 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "w-full mb-5 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={PeopleHit}
