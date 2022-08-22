@@ -104,7 +104,7 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 function InvestorsHit({ hit }: InvestorsHitProps) {
   return (
     <div>
-      <a href={(hit.person_slug) ? `/people/${hit.person_slug}` : `/investors/${hit.person_slug}`}>
+      <a href={(hit.person_slug) ? `/people/${hit.person_slug}` : `/investors/${hit.vc_firm_slug}`}>
         <div className=" my-2 flex flex-row flex-start">
           {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
           {/* <span className="Hit-price">{hit.name}</span>
