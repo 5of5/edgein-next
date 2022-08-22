@@ -78,6 +78,7 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 		coin {
 			ticker
 		}
+		sentiment
 		investor_amount
 		total_employees
 		logo
@@ -109,6 +110,7 @@ query GetCompaniesRecent(
 		total_employees
 		investor_amount
 		date_added
+		sentiment
 	}
 }
 

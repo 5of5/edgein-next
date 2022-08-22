@@ -130,21 +130,21 @@ export const ElemCompanyCard: FC<Props> = ({
             className="px-1 mr-2 text-black"
             roundedFull={false}
             btn="transparent"
-          > <IconHot className="mr-1"/> {companyData.sentiment?.hot || 0}
+          ><IconHot className="mr-1" /> {companyData.sentiment?.hot || 0}
           </ElemButton>
           <ElemButton
             onClick={(event) => handleReactionClick(event, 'like')}
             className="px-1 mr-2 text-black"
             roundedFull={false}
             btn="transparent"
-          ><IconLike className="mr-1"/> {companyData.sentiment?.like || 0}
+          ><IconLike className="mr-1" /> {companyData.sentiment?.like || 0}
           </ElemButton>
           <ElemButton
             onClick={(event) => handleReactionClick(event, 'crap')}
             className="px-1 text-black"
             roundedFull={false}
             btn="transparent"
-          ><IconCrap className="mr-1"/> {companyData.sentiment?.crap || 0}
+          ><IconCrap className="mr-1" /> {companyData.sentiment?.crap || 0}
           </ElemButton>
         </div>
 
