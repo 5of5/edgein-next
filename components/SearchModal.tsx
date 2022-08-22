@@ -61,7 +61,8 @@ type InvestorsHitProps = {
     vc_firm_name: string;
     person_picture: string;
     vc_firm_logo: string;
-    slug: string;
+    vc_firm_slug: string;
+    person_slug: string;
   }>;
 };
 
@@ -103,20 +104,20 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 function InvestorsHit({ hit }: InvestorsHitProps) {
   return (
     <div>
-      <a href={`/investors/${hit.slug}`}>
+      <a href={(hit.person_slug) ? `/people/${hit.person_slug}` : `/investors/${hit.person_slug}`}>
         <div className=" my-2 flex flex-row flex-start">
           {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
           {/* <span className="Hit-price">{hit.name}</span>
               <span className="Hit-price">{hit.overview}</span> */}
           <img
             className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
-            src={hit.vc_firm_logo}
-            alt={hit.vc_firm_logo}
+            src={(hit.vc_firm_slug) ? hit.vc_firm_logo : hit.person_picture}
+            alt={(hit.vc_firm_slug) ? hit.vc_firm_logo : hit.person_picture}
           />
           <h1 className=" mt-2 ml-2 text-xs">
-            <b>{hit.vc_firm_name}</b>
+            <b>{(hit.vc_firm_slug) ? hit.vc_firm_name: hit.person_name}</b>
           </h1>
-          <p className="ml-5 mt-2 text-xs">{hit.person_name}</p>
+          {/* <p className="ml-5 mt-2 text-xs">{hit.person_name}</p> */}
         </div>
       </a>
     </div>
