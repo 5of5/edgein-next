@@ -6,6 +6,7 @@ query GetVCFirm($slug: String!) {
 		logo
 		website
 		linkedin
+		sentiment
 		investments {
 			investment_round {
 				id
