@@ -1,15 +1,16 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { formatDate } from "@/utils";
 import {
+	Companies,
 	Companies_Bool_Exp,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
-import { ElemButton } from "../ElemButton";
-import { IconCrap, IconHot, IconLike } from "../Icons";
+import { ElemReactions } from "../ElemReactions";
+import { useRouter } from "next/router";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -45,25 +46,39 @@ export const ElemRecentCompanies: FC<Props> = ({
 		where: filters as Companies_Bool_Exp,
 	});
 
-	const companies = companiesData?.companies;
+	const [companies, setCompanies] = useState(companiesData?.companies);
 
-	const handleReactionClick = (event: any, company: any, sentiment: string) => async () => {
-    event.preventDefault();
-    event.stopPropagation();
-    const resp = await fetch("/api/reaction/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        company: company.id,
-        sentiment,
-        pathname: location.pathname
-      }),
-    });
-    const newSentiment = await resp.json()
-  }
+	useEffect(() => {
+		setCompanies(companiesData?.companies)
+	}, [companiesData?.companies])
+	const router = useRouter();
+
+	const handleReactionClick = (event: any, sentiment: string, company: Companies) => async () => {
+		event.stopPropagation();
+		const resp = await fetch("/api/reaction/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				company: company.id,
+				sentiment,
+				pathname: `/companies/${company.slug}`
+			}),
+		});
+		const newSentiment = await resp.json()
+		const tempCompanies = companies ? [...companies].map((item: any) => {
+			if (item.id === company.id) return { ...item, sentiment: newSentiment }
+			return item
+		}) : [];
+
+		setCompanies(tempCompanies);
+	}
+
+	const handleNavigation = (link: string) => {
+		router.push(link)
+	}
 
 	return (
 		<div className={`${className}`}>
@@ -92,8 +107,8 @@ export const ElemRecentCompanies: FC<Props> = ({
 									key={index}
 									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
-									<a
-										href={`/companies/${company.slug}`}
+									<div
+										onClick={() => handleNavigation(`/companies/${company.slug}`)}
 										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
 									>
 										<div className="flex">
@@ -128,29 +143,13 @@ export const ElemRecentCompanies: FC<Props> = ({
 												: ""
 												}`}
 										>
-											<ElemButton
-												onClick={(event) => handleReactionClick(event, company, 'hot')}
-												className="px-1 mr-2 text-black"
-												roundedFull={false}
-												btn="transparent"
-											> <IconHot className="mr-1" /> {company.sentiment?.hot || 0}
-											</ElemButton>
-											<ElemButton
-												onClick={(event) => handleReactionClick(event, company, 'like')}
-												className="px-1 mr-2 text-black"
-												roundedFull={false}
-												btn="transparent"
-											><IconLike className="mr-1" /> {company.sentiment?.like || 0}
-											</ElemButton>
-											<ElemButton
-												onClick={(event) => handleReactionClick(event, company, 'crap')}
-												className="px-1 text-black"
-												roundedFull={false}
-												btn="transparent"
-											><IconCrap className="mr-1" /> {company.sentiment?.crap || 0}
-											</ElemButton>
+											<ElemReactions
+												data={company}
+												handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, company)()}
+												blackText
+											/>
 										</div>
-									</a>
+									</div>
 								</ElemCarouselCard>
 							);
 						})}

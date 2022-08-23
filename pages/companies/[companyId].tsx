@@ -19,6 +19,7 @@ import {
 	Investment_Rounds,
 } from "../../graphql/types";
 import { IconCrap, IconHot, IconLike } from "@/components/Icons";
+import { ElemReactions } from "@/components/ElemReactions";
 
 type Props = {
 	company: Companies;
@@ -37,7 +38,7 @@ const Company: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async () => {
+	const handleReactionClick = (event: any, sentiment: string) => async () => {
 		const resp = await fetch("/api/reaction/", {
 			method: "POST",
 			headers: {
@@ -143,24 +144,12 @@ const Company: NextPage<Props> = (props) => {
 					}
 
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-						<ElemButton
-							onClick={handleReactionClick('hot')}
-							className="mr-2"
-						>
-							<IconHot className="mr-1" /> {company.sentiment?.hot || 0}
-						</ElemButton>
-						<ElemButton
-							onClick={handleReactionClick('like')}
-							className="mr-2"
-						>
-							<IconLike className="mr-1" />{company.sentiment?.like || 0}
-						</ElemButton>
-						<ElemButton
-							onClick={handleReactionClick('crap')}
-							className=""
-						>
-							<IconCrap className="mr-1" /> {company.sentiment?.crap || 0}
-						</ElemButton>
+						<ElemReactions
+							data={company}
+							handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}
+							blackText
+							roundedFull
+						/>
 					</div>
 				</div>
 			</div>
@@ -218,7 +207,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetCompanyDocument,
 		{ slug: context.params?.companyId }
 	);
-	console.log(companies);
+
 	if (!companies?.companies[0]) {
 		return {
 			notFound: true,
