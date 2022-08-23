@@ -1,7 +1,9 @@
 import { Companies, Vc_Firms } from "@/graphql/types";
 import { FC } from "react";
 import { ElemButton } from "./ElemButton";
-import { IconCrap, IconHot, IconLike } from "./Icons";
+import { IconCrap } from "./reactions/IconCrap";
+import { IconHot } from "./reactions/IconHot";
+import { IconLike } from "./reactions/IconLike";
 
 type Props = {
   data: any,
