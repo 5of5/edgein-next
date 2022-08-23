@@ -37,7 +37,7 @@ export default function SignUpModal(props) {
     const [password, setPassword] = useState("")
     const [isSignUp, setIsSignUp] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    // const [isWaitlisted, setIsWaitlisted] = useState(false)
+    const [isWaitlisted, setIsWaitlisted] = useState(false)
     const [isRegistered, setIsRegistered] = useState(false)
     const [emailError, setEmailError] = useState('')
     const [nameError, setNameError] = useState('')
@@ -77,10 +77,11 @@ export default function SignUpModal(props) {
 
     useEffect(() => {
         setIsBrowser(true);
+        setName('')
         setEmail(props.emailFromLogin ? props.emailFromLogin : "");
         setPassword('')
         setIsSignUp(false)
-        // setIsWaitlisted(false)
+        setIsWaitlisted(false)
         setIsRegistered(false)
         setErrorMessage('')
         setEmailError('')
@@ -112,14 +113,13 @@ export default function SignUpModal(props) {
                 },
                 body: JSON.stringify({ email, password, name }),
             }).then(res => res.json());
-            console.log("signnnup response =", response)
             if (response.success === true) {
                 setIsRegistered(true)
             }
 
         } catch (e) {
-            // setIsWaitlisted(true)
-            console.log(e);
+            setIsWaitlisted(true)
+            //console.log(e);
             setIsLoading(false);
         }
     };
@@ -160,6 +160,16 @@ export default function SignUpModal(props) {
 
                         )
                             :
+
+                            isWaitlisted ? (
+                                <>
+                                    {/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
+                                    <p className="mt-2 text-md text-dark-400 text-center">
+                                        {`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`}
+                                    </p>
+                                </>
+    
+                            ):
 
                             <>
                                 <ElemLogo
