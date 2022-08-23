@@ -1,15 +1,8 @@
-import { Magic } from "magic-sdk";
 import type { GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
-import { IconSpinner } from "../components/Icons";
-import { ElemButton } from "../components/ElemButton";
-import Link from "next/link";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import algoliasearch from "algoliasearch/lite";
 import { Hit as AlgoliaHit } from "instantsearch.js";
-
 import {
   InstantSearch,
   SearchBox,
@@ -36,7 +29,6 @@ const customStyles = {
     left: "50%",
     right: "auto",
     bottom: "auto",
-    // marginRight: '-50%',
     transform: "translate(-50%, -50%)",
     zindex: 100000,
     opacity: 1,
@@ -147,29 +139,6 @@ function PeopleHit({ hit }: PeopleHitProps) {
 }
 
 export default function SearchModal(props: any) {
-  const router = useRouter();
-
-  const [isBrowser, setIsBrowser] = useState(false);
-
-  useEffect(() => {
-    setIsBrowser(true);
-    setEmail("");
-    setPassword("");
-    setIsSignUp(false);
-    setIsWaitlisted(false);
-    setIsRegistered(false);
-    setEmailError("");
-    setErrorMessage("");
-  }, [props.show]);
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isWaitlisted, setIsWaitlisted] = useState(false);
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [emailError, setEmailError] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const onClose = () => {
     props.onClose();
