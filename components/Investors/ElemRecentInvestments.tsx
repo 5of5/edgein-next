@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { PlaceholderInvestorRecentInvestmentsCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
@@ -7,14 +7,17 @@ import { formatDate } from "@/utils";
 import {
 	Vc_Firms_Bool_Exp,
 	useGetVcFirmsRecentInvestmentsQuery,
+	Vc_Firms,
 } from "@/graphql/types";
 import { ElemButton } from "../ElemButton";
 import { IconCrap, IconHot, IconLike } from "../Icons";
+import { ElemReactions } from "../ElemReactions";
+import { useRouter } from "next/router";
 
 export type DeepPartial<T> = T extends object
 	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
+		[P in keyof T]?: DeepPartial<T[P]>;
+	}
 	: T;
 
 type Props = {
@@ -28,6 +31,8 @@ export const ElemRecentInvestments: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
+
+	const router = useRouter();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -45,7 +50,39 @@ export const ElemRecentInvestments: FC<Props> = ({
 		where: filters as Vc_Firms_Bool_Exp,
 	});
 
-	const vcFirms = vcFirmsData?.vc_firms;
+	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
+
+	useEffect(() => {
+		setVcFirms(vcFirmsData?.vc_firms)
+	}, [vcFirmsData?.vc_firms]);
+
+	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
+		event.stopPropagation();
+		const resp = await fetch("/api/reaction/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				vcfirm: vcFirm.id,
+				sentiment,
+				pathname: `/investors/${vcFirm.slug}`
+			}),
+		});
+		const newSentiment = await resp.json()
+
+		const tempVcFirms = vcFirms ? [...vcFirms].map((item: any) => {
+			if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+			return item;
+		}) : [];
+
+		setVcFirms(tempVcFirms);
+	}
+
+	const handleNavigation = (link: string) => {
+		router.push(link)
+	}
 
 	return (
 		<div className={`${className}`}>
@@ -74,8 +111,8 @@ export const ElemRecentInvestments: FC<Props> = ({
 									key={index}
 									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
-									<a
-										href={`/investors/${investor.slug}`}
+									<div
+										onClick={() => handleNavigation(`/investors/${investor.slug}`)}
 										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
 									>
 										<div className="flex">
@@ -85,7 +122,6 @@ export const ElemRecentInvestments: FC<Props> = ({
 												imgClass="object-contain w-full h-full"
 												imgAlt={investor.name}
 											/>
-
 											<div className="flex items-center justify-center pl-2 md:overflow-hidden">
 												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60">
 													{investor.name}
@@ -106,28 +142,15 @@ export const ElemRecentInvestments: FC<Props> = ({
 										</div>
 
 										<div
-												className={`flex w-full mt-6 items-center justify-start`}
-											>
-												<ElemButton
-													className="px-1 mr-2 text-black"
-													roundedFull={false}
-													btn="transparent"
-												> <IconHot className="mr-1" /> {investor.sentiment?.hot || 0}
-												</ElemButton>
-												<ElemButton
-													className="px-1 mr-2 text-black"
-													roundedFull={false}
-													btn="transparent"
-												><IconLike className="mr-1" /> {investor.sentiment?.like || 0}
-												</ElemButton>
-												<ElemButton
-													className="px-1 text-black"
-													roundedFull={false}
-													btn="transparent"
-												><IconCrap className="mr-1" /> {investor.sentiment?.crap || 0}
-												</ElemButton>
-											</div>
-									</a>
+											className={`flex w-full mt-6 items-center justify-start`}
+										>
+											<ElemReactions
+												data={investor}
+												handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, investor)()}
+												blackText
+											/>
+										</div>
+									</div>
 								</ElemCarouselCard>
 							);
 						})}

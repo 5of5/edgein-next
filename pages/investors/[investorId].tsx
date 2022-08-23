@@ -18,6 +18,7 @@ import {
 	Vc_Firms,
 } from "../../graphql/types";
 import { IconCrap, IconHot, IconLike } from "@/components/Icons";
+import { ElemReactions } from "@/components/ElemReactions";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -31,7 +32,7 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 
-	const handleReactionClick = (sentiment: string) => async () => {
+	const handleReactionClick = (event: any, sentiment: string) => async () => {
 		const resp = await fetch("/api/reaction/", {
 			method: "POST",
 			headers: {
@@ -80,24 +81,13 @@ const VCFirm: NextPage<Props> = (props) => {
 						investmentsLength={vcfirm.investments?.length}
 					/>
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-						<ElemButton
-							onClick={handleReactionClick('hot')}
-							className="mr-2"
-						>
-							<IconHot className="mr-1" /> {vcfirm.sentiment?.hot || 0}
-						</ElemButton>
-						<ElemButton
-							onClick={handleReactionClick('like')}
-							className="mr-2"
-						>
-							<IconLike className="mr-1" />{vcfirm.sentiment?.like || 0}
-						</ElemButton>
-						<ElemButton
-							onClick={handleReactionClick('crap')}
-							className=""
-						>
-							<IconCrap className="mr-1" /> {vcfirm.sentiment?.crap || 0}
-						</ElemButton>
+						{console.log(vcfirm)}
+						<ElemReactions
+							data={vcfirm}
+							handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}
+							blackText
+							roundedFull
+						/>
 					</div>
 				</div>
 
@@ -206,6 +196,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			logo
 			website
 			linkedin
+			sentiment
 			investments {
 				investment_round {
 					id

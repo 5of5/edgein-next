@@ -15,12 +15,15 @@ import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
 	useGetVcFirmsQuery,
+	Vc_Firms,
 	Vc_Firms_Bool_Exp,
 } from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
+import { ElemReactions } from "@/components/ElemReactions";
+import { useRouter } from "next/router";
 
 type Props = {
 	vcFirmCount: number;
@@ -35,6 +38,7 @@ const Investors: NextPage<Props> = ({
 	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
+	const router = useRouter();
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	// Search Box
@@ -90,7 +94,37 @@ const Investors: NextPage<Props> = ({
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
-	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms;
+	const [vcFirms, setVcFirms] = useState(initialLoad ? initialVCFirms : vcFirmsData?.vc_firms);
+
+	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
+		event.stopPropagation();
+		const resp = await fetch("/api/reaction/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				vcfirm: vcFirm.id,
+				sentiment,
+				pathname: `/investors/${vcFirm.slug}`
+			}),
+		});
+		const newSentiment = await resp.json()
+
+		const tempVcFirms = vcFirms ? [...vcFirms].map((item: any) => {
+			if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+			return item;
+		}) : [];
+
+		setVcFirms(tempVcFirms);
+
+	}
+
+
+	const handleNavigation = (link: string) => {
+		router.push(link)
+	}
 
 	return (
 		<div>
@@ -167,64 +201,46 @@ const Investors: NextPage<Props> = ({
 								</>
 							) : (
 								vcFirms?.map((vcfirm) => (
-									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
-										<a className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
-											<div className="flex items-center w-full">
-												<ElemPhoto
-													photo={vcfirm.logo}
-													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-													imgClass="object-fit max-w-full max-h-full"
-													imgAlt={vcfirm.name}
-												/>
-												<div className="w-full ml-3 space-y-1 overflow-hidden">
-													<h3
-														className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-1 text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
-														title={vcfirm.name ?? ""}
-													>
-														{vcfirm.name}
-													</h3>
-													{vcfirm.num_of_investments !== null &&
-														vcfirm.num_of_investments > 0 && (
-															<div className="inline-flex hover:opacity-70">
-																<IconCash
-																	title="Investments"
-																	className="w-6 h-6 mr-1 text-primary-500"
-																/>
-																<span className="mr-1 font-bold">
-																	{vcfirm.num_of_investments}
-																</span>
-																Investment
-																{vcfirm.num_of_investments > 1 && "s"}
-															</div>
-														)}
-												</div>
+
+									<div key={vcfirm.id} onClick={() => handleNavigation(`/investors/${vcfirm.slug}`)} className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
+										<div className="flex items-center w-full">
+											<ElemPhoto
+												photo={vcfirm.logo}
+												wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+												imgClass="object-fit max-w-full max-h-full"
+												imgAlt={vcfirm.name}
+											/>
+											<div className="w-full ml-3 space-y-1 overflow-hidden">
+												<h3
+													className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-1 text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
+													title={vcfirm.name ?? ""}
+												>
+													{vcfirm.name}
+												</h3>
+												{vcfirm.num_of_investments !== null &&
+													vcfirm.num_of_investments > 0 && (
+														<div className="inline-flex hover:opacity-70">
+															<IconCash
+																title="Investments"
+																className="w-6 h-6 mr-1 text-primary-500"
+															/>
+															<span className="mr-1 font-bold">
+																{vcfirm.num_of_investments}
+															</span>
+															Investment
+															{vcfirm.num_of_investments > 1 && "s"}
+														</div>
+													)}
 											</div>
+										</div>
 
 
-											<div
-												className={`flex w-full mt-6 items-center justify-start`}
-											>
-												<ElemButton
-													className="px-1 mr-2 text-black"
-													roundedFull={false}
-													btn="transparent"
-												> <IconHot className="mr-1" /> {vcfirm.sentiment?.hot || 0}
-												</ElemButton>
-												<ElemButton
-													className="px-1 mr-2 text-black"
-													roundedFull={false}
-													btn="transparent"
-												><IconLike className="mr-1" /> {vcfirm.sentiment?.like || 0}
-												</ElemButton>
-												<ElemButton
-													className="px-1 text-black"
-													roundedFull={false}
-													btn="transparent"
-												><IconCrap className="mr-1" /> {vcfirm.sentiment?.crap || 0}
-												</ElemButton>
-											</div>
-										</a>
-									</Link>
+										<div
+											className={`flex w-full mt-6 items-center justify-start`}
+										>
+											<ElemReactions data={vcfirm} handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, vcfirm)()} blackText />
+										</div>
+									</div>
 								))
 							)}
 						</div>
@@ -248,7 +264,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetVcFirmsDocument,
 		{ where: { slug: { _neq: "" } } }
 	);
-
+	console.log("vcFirms", vcFirms);
 	return {
 		props: {
 			metaTitle: "Web3 Investors - EdgeIn.io",
