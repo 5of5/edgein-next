@@ -81,7 +81,6 @@ const VCFirm: NextPage<Props> = (props) => {
 						investmentsLength={vcfirm.investments?.length}
 					/>
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-						{console.log(vcfirm)}
 						<ElemReactions
 							data={vcfirm}
 							handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}

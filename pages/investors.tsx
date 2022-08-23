@@ -264,7 +264,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetVcFirmsDocument,
 		{ where: { slug: { _neq: "" } } }
 	);
-	console.log("vcFirms", vcFirms);
+	
 	return {
 		props: {
 			metaTitle: "Web3 Investors - EdgeIn.io",
