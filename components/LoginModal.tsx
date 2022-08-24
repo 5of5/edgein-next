@@ -62,6 +62,18 @@ export default function LoginModal(props) {
         }
     }
 
+    const validate = (value: string) => {
+        setPassword(value)
+        if (validator.isStrongPassword(value, {
+            minLength: 8, minLowercase: 1,
+            minUppercase: 1, minNumbers: 1, minSymbols: 1
+        })) {
+            setErrorMessage('')
+        } else {
+            setErrorMessage('Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, a special character')
+        }
+    }
+
     const onLogin = async () => {
         validateEmail(email);
 
@@ -69,20 +81,21 @@ export default function LoginModal(props) {
             return;
         }
         try {
-            const response = await fetch("/api/check_email/", {
+            const response = await fetch("/api/signin/", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify({ email, password }),
             }).then(res => res.json());
+            console.log("continue signup=", response)
             if (response.nextStep && response.nextStep === "SIGNUP") {
                 setIsSignUp(true);
-                onSignUp(email)
+                onSignUp(email, password)
                 //console.log("continue signup=", response)
-            } else if (response.nextStep && response.nextStep === "LOGIN") {
-               window.location.href = response.loginLink;
+            } else if (response.success) {
+               window.location.href = '/';//response.loginLink;
             }
 
         } catch (e) {
@@ -92,8 +105,8 @@ export default function LoginModal(props) {
         }
     };
 
-    const onSignUp = (email:  string) => {
-        props.onSignUp(email)
+    const onSignUp = (email:  string, password: string) => {
+        props.onSignUp(email, password)
     };
 
     const onClose = () => {
@@ -156,6 +169,17 @@ export default function LoginModal(props) {
                                         />
                                         {emailError === '' ? null :
                                             <span className="w-full text-start text-sm">{emailError}</span>}
+                                         <input
+                                            name="password"
+                                            type="password"
+                                            value={password}
+                                            disabled={isLoading}
+                                            onChange={(event) => validate(event ?.target.value)}
+                                            placeholder="Password"
+                                            className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+                                        />
+                                        {errorMessage === '' ? null :
+                                            <span className="w-full text-start text-sm">{errorMessage}</span>}
                                        
                                     </div>
 
@@ -170,7 +194,7 @@ export default function LoginModal(props) {
                                 </ElemButton>
                                     </div>
                                     <div className="text-center sm:col-span-3">
-                                        <ElemButton className="w-full" onClick={()=>onSignUp('')} btn="ol-primary" loading={isLoading}>
+                                        <ElemButton className="w-full" onClick={()=>onSignUp('','')} btn="ol-primary" loading={isLoading}>
                                             Create an account
                                 </ElemButton>
                                     </div>
