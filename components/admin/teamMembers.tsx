@@ -18,7 +18,7 @@ import {
   BooleanInput,
   BooleanField,
 } from "react-admin";
-import uniqid from "uniqid"
+import uniqid from "uniqid";
 
 export const TeamMembersList = () => (
   <List>
@@ -44,7 +44,7 @@ export const TeamMembersList = () => (
       />
       <DateField source="start_date" />
       <DateField source="end_date" />
-	  <BooleanField source="founder"/>
+      <BooleanField source="founder" />
       <SelectField
         source="seniority"
         choices={[
@@ -76,12 +76,19 @@ export const TeamMembersEdit = () => (
   <Edit title={<TeamMembersTitle />}>
     <SimpleForm>
       <ReferenceInput label="Company" source="company_id" reference="companies">
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
       <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
         choices={[
           {
@@ -94,10 +101,20 @@ export const TeamMembersEdit = () => (
           },
         ]}
       />
-      <DateInput source="start_date" />
-      <DateInput source="end_date" />
-	  <BooleanInput source="founder"/>
+      <DateInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="start_date"
+      />
+      <DateInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="end_date"
+      />
+      <BooleanInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="founder"
+      />
       <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
         choices={[
           {
@@ -110,21 +127,31 @@ export const TeamMembersEdit = () => (
           },
         ]}
       />
-      <TextInput source="title" />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="title"
+      />
     </SimpleForm>
   </Edit>
 );
 
 export const TeamMembersCreate = () => (
   <Create title="Add a person to a company">
-    <SimpleForm defaultValues={{ external_id: uniqid() }} >
+    <SimpleForm defaultValues={{ external_id: uniqid() }}>
       <ReferenceInput label="Company" source="company_id" reference="companies">
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
       <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
         choices={[
           {
@@ -137,10 +164,19 @@ export const TeamMembersCreate = () => (
           },
         ]}
       />
-      <DateInput source="start_date" />
-      <DateInput source="end_date" />
-     <BooleanInput source="founder"/>
+      <DateInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="start_date"
+      />
+      <DateInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="end_date"
+      />
+      <BooleanInput   
+        source="founder"
+      />
       <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
         choices={[
           {
@@ -153,7 +189,10 @@ export const TeamMembersCreate = () => (
           },
         ]}
       />
-      <TextInput source="title" />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="title"
+      />
     </SimpleForm>
   </Create>
 );

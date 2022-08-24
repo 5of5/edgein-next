@@ -48,24 +48,36 @@ const InvestmentsTitle = ({ record }: TitleProps) => {
 export const InvestmentsEdit = () => (
   <Edit title={<InvestmentsTitle />}>
     <SimpleForm>
-      <TextInput disabled source="id" />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        disabled
+        source="id"
+      />
       <ReferenceInput
         label="Partner or Angel"
         source="person_id"
         reference="people"
       >
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
       <ReferenceInput
         label="Round"
         source="round_id"
         reference="investment_rounds"
       >
-        <SelectInput optionText="round" />
-       
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="round"
+        />
       </ReferenceInput>
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
     </SimpleForm>
   </Edit>
@@ -79,20 +91,27 @@ export const InvestmentsCreate = () => (
         source="person_id"
         reference="people"
       >
-        <SelectInput optionText="name" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
       <ReferenceInput
         label="Round"
         source="round_id"
         reference="investment_rounds"
       >
-        <SelectInput optionText="round" />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="round"
+        />
       </ReferenceInput>
 
-      <ReferenceInput label="VC Firm"
-	   source="vc_firm_id" 
-	   reference="vc_firms">
-        <SelectInput optionText="name" />
+      <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
       </ReferenceInput>
     </SimpleForm>
   </Create>

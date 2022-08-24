@@ -74,217 +74,252 @@ interface CompanyTitleProps {
     record?: Record<string, string>;
 }
 const CompanyTitle = ({ record }: CompanyTitleProps) => {
-    return <span>Company {record ? `"${record.name}"` : ''}</span>;
+  return <span>Company {record ? `"${record.name}"` : ""}</span>;
 };
 
 export const CompanyEdit = () => (
-    <Edit title={<CompanyTitle />}>
-        <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="name" validate={validateName} />
-            <TextInput source="slug" validate={validateSlug} />
-            <SelectField source="layer" choices={[
-                {
-                    id: "Layer 0",
-                    name: "Layer 0 - Native Code"
-                },
-                {
-                    id: "Layer 1",
-                    name: "Layer 1 - Programmable Blockchains / Networks"
-                },
-                {
-                    id: "Layer 2",
-                    name: "Layer 2 - Nodes / Node Providers / Data Platforms"
-                },
-                {
-                    id: "Layer 3",
-                    name: "Layer 3 - API's / API Providers / Systems"
-                },
-                {
-                    id: "Layer 4",
-                    name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
-                },
-                {
-                    id: "Layer 5",
-                    name: "Layer 5 - Applications"
-                },
-                {
-                    id: "Layer 6",
-                    name: "Layer 6 - Interoperable Digital Assets / NFT's"
-                },
-            ]} />
-            <TextInput source="layer_detail" />
-            <ReferenceInput label="Coin" source="coin_id" reference="coins">
-                <SelectInput optionText="name" />
-            </ReferenceInput>
-            <NumberField source="total_employees" />
-            <TextInput source="github" />
-            <TextInput source="notes" />
-            <TextInput source="overview" />
-            <TextInput source="website" />
-            <TextInput source="careers_page" />
-            <TextInput source="company_linkedin" />
-            <NumberInput source="year_founded" min="1900" max="2099" validate={validateYearFounded} />
-            <NumberInput source="investor_amount" />
-            <NumberInput source="total_valuation" />
-            <TextInput source="white_paper" />
-            <TextInput source="market_verified" />
-            <TextInput source="velocity_linkedin" />
-            <TextInput source="velocity_token" />
-        </SimpleForm>
-    </Edit>
+  <Edit title={<CompanyTitle />}>
+    <SimpleForm>
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        disabled
+        source="id"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="name"
+        validate={validateName}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        validate={validateSlug}
+      />
+      <SelectField
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="layer"
+        choices={[
+          {
+            id: "Layer 0",
+            name: "Layer 0 - Native Code",
+          },
+          {
+            id: "Layer 1",
+            name: "Layer 1 - Programmable Blockchains / Networks",
+          },
+          {
+            id: "Layer 2",
+            name: "Layer 2 - Nodes / Node Providers / Data Platforms",
+          },
+          {
+            id: "Layer 3",
+            name: "Layer 3 - API's / API Providers / Systems",
+          },
+          {
+            id: "Layer 4",
+            name: "Layer 4 - Decentralized Platforms / Contract / Modeling",
+          },
+          {
+            id: "Layer 5",
+            name: "Layer 5 - Applications",
+          },
+          {
+            id: "Layer 6",
+            name: "Layer 6 - Interoperable Digital Assets / NFT's",
+          },
+        ]}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="layer_detail"
+      />
+      <ReferenceInput label="Coin" source="coin_id" reference="coins">
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          optionText="name"
+        />
+      </ReferenceInput>
+      <NumberField
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="total_employees"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="github"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="notes"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="overview"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="website"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="careers_page"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="company_linkedin"
+      />
+      <NumberInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="year_founded"
+        min="1900"
+        max="2099"
+        validate={validateYearFounded}
+      />
+      <NumberInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="investor_amount"
+      />
+      <NumberInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="total_valuation"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="white_paper"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="market_verified"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="velocity_linkedin"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="velocity_token"
+      />
+    </SimpleForm>
+  </Edit>
 );
 
 export const CompanyCreate = () => {
-
-    const [signedUrl, setSignedUrl] = React.useState('')
-    const [slug, setSlug] = React.useState('')
-
-    React.useEffect(() => {
-      //  getSignedUrl()
-    }, [])
-
-    const getSignedUrl = async () => {
-        try {
-            const signUrl = await fetch("/api/uploadS3Image?file=abc.jpg/", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ file: 'abc.jpg' }),
-            }).then(res => res.json())
-            console.log("url ==", signUrl)
-            setSignedUrl(signUrl.url)
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    const uploadTos3 = async (file) => {
-
-        try {
-            const signUrl = await fetch("/api/uploadS3Image?file=abc.jpg/", {
-                method: "POST",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-
-                },
-                body: JSON.stringify({ file: 'abc.jpg' }),
-            }).then(res => res.json())
-
-
-
-            var options = { headers: { 'Content-Type': file.type, 'x-amz-acl': 'private'} };
-            // const formData = new FormData();
-            // formData.append('file', file);
-
-            axios.put(signUrl.url, file, options)
-            .then(response => {
-                console.log("result =", response);
-            }).catch(error => {
-                console.log("*****  " + error)
-            });
-
-            console.log("url ==", signUrl)
-            setSignedUrl(signUrl.url)
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    const getSelectedFiles = async (file) => {
-        console.log("logo value =", file)
-        uploadTos3(file[0])
-
-        //upload to s3
-        return file
-    }
-
-    return (
-        <Create title="Create a Company">
-            <SimpleForm defaultValues={{ external_id: uniqid() }}>
-                <TextInput source="name" validate={validateName} />
-                <TextInput source="slug" validate={validateSlug} />
-                 {/* <FileInput accept="image/*" source="logo" label="Logo" options={{ onDrop: (files) => getSelectedFiles(files) }}>
-                    <ImageField source="src" title="title" />
-                </FileInput> */}
-
-                {/* <S3FileInput
-          source='photo'
-          apiRoot='localhost:3000/' // your api server
-          fileCoverImg="someImgURL" // cover img for non-img files
-         // multipleFiles // allaw to save multiple files for that source
-          uploadOptions={{
-            signingUrl: 'localhost:3000/s3/sign', // api point to your server for S3 signin,
-            s3path: signedUrl, // path to folder from S3 where wil be saved file
-            //multiple: true, // for selecting multiple files from file system
-          }}
-        /> */}
-                <SelectField source="layer" choices={[
-                    {
-                        id: "Layer 0",
-                        name: "Layer 0 - Native Code"
-                    },
-                    {
-                        id: "Layer 1",
-                        name: "Layer 1 - Programmable Blockchains / Networks"
-                    },
-                    {
-                        id: "Layer 2",
-                        name: "Layer 2 - Nodes / Node Providers / Data Platforms"
-                    },
-                    {
-                        id: "Layer 3",
-                        name: "Layer 3 - API's / API Providers / Systems"
-                    },
-                    {
-                        id: "Layer 4",
-                        name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
-                    },
-                    {
-                        id: "Layer 5",
-                        name: "Layer 5 - Applications"
-                    },
-                    {
-                        id: "Layer 6",
-                        name: "Layer 6 - Interoperable Digital Assets / NFT's"
-                    },
-                ]} />
-                <TextInput source="layer_detail" />
-                <ReferenceInput label="Coin" source="coin_id" reference="coins">
-                    <SelectInput optionText="name" />
-                </ReferenceInput>
-                <NumberInput source="total_employees" />
-                <TextInput source="github" />
-                <TextInput source="notes" />
-                <TextInput source="overview" />
-                <TextInput source="website" />
-                <TextInput source="careers_page" />
-                <TextInput source="company_linkedin" />
-                {/* <NumberInput source="year_founded" min="1900" max="2099" validate={validateYearFounded} /> */}
-                <TextInput source="year_founded"  />
-                
-                <NumberInput source="investor_amount" />
-                <TextInput source="total_valuation" />
-                <TextInput source="white_paper" />
-                <TextInput source="market_verified" />
-                <TextInput source="velocity_linkedin" />
-                <TextInput source="velocity_token" />
-                {/* <FormDataConsumer>
-                    {
-                        ({formData}) => {
-                            if(formData.name && (!formData.slug || formData.slug =="")){
-                               
-                                formData.slug = formData.name.toLowerCase().replace(' ', '-')
-                                setSlug(formData.name.toLowerCase().replace(' ', '-'))
-                                console.log("m here", formData)
-                            }
-                        }
-                    }
-                </FormDataConsumer> */}
-            </SimpleForm>
-        </Create>
-    );
-}
+  return (
+    <Create title="Create a Company">
+      <SimpleForm defaultValues={{ external_id: uniqid() }}>
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="name"
+          validate={validateName}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="slug"
+          validate={validateSlug}
+        />
+        <SelectField
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="layer"
+          choices={[
+            {
+              id: "Layer 0",
+              name: "Layer 0 - Native Code",
+            },
+            {
+              id: "Layer 1",
+              name: "Layer 1 - Programmable Blockchains / Networks",
+            },
+            {
+              id: "Layer 2",
+              name: "Layer 2 - Nodes / Node Providers / Data Platforms",
+            },
+            {
+              id: "Layer 3",
+              name: "Layer 3 - API's / API Providers / Systems",
+            },
+            {
+              id: "Layer 4",
+              name: "Layer 4 - Decentralized Platforms / Contract / Modeling",
+            },
+            {
+              id: "Layer 5",
+              name: "Layer 5 - Applications",
+            },
+            {
+              id: "Layer 6",
+              name: "Layer 6 - Interoperable Digital Assets / NFT's",
+            },
+          ]}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="layer_detail"
+        />
+        <ReferenceInput label="Coin" source="coin_id" reference="coins">
+          <SelectInput
+            className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            optionText="name"
+          />
+        </ReferenceInput>
+        <NumberInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="total_employees"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="github"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="notes"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="overview"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="website"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="careers_page"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="company_linkedin"
+        />
+        <NumberInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="year_founded"
+          min="1900"
+          max="2099"
+          validate={validateYearFounded}
+        />
+        <NumberInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="investor_amount"
+        />
+        <NumberInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="total_valuation"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="white_paper"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="market_verified"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="velocity_linkedin"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="velocity_token"
+        />
+      </SimpleForm>
+    </Create>
+  );
+};

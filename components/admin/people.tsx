@@ -1,19 +1,19 @@
 // in posts.js
 import * as React from "react";
 import {
-	List,
-	Datagrid,
-	Edit,
-	Create,
-	SimpleForm,
-	TextField,
-	EditButton,
-	TextInput,
-	required,
-	minLength,
-	email,
+  List,
+  Datagrid,
+  Edit,
+  Create,
+  SimpleForm,
+  TextField,
+  EditButton,
+  TextInput,
+  required,
+  minLength,
+  email,
 } from "react-admin";
-import uniqid from 'uniqid';
+import uniqid from "uniqid";
 
 export const PeopleList = () => (
 	<List>
@@ -33,44 +33,104 @@ export const PeopleList = () => (
 );
 
 interface TitleProps {
-	record?: Record<string, string>;
+  record?: Record<string, string>;
 }
 
 const validateName = [required(), minLength(3)];
 const validateSlug = [required(), minLength(3)];
-const validateEmail = email()
+const validateEmail = email();
 
 const PeopleTitle = ({ record }: TitleProps) => {
-	return <span>Person {record ? `"${record.name}"` : ""}</span>;
+  return <span>Person {record ? `"${record.name}"` : ""}</span>;
 };
 
 export const PeopleEdit = () => (
-	<Edit title={<PeopleTitle />}>
-		<SimpleForm>
-			<TextInput disabled source="id" />
-			<TextInput source="name" validate={validateName} />
-			<TextInput source="slug" validate={validateSlug} />
-			<TextInput source="github" />
-			{/* <TextInput source="title" /> */}
-			<TextInput source="type" />
-			<TextInput source="personal_email" validate={validateEmail} />
-			<TextInput source="work_email" validate={validateEmail} />
-			<TextInput source="linkedin" />
-		</SimpleForm>
-	</Edit>
+  <Edit title={<PeopleTitle />}>
+    <SimpleForm>
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        disabled
+        source="id"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="name"
+        validate={validateName}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        validate={validateSlug}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="github"
+      />
+      {/* <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="title"
+      /> */}
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="type"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="personal_email"
+        validate={validateEmail}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="work_email"
+        validate={validateEmail}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="linkedin"
+      />
+    </SimpleForm>
+  </Edit>
 );
 
 export const PeopleCreate = () => (
-	<Create title="Create a Person">
-		<SimpleForm defaultValues={{ external_id: uniqid() }}>
-			<TextInput source="name" validate={validateName} />
-			<TextInput source="slug" validate={validateSlug} />
-			<TextInput source="github" />
-			{/* <TextInput source="title" /> */}
-			<TextInput source="type" />
-			<TextInput source="personal_email" validate={validateEmail} />
-			<TextInput source="work_email" validate={validateEmail} />
-			<TextInput source="linkedin" />
-		</SimpleForm>
-	</Create>
+  <Create title="Create a Person">
+    <SimpleForm defaultValues={{ external_id: uniqid() }}>
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="name"
+        validate={validateName}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        validate={validateSlug}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="github"
+      />
+      {/* <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="title"
+      /> */}
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="type"
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="personal_email"
+        validate={validateEmail}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="work_email"
+        validate={validateEmail}
+      />
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="linkedin"
+      />
+    </SimpleForm>
+  </Create>
 );

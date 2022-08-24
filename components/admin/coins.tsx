@@ -39,11 +39,11 @@ const CoinsTitle = ({ record }: TitleProps) => {
 export const CoinsEdit = () => (
 	<Edit title={<CoinsTitle />}>
 		<SimpleForm>
-			<TextInput disabled source="id" />
-			<TextInput source="name" />
-			<TextInput source="ticker" />
+			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
+			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
+			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
       <ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
-        <SelectInput optionText="name" />
+        <SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
 			</ReferenceInput>
 		</SimpleForm>
 	</Edit>
@@ -52,10 +52,10 @@ export const CoinsEdit = () => (
 export const CoinsCreate = () => (
 	<Create title="Create a Coin">
 		<SimpleForm>
-			<TextInput source="name" />
-			<TextInput source="ticker" />
-      <ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
-        <SelectInput optionText="name" />
+			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
+			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
+      <ReferenceInput  label="Blockchain" source="blockchain_id" reference="blockchains">
+        <SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
 			</ReferenceInput>
 		</SimpleForm>
 	</Create>
