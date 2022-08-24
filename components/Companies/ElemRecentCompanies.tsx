@@ -74,11 +74,12 @@ export const ElemRecentCompanies: FC<Props> = ({
 			return item
 		}) : [];
 
-		setCompanies(tempCompanies);
-	}
-
-	const handleNavigation = (link: string) => {
-		router.push(link)
+		setCompanies((prev) => {
+			return [...(prev || [])].map((item: any) => {
+				if (item.id === company.id) return { ...item, sentiment: newSentiment }
+				return item
+			})
+		});
 	}
 
 	return (

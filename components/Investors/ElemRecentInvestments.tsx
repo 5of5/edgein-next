@@ -9,8 +9,6 @@ import {
 	useGetVcFirmsRecentInvestmentsQuery,
 	Vc_Firms,
 } from "@/graphql/types";
-import { ElemButton } from "../ElemButton";
-import { IconCrap, IconHot, IconLike } from "../Icons";
 import { ElemReactions } from "../ElemReactions";
 import { useRouter } from "next/router";
 
@@ -74,15 +72,11 @@ export const ElemRecentInvestments: FC<Props> = ({
 		const newSentiment = await resp.json()
 
 		setVcFirms(prev => {
-		        return [...(prev || [])].map((item: any) => {
-			if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
-			return item;
+			return [...(prev || [])].map((item: any) => {
+				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+				return item;
+			});
 		});
-		});
-	}
-
-	const handleNavigation = (link: string) => {
-		router.push(link)
 	}
 
 	return (

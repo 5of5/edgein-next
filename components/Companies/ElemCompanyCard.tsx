@@ -39,10 +39,6 @@ export const ElemCompanyCard: FC<Props> = ({
     setCompanyData({ ...company, sentiment: newSentiment })
   }
 
-  const handleNavigation = (link: string) => {
-    router.push(link)
-  }
-
   return (
     <Link href={`/companies/${companyData.slug}`}>
       <a

@@ -113,18 +113,12 @@ const Investors: NextPage<Props> = ({
 		});
 		const newSentiment = await resp.json()
 
-		const tempVcFirms = vcFirms ? [...vcFirms].map((item: any) => {
-			if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
-			return item;
-		}) : [];
-
-		setVcFirms(tempVcFirms);
-
-	}
-
-
-	const handleNavigation = (link: string) => {
-		router.push(link)
+		setVcFirms(prev => {
+			return [...(prev || [])].map((item: any) => {
+				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+				return item;
+			});
+		});
 	}
 
 	return (
