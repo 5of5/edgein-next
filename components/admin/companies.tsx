@@ -16,7 +16,17 @@ const postFilters = [
 ];
 
 export const CompanyList = () => (
-  <List filters={postFilters}>
+  
+  <List filters={postFilters}
+    sx={{
+      ".css-gp0tzt-MuiToolbar-root-RaTopToolbar-root": {
+        paddingLeft: 0,
+        paddingRight: 0,
+        position: "absolute",
+        left: "900px",
+      },
+    }}
+  >
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
@@ -58,7 +68,7 @@ export const CompanyList = () => (
       <NumberField source="total_employees" />
       <TextField source="github" />
       <TextField source="notes" />
-      <TextField source="overview" />
+      <TextField cellClassName=" truncate h-5%" source="overview" />
       <TextField source="website" />
       <TextField source="careers_page" />
       <TextField source="company_linkedin" />
@@ -83,7 +93,7 @@ const CompanyTitle = ({ record }: CompanyTitleProps) => {
 
 export const CompanyEdit = () => (
   <Edit title={<CompanyTitle />}>
-    <SimpleForm>
+    <SimpleForm className="border rounded-lg">
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         disabled

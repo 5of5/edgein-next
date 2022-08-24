@@ -48,7 +48,7 @@ const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a
 export const VcFirmEdit = () => (
   <Edit title={<VcFirmTitle />}>
     <SimpleForm>
-      <TextInput disabled source="id" />
+      <TextInput  className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="name"
