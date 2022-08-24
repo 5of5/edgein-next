@@ -6,8 +6,8 @@ const client = algoliasearch(process.env.ALGOLIA_APPLICATION_ID!, process.env.AL
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // get the last sync datetime from db
-  const lastSyncArray = await queryForlastSync(); // todo: add time also
-  if (!lastSyncArray.length) return res.status(405).end(); // last error : text, add winston for logger
+  const lastSyncArray = await queryForlastSync();
+  if (!lastSyncArray.length) return res.status(405).end();
 
   // get last sync info for companies
   const companyLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_companies');
