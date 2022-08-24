@@ -12,6 +12,7 @@ import {
   TextInput,
   required,
   minLength,
+  regex
 } from "react-admin";
 import uniqid from "uniqid";
 
@@ -42,6 +43,7 @@ const VcFirmTitle = ({ record }: TitleProps) => {
 
 const validateName = [required(), minLength(3)];
 const validateSlug = [required(), minLength(3)];
+const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
 
 export const VcFirmEdit = () => (
   <Edit title={<VcFirmTitle />}>
@@ -60,10 +62,12 @@ export const VcFirmEdit = () => (
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="website"
+        validate={validateUrl}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="linkedin"
+        validate={validateUrl}
       />
     </SimpleForm>
   </Edit>
@@ -85,10 +89,12 @@ export const VcFirmCreate = () => (
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="website"
+        validate={validateUrl}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="linkedin"
+        validate={validateUrl}
       />
     </SimpleForm>
   </Create>

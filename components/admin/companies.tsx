@@ -1,6 +1,6 @@
 // in posts.js
 import * as React from "react";
-import {SearchInput,  FormDataConsumer, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue } from 'react-admin';
+import { SearchInput, FormDataConsumer, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import uniqid from 'uniqid';
 var axios = require('axios');
@@ -10,71 +10,72 @@ export const companyIcon = BookIcon;
 const validateName = [required(), minLength(3)];
 const validateSlug = [required(), minLength(3)];
 const validateYearFounded = [number(), minValue(1900), maxValue(2099)];
+const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
 const postFilters = [
   <SearchInput source="name,slug,overview" resettable alwaysOn />
 ];
 
 export const CompanyList = () => (
-    <List filters={postFilters}>
-        <Datagrid> 
-            <TextField source="id" />
-            <TextField source="name" />
-            <TextField source="slug" />
-            <SelectField source="layer" choices={[
-                {
-                    id: "Layer 0",
-                    name: "Layer 0 - Native Code"
-                },
-                {
-                    id: "Layer 1",
-                    name: "Layer 1 - Programmable Blockchains / Networks"
-                },
-                {
-                    id: "Layer 2",
-                    name: "Layer 2 - Nodes / Node Providers / Data Platforms"
-                },
-                {
-                    id: "Layer 3",
-                    name: "Layer 3 - API's / API Providers / Systems"
-                },
-                {
-                    id: "Layer 4",
-                    name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
-                },
-                {
-                    id: "Layer 5",
-                    name: "Layer 5 - Applications"
-                },
-                {
-                    id: "Layer 6",
-                    name: "Layer 6 - Interoperable Digital Assets / NFT's"
-                },
-            ]} />
-            <TextField source="layer_detail" />
-            <ReferenceField label="Coin" source="coin_id" reference="coins">
-                <TextField source="name" />
-            </ReferenceField>
-            <NumberField source="total_employees" />
-            <TextField source="github" />
-            <TextField source="notes" />
-            <TextField source="overview" />
-            <TextField source="website" />
-            <TextField source="careers_page" />
-            <TextField source="company_linkedin" />
-            <TextField source="year_founded" />
-            <TextField source="investor_amount" />
-            <TextField source="total_valuation" />
-            <TextField source="white_paper" />
-            <TextField source="market_verified" />
-            <TextField source="velocity_linkedin" />
-            <TextField source="velocity_token" />
-            <EditButton />
-        </Datagrid>
-    </List>
+  <List filters={postFilters}>
+    <Datagrid>
+      <TextField source="id" />
+      <TextField source="name" />
+      <TextField source="slug" />
+      <SelectField source="layer" choices={[
+        {
+          id: "Layer 0",
+          name: "Layer 0 - Native Code"
+        },
+        {
+          id: "Layer 1",
+          name: "Layer 1 - Programmable Blockchains / Networks"
+        },
+        {
+          id: "Layer 2",
+          name: "Layer 2 - Nodes / Node Providers / Data Platforms"
+        },
+        {
+          id: "Layer 3",
+          name: "Layer 3 - API's / API Providers / Systems"
+        },
+        {
+          id: "Layer 4",
+          name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
+        },
+        {
+          id: "Layer 5",
+          name: "Layer 5 - Applications"
+        },
+        {
+          id: "Layer 6",
+          name: "Layer 6 - Interoperable Digital Assets / NFT's"
+        },
+      ]} />
+      <TextField source="layer_detail" />
+      <ReferenceField label="Coin" source="coin_id" reference="coins">
+        <TextField source="name" />
+      </ReferenceField>
+      <NumberField source="total_employees" />
+      <TextField source="github" />
+      <TextField source="notes" />
+      <TextField source="overview" />
+      <TextField source="website" />
+      <TextField source="careers_page" />
+      <TextField source="company_linkedin" />
+      <TextField source="year_founded" />
+      <TextField source="investor_amount" />
+      <TextField source="total_valuation" />
+      <TextField source="white_paper" />
+      <TextField source="market_verified" />
+      <TextField source="velocity_linkedin" />
+      <TextField source="velocity_token" />
+      <EditButton />
+    </Datagrid>
+  </List>
 );
 
 interface CompanyTitleProps {
-    record?: Record<string, string>;
+  record?: Record<string, string>;
 }
 const CompanyTitle = ({ record }: CompanyTitleProps) => {
   return <span>Company {record ? `"${record.name}"` : ""}</span>;
@@ -149,6 +150,7 @@ export const CompanyEdit = () => (
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="github"
+        validate={validateUrl}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -161,6 +163,7 @@ export const CompanyEdit = () => (
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="website"
+        validate={validateUrl}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -169,13 +172,14 @@ export const CompanyEdit = () => (
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="company_linkedin"
+        validate={validateUrl}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="year_founded"
-        // min="1900"
-        // max="2099"
-        // validate={validateYearFounded}
+      // min="1900"
+      // max="2099"
+      // validate={validateYearFounded}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -206,6 +210,27 @@ export const CompanyEdit = () => (
 );
 
 export const CompanyCreate = () => {
+
+  const getUrl = async(files) => {
+    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
+			method: "POST",
+    }).then(res=> res.json());
+    var data = new FormData();
+    data.append('file', files[0]);
+    console.log("url ==", s3url.url)
+
+    //upload to s3
+    const response = axios.put(s3url.url,data)
+    console.log("s3 response =", response)
+    
+  }
+
+  const onSelect = (files) => {
+    getUrl(files)
+    // call local api to get signnedurl
+   
+  }
+
   return (
     <Create title="Create a Company">
       <SimpleForm defaultValues={{ external_id: uniqid() }}>
@@ -219,6 +244,9 @@ export const CompanyCreate = () => {
           source="slug"
           validate={validateSlug}
         />
+        {/* <FileInput options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+          <ImageField source="src" title="title" />
+        </FileInput> */}
         <SelectField
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="layer"
@@ -270,6 +298,7 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="github"
+          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -282,6 +311,7 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="website"
+          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -290,13 +320,14 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="company_linkedin"
+          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
-          // min="1900"
-          // max="2099"
-          // validate={validateYearFounded}
+        // min="1900"
+        // max="2099"
+        // validate={validateYearFounded}
         />
         <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
