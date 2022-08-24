@@ -11,7 +11,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const isEmailAllowed = await queryForAllowedEmailCheck(email)
 
   // when email does not exist in the allowed emails
-  if (!isEmailAllowed) return res.status(404).send(`Invalid Email`)
+  if (!isEmailAllowed) {
+    // insert user in waitlist table
+    await mutateForWaitlistEmail(email)
+    return res.status(404).send(`Invalid Email`)
+  }
 
   var data = JSON.stringify({
     client_id: process.env.AUTH0_CLIENT_ID,
@@ -21,17 +25,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user_metadata: { role: "user" },
     connection: "Username-Password-Authentication"
   });
-  
-  var config = {
-    method: 'post',
-    url: `${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/signup`,
-    headers: {  'Content-Type': 'application/json' },
-    data
-  };
 
   let result;
     try {
-      result = await axios(config);
+      result = await axios({
+        method: 'post',
+        url: `${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/signup`,
+        headers: {  'Content-Type': 'application/json' },
+        data
+      });
       // upsert user info
       await upsertUser(result.data);
     } catch (ex) {
@@ -65,7 +67,6 @@ const queryForAllowedEmailCheck = async (email: string) => {
 
 // upsert user to local db using graphql
 const upsertUser = async (auth0Data: any) => {
-
   // prepare gql query
   // TODO: in conflict constraint
   const usertQuery = `
@@ -96,7 +97,28 @@ const upsertUser = async (auth0Data: any) => {
     console.log(ex);
     throw ex;
   }
+}
 
+const mutateForWaitlistEmail = async (email: string) => {
+  // prepare gql query
+  const upsertWaitListEmail = `
+  mutation upsert_waitlist_email($email: String) {
+    insert_waitlist_emails(objects: [{email: $email}], on_conflict: {constraint: waitlist_emails_email_key, update_columns: [email]}) {
+      returning {
+        id
+        email
+      }
+    }
+  }
+`
+  try {
+    await mutate({
+      mutation: upsertWaitListEmail,
+      variables: { email }
+    });
+  } catch (e) {
+    throw e
+  }
 }
 
 export default handler
