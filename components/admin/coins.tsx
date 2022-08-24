@@ -1,6 +1,7 @@
 // in posts.js
 import * as React from "react";
 import {
+	SearchInput,
 	List,
 	Datagrid,
 	Edit,
@@ -14,8 +15,12 @@ import {
   SelectInput,
 } from "react-admin";
 
+const postFilters = [
+	<SearchInput source="name" resettable alwaysOn />
+  ];
+
 export const CoinsList = () => (
-	<List>
+	<List filters={postFilters}>
 		<Datagrid>
 			<TextField source="id" />
 			<TextField source="name" />

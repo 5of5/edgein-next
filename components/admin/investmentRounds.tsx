@@ -1,6 +1,7 @@
 // in posts.js
 import * as React from "react";
 import {
+  SearchInput,
   List,
   Datagrid,
   Edit,
@@ -20,8 +21,12 @@ import {
 } from "react-admin";
 import uniqid from "uniqid";
 
+const postFilters = [
+	<SearchInput type="number"  source="amount,valuation" resettable alwaysOn />
+];
+
 export const InvestmentRoundsList = () => (
-  <List>
+  <List filters={postFilters}>
     <Datagrid>
       <TextField source="id" />
       <ReferenceField label="Company" source="company_id" reference="companies">

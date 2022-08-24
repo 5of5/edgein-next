@@ -1,6 +1,6 @@
 // in posts.js
 import * as React from "react";
-import { FormDataConsumer, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue } from 'react-admin';
+import {SearchInput,  FormDataConsumer, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import uniqid from 'uniqid';
 var axios = require('axios');
@@ -10,10 +10,13 @@ export const companyIcon = BookIcon;
 const validateName = [required(), minLength(3)];
 const validateSlug = [required(), minLength(3)];
 const validateYearFounded = [number(), minValue(1900), maxValue(2099)];
+const postFilters = [
+  <SearchInput source="name,slug,overview" resettable alwaysOn />
+];
 
 export const CompanyList = () => (
-    <List>
-        <Datagrid>
+    <List filters={postFilters}>
+        <Datagrid> 
             <TextField source="id" />
             <TextField source="name" />
             <TextField source="slug" />
@@ -167,18 +170,18 @@ export const CompanyEdit = () => (
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="company_linkedin"
       />
-      <NumberInput
+      <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="year_founded"
-        min="1900"
-        max="2099"
-        validate={validateYearFounded}
+        // min="1900"
+        // max="2099"
+        // validate={validateYearFounded}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="investor_amount"
       />
-      <NumberInput
+      <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="total_valuation"
       />
@@ -288,18 +291,18 @@ export const CompanyCreate = () => {
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="company_linkedin"
         />
-        <NumberInput
+        <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
-          min="1900"
-          max="2099"
-          validate={validateYearFounded}
+          // min="1900"
+          // max="2099"
+          // validate={validateYearFounded}
         />
         <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="investor_amount"
         />
-        <NumberInput
+        <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="total_valuation"
         />

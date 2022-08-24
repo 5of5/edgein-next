@@ -1,6 +1,7 @@
 // in posts.js
 import * as React from "react";
 import {
+  SearchInput,
   List,
   Datagrid,
   Edit,
@@ -14,8 +15,12 @@ import {
 } from "react-admin";
 import uniqid from "uniqid";
 
+const postFilters = [
+	<SearchInput source="name,slug" resettable alwaysOn />
+];
+
 export const VcFirmList = () => (
-  <List>
+  <List filters={postFilters}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
