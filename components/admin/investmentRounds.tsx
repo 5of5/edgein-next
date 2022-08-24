@@ -18,6 +18,7 @@ import {
 	DateField,
 	NumberField,
 } from "react-admin";
+import uniqid from 'uniqid';
 
 export const InvestmentRoundsList = () => (
 	<List>
@@ -78,7 +79,7 @@ export const InvestmentRoundsEdit = () => (
 
 export const InvestmentRoundsCreate = () => (
 	<Create title="Create a Investment Round">
-		<SimpleForm>
+		<SimpleForm defaultValues={{ external_id: uniqid() }}>
 			<ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput optionText="name" />
 			</ReferenceInput>
