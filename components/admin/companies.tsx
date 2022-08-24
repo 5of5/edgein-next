@@ -58,7 +58,7 @@ export const CompanyList = () => (
       <NumberField source="total_employees" />
       <TextField source="github" />
       <TextField source="notes" />
-      <TextField source="overview" />
+      <TextField className="w-40 truncate" source="overview" />
       <TextField source="website" />
       <TextField source="careers_page" />
       <TextField source="company_linkedin" />
@@ -220,7 +220,7 @@ export const CompanyCreate = () => {
     console.log("url ==", s3url.url)
 
     //upload to s3
-    const response = axios.put(s3url.url,data)
+    const response = await axios.put(s3url.url,data)
     console.log("s3 response =", response)
     
   }
