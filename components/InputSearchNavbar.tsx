@@ -31,6 +31,7 @@ export const InputSearchNavbar: React.FC<PropsWithChildren<Props>> = ({
 					type="search"
 					name={name}
 					value=""
+					onChange={()=>{}}
 					placeholder={placeholder}
 					onClick={onClick}
 					className={`py-1.5 cursor-pointer pl-10 w-full pr-3 text-dark-500 relative bg-white rounded-md border border-dark-500/10 outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100`}
