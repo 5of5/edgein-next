@@ -10,7 +10,7 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { ElemButton } from "@/components/ElemButton";
-import { IconCash, IconSearch, IconAnnotation, IconHot, IconLike, IconCrap } from "@/components/Icons";
+import { IconCash, IconSearch, IconAnnotation } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -98,6 +98,7 @@ const Investors: NextPage<Props> = ({
 
 	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
 		event.stopPropagation();
+		event.preventDefault();
 		const resp = await fetch("/api/reaction/", {
 			method: "POST",
 			headers: {
@@ -201,46 +202,47 @@ const Investors: NextPage<Props> = ({
 								</>
 							) : (
 								vcFirms?.map((vcfirm) => (
-
-									<div key={vcfirm.id} onClick={() => handleNavigation(`/investors/${vcfirm.slug}`)} className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
-										<div className="flex items-center w-full">
-											<ElemPhoto
-												photo={vcfirm.logo}
-												wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-												imgClass="object-fit max-w-full max-h-full"
-												imgAlt={vcfirm.name}
-											/>
-											<div className="w-full ml-3 space-y-1 overflow-hidden">
-												<h3
-													className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-1 text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
-													title={vcfirm.name ?? ""}
-												>
-													{vcfirm.name}
-												</h3>
-												{vcfirm.num_of_investments !== null &&
-													vcfirm.num_of_investments > 0 && (
-														<div className="inline-flex hover:opacity-70">
-															<IconCash
-																title="Investments"
-																className="w-6 h-6 mr-1 text-primary-500"
-															/>
-															<span className="mr-1 font-bold">
-																{vcfirm.num_of_investments}
-															</span>
-															Investment
-															{vcfirm.num_of_investments > 1 && "s"}
-														</div>
-													)}
+									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
+										<a key={vcfirm.id} className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
+											<div className="flex items-center w-full">
+												<ElemPhoto
+													photo={vcfirm.logo}
+													wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+													imgClass="object-fit max-w-full max-h-full"
+													imgAlt={vcfirm.name}
+												/>
+												<div className="w-full ml-3 space-y-1 overflow-hidden">
+													<h3
+														className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-1 text-dark-500 sm:text-lg md:text-xl group-hover:opacity-60"
+														title={vcfirm.name ?? ""}
+													>
+														{vcfirm.name}
+													</h3>
+													{vcfirm.num_of_investments !== null &&
+														vcfirm.num_of_investments > 0 && (
+															<div className="inline-flex hover:opacity-70">
+																<IconCash
+																	title="Investments"
+																	className="w-6 h-6 mr-1 text-primary-500"
+																/>
+																<span className="mr-1 font-bold">
+																	{vcfirm.num_of_investments}
+																</span>
+																Investment
+																{vcfirm.num_of_investments > 1 && "s"}
+															</div>
+														)}
+												</div>
 											</div>
-										</div>
 
 
-										<div
-											className={`flex w-full mt-6 items-center justify-start`}
-										>
-											<ElemReactions data={vcfirm} handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, vcfirm)()} blackText />
-										</div>
-									</div>
+											<div
+												className={`flex w-full mt-6 items-center justify-start`}
+											>
+												<ElemReactions data={vcfirm} handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, vcfirm)()} blackText />
+											</div>
+										</a>
+									</Link>
 								))
 							)}
 						</div>
@@ -264,7 +266,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetVcFirmsDocument,
 		{ where: { slug: { _neq: "" } } }
 	);
-	
+
 	return {
 		props: {
 			metaTitle: "Web3 Investors - EdgeIn.io",

@@ -18,7 +18,6 @@ import {
 	GetCompanyQuery,
 	Investment_Rounds,
 } from "../../graphql/types";
-import { IconCrap, IconHot, IconLike } from "@/components/Icons";
 import { ElemReactions } from "@/components/ElemReactions";
 
 type Props = {

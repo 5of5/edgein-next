@@ -58,6 +58,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 
 	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
 		event.stopPropagation();
+		event.preventDefault();
 		const resp = await fetch("/api/reaction/", {
 			method: "POST",
 			headers: {
@@ -111,8 +112,8 @@ export const ElemRecentInvestments: FC<Props> = ({
 									key={index}
 									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
-									<div
-										onClick={() => handleNavigation(`/investors/${investor.slug}`)}
+									<a
+										href={`/investors/${investor.slug}`}
 										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
 									>
 										<div className="flex">
@@ -150,7 +151,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 												blackText
 											/>
 										</div>
-									</div>
+									</a>
 								</ElemCarouselCard>
 							);
 						})}

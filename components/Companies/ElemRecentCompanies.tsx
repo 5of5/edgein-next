@@ -55,6 +55,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 	const handleReactionClick = (event: any, sentiment: string, company: Companies) => async () => {
 		event.stopPropagation();
+		event.preventDefault();
 		const resp = await fetch("/api/reaction/", {
 			method: "POST",
 			headers: {
@@ -107,8 +108,8 @@ export const ElemRecentCompanies: FC<Props> = ({
 									key={index}
 									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
-									<div
-										onClick={() => handleNavigation(`/companies/${company.slug}`)}
+									<a
+										href={`/companies/${company.slug}`}
 										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
 									>
 										<div className="flex">
@@ -149,7 +150,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 												blackText
 											/>
 										</div>
-									</div>
+									</a>
 								</ElemCarouselCard>
 							);
 						})}
