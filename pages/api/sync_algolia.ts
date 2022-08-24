@@ -48,19 +48,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             investor.vc_firm_logo = investor.vc_firm.logo.thumbnails.full.url ? investor.vc_firm.logo.thumbnails.full.url : investor.vc_firm.logo.url;
           }
         }
-    
-        if (investor.person) {
-          if (investor.person.id) investor.person_id = investor.person.id;
-          if (investor.person.name) investor.person_name = investor.person.name;
-          if (investor.person.slug) investor.person_slug = investor.person.slug;
-          if (investor.person.picture) {
-            investor.person_picture = investor.person.picture.thumbnails.full.url ? investor.person.picture.thumbnails.full.url : investor.person.picture.url;
-          }
-        }
+
         investor.objectID = investor.id;
         delete investor.id;
         delete investor.vc_firm;
-        delete investor.person;
       }
       const investorIndex = client.initIndex('investors');
       await investorIndex.saveObjects(investorList, { autoGenerateObjectIDIfNotExist: true });
@@ -171,12 +162,6 @@ const queryForInvestorList = async (date: any) => {
         id
         name
         logo
-        slug
-      }
-      person {
-        id
-        name
-        picture
         slug
       }
     }
