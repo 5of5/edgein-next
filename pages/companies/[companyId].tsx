@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticProps } from "next";
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -30,10 +30,27 @@ const Company: NextPage<Props> = (props) => {
 
 	const goBack = () => router.back();
 
-	const company = props.company;
+	const [company, setCompany] = useState(props.company);
 
 	if (!company) {
 		return <h1>Not Found</h1>;
+	}
+
+	const handleReactionClick = (sentiment: string) => async () => {
+		const resp = await fetch("/api/reaction/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ 
+				company: company.id,
+				sentiment,
+				pathname: location.pathname 
+				}),
+		});
+		const newSentiment = await resp.json()
+		setCompany({...company, sentiment: newSentiment})
 	}
 
 	const sortedInvestmentRounds = props.sortRounds;
@@ -79,6 +96,7 @@ const Company: NextPage<Props> = (props) => {
 										{company.coin.ticker}
 									</div>
 								)}
+								<ElemButton onClick={handleReactionClick('rocket')}>Rocket {company.sentiment?.rocket || 0}</ElemButton>
 							</div>
 
 							{company.overview && (

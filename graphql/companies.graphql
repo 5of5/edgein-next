@@ -26,6 +26,7 @@ query GetCompany($slug: String!) {
 		ico_start
 		ico_end
 		audit_file
+		sentiment
 		teamMembers {
 			id
 			person {
