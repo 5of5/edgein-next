@@ -11,6 +11,7 @@ import { InputSelect } from "../components/InputSelect";
 import { ElemButton } from "@/components/ElemButton";
 import { IconCash, IconSearch, IconAnnotation } from "@/components/Icons";
 import {
+	GetVcFirmQuery,
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
 	useGetVcFirmsQuery,
@@ -96,14 +97,14 @@ const Investors: NextPage<Props> = ({
 	}
 	const [vcFirms, setVcFirms] = useState(initialLoad ? initialVCFirms : vcFirmsData?.vc_firms);
 
-	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
+	const handleReactionClick = (event: any, sentiment: string, vcFirm: any) => async () => {
 		event.stopPropagation();
 		event.preventDefault();
 
 		const newSentiment = await reactOnSentiment({
-			vcfirm: vcFirm.id,
+			vcfirm: vcFirm?.id!,
 			sentiment,
-			pathname: `/investors/${vcFirm.slug}`
+			pathname: `/investors/${vcFirm?.slug!}`
 		})
 
 		setVcFirms(prev => {
