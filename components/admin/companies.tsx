@@ -23,7 +23,7 @@ export const CompanyList = () => (
         paddingLeft: 0,
         paddingRight: 0,
         position: "absolute",
-        left: "900px",
+        left: "1200px",
       },
     }}
   >
@@ -67,7 +67,7 @@ export const CompanyList = () => (
       </ReferenceField>
       <NumberField source="total_employees" />
       <TextField source="github" />
-      <TextField source="notes" />
+      <TextField cellClassName=" truncate h-5%" source="notes" />
       <TextField cellClassName=" truncate h-5%" source="overview" />
       <TextField source="website" />
       <TextField source="careers_page" />
