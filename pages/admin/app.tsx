@@ -85,7 +85,7 @@ const AdminApp = () => {
         edit={TeamMembersEdit}
         create={TeamMembersCreate}
       />
-      <Resource
+      {/* <Resource
         name="investors"
         list={InvestorsList}
         edit={InvestorsEdit}
@@ -94,7 +94,7 @@ const AdminApp = () => {
       <Resource
         name="actions"
         list={ActionsList}
-      />
+      /> */}
     </Admin>
   );
 };

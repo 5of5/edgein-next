@@ -22,7 +22,7 @@ export const PeopleList = () => (
 			<TextField source="name" />
 			<TextField source="slug" />
 			<TextField source="github" />
-			<TextInput source="title" />
+			{/* <TextInput source="title" /> */}
 			<TextField source="type" />
 			<TextField source="personal_email" />
 			<TextField source="work_email" />
@@ -51,7 +51,7 @@ export const PeopleEdit = () => (
 			<TextInput source="name" validate={validateName} />
 			<TextInput source="slug" validate={validateSlug} />
 			<TextInput source="github" />
-			<TextInput source="title" />
+			{/* <TextInput source="title" /> */}
 			<TextInput source="type" />
 			<TextInput source="personal_email" validate={validateEmail} />
 			<TextInput source="work_email" validate={validateEmail} />
@@ -66,7 +66,7 @@ export const PeopleCreate = () => (
 			<TextInput source="name" validate={validateName} />
 			<TextInput source="slug" validate={validateSlug} />
 			<TextInput source="github" />
-			<TextInput source="title" />
+			{/* <TextInput source="title" /> */}
 			<TextInput source="type" />
 			<TextInput source="personal_email" validate={validateEmail} />
 			<TextInput source="work_email" validate={validateEmail} />
