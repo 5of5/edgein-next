@@ -1,5 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { increaseResourceSentiment, upsertList } from '@/utils/lists'
+import { increaseResourceSentiment, upsertFollow, upsertList } from '@/utils/lists'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -29,7 +29,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // upsertList
   const list = await upsertList(listname, user, token)
   // insert follow
-  const follow = true || await upsertFollow() // added true to skip error
+  const follow = await upsertFollow(list, resourceId, resourceType, user, token)
 
   const { sentiment, revalidatePath } = await increaseResourceSentiment(resourceType, resourceId, token, sentimentType, Boolean(follow))
   if (revalidatePath) {
@@ -66,7 +66,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 export default handler
-
-function upsertFollow() {
-  throw new Error('Function not implemented.')
-}
