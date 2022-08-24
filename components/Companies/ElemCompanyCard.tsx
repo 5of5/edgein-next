@@ -1,9 +1,9 @@
+import { reactOnSentiment } from "@/utils/reaction";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { ElemCredibility } from "../Company/ElemCredibility";
 import { ElemVelocity } from "../Company/ElemVelocity";
-import { ElemButton } from "../ElemButton";
 import { ElemPhoto } from "../ElemPhoto";
 import { ElemReactions } from "../ElemReactions";
 import { ElemTooltip } from "../ElemTooltip";
@@ -23,19 +23,12 @@ export const ElemCompanyCard: FC<Props> = ({
   const handleReactionClick = (event: any, sentiment: string) => async () => {
     event.stopPropagation();
     event.preventDefault();
-    const resp = await fetch("/api/reaction/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        company: company.id,
-        sentiment,
-        pathname: company.slug
-      }),
-    });
-    const newSentiment = await resp.json()
+    
+    const newSentiment = await reactOnSentiment({
+      company: company.id,
+      sentiment,
+      pathname: `/companies/${company.slug}`
+    })
     setCompanyData({ ...company, sentiment: newSentiment })
   }
 

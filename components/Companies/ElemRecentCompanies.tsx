@@ -11,6 +11,7 @@ import {
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
 import { useRouter } from "next/router";
+import { reactOnSentiment } from "@/utils/reaction";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -56,23 +57,12 @@ export const ElemRecentCompanies: FC<Props> = ({
 	const handleReactionClick = (event: any, sentiment: string, company: Companies) => async () => {
 		event.stopPropagation();
 		event.preventDefault();
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`
-			}),
-		});
-		const newSentiment = await resp.json()
-		const tempCompanies = companies ? [...companies].map((item: any) => {
-			if (item.id === company.id) return { ...item, sentiment: newSentiment }
-			return item
-		}) : [];
+		
+		const newSentiment = await reactOnSentiment({
+			company: company.id,
+			sentiment,
+			pathname: `/companies/${company.slug}`
+		})
 
 		setCompanies((prev) => {
 			return [...(prev || [])].map((item: any) => {

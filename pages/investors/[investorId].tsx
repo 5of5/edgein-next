@@ -17,8 +17,8 @@ import {
 	Investment_Rounds,
 	Vc_Firms,
 } from "../../graphql/types";
-import { IconCrap, IconHot, IconLike } from "@/components/Icons";
 import { ElemReactions } from "@/components/ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -33,19 +33,13 @@ const VCFirm: NextPage<Props> = (props) => {
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 
 	const handleReactionClick = (event: any, sentiment: string) => async () => {
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				vcfirm: vcfirm.id,
-				sentiment,
-				pathname: location.pathname
-			}),
+		
+		const newSentiment = await reactOnSentiment({
+			vcfirm: vcfirm.id,
+			sentiment,
+			pathname: location.pathname
 		});
-		const newSentiment = await resp.json()
+
 		setVcfirm({ ...vcfirm, sentiment: newSentiment })
 	}
 

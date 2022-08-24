@@ -5,7 +5,6 @@ import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
-import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
@@ -19,6 +18,7 @@ import {
 	Investment_Rounds,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
 
 type Props = {
 	company: Companies;
@@ -38,19 +38,13 @@ const Company: NextPage<Props> = (props) => {
 	}
 
 	const handleReactionClick = (event: any, sentiment: string) => async () => {
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				company: company.id,
-				sentiment,
-				pathname: location.pathname
-			}),
+		
+		const newSentiment: any = await reactOnSentiment({
+			company: company.id,
+			sentiment,
+			pathname: location.pathname
 		});
-		const newSentiment = await resp.json()
+		
 		setCompany({ ...company, sentiment: newSentiment })
 	}
 

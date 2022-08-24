@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
 import Link from "next/link";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
@@ -24,6 +23,7 @@ import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import { useRouter } from "next/router";
+import { reactOnSentiment } from "@/utils/reaction";
 
 type Props = {
 	vcFirmCount: number;
@@ -99,19 +99,12 @@ const Investors: NextPage<Props> = ({
 	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
 		event.stopPropagation();
 		event.preventDefault();
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				vcfirm: vcFirm.id,
-				sentiment,
-				pathname: `/investors/${vcFirm.slug}`
-			}),
-		});
-		const newSentiment = await resp.json()
+
+		const newSentiment = await reactOnSentiment({
+			vcfirm: vcFirm.id,
+			sentiment,
+			pathname: `/investors/${vcFirm.slug}`
+		})
 
 		setVcFirms(prev => {
 			return [...(prev || [])].map((item: any) => {
