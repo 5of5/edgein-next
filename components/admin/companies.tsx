@@ -58,7 +58,7 @@ export const CompanyList = () => (
       <NumberField source="total_employees" />
       <TextField source="github" />
       <TextField source="notes" />
-      <TextField className="w-40 truncate" source="overview" />
+      <TextField source="overview" />
       <TextField source="website" />
       <TextField source="careers_page" />
       <TextField source="company_linkedin" />
