@@ -49,12 +49,9 @@ type CompaniesHitProps = {
 
 type InvestorsHitProps = {
   hit: AlgoliaHit<{
-    person_name: string;
     vc_firm_name: string;
-    person_picture: string;
     vc_firm_logo: string;
     vc_firm_slug: string;
-    person_slug: string;
   }>;
 };
 
@@ -73,9 +70,6 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
     <div>
       <a href={`/companies/${hit.slug}`}>
         <div className=" my-3 flex flex-row flex-start">
-          {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
-          {/* <span className="Hit-price">{hit.name}</span>
-              <span className="Hit-price">{hit.overview}</span> */}
           <img
             className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
             src={hit.logo}
@@ -96,20 +90,16 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 function InvestorsHit({ hit }: InvestorsHitProps) {
   return (
     <div>
-      <a href={(hit.person_slug) ? `/people/${hit.person_slug}` : `/investors/${hit.vc_firm_slug}`}>
+      <a href={`/investors/${hit.vc_firm_slug}`}>
         <div className=" my-2 flex flex-row flex-start">
-          {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
-          {/* <span className="Hit-price">{hit.name}</span>
-              <span className="Hit-price">{hit.overview}</span> */}
           <img
             className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
-            src={(hit.vc_firm_slug) ? hit.vc_firm_logo : hit.person_picture}
-            alt={(hit.vc_firm_slug) ? hit.vc_firm_logo : hit.person_picture}
+            src={hit.vc_firm_logo }
+            alt={hit.vc_firm_logo }
           />
           <h1 className=" mt-2 ml-2 text-xs">
-            <b>{(hit.vc_firm_slug) ? hit.vc_firm_name: hit.person_name}</b>
+            <b>{hit.vc_firm_name}</b>
           </h1>
-          {/* <p className="ml-5 mt-2 text-xs">{hit.person_name}</p> */}
         </div>
       </a>
     </div>
@@ -121,9 +111,6 @@ function PeopleHit({ hit }: PeopleHitProps) {
     <div>
       <a href={`/people/${hit.slug}`}>
         <div className="my-2 flex flex-row flex-start">
-          {/* <Highlight hit={hit} attribute="name" className="Hit-label" /> */}
-          {/* <span className="Hit-price">{hit.name}</span>
-              <span className="Hit-price">{hit.overview}</span> */}
           <img
             className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
             src={hit.picture}
@@ -147,7 +134,6 @@ export default function SearchModal(props: any) {
   return (
     <Modal
       isOpen={props.show}
-      // onAfterOpen={afterOpenModal}
       onRequestClose={onClose}
       style={customStyles}
       contentLabel="Login Modal"
@@ -169,10 +155,8 @@ export default function SearchModal(props: any) {
             <hr className="max-w-8xl mt-3 -ml-10 -mr-8 "></hr>
             <Configure
               analytics={false}
-              // filters="free_shipping:true"
               hitsPerPage={3}
             />
-            {/* <InfiniteHits showPrevious={false} hitComponent={Hit} /> */}
             <Index indexName="companies">
               <h1 className="font-bold my-1">Companies</h1>
               <InfiniteHits
