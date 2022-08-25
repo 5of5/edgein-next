@@ -1,4 +1,4 @@
-query GetCompany($slug: String!) {
+query GetCompany($slug: String!, $current_user: Int) {
 	companies(where: { slug: { _eq: $slug } }) {
 		id
 		name
@@ -61,6 +61,11 @@ query GetCompany($slug: String!) {
 				}
 			}
 		}
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
@@ -100,6 +105,7 @@ query GetCompaniesRecent(
 	$limit: Int
 	$offset: Int
 	$where: companies_bool_exp!
+	$current_user: Int
 ) {
 	companies(
 		where: $where
@@ -116,6 +122,11 @@ query GetCompaniesRecent(
 		investor_amount
 		date_added
 		sentiment
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
