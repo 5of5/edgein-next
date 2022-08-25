@@ -19,7 +19,7 @@ import {
 var axios = require('axios');
 
 const postFilters = [
-	<SearchInput source="name,slug,type" resettable alwaysOn />
+	<SearchInput key="search" source="name,slug,type" resettable alwaysOn />
 ];
 export const PeopleList = () => (
 	<List filters={postFilters}>

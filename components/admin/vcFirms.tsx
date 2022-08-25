@@ -16,7 +16,7 @@ import {
 } from "react-admin";
 
 const postFilters = [
-	<SearchInput source="name,slug" resettable alwaysOn />
+	<SearchInput key="search" source="name,slug" resettable alwaysOn />
 ];
 
 export const VcFirmList = () => (

@@ -21,7 +21,7 @@ import {
 } from "react-admin";
 
 const postFilters = [
-	<SearchInput type="number"  source="amount,valuation" resettable alwaysOn />
+	<SearchInput key="search" type="number"  source="amount,valuation" resettable alwaysOn />
 ];
 
 export const InvestmentRoundsList = () => (

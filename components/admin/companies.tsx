@@ -11,7 +11,7 @@ const validateSlug = [required(), minLength(3)];
 const validateYearFounded = [number(), minValue(1900), maxValue(2099)];
 const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
 const postFilters = [
-  <SearchInput source="name,slug,overview" resettable alwaysOn />
+  <SearchInput key="search" source="name,slug,overview,notes" resettable alwaysOn />
 ];
 
 export const CompanyList = () => (

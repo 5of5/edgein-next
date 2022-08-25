@@ -13,7 +13,7 @@ import {
 } from "react-admin";
 
 const postFilters = [
-  <SearchInput source="name" resettable alwaysOn />
+  <SearchInput key="search" source="name" resettable alwaysOn />
 ];
 
 export const BlockchainsList = () => (

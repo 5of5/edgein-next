@@ -21,7 +21,7 @@ import {
 } from "react-admin";
 
 const postFilters = [
-	<SearchInput source="function,seniority,title" resettable alwaysOn />
+	<SearchInput key="search" source="function,seniority,title" resettable alwaysOn />
 ];
 
 export const TeamMembersList = () => (
