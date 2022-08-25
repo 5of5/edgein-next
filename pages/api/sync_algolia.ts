@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const companyList = await queryForCompanyList(companyLastSync.value);
       for (const company of companyList) {
         if (company.logo) {
-          company.logo = company.logo.thumbnails.full.url ? company.logo.thumbnails.full.url : company.logo.url;
+          company.logo = company.logo.url;
         }
         company.objectID = company.id;
         delete company.id;
@@ -45,7 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           if (investor.vc_firm.name) investor.vc_firm_name = investor.vc_firm.name;
           if (investor.vc_firm.slug) investor.vc_firm_slug = investor.vc_firm.slug;
           if (investor.vc_firm.logo) {
-            investor.vc_firm_logo = investor.vc_firm.logo.thumbnails.full.url ? investor.vc_firm.logo.thumbnails.full.url : investor.vc_firm.logo.url;
+            investor.vc_firm_logo = investor.vc_firm.logo.url;
           }
         }
 
@@ -72,7 +72,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         const peopleList = await queryForPeopleList(peopleLastSync.value);
         for (const people of peopleList) {
           if (people.picture) {
-            people.picture = people.picture.thumbnails.full.url ? people.picture.thumbnails.full.url : people.picture.url;
+            people.picture = people.picture.url;
           }
           people.objectID = people.id;
           delete people.id;
