@@ -54,14 +54,14 @@ const VCFirm: NextPage<Props> = (props) => {
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
 	return (
-		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
+		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
 				</ElemButton>
 			</div>
 
-			<div className="flex flex-col md:grid md:grid-cols-3 gap-5 my-8">
+			<div className="flex flex-col gap-5 my-8 md:grid md:grid-cols-3">
 				<div className="col-span-1">
 					<ElemPhoto
 						photo={vcfirm.logo}
@@ -71,7 +71,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="w-full col-span-2 p-2">
-					<h1 className="text-4xl md:text-6xl font-bold my-5">{vcfirm.name}</h1>
+					<h1 className="my-5 text-4xl font-bold md:text-6xl">{vcfirm.name}</h1>
 					<ElemButton onClick={handleReactionClick('rocket')}>Rocket {vcfirm.sentiment?.rocket || 0}</ElemButton>
 					<ElemKeyInfo
 						heading=""
@@ -87,7 +87,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					<h2 className="text-2xl font-bold">Investments</h2>
 
 					<ElemTable
-						className="mt-3 w-full"
+						className="w-full mt-3"
 						columns={[
 							{ label: "Company" },
 							{ label: "Round" },
@@ -113,7 +113,7 @@ const VCFirm: NextPage<Props> = (props) => {
 												href={`/companies/${theRound.company.slug}`}
 												key={theRound.company.id}
 											>
-												<a className="investor inline-flex items-center hover:opacity-70">
+												<a className="inline-flex items-center investor hover:opacity-70">
 													<ElemPhoto
 														photo={theRound.company.logo}
 														wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
@@ -163,7 +163,7 @@ const VCFirm: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(
-		`{vc_firms(where: {slug: {_neq: ""}}) { name, slug, logo}}`
+		`{vc_firms(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { name, slug, logo}}`
 	);
 
 	return {
