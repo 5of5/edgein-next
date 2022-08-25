@@ -46,6 +46,23 @@ export const InvestmentRoundsList = () => (
         ]}
       />
       <NumberField source="amount" />
+      <SelectField
+        source="currency"
+        choices={[
+          {
+            id: "USD",
+            name: "USD",
+          },
+          {
+            id: "INR",
+            name: "INR",
+          },
+          {
+            id: "EUR",
+            name: "EUR",
+          },
+        ]}
+      />
       <NumberField source="valuation" />
       <EditButton />
     </Datagrid>
@@ -93,6 +110,24 @@ export const InvestmentRoundsEdit = () => (
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="amount"
       />
+      <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="currency"
+        choices={[
+          {
+            id: "USD",
+            name: "USD",
+          },
+          {
+            id: "INR",
+            name: "INR",
+          },
+          {
+            id: "EUR",
+            name: "EUR",
+          },
+        ]}
+      />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="valuation"
@@ -131,6 +166,24 @@ export const InvestmentRoundsCreate = () => (
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="amount"
+      />
+      <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="currency"
+        choices={[
+          {
+            id: "USD",
+            name: "USD",
+          },
+          {
+            id: "INR",
+            name: "INR",
+          },
+          {
+            id: "EUR",
+            name: "EUR",
+          },
+        ]}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

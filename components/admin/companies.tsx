@@ -1,6 +1,6 @@
 // in posts.js
 import * as React from "react";
-import { SearchInput, FormDataConsumer, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
+import { SearchInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 var axios = require('axios');
 // import { S3FileInput } from '@fusionworks/ra-s3-input';
@@ -15,7 +15,7 @@ const postFilters = [
 ];
 
 export const CompanyList = () => (
-  
+
   <List filters={postFilters}
     sx={{
       ".css-gp0tzt-MuiToolbar-root-RaTopToolbar-root": {
@@ -30,6 +30,7 @@ export const CompanyList = () => (
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="slug" />
+      <ImageField source="logo.url" label="Logo" />
       <SelectField source="layer" choices={[
         {
           id: "Layer 0",
@@ -90,8 +91,74 @@ const CompanyTitle = ({ record }: CompanyTitleProps) => {
   return <span>Company {record ? `"${record.name}"` : ""}</span>;
 };
 
-export const CompanyEdit = () => (
-  <Edit title={<CompanyTitle />}>
+export const CompanyEdit = () => {
+
+  const [logo, setLogo] = React.useState(null)
+  const [oldLogo, setOldLogo] = React.useState(null)
+  const [isImageUpdated, setIsImageUpdated] = React.useState(false)
+
+  const getUrl = async (files: any) => {
+    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({fileType: files.type})
+    }).then(res => res.json());
+   
+     //upload to s3
+    const response = await axios.put(s3url.url, files)
+    return s3url
+  }
+
+  const deleteFile = async (file : any) => {
+    const response = await fetch(`/api/deleteS3Image?file=${file.filename}`, {
+      method: "GET"
+    }).then(res => res.json());
+  }
+
+  const transform = async (data: any) => {
+   var formdata = {...data};
+   if(oldLogo){
+    //delete old file from s3
+    deleteFile(oldLogo)
+  }
+   if(logo){
+     const res = await getUrl(logo);
+      formdata = {
+        ...data,
+        coin_id: (!data.coin_id) ? null : data.coin_id,
+        logo: res.file
+      }
+      return formdata
+   }else {
+    formdata = {
+      ...data,
+      coin_id: (!data.coin_id) ? null : data.coin_id
+    }
+    return formdata
+   }
+  };
+
+  const onSelect = (files: any) => {
+    if(files && files.length > 0){
+      setLogo(files[0])
+    }else{
+      setLogo(null)
+    }
+  }
+
+  const onDropRejected = (files: any) => {
+    if(files.id){
+      setOldLogo(files)
+    }
+    setIsImageUpdated(true)
+    setLogo(null)
+  }
+
+return(
+  <Edit title={<CompanyTitle />} transform={transform}>
     <SimpleForm className="border rounded-lg">
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -108,6 +175,13 @@ export const CompanyEdit = () => (
         source="slug"
         validate={validateSlug}
       />
+       <FileInput onRemove={onDropRejected} options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+          <ImageField source="src" title="title" />
+        </FileInput>
+      {
+        (!logo && !isImageUpdated) &&
+        <ImageField source="logo.url" title="Logo" />
+      }
       <SelectField
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="layer"
@@ -216,32 +290,62 @@ export const CompanyEdit = () => (
       />
     </SimpleForm>
   </Edit>
-);
+)
+};
 
 export const CompanyCreate = () => {
 
-  const getUrl = async(files) => {
-    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-			method: "POST",
-    }).then(res=> res.json());
-    var data = new FormData();
-    data.append('file', files[0]);
-    console.log("url ==", s3url.url)
+  const [logo, setLogo] = React.useState(null)
 
-    //upload to s3
-    const response = await axios.put(s3url.url,data)
-    console.log("s3 response =", response)
-    
+  const getUrl = async (files: any) => {
+    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({fileType: files.type})
+    }).then(res => res.json());
+   
+     //upload to s3
+    const response = await axios.put(s3url.url, files)
+    return s3url
+
   }
 
-  const onSelect = (files) => {
-    getUrl(files)
-    // call local api to get signnedurl
-   
+  const transform = async (data: any) => {
+   var formdata = {...data};
+   if(logo){
+     const res = await getUrl(logo);
+      formdata = {
+        ...data,
+        coin_id: (!data.coin_id) ? null : data.coin_id,
+        logo: res.file
+      }
+      return formdata
+   }else {
+    formdata = {
+      ...data,
+      coin_id: (!data.coin_id) ? null : data.coin_id
+    }
+    return formdata
+   }
+  };
+
+  const onSelect = (files: any) => {
+    if(files && files.length > 0){
+      setLogo(files[0])
+    }else{
+      setLogo(null)
+    }
+  }
+
+  const onDropRejected = (files: any) => {
+    setLogo(null)
   }
 
   return (
-    <Create title="Create a Company">
+    <Create title="Create a Company" transform={transform}>
       <SimpleForm>
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -253,9 +357,9 @@ export const CompanyCreate = () => {
           source="slug"
           validate={validateSlug}
         />
-        {/* <FileInput options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+        <FileInput onRemove={onDropRejected} options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
-        </FileInput> */}
+        </FileInput>
         <SelectField
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="layer"
