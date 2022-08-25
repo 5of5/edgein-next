@@ -30,7 +30,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	const offset = null;
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, date_added: { _neq: new Date(0) } }],
+		_and: [{ slug: { _neq: "" }, date_added: { _neq: new Date(0) }, status: { _eq: "published" } }],
 	};
 
 	const {
@@ -52,11 +52,11 @@ export const ElemRecentCompanies: FC<Props> = ({
 				<h4>Error loading companies</h4>
 			) : isLoading ? (
 				<>
-					<div className="mt-2 p-3 flex overflow-hidden bg-white rounded-lg">
+					<div className="flex p-3 mt-2 overflow-hidden bg-white rounded-lg">
 						{Array.from({ length: 3 }, (_, i) => (
 							<div
 								key={i}
-								className="shrink-0 p-3 basis-full sm:basis-1/2 lg:basis-1/3"
+								className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
 							>
 								<PlaceholderRecentCompanyCard />
 							</div>
@@ -74,7 +74,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 								>
 									<a
 										href={`/companies/${company.slug}`}
-										className="flex flex-col h-full w-full z-0 group border border-dark-500/10 bg-white rounded-lg p-5 transition-all hover:scale-102 hover:shadow-lg"
+										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
 									>
 										<div className="flex">
 											<ElemPhoto
@@ -85,12 +85,12 @@ export const ElemRecentCompanies: FC<Props> = ({
 											/>
 
 											<div className="flex items-center justify-center pl-2 md:overflow-hidden">
-												<h3 className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60">
+												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60">
 													{company.name}
 												</h3>
 											</div>
 										</div>
-										<div className="mt-4 grow line-clamp-3 text-gray-400">
+										<div className="mt-4 text-gray-400 grow line-clamp-3">
 											{company.overview}
 										</div>
 										<div className="mt-3 text-xs font-bold text-gray-400">

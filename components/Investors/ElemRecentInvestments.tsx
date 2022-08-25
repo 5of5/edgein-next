@@ -30,7 +30,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 	const offset = null;
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
 
 	const {
@@ -52,11 +52,11 @@ export const ElemRecentInvestments: FC<Props> = ({
 				<h4>Error loading investors</h4>
 			) : isLoading ? (
 				<>
-					<div className="mt-2 p-3 flex overflow-hidden bg-white rounded-lg">
+					<div className="flex p-3 mt-2 overflow-hidden bg-white rounded-lg">
 						{Array.from({ length: 3 }, (_, i) => (
 							<div
 								key={i}
-								className="shrink-0 p-3 basis-full sm:basis-1/2 lg:basis-1/3"
+								className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
 							>
 								<PlaceholderInvestorRecentInvestmentsCard />
 							</div>
@@ -74,7 +74,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 								>
 									<a
 										href={`/investors/${investor.slug}`}
-										className="flex flex-col h-full w-full z-0 group border border-dark-500/10 bg-white rounded-lg p-5 transition-all hover:scale-102 hover:shadow-lg"
+										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
 									>
 										<div className="flex">
 											<ElemPhoto
@@ -85,7 +85,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 											/>
 
 											<div className="flex items-center justify-center pl-2 md:overflow-hidden">
-												<h3 className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60">
+												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60">
 													{investor.name}
 												</h3>
 											</div>
