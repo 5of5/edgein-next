@@ -1,17 +1,11 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
-import Link from "next/link";
 import { ElemHeading } from "../components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { ElemPhoto } from "../components/ElemPhoto";
-import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
-import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { ElemButton } from "@/components/ElemButton";
 import { runGraphQl } from "../utils";
 import {
@@ -152,6 +146,8 @@ const Companies: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
+		// TODO: pass logged in user's id
+		current_user: user?.id ?? 0
 	});
 
 	const { mutate: insertAction } = useInsertActionMutation();
@@ -162,6 +158,7 @@ const Companies: NextPage<Props> = ({
 		companiesData?.companies.length === 0 &&
 		!savedEmptySearches.includes(debouncedSearchTerm)
 	) {
+
 		insertAction({
 			action: "Empty Search",
 			page: location.pathname,
@@ -181,6 +178,7 @@ const Companies: NextPage<Props> = ({
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
+
 	const companies = initialLoad ? initialCompanies : companiesData?.companies;
 
 	return (
@@ -316,7 +314,7 @@ const Companies: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
-		{ where: { slug: { _neq: "" } } }
+		{ where: { slug: { _neq: "" } }, current_user: 0 }
 	);
 
 	return {

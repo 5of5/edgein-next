@@ -1459,6 +1459,8 @@ export type Follows_Companies = {
   company: Maybe<Companies>;
   created_by_user_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  list: Maybe<Lists>;
   list_id: Maybe<Scalars['Int']>;
   resource_id: Maybe<Scalars['Int']>;
   resource_type: Maybe<Scalars['String']>;
@@ -1539,6 +1541,7 @@ export type Follows_Companies_Bool_Exp = {
   company: InputMaybe<Companies_Bool_Exp>;
   created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  list: InputMaybe<Lists_Bool_Exp>;
   list_id: InputMaybe<Int_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
   resource_type: InputMaybe<String_Comparison_Exp>;
@@ -1557,6 +1560,7 @@ export type Follows_Companies_Insert_Input = {
   company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
   created_by_user_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  list: InputMaybe<Lists_Obj_Rel_Insert_Input>;
   list_id: InputMaybe<Scalars['Int']>;
   resource_id: InputMaybe<Scalars['Int']>;
   resource_type: InputMaybe<Scalars['String']>;
@@ -1614,6 +1618,7 @@ export type Follows_Companies_Order_By = {
   company: InputMaybe<Companies_Order_By>;
   created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  list: InputMaybe<Lists_Order_By>;
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   resource_type: InputMaybe<Order_By>;
@@ -7095,11 +7100,12 @@ export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  current_user: InputMaybe<Scalars['Int']>;
   where: Companies_Bool_Exp;
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', ticker: string } | null }> };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
 
 export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -7264,7 +7270,7 @@ useGetCompanyQuery.getKey = (variables: GetCompanyQueryVariables) => ['GetCompan
 
 useGetCompanyQuery.fetcher = (variables: GetCompanyQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyQuery, GetCompanyQueryVariables>(GetCompanyDocument, variables, options);
 export const GetCompaniesDocument = `
-    query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
+    query GetCompanies($limit: Int, $offset: Int, $current_user: Int, $where: companies_bool_exp!) {
   companies(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
     id
     name
@@ -7283,6 +7289,11 @@ export const GetCompaniesDocument = `
     market_verified
     velocity_linkedin
     velocity_token
+    follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
   }
 }
     `;

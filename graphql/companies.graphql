@@ -64,7 +64,7 @@ query GetCompany($slug: String!) {
 	}
 }
 
-query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
+query GetCompanies($limit: Int, $offset: Int, $current_user: Int, $where: companies_bool_exp!) {
 	companies(
 		where: $where
 		order_by: { slug: asc }
@@ -88,6 +88,11 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 		market_verified
 		velocity_linkedin
 		velocity_token
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 

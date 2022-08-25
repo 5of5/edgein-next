@@ -1,4 +1,5 @@
 import { Companies, Vc_Firms } from "@/graphql/types";
+import { findIndex } from "lodash";
 import { FC } from "react";
 import { ElemButton } from "./ElemButton";
 import { IconCrap } from "./reactions/IconCrap";
@@ -19,6 +20,7 @@ type Props = {
   | "ol-primary"
   | "";
   roundedFull?: boolean
+  follows?: any[]
 }
 
 export const ElemReactions: FC<Props> = ({
@@ -26,8 +28,25 @@ export const ElemReactions: FC<Props> = ({
   handleReactionClick,
   blackText,
   btn,
-  roundedFull
+  roundedFull,
+  follows
 }) => {
+
+  const hot = findIndex(follows, (item) => {
+    const fragments = item.list.name.split('-');
+    return fragments[fragments.length - 1] === 'hot';
+  })
+
+  const like = findIndex(follows, (item) => {
+    const fragments = item.list.name.split('-');
+    return fragments[fragments.length - 1] === 'like';
+  })
+
+  const crap = findIndex(follows, (item) => {
+    const fragments = item.list.name.split('-');
+    return fragments[fragments.length - 1] === 'crap';
+  })
+
   return (
     <>
       <ElemButton
@@ -35,6 +54,7 @@ export const ElemReactions: FC<Props> = ({
         className={`px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
+        disabled={hot !== -1}
       ><IconHot className="mr-1" /> {data?.sentiment?.hot || 0}
       </ElemButton>
       <ElemButton
@@ -42,6 +62,7 @@ export const ElemReactions: FC<Props> = ({
         className={`px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
+        disabled={like !== -1}
       ><IconLike className="mr-1" /> {data?.sentiment?.like || 0}
       </ElemButton>
       <ElemButton
@@ -49,6 +70,7 @@ export const ElemReactions: FC<Props> = ({
         className={`px-1${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
+        disabled={crap !== -1}
       ><IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
       </ElemButton>
     </>

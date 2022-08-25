@@ -1,6 +1,5 @@
 import { reactOnSentiment } from "@/utils/reaction";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { ElemCredibility } from "../Company/ElemCredibility";
 import { ElemVelocity } from "../Company/ElemVelocity";
@@ -17,7 +16,6 @@ export const ElemCompanyCard: FC<Props> = ({
   company,
   toggleViewMode
 }) => {
-  const router = useRouter()
   const [companyData, setCompanyData] = useState(company);
 
   const handleReactionClick = (event: any, sentiment: string) => async () => {
@@ -122,6 +120,7 @@ export const ElemCompanyCard: FC<Props> = ({
             data={companyData}
             handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}
             blackText
+            follows={companyData.follows}
           />
         </div>
 
