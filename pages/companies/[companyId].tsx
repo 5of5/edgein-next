@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticProps } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -16,9 +16,11 @@ import {
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
+	useGetCompanyQuery,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	company: Companies;
@@ -26,6 +28,7 @@ type Props = {
 };
 
 const Company: NextPage<Props> = (props) => {
+	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
 
@@ -33,18 +36,32 @@ const Company: NextPage<Props> = (props) => {
 
 	const [company, setCompany] = useState(props.company);
 
+	const {
+		data: conpanyData,
+		error,
+		isLoading,
+	} = useGetCompanyQuery({
+		slug: companyId as string,
+		current_user: user?.id ?? 0
+	});
+
+	useEffect(() => {
+		if (conpanyData)
+			setCompany(conpanyData?.companies[0] as Companies)
+	}, [conpanyData])
+
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
 
 	const handleReactionClick = (event: any, sentiment: string) => async () => {
-		
+
 		const newSentiment: any = await reactOnSentiment({
 			company: company.id,
 			sentiment,
 			pathname: location.pathname
 		});
-		
+
 		setCompany({ ...company, sentiment: newSentiment })
 	}
 
@@ -198,7 +215,7 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId }
+		{ slug: context.params?.companyId, current_user: 0 }
 	);
 
 	if (!companies?.companies[0]) {

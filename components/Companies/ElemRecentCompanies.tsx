@@ -10,8 +10,8 @@ import {
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
-import { useRouter } from "next/router";
 import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -30,6 +30,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
+	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -45,6 +46,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
+		current_user: user?.id ?? 0
 	});
 
 	const [companies, setCompanies] = useState(companiesData?.companies);
@@ -52,12 +54,11 @@ export const ElemRecentCompanies: FC<Props> = ({
 	useEffect(() => {
 		setCompanies(companiesData?.companies)
 	}, [companiesData?.companies])
-	const router = useRouter();
-
+	
 	const handleReactionClick = (event: any, sentiment: string, company: Companies) => async () => {
 		event.stopPropagation();
 		event.preventDefault();
-		
+
 		const newSentiment = await reactOnSentiment({
 			company: company.id,
 			sentiment,

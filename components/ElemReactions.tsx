@@ -1,6 +1,6 @@
 import { Companies, Vc_Firms } from "@/graphql/types";
 import { findIndex } from "lodash";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ElemButton } from "./ElemButton";
 import { IconCrap } from "./reactions/IconCrap";
 import { IconHot } from "./reactions/IconHot";
@@ -20,7 +20,6 @@ type Props = {
   | "ol-primary"
   | "";
   roundedFull?: boolean
-  follows?: any[]
 }
 
 export const ElemReactions: FC<Props> = ({
@@ -28,24 +27,30 @@ export const ElemReactions: FC<Props> = ({
   handleReactionClick,
   blackText,
   btn,
-  roundedFull,
-  follows
+  roundedFull
 }) => {
 
-  const hot = findIndex(follows, (item) => {
-    const fragments = item.list.name.split('-');
-    return fragments[fragments.length - 1] === 'hot';
-  })
+  const [hot, setHot] = useState(-1);
+  const [like, setLike] = useState(-1);
+  const [crap, setCrap] = useState(-1);
 
-  const like = findIndex(follows, (item) => {
-    const fragments = item.list.name.split('-');
-    return fragments[fragments.length - 1] === 'like';
-  })
+  useEffect(() => {
+    setHot(() => findIndex(data.follows, (item: any) => {
+      const fragments = item.list.name.split('-');
+      return fragments[fragments.length - 1] === 'hot';
+    }))
 
-  const crap = findIndex(follows, (item) => {
-    const fragments = item.list.name.split('-');
-    return fragments[fragments.length - 1] === 'crap';
-  })
+    setLike(findIndex(data.follows, (item: any) => {
+      const fragments = item.list.name.split('-');
+      return fragments[fragments.length - 1] === 'like';
+    }))
+
+    setCrap(findIndex(data.follows, (item: any) => {
+      const fragments = item.list.name.split('-');
+      return fragments[fragments.length - 1] === 'crap';
+    }))
+
+  }, [data]);
 
   return (
     <>

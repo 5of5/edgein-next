@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,12 +13,15 @@ import {
 	runGraphQl,
 } from "../../utils";
 import {
+	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
+	useGetVcFirmQuery,
 	Vc_Firms,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -26,14 +29,33 @@ type Props = {
 };
 
 const VCFirm: NextPage<Props> = (props) => {
+	const { user } = useAuth()
 	const router = useRouter();
-
+	const { investorId } = router.query;
 	const goBack = () => router.back();
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 
+	const {
+		data: vcFirmData,
+		error,
+		isLoading,
+	} = useGetVcFirmQuery({
+		slug: investorId as string,
+		current_user: user?.id ?? 0
+	});
+
+	useEffect(() => {
+		if (vcFirmData)
+			setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms)
+	}, [vcFirmData]);
+
+	if (!vcfirm) {
+		return <h1>Not Found</h1>;
+	}
+
 	const handleReactionClick = (event: any, sentiment: string) => async () => {
-		
+
 		const newSentiment = await reactOnSentiment({
 			vcfirm: vcfirm.id,
 			sentiment,
@@ -180,33 +202,10 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(`
-	{
-		vc_firms(where: {slug: {_eq: "${context.params?.investorId}"}}) {
-			id
-			name
-			slug
-			logo
-			website
-			linkedin
-			sentiment
-			investments {
-				investment_round {
-					id
-					round_date
-					round
-					amount
-					company {
-						id
-						slug
-						name
-						logo
-					}
-				}
-			}
-		}
-	}	
-	`);
+	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
+		GetVcFirmDocument,
+		{ slug: context.params?.investorId, current_user: 0 }
+	);
 
 	if (!vc_firms?.vc_firms[0]) {
 		return {

@@ -10,8 +10,8 @@ import {
 	Vc_Firms,
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
-import { useRouter } from "next/router";
 import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -31,7 +31,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 	itemsLimit,
 }) => {
 
-	const router = useRouter();
+	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -47,6 +47,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
+		current_user: user?.id ?? 0
 	});
 
 	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
@@ -58,7 +59,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
 		event.stopPropagation();
 		event.preventDefault();
-		
+
 		const newSentiment = await reactOnSentiment({
 			vcfirm: vcFirm.id,
 			sentiment,

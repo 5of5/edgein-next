@@ -11,11 +11,9 @@ import { InputSelect } from "../components/InputSelect";
 import { ElemButton } from "@/components/ElemButton";
 import { IconCash, IconSearch, IconAnnotation } from "@/components/Icons";
 import {
-	GetVcFirmQuery,
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
 	useGetVcFirmsQuery,
-	Vc_Firms,
 	Vc_Firms_Bool_Exp,
 } from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
@@ -23,8 +21,8 @@ import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
-import { useRouter } from "next/router";
 import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	vcFirmCount: number;
@@ -39,7 +37,7 @@ const Investors: NextPage<Props> = ({
 	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
-	const router = useRouter();
+	const { user } = useAuth();
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	// Search Box
@@ -90,12 +88,17 @@ const Investors: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
+		current_user: user?.id ?? 0
 	});
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
 	const [vcFirms, setVcFirms] = useState(initialLoad ? initialVCFirms : vcFirmsData?.vc_firms);
+
+	useEffect(() => {
+		setVcFirms(vcFirmsData?.vc_firms);
+	}, [vcFirmsData]);
 
 	const handleReactionClick = (event: any, sentiment: string, vcFirm: any) => async () => {
 		event.stopPropagation();
@@ -191,7 +194,7 @@ const Investors: NextPage<Props> = ({
 							) : (
 								vcFirms?.map((vcfirm) => (
 									<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
-										<a key={vcfirm.id} className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
+										<a className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
 											<div className="flex items-center w-full">
 												<ElemPhoto
 													photo={vcfirm.logo}
@@ -223,7 +226,6 @@ const Investors: NextPage<Props> = ({
 												</div>
 											</div>
 
-
 											<div
 												className={`flex w-full mt-6 items-center justify-start`}
 											>
@@ -252,7 +254,7 @@ const Investors: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
 		GetVcFirmsDocument,
-		{ where: { slug: { _neq: "" } } }
+		{ where: { slug: { _neq: "" } }, current_user: 0 }
 	);
 
 	return {

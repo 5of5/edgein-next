@@ -1,6 +1,6 @@
 import { reactOnSentiment } from "@/utils/reaction";
 import Link from "next/link";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { ElemCredibility } from "../Company/ElemCredibility";
 import { ElemVelocity } from "../Company/ElemVelocity";
 import { ElemPhoto } from "../ElemPhoto";
@@ -18,10 +18,14 @@ export const ElemCompanyCard: FC<Props> = ({
 }) => {
   const [companyData, setCompanyData] = useState(company);
 
+  useEffect(() => {
+    setCompanyData(company)
+  }, [company]);
+
   const handleReactionClick = (event: any, sentiment: string) => async () => {
     event.stopPropagation();
     event.preventDefault();
-    
+
     const newSentiment = await reactOnSentiment({
       company: company.id,
       sentiment,
