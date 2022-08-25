@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     //creating signed url for frontend
     const url = await s3.getSignedUrlPromise("putObject", options);
-    res.status(200).json({ url: url });
+    res.status(200).json({ url, fileKey });
   } catch (err: any) {
     console.log(err);
     res.status(400).json({ message: err.message });
