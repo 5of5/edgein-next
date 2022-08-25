@@ -17,8 +17,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // get extension of the file, prefix with  a dot if extension is found
     let ext = getExt(req.query.file);
 
+    const fileName = new Date().valueOf();
+
     // upload key is unique id with .extension if any
-    const fileKey = `${new Date().valueOf()}${ext}`;
+    const fileNameWithExtension = `${fileName}${ext}`;
 
     // create s3 instance.
     const s3 = new AWS.S3({
@@ -29,14 +31,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // url generation options
     const options = {
       Bucket: process.env.AWS_BUCKET,
-      Key: fileKey,
+      Key: fileNameWithExtension,
       Expires: 5 * 60, // in seconds
       ACL: "public-read",
     };
 
     //creating signed url for frontend
     const url = await s3.getSignedUrlPromise("putObject", options);
-    res.status(200).json({ url, file: `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}` });
+    res.status(200).json({ url, file: {
+      id: fileName,
+      url: `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileNameWithExtension}`,
+      type: req.body.fileType,
+      filename: fileNameWithExtension,
+    } });
   } catch (err: any) {
     console.log(err);
     res.status(400).json({ message: err.message });
