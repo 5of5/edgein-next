@@ -124,7 +124,7 @@ export const upsertList = async (listname: string, user: User, token: string) =>
   return list
 }
 
-const upsertFollow = async (list: Lists, resourceId: string, resourceType: string, user: User, token: string) => {
+export const upsertFollow = async (list: Lists, resourceId: string, resourceType: string, user: User, token: string) => {
   const { data: { insert_follows_one }} = await mutate({
     mutation: `
     mutation upsert_follows($listId: Int, $resourceId: Int, $resourceType: String, $userId: Int) {
