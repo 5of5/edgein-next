@@ -113,7 +113,7 @@ const Companies: NextPage<Props> = ({
 	]);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
 	if (debouncedSearchTerm !== "") {
 		filters._and?.push({
@@ -190,14 +190,14 @@ const Companies: NextPage<Props> = ({
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				></ElemHeading>
 
-				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 pt-4 sm:px-6 lg:px-8 lg:pt-10">
+				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
+					<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
 						{companies && <ElemRecentCompanies heading="Recently Discovered" />}
 					</div>
 
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
 						<h2 className="text-2xl font-bold">All Companies</h2>
-						<ElemFiltersWrap className="filters-wrap pt-2">
+						<ElemFiltersWrap className="pt-2 filters-wrap">
 							<InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								label="Search"
@@ -235,12 +235,12 @@ const Companies: NextPage<Props> = ({
 								>
 									{toggleViewMode ? (
 										<div className="flex items-center">
-											<IconGrid className="h-5 w-5 mr-1" />
+											<IconGrid className="w-5 h-5 mr-1" />
 											Grid
 										</div>
 									) : (
 										<div className="flex items-center">
-											<IconList className="h-5 w-5 mr-1" />
+											<IconList className="w-5 h-5 mr-1" />
 											List
 										</div>
 									)}
@@ -251,8 +251,8 @@ const Companies: NextPage<Props> = ({
 						{companies?.length === 0 && (
 							<>
 								<div className="flex items-center justify-center mx-auto min-h-[40vh]">
-									<div className="w-full max-w-2xl p-8 bg-white rounded-2xl border border-dark-500/10 text-center">
-										<IconSearch className="mx-auto h-12 w-12 text-slate-300" />
+									<div className="w-full max-w-2xl p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+										<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
 										<h2 className="mt-5 text-3xl font-bold">
 											No results found
 										</h2>
@@ -265,7 +265,7 @@ const Companies: NextPage<Props> = ({
 											btn="white"
 											className="mt-3"
 										>
-											<IconAnnotation className="h-6 w-6 mr-1" />
+											<IconAnnotation className="w-6 h-6 mr-1" />
 											Tell us about missing data
 										</ElemButton>
 									</div>
@@ -311,7 +311,7 @@ const Companies: NextPage<Props> = ({
 
 													<div className="flex items-center justify-center pl-2 md:overflow-hidden">
 														<h3
-															className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
+															className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
 															title={company.name ?? ""}
 														>
 															{company.name}
@@ -320,9 +320,9 @@ const Companies: NextPage<Props> = ({
 													{company.coin && (
 														<ElemTooltip
 															content={`Token: ${company.coin.ticker}`}
-															className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
+															className="self-center inline-block px-2 py-1 ml-1 align-middle rounded-md whitespace-nowrap text-dark-400 bg-gray-50"
 														>
-															<span className=" text-sm font-bold leading-sm uppercase">
+															<span className="text-sm font-bold uppercase leading-sm">
 																{company.coin.ticker}
 															</span>
 														</ElemTooltip>
@@ -398,7 +398,7 @@ const Companies: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
-		{ where: { slug: { _neq: "" } } }
+		{ where: { slug: { _neq: "" }, status: { _eq: 'published' } } }
 	);
 
 	return {
