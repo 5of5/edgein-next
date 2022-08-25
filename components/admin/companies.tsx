@@ -243,7 +243,7 @@ export const CompanyCreate = () => {
 
   return (
     <Create title="Create a Company">
-      <SimpleForm defaultValues={{ external_id: uniqid() }}>
+      <SimpleForm>
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="name"

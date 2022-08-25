@@ -104,7 +104,7 @@ export const InvestmentRoundsEdit = () => (
 
 export const InvestmentRoundsCreate = () => (
   <Create title="Create a Investment Round">
-    <SimpleForm defaultValues={{ external_id: uniqid() }}>
+    <SimpleForm>
       <ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
