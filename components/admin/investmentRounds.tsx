@@ -19,7 +19,6 @@ import {
   DateField,
   NumberField,
 } from "react-admin";
-import uniqid from "uniqid";
 
 const postFilters = [
 	<SearchInput type="number"  source="amount,valuation" resettable alwaysOn />

@@ -2,7 +2,6 @@
 import * as React from "react";
 import { SearchInput, FormDataConsumer, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
-import uniqid from 'uniqid';
 var axios = require('axios');
 // import { S3FileInput } from '@fusionworks/ra-s3-input';
 export const companyIcon = BookIcon;

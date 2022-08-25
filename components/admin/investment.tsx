@@ -13,7 +13,6 @@ import {
   ReferenceInput,
   SelectInput,
 } from "react-admin";
-import uniqid from "uniqid";
 
 export const InvestmentsList = () => (
   <List>

@@ -14,7 +14,6 @@ import {
   minLength,
   regex
 } from "react-admin";
-import uniqid from "uniqid";
 
 const postFilters = [
 	<SearchInput source="name,slug" resettable alwaysOn />

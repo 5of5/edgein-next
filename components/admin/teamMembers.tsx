@@ -19,7 +19,6 @@ import {
   BooleanInput,
   BooleanField,
 } from "react-admin";
-import uniqid from "uniqid";
 
 const postFilters = [
 	<SearchInput source="function,seniority,title" resettable alwaysOn />
