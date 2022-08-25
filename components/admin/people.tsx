@@ -15,7 +15,6 @@ import {
 	email,
 	regex
 } from "react-admin";
-import uniqid from "uniqid";
 
 const postFilters = [
 	<SearchInput source="name,slug,type" resettable alwaysOn />
@@ -102,7 +101,7 @@ export const PeopleEdit = () => (
 
 export const PeopleCreate = () => (
 	<Create title="Create a Person">
-		<SimpleForm defaultValues={{ external_id: uniqid() }}>
+		<SimpleForm>
 			<TextInput
 				className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 				source="name"

@@ -13,7 +13,6 @@ import {
   ReferenceInput,
   SelectInput,
 } from "react-admin";
-import uniqid from "uniqid";
 
 export const InvestmentsList = () => (
   <List>
@@ -85,7 +84,7 @@ export const InvestmentsEdit = () => (
 
 export const InvestmentsCreate = () => (
   <Create title="Add a vc or angel to an Investment Round">
-    <SimpleForm defaultValues={{ external_id: uniqid() }}>
+    <SimpleForm>
       <ReferenceInput
         label="Partner or Angel"
         source="person_id"
