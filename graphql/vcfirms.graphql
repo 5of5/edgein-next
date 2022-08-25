@@ -1,4 +1,4 @@
-query GetVCFirm($slug: String!) {
+query GetVCFirm($slug: String!, $current_user: Int) {
 	vc_firms(where: { slug: { _eq: $slug } }) {
 		id
 		name
@@ -21,10 +21,15 @@ query GetVCFirm($slug: String!) {
 				}
 			}
 		}
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
-query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
+query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int) {
 	vc_firms(
 		where: $where
 		order_by: { num_of_investments: desc }
@@ -37,6 +42,11 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
 		logo
 		num_of_investments
 		sentiment
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
@@ -44,6 +54,7 @@ query GetVCFirmsRecentInvestments(
 	$limit: Int
 	$offset: Int
 	$where: vc_firms_bool_exp!
+	$current_user: Int
 ) {
 	vc_firms(
 		where: $where
@@ -57,6 +68,11 @@ query GetVCFirmsRecentInvestments(
 		logo
 		latest_investments
 		sentiment
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
