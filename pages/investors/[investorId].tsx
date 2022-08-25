@@ -188,7 +188,7 @@ const VCFirm: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(
-		`{vc_firms(where: {slug: {_neq: ""}}) { name, slug, logo}}`
+		`{vc_firms(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { name, slug, logo}}`
 	);
 
 	return {

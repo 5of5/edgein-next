@@ -35,7 +35,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	const offset = null;
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, date_added: { _neq: new Date(0) } }],
+		_and: [{ slug: { _neq: "" }, date_added: { _neq: new Date(0) }, status: { _eq: "published" } }],
 	};
 
 	const {

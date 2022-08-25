@@ -133,7 +133,6 @@ const Company: NextPage<Props> = (props) => {
 							</div>
 						</section> */}
 					</div>
-
 					{
 						(company.market_verified || company.github || company.company_linkedin || company.velocity_linkedin || company.velocity_token) &&
 						<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
@@ -201,7 +200,7 @@ const Company: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
-		`{ companies(where: {slug: {_neq: ""}}) { slug }}`
+		`{ companies(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { slug }}`
 	);
 
 	return {

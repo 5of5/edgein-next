@@ -108,7 +108,7 @@ const Companies: NextPage<Props> = ({
 	]);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
 	if (debouncedSearchTerm !== "") {
 		filters._and?.push({
@@ -314,7 +314,7 @@ const Companies: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
-		{ where: { slug: { _neq: "" } }, current_user: 0 }
+		{ where: { slug: { _neq: "" }, status: { _eq: 'published' } } }
 	);
 
 	return {

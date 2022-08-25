@@ -66,7 +66,7 @@ const Investors: NextPage<Props> = ({
 	}, [debouncedSearchTerm, selectedInvestmentCount]);
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
 	if (debouncedSearchTerm !== "") {
 		filters._and?.push({ name: { _ilike: `%${debouncedSearchTerm}%` } });
@@ -254,7 +254,7 @@ const Investors: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
 		GetVcFirmsDocument,
-		{ where: { slug: { _neq: "" } }, current_user: 0 }
+		{ where: { slug: { _neq: "" }, status: { _eq: "published" } } }
 	);
 
 	return {
@@ -262,8 +262,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Investors - EdgeIn.io",
 			metaDescription:
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
-			vcFirmCount: vcFirms?.vc_firms.length,
-			initialVCFirms: vcFirms?.vc_firms,
+			vcFirmCount: vcFirms?.vc_firms?.length || null,
+			initialVCFirms: vcFirms?.vc_firms || null,
 			numberOfInvestments: InvestmentsFilters,
 		},
 	};
