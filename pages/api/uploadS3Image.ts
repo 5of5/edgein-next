@@ -31,12 +31,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       Bucket: process.env.AWS_BUCKET,
       Key: fileKey,
       Expires: 5 * 60, // in seconds
-      ACL: "private",
+      ACL: "public-read",
     };
 
     //creating signed url for frontend
     const url = await s3.getSignedUrlPromise("putObject", options);
-    res.status(200).json({ url, fileKey });
+    res.status(200).json({ url, file: `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}` });
   } catch (err: any) {
     console.log(err);
     res.status(400).json({ message: err.message });
