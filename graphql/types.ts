@@ -7296,7 +7296,7 @@ export type InsertActionMutation = { __typename?: 'mutation_root', insert_action
 
 export type GetCompanyQueryVariables = Exact<{
   slug: Scalars['String'];
-  current_user: InputMaybe<Scalars['Int']>;
+  current_user?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -7305,7 +7305,7 @@ export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  current_user: InputMaybe<Scalars['Int']>;
+  current_user?: InputMaybe<Scalars['Int']>;
   where: Companies_Bool_Exp;
 }>;
 
@@ -7316,7 +7316,7 @@ export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
   where: Companies_Bool_Exp;
-  current_user: InputMaybe<Scalars['Int']>;
+  current_user?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -7393,7 +7393,7 @@ export const useInsertActionMutation = <
     );
 useInsertActionMutation.fetcher = (variables: InsertActionMutationVariables, options?: RequestInit['headers']) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables, options);
 export const GetCompanyDocument = `
-    query GetCompany($slug: String!, $current_user: Int) {
+    query GetCompany($slug: String!, $current_user: Int = 0) {
   companies(where: {slug: {_eq: $slug}}) {
     id
     name
@@ -7484,7 +7484,7 @@ useGetCompanyQuery.getKey = (variables: GetCompanyQueryVariables) => ['GetCompan
 
 useGetCompanyQuery.fetcher = (variables: GetCompanyQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompanyQuery, GetCompanyQueryVariables>(GetCompanyDocument, variables, options);
 export const GetCompaniesDocument = `
-    query GetCompanies($limit: Int, $offset: Int, $current_user: Int, $where: companies_bool_exp!) {
+    query GetCompanies($limit: Int, $offset: Int, $current_user: Int = 0, $where: companies_bool_exp!) {
   companies(where: $where, order_by: {slug: asc}, limit: $limit, offset: $offset) {
     id
     name
@@ -7531,7 +7531,7 @@ useGetCompaniesQuery.getKey = (variables: GetCompaniesQueryVariables) => ['GetCo
 
 useGetCompaniesQuery.fetcher = (variables: GetCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesQuery, GetCompaniesQueryVariables>(GetCompaniesDocument, variables, options);
 export const GetCompaniesRecentDocument = `
-    query GetCompaniesRecent($limit: Int, $offset: Int, $where: companies_bool_exp!, $current_user: Int) {
+    query GetCompaniesRecent($limit: Int, $offset: Int, $where: companies_bool_exp!, $current_user: Int = 0) {
   companies(
     where: $where
     order_by: {date_added: desc}

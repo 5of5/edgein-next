@@ -1,4 +1,4 @@
-query GetCompany($slug: String!, $current_user: Int) {
+query GetCompany($slug: String!, $current_user: Int = 0) {
 	companies(where: { slug: { _eq: $slug } }) {
 		id
 		name
@@ -69,7 +69,7 @@ query GetCompany($slug: String!, $current_user: Int) {
 	}
 }
 
-query GetCompanies($limit: Int, $offset: Int, $current_user: Int, $where: companies_bool_exp!) {
+query GetCompanies($limit: Int, $offset: Int, $current_user: Int = 0, $where: companies_bool_exp!) {
 	companies(
 		where: $where
 		order_by: { slug: asc }
@@ -105,7 +105,7 @@ query GetCompaniesRecent(
 	$limit: Int
 	$offset: Int
 	$where: companies_bool_exp!
-	$current_user: Int
+	$current_user: Int = 0
 ) {
 	companies(
 		where: $where

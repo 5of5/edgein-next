@@ -124,7 +124,6 @@ export const ElemCompanyCard: FC<Props> = ({
             data={companyData}
             handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}
             blackText
-            follows={companyData.follows}
           />
         </div>
 
