@@ -56,7 +56,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 		setVcFirms(vcFirmsData?.vc_firms)
 	}, [vcFirmsData?.vc_firms]);
 
-	const handleReactionClick = (event: any, sentiment: string, vcFirm: Vc_Firms) => async () => {
+	const handleReactionClick = (vcFirm: Vc_Firms) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
 
@@ -136,7 +136,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 										>
 											<ElemReactions
 												data={investor}
-												handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, investor)()}
+												handleReactionClick={handleReactionClick(investor)}
 												blackText
 											/>
 										</div>

@@ -22,7 +22,7 @@ export const ElemCompanyCard: FC<Props> = ({
     setCompanyData(company)
   }, [company]);
 
-  const handleReactionClick = (event: any, sentiment: string) => async () => {
+  const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -122,7 +122,7 @@ export const ElemCompanyCard: FC<Props> = ({
         >
           <ElemReactions
             data={companyData}
-            handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}
+            handleReactionClick={handleReactionClick}
             blackText
           />
         </div>

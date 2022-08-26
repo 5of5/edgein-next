@@ -55,7 +55,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 		setCompanies(companiesData?.companies)
 	}, [companiesData?.companies])
 	
-	const handleReactionClick = (event: any, sentiment: string, company: Companies) => async () => {
+	const handleReactionClick = (company: Companies) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
 
@@ -138,7 +138,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 										>
 											<ElemReactions
 												data={company}
-												handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, company)()}
+												handleReactionClick={handleReactionClick(company)}
 												blackText
 											/>
 										</div>

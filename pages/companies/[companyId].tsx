@@ -54,7 +54,7 @@ const Company: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (event: any, sentiment: string) => async () => {
+	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
 
 		const newSentiment: any = await reactOnSentiment({
 			company: company.id,
@@ -155,7 +155,7 @@ const Company: NextPage<Props> = (props) => {
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
 						<ElemReactions
 							data={company}
-							handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction)()}
+							handleReactionClick={handleReactionClick}
 							blackText
 							roundedFull
 						/>

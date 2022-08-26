@@ -15,6 +15,7 @@ import {
 	GetVcFirmsQuery,
 	useGetVcFirmsQuery,
 	Vc_Firms_Bool_Exp,
+	Vc_Firms,
 } from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
 import { useDebounce } from "../hooks/useDebounce";
@@ -100,7 +101,7 @@ const Investors: NextPage<Props> = ({
 		setVcFirms(vcFirmsData?.vc_firms);
 	}, [vcFirmsData]);
 
-	const handleReactionClick = (event: any, sentiment: string, vcFirm: any) => async () => {
+	const handleReactionClick = (vcFirm: GetVcFirmsQuery["vc_firms"][0]) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
 
@@ -229,7 +230,7 @@ const Investors: NextPage<Props> = ({
 											<div
 												className={`flex w-full mt-6 items-center justify-start`}
 											>
-												<ElemReactions data={vcfirm} handleReactionClick={(event: any, reaction: string) => handleReactionClick(event, reaction, vcfirm)()} blackText />
+												<ElemReactions data={vcfirm} handleReactionClick={handleReactionClick(vcfirm)} blackText />
 											</div>
 										</a>
 									</Link>

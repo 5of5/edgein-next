@@ -8,7 +8,7 @@ import { IconLike } from "./reactions/IconLike";
 
 type Props = {
   data: any,
-  handleReactionClick: Function
+  handleReactionClick: (reaction: string) => (e: React.MouseEvent<HTMLButtonElement>) => void;
   blackText?: boolean
   btn?:
   | "danger"
@@ -55,7 +55,7 @@ export const ElemReactions: FC<Props> = ({
   return (
     <>
       <ElemButton
-        onClick={(event) => handleReactionClick(event, 'hot')}
+        onClick={handleReactionClick('hot')}
         className={`px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
@@ -63,7 +63,7 @@ export const ElemReactions: FC<Props> = ({
       ><IconHot className="mr-1" /> {data?.sentiment?.hot || 0}
       </ElemButton>
       <ElemButton
-        onClick={(event) => handleReactionClick(event, 'like')}
+        onClick={handleReactionClick('like')}
         className={`px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
@@ -71,7 +71,7 @@ export const ElemReactions: FC<Props> = ({
       ><IconLike className="mr-1" /> {data?.sentiment?.like || 0}
       </ElemButton>
       <ElemButton
-        onClick={(event) => handleReactionClick(event, 'crap')}
+        onClick={handleReactionClick('crap')}
         className={`px-1${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
