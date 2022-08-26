@@ -15,14 +15,15 @@ import {
   minLength,
   regex
 } from "react-admin";
-var axios = require('axios');
+import { uploadFile, deleteFile } from "../../utils/functions";
+import {validateName, validateSlug, validateUrl} from "../../utils/constants"
 
-const postFilters = [
+const filters = [
 	<SearchInput key="search" source="name,slug" resettable alwaysOn />
 ];
 
 export const VcFirmList = () => (
-  <List filters={postFilters}>
+  <List filters={filters}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />
@@ -43,36 +44,11 @@ const VcFirmTitle = ({ record }: TitleProps) => {
   return <span>Vc Firm {record ? `"${record.name}"` : ""}</span>;
 };
 
-const validateName = [required(), minLength(3)];
-const validateSlug = [required(), minLength(3)];
-const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
-
 export const VcFirmEdit = () => {
 
   const [logo, setLogo] = React.useState(null)
   const [oldLogo, setOldLogo] = React.useState(null)
   const [isImageUpdated, setIsImageUpdated] = React.useState(false)
-
-  const getUrl = async (files: any) => {
-    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({fileType: files.type})
-    }).then(res => res.json());
-   
-     //upload to s3
-    const response = await axios.put(s3url.url, files)
-    return s3url
-  }
-
-  const deleteFile = async (file : any) => {
-    const response = await fetch(`/api/deleteS3Image?file=${file.filename}`, {
-      method: "GET"
-    }).then(res => res.json());
-  }
 
   const transform = async (data: any) => {
    var formdata = {...data};
@@ -81,7 +57,7 @@ export const VcFirmEdit = () => {
     deleteFile(oldLogo)
   }
    if(logo){
-     const res = await getUrl(logo);
+     const res = await uploadFile(logo);
       formdata = {
         ...data,
         logo: res.file
@@ -150,27 +126,11 @@ return(
 export const VcFirmCreate = () => {
   const [logo, setLogo] = React.useState(null)
 
-  const getUrl = async (files: any) => {
-    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({fileType: files.type})
-    }).then(res => res.json());
-   
-     //upload to s3
-    const response = await axios.put(s3url.url, files)
-    return s3url
-
-  }
-
   const transform = async (data: any) => {
    var formdata = {...data};
    console.log("formdata=", formdata)
    if(logo){
-     const res = await getUrl(logo);
+     const res = await uploadFile(logo);
       formdata = {
         ...data,
         logo: res.file

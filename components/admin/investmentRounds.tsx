@@ -19,13 +19,14 @@ import {
   DateField,
   NumberField,
 } from "react-admin";
+import {roundChoices, currencyChoices} from "../../utils/constants"
 
-const postFilters = [
+const filters = [
 	<SearchInput key="search" type="number"  source="amount,valuation" resettable alwaysOn />
 ];
 
 export const InvestmentRoundsList = () => (
-  <List filters={postFilters}>
+  <List filters={filters}>
     <Datagrid>
       <TextField source="id" />
       <ReferenceField label="Company" source="company_id" reference="companies">
@@ -34,34 +35,12 @@ export const InvestmentRoundsList = () => (
       <DateField source="round_date" />
       <SelectField
         source="round"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={roundChoices}
       />
       <NumberField source="amount" />
       <SelectField
         source="currency"
-        choices={[
-          {
-            id: "USD",
-            name: "USD",
-          },
-          {
-            id: "INR",
-            name: "INR",
-          },
-          {
-            id: "EUR",
-            name: "EUR",
-          },
-        ]}
+        choices={currencyChoices}
       />
       <NumberField source="valuation" />
       <EditButton />
@@ -95,16 +74,7 @@ export const InvestmentRoundsEdit = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={roundChoices}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -113,20 +83,7 @@ export const InvestmentRoundsEdit = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="currency"
-        choices={[
-          {
-            id: "USD",
-            name: "USD",
-          },
-          {
-            id: "INR",
-            name: "INR",
-          },
-          {
-            id: "EUR",
-            name: "EUR",
-          },
-        ]}
+        choices={currencyChoices}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -152,16 +109,7 @@ export const InvestmentRoundsCreate = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={roundChoices}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -170,20 +118,7 @@ export const InvestmentRoundsCreate = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="currency"
-        choices={[
-          {
-            id: "USD",
-            name: "USD",
-          },
-          {
-            id: "INR",
-            name: "INR",
-          },
-          {
-            id: "EUR",
-            name: "EUR",
-          },
-        ]}
+        choices={currencyChoices}
       />
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

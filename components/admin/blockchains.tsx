@@ -12,12 +12,12 @@ import {
   TextInput,
 } from "react-admin";
 
-const postFilters = [
+const filters = [
   <SearchInput key="search" source="name" resettable alwaysOn />
 ];
 
 export const BlockchainsList = () => (
-  <List filters={postFilters}>
+  <List filters={filters}>
     <Datagrid>
       <TextField source="id" />
       <TextField source="name" />

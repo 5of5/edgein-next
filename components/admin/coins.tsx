@@ -15,17 +15,17 @@ import {
   SelectInput,
 } from "react-admin";
 
-const postFilters = [
+const filters = [
 	<SearchInput key="search" source="name" resettable alwaysOn />
   ];
 
 export const CoinsList = () => (
-	<List filters={postFilters}>
+	<List filters={filters}>
 		<Datagrid>
 			<TextField source="id" />
 			<TextField source="name" />
 			<TextField source="ticker" />
-      <ReferenceField label="Blockchain" source="blockchain_id" reference="blockchains">
+      		<ReferenceField label="Blockchain" source="blockchain_id" reference="blockchains">
 				<TextField source="name" />
 			</ReferenceField>
 			<EditButton />

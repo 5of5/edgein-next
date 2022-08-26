@@ -85,13 +85,13 @@ const AdminApp = () => {
         edit={TeamMembersEdit}
         create={TeamMembersCreate}
       />
-      {/* <Resource
+      <Resource
         name="investors"
         list={InvestorsList}
         edit={InvestorsEdit}
         create={InvestorCreate}
       />
-      <Resource
+      {/* <Resource
         name="actions"
         list={ActionsList}
       /> */}

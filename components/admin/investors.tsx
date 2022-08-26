@@ -16,11 +16,12 @@ import {
   SelectField,
   DateInput,
 } from "react-admin";
+import {investorFunctionChoices, investorSeniorityChoices} from "../../utils/constants"
 
 export const InvestorsList = () => (
   <List>
     <Datagrid>
-      <ReferenceField label="Company" source="company_id" reference="companies">
+      <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <TextField source="name" />
       </ReferenceField>
       <ReferenceField label="Perons" source="person_id" reference="people">
@@ -28,32 +29,14 @@ export const InvestorsList = () => (
       </ReferenceField>
       <SelectField
         source="function"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={investorFunctionChoices}
       />
       <DateField source="start_date" />
       <DateField source="end_date" />
       <TextField source="founder" />
       <SelectField
         source="seniority"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={investorSeniorityChoices}
       />
       <TextField source="title" />
       <EditButton />
@@ -72,7 +55,7 @@ const InvestorsTitle = ({ record }: TitleProps) => {
 export const InvestorsEdit = () => (
   <Edit title={<InvestorsTitle />}>
     <SimpleForm>
-      <ReferenceInput label="Company" source="company_id" reference="companies">
+    <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
@@ -87,16 +70,7 @@ export const InvestorsEdit = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={investorFunctionChoices}
       />
       <DateInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -110,16 +84,7 @@ export const InvestorsEdit = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={investorSeniorityChoices}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -147,16 +112,7 @@ export const InvestorCreate = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={investorFunctionChoices}
       />
       <DateInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -173,16 +129,7 @@ export const InvestorCreate = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={investorSeniorityChoices}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

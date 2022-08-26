@@ -19,13 +19,14 @@ import {
   BooleanInput,
   BooleanField,
 } from "react-admin";
+import { functionChoicesTM, seniorityChoicesTM } from "../../utils/constants";
 
-const postFilters = [
+const filters = [
 	<SearchInput key="search" source="function,seniority,title" resettable alwaysOn />
 ];
 
 export const TeamMembersList = () => (
-  <List filters={postFilters}>
+  <List filters={filters}>
     <Datagrid>
       <ReferenceField label="Company" source="company_id" reference="companies">
         <TextField source="name" />
@@ -35,32 +36,14 @@ export const TeamMembersList = () => (
       </ReferenceField>
       <SelectField
         source="function"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={functionChoicesTM}
       />
       <DateField source="start_date" />
       <DateField source="end_date" />
       <BooleanField source="founder" />
       <SelectField
         source="seniority"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={seniorityChoicesTM}
       />
       <TextField source="title" />
       <EditButton />
@@ -94,16 +77,7 @@ export const TeamMembersEdit = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={functionChoicesTM}
       />
       <DateInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -120,16 +94,7 @@ export const TeamMembersEdit = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={seniorityChoicesTM}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -157,16 +122,7 @@ export const TeamMembersCreate = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={functionChoicesTM}
       />
       <DateInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -182,16 +138,7 @@ export const TeamMembersCreate = () => (
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
-        choices={[
-          {
-            id: "Seed",
-            name: "Seed",
-          },
-          {
-            id: "Series A",
-            name: "Series A",
-          },
-        ]}
+        choices={seniorityChoicesTM}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

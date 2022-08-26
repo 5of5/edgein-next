@@ -2,21 +2,17 @@
 import * as React from "react";
 import { SearchInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
-var axios = require('axios');
-// import { S3FileInput } from '@fusionworks/ra-s3-input';
+import { uploadFile, deleteFile } from "../../utils/functions";
+import {companyLayerChoices, validateName, validateSlug, validateUrl} from "../../utils/constants"
 export const companyIcon = BookIcon;
 
-const validateName = [required(), minLength(3)];
-const validateSlug = [required(), minLength(3)];
-const validateYearFounded = [number(), minValue(1900), maxValue(2099)];
-const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
-const postFilters = [
+const filters = [
   <SearchInput key="search" source="name,slug,overview,notes" resettable alwaysOn />
 ];
 
 export const CompanyList = () => (
 
-  <List filters={postFilters}
+  <List filters={filters}
     sx={{
       ".css-gp0tzt-MuiToolbar-root-RaTopToolbar-root": {
         paddingLeft: 0,
@@ -31,36 +27,7 @@ export const CompanyList = () => (
       <TextField source="name" />
       <TextField source="slug" />
       <ImageField source="logo.url" label="Logo" />
-      <SelectField source="layer" choices={[
-        {
-          id: "Layer 0",
-          name: "Layer 0 - Native Code"
-        },
-        {
-          id: "Layer 1",
-          name: "Layer 1 - Programmable Blockchains / Networks"
-        },
-        {
-          id: "Layer 2",
-          name: "Layer 2 - Nodes / Node Providers / Data Platforms"
-        },
-        {
-          id: "Layer 3",
-          name: "Layer 3 - API's / API Providers / Systems"
-        },
-        {
-          id: "Layer 4",
-          name: "Layer 4 - Decentralized Platforms / Contract / Modeling"
-        },
-        {
-          id: "Layer 5",
-          name: "Layer 5 - Applications"
-        },
-        {
-          id: "Layer 6",
-          name: "Layer 6 - Interoperable Digital Assets / NFT's"
-        },
-      ]} />
+      <SelectField source="layer" choices={companyLayerChoices} />
       <TextField source="layer_detail" />
       <ReferenceField label="Coin" source="coin_id" reference="coins">
         <TextField source="name" />
@@ -97,27 +64,6 @@ export const CompanyEdit = () => {
   const [oldLogo, setOldLogo] = React.useState(null)
   const [isImageUpdated, setIsImageUpdated] = React.useState(false)
 
-  const getUrl = async (files: any) => {
-    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({fileType: files.type})
-    }).then(res => res.json());
-   
-     //upload to s3
-    const response = await axios.put(s3url.url, files)
-    return s3url
-  }
-
-  const deleteFile = async (file : any) => {
-    const response = await fetch(`/api/deleteS3Image?file=${file.filename}`, {
-      method: "GET"
-    }).then(res => res.json());
-  }
-
   const transform = async (data: any) => {
    var formdata = {...data};
    if(oldLogo){
@@ -125,7 +71,7 @@ export const CompanyEdit = () => {
     deleteFile(oldLogo)
   }
    if(logo){
-     const res = await getUrl(logo);
+     const res = await uploadFile(logo);
       formdata = {
         ...data,
         coin_id: (!data.coin_id) ? null : data.coin_id,
@@ -142,6 +88,7 @@ export const CompanyEdit = () => {
   };
 
   const onSelect = (files: any) => {
+    
     if(files && files.length > 0){
       setLogo(files[0])
     }else{
@@ -182,39 +129,10 @@ return(
         (!logo && !isImageUpdated) &&
         <ImageField source="logo.url" title="Logo" />
       }
-      <SelectField
+       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="layer"
-        choices={[
-          {
-            id: "Layer 0",
-            name: "Layer 0 - Native Code",
-          },
-          {
-            id: "Layer 1",
-            name: "Layer 1 - Programmable Blockchains / Networks",
-          },
-          {
-            id: "Layer 2",
-            name: "Layer 2 - Nodes / Node Providers / Data Platforms",
-          },
-          {
-            id: "Layer 3",
-            name: "Layer 3 - API's / API Providers / Systems",
-          },
-          {
-            id: "Layer 4",
-            name: "Layer 4 - Decentralized Platforms / Contract / Modeling",
-          },
-          {
-            id: "Layer 5",
-            name: "Layer 5 - Applications",
-          },
-          {
-            id: "Layer 6",
-            name: "Layer 6 - Interoperable Digital Assets / NFT's",
-          },
-        ]}
+        choices={companyLayerChoices}
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -297,26 +215,10 @@ export const CompanyCreate = () => {
 
   const [logo, setLogo] = React.useState(null)
 
-  const getUrl = async (files: any) => {
-    const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({fileType: files.type})
-    }).then(res => res.json());
-   
-     //upload to s3
-    const response = await axios.put(s3url.url, files)
-    return s3url
-
-  }
-
   const transform = async (data: any) => {
    var formdata = {...data};
    if(logo){
-     const res = await getUrl(logo);
+     const res = await uploadFile(logo);
       formdata = {
         ...data,
         coin_id: (!data.coin_id) ? null : data.coin_id,
@@ -360,39 +262,11 @@ export const CompanyCreate = () => {
         <FileInput onRemove={onDropRejected} options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
-        <SelectField
+
+        <SelectInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="layer"
-          choices={[
-            {
-              id: "Layer 0",
-              name: "Layer 0 - Native Code",
-            },
-            {
-              id: "Layer 1",
-              name: "Layer 1 - Programmable Blockchains / Networks",
-            },
-            {
-              id: "Layer 2",
-              name: "Layer 2 - Nodes / Node Providers / Data Platforms",
-            },
-            {
-              id: "Layer 3",
-              name: "Layer 3 - API's / API Providers / Systems",
-            },
-            {
-              id: "Layer 4",
-              name: "Layer 4 - Decentralized Platforms / Contract / Modeling",
-            },
-            {
-              id: "Layer 5",
-              name: "Layer 5 - Applications",
-            },
-            {
-              id: "Layer 6",
-              name: "Layer 6 - Interoperable Digital Assets / NFT's",
-            },
-          ]}
+          choices={companyLayerChoices}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

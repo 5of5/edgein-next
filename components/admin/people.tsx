@@ -16,13 +16,13 @@ import {
 	email,
 	regex
 } from "react-admin";
-var axios = require('axios');
-
-const postFilters = [
+import { uploadFile, deleteFile } from "../../utils/functions";
+import {validateName, validateSlug, validateUrl, validateEmail} from "../../utils/constants"
+const filters = [
 	<SearchInput key="search" source="name,slug,type" resettable alwaysOn />
 ];
 export const PeopleList = () => (
-	<List filters={postFilters}>
+	<List filters={filters}>
 		<Datagrid>
 			<TextField source="id" />
 			<TextField source="name" />
@@ -43,11 +43,6 @@ interface TitleProps {
 	record?: Record<string, string>;
 }
 
-const validateName = [required(), minLength(3)];
-const validateSlug = [required(), minLength(3)];
-const validateEmail = email();
-const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
-
 const PeopleTitle = ({ record }: TitleProps) => {
 	return <span>Person {record ? `"${record.name}"` : ""}</span>;
 };
@@ -58,27 +53,6 @@ export const PeopleEdit = () => {
 	const [oldLogo, setOldLogo] = React.useState(null)
 	const [isImageUpdated, setIsImageUpdated] = React.useState(false)
 
-	const getUrl = async (files: any) => {
-		const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-			method: "POST",
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ fileType: files.type })
-		}).then(res => res.json());
-
-		//upload to s3
-		const response = await axios.put(s3url.url, files)
-		return s3url
-	}
-
-	const deleteFile = async (file: any) => {
-		const response = await fetch(`/api/deleteS3Image?file=${file.filename}`, {
-			method: "GET"
-		}).then(res => res.json());
-	}
-
 	const transform = async (data: any) => {
 		var formdata = { ...data };
 		if (oldLogo) {
@@ -86,7 +60,7 @@ export const PeopleEdit = () => {
 			deleteFile(oldLogo)
 		}
 		if (logo) {
-			const res = await getUrl(logo);
+			const res = await uploadFile(logo);
 			formdata = {
 				...data,
 				picture: res.file
@@ -173,26 +147,10 @@ export const PeopleEdit = () => {
 export const PeopleCreate = () => {
 	const [logo, setLogo] = React.useState(null)
 
-	const getUrl = async (files: any) => {
-		const s3url = await fetch("/api/uploadS3Image?file=abc.jpg", {
-			method: "POST",
-			headers: {
-				'Accept': 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ fileType: files.type })
-		}).then(res => res.json());
-
-		//upload to s3
-		const response = await axios.put(s3url.url, files)
-		return s3url
-
-	}
-
 	const transform = async (data: any) => {
 		var formdata = { ...data };
 		if (logo) {
-			const res = await getUrl(logo);
+			const res = await uploadFile(logo);
 			formdata = {
 				...data,
 				picture: res.file
