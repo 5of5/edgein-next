@@ -51,30 +51,38 @@ export const ElemReactions: FC<Props> = ({
 
   }, [data]);
 
+  const disabled = (sentiment: number): boolean => {
+    return sentiment !== -1;
+  }
+
+  const disabledClasses = (sentiment: number) => {
+    return sentiment !== -1 ? 'shadow-gray-300 bg-gray-100 hover:bg-gray-100 opacity-100 shadow-xl shadow-inner ... ': '';
+  }
+
   return (
     <>
       <ElemButton
         onClick={handleReactionClick('hot')}
-        className={`px-1 mr-2${blackText ? " text-black" : ''}`}
+        className={`${disabledClasses(hot)}px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
-        disabled={hot !== -1}
+        disabled={disabled(hot)}
       ><IconHot className="mr-1" /> {data?.sentiment?.hot || 0}
       </ElemButton>
       <ElemButton
         onClick={handleReactionClick('like')}
-        className={`px-1 mr-2${blackText ? " text-black" : ''}`}
+        className={`${disabledClasses(like)}px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
-        disabled={like !== -1}
+        disabled={disabled(like)}
       ><IconLike className="mr-1" /> {data?.sentiment?.like || 0}
       </ElemButton>
       <ElemButton
         onClick={handleReactionClick('crap')}
-        className={`px-1${blackText ? " text-black" : ''}`}
+        className={`${disabledClasses(crap)}px-1 mr-2${blackText ? " text-black" : ''}`}
         roundedFull={roundedFull}
         btn={btn}
-        disabled={crap !== -1}
+        disabled={disabled(crap)}
       ><IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
       </ElemButton>
     </>

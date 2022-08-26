@@ -138,10 +138,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 										</div>
 
 										<div
-											className={`flex flex-row justify-end mt-4 shrink-0 lg:flex-row mt-2
-												? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-2 lg:flex-row lg:items-center"
-												: ""
-												}`}
+											className={`flex grid-cols-5 md:grid mt-4`}
 										>
 											<ElemReactions
 												data={company}

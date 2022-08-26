@@ -234,7 +234,7 @@ const Investors: NextPage<Props> = ({
 											</div>
 
 											<div
-												className={`flex w-full mt-6 items-center justify-start`}
+												className={`flex grid-cols-5 md:grid mt-4`}
 											>
 												<ElemReactions data={vcfirm} handleReactionClick={handleReactionClick(vcfirm)} blackText />
 											</div>

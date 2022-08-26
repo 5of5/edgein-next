@@ -136,7 +136,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 										</div>
 
 										<div
-											className={`flex w-full mt-6 items-center justify-start`}
+											className={`flex grid-cols-5 md:grid mt-4`}
 										>
 											<ElemReactions
 												data={investor}
