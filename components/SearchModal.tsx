@@ -25,7 +25,7 @@ Modal.setAppElement("#modal-root");
 
 const customStyles = {
   content: {
-    position: "absolute",
+  
     top: "50%",
     left: "50%",
     right: "auto",
@@ -36,7 +36,8 @@ const customStyles = {
     borderRadius: 20,
     overlay: { backgroundColor: "red", opacity: 1 },
     width: "50%",
-    height: "550px"
+    height: "550px",
+    overflowX:"hidden",
   },
 };
 type CompaniesHitProps = {
@@ -69,13 +70,13 @@ type PeopleHitProps = {
   }>;
 };
 
-const transformItems = (items, { results }) => {
+const transformItems = (items:any, { results }) => {
   if (results.hits.length === 0) {
     return {
       empty: true
     }
   }
-  return items.map((item, index) => ({
+  return items.map((item:any, index:any) => ({
     ...item,
     position: { index, page: results.page },
   }));
@@ -194,10 +195,10 @@ export default function SearchModal(props: any) {
                   "w-5/6 bg-white text-dark-500 rounded-md outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
               }}
             />
-             <button onClick={onClose} className="bg-white w-8 justify-items-end border rounded-md text-dark-500 font-bold text-sm p-0.5 ml-10">
+             <button onClick={onClose} className="bg-white -mt-5 float-right w-8 justify-items-end border rounded-md text-dark-500 font-bold text-sm p-0.5 ml-10">
                   Esc
                 </button>
-            <hr className="max-w-8xl mt-3 -ml-10 -mr-8 "></hr>
+            <hr className="max-w-8xl clear-both mt-4 -ml-10 -mr-8 "></hr>
             <Configure
               analytics={false}
               hitsPerPage={3}
