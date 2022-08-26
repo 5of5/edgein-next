@@ -1,4 +1,4 @@
-query GetCompany($slug: String!) {
+query GetCompany($slug: String!, $current_user: Int = 0) {
 	companies(where: { slug: { _eq: $slug } }) {
 		id
 		name
@@ -61,10 +61,15 @@ query GetCompany($slug: String!) {
 				}
 			}
 		}
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
-query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
+query GetCompanies($limit: Int, $offset: Int, $current_user: Int = 0, $where: companies_bool_exp!) {
 	companies(
 		where: $where
 		order_by: { slug: asc }
@@ -78,6 +83,7 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 		coin {
 			ticker
 		}
+		sentiment
 		investor_amount
 		total_employees
 		logo
@@ -87,6 +93,11 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 		market_verified
 		velocity_linkedin
 		velocity_token
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
@@ -94,6 +105,7 @@ query GetCompaniesRecent(
 	$limit: Int
 	$offset: Int
 	$where: companies_bool_exp!
+	$current_user: Int = 0
 ) {
 	companies(
 		where: $where
@@ -109,6 +121,12 @@ query GetCompaniesRecent(
 		total_employees
 		investor_amount
 		date_added
+		sentiment
+		follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
 	}
 }
 
