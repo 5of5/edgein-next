@@ -14,6 +14,7 @@ import {
   Configure,
 } from "react-instantsearch-hooks-web";
 import { truncate } from "lodash";
+import { empty } from "@apollo/client";
 
 const searchClient = algoliasearch(
   "TFBKEVTOJD",
@@ -24,7 +25,7 @@ Modal.setAppElement("#modal-root");
 
 const customStyles = {
   content: {
-   position:"absolute",
+    position: "absolute",
     top: "50%",
     left: "50%",
     right: "auto",
@@ -34,8 +35,8 @@ const customStyles = {
     opacity: 1,
     borderRadius: 20,
     overlay: { backgroundColor: "red", opacity: 1 },
-    width:"50%",
-    height:"550px"
+    width: "50%",
+    height: "550px"
   },
 };
 type CompaniesHitProps = {
@@ -44,6 +45,7 @@ type CompaniesHitProps = {
     overview: string;
     logo: string;
     slug: string;
+    empty: boolean;
   }>;
 };
 
@@ -52,6 +54,7 @@ type InvestorsHitProps = {
     vc_firm_name: string;
     vc_firm_logo: string;
     vc_firm_slug: string;
+    empty: boolean;
   }>;
 };
 
@@ -62,27 +65,48 @@ type PeopleHitProps = {
     personal_email: string;
     picture: string;
     slug: string;
+    empty: boolean;
   }>;
+};
+
+const transformItems = (items, { results }) => {
+  if (results.hits.length === 0) {
+    return {
+      empty: true
+    }
+  }
+  return items.map((item, index) => ({
+    ...item,
+    position: { index, page: results.page },
+  }));
 };
 
 function CompaniesHit({ hit }: CompaniesHitProps) {
   return (
     <div>
-      <a href={`/companies/${hit.slug}`}>
-        <div className=" my-3 flex flex-row flex-start">
-          <img
-            className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
-            src={hit.logo}
-            alt={hit.logo}
-          />
-          <h1 className="whitespace nowrap ml-2 text-xs mt-2">
-            <b>{hit.name}</b>
+      {
+        (hit.empty) ?
+          <h1 className="text-xs m-4 text-gray-500 text-center">
+            <b>No result found</b>
           </h1>
-          <p className=" ml-3 mt-2 text-xs ">
-            {truncate(hit.overview, { omission: "...", length: 80 })}
-          </p>
-        </div>
-      </a>
+          :
+          <a href={`/companies/${hit.slug}`}>
+            <div className=" my-3 flex flex-row flex-start">
+              <img
+                 className="w-10 h-10 border-solid border border-gray-5 rounded-md"
+                src={hit.logo}
+                alt={hit.logo}
+              />
+              <h1 className="whitespace nowrap ml-2 text-xs mt-2 text-gray-10">
+                <b>{hit.name}</b>
+              </h1>
+              <p className=" ml-3 mt-2 text-xs text-gray-10">
+                {truncate(hit.overview, { omission: "...", length: 80 })}
+              </p>
+            </div>
+          </a>
+      }
+
     </div>
   );
 }
@@ -90,18 +114,27 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 function InvestorsHit({ hit }: InvestorsHitProps) {
   return (
     <div>
-      <a href={`/investors/${hit.vc_firm_slug}`}>
-        <div className=" my-2 flex flex-row flex-start">
-          <img
-            className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
-            src={hit.vc_firm_logo }
-            alt={hit.vc_firm_logo }
-          />
-          <h1 className=" mt-2 ml-2 text-xs">
-            <b>{hit.vc_firm_name}</b>
+      {
+        (hit.empty) ?
+          <h1 className="text-xs m-4 text-gray-500 text-center">
+            <b>No result found</b>
           </h1>
-        </div>
-      </a>
+          :
+          <a href={`/investors/${hit.vc_firm_slug}`}>
+            <div className=" my-2 flex flex-row flex-start">
+              <img
+                 className="w-10 h-10 border-solid border border-gray-5 rounded-md"
+                src={hit.vc_firm_logo}
+                alt={hit.vc_firm_logo}
+              />
+              <h1 className=" mt-2 ml-2 text-xs text-gray-10">
+                <b>{hit.vc_firm_name}</b>
+              </h1>
+            </div>
+          </a>
+
+      }
+
     </div>
   );
 }
@@ -109,18 +142,26 @@ function InvestorsHit({ hit }: InvestorsHitProps) {
 function PeopleHit({ hit }: PeopleHitProps) {
   return (
     <div>
-      <a href={`/people/${hit.slug}`}>
-        <div className="my-2 flex flex-row flex-start">
-          <img
-            className="w-10 h-10 border-solid border-2 border-gray-200 rounded-md"
-            src={hit.picture}
-            alt={hit.picture}
-          />
-          <h1 className=" ml-2 text-xs mt-3">
-            <b>{hit.name}</b>
+      {
+        (hit.empty) ?
+          <h1 className="text-xs m-4 text-gray-500 text-center">
+           <b>No result found</b>
           </h1>
-        </div>
-      </a>
+          :
+          <a href={`/people/${hit.slug}`}>
+            <div className="my-2 flex flex-row flex-start">
+              <img
+                className="w-10 h-10 border-solid border border-gray-5 rounded-md"
+                src={hit.picture}
+                alt={hit.picture}
+              />
+              <h1 className=" ml-2 text-xs mt-3 text-gray-10">
+                <b>{hit.name}</b>
+              </h1>
+            </div>
+          </a>
+      }
+
     </div>
   );
 }
@@ -137,32 +178,38 @@ export default function SearchModal(props: any) {
       onRequestClose={onClose}
       style={customStyles}
       contentLabel="Login Modal"
-    
+
     >
-      <div className="max-w-6xl sm:px-3 lg:min-h-[40vh] lg:max-h-[2vh]">
+      <div className="max-w-6xl  lg:min-h-[40vh] lg:max-h-[2vh]">
         <div className="bg-white rounded-2xl center">
           <InstantSearch searchClient={searchClient} indexName="companies">
             <SearchBox
+              className="w-full"
               placeholder="Search"
               classNames={{
                 submitIcon: "hidden",
                 resetIcon: "hidden",
                 loadingIndicator: "hidden",
                 input:
-                  " w-full bg-transaparent text-dark-500  rounded-md  outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
+                  "w-5/6 bg-white text-dark-500 rounded-md outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
               }}
             />
+             <button onClick={onClose} className="bg-white w-8 justify-items-end border rounded-md text-dark-500 font-bold text-sm p-0.5 ml-10">
+                  Esc
+                </button>
             <hr className="max-w-8xl mt-3 -ml-10 -mr-8 "></hr>
             <Configure
               analytics={false}
               hitsPerPage={3}
             />
             <Index indexName="companies">
-              <h1 className="font-bold my-1">Companies</h1>
+              <h1 className="font-bold my-1 text-dark-500">Companies</h1>
               <InfiniteHits
+                transformItems={transformItems}
                 classNames={{
+                  emptyRoot: "No result",
                   loadMore:
-                    "w-full mb-5 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "font-bold w-full mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={CompaniesHit}
@@ -170,22 +217,24 @@ export default function SearchModal(props: any) {
             </Index>
 
             <Index indexName="investors">
-              <h1 className="font-bold my-1">Investors</h1>
+              <h1 className="font-bold my-1 text-dark-500">Investors</h1>
               <InfiniteHits
+                transformItems={transformItems}
                 classNames={{
                   loadMore:
-                    "w-full mb-5 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "font-bold w-full mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={InvestorsHit}
               />
             </Index>
             <Index indexName="people">
-              <h1 className="font-bold my-2">People</h1>
+              <h1 className="font-bold my-2 text-dark-500">People</h1>
               <InfiniteHits
+                transformItems={transformItems}
                 classNames={{
                   loadMore:
-                    "w-full mb-5 text-sm text-primary-500 bg-transparent focus:ring-primary-800 border-2 border-primary-500 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "font-bold w-full mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={PeopleHit}

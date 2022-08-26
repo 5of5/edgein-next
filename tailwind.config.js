@@ -34,6 +34,8 @@ const dark = {
 }
 
 const gray = {
+  5: "#00000010",
+  10: "#475569",
   50: "#F2F5FA",
   100: "#eeeef1",
   200: "#d5d5db",
@@ -73,6 +75,10 @@ const yellow = {
   900: "#403602"
 }
 
+const purple = {
+  50: "#5E41FE"
+}
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -94,6 +100,7 @@ module.exports = {
         blue,
         yellow,
         transparent: 'transparent',
+        purple
       },
       borderRadius: {
         '8xl': '4rem',
