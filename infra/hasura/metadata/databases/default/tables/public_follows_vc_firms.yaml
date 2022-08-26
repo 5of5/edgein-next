@@ -2,6 +2,15 @@ table:
   schema: public
   name: follows_vc_firms
 object_relationships:
+  - name: list
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: lists
+        insertion_order: null
+        column_mapping:
+          list_id: id
   - name: vc_firm
     using:
       manual_configuration:
