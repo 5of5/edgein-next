@@ -15,6 +15,7 @@ import {
 	IconAnnotation,
 } from "@/components/Icons";
 import {
+	Companies,
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
@@ -181,6 +182,10 @@ const Companies: NextPage<Props> = ({
 
 	const companies = initialLoad ? initialCompanies : companiesData?.companies;
 
+	const onUpdateOfCompany = (company: Companies) => {
+		// TODO if company is currently displayed update it
+	}
+
 	return (
 		<div>
 			<div>
@@ -191,7 +196,7 @@ const Companies: NextPage<Props> = ({
 
 				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
-						{companies && <ElemRecentCompanies heading="Recently Discovered" />}
+						{companies && <ElemRecentCompanies onUpdateOfCompany={onUpdateOfCompany} heading="Recently Discovered" />}
 					</div>
 
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">

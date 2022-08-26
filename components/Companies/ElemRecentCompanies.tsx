@@ -23,6 +23,7 @@ type Props = {
 	className?: string;
 	heading?: string;
 	itemsLimit?: number;
+	onUpdateOfCompany: (company: Companies)=> void
 };
 
 export const ElemRecentCompanies: FC<Props> = ({
