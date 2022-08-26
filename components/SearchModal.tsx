@@ -195,7 +195,7 @@ export default function SearchModal(props: any) {
                   "w-5/6 bg-white text-dark-500 rounded-md outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
               }}
             />
-             <button onClick={onClose} className="bg-white -mt-5 float-right w-8 justify-items-end border rounded-md text-dark-500 font-bold text-sm p-0.5 ml-10">
+             <button onClick={onClose} className="bg-white -mt-7 float-right w-8 justify-items-end border rounded-md text-dark-500 font-bold text-sm p-0.5 ml-10">
                   Esc
                 </button>
             <hr className="max-w-8xl clear-both mt-4 -ml-10 -mr-8 "></hr>
