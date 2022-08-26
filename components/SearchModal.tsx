@@ -25,7 +25,6 @@ Modal.setAppElement("#modal-root");
 
 const customStyles = {
   content: {
-  
     top: "50%",
     left: "50%",
     right: "auto",
@@ -98,10 +97,10 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
                 src={hit.logo}
                 alt={hit.logo}
               />
-              <h1 className="whitespace nowrap ml-2 text-xs mt-2 text-gray-10">
+              <h1 className="whitespace nowrap ml-2 text-xs mt-3 text-gray-10">
                 <b>{hit.name}</b>
               </h1>
-              <p className=" ml-3 mt-2 text-xs text-gray-10">
+              <p className=" ml-2 mt-3 text-xs tracking-wide text-gray-10">
                 {truncate(hit.overview, { omission: "...", length: 80 })}
               </p>
             </div>
@@ -128,7 +127,7 @@ function InvestorsHit({ hit }: InvestorsHitProps) {
                 src={hit.vc_firm_logo}
                 alt={hit.vc_firm_logo}
               />
-              <h1 className=" mt-2 ml-2 text-xs text-gray-10">
+              <h1 className=" mt-3 ml-2 text-xs text-gray-10">
                 <b>{hit.vc_firm_name}</b>
               </h1>
             </div>
@@ -195,22 +194,22 @@ export default function SearchModal(props: any) {
                   "w-5/6 bg-white text-dark-500 rounded-md outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
               }}
             />
-             <button onClick={onClose} className="bg-white -mt-7 float-right w-8 justify-items-end border rounded-md text-dark-500 font-bold text-sm p-0.5 ml-10">
-                  Esc
+             <button onClick={onClose} className="bg-white -mt-6 float-right w-8 justify-items-end border rounded-md text-dark-500 font-bold text-xs p-0.5 ml-10">
+                  ESC
                 </button>
-            <hr className="max-w-8xl clear-both mt-4 -ml-10 -mr-8 "></hr>
+            <hr className="max-w-8xl clear-both mt-2 -ml-10 -mr-8 "></hr>
             <Configure
               analytics={false}
               hitsPerPage={3}
             />
             <Index indexName="companies">
-              <h1 className="font-bold my-1 text-dark-500">Companies</h1>
+              <h1 className="font-bold mt-5 text-dark-500">Companies</h1>
               <InfiniteHits
                 transformItems={transformItems}
                 classNames={{
                   emptyRoot: "No result",
                   loadMore:
-                    "font-bold w-full mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+                    "font-bold w-full mb-4 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
                 }}
                 showPrevious={false}
                 hitComponent={CompaniesHit}
