@@ -10,7 +10,7 @@ import {
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
-import { reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object
@@ -23,7 +23,7 @@ type Props = {
 	className?: string;
 	heading?: string;
 	itemsLimit?: number;
-	onUpdateOfCompany: (company: Companies)=> void
+	onUpdateOfCompany: (company: Companies) => void
 };
 
 export const ElemRecentCompanies: FC<Props> = ({
@@ -55,7 +55,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	useEffect(() => {
 		setCompanies(companiesData?.companies)
 	}, [companiesData?.companies])
-	
+
 	const handleReactionClick = (company: Companies) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -68,7 +68,13 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 		setCompanies((prev) => {
 			return [...(prev || [])].map((item: any) => {
-				if (item.id === company.id) return { ...item, sentiment: newSentiment }
+				if (item.id === company.id) {
+
+					const newFollows = getNewFollows(sentiment);
+
+					item.follows.push(newFollows);
+					return { ...item, sentiment: newSentiment };
+				}
 				return item
 			})
 		});

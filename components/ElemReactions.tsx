@@ -1,4 +1,3 @@
-import { Companies, Vc_Firms } from "@/graphql/types";
 import { findIndex } from "lodash";
 import { FC, useEffect, useState } from "react";
 import { ElemButton } from "./ElemButton";

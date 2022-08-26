@@ -1,3 +1,5 @@
+import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types"
+
 type ReactionType = {
   company?: number
   vcfirm?: number
@@ -25,4 +27,12 @@ export const reactOnSentiment = async ({
     }),
   });
   return resp.json()
+}
+
+export const getNewFollows = (sentiment: string, type: string = 'company') => {
+  const follows = type === 'company' ? {} as Follows_Companies : {} as Follows_Vc_Firms;
+  follows.list = {} as Lists;
+  follows.list.name = `sentiment-${sentiment}`;
+
+  return follows;
 }

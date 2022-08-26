@@ -1,4 +1,5 @@
-import { reactOnSentiment } from "@/utils/reaction";
+import { Companies, Follows_Companies } from "@/graphql/types";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { ElemCredibility } from "../Company/ElemCredibility";
@@ -8,7 +9,7 @@ import { ElemReactions } from "../ElemReactions";
 import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
-  company: any,
+  company: Companies,
   toggleViewMode: boolean
 }
 
@@ -31,7 +32,12 @@ export const ElemCompanyCard: FC<Props> = ({
       sentiment,
       pathname: `/companies/${company.slug}`
     })
-    setCompanyData({ ...company, sentiment: newSentiment })
+    setCompanyData((prev: Companies) => {
+      const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+      prev.follows.push(newFollows);
+      return { ...prev, sentiment: newSentiment }
+    })
   }
 
   return (

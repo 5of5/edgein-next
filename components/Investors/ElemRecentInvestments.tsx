@@ -10,7 +10,7 @@ import {
 	Vc_Firms,
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
-import { reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object
@@ -68,7 +68,11 @@ export const ElemRecentInvestments: FC<Props> = ({
 
 		setVcFirms(prev => {
 			return [...(prev || [])].map((item: any) => {
-				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+				if (item.id === vcFirm.id) {
+					const newFollows = getNewFollows(sentiment, 'vcfirm')
+					item.follows.push(newFollows);
+					return { ...item, sentiment: newSentiment }
+				}
 				return item;
 			});
 		});
