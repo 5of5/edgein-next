@@ -138,6 +138,7 @@ const queryForCompanyList = async (date: any) => {
       tags
       logo
       slug
+      aliases
     }
   }
   `
