@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
 import Link from "next/link";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
@@ -16,11 +15,15 @@ import {
 	GetVcFirmsQuery,
 	useGetVcFirmsQuery,
 	Vc_Firms_Bool_Exp,
+	Vc_Firms,
 } from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
+import { ElemReactions } from "@/components/ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	vcFirmCount: number;
@@ -35,6 +38,7 @@ const Investors: NextPage<Props> = ({
 	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
+	const { user } = useAuth();
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	// Search Box
@@ -85,12 +89,35 @@ const Investors: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
+		current_user: user?.id ?? 0
 	});
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
-	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms;
+	const [vcFirms, setVcFirms] = useState(initialLoad ? initialVCFirms : vcFirmsData?.vc_firms);
+
+	useEffect(() => {
+		setVcFirms(vcFirmsData?.vc_firms);
+	}, [vcFirmsData]);
+
+	const handleReactionClick = (vcFirm: GetVcFirmsQuery["vc_firms"][0]) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		const newSentiment = await reactOnSentiment({
+			vcfirm: vcFirm?.id!,
+			sentiment,
+			pathname: `/investors/${vcFirm?.slug!}`
+		})
+
+		setVcFirms(prev => {
+			return [...(prev || [])].map((item: any) => {
+				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+				return item;
+			});
+		});
+	}
 
 	return (
 		<div>
@@ -199,6 +226,12 @@ const Investors: NextPage<Props> = ({
 														)}
 												</div>
 											</div>
+
+											<div
+												className={`flex w-full mt-6 items-center justify-start`}
+											>
+												<ElemReactions data={vcfirm} handleReactionClick={handleReactionClick(vcfirm)} blackText />
+											</div>
 										</a>
 									</Link>
 								))
@@ -230,8 +263,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Investors - EdgeIn.io",
 			metaDescription:
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
-			vcFirmCount: vcFirms?.vc_firms.length,
-			initialVCFirms: vcFirms?.vc_firms,
+			vcFirmCount: vcFirms?.vc_firms?.length || null,
+			initialVCFirms: vcFirms?.vc_firms || null,
 			numberOfInvestments: InvestmentsFilters,
 		},
 	};

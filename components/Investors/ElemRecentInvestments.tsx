@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { PlaceholderInvestorRecentInvestmentsCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
@@ -7,12 +7,16 @@ import { formatDate } from "@/utils";
 import {
 	Vc_Firms_Bool_Exp,
 	useGetVcFirmsRecentInvestmentsQuery,
+	Vc_Firms,
 } from "@/graphql/types";
+import { ElemReactions } from "../ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object
 	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
+		[P in keyof T]?: DeepPartial<T[P]>;
+	}
 	: T;
 
 type Props = {
@@ -26,6 +30,8 @@ export const ElemRecentInvestments: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
+
+	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -41,9 +47,32 @@ export const ElemRecentInvestments: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
+		current_user: user?.id ?? 0
 	});
 
-	const vcFirms = vcFirmsData?.vc_firms;
+	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
+
+	useEffect(() => {
+		setVcFirms(vcFirmsData?.vc_firms)
+	}, [vcFirmsData?.vc_firms]);
+
+	const handleReactionClick = (vcFirm: Vc_Firms) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		const newSentiment = await reactOnSentiment({
+			vcfirm: vcFirm.id,
+			sentiment,
+			pathname: `/investors/${vcFirm.slug}`
+		})
+
+		setVcFirms(prev => {
+			return [...(prev || [])].map((item: any) => {
+				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+				return item;
+			});
+		});
+	}
 
 	return (
 		<div className={`${className}`}>
@@ -83,7 +112,6 @@ export const ElemRecentInvestments: FC<Props> = ({
 												imgClass="object-contain w-full h-full"
 												imgAlt={investor.name}
 											/>
-
 											<div className="flex items-center justify-center pl-2 md:overflow-hidden">
 												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60">
 													{investor.name}
@@ -101,6 +129,16 @@ export const ElemRecentInvestments: FC<Props> = ({
 													})}
 												</div>
 											)}
+										</div>
+
+										<div
+											className={`flex w-full mt-6 items-center justify-start`}
+										>
+											<ElemReactions
+												data={investor}
+												handleReactionClick={handleReactionClick(investor)}
+												blackText
+											/>
 										</div>
 									</a>
 								</ElemCarouselCard>

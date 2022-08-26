@@ -1,11 +1,10 @@
 import type { NextPage, GetStaticProps } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
-import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
@@ -17,7 +16,11 @@ import {
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
+	useGetCompanyQuery,
 } from "../../graphql/types";
+import { ElemReactions } from "@/components/ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	company: Companies;
@@ -25,6 +28,7 @@ type Props = {
 };
 
 const Company: NextPage<Props> = (props) => {
+	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
 
@@ -32,25 +36,33 @@ const Company: NextPage<Props> = (props) => {
 
 	const [company, setCompany] = useState(props.company);
 
+	const {
+		data: conpanyData,
+		error,
+		isLoading,
+	} = useGetCompanyQuery({
+		slug: companyId as string,
+		current_user: user?.id ?? 0
+	});
+
+	useEffect(() => {
+		if (conpanyData)
+			setCompany(conpanyData?.companies[0] as Companies)
+	}, [conpanyData])
+
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async () => {
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ 
-				company: company.id,
-				sentiment,
-				pathname: location.pathname 
-				}),
+	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+
+		const newSentiment: any = await reactOnSentiment({
+			company: company.id,
+			sentiment,
+			pathname: location.pathname
 		});
-		const newSentiment = await resp.json()
-		setCompany({...company, sentiment: newSentiment})
+
+		setCompany({ ...company, sentiment: newSentiment })
 	}
 
 	const sortedInvestmentRounds = props.sortRounds;
@@ -96,7 +108,6 @@ const Company: NextPage<Props> = (props) => {
 										{company.coin.ticker}
 									</div>
 								)}
-								<ElemButton onClick={handleReactionClick('rocket')}>Rocket {company.sentiment?.rocket || 0}</ElemButton>
 							</div>
 
 							{company.overview && (
@@ -122,20 +133,31 @@ const Company: NextPage<Props> = (props) => {
 							</div>
 						</section> */}
 					</div>
+					{
+						(company.market_verified || company.github || company.company_linkedin || company.velocity_linkedin || company.velocity_token) &&
+						<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+							<ElemCredibility
+								className="col-span-5 mt-16 md:mt-0"
+								heading="Credibility"
+								marketVerified={company.market_verified}
+								githubVerified={company.github}
+								linkedInVerified={company.company_linkedin}
+							/>
+							<ElemVelocity
+								className="flex flex-col col-span-3 mt-16 md:mt-0"
+								heading="Velocity"
+								employeeListings={company.velocity_linkedin}
+								tokenExchangeValue={company.velocity_token}
+							/>
+						</div>
+					}
 
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-						<ElemCredibility
-							className="col-span-5 mt-16 md:mt-0"
-							heading="Credibility"
-							marketVerified={company.market_verified}
-							githubVerified={company.github}
-							linkedInVerified={company.company_linkedin}
-						/>
-						<ElemVelocity
-							className="flex flex-col col-span-3 mt-16 md:mt-0"
-							heading="Velocity"
-							employeeListings={company.velocity_linkedin}
-							tokenExchangeValue={company.velocity_token}
+						<ElemReactions
+							data={company}
+							handleReactionClick={handleReactionClick}
+							blackText
+							roundedFull
 						/>
 					</div>
 				</div>
@@ -192,7 +214,7 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId }
+		{ slug: context.params?.companyId, current_user: 0 }
 	);
 
 	if (!companies?.companies[0]) {

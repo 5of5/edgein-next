@@ -1,18 +1,22 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { formatDate } from "@/utils";
 import {
+	Companies,
 	Companies_Bool_Exp,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
+import { ElemReactions } from "../ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object
 	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
+		[P in keyof T]?: DeepPartial<T[P]>;
+	}
 	: T;
 
 type Props = {
@@ -26,6 +30,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
+	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -41,9 +46,32 @@ export const ElemRecentCompanies: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
+		current_user: user?.id ?? 0
 	});
 
-	const companies = companiesData?.companies;
+	const [companies, setCompanies] = useState(companiesData?.companies);
+
+	useEffect(() => {
+		setCompanies(companiesData?.companies)
+	}, [companiesData?.companies])
+	
+	const handleReactionClick = (company: Companies) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		const newSentiment = await reactOnSentiment({
+			company: company.id,
+			sentiment,
+			pathname: `/companies/${company.slug}`
+		})
+
+		setCompanies((prev) => {
+			return [...(prev || [])].map((item: any) => {
+				if (item.id === company.id) return { ...item, sentiment: newSentiment }
+				return item
+			})
+		});
+	}
 
 	return (
 		<div className={`${className}`}>
@@ -100,6 +128,19 @@ export const ElemRecentCompanies: FC<Props> = ({
 												day: "2-digit",
 												year: "numeric",
 											})}
+										</div>
+
+										<div
+											className={`flex flex-row justify-end mt-4 shrink-0 lg:flex-row mt-2
+												? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-2 lg:flex-row lg:items-center"
+												: ""
+												}`}
+										>
+											<ElemReactions
+												data={company}
+												handleReactionClick={handleReactionClick(company)}
+												blackText
+											/>
 										</div>
 									</a>
 								</ElemCarouselCard>

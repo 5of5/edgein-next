@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,10 +13,15 @@ import {
 	runGraphQl,
 } from "../../utils";
 import {
+	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
+	useGetVcFirmQuery,
 	Vc_Firms,
 } from "../../graphql/types";
+import { ElemReactions } from "@/components/ElemReactions";
+import { reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -24,27 +29,40 @@ type Props = {
 };
 
 const VCFirm: NextPage<Props> = (props) => {
+	const { user } = useAuth()
 	const router = useRouter();
-
+	const { investorId } = router.query;
 	const goBack = () => router.back();
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 
-	const handleReactionClick = (sentiment: string) => async () => {
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ 
-				vcfirm: vcfirm.id,
-				sentiment,
-				pathname: location.pathname 
-			}),
+	const {
+		data: vcFirmData,
+		error,
+		isLoading,
+	} = useGetVcFirmQuery({
+		slug: investorId as string,
+		current_user: user?.id ?? 0
+	});
+
+	useEffect(() => {
+		if (vcFirmData)
+			setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms)
+	}, [vcFirmData]);
+
+	if (!vcfirm) {
+		return <h1>Not Found</h1>;
+	}
+
+	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+
+		const newSentiment = await reactOnSentiment({
+			vcfirm: vcfirm.id,
+			sentiment,
+			pathname: location.pathname
 		});
-		const newSentiment = await resp.json()
-		setVcfirm({...vcfirm, sentiment: newSentiment})
+
+		setVcfirm({ ...vcfirm, sentiment: newSentiment })
 	}
 
 	if (!vcfirm) {
@@ -72,14 +90,22 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 				<div className="w-full col-span-2 p-2">
 					<h1 className="my-5 text-4xl font-bold md:text-6xl">{vcfirm.name}</h1>
-					<ElemButton onClick={handleReactionClick('rocket')}>Rocket {vcfirm.sentiment?.rocket || 0}</ElemButton>
 					<ElemKeyInfo
 						heading=""
 						website={vcfirm.website}
 						linkedIn={vcfirm.linkedin}
 						investmentsLength={vcfirm.investments?.length}
 					/>
+					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+						<ElemReactions
+							data={vcfirm}
+							handleReactionClick={handleReactionClick}
+							blackText
+							roundedFull
+						/>
+					</div>
 				</div>
+
 			</div>
 
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
@@ -103,9 +129,8 @@ const VCFirm: NextPage<Props> = (props) => {
 							return (
 								<tr
 									key={index}
-									className={`${
-										index % 2 === 0 ? "" : ""
-									} flex flex-col flex-no wrap overflow-hidden md:table-row`}
+									className={`${index % 2 === 0 ? "" : ""
+										} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
@@ -177,32 +202,10 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(`
-	{
-		vc_firms(where: {slug: {_eq: "${context.params?.investorId}"}}) {
-			id
-			name
-			slug
-			logo
-			website
-			linkedin
-			investments {
-				investment_round {
-					id
-					round_date
-					round
-					amount
-					company {
-						id
-						slug
-						name
-						logo
-					}
-				}
-			}
-		}
-	}	
-	`);
+	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
+		GetVcFirmDocument,
+		{ slug: context.params?.investorId, current_user: 0 }
+	);
 
 	if (!vc_firms?.vc_firms[0]) {
 		return {
