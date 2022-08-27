@@ -12,14 +12,17 @@ import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
 import {
 	Companies,
+	Follows_Companies,
+	Follows_Companies_Aggregate,
 	GetCompaniesPathsQuery,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
+	Lists,
 	useGetCompanyQuery,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
@@ -62,7 +65,11 @@ const Company: NextPage<Props> = (props) => {
 			pathname: location.pathname
 		});
 
-		setCompany({ ...company, sentiment: newSentiment })
+		setCompany((prev) => {
+			const newFollows = getNewFollows(sentiment) as Follows_Companies;
+			prev.follows.push(newFollows);
+			return { ...prev, sentiment: newSentiment }
+		})
 	}
 
 	const sortedInvestmentRounds = props.sortRounds;

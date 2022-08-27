@@ -13,6 +13,7 @@ import {
 	runGraphQl,
 } from "../../utils";
 import {
+	Follows_Vc_Firms,
 	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
@@ -20,7 +21,7 @@ import {
 	Vc_Firms,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
@@ -61,8 +62,12 @@ const VCFirm: NextPage<Props> = (props) => {
 			sentiment,
 			pathname: location.pathname
 		});
-
-		setVcfirm({ ...vcfirm, sentiment: newSentiment })
+		
+		setVcfirm((prev) => {
+			const newFollows = getNewFollows(sentiment, 'vcfirm') as Follows_Vc_Firms
+			prev.follows.push(newFollows);
+			return { ...prev, sentiment: newSentiment }
+		});
 	}
 
 	if (!vcfirm) {
