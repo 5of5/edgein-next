@@ -14,11 +14,10 @@ import {
   Configure,
 } from "react-instantsearch-hooks-web";
 import { truncate } from "lodash";
-import { empty } from "@apollo/client";
 
 const searchClient = algoliasearch(
-  "TFBKEVTOJD",
-  "c1067c8b29709544620c3ca4d0702ebc"
+  process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
+  process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
 );
 
 Modal.setAppElement("#modal-root");

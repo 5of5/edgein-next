@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import algoliasearch from 'algoliasearch'
 import { query, mutate } from '@/graphql/hasuraAdmin'
 
-const client = algoliasearch(process.env.ALGOLIA_APPLICATION_ID!, process.env.ALGOLIA_API_KEY!);
+const client = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!, process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // get the last sync datetime from db

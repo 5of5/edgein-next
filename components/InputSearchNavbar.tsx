@@ -7,7 +7,7 @@ type Props = {
 	name?: string;
 	value?: string;
 	placeholder?: string;
-	onClick?:any;
+	onClick?:() => void;
   
 };
 
