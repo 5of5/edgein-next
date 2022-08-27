@@ -15,7 +15,7 @@ import {
   minLength,
   regex
 } from "react-admin";
-import { uploadFile, deleteFile } from "../../utils/functions";
+import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {validateName, validateSlug, validateUrl} from "../../utils/constants"
 
 const filters = [

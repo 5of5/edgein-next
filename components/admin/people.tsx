@@ -16,7 +16,7 @@ import {
 	email,
 	regex
 } from "react-admin";
-import { uploadFile, deleteFile } from "../../utils/functions";
+import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {validateName, validateSlug, validateUrl, validateEmail} from "../../utils/constants"
 const filters = [
 	<SearchInput key="search" source="name,slug,type" resettable alwaysOn />

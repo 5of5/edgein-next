@@ -2,7 +2,7 @@
 import * as React from "react";
 import { SearchInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
-import { uploadFile, deleteFile } from "../../utils/functions";
+import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {companyLayerChoices, validateName, validateSlug, validateUrl} from "../../utils/constants"
 export const companyIcon = BookIcon;
 
