@@ -22,7 +22,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
-import { reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
@@ -113,7 +113,13 @@ const Investors: NextPage<Props> = ({
 
 		setVcFirms(prev => {
 			return [...(prev || [])].map((item: any) => {
-				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
+				if (item.id === vcFirm.id) {
+					const newFollows = getNewFollows(sentiment, 'vcfirm');
+
+					item.follows.push(newFollows);
+
+					return { ...item, sentiment: newSentiment };
+				}
 				return item;
 			});
 		});
@@ -228,7 +234,7 @@ const Investors: NextPage<Props> = ({
 											</div>
 
 											<div
-												className={`flex w-full mt-6 items-center justify-start`}
+												className={`flex grid-cols-5 md:grid mt-4`}
 											>
 												<ElemReactions data={vcfirm} handleReactionClick={handleReactionClick(vcfirm)} blackText />
 											</div>

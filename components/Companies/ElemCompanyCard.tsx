@@ -1,4 +1,5 @@
-import { reactOnSentiment } from "@/utils/reaction";
+import { Companies, Follows_Companies } from "@/graphql/types";
+import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { ElemCredibility } from "../Company/ElemCredibility";
@@ -8,7 +9,7 @@ import { ElemReactions } from "../ElemReactions";
 import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
-  company: any,
+  company: Companies,
   toggleViewMode: boolean
 }
 
@@ -31,7 +32,12 @@ export const ElemCompanyCard: FC<Props> = ({
       sentiment,
       pathname: `/companies/${company.slug}`
     })
-    setCompanyData({ ...company, sentiment: newSentiment })
+    setCompanyData((prev: Companies) => {
+      const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+      prev.follows.push(newFollows);
+      return { ...prev, sentiment: newSentiment }
+    })
   }
 
   return (
@@ -64,7 +70,7 @@ export const ElemCompanyCard: FC<Props> = ({
           {companyData.coin && (
             <ElemTooltip
               content={`Token: ${companyData.coin.ticker}`}
-              className="self-center inline-block px-2 py-1 ml-1 align-middle rounded-md whitespace-nowrap text-dark-400 bg-gray-50"
+              className="self-center inline-block px-2 py-1 ml-1 align-middle rounded-md whitespace-nowrap text-dark-400 bg-gray-50 items-end"
             >
               <span className="text-sm font-bold uppercase leading-sm">
                 {companyData.coin.ticker}
@@ -115,7 +121,7 @@ export const ElemCompanyCard: FC<Props> = ({
         </div>
 
         <div
-          className={`flex flex-row justify-end mt-4 shrink-0 lg:flex-row ${toggleViewMode
+          className={`flex mt-4 grid-cols-5 md:grid ${toggleViewMode
             ? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
             : ""
             }`}
