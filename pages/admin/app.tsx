@@ -16,15 +16,51 @@ import { BlockchainsList, BlockchainsEdit, BlockchainsCreate } from '../../compo
 import { CoinsList, CoinsEdit, CoinsCreate } from '../../components/admin/coins';
 import { ActionsList } from '../../components/admin/actions';
 
+const MyLogin = () => {
+  useEffect(() => {
+    window.location.href = "/"
+  },[])
+
+  return <div/>
+}
+
 const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(null);
+  const [loggedUser, setLoggedUser] = useState(null)
+  const authProvider = {
+    // authentication
+    login: () => Promise.resolve(),
+    checkError: () => Promise.resolve(),
+    checkAuth: () => {
+      if (loggedUser) {
+        if (loggedUser.role === "user") {
+          return Promise.reject(new Error("User is not an admin"));
+        } else {
+          return Promise.resolve()
+        }
+      }
+      return Promise.reject()
+    },
+    logout: () => Promise.resolve(),
+    getIdentity: () => Promise.resolve(),
+    // authorization
+    getPermissions: () => Promise.resolve(),
+  };
 
   useEffect(() => {
+    const savedUser = localStorage.getItem('user')
+    if(savedUser){
+      setLoggedUser(JSON.parse(savedUser))
+    }
+  }, [])
+
+  useEffect(() => {
+   
     const buildDataProvider = async () => {
       const myClientWithAuth = new ApolloClient({
         uri: "/api/graphql",
         cache: new InMemoryCache(),
-      });      
+      });
       const dataProvider = await buildHasuraProvider({
         client: myClientWithAuth
       });
@@ -36,7 +72,7 @@ const AdminApp = () => {
   if (!dataProvider) return <p>Loading...</p>;
 
   return (
-    <Admin dataProvider={dataProvider}>
+    <Admin loginPage={MyLogin} dataProvider={dataProvider} authProvider={authProvider}>
       <Resource
         name="blockchains"
         list={BlockchainsList}
@@ -101,7 +137,7 @@ const AdminApp = () => {
 
 export async function getStaticProps() {
   return {
-    props: { noLayout: true },
+    props: { noLayout: true},
   }
 }
 

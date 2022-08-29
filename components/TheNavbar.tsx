@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
@@ -25,6 +25,10 @@ export const TheNavbar = () => {
 		// 	name: "Events",
 		// },
 	];
+
+	useEffect(() => {
+		localStorage.setItem('user', JSON.stringify(user))
+	},[user])
 
 	const logout = async () => {
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
