@@ -61,8 +61,8 @@ const Company: NextPage<Props> = (props) => {
 			sentiment,
 			pathname: location.pathname
 		});
-
-		setCompany({ ...company, sentiment: newSentiment })
+		console.log("newSentiment", newSentiment);
+		setCompany((prev) => ({ ...prev, sentiment: newSentiment }))
 	}
 
 	const sortedInvestmentRounds = props.sortRounds;
