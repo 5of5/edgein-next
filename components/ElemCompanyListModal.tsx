@@ -1,9 +1,11 @@
 import Modal from "react-modal";
 import React, { FC, useEffect } from "react";
 import { useState } from "react";
-import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types";
+import { Lists } from "@/graphql/types";
 import { findIndex } from "lodash";
 import { User } from "@/models/User";
+import { ElemButton } from "./ElemButton";
+import { getName } from "@/utils/reaction";
 
 type Props = {
   show: boolean
@@ -26,7 +28,8 @@ export const ElemCompanyListModal: FC<Props> = ({
   const [newName, setNewName] = useState<string>();
   const [listsData, setListsData] = useState([] as Lists[]);
 
-  const onModalClose = () => {
+  const onModalClose = (event:  React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     onClose();
   };
 
@@ -35,32 +38,33 @@ export const ElemCompanyListModal: FC<Props> = ({
       setListsData(lists);
   }, [lists]);
 
-  const getName = (list: Lists) => {
-    const fragments = list.name.split('-');
-    return fragments[fragments.length - 1];
-  };
-
   const isSelected = (list: any) => {
     const name = getName(list);
-
+    // check and return index if the company is added to list already
     return findIndex(follows, (item: any) => {
       return getName(item.list) === name;
     }) !== -1
   }
 
-  const onCreate = (event) => {
+  const onCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
     if (newName) {
+      // pass event and reaction name to handleReactionClick function
       onCreateNew(newName)(event);
+      // push sentiment to list
       setListsData((prev: Lists[]) => {
-        return [...prev, {name: `sentiment-${user.id}-${newName}`} as Lists];
+        return [...prev, { name: `sentiment-${user.id}-${newName}` } as Lists];
       });
+      // hide input
+      setShowNew(false);
+      setNewName(undefined);
     }
   }
 
   const onChangeHandler = () => {
     // TODO: handle uncheck
   }
- 
+
   return (
     <Modal isOpen={show}
       contentLabel="List Modal"
@@ -117,12 +121,14 @@ export const ElemCompanyListModal: FC<Props> = ({
               placeholder="Enter List Name..."
               value={newName}
             ></input>
-            <button
+            <ElemButton
               onClick={(e) => onCreate(e)}
-              className=" mt-3 float-right from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r py-2 px-5 text-white font-bold border rounded-full"
+              className="mt-3 float-right"
+              roundedFull
+              btn="primary"
             >
               Create
-            </button>
+            </ElemButton>
           </div>
         )}
     </Modal>
@@ -131,7 +137,7 @@ export const ElemCompanyListModal: FC<Props> = ({
 
 const customStyles = {
   content: {
-    top: "40%",
+    top: "50%",
     left: "50%",
     right: "auto",
     bottom: "auto",

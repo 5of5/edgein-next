@@ -1,5 +1,6 @@
 import { Companies, Follows_Companies, Lists, useGetListsByUserQuery, Vc_Firms } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
+import { getName } from "@/utils/reaction";
 import { findIndex } from "lodash";
 import { FC, useEffect, useState } from "react";
 import { ElemButton } from "./ElemButton";
@@ -39,20 +40,19 @@ export const ElemReactions: FC<Props> = ({
   const [crap, setCrap] = useState(-1);
   const [list, setList] = useState<Lists[]>([]);
 
+  const [showListModal, setShowListModal] = useState(false);
+
   useEffect(() => {
     setHot(() => findIndex(data.follows, (item: any) => {
-      const fragments = item.list.name.split('-');
-      return fragments[fragments.length - 1] === 'hot';
+      return getName(item.list) === 'hot';
     }))
 
     setLike(findIndex(data.follows, (item: any) => {
-      const fragments = item.list.name.split('-');
-      return fragments[fragments.length - 1] === 'like';
+      return getName(item.list) === 'like';
     }))
 
     setCrap(findIndex(data.follows, (item: any) => {
-      const fragments = item.list.name.split('-');
-      return fragments[fragments.length - 1] === 'crap';
+      return getName(item.list) === 'crap';
     }))
   }, [data]);
 
@@ -83,6 +83,14 @@ export const ElemReactions: FC<Props> = ({
     return sentiment !== -1 ? 'shadow-gray-300 bg-gray-100 hover:bg-gray-100 opacity-100 shadow-xl shadow-inner ... ': '';
   }
 
+
+  const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    setShowListModal(true);
+  }
+
   return (
     <>
       <ElemButton
@@ -109,14 +117,16 @@ export const ElemReactions: FC<Props> = ({
         disabled={disabled(crap)}
       ><IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
       </ElemButton>
-      {/* <ElemCompanyListModal
-        show
-        onClose={() => { }}
+
+      <ElemButton onClick={onSaveButton}>Save</ElemButton>
+      <ElemCompanyListModal
+        show={showListModal}
+        onClose={() => setShowListModal(false)}
         lists={list}
         follows={data?.follows}
         onCreateNew={handleReactionClick}
         user={user}
-      /> */}
+      />
     </>
   );
 } 
