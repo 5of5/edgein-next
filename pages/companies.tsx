@@ -295,7 +295,7 @@ const Companies: NextPage<Props> = ({
 									return (
 										<ElemCompanyCard
 											key={company.id}
-											company={company}
+											company={company as Companies}
 											toggleViewMode={toggleViewMode}
 										/>
 									);
