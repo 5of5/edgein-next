@@ -7,6 +7,7 @@ import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
+import { ElemTags } from "@/components/ElemTags";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -23,6 +24,7 @@ import {
 import { ElemReactions } from "@/components/ElemReactions";
 import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
+import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -43,12 +45,13 @@ const VCFirm: NextPage<Props> = (props) => {
 		isLoading,
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
-		current_user: user?.id ?? 0
+		current_user: user ?.id ?? 0
 	});
 
 	useEffect(() => {
+		console.log("vcFirmData =", vcFirmData)
 		if (vcFirmData)
-			setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms)
+			setVcfirm(vcFirmData ?.vc_firms[0] as Vc_Firms)
 	}, [vcFirmData]);
 
 	if (!vcfirm) {
@@ -62,7 +65,7 @@ const VCFirm: NextPage<Props> = (props) => {
 			sentiment,
 			pathname: location.pathname
 		});
-		
+
 		setVcfirm((prev) => {
 			const newFollows = getNewFollows(sentiment, 'vcfirm') as Follows_Vc_Firms
 			prev.follows.push(newFollows);
@@ -78,11 +81,11 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	return (
 		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
-			<div onClick={goBack}>
+			{/* <div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
 				</ElemButton>
-			</div>
+			</div> */}
 
 			<div className="flex flex-col gap-5 my-8 md:grid md:grid-cols-3">
 				<div className="col-span-1">
@@ -93,15 +96,24 @@ const VCFirm: NextPage<Props> = (props) => {
 						imgAlt={vcfirm.name}
 					/>
 				</div>
+
 				<div className="w-full col-span-2 p-2">
-					<h1 className="my-5 text-4xl font-bold md:text-6xl">{vcfirm.name}</h1>
-					<ElemKeyInfo
+					<h1 className="my-5 text-4xl font-bold md:text-6xl dark-500">{vcfirm.name}</h1>
+					{
+						vcfirm.tags && (
+							<ElemTags className="dark-500" tags={vcfirm.tags} />
+						)
+					}
+					{vcfirm.overview && (
+						<p className="mt-2 line-clamp-3 text-base text-slate-600">{vcfirm.overview}</p>
+					)}
+					{/* <ElemKeyInfo
 						heading=""
 						website={vcfirm.website}
 						linkedIn={vcfirm.linkedin}
-						investmentsLength={vcfirm.investments?.length}
-					/>
-					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+						investmentsLength={vcfirm.investments ?.length}
+					/> */}
+					<div className="flex flex-col grid-cols-8 gap-4 mt-4 md:grid">
 						<ElemReactions
 							data={vcfirm}
 							handleReactionClick={handleReactionClick}
@@ -114,16 +126,16 @@ const VCFirm: NextPage<Props> = (props) => {
 			</div>
 
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
-				<div className="mt-16" id="investments">
+				<div className="mt-16 rounded-xl bg-white p-4 pt-6" id="investments">
 					<h2 className="text-2xl font-bold">Investments</h2>
 
 					<ElemTable
-						className="w-full mt-3"
+						className="w-full mt-3 border border-separate rounded-xl"
 						columns={[
+							{ label: "Date" },
 							{ label: "Company" },
 							{ label: "Round" },
 							{ label: "Money Raised" },
-							{ label: "Date" },
 						]}
 					>
 						{sortedInvestmentRounds.map((theRound, index: number) => {
@@ -134,9 +146,20 @@ const VCFirm: NextPage<Props> = (props) => {
 							return (
 								<tr
 									key={index}
-									className={`${index % 2 === 0 ? "" : ""
+									className={`${index % 2 === 0 ? "" : "bg-slate-50"
 										} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
+									<ElemTableCell header="Date">
+										{theRound.round_date ? (
+											formatDate(theRound.round_date, {
+												month: "short",
+												day: "2-digit",
+												year: "numeric",
+											})
+										) : (
+												<>&mdash;</>
+											)}
+									</ElemTableCell>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
 											<Link
@@ -154,8 +177,8 @@ const VCFirm: NextPage<Props> = (props) => {
 												</a>
 											</Link>
 										) : (
-											<>&mdash;</>
-										)}
+												<>&mdash;</>
+											)}
 									</ElemTableCell>
 									<ElemTableCell header="Round">
 										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
@@ -167,26 +190,22 @@ const VCFirm: NextPage<Props> = (props) => {
 												{convertAmountRaised(theRound.amount)}
 											</>
 										) : (
-											<>&mdash;</>
-										)}
+												<>&mdash;</>
+											)}
 									</ElemTableCell>
-									<ElemTableCell header="Date">
-										{theRound.round_date ? (
-											formatDate(theRound.round_date, {
-												month: "short",
-												day: "2-digit",
-												year: "numeric",
-											})
-										) : (
-											<>&mdash;</>
-										)}
-									</ElemTableCell>
+
 								</tr>
 							);
 						})}
 					</ElemTable>
 				</div>
 			)}
+
+			<div className="mt-16 rounded-xl bg-white ">
+				{vcfirm && (
+					<ElemRecentInvestments heading="Similar Investors" />
+				)}
+			</div>
 		</div>
 	);
 };
@@ -197,11 +216,11 @@ export async function getStaticPaths() {
 	);
 
 	return {
-		paths: vcFirms?.vc_firms
+		paths: vcFirms ?.vc_firms
 			?.filter((vcfirm) => vcfirm.slug)
-			.map((vcfirm) => ({
-				params: { investorId: vcfirm.slug },
-			})),
+				.map((vcfirm) => ({
+					params: { investorId: vcfirm.slug },
+				})),
 		fallback: true, // false or 'blocking'
 	};
 }
@@ -209,10 +228,10 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
-		{ slug: context.params?.investorId, current_user: 0 }
+		{ slug: context.params ?.investorId, current_user: 0 }
 	);
 
-	if (!vc_firms?.vc_firms[0]) {
+	if (!vc_firms ?.vc_firms[0]) {
 		return {
 			notFound: true,
 		};
@@ -231,8 +250,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		.sort((a, b) => {
 			const distantFuture = new Date(8640000000000000);
 
-			let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
-			let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
+			let dateA = a ?.round_date ? new Date(a.round_date) : distantFuture;
+			let dateB = b ?.round_date ? new Date(b.round_date) : distantFuture;
 			return dateA.getTime() - dateB.getTime();
 		})
 		.reverse();

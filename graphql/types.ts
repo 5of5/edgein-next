@@ -7696,6 +7696,8 @@ export const GetVcFirmDocument = `
     website
     linkedin
     sentiment
+    tags
+    overview
     investments {
       investment_round {
         id
