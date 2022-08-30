@@ -7,11 +7,15 @@ import { formatDate } from "@/utils";
 import {
 	Companies,
 	Companies_Bool_Exp,
+	Follows_Companies,
+	Lists,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
+
+import { remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -56,7 +60,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 		setCompanies(companiesData?.companies)
 	}, [companiesData?.companies])
 
-	const handleReactionClick = (company: Companies) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleReactionClick = (company: Companies) => (sentiment: string, alreadyReacted: boolean) => async (event: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
 
@@ -67,12 +71,17 @@ export const ElemRecentCompanies: FC<Props> = ({
 		})
 
 		setCompanies((prev) => {
-			return [...(prev || [])].map((item: any) => {
+			return [...(prev || [] as Companies[])].map((item) => {
 				if (item.id === company.id) {
 
-					const newFollows = getNewFollows(sentiment);
+					const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
-					item.follows.push(newFollows);
+					if (!alreadyReacted)item.follows.push(newFollows)
+					else
+						remove(item.follows, (list) => {
+							return getName(list.list! as Lists) === sentiment;
+						})
+
 					return { ...item, sentiment: newSentiment };
 				}
 				return item
@@ -125,6 +134,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 												</h3>
 											</div>
 										</div>
+
 										<div className="mt-4 text-gray-400 grow line-clamp-3">
 											{company.overview}
 										</div>
@@ -144,6 +154,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 												data={company}
 												handleReactionClick={handleReactionClick(company)}
 												blackText
+												isList
 											/>
 										</div>
 									</a>

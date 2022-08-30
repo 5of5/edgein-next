@@ -12,7 +12,7 @@ type Props = {
   onClose: Function
   follows: any
   lists: Lists[],
-  onCreateNew: (reaction: string) => (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onCreateNew: (reaction: string, alreadyReacted: boolean) => (e: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => void;
   user: User,
 }
 
@@ -50,7 +50,7 @@ export const ElemCompanyListModal: FC<Props> = ({
     event.preventDefault()
     if (newName) {
       // pass event and reaction name to handleReactionClick function
-      onCreateNew(newName)(event);
+      onCreateNew(newName, false)(event);
       // push sentiment to list
       setListsData((prev: Lists[]) => {
         return [...prev, { name: `sentiment-${user.id}-${newName}` } as Lists];
@@ -61,8 +61,10 @@ export const ElemCompanyListModal: FC<Props> = ({
     }
   }
 
-  const onChangeHandler = () => {
+  const onClickHandler = (event: React.MouseEvent<HTMLInputElement>, list: Lists) => {
+    console.log("isSelected", isSelected(list));
     // TODO: handle uncheck
+    onCreateNew(getName(list), isSelected(list))(event);
   }
 
   return (
@@ -70,7 +72,7 @@ export const ElemCompanyListModal: FC<Props> = ({
       contentLabel="List Modal"
       style={customStyles}
     >
-      <div className="z-50 -mt-5 -ml-10 -mr-5 h-12 flex justify-between from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
+      <div className="z-50 h-12 w-full flex justify-between from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r absolute top-0 left-0">
         <h2 className="ml-10 mt-2.5 text-lg text-white font-normal">
           Save to List
         </h2>
@@ -82,13 +84,13 @@ export const ElemCompanyListModal: FC<Props> = ({
         </button>
       </div>
 
-      <div className="mt-2">
+      <div className="mt-10">
         <ul>
           {
             listsData?.map((item) => (
               <>
                 <li className="flex flex-start h-10">
-                  <input type="checkbox" defaultChecked checked={isSelected(item)} onChange={onChangeHandler}></input>
+                  <input type="checkbox" checked={isSelected(item)} onClick={(e) => onClickHandler(e, item)}></input>
                   <h1 className="ml-2 mt-2">{getName(item)}</h1>
                 </li>
                 <hr className="w-78 -ml-10 -mr-5"></hr>
@@ -144,8 +146,9 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     opacity: 1,
     borderRadius: 20,
-    minWidth: "320px",
+    minWidth: 320,
     height: "auto",
+    maxHeight: 400,
   },
   overlay: {
     zIndex: 99,

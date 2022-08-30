@@ -10,9 +10,13 @@ import { IconHot } from "./reactions/IconHot";
 import { IconLike } from "./reactions/IconLike";
 
 type Props = {
-  data: any,
-  handleReactionClick: (reaction: string) => (e: React.MouseEvent<HTMLButtonElement>) => void;
-  blackText?: boolean
+
+  data: any;
+  handleReactionClick: (
+    reaction: string,
+    isSelected: boolean,
+  ) => (e: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => void;
+  blackText?: boolean;
   btn?:
   | "danger"
   | "dark"
@@ -22,8 +26,9 @@ type Props = {
   | "ol-white"
   | "ol-primary"
   | "";
-  roundedFull?: boolean
-}
+  roundedFull?: boolean;
+  isList?: boolean;
+};
 
 export const ElemReactions: FC<Props> = ({
   data,
@@ -31,6 +36,7 @@ export const ElemReactions: FC<Props> = ({
   blackText,
   btn,
   roundedFull,
+  isList,
 }) => {
 
   const { user } = useAuth();
@@ -75,14 +81,15 @@ export const ElemReactions: FC<Props> = ({
       })
   }, [listsData]);
 
-  const disabled = (sentiment: number): boolean => {
+  const alreadyReacted = (sentiment: number): boolean => {
     return sentiment !== -1;
   }
 
-  const disabledClasses = (sentiment: number) => {
-    return sentiment !== -1 ? 'shadow-gray-300 bg-gray-100 hover:bg-gray-100 opacity-100 shadow-xl shadow-inner ... ': '';
-  }
-
+  const alreadyReactedClasses = (sentiment: number) => {
+    return sentiment !== -1
+      ? "shadow-gray-300 bg-gray-100 hover:bg-gray-100 opacity-100 shadow-xl shadow-inner ... "
+      : "";
+  };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -94,31 +101,48 @@ export const ElemReactions: FC<Props> = ({
   return (
     <>
       <ElemButton
-        onClick={handleReactionClick('hot')}
-        className={`${disabledClasses(hot)}px-1 mr-2${blackText ? " text-black" : ''}`}
+        onClick={handleReactionClick("hot", alreadyReacted(hot))}
+        className={`${alreadyReactedClasses(hot)}px-1 mr-2${blackText ? " text-black" : ""
+          }`}
         roundedFull={roundedFull}
         btn={btn}
-        disabled={disabled(hot)}
-      ><IconHot className="mr-1" /> {data?.sentiment?.hot || 0}
+      // disabled={disabled(hot)}
+      >
+        <IconHot className="mr-1" /> {data?.sentiment?.hot || 0}
       </ElemButton>
       <ElemButton
-        onClick={handleReactionClick('like')}
-        className={`${disabledClasses(like)}px-1 mr-2${blackText ? " text-black" : ''}`}
+        onClick={handleReactionClick("like", alreadyReacted(like))}
+        className={`${alreadyReactedClasses(like)}px-1 mr-2${blackText ? " text-black" : ""
+          }`}
         roundedFull={roundedFull}
         btn={btn}
-        disabled={disabled(like)}
-      ><IconLike className="mr-1" /> {data?.sentiment?.like || 0}
+      // disabled={disabled(like)}
+      >
+        <IconLike className="mr-1" /> {data?.sentiment?.like || 0}
       </ElemButton>
       <ElemButton
-        onClick={handleReactionClick('crap')}
-        className={`${disabledClasses(crap)}px-1 mr-2${blackText ? " text-black" : ''}`}
+        onClick={handleReactionClick("crap", alreadyReacted(crap))}
+        className={`${alreadyReactedClasses(crap)}px-1 mr-2${blackText ? " text-black" : ""
+          }`}
         roundedFull={roundedFull}
         btn={btn}
-        disabled={disabled(crap)}
-      ><IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
+      // disabled={disabled(crap)}
+      >
+        <IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
       </ElemButton>
 
-      <ElemButton onClick={onSaveButton}>Save</ElemButton>
+      {/* save button  */}
+      <ElemButton
+        onClick={onSaveButton}
+        roundedFull={roundedFull}
+        btn={btn}
+        className={`mr-0 border-gray-500${isList ? ' col-end-6 col-span-2': ''} px-1 mr-2${blackText ? " text-black" : ""
+      }`}
+      >
+        {/* <IconCompanyList className="text-sm mr-1" />  */}
+        Save
+      </ElemButton>
+
       <ElemCompanyListModal
         show={showListModal}
         onClose={() => setShowListModal(false)}
