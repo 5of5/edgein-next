@@ -2,247 +2,249 @@ import type { GetStaticProps } from "next";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import algoliasearch from "algoliasearch/lite";
+import Link from "next/link";
 import { Hit as AlgoliaHit } from "instantsearch.js";
 import {
-  InstantSearch,
-  SearchBox,
-  Hits,
-  HitsPerPage,
-  Highlight,
-  InfiniteHits,
-  Index,
-  Configure,
+	InstantSearch,
+	SearchBox,
+	Hits,
+	HitsPerPage,
+	Highlight,
+	InfiniteHits,
+	Index,
+	Configure,
 } from "react-instantsearch-hooks-web";
-import { truncate } from "lodash";
 import { empty } from "@apollo/client";
+import { IconSearch } from "@/components/Icons";
 
 const searchClient = algoliasearch(
-  "TFBKEVTOJD",
-  "c1067c8b29709544620c3ca4d0702ebc"
+	"TFBKEVTOJD",
+	"c1067c8b29709544620c3ca4d0702ebc"
 );
 
 Modal.setAppElement("#modal-root");
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-    zindex: 100000,
-    opacity: 1,
-    borderRadius: 20,
-    overlay: { backgroundColor: "red", opacity: 1 },
-    width: "50%",
-    height: "550px",
-    overflowX:"hidden",
-  },
-};
 type CompaniesHitProps = {
-  hit: AlgoliaHit<{
-    name: string;
-    overview: string;
-    logo: string;
-    slug: string;
-    empty: boolean;
-  }>;
+	hit: AlgoliaHit<{
+		name: string;
+		overview: string;
+		logo: string;
+		slug: string;
+		empty: boolean;
+	}>;
 };
 
 type InvestorsHitProps = {
-  hit: AlgoliaHit<{
-    vc_firm_name: string;
-    vc_firm_logo: string;
-    vc_firm_slug: string;
-    empty: boolean;
-  }>;
+	hit: AlgoliaHit<{
+		vc_firm_name: string;
+		vc_firm_logo: string;
+		vc_firm_slug: string;
+		empty: boolean;
+	}>;
 };
 
 type PeopleHitProps = {
-  hit: AlgoliaHit<{
-    name: string;
-    work_email: string;
-    personal_email: string;
-    picture: string;
-    slug: string;
-    empty: boolean;
-  }>;
+	hit: AlgoliaHit<{
+		name: string;
+		work_email: string;
+		personal_email: string;
+		picture: string;
+		slug: string;
+		empty: boolean;
+	}>;
 };
 
-const transformItems = (items:any, { results }) => {
-  if (results.hits.length === 0) {
-    return {
-      empty: true
-    }
-  }
-  return items.map((item:any, index:any) => ({
-    ...item,
-    position: { index, page: results.page },
-  }));
+const transformItems = (items: any, { results }) => {
+	if (results.hits.length === 0) {
+		return {
+			empty: true,
+		};
+	}
+	return items.map((item: any, index: any) => ({
+		...item,
+		position: { index, page: results.page },
+	}));
 };
 
 function CompaniesHit({ hit }: CompaniesHitProps) {
-  return (
-    <div>
-      {
-        (hit.empty) ?
-          <h1 className="text-xs m-4 text-gray-500 text-center">
-            <b>No result found</b>
-          </h1>
-          :
-          <a href={`/companies/${hit.slug}`}>
-            <div className=" my-3 flex flex-row flex-start">
-              <img
-                 className="w-10 h-10 border-solid border border-gray-5 rounded-md"
-                src={hit.logo}
-                alt={hit.logo}
-              />
-              <h1 className="whitespace nowrap ml-2 text-xs mt-3 text-gray-10">
-                <b>{hit.name}</b>
-              </h1>
-              <p className=" ml-2 mt-3 text-xs tracking-wide text-gray-10">
-                {truncate(hit.overview, { omission: "...", length: 80 })}
-              </p>
-            </div>
-          </a>
-      }
-
-    </div>
-  );
+	return (
+		<>
+			{hit.empty ? (
+				<div className="m-4 text-center">
+					<h1 className="font-bold text-sm text-gray-500">No Results Found</h1>
+					{/* <p className="text-sm test-slate-600">
+						Not finding what you&rsquo;re looking for?{" "}
+						<Link href="/contact" passHref>
+							tell us about missing data.
+						</Link>
+					</p> */}
+				</div>
+			) : (
+				<a
+					href={`/companies/${hit.slug}`}
+					className="flex items-center px-6 py-1 hover:bg-slate-100"
+				>
+					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+						<img
+							className="object-contain max-w-full max-h-full"
+							src={hit.logo}
+							alt={hit.logo}
+						/>
+					</div>
+					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600">
+						{hit.name}
+					</h2>
+					<p className="ml-2 text-sm text-slate-600 line-clamp-1">
+						{hit.overview}
+					</p>
+				</a>
+			)}
+		</>
+	);
 }
 
 function InvestorsHit({ hit }: InvestorsHitProps) {
-  return (
-    <div>
-      {
-        (hit.empty) ?
-          <h1 className="text-xs m-4 text-gray-500 text-center">
-            <b>No result found</b>
-          </h1>
-          :
-          <a href={`/investors/${hit.vc_firm_slug}`}>
-            <div className=" my-2 flex flex-row flex-start">
-              <img
-                 className="w-10 h-10 border-solid border border-gray-5 rounded-md"
-                src={hit.vc_firm_logo}
-                alt={hit.vc_firm_logo}
-              />
-              <h1 className=" mt-3 ml-2 text-xs text-gray-10">
-                <b>{hit.vc_firm_name}</b>
-              </h1>
-            </div>
-          </a>
-
-      }
-
-    </div>
-  );
+	return (
+		<>
+			{hit.empty ? (
+				<div className="m-4 text-center">
+					<h1 className="font-bold text-sm  text-gray-500">No Results Found</h1>
+				</div>
+			) : (
+				<a
+					href={`/investors/${hit.vc_firm_slug}`}
+					className="flex items-center px-6 py-1 hover:bg-slate-100"
+				>
+					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+						<img
+							className="object-contain max-w-full max-h-full"
+							src={hit.vc_firm_logo}
+							alt={hit.vc_firm_logo}
+						/>
+					</div>
+					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600">
+						{hit.vc_firm_name}
+					</h2>
+				</a>
+			)}
+		</>
+	);
 }
 
 function PeopleHit({ hit }: PeopleHitProps) {
-  return (
-    <div>
-      {
-        (hit.empty) ?
-          <h1 className="text-xs m-4 text-gray-500 text-center">
-           <b>No result found</b>
-          </h1>
-          :
-          <a href={`/people/${hit.slug}`}>
-            <div className="my-2 flex flex-row flex-start">
-              <img
-                className="w-10 h-10 border-solid border border-gray-5 rounded-md"
-                src={hit.picture}
-                alt={hit.picture}
-              />
-              <h1 className=" ml-2 text-xs mt-3 text-gray-10">
-                <b>{hit.name}</b>
-              </h1>
-            </div>
-          </a>
-      }
-
-    </div>
-  );
+	return (
+		<>
+			{hit.empty ? (
+				<div className="m-4 text-center">
+					<h1 className="font-bold text-sm text-gray-500">No Results Found</h1>
+				</div>
+			) : (
+				<a
+					href={`/people/${hit.slug}`}
+					className="flex items-center px-6 py-1 hover:bg-slate-100"
+				>
+					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+						<img
+							className="object-contain max-w-full max-h-full"
+							src={hit.picture}
+							alt={hit.picture}
+						/>
+					</div>
+					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600">
+						{hit.name}
+					</h2>
+				</a>
+			)}
+		</>
+	);
 }
 
 export default function SearchModal(props: any) {
+	const onClose = () => {
+		props.onClose();
+	};
 
-  const onClose = () => {
-    props.onClose();
-  };
+	return (
+		<Modal
+			isOpen={props.show}
+			onRequestClose={onClose}
+			shouldCloseOnOverlayClick={true}
+			overlayClassName="fixed top-0 left-0 z-[50] flex flex-col h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
+			className={`${
+				props.show && "animate-fade-in-up"
+			} max-w-3xl w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden`}
+			contentLabel="Search Modal"
+		>
+			<InstantSearch searchClient={searchClient} indexName="companies">
+				<header className="relative flex items-center z-10 p-0 px-4 border-b border-slate-100">
+					<IconSearch className="h-6 w-6 text-slate-600" />
+					<SearchBox
+						className="w-full"
+						placeholder="Search"
+						classNames={{
+							submitIcon: "hidden",
+							resetIcon: "hidden",
+							loadingIndicator: "hidden",
+							input:
+								"appearance-none bg-transparent ml-3 mr-4 flex-auto h-14 min-w-0 placeholder:text-slate-400 focus:bg-transparent focus:outline-none",
+						}}
+					/>
+					<button
+						onClick={onClose}
+						type="reset"
+						arial-label="cancel"
+						className="appearance-none w-8 justify-items-end p-1 bg-white border border-slate-100 rounded-md text-slate-600 font-bold text-[9px] hover:shadow-sm"
+					>
+						ESC
+					</button>
+				</header>
 
-  return (
-    <Modal
-      isOpen={props.show}
-      onRequestClose={onClose}
-      style={customStyles}
-      contentLabel="Login Modal"
+				<Configure analytics={false} hitsPerPage={3} />
+				<Index indexName="companies">
+					<h1 className="font-bold mt-5 mx-6">Companies</h1>
+					<InfiniteHits
+						transformItems={transformItems}
+						classNames={{
+							list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+							// item: "",
+							loadMore:
+								"w-[calc(100%-3rem)] mx-6 font-bold mb-4 px-3 py-1 text-sm text-purple-50 bg-transparent border border-purple-50 rounded-full hover:bg-primary-100 focus:ring-purple-50",
+							disabledLoadMore: "hidden",
+						}}
+						showPrevious={false}
+						hitComponent={CompaniesHit}
+					/>
+				</Index>
 
-    >
-      <div className="max-w-6xl  lg:min-h-[40vh] lg:max-h-[2vh]">
-        <div className="bg-white rounded-2xl center">
-          <InstantSearch searchClient={searchClient} indexName="companies">
-            <SearchBox
-              className="w-full"
-              placeholder="Search"
-              classNames={{
-                submitIcon: "hidden",
-                resetIcon: "hidden",
-                loadingIndicator: "hidden",
-                input:
-                  "w-5/6 bg-white text-dark-500 rounded-md outline-none placeholder:text-dark-400 focus:bg-white focus:outline-none",
-              }}
-            />
-             <button onClick={onClose} className="bg-white -mt-6 float-right w-8 justify-items-end border rounded-md text-dark-500 font-bold text-xs p-0.5 ml-10">
-                  ESC
-                </button>
-            <hr className="max-w-8xl clear-both mt-2 -ml-10 -mr-8 "></hr>
-            <Configure
-              analytics={false}
-              hitsPerPage={3}
-            />
-            <Index indexName="companies">
-              <h1 className="font-bold mt-5 text-dark-500">Companies</h1>
-              <InfiniteHits
-                transformItems={transformItems}
-                classNames={{
-                  emptyRoot: "No result",
-                  loadMore:
-                    "font-bold w-full mb-4 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
-                }}
-                showPrevious={false}
-                hitComponent={CompaniesHit}
-              />
-            </Index>
-
-            <Index indexName="investors">
-              <h1 className="font-bold my-1 text-dark-500">Investors</h1>
-              <InfiniteHits
-                transformItems={transformItems}
-                classNames={{
-                  loadMore:
-                    "font-bold w-full mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
-                }}
-                showPrevious={false}
-                hitComponent={InvestorsHit}
-              />
-            </Index>
-            <Index indexName="people">
-              <h1 className="font-bold my-2 text-dark-500">People</h1>
-              <InfiniteHits
-                transformItems={transformItems}
-                classNames={{
-                  loadMore:
-                    "font-bold w-full mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
-                }}
-                showPrevious={false}
-                hitComponent={PeopleHit}
-              />
-            </Index>
-          </InstantSearch>
-        </div>
-      </div>
-    </Modal>
-  );
+				<Index indexName="investors">
+					<h1 className="font-bold mt-5 mx-6">Investors</h1>
+					<InfiniteHits
+						transformItems={transformItems}
+						classNames={{
+							list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+							loadMore:
+								"w-[calc(100%-3rem)] mx-6 font-bold mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+							disabledLoadMore: "hidden",
+						}}
+						showPrevious={false}
+						hitComponent={InvestorsHit}
+					/>
+				</Index>
+				<Index indexName="people">
+					<h1 className="font-bold mt-5 mx-6">People</h1>
+					<InfiniteHits
+						transformItems={transformItems}
+						classNames={{
+							list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+							loadMore:
+								"w-[calc(100%-3rem)] mx-6 font-bold mb-5 text-sm text-purple-50 bg-transparent focus:ring-purple-50 border border-purple-50 hover:bg-primary-100 rounded-full px-3 py-1 min-w-32 justify-center",
+							disabledLoadMore: "hidden",
+						}}
+						showPrevious={false}
+						hitComponent={PeopleHit}
+					/>
+				</Index>
+			</InstantSearch>
+		</Modal>
+	);
 }
