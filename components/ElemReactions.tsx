@@ -5,6 +5,7 @@ import { findIndex } from "lodash";
 import { FC, useEffect, useState } from "react";
 import { ElemButton } from "./ElemButton";
 import { ElemCompanyListModal } from "./ElemCompanyListModal";
+import { IconCompanyList } from "./reactions/IconCompanyList";
 import { IconCrap } from "./reactions/IconCrap";
 import { IconHot } from "./reactions/IconHot";
 import { IconLike } from "./reactions/IconLike";
@@ -139,7 +140,7 @@ export const ElemReactions: FC<Props> = ({
         className={`mr-0 border-gray-500${isList ? ' col-end-6 col-span-2': ''} px-1 mr-2${blackText ? " text-black" : ""
       }`}
       >
-        {/* <IconCompanyList className="text-sm mr-1" />  */}
+        <IconCompanyList className="text-sm mr-1" /> 
         Save
       </ElemButton>
 
