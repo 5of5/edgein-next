@@ -242,6 +242,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			person: people.people[0],
 			sortByDateAscInvestments,
 		},
+		// Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 1 hour
+    revalidate: 60 * 60, // In seconds
 	};
 };
 
