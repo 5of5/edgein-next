@@ -6925,6 +6925,11 @@ export type Vc_Firms = {
   slug: Maybe<Scalars['String']>;
   status: Scalars['String'];
   website: Maybe<Scalars['String']>;
+  tags: Maybe<Scalars['jsonb']>;
+  overview: Maybe<Scalars['String']>;
+  year_founded: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['String']>;
+  twitter: Maybe<Scalars['String']>;
 };
 
 

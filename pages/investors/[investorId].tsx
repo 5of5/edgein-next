@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, MutableRefObject } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,7 +9,6 @@ import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
-import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -23,11 +22,13 @@ import {
 	Investment_Rounds,
 	useGetVcFirmQuery,
 	Vc_Firms,
+	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
+import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -42,6 +43,10 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 	const [selectedTab, setSelectedTab] = useState(0)
+
+
+	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	const activityTimeline = [
 		{
@@ -121,7 +126,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const scrollToSection = (tab: number) => {
-		if (tab === 1 && teamRef && teamRef.current) {
+		if (tab === 1) {
 			window.scrollTo(0, teamRef.current.offsetTop - 30);
 		}else if (tab == 2) {
 			window.scrollTo(0, investmentRef.current.offsetTop - 30);
@@ -129,8 +134,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	};
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
-	const investmentRef = useRef(null)
-	const teamRef = useRef(null)
+
 	return (
 		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
 			{/* <div onClick={goBack}>
@@ -213,9 +217,9 @@ const VCFirm: NextPage<Props> = (props) => {
 						<div className="flex p-4 flex-col border rounded-lg py-10">
 							{
 								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
-									sortedInvestmentRounds.map(activity => {
+									sortedInvestmentRounds.map((activity, index) => {
 										return (
-											<div className="flex inline-flex w-full mt-2">
+											<div key={index} className="flex inline-flex w-full mt-2">
 												<div className="mt-1">
 													<IconEventDot
 														title="dot"
@@ -248,8 +252,8 @@ const VCFirm: NextPage<Props> = (props) => {
 			</div>
 			{vcfirm.investors.length > 0 && (
 				<div ref={teamRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="team">
-					<ElemTeamGrid
-						tags={vcfirm.investors.map(investor => investor.function)}
+					<ElemInvestorGrid
+						// tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
 						showEdit={true}
 						//className="mt-12"
 						heading="Team"

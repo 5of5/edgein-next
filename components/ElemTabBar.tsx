@@ -20,7 +20,7 @@ export const ElemTabBar: React.FC<Props> = ({
             {
                 menuItems && menuItems.map((item, index) => {
                     return (
-                        <button onClick={() => onTabClick(index)} className={`ml-4  cursor-pointer decoration-4 font-bold ${selectedTab === index ? 'text-primary-500 ' : 'text-dark-500'}`}>
+                        <button key={item} onClick={() => onTabClick(index)} className={`ml-4  cursor-pointer decoration-4 font-bold ${selectedTab === index ? 'text-primary-500 ' : 'text-dark-500'}`}>
                             {item}
                         </button>
                     )
