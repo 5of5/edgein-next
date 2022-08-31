@@ -83,8 +83,18 @@ export const ElemReactions: FC<Props> = ({
         roundedFull={roundedFull}
         btn={btn}
         disabled={disabled(crap)}
-      ><IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
+      >
+        <IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
       </ElemButton>
+
+      {/* save button  */}
+      {/* <ElemButton      
+        roundedFull={roundedFull}
+        btn={btn}
+        className={`w-20 ml-4  border rounded-lg border-gray-100`}
+      >
+        <IconCompanyList className="text-base w-10" /> Save
+      </ElemButton> */}
     </>
   );
 } 

@@ -201,7 +201,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-			<div className="mt-16 rounded-xl bg-white ">
+			<div className="mt-16 rounded-xl bg-white">
 				{vcfirm && (
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}
