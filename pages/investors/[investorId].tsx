@@ -10,7 +10,7 @@ import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
-import { IconEditPencil, IconEventDot, IconEventLine } from "@/components/Icons";
+import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -219,28 +219,32 @@ const VCFirm: NextPage<Props> = (props) => {
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
 							{
-								activityTimeline.map(activity => {
-									return (
-										<div className="flex inline-flex w-full mt-2">
-											<div className="mt-1">
-												<IconEventDot
-													title="dot"
-													className="h-2 mr-2"
-												/>
-												<IconEventLine
-													title="line"
-													className="h-7 w-2 ml-1"
-												/>
+								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
+									sortedInvestmentRounds.map(activity => {
+										return (
+											<div className="flex inline-flex w-full mt-2">
+												<div className="mt-1">
+													<IconEventDot
+														title="dot"
+														className="h-2 mr-2"
+													/>
+													<IconEventLine
+														title="line"
+														className="h-7 w-2 ml-1"
+													/>
+												</div>
+	
+												<div className="w-5/6">
+													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name:''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
+													<p className="text-gray-400 text-xs">{activity.round_date}</p>
+												</div>
 											</div>
-
-											<div className="w-5/6">
-												<h2 className="text-dark-500 font-bold truncate text-base">{activity.title}</h2>
-												<p className="text-gray-400 text-xs">{activity.date}</p>
-											</div>
-										</div>
-
-									)
-								})
+										)
+									})
+								)
+								:
+								<p>There is no recent activity for this organization.</p>
+								
 							}
 							{/* <p>There is no recent activity for this organization.</p>
 							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1> */}
@@ -252,6 +256,7 @@ const VCFirm: NextPage<Props> = (props) => {
 			{vcfirm.investors.length > 0 && (
 				<div ref={teamRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="team">
 					<ElemTeamGrid
+						tags={vcfirm.investors.map(investor => investor.function)}
 						showEdit={true}
 						//className="mt-12"
 						heading="Team"
@@ -335,18 +340,17 @@ const VCFirm: NextPage<Props> = (props) => {
 												<>&mdash;</>
 											)}
 									</ElemTableCell>
-
 								</tr>
 							);
 						})}
 					</ElemTable>
 				</div>
 			)}
-			<div className="mt-10 rounded-xl bg-white shadow-md">
+			{/* <div className="mt-10 rounded-xl bg-white shadow-md">
 				{vcfirm && (
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}
-			</div>
+			</div> */}
 		</div>
 	);
 };

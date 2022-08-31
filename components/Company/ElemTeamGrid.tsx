@@ -2,19 +2,22 @@ import React from "react";
 import { Team_Members } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
+import { ElemTags } from "@/components/ElemTags";
 
 type Props = {
 	className?: string;
 	heading?: string;
 	people: Team_Members[];
 	showEdit?: boolean;
+	tags?: string[] | null
 };
 
 export const ElemTeamGrid: React.FC<Props> = ({
 	className,
 	heading,
 	people,
-	showEdit
+	showEdit,
+	tags
 }) => {
 	// Show founders first
 	const peopleFoundersFirst = people.sort(function (a: any, b: any) {
@@ -24,7 +27,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 		<section className={className}>
 			{
 				heading && (
-					<div className="flex justify-between pb-4">
+					<div className="flex justify-between">
 						<h2 className="text-2xl font-bold">{heading}</h2>
 						{
 							(showEdit) && (
@@ -38,7 +41,10 @@ export const ElemTeamGrid: React.FC<Props> = ({
 						}
 					</div>
 				)}
-			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-3 w-full">
+				{(tags) && (
+					<ElemTags className="dark-500" tags={tags} />
+				)}
+			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-5 w-full">
 				{peopleFoundersFirst.map((teamMember) => {
 					return (
 						<React.Fragment key={teamMember.id}>

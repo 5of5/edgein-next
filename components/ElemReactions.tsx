@@ -4,6 +4,7 @@ import { ElemButton } from "./ElemButton";
 import { IconCrap } from "./reactions/IconCrap";
 import { IconHot } from "./reactions/IconHot";
 import { IconLike } from "./reactions/IconLike";
+import { IconSave } from "@/components/Icons"
 
 type Props = {
   data: any,
@@ -91,9 +92,9 @@ export const ElemReactions: FC<Props> = ({
       <ElemButton      
         roundedFull={roundedFull}
         btn={btn}
-        className={`w-20 ml-4  border rounded-lg border-gray-100 text-slate-600`}
+        className={`w-24 ml-4  border rounded-lg border-gray-100 text-slate-600`}
       >
-        {/* <IconCompanyList className="text-base w-10" />  */}
+        <IconSave className="text-base pt-3" /> 
         Save
       </ElemButton>
     </>
