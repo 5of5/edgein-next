@@ -91,7 +91,7 @@ export const ElemReactions: FC<Props> = ({
       {/* <ElemButton      
         roundedFull={roundedFull}
         btn={btn}
-        className={`w-20 ml-4  border rounded-lg border-gray-100`}
+        className={`w-20 ml-4  border rounded-lg border-gray-100 text-slate-600`}
       >
         <IconCompanyList className="text-base w-10" /> Save
       </ElemButton> */}

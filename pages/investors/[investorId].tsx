@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -7,6 +7,7 @@ import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
+import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import {
 	convertToInternationalCurrencySystem,
@@ -38,6 +39,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	const goBack = () => router.back();
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
+	const [selectedTab, setSelectedTab] = useState(0)
 
 	const {
 		data: vcFirmData,
@@ -77,8 +79,17 @@ const VCFirm: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+	const scrollToSection = (tab) => {
+		if(tab==2){
+			window.scrollTo({
+				top: window.scrollTo(0, myRef.current.offsetTop - 30) ,
+				behavior: 'smooth',
+			  });
+		}
+	  };
 
+	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+	const myRef = useRef(null)
 	return (
 		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
 			{/* <div onClick={goBack}>
@@ -87,7 +98,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				</ElemButton>
 			</div> */}
 
-			<div className="flex flex-col gap-5 my-8 md:grid md:grid-cols-3">
+			<div className="flex flex-col gap-5 md:grid md:grid-cols-3">
 				<div className="col-span-1">
 					<ElemPhoto
 						photo={vcfirm.logo}
@@ -122,11 +133,52 @@ const VCFirm: NextPage<Props> = (props) => {
 						/>
 					</div>
 				</div>
-
 			</div>
 
+			<ElemTabBar
+				className=""
+				menuItems={["Overview", "Team", "Investments"]}
+				onTabClick={(index) => {
+					scrollToSection(index)
+					setSelectedTab(index)
+				}}
+				selectedTab={selectedTab}
+			/>
+
+			<div className="flex justify-between w-full">
+				<ElemKeyInfo
+					className="mt-5 w-2/6"
+					heading="Key Info"
+					website={vcfirm.website}
+					investmentsLength={sortedInvestmentRounds.length}
+					// totalFundingRaised={company.investor_amount}
+					// whitePaper={company.white_paper}
+					// totalEmployees={company.total_employees}
+					// careerPage={company.careers_page}
+					// yearFounded={company.year_founded}
+					linkedIn={vcfirm.linkedin}
+				// github={company.github}
+				/>
+
+				<div className="w-4/6 flex p-5 flex-col grid-cols-8 gap-4 mt-6 md:grid bg-white shadow-md border rounded-lg border-dark-500/10">
+					<div className="col-span-8">
+						<div className="flex justify-between pb-4">
+							<h2 className="text-xl font-bold">Actively Timeline</h2>
+							{/* <span className="border rounded-2xl p-1 text-center">
+                  <IconEdit
+                /></span> */}
+						</div>
+
+						<div className=" text-center flex p-4 flex-col align-center border rounded-lg py-10">
+							<p>There is no recent activity for this organization.</p>
+							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1>
+						</div>
+					</div>
+				</div>
+
+			</div>
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
-				<div className="mt-16 rounded-xl bg-white p-4 pt-6" id="investments">
+				<div ref={myRef} id="investment-section" className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
 					<h2 className="text-2xl font-bold">Investments</h2>
 
 					<ElemTable
@@ -200,8 +252,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					</ElemTable>
 				</div>
 			)}
-
-			<div className="mt-16 rounded-xl bg-white">
+			<div className="mt-10 rounded-xl bg-white shadow-md">
 				{vcfirm && (
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}

@@ -10,6 +10,7 @@ import {
 	IconBriefcase,
 	IconRole,
 	IconEmail,
+	IconLocation
 } from "./Icons";
 
 import {
@@ -56,7 +57,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 
-			<div className="inline-flex flex-wrap items-center gap-x-6 gap-y-2 mt-2">
+			<div className="inline-flex flex-col gap-x-6 gap-y-2 mt-2">
 				{website && (
 					<a
 						href={website}
