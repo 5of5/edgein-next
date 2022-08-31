@@ -9,6 +9,7 @@ import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
+import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -80,16 +81,23 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const scrollToSection = (tab) => {
+		if(tab===1){
+			window.scrollTo({
+				top: window.scrollTo(0, teamRef.current.offsetTop - 30) ,
+				behavior: 'smooth',
+			  });
+		}
 		if(tab==2){
 			window.scrollTo({
-				top: window.scrollTo(0, myRef.current.offsetTop - 30) ,
+				top: window.scrollTo(0, investmentRef.current.offsetTop - 30) ,
 				behavior: 'smooth',
 			  });
 		}
 	  };
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
-	const myRef = useRef(null)
+	const investmentRef = useRef(null)
+	const teamRef = useRef(null)
 	return (
 		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
 			{/* <div onClick={goBack}>
@@ -151,13 +159,10 @@ const VCFirm: NextPage<Props> = (props) => {
 					heading="Key Info"
 					website={vcfirm.website}
 					investmentsLength={sortedInvestmentRounds.length}
-					// totalFundingRaised={company.investor_amount}
-					// whitePaper={company.white_paper}
-					// totalEmployees={company.total_employees}
-					// careerPage={company.careers_page}
-					// yearFounded={company.year_founded}
+					yearFounded={vcfirm.year_founded}
 					linkedIn={vcfirm.linkedin}
-				// github={company.github}
+					location={vcfirm.location}
+					twitter={vcfirm.twitter}
 				/>
 
 				<div className="w-4/6 flex p-5 flex-col grid-cols-8 gap-4 mt-6 md:grid bg-white shadow-md border rounded-lg border-dark-500/10">
@@ -177,8 +182,18 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 
 			</div>
+			{vcfirm.investors.length > 0 && (
+				<div ref={teamRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="team">
+				<ElemTeamGrid
+					//className="mt-12"
+					heading="Team"
+					people={vcfirm.investors}
+				/>
+				</div>
+			)}
+			
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
-				<div ref={myRef} id="investment-section" className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
+				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
 					<h2 className="text-2xl font-bold">Investments</h2>
 
 					<ElemTable

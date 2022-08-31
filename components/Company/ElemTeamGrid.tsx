@@ -32,6 +32,9 @@ export const ElemTeamGrid: React.FC<Props> = ({
 									heading={teamMember.person.name}
 									founder={teamMember.founder}
 									text={teamMember.function}
+									linkedin={teamMember.person.linkedin}
+									personal_email={teamMember.person.personal_email}
+									work_email={teamMember.person.work_email}
 								/>
 							)}
 						</React.Fragment>
