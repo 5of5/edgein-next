@@ -120,18 +120,11 @@ const VCFirm: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const scrollToSection = (tab) => {
-		if (tab === 1) {
-			window.scrollTo({
-				top: window.scrollTo(0, teamRef.current.offsetTop - 30),
-				behavior: 'smooth',
-			});
-		}
-		if (tab == 2) {
-			window.scrollTo({
-				top: window.scrollTo(0, investmentRef.current.offsetTop - 30),
-				behavior: 'smooth',
-			});
+	const scrollToSection = (tab: number) => {
+		if (tab === 1 && teamRef && teamRef.current) {
+			window.scrollTo(0, teamRef.current.offsetTop - 30);
+		}else if (tab == 2) {
+			window.scrollTo(0, investmentRef.current.offsetTop - 30);
 		}
 	};
 

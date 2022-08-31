@@ -10,7 +10,7 @@ type Props = {
 export const ElemTabBar: React.FC<Props> = ({
     className,
     menuItems,
-    onTabClick,
+    onTabClick = () => {},
     selectedTab
 }) => {
     //console.log("menus =", menuItems)

@@ -58,7 +58,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 								{text && <span title={text}>{text}</span>}
 							</p>
 						)}
-						<div class="inline-flex">
+						<div className="inline-flex">
 							{(linkedin) && (
 								<IconLinkedInColored
 									title="LinkedIn"
