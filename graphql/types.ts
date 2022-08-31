@@ -7327,6 +7327,13 @@ export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null }> };
 
+export type GetListsByUserQueryVariables = Exact<{
+  current_user: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetListsByUserQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string }> };
+
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -7602,6 +7609,33 @@ useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables)
 ;
 
 useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
+export const GetListsByUserDocument = `
+    query GetListsByUser($current_user: Int) {
+  lists(where: {created_by_id: {_eq: $current_user}}) {
+    id
+    name
+  }
+}
+    `;
+export const useGetListsByUserQuery = <
+      TData = GetListsByUserQuery,
+      TError = Error
+    >(
+      variables?: GetListsByUserQueryVariables,
+      options?: UseQueryOptions<GetListsByUserQuery, TError, TData>
+    ) =>
+    useQuery<GetListsByUserQuery, TError, TData>(
+      variables === undefined ? ['GetListsByUser'] : ['GetListsByUser', variables],
+      fetcher<GetListsByUserQuery, GetListsByUserQueryVariables>(GetListsByUserDocument, variables),
+      options
+    );
+useGetListsByUserQuery.document = GetListsByUserDocument;
+
+
+useGetListsByUserQuery.getKey = (variables?: GetListsByUserQueryVariables) => variables === undefined ? ['GetListsByUser'] : ['GetListsByUser', variables];
+;
+
+useGetListsByUserQuery.fetcher = (variables?: GetListsByUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetListsByUserQuery, GetListsByUserQueryVariables>(GetListsByUserDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
