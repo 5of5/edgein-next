@@ -10,6 +10,7 @@ import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
+import { IconEditPencil, IconEventDot, IconEventLine } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -41,6 +42,45 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 	const [selectedTab, setSelectedTab] = useState(0)
+
+	const activityTimeline = [
+		{
+			title: "IDEO CoLab Ventures invested in Cometh’s 10M Seed with other investors.",
+			date: "May 4, 2022"
+		},
+		{
+			title: "IDEO CoLab Ventures invested in Syndicate Prototol’s $20M Series A with other investors.",
+			date: "Aug 30, 2021"
+		},
+		{
+			title: "Hashflow raised $3.2M / Venture Round from IDEO CoLab Ventures and other investors",
+			date: "Apr 28, 2021"
+		},
+		{
+			title: "Syndicate Protocol raised $1M / Seed from IDEO CoLab Ventures and other investors",
+			date: "Mar 16, 2021"
+		},
+		{
+			title: "Boardroom Labs raised $2.2M / Seed from IDEO CoLab Ventures and other investors",
+			date: "Oct 12, 2020"
+		},
+		{
+			title: "Chia raised $5M / Series A from IDEO CoLab Ventures and other investors",
+			date: "Aug 10, 2020"
+		},
+		{
+			title: "Optimist raised $3.5M / Seed from IDEO CoLab Ventures and other investors",
+			date: "Jan 14, 2020"
+		},
+		{
+			title: "Messari raised $4M / Seed from IDEO CoLab Ventures and other investors",
+			date: "Nov 12, 2019"
+		},
+		{
+			title: "Chia raised $3.395M / Pre-seed from IDEO CoLab Ventures and other investors",
+			date: "Feb 28, 2018"
+		}
+	]
 
 	const {
 		data: vcFirmData,
@@ -81,19 +121,19 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const scrollToSection = (tab) => {
-		if(tab===1){
+		if (tab === 1) {
 			window.scrollTo({
-				top: window.scrollTo(0, teamRef.current.offsetTop - 30) ,
+				top: window.scrollTo(0, teamRef.current.offsetTop - 30),
 				behavior: 'smooth',
-			  });
+			});
 		}
-		if(tab==2){
+		if (tab == 2) {
 			window.scrollTo({
-				top: window.scrollTo(0, investmentRef.current.offsetTop - 30) ,
+				top: window.scrollTo(0, investmentRef.current.offsetTop - 30),
 				behavior: 'smooth',
-			  });
+			});
 		}
-	  };
+	};
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 	const investmentRef = useRef(null)
@@ -169,14 +209,41 @@ const VCFirm: NextPage<Props> = (props) => {
 					<div className="col-span-8">
 						<div className="flex justify-between pb-4">
 							<h2 className="text-xl font-bold">Actively Timeline</h2>
-							{/* <span className="border rounded-2xl p-1 text-center">
-                  <IconEdit
-                /></span> */}
+							<span className="border rounded-full p-1 pl-2 pt-2">
+								<IconEditPencil
+									title="Edit"
+									className="h-6 w-6"
+								/>
+							</span>
 						</div>
 
-						<div className=" text-center flex p-4 flex-col align-center border rounded-lg py-10">
-							<p>There is no recent activity for this organization.</p>
-							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1>
+						<div className="flex p-4 flex-col border rounded-lg py-10">
+							{
+								activityTimeline.map(activity => {
+									return (
+										<div className="flex inline-flex w-full mt-2">
+											<div className="mt-1">
+												<IconEventDot
+													title="dot"
+													className="h-2 mr-2"
+												/>
+												<IconEventLine
+													title="line"
+													className="h-7 w-2 ml-1"
+												/>
+											</div>
+
+											<div className="w-5/6">
+												<h2 className="text-dark-500 font-bold truncate text-base">{activity.title}</h2>
+												<p className="text-gray-400 text-xs">{activity.date}</p>
+											</div>
+										</div>
+
+									)
+								})
+							}
+							{/* <p>There is no recent activity for this organization.</p>
+							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1> */}
 						</div>
 					</div>
 				</div>
@@ -184,18 +251,26 @@ const VCFirm: NextPage<Props> = (props) => {
 			</div>
 			{vcfirm.investors.length > 0 && (
 				<div ref={teamRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="team">
-				<ElemTeamGrid
-					//className="mt-12"
-					heading="Team"
-					people={vcfirm.investors}
-				/>
+					<ElemTeamGrid
+						showEdit={true}
+						//className="mt-12"
+						heading="Team"
+						people={vcfirm.investors}
+					/>
 				</div>
 			)}
-			
+
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
 				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
-					<h2 className="text-2xl font-bold">Investments</h2>
-
+					<div className="flex justify-between pb-4">
+						<h2 className="text-2xl font-bold">Investments</h2>
+						<span className="border rounded-full p-1 pl-2 pt-2">
+							<IconEditPencil
+								title="Edit"
+								className="h-6 w-6"
+							/>
+						</span>
+					</div>
 					<ElemTable
 						className="w-full mt-3 border border-separate rounded-xl"
 						columns={[

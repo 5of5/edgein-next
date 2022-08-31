@@ -1,18 +1,7 @@
 import Link from "next/link";
 import { ElemPhoto } from "../components/ElemPhoto";
 import {
-	IconLink,
-	IconCash,
-	IconDocumentDownload,
-	IconUsers,
-	IconFlag,
-	IconLinkedIn,
-	IconGithub,
-	IconBriefcase,
-	IconRole,
 	IconEmail,
-	IconLocation,
-	IconTwitter,
 	IconLinkedInColored
 } from "./Icons";
 
