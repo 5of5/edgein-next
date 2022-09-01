@@ -195,20 +195,21 @@ const Companies: NextPage<Props> = ({
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				></ElemHeading>
 
-				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
-						{companies && <ElemRecentCompanies onUpdateOfCompany={onUpdateOfCompany} heading="Recently Discovered" />}
+				<div className="relative py-20 z-10 rounded-t-xl lg:rounded-t-2xl">
+					<div className="max-w-6xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+						{companies && <ElemRecentCompanies onUpdateOfCompany={onUpdateOfCompany} className="bg-white border rounded-lg" heading="Recently Discovered" />}
 					</div>
 
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
-						<h2 className="text-2xl font-bold">All Companies</h2>
+					<div className="pl-8 pr-7 max-w-6xl relative left-24">
+					<div className="max-w-6xl mx-auto bg-white border mt-4 rounded-lg mx-auto sm:px-6 lg:px-10 lg:py-10 lg:min-h-[40vh]">
+						<h2 className="text-xl relative bottom-4 font-bold">All Companies</h2>
 						<ElemFiltersWrap className="pt-2 filters-wrap">
 							<InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								label="Search"
 								name="search"
 								value={search}
-								placeholder="Quick Search..."
+								placeholder="Trending"
 								onChange={searchCompanies}
 							/>
 
@@ -310,6 +311,7 @@ const Companies: NextPage<Props> = ({
 							onClickPrev={() => setPage((prev) => prev - 1)}
 							onClickNext={() => setPage((prev) => prev + 1)}
 						/>
+					</div>
 					</div>
 				</div>
 			</div>

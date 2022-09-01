@@ -51,7 +51,7 @@ export const ElemCompanyCard: FC<Props> = ({
     <Link href={`/companies/${companyData.slug}`}>
       <a
         className={`flex flex-col ${toggleViewMode ? "md:flex-row md:items-center" : ""
-          } mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
+          } mx-auto w-full p-5 cursor-pointer bg-white border rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
       >
         <div
           className={`flex shrink-0 mb-4 ${toggleViewMode
@@ -106,7 +106,7 @@ export const ElemCompanyCard: FC<Props> = ({
           </div>
         )}
 
-        <div
+        {/* <div
           className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${toggleViewMode
             ? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
             : ""
@@ -127,7 +127,7 @@ export const ElemCompanyCard: FC<Props> = ({
             employeeListings={companyData.velocity_linkedin}
             tokenExchangeValue={companyData.velocity_token}
           />
-        </div>
+        </div> */}
 
         <div
           className={`flex mt-4 grid-cols-5 md:grid ${toggleViewMode
