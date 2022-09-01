@@ -302,8 +302,6 @@ const Company: NextPage<Props> = (props) => {
 										<p>There is no recent activity for this organization.</p>
 
 								}
-								{/* <p>There is no recent activity for this organization.</p>
-							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1> */}
 							</div>
 						</div>
 					</div>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useState} from "react";
 import { Team_Members, Maybe, Investors } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
-import { ElemTags } from "@/components/ElemTags";
+import { ElemFilterTags } from "@/components/ElemFilterTags";
 
 type Props = {
 	className?: string;
@@ -19,7 +19,13 @@ export const ElemInvestorGrid: React.FC<Props> = ({
 	showEdit
 }) => {
 	// Show founders first
-	const peopleFoundersFirst = people.sort(function (a: any, b: any) {
+	const allTags = [ "All Members" ,...people.map(people => people.function)]
+	const [selectedTag, setSelectedTag] = useState<string>("All Members")
+	const peopleFoundersFirst = (selectedTag === "All Members") ? people.sort(function (a: any, b: any) {
+		return b.founder - a.founder;
+	})
+	:
+	people.filter(p => p.function === selectedTag).sort(function (a: any, b: any) {
 		return b.founder - a.founder;
 	});
 	return (
@@ -41,7 +47,7 @@ export const ElemInvestorGrid: React.FC<Props> = ({
 					</div>
 				)}
 				{(peopleFoundersFirst.map(people => people.function)) && (
-					<ElemTags className="dark-500" tags={peopleFoundersFirst.map(people => people.function)} />
+					<ElemFilterTags onClick={(tag, index) => setSelectedTag(tag)} selectedTag={selectedTag} className="dark-500" tags={allTags} />
 				)}
 			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-5 w-full">
 				{peopleFoundersFirst.map((teamMember) => {
