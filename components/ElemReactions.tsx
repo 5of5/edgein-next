@@ -9,6 +9,7 @@ import { IconCompanyList } from "./reactions/IconCompanyList";
 import { IconCrap } from "./reactions/IconCrap";
 import { IconHot } from "./reactions/IconHot";
 import { IconLike } from "./reactions/IconLike";
+import { IconSave } from "@/components/Icons"
 
 type Props = {
 

@@ -92,12 +92,12 @@ export const ElemRecentInvestments: FC<Props> = ({
 
   return (
     <div className={`${className}`}>
-      {heading && <h2 className="text-2xl font-bold">{heading}</h2>}
+      {heading && <h2 className="text-2xl font-bold p-4 pt-6">{heading}</h2>}
       {error ? (
         <h4>Error loading investors</h4>
       ) : isLoading ? (
         <>
-          <div className="flex p-3 mt-2 overflow-hidden bg-white rounded-lg">
+          <div className="flex p-3 overflow-hidden bg-white rounded-lg">
             {Array.from({ length: 3 }, (_, i) => (
               <div
                 key={i}
@@ -110,7 +110,7 @@ export const ElemRecentInvestments: FC<Props> = ({
         </>
       ) : (
         vcFirms && (
-          <ElemCarouselWrap className="mt-2 bg-white rounded-lg">
+          <ElemCarouselWrap className=" bg-white rounded-lg">
             {vcFirms.map((investor: any, index: number) => {
               return (
                 <ElemCarouselCard
@@ -134,10 +134,29 @@ export const ElemRecentInvestments: FC<Props> = ({
                         </h3>
                       </div>
                     </div>
-                    <div className="mt-3 text-xs font-bold text-gray-400">
+
+                    <div className="flex flex-start mt-4">
+                      <div className="flex ">
+                        <span className="text-gray-500 mr-1"><b>32</b>
+                        <span className="text-slate-600 pl-1">Investments
+                        </span>
+                        </span>
+                        
+                      </div>
+                      <div className="flex ml-4">
+                        <span className="text-gray-500 mr-1"><b>2</b>
+                        <span className="text-slate-600 pl-1">Exit</span>
+                        </span>
+                       
+                      </div>
+                    </div>
+					{investor.overview && (
+						<p className="mt-2 line-clamp-3 text-base text-slate-600">{investor.overview}</p>
+					)}
+                    {/* <div className="mt-3 text-xs font-bold text-gray-400">
                       {investor.latest_investments && (
                         <div>
-                          Latest Investment{" "}
+                          Latest Investment
                           {formatDate(investor.latest_investments, {
                             month: "short",
                             day: "2-digit",
@@ -145,11 +164,9 @@ export const ElemRecentInvestments: FC<Props> = ({
                           })}
                         </div>
                       )}
-                    </div>
+                    </div> */}
 
-                    <div
-                      className={`flex grid-cols-5 md:grid mt-4`}
-                    >
+                    <div className={`flex grid-cols-5 md:grid mt-4`}>
                       <ElemReactions
                         data={investor}
                         handleReactionClick={handleReactionClick(investor)}
