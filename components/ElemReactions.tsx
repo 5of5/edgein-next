@@ -138,7 +138,7 @@ export const ElemReactions: FC<Props> = ({
         onClick={onSaveButton}
         roundedFull={roundedFull}
         btn={btn}
-        className={`mr-0 border-gray-500${isList ? ' col-end-6 col-span-2': ''} px-1 mr-2${blackText ? " text-black" : ""
+        className={`mr-0 border border-gray-500${isList ? ' col-end-6 col-span-2': ''} px-1 mr-2${blackText ? " text-black" : ""
       }`}
       >
         <IconCompanyList className="text-sm mr-1" /> 

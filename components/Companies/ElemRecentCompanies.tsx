@@ -91,7 +91,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 	return (
 		<div className={`${className}`}>
-			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
+			{heading && <h2 className="text-2xl font-bold p-4 pt-6">{heading}</h2>}
 			{error ? (
 				<h4>Error loading companies</h4>
 			) : isLoading ? (

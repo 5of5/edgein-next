@@ -54,7 +54,7 @@ export const ElemVelocity: React.FC<Props> = ({
 	return (
 		<section className={`${className} flex flex-col`}>
 			{heading && (
-				<h2 className="text-2xl font-bold">
+				<h2 className="text-xl font-bold">
 					{heading}
 					<ElemTooltip
 						className="ml-1"
@@ -73,7 +73,7 @@ export const ElemVelocity: React.FC<Props> = ({
 				className={`${
 					mini
 						? "space-x-2 justify-end"
-						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10"
+						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white"
 				} flex grow`}
 			>
 				{velocityItems.map((item, index: number) => {
@@ -99,7 +99,7 @@ export const ElemVelocity: React.FC<Props> = ({
 								<ElemTooltip content={item.text}>{badge}</ElemTooltip>
 							) : (
 								<>
-									<div className="text-xs font-semibold uppercase tracking-wide">
+									<div className="text-base text-slate-600 tracking-wide">
 										{item.text}
 									</div>
 									{badge}
