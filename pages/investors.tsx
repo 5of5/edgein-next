@@ -261,7 +261,7 @@ const Investors: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
 		GetVcFirmsDocument,
-		{ where: { slug: { _neq: "" }, status: { _eq: "published" } }, current_user: 0 }
+		{ offset: 0, limit: 50, where: { slug: { _neq: "" }, status: { _eq: "published" } }, current_user: 0 }
 	);
 
 	return {
