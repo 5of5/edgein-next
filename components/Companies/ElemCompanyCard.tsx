@@ -1,5 +1,7 @@
 import { Companies, Follows_Companies } from "@/graphql/types";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getLayerClass } from "@/utils/style";
+import { remove } from "lodash";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { ElemCredibility } from "../Company/ElemCredibility";
@@ -23,7 +25,7 @@ export const ElemCompanyCard: FC<Props> = ({
     setCompanyData(company)
   }, [company]);
 
-  const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleReactionClick = (sentiment: string, alreadyReacted: boolean) => async (event: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -35,7 +37,12 @@ export const ElemCompanyCard: FC<Props> = ({
     setCompanyData((prev: Companies) => {
       const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
-      prev.follows.push(newFollows);
+      if (!alreadyReacted)
+        prev.follows.push(newFollows);
+      else
+        remove(prev.follows, (item) => {
+          return getName(item.list!) === sentiment;
+        })
       return { ...prev, sentiment: newSentiment }
     })
   }
@@ -78,6 +85,17 @@ export const ElemCompanyCard: FC<Props> = ({
             </ElemTooltip>
           )}
         </div>
+
+        {companyData.layer && (
+          <div
+            className={`${getLayerClass(
+              companyData.layer
+            )} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mb-4`}
+          >
+            {companyData.layer}
+          </div>
+        )}
+        
         {companyData.overview && (
           <div
             className={`grow ${toggleViewMode && "max-w-sm mr-4"}`}
@@ -88,15 +106,6 @@ export const ElemCompanyCard: FC<Props> = ({
           </div>
         )}
 
-        {/* {companyData.layer && (
-												<div
-													className={`${getLayerClass(
-														companyData.layer
-													)} self-start text-xs font-bold leading-sm uppercase mt-4 px-3 py-1 rounded-full`}
-												>
-													{companyData.layer}
-												</div>
-											)} */}
         <div
           className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${toggleViewMode
             ? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
@@ -130,6 +139,7 @@ export const ElemCompanyCard: FC<Props> = ({
             data={companyData}
             handleReactionClick={handleReactionClick}
             blackText
+            isList
           />
         </div>
 
