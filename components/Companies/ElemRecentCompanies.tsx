@@ -109,12 +109,12 @@ export const ElemRecentCompanies: FC<Props> = ({
 				</>
 			) : (
 				companies && (
-					<ElemCarouselWrap className="mt-2 bg-white rounded-lg">
+					<ElemCarouselWrap className=" bg-white rounded-lg">
 						{companies.map((company: any, index: number) => {
 							return (
 								<ElemCarouselCard
 									key={index}
-									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+									className={`p-2 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
 									<a
 										href={`/companies/${company.slug}`}

@@ -46,6 +46,7 @@ const Company: NextPage<Props> = (props) => {
 
 	const [company, setCompany] = useState(props.company);
 	const [selectedTab, setSelectedTab] = useState(0)
+	const [tokenInfo, setTokenInfo] = useState(null)
 
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -59,6 +60,28 @@ const Company: NextPage<Props> = (props) => {
 		current_user: user ?.id ?? 0,
 	});
 	console.log("company ==", company)
+
+	const getTokenInfo = async (ticker: string) => {
+		const data = await fetch("../../api/get_metrics_amount", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ ticker })
+		}).then(res => res.json());
+		console.log("token innfo=", data)
+		setTokenInfo(data)
+	}
+
+	useEffect(() => {
+		if (company && company.coin) {
+			getTokenInfo(company.coin.ticker)
+			// getTokenInfo('bnb')
+		}
+
+	}, [company])
+
 	useEffect(() => {
 		if (conpanyData) setCompany(conpanyData ?.companies[0] as Companies);
 	}, [conpanyData]);
@@ -163,16 +186,16 @@ const Company: NextPage<Props> = (props) => {
 										Price (USD)
                   </div>
 									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										$40.35
-                  </div>
+										{`$${tokenInfo && tokenInfo.currentPrice ? convertAmountRaised(tokenInfo.currentPrice) : 0}`}
+									</div>
 								</div>
 								<div className="flex flex-start">
 									<div className="text-base tracking-wide text-slate-600">
 										Market Cap
                   </div>
 									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										$168.1M
-                  </div>
+										{`$${tokenInfo && tokenInfo.marketCap ? convertAmountRaised(tokenInfo.marketCap) : 0}`}
+									</div>
 								</div>
 							</div>
 						</section>
