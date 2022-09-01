@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const currentPriceData = await axios({
       method: 'GET',
       url: `https://web3api.io/api/v2/tokens/metrics/${ticker}/latest`,
-      headers: { Accept: 'application/json', 'x-amberdata-blockchain-id': 'ethereum-mainnet', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
+      headers: { Accept: 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
     })
     currentPrice = +currentPriceData.data.payload.priceUSD;
   } catch(ex) {
