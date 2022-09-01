@@ -1,5 +1,5 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") res.status(405).json({ message: "Method not allowed" });
@@ -17,8 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: { Accept: 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
     })
     currentPrice = +currentPriceData.data.payload.priceUSD;
-  } catch(ex) {
-    return res.status(ex.response.status).send(ex.response.data.message)
+  } catch(err: any) {
+    return res.status(err.response.status).send(err.response.data.message)
   }
 
   try {
@@ -29,8 +29,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: { 'Accept': 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
     })
     circulatingSupply = circulatingSupplyData.data.payload.circulatingSupply;
-  } catch(ex) {
-    return res.status(ex.response.status).send(ex.response.data.message)
+  } catch(err: any) {
+    return res.status(err.response.status).send(err.response.data.message)
   }
 
   // get the Market Cap value (Market Cap = Current Price x Circulating Supply)
