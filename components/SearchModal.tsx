@@ -1,21 +1,24 @@
 import type { GetStaticProps } from "next";
-import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import algoliasearch from "algoliasearch/lite";
-import Link from "next/link";
+// import Link from "next/link";
 import { Hit as AlgoliaHit } from "instantsearch.js";
 import {
 	InstantSearch,
 	SearchBox,
-	Hits,
-	HitsPerPage,
+	//Hits,
+	//HitsPerPage,
 	Highlight,
 	InfiniteHits,
 	Index,
 	Configure,
 } from "react-instantsearch-hooks-web";
-import { empty } from "@apollo/client";
-import { IconSearch } from "@/components/Icons";
+import type {
+	InfiniteHitsProps,
+	// UseHitsProps,
+} from "react-instantsearch-hooks-web";
+
+import { IconSearch, IconChevronRight } from "@/components/Icons";
 
 const searchClient = algoliasearch(
 	"TFBKEVTOJD",
@@ -54,15 +57,18 @@ type PeopleHitProps = {
 	}>;
 };
 
-const transformItems = (items: any, { results }) => {
-	if (results.hits.length === 0) {
+const transformItems: InfiniteHitsProps["transformItems"] = (
+	items: any,
+	{ results }
+) => {
+	if (results?.hits.length === 0) {
 		return {
 			empty: true,
 		};
 	}
 	return items.map((item: any, index: any) => ({
 		...item,
-		position: { index, page: results.page },
+		position: { index, page: results?.page },
 	}));
 };
 
@@ -70,8 +76,8 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 	return (
 		<>
 			{hit.empty ? (
-				<div className="m-4 text-center">
-					<h1 className="font-bold text-sm text-gray-500">No Results Found</h1>
+				<div className="px-6 py-1">
+					<h1 className="text-slate-600">No Results Found</h1>
 					{/* <p className="text-sm test-slate-600">
 						Not finding what you&rsquo;re looking for?{" "}
 						<Link href="/contact" passHref>
@@ -82,7 +88,7 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 			) : (
 				<a
 					href={`/companies/${hit.slug}`}
-					className="flex items-center px-6 py-1 hover:bg-slate-100"
+					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 						<img
@@ -91,12 +97,26 @@ function CompaniesHit({ hit }: CompaniesHitProps) {
 							alt={hit.logo}
 						/>
 					</div>
-					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600">
-						{hit.name}
+					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
+						<Highlight
+							attribute="name"
+							hit={hit}
+							classNames={{
+								highlighted:
+									"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
+							}}
+						/>
 					</h2>
 					<p className="ml-2 text-sm text-slate-600 line-clamp-1">
-						{hit.overview}
+						<Highlight
+							attribute="overview"
+							hit={hit}
+							classNames={{
+								highlighted: "bg-primary-100",
+							}}
+						/>
 					</p>
+					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 				</a>
 			)}
 		</>
@@ -107,13 +127,13 @@ function InvestorsHit({ hit }: InvestorsHitProps) {
 	return (
 		<>
 			{hit.empty ? (
-				<div className="m-4 text-center">
-					<h1 className="font-bold text-sm  text-gray-500">No Results Found</h1>
+				<div className="px-6 py-1">
+					<h1 className="text-slate-600">No Results Found</h1>
 				</div>
 			) : (
 				<a
 					href={`/investors/${hit.vc_firm_slug}`}
-					className="flex items-center px-6 py-1 hover:bg-slate-100"
+					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 						<img
@@ -122,9 +142,18 @@ function InvestorsHit({ hit }: InvestorsHitProps) {
 							alt={hit.vc_firm_logo}
 						/>
 					</div>
-					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600">
-						{hit.vc_firm_name}
+					<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
+						<Highlight
+							attribute="vc_firm_name"
+							hit={hit}
+							classNames={{
+								highlighted:
+									"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
+							}}
+						/>
+						{/* {hit.vc_firm_name} */}
 					</h2>
+					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 				</a>
 			)}
 		</>
@@ -135,13 +164,13 @@ function PeopleHit({ hit }: PeopleHitProps) {
 	return (
 		<>
 			{hit.empty ? (
-				<div className="m-4 text-center">
-					<h1 className="font-bold text-sm text-gray-500">No Results Found</h1>
+				<div className="px-6 py-1">
+					<h1 className="text-slate-600">No Results Found</h1>
 				</div>
 			) : (
 				<a
 					href={`/people/${hit.slug}`}
-					className="flex items-center px-6 py-1 hover:bg-slate-100"
+					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 						<img
@@ -150,9 +179,17 @@ function PeopleHit({ hit }: PeopleHitProps) {
 							alt={hit.picture}
 						/>
 					</div>
-					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600">
-						{hit.name}
+					<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
+						<Highlight
+							attribute="name"
+							hit={hit}
+							classNames={{
+								highlighted:
+									"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
+							}}
+						/>
 					</h2>
+					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 				</a>
 			)}
 		</>
@@ -172,7 +209,7 @@ export default function SearchModal(props: any) {
 			overlayClassName="fixed top-0 left-0 z-[50] flex flex-col h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
 			className={`${
 				props.show && "animate-fade-in-up"
-			} max-w-3xl w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden`}
+			} max-w-3xl w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0`}
 			contentLabel="Search Modal"
 		>
 			<InstantSearch searchClient={searchClient} indexName="companies">
@@ -185,8 +222,9 @@ export default function SearchModal(props: any) {
 							submitIcon: "hidden",
 							resetIcon: "hidden",
 							loadingIndicator: "hidden",
+							form: "flex",
 							input:
-								"appearance-none bg-transparent ml-3 mr-4 flex-auto h-14 min-w-0 placeholder:text-slate-400 focus:bg-transparent focus:outline-none",
+								"appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 placeholder:text-slate-400 focus:bg-transparent focus:outline-none",
 						}}
 					/>
 					<button

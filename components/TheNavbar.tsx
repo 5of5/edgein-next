@@ -9,11 +9,18 @@ import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
 import { IconSearch } from "@/components/Icons";
 import SearchModal from "./SearchModal";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
 	const [showSearchModal, setShowSearchModal] = useState(false);
+
+	useHotkeys("ctrl+k, command+k", function (event) {
+		event.preventDefault();
+		setShowSearchModal(true);
+	});
+
 	const siteNav = [
 		{
 			path: "/companies",
