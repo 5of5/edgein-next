@@ -17,15 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: { Accept: 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
     })
     currentPrice = +currentPriceData.data.payload.priceUSD;
-  } catch(error) {
-    const err = error as AxiosError
-    let errrorData: any;
-    let errrorStatus: any;
-    errrorStatus = err.response?.status;
-    errrorData = err.response?.data;
-    if (errrorData && errrorData.message) {
-      return res.status(errrorStatus).send(errrorData.message)
-    }
+  } catch(err: any) {
+    return res.status(err.response.status).send(err.response.data.message)
   }
 
   try {
@@ -36,15 +29,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: { 'Accept': 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
     })
     circulatingSupply = circulatingSupplyData.data.payload.circulatingSupply;
-  } catch(error) {
-    const err = error as AxiosError
-    let errrorData: any;
-    let errrorStatus: any;
-    errrorStatus = err.response?.status;
-    errrorData = err.response?.data;
-    if (errrorData && errrorData.message) {
-      return res.status(errrorStatus).send(errrorData.message)
-    }
+  } catch(err: any) {
+    return res.status(err.response.status).send(err.response.data.message)
   }
 
   // get the Market Cap value (Market Cap = Current Price x Circulating Supply)
