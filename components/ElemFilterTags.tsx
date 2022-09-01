@@ -5,7 +5,7 @@ type Props = {
 	heading?: string;
 	tags: (string | null)[];
 	onClick: (tag: string|null, index: number) => void;
-	selectedTag: string;
+	selectedTag?: string | null;
 };
 
 export const ElemFilterTags: React.FC<Props> = ({ className, heading, tags, onClick, selectedTag = "All Members" }) => {

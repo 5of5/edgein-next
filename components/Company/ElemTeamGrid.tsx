@@ -20,7 +20,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 }) => {
 	// Show founders first
 	const allTags = [ "All Members" ,...people.map(people => people.function)]
-	const [selectedTag, setSelectedTag] = useState<string>("All Members")
+	const [selectedTag, setSelectedTag] = useState<string | null>("All Members")
 	const peopleFoundersFirst = (selectedTag === "All Members") ? people.sort(function (a: any, b: any) {
 		return b.founder - a.founder;
 	})
