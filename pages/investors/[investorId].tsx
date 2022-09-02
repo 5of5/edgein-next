@@ -30,7 +30,7 @@ type Props = {
 };
 
 const VCFirm: NextPage<Props> = (props) => {
-	const { user } = useAuth()
+	const { user } = useAuth();
 	const router = useRouter();
 	const { investorId } = router.query;
 	const goBack = () => router.back();
@@ -43,32 +43,39 @@ const VCFirm: NextPage<Props> = (props) => {
 		isLoading,
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
-		current_user: user?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	useEffect(() => {
-		if (vcFirmData)
-			setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms)
+		if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
 	}, [vcFirmData]);
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => {
+	const handleReactionClick =
+		(sentiment: string) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			const newSentiment = await reactOnSentiment({
+				vcfirm: vcfirm.id,
+				sentiment,
+				pathname: location.pathname,
+			});
 
-		const newSentiment = await reactOnSentiment({
-			vcfirm: vcfirm.id,
-			sentiment,
-			pathname: location.pathname
-		});
-
-		setVcfirm((prev) => {
-			const newFollows = getNewFollows(sentiment, 'vcfirm') as Follows_Vc_Firms
-			prev.follows.push(newFollows);
-			return { ...prev, sentiment: newSentiment }
-		});
-	}
+			setVcfirm((prev) => {
+				const newFollows = getNewFollows(
+					sentiment,
+					"vcfirm"
+				) as Follows_Vc_Firms;
+				prev.follows.push(newFollows);
+				return { ...prev, sentiment: newSentiment };
+			});
+		};
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
@@ -110,7 +117,6 @@ const VCFirm: NextPage<Props> = (props) => {
 						/>
 					</div>
 				</div>
-
 			</div>
 
 			{Object.keys(sortedInvestmentRounds).length > 0 && (
@@ -134,8 +140,9 @@ const VCFirm: NextPage<Props> = (props) => {
 							return (
 								<tr
 									key={index}
-									className={`${index % 2 === 0 ? "" : ""
-										} flex flex-col flex-no wrap overflow-hidden md:table-row`}
+									className={`${
+										index % 2 === 0 ? "" : ""
+									} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
