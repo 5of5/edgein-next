@@ -13,15 +13,21 @@ import {
 } from "react-admin";
 
 const filters = [
-  <SearchInput key="search" source="name" resettable alwaysOn />
+  <TextInput key="search" source="name" label="Search Name" resettable alwaysOn />
 ];
 
 export const BlockchainsList = () => (
-  <List filters={filters}>
+  <List filters={filters}
+    sx={{
+      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+        justifyContent: 'flex-start'
+      }
+    }}
+  >
     <Datagrid>
+      <EditButton />
       <TextField source="id" />
       <TextField source="name" />
-      <EditButton />
     </Datagrid>
   </List>
 );

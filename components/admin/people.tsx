@@ -14,16 +14,24 @@ import {
 	required,
 	minLength,
 	email,
-	regex
+	regex,
+	SelectInput
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import {validateName, validateSlug, validateUrl, validateEmail} from "../../utils/constants"
+import { validateName, validateSlug, validateUrl, validateEmail, status } from "../../utils/constants"
 const filters = [
-	<SearchInput key="search" source="name,slug,type" resettable alwaysOn />
+	<TextInput key="search" source="name,slug,type,status" label="Search in name,slug,type,status" resettable alwaysOn />
 ];
 export const PeopleList = () => (
-	<List filters={filters}>
+	<List filters={filters}
+	sx={{
+		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
+			justifyContent: 'flex-start'
+		}
+	   }}
+	  >
 		<Datagrid>
+			<EditButton />
 			<TextField source="id" />
 			<TextField source="name" />
 			<TextField source="slug" />
@@ -34,7 +42,7 @@ export const PeopleList = () => (
 			<TextField source="personal_email" />
 			<TextField source="work_email" />
 			<TextField source="linkedin" />
-			<EditButton />
+			<TextField source="status" />
 		</Datagrid>
 	</List>
 );
@@ -139,6 +147,11 @@ export const PeopleEdit = () => {
 					source="linkedin"
 					validate={validateUrl}
 				/>
+				<SelectInput
+					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="status"
+					choices={status}
+				/>
 			</SimpleForm>
 		</Edit>
 	)
@@ -214,6 +227,11 @@ export const PeopleCreate = () => {
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="linkedin"
 					validate={validateUrl}
+				/>
+				<SelectInput
+					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="status"
+					choices={status}
 				/>
 			</SimpleForm>
 		</Create>

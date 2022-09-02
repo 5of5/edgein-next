@@ -1,28 +1,33 @@
 // in posts.js
 import * as React from "react";
-import { SearchInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, required, minLength, maxLength, number, minValue, maxValue, regex } from 'react-admin';
+import { FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import {companyLayerChoices, validateName, validateSlug, validateUrl} from "../../utils/constants"
+import { companyLayerChoices, validateName, validateSlug, validateUrl, status } from "../../utils/constants"
 export const companyIcon = BookIcon;
 
 const filters = [
-  <SearchInput key="search" source="name,slug,overview,notes" resettable alwaysOn />
+  <TextInput key="search" source="name,slug,overview,notes,status" label="Search in name,slug,overview,notes,status" resettable alwaysOn />,
+  <ReferenceInput source="coin_id" reference="coins">
+    <AutocompleteInput
+      optionText={choice =>
+        `${choice.name}`
+      }
+    />
+  </ReferenceInput>
 ];
 
 export const CompanyList = () => (
 
   <List filters={filters}
     sx={{
-      ".css-gp0tzt-MuiToolbar-root-RaTopToolbar-root": {
-        paddingLeft: 0,
-        paddingRight: 0,
-        position: "absolute",
-        left: "1200px",
-      },
+      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+        justifyContent: 'flex-start'
+      }
     }}
   >
     <Datagrid>
+      <EditButton />
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="slug" />
@@ -46,7 +51,13 @@ export const CompanyList = () => (
       <TextField source="market_verified" />
       <TextField source="velocity_linkedin" />
       <TextField source="velocity_token" />
-      <EditButton />
+      <TextField source="status" />
+      <TextField source="aliases" />
+      <TextField source="twitter" />
+      <TextField source="location" />
+      <TextField source="discord" />
+      <TextField source="glassdoor" />
+      <FunctionField source="tags" render={(record: any) => (record.tags) ? record.tags.join() : ''} />
     </Datagrid>
   </List>
 );
@@ -65,150 +76,184 @@ export const CompanyEdit = () => {
   const [isImageUpdated, setIsImageUpdated] = React.useState(false)
 
   const transform = async (data: any) => {
-   var formdata = {...data};
-   if(oldLogo){
-    //delete old file from s3
-    deleteFile(oldLogo)
-  }
-   if(logo){
-     const res = await uploadFile(logo);
+    var formdata = { ...data };
+    const tagValue = (formdata.tags) ? formdata.tags : []
+    const finalValue = (typeof tagValue === "string") ? tagValue.split(',') : tagValue
+    if (oldLogo) {
+      //delete old file from s3
+      deleteFile(oldLogo)
+    }
+    if (logo) {
+      const res = await uploadFile(logo);
       formdata = {
         ...data,
         coin_id: (!data.coin_id) ? null : data.coin_id,
-        logo: res.file
+        logo: res.file,
+        tags: finalValue
       }
       return formdata
-   }else {
-    formdata = {
-      ...data,
-      coin_id: (!data.coin_id) ? null : data.coin_id
+    } else {
+      formdata = {
+        ...data,
+        coin_id: (!data.coin_id) ? null : data.coin_id,
+        tags: finalValue
+      }
+      return formdata
     }
-    return formdata
-   }
   };
 
   const onSelect = (files: any) => {
-    
-    if(files && files.length > 0){
+
+    if (files && files.length > 0) {
       setLogo(files[0])
-    }else{
+    } else {
       setLogo(null)
     }
   }
 
   const onDropRejected = (files: any) => {
-    if(files.id){
+    if (files.id) {
       setOldLogo(files)
     }
     setIsImageUpdated(true)
     setLogo(null)
   }
 
-return(
-  <Edit title={<CompanyTitle />} transform={transform}>
-    <SimpleForm className="border rounded-lg">
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        disabled
-        source="id"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="name"
-        validate={validateName}
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="slug"
-        validate={validateSlug}
-      />
-       <FileInput onRemove={onDropRejected} options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+  return (
+    <Edit title={<CompanyTitle />} transform={transform}>
+      <SimpleForm className="border rounded-lg">
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          disabled
+          source="id"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="name"
+          validate={validateName}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="slug"
+          validate={validateSlug}
+        />
+        <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
-      {
-        (!logo && !isImageUpdated) &&
-        <ImageField source="logo.url" title="Logo" />
-      }
-       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="layer"
-        choices={companyLayerChoices}
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="layer_detail"
-      />
-      <ReferenceInput label="Coin" source="coin_id" reference="coins">
+        {
+          (!logo && !isImageUpdated) &&
+          <ImageField source="logo.url" title="Logo" />
+        }
         <SelectInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          optionText="name"
+          source="layer"
+          choices={companyLayerChoices}
         />
-      </ReferenceInput>
-      <NumberField
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="total_employees"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="github"
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="layer_detail"
+        />
+        <ReferenceInput label="Coin" source="coin_id" reference="coins">
+          <SelectInput
+            className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            optionText="name"
+          />
+        </ReferenceInput>
+        <NumberField
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="total_employees"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="github"
+          validate={validateUrl}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="notes"
+          multiline
+        />
+        <TextInput
+          multiline
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="overview"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="website"
         validate={validateUrl}
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="notes"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="overview"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="website"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="careers_page"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="company_linkedin"
         validate={validateUrl}
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="careers_page"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="company_linkedin"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="year_founded"
+        // min="1900"
+        // max="2099"
+        // validate={validateYearFounded}
+        />
+        <NumberInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="investor_amount"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="total_valuation"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="white_paper"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="market_verified"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="velocity_linkedin"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="velocity_token"
+        />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="status"
+          choices={status}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="location"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="twitter"
         validate={validateUrl}
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="year_founded"
-      // min="1900"
-      // max="2099"
-      // validate={validateYearFounded}
-      />
-      <NumberInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="investor_amount"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="total_valuation"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="white_paper"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="market_verified"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="velocity_linkedin"
-      />
-      <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="velocity_token"
-      />
-    </SimpleForm>
-  </Edit>
-)
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="discord"
+        validate={validateUrl}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="glassdoor"
+        validate={validateUrl}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="tags"
+        />
+      </SimpleForm>
+    </Edit>
+  )
 };
 
 export const CompanyCreate = () => {
@@ -216,28 +261,32 @@ export const CompanyCreate = () => {
   const [logo, setLogo] = React.useState(null)
 
   const transform = async (data: any) => {
-   var formdata = {...data};
-   if(logo){
-     const res = await uploadFile(logo);
+    var formdata = { ...data };
+    const tagValue = (formdata.tags) ? formdata.tags : []
+    const finalValue = (typeof tagValue === "string") ? tagValue.split(',') : tagValue
+    if (logo) {
+      const res = await uploadFile(logo);
       formdata = {
         ...data,
         coin_id: (!data.coin_id) ? null : data.coin_id,
-        logo: res.file
+        logo: res.file,
+        tags: finalValue
       }
       return formdata
-   }else {
-    formdata = {
-      ...data,
-      coin_id: (!data.coin_id) ? null : data.coin_id
+    } else {
+      formdata = {
+        ...data,
+        coin_id: (!data.coin_id) ? null : data.coin_id,
+        tags: finalValue
+      }
+      return formdata
     }
-    return formdata
-   }
   };
 
   const onSelect = (files: any) => {
-    if(files && files.length > 0){
+    if (files && files.length > 0) {
       setLogo(files[0])
-    }else{
+    } else {
       setLogo(null)
     }
   }
@@ -259,7 +308,7 @@ export const CompanyCreate = () => {
           source="slug"
           validate={validateSlug}
         />
-        <FileInput onRemove={onDropRejected} options={{onDrop:onSelect}} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+        <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
 
@@ -290,8 +339,10 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="notes"
+          multiline
         />
         <TextInput
+          multiline
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="overview"
         />
@@ -339,6 +390,34 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="velocity_token"
+        />
+        <SelectInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="status"
+          choices={status}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="location"
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="twitter"
+          validate={validateUrl}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="discord"
+          validate={validateUrl}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="glassdoor"
+          validate={validateUrl}
+        />
+        <TextInput
+          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="tags"
         />
       </SimpleForm>
     </Create>

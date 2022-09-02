@@ -231,4 +231,13 @@ export const functionChoicesTM = [
     },
   ]
   
-  
+  export const status = [
+    {
+      id: "draft",
+      name: "Draft"
+    },
+    {
+      id: "published",
+      name: "Published"
+    }
+  ]
