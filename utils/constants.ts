@@ -4,7 +4,9 @@ import {email, required, minLength, number, minValue, maxValue, regex} from 'rea
 export const validateName = [required(), minLength(3)];
 export const validateSlug = [required(), minLength(3)];
 export const validateYearFounded = [number(), minValue(1900), maxValue(2099)];
-export const validateUrl = regex(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi, 'Must be a valid Url')
+//export const validateUrl = regex(/^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/, 'Must be a valid Url')
+export const validateUrl = regex(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?$/s, 'Must be a valid Url')
+
 export const validateEmail = email();
 
 export const functionChoicesTM = [

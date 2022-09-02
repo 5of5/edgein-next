@@ -159,7 +159,7 @@ export const CompanyEdit = () => {
             optionText="name"
           />
         </ReferenceInput>
-        <NumberField
+        <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="total_employees"
         />
@@ -186,6 +186,7 @@ export const CompanyEdit = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="careers_page"
+          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -327,6 +328,7 @@ export const CompanyCreate = () => {
             optionText="name"
           />
         </ReferenceInput>
+        
         <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="total_employees"
