@@ -11,6 +11,8 @@ type Props = {
   selectedListName: string | null
   totalFunding: number
   getAlternateRowColor: (index: number) => string
+  handleNavigation: (link: string) => void
+  tagsCount: any
 }
 
 export const ElemCompanies: FC<Props> = ({
@@ -19,6 +21,8 @@ export const ElemCompanies: FC<Props> = ({
   selectedListName,
   totalFunding,
   getAlternateRowColor,
+  handleNavigation,
+  tagsCount,
 }) => {
   return (
     <div className="rounded-lg p-3 bg-white col-span-3">
@@ -28,9 +32,7 @@ export const ElemCompanies: FC<Props> = ({
         <div className="inline-flex items-center">
           <span className="font-semibold text-sm mr-2">Tags: </span>
           <span>
-            <span className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2">Layer-1 (2)</span>
-            <span className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2">Identity (4)</span>
-            <span className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2">d-Apps (3)</span>
+            {tagsCount && Object.keys(tagsCount).map((tag) => <span key={tag} className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2">{tag} ({tagsCount[tag]})</span>)}
           </span>
         </div>
 
@@ -54,7 +56,12 @@ export const ElemCompanies: FC<Props> = ({
           <tbody>
             {
               companies?.follows_companies.map(({ company }, index) => (
-                <tr key={company?.id} className={`text-left text-sm${getAlternateRowColor(index)}`}>
+                <tr 
+                key={company?.id} 
+                className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
+                onClick={() => handleNavigation(`/companies/${company?.slug}`)}
+                role="button"
+                >
                   <td className="px-1 inline-flex items-center py-2">
                     <ElemPhoto
                       photo={company?.logo}
@@ -62,7 +69,7 @@ export const ElemCompanies: FC<Props> = ({
                       imgClass="object-fit max-w-full max-h-full"
                       imgAlt={'chia'}
                     />
-                    Chia
+                    {company?.name}
                   </td>
                   <td className="px-1 py-2">{company?.coin?.ticker ? company?.coin?.ticker : '-'}</td>
                   <td className="px-1 py-2">{company?.teamMembers.length}</td>

@@ -9169,7 +9169,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
 
 export type GetListsByUserQueryVariables = Exact<{
   current_user: InputMaybe<Scalars['Int']>;
@@ -9228,7 +9228,7 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null } | null }> };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null, slug: string | null } | null }> };
 
 
 export const InsertActionDocument = `
@@ -9480,6 +9480,7 @@ export const GetCompaniesByListIdDocument = `
         amount
       }
       tags
+      slug
     }
   }
 }
@@ -9786,6 +9787,7 @@ export const GetVcFirmsByListIdDocument = `
       latest_investments
       sentiment
       logo
+      slug
     }
   }
 }

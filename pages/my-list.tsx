@@ -8,14 +8,16 @@ import { IconLike } from "@/components/reactions/IconLike";
 import { Lists, useGetListsByUserQuery, useGetCompaniesByListIdQuery, useGetVcFirmsByListIdQuery } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { getName } from "@/utils/reaction";
-import { find } from "lodash";
+import { find, has } from "lodash";
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 type Props = {}
 
 const MyList: NextPage<Props> = ({ }) => {
   const { user } = useAuth();
+  const router = useRouter()
   const [userLists, setUserLists] = useState<Lists[]>();
   const [selectedList, setSelectedList] = useState<number | null>(null);
   const [selectedListName, setSelectedListName] = useState<null | string>('hot');
@@ -24,7 +26,7 @@ const MyList: NextPage<Props> = ({ }) => {
   const [likeId, setLikeId] = useState(0);
   const [totalFunding, setTotalFuncding] = useState(0);
   // @TODO: implement tags count on final structure for tags in admin
-  const [tagsCount, setTagsCount] = useState();
+  const [tagsCount, setTagsCount] = useState({});
   const [isCustomList, setIsCustomList] = useState(false);
 
   const {
@@ -48,8 +50,16 @@ const MyList: NextPage<Props> = ({ }) => {
   useEffect(() => {
     if (companies) {
       let funding = 0;
-      companies.follows_companies.forEach((company) => {
-        company.company?.investment_rounds.forEach((round) => { funding += round.amount })
+      companies.follows_companies.forEach(({ company }) => {
+        setTagsCount((prev: any) => {
+          console.log(company?.tags)
+          company?.tags?.forEach((tag: string) => {
+            if (!has(prev, tag)) prev = {...prev, [tag]: 1}
+            else prev[tag] += 1
+          })
+          return prev
+        })
+        company?.investment_rounds.forEach((round) => { funding += round.amount })
       })
 
       setTotalFuncding(funding)
@@ -92,11 +102,17 @@ const MyList: NextPage<Props> = ({ }) => {
   }
 
   const onSelect = (listId: number, listName: string) => {
+    setTagsCount({})
     setSelectedList(listId)
     setSelectedListName(listName)
     // set isCustomList to true if list is created by user and check 
     // isCustomList to enable dropdown options on custom list
     if (!['hot', 'like', 'crap'].includes(listName)) setIsCustomList(true)
+    else setIsCustomList(false)
+  }
+
+  const handleRowClick = (link: string) => {
+    router.push(link);
   }
 
   const getActiveClass = (listName: string) => {
@@ -144,20 +160,27 @@ const MyList: NextPage<Props> = ({ }) => {
         <div className="col-span-3">
 
           <div className="w-full mb-7">
-            <h1 className="flex font-bold text-xl capitalize mb-1">
-              <IconHot className="mr-2" /> {selectedListName}
+            <h1 className="flex font-bold text-xl capitalize mb-1 items-center">
+              {selectedListName === 'hot' && <IconHot className="mr-2" />}
+              {selectedListName === 'like' && <IconLike className="mr-2" />}
+              {selectedListName === 'crap' && <IconCrap className="mr-2" />}
+              {isCustomList && <IconCompanyList className="mr-2" />}
+              {selectedListName}
             </h1>
             <p className="first-letter:uppercase">{selectedListName} lists are generated from your {selectedListName?.toLowerCase()} reactions.</p>
           </div>
 
           <ElemCompanies
+            handleNavigation={handleRowClick}
             companies={companies}
             selectedListName={selectedListName}
             totalFunding={totalFunding}
             getAlternateRowColor={getAlternateRowColor}
+            tagsCount={tagsCount}
           />
 
           <ElemInvestors
+            handleNavigation={handleRowClick}
             vcfirms={vcfirms}
             selectedListName={selectedListName}
             getAlternateRowColor={getAlternateRowColor}

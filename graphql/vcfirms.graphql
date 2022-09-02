@@ -93,6 +93,7 @@ query GetVcFirmsByListId($list_id: Int = 0) {
       latest_investments
       sentiment
       logo
+			slug
     }
   }
 }

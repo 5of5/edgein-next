@@ -10,6 +10,7 @@ type Props = {
   isCustomList?: boolean
   selectedListName: string | null
   getAlternateRowColor: (index: number) => string
+  handleNavigation: (link: string) => void
 }
 
 export const ElemInvestors: FC<Props> = ({
@@ -17,6 +18,7 @@ export const ElemInvestors: FC<Props> = ({
   isCustomList,
   selectedListName,
   getAlternateRowColor,
+  handleNavigation,
 }) => {
   return (
     <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10">
@@ -36,8 +38,15 @@ export const ElemInvestors: FC<Props> = ({
           <tbody>
             {
               vcfirms?.follows_vc_firms.map(({ vc_firm }, index) => (
-                <tr key={vc_firm?.id} className={`text-left text-sm${getAlternateRowColor(index)}`}>
-                  <td className="px-1 inline-flex items-center py-2">
+                <tr
+                  key={vc_firm?.id}
+                  className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
+                  onClick={() => handleNavigation(`/investors/${vc_firm?.slug}`)}
+                  role="button"
+                >
+                  <td
+                    className="px-1 inline-flex items-center py-2"
+                  >
                     <ElemPhoto
                       photo={vc_firm?.logo}
                       wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"

@@ -157,6 +157,7 @@ query GetCompaniesByListId($list_id: Int = 0) {
         amount
       }
       tags
+			slug
     }
   }
 }
