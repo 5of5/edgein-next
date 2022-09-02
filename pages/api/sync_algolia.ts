@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import algoliasearch from 'algoliasearch'
 import { query, mutate } from '@/graphql/hasuraAdmin'
 
-const client = algoliasearch(process.env.ALGOLIA_APPLICATION_ID!, process.env.ALGOLIA_API_KEY!);
+const client = algoliasearch(process.env.ALGOLIA_WRITE_APPLICATION_ID!, process.env.ALGOLIA_WRITE_API_KEY!);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // get the last sync datetime from db
@@ -34,33 +34,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // get last sync info for investors
-  const investorLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_investors');
+  const investorLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_vc_firms');
   if (investorLastSync) {
     try {
       // get all investors details
-      const investorList = await queryForInvestorList(investorLastSync.value);
-      for (const investor of investorList) {
-        if (investor.vc_firm) {
-          if (investor.vc_firm.id) investor.vc_firm_id = investor.vc_firm.id;
-          if (investor.vc_firm.name) investor.vc_firm_name = investor.vc_firm.name;
-          if (investor.vc_firm.slug) investor.vc_firm_slug = investor.vc_firm.slug;
-          if (investor.vc_firm.logo) {
-            investor.vc_firm_logo = investor.vc_firm.logo.url;
-          }
+      const vcfirmsList = await queryForVcFirmsList(investorLastSync.value);
+      for (const vc_firm of vcfirmsList) {
+        if (vc_firm.logo) {
+          vc_firm.logo = vc_firm.logo.url;
         }
 
-        investor.objectID = investor.id;
-        delete investor.id;
-        delete investor.vc_firm;
+        vc_firm.objectID = vc_firm.id;
+        delete vc_firm.id;
       }
-      const investorIndex = client.initIndex('investors');
-      await investorIndex.saveObjects(investorList, { autoGenerateObjectIDIfNotExist: true });
+      const investorIndex = client.initIndex('vc_firms');
+      await investorIndex.saveObjects(vcfirmsList, { autoGenerateObjectIDIfNotExist: true });
 
        // update the last_sync date to current date
-       await mutateForlastSync('sync_investors');
+       await mutateForlastSync('sync_vc_firms');
     } catch (error) {
       // update the last_error
-      await mutateForError('sync_investors', prepareError(error));
+      await mutateForError('sync_vc_firms', prepareError(error));
     }
   }
 
@@ -108,7 +102,7 @@ const queryForlastSync = async () => {
   // prepare gql query
   const fetchQuery = `
   query query_last_sync {
-    application_meta(where: {key: {_in: ["sync_companies", "sync_investors", "sync_people"]}}) {
+    application_meta(where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}) {
       id
       key
       value
@@ -153,18 +147,15 @@ const queryForCompanyList = async (date: any) => {
   }
 }
 // queries local user using graphql endpoint
-const queryForInvestorList = async (date: any) => {
+const queryForVcFirmsList = async (date: any) => {
   // prepare gql query
   const fetchQuery = `
-  query query_investors($date: timestamptz) {
-    investors(where: {updated_at: {_gte: $date}}) {
+  query query_vcfirms($date: timestamptz) {
+    vc_firms(where: {updated_at: {_gte: $date}}) {
       id
-      vc_firm {
-        id
-        name
-        logo
-        slug
-      }
+      name
+      logo
+      slug
     }
   }
   `
@@ -173,7 +164,7 @@ const queryForInvestorList = async (date: any) => {
       query: fetchQuery,
       variables: { date }
     })
-    return data.data.investors
+    return data.data.vc_firms
   } catch (ex) {
     throw ex;
   }
