@@ -204,14 +204,23 @@ const Companies: NextPage<Props> = ({
 					<div className="max-w-6xl mx-auto bg-white border mt-4 rounded-lg mx-auto sm:px-6 lg:px-10 lg:py-10 lg:min-h-[40vh]">
 						<h2 className="text-xl relative bottom-4 font-bold">All Companies</h2>
 						<ElemFiltersWrap className="pt-2 filters-wrap">
-							<InputSearch
+							{/* <InputSearch
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 								label="Search"
 								name="search"
 								value={search}
 								placeholder="Trending"
 								onChange={searchCompanies}
+							/> */}
+							<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={search}
+							placeholder="Trending"
+							onChange={searchCompanies}
+							options={[]}
 							/>
+							
+							
 
 							<InputSelect
 								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
