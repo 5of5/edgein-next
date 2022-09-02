@@ -1,0 +1,73 @@
+import { GetCompaniesByListIdQuery, GetVcFirmsByListIdQuery } from "@/graphql/types";
+import { FC } from "react";
+import { ElemPhoto } from "../ElemPhoto";
+import { IconCrap } from "../reactions/IconCrap";
+import { IconHot } from "../reactions/IconHot";
+import { IconLike } from "../reactions/IconLike";
+
+type Props = {
+  vcfirms: GetVcFirmsByListIdQuery | undefined
+  isCustomList?: boolean
+  selectedListName: string | null
+  getAlternateRowColor: (index: number) => string
+}
+
+export const ElemInvestors: FC<Props> = ({
+  vcfirms,
+  isCustomList,
+  selectedListName,
+  getAlternateRowColor,
+}) => {
+  return (
+    <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10">
+      <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Investors</h2>
+
+      <div className="mt-3 w-full rounded-lg border border-slate-200">
+        <table className="w-full">
+          <thead className="">
+            <tr className="text-left text-sm border-b-slate-200">
+              <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Name</th>
+              <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0"># of Investments</th>
+              <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Latest Investment Date</th>
+              <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Reactions</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {
+              vcfirms?.follows_vc_firms.map(({ vc_firm }, index) => (
+                <tr key={vc_firm?.id} className={`text-left text-sm${getAlternateRowColor(index)}`}>
+                  <td className="px-1 inline-flex items-center py-2">
+                    <ElemPhoto
+                      photo={vc_firm?.logo}
+                      wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
+                      imgClass="object-fit max-w-full max-h-full"
+                      imgAlt={'chia'}
+                    />
+                    {vc_firm?.name}
+                  </td>
+                  <td className="px-1 py-2">{vc_firm?.num_of_investments}</td>
+                  <td className="px-1 py-2">May 12, 2022 {vc_firm?.latest_investments}</td>
+                  <td className="px-1 py-2">
+                    <div>
+                      <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1" />{vc_firm?.sentiment.hot || 0}</span>
+                      <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1" />{vc_firm?.sentiment.like || 0}</span>
+                      <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1" />{vc_firm?.sentiment.crap || 0}</span>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            }
+
+            {
+              (!vcfirms?.follows_vc_firms || vcfirms?.follows_vc_firms.length === 0) &&
+              <tr>
+                <td colSpan={4} className="text-center px-1 py-2">No Investors</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
