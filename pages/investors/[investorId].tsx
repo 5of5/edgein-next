@@ -106,7 +106,7 @@ const VCFirm: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => {
 
 		const newSentiment = await reactOnSentiment({
 			vcfirm: vcfirm.id,
