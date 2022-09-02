@@ -39,8 +39,8 @@ type Props = {
 
 export type DeepPartial<T> = T extends object
 	? {
-		[P in keyof T]?: DeepPartial<T[P]>;
-	}
+			[P in keyof T]?: DeepPartial<T[P]>;
+	  }
 	: T;
 
 const Companies: NextPage<Props> = ({
@@ -148,7 +148,7 @@ const Companies: NextPage<Props> = ({
 		limit,
 		where: filters as Companies_Bool_Exp,
 		// TODO: pass logged in user's id
-		current_user: user?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	if (!isLoading && initialLoad) {
@@ -159,7 +159,7 @@ const Companies: NextPage<Props> = ({
 
 	const onUpdateOfCompany = (company: Companies) => {
 		// TODO if company is currently displayed update it
-	}
+	};
 
 	return (
 		<div>
@@ -169,9 +169,14 @@ const Companies: NextPage<Props> = ({
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				></ElemHeading>
 
-				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
+				<div className="relative bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
 					<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
-						{companies && <ElemRecentCompanies onUpdateOfCompany={onUpdateOfCompany} heading="Recently Discovered" />}
+						{companies && (
+							<ElemRecentCompanies
+								onUpdateOfCompany={onUpdateOfCompany}
+								heading="Recently Discovered"
+							/>
+						)}
 					</div>
 
 					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
@@ -253,8 +258,9 @@ const Companies: NextPage<Props> = ({
 						)}
 
 						<div
-							className={`grid gap-5 grid-cols-1 md:grid-cols-${toggleViewMode ? "1" : "2"
-								} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
+							className={`grid gap-5 grid-cols-1 md:grid-cols-${
+								toggleViewMode ? "1" : "2"
+							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
 						>
 							{error ? (
 								<h4>Error loading companies</h4>
@@ -294,7 +300,11 @@ const Companies: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
-		{ limit: 50, offset: 0, where: { slug: { _neq: "" }, status: { _eq: 'published' } } }
+		{
+			limit: 50,
+			offset: 0,
+			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+		}
 	);
 
 	return {

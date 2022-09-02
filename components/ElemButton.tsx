@@ -58,14 +58,13 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass =
 			"text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100";
 	} else {
-		btnClass =
-			"border-white bg-white hover:bg-gray-50 hover:text-primary-500 focus:ring-primary-500";
+		btnClass = "";
 	}
 
 	// button sizes
-	let sizeClasses = "py-1.5 px-4";
+	let sizeClasses = "px-4 py-1";
 	if (size === "md") {
-		sizeClasses = "px-5 py-2 min-w-32 justify-center";
+		sizeClasses = "px-5 py-1.5 min-w-32 justify-center";
 	} else if (size === "sm") {
 		sizeClasses = "px-3 py-2 lg:px-2.5 lg:py-1.5 lg:text-sm";
 	} else if (size === "xs") {
