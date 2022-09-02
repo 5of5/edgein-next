@@ -40,7 +40,8 @@ export const VcFirmList = () => (
       <TextField source="website" />
       <TextField source="linkedin" />
       <TextField source="status" />
-      <TextField cellClassName=" truncate h-5%" source="overview" />
+       {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
+      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0,20)}...` : record.overview} />
       <TextField source="year_founded" />
       <TextField source="twitter" />
       <TextField source="location" />

@@ -39,8 +39,10 @@ export const CompanyList = () => (
       </ReferenceField>
       <NumberField source="total_employees" />
       <TextField source="github" />
-      <TextField cellClassName=" truncate h-5%" source="notes" />
-      <TextField cellClassName=" truncate h-5%" source="overview" />
+      {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
+      <FunctionField cellClassName="truncate" source="notes" render={(record: any) => (record.notes && record.notes.length > 25) ? `${record.notes.substring(0,20)}...` : record.notes} />
+      {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
+      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0,20)}...` : record.overview} />
       <TextField source="website" />
       <TextField source="careers_page" />
       <TextField source="company_linkedin" />
