@@ -92,7 +92,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 
   return (
     <div className={`${className}`}>
-      {heading && <h2 className="text-2xl font-bold">{heading}</h2>}
+      {heading && <h2 className="text-xl relative left-5 top-2 font-bold">{heading}</h2>}
       {error ? (
         <h4>Error loading investors</h4>
       ) : isLoading ? (
@@ -110,7 +110,7 @@ export const ElemRecentInvestments: FC<Props> = ({
         </>
       ) : (
         vcFirms && (
-          <ElemCarouselWrap className="mt-2 bg-white rounded-lg">
+          <ElemCarouselWrap className="mt-2 bg-white border-none shadow-lg rounded-lg">
             {vcFirms.map((investor: any, index: number) => {
               return (
                 <ElemCarouselCard
@@ -154,6 +154,7 @@ export const ElemRecentInvestments: FC<Props> = ({
                         data={investor}
                         handleReactionClick={handleReactionClick(investor)}
                         blackText
+                        isList
                       />
                     </div>
                   </a>
