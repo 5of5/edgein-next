@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import algoliasearch from 'algoliasearch'
 import { query, mutate } from '@/graphql/hasuraAdmin'
 
-const client = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!, process.env.ALGOLIA_WRITE_API_KEY!);
+const client = algoliasearch(process.env.ALGOLIA_WRITE_APPLICATION_ID!, process.env.ALGOLIA_WRITE_API_KEY!);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // get the last sync datetime from db
@@ -40,8 +40,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // get all investors details
       const vcfirmsList = await queryForVcFirmsList(investorLastSync.value);
       for (const vc_firm of vcfirmsList) {
-        if (vc_firm.vc_firm.logo) {
-          vc_firm.vc_firm_logo = vc_firm.vc_firm.logo.url;
+        if (vc_firm.logo) {
+          vc_firm.logo = vc_firm.logo.url;
         }
 
         vc_firm.objectID = vc_firm.id;
@@ -102,7 +102,7 @@ const queryForlastSync = async () => {
   // prepare gql query
   const fetchQuery = `
   query query_last_sync {
-    application_meta(where: {key: {_in: ["sync_companies", "sync_investors", "sync_people"]}}) {
+    application_meta(where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}) {
       id
       key
       value
