@@ -4,7 +4,6 @@ import { mutate } from "../graphql/hasuraAdmin";
 
 export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
-	console.log({ url });
 
 	// Prevent security issues – users should not be able to canonically access
 	// the pages/sites folder and its respective contents. This can also be done
@@ -60,7 +59,8 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (![`/api/graphql/`].includes(url.pathname)) {
+	if (![`/api/graphql/`].includes(url.pathname) && user?.id) {
+		const parts = url.pathname.split('/')
 		mutate({
 			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {
@@ -75,8 +75,11 @@ export async function middleware(req: NextRequest) {
 				object: {
 					action: "View",
 					page: url.pathname,
+					// TODO add from url split
+					// resourceType:,
+					// resourceId: ,
 					properties: {},
-					user: user.email,
+					user: user.id,
 				},
 			},
 		});

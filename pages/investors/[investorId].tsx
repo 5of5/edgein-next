@@ -55,14 +55,14 @@ const VCFirm: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => {
 
 		const newSentiment = await reactOnSentiment({
 			vcfirm: vcfirm.id,
 			sentiment,
 			pathname: location.pathname
 		});
-		
+
 		setVcfirm((prev) => {
 			const newFollows = getNewFollows(sentiment, 'vcfirm') as Follows_Vc_Firms
 			prev.follows.push(newFollows);

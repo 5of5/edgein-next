@@ -57,11 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         page: pathname,
         properties: {
           listId: list.id,
-          resourceId,
-          resourceType,
           sentiment: sentimentType,
         },
-        user: user.email,
+        resourceId,
+        resourceType,
+        user: user.id,
       },
     },
   });
