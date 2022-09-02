@@ -23,7 +23,7 @@ import {
 import { roundChoices, currencyChoices, status } from "../../utils/constants"
 
 const filters = [
-  <TextInput key="search" type="text" source="round,status" label="Search Round, Status" resettable alwaysOn />,
+  <TextInput key="search" type="text" source="round" label="Search in Round" resettable alwaysOn />,
   <TextInput key="search1" type="number" source="valuation,amount" label="Valuation, Amount" resettable />,
   <ReferenceInput source="company_id" reference="companies">
         <AutocompleteInput

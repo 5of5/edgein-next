@@ -20,7 +20,7 @@ import {
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import { validateName, validateSlug, validateUrl, validateEmail, status } from "../../utils/constants"
 const filters = [
-	<TextInput key="search" source="name,slug,type,status" label="Search in name,slug,type,status" resettable alwaysOn />
+	<TextInput key="search" source="name,type" label="Search in name,type" resettable alwaysOn />
 ];
 export const PeopleList = () => (
 	<List filters={filters}

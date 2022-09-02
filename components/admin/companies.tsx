@@ -7,7 +7,7 @@ import { companyLayerChoices, validateName, validateSlug, validateUrl, status } 
 export const companyIcon = BookIcon;
 
 const filters = [
-  <TextInput key="search" source="name,slug,overview,notes,status" label="Search in name,slug,overview,notes,status" resettable alwaysOn />,
+  <TextInput key="search" source="name,layer" label="Search in name, layer" resettable alwaysOn />,
   <ReferenceInput source="coin_id" reference="coins">
     <AutocompleteInput
       optionText={choice =>
@@ -249,6 +249,7 @@ export const CompanyEdit = () => {
         validate={validateUrl}
         />
         <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="tags"
         />
@@ -418,6 +419,7 @@ export const CompanyCreate = () => {
           validate={validateUrl}
         />
         <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="tags"
         />

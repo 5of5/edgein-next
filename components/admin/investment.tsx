@@ -17,7 +17,7 @@ import {
 import { status } from "../../utils/constants"
 
 const filters = [
-  <TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
+  //<TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
   <ReferenceInput source="person_id" reference="people">
     <AutocompleteInput
       optionText={choice =>

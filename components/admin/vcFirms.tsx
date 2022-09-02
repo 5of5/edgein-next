@@ -20,7 +20,7 @@ import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import { validateName, validateSlug, validateUrl, status } from "../../utils/constants"
 
 const filters = [
-  <TextInput key="search" source="name,slug,status,overview,location,year_founded" label="Search in name,slug,status,overview,location,year" resettable alwaysOn />
+  <TextInput key="search" source="name" label="Search in name" resettable alwaysOn />
 ];
 
 export const VcFirmList = () => (
@@ -159,6 +159,7 @@ export const VcFirmEdit = () => {
           source="year_founded"
         />
          <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="tags"
         />
@@ -253,6 +254,7 @@ export const VcFirmCreate = () => {
           source="year_founded"
         />
          <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="tags"
         />
