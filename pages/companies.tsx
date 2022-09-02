@@ -56,7 +56,6 @@ const Companies: NextPage<Props> = ({
 
 	// Search Box
 	const [search, setSearch] = useState("");
-	const [savedEmptySearches, setSavedEmptySearches] = useState<string[]>([]);
 	const debouncedSearchTerm = useDebounce(search, 500);
 
 	const searchCompanies = (e: {
@@ -151,31 +150,6 @@ const Companies: NextPage<Props> = ({
 		// TODO: pass logged in user's id
 		current_user: user?.id ?? 0
 	});
-
-	const { mutate: insertAction } = useInsertActionMutation();
-
-	if (
-		!isLoading &&
-		debouncedSearchTerm !== "" &&
-		companiesData?.companies.length === 0 &&
-		!savedEmptySearches.includes(debouncedSearchTerm)
-	) {
-
-		insertAction({
-			action: "Empty Search",
-			page: location.pathname,
-			properties: {
-				search: debouncedSearchTerm,
-				layer: selectedLayer.value,
-				investor_amount: selectedAmountRaised.rangeStart,
-				total_employees: selectedTotalEmployees.rangeStart,
-			},
-			user: user?.email ?? "",
-		});
-		setSavedEmptySearches((prev) =>
-			prev.includes(debouncedSearchTerm) ? prev : [...prev, debouncedSearchTerm]
-		);
-	}
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
