@@ -21,10 +21,10 @@ export const ElemInvestors: FC<Props> = ({
   handleNavigation,
 }) => {
   return (
-    <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10">
+    <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10 ">
       <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Investors</h2>
 
-      <div className="mt-3 w-full rounded-lg border border-slate-200">
+      <div className="mt-3 w-full rounded-lg border border-slate-200 max-h-80 overflow-auto">
         <table className="w-full">
           <thead className="">
             <tr className="text-left text-sm border-b-slate-200">

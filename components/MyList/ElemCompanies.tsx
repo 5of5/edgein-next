@@ -41,7 +41,7 @@ export const ElemCompanies: FC<Props> = ({
         </div>
       </div>
 
-      <div className="mt-3 w-full rounded-lg border border-slate-200">
+      <div className="mt-3 w-full rounded-lg border border-slate-200 max-h-80 overflow-auto">
         <table className="w-full">
           <thead>
             <tr className="text-left text-sm border-b-slate-200">
