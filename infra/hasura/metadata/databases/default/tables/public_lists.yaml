@@ -11,3 +11,10 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: list_id
+computed_fields:
+  - name: total_no_of_companies
+    definition:
+      function:
+        schema: public
+        name: lists_total_no_of_companies
+    comment: Computed field to get total no. of companies in a list
