@@ -12,7 +12,7 @@ array_relationships:
         column_mapping:
           id: list_id
 computed_fields:
-  - name: total_no_of_companies
+  - name: total_no_of_resources
     definition:
       function:
         schema: public

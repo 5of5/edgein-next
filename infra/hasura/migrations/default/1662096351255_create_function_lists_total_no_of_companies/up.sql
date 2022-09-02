@@ -4,7 +4,7 @@ CREATE OR REPLACE FUNCTION public.lists_total_no_of_companies(list_row lists)
  STABLE
 AS $function$
   SELECT count(*)
-  FROM follows_companies
+  FROM follows
   WHERE
-    follows_companies.list_id = list_row.id
+    follows.list_id = list_row.id
 $function$;

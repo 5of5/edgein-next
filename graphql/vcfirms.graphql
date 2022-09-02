@@ -83,3 +83,16 @@ query GetVCFirmsPath {
 		slug
 	}
 }
+
+query GetVcFirmsByListId($list_id: Int = 0) {
+  follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
+    vc_firm {
+      id
+			name
+      num_of_investments
+      latest_investments
+      sentiment
+      logo
+    }
+  }
+}

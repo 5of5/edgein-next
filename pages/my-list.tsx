@@ -1,15 +1,106 @@
 import { ElemPhoto } from "@/components/ElemPhoto";
+import { IconCompanyList } from "@/components/reactions/IconCompanyList";
 import { IconCrap } from "@/components/reactions/IconCrap";
 import { IconHot } from "@/components/reactions/IconHot";
 import { IconLike } from "@/components/reactions/IconLike";
+import { Lists, useGetListsByUserQuery, useGetCompaniesByListIdQuery, useGetVcFirmsByListIdQuery } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
-import { runGraphQl } from "@/utils";
+import { getName } from "@/utils/reaction";
+import { find } from "lodash";
 import { NextPage } from "next";
+import { useEffect, useState } from "react";
 
 type Props = {}
 
-const MyList: NextPage<Props> = (props) => {
+const MyList: NextPage<Props> = ({ }) => {
   const { user } = useAuth();
+  const [userLists, setUserLists] = useState<Lists[]>();
+  const [selectedList, setSelectedList] = useState<number | null>(null);
+  const [selectedListName, setSelectedListName] = useState<null | string>('hot');
+  const [hotId, setHotId] = useState(0);
+  const [crapId, setCrapId] = useState(0);
+  const [likeId, setLikeId] = useState(0);
+  const [totalFunding, setTotalFuncding] = useState(0);
+  // @TODO: implement tags count on final structure for tags in admin
+  const [tagsCount, setTagsCount] = useState();
+
+  const {
+    data: lists,
+  } = useGetListsByUserQuery({
+    current_user: user?.id ?? 0,
+  })
+
+  const {
+    data: companies
+  } = useGetCompaniesByListIdQuery({
+    list_id: selectedList ?? 0
+  })
+
+  const {
+    data: vcfirms,
+  } = useGetVcFirmsByListIdQuery({
+    list_id: selectedList ?? 0
+  })
+
+  useEffect(() => {
+    if (companies) {
+      let funding = 0;
+      companies.follows_companies.forEach((company) => {
+        company.company?.investment_rounds.forEach((round) => { funding += round.amount })
+      })
+
+      setTotalFuncding(funding)
+    }
+  }, [companies]);
+
+  useEffect(() => {
+    if (lists) {
+      setUserLists(lists.lists as Lists[])
+      setHotId(() => find(lists.lists, (list) => getName(list as Lists) === 'hot')?.id ?? 0)
+      setLikeId(() => find(lists.lists, (list) => getName(list as Lists) === 'like')?.id ?? 0)
+      setCrapId(() => find(lists.lists, (list) => getName(list as Lists) === 'crap')?.id ?? 0)
+
+      if (selectedList === null) setSelectedList(find(lists.lists, (list) => getName(list as Lists) === 'hot')?.id || null)
+    }
+  }, [lists])
+
+  const getCountForList = (listName: string) => {
+    if (userLists) {
+      const list = find(userLists, (item) => getName(item) === listName)
+      return list?.total_no_of_resources ?? 0
+    }
+    return 0
+  }
+
+  const renderMyCustomList = () => {
+    return (
+      userLists?.filter((list => !['hot', 'crap', 'like'].includes(getName(list))))
+        .map(list => (
+          <li
+            key={list.id}
+            className={`py-1 text-slate-600 inline-flex items-center${getActiveClass(getName(list))}`}
+            role="button"
+            onClick={() => onSelect(list.id, getName(list))}
+          >
+            <IconCompanyList className="mr-1 w-7" /> {getName(list)} ({getCountForList(getName(list))})
+          </li>
+        ))
+    )
+  }
+
+  const onSelect = (listId: number, listName: string) => {
+    setSelectedList(listId)
+    setSelectedListName(listName)
+  }
+
+  const getActiveClass = (listName: string) => {
+    return selectedListName === listName ? '  bg-slate-200 rounded-xl -ml-2 pl-2' : ''
+  }
+
+  const getAlternateRowColor = (index: number) => {
+    if (index % 2 === 0) return ' bg-slate-50'
+    return ''
+  }
 
   return (
     <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -20,10 +111,26 @@ const MyList: NextPage<Props> = (props) => {
           <div>
             <h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
             <ul className="flex flex-col">
-              <li className="py-1 text-slate-600 inline-flex"><IconHot className="mr-1" /> Hot (1)</li>
-              <li className="py-1 text-slate-600 inline-flex"><IconLike className="mr-1" /> Like (10)</li>
-              <li className="py-1 text-slate-600 inline-flex"><IconCrap className="mr-1" /> Crap (4)</li>
-              <li className="py-1 text-slate-600 inline-flex"><IconCrap className="mr-1" /> Crap (4)</li>
+              <li
+                className={`py-2 text-slate-600 inline-flex items-center${getActiveClass('hot')}`}
+                role="button"
+                onClick={() => onSelect(hotId, 'hot')}>
+                <IconHot className="mr-1 w-7" /> Hot ({getCountForList('hot')})
+              </li>
+              <li
+                className={`py-2 text-slate-600 inline-flex items-center${getActiveClass('like')}`}
+                role="button"
+                onClick={() => onSelect(likeId, 'like')}>
+                <IconLike className="mr-1 w-7" /> Like ({getCountForList('like')})
+              </li>
+              <li
+                className={`py-2 text-slate-600 inline-flex items-center${getActiveClass('crap')}`}
+                role="button"
+                onClick={() => onSelect(crapId, 'crap')}>
+                <IconCrap className="mr-1 w-7" /> Crap ({getCountForList('crap')})
+              </li>
+
+              {renderMyCustomList()}
             </ul>
           </div>
 
@@ -31,11 +138,13 @@ const MyList: NextPage<Props> = (props) => {
         <div className="col-span-3">
 
           <div className="w-full">
-            <h1 className="flex font-bold text-xl"><IconHot className="mr-2 mb-10"/> Hot</h1>
+            <h1 className="flex font-bold text-xl capitalize">
+              <IconHot className="mr-2 mb-10" /> {selectedListName}
+            </h1>
           </div>
 
           <div className="rounded-lg p-3 bg-white col-span-3">
-            <h2 className="font-bold text-dark-500 text-xl">Hot: Companies</h2>
+            <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Companies</h2>
 
             <div className="w-full mt-1 flex justify-between">
               <div className="inline-flex items-center">
@@ -48,14 +157,14 @@ const MyList: NextPage<Props> = (props) => {
               </div>
 
               <div className="inline-flex items-center">
-                <span className="font-semibold text-sm mr-2">Total Funding: 4.8M</span>
+                <span className="font-semibold text-sm mr-2">Total Funding: {totalFunding}</span>
               </div>
             </div>
 
             <div className="mt-3 w-full">
-              <table className="w-full rounded border border-slate-100">
-                <thead className="">
-                  <tr className="text-left text-sm">
+              <table className="w-full rounded border border-slate-200">
+                <thead>
+                  <tr className="text-left text-sm border-b-slate-200">
                     <th className="px-1">Name</th>
                     <th className="px-1">Token/Value</th>
                     <th className="px-1">Team Size</th>
@@ -65,100 +174,45 @@ const MyList: NextPage<Props> = (props) => {
                 </thead>
 
                 <tbody>
-                  <tr className="text-left text-sm">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{ "id": "attAtWZ0GvZoH3Htr", "url": "https://dl.airtable.com/.attachments/7a766e52717adcc89b21cfde621ea132/abdfd0e7/SolriseFinance.jpg?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=af7a92ccf4154c59", "size": 4431, "type": "image/jpeg", "width": 200, "height": 200, "filename": "Solrise Finance.jpg", "thumbnails": { "full": { "url": "https://dl.airtable.com/.attachmentThumbnails/b74127d1260d940a4a8888ff0bc296de/08d24161?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=32e2c28bca27220e", "width": 3000, "height": 3000 }, "large": { "url": "https://dl.airtable.com/.attachmentThumbnails/94859f1f52eb3dc9bb537d82b3852419/d40a82c0?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=d96a486ded492ce5", "width": 200, "height": 200 }, "small": { "url": "https://dl.airtable.com/.attachmentThumbnails/dfa1bcf9842cefdae3d14bc01c58162e/d2c57666?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=2e1452e05d13f76d", "width": 36, "height": 36 } } }}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      Chia
-                    </td>
-                    <td className="px-1 py-2">XCH/$39.19</td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">San Francisco, CA, USA</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
+                  {
+                    companies?.follows_companies.map(({ company }, index) => (
+                      <tr key={company?.id} className={`text-left text-sm${getAlternateRowColor(index)}`}>
+                        <td className="px-1 inline-flex items-center py-2">
+                          <ElemPhoto
+                            photo={company?.logo}
+                            wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
+                            imgClass="object-fit max-w-full max-h-full"
+                            imgAlt={'chia'}
+                          />
+                          Chia
+                        </td>
+                        <td className="px-1 py-2">{company?.coin?.ticker ? company?.coin?.ticker : '-'}</td>
+                        <td className="px-1 py-2">{company?.teamMembers.length}</td>
+                        <td className="px-1 py-2">{company?.location}</td>
+                        <td className="px-1 py-2">
+                          <div>
+                            <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1" />{company?.sentiment.hot || 0}</span>
+                            <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1" />{company?.sentiment.like || 0}</span>
+                            <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1" />{company?.sentiment.crap || 0}</span>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  }
 
-                  <tr className="text-left text-sm bg-slate-50">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{"id":"attqlQW9sa7EHXA0F","url":"https://dl.airtable.com/.attachments/4c5dbf062c363e1963f91bcf0237f470/5c238f9c/0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=1ec1ef208dd22ddc","size":2572,"type":"image/jpeg","width":128,"height":128,"filename":"0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized","thumbnails":{"full":{"url":"https://dl.airtable.com/.attachmentThumbnails/380a0dbb32426fa1c4dfd594e215c73a/dba9fc7a?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=76de77a37734da7c","width":3000,"height":3000},"large":{"url":"https://dl.airtable.com/.attachmentThumbnails/10d7f0be666f8de9bcdddd2b9d05fc66/b0fdd585?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=56a8b542efc86201","width":128,"height":128},"small":{"url":"https://dl.airtable.com/.attachmentThumbnails/8a11fb7e4e2bca2ead2c79b69b02d5fa/9e676d41?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=fcc239f5fe6fb124","width":36,"height":36}}}}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      MetaSoccer
-                    </td>
-                    <td className="px-1 py-2">XCH/$39.19</td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">San Francisco, CA, USA</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr className="text-left text-sm">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{ "id": "attAtWZ0GvZoH3Htr", "url": "https://dl.airtable.com/.attachments/7a766e52717adcc89b21cfde621ea132/abdfd0e7/SolriseFinance.jpg?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=af7a92ccf4154c59", "size": 4431, "type": "image/jpeg", "width": 200, "height": 200, "filename": "Solrise Finance.jpg", "thumbnails": { "full": { "url": "https://dl.airtable.com/.attachmentThumbnails/b74127d1260d940a4a8888ff0bc296de/08d24161?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=32e2c28bca27220e", "width": 3000, "height": 3000 }, "large": { "url": "https://dl.airtable.com/.attachmentThumbnails/94859f1f52eb3dc9bb537d82b3852419/d40a82c0?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=d96a486ded492ce5", "width": 200, "height": 200 }, "small": { "url": "https://dl.airtable.com/.attachmentThumbnails/dfa1bcf9842cefdae3d14bc01c58162e/d2c57666?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=2e1452e05d13f76d", "width": 36, "height": 36 } } }}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      Chia
-                    </td>
-                    <td className="px-1 py-2">XCH/$39.19</td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">San Francisco, CA, USA</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr className="text-left text-sm bg-slate-50">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{"id":"attqlQW9sa7EHXA0F","url":"https://dl.airtable.com/.attachments/4c5dbf062c363e1963f91bcf0237f470/5c238f9c/0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=1ec1ef208dd22ddc","size":2572,"type":"image/jpeg","width":128,"height":128,"filename":"0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized","thumbnails":{"full":{"url":"https://dl.airtable.com/.attachmentThumbnails/380a0dbb32426fa1c4dfd594e215c73a/dba9fc7a?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=76de77a37734da7c","width":3000,"height":3000},"large":{"url":"https://dl.airtable.com/.attachmentThumbnails/10d7f0be666f8de9bcdddd2b9d05fc66/b0fdd585?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=56a8b542efc86201","width":128,"height":128},"small":{"url":"https://dl.airtable.com/.attachmentThumbnails/8a11fb7e4e2bca2ead2c79b69b02d5fa/9e676d41?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=fcc239f5fe6fb124","width":36,"height":36}}}}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      MetaSoccer
-                    </td>
-                    <td className="px-1 py-2">XCH/$39.19</td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">San Francisco, CA, USA</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
+                  {
+                    (!companies?.follows_companies || companies?.follows_companies.length === 0) &&
+                    <tr>
+                      <td colSpan={5} className="text-center">No Companies</td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </div>
           </div>
 
           <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10">
-            <h2 className="font-bold text-dark-500 text-xl">Hot: Investors</h2>
+            <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Investors</h2>
 
             <div className="mt-3 w-full">
               <table className="w-full rounded border border-slate-100">
@@ -172,89 +226,37 @@ const MyList: NextPage<Props> = (props) => {
                 </thead>
 
                 <tbody>
-                  <tr className="text-left text-sm">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{ "id": "attAtWZ0GvZoH3Htr", "url": "https://dl.airtable.com/.attachments/7a766e52717adcc89b21cfde621ea132/abdfd0e7/SolriseFinance.jpg?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=af7a92ccf4154c59", "size": 4431, "type": "image/jpeg", "width": 200, "height": 200, "filename": "Solrise Finance.jpg", "thumbnails": { "full": { "url": "https://dl.airtable.com/.attachmentThumbnails/b74127d1260d940a4a8888ff0bc296de/08d24161?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=32e2c28bca27220e", "width": 3000, "height": 3000 }, "large": { "url": "https://dl.airtable.com/.attachmentThumbnails/94859f1f52eb3dc9bb537d82b3852419/d40a82c0?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=d96a486ded492ce5", "width": 200, "height": 200 }, "small": { "url": "https://dl.airtable.com/.attachmentThumbnails/dfa1bcf9842cefdae3d14bc01c58162e/d2c57666?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=2e1452e05d13f76d", "width": 36, "height": 36 } } }}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      Chia
-                    </td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">May 12, 2022</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
+                  {
+                    vcfirms?.follows_vc_firms.map(({ vc_firm }) => (
+                      <tr key={vc_firm?.id} className="text-left text-sm">
+                        <td className="px-1 inline-flex items-center py-2">
+                          <ElemPhoto
+                            photo={vc_firm?.logo}
+                            wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
+                            imgClass="object-fit max-w-full max-h-full"
+                            imgAlt={'chia'}
+                          />
+                          {vc_firm?.name}
+                        </td>
+                        <td className="px-1 py-2">{vc_firm?.num_of_investments}</td>
+                        <td className="px-1 py-2">May 12, 2022 {vc_firm?.latest_investments}</td>
+                        <td className="px-1 py-2">
+                          <div>
+                            <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1" />{vc_firm?.sentiment.hot || 0}</span>
+                            <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1" />{vc_firm?.sentiment.like || 0}</span>
+                            <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1" />{vc_firm?.sentiment.crap || 0}</span>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  }
 
-                  <tr className="text-left text-sm bg-slate-50">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{"id":"attqlQW9sa7EHXA0F","url":"https://dl.airtable.com/.attachments/4c5dbf062c363e1963f91bcf0237f470/5c238f9c/0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=1ec1ef208dd22ddc","size":2572,"type":"image/jpeg","width":128,"height":128,"filename":"0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized","thumbnails":{"full":{"url":"https://dl.airtable.com/.attachmentThumbnails/380a0dbb32426fa1c4dfd594e215c73a/dba9fc7a?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=76de77a37734da7c","width":3000,"height":3000},"large":{"url":"https://dl.airtable.com/.attachmentThumbnails/10d7f0be666f8de9bcdddd2b9d05fc66/b0fdd585?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=56a8b542efc86201","width":128,"height":128},"small":{"url":"https://dl.airtable.com/.attachmentThumbnails/8a11fb7e4e2bca2ead2c79b69b02d5fa/9e676d41?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=fcc239f5fe6fb124","width":36,"height":36}}}}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      MetaSoccer
-                    </td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">May 12, 2022</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr className="text-left text-sm">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{ "id": "attAtWZ0GvZoH3Htr", "url": "https://dl.airtable.com/.attachments/7a766e52717adcc89b21cfde621ea132/abdfd0e7/SolriseFinance.jpg?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=af7a92ccf4154c59", "size": 4431, "type": "image/jpeg", "width": 200, "height": 200, "filename": "Solrise Finance.jpg", "thumbnails": { "full": { "url": "https://dl.airtable.com/.attachmentThumbnails/b74127d1260d940a4a8888ff0bc296de/08d24161?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=32e2c28bca27220e", "width": 3000, "height": 3000 }, "large": { "url": "https://dl.airtable.com/.attachmentThumbnails/94859f1f52eb3dc9bb537d82b3852419/d40a82c0?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=d96a486ded492ce5", "width": 200, "height": 200 }, "small": { "url": "https://dl.airtable.com/.attachmentThumbnails/dfa1bcf9842cefdae3d14bc01c58162e/d2c57666?ts=1658363798&userId=usr7CWMWLCRhTmk83&cs=2e1452e05d13f76d", "width": 36, "height": 36 } } }}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      Chia
-                    </td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">May 12, 2022</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
-
-                  <tr className="text-left text-sm bg-slate-50">
-                    <td className="px-1 inline-flex items-center py-2">
-                      <ElemPhoto
-                        photo={{"id":"attqlQW9sa7EHXA0F","url":"https://dl.airtable.com/.attachments/4c5dbf062c363e1963f91bcf0237f470/5c238f9c/0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=1ec1ef208dd22ddc","size":2572,"type":"image/jpeg","width":128,"height":128,"filename":"0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized","thumbnails":{"full":{"url":"https://dl.airtable.com/.attachmentThumbnails/380a0dbb32426fa1c4dfd594e215c73a/dba9fc7a?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=76de77a37734da7c","width":3000,"height":3000},"large":{"url":"https://dl.airtable.com/.attachmentThumbnails/10d7f0be666f8de9bcdddd2b9d05fc66/b0fdd585?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=56a8b542efc86201","width":128,"height":128},"small":{"url":"https://dl.airtable.com/.attachmentThumbnails/8a11fb7e4e2bca2ead2c79b69b02d5fa/9e676d41?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=fcc239f5fe6fb124","width":36,"height":36}}}}
-                        wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white rounded-lg shadow-md mr-2"
-                        imgClass="object-fit max-w-full max-h-full"
-                        imgAlt={'chia'}
-                      />
-                      MetaSoccer
-                    </td>
-                    <td className="px-1 py-2">69</td>
-                    <td className="px-1 py-2">May 12, 2022</td>
-                    <td className="px-1 py-2">
-                      <div>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconHot className="mr-1"/>2</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex mr-2"><IconLike className="mr-1"/>4</span>
-                        <span className="text-slate-600 font-bold items-center inline-flex"><IconCrap className="mr-1"/>5</span>
-                      </div>
-                    </td>
-                  </tr>
+                  {
+                    (!vcfirms?.follows_vc_firms || vcfirms?.follows_vc_firms.length === 0) &&
+                    <tr>
+                      <td colSpan={4} className="text-center">No Investors</td>
+                    </tr>
+                  }
                 </tbody>
               </table>
             </div>
@@ -262,7 +264,7 @@ const MyList: NextPage<Props> = (props) => {
 
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
