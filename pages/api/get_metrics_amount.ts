@@ -1,5 +1,4 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import axios, {AxiosError} from "axios";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") res.status(405).json({ message: "Method not allowed" });
@@ -9,28 +8,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let currentPrice = 0;
   let circulatingSupply = 0;
+  const priceHeader = new Headers();
+  priceHeader.append('Accept', 'application/json');
+  priceHeader.append('x-api-key', process.env.AMBERDATA_API_KEY!);
   try {
-    // fetch the data current price
-    const currentPriceData = await axios({
+    const currentPriceFetchResponse = await fetch(`https://web3api.io/api/v2/tokens/metrics/${ticker}/latest`, {
       method: 'GET',
-      url: `https://web3api.io/api/v2/tokens/metrics/${ticker}/latest`,
-      headers: { Accept: 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
-    })
-    currentPrice = +currentPriceData.data.payload.priceUSD;
-  } catch(err: any) {
-    return res.status(err.response.status).send(err.response.data.message)
+      headers: priceHeader,
+    });
+    if (!currentPriceFetchResponse.ok) {
+      return res.status(currentPriceFetchResponse.status).send(currentPriceFetchResponse.statusText)
+    }
+    const currentPriceData = JSON.parse(await currentPriceFetchResponse.text());
+    currentPrice = +currentPriceData.payload.priceUSD;
+  } catch (ex: any) {
+    return res.status(404).send(ex.message)
   }
 
   try {
-    // fetch the data for Circulating Supply
-    const circulatingSupplyData = await axios({
+    const circulatingSupplyFetchResponse = await fetch(`https://web3api.io/api/v2/market/metrics/${ticker}/supply/latest`, {
       method: 'GET',
-      url: `https://web3api.io/api/v2/market/metrics/${ticker}/supply/latest`,
-      headers: { 'Accept': 'application/json', 'x-api-key': process.env.AMBERDATA_API_KEY!, }
-    })
-    circulatingSupply = circulatingSupplyData.data.payload.circulatingSupply;
-  } catch(err: any) {
-    return res.status(err.response.status).send(err.response.data.message)
+      headers: priceHeader,
+    });
+    if (!circulatingSupplyFetchResponse.ok) {
+      return res.status(circulatingSupplyFetchResponse.status).send(circulatingSupplyFetchResponse.statusText)
+    }
+    const circulatingSupplyData = JSON.parse(await circulatingSupplyFetchResponse.text());
+    circulatingSupply = +circulatingSupplyData.payload.circulatingSupply;
+  } catch (ex: any) {
+    return res.status(404).send(ex.message)
   }
 
   // get the Market Cap value (Market Cap = Current Price x Circulating Supply)
