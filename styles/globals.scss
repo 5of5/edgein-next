@@ -88,6 +88,12 @@ body {
 body {
   @apply bg-gray-50 text-dark-500 overscroll-y-none;
 }
+input[type="checkbox"]::before {
+  /* ...existing styles */
+
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
 
 /***************** 
 Mobile hamburger button

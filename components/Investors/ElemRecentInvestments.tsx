@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { PlaceholderInvestorRecentInvestmentsCard } from "@/components/Placeholders";
+import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -8,15 +8,19 @@ import {
 	Vc_Firms_Bool_Exp,
 	useGetVcFirmsRecentInvestmentsQuery,
 	Vc_Firms,
+	Lists,
+	Follows_Vc_Firms,
 } from "@/graphql/types";
-import { ElemReactions } from "../ElemReactions";
-import { reactOnSentiment } from "@/utils/reaction";
+import { ElemReactions } from "@/components/ElemReactions";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
+import { remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
-		[P in keyof T]?: DeepPartial<T[P]>;
-	}
+			[P in keyof T]?: DeepPartial<T[P]>;
+	  }
 	: T;
 
 type Props = {
@@ -30,7 +34,6 @@ export const ElemRecentInvestments: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
-
 	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
@@ -47,36 +50,56 @@ export const ElemRecentInvestments: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
-		current_user: user?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
 
 	useEffect(() => {
-		setVcFirms(vcFirmsData?.vc_firms)
+		setVcFirms(vcFirmsData?.vc_firms);
 	}, [vcFirmsData?.vc_firms]);
 
-	const handleReactionClick = (vcFirm: Vc_Firms) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.stopPropagation();
-		event.preventDefault();
+	const handleReactionClick =
+		(vcFirm: Vc_Firms) =>
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			event.stopPropagation();
+			event.preventDefault();
 
-		const newSentiment = await reactOnSentiment({
-			vcfirm: vcFirm.id,
-			sentiment,
-			pathname: `/investors/${vcFirm.slug}`
-		})
-
-		setVcFirms(prev => {
-			return [...(prev || [])].map((item: any) => {
-				if (item.id === vcFirm.id) return { ...item, sentiment: newSentiment }
-				return item;
+			const newSentiment = await reactOnSentiment({
+				vcfirm: vcFirm.id,
+				sentiment,
+				pathname: `/investors/${vcFirm.slug}`,
 			});
-		});
-	}
+
+			setVcFirms((prev) => {
+				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+					if (item.id === vcFirm.id) {
+						const newFollows = getNewFollows(
+							sentiment,
+							"vcfirm"
+						) as Follows_Vc_Firms;
+
+						if (!alreadyReacted) item.follows.push(newFollows);
+						else
+							remove(item.follows, (list) => {
+								return getName(list.list! as Lists) === sentiment;
+							});
+
+						return { ...item, sentiment: newSentiment };
+					}
+					return item;
+				});
+			});
+		};
 
 	return (
-		<div className={`${className}`}>
-			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
+		<div className={`${className} bg-white rounded-lg p-5`}>
+			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			{error ? (
 				<h4>Error loading investors</h4>
 			) : isLoading ? (
@@ -87,7 +110,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 								key={i}
 								className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
 							>
-								<PlaceholderInvestorRecentInvestmentsCard />
+								<PlaceholderInvestorCard />
 							</div>
 						))}
 					</div>
@@ -103,7 +126,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 								>
 									<a
 										href={`/investors/${investor.slug}`}
-										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
+										className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
 									>
 										<div className="flex">
 											<ElemPhoto
@@ -131,13 +154,14 @@ export const ElemRecentInvestments: FC<Props> = ({
 											)}
 										</div>
 
-										<div
-											className={`flex w-full mt-6 items-center justify-start`}
-										>
+										<div className="flex items-center justify-between mt-4">
 											<ElemReactions
 												data={investor}
 												handleReactionClick={handleReactionClick(investor)}
-												blackText
+											/>
+											<ElemSaveToList
+												follows={investor?.follows}
+												onCreateNew={handleReactionClick(investor)}
 											/>
 										</div>
 									</a>
