@@ -162,10 +162,12 @@ const Investors: NextPage<Props> = ({
 					</ElemButton> */}
 			</ElemHeading>
 
-			<div className="max-w-7xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+			<div className="relative pb-20 z-10 rounded-t-xl lg:rounded-t-2xl">
+          <div className="max-w-7xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
 				{vcFirms && <ElemRecentInvestments heading="Recent Investor Updates" />}
 			</div>
-			<div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:min-h-[40vh] bg-white rounded-lg mt-6">
+			<div className="max-w-7xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+            <div className="max-w-7xl mx-auto bg-white mt-4 rounded-lg mx-auto sm:px-6 lg:py-10 lg:min-h-[40vh] shadow-sm hover:shadow">
 				<h2 className="text-2xl font-bold">All Investors</h2>
 				<ElemFiltersWrap className="pt-2 filters-wrap">
 					<InputSearch
@@ -221,7 +223,7 @@ const Investors: NextPage<Props> = ({
 					) : (
 						vcFirms?.map((vcfirm) => (
 							<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
-								<a className="flex flex-col mx-auto w-full p-5 cursor-pointer bg-white rounded-lg transition-all hover:scale-102 hover:shadow md:h-full">
+								<a className="flex flex-col mx-auto w-full p-5 cursor-pointer bg-white rounded-lg transition-all hover:scale-102  border border-black/10 hover:shadow md:h-full">
 									<div className="flex shrink-0 mb-4 w-full">
 										<ElemPhoto
 											photo={vcfirm.logo}
@@ -276,6 +278,8 @@ const Investors: NextPage<Props> = ({
 					onClickPrev={() => setPage((prev) => prev - 1)}
 					onClickNext={() => setPage((prev) => prev + 1)}
 				/>
+			</div>
+			</div>
 			</div>
 		</div>
 	);
