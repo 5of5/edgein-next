@@ -5,54 +5,57 @@ import { ElemHeading } from "../components/ElemHeading";
 import { Companies_Bool_Exp, useGetCompaniesQuery } from "../graphql/types";
 import { useTable } from 'react-table';
 import { ElemButton } from "../components/ElemButton";
-  
+import { useAuth } from "@/hooks/useAuth";
+
 type Props = {
 };
 
 const CompaniesTable: NextPage<Props> = () => {
-  const [page, setPage] = useState<number>(0)
-  const limit = 50
-  const offset = limit * page
+	const { user } = useAuth()
+	const [page, setPage] = useState<number>(0)
+	const limit = 50
+	const offset = limit * page
 
-  const filters = {}
+	const filters = {}
 
-  const {
-    data: companiesData,
-    error,
-    isLoading
-  } = useGetCompaniesQuery({
-    offset,
-    limit,
+	const {
+		data: companiesData,
+		error,
+		isLoading
+	} = useGetCompaniesQuery({
+		offset,
+		limit,
 		where: {} as Companies_Bool_Exp,
-  }) 
-  
-   const columns = React.useMemo(
-       () => [
-         {
-           Header: 'Name',
-           accessor: 'name' as const,
-         },
-         {
-           Header: 'Layer',
-           accessor: 'layer' as const,
-         },
-       ],
-       []
-   )
-  
-  const companies = companiesData?.companies || []
+		current_user: user?.id ?? 0
+	})
 
-   const {
-     getTableProps,
-     getTableBodyProps,
-     headerGroups,
-     rows,
-     prepareRow,
-   } = useTable({ columns, data: companies })
-  
-  if (isLoading) {
-    return <h1>Loading</h1>
-  }
+	const columns = React.useMemo(
+		() => [
+			{
+				Header: 'Name',
+				accessor: 'name' as const,
+			},
+			{
+				Header: 'Layer',
+				accessor: 'layer' as const,
+			},
+		],
+		[]
+	)
+
+	const companies = companiesData?.companies || []
+
+	const {
+		getTableProps,
+		getTableBodyProps,
+		headerGroups,
+		rows,
+		prepareRow,
+	} = useTable({ columns, data: companies })
+
+	if (isLoading) {
+		return <h1>Loading</h1>
+	}
 
 	return (
 		<div>
@@ -69,14 +72,14 @@ const CompaniesTable: NextPage<Props> = () => {
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				></ElemHeading>
 
-				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-						<div className="w-full flex flex-col py-5 gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3"></div>
+				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
+					<div className="max-w-6xl px-4 py-4 mx-auto sm:px-6 lg:px-8 lg:py-10">
+						<div className="flex flex-col w-full gap-5 py-5 sm:grid sm:grid-cols-2 md:grid-cols-3"></div>
 						<div>
 							<table
 								{...getTableProps()}
 								//style={{ border: "solid 1px black" }}
-								className="table table-auto w-full"
+								className="table w-full table-auto"
 							>
 								<thead>
 									{headerGroups.map((headerGroup) => {
@@ -95,7 +98,7 @@ const CompaniesTable: NextPage<Props> = () => {
 														<th
 															key={key}
 															{...restColumnProps}
-															className="px-4 py-2 whitespace-nowrap font-bold text-left bg-white border border-dark-100 first:rounded-tl-lg last:rounded-tr-lg "
+															className="px-4 py-2 font-bold text-left bg-white border whitespace-nowrap border-dark-100 first:rounded-tl-lg last:rounded-tr-lg "
 														>
 															{column.render("Header")}
 														</th>
@@ -107,7 +110,7 @@ const CompaniesTable: NextPage<Props> = () => {
 								</thead>
 								<tbody
 									{...getTableBodyProps()}
-									className="bg-white divide-y divide-dark-100 flex-1 md:flex-none mb-96"
+									className="flex-1 bg-white divide-y divide-dark-100 md:flex-none mb-96"
 								>
 									{rows.map((row) => {
 										prepareRow(row);
@@ -116,7 +119,7 @@ const CompaniesTable: NextPage<Props> = () => {
 											<tr
 												key={key}
 												{...restRowProps}
-												className="flex flex-col flex-nowrap overflow-hidden md:table-row even:bg-slate-50"
+												className="flex flex-col overflow-hidden flex-nowrap md:table-row even:bg-slate-50"
 											>
 												{row.cells.map((cell) => {
 													const { key, ...restCellProps } = cell.getCellProps();
@@ -124,7 +127,7 @@ const CompaniesTable: NextPage<Props> = () => {
 														<td
 															key={key}
 															{...restCellProps}
-															className="align-middle px-4 pb-4 whitespace-nowrap border border-dark-100 md:p-4"
+															className="px-4 pb-4 align-middle border whitespace-nowrap border-dark-100 md:p-4"
 														>
 															{cell.render("Cell")}
 														</td>
@@ -135,8 +138,8 @@ const CompaniesTable: NextPage<Props> = () => {
 									})}
 								</tbody>
 							</table>
-              <ElemButton disabled={page === 0} onClick={() => { setPage((prev) => prev - 1)}}>Prev</ElemButton>
-              <ElemButton onClick={() => { setPage((prev) => prev + 1)}}>Next</ElemButton>
+							<ElemButton disabled={page === 0} onClick={() => { setPage((prev) => prev - 1) }}>Prev</ElemButton>
+							<ElemButton onClick={() => { setPage((prev) => prev + 1) }}>Next</ElemButton>
 						</div>
 					</div>
 				</div>

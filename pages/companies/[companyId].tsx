@@ -1,11 +1,10 @@
 import type { NextPage, GetStaticProps } from "next";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
-import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
@@ -13,11 +12,19 @@ import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
 import {
 	Companies,
+	Follows_Companies,
+	Follows_Companies_Aggregate,
 	GetCompaniesPathsQuery,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
+	Lists,
+	useGetCompanyQuery,
 } from "../../graphql/types";
+import { ElemReactions } from "@/components/ElemReactions";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { useAuth } from "@/hooks/useAuth";
+import { remove } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -25,6 +32,7 @@ type Props = {
 };
 
 const Company: NextPage<Props> = (props) => {
+	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
 
@@ -32,26 +40,46 @@ const Company: NextPage<Props> = (props) => {
 
 	const [company, setCompany] = useState(props.company);
 
+	const {
+		data: conpanyData,
+		error,
+		isLoading,
+	} = useGetCompanyQuery({
+		slug: companyId as string,
+		current_user: user?.id ?? 0,
+	});
+
+	useEffect(() => {
+		if (conpanyData) setCompany(conpanyData?.companies[0] as Companies);
+	}, [conpanyData]);
+
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async () => {
-		const resp = await fetch("/api/reaction/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ 
+	const handleReactionClick =
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			const newSentiment: any = await reactOnSentiment({
 				company: company.id,
 				sentiment,
-				pathname: location.pathname 
-				}),
-		});
-		const newSentiment = await resp.json()
-		setCompany({...company, sentiment: newSentiment})
-	}
+				pathname: location.pathname,
+			});
+
+			setCompany((prev) => {
+				const newFollows = getNewFollows(sentiment) as Follows_Companies;
+				if (!alreadyReacted) prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
+				return { ...prev, sentiment: newSentiment };
+			});
+		};
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -65,13 +93,13 @@ const Company: NextPage<Props> = (props) => {
 	}
 
 	return (
-		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
+		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
 				</ElemButton>
 			</div>
-			<div className="flex flex-col md:grid md:grid-cols-11 gap-4 mt-6">
+			<div className="flex flex-col gap-4 mt-6 md:grid md:grid-cols-11">
 				<div className="col-span-3">
 					<ElemPhoto
 						photo={company.logo}
@@ -81,10 +109,10 @@ const Company: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="w-full col-span-8">
-					<div className="flex flex-col md:grid grid-cols-8 gap-4">
+					<div className="flex flex-col grid-cols-8 gap-4 md:grid">
 						<div className="col-span-5 mt-16 md:mt-0">
 							<div className="flex shrink-0">
-								<h1 className="inline-block self-end font-bold text-4xl md:text-5xl">
+								<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 									{company.name}
 								</h1>
 								{company.coin && (
@@ -96,7 +124,6 @@ const Company: NextPage<Props> = (props) => {
 										{company.coin.ticker}
 									</div>
 								)}
-								<ElemButton onClick={handleReactionClick('rocket')}>Rocket {company.sentiment?.rocket || 0}</ElemButton>
 							</div>
 
 							{company.overview && (
@@ -104,17 +131,17 @@ const Company: NextPage<Props> = (props) => {
 							)}
 						</div>
 
-						{/* <section className="col-span-3 flex flex-col mt-16 md:mt-0">
+						{/* <section className="flex flex-col col-span-3 mt-16 md:mt-0">
 							<h2 className="text-2xl font-bold">Token Info</h2>
-							<div className="flex-col justify-center flex space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10">
+							<div className="flex flex-col justify-center p-3 mt-2 space-y-3 bg-white border rounded-lg border-dark-500/10">
 								<div className="flex items-center space-x-2">
-									<div className="text-xs font-semibold uppercase tracking-wide">
+									<div className="text-xs font-semibold tracking-wide uppercase">
 										Price (USD):
 									</div>
-									<div className=" text-red-500">$40.35</div>
+									<div className="text-red-500 ">$40.35</div>
 								</div>
 								<div className="flex items-center space-x-2">
-									<div className="text-xs font-semibold uppercase tracking-wide">
+									<div className="text-xs font-semibold tracking-wide uppercase">
 										Market Cap:
 									</div>
 									<div className="">$168.1M</div>
@@ -122,20 +149,32 @@ const Company: NextPage<Props> = (props) => {
 							</div>
 						</section> */}
 					</div>
+					{(company.market_verified ||
+						company.github ||
+						company.company_linkedin ||
+						company.velocity_linkedin ||
+						company.velocity_token) && (
+						<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+							<ElemCredibility
+								className="col-span-5 mt-16 md:mt-0"
+								heading="Credibility"
+								marketVerified={company.market_verified}
+								githubVerified={company.github}
+								linkedInVerified={company.company_linkedin}
+							/>
+							<ElemVelocity
+								className="flex flex-col col-span-3 mt-16 md:mt-0"
+								heading="Velocity"
+								employeeListings={company.velocity_linkedin}
+								tokenExchangeValue={company.velocity_token}
+							/>
+						</div>
+					)}
 
-					<div className="flex flex-col md:grid grid-cols-8 gap-4 mt-6">
-						<ElemCredibility
-							className="col-span-5 mt-16 md:mt-0"
-							heading="Credibility"
-							marketVerified={company.market_verified}
-							githubVerified={company.github}
-							linkedInVerified={company.company_linkedin}
-						/>
-						<ElemVelocity
-							className="col-span-3 flex flex-col mt-16 md:mt-0"
-							heading="Velocity"
-							employeeListings={company.velocity_linkedin}
-							tokenExchangeValue={company.velocity_token}
+					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+						<ElemReactions
+							data={company}
+							handleReactionClick={handleReactionClick}
 						/>
 					</div>
 				</div>
@@ -178,7 +217,7 @@ const Company: NextPage<Props> = (props) => {
 
 export async function getStaticPaths() {
 	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
-		`{ companies(where: {slug: {_neq: ""}}) { slug }}`
+		`{ companies(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { slug }}`
 	);
 
 	return {
@@ -192,7 +231,7 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId }
+		{ slug: context.params?.companyId, current_user: 0 }
 	);
 
 	if (!companies?.companies[0]) {

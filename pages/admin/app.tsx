@@ -15,10 +15,11 @@ import { VcFirmCreate, VcFirmEdit, VcFirmList } from '../../components/admin/vcF
 import { BlockchainsList, BlockchainsEdit, BlockchainsCreate } from '../../components/admin/blockchains';
 import { CoinsList, CoinsEdit, CoinsCreate } from '../../components/admin/coins';
 import { ActionsList } from '../../components/admin/actions';
+import { useAuth } from "../../hooks/useAuth";
 
 const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(null);
-
+  const { user, error, loading } = useAuth();
   useEffect(() => {
     const buildDataProvider = async () => {
       const myClientWithAuth = new ApolloClient({
@@ -91,10 +92,10 @@ const AdminApp = () => {
         edit={InvestorsEdit}
         create={InvestorCreate}
       />
-      <Resource
+      {/* <Resource
         name="actions"
         list={ActionsList}
-      />
+      /> */}
     </Admin>
   );
 };

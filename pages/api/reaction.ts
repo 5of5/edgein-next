@@ -1,5 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { increaseResourceSentiment, upsertList } from '@/utils/lists'
+import { deleteIfExists, updateResourceSentimentCount, upsertFollow, upsertList } from '@/utils/lists'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies)
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end()
-  
+
   const resourceType = companyId ? 'companies' : vcFirmId ? 'vc_firms' : ''
   const resourceId = resourceType === 'companies' ? companyId : vcFirmId
 
@@ -28,10 +28,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const listname = `sentiment-${user.id}-${sentimentType}`
   // upsertList
   const list = await upsertList(listname, user, token)
-  // insert follow
-  const follow = await upsertFollow()
 
-  const { sentiment, revalidatePath } = await increaseResourceSentiment(resourceType, resourceId, token, sentimentType, Boolean(follow))
+  // check if user already follows
+  const existsFollows = await deleteIfExists(list, resourceId, resourceType, user, token)
+
+  // insert follow only if the follows don't exists
+  const follow = !existsFollows && await upsertFollow(list, resourceId, resourceType, user, token)
+
+  const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), Boolean(existsFollows))
   if (revalidatePath) {
     await res.unstable_revalidate(revalidatePath)
   }
@@ -53,20 +57,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         page: pathname,
         properties: {
           listId: list.id,
-          resourceId,
-          resourceType,
           sentiment: sentimentType,
         },
-        user: user.email,
+        resourceId,
+        resourceType,
+        user: user.id,
       },
     },
   });
 
-  res.send({...sentiment})
+  res.send({ ...sentiment })
 }
 
 export default handler
-
-function upsertFollow() {
-  throw new Error('Function not implemented.')
-}
