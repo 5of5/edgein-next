@@ -12,6 +12,7 @@ import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "../../components/ElemTabBar";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 import {
 	Companies,
 	Follows_Companies,
@@ -24,13 +25,14 @@ import {
 	useGetCompanyQuery,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
 import { useRef } from "react";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { companyLayerChoices } from '@/utils/constants';
 import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
+import { remove } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -103,7 +105,7 @@ const Company: NextPage<Props> = (props) => {
 				pathname: location.pathname,
 			});
 
-			setCompany((prev) => {
+			setCompany((prev: Companies) => {
 				const newFollows = getNewFollows(sentiment) as Follows_Companies;
 				if (!alreadyReacted) prev.follows.push(newFollows);
 				else
@@ -177,12 +179,15 @@ const Company: NextPage<Props> = (props) => {
 								<p className="mt-2 line-clamp-3 text-base text-slate-600">{company.overview}</p>
 							)}
 
-							<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+							<div className="flex items-center mt-4 gap-x-5">
 								<ElemReactions
 									data={company}
 									handleReactionClick={handleReactionClick}
-									blackText
-									roundedFull
+									// roundedFull
+								/>
+								<ElemSaveToList
+									follows={company?.follows}
+									onCreateNew={handleReactionClick}
 								/>
 							</div>
 						</div>
