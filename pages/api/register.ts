@@ -1,4 +1,3 @@
-import axios from "axios";
 import { User } from '@/models/User'
 import { query, mutate } from '@/graphql/hasuraAdmin'
 import type { NextApiRequest, NextApiResponse } from 'next'
@@ -17,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).send(`Invalid Email`)
   }
 
-  var data = JSON.stringify({
+  const data = JSON.stringify({
     client_id: process.env.AUTH0_CLIENT_ID,
     email,
     password: req.body.password,
@@ -27,20 +26,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   let result;
-    try {
-      result = await axios({
-        method: 'post',
-        url: `${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/signup`,
-        headers: {  'Content-Type': 'application/json' },
-        data
-      });
-      // upsert user info
-      await upsertUser(result.data);
-    } catch (ex) {
-      return res.status(ex.response.status).send(ex.response.data.description)
-    }
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/json');
 
-  res.send({ success: true, result: result.data });
+  try {
+    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/signup`, {
+      method: 'POST',
+      headers: myHeaders,
+      body: data,
+      redirect: 'follow'
+    });
+    if (!fetchRequest.ok) {
+      return res.status(fetchRequest.status).send(fetchRequest.statusText)
+    }
+    result = JSON.parse(await fetchRequest.text());
+    // upsert user info
+    await upsertUser(result);
+  } catch (ex) {
+    return res.status(404).send(ex.message)
+  }
+
+  res.send({ success: true, result });
 }
 
 // queries local user using graphql endpoint
@@ -68,7 +74,6 @@ const queryForAllowedEmailCheck = async (email: string) => {
 // upsert user to local db using graphql
 const upsertUser = async (auth0Data: any) => {
   // prepare gql query
-  // TODO: in conflict constraint
   const usertQuery = `
     mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String) {
       insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {

@@ -1,5 +1,4 @@
 import qs from "qs";
-import axios from "axios";
 import { SignJWT } from 'jose'
 import { nanoid } from 'nanoid'
 import { User } from '@/models/User'
@@ -36,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!emailExist) { return res.status(404).send({ nextStep: 'SIGNUP' }) }
 
   // send data to auth0 to make user login
-  var data = qs.stringify({
+  const data = qs.stringify({
     grant_type: 'password',
     username: email,
     scope: 'offline_access',
@@ -44,30 +43,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     client_id: process.env.AUTH0_CLIENT_ID,
     client_secret: process.env.AUTH0_CLIENT_SECRET
   });
+
+  const myHeaders = new Headers();
+  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
   
   try {
-    const result = await axios({
-      method: 'post',
-      url: `${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      data
-    })
-    if (!result.data) {
-      return res.status(404).send(`Invalid Request`)
+    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+      method: 'POST',
+      headers: myHeaders,
+      body: data,
+      redirect: 'follow'
+    });
+    if (!fetchRequest.ok) {
+      return res.status(fetchRequest.status).send(fetchRequest.statusText)
     }
+    const tokenResponse = JSON.parse(await fetchRequest.text());
+
+    // get user info
+    myHeaders.append('Authorization', `Bearer ${tokenResponse.access_token}`);
+    const userInfoFetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/userinfo`, {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    });
+    if (!userInfoFetchRequest.ok) {
+      return res.status(userInfoFetchRequest.status).send(userInfoFetchRequest.statusText)
+    }
+    const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
   
-    // get the user info from auth0
-    const userInfo = await axios({
-      method: 'get',
-      url: `${process.env.AUTH0_ISSUER_BASE_URL}/userinfo`,
-      headers: { 
-        'Authorization': `Bearer ${result.data.access_token}`, 
-      }
-    })
-  
-    if (userInfo.data && userInfo.data.email) {
+    if (userInfoInJson && userInfoInJson.email) {
       // get the user info from the user table
-      const { id, email, role, external_id } = await queryForUserInfo(userInfo.data.email);
+      const { id, email, role, external_id } = await queryForUserInfo(userInfoInJson.email);
   
         // Author a couple of cookies to persist a user's session
       const token = await new SignJWT({ user: JSON.stringify({id, email, role, publicAddress: external_id}), ...hasuraClaims })
@@ -76,11 +82,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .setIssuedAt()
       .setExpirationTime('90d')
       .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
-  
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex) {
-    return res.status(ex.response.status).send(ex.response.data.error_description)
+    return res.status(404).send(ex.message)
   }
 
   res.send({ success: true });
