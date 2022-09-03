@@ -18,7 +18,7 @@ import {
 
 const filters = [
 	<TextInput key="search" source="name,ticker" label="Search Name, Ticker" resettable alwaysOn />,
-	<ReferenceInput source="blockchain_id" reference="blockchains">
+	<ReferenceInput key="searchBlockchain" source="blockchain_id" reference="blockchains">
 		<AutocompleteInput
 			optionText={choice =>
 				`${choice.name}`
