@@ -1,5 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { deleteIfExists, increaseResourceSentiment, updateResourceSentimentCount, upsertFollow, upsertList } from '@/utils/lists'
+import { deleteIfExists, updateResourceSentimentCount, upsertFollow, upsertList } from '@/utils/lists'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -57,11 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         page: pathname,
         properties: {
           listId: list.id,
-          resourceId,
-          resourceType,
           sentiment: sentimentType,
         },
-        user: user.email,
+        resourceId,
+        resourceType,
+        user: user.id,
       },
     },
   });

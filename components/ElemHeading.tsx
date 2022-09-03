@@ -15,7 +15,7 @@ export const ElemHeading: React.FC<PropsWithChildren<Props>> = ({
 		<section className="relative">
 			<FigureBlurredBg className="-bottom-20 sm:-bottom-20 lg:-bottom-[1rem]" />
 
-			<div className="max-w-6xl mx-auto py-12 px-4 relative z-10 sm:px-6 lg:py-16 lg:px-8">
+			<div className="max-w-7xl mx-auto py-12 px-4 relative z-10 sm:px-6 lg:py-16 lg:px-8">
 				<div>
 					{title ? (
 						<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
@@ -27,7 +27,7 @@ export const ElemHeading: React.FC<PropsWithChildren<Props>> = ({
 						</h1>
 					)}
 					{subtitle && (
-						<p className="max-w-3xl mt-5 text-xl text-dark-400">{subtitle}</p>
+						<p className="max-w-3xl mt-5 text-xl text-slate-600">{subtitle}</p>
 					)}
 					{children}
 				</div>
