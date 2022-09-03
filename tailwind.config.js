@@ -34,6 +34,8 @@ const dark = {
 }
 
 const gray = {
+  5: "#00000010",
+  10: "#475569",
   50: "#F2F5FA",
   100: "#eeeef1",
   200: "#d5d5db",
@@ -73,6 +75,10 @@ const blue = {
 //   900: "#403602"
 // }
 
+const purple = {
+  50: "#5E41FE"
+}
+
 const slate = {
   50: "#F8FAFC",
   200: "#E2E8F0",
@@ -102,6 +108,7 @@ module.exports = {
         //yellow,
         slate,
         transparent: 'transparent',
+        purple
       },
       borderRadius: {
         '8xl': '4rem',
