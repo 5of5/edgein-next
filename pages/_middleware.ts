@@ -28,7 +28,6 @@ export async function middleware(req: NextRequest) {
 		url.pathname.endsWith(".ico") ||
 		process.env.DEV_MODE
 	) {
-		console.log("pass-thur", url.pathname);
 		return NextResponse.next();
 	}
 
@@ -42,7 +41,6 @@ export async function middleware(req: NextRequest) {
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
-			console.log("no-user", url.pathname);
 			return NextResponse.redirect(
 				new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 			);
@@ -59,8 +57,7 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (![`/api/graphql/`].includes(url.pathname) && user?.id) {
-		const parts = url.pathname.split('/')
+	if (![`/api/`].includes(url.pathname) && user?.id) {
 		mutate({
 			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {
@@ -85,6 +82,5 @@ export async function middleware(req: NextRequest) {
 		});
 	}
 
-	console.log("pass-thur");
 	return NextResponse.next();
 }

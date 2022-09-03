@@ -77,6 +77,7 @@ module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./utils/style.ts"
   ],
   theme: {
     fontFamily: {
@@ -104,6 +105,9 @@ module.exports = {
       scale: {
         '102': '1.02',
         '600': '6',
+      },
+      opacity: {
+        '15': '.15',
       },
       boxShadow: {
         'shadow': '0px 2px 4px rgba(0, 0, 0, 0.1)',
