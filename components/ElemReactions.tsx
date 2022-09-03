@@ -1,102 +1,127 @@
+import { useAuth } from "@/hooks/useAuth";
+import { getName } from "@/utils/reaction";
 import { findIndex } from "lodash";
 import { FC, useEffect, useState } from "react";
-import { ElemButton } from "./ElemButton";
 import { IconCrap } from "./reactions/IconCrap";
 import { IconHot } from "./reactions/IconHot";
 import { IconLike } from "./reactions/IconLike";
 import { IconSave } from "@/components/Icons"
+import { ElemTooltip } from "@/components/ElemTooltip";
 
 type Props = {
-  data: any,
-  handleReactionClick: (reaction: string) => (e: React.MouseEvent<HTMLButtonElement>) => void;
-  blackText?: boolean
-  btn?:
-  | "danger"
-  | "dark"
-  | "primary"
-  | "transparent"
-  | "white"
-  | "ol-white"
-  | "ol-primary"
-  | "";
-  roundedFull?: boolean
-}
+	className?: string;
+	data: any;
+	handleReactionClick: (
+		reaction: string,
+		isSelected: boolean
+	) => (
+		e: React.MouseEvent<HTMLButtonElement | HTMLInputElement | HTMLElement>
+	) => void;
+};
 
 export const ElemReactions: FC<Props> = ({
-  data,
-  handleReactionClick,
-  blackText,
-  btn,
-  roundedFull
+	className = "",
+	data,
+	handleReactionClick,
 }) => {
+	const { user } = useAuth();
 
-  const [hot, setHot] = useState(-1);
-  const [like, setLike] = useState(-1);
-  const [crap, setCrap] = useState(-1);
+	const [hot, setHot] = useState(-1);
+	const [like, setLike] = useState(-1);
+	const [crap, setCrap] = useState(-1);
 
-  useEffect(() => {
-    setHot(() => findIndex(data.follows, (item: any) => {
-      const fragments = item.list.name.split('-');
-      return fragments[fragments.length - 1] === 'hot';
-    }))
+	useEffect(() => {
+		setHot(() =>
+			findIndex(data.follows, (item: any) => {
+				return getName(item.list) === "hot";
+			})
+		);
 
-    setLike(findIndex(data.follows, (item: any) => {
-      const fragments = item.list.name.split('-');
-      return fragments[fragments.length - 1] === 'like';
-    }))
+		setLike(
+			findIndex(data.follows, (item: any) => {
+				return getName(item.list) === "like";
+			})
+		);
 
-    setCrap(findIndex(data.follows, (item: any) => {
-      const fragments = item.list.name.split('-');
-      return fragments[fragments.length - 1] === 'crap';
-    }))
+		setCrap(
+			findIndex(data.follows, (item: any) => {
+				return getName(item.list) === "crap";
+			})
+		);
+	}, [data]);
 
-  }, [data]);
+	const alreadyReacted = (sentiment: number): boolean => {
+		return sentiment !== -1;
+	};
 
-  const disabled = (sentiment: number): boolean => {
-    return sentiment !== -1;
-  }
+	const alreadyReactedClasses = (sentiment: number, reaction: string) => {
+		let classes = "";
 
-  const disabledClasses = (sentiment: number) => {
-    return sentiment !== -1 ? 'shadow-gray-300 bg-gray-100 hover:bg-gray-100 opacity-100 shadow-xl shadow-inner ... ': '';
-  }
+		if (sentiment !== -1 && reaction === "hot") {
+			classes = "text-red-500 hover:text-red-500";
+		} else if (sentiment !== -1 && reaction === "like") {
+			classes = "text-primary-500 hover:text-primary-500";
+		} else if (sentiment !== -1 && reaction === "crap") {
+			classes = "text-yellow-800 hover:text-yellow-800";
+		} else {
+			classes = "text-slate-400 hover:text-slate-600";
+		}
 
-  return (
-    <>
-      <ElemButton
-        onClick={handleReactionClick('hot')}
-        className={`${disabledClasses(hot)}px-1 mr-2${blackText ? " text-black" : ''}`}
-        roundedFull={roundedFull}
-        btn={btn}
-        disabled={disabled(hot)}
-      ><IconHot className="mr-1" /> {data?.sentiment?.hot || 0}
-      </ElemButton>
-      <ElemButton
-        onClick={handleReactionClick('like')}
-        className={`${disabledClasses(like)}px-1 mr-2${blackText ? " text-black" : ''}`}
-        roundedFull={roundedFull}
-        btn={btn}
-        disabled={disabled(like)}
-      ><IconLike className="mr-1" /> {data?.sentiment?.like || 0}
-      </ElemButton>
-      <ElemButton
-        onClick={handleReactionClick('crap')}
-        className={`${disabledClasses(crap)}px-1 mr-2${blackText ? " text-black" : ''}`}
-        roundedFull={roundedFull}
-        btn={btn}
-        disabled={disabled(crap)}
-      >
-        <IconCrap className="mr-1" /> {data?.sentiment?.crap || 0}
-      </ElemButton>
+		return classes;
+	};
 
-      {/* save button  */}
-      <ElemButton      
-        roundedFull={roundedFull}
-        btn={btn}
-        className={`w-24 ml-4  border rounded-lg border-gray-100 text-slate-600`}
-      >
-        <IconSave className="text-base pt-3" /> 
-        Save
-      </ElemButton>
-    </>
-  );
-} 
+	return (
+		<div className={`flex flex-nowrap space-x-3 -ml-1 ${className}`}>
+			<div
+				onClick={handleReactionClick("hot", alreadyReacted(hot))}
+				title="Hot"
+				role="button"
+				className={`flex items-center cursor-pointer font-bold group ease-in-out duration-150 ${alreadyReactedClasses(
+					hot,
+					"hot"
+				)}`}
+			>
+				<ElemTooltip content="Hot">
+					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
+						<IconHot className="h-6 w-6" />{" "}
+					</div>
+				</ElemTooltip>
+				{data?.sentiment?.hot || 0}
+			</div>
+
+			<div
+				onClick={handleReactionClick("like", alreadyReacted(like))}
+				title="Like"
+				role="button"
+				className={`flex items-center cursor-pointer font-bold group ease-in-out duration-150 ${alreadyReactedClasses(
+					like,
+					"like"
+				)}`}
+			>
+				<ElemTooltip content="Like">
+					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
+						<IconLike className="h-6 w-6" />{" "}
+					</div>
+				</ElemTooltip>
+				{data?.sentiment?.like || 0}
+			</div>
+
+			<div
+				onClick={handleReactionClick("crap", alreadyReacted(crap))}
+				title="Sh**"
+				role="button"
+				className={`flex items-center cursor-pointer font-bold group ease-in-out duration-150 ${alreadyReactedClasses(
+					crap,
+					"crap"
+				)}`}
+			>
+				<ElemTooltip content="Sh**">
+					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
+						<IconCrap className="h-6 w-6" />{" "}
+					</div>
+				</ElemTooltip>
+				{data?.sentiment?.crap || 0}
+			</div>
+		</div>
+	);
+};

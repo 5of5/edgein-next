@@ -75,10 +75,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<div className={`${className}`}>
-			{/* {maxScrollWidth} */}
-			{/* Index: {currentIndex}
-			Max: {maxScrollWidth.current} */}
-			<div className="relative overflow-hidden">
+			<div className="relative overflow-hidden -mx-3">
 				<div className="absolute top left flex justify-between w-full h-full">
 					<button
 						onClick={movePrev}
@@ -102,13 +99,11 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 						<span className="sr-only">Next</span>
 					</button>
 				</div>
-				<div className="relative z-0">
-					<div
-						ref={carousel}
-						className="relative flex overflow-x-scroll overflow-y-hidden scrollbar-hide m-3 scroll-smooth snap-x snap-mandatory touch-pan-x"
-					>
-						{children}
-					</div>
+				<div
+					ref={carousel}
+					className="relative flex flex-row overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x"
+				>
+					{children}
 				</div>
 			</div>
 		</div>

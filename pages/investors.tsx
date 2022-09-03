@@ -16,14 +16,17 @@ import {
 	useGetVcFirmsQuery,
 	Vc_Firms_Bool_Exp,
 	Vc_Firms,
+	Lists,
+	Follows_Vc_Firms,
 } from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
+import { remove } from "lodash";
 
 type Props = {
 	vcFirmCount: number;
@@ -89,41 +92,57 @@ const Investors: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
-		current_user: user?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
-	const [vcFirms, setVcFirms] = useState(initialLoad ? initialVCFirms : vcFirmsData?.vc_firms);
+	const [vcFirms, setVcFirms] = useState(
+		initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
+	);
 
 	useEffect(() => {
 		setVcFirms(vcFirmsData?.vc_firms);
 	}, [vcFirmsData]);
 
-	const handleReactionClick = (vcFirm: GetVcFirmsQuery["vc_firms"][0]) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.stopPropagation();
-		event.preventDefault();
+	const handleReactionClick =
+		(vcFirm: GetVcFirmsQuery["vc_firms"][0]) =>
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			event.stopPropagation();
+			event.preventDefault();
 
-		const newSentiment = await reactOnSentiment({
-			vcfirm: vcFirm?.id!,
-			sentiment,
-			pathname: `/investors/${vcFirm?.slug!}`
-		})
-
-		setVcFirms(prev => {
-			return [...(prev || [])].map((item: any) => {
-				if (item.id === vcFirm.id) {
-					const newFollows = getNewFollows(sentiment, 'vcfirm');
-
-					item.follows.push(newFollows);
-
-					return { ...item, sentiment: newSentiment };
-				}
-				return item;
+			const newSentiment = await reactOnSentiment({
+				vcfirm: vcFirm?.id!,
+				sentiment,
+				pathname: `/investors/${vcFirm?.slug!}`,
 			});
-		});
-	}
+
+			setVcFirms((prev) => {
+				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+					if (item.id === vcFirm.id) {
+						const newFollows = getNewFollows(
+							sentiment,
+							"vcfirm"
+						) as Follows_Vc_Firms;
+
+						if (!alreadyReacted) item.follows.push(newFollows);
+						else
+							remove(item.follows, (list) => {
+								return getName(list.list! as Lists) === sentiment;
+							});
+
+						return { ...item, sentiment: newSentiment };
+					}
+					return item;
+				});
+			});
+		};
 
 	return (
 		<div>
@@ -233,10 +252,11 @@ const Investors: NextPage<Props> = ({
 												</div>
 											</div>
 
-											<div
-												className={`flex grid-cols-5 md:grid mt-4`}
-											>
-												<ElemReactions data={vcfirm} handleReactionClick={handleReactionClick(vcfirm)} blackText />
+											<div className={`flex grid-cols-5 md:grid mt-4`}>
+												<ElemReactions
+													data={vcfirm}
+													handleReactionClick={handleReactionClick(vcfirm)}
+												/>
 											</div>
 										</a>
 									</Link>
@@ -261,7 +281,12 @@ const Investors: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
 		GetVcFirmsDocument,
-		{ where: { slug: { _neq: "" }, status: { _eq: "published" } }, current_user: 0 }
+		{
+			offset: 0,
+			limit: 50,
+			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+			current_user: 0,
+		}
 	);
 
 	return {

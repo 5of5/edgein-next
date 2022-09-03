@@ -22,8 +22,9 @@ import {
 	useGetCompanyQuery,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
+import { remove } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -45,32 +46,40 @@ const Company: NextPage<Props> = (props) => {
 		isLoading,
 	} = useGetCompanyQuery({
 		slug: companyId as string,
-		current_user: user?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	useEffect(() => {
-		if (conpanyData)
-			setCompany(conpanyData?.companies[0] as Companies)
-	}, [conpanyData])
+		if (conpanyData) setCompany(conpanyData?.companies[0] as Companies);
+	}, [conpanyData]);
 
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
+	const handleReactionClick =
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			const newSentiment: any = await reactOnSentiment({
+				company: company.id,
+				sentiment,
+				pathname: location.pathname,
+			});
 
-		const newSentiment: any = await reactOnSentiment({
-			company: company.id,
-			sentiment,
-			pathname: location.pathname
-		});
-
-		setCompany((prev) => {
-			const newFollows = getNewFollows(sentiment) as Follows_Companies;
-			prev.follows.push(newFollows);
-			return { ...prev, sentiment: newSentiment }
-		})
-	}
+			setCompany((prev) => {
+				const newFollows = getNewFollows(sentiment) as Follows_Companies;
+				if (!alreadyReacted) prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
+				return { ...prev, sentiment: newSentiment };
+			});
+		};
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -140,8 +149,11 @@ const Company: NextPage<Props> = (props) => {
 							</div>
 						</section> */}
 					</div>
-					{
-						(company.market_verified || company.github || company.company_linkedin || company.velocity_linkedin || company.velocity_token) &&
+					{(company.market_verified ||
+						company.github ||
+						company.company_linkedin ||
+						company.velocity_linkedin ||
+						company.velocity_token) && (
 						<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
 							<ElemCredibility
 								className="col-span-5 mt-16 md:mt-0"
@@ -157,14 +169,12 @@ const Company: NextPage<Props> = (props) => {
 								tokenExchangeValue={company.velocity_token}
 							/>
 						</div>
-					}
+					)}
 
 					<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
 						<ElemReactions
 							data={company}
 							handleReactionClick={handleReactionClick}
-							blackText
-							roundedFull
 						/>
 					</div>
 				</div>

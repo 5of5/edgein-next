@@ -8,15 +8,18 @@ import {
 	Vc_Firms_Bool_Exp,
 	useGetVcFirmsRecentInvestmentsQuery,
 	Vc_Firms,
+	Lists,
+	Follows_Vc_Firms,
 } from "@/graphql/types";
 import { ElemReactions } from "../ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
+import { remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
-		[P in keyof T]?: DeepPartial<T[P]>;
-	}
+			[P in keyof T]?: DeepPartial<T[P]>;
+	  }
 	: T;
 
 type Props = {
@@ -30,7 +33,6 @@ export const ElemRecentInvestments: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
-
 	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
@@ -47,36 +49,52 @@ export const ElemRecentInvestments: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
-		current_user: user?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
 
 	useEffect(() => {
-		setVcFirms(vcFirmsData?.vc_firms)
+		setVcFirms(vcFirmsData?.vc_firms);
 	}, [vcFirmsData?.vc_firms]);
 
-	const handleReactionClick = (vcFirm: Vc_Firms) => (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.stopPropagation();
-		event.preventDefault();
+	const handleReactionClick =
+		(vcFirm: Vc_Firms) =>
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			event.stopPropagation();
+			event.preventDefault();
 
-		const newSentiment = await reactOnSentiment({
-			vcfirm: vcFirm.id,
-			sentiment,
-			pathname: `/investors/${vcFirm.slug}`
-		})
-
-		setVcFirms(prev => {
-			return [...(prev || [])].map((item: any) => {
-				if (item.id === vcFirm.id) {
-					const newFollows = getNewFollows(sentiment, 'vcfirm')
-					item.follows.push(newFollows);
-					return { ...item, sentiment: newSentiment }
-				}
-				return item;
+			const newSentiment = await reactOnSentiment({
+				vcfirm: vcFirm.id,
+				sentiment,
+				pathname: `/investors/${vcFirm.slug}`,
 			});
-		});
-	}
+
+			setVcFirms((prev) => {
+				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+					if (item.id === vcFirm.id) {
+						const newFollows = getNewFollows(
+							sentiment,
+							"vcfirm"
+						) as Follows_Vc_Firms;
+
+						if (!alreadyReacted) item.follows.push(newFollows);
+						else
+							remove(item.follows, (list) => {
+								return getName(list.list! as Lists) === sentiment;
+							});
+
+						return { ...item, sentiment: newSentiment };
+					}
+					return item;
+				});
+			});
+		};
 
 
   return (
@@ -159,7 +177,6 @@ export const ElemRecentInvestments: FC<Props> = ({
                       <ElemReactions
                         data={investor}
                         handleReactionClick={handleReactionClick(investor)}
-                        blackText
                       />
                     </div>
                   </a>
