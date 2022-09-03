@@ -64,7 +64,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 		event: React.MouseEvent<HTMLInputElement>,
 		list: Lists
 	) => {
-		console.log("isSelected", isSelected(list));
+		
 		// TODO: handle uncheck
 		onCreateNew(getName(list), isSelected(list))(event);
 	};

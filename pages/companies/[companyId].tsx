@@ -61,7 +61,6 @@ const Company: NextPage<Props> = (props) => {
 		slug: companyId as string,
 		current_user: user ?.id ?? 0,
 	});
-	console.log("company ==", company)
 
 	const getTokenInfo = async (ticker: string) => {
 		const data = await fetch("../../api/get_metrics_amount", {
@@ -72,7 +71,6 @@ const Company: NextPage<Props> = (props) => {
 			},
 			body: JSON.stringify({ ticker })
 		}).then(res => res.json());
-		console.log("token innfo=", data)
 		setTokenInfo(data)
 	}
 
@@ -129,9 +127,9 @@ const Company: NextPage<Props> = (props) => {
 	}
 
 	const scrollToSection = (tab: number) => {
-		if (tab === 1) {
+		if (tab === 1 && teamRef) {
 			window.scrollTo(0, teamRef.current.offsetTop - 30);
-		} else if (tab == 2) {
+		} else if (tab == 2 && investmentRef) {
 			window.scrollTo(0, investmentRef.current.offsetTop - 30);
 		}
 	};
