@@ -9,6 +9,7 @@ import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -25,11 +26,11 @@ import {
 	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
-
+import { remove } from "lodash";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
@@ -66,26 +67,34 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const handleReactionClick =
-		(sentiment: string) =>
+		(sentiment: string, alreadyReacted: boolean) =>
 		async (
 			event: React.MouseEvent<
 				HTMLButtonElement | HTMLInputElement | HTMLElement
 			>
 		) => {
+			event.stopPropagation();
+			event.preventDefault();
+
 			const newSentiment = await reactOnSentiment({
 				vcfirm: vcfirm.id,
 				sentiment,
 				pathname: location.pathname,
 			});
 
-			setVcfirm((prev) => {
+			setVcfirm((prev: Vc_Firms) => {
 				const newFollows = getNewFollows(
 					sentiment,
 					"vcfirm"
 				) as Follows_Vc_Firms;
-				prev.follows.push(newFollows);
+				if (!alreadyReacted) prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
 				return { ...prev, sentiment: newSentiment };
 			});
+			
 		};
 
 	if (!vcfirm) {
@@ -136,11 +145,15 @@ const VCFirm: NextPage<Props> = (props) => {
 						linkedIn={vcfirm.linkedin}
 						investmentsLength={vcfirm.investments ?.length}
 					/> */}
-					<div className="flex flex-col grid-cols-8 gap-4 mt-4 md:grid">
+					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions
 							data={vcfirm}
 							handleReactionClick={handleReactionClick}
 						/>
+						<ElemSaveToList
+						follows={vcfirm?.follows}
+						onCreateNew={handleReactionClick}
+					/>
 					</div>
 				</div>
 			</div>

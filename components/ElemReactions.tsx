@@ -5,7 +5,6 @@ import { FC, useEffect, useState } from "react";
 import { IconCrap } from "./reactions/IconCrap";
 import { IconHot } from "./reactions/IconHot";
 import { IconLike } from "./reactions/IconLike";
-import { IconSave } from "@/components/Icons"
 import { ElemTooltip } from "@/components/ElemTooltip";
 
 type Props = {
