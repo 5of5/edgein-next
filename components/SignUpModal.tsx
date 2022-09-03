@@ -8,7 +8,15 @@ const validator = require('validator');
 
 Modal.setAppElement('#modal-root');
 
-export default function SignUpModal(props: any) {
+type Props = {
+    show: boolean;
+    passwordFromLogin: string;
+    emailFromLogin: string;
+    onLogin: () => void;
+    onClose:() => void
+};
+
+export default function SignUpModal(props: Props) {
     const router = useRouter();
 
     const [isBrowser, setIsBrowser] = useState(false);
@@ -67,7 +75,7 @@ export default function SignUpModal(props: any) {
         setErrorMessage('')
         setEmailError('')
         setNameError('')
-    }, [props.show]);
+    }, [props.show,props.emailFromLogin, props.passwordFromLogin]);
 
 
 
@@ -107,11 +115,6 @@ export default function SignUpModal(props: any) {
 
     const onClose = () => {
         props.onClose();
-    }
-
-    const onForgotPassword = () => {
-        props.onClose();
-        props.onForgotPassword();
     }
 
     return (
@@ -189,7 +192,7 @@ export default function SignUpModal(props: any) {
                                             name="email"
                                             type="email"
                                             value={email}
-                                            disabled={isLoading || props.emailFromLogin}
+                                            disabled={isLoading || props.emailFromLogin != ''}
                                             onChange={(event) => validateEmail(event ?.target.value)}
                                             placeholder="Email"
                                             className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
@@ -200,7 +203,7 @@ export default function SignUpModal(props: any) {
                                             name="password"
                                             type="password"
                                             value={password}
-                                            disabled={isLoading || props.passwordFromLogin}
+                                            disabled={isLoading || props.passwordFromLogin != ''}
                                             onChange={(event) => validate(event ?.target.value)}
                                             placeholder="Password"
                                             className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
@@ -215,7 +218,7 @@ export default function SignUpModal(props: any) {
                                             Sign up and explore
                                 </ElemButton>
                                     </div>
-                                    <p className="text-sm text-gray-300">Creating an account means you're okay with our terms of service, privact policy, and our default notification settings.</p>
+                                    <p className="text-sm text-gray-300">{`Creating an account means you're okay with our terms of service, privact policy, and our default notification settings.`}</p>
                                     <div className="text-center sm:col-span-3">
                                         <ElemButton className="w-full" onClick={onLogin} btn="ol-primary" loading={isLoading}>
                                             Login

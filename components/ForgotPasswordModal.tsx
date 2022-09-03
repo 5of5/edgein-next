@@ -4,8 +4,13 @@ import { ElemButton } from "./ElemButton";
 import Modal from 'react-modal';
 
 Modal.setAppElement('#modal-root');
+type Props = {
+    show: boolean;
+    onClose:() => void;
+    onBack:() => void;
+};
 
-export default function ForgotPasswordModal(props: any) {
+export default function ForgotPasswordModal(props: Props) {
 
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);

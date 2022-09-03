@@ -7,7 +7,14 @@ const validator = require('validator');
 
 Modal.setAppElement('#modal-root');
 
-export default function LoginModal(props: any) {
+type Props = {
+    show: boolean;
+    onSignUp:(email: string, password: string) => void;
+    onForgotPassword:() => void;
+    onClose:() => void
+};
+
+export default function LoginModal(props: Props) {
 
     useEffect(() => {
         setEmail('');
