@@ -10,6 +10,7 @@ import {
 	IconCompanies,
 	IconCash,
 } from "@/components/Icons";
+import { IconCompanyList } from "../reactions/IconCompanyList";
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ");
@@ -33,6 +34,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 			icon: IconCompanies,
 		},
 		{ name: "Investors", href: "/investors", icon: IconCash },
+		{ name: "My list", href: "/my-list", icon: IconCompanyList }
 	],
 	children,
 }) => {
