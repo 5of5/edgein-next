@@ -24,6 +24,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { remove } from "lodash";
@@ -214,8 +215,8 @@ const Investors: NextPage<Props> = ({
 					) : (
 						vcFirms?.map((vcfirm) => (
 							<Link key={vcfirm.id} href={`/investors/${vcfirm.slug}`}>
-								<a className="flex flex-col w-full max-w-md p-5 mx-auto overflow-hidden transition duration-300 ease-in-out transform bg-white rounded-lg cursor-pointer group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full">
-									<div className="flex items-center w-full">
+								<a className="flex flex-col mx-auto w-full p-5 cursor-pointer bg-white rounded-lg transition-all hover:scale-102 hover:shadow md:h-full">
+									<div className="flex shrink-0 mb-4 w-full">
 										<ElemPhoto
 											photo={vcfirm.logo}
 											wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
@@ -246,10 +247,14 @@ const Investors: NextPage<Props> = ({
 										</div>
 									</div>
 
-									<div className={`flex grid-cols-5 md:grid mt-4`}>
+									<div className="flex items-center justify-between mt-4">
 										<ElemReactions
 											data={vcfirm}
 											handleReactionClick={handleReactionClick(vcfirm)}
+										/>
+										<ElemSaveToList
+											follows={vcfirm?.follows}
+											onCreateNew={handleReactionClick(vcfirm)}
 										/>
 									</div>
 								</a>

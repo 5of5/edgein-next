@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { PlaceholderInvestorRecentInvestmentsCard } from "@/components/Placeholders";
+import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -11,7 +11,8 @@ import {
 	Lists,
 	Follows_Vc_Firms,
 } from "@/graphql/types";
-import { ElemReactions } from "../ElemReactions";
+import { ElemReactions } from "@/components/ElemReactions";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { remove } from "lodash";
@@ -97,8 +98,8 @@ export const ElemRecentInvestments: FC<Props> = ({
 		};
 
 	return (
-		<div className={`${className}`}>
-			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
+		<div className={`${className} bg-white rounded-lg p-5`}>
+			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			{error ? (
 				<h4>Error loading investors</h4>
 			) : isLoading ? (
@@ -109,7 +110,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 								key={i}
 								className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
 							>
-								<PlaceholderInvestorRecentInvestmentsCard />
+								<PlaceholderInvestorCard />
 							</div>
 						))}
 					</div>
@@ -125,7 +126,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 								>
 									<a
 										href={`/investors/${investor.slug}`}
-										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg group border-dark-500/10 hover:scale-102 hover:shadow-lg"
+										className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
 									>
 										<div className="flex">
 											<ElemPhoto
@@ -153,10 +154,14 @@ export const ElemRecentInvestments: FC<Props> = ({
 											)}
 										</div>
 
-										<div className={`flex grid-cols-5 md:grid mt-4`}>
+										<div className="flex items-center justify-between mt-4">
 											<ElemReactions
 												data={investor}
 												handleReactionClick={handleReactionClick(investor)}
+											/>
+											<ElemSaveToList
+												follows={investor?.follows}
+												onCreateNew={handleReactionClick(investor)}
 											/>
 										</div>
 									</a>
