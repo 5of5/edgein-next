@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticProps } from "next";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, MutableRefObject, useRef } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -23,12 +23,12 @@ import {
 	Investment_Rounds,
 	Lists,
 	useGetCompanyQuery,
+	Investments,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
-import { useRef } from "react";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { companyLayerChoices } from '@/utils/constants';
 import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
@@ -48,7 +48,7 @@ const Company: NextPage<Props> = (props) => {
 
 	const [company, setCompany] = useState(props.company);
 	const [selectedTab, setSelectedTab] = useState(0)
-	const [tokenInfo, setTokenInfo] = useState(null)
+	const [tokenInfo, setTokenInfo] = useState({currentPrice: 0, marketCap: 0})
 
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -59,7 +59,7 @@ const Company: NextPage<Props> = (props) => {
 		isLoading,
 	} = useGetCompanyQuery({
 		slug: companyId as string,
-		current_user: user ?.id ?? 0,
+		current_user: user?.id ?? 0,
 	});
 
 	const getTokenInfo = async (ticker: string) => {
@@ -83,7 +83,7 @@ const Company: NextPage<Props> = (props) => {
 	}, [company])
 
 	useEffect(() => {
-		if (conpanyData) setCompany(conpanyData ?.companies[0] as Companies);
+		if (conpanyData) setCompany(conpanyData?.companies[0] as Companies);
 	}, [conpanyData]);
 
 	if (!company) {
@@ -120,7 +120,7 @@ const Company: NextPage<Props> = (props) => {
 	const companyTags = [];
 	if (company.layer) {
 		const layer = companyLayerChoices.find(layer => layer.id === company.layer);
-		companyTags.unshift(layer.name);
+		companyTags.unshift((layer) ? layer.name : company.layer);
 	}
 	if (company.tags) {
 		company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
@@ -134,7 +134,7 @@ const Company: NextPage<Props> = (props) => {
 		}
 	};
 
-	const getInvestorsNames = (investments: Array<Object>) => {
+	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
 			const names = `${(investments[0].person) ? investments[0].person.name + "," : ''} ${(investments[0].vc_firm) ? investments[0].vc_firm.name : ''} and others`
 			return names
@@ -299,7 +299,7 @@ const Company: NextPage<Props> = (props) => {
 													<div className="w-5/6">
 														<h2 className="text-dark-500 font-bold truncate text-base">{`Raises $${convertAmountRaised(activity.amount)} from ${getInvestorsNames(activity.investments)}`}</h2>
 														<p className="text-gray-400 text-xs">{
-															formatDate(activity.round_date, {
+															formatDate(activity.round_date as string, {
 																month: "short",
 																day: "2-digit",
 																year: "numeric",

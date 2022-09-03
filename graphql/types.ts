@@ -831,6 +831,8 @@ export type Companies = {
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
+  discord: Maybe<Scalars['String']>;
+  glassdoor: Maybe<Scalars['String']>;
 };
 
 
