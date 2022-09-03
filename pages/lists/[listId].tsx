@@ -5,11 +5,19 @@ import { IconCompanyList } from "@/components/reactions/IconCompanyList";
 import { IconCrap } from "@/components/reactions/IconCrap";
 import { IconHot } from "@/components/reactions/IconHot";
 import { IconLike } from "@/components/reactions/IconLike";
-import { Lists, useGetListsByUserQuery, useGetCompaniesByListIdQuery, useGetVcFirmsByListIdQuery, GetFollowsListsStaticPathsQuery, GetVcFirmsByListIdQuery, GetVcFirmsByListIdDocument, GetCompaniesByListIdQuery, GetCompaniesByListIdDocument, Follows_Companies, Follows_Vc_Firms, GetFollowsListsStaticPathsDocument } from "@/graphql/types";
+import {
+  GetFollowsListsStaticPathsQuery,
+  GetVcFirmsByListIdQuery,
+  GetVcFirmsByListIdDocument,
+  GetCompaniesByListIdQuery,
+  GetCompaniesByListIdDocument,
+  Follows_Companies,
+  Follows_Vc_Firms,
+  GetFollowsListsStaticPathsDocument
+} from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { runGraphQl } from "@/utils";
-import { getName } from "@/utils/reaction";
-import { find, has } from "lodash";
+import { has } from "lodash";
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -25,7 +33,6 @@ const MyList: NextPage<Props> = ({
 }) => {
   const { user } = useAuth();
   const router = useRouter()
-  const [selectedList, setSelectedList] = useState<number | null>(null);
   const [selectedListName, setSelectedListName] = useState<null | string>('hot');
   const [totalFunding, setTotalFuncding] = useState(0);
   // @TODO: implement tags count on final structure for tags in admin
@@ -111,7 +118,7 @@ export async function getStaticPaths() {
   const paths = follows?.follows
     ?.filter((follow) => follow.list_id)
     .map((follow) => ({ params: { listId: follow.list_id?.toString() } }))
-  console.log("paths", paths);
+ 
   return {
     paths,
     fallback: true, // false or 'blocking'
