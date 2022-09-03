@@ -19,8 +19,7 @@ import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
-	useGetCompaniesQuery,
-	useInsertActionMutation,
+	useGetCompaniesQuery
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";

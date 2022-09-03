@@ -73,6 +73,12 @@ const blue = {
 //   900: "#403602"
 // }
 
+const slate = {
+  50: "#F8FAFC",
+  200: "#E2E8F0",
+  600: "#475569"
+}
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -94,6 +100,7 @@ module.exports = {
         gray,
         blue,
         //yellow,
+        slate,
         transparent: 'transparent',
       },
       borderRadius: {
