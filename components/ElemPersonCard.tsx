@@ -50,7 +50,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 						{(founder || text) && (
 							<p className="text-sm truncate">
 								{founder && (
-									<span title="Founder" className="font-bold text-primary-500">
+									<span title="Founder" >
 										Founder
 									</span>
 								)}

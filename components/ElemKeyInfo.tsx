@@ -11,7 +11,9 @@ import {
 	IconRole,
 	IconEmail,
 	IconLocation,
-	IconTwitter
+	IconTwitter,
+	IconDiscord,
+	IconGlassdoor
 } from "./Icons";
 
 import {
@@ -34,6 +36,8 @@ type Props = {
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
+	discord?: string | null;
+	glassdoor?: string | null;
 	careerPage?: string | null;
 };
 
@@ -52,7 +56,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	github,
 	careerPage,
 	location,
-	twitter
+	twitter,
+	discord,
+	glassdoor
 }) => {
 	const websiteName = website
 		?.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")
@@ -62,7 +68,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 
-			<div className="inline-flex flex-col gap-x-6 gap-y-2 mt-2">
+			<div className="inline-flex flex-col gap-x-6 gap-y-2 mt-2 py-1">
 				{website && (
 					<a
 						href={website}
@@ -79,19 +85,19 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</a>
 				)}
 				{totalFundingRaised && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1 text-slate-600">
 						<IconCash
 							title="Total Funding Raised"
-							className="h-6 w-6 mr-1 text-primary-500"
+							className="h-6 w-6 mr-1 "
 						/>
-						<span className="font-bold mr-1">
+						<span className="text-slate-600 mr-1">
 							{convertToInternationalCurrencySystem(Number(totalFundingRaised))}
 						</span>
 						Total Funding Raised
 					</div>
 				)}
 				{yearFounded && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<IconFlag
 							title="Year Founded"
 							className="h-6 w-6 mr-1 text-slate-600"
@@ -112,13 +118,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</div>
 				)}
 				{totalEmployees && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<IconUsers
 							title="Total Employee Count"
-							className="h-6 w-6 mr-1 text-primary-500"
+							className="h-6 w-6 mr-1"
 						/>
-						<div>
-							<span className="font-bold mr-1">
+						<div className="text-slate-600">
+							<span className="text-slate-600 mr-1">
 								{numberWithCommas(totalEmployees)}
 							</span>
 							Employees
@@ -126,7 +132,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					</div>
 				)}
 				{whitePaper && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<a
 							href={whitePaper}
 							target="_blank"
@@ -135,9 +141,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						>
 							<IconDocumentDownload
 								title="White Paper"
-								className="h-6 w-6 mr-1 text-primary-500"
+								className="h-6 w-6 mr-1"
 							/>
-							<span>White Paper</span>
+							<span className='text-primary-500'>White Paper</span>
 						</a>
 					</div>
 				)}
@@ -145,24 +151,24 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<a
 						href={careerPage}
 						target="_blank"
-						className="inline-flex py-3 hover:opacity-70"
+						className="inline-flex py-1 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconBriefcase
 							title="Careers"
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
-						<span>Careers</span>
+						<span className='text-primary-500'>Careers</span>
 					</a>
 				)}
 				{roles && roles.length > 0 && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
 						<div>{roles}</div>
 					</div>
 				)}
 				{investmentsLength > 0 && (
-					<a href="#investments" className="inline-flex py-3 hover:opacity-70 text-slate-600">
+					<a href="#investments" className="inline-flex py-1 hover:opacity-70 text-slate-600">
 						<IconCash
 							title="Investments"
 							className="h-6 w-6 mr-1 text-slate-600"
@@ -173,7 +179,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				)}
 
 				{emails && emails.length > 0 && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<IconEmail
 							title="Email"
 							className="h-6 w-6 mr-1 text-primary-500"
@@ -211,7 +217,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<a
 						href={github}
 						target="_blank"
-						className="inline-flex py-3 hover:opacity-70"
+						className="inline-flex py-1 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconGithub
@@ -221,11 +227,39 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						<span className='text-primary-500'>Github</span>
 					</a>
 				)}
+				{discord && (
+					<a
+						href={discord}
+						target="_blank"
+						className="inline-flex py-1 hover:opacity-70"
+						rel="noopener noreferrer"
+					>
+						<IconDiscord
+							title="Discord"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<span className='text-primary-500'>Discord</span>
+					</a>
+				)}
+				{glassdoor && (
+					<a
+						href={glassdoor}
+						target="_blank"
+						className="inline-flex py-1 hover:opacity-70"
+						rel="noopener noreferrer"
+					>
+						<IconGlassdoor
+							title="Glassdoor"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<span className='text-primary-500'>Glassdoor</span>
+					</a>
+				)}
 				{twitter && (
 					<a
 						href={twitter}
 						target="_blank"
-						className="inline-flex py-3 hover:opacity-70"
+						className="inline-flex py-1 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconTwitter
