@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { ElemButton } from "../components/ElemButton";
 import Modal from 'react-modal';
 import { ElemLogo } from "./ElemLogo";
-import validator from 'validator'
+const validator = require('validator');
 
 Modal.setAppElement('#modal-root');
 
-export default function SignUpModal(props) {
+export default function SignUpModal(props: any) {
     const router = useRouter();
 
     const [isBrowser, setIsBrowser] = useState(false);

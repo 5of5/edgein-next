@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 import { ElemButton } from "../components/ElemButton";
 import Modal from 'react-modal';
 import { ElemLogo } from "./ElemLogo";
-import validator from 'validator'
+const validator = require('validator');
 
 Modal.setAppElement('#modal-root');
 
-export default function LoginModal(props) {
+export default function LoginModal(props: any) {
 
     useEffect(() => {
         setEmail('');

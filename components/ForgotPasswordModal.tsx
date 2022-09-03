@@ -5,7 +5,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#modal-root');
 
-export default function ForgotPasswordModal(props) {
+export default function ForgotPasswordModal(props: any) {
 
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);

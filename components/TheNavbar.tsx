@@ -56,7 +56,7 @@ export const TheNavbar = () => {
 		if(router.query.code){
 			(async () => {
 				//setFinishingLogin(true);
-				const res = await getAccessTokenFromCode(router.query.code);
+				const res = await getAccessTokenFromCode(router.query.code as string);
 			})();
 		}
 	}, [router.query.code])
