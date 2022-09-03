@@ -1,4 +1,4 @@
-import { GetCompaniesByListIdQuery } from "@/graphql/types";
+import { Follows_Companies, GetCompaniesByListIdQuery } from "@/graphql/types";
 import { FC } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
@@ -6,7 +6,7 @@ import { IconHot } from "../reactions/IconHot";
 import { IconLike } from "../reactions/IconLike";
 
 type Props = {
-  companies: GetCompaniesByListIdQuery | undefined
+  companies?: Follows_Companies[]
   isCustomList?: boolean
   selectedListName: string | null
   totalFunding: number
@@ -55,7 +55,7 @@ export const ElemCompanies: FC<Props> = ({
 
           <tbody>
             {
-              companies?.follows_companies.map(({ company }, index) => (
+              companies?.map(({ company }, index) => (
                 <tr 
                 key={company?.id} 
                 className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
@@ -86,7 +86,7 @@ export const ElemCompanies: FC<Props> = ({
             }
 
             {
-              (!companies?.follows_companies || companies?.follows_companies.length === 0) &&
+              (!companies || companies?.length === 0) &&
               <tr>
                 <td colSpan={5} className="text-center px-1 py-2">No Companies</td>
               </tr>

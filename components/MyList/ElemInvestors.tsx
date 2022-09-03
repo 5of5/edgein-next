@@ -1,4 +1,4 @@
-import { GetCompaniesByListIdQuery, GetVcFirmsByListIdQuery } from "@/graphql/types";
+import { Follows_Vc_Firms, GetCompaniesByListIdQuery, GetVcFirmsByListIdQuery } from "@/graphql/types";
 import { FC } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
@@ -6,7 +6,7 @@ import { IconHot } from "../reactions/IconHot";
 import { IconLike } from "../reactions/IconLike";
 
 type Props = {
-  vcfirms: GetVcFirmsByListIdQuery | undefined
+  vcfirms?: Follows_Vc_Firms[]
   isCustomList?: boolean
   selectedListName: string | null
   getAlternateRowColor: (index: number) => string
@@ -37,7 +37,7 @@ export const ElemInvestors: FC<Props> = ({
 
           <tbody>
             {
-              vcfirms?.follows_vc_firms.map(({ vc_firm }, index) => (
+              vcfirms?.map(({ vc_firm }, index) => (
                 <tr
                   key={vc_firm?.id}
                   className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
@@ -69,7 +69,7 @@ export const ElemInvestors: FC<Props> = ({
             }
 
             {
-              (!vcfirms?.follows_vc_firms || vcfirms?.follows_vc_firms.length === 0) &&
+              (!vcfirms || vcfirms?.length === 0) &&
               <tr>
                 <td colSpan={4} className="text-center px-1 py-2">No Investors</td>
               </tr>
