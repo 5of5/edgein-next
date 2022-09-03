@@ -42,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     result = JSON.parse(await fetchRequest.text());
     // upsert user info
     await upsertUser(result);
-  } catch (ex) {
+  } catch (ex: any) {
     return res.status(404).send(ex.message)
   }
 

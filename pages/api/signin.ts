@@ -84,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
       CookieService.setTokenCookie(res, token)
     }
-  } catch (ex) {
+  } catch (ex: any) {
     return res.status(404).send(ex.message)
   }
 

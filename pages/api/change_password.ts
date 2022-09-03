@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(fetchRequest.status).send(fetchRequest.statusText)
     }
     result = await fetchRequest.text();
-  } catch (ex) {
+  } catch (ex: any) {
     return res.status(404).send(ex.message)
   }
 
