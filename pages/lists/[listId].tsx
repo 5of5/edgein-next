@@ -1,5 +1,8 @@
 import { ElemCompanies } from "@/components/MyList/ElemCompanies";
+import { ElemDeleteListModal } from "@/components/MyList/ElemDeleteListModal";
 import { ElemInvestors } from "@/components/MyList/ElemInvestors";
+import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
+import { ElemListOptionMenu } from "@/components/MyList/ElemListOptionMenu";
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { IconCompanyList } from "@/components/reactions/IconCompanyList";
 import { IconCrap } from "@/components/reactions/IconCrap";
@@ -39,6 +42,9 @@ const MyList: NextPage<Props> = ({
   const [tagsCount, setTagsCount] = useState({});
   const [isCustomList, setIsCustomList] = useState(false);
 
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
   useEffect(() => {
     if (companies) {
       let funding = 0;
@@ -67,6 +73,23 @@ const MyList: NextPage<Props> = ({
     return ''
   }
 
+  const onDeleteList = async (id: number) => {
+    const deleteRes = await fetch(`/api/delete_list?listId=${id}`, {
+      method: 'DELETE',
+    })
+
+    if (deleteRes.ok) router.push('/my-list')
+  }
+
+  const onSave = async (name: string) => {
+    const updateNameRes = await fetch(`/api/update_list`, {
+      method: 'PUT',
+      body: JSON.stringify({ id: parseInt(router.query.listId as string), name })
+    })
+
+    if (updateNameRes.ok) router.reload()
+  }
+
   return (
     <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
       <div className="grid grid-cols-4 gap-4">
@@ -78,13 +101,35 @@ const MyList: NextPage<Props> = ({
         <div className="col-span-3">
 
           <div className="w-full mb-7">
-            <h1 className="flex font-bold text-xl capitalize mb-1 items-center">
-              {selectedListName === 'hot' && <IconHot className="mr-2" />}
-              {selectedListName === 'like' && <IconLike className="mr-2" />}
-              {selectedListName === 'crap' && <IconCrap className="mr-2" />}
-              {isCustomList && <IconCompanyList className="mr-2" />}
-              {selectedListName}
-            </h1>
+            <div className="inline-flex ">
+              <h1 className="flex font-bold text-xl capitalize mb-1 items-center">
+                {selectedListName === 'hot' && <IconHot className="mr-2" />}
+                {selectedListName === 'like' && <IconLike className="mr-2" />}
+                {selectedListName === 'crap' && <IconCrap className="mr-2" />}
+                {isCustomList && <IconCompanyList className="mr-2" />}
+                {selectedListName}
+              </h1>
+
+              { isCustomList &&
+                <>
+                  <ElemListOptionMenu onUpdateBtn={() => setShowEditModal(true)} onDeleteBtn={() => setShowDeleteModal(true)} />
+
+                  <ElemListEditModal
+                    onCloseModal={() => setShowEditModal(false)}
+                    isOpen={showEditModal}
+                    onSave={onSave}
+                  />
+
+                  <ElemDeleteListModal
+                    onCloseModal={() => setShowDeleteModal(false)}
+                    onDelete={onDeleteList}
+                    isOpen={showDeleteModal}
+                    listName={selectedListName}
+                    deleteId={parseInt(router.query.listId as string)}
+                  />
+                </>
+              }
+            </div>
             <p className="first-letter:uppercase">{selectedListName} lists are generated from your {selectedListName?.toLowerCase()} reactions.</p>
           </div>
 
@@ -96,7 +141,6 @@ const MyList: NextPage<Props> = ({
             getAlternateRowColor={getAlternateRowColor}
             tagsCount={tagsCount}
             isCustomList={isCustomList}
-            listId={router.query.listId}
           />
 
           <ElemInvestors
@@ -105,7 +149,6 @@ const MyList: NextPage<Props> = ({
             selectedListName={selectedListName}
             getAlternateRowColor={getAlternateRowColor}
             isCustomList={isCustomList}
-            listId={router.query.listId}
           />
 
         </div>
@@ -122,7 +165,7 @@ export async function getStaticPaths() {
   const paths = follows?.follows
     ?.filter((follow) => follow.list_id)
     .map((follow) => ({ params: { listId: follow.list_id?.toString() } }))
- 
+
   return {
     paths,
     fallback: true, // false or 'blocking'

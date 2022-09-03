@@ -1,6 +1,6 @@
-import { Follows_Companies, GetCompaniesByListIdQuery } from "@/graphql/types";
-import { Menu } from "@headlessui/react";
-import { ChangeEvent, FC, MouseEvent, useState } from "react";
+import { Follows_Companies } from "@/graphql/types";
+import { useRouter } from "next/router";
+import { FC, useCallback, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
 import { IconHot } from "../reactions/IconHot";
@@ -8,7 +8,6 @@ import { IconLike } from "../reactions/IconLike";
 import { ElemDeleteListModal } from "./ElemDeleteListModal";
 import { ElemListEditModal } from "./ElemListEditModal";
 import { ElemListOptionMenu } from "./ElemListOptionMenu";
-import { IconThreeDots } from "./IconThreeDots";
 
 type Props = {
   companies?: Follows_Companies[]
@@ -18,7 +17,6 @@ type Props = {
   getAlternateRowColor: (index: number) => string
   handleNavigation: (link: string) => void
   tagsCount: any
-  listId: string
 }
 
 export const ElemCompanies: FC<Props> = ({
@@ -28,13 +26,10 @@ export const ElemCompanies: FC<Props> = ({
   totalFunding,
   getAlternateRowColor,
   handleNavigation,
-  tagsCount,
-  listId,
+  tagsCount
 }) => {
 
   const [selected, setSelected] = useState<number[]>([])
-  const [showEditModal, setShowEditModal] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   const toggleCheckboxes = () => {
     if (selected.length > 0 && companies?.length === selected.length) {
@@ -51,10 +46,8 @@ export const ElemCompanies: FC<Props> = ({
     }
   }
 
-  const toggleCheckbox = (id: number) => (event: any) => {
-    event.stopPropagation()
-    event.preventDefault()
-
+  const toggleCheckbox = (id: number) => () => {
+  
     setSelected((prev) => {
       const items = [...prev]
 
@@ -66,25 +59,12 @@ export const ElemCompanies: FC<Props> = ({
     })
   }
 
-  const isChecked = (id: number) => {
+  const isChecked = useCallback((id: number) => {
     return selected.includes(id)
-  }
+  }, [selected])
 
   const isCheckedAll = () => {
     return selected.length === companies?.length
-  }
-
-  const onDeleteList = async (id: number) => {
-    const deleteRes = await fetch(`/api/delete_list?listId=${id}`, {
-      method: 'DELETE',
-    })
-  }
-
-  const onSave = async (name: string) => {
-    const updateNameRes = await fetch(`/api/update_list`, {
-      method: 'PUT',
-      body: JSON.stringify({ id: listId, name })
-    })
   }
 
   return (
@@ -93,30 +73,21 @@ export const ElemCompanies: FC<Props> = ({
         <h2 className="font-bold text-dark-500 text-xl capitalize mr-2">
           {selectedListName}: Companies
         </h2>
-
-        <ElemListOptionMenu onUpdateBtn={() => setShowEditModal(true)} onDeleteBtn={() => setShowDeleteModal(true)} />
-
-        <ElemListEditModal
-          onCloseModal={() => setShowEditModal(false)}
-          isOpen={showEditModal}
-          onSave={onSave}
-        />
-
-        <ElemDeleteListModal
-          onCloseModal={() => setShowDeleteModal(false)}
-          onDelete={onDeleteList}
-          isOpen={showDeleteModal}
-          listName={selectedListName}
-          deleteId={parseInt(listId)}
-        />
-
       </div>
 
       <div className="w-full mt-1 flex justify-between">
         <div className="inline-flex items-center">
           <span className="font-semibold text-sm mr-2">Tags: </span>
           <span>
-            {tagsCount && Object.keys(tagsCount).map((tag) => <span key={tag} className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2">{tag} ({tagsCount[tag]})</span>)}
+            {
+              tagsCount &&
+              Object.keys(tagsCount).map(
+                (tag) => (
+                  <span key={tag} className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2">
+                    {tag} ({tagsCount[tag]})
+                  </span>
+                ))
+            }
           </span>
         </div>
 
@@ -155,9 +126,9 @@ export const ElemCompanies: FC<Props> = ({
                     isCustomList && <td className="pl-2 px-1 py-2">
                       <input
                         type="checkbox"
-                        onClick={toggleCheckbox(company?.id!)}
-                        checked={isChecked(company?.id!)}
-                        onChange={() => { }}
+                        onChange={toggleCheckbox(company?.id!)}
+                        onClick={(e) => e.stopPropagation()}
+                        checked={isChecked(company?.id)}
                       />
                     </td>
                   }
