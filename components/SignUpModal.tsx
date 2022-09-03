@@ -1,31 +1,12 @@
-import { Magic } from "magic-sdk";
 import type { GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
-import { IconSpinner } from "../components/Icons";
+import { useEffect, useState } from "react";
 import { ElemButton } from "../components/ElemButton";
-import Link from "next/link";
-import ReactDOM from "react-dom";
 import Modal from 'react-modal';
 import { ElemLogo } from "./ElemLogo";
 import validator from 'validator'
 
 Modal.setAppElement('#modal-root');
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        // marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        zindex: 100000,
-        opacity: 1,
-        borderRadius: 20,
-        overlay: { backgroundColor: 'red', opacity: 1 }
-    },
-};
 
 export default function SignUpModal(props) {
     const router = useRouter();
@@ -138,11 +119,15 @@ export default function SignUpModal(props) {
             isOpen={props.show}
             // onAfterOpen={afterOpenModal}
             onRequestClose={onClose}
-            style={customStyles}
+            overlayClassName="fixed top-0 left-0 z-[50] flex items-center justify-center h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
+            className={`${
+                "animate-fade-in-up"
+            } relative z-[50] max-w-sm w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0`}
+            
             contentLabel="SignUp Modal"
         >
-            <div className="relative max-w-md mx-auto px-6">
-                <div className="bg-white rounded-2xl p-6 px-6 center">
+            <div className="relative max-w-md mx-auto">
+                <div className="bg-white rounded-2xl p-10 center">
                     {
 
                         isRegistered ? (

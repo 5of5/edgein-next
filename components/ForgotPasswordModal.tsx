@@ -1,29 +1,9 @@
-import { Magic } from "magic-sdk";
 import type { GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { FormEvent, useEffect, useState } from "react";
-import { IconSpinner } from "./Icons";
+import { useState } from "react";
 import { ElemButton } from "./ElemButton";
-import Link from "next/link";
-import ReactDOM from "react-dom";
 import Modal from 'react-modal';
 
 Modal.setAppElement('#modal-root');
-
-const customStyles = {
-    content: {
-        top: '50%',
-        left: '50%',
-        right: 'auto',
-        bottom: 'auto',
-        //marginRight: '-50%',
-        transform: 'translate(-50%, -50%)',
-        zindex: 100000,
-        opacity: 1,
-        borderRadius: 20,
-        overlay: { backgroundColor: 'red', opacity: 1 }
-    },
-};
 
 export default function ForgotPasswordModal(props) {
 
@@ -51,7 +31,7 @@ export default function ForgotPasswordModal(props) {
 
         } catch (e) {
             // setIsMailSent(true)
-            console.log(e);
+           
             setIsLoading(false);
         }
     };
@@ -69,12 +49,16 @@ export default function ForgotPasswordModal(props) {
             isOpen={props.show}
             // onAfterOpen={afterOpenModal}
             onRequestClose={onClose}
-            style={customStyles}
+            overlayClassName="fixed top-0 left-0 z-[50] flex items-center justify-center h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
+            className={`${
+                "animate-fade-in-up"
+            } relative z-[50] max-w-sm w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0`}
+            
             contentLabel="Forgot Password Modal"
         >
            
             <div className="relative max-w-md mx-auto ">
-                <div className="bg-white rounded-2xl  p-6">
+                <div className="bg-white rounded-2xl p-6">
                     {
                         isMailSent ? 
                         <>
