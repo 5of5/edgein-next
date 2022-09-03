@@ -32,9 +32,9 @@ type HitCompaniesProps = {
 
 type HitInvestorsProps = {
 	hit: AlgoliaHit<{
-		vc_firm_name: string;
-		vc_firm_logo: string;
-		vc_firm_slug: string;
+		name: string;
+		logo: string;
+		slug: string;
 		empty: boolean;
 	}>;
 };
@@ -105,19 +105,19 @@ function HitCompanies({ hit }: HitCompaniesProps) {
 function HitInvestors({ hit }: HitInvestorsProps) {
 	return (
 		<a
-			href={`/investors/${hit.vc_firm_slug}`}
+			href={`/investors/${hit.slug}`}
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 				<img
 					className="object-contain max-w-full max-h-full"
-					src={hit.vc_firm_logo}
-					alt={hit.vc_firm_logo}
+					src={hit.logo}
+					//alt={hit.logo}
 				/>
 			</div>
 			<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
 				<Highlight
-					attribute="vc_firm_name"
+					attribute="name"
 					hit={hit}
 					classNames={{
 						highlighted:
@@ -245,7 +245,7 @@ export default function SearchModal(props: any) {
 					/>
 				</Index>
 
-				<Index indexName="investors">
+				<Index indexName="vc_firms">
 					<h1 className="font-bold mt-5 mx-6">Investors</h1>
 					<NoResults />
 					<InfiniteHits
