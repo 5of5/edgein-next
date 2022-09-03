@@ -95,6 +95,8 @@ const MyList: NextPage<Props> = ({
             totalFunding={totalFunding}
             getAlternateRowColor={getAlternateRowColor}
             tagsCount={tagsCount}
+            isCustomList={isCustomList}
+            listId={router.query.listId}
           />
 
           <ElemInvestors
@@ -102,6 +104,8 @@ const MyList: NextPage<Props> = ({
             vcfirms={vcfirms}
             selectedListName={selectedListName}
             getAlternateRowColor={getAlternateRowColor}
+            isCustomList={isCustomList}
+            listId={router.query.listId}
           />
 
         </div>

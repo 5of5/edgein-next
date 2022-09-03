@@ -28,6 +28,7 @@ export const ElemInvestors: FC<Props> = ({
         <table className="w-full">
           <thead className="">
             <tr className="text-left text-sm border-b-slate-200">
+              {isCustomList && <th className="pl-2 px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0"><input type="checkbox" className="align-middle" /></th>}
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Name</th>
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0"># of Investments</th>
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Latest Investment Date</th>
@@ -44,6 +45,7 @@ export const ElemInvestors: FC<Props> = ({
                   onClick={() => handleNavigation(`/investors/${vc_firm?.slug}`)}
                   role="button"
                 >
+                  {isCustomList && <td className="pl-2 px-1 py-2"><input type="checkbox" /></td>}
                   <td
                     className="px-1 inline-flex items-center py-2"
                   >

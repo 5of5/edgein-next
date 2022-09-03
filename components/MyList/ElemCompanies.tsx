@@ -1,9 +1,14 @@
 import { Follows_Companies, GetCompaniesByListIdQuery } from "@/graphql/types";
-import { FC } from "react";
+import { Menu } from "@headlessui/react";
+import { ChangeEvent, FC, MouseEvent, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
 import { IconHot } from "../reactions/IconHot";
 import { IconLike } from "../reactions/IconLike";
+import { ElemDeleteListModal } from "./ElemDeleteListModal";
+import { ElemListEditModal } from "./ElemListEditModal";
+import { ElemListOptionMenu } from "./ElemListOptionMenu";
+import { IconThreeDots } from "./IconThreeDots";
 
 type Props = {
   companies?: Follows_Companies[]
@@ -13,6 +18,7 @@ type Props = {
   getAlternateRowColor: (index: number) => string
   handleNavigation: (link: string) => void
   tagsCount: any
+  listId: string
 }
 
 export const ElemCompanies: FC<Props> = ({
@@ -23,10 +29,88 @@ export const ElemCompanies: FC<Props> = ({
   getAlternateRowColor,
   handleNavigation,
   tagsCount,
+  listId,
 }) => {
+
+  const [selected, setSelected] = useState<number[]>([])
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+  const toggleCheckboxes = () => {
+    if (selected.length > 0 && companies?.length === selected.length) {
+      setSelected([]);
+    } else if ((companies?.length || 0) > selected.length) {
+      setSelected((prev) => {
+        const items = [...prev];
+        companies?.forEach(({ company }) => {
+          if (!items.includes(company?.id!))
+            items.push(company?.id!)
+        });
+        return items
+      })
+    }
+  }
+
+  const toggleCheckbox = (id: number) => (event: any) => {
+    event.stopPropagation()
+    event.preventDefault()
+
+    setSelected((prev) => {
+      const items = [...prev]
+
+      const index = items.indexOf(id)
+      if (index === -1) items.push(id)
+      else items.splice(index, 1)
+
+      return items
+    })
+  }
+
+  const isChecked = (id: number) => {
+    return selected.includes(id)
+  }
+
+  const isCheckedAll = () => {
+    return selected.length === companies?.length
+  }
+
+  const onDeleteList = async (id: number) => {
+    const deleteRes = await fetch(`/api/delete_list?listId=${id}`, {
+      method: 'DELETE',
+    })
+  }
+
+  const onSave = async (name: string) => {
+    const updateNameRes = await fetch(`/api/update_list`, {
+      method: 'PUT',
+      body: JSON.stringify({ id: listId, name })
+    })
+  }
+
   return (
     <div className="rounded-lg p-3 bg-white col-span-3">
-      <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Companies</h2>
+      <div className="inline-flex">
+        <h2 className="font-bold text-dark-500 text-xl capitalize mr-2">
+          {selectedListName}: Companies
+        </h2>
+
+        <ElemListOptionMenu onUpdateBtn={() => setShowEditModal(true)} onDeleteBtn={() => setShowDeleteModal(true)} />
+
+        <ElemListEditModal
+          onCloseModal={() => setShowEditModal(false)}
+          isOpen={showEditModal}
+          onSave={onSave}
+        />
+
+        <ElemDeleteListModal
+          onCloseModal={() => setShowDeleteModal(false)}
+          onDelete={onDeleteList}
+          isOpen={showDeleteModal}
+          listName={selectedListName}
+          deleteId={parseInt(listId)}
+        />
+
+      </div>
 
       <div className="w-full mt-1 flex justify-between">
         <div className="inline-flex items-center">
@@ -45,6 +129,11 @@ export const ElemCompanies: FC<Props> = ({
         <table className="w-full">
           <thead>
             <tr className="text-left text-sm border-b-slate-200">
+              {
+                isCustomList && <th className="pl-2 px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">
+                  <input type="checkbox" className="align-middle" onChange={toggleCheckboxes} checked={isCheckedAll()} />
+                </th>
+              }
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Name</th>
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Token/Value</th>
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Team Size</th>
@@ -56,12 +145,22 @@ export const ElemCompanies: FC<Props> = ({
           <tbody>
             {
               companies?.map(({ company }, index) => (
-                <tr 
-                key={company?.id} 
-                className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
-                onClick={() => handleNavigation(`/companies/${company?.slug}`)}
-                role="button"
+                <tr
+                  key={company?.id}
+                  className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
+                  onClick={() => handleNavigation(`/companies/${company?.slug}`)}
+                  role="button"
                 >
+                  {
+                    isCustomList && <td className="pl-2 px-1 py-2">
+                      <input
+                        type="checkbox"
+                        onClick={toggleCheckbox(company?.id!)}
+                        checked={isChecked(company?.id!)}
+                        onChange={() => { }}
+                      />
+                    </td>
+                  }
                   <td className="px-1 inline-flex items-center py-2">
                     <ElemPhoto
                       photo={company?.logo}
