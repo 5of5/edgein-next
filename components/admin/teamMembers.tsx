@@ -18,16 +18,38 @@ import {
   DateInput,
   BooleanInput,
   BooleanField,
+  AutocompleteInput
 } from "react-admin";
 import { functionChoicesTM, seniorityChoicesTM } from "../../utils/constants";
 
 const filters = [
-	<SearchInput key="search" source="function,seniority,title" resettable alwaysOn />
+  <TextInput key="search" source="function,seniority,title" label="Search in Function,Seniority,Title" resettable alwaysOn />,
+  <ReferenceInput source="company_id" reference="companies">
+    <AutocompleteInput
+      optionText={choice =>
+        `${choice.name}`
+      }
+    />
+  </ReferenceInput>,
+  <ReferenceInput source="person_id" reference="people">
+  <AutocompleteInput
+    optionText={choice =>
+      `${choice.name}`
+    }
+  />
+</ReferenceInput>
 ];
 
 export const TeamMembersList = () => (
-  <List filters={filters}>
+  <List filters={filters}
+  sx={{
+		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
+      justifyContent: 'flex-start'
+		}
+	   }}
+  >
     <Datagrid>
+      <EditButton />
       <ReferenceField label="Company" source="company_id" reference="companies">
         <TextField source="name" />
       </ReferenceField>
@@ -46,7 +68,6 @@ export const TeamMembersList = () => (
         choices={seniorityChoicesTM}
       />
       <TextField source="title" />
-      <EditButton />
     </Datagrid>
   </List>
 );
@@ -132,7 +153,7 @@ export const TeamMembersCreate = () => (
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
-      <BooleanInput   
+      <BooleanInput
         source="founder"
       />
       <SelectInput

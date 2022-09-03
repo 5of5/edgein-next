@@ -1,9 +1,18 @@
 {
 	"cSpell.words": [
+		"airtable",
+		"algoliasearch",
+		"codegen",
+		"dockerenv",
 		"edgein",
+		"hasura",
 		"headlessui",
+		"hotjar",
+		"instantsearch",
 		"loggedin",
+		"loggedout",
 		"overscroll",
+		"sindresorhus",
 		"vcfirm",
 		"vcfirms"
 	],

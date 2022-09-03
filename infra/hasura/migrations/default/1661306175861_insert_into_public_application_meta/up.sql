@@ -1,0 +1,1 @@
+INSERT INTO "public"."application_meta"("id", "key", "value", "error", "created_at", "updated_at") VALUES (1, E'sync_companies', E'1970-01-01T01:54:20.823+00:00', null, E'2022-08-24T01:56:15.829009+00:00', E'2022-08-24T01:56:15.829009+00:00');

@@ -26,9 +26,7 @@ import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
-import { ElemCompanyListModal } from "@/components/ElemCompanyListModal";
 import {companyLayerChoices} from "../utils/constants"
-import { oneOf } from "prop-types";
 
 type Props = {
   companiesCount: number;

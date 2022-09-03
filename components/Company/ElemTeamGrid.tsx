@@ -1,26 +1,55 @@
-import React from "react";
-import { Team_Members } from "../../graphql/types";
+import React, {useState} from "react";
+import { Team_Members, Maybe } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
+import { IconEditPencil } from "@/components/Icons";
+import { ElemFilterTags } from "@/components/ElemFilterTags";
 
 type Props = {
 	className?: string;
 	heading?: string;
 	people: Team_Members[];
+	showEdit?: boolean;
+	// tags?: Maybe<string>[] | null
 };
 
 export const ElemTeamGrid: React.FC<Props> = ({
 	className,
 	heading,
 	people,
+	showEdit
 }) => {
 	// Show founders first
-	const peopleFoundersFirst = people.sort(function (a: any, b: any) {
+	const allTags = [ "All Members" ,...people.map(people => people.function)]
+	const [selectedTag, setSelectedTag] = useState<string | null>("All Members")
+	const peopleFoundersFirst = (selectedTag === "All Members") ? people.sort(function (a: any, b: any) {
+		return b.founder - a.founder;
+	})
+	:
+	people.filter(p => p.function === selectedTag).sort(function (a: any, b: any) {
 		return b.founder - a.founder;
 	});
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
-			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-3 w-full">
+			{
+				heading && (
+					<div className="flex justify-between">
+						<h2 className="text-2xl font-bold">{heading}</h2>
+						{
+							(showEdit) && (
+								<span className="border rounded-full p-1 pl-2 pt-2">
+									<IconEditPencil
+										title="Edit"
+										className="h-6 w-6"
+									/>
+								</span>
+							)
+						}
+					</div>
+				)}
+				{(peopleFoundersFirst.map(people => people.function)) && (
+					<ElemFilterTags onClick={(tag, index) => setSelectedTag(tag)} selectedTag={selectedTag} className="dark-500" tags={allTags} />
+				)}
+			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-5 w-full">
 				{peopleFoundersFirst.map((teamMember) => {
 					return (
 						<React.Fragment key={teamMember.id}>
@@ -32,6 +61,9 @@ export const ElemTeamGrid: React.FC<Props> = ({
 									heading={teamMember.person.name}
 									founder={teamMember.founder}
 									text={teamMember.function}
+									linkedin={teamMember.person.linkedin}
+									personal_email={teamMember.person.personal_email}
+									work_email={teamMember.person.work_email}
 								/>
 							)}
 						</React.Fragment>
