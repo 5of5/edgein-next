@@ -105,6 +105,9 @@ module.exports = {
         '102': '1.02',
         '600': '6',
       },
+      opacity: {
+        '15': '.15',
+      },
       boxShadow: {
         'shadow': '0px 2px 4px rgba(0, 0, 0, 0.1)',
         'inner-top': 'inset 0px 2px 2px rgba(0, 0, 0, 0.1)',

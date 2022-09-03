@@ -80,7 +80,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 					<header className="relative py-2 text-center font-bold bg-primary-500 text-white">
 						{heading ? heading : "Feedback"}
 						<div
-							className="absolute top-0 left-2 bottom-0 flex items-center"
+							className="absolute top-0 right-2 bottom-0 flex items-center"
 							onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 						>
 							<IconMinus className="cursor-pointer rounded-md hover:bg-white/20 h-6 w-6" />
