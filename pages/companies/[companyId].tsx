@@ -175,8 +175,6 @@ const Company: NextPage<Props> = (props) => {
 						<ElemReactions
 							data={company}
 							handleReactionClick={handleReactionClick}
-							blackText
-							roundedFull
 						/>
 					</div>
 				</div>

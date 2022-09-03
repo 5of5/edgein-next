@@ -12,15 +12,14 @@ const Home: NextPage = () => {
 	return (
 		<>
 			<section className="relative">
-				<figure className="absolute -left-96 -top-44 z-0 bg-gray-100 rounded-full h-[30rem] w-[30rem] lg:h-[40rem] lg:w-[40rem]"></figure>
-				<FigureBlurredBg className="-bottom-16 sm:-bottom-44" />
+				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
 				<div className="relative z-10 max-w-6xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-28">
 					<div className="flex flex-col items-center lg:items-start lg:grid lg:grid-cols-5 gap-5 my-8">
 						<div className="col-span-3 flex flex-col justify-center">
 							<h1 className="font-bold text-5xl lg:text-6xl">
 								Web3-focused data intelligence for success.
 							</h1>
-							<h2 className="max-w-lg mt-5 text-xl text-dark-400">
+							<h2 className="max-w-lg mt-5 text-xl leading-relaxed text-slate-600">
 								EdgeIn combines highly refined automated processes, the
 								personalization of human intelligence, and the meaningful
 								utility of blockchain technologies, to give you an unparalleled
@@ -28,8 +27,8 @@ const Home: NextPage = () => {
 							</h2>
 							<div className="mt-8">
 								{user ? (
-									<ElemButton href="/companies" btn="primary">
-										Explore
+									<ElemButton href="/companies" btn="primary" arrow>
+										Start Exploring
 									</ElemButton>
 								) : (
 									<ElemButton href="/login" btn="primary" arrow>
@@ -58,7 +57,7 @@ const Home: NextPage = () => {
 							<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 								For founders
 							</h3>
-							<p className="mb-4 text-md text-dark-400 lg:text-lg">
+							<p className="mb-4 text-md text-slate-400 lg:text-lg">
 								We give you unrestricted access to the most reliable market data
 								at hyper-speeds to help you drive growth, make critical
 								connections, and gain competitor insights to stay one step ahead

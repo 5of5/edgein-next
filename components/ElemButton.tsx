@@ -17,7 +17,7 @@ type Props = {
 		| "ol-primary"
 		| "";
 	roundedFull?: boolean;
-	size?: "md" | "sm" | "xs" | "lg" | "";
+	size?: "xs" | "sm" | "md" | "lg" | "";
 	href?: string;
 	disabled?: boolean;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -62,15 +62,18 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	}
 
 	// button sizes
-	let sizeClasses = "px-4 py-1";
-	if (size === "md") {
-		sizeClasses = "px-5 py-1.5 min-w-32 justify-center";
+	let sizeClasses = "";
+
+	if (size === "xs") {
+		sizeClasses = "px-3 py-1 text-xs";
 	} else if (size === "sm") {
-		sizeClasses = "px-3 py-2 lg:px-2.5 lg:py-1.5 lg:text-sm";
-	} else if (size === "xs") {
-		sizeClasses = "px-2.5 py-1.5 text-sm lg:px-2 lg:py-1 lg:text-xs";
+		sizeClasses = "px-3.5 py-1.5 text-sm";
+	} else if (size === "md") {
+		sizeClasses = "px-4 py-1.5 text-base";
 	} else if (size === "lg") {
-		sizeClasses = "px-6 py-4 text-lg";
+		sizeClasses = "px-5 py-2 text-lg";
+	} else {
+		sizeClasses = "px-4 py-1.5";
 	}
 
 	btnClass += ` ${sizeClasses}`;
@@ -93,9 +96,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 			type="submit"
 		>
 			{loading && <IconSpinner className="animate-spin -ml-1 mr-3 h-5 w-5" />}
-			{arrowLeft && <IconArrowLeft className="h-3 w-6" />}
+			{arrowLeft && <IconArrowLeft className="h-3 w-4" />}
 			{children}
-			{arrow && <IconArrow className="h-3 w-6" />}
+			{arrow && <IconArrow className="h-3 w-4 ml-1" />}
 		</button>
 	);
 

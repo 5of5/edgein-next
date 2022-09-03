@@ -112,8 +112,6 @@ const VCFirm: NextPage<Props> = (props) => {
 						<ElemReactions
 							data={vcfirm}
 							handleReactionClick={handleReactionClick}
-							blackText
-							roundedFull
 						/>
 					</div>
 				</div>

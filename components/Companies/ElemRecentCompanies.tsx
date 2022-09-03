@@ -104,8 +104,8 @@ export const ElemRecentCompanies: FC<Props> = ({
 		};
 
 	return (
-		<div className={`${className}`}>
-			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
+		<div className={`${className} bg-white rounded-lg p-5`}>
+			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			{error ? (
 				<h4>Error loading companies</h4>
 			) : isLoading ? (
@@ -123,7 +123,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 				</>
 			) : (
 				companies && (
-					<ElemCarouselWrap className="mt-2 bg-white rounded-lg">
+					<ElemCarouselWrap>
 						{companies.map((company: any, index: number) => {
 							return (
 								<ElemCarouselCard
@@ -132,7 +132,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 								>
 									<a
 										href={`/companies/${company.slug}`}
-										className="z-0 flex flex-col w-full h-full p-5 transition-all bg-white border rounded-lg border-black/10 hover:scale-102 hover:shadow"
+										className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
 									>
 										<div className="flex">
 											<ElemPhoto
