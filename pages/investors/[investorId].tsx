@@ -48,45 +48,6 @@ const VCFirm: NextPage<Props> = (props) => {
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	const activityTimeline = [
-		{
-			title: "IDEO CoLab Ventures invested in Cometh’s 10M Seed with other investors.",
-			date: "May 4, 2022"
-		},
-		{
-			title: "IDEO CoLab Ventures invested in Syndicate Prototol’s $20M Series A with other investors.",
-			date: "Aug 30, 2021"
-		},
-		{
-			title: "Hashflow raised $3.2M / Venture Round from IDEO CoLab Ventures and other investors",
-			date: "Apr 28, 2021"
-		},
-		{
-			title: "Syndicate Protocol raised $1M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Mar 16, 2021"
-		},
-		{
-			title: "Boardroom Labs raised $2.2M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Oct 12, 2020"
-		},
-		{
-			title: "Chia raised $5M / Series A from IDEO CoLab Ventures and other investors",
-			date: "Aug 10, 2020"
-		},
-		{
-			title: "Optimist raised $3.5M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Jan 14, 2020"
-		},
-		{
-			title: "Messari raised $4M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Nov 12, 2019"
-		},
-		{
-			title: "Chia raised $3.395M / Pre-seed from IDEO CoLab Ventures and other investors",
-			date: "Feb 28, 2018"
-		}
-	]
-
 	const {
 		data: vcFirmData,
 		error,
@@ -97,7 +58,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	});
 
 	useEffect(() => {
-		console.log("vcFirmData =", vcFirmData)
+		
 		if (vcFirmData)
 			setVcfirm(vcFirmData ?.vc_firms[0] as Vc_Firms)
 	}, [vcFirmData]);
@@ -126,9 +87,9 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const scrollToSection = (tab: number) => {
-		if (tab === 1) {
+		if (tab === 1 && teamRef) {
 			window.scrollTo(0, teamRef.current.offsetTop - 30);
-		}else if (tab == 2) {
+		}else if (tab == 2 && investmentRef) {
 			window.scrollTo(0, investmentRef.current.offsetTop - 30);
 		}
 	};
