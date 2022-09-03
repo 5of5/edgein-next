@@ -79,6 +79,12 @@ const purple = {
   50: "#5E41FE"
 }
 
+const slate = {
+  50: "#F8FAFC",
+  200: "#E2E8F0",
+  600: "#475569"
+}
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -100,6 +106,7 @@ module.exports = {
         gray,
         blue,
         //yellow,
+        slate,
         transparent: 'transparent',
         purple
       },

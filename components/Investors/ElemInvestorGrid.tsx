@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { Team_Members, Maybe } from "../../graphql/types";
+import { Team_Members, Maybe, Investors } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
 import { ElemFilterTags } from "@/components/ElemFilterTags";
@@ -7,12 +7,12 @@ import { ElemFilterTags } from "@/components/ElemFilterTags";
 type Props = {
 	className?: string;
 	heading?: string;
-	people: Team_Members[];
+	people: Investors[];
 	showEdit?: boolean;
 	// tags?: Maybe<string>[] | null
 };
 
-export const ElemTeamGrid: React.FC<Props> = ({
+export const ElemInvestorGrid: React.FC<Props> = ({
 	className,
 	heading,
 	people,
@@ -59,7 +59,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 									href={`/people/${teamMember.person.slug}`}
 									photo={teamMember.person.picture}
 									heading={teamMember.person.name}
-									founder={teamMember.founder}
+									//founder={teamMember.founder}
 									text={teamMember.function}
 									linkedin={teamMember.person.linkedin}
 									personal_email={teamMember.person.personal_email}

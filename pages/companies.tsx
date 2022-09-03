@@ -19,14 +19,12 @@ import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
-	useGetCompaniesQuery,
-	useInsertActionMutation,
+	useGetCompaniesQuery
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
-import { ElemCompanyListModal } from "@/components/ElemCompanyListModal";
 
 type Props = {
 	companiesCount: number;

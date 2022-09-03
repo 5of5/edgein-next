@@ -10,6 +10,10 @@ import {
 	IconBriefcase,
 	IconRole,
 	IconEmail,
+	IconLocation,
+	IconTwitter,
+	IconDiscord,
+	IconGlassdoor
 } from "./Icons";
 
 import {
@@ -25,11 +29,15 @@ type Props = {
 	whitePaper?: string | null;
 	totalEmployees?: number;
 	yearFounded?: string | null;
+	location?: string | null;
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
 	linkedIn?: string | null;
 	github?: string | null;
+	twitter?: string | null;
+	discord?: string | null;
+	glassdoor?: string | null;
 	careerPage?: string | null;
 };
 
@@ -47,6 +55,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	linkedIn,
 	github,
 	careerPage,
+	location,
+	twitter,
+	discord,
+	glassdoor
 }) => {
 	const websiteName = website
 		?.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")
@@ -56,7 +68,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 
-			<div className="inline-flex flex-wrap items-center gap-x-6 gap-y-2 mt-2">
+			<div className="inline-flex flex-col gap-x-6 gap-y-2 mt-2 py-1">
 				{website && (
 					<a
 						href={website}
@@ -69,23 +81,58 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							title={website}
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
-						{websiteName}
+						<span className='text-primary-500'>{websiteName}</span>
 					</a>
 				)}
 				{totalFundingRaised && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1 text-slate-600">
 						<IconCash
 							title="Total Funding Raised"
-							className="h-6 w-6 mr-1 text-primary-500"
+							className="h-6 w-6 mr-1 "
 						/>
-						<span className="font-bold mr-1">
+						<span className="text-slate-600 mr-1">
 							{convertToInternationalCurrencySystem(Number(totalFundingRaised))}
 						</span>
 						Total Funding Raised
 					</div>
 				)}
+				{yearFounded && (
+					<div className="inline-flex py-1">
+						<IconFlag
+							title="Year Founded"
+							className="h-6 w-6 mr-1 text-slate-600"
+						/>
+						<div className="text-slate-600">
+							<span className="mr-1">{yearFounded}</span>
+							Founded
+						</div>
+					</div>
+				)}
+				{location && (
+					<div className="inline-flex">
+						<IconLocation
+							title="Location"
+							className="h-6 w-6"
+						/>
+							<span className="text-slate-600">{location}</span>
+					</div>
+				)}
+				{totalEmployees && (
+					<div className="inline-flex py-1">
+						<IconUsers
+							title="Total Employee Count"
+							className="h-6 w-6 mr-1"
+						/>
+						<div className="text-slate-600">
+							<span className="text-slate-600 mr-1">
+								{numberWithCommas(totalEmployees)}
+							</span>
+							Employees
+						</div>
+					</div>
+				)}
 				{whitePaper && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<a
 							href={whitePaper}
 							target="_blank"
@@ -94,68 +141,37 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						>
 							<IconDocumentDownload
 								title="White Paper"
-								className="h-6 w-6 mr-1 text-primary-500"
+								className="h-6 w-6 mr-1"
 							/>
-							<span>White Paper</span>
+							<span className='text-primary-500'>White Paper</span>
 						</a>
 					</div>
 				)}
-
-				{totalEmployees && (
-					<div className="inline-flex py-3">
-						<IconUsers
-							title="Total Employee Count"
-							className="h-6 w-6 mr-1 text-primary-500"
-						/>
-						<div>
-							<span className="font-bold mr-1">
-								{numberWithCommas(totalEmployees)}
-							</span>
-							Employees
-						</div>
-					</div>
-				)}
-
 				{careerPage && (
 					<a
 						href={careerPage}
 						target="_blank"
-						className="inline-flex py-3 hover:opacity-70"
+						className="inline-flex py-1 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconBriefcase
 							title="Careers"
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
-						<span>Careers</span>
+						<span className='text-primary-500'>Careers</span>
 					</a>
 				)}
-
-				{yearFounded && (
-					<div className="inline-flex py-3">
-						<IconFlag
-							title="Year Founded"
-							className="h-6 w-6 mr-1 text-primary-500"
-						/>
-						<div>
-							<span className="font-bold mr-1">{yearFounded}</span>
-							Founded
-						</div>
-					</div>
-				)}
-
 				{roles && roles.length > 0 && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
 						<div>{roles}</div>
 					</div>
 				)}
-
 				{investmentsLength > 0 && (
-					<a href="#investments" className="inline-flex py-3 hover:opacity-70">
+					<a href="#investments" className="inline-flex py-1 hover:opacity-70 text-slate-600">
 						<IconCash
 							title="Investments"
-							className="h-6 w-6 mr-1 text-primary-500"
+							className="h-6 w-6 mr-1 text-slate-600"
 						/>
 						<span className="font-bold mr-1">{investmentsLength}</span>
 						Investment{investmentsLength > 1 && "s"}
@@ -163,7 +179,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				)}
 
 				{emails && emails.length > 0 && (
-					<div className="inline-flex py-3">
+					<div className="inline-flex py-1">
 						<IconEmail
 							title="Email"
 							className="h-6 w-6 mr-1 text-primary-500"
@@ -186,14 +202,14 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<a
 						href={linkedIn}
 						target="_blank"
-						className="inline-flex py-3 hover:opacity-70"
+						className="inline-flex hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconLinkedIn
 							title="LinkedIn"
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
-						<span>LinkedIn</span>
+						<span className='text-primary-500'>LinkedIn</span>
 					</a>
 				)}
 
@@ -201,14 +217,56 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					<a
 						href={github}
 						target="_blank"
-						className="inline-flex py-3 hover:opacity-70"
+						className="inline-flex py-1 hover:opacity-70"
 						rel="noopener noreferrer"
 					>
 						<IconGithub
 							title="Github"
 							className="h-6 w-6 mr-1 text-primary-500"
 						/>
-						<span>Github</span>
+						<span className='text-primary-500'>Github</span>
+					</a>
+				)}
+				{discord && (
+					<a
+						href={discord}
+						target="_blank"
+						className="inline-flex py-1 hover:opacity-70"
+						rel="noopener noreferrer"
+					>
+						<IconDiscord
+							title="Discord"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<span className='text-primary-500'>Discord</span>
+					</a>
+				)}
+				{glassdoor && (
+					<a
+						href={glassdoor}
+						target="_blank"
+						className="inline-flex py-1 hover:opacity-70"
+						rel="noopener noreferrer"
+					>
+						<IconGlassdoor
+							title="Glassdoor"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<span className='text-primary-500'>Glassdoor</span>
+					</a>
+				)}
+				{twitter && (
+					<a
+						href={twitter}
+						target="_blank"
+						className="inline-flex py-1 hover:opacity-70"
+						rel="noopener noreferrer"
+					>
+						<IconTwitter
+							title="Twitter"
+							className="h-6 w-6 mr-1 text-primary-500"
+						/>
+						<span className='text-primary-500'>Twitter</span>
 					</a>
 				)}
 			</div>
