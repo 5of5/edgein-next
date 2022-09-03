@@ -159,9 +159,9 @@ export const ElemCompanies: FC<Props> = ({
                     isCustomList && <td className="pl-2 px-1 py-2">
                       <input
                         type="checkbox"
-                        onChange={toggleCheckbox(id)}
+                        onChange={toggleCheckbox(id as number)}
                         onClick={(e) => e.stopPropagation()}
-                        checked={isChecked(id)}
+                        checked={isChecked(id as number)}
                       />
                     </td>
                   }

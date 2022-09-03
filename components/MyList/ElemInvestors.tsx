@@ -40,8 +40,8 @@ export const ElemInvestors: FC<Props> = ({
       setSelected((prev) => {
         const items = [...prev];
         vcfirms?.forEach(({ id }) => {
-          if (!items.includes(id))
-            items.push(id)
+          if (!items.includes(id as number))
+            items.push(id as number)
         });
         return items
       })
@@ -112,7 +112,7 @@ export const ElemInvestors: FC<Props> = ({
                         type="checkbox"
                         onChange={toggleCheckbox(vc_firm?.id!)}
                         onClick={(e) => e.stopPropagation()}
-                        checked={isChecked(id)}
+                        checked={isChecked(id as number)}
                       />
                     </td>
                   }
