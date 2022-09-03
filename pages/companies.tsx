@@ -27,6 +27,8 @@ import { Pagination } from "../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
 import { ElemCompanyListModal } from "@/components/ElemCompanyListModal";
+import {companyLayerChoices} from "../utils/constants"
+import { oneOf } from "prop-types";
 
 type Props = {
   companiesCount: number;
@@ -194,19 +196,19 @@ const Companies: NextPage<Props> = ({
           subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
         ></ElemHeading>
 
-        <div className="relative py-20 z-10 rounded-t-xl lg:rounded-t-2xl">
+        <div className="relative pb-20 z-10 rounded-t-xl lg:rounded-t-2xl">
           <div className="max-w-6xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
             {companies && (
               <ElemRecentCompanies
                 onUpdateOfCompany={onUpdateOfCompany}
-                className="bg-white border rounded-lg"
+                className="bg-white rounded-lg shadow-sm hover:shadow"
                 heading="Recently Discovered"
               />
             )}
           </div>
 
-          <div className="pl-8 pr-7 max-w-6xl relative left-24">
-            <div className="max-w-6xl mx-auto bg-white border mt-4 rounded-lg mx-auto sm:px-6 lg:px-10 lg:py-10 lg:min-h-[40vh]">
+          <div className="max-w-6xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+            <div className="max-w-6xl mx-auto bg-white mt-4 rounded-lg mx-auto sm:px-6 lg:py-10 lg:min-h-[40vh] shadow-sm hover:shadow">
               <h2 className="text-xl relative bottom-4 font-bold">
                 All Companies
               </h2>
@@ -254,7 +256,7 @@ const Companies: NextPage<Props> = ({
                     ) : (
                       <div className="flex items-center">
                         <IconList className="w-5 h-5 mr-1" />
-                        List
+                        Table
                       </div>
                     )}
                   </div>
@@ -366,46 +368,18 @@ export interface NumericFilter {
   rangeEnd: number;
 }
 
+const layerFilterValues = companyLayerChoices.map((option) => {return {
+  title: option.id,
+  value: option.id,
+  description: option.name
+}})
+
 const LayersFilters: TextFilter[] = [
   {
     title: "All Layers",
     value: "",
   },
-  {
-    title: "Layer 0",
-    value: "Layer 0",
-    description: "Native Code",
-  },
-  {
-    title: "Layer 1",
-    value: "Layer 1",
-    description: "Programmable Blockchains / Networks",
-  },
-  {
-    title: "Layer 2",
-    value: "Layer 2",
-    description: "Nodes / Node Providers / Data Platforms",
-  },
-  {
-    title: "Layer 3",
-    value: "Layer 3",
-    description: "API's / API Providers / Systems",
-  },
-  {
-    title: "Layer 4",
-    value: "Layer 4",
-    description: "Decentralized Platforms / Contract/Modeling",
-  },
-  {
-    title: "Layer 5",
-    value: "Layer 5",
-    description: "Applications",
-  },
-  {
-    title: "Layer 6",
-    value: "Layer 6",
-    description: "Interoperable Digital Assets / NFT's",
-  },
+  ...layerFilterValues
 ];
 // Amount Raised Filter
 const AmountRaisedFilters: NumericFilter[] = [

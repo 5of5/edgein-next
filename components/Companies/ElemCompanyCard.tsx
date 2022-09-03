@@ -55,7 +55,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 			<a
 				className={`flex flex-col ${
 					toggleViewMode ? "md:flex-row md:items-center" : ""
-				} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg transition-all hover:scale-102 hover:shadow md:h-full`}
+				} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg transition-all hover:scale-102 hover:shadow md:h-full border border-black/10`}
 			>
 				<div
 					className={`flex shrink-0 mb-4 ${
@@ -71,38 +71,38 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 						imgAlt={companyData.name}
 					/>
 
-					<div className="flex items-center justify-center pl-2 md:overflow-hidden">
+					<div className=" items-center justify-center pl-2 md:overflow-hidden">
 						<h3
 							className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl"
 							title={companyData.name ?? ""}
 						>
 							{companyData.name}
 						</h3>
+						{companyData.coin && (
+							<ElemTooltip
+								content={`Token: ${companyData.coin.ticker}`}
+								className="inline-block py-1 ml-1  whitespace-nowrap text-dark-400"
+							>
+								<span className="text-sm uppercase leading-sm">
+									{companyData.coin.ticker}
+								</span>
+							</ElemTooltip>
+						)}
 					</div>
-					{companyData.coin && (
-						<ElemTooltip
-							content={`Token: ${companyData.coin.ticker}`}
-							className="self-center inline-block px-2 py-1 ml-1 align-middle rounded-md whitespace-nowrap text-dark-400 bg-gray-50 items-end"
-						>
-							<span className="text-sm font-bold uppercase leading-sm">
-								{companyData.coin.ticker}
-							</span>
-						</ElemTooltip>
-					)}
 				</div>
 
 				{companyData.layer && (
 					<div
 						className={`${getLayerClass(
 							companyData.layer
-						)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mb-4`}
+						)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mb-4 ${toggleViewMode && "mt-4"}`}
 					>
 						{companyData.layer}
 					</div>
 				)}
 
 				{companyData.overview && (
-					<div className={`grow ${toggleViewMode && "max-w-sm mr-4"}`}>
+					<div className={`grow ${toggleViewMode && "max-w-sm mr-4 ml-5"}`}>
 						<div className="text-gray-400 line-clamp-3">
 							{companyData.overview}
 						</div>
@@ -132,7 +132,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				/>
 				</div> */}
 
-				<div className="flex items-center justify-between mt-4">
+				<div className="flex items-center justify-between mt-4 gap-x-5">
 					<ElemReactions
 						data={companyData}
 						handleReactionClick={handleReactionClick}

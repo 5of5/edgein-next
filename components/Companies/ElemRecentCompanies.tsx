@@ -129,7 +129,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 							return (
 								<ElemCarouselCard
 									key={index}
-									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+									className={`px-3 pt-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
 									<a
 										href={`/companies/${company.slug}`}
