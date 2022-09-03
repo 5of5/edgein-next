@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from "next";
+import { NextPage, GetStaticProps } from "next";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
@@ -31,7 +31,7 @@ type Props = {
 	sortRounds: Investment_Rounds[];
 };
 
-const Company: NextPage<Props> = (props) => {
+const Company: NextPage<Props> = (props: Props) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
