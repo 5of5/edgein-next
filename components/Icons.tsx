@@ -786,3 +786,20 @@ export const IconSave: React.FC<IconProps> = ({ className, title }) => {
 		</svg>
 	);
 };
+
+export const IconSaveToList: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			className={className}
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<title>{title ? title : "Save To List"}</title>
+			<path
+				d="M22 13H18V17H16V13H12V11H16V7H18V11H22V13ZM14 7H2V8H14V7ZM2 12H10V11H2V12ZM2 16H10V15H2V16Z"
+				fill="currentColor"
+			/>
+		</svg>
+	);
+};

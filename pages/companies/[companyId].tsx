@@ -91,20 +91,28 @@ const Company: NextPage<Props> = (props) => {
 	}
 
 	const handleReactionClick =
-		(sentiment: string) =>
-			async (event: React.MouseEvent<HTMLButtonElement>) => {
-				const newSentiment: any = await reactOnSentiment({
-					company: company.id,
-					sentiment,
-					pathname: location.pathname,
-				});
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			const newSentiment: any = await reactOnSentiment({
+				company: company.id,
+				sentiment,
+				pathname: location.pathname,
+			});
 
-				setCompany((prev) => {
-					const newFollows = getNewFollows(sentiment) as Follows_Companies;
-					prev.follows.push(newFollows);
-					return { ...prev, sentiment: newSentiment };
-				});
-			};
+			setCompany((prev) => {
+				const newFollows = getNewFollows(sentiment) as Follows_Companies;
+				if (!alreadyReacted) prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
+				return { ...prev, sentiment: newSentiment };
+			});
+		};
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -330,13 +338,13 @@ const Company: NextPage<Props> = (props) => {
 			)}
 
 			{/* <ElemCohort className="mt-12" heading="Similar Companies" /> */}
-			<div className="mt-10 rounded-xl bg-white shadow-md">
+			{/* <div className="mt-10 rounded-xl bg-white shadow-md">
 				<ElemRecentCompanies
 					onUpdateOfCompany={() => { }}
 					//className="mt-12 px-5 bg-white shadow-lg border rounded-lg border-dark-500/10"
 					heading="Similar Companies"
 				/>
-			</div>
+			</div> */}
 		</div>
 	);
 };
@@ -347,9 +355,9 @@ export async function getStaticPaths() {
 	);
 
 	return {
-		paths: companies ?.companies
+		paths: companies?.companies
 			?.filter((comp) => comp.slug)
-				.map((comp) => ({ params: { companyId: comp.slug } })),
+			.map((comp) => ({ params: { companyId: comp.slug } })),
 		fallback: true, // false or 'blocking'
 	};
 }
@@ -357,10 +365,10 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params ?.companyId, current_user: 0 }
+		{ slug: context.params?.companyId, current_user: 0 }
 	);
 
-	if (!companies ?.companies[0]) {
+	if (!companies?.companies[0]) {
 		return {
 			notFound: true,
 		};

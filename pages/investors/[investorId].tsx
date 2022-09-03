@@ -9,6 +9,7 @@ import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -25,18 +26,18 @@ import {
 	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
-
+import { remove } from "lodash";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
-	const { user } = useAuth()
+	const { user } = useAuth();
 	const router = useRouter();
 	const { investorId } = router.query;
 	const goBack = () => router.back();
@@ -48,87 +49,62 @@ const VCFirm: NextPage<Props> = (props) => {
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	const activityTimeline = [
-		{
-			title: "IDEO CoLab Ventures invested in Cometh’s 10M Seed with other investors.",
-			date: "May 4, 2022"
-		},
-		{
-			title: "IDEO CoLab Ventures invested in Syndicate Prototol’s $20M Series A with other investors.",
-			date: "Aug 30, 2021"
-		},
-		{
-			title: "Hashflow raised $3.2M / Venture Round from IDEO CoLab Ventures and other investors",
-			date: "Apr 28, 2021"
-		},
-		{
-			title: "Syndicate Protocol raised $1M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Mar 16, 2021"
-		},
-		{
-			title: "Boardroom Labs raised $2.2M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Oct 12, 2020"
-		},
-		{
-			title: "Chia raised $5M / Series A from IDEO CoLab Ventures and other investors",
-			date: "Aug 10, 2020"
-		},
-		{
-			title: "Optimist raised $3.5M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Jan 14, 2020"
-		},
-		{
-			title: "Messari raised $4M / Seed from IDEO CoLab Ventures and other investors",
-			date: "Nov 12, 2019"
-		},
-		{
-			title: "Chia raised $3.395M / Pre-seed from IDEO CoLab Ventures and other investors",
-			date: "Feb 28, 2018"
-		}
-	]
-
 	const {
 		data: vcFirmData,
 		error,
 		isLoading,
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
-		current_user: user ?.id ?? 0
+		current_user: user?.id ?? 0,
 	});
 
 	useEffect(() => {
-		console.log("vcFirmData =", vcFirmData)
-		if (vcFirmData)
-			setVcfirm(vcFirmData ?.vc_firms[0] as Vc_Firms)
+		if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
 	}, [vcFirmData]);
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => {
+	const handleReactionClick =
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			event.stopPropagation();
+			event.preventDefault();
 
-		const newSentiment = await reactOnSentiment({
-			vcfirm: vcfirm.id,
-			sentiment,
-			pathname: location.pathname
-		});
+			const newSentiment = await reactOnSentiment({
+				vcfirm: vcfirm.id,
+				sentiment,
+				pathname: location.pathname,
+			});
 
-		setVcfirm((prev) => {
-			const newFollows = getNewFollows(sentiment, 'vcfirm') as Follows_Vc_Firms
-			prev.follows.push(newFollows);
-			return { ...prev, sentiment: newSentiment }
-		});
-	}
+			setVcfirm((prev: Vc_Firms) => {
+				const newFollows = getNewFollows(
+					sentiment,
+					"vcfirm"
+				) as Follows_Vc_Firms;
+				if (!alreadyReacted) prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
+				return { ...prev, sentiment: newSentiment };
+			});
+			
+		};
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
 	}
 
 	const scrollToSection = (tab: number) => {
-		if (tab === 1) {
+		if (tab === 1 && teamRef) {
 			window.scrollTo(0, teamRef.current.offsetTop - 30);
-		}else if (tab == 2) {
+		}else if (tab == 2 && investmentRef) {
 			window.scrollTo(0, investmentRef.current.offsetTop - 30);
 		}
 	};
@@ -169,13 +145,15 @@ const VCFirm: NextPage<Props> = (props) => {
 						linkedIn={vcfirm.linkedin}
 						investmentsLength={vcfirm.investments ?.length}
 					/> */}
-					<div className="flex flex-col grid-cols-8 gap-4 mt-4 md:grid">
+					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions
 							data={vcfirm}
 							handleReactionClick={handleReactionClick}
-							blackText
-							roundedFull
 						/>
+						<ElemSaveToList
+						follows={vcfirm?.follows}
+						onCreateNew={handleReactionClick}
+					/>
 					</div>
 				</div>
 			</div>
