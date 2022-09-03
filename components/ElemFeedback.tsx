@@ -41,17 +41,17 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 	const [submit, submitting] = useFormspark({
 		formId: "mZbXY8MV",
 	});
-	const [name, setName] = useState("");
+	//const [name, setName] = useState("");
 	const [message, setMessage] = useState("");
 
 	const onSubmit = async (e: { preventDefault: () => void }) => {
 		if (e) e.preventDefault();
 		await submit({
-			name: name,
+			//name: name,
 			message: message,
 			page: window.location.href,
 			_email: {
-				from: name,
+				//from: name,
 				subject: "Feedback - EdgeIn",
 				template: {
 					title: false,
@@ -63,19 +63,19 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 		setFeedbackSent(true);
 		setTimeout(() => {
 			setFeedbackSent(false);
-			setName("");
+			//setName("");
 			setMessage("");
 			setToggleFeedbackForm(false);
 		}, 3000);
 	};
 
 	return (
-		<div className={`${className} fixed z-50 right-4 bottom-4`}>
+		<div className={`${className} fixed z-50 left-4 bottom-4`}>
 			{toggleFeedbackForm && (
 				<div
 					className={`${
 						toggleFeedbackForm && "animate-fade-in-up"
-					} absolute right-4 bottom-6 z-30 w-96 max-w-xs bg-white shadow-xl rounded-xl overflow-hidden`}
+					} absolute left-4 bottom-6 z-30 w-96 max-w-xs bg-white shadow-xl rounded-xl overflow-hidden`}
 				>
 					<header className="relative py-2 text-center font-bold bg-primary-500 text-white">
 						{heading ? heading : "Feedback"}
@@ -96,14 +96,14 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 								className="relative grid grid-cols-1 gap-y-4 m-4 overflow-y-scroll sm:grid-cols-2 sm:gap-x-8"
 								onSubmit={onSubmit}
 							>
-								<div className="group mb-2 sm:col-span-2">
+								{/* <div className="group mb-2 sm:col-span-2">
 									<InputText
 										label="Name (optional)"
 										name="name"
 										value={name}
 										onChange={(e) => setName(e.target.value)}
 									/>
-								</div>
+								</div> */}
 								<div className="group mb-2 sm:col-span-2">
 									<InputTextarea
 										label="What missing data would you like to see?"
@@ -126,7 +126,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 			)}
 
 			<ElemButton
-				className="absolute right-4 bottom-4 shadow-lg"
+				className="absolute left-4 bottom-4 shadow-lg"
 				btn="white"
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>
