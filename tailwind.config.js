@@ -60,18 +60,18 @@ const blue = {
 }
 
 
-const yellow = {
-  50: "#FEFBEB",
-  100: "#FEF8DD",
-  200: "#FCF0B5",
-  300: "#FBE993",
-  400: "#F9E371",
-  500: "#F8DA4B",
-  600: "#F6CF0E",
-  700: "#BB9D07",
-  800: "#7B6705",
-  900: "#403602"
-}
+// const yellow = {
+//   50: "#FEFBEB",
+//   100: "#FEF8DD",
+//   200: "#FCF0B5",
+//   300: "#FBE993",
+//   400: "#F9E371",
+//   500: "#F8DA4B",
+//   600: "#F6CF0E",
+//   700: "#BB9D07",
+//   800: "#7B6705",
+//   900: "#403602"
+// }
 
 module.exports = {
   content: [
@@ -92,7 +92,7 @@ module.exports = {
         dark,
         gray,
         blue,
-        yellow,
+        //yellow,
         transparent: 'transparent',
       },
       borderRadius: {
@@ -104,6 +104,10 @@ module.exports = {
       scale: {
         '102': '1.02',
         '600': '6',
+      },
+      boxShadow: {
+        'shadow': '0px 2px 4px rgba(0, 0, 0, 0.1)',
+        'inner-top': 'inset 0px 2px 2px rgba(0, 0, 0, 0.1)',
       },
       animation: {
         //blob: 'blob 10s infinite',
