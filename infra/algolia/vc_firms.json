@@ -5,8 +5,8 @@
     "hitsPerPage": 20,
     "maxValuesPerFacet": 100,
     "searchableAttributes": [
-      "vc_firm_name",
-      "vc_firm_slug"
+      "name",
+      "slug"
     ],
     "numericAttributesToIndex": null,
     "attributesToRetrieve": null,
@@ -43,5 +43,3 @@
   "rules": [],
   "synonyms": []
 }
-
-    
