@@ -197,7 +197,7 @@ const Companies: NextPage<Props> = ({
         ></ElemHeading>
 
         <div className="relative pb-20 z-10 rounded-t-xl lg:rounded-t-2xl">
-          <div className="max-w-6xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+          <div className="max-w-7xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
             {companies && (
               <ElemRecentCompanies
                 onUpdateOfCompany={onUpdateOfCompany}
@@ -207,8 +207,8 @@ const Companies: NextPage<Props> = ({
             )}
           </div>
 
-          <div className="max-w-6xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
-            <div className="max-w-6xl mx-auto bg-white mt-4 rounded-lg mx-auto sm:px-6 lg:py-10 lg:min-h-[40vh] shadow-sm hover:shadow">
+          <div className="max-w-7xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+            <div className="max-w-7xl mx-auto bg-white mt-4 rounded-lg mx-auto sm:px-6 lg:py-10 lg:min-h-[40vh] shadow-sm hover:shadow">
               <h2 className="text-xl relative bottom-4 font-bold">
                 All Companies
               </h2>
