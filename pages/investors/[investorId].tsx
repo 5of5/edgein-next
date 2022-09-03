@@ -260,7 +260,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Money Raised" },
 						]}
 					>
-						{sortedInvestmentRounds.map((theRound, index: number) => {
+						{sortedInvestmentRounds.map((theRound: Investment_Rounds, index: number) => {
 							if (!theRound) {
 								return;
 							}
