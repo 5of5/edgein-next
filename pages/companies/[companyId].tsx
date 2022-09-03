@@ -1,5 +1,5 @@
-import type { NextPage, GetStaticProps } from "next";
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
+import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -39,7 +39,7 @@ type Props = {
 	sortRounds: Investment_Rounds[];
 };
 
-const Company: NextPage<Props> = (props) => {
+const Company: NextPage<Props> = (props: Props) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;

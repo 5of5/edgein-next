@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, MutableRefObject } from "react";
-import type { NextPage, GetStaticProps } from "next";
+import { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
@@ -195,7 +195,7 @@ const VCFirm: NextPage<Props> = (props) => {
 						<div className="flex p-4 flex-col border rounded-lg py-10">
 							{
 								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
-									sortedInvestmentRounds.map((activity, index) => {
+									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
 										return (
 											<div key={index} className="flex inline-flex w-full mt-2">
 												<div className="mt-1">
@@ -260,7 +260,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Money Raised" },
 						]}
 					>
-						{sortedInvestmentRounds.map((theRound, index: number) => {
+						{sortedInvestmentRounds.map((theRound: Investment_Rounds, index: number) => {
 							if (!theRound) {
 								return;
 							}
@@ -336,7 +336,7 @@ export async function getStaticPaths() {
 	);
 
 	return {
-		paths: vcFirms ?.vc_firms
+		paths: vcFirms?.vc_firms
 			?.filter((vcfirm) => vcfirm.slug)
 				.map((vcfirm) => ({
 					params: { investorId: vcfirm.slug },
@@ -348,10 +348,10 @@ export async function getStaticPaths() {
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
-		{ slug: context.params ?.investorId, current_user: 0 }
+		{ slug: context.params?.investorId, current_user: 0 }
 	);
 
-	if (!vc_firms ?.vc_firms[0]) {
+	if (!vc_firms?.vc_firms[0]) {
 		return {
 			notFound: true,
 		};
@@ -370,8 +370,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		.sort((a, b) => {
 			const distantFuture = new Date(8640000000000000);
 
-			let dateA = a ?.round_date ? new Date(a.round_date) : distantFuture;
-			let dateB = b ?.round_date ? new Date(b.round_date) : distantFuture;
+			let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+			let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
 			return dateA.getTime() - dateB.getTime();
 		})
 		.reverse();
