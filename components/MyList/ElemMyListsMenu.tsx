@@ -16,7 +16,7 @@ type Props = {
   setSelectedListName?: Function
 }
 
-export const MyLists: FC<Props> = ({ user, setIsCustom, setSelectedListName }) => {
+export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListName }) => {
 
   const router = useRouter();
   const [hotId, setHotId] = useState(0);

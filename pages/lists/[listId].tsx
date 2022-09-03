@@ -1,6 +1,6 @@
 import { ElemCompanies } from "@/components/MyList/ElemCompanies";
 import { ElemInvestors } from "@/components/MyList/ElemInvestors";
-import { MyLists } from "@/components/MyList/MyLists";
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { IconCompanyList } from "@/components/reactions/IconCompanyList";
 import { IconCrap } from "@/components/reactions/IconCrap";
 import { IconHot } from "@/components/reactions/IconHot";
@@ -70,7 +70,7 @@ const MyList: NextPage<Props> = ({
   return (
     <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
       <div className="grid grid-cols-4 gap-4">
-        <MyLists
+        <ElemMyListsMenu
           user={user}
           setIsCustom={setIsCustomList}
           setSelectedListName={setSelectedListName}

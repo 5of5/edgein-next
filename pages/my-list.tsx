@@ -1,4 +1,4 @@
-import { MyLists } from "@/components/MyList/MyLists";
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { NextPage } from "next";
 
@@ -10,7 +10,7 @@ const MyList: NextPage<Props> = ({ }) => {
   return (
     <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
       <div className="grid grid-cols-4 gap-4">
-        <MyLists
+        <ElemMyListsMenu
           user={user}
         />
       </div>
