@@ -1,5 +1,6 @@
 import { Follows_Vc_Firms, GetCompaniesByListIdQuery, GetVcFirmsByListIdQuery } from "@/graphql/types";
-import { FC } from "react";
+import { useRouter } from "next/router";
+import { FC, useCallback, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
 import { IconHot } from "../reactions/IconHot";
@@ -20,6 +21,62 @@ export const ElemInvestors: FC<Props> = ({
   getAlternateRowColor,
   handleNavigation,
 }) => {
+
+  const router = useRouter()
+  const [selected, setSelected] = useState<number[]>([])
+
+  const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
+
+  const toggleCheckboxes = (clearAll: boolean = false) => () => {
+
+    if (clearAll) {
+      setSelected([])
+      return;
+    }
+
+    if (selected.length > 0 && vcfirms?.length === selected.length) {
+      setSelected([]);
+    } else if ((vcfirms?.length || 0) > selected.length) {
+      setSelected((prev) => {
+        const items = [...prev];
+        vcfirms?.forEach(({ id }) => {
+          if (!items.includes(id))
+            items.push(id)
+        });
+        return items
+      })
+    }
+  }
+
+  const toggleCheckbox = (id: number) => () => {
+
+    setSelected((prev) => {
+      const items = [...prev]
+
+      const index = items.indexOf(id)
+      if (index === -1) items.push(id)
+      else items.splice(index, 1)
+
+      return items
+    })
+  }
+
+  const isChecked = useCallback((id: number) => {
+    return selected.includes(id)
+  }, [selected])
+
+  const isCheckedAll = () => {
+    return selected.length === vcfirms?.length
+  }
+
+  const onRemove = async () => {
+    const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
+      method: 'POST',
+      body: JSON.stringify({ followIds: selected })
+    })
+
+    if (deleteCompaniesRes.ok) router.reload()
+  }
   return (
     <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10 ">
       <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Investors</h2>
@@ -28,7 +85,11 @@ export const ElemInvestors: FC<Props> = ({
         <table className="w-full">
           <thead className="">
             <tr className="text-left text-sm border-b-slate-200">
-              {isCustomList && <th className="pl-2 px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0"><input type="checkbox" className="align-middle" /></th>}
+              {
+                isCustomList && <th className="pl-2 px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">
+                  <input type="checkbox" className="align-middle" onChange={toggleCheckboxes()} checked={isCheckedAll()} />
+                </th>
+              }
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Name</th>
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0"># of Investments</th>
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Latest Investment Date</th>
@@ -38,14 +99,23 @@ export const ElemInvestors: FC<Props> = ({
 
           <tbody>
             {
-              vcfirms?.map(({ vc_firm }, index) => (
+              vcfirms?.map(({ vc_firm, id }, index) => (
                 <tr
                   key={vc_firm?.id}
                   className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
                   onClick={() => handleNavigation(`/investors/${vc_firm?.slug}`)}
                   role="button"
                 >
-                  {isCustomList && <td className="pl-2 px-1 py-2"><input type="checkbox" /></td>}
+                  {
+                    isCustomList && <td className="pl-2 px-1 py-2">
+                      <input
+                        type="checkbox"
+                        onChange={toggleCheckbox(vc_firm?.id!)}
+                        onClick={(e) => e.stopPropagation()}
+                        checked={isChecked(id)}
+                      />
+                    </td>
+                  }
                   <td
                     className="px-1 inline-flex items-center py-2"
                   >

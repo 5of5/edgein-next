@@ -6,8 +6,10 @@ import { IconCrap } from "../reactions/IconCrap";
 import { IconHot } from "../reactions/IconHot";
 import { IconLike } from "../reactions/IconLike";
 import { ElemDeleteListModal } from "./ElemDeleteListModal";
+import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { ElemListEditModal } from "./ElemListEditModal";
 import { ElemListOptionMenu } from "./ElemListOptionMenu";
+import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
 
 type Props = {
   companies?: Follows_Companies[]
@@ -28,18 +30,26 @@ export const ElemCompanies: FC<Props> = ({
   handleNavigation,
   tagsCount
 }) => {
-
+  const router = useRouter()
   const [selected, setSelected] = useState<number[]>([])
 
-  const toggleCheckboxes = () => {
+  const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
+
+  const toggleCheckboxes = (clearAll: boolean = false) => () => {
+
+    if (clearAll) {
+      setSelected([])
+      return;
+    }
+
     if (selected.length > 0 && companies?.length === selected.length) {
       setSelected([]);
     } else if ((companies?.length || 0) > selected.length) {
       setSelected((prev) => {
         const items = [...prev];
-        companies?.forEach(({ company }) => {
-          if (!items.includes(company?.id!))
-            items.push(company?.id!)
+        companies?.forEach(({ id }) => {
+          if (!items.includes(id!))
+            items.push(id!)
         });
         return items
       })
@@ -47,7 +57,7 @@ export const ElemCompanies: FC<Props> = ({
   }
 
   const toggleCheckbox = (id: number) => () => {
-  
+
     setSelected((prev) => {
       const items = [...prev]
 
@@ -67,12 +77,35 @@ export const ElemCompanies: FC<Props> = ({
     return selected.length === companies?.length
   }
 
+  const onRemove = async () => {
+    const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
+      method: 'POST',
+      body: JSON.stringify({ followIds: selected })
+    })
+
+    if (deleteCompaniesRes.ok) router.reload()
+  }
+
   return (
     <div className="rounded-lg p-3 bg-white col-span-3">
       <div className="inline-flex">
         <h2 className="font-bold text-dark-500 text-xl capitalize mr-2">
           {selectedListName}: Companies
         </h2>
+
+        {isCustomList && selected.length > 0 && <>
+          <ElemListsOptionMenu
+            onRemoveBtn={() => setShowDeleteItemsModal(true)}
+            onClearSelection={toggleCheckboxes(true)}
+          />
+
+          <ElemDeleteListsModal
+            isOpen={showDeleteItemsModal}
+            onCloseModal={() => setShowDeleteItemsModal(false)}
+            listName={selectedListName}
+            onDelete={onRemove}
+          />
+        </>}
       </div>
 
       <div className="w-full mt-1 flex justify-between">
@@ -102,7 +135,7 @@ export const ElemCompanies: FC<Props> = ({
             <tr className="text-left text-sm border-b-slate-200">
               {
                 isCustomList && <th className="pl-2 px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">
-                  <input type="checkbox" className="align-middle" onChange={toggleCheckboxes} checked={isCheckedAll()} />
+                  <input type="checkbox" className="align-middle" onChange={toggleCheckboxes()} checked={isCheckedAll()} />
                 </th>
               }
               <th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">Name</th>
@@ -115,7 +148,7 @@ export const ElemCompanies: FC<Props> = ({
 
           <tbody>
             {
-              companies?.map(({ company }, index) => (
+              companies?.map(({ company, id }, index) => (
                 <tr
                   key={company?.id}
                   className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
@@ -126,9 +159,9 @@ export const ElemCompanies: FC<Props> = ({
                     isCustomList && <td className="pl-2 px-1 py-2">
                       <input
                         type="checkbox"
-                        onChange={toggleCheckbox(company?.id!)}
+                        onChange={toggleCheckbox(id)}
                         onClick={(e) => e.stopPropagation()}
-                        checked={isChecked(company?.id)}
+                        checked={isChecked(id)}
                       />
                     </td>
                   }

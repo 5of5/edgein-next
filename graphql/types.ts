@@ -9164,14 +9164,14 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null, slug: string | null } | null }> };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null, slug: string | null } | null }> };
 
 export type GetListsByUserQueryVariables = Exact<{
   current_user: InputMaybe<Scalars['Int']>;
@@ -9466,6 +9466,7 @@ useGetFollowsListsStaticPathsQuery.fetcher = (variables?: GetFollowsListsStaticP
 export const GetCompaniesByListIdDocument = `
     query GetCompaniesByListId($list_id: Int = 0) {
   follows_companies(where: {list_id: {_eq: $list_id}}) {
+    id
     company {
       id
       name
@@ -9510,6 +9511,7 @@ useGetCompaniesByListIdQuery.fetcher = (variables?: GetCompaniesByListIdQueryVar
 export const GetVcFirmsByListIdDocument = `
     query GetVcFirmsByListId($list_id: Int = 0) {
   follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
+    id
     vc_firm {
       id
       name
