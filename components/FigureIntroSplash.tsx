@@ -1,4 +1,4 @@
-import { FigurePerspectiveGrid } from "@/components/FigurePerspectiveGrid";
+import { FigurePerspectiveGrid } from "@/components/Figures";
 import { Transition } from "@headlessui/react";
 import { FC } from "react";
 type Props = {
