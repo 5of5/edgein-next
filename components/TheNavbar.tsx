@@ -10,6 +10,9 @@ import { useRouter } from "next/router";
 import LoginModal from "./LoginModal";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import SignUpModal from "./SignUpModal";
+import { IconSearch } from "@/components/Icons";
+import SearchModal from "./SearchModal";
+import { useHotkeys } from "react-hotkeys-hook";
 
 export const TheNavbar = () => {
 	const router = useRouter();
@@ -20,6 +23,12 @@ export const TheNavbar = () => {
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false)
 	const [emailFromLogin, setEmailFromLogin] = useState('')
 	const [passwordFromLogin, setPasswordFromLogin] = useState('')
+	const [showSearchModal, setShowSearchModal] = useState(false);
+
+	useHotkeys("ctrl+k, command+k", function (event) {
+		event.preventDefault();
+		setShowSearchModal(true);
+	});
 
 	const siteNav = [
 		{
@@ -115,18 +124,16 @@ export const TheNavbar = () => {
 	}
 
 	return (
-		<>
-
-			<header className="overflow-y-visible z-30">
-
-				<div className="max-w-6xl mx-auto px-4 py-2 sm:px-6 lg:px-8 lg:py-4">
-					<nav
-						className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
-							isActive ? "nav-toggle-active" : ""
-							}`}
-						aria-label="Global"
-					>
-						<div className="flex-none lg:mr-6">
+		<header className="overflow-y-visible z-30 shadow bg-white">
+			<div className="mx-auto px-4 py-1 sm:px-6 lg:px-8">
+				<nav
+					className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
+						isActive ? "nav-toggle-active" : ""
+					}`}
+					aria-label="Global"
+				>
+					<div className="flex items-center">
+						<div className="flex-none lg:mr-4">
 							<Link href="/" passHref>
 								<a>
 									<ElemLogo
@@ -136,20 +143,37 @@ export const TheNavbar = () => {
 								</a>
 							</Link>
 						</div>
+						<button
+							onClick={() => {
+								setShowSearchModal(true);
+							}}
+							className="flex items-center w-48 lg:w-64 text-left space-x-2 px-2 h-9 bg-white ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-sm rounded-lg text-slate-400"
+						>
+							<IconSearch className="flex-none h-5 w-5 text-slate-600" />
+							<span className="flex-auto">Quick Search...</span>
+							<kbd className="text-sm font-semibold">
+								<abbr title="Command" className="no-underline text-slate-400">
+									⌘
+								</abbr>{" "}
+								K
+							</kbd>
+						</button>
+					</div>
 
+					<div className="flex items-center">
 						<ul
 							className={`${
 								isActive
 									? "flex h-auto opacity-100 translate-y-0"
 									: "h-0 opacity-0 overflow-hidden -translate-y-6 lg:h-auto lg:opacity-100 lg:translate-y-0"
-								} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
+							} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
 						>
 							{siteNav.map((navItem, i) => (
 								<li key={i}>
 									<Link href={navItem.path}>
 										<a
 											onClick={toggleNav}
-											className="inline-block mx-1 px-5 py-3 font-medium transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100"
+											className="inline-block mx-1 px-5 py-3 font-bold transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100"
 										>
 											{navItem.name}
 										</a>
@@ -182,12 +206,22 @@ export const TheNavbar = () => {
 								<span className="sr-only">Toggle menu</span>
 							</button>
 						</div>
-					</nav>
+						</div>
+					{/* </nav>
 				</div>
-			</header>
+			</header> */}
 			<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
 			<SignUpModal passwordFromLogin={passwordFromLogin} emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose}/>
 			<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
-		</>
+		{/* </>
+					</div> */}
+
+					<SearchModal
+						show={showSearchModal}
+						onClose={() => setShowSearchModal(false)}
+					/>
+				</nav>
+			</div>
+		</header>
 	);
 };

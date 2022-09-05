@@ -1,5 +1,6 @@
 - "!include public_actions.yaml"
 - "!include public_allowed_emails.yaml"
+- "!include public_application_meta.yaml"
 - "!include public_blockchains.yaml"
 - "!include public_coins.yaml"
 - "!include public_companies.yaml"

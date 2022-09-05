@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
 import Head from "next/head";
-// import Image from "next/image";
-import { FigureIntroSplash } from "../components/FigureIntroSplash";
-import { FigureBlurredBg } from "../components/FigureBlurredBg";
-import { ElemButton } from "../components/ElemButton";
-// import styles from "../styles/Home.module.css";
-import { useAuth } from "../hooks/useAuth";
-import { InputText } from "../components/InputText";
+import { FigureIntroSplash } from "@/components/FigureIntroSplash";
+import { FigureIntroSplashNew } from "@/components/FigureIntroSplashNew";
+
+import { FigureBlurredBg } from "@/components/FigureBlurredBg";
+import { ElemButton } from "@/components/ElemButton";
+import { useAuth } from "@/hooks/useAuth";
+
+import { FigureCircleDashes } from "@/components/Figures";
 import { useFormspark } from "@formspark/use-formspark";
 
 const Home: NextPage = () => {
@@ -40,11 +41,12 @@ const Home: NextPage = () => {
 		<>
 			<section className="relative">
 				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
-				<div className="relative z-10 max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-28">
-					<div className="flex flex-col items-center lg:items-start lg:grid lg:grid-cols-5 gap-5 my-8">
-						<div className="col-span-3 flex flex-col justify-center">
+				<div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
+					<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:content-center">
+						<div className="mx-auto max-w-2xl lg:col-span-7 lg:max-w-none">
 							<h1 className="font-bold text-5xl lg:text-6xl">
 								Web3-focused data intelligence for success.
+								{/* Web3 Project Company research delivered daily to save you time */}
 							</h1>
 							<h2 className="max-w-lg mt-5 text-xl leading-relaxed text-slate-600">
 								EdgeIn combines highly refined automated processes, the
@@ -64,8 +66,10 @@ const Home: NextPage = () => {
 								)}
 							</div> */}
 						</div>
-						<div className="relative col-span-2 flex flex-col justify-center">
-							<FigureIntroSplash className="hidden lg:block relative" />
+
+						<div className="mt-28 mx-6 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
+							<FigureIntroSplashNew />
+							{/* <FigureIntroSplash className="hidden lg:block relative" /> */}
 						</div>
 					</div>
 					{/* <div className="bg-white rounded-2xl border border-dark-500/10 p-6 w-[30rem]">
@@ -106,66 +110,65 @@ const Home: NextPage = () => {
 				</div>
 			</section>
 
-			<section className="bg-gray-50 rounded-t-8xl relative z-10">
-				<div className="max-w-7xl mx-auto py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
-					<div className="pb-12 lg:pb-20">
+			<section className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
+				{/* <div className="pb-12 lg:pb-20">
 						<h2 className="relative max-w-3xl text-3xl font-bold text-dark-500 border-l-4 border-primary-500 pl-6 lg:text-4xl">
 							Actionable intelligence, strategic analysis and data sovereignty.
 						</h2>
+					</div> */}
+
+				<div className="block md:w-full md:grid md:grid-cols-2 gap-8">
+					<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
+						<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
+							For founders
+						</h3>
+						<p className="mb-4 text-md text-slate-600 lg:text-lg">
+							We give you unrestricted access to the most reliable market data
+							at hyper-speeds to help you drive growth, make critical
+							connections, and gain competitor insights to stay one step ahead
+							at all times.
+						</p>
+						{/* <ElemButton className="pl-0 pr-0" href="/" arrow>
+							Learn more
+						</ElemButton> */}
+					</div>
+					<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
+						<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
+							For investors
+						</h3>
+						<p className="mb-4 text-md text-slate-600 lg:text-lg">
+							One login for all of the portfolio performance metrics you need,
+							web3 investment opportunities and comprehensive due diligence.
+						</p>
+						{/* <ElemButton className="pl-0 pr-0" href="/" arrow>
+							Learn more
+						</ElemButton> */}
 					</div>
 
-					<div className="block md:w-full md:grid md:grid-cols-2 gap-8">
-						<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
-							<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
-								For founders
-							</h3>
-							<p className="mb-4 text-md text-slate-600 lg:text-lg">
-								We give you unrestricted access to the most reliable market data
-								at hyper-speeds to help you drive growth, make critical
-								connections, and gain competitor insights to stay one step ahead
-								at all times.
+					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
+						<div className="relative z-10 text-center text-white">
+							<h2 className="max-w-2xl mx-auto mb-6 text-3xl font-bold sm:text-5xl">
+								Ready to start exploring?
+							</h2>
+							<p className="max-w-sm mx-auto mb-6 text-xl opacity-80">
+								Actionable intelligence, strategic analysis and data
+								sovereignty.
 							</p>
-							{/* <ElemButton
-									className="pl-0 pr-0"
-									href="/"
-									btn="transparent"
-									arrow
-								>
-									Learn more
-								</ElemButton> */}
+							<ElemButton
+								href="/waitlist"
+								arrow
+								className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
+							>
+								Request Access
+							</ElemButton>
 						</div>
-						<div className="bg-white text-dark-500 rounded-3xl p-7 mb-12 lg:mb-0">
-							<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
-								For investors
-							</h3>
-							<p className="mb-4 text-md text-slate-600 lg:text-lg">
-								One login for all of the portfolio performance metrics you need,
-								web3 investment opportunities and comprehensive due diligence.
-							</p>
-							{/* <ElemButton
-									className="pl-0 pr-0"
-									href="/"
-									btn="transparent"
-									arrow
-								>
-									Learn more
-								</ElemButton> */}
-						</div>
-
-						{/* <div className="col-span-2 p-16 py-12 bg-white text-dark-500 rounded-3xl lg:py-16">
-								<div className="max-w-lg mx-auto text-center">
-									<h2 className="mb-4 text-3xl font-lb font-bold sm:text-4xl">
-										Access the EdgeIn WhitePaper, Join in the Fun!
-									</h2>
-									<p className="mb-4 text-md text-dark-400 sm:text-sm lg:text-lg">
-										Explore the daily-updated web3 database of company, VC firm,
-										team, and investment information.
-									</p>
-									<ElemButton href="/login" btn="primary" arrow>
-										Request Access
-									</ElemButton>
-								</div>
-							</div> */}
+						<figure className="absolute -top-64 -left-36 w-96 h-96 bg-[#1BE6FF] rounded-full blur-3xl opacity-70"></figure>
+						<figure className="absolute -bottom-72 right-36 w-96 h-96 bg-[#F8DA4B] rounded-full blur-3xl"></figure>
+						<figure className="absolute -bottom-64 -right-36 w-96 h-96 bg-[#F72784] rounded-full blur-3xl opacity-50"></figure>
+						<FigureCircleDashes className="absolute -top-96 -left-36" />
+						<FigureCircleDashes className="absolute -top-88 -left-16" />
+						<FigureCircleDashes className="absolute -bottom-96 -right-32" />
+						<FigureCircleDashes className="absolute -bottom-112 -right-52" />
 					</div>
 				</div>
 			</section>

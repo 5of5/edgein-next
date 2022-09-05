@@ -10,25 +10,39 @@ import {
 	TextField,
 	EditButton,
 	TextInput,
-  ReferenceField,
-  ReferenceInput,
-  SelectInput,
+	ReferenceField,
+	ReferenceInput,
+	SelectInput,
+	AutocompleteInput
 } from "react-admin";
 
 const filters = [
-	<SearchInput key="search" source="name" resettable alwaysOn />
-  ];
+	<TextInput key="search" source="name,ticker" label="Search Name, Ticker" resettable alwaysOn />,
+	<ReferenceInput key="searchBlockchain" source="blockchain_id" reference="blockchains">
+		<AutocompleteInput
+			optionText={choice =>
+				`${choice.name}`
+			}
+		/>
+	</ReferenceInput>
+];
 
 export const CoinsList = () => (
-	<List filters={filters}>
+	<List filters={filters}
+		sx={{
+			'.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+				justifyContent: 'flex-start'
+			}
+		}}
+	>
 		<Datagrid>
+			<EditButton />
 			<TextField source="id" />
 			<TextField source="name" />
 			<TextField source="ticker" />
-      		<ReferenceField label="Blockchain" source="blockchain_id" reference="blockchains">
+			<ReferenceField label="Blockchain" source="blockchain_id" reference="blockchains">
 				<TextField source="name" />
 			</ReferenceField>
-			<EditButton />
 		</Datagrid>
 	</List>
 );
@@ -47,8 +61,8 @@ export const CoinsEdit = () => (
 			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
 			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
 			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
-      <ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
-        <SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
+			<ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
+				<SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
 			</ReferenceInput>
 		</SimpleForm>
 	</Edit>
@@ -59,8 +73,8 @@ export const CoinsCreate = () => (
 		<SimpleForm>
 			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
 			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
-      <ReferenceInput  label="Blockchain" source="blockchain_id" reference="blockchains">
-        <SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
+			<ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
+				<SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
 			</ReferenceInput>
 		</SimpleForm>
 	</Create>
