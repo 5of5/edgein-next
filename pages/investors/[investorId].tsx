@@ -196,6 +196,9 @@ const VCFirm: NextPage<Props> = (props) => {
 							{
 								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
 									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
+										if (!activity) {
+											return;
+										}
 										return (
 											<div key={index} className="flex inline-flex w-full mt-2">
 												<div className="mt-1">
@@ -208,8 +211,7 @@ const VCFirm: NextPage<Props> = (props) => {
 														className="h-7 w-2 ml-1"
 													/>
 												</div>
-	
-												<div className="w-5/6">
+													<div className="w-5/6">
 													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name:''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
 													<p className="text-gray-400 text-xs">{activity.round_date}</p>
 												</div>
@@ -240,7 +242,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-			{Object.keys(sortedInvestmentRounds).length > 0 && (
+			{Object.keys(sortedInvestmentRounds).map(key => key != null).length > 0 && (
 				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
 					<div className="flex justify-between pb-4">
 						<h2 className="text-2xl font-bold">Investments</h2>
