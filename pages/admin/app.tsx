@@ -1,7 +1,7 @@
 // Initialize the dataProvider before rendering react-admin resources.
 import React, { useState, useEffect } from 'react';
 import buildHasuraProvider from 'ra-data-hasura';
-import { Admin, DataProvider, Resource } from 'react-admin';
+import { Admin, DataProvider, Resource, AuthProvider } from 'react-admin';
 
 import { CompanyCreate, CompanyEdit, CompanyList } from '../../components/admin/companies';
 
@@ -45,10 +45,10 @@ const AdminApp = () => {
       return Promise.reject()
     },
     logout: () => Promise.resolve(),
-    getIdentity: () => Promise.resolve(),
+    getIdentity: () => Promise.resolve().then(res => res),
     // authorization
     getPermissions: () => Promise.resolve(),
-  };
+  }  as AuthProvider;
 
   useEffect(() => {
    
