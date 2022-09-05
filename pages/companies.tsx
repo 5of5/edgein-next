@@ -19,7 +19,7 @@ import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
-	useGetCompaniesQuery
+	useGetCompaniesQuery,
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
@@ -175,115 +175,117 @@ const Companies: NextPage<Props> = ({
 				)}
 			</div>
 
-			<div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
-				<h2 className="text-2xl font-bold">All Companies</h2>
-				<ElemFiltersWrap className="pt-2 filters-wrap">
-					<InputSearch
-						className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-						label="Search"
-						name="search"
-						value={search}
-						placeholder="Quick Search..."
-						onChange={searchCompanies}
-					/>
+			<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
+				<div className="bg-white rounded-lg p-5">
+					<h2 className="text-xl font-bold">All Companies</h2>
+					<ElemFiltersWrap className="pt-2 filters-wrap">
+						<InputSearch
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							label="Search"
+							name="search"
+							value={search}
+							placeholder="Quick Search..."
+							onChange={searchCompanies}
+						/>
 
-					<InputSelect
-						className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-						value={selectedLayer}
-						onChange={setSelectedLayer}
-						options={companyLayers}
-					/>
+						<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={selectedLayer}
+							onChange={setSelectedLayer}
+							options={companyLayers}
+						/>
 
-					<InputSelect
-						className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-						value={selectedAmountRaised}
-						onChange={setSelectedAmountRaised}
-						options={amountRaised}
-					/>
+						<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={selectedAmountRaised}
+							onChange={setSelectedAmountRaised}
+							options={amountRaised}
+						/>
 
-					<InputSelect
-						className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-						value={selectedTotalEmployees}
-						onChange={setSelectedTotalEmployees}
-						options={totalEmployees}
-					/>
+						<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={selectedTotalEmployees}
+							onChange={setSelectedTotalEmployees}
+							options={totalEmployees}
+						/>
 
-					<div className="hidden md:block md:shrink md:basis-0">
-						<div
-							className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
-							onClick={() => setToggleViewMode(!toggleViewMode)}
-						>
-							{toggleViewMode ? (
-								<div className="flex items-center">
-									<IconGrid className="w-5 h-5 mr-1" />
-									Grid
-								</div>
-							) : (
-								<div className="flex items-center">
-									<IconList className="w-5 h-5 mr-1" />
-									List
-								</div>
-							)}
-						</div>
-					</div>
-				</ElemFiltersWrap>
-
-				{companies?.length === 0 && (
-					<>
-						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
-							<div className="w-full max-w-2xl p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-								<h2 className="mt-5 text-3xl font-bold">No results found</h2>
-								<div className="mt-1 text-lg text-dark-400">
-									Please check spelling, try different filters, or tell us about
-									missing data.
-								</div>
-								<ElemButton
-									onClick={() => setToggleFeedbackForm(true)}
-									btn="white"
-									className="mt-3"
-								>
-									<IconAnnotation className="w-6 h-6 mr-1" />
-									Tell us about missing data
-								</ElemButton>
+						<div className="hidden md:block md:shrink md:basis-0">
+							<div
+								className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
+								onClick={() => setToggleViewMode(!toggleViewMode)}
+							>
+								{toggleViewMode ? (
+									<div className="flex items-center">
+										<IconGrid className="w-5 h-5 mr-1" />
+										Grid
+									</div>
+								) : (
+									<div className="flex items-center">
+										<IconList className="w-5 h-5 mr-1" />
+										List
+									</div>
+								)}
 							</div>
 						</div>
-					</>
-				)}
+					</ElemFiltersWrap>
 
-				<div
-					className={`grid gap-5 grid-cols-1 md:grid-cols-${
-						toggleViewMode ? "1" : "2"
-					} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
-				>
-					{error ? (
-						<h4>Error loading companies</h4>
-					) : isLoading && !initialLoad ? (
+					{companies?.length === 0 && (
 						<>
-							{Array.from({ length: 9 }, (_, i) => (
-								<PlaceholderCompanyCard key={i} />
-							))}
+							<div className="flex items-center justify-center mx-auto min-h-[40vh]">
+								<div className="w-full max-w-2xl p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+									<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+									<h2 className="mt-5 text-3xl font-bold">No results found</h2>
+									<div className="mt-1 text-lg text-dark-400">
+										Please check spelling, try different filters, or tell us
+										about missing data.
+									</div>
+									<ElemButton
+										onClick={() => setToggleFeedbackForm(true)}
+										btn="white"
+										className="mt-3"
+									>
+										<IconAnnotation className="w-6 h-6 mr-1" />
+										Tell us about missing data
+									</ElemButton>
+								</div>
+							</div>
 						</>
-					) : (
-						companies?.map((company) => {
-							return (
-								<ElemCompanyCard
-									key={company.id}
-									company={company as Companies}
-									toggleViewMode={toggleViewMode}
-								/>
-							);
-						})
 					)}
+
+					<div
+						className={`grid gap-5 grid-cols-1 md:grid-cols-${
+							toggleViewMode ? "1" : "2"
+						} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
+					>
+						{error ? (
+							<h4>Error loading companies</h4>
+						) : isLoading && !initialLoad ? (
+							<>
+								{Array.from({ length: 9 }, (_, i) => (
+									<PlaceholderCompanyCard key={i} />
+								))}
+							</>
+						) : (
+							companies?.map((company) => {
+								return (
+									<ElemCompanyCard
+										key={company.id}
+										company={company as Companies}
+										toggleViewMode={toggleViewMode}
+									/>
+								);
+							})
+						)}
+					</div>
+					<Pagination
+						shownItems={companies?.length}
+						totalItems={companiesCount}
+						page={page}
+						itemsPerPage={limit}
+						onClickPrev={() => setPage((prev) => prev - 1)}
+						onClickNext={() => setPage((prev) => prev + 1)}
+					/>
 				</div>
-				<Pagination
-					shownItems={companies?.length}
-					totalItems={companiesCount}
-					page={page}
-					itemsPerPage={limit}
-					onClickPrev={() => setPage((prev) => prev - 1)}
-					onClickNext={() => setPage((prev) => prev + 1)}
-				/>
 			</div>
 		</div>
 	);

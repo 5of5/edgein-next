@@ -27,6 +27,10 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 		ico_end
 		audit_file
 		sentiment
+		twitter
+		location
+		discord
+		glassdoor
 		teamMembers {
 			id
 			person {
@@ -34,6 +38,9 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 				slug
 				name
 				picture
+				linkedin
+				personal_email
+				work_email
 			}
 			function
 			start_date

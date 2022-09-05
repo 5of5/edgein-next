@@ -115,6 +115,7 @@ module.exports = {
       },
       spacing: {
         '88': '22rem',
+        '112': '28rem'
       },
       scale: {
         '102': '1.02',
