@@ -15,6 +15,7 @@ import { VcFirmCreate, VcFirmEdit, VcFirmList } from '../../components/admin/vcF
 import { BlockchainsList, BlockchainsEdit, BlockchainsCreate } from '../../components/admin/blockchains';
 import { CoinsList, CoinsEdit, CoinsCreate } from '../../components/admin/coins';
 import { ActionsList } from '../../components/admin/actions';
+import { useAuth } from "../../hooks/useAuth";
 
 const MyLogin = () => {
   useEffect(() => {
@@ -27,13 +28,15 @@ const MyLogin = () => {
 const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(null);
   const [loggedUser, setLoggedUser] = useState(null)
+  const { user, error, loading } = useAuth();
+  
   const authProvider = {
     // authentication
     login: () => Promise.resolve(),
     checkError: () => Promise.resolve(),
     checkAuth: () => {
-      if (loggedUser) {
-        if (loggedUser.role === "user") {
+      if (user) {
+        if (user.role === "user") {
           return Promise.reject(new Error("User is not an admin"));
         } else {
           return Promise.resolve()
@@ -46,13 +49,6 @@ const AdminApp = () => {
     // authorization
     getPermissions: () => Promise.resolve(),
   };
-
-  useEffect(() => {
-    const savedUser = localStorage.getItem('user')
-    if(savedUser){
-      setLoggedUser(JSON.parse(savedUser))
-    }
-  }, [])
 
   useEffect(() => {
    
@@ -69,7 +65,7 @@ const AdminApp = () => {
     buildDataProvider();
   }, []);
 
-  if (!dataProvider) return <p>Loading...</p>;
+  if (!dataProvider || loading) return <p>Loading...</p>;
 
   return (
     <Admin loginPage={MyLogin} dataProvider={dataProvider} authProvider={authProvider}>

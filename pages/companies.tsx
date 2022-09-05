@@ -1,17 +1,11 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
-import Link from "next/link";
 import { ElemHeading } from "../components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemCredibility } from "../components/Company/ElemCredibility";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
-import { ElemPhoto } from "../components/ElemPhoto";
-import { ElemTooltip } from "../components/ElemTooltip";
 import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
-import { ElemVelocity } from "../components/Company/ElemVelocity";
 import { ElemButton } from "@/components/ElemButton";
 import { runGraphQl } from "../utils";
 import {
@@ -21,15 +15,16 @@ import {
 	IconAnnotation,
 } from "@/components/Icons";
 import {
+	Companies,
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
-	useInsertActionMutation,
 } from "../graphql/types";
 import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
+import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
 
 type Props = {
 	companiesCount: number;
@@ -59,7 +54,6 @@ const Companies: NextPage<Props> = ({
 
 	// Search Box
 	const [search, setSearch] = useState("");
-	const [savedEmptySearches, setSavedEmptySearches] = useState<string[]>([]);
 	const debouncedSearchTerm = useDebounce(search, 500);
 
 	const searchCompanies = (e: {
@@ -113,7 +107,7 @@ const Companies: NextPage<Props> = ({
 	]);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
 	if (debouncedSearchTerm !== "") {
 		filters._and?.push({
@@ -151,244 +145,146 @@ const Companies: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
+		// TODO: pass logged in user's id
+		current_user: user?.id ?? 0,
 	});
-
-	const { mutate: insertAction } = useInsertActionMutation();
-
-	if (
-		!isLoading &&
-		debouncedSearchTerm !== "" &&
-		companiesData?.companies.length === 0 &&
-		!savedEmptySearches.includes(debouncedSearchTerm)
-	) {
-		insertAction({
-			action: "Empty Search",
-			page: location.pathname,
-			properties: {
-				search: debouncedSearchTerm,
-				layer: selectedLayer.value,
-				investor_amount: selectedAmountRaised.rangeStart,
-				total_employees: selectedTotalEmployees.rangeStart,
-			},
-			user: user?.email ?? "",
-		});
-		setSavedEmptySearches((prev) =>
-			prev.includes(debouncedSearchTerm) ? prev : [...prev, debouncedSearchTerm]
-		);
-	}
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
+
 	const companies = initialLoad ? initialCompanies : companiesData?.companies;
+
+	const onUpdateOfCompany = (company: Companies) => {
+		// TODO if company is currently displayed update it
+	};
 
 	return (
 		<div>
-			<div>
-				<ElemHeading
-					title="Web3 Companies"
-					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
-				></ElemHeading>
+			<ElemHeading
+				title="Web3 Companies"
+				subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
+			></ElemHeading>
 
-				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 pt-4 sm:px-6 lg:px-8 lg:pt-10">
-						{companies && <ElemRecentCompanies heading="Recently Discovered" />}
-					</div>
+			<div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
+				{companies && (
+					<ElemRecentCompanies
+						onUpdateOfCompany={onUpdateOfCompany}
+						heading="Recently Discovered"
+					/>
+				)}
+			</div>
 
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
-						<h2 className="text-2xl font-bold">All Companies</h2>
-						<ElemFiltersWrap className="filters-wrap pt-2">
-							<InputSearch
-								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-								label="Search"
-								name="search"
-								value={search}
-								placeholder="Quick Search..."
-								onChange={searchCompanies}
-							/>
+			<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
+				<div className="bg-white rounded-lg p-5">
+					<h2 className="text-xl font-bold">All Companies</h2>
+					<ElemFiltersWrap className="pt-2 filters-wrap">
+						<InputSearch
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							label="Search"
+							name="search"
+							value={search}
+							placeholder="Quick Search..."
+							onChange={searchCompanies}
+						/>
 
-							<InputSelect
-								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-								value={selectedLayer}
-								onChange={setSelectedLayer}
-								options={companyLayers}
-							/>
+						<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={selectedLayer}
+							onChange={setSelectedLayer}
+							options={companyLayers}
+						/>
 
-							<InputSelect
-								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-								value={selectedAmountRaised}
-								onChange={setSelectedAmountRaised}
-								options={amountRaised}
-							/>
+						<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={selectedAmountRaised}
+							onChange={setSelectedAmountRaised}
+							options={amountRaised}
+						/>
 
-							<InputSelect
-								className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-								value={selectedTotalEmployees}
-								onChange={setSelectedTotalEmployees}
-								options={totalEmployees}
-							/>
+						<InputSelect
+							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
+							value={selectedTotalEmployees}
+							onChange={setSelectedTotalEmployees}
+							options={totalEmployees}
+						/>
 
-							<div className="hidden md:block md:shrink md:basis-0">
-								<div
-									className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
-									onClick={() => setToggleViewMode(!toggleViewMode)}
-								>
-									{toggleViewMode ? (
-										<div className="flex items-center">
-											<IconGrid className="h-5 w-5 mr-1" />
-											Grid
-										</div>
-									) : (
-										<div className="flex items-center">
-											<IconList className="h-5 w-5 mr-1" />
-											List
-										</div>
-									)}
+						<div className="hidden md:block md:shrink md:basis-0">
+							<div
+								className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
+								onClick={() => setToggleViewMode(!toggleViewMode)}
+							>
+								{toggleViewMode ? (
+									<div className="flex items-center">
+										<IconGrid className="w-5 h-5 mr-1" />
+										Grid
+									</div>
+								) : (
+									<div className="flex items-center">
+										<IconList className="w-5 h-5 mr-1" />
+										List
+									</div>
+								)}
+							</div>
+						</div>
+					</ElemFiltersWrap>
+
+					{companies?.length === 0 && (
+						<>
+							<div className="flex items-center justify-center mx-auto min-h-[40vh]">
+								<div className="w-full max-w-2xl p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+									<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+									<h2 className="mt-5 text-3xl font-bold">No results found</h2>
+									<div className="mt-1 text-lg text-dark-400">
+										Please check spelling, try different filters, or tell us
+										about missing data.
+									</div>
+									<ElemButton
+										onClick={() => setToggleFeedbackForm(true)}
+										btn="white"
+										className="mt-3"
+									>
+										<IconAnnotation className="w-6 h-6 mr-1" />
+										Tell us about missing data
+									</ElemButton>
 								</div>
 							</div>
-						</ElemFiltersWrap>
+						</>
+					)}
 
-						{companies?.length === 0 && (
+					<div
+						className={`grid gap-5 grid-cols-1 md:grid-cols-${
+							toggleViewMode ? "1" : "2"
+						} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
+					>
+						{error ? (
+							<h4>Error loading companies</h4>
+						) : isLoading && !initialLoad ? (
 							<>
-								<div className="flex items-center justify-center mx-auto min-h-[40vh]">
-									<div className="w-full max-w-2xl p-8 bg-white rounded-2xl border border-dark-500/10 text-center">
-										<IconSearch className="mx-auto h-12 w-12 text-slate-300" />
-										<h2 className="mt-5 text-3xl font-bold">
-											No results found
-										</h2>
-										<div className="mt-1 text-lg text-dark-400">
-											Please check spelling, try different filters, or tell us
-											about missing data.
-										</div>
-										<ElemButton
-											onClick={() => setToggleFeedbackForm(true)}
-											btn="white"
-											className="mt-3"
-										>
-											<IconAnnotation className="h-6 w-6 mr-1" />
-											Tell us about missing data
-										</ElemButton>
-									</div>
-								</div>
+								{Array.from({ length: 9 }, (_, i) => (
+									<PlaceholderCompanyCard key={i} />
+								))}
 							</>
+						) : (
+							companies?.map((company) => {
+								return (
+									<ElemCompanyCard
+										key={company.id}
+										company={company as Companies}
+										toggleViewMode={toggleViewMode}
+									/>
+								);
+							})
 						)}
-
-						<div
-							className={`grid gap-5 grid-cols-1 md:grid-cols-${
-								toggleViewMode ? "1" : "2"
-							} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
-						>
-							{error ? (
-								<h4>Error loading companies</h4>
-							) : isLoading && !initialLoad ? (
-								<>
-									{Array.from({ length: 9 }, (_, i) => (
-										<PlaceholderCompanyCard key={i} />
-									))}
-								</>
-							) : (
-								companies?.map((company) => {
-									return (
-										<Link key={company.id} href={`/companies/${company.slug}`}>
-											<a
-												className={`flex flex-col ${
-													toggleViewMode ? "md:flex-row md:items-center" : ""
-												} mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
-											>
-												<div
-													className={`flex shrink-0 mb-4 ${
-														toggleViewMode
-															? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
-															: "w-full"
-													}`}
-												>
-													<ElemPhoto
-														photo={company.logo}
-														wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={company.name}
-													/>
-
-													<div className="flex items-center justify-center pl-2 md:overflow-hidden">
-														<h3
-															className="inline text-2xl align-middle line-clamp-2 font-bold min-w-0 break-words text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
-															title={company.name ?? ""}
-														>
-															{company.name}
-														</h3>
-													</div>
-													{company.coin && (
-														<ElemTooltip
-															content={`Token: ${company.coin.ticker}`}
-															className="ml-1 inline-block self-center align-middle whitespace-nowrap px-2 py-1 rounded-md text-dark-400 bg-gray-50"
-														>
-															<span className=" text-sm font-bold leading-sm uppercase">
-																{company.coin.ticker}
-															</span>
-														</ElemTooltip>
-													)}
-												</div>
-												{company.overview && (
-													<div
-														className={`grow ${
-															toggleViewMode && "max-w-sm mr-4"
-														}`}
-													>
-														<div className="text-gray-400 line-clamp-3">
-															{company.overview}
-														</div>
-													</div>
-												)}
-
-												{/* {company.layer && (
-												<div
-													className={`${getLayerClass(
-														company.layer
-													)} self-start text-xs font-bold leading-sm uppercase mt-4 px-3 py-1 rounded-full`}
-												>
-													{company.layer}
-												</div>
-											)} */}
-												<div
-													className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${
-														toggleViewMode
-															? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
-															: ""
-													}`}
-												>
-													<ElemCredibility
-														mini={true}
-														className={`pr-4 ${
-															toggleViewMode ? "md:pr-0 lg:pr-4" : ""
-														}`}
-														marketVerified={company.market_verified}
-														githubVerified={company.github}
-														linkedInVerified={company.company_linkedin}
-													/>
-													<ElemVelocity
-														mini={true}
-														className={`${
-															toggleViewMode ? "md:pt-2 lg:pt-0" : ""
-														}`}
-														employeeListings={company.velocity_linkedin}
-														tokenExchangeValue={company.velocity_token}
-													/>
-												</div>
-											</a>
-										</Link>
-									);
-								})
-							)}
-						</div>
-						<Pagination
-							shownItems={companies?.length}
-							totalItems={companiesCount}
-							page={page}
-							itemsPerPage={limit}
-							onClickPrev={() => setPage((prev) => prev - 1)}
-							onClickNext={() => setPage((prev) => prev + 1)}
-						/>
 					</div>
+					<Pagination
+						shownItems={companies?.length}
+						totalItems={companiesCount}
+						page={page}
+						itemsPerPage={limit}
+						onClickPrev={() => setPage((prev) => prev - 1)}
+						onClickNext={() => setPage((prev) => prev + 1)}
+					/>
 				</div>
 			</div>
 		</div>
@@ -398,7 +294,11 @@ const Companies: NextPage<Props> = ({
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
-		{ where: { slug: { _neq: "" } } }
+		{
+			limit: 50,
+			offset: 0,
+			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+		}
 	);
 
 	return {

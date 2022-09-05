@@ -1,24 +1,32 @@
-import { FigurePerspectiveGrid } from "../components/FigurePerspectiveGrid";
+import { FigurePerspectiveGrid } from "@/components/Figures";
+import { Transition } from "@headlessui/react";
+import { FC } from "react";
+type Props = {
+	className?: string;
+	isShowing?: boolean;
+};
 
-export const FigureIntroSplash = (props: { className?: string }) => {
+export const FigureIntroSplash: FC<Props> = ({
+	className = "",
+	isShowing = true,
+}) => {
 	return (
-		<figure className={`${props.className} hidden lg:block relative`}>
-			{/* <transition
-        enter-active-class=""
-        enter-class="translate-x-full opacity-0"
-        enter-to-class="translate-x-0 opacity-100"
-      > */}
+		<figure className={`${className} hidden lg:block relative`}>
+			{/* <Transition
+				appear={true}
+				show={isShowing}
+				enter="transition-all delay-1000 ease-in duration-300"
+				enterFrom="opacity-0 translate-x-0"
+				enterTo="opacity-100 translate-x-full"
+				className="relative z-10"
+			> */}
 			<div className="relative z-10 grid grid-cols-2 gap-3 w-96 p-4 rounded-[40px] bg-white/75 box-border border border-white/50 -skew-x-6 transition duration-500 ease-in shadow-[0_30px_60px_-12px_rgba(50,50,93,0.25),_0_18px_36px_-18px_rgba(0,0,0,0.3)]">
 				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
 				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
 				<div className="col-span-2 h-44 rounded-[26px] bg-dark-100"></div>
 			</div>
-			{/* </transition>
-      <transition
-        enter-active-class=""
-        enter-class="translate-x-36 scale-0"
-        enter-to-class="translate-x-0 scale-100"
-      > */}
+			{/* </Transition> */}
+
 			<div className="absolute z-10 -left-16 top-1/2 -translate-y-3/4 w-2/3 rounded-xl bg-[#f6f9fc] border border-white/50 -skew-x-6 p-1.5 transition delay-500 duration-300 ease-in shadow-[0_30px_60px_-12px_rgba(50,50,93,0.25),_0_18px_36px_-18px_rgba(0,0,0,0.3)]">
 				<div className="flex h-full w-full bg-white rounded-lg p-1.5">
 					<div className="mr-2 h-20 w-20 rounded-full overflow-hidden relative bg-dark-100"></div>
@@ -36,8 +44,8 @@ export const FigureIntroSplash = (props: { className?: string }) => {
 					</div>
 				</div>
 			</div>
-			{/* </transition> */}
-			<FigurePerspectiveGrid className="w-full scale-[3.5] absolute -bottom-36 opacity-30 z-0 text-dark-500" />
+
+			<FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-0 opacity-80 text-dark-500" />
 		</figure>
 	);
 };

@@ -28,7 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const localUser = await upsertUser(user)
 
   // Author a couple of cookies to persist a user's session
-  const token = await new SignJWT({ user: JSON.stringify({...user, role: localUser.role}), ...hasuraClaims })
+  const token = await new SignJWT({ user: JSON.stringify({...user, ...localUser}), ...hasuraClaims })
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(nanoid())
     .setIssuedAt()
@@ -47,6 +47,7 @@ const upsertUser = async (user: any) => {
   const emailFragments = user.email.split('@')
 
   // prepare gql query
+  // TODO refactor to use insert_users_one
   const usertQuery = `
     mutation upsert_users($external_id: String, $email: String, $display_name: String, $role: String) {
       insert_users(objects: [{external_id: $external_id, email: $email, display_name: $display_name, role: $role}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {

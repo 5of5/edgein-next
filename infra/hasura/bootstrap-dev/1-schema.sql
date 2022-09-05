@@ -263,7 +263,7 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 --
 
 CREATE TABLE public.follows (
-    user_id text NOT NULL,
+    created_by_user_id integer NOT NULL,
     resource_type text NOT NULL,
     resource_id integer NOT NULL,
     id integer NOT NULL,
@@ -279,7 +279,7 @@ ALTER TABLE public.follows OWNER TO edgeu;
 --
 
 CREATE VIEW public.follows_companies AS
- SELECT follows.user_id,
+ SELECT follows.created_by_user_id,
     follows.resource_id,
     follows.id,
     follows.resource_type

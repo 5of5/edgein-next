@@ -22,7 +22,7 @@ export const ElemInvestments: React.FC<Props> = ({
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}
 
 			<ElemTable
-				className="mt-3 w-full"
+				className="mt-3 w-full border border-separate rounded-xl"
 				columns={[
 					{ label: "Round" },
 					{ label: "Money Raised" },
@@ -114,7 +114,7 @@ export const ElemInvestments: React.FC<Props> = ({
 															<a className="investor flex items-center hover:opacity-70">
 																<ElemPhoto
 																	photo={investment.person.picture}
-																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-full overflow-hidden mr-2 shadow-md"
+																	wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 shadow-md"
 																	imgClass="object-cover w-12 h-12"
 																	imgAlt={investment.person.name}
 																/>

@@ -1,0 +1,3 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- ALTER TABLE actions ALTER COLUMN "user" TYPE integer USING CAST("user" AS integer);

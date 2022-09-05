@@ -1,0 +1,1 @@
+CREATE TABLE "public"."data_runs" ("data_raw" integer NOT NULL, "classification" text NOT NULL, "run_at" timestamptz NOT NULL, "weight" integer NOT NULL, "weight_normalized" float8 NOT NULL, "id" bigserial NOT NULL, PRIMARY KEY ("id") );
