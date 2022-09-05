@@ -36,10 +36,6 @@ export const TheNavbar = () => {
 		// },
 	];
 
-	useEffect(() => {
-		localStorage.setItem('user', JSON.stringify(user))
-	},[user])
-
 	const logout = async () => {
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 		magic.user.logout();
