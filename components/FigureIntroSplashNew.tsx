@@ -31,7 +31,6 @@ export const FigureIntroSplashNew: FC<Props> = ({
 			<div className="absolute w-20 h-20 sm:w-28 sm:h-28 top-28 -left-10 bg-gradient-to-br from-[#FFFBEB] to-[#F8DA4B] rounded-full"></div>
 
 			{/* Cards */}
-
 			<div className="absolute -top-8 left-0 right-0 aspect-video w-10/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
 			<div className="absolute -top-4 left-0 right-0 aspect-video w-11/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
 			<div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl shadow-[10px_14px_25px_rgba(0,0,0,0.10)]"></div>

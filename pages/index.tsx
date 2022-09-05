@@ -42,14 +42,14 @@ const Home: NextPage = () => {
 						</div>
 
 						<div className="mt-28 mx-6 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
-							{/* <FigureIntroSplashNew /> */}
-							<FigureIntroSplash className="hidden lg:block relative" />
+							<FigureIntroSplashNew />
+							{/* <FigureIntroSplash className="hidden lg:block relative" /> */}
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<section className="max-w-7xl mx-auto relative z-10 pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8">
+			<section className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
 				{/* <div className="pb-12 lg:pb-20">
 						<h2 className="relative max-w-3xl text-3xl font-bold text-dark-500 border-l-4 border-primary-500 pl-6 lg:text-4xl">
 							Actionable intelligence, strategic analysis and data sovereignty.

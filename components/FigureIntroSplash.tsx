@@ -44,15 +44,8 @@ export const FigureIntroSplash: FC<Props> = ({
 					</div>
 				</div>
 			</div>
-			<Transition
-				appear={true}
-				show={isShowing}
-				enter="transition ease-in-out delay-1000 duration-500"
-				enterFrom="opacity-0 scale-0"
-				enterTo="opacity-100 scale-100"
-			>
-				<FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-0 opacity-80 text-dark-500" />
-			</Transition>
+
+			<FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-0 opacity-80 text-dark-500" />
 		</figure>
 	);
 };
