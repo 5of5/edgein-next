@@ -153,7 +153,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 										<div
 											className={`${getLayerClass(
 											company.layer
-											)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mb-4`}
+											)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
 										>
 											{company.layer}
 										</div>
