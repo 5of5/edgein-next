@@ -1,8 +1,9 @@
 import React, {useState} from "react";
-import { Team_Members, Maybe } from "../../graphql/types";
+import { Team_Members } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
 import { ElemFilterTags } from "@/components/ElemFilterTags";
+import { uniq, compact, sortBy } from 'lodash';
 
 type Props = {
 	className?: string;
@@ -19,7 +20,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 	showEdit
 }) => {
 	// Show founders first
-	const allTags = [ "All Members" ,...people.map(people => people.function)]
+	const allTags = compact(uniq([ "All Members" , ...(sortBy(people.map(people => people.function)))]))
 	const [selectedTag, setSelectedTag] = useState<string | null>("All Members")
 	const peopleFoundersFirst = (selectedTag === "All Members") ? people.sort(function (a: any, b: any) {
 		return b.founder - a.founder;
@@ -46,9 +47,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 						}
 					</div>
 				)}
-				{(peopleFoundersFirst.map(people => people.function)) && (
-					<ElemFilterTags onClick={(tag, index) => setSelectedTag(tag)} selectedTag={selectedTag} className="dark-500" tags={allTags} />
-				)}
+			<ElemFilterTags onClick={(tag, index) => setSelectedTag(tag)} selectedTag={selectedTag} className="dark-500" tags={allTags} />
 			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-5 w-full">
 				{peopleFoundersFirst.map((teamMember) => {
 					return (

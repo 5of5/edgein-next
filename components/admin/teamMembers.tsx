@@ -24,14 +24,14 @@ import { functionChoicesTM, seniorityChoicesTM } from "../../utils/constants";
 
 const filters = [
   <TextInput key="search" source="function,seniority,title" label="Search in Function,Seniority,Title" resettable alwaysOn />,
-  <ReferenceInput source="company_id" reference="companies">
+  <ReferenceInput key="searchCompany" source="company_id" reference="companies">
     <AutocompleteInput
       optionText={choice =>
         `${choice.name}`
       }
     />
   </ReferenceInput>,
-  <ReferenceInput source="person_id" reference="people">
+  <ReferenceInput key="searchPerson" source="person_id" reference="people">
   <AutocompleteInput
     optionText={choice =>
       `${choice.name}`

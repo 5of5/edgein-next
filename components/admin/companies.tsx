@@ -8,7 +8,7 @@ export const companyIcon = BookIcon;
 
 const filters = [
   <TextInput key="search" source="name,layer" label="Search in name, layer" resettable alwaysOn />,
-  <ReferenceInput source="coin_id" reference="coins">
+  <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
     <AutocompleteInput
       optionText={choice =>
         `${choice.name}`

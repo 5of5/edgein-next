@@ -112,7 +112,7 @@ function HitInvestors({ hit }: HitInvestorsProps) {
 				<img
 					className="object-contain max-w-full max-h-full"
 					src={hit.logo}
-					//alt={hit.logo}
+					alt={''}
 				/>
 			</div>
 			<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">

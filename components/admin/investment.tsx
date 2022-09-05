@@ -18,21 +18,21 @@ import { status } from "../../utils/constants"
 
 const filters = [
   //<TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
-  <ReferenceInput source="person_id" reference="people">
+  <ReferenceInput key="searchPeople" source="person_id" reference="people">
     <AutocompleteInput
       optionText={choice =>
         `${choice.name}`
       }
     />
   </ReferenceInput>,
-  <ReferenceInput source="round_id" reference="investment_rounds">
+  <ReferenceInput key="searchRounds" source="round_id" reference="investment_rounds">
     <AutocompleteInput
       optionText={choice =>
         `${choice.round}`
       }
     />
   </ReferenceInput>,
-  <ReferenceInput source="vc_firm_id" reference="vc_firms">
+  <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
     <AutocompleteInput
       optionText={choice =>
         `${choice.name}`
