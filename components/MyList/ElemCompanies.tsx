@@ -78,7 +78,7 @@ export const ElemCompanies: FC<Props> = ({
   }, [selected])
 
   const isCheckedAll = () => {
-    return selected.length === resourceList?.length && resourceList?.length
+    return selected.length === resourceList?.length && Boolean(resourceList?.length)
   }
 
   const onRemove = async () => {

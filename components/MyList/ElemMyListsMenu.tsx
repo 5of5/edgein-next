@@ -14,7 +14,7 @@ type Props = {
   user: User
   setIsCustom?: Function
   setSelectedListName?: Function
-  isUpdated: number
+  isUpdated?: number
 }
 
 export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListName, isUpdated }) => {

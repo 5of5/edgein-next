@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const result = await mutateForlastSync(listId, listname);
     res.status(200).json({ result });
   } catch (err: any) {
-    console.log(err);
+    // console.log(err);
     res.status(400).json({ message: err.message });
   }
 };
