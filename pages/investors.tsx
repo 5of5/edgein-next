@@ -270,6 +270,14 @@ const Investors: NextPage<Props> = ({
 										)} */}
 									</div>
 
+									{vcfirm.overview && (
+										<div className={`grow mt-4`}>
+											<div className="text-gray-400 line-clamp-3">
+												{vcfirm.overview}
+											</div>
+										</div>
+									)}
+
 									<div className="flex items-center justify-between mt-4">
 										<ElemReactions
 											data={vcfirm}
@@ -293,8 +301,6 @@ const Investors: NextPage<Props> = ({
 						onClickNext={() => setPage((prev) => prev + 1)}
 					/>
 				</div>
-			</div>
-			</div>
 			</div>
 		</div>
 	);
