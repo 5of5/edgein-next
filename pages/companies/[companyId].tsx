@@ -1,7 +1,7 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ElemButton } from "@/components/ElemButton";
+//import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
@@ -10,7 +10,7 @@ import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
-import { ElemCohort } from "@/components/Company/ElemCohort";
+// import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import {
@@ -28,9 +28,14 @@ import {
 import { ElemReactions } from "@/components/ElemReactions";
 import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
-import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
-import { companyLayerChoices } from '@/utils/constants';
+import {
+	IconEditPencil,
+	IconEventDot,
+	IconEventLine,
+	//IconSort,
+} from "@/components/Icons";
+// import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
+import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
 import { remove } from "lodash";
 
@@ -44,17 +49,18 @@ const Company: NextPage<Props> = (props: Props) => {
 	const router = useRouter();
 	const { companyId } = router.query;
 
-	const goBack = () => router.back();
+	//const goBack = () => router.back();
 
 	const [company, setCompany] = useState(props.company);
-	const [selectedTab, setSelectedTab] = useState(0)
-	const [tokenInfo, setTokenInfo] = useState({currentPrice: 0, marketCap: 0})
 
+	const [tokenInfo, setTokenInfo] = useState({ currentPrice: 0, marketCap: 0 });
+
+	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	const {
-		data: conpanyData,
+		data: companyData,
 		error,
 		isLoading,
 	} = useGetCompanyQuery({
@@ -69,22 +75,21 @@ const Company: NextPage<Props> = (props: Props) => {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ ticker })
-		}).then(res => res.json());
-		setTokenInfo(data)
-	}
+			body: JSON.stringify({ ticker }),
+		}).then((res) => res.json());
+		setTokenInfo(data);
+	};
 
 	useEffect(() => {
 		if (company && company.coin) {
-			getTokenInfo(company.coin.ticker)
+			getTokenInfo(company.coin.ticker);
 			// getTokenInfo('bnb')
 		}
-
-	}, [company])
+	}, [company]);
 
 	useEffect(() => {
-		if (conpanyData) setCompany(conpanyData?.companies[0] as Companies);
-	}, [conpanyData]);
+		if (companyData) setCompany(companyData?.companies[0] as Companies);
+	}, [companyData]);
 
 	if (!company) {
 		return <h1>Not Found</h1>;
@@ -119,15 +124,28 @@ const Company: NextPage<Props> = (props: Props) => {
 	// Company tags
 	const companyTags = [];
 	if (company.layer) {
-		const layer = companyLayerChoices.find(layer => layer.id === company.layer);
-		companyTags.unshift((layer) ? layer.name : company.layer);
+		const layer = companyLayerChoices.find(
+			(layer) => layer.id === company.layer
+		);
+		companyTags.unshift(layer ? layer.name : company.layer);
 	}
 	if (company.tags) {
 		company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
 	}
 
+	// Tabs
+	const tabBarItems = ["Overview"];
+	if (company.teamMembers.length > 0) {
+		tabBarItems.push("Team");
+	}
+	if (sortedInvestmentRounds.length > 0) {
+		tabBarItems.push("Investments");
+	}
+
 	const scrollToSection = (tab: number) => {
-		if (tab === 1 && teamRef) {
+		if (tab === 0 && overviewRef) {
+			window.scrollTo(0, overviewRef.current.offsetTop - 30);
+		} else if (tab === 1 && teamRef) {
 			window.scrollTo(0, teamRef.current.offsetTop - 30);
 		} else if (tab == 2 && investmentRef) {
 			window.scrollTo(0, investmentRef.current.offsetTop - 30);
@@ -136,11 +154,15 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
-			const names = `${(investments[0].person) ? investments[0].person.name + "," : ''} ${(investments[0].vc_firm) ? investments[0].vc_firm.name : ''} and others`
-			return names
+			const names = `${
+				investments[0].person ? investments[0].person.name + "," : ""
+			} ${
+				investments[0].vc_firm ? investments[0].vc_firm.name : ""
+			} and others`;
+			return names;
 		}
-		return ''
-	}
+		return "";
+	};
 
 	return (
 		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
@@ -174,7 +196,9 @@ const Company: NextPage<Props> = (props: Props) => {
 								<ElemTags className="dark-500" tags={companyTags} />
 							)}
 							{company.overview && (
-								<p className="mt-2 line-clamp-3 text-base text-slate-600">{company.overview}</p>
+								<p className="mt-2 line-clamp-3 text-base text-slate-600">
+									{company.overview}
+								</p>
 							)}
 
 							<div className="flex items-center mt-4 gap-x-5">
@@ -189,44 +213,48 @@ const Company: NextPage<Props> = (props: Props) => {
 								/>
 							</div>
 						</div>
-						<section className="flex bg-white shadow-md border rounded-lg border-dark-500/10 flex-col col-span-1 md:mt-0">
+						<section className="flex bg-white shadow rounded-lg flex-col col-span-1 md:mt-0">
 							<h2 className="text-lg ml-2 mt-3 font-bold">Token Info</h2>
 							<div className="flex flex-col justify-center p-3 mt-1 space-y-2 ">
 								<div className="flex flex-start">
 									<div className="text-base tracking-wide text-slate-600">
 										Price (USD)
-                  </div>
+									</div>
 									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										{`$${tokenInfo && tokenInfo.currentPrice ? convertAmountRaised(tokenInfo.currentPrice) : 0}`}
+										{`$${
+											tokenInfo && tokenInfo.currentPrice
+												? convertAmountRaised(tokenInfo.currentPrice)
+												: 0
+										}`}
 									</div>
 								</div>
 								<div className="flex flex-start">
 									<div className="text-base tracking-wide text-slate-600">
 										Market Cap
-                  </div>
+									</div>
 									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										{`$${tokenInfo && tokenInfo.marketCap ? convertAmountRaised(tokenInfo.marketCap) : 0}`}
+										{`$${
+											tokenInfo && tokenInfo.marketCap
+												? convertAmountRaised(tokenInfo.marketCap)
+												: 0
+										}`}
 									</div>
 								</div>
 							</div>
 						</section>
-
 					</div>
 				</div>
 			</div>
 
-
 			<ElemTabBar
-				className=""
-				menuItems={["Overview", "Team", "Investments"]}
+				className="mt-7"
+				tabs={tabBarItems}
 				onTabClick={(index) => {
-					scrollToSection(index)
-					setSelectedTab(index)
+					scrollToSection(index);
 				}}
-				selectedTab={selectedTab}
 			/>
 
-			<div className="flex justify-between">
+			<div className="flex justify-between" ref={overviewRef}>
 				<ElemKeyInfo
 					className="mt-5 w-2/8"
 					heading="Key Info"
@@ -250,79 +278,77 @@ const Company: NextPage<Props> = (props: Props) => {
 							company.company_linkedin ||
 							company.velocity_linkedin ||
 							company.velocity_token) && (
-								<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-									<ElemCredibility
-										className="col-span-5 mt-16 md:mt-0 p-3 bg-white shadow-lg border rounded-lg border-dark-500/10"
-										heading="Credibility"
-										marketVerified={company.market_verified}
-										githubVerified={company.github}
-										linkedInVerified={company.company_linkedin}
-									/>
-									<ElemVelocity
-										className="flex flex-col p-3 bg-white shadow-lg border rounded-lg border-dark-500/10  col-span-3 mt-16 md:mt-0"
-										heading="Velocity"
-										employeeListings={"4"}
-										tokenExchangeValue={"2.3"}
-									/>
-								</div>
-							)}
+							<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+								<ElemCredibility
+									className="col-span-5 mt-16 md:mt-0 p-3 bg-white shadow border rounded-lg border-dark-500/10"
+									heading="Credibility"
+									marketVerified={company.market_verified}
+									githubVerified={company.github}
+									linkedInVerified={company.company_linkedin}
+								/>
+								<ElemVelocity
+									className="flex flex-col p-3 bg-white shadow border rounded-lg border-dark-500/10  col-span-3 mt-16 md:mt-0"
+									heading="Velocity"
+									employeeListings={"4"}
+									tokenExchangeValue={"2.3"}
+								/>
+							</div>
+						)}
 					</div>
-					<div className="w-full flex p-5 flex-col grid-cols-8 gap-4 mt-6 md:grid bg-white shadow-md border rounded-lg border-dark-500/10">
+					<div className="w-full flex p-5 flex-col grid-cols-8 gap-4 mt-6 md:grid bg-white shadow border rounded-lg border-dark-500/10">
 						<div className="col-span-8">
 							<div className="flex justify-between pb-4">
 								<h2 className="text-xl font-bold">Actively Timeline</h2>
 								<span className="border rounded-full p-1 pl-2 pt-2">
-									<IconEditPencil
-										title="Edit"
-										className="h-6 w-6"
-									/>
+									<IconEditPencil title="Edit" className="h-6 w-6" />
 								</span>
 							</div>
 
 							<div className="flex p-4 flex-col border rounded-lg py-10">
-								{
-									(sortedInvestmentRounds && sortedInvestmentRounds.length > 0) ? (
-										sortedInvestmentRounds.map((activity, index) => {
-											return (
-												<div key={index} className="flex inline-flex w-full mt-2">
-													<div className="mt-1">
-														<IconEventDot
-															title="dot"
-															className="h-2 mr-2"
-														/>
-														<IconEventLine
-															title="line"
-															className="h-7 w-2 ml-1"
-														/>
-													</div>
-
-													<div className="w-5/6">
-														<h2 className="text-dark-500 font-bold truncate text-base">{`Raises $${convertAmountRaised(activity.amount)} from ${getInvestorsNames(activity.investments)}`}</h2>
-														<p className="text-gray-400 text-xs">{
-															formatDate(activity.round_date as string, {
-																month: "short",
-																day: "2-digit",
-																year: "numeric",
-															})}</p>
-													</div>
+								{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
+									sortedInvestmentRounds.map((activity, index) => {
+										return (
+											<div key={index} className="flex w-full mt-2">
+												<div className="mt-1">
+													<IconEventDot title="dot" className="h-2 mr-2" />
+													<IconEventLine
+														title="line"
+														className="h-7 w-2 ml-1"
+													/>
 												</div>
-											)
-										})
-									)
-										:
-										<p>There is no recent activity for this organization.</p>
 
-								}
+												<div className="w-5/6">
+													<h2 className="text-dark-500 font-bold truncate text-base">{`Raises $${convertAmountRaised(
+														activity.amount
+													)} from ${getInvestorsNames(
+														activity.investments
+													)}`}</h2>
+													<p className="text-gray-400 text-xs">
+														{formatDate(activity.round_date as string, {
+															month: "short",
+															day: "2-digit",
+															year: "numeric",
+														})}
+													</p>
+												</div>
+											</div>
+										);
+									})
+								) : (
+									<p>There is no recent activity for this organization.</p>
+								)}
 							</div>
 						</div>
 					</div>
-
 				</div>
 			</div>
 
-
 			{company.teamMembers.length > 0 && (
-				<div ref={teamRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="team">
+				<div
+					ref={teamRef}
+					className="mt-10 rounded-xl bg-white p-4 pt-6 shadow"
+					id="team"
+				>
 					<ElemTeamGrid
 						showEdit={true}
 						//className="mt-12"
@@ -332,7 +358,11 @@ const Company: NextPage<Props> = (props: Props) => {
 				</div>
 			)}
 			{sortedInvestmentRounds.length > 0 && (
-				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
+				<div
+					ref={investmentRef}
+					className="mt-10 rounded-xl bg-white p-4 pt-6 shadow"
+					id="investments"
+				>
 					<ElemInvestments
 						heading="Investments"
 						investments={sortedInvestmentRounds}
@@ -380,13 +410,13 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const sortRounds =
 		companies.companies[0].investment_rounds
 			?.slice()
-				.sort((a, b) => {
-					return (
-						new Date(a.round_date ?? "").getTime() -
-						new Date(b.round_date ?? "").getTime()
-					);
-				})
-				.reverse() || [];
+			.sort((a, b) => {
+				return (
+					new Date(a.round_date ?? "").getTime() -
+					new Date(b.round_date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	let metaTitle = null;
 	if (companies.companies[0].name) {
