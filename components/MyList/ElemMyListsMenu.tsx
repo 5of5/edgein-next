@@ -14,9 +14,10 @@ type Props = {
   user: User
   setIsCustom?: Function
   setSelectedListName?: Function
+  isUpdated: number
 }
 
-export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListName }) => {
+export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListName, isUpdated }) => {
 
   const router = useRouter();
   const [hotId, setHotId] = useState(0);
@@ -26,9 +27,15 @@ export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListN
 
   const {
     data: lists,
+    refetch
   } = useGetListsByUserQuery({
     current_user: user?.id ?? 0,
   })
+
+  useEffect(() => {
+    if (isUpdated)
+      refetch()
+  }, [isUpdated])
 
   useEffect(() => {
     if (lists) {

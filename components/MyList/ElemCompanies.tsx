@@ -1,14 +1,11 @@
 import { Follows_Companies } from "@/graphql/types";
 import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
 import { IconHot } from "../reactions/IconHot";
 import { IconLike } from "../reactions/IconLike";
-import { ElemDeleteListModal } from "./ElemDeleteListModal";
 import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
-import { ElemListEditModal } from "./ElemListEditModal";
-import { ElemListOptionMenu } from "./ElemListOptionMenu";
 import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
 
 type Props = {
@@ -33,7 +30,14 @@ export const ElemCompanies: FC<Props> = ({
   const router = useRouter()
   const [selected, setSelected] = useState<number[]>([])
 
-  const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
+  const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false)
+
+  const [resourceList, setResourceList] = useState<Follows_Companies[]>()
+
+  useEffect(() => {
+    if (companies)
+      setResourceList(companies)
+  }, [companies])
 
   const toggleCheckboxes = (clearAll: boolean = false) => () => {
 
@@ -42,12 +46,12 @@ export const ElemCompanies: FC<Props> = ({
       return;
     }
 
-    if (selected.length > 0 && companies?.length === selected.length) {
+    if (selected.length > 0 && resourceList?.length === selected.length) {
       setSelected([]);
-    } else if ((companies?.length || 0) > selected.length) {
+    } else if ((resourceList?.length || 0) > selected.length) {
       setSelected((prev) => {
         const items = [...prev];
-        companies?.forEach(({ id }) => {
+        resourceList?.forEach(({ id }) => {
           if (!items.includes(id!))
             items.push(id!)
         });
@@ -74,16 +78,24 @@ export const ElemCompanies: FC<Props> = ({
   }, [selected])
 
   const isCheckedAll = () => {
-    return selected.length === companies?.length
+    return selected.length === resourceList?.length
   }
 
   const onRemove = async () => {
     const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
       method: 'POST',
-      body: JSON.stringify({ followIds: selected })
+      body: JSON.stringify({ followIds: selected }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
 
-    if (deleteCompaniesRes.ok) router.reload()
+    if (deleteCompaniesRes.ok) {
+      setResourceList((prev) => {
+        return prev?.filter((resource) => !selected.includes(resource.id as number))
+      })
+    }
   }
 
   return (
@@ -148,7 +160,7 @@ export const ElemCompanies: FC<Props> = ({
 
           <tbody>
             {
-              companies?.map(({ company, id }, index) => (
+              resourceList?.map(({ company, id }, index) => (
                 <tr
                   key={company?.id}
                   className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
@@ -189,7 +201,7 @@ export const ElemCompanies: FC<Props> = ({
             }
 
             {
-              (!companies || companies?.length === 0) &&
+              (!resourceList || resourceList?.length === 0) &&
               <tr>
                 <td colSpan={5} className="text-center px-1 py-2">No Companies</td>
               </tr>
