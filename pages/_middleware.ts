@@ -4,7 +4,6 @@ import { mutate } from "../graphql/hasuraAdmin";
 
 export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
-	console.log({ url });
 
 	// Prevent security issues – users should not be able to canonically access
 	// the pages/sites folder and its respective contents. This can also be done
@@ -29,7 +28,6 @@ export async function middleware(req: NextRequest) {
 		url.pathname.endsWith(".ico") ||
 		process.env.DEV_MODE
 	) {
-		console.log("pass-thur", url.pathname);
 		return NextResponse.next();
 	}
 
@@ -43,7 +41,6 @@ export async function middleware(req: NextRequest) {
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
-			console.log("no-user", url.pathname);
 			return NextResponse.redirect(
 				new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
 			);
@@ -60,7 +57,7 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (![`/api/graphql/`].includes(url.pathname)) {
+	if (![`/api/`].includes(url.pathname) && user?.id) {
 		mutate({
 			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {
@@ -75,13 +72,15 @@ export async function middleware(req: NextRequest) {
 				object: {
 					action: "View",
 					page: url.pathname,
+					// TODO add from url split
+					// resourceType:,
+					// resourceId: ,
 					properties: {},
-					user: user.email,
+					user: user.id,
 				},
 			},
 		});
 	}
 
-	console.log("pass-thur");
 	return NextResponse.next();
 }

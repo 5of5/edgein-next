@@ -1,140 +1,153 @@
 import { Companies, Follows_Companies } from "@/graphql/types";
-import { getNewFollows, reactOnSentiment } from "@/utils/reaction";
-import Link from "next/link";
+import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getLayerClass } from "@/utils/style";
+import { remove } from "lodash";
 import { FC, useEffect, useState } from "react";
-import { ElemCredibility } from "../Company/ElemCredibility";
-import { ElemVelocity } from "../Company/ElemVelocity";
-import { ElemPhoto } from "../ElemPhoto";
-import { ElemReactions } from "../ElemReactions";
-import { ElemTooltip } from "../ElemTooltip";
+// import { ElemCredibility } from "@/components/Company/ElemCredibility";
+// import { ElemVelocity } from "@/components/Company/ElemVelocity";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemReactions } from "@/components/ElemReactions";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemTooltip } from "@/components/ElemTooltip";
+import { IconArrowUp, IconArrowDown } from "@/components/Icons";
 
 type Props = {
-  company: Companies,
-  toggleViewMode: boolean
-}
+	company: Companies;
+	toggleViewMode: boolean;
+};
 
-export const ElemCompanyCard: FC<Props> = ({
-  company,
-  toggleViewMode
-}) => {
-  const [companyData, setCompanyData] = useState(company);
+export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
+	const [companyData, setCompanyData] = useState(company);
 
-  useEffect(() => {
-    setCompanyData(company)
-  }, [company]);
+	useEffect(() => {
+		setCompanyData(company);
+	}, [company]);
 
-  const handleReactionClick = (sentiment: string) => async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
+	const handleReactionClick =
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			event.stopPropagation();
+			event.preventDefault();
 
-    const newSentiment = await reactOnSentiment({
-      company: company.id,
-      sentiment,
-      pathname: `/companies/${company.slug}`
-    })
-    setCompanyData((prev: Companies) => {
-      const newFollows = getNewFollows(sentiment) as Follows_Companies;
+			const newSentiment = await reactOnSentiment({
+				company: company.id,
+				sentiment,
+				pathname: `/companies/${company.slug}`,
+			});
+			setCompanyData((prev: Companies) => {
+				const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
-      prev.follows.push(newFollows);
-      return { ...prev, sentiment: newSentiment }
-    })
-  }
+				if (!alreadyReacted) prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
+				return { ...prev, sentiment: newSentiment };
+			});
+		};
 
-  return (
-    <Link href={`/companies/${companyData.slug}`}>
-      <a
-        className={`flex flex-col ${toggleViewMode ? "md:flex-row md:items-center" : ""
-          } mx-auto w-full p-5 cursor-pointer bg-white rounded-lg group transform transition duration-300 ease-in-out hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300 md:h-full`}
-      >
-        <div
-          className={`flex shrink-0 mb-4 ${toggleViewMode
-            ? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
-            : "w-full"
-            }`}
-        >
-          <ElemPhoto
-            photo={companyData.logo}
-            wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
-            imgClass="object-fit max-w-full max-h-full"
-            imgAlt={companyData.name}
-          />
+	return (
+		<a
+			href={`/companies/${companyData.slug}`}
+			className={`flex flex-col ${
+				toggleViewMode ? "md:flex-row md:items-center" : ""
+			} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
+		>
+			<div
+				className={`flex shrink-0 ${
+					toggleViewMode
+						? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
+						: "w-full"
+				}`}
+			>
+				<ElemPhoto
+					photo={companyData.logo}
+					wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+					imgClass="object-fit max-w-full max-h-full"
+					imgAlt={companyData.name}
+				/>
 
-          <div className="flex items-center justify-center pl-2 md:overflow-hidden">
-            <h3
-              className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl group-hover:opacity-60"
-              title={companyData.name ?? ""}
-            >
-              {companyData.name}
-            </h3>
-          </div>
-          {companyData.coin && (
-            <ElemTooltip
-              content={`Token: ${companyData.coin.ticker}`}
-              className="self-center inline-block px-2 py-1 ml-1 align-middle rounded-md whitespace-nowrap text-dark-400 bg-gray-50 items-end"
-            >
-              <span className="text-sm font-bold uppercase leading-sm">
-                {companyData.coin.ticker}
-              </span>
-            </ElemTooltip>
-          )}
-        </div>
-        {companyData.overview && (
-          <div
-            className={`grow ${toggleViewMode && "max-w-sm mr-4"}`}
-          >
-            <div className="text-gray-400 line-clamp-3">
-              {companyData.overview}
-            </div>
-          </div>
-        )}
+				<div className="flex items-center justify-center pl-2 md:overflow-visible">
+					<div>
+						<h3
+							className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl"
+							title={companyData.name ?? ""}
+						>
+							{companyData.name}
+						</h3>
+						{companyData.coin && (
+							<ElemTooltip
+								content={`Token / Value`}
+								className="inline-flex items-center overflow-visible"
+							>
+								<span className="uppercase">{companyData.coin.ticker}</span>
+								{/* <span className="text-green-500">
+									$7.75 <IconArrowUp className="h-4 w-4 inline" />
+								</span>
+								<div className="inline-flex items-center text-red-500">
+									$0.0258 <IconArrowDown className="h-4 w-4 inline" />
+								</div> */}
+							</ElemTooltip>
+						)}
+					</div>
+				</div>
+			</div>
 
-        {/* {companyData.layer && (
-												<div
-													className={`${getLayerClass(
-														companyData.layer
-													)} self-start text-xs font-bold leading-sm uppercase mt-4 px-3 py-1 rounded-full`}
-												>
-													{companyData.layer}
-												</div>
-											)} */}
-        <div
-          className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${toggleViewMode
-            ? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
-            : ""
-            }`}
-        >
-          <ElemCredibility
-            mini={true}
-            className={`pr-4 ${toggleViewMode ? "md:pr-0 lg:pr-4" : ""
-              }`}
-            marketVerified={companyData.market_verified}
-            githubVerified={companyData.github}
-            linkedInVerified={companyData.company_linkedin}
-          />
-          <ElemVelocity
-            mini={true}
-            className={`${toggleViewMode ? "md:pt-2 lg:pt-0" : ""
-              }`}
-            employeeListings={companyData.velocity_linkedin}
-            tokenExchangeValue={companyData.velocity_token}
-          />
-        </div>
+			{companyData.layer && (
+				<div
+					className={`${getLayerClass(
+						companyData.layer
+					)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
+				>
+					{companyData.layer}
+				</div>
+			)}
 
-        <div
-          className={`flex mt-4 grid-cols-5 md:grid ${toggleViewMode
-            ? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
-            : ""
-            }`}
-        >
-          <ElemReactions
-            data={companyData}
-            handleReactionClick={handleReactionClick}
-            blackText
-          />
-        </div>
+			{companyData.overview && (
+				<div className={`grow mt-4 ${toggleViewMode && "max-w-sm mr-4"}`}>
+					<div className="text-gray-400 line-clamp-3">
+						{companyData.overview}
+					</div>
+				</div>
+			)}
 
-      </a>
-    </Link>
-  );
+			{/* <div
+				className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${toggleViewMode
+					? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
+					: ""
+					}`}
+				>
+				<ElemCredibility
+					mini={true}
+					className={`pr-4 ${toggleViewMode ? "md:pr-0 lg:pr-4" : ""
+					}`}
+					marketVerified={companyData.market_verified}
+					githubVerified={companyData.github}
+					linkedInVerified={companyData.company_linkedin}
+				/>
+				<ElemVelocity
+					mini={true}
+					className={`${toggleViewMode ? "md:pt-2 lg:pt-0" : ""
+					}`}
+					employeeListings={companyData.velocity_linkedin}
+					tokenExchangeValue={companyData.velocity_token}
+				/>
+				</div> */}
 
-}
+			<div className="flex items-center justify-between mt-4">
+				<ElemReactions
+					data={companyData}
+					handleReactionClick={handleReactionClick}
+				/>
+				<ElemSaveToList
+					follows={company?.follows}
+					onCreateNew={handleReactionClick}
+				/>
+			</div>
+		</a>
+	);
+};

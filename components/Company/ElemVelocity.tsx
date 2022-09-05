@@ -52,17 +52,17 @@ export const ElemVelocity: React.FC<Props> = ({
 	}
 
 	return (
-		<section className={`${className} flex flex-col`}>
+		<section className={`${className} flex flex-col align-middle`}>
 			{heading && (
-				<h2 className="text-2xl font-bold">
+				<h2 className="text-xl font-bold align-middle">
 					{heading}
 					<ElemTooltip
-						className="ml-1"
+						className="ml-1 align-middle bg-slate-200 rounded-full pl-3 "
 						size="md"
 						content="Velocity trends based on the last 3 months of LinkedIn employment data, as well as token exchange values from Binance and Coinbase."
 					>
 						<IconQuestionMarkCircle
-							className="h-5 w-5"
+							className="h-5 w-5 mt-2 text-center"
 							title="What is Velocity?"
 						/>
 					</ElemTooltip>
@@ -73,7 +73,7 @@ export const ElemVelocity: React.FC<Props> = ({
 				className={`${
 					mini
 						? "space-x-2 justify-end"
-						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white rounded-lg border border-dark-500/10"
+						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white"
 				} flex grow`}
 			>
 				{velocityItems.map((item, index: number) => {
@@ -99,7 +99,7 @@ export const ElemVelocity: React.FC<Props> = ({
 								<ElemTooltip content={item.text}>{badge}</ElemTooltip>
 							) : (
 								<>
-									<div className="text-xs font-semibold uppercase tracking-wide">
+									<div className="text-base text-slate-600 tracking-wide">
 										{item.text}
 									</div>
 									{badge}

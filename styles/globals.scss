@@ -45,24 +45,29 @@
   .animation-delay-5000 {
     animation-delay: 5s;
   }
+
   .backface-hidden {
     backface-visibility: hidden;
   }
-  .scrollbar-hide{
+
+  .scrollbar-hide {
     /* IE and Edge */
     -ms-overflow-style: none;
     /* Firefox */
     scrollbar-width: none;
+
     /* Safari and Chrome */
     &::-webkit-scrollbar {
       display: none;
     }
   }
-  .scrollbar-default{
+
+  .scrollbar-default {
     /* IE and Edge */
     -ms-overflow-style: auto;
     /* Firefox */
     scrollbar-width: auto;
+
     /* Safari and Chrome */
     &::-webkit-scrollbar {
       display: block;
@@ -81,43 +86,51 @@ body {
 }
 
 body {
-   @apply bg-gray-50 text-dark-500 overscroll-y-none;
+  @apply bg-gray-50 text-dark-500 overscroll-y-none;
+}
+input[type="checkbox"]::before {
+  /* ...existing styles */
+
+  transform-origin: bottom left;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
 /***************** 
 Mobile hamburger button
 ******************/
-.main-nav{
+.main-nav {
   .hamburger-inner,
   .hamburger-inner::before,
-  .hamburger-inner::after { 
+  .hamburger-inner::after {
     @apply absolute h-0.5 w-[26px] bg-current rounded-[1px] transition-transform;
   }
 
-  .hamburger-inner{
-    &::before{
-      transition:top .075s .12s ease, opacity .075s ease;
+  .hamburger-inner {
+    &::before {
+      transition: top .075s .12s ease, opacity .075s ease;
       @apply top-[7px];
     }
-    &::after{
-      transition:bottom .075s .12s ease,transform .075s cubic-bezier(.55,.055,.675,.19);
+
+    &::after {
+      transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
       @apply bottom-[7px];
     }
   }
 
   /* Active hamburger button  */
-  &.nav-toggle-active{
-    .hamburger-inner{
+  &.nav-toggle-active {
+    .hamburger-inner {
       @apply delay-150 ease-linear rotate-45;
 
-      &::before{
-        transition:top .075s ease, opacity .075s .12s ease;
+      &::before {
+        transition: top .075s ease, opacity .075s .12s ease;
         @apply top-0 opacity-0;
       }
-      &::after{
-        transition:bottom .075s ease, transform .075s .12s cubic-bezier(.215,.61,.355,1);
+
+      &::after {
+        transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
         @apply bottom-0 rotate-90;
       }
-    } 
+    }
   }
 }

@@ -15,7 +15,7 @@ export const ElemTags: React.FC<Props> = ({ className, heading, tags }) => {
 					return (
 						<li
 							key={index}
-							className="bg-primary-100 text-primary-500 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full"
+							className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full"
 						>
 							{tag}
 						</li>

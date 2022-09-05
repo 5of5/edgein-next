@@ -15,12 +15,38 @@ import {
   DateField,
   SelectField,
   DateInput,
+  AutocompleteInput
 } from "react-admin";
-import {investorFunctionChoices, investorSeniorityChoices} from "../../utils/constants"
+import { investorFunctionChoices, investorSeniorityChoices } from "../../utils/constants"
+
+const filters = [
+  <TextInput key="search" source="function,seniority,title" label="Search in Function,Seniority,Title" resettable alwaysOn />,
+  <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
+    <AutocompleteInput
+      optionText={choice =>
+        `${choice.name}`
+      }
+    />
+  </ReferenceInput>,
+  <ReferenceInput key="searchPerson" source="person_id" reference="people">
+  <AutocompleteInput
+    optionText={choice =>
+      `${choice.name}`
+    }
+  />
+</ReferenceInput>
+];
 
 export const InvestorsList = () => (
-  <List>
+  <List filters={filters}
+  sx={{
+		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
+      justifyContent: 'flex-start'
+		}
+	   }}
+  >
     <Datagrid>
+      <EditButton />
       <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <TextField source="name" />
       </ReferenceField>
@@ -33,13 +59,12 @@ export const InvestorsList = () => (
       />
       <DateField source="start_date" />
       <DateField source="end_date" />
-      <TextField source="founder" />
+      {/* <TextField source="founder" /> */}
       <SelectField
         source="seniority"
         choices={investorSeniorityChoices}
       />
       <TextField source="title" />
-      <EditButton />
     </Datagrid>
   </List>
 );
@@ -55,7 +80,7 @@ const InvestorsTitle = ({ record }: TitleProps) => {
 export const InvestorsEdit = () => (
   <Edit title={<InvestorsTitle />}>
     <SimpleForm>
-    <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
+      <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
@@ -80,7 +105,10 @@ export const InvestorsEdit = () => (
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
-      <TextInput source="founder" />
+     {/* <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="founder"
+      /> */}
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
@@ -122,10 +150,10 @@ export const InvestorCreate = () => (
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
-      <TextInput
+      {/* <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="founder"
-      />
+      /> */}
       <SelectInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
@@ -133,7 +161,7 @@ export const InvestorCreate = () => (
       />
       <TextInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        
+
         source="title"
       />
     </SimpleForm>

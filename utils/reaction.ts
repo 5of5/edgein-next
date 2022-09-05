@@ -36,3 +36,8 @@ export const getNewFollows = (sentiment: string, type: string = 'company') => {
 
   return follows;
 }
+
+export const getName = (list: Lists) => {
+  const fragments = list.name.split('-');
+  return fragments[fragments.length - 1];
+};
