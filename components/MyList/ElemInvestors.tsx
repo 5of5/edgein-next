@@ -1,10 +1,12 @@
 import { Follows_Vc_Firms, GetCompaniesByListIdQuery, GetVcFirmsByListIdQuery } from "@/graphql/types";
 import { useRouter } from "next/router";
-import { FC, useCallback, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { IconCrap } from "../reactions/IconCrap";
 import { IconHot } from "../reactions/IconHot";
 import { IconLike } from "../reactions/IconLike";
+import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
+import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
 
 type Props = {
   vcfirms?: Follows_Vc_Firms[]
@@ -25,7 +27,14 @@ export const ElemInvestors: FC<Props> = ({
   const router = useRouter()
   const [selected, setSelected] = useState<number[]>([])
 
-  const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
+  const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false)
+
+  const [resourceList, setResourceList] = useState<Follows_Vc_Firms[]>()
+
+  useEffect(() => {
+    if (vcfirms)
+      setResourceList(vcfirms)
+  }, [vcfirms])
 
   const toggleCheckboxes = (clearAll: boolean = false) => () => {
 
@@ -34,12 +43,12 @@ export const ElemInvestors: FC<Props> = ({
       return;
     }
 
-    if (selected.length > 0 && vcfirms?.length === selected.length) {
+    if (selected.length > 0 && resourceList?.length === selected.length) {
       setSelected([]);
-    } else if ((vcfirms?.length || 0) > selected.length) {
+    } else if ((resourceList?.length || 0) > selected.length) {
       setSelected((prev) => {
         const items = [...prev];
-        vcfirms?.forEach(({ id }) => {
+        resourceList?.forEach(({ id }) => {
           if (!items.includes(id as number))
             items.push(id as number)
         });
@@ -66,20 +75,46 @@ export const ElemInvestors: FC<Props> = ({
   }, [selected])
 
   const isCheckedAll = () => {
-    return selected.length === vcfirms?.length
+    return selected.length === resourceList?.length && resourceList?.length
   }
 
   const onRemove = async () => {
-    const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
+    const deleteVcfirmsRes = await fetch(`/api/delete_follows`, {
       method: 'POST',
-      body: JSON.stringify({ followIds: selected })
+      body: JSON.stringify({ followIds: selected }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
 
-    if (deleteCompaniesRes.ok) router.reload()
+    if (deleteVcfirmsRes.ok) {
+      setResourceList((prev) => {
+        return prev?.filter((resource) => !selected.includes(resource.id as number))
+      })
+      setSelected([])
+    }
   }
   return (
     <div className="rounded-lg p-3 bg-white col-span-3 mt-10 mb-10 ">
       <h2 className="font-bold text-dark-500 text-xl capitalize">{selectedListName}: Investors</h2>
+
+      {
+        isCustomList && selected.length > 0 &&
+        <>
+          <ElemListsOptionMenu
+            onRemoveBtn={() => setShowDeleteItemsModal(true)}
+            onClearSelection={toggleCheckboxes(true)}
+          />
+
+          <ElemDeleteListsModal
+            isOpen={showDeleteItemsModal}
+            onCloseModal={() => setShowDeleteItemsModal(false)}
+            listName={selectedListName}
+            onDelete={onRemove}
+          />
+        </>
+      }
 
       <div className="mt-3 w-full rounded-lg border border-slate-200 max-h-80 overflow-auto">
         <table className="w-full">
@@ -99,7 +134,7 @@ export const ElemInvestors: FC<Props> = ({
 
           <tbody>
             {
-              vcfirms?.map(({ vc_firm, id }, index) => (
+              resourceList?.map(({ vc_firm, id }, index) => (
                 <tr
                   key={vc_firm?.id}
                   className={`text-left text-sm${getAlternateRowColor(index)} hover:bg-slate-100`}
@@ -141,7 +176,7 @@ export const ElemInvestors: FC<Props> = ({
             }
 
             {
-              (!vcfirms || vcfirms?.length === 0) &&
+              (!resourceList || resourceList?.length === 0) &&
               <tr>
                 <td colSpan={4} className="text-center px-1 py-2">No Investors</td>
               </tr>

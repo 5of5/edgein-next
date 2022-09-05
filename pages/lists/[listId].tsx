@@ -34,16 +34,17 @@ const MyList: NextPage<Props> = ({
   companies,
   vcfirms,
 }) => {
-  const { user } = useAuth();
+  const { user } = useAuth()
   const router = useRouter()
   const [selectedListName, setSelectedListName] = useState<null | string>('hot');
-  const [totalFunding, setTotalFuncding] = useState(0);
-  // @TODO: implement tags count on final structure for tags in admin
-  const [tagsCount, setTagsCount] = useState({});
-  const [isCustomList, setIsCustomList] = useState(false);
+  const [totalFunding, setTotalFuncding] = useState(0)
+  const [tagsCount, setTagsCount] = useState({})
+  const [isCustomList, setIsCustomList] = useState(false)
 
   const [showEditModal, setShowEditModal] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+
+  const [isUpdated, setIsUpdated] = useState(0);
 
   useEffect(() => {
     if (companies) {
@@ -84,10 +85,18 @@ const MyList: NextPage<Props> = ({
   const onSave = async (name: string) => {
     const updateNameRes = await fetch(`/api/update_list`, {
       method: 'PUT',
-      body: JSON.stringify({ id: parseInt(router.query.listId as string), name })
+      body: JSON.stringify({ id: parseInt(router.query.listId as string), name }),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
     })
 
-    if (updateNameRes.ok) router.reload()
+    if (updateNameRes.ok) {
+      setShowEditModal(false)
+      setSelectedListName(name)
+      setIsUpdated((new Date).getTime())
+    }
   }
 
   return (
@@ -97,6 +106,7 @@ const MyList: NextPage<Props> = ({
           user={user}
           setIsCustom={setIsCustomList}
           setSelectedListName={setSelectedListName}
+          isUpdated={isUpdated}
         />
         <div className="col-span-3">
 
@@ -110,7 +120,7 @@ const MyList: NextPage<Props> = ({
                 {selectedListName}
               </h1>
 
-              { isCustomList &&
+              {isCustomList &&
                 <>
                   <ElemListOptionMenu onUpdateBtn={() => setShowEditModal(true)} onDeleteBtn={() => setShowDeleteModal(true)} />
 
