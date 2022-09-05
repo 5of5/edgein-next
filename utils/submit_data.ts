@@ -1,5 +1,4 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { DataRaw } from '@/models/biz_model'
 
 
 export const partnerLookUp = async (apiKey: string) => {
@@ -15,6 +14,33 @@ export const partnerLookUp = async (apiKey: string) => {
     variables: {apiKey}
   })
   return data_partner 
+}
+
+const TABLE_NAME: Record<string, string> = {
+  'company': 'companies',
+  'vc_firm': 'vc_firms',
+  'person': 'people'
+}
+
+export const resourceIdLookup = async (resourceType: string, resourceIdentifier: string, identifierColumn: string) => {
+  const tableName = TABLE_NAME[resourceType]
+  if (tableName === undefined)
+    return
+
+  try {
+    const { data } = await query({
+      query: `
+      query lookup_resource($resourceIdentifier: String!) {
+        ${tableName}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
+          id
+        }
+      }`,
+      variables: {resourceIdentifier}
+    })
+    return data[tableName][0].id
+  } catch (e) {
+    return
+  }
 }
 
 export const fieldLookup = async (path: string) => {
@@ -36,25 +62,12 @@ export const fieldLookup = async (path: string) => {
   return data_field
 }
 
-export const insertDataRaw = async (data: DataRaw) => {
-  const { data: {insert_data_raw_one} } = await mutate({
+export const insertDataRaw = async (data: Array<Record<string, any>>) => {
+  const { data: {insert_data_raw: {returning}} } = await mutate({
     mutation: `
-    mutation insert_data_raw(
-      $accuracy_weight: Int!,
-      $field: String!,
-      $partner: Int!,
-      $resource: String!,
-      $value: jsonb!,
-      $resource_id: Int!
-      ) {
-        insert_data_raw_one(object: {
-          accuracy_weight: $accuracy_weight,
-          field: $field,
-          partner: $partner,
-          resource: $resource,
-          value: $value,
-          resource_id: $resource_id
-        }) {
+    mutation submit_data_raw($input: [data_raw_insert_input!]!) {
+      insert_data_raw(objects: $input) {
+        returning {
           id
           created_at
           resource
@@ -64,8 +77,9 @@ export const insertDataRaw = async (data: DataRaw) => {
           accuracy_weight
         }
       }
+    }
     `,
-    variables: {...data} 
+    variables: {input: data} 
   })
-  return insert_data_raw_one
+  return returning
 }
