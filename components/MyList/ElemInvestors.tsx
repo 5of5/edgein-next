@@ -75,7 +75,7 @@ export const ElemInvestors: FC<Props> = ({
   }, [selected])
 
   const isCheckedAll = () => {
-    return selected.length === resourceList?.length
+    return selected.length === resourceList?.length && resourceList?.length
   }
 
   const onRemove = async () => {
@@ -92,6 +92,7 @@ export const ElemInvestors: FC<Props> = ({
       setResourceList((prev) => {
         return prev?.filter((resource) => !selected.includes(resource.id as number))
       })
+      setSelected([])
     }
   }
   return (
