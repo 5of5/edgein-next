@@ -104,8 +104,8 @@ export const ElemRecentCompanies: FC<Props> = ({
 		};
 
 	return (
-		<div className={`${className} bg-white rounded-lg p-5`}>
-			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
+		<div className={`${className}`}>
+			{heading && <h2 className="text-2xl font-bold p-4 pt-6">{heading}</h2>}
 			{error ? (
 				<h4>Error loading companies</h4>
 			) : isLoading ? (
@@ -123,12 +123,12 @@ export const ElemRecentCompanies: FC<Props> = ({
 				</>
 			) : (
 				companies && (
-					<ElemCarouselWrap>
+					<ElemCarouselWrap className=" bg-white rounded-lg">
 						{companies.map((company: any, index: number) => {
 							return (
 								<ElemCarouselCard
 									key={index}
-									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+									className={`p-2 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
 									<a
 										href={`/companies/${company.slug}`}

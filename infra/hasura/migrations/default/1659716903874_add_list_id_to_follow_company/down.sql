@@ -1,7 +1,7 @@
 -- Could not auto-generate a down migration.
 -- Please write an appropriate down migration for the SQL below:
 CREATE OR REPLACE VIEW "public"."follows_companies" AS
- SELECT follows.user_id,
+ SELECT follows.created_by_user_id,
     follows.resource_id,
     follows.id,
     follows.resource_type

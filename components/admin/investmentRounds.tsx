@@ -18,32 +18,49 @@ import {
   NumberInput,
   DateField,
   NumberField,
+  AutocompleteInput
 } from "react-admin";
-import {roundChoices, currencyChoices} from "../../utils/constants"
+import { roundChoices, currencyChoices, status } from "../../utils/constants"
 
 const filters = [
-	<SearchInput key="search" type="number"  source="amount,valuation" resettable alwaysOn />
+  <TextInput key="search" type="text" source="round" label="Search in Round" resettable alwaysOn />,
+  <TextInput key="search1" type="number" source="valuation,amount" label="Valuation, Amount" resettable />,
+  <ReferenceInput source="company_id" reference="companies">
+        <AutocompleteInput
+            optionText={choice =>
+                `${choice.name}`
+            }
+        />
+    </ReferenceInput>
 ];
 
 export const InvestmentRoundsList = () => (
-  <List filters={filters}>
+  <List filters={filters}
+  sx={{
+		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
+      justifyContent: 'flex-start'
+		}
+	   }}
+  >
     <Datagrid>
+      <EditButton />
       <TextField source="id" />
       <ReferenceField label="Company" source="company_id" reference="companies">
         <TextField source="name" />
       </ReferenceField>
       <DateField source="round_date" />
-      <SelectField
+      <TextField source="round" />
+      {/* <SelectField
         source="round"
         choices={roundChoices}
-      />
+      /> */}
       <NumberField source="amount" />
       <SelectField
         source="currency"
         choices={currencyChoices}
       />
       <NumberField source="valuation" />
-      <EditButton />
+      <TextField source="status" />
     </Datagrid>
   </List>
 );
@@ -89,6 +106,11 @@ export const InvestmentRoundsEdit = () => (
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="valuation"
       />
+      <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="status"
+        choices={status}
+      />
     </SimpleForm>
   </Edit>
 );
@@ -123,6 +145,11 @@ export const InvestmentRoundsCreate = () => (
       <NumberInput
         className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="valuation"
+      />
+      <SelectInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="status"
+        choices={status}
       />
     </SimpleForm>
   </Create>
