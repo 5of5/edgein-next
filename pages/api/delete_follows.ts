@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await deleteIfExists(list, followResult.resource_id, followResult.resource_type, user, token) // delete follows
       await updateResourceSentimentCount(followResult.resource_type, followResult.resource_id, token, sentimentType, false, true)
     }
-    res.status(400).json({ message: 'success' });
+    res.status(200).json({ message: 'success' });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
