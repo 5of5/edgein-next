@@ -154,7 +154,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				/>
 				</div> */}
 
-			<div className="flex items-center justify-between mt-4">
+			<div className="flex items-center justify-between mt-4 gap-x-5">
 				<ElemReactions
 					data={companyData}
 					handleReactionClick={handleReactionClick}

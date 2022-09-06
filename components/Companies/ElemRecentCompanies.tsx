@@ -3,13 +3,14 @@ import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
-// import { formatDate } from "@/utils";
+import { formatDate } from "@/utils";
+import { getLayerClass } from "@/utils/style";
 import {
-	Companies,
-	Companies_Bool_Exp,
-	Follows_Companies,
-	Lists,
-	useGetCompaniesRecentQuery,
+  Companies,
+  Companies_Bool_Exp,
+  Follows_Companies,
+  Lists,
+  useGetCompaniesRecentQuery,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
@@ -33,9 +34,9 @@ type Props = {
 };
 
 export const ElemRecentCompanies: FC<Props> = ({
-	className = "",
-	heading,
-	itemsLimit,
+  className = "",
+  heading,
+  itemsLimit,
 }) => {
 	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
@@ -170,8 +171,16 @@ export const ElemRecentCompanies: FC<Props> = ({
 												</h3>
 											</div>
 										</div>
-
-										<div className="mt-4 text-slate-600 grow line-clamp-3">
+										{company.layer && (
+										<div
+											className={`${getLayerClass(
+											company.layer
+											)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
+										>
+											{company.layer}
+										</div>
+										)}
+										<div className="mt-4 text-gray-400 grow line-clamp-3">
 											{company.overview}
 										</div>
 										{/* <div className="mt-3 text-xs font-bold text-gray-400">

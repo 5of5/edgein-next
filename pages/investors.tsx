@@ -9,7 +9,13 @@ import { ElemPhoto } from "../components/ElemPhoto";
 import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { ElemButton } from "@/components/ElemButton";
-import { IconCash, IconSearch, IconAnnotation } from "@/components/Icons";
+import {
+  IconCash,
+  IconSearch,
+  IconGrid,
+  IconList,
+  IconAnnotation,
+} from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -85,16 +91,16 @@ const Investors: NextPage<Props> = ({
 		});
 	}
 
-	const {
-		data: vcFirmsData,
-		error,
-		isLoading,
-	} = useGetVcFirmsQuery({
-		offset,
-		limit,
-		where: filters as Vc_Firms_Bool_Exp,
-		current_user: user?.id ?? 0,
-	});
+  const {
+    data: vcFirmsData,
+    error,
+    isLoading,
+  } = useGetVcFirmsQuery({
+    offset,
+    limit,
+    where: filters as Vc_Firms_Bool_Exp,
+    current_user: user?.id ?? 0,
+  });
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
@@ -290,6 +296,14 @@ const Investors: NextPage<Props> = ({
 											</div>
 										)} */}
 									</div>
+
+									{vcfirm.overview && (
+										<div className={`grow mt-4`}>
+											<div className="text-gray-400 line-clamp-3">
+												{vcfirm.overview}
+											</div>
+										</div>
+									)}
 
 									<div className="flex items-center justify-between mt-4">
 										<ElemReactions

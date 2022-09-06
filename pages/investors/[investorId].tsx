@@ -9,7 +9,12 @@ import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { IconEditPencil, IconEventDot, IconEventLine } from "@/components/Icons";
+import {
+	IconEditPencil,
+	IconEventDot,
+	IconEventLine,
+	IconSort,
+} from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -40,8 +45,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	const goBack = () => router.back();
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
-	const [selectedTab, setSelectedTab] = useState(0)
-
+	const [selectedTab, setSelectedTab] = useState(0);
 
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -147,14 +151,14 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 
 				<div className="w-full col-span-2 p-2">
-					<h1 className="my-5 text-4xl font-bold md:text-6xl dark-500">{vcfirm.name}</h1>
-					{
-						vcfirm.tags && (
-							<ElemTags className="dark-500" tags={vcfirm.tags} />
-						)
-					}
+					<h1 className="my-5 text-4xl font-bold md:text-6xl dark-500">
+						{vcfirm.name}
+					</h1>
+					{vcfirm.tags && <ElemTags className="dark-500" tags={vcfirm.tags} />}
 					{vcfirm.overview && (
-						<p className="mt-2 line-clamp-3 text-base text-slate-600">{vcfirm.overview}</p>
+						<p className="mt-2 line-clamp-3 text-base text-slate-600">
+							{vcfirm.overview}
+						</p>
 					)}
 					{/* <ElemKeyInfo
 						heading=""
@@ -177,10 +181,10 @@ const VCFirm: NextPage<Props> = (props) => {
 
 			<ElemTabBar
 				className=""
-				menuItems={["Overview", "Team", "Investments"]}
+				tabs={["Overview", "Team", "Investments"]}
 				onTabClick={(index) => {
-					scrollToSection(index)
-					setSelectedTab(index)
+					scrollToSection(index);
+					setSelectedTab(index);
 				}}
 				selectedTab={selectedTab}
 			/>
@@ -202,51 +206,50 @@ const VCFirm: NextPage<Props> = (props) => {
 						<div className="flex justify-between pb-4">
 							<h2 className="text-xl font-bold">Actively Timeline</h2>
 							<span className="border rounded-full p-1 pl-2 pt-2">
-								<IconEditPencil
-									title="Edit"
-									className="h-6 w-6"
-								/>
+								<IconEditPencil title="Edit" className="h-6 w-6" />
 							</span>
 						</div>
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
+
 							{
-								(sortedInvestmentRounds && sortedInvestmentRounds.length > 0) ? (
-									sortedInvestmentRounds.map((activity: Investment_Rounds, index: number) => {
+								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
+									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
+										if (!activity) {
+											return;
+										}
 										return (
 											<div key={index} className="flex inline-flex w-full mt-2">
 												<div className="mt-1">
-													<IconEventDot
-														title="dot"
-														className="h-2 mr-2"
-													/>
+													<IconEventDot title="dot" className="h-2 mr-2" />
 													<IconEventLine
 														title="line"
 														className="h-7 w-2 ml-1"
 													/>
 												</div>
-
-												<div className="w-5/6">
-													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name : ''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
+													<div className="w-5/6">
+													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name:''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
 													<p className="text-gray-400 text-xs">{activity.round_date}</p>
 												</div>
 											</div>
-										)
-									})
+										);
+									}
 								)
-									:
-									<p>There is no recent activity for this organization.</p>
-
-							}
+							) : (
+								<p>There is no recent activity for this organization.</p>
+							)}
 							{/* <p>There is no recent activity for this organization.</p>
 							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1> */}
 						</div>
 					</div>
 				</div>
-
 			</div>
 			{vcfirm.investors.length > 0 && (
-				<div ref={teamRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="team">
+				<div
+					ref={teamRef}
+					className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md"
+					id="team"
+				>
 					<ElemInvestorGrid
 						// tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
 						showEdit={true}
@@ -257,15 +260,12 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-			{Object.keys(sortedInvestmentRounds).length > 0 && (
+			{Object.keys(sortedInvestmentRounds).map(key => key != null).length > 0 && (
 				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
 					<div className="flex justify-between pb-4">
 						<h2 className="text-2xl font-bold">Investments</h2>
 						<span className="border rounded-full p-1 pl-2 pt-2">
-							<IconEditPencil
-								title="Edit"
-								className="h-6 w-6"
-							/>
+							<IconEditPencil title="Edit" className="h-6 w-6" />
 						</span>
 					</div>
 					<ElemTable
@@ -277,64 +277,67 @@ const VCFirm: NextPage<Props> = (props) => {
 							{ label: "Money Raised" },
 						]}
 					>
-						{sortedInvestmentRounds.map((theRound: Investment_Rounds, index: number) => {
-							if (!theRound) {
-								return;
-							}
+						{sortedInvestmentRounds.map(
+							(theRound: Investment_Rounds, index: number) => {
+								if (!theRound) {
+									return;
+								}
 
-							return (
-								<tr
-									key={index}
-									className={`${index % 2 === 0 ? "" : "bg-slate-50"
+								return (
+									<tr
+										key={index}
+										className={`${
+											index % 2 === 0 ? "" : "bg-slate-50"
 										} flex flex-col flex-no wrap overflow-hidden md:table-row`}
-								>
-									<ElemTableCell header="Date">
-										{theRound.round_date ? (
-											formatDate(theRound.round_date, {
-												month: "short",
-												day: "2-digit",
-												year: "numeric",
-											})
-										) : (
-											<>&mdash;</>
-										)}
-									</ElemTableCell>
-									<ElemTableCell header="Company">
-										{theRound.company ? (
-											<Link
-												href={`/companies/${theRound.company.slug}`}
-												key={theRound.company.id}
-											>
-												<a className="inline-flex items-center investor hover:opacity-70">
-													<ElemPhoto
-														photo={theRound.company.logo}
-														wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={theRound.company.name}
-													/>
-													{theRound.company.name}
-												</a>
-											</Link>
-										) : (
-											<>&mdash;</>
-										)}
-									</ElemTableCell>
-									<ElemTableCell header="Round">
-										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
-									</ElemTableCell>
-									<ElemTableCell header="Money Raised">
-										{theRound.amount ? (
-											<>
-												<span>$</span>
-												{convertAmountRaised(theRound.amount)}
-											</>
-										) : (
-											<>&mdash;</>
-										)}
-									</ElemTableCell>
-								</tr>
-							);
-						})}
+									>
+										<ElemTableCell header="Date">
+											{theRound.round_date ? (
+												formatDate(theRound.round_date, {
+													month: "short",
+													day: "2-digit",
+													year: "numeric",
+												})
+											) : (
+												<>&mdash;</>
+											)}
+										</ElemTableCell>
+										<ElemTableCell header="Company">
+											{theRound.company ? (
+												<Link
+													href={`/companies/${theRound.company.slug}`}
+													key={theRound.company.id}
+												>
+													<a className="inline-flex items-center investor hover:opacity-70">
+														<ElemPhoto
+															photo={theRound.company.logo}
+															wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+															imgClass="object-fit max-w-full max-h-full"
+															imgAlt={theRound.company.name}
+														/>
+														{theRound.company.name}
+													</a>
+												</Link>
+											) : (
+												<>&mdash;</>
+											)}
+										</ElemTableCell>
+										<ElemTableCell header="Round">
+											{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
+										</ElemTableCell>
+										<ElemTableCell header="Money Raised">
+											{theRound.amount ? (
+												<>
+													<span>$</span>
+													{convertAmountRaised(theRound.amount)}
+												</>
+											) : (
+												<>&mdash;</>
+											)}
+										</ElemTableCell>
+									</tr>
+								);
+							}
+						)}
 					</ElemTable>
 				</div>
 			)}
