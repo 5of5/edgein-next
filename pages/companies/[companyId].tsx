@@ -165,17 +165,17 @@ const Company: NextPage<Props> = (props: Props) => {
 	};
 
 	return (
-		<div className="max-w-6xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
-			<div className="flex flex-col gap-4 md:grid md:grid-cols-5">
-				<div className="col-span-1">
+		<div className="max-w-7xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+				<div className="col-span-3">
 					<ElemPhoto
 						photo={company.logo}
-						wrapClass="flex items-center justify-center aspect-square shrink-0 p-6 bg-white rounded-lg border border-dark-500/10"
+						wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
 						imgClass="object-contain w-full h-full"
 						imgAlt={company.name}
 					/>
 				</div>
-				<div className="w-full col-span-4">
+				<div className="w-full col-span-5 mt-7 lg:mt-0">
 					<div className="flex shrink-0">
 						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 							{company.name}
@@ -190,62 +190,56 @@ const Company: NextPage<Props> = (props: Props) => {
 							</div>
 						)}
 					</div>
-					<div className="flex flex-col grid-cols-4 gap-4 md:grid">
-						<div className="col-span-3 mt-16 md:mt-0">
-							{companyTags.length > 0 && (
-								<ElemTags className="dark-500" tags={companyTags} />
-							)}
-							{company.overview && (
-								<p className="mt-2 line-clamp-3 text-base text-slate-600">
-									{company.overview}
-								</p>
-							)}
+					{companyTags.length > 0 && (
+						<ElemTags className="mt-4" tags={companyTags} />
+					)}
 
-							<div className="flex items-center mt-4 gap-x-5">
-								<ElemReactions
-									data={company}
-									handleReactionClick={handleReactionClick}
-									// roundedFull
-								/>
-								<ElemSaveToList
-									follows={company?.follows}
-									onCreateNew={handleReactionClick}
-								/>
-							</div>
-						</div>
-						<section className="flex bg-white shadow rounded-lg flex-col col-span-1 md:mt-0">
-							<h2 className="text-lg ml-2 mt-3 font-bold">Token Info</h2>
-							<div className="flex flex-col justify-center p-3 mt-1 space-y-2 ">
-								<div className="flex flex-start">
-									<div className="text-base tracking-wide text-slate-600">
-										Price (USD)
-									</div>
-									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										{`$${
-											tokenInfo && tokenInfo.currentPrice
-												? convertAmountRaised(tokenInfo.currentPrice)
-												: 0
-										}`}
-									</div>
-								</div>
-								<div className="flex flex-start">
-									<div className="text-base tracking-wide text-slate-600">
-										Market Cap
-									</div>
-									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										{`$${
-											tokenInfo && tokenInfo.marketCap
-												? convertAmountRaised(tokenInfo.marketCap)
-												: 0
-										}`}
-									</div>
-								</div>
-							</div>
-						</section>
+					{company.overview && (
+						<p className="mt-4 line-clamp-3 text-base text-slate-600">
+							{company.overview}
+						</p>
+					)}
+
+					<div className="flex items-center mt-4 gap-x-5">
+						<ElemReactions
+							data={company}
+							handleReactionClick={handleReactionClick}
+							// roundedFull
+						/>
+						<ElemSaveToList
+							follows={company?.follows}
+							onCreateNew={handleReactionClick}
+						/>
 					</div>
 				</div>
+				<div className="col-span-3 mt-7 lg:mt-0">
+					<section className="bg-white shadow rounded-lg p-5 md:mt-0">
+						<h2 className="text-xl font-bold">Token Info</h2>
+						<div className="flex flex-col space-y-2 mt-2">
+							<div className="flex items-center space-x-2">
+								<div className=" text-slate-600">Price (USD)</div>
+								<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
+									{`$${
+										tokenInfo && tokenInfo.currentPrice
+											? convertAmountRaised(tokenInfo.currentPrice)
+											: 0
+									}`}
+								</div>
+							</div>
+							<div className="flex items-center space-x-2">
+								<div className=" text-slate-600">Market Cap</div>
+								<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
+									{`$${
+										tokenInfo && tokenInfo.marketCap
+											? convertAmountRaised(tokenInfo.marketCap)
+											: 0
+									}`}
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
 			</div>
-
 			<ElemTabBar
 				className="mt-7"
 				tabs={tabBarItems}
@@ -253,77 +247,76 @@ const Company: NextPage<Props> = (props: Props) => {
 					scrollToSection(index);
 				}}
 			/>
+			<div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7" ref={overviewRef}>
+				<div className="col-span-3">
+					<ElemKeyInfo
+						className="sticky top-4"
+						heading="Key Info"
+						website={company.website}
+						totalFundingRaised={company.investor_amount}
+						whitePaper={company.white_paper}
+						totalEmployees={company.total_employees}
+						careerPage={company.careers_page}
+						yearFounded={company.year_founded}
+						linkedIn={company.company_linkedin}
+						github={company.github}
+						twitter={company.twitter}
+						location={company.location}
+						discord={company.discord}
+						glassdoor={company.glassdoor}
+					/>
+				</div>
+				<div className="col-span-8">
+					{(company.market_verified ||
+						company.github ||
+						company.company_linkedin ||
+						company.velocity_linkedin ||
+						company.velocity_token) && (
+						<div className="lg:grid lg:grid-cols-8 lg:gap-7">
+							<ElemCredibility
+								className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+								heading="Credibility"
+								marketVerified={company.market_verified}
+								githubVerified={company.github}
+								linkedInVerified={company.company_linkedin}
+							/>
+							<ElemVelocity
+								className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+								heading="Velocity"
+								employeeListings={"4"}
+								tokenExchangeValue={"2.3"}
+							/>
+						</div>
+					)}
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+						<div className="flex items-center justify-between">
+							<h2 className="text-xl font-bold">Activity Timeline</h2>
+							<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+								<IconEditPencil title="Edit" />
+							</button>
+						</div>
 
-			<div className="flex justify-between" ref={overviewRef}>
-				<ElemKeyInfo
-					className="mt-5 w-2/8"
-					heading="Key Info"
-					website={company.website}
-					totalFundingRaised={company.investor_amount}
-					whitePaper={company.white_paper}
-					totalEmployees={company.total_employees}
-					careerPage={company.careers_page}
-					yearFounded={company.year_founded}
-					linkedIn={company.company_linkedin}
-					github={company.github}
-					twitter={company.twitter}
-					location={company.location}
-					discord={company.discord}
-					glassdoor={company.glassdoor}
-				/>
-				<div className="w-6/8">
-					<div>
-						{(company.market_verified ||
-							company.github ||
-							company.company_linkedin ||
-							company.velocity_linkedin ||
-							company.velocity_token) && (
-							<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-								<ElemCredibility
-									className="col-span-5 mt-16 md:mt-0 p-3 bg-white shadow border rounded-lg border-dark-500/10"
-									heading="Credibility"
-									marketVerified={company.market_verified}
-									githubVerified={company.github}
-									linkedInVerified={company.company_linkedin}
-								/>
-								<ElemVelocity
-									className="flex flex-col p-3 bg-white shadow border rounded-lg border-dark-500/10  col-span-3 mt-16 md:mt-0"
-									heading="Velocity"
-									employeeListings={"4"}
-									tokenExchangeValue={"2.3"}
-								/>
-							</div>
-						)}
-					</div>
-					<div className="w-full flex p-5 flex-col grid-cols-8 gap-4 mt-6 md:grid bg-white shadow border rounded-lg border-dark-500/10">
-						<div className="col-span-8">
-							<div className="flex justify-between pb-4">
-								<h2 className="text-xl font-bold">Actively Timeline</h2>
-								<span className="border rounded-full p-1 pl-2 pt-2">
-									<IconEditPencil title="Edit" className="h-6 w-6" />
-								</span>
-							</div>
-
-							<div className="flex p-4 flex-col border rounded-lg py-10">
-								{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
-									sortedInvestmentRounds.map((activity, index) => {
+						<div className="mt-2 p-4 border border-black/10 rounded-lg">
+							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
+								<ul className="flex flex-col">
+									{sortedInvestmentRounds.map((activity, index) => {
 										return (
-											<div key={index} className="flex w-full mt-2">
-												<div className="mt-1">
-													<IconEventDot title="dot" className="h-2 mr-2" />
-													<IconEventLine
-														title="line"
-														className="h-7 w-2 ml-1"
-													/>
-												</div>
+											<li
+												key={index}
+												className="relative pl-6 overflow-hidden group last:-mb-4"
+											>
+												<span className="absolute h-full top-0 bottom-0 left-0">
+													<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+													<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+												</span>
 
-												<div className="w-5/6">
-													<h2 className="text-dark-500 font-bold truncate text-base">{`Raises $${convertAmountRaised(
+												<div className="mb-4">
+													<h2 className="font-bold">{`Raised $${convertAmountRaised(
 														activity.amount
 													)} from ${getInvestorsNames(
 														activity.investments
 													)}`}</h2>
-													<p className="text-gray-400 text-xs">
+													<p className="text-xs text-slate-600">
 														{formatDate(activity.round_date as string, {
 															month: "short",
 															day: "2-digit",
@@ -331,18 +324,19 @@ const Company: NextPage<Props> = (props: Props) => {
 														})}
 													</p>
 												</div>
-											</div>
+											</li>
 										);
-									})
-								) : (
-									<p>There is no recent activity for this organization.</p>
-								)}
-							</div>
+									})}
+								</ul>
+							) : (
+								<div className="flex items-center justify-center p-5">
+									<div>There is no recent activity for this organization.</div>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
 			</div>
-
 			{company.teamMembers.length > 0 && (
 				<div
 					ref={teamRef}
@@ -369,7 +363,6 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 			)}
-
 			{/* <ElemCohort className="mt-12" heading="Similar Companies" /> */}
 			{/* <div className="mt-10 rounded-xl bg-white shadow-md">
 				<ElemRecentCompanies
