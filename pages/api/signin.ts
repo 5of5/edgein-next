@@ -72,10 +72,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
   
     if (userInfoInJson && userInfoInJson.email) {
+      if (!emailExist.is_auth0_verified) {
+        // update userInfo
+        await updateEmailVerifiedStatus(userInfoInJson.email, userInfoInJson.email_verified);
+      }
+
       // get the user info from the user table
       const { id, email, role, external_id } = await queryForUserInfo(userInfoInJson.email);
-  
-        // Author a couple of cookies to persist a user's session
+      // Author a couple of cookies to persist a user's session
       const token = await new SignJWT({ user: JSON.stringify({id, email, role, publicAddress: external_id}), ...hasuraClaims })
       .setProtectedHeader({ alg: 'HS256' })
       .setJti(nanoid())
@@ -142,6 +146,7 @@ const queryForExistingUsers = async (email: string) => {
     users(where: {email: {_eq: $email}}, limit: 1) {
       id
       email
+      is_auth0_verified
     }
   }
   `
@@ -177,6 +182,32 @@ const queryForUserInfo = async (email: string) => {
     return data.data.users[0] as User
   } catch (ex) {
     throw ex;
+  }
+}
+
+const updateEmailVerifiedStatus = async (email: String, is_auth0_verified: Boolean) => {
+  // prepare gql query
+  const updateEmailVerified = `
+  mutation update_users($email: String, $is_auth0_verified: Boolean) {
+    update_users(
+      where: {email: {_eq: $email}},
+      _set: { is_auth0_verified: $is_auth0_verified }
+    ) {
+      affected_rows
+      returning {
+        id
+        email
+      }
+    }
+  }
+`
+try {
+  await mutate({
+    mutation: updateEmailVerified,
+    variables: { email, is_auth0_verified }
+  });
+  } catch (e) {
+    throw e
   }
 }
 
