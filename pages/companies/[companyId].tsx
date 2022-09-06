@@ -174,9 +174,11 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
-			const names = `${investments[0].person ? investments[0].person.name + "," : ""
-				} ${investments[0].vc_firm ? investments[0].vc_firm.name : ""
-				} and others`;
+			const names = `${
+				investments[0].person ? investments[0].person.name + "," : ""
+			} ${
+				investments[0].vc_firm ? investments[0].vc_firm.name : ""
+			} and others`;
 			return names;
 		}
 		return "";
