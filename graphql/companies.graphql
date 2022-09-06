@@ -123,6 +123,7 @@ query GetCompaniesRecent(
 		id
 		name
 		slug
+		layer
 		logo
 		overview
 		total_employees

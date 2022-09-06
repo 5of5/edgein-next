@@ -1,36 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 
 type Props = {
-    className?: string;
-    menuItems?: string[],
-    onTabClick?: (index: number) => void,
-    selectedTab?: number
-}
+	className?: string;
+	tabs?: string[];
+	onTabClick?: (index: number) => void;
+	selectedTab?: number;
+};
 
 export const ElemTabBar: React.FC<Props> = ({
-    className,
-    menuItems,
-    onTabClick = () => {},
-    selectedTab
+	className,
+	tabs,
+	onTabClick = () => {},
+	selectedTab,
 }) => {
-    //console.log("menus =", menuItems)
-    return (
-        <div>
-            <hr className="mt-5 mb-4"></hr>
-            {
-                menuItems && menuItems.map((item, index) => {
-                    return (
-                        <button key={item} onClick={() => onTabClick(index)} className={`ml-4  cursor-pointer decoration-4 font-bold ${selectedTab === index ? 'text-primary-500 ' : 'text-dark-500'}`}>
-                            {item}
-                        </button>
-                    )
-                })
-            }
+	const [isActive, setActive] = useState(0);
 
-            {/* <span className=" ml-4 font-bold cursor-pointer">Team</span>
-            <span className=" ml-4 font-bold cursor-pointer">Investments</span> */}
-            <hr className="mt-4"></hr>
-        </div>
+	const onClick = (i: number) => {
+		setActive(i);
+		onTabClick(i);
+	};
 
-    )
-}
+	return (
+		<nav
+			className={`flex border-y border-black/10 ${className}`}
+			role="tablist"
+		>
+			{tabs &&
+				tabs.map((tab: string, i: number) => (
+					<button
+						key={i}
+						onClick={() => onClick(i)}
+						className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+							isActive === i
+								? "text-primary-500 border-primary-500"
+								: "border-transparent  hover:bg-slate-200"
+						}`}
+						aria-current={isActive === i ? "true" : "false"}
+					>
+						{tab}
+					</button>
+				))}
+		</nav>
+	);
+};

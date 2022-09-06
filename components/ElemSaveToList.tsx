@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useState, Fragment } from "react";
-import { Lists } from "@/graphql/types";
+import { Lists, useGetListsByUserQuery } from "@/graphql/types";
 import { findIndex } from "lodash";
 import { getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
@@ -24,9 +24,22 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 	const [newName, setNewName] = useState<string>("");
 	const [listsData, setListsData] = useState([] as Lists[]);
 
+	const {
+    data: lists,
+  } = useGetListsByUserQuery({
+    current_user: user?.id ?? 0
+  });
+
 	useEffect(() => {
-		if (listsData) setListsData(listsData);
-	}, [listsData]);
+    if (lists)
+      setListsData(() => {
+        return lists?.lists?.filter((item) => {
+          const fragments = item.name.split('-');
+          const sentiment = fragments[fragments.length - 1];
+          return !['hot', 'like', 'crap'].includes(sentiment)
+        }) as Lists[]
+      })
+  }, [lists]);
 
 	const isSelected = (list: any) => {
 		const name = getName(list);
