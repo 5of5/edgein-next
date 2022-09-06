@@ -13,7 +13,7 @@ export const ElemHeading: React.FC<PropsWithChildren<Props>> = ({
 }) => {
 	return (
 		<section className="relative">
-			<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
+			<FigureBlurredBg className="-bottom-20 sm:-bottom-20 lg:-bottom-[1rem]" />
 
 			<div className="max-w-7xl mx-auto py-12 px-4 relative z-10 sm:px-6 lg:py-16 lg:px-8">
 				<div>

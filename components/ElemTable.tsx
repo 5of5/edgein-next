@@ -13,6 +13,7 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 	return (
 		<table
 			className={`${className} flex flex-row flex-no-wrap md:table md:table-auto`}
+			cellSpacing={0}
 		>
 			<thead>
 				<tr className="hidden md:table-row">
@@ -20,7 +21,7 @@ export const ElemTable: FC<PropsWithChildren<Props>> = ({
 						return (
 							<th
 								key={index}
-								className="px-4 py-2 whitespace-nowrap font-bold text-left bg-white border-b-2 border-dark-100 first:rounded-tl-lg last:rounded-tr-lg"
+								className="px-4 py-2 whitespace-nowrap font-bold text-sm text-left bg-white border-b-2 border-dark-100 first:rounded-tl-lg last:rounded-tr-lg"
 								colSpan={col.colSpan ? col.colSpan : 1}
 							>
 								{col.label}
