@@ -145,7 +145,7 @@ export const CompanyEdit = () => {
     React.useEffect(() => {
       if (slug !== '')
         setValue('slug', slug)
-    }, [slug])
+    }, [slug, setValue])
 
     return (
       <TextInput
@@ -346,7 +346,7 @@ export const CompanyCreate = () => {
     React.useEffect(() => {
       if (slug !== '')
         setValue('slug', slug)
-    }, [slug])
+    }, [slug, setValue])
 
     return (
       <TextInput

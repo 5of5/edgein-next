@@ -118,7 +118,7 @@ export const PeopleEdit = () => {
 		React.useEffect(() => {
 			if (slug !== '')
 				setValue('slug', slug)
-		}, [slug])
+		}, [slug, setValue])
 
 		return (
 			<TextInput
@@ -240,7 +240,7 @@ export const PeopleCreate = () => {
 		React.useEffect(() => {
 			if (slug !== '')
 				setValue('slug', slug)
-		}, [slug])
+		}, [slug, setValue])
 
 		return (
 			<TextInput
