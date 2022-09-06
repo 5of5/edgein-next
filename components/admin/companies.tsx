@@ -1,9 +1,12 @@
 // in posts.js
 import * as React from "react";
-import { FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput } from 'react-admin';
+import { FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, useGetList, FormDataConsumer } from 'react-admin';
+import { useForm, useFormContext } from "react-hook-form";
 import BookIcon from '@mui/icons-material/Book';
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { companyLayerChoices, validateName, validateSlug, validateUrl, status } from "../../utils/constants"
+import { companyLayerChoices, validateNameAndSlugAndEmailAndDomain, status } from "../../utils/constants"
+import { random } from "lodash";
+
 export const companyIcon = BookIcon;
 
 const filters = [
@@ -40,9 +43,9 @@ export const CompanyList = () => (
       <NumberField source="total_employees" />
       <TextField source="github" />
       {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
-      <FunctionField cellClassName="truncate" source="notes" render={(record: any) => (record.notes && record.notes.length > 25) ? `${record.notes.substring(0,20)}...` : record.notes} />
+      <FunctionField cellClassName="truncate" source="notes" render={(record: any) => (record.notes && record.notes.length > 25) ? `${record.notes.substring(0, 20)}...` : record.notes} />
       {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
-      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0,20)}...` : record.overview} />
+      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
       <TextField source="website" />
       <TextField source="careers_page" />
       <TextField source="company_linkedin" />
@@ -72,10 +75,11 @@ const CompanyTitle = ({ record }: CompanyTitleProps) => {
 };
 
 export const CompanyEdit = () => {
-
   const [logo, setLogo] = React.useState(null)
   const [oldLogo, setOldLogo] = React.useState(null)
   const [isImageUpdated, setIsImageUpdated] = React.useState(false)
+  const { data: companies } = useGetList('companies', {});
+  const [slug, setSlug] = React.useState('')
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -121,24 +125,56 @@ export const CompanyEdit = () => {
     setLogo(null)
   }
 
+  const handleNameBlur = (value: string, formData: any) => {
+    let filterSlug: any[] | undefined
+    filterSlug = companies?.filter(f => f.slug === value)
+
+    if (formData.slug === '') {
+      if (filterSlug && filterSlug?.length > 0) {
+        handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+      }
+      if (filterSlug?.length === 0) {
+        setSlug(value)
+      }
+    }
+  }
+
+  const SlugInput = ({ slug }: any) => {
+    const { setValue } = useFormContext();
+
+    React.useEffect(() => {
+      if (slug !== '')
+        setValue('slug', slug)
+    }, [slug])
+
+    return (
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+      />
+    );
+  };
+
   return (
     <Edit title={<CompanyTitle />} transform={transform}>
-      <SimpleForm className="border rounded-lg">
+      <SimpleForm className="border rounded-lg" validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, companies)}>
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           disabled
           source="id"
         />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="name"
-          validate={validateName}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="slug"
-          validate={validateSlug}
-        />
+        <FormDataConsumer>
+          {({ formData, ...rest }) => (
+            <TextInput
+              className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              source="name"
+              onBlur={e => handleNameBlur(e.target.value, formData)}
+              {...rest}
+            />
+          )}
+        </FormDataConsumer>
+        <SlugInput slug={slug} />
+
         <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
@@ -168,7 +204,6 @@ export const CompanyEdit = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="github"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -183,24 +218,18 @@ export const CompanyEdit = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="website"
-        validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="careers_page"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="company_linkedin"
-        validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
-        // min="1900"
-        // max="2099"
-        // validate={validateYearFounded}
         />
         <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -238,17 +267,14 @@ export const CompanyEdit = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="twitter"
-        validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="discord"
-        validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="glassdoor"
-        validate={validateUrl}
         />
         <TextInput
           placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
@@ -261,8 +287,9 @@ export const CompanyEdit = () => {
 };
 
 export const CompanyCreate = () => {
-
   const [logo, setLogo] = React.useState(null)
+  const { data: companies } = useGetList('companies', {});
+  const [slug, setSlug] = React.useState('')
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -299,23 +326,54 @@ export const CompanyCreate = () => {
     setLogo(null)
   }
 
+  const handleNameBlur = (value: string, formData: any) => {
+    let filterSlug: any[] | undefined
+    filterSlug = companies?.filter(f => f.slug === value)
+
+    if (formData.slug === '') {
+      if (filterSlug && filterSlug?.length > 0) {
+        handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+      }
+      if (filterSlug?.length === 0) {
+        setSlug(value)
+      }
+    }
+  }
+
+  const SlugInput = ({ slug }: any) => {
+    const { setValue } = useFormContext();
+
+    React.useEffect(() => {
+      if (slug !== '')
+        setValue('slug', slug)
+    }, [slug])
+
+    return (
+      <TextInput
+        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+      />
+    );
+  };
+
   return (
     <Create title="Create a Company" transform={transform}>
-      <SimpleForm>
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="name"
-          validate={validateName}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="slug"
-          validate={validateSlug}
-        />
+      <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, companies)}>
+        <FormDataConsumer>
+          {({ formData, ...rest }) => (
+            <TextInput
+              className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              source="name"
+              onBlur={e => handleNameBlur(e.target.value, formData)}
+              {...rest}
+            />
+          )}
+        </FormDataConsumer>
+        <SlugInput slug={slug} />
+
         <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
-
         <SelectInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="layer"
@@ -331,7 +389,6 @@ export const CompanyCreate = () => {
             optionText="name"
           />
         </ReferenceInput>
-        
         <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="total_employees"
@@ -339,7 +396,6 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="github"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -354,7 +410,6 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="website"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -363,14 +418,10 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="company_linkedin"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
-        // min="1900"
-        // max="2099"
-        // validate={validateYearFounded}
         />
         <NumberInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -408,17 +459,14 @@ export const CompanyCreate = () => {
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="twitter"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="discord"
-          validate={validateUrl}
         />
         <TextInput
           className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="glassdoor"
-          validate={validateUrl}
         />
         <TextInput
           placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"

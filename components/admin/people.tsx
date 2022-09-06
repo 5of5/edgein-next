@@ -1,7 +1,6 @@
 // in posts.js
 import * as React from "react";
 import {
-	SearchInput,
 	FileInput, ImageField,
 	List,
 	Datagrid,
@@ -11,25 +10,25 @@ import {
 	TextField,
 	EditButton,
 	TextInput,
-	required,
-	minLength,
-	email,
-	regex,
-	SelectInput
+	FormDataConsumer,
+	SelectInput,
+	useGetList
 } from "react-admin";
+import { useFormContext } from "react-hook-form";
+import { random } from "lodash";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { validateName, validateSlug, validateUrl, validateEmail, status } from "../../utils/constants"
+import { validateNameAndSlugAndEmailAndDomain, status } from "../../utils/constants"
 const filters = [
 	<TextInput key="search" source="name,type" label="Search in name,type" resettable alwaysOn />
 ];
 export const PeopleList = () => (
 	<List filters={filters}
-	sx={{
-		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
-			justifyContent: 'flex-start'
-		}
-	   }}
-	  >
+		sx={{
+			'.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+				justifyContent: 'flex-start'
+			}
+		}}
+	>
 		<Datagrid>
 			<EditButton />
 			<TextField source="id" />
@@ -56,10 +55,11 @@ const PeopleTitle = ({ record }: TitleProps) => {
 };
 
 export const PeopleEdit = () => {
-
 	const [logo, setLogo] = React.useState(null)
 	const [oldLogo, setOldLogo] = React.useState(null)
 	const [isImageUpdated, setIsImageUpdated] = React.useState(false)
+	const { data: people } = useGetList('people', {});
+	const [slug, setSlug] = React.useState('')
 
 	const transform = async (data: any) => {
 		var formdata = { ...data };
@@ -98,24 +98,55 @@ export const PeopleEdit = () => {
 		setLogo(null)
 	}
 
+	const handleNameBlur = (value: string, formData: any) => {
+		let filterSlug: any[] | undefined
+		filterSlug = people?.filter(f => f.slug === value)
+
+		if (formData.slug === '') {
+			if (filterSlug && filterSlug?.length > 0) {
+				handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+			}
+			if (filterSlug?.length === 0) {
+				setSlug(value)
+			}
+		}
+	}
+
+	const SlugInput = ({ slug }: any) => {
+		const { setValue } = useFormContext();
+
+		React.useEffect(() => {
+			if (slug !== '')
+				setValue('slug', slug)
+		}, [slug])
+
+		return (
+			<TextInput
+				className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+				source="slug"
+			/>
+		);
+	};
+
 	return (
 		<Edit title={<PeopleTitle />} transform={transform}>
-			<SimpleForm>
+			<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, people)}>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					disabled
 					source="id"
 				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="name"
-					validate={validateName}
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="slug"
-					validate={validateSlug}
-				/>
+				<FormDataConsumer>
+					{({ formData, ...rest }) => (
+						<TextInput
+							className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+							source="name"
+							onBlur={e => handleNameBlur(e.target.value, formData)}
+							{...rest}
+						/>
+					)}
+				</FormDataConsumer>
+				<SlugInput slug={slug} />
 				<FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
 					<ImageField source="src" title="title" />
 				</FileInput>
@@ -126,7 +157,7 @@ export const PeopleEdit = () => {
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="github"
-					validate={validateUrl}
+
 				/>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -135,17 +166,15 @@ export const PeopleEdit = () => {
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="personal_email"
-					validate={validateEmail}
 				/>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="work_email"
-					validate={validateEmail}
 				/>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="linkedin"
-					validate={validateUrl}
+
 				/>
 				<SelectInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -159,6 +188,8 @@ export const PeopleEdit = () => {
 
 export const PeopleCreate = () => {
 	const [logo, setLogo] = React.useState(null)
+	const { data: people } = useGetList('people', {});
+	const [slug, setSlug] = React.useState('')
 
 	const transform = async (data: any) => {
 		var formdata = { ...data };
@@ -188,26 +219,57 @@ export const PeopleCreate = () => {
 	const onDropRejected = (files: any) => {
 		setLogo(null)
 	}
+
+	const handleNameBlur = (value: string, formData: any) => {
+		let filterSlug: any[] | undefined
+		filterSlug = people?.filter(f => f.slug === value)
+
+		if (formData.slug === '') {
+			if (filterSlug && filterSlug?.length > 0) {
+				handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+			}
+			if (filterSlug?.length === 0) {
+				setSlug(value)
+			}
+		}
+	}
+
+	const SlugInput = ({ slug }: any) => {
+		const { setValue } = useFormContext();
+
+		React.useEffect(() => {
+			if (slug !== '')
+				setValue('slug', slug)
+		}, [slug])
+
+		return (
+			<TextInput
+				className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+				source="slug"
+			/>
+		);
+	};
+
 	return (
 		<Create title="Create a Person" transform={transform}>
-			<SimpleForm>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="name"
-					validate={validateName}
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="slug"
-					validate={validateSlug}
-				/>
+			<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, people)}>
+				<FormDataConsumer>
+					{({ formData, ...rest }) => (
+						<TextInput
+							className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+							source="name"
+							onBlur={e => handleNameBlur(e.target.value, formData)}
+							{...rest}
+						/>
+					)}
+				</FormDataConsumer>
+				<SlugInput slug={slug} />
 				<FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
 					<ImageField source="src" title="title" />
 				</FileInput>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="github"
-					validate={validateUrl}
 				/>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -216,17 +278,14 @@ export const PeopleCreate = () => {
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="personal_email"
-					validate={validateEmail}
 				/>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="work_email"
-					validate={validateEmail}
 				/>
 				<TextInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="linkedin"
-					validate={validateUrl}
 				/>
 				<SelectInput
 					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -237,3 +296,4 @@ export const PeopleCreate = () => {
 		</Create>
 	)
 }
+
