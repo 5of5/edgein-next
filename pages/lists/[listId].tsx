@@ -151,6 +151,7 @@ const MyList: NextPage<Props> = ({
             getAlternateRowColor={getAlternateRowColor}
             tagsCount={tagsCount}
             isCustomList={isCustomList}
+            setIsUpdated={setIsUpdated}
           />
 
           <ElemInvestors
@@ -159,6 +160,7 @@ const MyList: NextPage<Props> = ({
             selectedListName={selectedListName}
             getAlternateRowColor={getAlternateRowColor}
             isCustomList={isCustomList}
+            setIsUpdated={setIsUpdated}
           />
 
         </div>

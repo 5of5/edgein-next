@@ -35,7 +35,7 @@ export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListN
   useEffect(() => {
     if (isUpdated)
       refetch()
-  }, [isUpdated])
+  }, [isUpdated, refetch])
 
   useEffect(() => {
     if (lists) {
@@ -55,7 +55,7 @@ export const ElemMyListsMenu: FC<Props> = ({ user, setIsCustom, setSelectedListN
         return list ? getName(list as Lists) : '';
       })
     }
-  }, [lists])
+  }, [lists, router.query.listId, setIsCustom, setSelectedListName])
 
   const getCountForList = (listName: string) => {
     if (userLists) {

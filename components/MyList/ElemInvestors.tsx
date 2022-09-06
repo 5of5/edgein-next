@@ -14,6 +14,7 @@ type Props = {
   selectedListName: string | null
   getAlternateRowColor: (index: number) => string
   handleNavigation: (link: string) => void
+  setIsUpdated: Function
 }
 
 export const ElemInvestors: FC<Props> = ({
@@ -22,9 +23,9 @@ export const ElemInvestors: FC<Props> = ({
   selectedListName,
   getAlternateRowColor,
   handleNavigation,
+  setIsUpdated
 }) => {
 
-  const router = useRouter()
   const [selected, setSelected] = useState<number[]>([])
 
   const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false)
@@ -93,6 +94,7 @@ export const ElemInvestors: FC<Props> = ({
         return prev?.filter((resource) => !selected.includes(resource.id as number))
       })
       setSelected([])
+      setIsUpdated((new Date()).getTime())
     }
   }
   return (

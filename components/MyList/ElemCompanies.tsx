@@ -16,6 +16,7 @@ type Props = {
   getAlternateRowColor: (index: number) => string
   handleNavigation: (link: string) => void
   tagsCount: any
+  setIsUpdated: Function
 }
 
 export const ElemCompanies: FC<Props> = ({
@@ -25,9 +26,9 @@ export const ElemCompanies: FC<Props> = ({
   totalFunding,
   getAlternateRowColor,
   handleNavigation,
-  tagsCount
+  tagsCount,
+  setIsUpdated,
 }) => {
-  const router = useRouter()
   const [selected, setSelected] = useState<number[]>([])
 
   const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false)
@@ -96,6 +97,7 @@ export const ElemCompanies: FC<Props> = ({
         return prev?.filter((resource) => !selected.includes(resource.id as number))
       })
       setSelected([])
+      setIsUpdated((new Date()).getTime())
     }
   }
 
