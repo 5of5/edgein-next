@@ -5,6 +5,7 @@
 		"codegen",
 		"dockerenv",
 		"edgein",
+		"glassdoor",
 		"hasura",
 		"headlessui",
 		"hotjar",
