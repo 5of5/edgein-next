@@ -26,7 +26,7 @@ import {
 	Investments,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import {
 	IconEditPencil,
@@ -37,7 +37,7 @@ import {
 // import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -97,27 +97,47 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			const newSentiment: any = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: location.pathname,
-			});
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				
+				setTemporary(sentiment, alreadyReacted)
+				const newSentiment = await reactOnSentiment({
+					company: company.id,
+					sentiment,
+					pathname: location.pathname,
+				})
 
-			setCompany((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
-				if (!alreadyReacted) prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+				setCompany((prev: Companies) => {
+					const newFollows = getNewFollows(sentiment) as Follows_Companies;
+					if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
+					else
+						remove(prev.follows, (item) => {
+							return getName(item.list!) === sentiment
+						})
+					return { ...prev, sentiment: newSentiment }
+				})
+				
+			}
+
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+		
+		setCompany((prev: Companies) => {
+
+			const newSentiment = getNewTempSentiment({ ...prev.sentiment }, sentiment, alreadyReacted)
+
+			const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment };
+		});
+	}
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -154,11 +174,9 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
-			const names = `${
-				investments[0].person ? investments[0].person.name + "," : ""
-			} ${
-				investments[0].vc_firm ? investments[0].vc_firm.name : ""
-			} and others`;
+			const names = `${investments[0].person ? investments[0].person.name + "," : ""
+				} ${investments[0].vc_firm ? investments[0].vc_firm.name : ""
+				} and others`;
 			return names;
 		}
 		return "";
