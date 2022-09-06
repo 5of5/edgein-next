@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Team_Members } from "../../graphql/types";
 import { ElemPersonCard } from "../ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
 import { ElemFilterTags } from "@/components/ElemFilterTags";
-import { uniq, compact, sortBy } from 'lodash';
+import { uniq, compact, sortBy } from "lodash";
 
 type Props = {
 	className?: string;
@@ -17,38 +17,43 @@ export const ElemTeamGrid: React.FC<Props> = ({
 	className,
 	heading,
 	people,
-	showEdit
+	showEdit,
 }) => {
 	// Show founders first
-	const allTags = compact(uniq([ "All Members" , ...(sortBy(people.map(people => people.function)))]))
-	const [selectedTag, setSelectedTag] = useState<string | null>("All Members")
-	const peopleFoundersFirst = (selectedTag === "All Members") ? people.sort(function (a: any, b: any) {
-		return b.founder - a.founder;
-	})
-	:
-	people.filter(p => p.function === selectedTag).sort(function (a: any, b: any) {
-		return b.founder - a.founder;
-	});
+	const allTags = compact(
+		uniq(["All Members", ...sortBy(people.map((people) => people.function))])
+	);
+	const [selectedTag, setSelectedTag] = useState<string | null>("All Members");
+	const peopleFoundersFirst =
+		selectedTag === "All Members"
+			? people.sort(function (a: any, b: any) {
+					return b.founder - a.founder;
+			  })
+			: people
+					.filter((p) => p.function === selectedTag)
+					.sort(function (a: any, b: any) {
+						return b.founder - a.founder;
+					});
 	return (
 		<section className={className}>
-			{
-				heading && (
-					<div className="flex justify-between">
-						<h2 className="text-2xl font-bold">{heading}</h2>
-						{
-							(showEdit) && (
-								<span className="border rounded-full p-1 pl-2 pt-2">
-									<IconEditPencil
-										title="Edit"
-										className="h-6 w-6"
-									/>
-								</span>
-							)
-						}
-					</div>
-				)}
-			<ElemFilterTags onClick={(tag, index) => setSelectedTag(tag)} selectedTag={selectedTag} className="dark-500" tags={allTags} />
-			<div className="flex flex-col sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-5 w-full">
+			{heading && (
+				<div className="flex items-center justify-between">
+					<h2 className="text-xl font-bold">{heading}</h2>
+					{showEdit && (
+						<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+							<IconEditPencil title="Edit" />
+						</button>
+					)}
+				</div>
+			)}
+
+			<ElemFilterTags
+				onClick={(tag, index) => setSelectedTag(tag)}
+				selectedTag={selectedTag}
+				className="mt-2"
+				tags={allTags}
+			/>
+			<div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{peopleFoundersFirst.map((teamMember) => {
 					return (
 						<React.Fragment key={teamMember.id}>

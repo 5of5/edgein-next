@@ -1,9 +1,6 @@
 import Link from "next/link";
 import { ElemPhoto } from "../components/ElemPhoto";
-import {
-	IconEmail,
-	IconLinkedInColored
-} from "./Icons";
+import { IconEmail, IconLinkedIn } from "./Icons";
 
 type Props = {
 	href?: string;
@@ -24,61 +21,49 @@ export const ElemPersonCard: React.FC<Props> = ({
 	founder,
 	linkedin,
 	personal_email,
-	work_email
+	work_email,
 }) => {
 	return (
 		<div>
 			<Link href={href}>
-				<a className="flex items-center border border-dark-500/10 bg-white p-1 rounded-md transition-all group hover:shadow-md hover:-translate-y-0.5">
+				<a className="flex items-center p-1 border border-black/10 rounded-lg transition-all hover:shadow hover:-translate-y-0.5">
 					<ElemPhoto
 						photo={photo}
-						wrapClass="shrink-0 flex items-center justify-center w-20 h-20 rounded-md overflow-hidden"
-						imgClass="object-cover w-20 h-20"
+						wrapClass="flex items-center justify-center shrink-0 w-20 h-20 rounded-lg overflow-hidden"
+						imgClass="object-cover w-full h-full"
 						imgAlt={heading}
 						placeholder="user"
 					/>
 					<div className="overflow-hidden px-2">
 						{heading && (
-							<h3
-								className="font-bold text-lg truncate group-hover:opacity-60"
-								title={heading}
-							>
+							<h3 className="font-bold text-lg truncate" title={heading}>
 								{heading}
 							</h3>
 						)}
 
 						{(founder || text) && (
 							<p className="text-sm truncate">
-								{founder && (
-									<span title="Founder" >
-										Founder
-									</span>
-								)}
+								{founder && <span title="Founder">Founder</span>}
 								{founder && text && `, `}
 								{text && <span title={text}>{text}</span>}
 							</p>
 						)}
-						<div className="inline-flex">
-							{(linkedin) && (
-								<IconLinkedInColored
+						<div className="inline-flex space-x-2 py-1">
+							{linkedin && (
+								<IconLinkedIn
 									title="LinkedIn"
-									className="h-6 w-6 mr-1 text-primary-500"
+									className="h-6 w-6 text-[#0077B5]"
 								/>
-							)
-							}
-							{
-								(work_email || personal_email) && (
-									<>
-									<IconEmail
-										title="Email"
-										className="h-6 w-6 mt-1 mr-1 text-primary-500"
-									/>
-									<span className="text-slate-600 text-sm">{`${work_email && personal_email ? 2 : 1} email`}</span>
-									</>
-								)
-							}
+							)}
+							{(work_email || personal_email) && (
+								<div className="inline-flex items-center space-x-1 text-slate-600">
+									<IconEmail title="Email" className="h-6 w-6" />
+									<span className="text-sm">{`${
+										work_email && personal_email ? 2 : 1
+									} email`}</span>
+								</div>
+							)}
 						</div>
-
 					</div>
 				</a>
 			</Link>

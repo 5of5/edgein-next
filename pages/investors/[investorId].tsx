@@ -193,6 +193,7 @@ const VCFirm: NextPage<Props> = (props) => {
 						</div>
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
+
 							{
 								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
 									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
@@ -242,9 +243,9 @@ const VCFirm: NextPage<Props> = (props) => {
 			)}
 
 
+
 			{Object.keys(sortedInvestmentRounds).map(key => key != null).length > 0 && (
 				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
-
 					<div className="flex justify-between pb-4">
 						<h2 className="text-2xl font-bold">Investments</h2>
 						<span className="border rounded-full p-1 pl-2 pt-2">
