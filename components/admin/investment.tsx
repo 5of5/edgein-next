@@ -12,7 +12,8 @@ import {
   ReferenceField,
   ReferenceInput,
   SelectInput,
-  AutocompleteInput
+  AutocompleteInput,
+  Pagination
 } from "react-admin";
 import { status } from "../../utils/constants"
 
@@ -41,8 +42,11 @@ const filters = [
   </ReferenceInput>
 ];
 
+const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
 export const InvestmentsList = () => (
   <List filters={filters}
+    pagination={<PostPagination />}
     sx={{
       '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
         justifyContent: 'flex-start'

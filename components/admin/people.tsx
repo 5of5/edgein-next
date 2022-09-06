@@ -1,5 +1,5 @@
 // in posts.js
-import * as React from "react";
+import React, { FC, useRef, useState } from 'react';
 import {
 	SearchInput,
 	FileInput, ImageField,
@@ -15,15 +15,24 @@ import {
 	minLength,
 	email,
 	regex,
-	SelectInput
+	SelectInput,
+	Pagination
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import { validateName, validateSlug, validateUrl, validateEmail, status } from "../../utils/constants"
+
+import GoogleIcon from '@mui/icons-material/Google';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import GitHubIcon from '@mui/icons-material/GitHub';
+
 const filters = [
 	<TextInput key="search" source="name,type" label="Search in name,type" resettable alwaysOn />
 ];
+const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
 export const PeopleList = () => (
 	<List filters={filters}
+	    pagination={<PostPagination />}
 		sx={{
 			'.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
 				justifyContent: 'flex-start'
@@ -57,9 +66,9 @@ const PeopleTitle = ({ record }: TitleProps) => {
 
 export const PeopleEdit = () => {
 
-	const [logo, setLogo] = React.useState(null)
-	const [oldLogo, setOldLogo] = React.useState(null)
-	const [isImageUpdated, setIsImageUpdated] = React.useState(false)
+	const [logo, setLogo] = useState(null)
+	const [oldLogo, setOldLogo] = useState(null)
+	const [isImageUpdated, setIsImageUpdated] = useState(false)
 
 	const transform = async (data: any) => {
 		var formdata = { ...data };
@@ -205,7 +214,9 @@ export const PeopleEdit = () => {
 }
 
 export const PeopleCreate = () => {
-	const [logo, setLogo] = React.useState(null)
+	const [logo, setLogo] = useState(null)
+	const [isIcon, setIsIcon] = useState(false)
+	const [keyword, setKeyword] = useState('');
 
 	const transform = async (data: any) => {
 		var formdata = { ...data };
@@ -235,6 +246,57 @@ export const PeopleCreate = () => {
 	const onDropRejected = (files: any) => {
 		setLogo(null)
 	}
+
+	type Props = {
+		googleKeyWord: string,
+	  };
+	  const RenderGoogleIcon: FC<Props> = ({googleKeyWord}) => {
+		const url = "https://www.google.com/search?q=" + googleKeyWord
+		return(
+		<div style={{ position: 'absolute', top: '70px' }}>
+		  <a href={url} target="_blank" rel="noreferrer">
+			<GoogleIcon />
+		  </a>
+		</div>)
+	  }
+	
+	const RenderLinkedinIcon: FC<Props> = ({googleKeyWord}) => {
+	const url = "https://www.google.com/search?q=" + googleKeyWord + " Linkedin"
+
+	return (
+		<div style={{ position: 'absolute', top: '70px', left: '45px' }}>
+		<a href={url} target="_blank" rel="noreferrer">
+			<LinkedInIcon /></a>
+		</div>)
+	}
+	const RenderGitHubIcon: FC<Props> = ({googleKeyWord}) => {
+	const url = "https://www.google.com/search?q=" + googleKeyWord + " Github"
+
+	return (
+	<div style={{ position: 'absolute', top: '70px', left: '80px' }}>
+		<a href={url} target="_blank" rel="noreferrer">
+		<GitHubIcon />
+		</a>
+	</div>)
+	}
+
+	const RenderCBIcon: FC<Props> = ({googleKeyWord}) => {
+	const url = "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase"
+
+	return (
+	<div style={{ position: 'absolute', top: '70px', left: '115px' }}>
+		<a href={url} target="_blank" rel="noreferrer">
+		<img src="https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg" alt="cb_logo" width="25px" height="25px"/>
+		</a>
+	</div>)
+	}
+
+
+	const handleIcon = (e: any) => {
+	setIsIcon(e.target.value.length > 0 ? true : false);
+	setKeyword(e.target.value);
+	}
+
 	return (
 		<Create title="Create a Person" transform={transform}
 			sx={{
@@ -252,17 +314,27 @@ export const PeopleCreate = () => {
 				}
 			}}
 		>
+		<div className='customForm' style={{ position: 'relative' }}>
 			<SimpleForm>
 				<TextInput
 					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="name"
 					validate={validateName}
+					onChange={handleIcon}
+
 					sx={{
 						'.MuiFormHelperText-root': {
 							display: 'block !important',
 						}
 					}}
 				/>
+				{isIcon &&
+				<>
+					<RenderGoogleIcon googleKeyWord={keyword}/>
+					<RenderLinkedinIcon googleKeyWord={keyword}/>
+					<RenderGitHubIcon googleKeyWord={keyword}/>
+					<RenderCBIcon googleKeyWord={keyword}/>
+				</>}
 				<TextInput
 					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="slug"
@@ -328,6 +400,7 @@ export const PeopleCreate = () => {
 				/>
 
 			</SimpleForm>
+			</div>
 		</Create>
 	)
 }

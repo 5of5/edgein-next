@@ -18,7 +18,8 @@ import {
   DateInput,
   BooleanInput,
   BooleanField,
-  AutocompleteInput
+  AutocompleteInput,
+  Pagination
 } from "react-admin";
 import { functionChoicesTM, seniorityChoicesTM } from "../../utils/constants";
 
@@ -40,8 +41,11 @@ const filters = [
   </ReferenceInput>
 ];
 
+const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
 export const TeamMembersList = () => (
   <List filters={filters}
+    pagination={<PostPagination />}
     sx={{
       '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
         justifyContent: 'flex-start'
