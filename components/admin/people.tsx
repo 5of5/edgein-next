@@ -122,65 +122,105 @@ export const PeopleEdit = () => {
 
 		return (
 			<TextInput
-				className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+				className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 				source="slug"
 			/>
 		);
 	};
 
 	return (
-		<Edit title={<PeopleTitle />} transform={transform}>
+		<Edit title={<PeopleTitle />} transform={transform}
+			sx={{
+				'.MuiCardContent-root': {
+					'& > div': {
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						flexWrap: 'wrap',
+						flexDirection: 'row !important',
+					},
+				},
+				'.MuiFormHelperText-root': {
+					display: 'none',
+				}
+			}}
+		>
 			<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, people)}>
 				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					disabled
 					source="id"
 				/>
 				<FormDataConsumer>
 					{({ formData, ...rest }) => (
 						<TextInput
-							className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+							className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 							source="name"
 							onBlur={e => handleNameBlur(e.target.value, formData)}
+							sx={{
+								'.MuiFormHelperText-root': {
+									display: 'block !important',
+								}
+							}}
 							{...rest}
 						/>
 					)}
 				</FormDataConsumer>
 				<SlugInput slug={slug} />
-				<FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
+				<FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
 					<ImageField source="src" title="title" />
 				</FileInput>
 				{
 					(!logo && !isImageUpdated) &&
-					<ImageField source="picture.url" title="Logo" />
+					<ImageField className="w-full" source="picture.url" title="Logo" />
 				}
 				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="github"
-
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="type"
 				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="personal_email"
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="work_email"
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="linkedin"
-
-				/>
 				<SelectInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="status"
 					choices={status}
 				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="github"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="personal_email"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="work_email"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="linkedin"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+
+				/>
+
 			</SimpleForm>
 		</Edit>
 	)
@@ -244,54 +284,94 @@ export const PeopleCreate = () => {
 
 		return (
 			<TextInput
-				className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+				className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 				source="slug"
 			/>
 		);
 	};
 
 	return (
-		<Create title="Create a Person" transform={transform}>
+		<Create title="Create a Person" transform={transform}
+			sx={{
+				'.MuiCardContent-root': {
+					'& > div': {
+						display: 'flex',
+						justifyContent: 'space-between',
+						alignItems: 'center',
+						flexWrap: 'wrap',
+						flexDirection: 'row !important',
+					},
+				},
+				'.MuiFormHelperText-root': {
+					display: 'none',
+				}
+			}}
+		>
 			<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, people)}>
 				<FormDataConsumer>
 					{({ formData, ...rest }) => (
 						<TextInput
-							className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+							className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 							source="name"
 							onBlur={e => handleNameBlur(e.target.value, formData)}
+							sx={{
+								'.MuiFormHelperText-root': {
+									display: 'block !important',
+								}
+							}}
 							{...rest}
 						/>
 					)}
 				</FormDataConsumer>
 				<SlugInput slug={slug} />
-				<FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
+				<FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
 					<ImageField source="src" title="title" />
 				</FileInput>
 				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="github"
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="type"
 				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="personal_email"
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="work_email"
-				/>
-				<TextInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="linkedin"
-				/>
 				<SelectInput
-					className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="status"
 					choices={status}
 				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="github"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="personal_email"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="work_email"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>
+				<TextInput
+					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="linkedin"
+					sx={{
+						'.MuiFormHelperText-root': {
+							display: 'block !important',
+						}
+					}}
+				/>				
 			</SimpleForm>
 		</Create>
 	)

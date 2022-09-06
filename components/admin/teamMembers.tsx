@@ -32,21 +32,21 @@ const filters = [
     />
   </ReferenceInput>,
   <ReferenceInput key="searchPerson" source="person_id" reference="people">
-  <AutocompleteInput
-    optionText={choice =>
-      `${choice.name}`
-    }
-  />
-</ReferenceInput>
+    <AutocompleteInput
+      optionText={choice =>
+        `${choice.name}`
+      }
+    />
+  </ReferenceInput>
 ];
 
 export const TeamMembersList = () => (
   <List filters={filters}
-  sx={{
-		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
-      justifyContent: 'flex-start'
-		}
-	   }}
+    sx={{
+      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+        justifyContent: 'flex-start'
+      }
+    }}
   >
     <Datagrid>
       <EditButton />
@@ -81,89 +81,120 @@ const TeamMembersTitle = ({ record }: TitleProps) => {
 };
 
 export const TeamMembersEdit = () => (
-  <Edit title={<TeamMembersTitle />}>
+  <Edit title={<TeamMembersTitle />}
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
         choices={functionChoicesTM}
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="start_date"
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
-      <BooleanInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="founder"
-      />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
         choices={seniorityChoicesTM}
       />
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="title"
+      />
+      <BooleanInput
+        className="w-full"
+        source="founder"
       />
     </SimpleForm>
   </Edit>
 );
 
 export const TeamMembersCreate = () => (
-  <Create title="Add a person to a company">
+  <Create title="Add a person to a company"
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
         choices={functionChoicesTM}
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="start_date"
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
-      <BooleanInput
-        source="founder"
-      />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
         choices={seniorityChoicesTM}
       />
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="title"
+      />
+      <BooleanInput
+        className="w-full"
+        source="founder"
       />
     </SimpleForm>
   </Create>
