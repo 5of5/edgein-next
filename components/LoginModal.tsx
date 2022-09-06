@@ -24,6 +24,7 @@ export default function LoginModal(props: Props) {
         setIsRegistered(false)
         setEmailError('')
         setErrorMessage('')
+        setIsUnauthorized(false)
     }, [props.show]);
 
     const [email, setEmail] = useState("");
@@ -34,6 +35,7 @@ export default function LoginModal(props: Props) {
     const [isRegistered, setIsRegistered] = useState(false)
     const [emailError, setEmailError] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const [isUnauthorized, setIsUnauthorized] = useState(false)
 
 
     const validateEmail = (value: string) => {
@@ -71,13 +73,15 @@ export default function LoginModal(props: Props) {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ email, password }),
-            }).then(res => res.json());
-            console.log("continue signup=", response)
-            if (response.nextStep && response.nextStep === "SIGNUP") {
+            })
+            const res = await response.json()
+            if(response.status === 401){
+                setIsUnauthorized(true)
+            }
+            else if (res.nextStep && res.nextStep === "SIGNUP") {
                 setIsSignUp(true);
                 onSignUp(email, password)
-                //console.log("continue signup=", response)
-            } else if (response.success) {
+            } else if (res.success) {
                window.location.href = '/';//response.loginLink;
             }
 
@@ -123,6 +127,15 @@ export default function LoginModal(props: Props) {
                                     {`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`}
                                 </p>
                             </>
+
+                        )
+                        : isUnauthorized ? (
+                            <>
+                            {/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
+                            <p className="mt-2 text-md text-dark-400 text-center">
+                                {`Please verify your email before logging in.`}
+                            </p>
+                        </>
 
                         )
                             :
