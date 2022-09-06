@@ -2,7 +2,7 @@ import "../styles/LoaderPlasma.scss";
 import "../styles/globals.scss";
 import React, { useState } from "react";
 import TagManager from "react-gtm-module";
-import { hotjar } from 'react-hotjar';
+import { hotjar } from "react-hotjar";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
@@ -26,7 +26,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 		if (process.env.NEXT_PUBLIC_GTM_ID) {
 			TagManager.initialize({ gtmId: process.env.NEXT_PUBLIC_GTM_ID });
 		}
-		if (process.env.NEXT_PUBLIC_HOTJAR_ID && !isNaN(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID))) {
+		if (
+			process.env.NEXT_PUBLIC_HOTJAR_ID &&
+			!isNaN(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID))
+		) {
 			hotjar.initialize(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID), 7);
 		}
 	}, []);
@@ -94,7 +97,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					) : (
 						<>
 							<TheNavbar />
-							<main className="overflow-hidden grow selection:bg-primary-200">
+							<main className="grow selection:bg-primary-200">
 								{pageLoading ? (
 									<LoaderPlasma />
 								) : (
