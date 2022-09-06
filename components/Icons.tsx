@@ -440,28 +440,6 @@ export const IconLinkedIn: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconLinkedInColored: React.FC<IconProps> = ({
-	className,
-	title,
-}) => {
-	return (
-		<svg
-			className={className}
-			fill="none"
-			viewBox="0 0 20 20"
-			aria-hidden="true"
-		>
-			<title>{title ? title : "LinkedIn"}</title>
-			<path
-				fillRule="evenodd"
-				clipRule="evenodd"
-				d="M16.6963 0.5H1.35686C0.623143 0.5 0 1.08029 0 1.79514V17.204C0 17.9197 0.408857 18.5 1.14257 18.5H16.482C17.2166 18.5 18 17.9197 18 17.204V1.79514C18 1.08029 17.4309 0.5 16.6963 0.5ZM6.85714 7.35714H9.28029V8.59229H9.30686C9.67629 7.92629 10.7674 7.25 12.1166 7.25C14.706 7.25 15.4286 8.62486 15.4286 11.1714V15.9286H12.8571V11.6403C12.8571 10.5003 12.402 9.5 11.3374 9.5C10.0449 9.5 9.42857 10.3751 9.42857 11.8117V15.9286H6.85714V7.35714ZM2.57143 15.9286H5.14286V7.35714H2.57143V15.9286ZM5.46429 4.35714C5.46429 5.24514 4.74514 5.96429 3.85714 5.96429C2.96914 5.96429 2.25 5.24514 2.25 4.35714C2.25 3.46914 2.96914 2.75 3.85714 2.75C4.74514 2.75 5.46429 3.46914 5.46429 4.35714Z"
-				fill="#0077B5"
-			/>
-		</svg>
-	);
-};
-
 export const IconGithub: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg

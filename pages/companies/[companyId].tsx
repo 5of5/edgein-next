@@ -165,7 +165,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	};
 
 	return (
-		<div className="max-w-7xl px-4 py-8 mx-auto sm:px-6 lg:py-12 lg:px-8">
+		<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
 			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
 				<div className="col-span-3">
 					<ElemPhoto
@@ -330,7 +330,9 @@ const Company: NextPage<Props> = (props: Props) => {
 								</ul>
 							) : (
 								<div className="flex items-center justify-center p-5">
-									<div>There is no recent activity for this organization.</div>
+									<div className="text-xl text-slate-600">
+										There is no recent activity for this organization.
+									</div>
 								</div>
 							)}
 						</div>
@@ -340,12 +342,11 @@ const Company: NextPage<Props> = (props: Props) => {
 			{company.teamMembers.length > 0 && (
 				<div
 					ref={teamRef}
-					className="mt-10 rounded-xl bg-white p-4 pt-6 shadow"
+					className="mt-7 p-5 rounded-lg bg-white shadow"
 					id="team"
 				>
 					<ElemTeamGrid
 						showEdit={true}
-						//className="mt-12"
 						heading="Team"
 						people={company.teamMembers}
 					/>
@@ -354,7 +355,7 @@ const Company: NextPage<Props> = (props: Props) => {
 			{sortedInvestmentRounds.length > 0 && (
 				<div
 					ref={investmentRef}
-					className="mt-10 rounded-xl bg-white p-4 pt-6 shadow"
+					className="mt-7 p-5 rounded-lg bg-white shadow"
 					id="investments"
 				>
 					<ElemInvestments
@@ -363,11 +364,11 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 			)}
-			{/* <ElemCohort className="mt-12" heading="Similar Companies" /> */}
-			{/* <div className="mt-10 rounded-xl bg-white shadow-md">
+			{/* <ElemCohort className="mt-7" heading="Similar Companies" /> */}
+			{/* <div className="mt-7 rounded-lg bg-white shadow">
 				<ElemRecentCompanies
 					onUpdateOfCompany={() => { }}
-					//className="mt-12 px-5 bg-white shadow-lg border rounded-lg border-dark-500/10"
+					//className="px-5 bg-white border rounded-lg border-black/10"
 					heading="Similar Companies"
 				/>
 			</div> */}
