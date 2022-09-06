@@ -55,7 +55,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       redirect: 'follow'
     });
     if (!fetchRequest.ok) {
-      return res.status(fetchRequest.status).send(fetchRequest.statusText)
+      const errorResponse = JSON.parse(await fetchRequest.text());
+      return res.status(fetchRequest.status).send(errorResponse.error_description)
     }
     const tokenResponse = JSON.parse(await fetchRequest.text());
 
@@ -67,7 +68,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       redirect: 'follow'
     });
     if (!userInfoFetchRequest.ok) {
-      return res.status(userInfoFetchRequest.status).send(userInfoFetchRequest.statusText)
+      const userInfoErrorResponse = JSON.parse(await userInfoFetchRequest.text());
+      return res.status(userInfoFetchRequest.status).send(userInfoErrorResponse.error_description)
     }
     const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
   
