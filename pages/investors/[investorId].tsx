@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, MutableRefObject } from "react";
 import { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
@@ -10,7 +9,7 @@ import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "../../components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { IconEditPencil, IconEventDot, IconEventLine, IconSort } from "@/components/Icons";
+import { IconEditPencil, IconEventDot, IconEventLine } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -23,14 +22,12 @@ import {
 	Investment_Rounds,
 	useGetVcFirmQuery,
 	Vc_Firms,
-	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName, checkIfFollowsExists, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
-import { has, remove } from "lodash";
+import { remove } from "lodash";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
