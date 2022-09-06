@@ -5,7 +5,7 @@ import {
 	IconProps,
 	IconUsers,
 	IconCurrencyDollar,
-	IconQuestionMarkCircle,
+	IconQuestion,
 	IconArrowUp,
 	IconArrowDown,
 } from "../Icons";
@@ -52,29 +52,26 @@ export const ElemVelocity: React.FC<Props> = ({
 	}
 
 	return (
-		<section className={`${className} flex flex-col align-middle`}>
+		<section className={`${className} flex flex-col`}>
 			{heading && (
-				<h2 className="text-xl font-bold align-middle">
-					{heading}
+				<div className="flex items-center space-x-2">
+					<h2 className="text-xl font-bold">{heading}</h2>
 					<ElemTooltip
-						className="ml-1 align-middle bg-slate-200 rounded-full pl-3 "
+						className="bg-slate-200 rounded-full h-4 w-4 p-0.5"
 						size="md"
 						content="Velocity trends based on the last 3 months of LinkedIn employment data, as well as token exchange values from Binance and Coinbase."
 					>
-						<IconQuestionMarkCircle
-							className="h-5 w-5 mt-2 text-center"
-							title="What is Velocity?"
-						/>
+						<IconQuestion className="" title="What is Velocity?" />
 					</ElemTooltip>
-				</h2>
+				</div>
 			)}
 
 			<div
-				className={`${
+				className={`flex ${
 					mini
 						? "space-x-2 justify-end"
-						: "flex-col justify-center space-y-3 mt-2 p-3 bg-white"
-				} flex grow`}
+						: "flex-col grow justify-center space-y-3"
+				}`}
 			>
 				{velocityItems.map((item, index: number) => {
 					const badge = (
@@ -99,9 +96,7 @@ export const ElemVelocity: React.FC<Props> = ({
 								<ElemTooltip content={item.text}>{badge}</ElemTooltip>
 							) : (
 								<>
-									<div className="text-base text-slate-600 tracking-wide">
-										{item.text}
-									</div>
+									<div className="text-base text-slate-600">{item.text}</div>
 									{badge}
 								</>
 							)}

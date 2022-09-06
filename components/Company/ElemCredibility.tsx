@@ -45,12 +45,10 @@ export const ElemCredibility: React.FC<Props> = ({
 
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-xl font-bold mb-2">{heading}</h2>}
+			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			<div
 				className={`grid gap-2 overflow-visible ${
-					mini
-						? `grid-cols-${credibilityItems.length}`
-						: "grid-cols-3 bg-white rounded-lg"
+					mini ? `grid-cols-${credibilityItems.length}` : "grid-cols-3 mt-3"
 				}`}
 			>
 				{credibilityItems.map((item, index: number) => {
@@ -58,7 +56,7 @@ export const ElemCredibility: React.FC<Props> = ({
 						<div
 							className={`${
 								mini ? "w-8 h-8" : "w-12 h-12"
-							} relative flex items-center justify-center bg-white rounded-lg border border-dark-500/10`}
+							} relative flex items-center justify-center bg-white rounded-lg border border-black/10`}
 						>
 							<IconBadgeCheck
 								title="Verified"
@@ -67,7 +65,7 @@ export const ElemCredibility: React.FC<Props> = ({
 								} absolute text-green-500`}
 							/>
 							<item.icon
-								className={`${mini ? "w-6 h-6 text-slate-600" : "h-8 w-8 text-slate-600"}`}
+								className={`${mini ? "w-6 h-6" : "h-8 w-8"}  text-slate-600`}
 								title={item.text}
 							/>
 						</div>
@@ -78,16 +76,16 @@ export const ElemCredibility: React.FC<Props> = ({
 							key={index}
 							className={`${
 								mini
-									? "text-slate-600"
-									: "text-slate-600 pt-4 pb-2 flex flex-col items-center justify-center h-full bg-white rounded-lg"
-							}`}
+									? ""
+									: "pt-2 flex flex-col items-center justify-center h-full bg-white rounded-lg"
+							} text-slate-600`}
 						>
 							{mini ? (
 								<ElemTooltip content={item.text}>{credibilityItem}</ElemTooltip>
 							) : (
 								<>
 									{credibilityItem}
-									<div className="mt-1 text-center text-xs font-semibold uppercase tracking-wide">
+									<div className="mt-2 text-center text-xs font-bold uppercase tracking-wider text-slate-600">
 										{item.text}
 									</div>
 								</>

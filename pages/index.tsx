@@ -39,7 +39,7 @@ const Home: NextPage = () => {
 
 	return (
 		<>
-			<section className="relative">
+			<section className="relative overflow-hidden">
 				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
 				<div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
 					<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:content-center">
