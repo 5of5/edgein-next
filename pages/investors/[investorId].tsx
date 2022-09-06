@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, MutableRefObject } from "react";
 import { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
@@ -28,12 +27,16 @@ import {
 	Investment_Rounds,
 	useGetVcFirmQuery,
 	Vc_Firms,
-	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
+import {
+	getNewFollows,
+	reactOnSentiment,
+	getName,
+	isFollowsExists,
+	getNewTempSentiment,
+} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
 import { remove } from "lodash";
 type Props = {
@@ -80,6 +83,8 @@ const VCFirm: NextPage<Props> = (props) => {
 			event.stopPropagation();
 			event.preventDefault();
 
+			setTemporary(sentiment, alreadyReacted);
+
 			const newSentiment = await reactOnSentiment({
 				vcfirm: vcfirm.id,
 				sentiment,
@@ -91,7 +96,8 @@ const VCFirm: NextPage<Props> = (props) => {
 					sentiment,
 					"vcfirm"
 				) as Follows_Vc_Firms;
-				if (!alreadyReacted) prev.follows.push(newFollows);
+				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
+					prev.follows.push(newFollows);
 				else
 					remove(prev.follows, (item) => {
 						return getName(item.list!) === sentiment;
@@ -99,6 +105,24 @@ const VCFirm: NextPage<Props> = (props) => {
 				return { ...prev, sentiment: newSentiment };
 			});
 		};
+
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+		setVcfirm((prev: Vc_Firms) => {
+			const newSentiment = getNewTempSentiment(
+				{ ...prev.sentiment },
+				sentiment,
+				alreadyReacted
+			);
+
+			const newFollows = getNewFollows(sentiment, "vcfirm") as Follows_Vc_Firms;
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment };
+		});
+	};
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
@@ -194,6 +218,7 @@ const VCFirm: NextPage<Props> = (props) => {
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
 
+
 							{
 								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
 									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
@@ -201,7 +226,7 @@ const VCFirm: NextPage<Props> = (props) => {
 											return;
 										}
 										return (
-											<div key={index} className="flex inline-flex w-full mt-2">
+											<div key={index} className="inline-flex w-full mt-2">
 												<div className="mt-1">
 													<IconEventDot title="dot" className="h-2 mr-2" />
 													<IconEventLine
@@ -209,9 +234,15 @@ const VCFirm: NextPage<Props> = (props) => {
 														className="h-7 w-2 ml-1"
 													/>
 												</div>
-													<div className="w-5/6">
-													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name:''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
-													<p className="text-gray-400 text-xs">{activity.round_date}</p>
+												<div className="w-5/6">
+													<h2 className="text-dark-500 font-bold truncate text-base">{`${
+														activity.company ? activity.company.name : ""
+													} raised $${activity.amount} / ${
+														activity.round
+													} from ${vcfirm.name}`}</h2>
+													<p className="text-gray-400 text-xs">
+														{activity.round_date}
+													</p>
 												</div>
 											</div>
 										);
@@ -242,8 +273,13 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-			{Object.keys(sortedInvestmentRounds).map(key => key != null).length > 0 && (
-				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
+			{Object.keys(sortedInvestmentRounds).map((key) => key != null).length >
+				0 && (
+				<div
+					ref={investmentRef}
+					className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md"
+					id="investments"
+				>
 					<div className="flex justify-between pb-4">
 						<h2 className="text-2xl font-bold">Investments</h2>
 						<span className="border rounded-full p-1 pl-2 pt-2">
