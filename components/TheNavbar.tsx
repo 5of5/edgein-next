@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
@@ -10,16 +10,26 @@ import { useRouter } from "next/router";
 import { IconSearch } from "@/components/Icons";
 import SearchModal from "./SearchModal";
 import { useHotkeys } from "react-hotkeys-hook";
+import OnBoardingStep1Modal from "./onBoarding/OnBoardingStep1Modal";
+import OnBoardingStep2Modal from "./onBoarding/OnBoardingStep2Modal";
+import OnBoardingStep3Modal from "./onBoarding/OnBoardingStep3Modal";
 
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
 	const [showSearchModal, setShowSearchModal] = useState(false);
+	const [onBoardingStep, setOnBoardingStep] = useState(0)
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
 		setShowSearchModal(true);
 	});
+
+	useEffect(() => {
+		if(user){
+			setOnBoardingStep(1)
+		}
+	}, [user])
 
 	const siteNav = [
 		{
@@ -141,6 +151,26 @@ export const TheNavbar = () => {
 					<SearchModal
 						show={showSearchModal}
 						onClose={() => setShowSearchModal(false)}
+					/>
+					<OnBoardingStep1Modal
+						show={onBoardingStep === 1 && !loading}
+						onClose={() => setOnBoardingStep(0)}
+						onNext={(selectedOption) => setOnBoardingStep(2)}
+						user={user}
+					/>
+					<OnBoardingStep2Modal
+						show={onBoardingStep === 2 && !loading}
+						onClose={() => {setOnBoardingStep(0)}}
+						onNext={() => setOnBoardingStep(3)}
+						onBack={() => setOnBoardingStep(1)}
+						user={user}
+					/>
+					<OnBoardingStep3Modal
+						show={onBoardingStep === 3 && !loading}
+						onClose={() => {setOnBoardingStep(0)}}
+						onNext={() => {setOnBoardingStep(0)}}
+						onBack={() => setOnBoardingStep(2)}
+						user={user}
 					/>
 				</nav>
 			</div>
