@@ -26,11 +26,11 @@ import {
 	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName, checkIfFollowsExists } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
@@ -68,34 +68,57 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				event.stopPropagation();
+				event.preventDefault();
 
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcfirm.id,
-				sentiment,
-				pathname: location.pathname,
-			});
-
-			setVcfirm((prev: Vc_Firms) => {
-				const newFollows = getNewFollows(
+				reactOnSentiment({
+					vcfirm: vcfirm.id,
 					sentiment,
-					"vcfirm"
-				) as Follows_Vc_Firms;
-				if (!alreadyReacted) prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-			
-		};
+					pathname: location.pathname,
+				}).then((newSentiment) => {
+					setVcfirm((prev: Vc_Firms) => {
+						const newFollows = getNewFollows(
+							sentiment,
+							"vcfirm"
+						) as Follows_Vc_Firms;
+						if (!alreadyReacted && !checkIfFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
+						else
+							remove(prev.follows, (item) => {
+								return getName(item.list!) === sentiment;
+							})
+						return { ...prev, sentiment: newSentiment };
+					})
+				})
+				setTemporary(sentiment, alreadyReacted)
+			}
+
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+		setVcfirm((prev: Vc_Firms) => {
+
+			const newSentiment = { ...prev.sentiment };
+			const hasSentiment = has(newSentiment, sentiment)
+			if (!hasSentiment && alreadyReacted) { }
+			else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
+			else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
+			else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
+
+			const newFollows = getNewFollows(
+				sentiment,
+				"vcfirm"
+			) as Follows_Vc_Firms;
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment };
+		});
+	}
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
@@ -104,7 +127,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	const scrollToSection = (tab: number) => {
 		if (tab === 1 && teamRef) {
 			window.scrollTo(0, teamRef.current.offsetTop - 30);
-		}else if (tab == 2 && investmentRef) {
+		} else if (tab == 2 && investmentRef) {
 			window.scrollTo(0, investmentRef.current.offsetTop - 30);
 		}
 	};
@@ -151,9 +174,9 @@ const VCFirm: NextPage<Props> = (props) => {
 							handleReactionClick={handleReactionClick}
 						/>
 						<ElemSaveToList
-						follows={vcfirm?.follows}
-						onCreateNew={handleReactionClick}
-					/>
+							follows={vcfirm?.follows}
+							onCreateNew={handleReactionClick}
+						/>
 					</div>
 				</div>
 			</div>
@@ -194,8 +217,8 @@ const VCFirm: NextPage<Props> = (props) => {
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
 							{
-								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
-									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
+								(sortedInvestmentRounds && sortedInvestmentRounds.length > 0) ? (
+									sortedInvestmentRounds.map((activity: Investment_Rounds, index: number) => {
 										return (
 											<div key={index} className="flex inline-flex w-full mt-2">
 												<div className="mt-1">
@@ -208,18 +231,18 @@ const VCFirm: NextPage<Props> = (props) => {
 														className="h-7 w-2 ml-1"
 													/>
 												</div>
-	
+
 												<div className="w-5/6">
-													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name:''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
+													<h2 className="text-dark-500 font-bold truncate text-base">{`${activity.company ? activity.company.name : ''} raised $${activity.amount} / ${activity.round} from ${vcfirm.name}`}</h2>
 													<p className="text-gray-400 text-xs">{activity.round_date}</p>
 												</div>
 											</div>
 										)
 									})
 								)
-								:
-								<p>There is no recent activity for this organization.</p>
-								
+									:
+									<p>There is no recent activity for this organization.</p>
+
 							}
 							{/* <p>There is no recent activity for this organization.</p>
 							<h1 className="text-primary-800 bg-primary-200 px-2 py-1 border-none rounded-2xl font-bold ">Suggest Activity</h1> */}
@@ -279,8 +302,8 @@ const VCFirm: NextPage<Props> = (props) => {
 												year: "numeric",
 											})
 										) : (
-												<>&mdash;</>
-											)}
+											<>&mdash;</>
+										)}
 									</ElemTableCell>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
@@ -299,8 +322,8 @@ const VCFirm: NextPage<Props> = (props) => {
 												</a>
 											</Link>
 										) : (
-												<>&mdash;</>
-											)}
+											<>&mdash;</>
+										)}
 									</ElemTableCell>
 									<ElemTableCell header="Round">
 										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
@@ -312,8 +335,8 @@ const VCFirm: NextPage<Props> = (props) => {
 												{convertAmountRaised(theRound.amount)}
 											</>
 										) : (
-												<>&mdash;</>
-											)}
+											<>&mdash;</>
+										)}
 									</ElemTableCell>
 								</tr>
 							);
@@ -338,9 +361,9 @@ export async function getStaticPaths() {
 	return {
 		paths: vcFirms?.vc_firms
 			?.filter((vcfirm) => vcfirm.slug)
-				.map((vcfirm) => ({
-					params: { investorId: vcfirm.slug },
-				})),
+			.map((vcfirm) => ({
+				params: { investorId: vcfirm.slug },
+			})),
 		fallback: true, // false or 'blocking'
 	};
 }

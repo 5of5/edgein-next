@@ -37,7 +37,7 @@ import {
 // import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -97,27 +97,52 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			const newSentiment: any = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: location.pathname,
-			});
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				reactOnSentiment({
+					company: company.id,
+					sentiment,
+					pathname: location.pathname,
+				}).then((newSentiment) => {
+					setCompany((prev: Companies) => {
+						const newFollows = getNewFollows(sentiment) as Follows_Companies;
+						if (!alreadyReacted) prev.follows.push(newFollows)
+						else
+							remove(prev.follows, (item) => {
+								return getName(item.list!) === sentiment
+							})
+						return { ...prev, sentiment: newSentiment }
+					})
+				})
+				setTemporary(sentiment, alreadyReacted)
+			}
 
-			setCompany((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
-				if (!alreadyReacted) prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+		
+		setCompany((prev: Companies) => {
+
+			const newSentiment = { ...prev.sentiment };
+			console.log("prior to update", newSentiment);
+			const hasSentiment = has(newSentiment, sentiment)
+
+			if (!hasSentiment && alreadyReacted) { }
+			else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
+			else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
+			else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
+			console.log("after to update", newSentiment);
+			const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment };
+		});
+	}
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -154,11 +179,9 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
-			const names = `${
-				investments[0].person ? investments[0].person.name + "," : ""
-			} ${
-				investments[0].vc_firm ? investments[0].vc_firm.name : ""
-			} and others`;
+			const names = `${investments[0].person ? investments[0].person.name + "," : ""
+				} ${investments[0].vc_firm ? investments[0].vc_firm.name : ""
+				} and others`;
 			return names;
 		}
 		return "";
@@ -205,7 +228,7 @@ const Company: NextPage<Props> = (props: Props) => {
 								<ElemReactions
 									data={company}
 									handleReactionClick={handleReactionClick}
-									// roundedFull
+								// roundedFull
 								/>
 								<ElemSaveToList
 									follows={company?.follows}
@@ -221,11 +244,10 @@ const Company: NextPage<Props> = (props: Props) => {
 										Price (USD)
 									</div>
 									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										{`$${
-											tokenInfo && tokenInfo.currentPrice
-												? convertAmountRaised(tokenInfo.currentPrice)
-												: 0
-										}`}
+										{`$${tokenInfo && tokenInfo.currentPrice
+											? convertAmountRaised(tokenInfo.currentPrice)
+											: 0
+											}`}
 									</div>
 								</div>
 								<div className="flex flex-start">
@@ -233,11 +255,10 @@ const Company: NextPage<Props> = (props: Props) => {
 										Market Cap
 									</div>
 									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2 ml-4">
-										{`$${
-											tokenInfo && tokenInfo.marketCap
-												? convertAmountRaised(tokenInfo.marketCap)
-												: 0
-										}`}
+										{`$${tokenInfo && tokenInfo.marketCap
+											? convertAmountRaised(tokenInfo.marketCap)
+											: 0
+											}`}
 									</div>
 								</div>
 							</div>
@@ -278,22 +299,22 @@ const Company: NextPage<Props> = (props: Props) => {
 							company.company_linkedin ||
 							company.velocity_linkedin ||
 							company.velocity_token) && (
-							<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
-								<ElemCredibility
-									className="col-span-5 mt-16 md:mt-0 p-3 bg-white shadow border rounded-lg border-dark-500/10"
-									heading="Credibility"
-									marketVerified={company.market_verified}
-									githubVerified={company.github}
-									linkedInVerified={company.company_linkedin}
-								/>
-								<ElemVelocity
-									className="flex flex-col p-3 bg-white shadow border rounded-lg border-dark-500/10  col-span-3 mt-16 md:mt-0"
-									heading="Velocity"
-									employeeListings={"4"}
-									tokenExchangeValue={"2.3"}
-								/>
-							</div>
-						)}
+								<div className="flex flex-col grid-cols-8 gap-4 mt-6 md:grid">
+									<ElemCredibility
+										className="col-span-5 mt-16 md:mt-0 p-3 bg-white shadow border rounded-lg border-dark-500/10"
+										heading="Credibility"
+										marketVerified={company.market_verified}
+										githubVerified={company.github}
+										linkedInVerified={company.company_linkedin}
+									/>
+									<ElemVelocity
+										className="flex flex-col p-3 bg-white shadow border rounded-lg border-dark-500/10  col-span-3 mt-16 md:mt-0"
+										heading="Velocity"
+										employeeListings={"4"}
+										tokenExchangeValue={"2.3"}
+									/>
+								</div>
+							)}
 					</div>
 					<div className="w-full flex p-5 flex-col grid-cols-8 gap-4 mt-6 md:grid bg-white shadow border rounded-lg border-dark-500/10">
 						<div className="col-span-8">

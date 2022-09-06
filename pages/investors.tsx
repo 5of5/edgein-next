@@ -27,7 +27,7 @@ import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 
 type Props = {
 	vcFirmCount: number;
@@ -112,41 +112,73 @@ const Investors: NextPage<Props> = ({
 
 	const handleReactionClick =
 		(vcFirm: GetVcFirmsQuery["vc_firms"][0]) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			(sentiment: string, alreadyReacted: boolean) =>
+				async (
+					event: React.MouseEvent<
+						HTMLButtonElement | HTMLInputElement | HTMLElement
+					>
+				) => {
+					event.stopPropagation();
+					event.preventDefault();
 
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcFirm?.id!,
-				sentiment,
-				pathname: `/investors/${vcFirm?.slug!}`,
-			});
+					setTemporary(vcFirm, sentiment, alreadyReacted)
 
-			setVcFirms((prev) => {
-				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
-					if (item.id === vcFirm.id) {
-						const newFollows = getNewFollows(
-							sentiment,
-							"vcfirm"
-						) as Follows_Vc_Firms;
+					const newSentiment = await reactOnSentiment({
+						vcfirm: vcFirm?.id!,
+						sentiment,
+						pathname: `/investors/${vcFirm?.slug!}`,
+					});
 
-						if (!alreadyReacted) item.follows.push(newFollows);
-						else
-							remove(item.follows, (list) => {
-								return getName(list.list! as Lists) === sentiment;
-							});
+					setVcFirms((prev) => {
+						return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+							if (item.id === vcFirm.id) {
+								const newFollows = getNewFollows(
+									sentiment,
+									"vcfirm"
+								) as Follows_Vc_Firms;
 
-						return { ...item, sentiment: newSentiment };
-					}
-					return item;
-				});
-			});
-		};
+								if (!alreadyReacted) item.follows.push(newFollows)
+								else
+									remove(item.follows, (list) => {
+										return getName(list.list! as Lists) === sentiment
+									});
+
+								return { ...item, sentiment: newSentiment }
+							}
+							return item;
+						})
+					})
+				}
+
+	const setTemporary = (vcFirm: GetVcFirmsQuery['vc_firms'][0], sentiment: string, alreadyReacted: boolean) => {
+		setVcFirms((prev) => {
+			return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+				if (item.id === vcFirm.id) {
+
+					const newSentiment = { ...item.sentiment };
+					const hasSentiment = has(newSentiment, sentiment)
+					if (!hasSentiment && alreadyReacted) { }
+					else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
+					else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
+					else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
+
+					const newFollows = getNewFollows(
+						sentiment,
+						"vcfirm"
+					) as Follows_Vc_Firms;
+
+					if (!alreadyReacted) item.follows.push(newFollows)
+					else
+						remove(item.follows, (list) => {
+							return getName(list.list! as Lists) === sentiment
+						});
+
+					return { ...item, sentiment: newSentiment }
+				}
+				return item;
+			}) as Vc_Firms[]
+		})
+	}
 
 	return (
 		<div>

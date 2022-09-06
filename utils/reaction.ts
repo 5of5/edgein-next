@@ -1,4 +1,5 @@
 import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types"
+import { find } from "lodash"
 
 type ReactionType = {
   company?: number
@@ -41,3 +42,7 @@ export const getName = (list: Lists) => {
   const fragments = list.name.split('-');
   return fragments[fragments.length - 1];
 };
+
+export const checkIfFollowsExists = (follows: Follows_Companies[] | Follows_Vc_Firms[], sentiment: string) => {
+  return find(follows, (follow: Follows_Companies | Follows_Vc_Firms) => getName(follow?.list!) === sentiment)
+}
