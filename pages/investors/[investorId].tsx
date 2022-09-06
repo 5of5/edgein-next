@@ -242,8 +242,6 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-
-
 			{Object.keys(sortedInvestmentRounds).map(key => key != null).length > 0 && (
 				<div ref={investmentRef} className="mt-10 rounded-xl bg-white p-4 pt-6 shadow-md" id="investments">
 					<div className="flex justify-between pb-4">
