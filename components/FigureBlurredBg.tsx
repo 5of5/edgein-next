@@ -8,7 +8,9 @@ export const FigureBlurredBg: FC<PropsWithChildren<Props>> = ({
 	className = "",
 }) => {
 	return (
-		<figure className={`${className} absolute z-0 grid grid-cols-5 w-full`}>
+		<figure
+			className={`${className} overflow-x-hidden absolute z-0 grid grid-cols-5 w-full`}
+		>
 			<div className="opacity-15 filter mix-blend-multiply transform-gpu animate-blob">
 				<div className="w-[150%] aspect-square -mx-[25%] bg-[#F8DA4B] rounded-full blur-3xl"></div>
 			</div>
