@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, MutableRefObject } from "react";
 import { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
 import { ElemPhoto } from "../../components/ElemPhoto";
 import { ElemKeyInfo } from "../../components/ElemKeyInfo";
 import { ElemTable } from "../../components/ElemTable";
@@ -28,12 +27,10 @@ import {
 	Investment_Rounds,
 	useGetVcFirmQuery,
 	Vc_Firms,
-	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
 import { remove } from "lodash";
 type Props = {
@@ -72,33 +69,54 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				event.stopPropagation()
+				event.preventDefault()
 
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcfirm.id,
-				sentiment,
-				pathname: location.pathname,
-			});
+				setTemporary(sentiment, alreadyReacted)
 
-			setVcfirm((prev: Vc_Firms) => {
-				const newFollows = getNewFollows(
+				const newSentiment = await reactOnSentiment({
+					vcfirm: vcfirm.id,
 					sentiment,
-					"vcfirm"
-				) as Follows_Vc_Firms;
-				if (!alreadyReacted) prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+					pathname: location.pathname,
+				})
+
+				setVcfirm((prev: Vc_Firms) => {
+					const newFollows = getNewFollows(
+						sentiment,
+						"vcfirm"
+					) as Follows_Vc_Firms;
+					if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
+					else
+						remove(prev.follows, (item) => {
+							return getName(item.list!) === sentiment;
+						})
+					return { ...prev, sentiment: newSentiment };
+				})
+
+			}
+
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+		setVcfirm((prev: Vc_Firms) => {
+
+			const newSentiment = getNewTempSentiment({ ...prev.sentiment }, sentiment, alreadyReacted)
+
+			const newFollows = getNewFollows(
+				sentiment,
+				"vcfirm"
+			) as Follows_Vc_Firms;
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment };
+		});
+	}
 
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
