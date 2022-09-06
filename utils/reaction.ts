@@ -1,5 +1,5 @@
 import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types"
-import { find } from "lodash"
+import { find, has } from "lodash"
 
 type ReactionType = {
   company?: number
@@ -43,6 +43,20 @@ export const getName = (list: Lists) => {
   return fragments[fragments.length - 1];
 };
 
-export const checkIfFollowsExists = (follows: Follows_Companies[] | Follows_Vc_Firms[], sentiment: string) => {
+export const isFollowsExists = (follows: Follows_Companies[] | Follows_Vc_Firms[], sentiment: string) => {
   return find(follows, (follow: Follows_Companies | Follows_Vc_Firms) => getName(follow?.list!) === sentiment)
+}
+
+export const getNewTempSentiment = (sentiments: any, sentiment: string, alreadyReacted: boolean) => {
+
+  const newSentiment = { ...sentiments }
+
+  const hasSentiment = has(newSentiment, sentiment)
+
+  if (!hasSentiment && alreadyReacted) { }
+  else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
+  else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
+  else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
+
+  return newSentiment
 }

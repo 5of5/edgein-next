@@ -25,7 +25,7 @@ import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, getNewTempSentiment, isFollowsExists, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { has, remove } from "lodash";
 
@@ -137,7 +137,7 @@ const Investors: NextPage<Props> = ({
 									"vcfirm"
 								) as Follows_Vc_Firms;
 
-								if (!alreadyReacted) item.follows.push(newFollows)
+								if (!alreadyReacted && !isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)) item.follows.push(newFollows)
 								else
 									remove(item.follows, (list) => {
 										return getName(list.list! as Lists) === sentiment
@@ -155,12 +155,7 @@ const Investors: NextPage<Props> = ({
 			return [...(prev || ([] as Vc_Firms[]))].map((item) => {
 				if (item.id === vcFirm.id) {
 
-					const newSentiment = { ...item.sentiment };
-					const hasSentiment = has(newSentiment, sentiment)
-					if (!hasSentiment && alreadyReacted) { }
-					else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
-					else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
-					else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
+					const newSentiment = getNewTempSentiment({ ...item.sentiment }, sentiment, alreadyReacted)
 
 					const newFollows = getNewFollows(
 						sentiment,

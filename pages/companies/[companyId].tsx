@@ -26,7 +26,7 @@ import {
 	Investments,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import {
 	IconEditPencil,
@@ -102,37 +102,32 @@ const Company: NextPage<Props> = (props: Props) => {
 					HTMLButtonElement | HTMLInputElement | HTMLElement
 				>
 			) => {
-				reactOnSentiment({
+				
+				setTemporary(sentiment, alreadyReacted)
+				const newSentiment = await reactOnSentiment({
 					company: company.id,
 					sentiment,
 					pathname: location.pathname,
-				}).then((newSentiment) => {
-					setCompany((prev: Companies) => {
-						const newFollows = getNewFollows(sentiment) as Follows_Companies;
-						if (!alreadyReacted) prev.follows.push(newFollows)
-						else
-							remove(prev.follows, (item) => {
-								return getName(item.list!) === sentiment
-							})
-						return { ...prev, sentiment: newSentiment }
-					})
 				})
-				setTemporary(sentiment, alreadyReacted)
+
+				setCompany((prev: Companies) => {
+					const newFollows = getNewFollows(sentiment) as Follows_Companies;
+					if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
+					else
+						remove(prev.follows, (item) => {
+							return getName(item.list!) === sentiment
+						})
+					return { ...prev, sentiment: newSentiment }
+				})
+				
 			}
 
 	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
 		
 		setCompany((prev: Companies) => {
 
-			const newSentiment = { ...prev.sentiment };
-			console.log("prior to update", newSentiment);
-			const hasSentiment = has(newSentiment, sentiment)
+			const newSentiment = getNewTempSentiment({ ...prev.sentiment }, sentiment, alreadyReacted)
 
-			if (!hasSentiment && alreadyReacted) { }
-			else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
-			else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
-			else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
-			console.log("after to update", newSentiment);
 			const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
 			if (!alreadyReacted) prev.follows.push(newFollows);

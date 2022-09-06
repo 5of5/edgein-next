@@ -26,7 +26,7 @@ import {
 	Team_Members,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName, checkIfFollowsExists } from "@/utils/reaction";
+import { getNewFollows, reactOnSentiment, getName, checkIfFollowsExists, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
@@ -73,39 +73,36 @@ const VCFirm: NextPage<Props> = (props) => {
 					HTMLButtonElement | HTMLInputElement | HTMLElement
 				>
 			) => {
-				event.stopPropagation();
-				event.preventDefault();
+				event.stopPropagation()
+				event.preventDefault()
 
-				reactOnSentiment({
+				setTemporary(sentiment, alreadyReacted)
+
+				const newSentiment = await reactOnSentiment({
 					vcfirm: vcfirm.id,
 					sentiment,
 					pathname: location.pathname,
-				}).then((newSentiment) => {
-					setVcfirm((prev: Vc_Firms) => {
-						const newFollows = getNewFollows(
-							sentiment,
-							"vcfirm"
-						) as Follows_Vc_Firms;
-						if (!alreadyReacted && !checkIfFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
-						else
-							remove(prev.follows, (item) => {
-								return getName(item.list!) === sentiment;
-							})
-						return { ...prev, sentiment: newSentiment };
-					})
 				})
-				setTemporary(sentiment, alreadyReacted)
+
+				setVcfirm((prev: Vc_Firms) => {
+					const newFollows = getNewFollows(
+						sentiment,
+						"vcfirm"
+					) as Follows_Vc_Firms;
+					if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
+					else
+						remove(prev.follows, (item) => {
+							return getName(item.list!) === sentiment;
+						})
+					return { ...prev, sentiment: newSentiment };
+				})
+
 			}
 
 	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
 		setVcfirm((prev: Vc_Firms) => {
 
-			const newSentiment = { ...prev.sentiment };
-			const hasSentiment = has(newSentiment, sentiment)
-			if (!hasSentiment && alreadyReacted) { }
-			else if (!hasSentiment && !alreadyReacted) newSentiment[sentiment] = 1
-			else if (hasSentiment && !alreadyReacted) newSentiment[sentiment] += 1
-			else if (hasSentiment && alreadyReacted) newSentiment[sentiment] > 0 ? newSentiment[sentiment] -= 1 : newSentiment[sentiment] = 0
+			const newSentiment = getNewTempSentiment({ ...prev.sentiment }, sentiment, alreadyReacted)
 
 			const newFollows = getNewFollows(
 				sentiment,
