@@ -20,6 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  let isFirstLogin = false;
   const isEmailAllowed = await queryForAllowedEmailCheck(email)
 
   // when email does not exist in the allowed emails
@@ -76,6 +77,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (userInfoInJson && userInfoInJson.email) {
       if (!emailExist.is_auth0_verified) {
         // update userInfo
+        isFirstLogin = true;
         await updateEmailVerifiedStatus(userInfoInJson.email, userInfoInJson.email_verified);
       }
 
@@ -94,7 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).send(ex.message)
   }
 
-  res.send({ success: true });
+  res.send({ success: true, isFirstLogin });
 }
 
 // queries local user using graphql endpoint
