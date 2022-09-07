@@ -1,10 +1,5 @@
-import Link from "next/link"
-import { IconCrap } from "../components/reactions/IconCrap"
-import { IconHot } from "../components/reactions/IconHot"
-import { IconLike } from "../components/reactions/IconLike"
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { FC, useEffect, useState } from "react";
@@ -171,7 +166,6 @@ const Profile: FC<Props> = ({ }) => {
 											value=""
 											name=""
 											placeholder="Cohen@gmail.com"
-
 										/>
 
 										<div className="flex mt-3 mb-2">
