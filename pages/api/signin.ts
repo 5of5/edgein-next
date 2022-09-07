@@ -84,7 +84,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // get the user info from the user table
       const { id, email, role, external_id } = await queryForUserInfo(userInfoInJson.email);
       // Author a couple of cookies to persist a user's session
-      const token = await new SignJWT({ user: JSON.stringify({id, email, role, publicAddress: external_id}), ...hasuraClaims })
+      const token = await new SignJWT({ user: JSON.stringify({id, email, role, publicAddress: external_id, isFirstLogin}), ...hasuraClaims })
       .setProtectedHeader({ alg: 'HS256' })
       .setJti(nanoid())
       .setIssuedAt()
@@ -96,7 +96,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(404).send(ex.message)
   }
 
-  res.send({ success: true, isFirstLogin });
+  res.send({ success: true });
 }
 
 // queries local user using graphql endpoint
