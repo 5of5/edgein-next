@@ -22,6 +22,9 @@ export async function middleware(req: NextRequest) {
 			`/admin/app/`,
 			`/404/`,
 			`/api/login_attempt/`,
+			`/api/check_email/`,
+			`/api/get_access_token/`,
+			`/api/refresh_token/`,
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||

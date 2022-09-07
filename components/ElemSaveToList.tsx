@@ -24,22 +24,20 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 	const [newName, setNewName] = useState<string>("");
 	const [listsData, setListsData] = useState([] as Lists[]);
 
-	const {
-    data: lists,
-  } = useGetListsByUserQuery({
-    current_user: user?.id ?? 0
-  });
+	const { data: lists } = useGetListsByUserQuery({
+		current_user: user?.id ?? 0,
+	});
 
 	useEffect(() => {
-    if (lists)
-      setListsData(() => {
-        return lists?.lists?.filter((item) => {
-          const fragments = item.name.split('-');
-          const sentiment = fragments[fragments.length - 1];
-          return !['hot', 'like', 'crap'].includes(sentiment)
-        }) as Lists[]
-      })
-  }, [lists]);
+		if (lists)
+			setListsData(() => {
+				return lists?.lists?.filter((item) => {
+					const fragments = item.name.split("-");
+					const sentiment = fragments[fragments.length - 1];
+					return !["hot", "like", "crap"].includes(sentiment);
+				}) as Lists[];
+			});
+	}, [lists]);
 
 	const isSelected = (list: any) => {
 		const name = getName(list);
@@ -119,7 +117,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-sm w-full mx-auto rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden">
+							<Dialog.Panel className="max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none">
 								<div className="flex items-center justify-between px-3 py-1 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
 									<h2 className="text-lg font-bold text-white">Save to List</h2>
 
@@ -134,21 +132,22 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 								</div>
 
 								<ul className="divide-y divide-slate-100">
-									{listsData?.map((item, index) => (
-										<>
+									{listsData?.map((item, index: number) => {
+										return (
 											<li key={index}>
 												<label className="flex items-center p-3 w-full hover:bg-slate-100">
 													<input
 														type="checkbox"
 														checked={isSelected(item)}
 														onClick={(e) => onClickHandler(e, item)}
+														onChange={(e) => {}}
 														className="accent-primary-500 border border-slate-100 rounded"
 													></input>
 													<h1 className="ml-2">{getName(item)}</h1>
 												</label>
 											</li>
-										</>
-									))}
+										);
+									})}
 								</ul>
 
 								{!showNew && (

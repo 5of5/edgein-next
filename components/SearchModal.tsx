@@ -14,8 +14,8 @@ import {
 import { IconSearch, IconChevronRight } from "@/components/Icons";
 
 const searchClient = algoliasearch(
-  process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
-  process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
+	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
+	process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
 );
 
 Modal.setAppElement("#modal-root");
@@ -112,7 +112,7 @@ function HitInvestors({ hit }: HitInvestorsProps) {
 				<img
 					className="object-contain max-w-full max-h-full"
 					src={hit.logo}
-					alt={''}
+					alt={""}
 				/>
 			</div>
 			<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
@@ -197,9 +197,7 @@ export default function SearchModal(props: any) {
 			onRequestClose={onClose}
 			shouldCloseOnOverlayClick={true}
 			overlayClassName="fixed top-0 left-0 z-[50] flex flex-col h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
-			className={`${
-				props.show && "animate-fade-in-up"
-			} max-w-3xl w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0`}
+			className="animate-fade-in-up max-w-3xl w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0"
 			contentLabel="Search EdgeIn"
 		>
 			<InstantSearch searchClient={searchClient} indexName="companies">
