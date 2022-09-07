@@ -76,14 +76,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({id: userData.id, email: userData.email, role: userData.role, publicAddress: userData.external_id});
+      const token = await CookieService.createToken({id: userData.id, email: userData.email, role: userData.role, publicAddress: userData.external_id, isFirstLogin});
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {
     return res.status(400).send(ex.message)
   }
 
-  res.send({ success: true, isFirstLogin });
+  res.send({ success: true });
 }
 
 export default handler
