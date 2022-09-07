@@ -9,11 +9,13 @@ import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { FC, useEffect, useState } from "react";
 import { People, useGetPersonQuery } from "@/graphql/types";
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {}
 
 const Profile: FC<Props> = ({ }) => {
-
+	const { user } = useAuth()
 	const [person, setPerson] = useState<People>()
 	const [editName, setEditName] = useState(false)
 	const [editEmail, setEditEmail] = useState(false)
@@ -40,42 +42,9 @@ const Profile: FC<Props> = ({ }) => {
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
 			<div className="grid grid-cols-4 gap-4">
 				<div className="col-span-1">
-					<h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
-					<ul className="flex flex-col">
-						<li
-							className="py-2 text-slate-600 inline-flex items-center"
-							role="button"
-						>
-							<Link href=""
-							>
-								<a className="inline-flex items-center">
-									<IconHot className="mr-1 w-7" /> Hot
-								</a>
-							</Link>
-						</li>
-						<li
-							className="py-2 text-slate-600 inline-flex items-center"
-							role="button">
-							<Link href=""
-							>
-								<a className="inline-flex items-center">
-									<IconLike className="mr-1 w-7" /> Like
-								</a>
-							</Link>
-						</li>
-						<li
-							className={`py-2 text-slate-600 inline-flex items-center`}
-							role="button"
-						>
-							<Link href=""
-							>
-								<a className="inline-flex items-center">
-									<IconCrap className="mr-1 w-7" /> Crap
-								</a>
-							</Link>
-						</li>
-
-					</ul>
+					<ElemMyListsMenu
+						user={user}
+					/>
 				</div>
 
 				<div className="col-span-3">
@@ -107,7 +76,6 @@ const Profile: FC<Props> = ({ }) => {
 								</div>
 							</div>
 						</div>
-
 
 						{
 							!editName && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
@@ -230,7 +198,7 @@ const Profile: FC<Props> = ({ }) => {
 							!editLocation && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
 								<h2 className="text-dark-500 font-bold text-md w-40">Location</h2>
 								<div>
-									{/* <h2 className="text-slate-600 text-md">{person?.city}, {person?.country}</h2> */}
+									<h2 className="text-slate-600 text-md">{person?.city}, {person?.country}</h2>
 								</div>
 
 								<button
@@ -287,7 +255,7 @@ const Profile: FC<Props> = ({ }) => {
 							!editWebsite && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
 								<h2 className="text-dark-500 font-bold text-md w-40">Website URl</h2>
 								<div>
-									<h2 className="text-slate-600 text-md">{person?.website_url || ''}</h2>
+									<h2 className="text-slate-600 text-md">{person?.website_url}</h2>
 								</div>
 
 								<button
