@@ -4,4 +4,5 @@ export type User = {
   email: string
   display_name?: string | null
   role: "user" | "admin"
+  is_auth0_verified: boolean
 }

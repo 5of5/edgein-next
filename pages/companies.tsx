@@ -193,7 +193,7 @@ const Companies: NextPage<Props> = ({
 			></ElemHeading>
 
 			<div className="relative">
-				<div className="max-w-7xl pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10">
+				<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 					{companies && (
 						<ElemRecentCompanies
 							onUpdateOfCompany={onUpdateOfCompany}
