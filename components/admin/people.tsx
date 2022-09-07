@@ -282,11 +282,16 @@ export const PeopleCreate = () => {
 
 	const RenderCBIcon: FC<Props> = ({googleKeyWord}) => {
 	const url = "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase"
+	const cb_logo = "https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg"
 
 	return (
 	<div style={{ position: 'absolute', top: '70px', left: '115px' }}>
 		<a href={url} target="_blank" rel="noreferrer">
-		<img src="https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg" alt="cb_logo" width="25px" height="25px"/>
+			<img
+			className="w-[25px] h-[25px]"
+			src={cb_logo}
+			alt={cb_logo}
+			/>
 		</a>
 	</div>)
 	}

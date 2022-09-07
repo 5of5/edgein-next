@@ -72,52 +72,57 @@ export const BlockchainsEdit = () => (
 );
 
 export const BlockchainsCreate = () => {
- 
+
   const [isIcon, setIsIcon] = React.useState(false)
   const [keyword, setKeyword] = React.useState('');
 
   type Props = {
     googleKeyWord: string,
   };
-  const RenderGoogleIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderGoogleIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord
-    return(
-    <div style={{ position: 'absolute', top: '70px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <GoogleIcon />
-      </a>
-    </div>)
+    return (
+      <div style={{ position: 'absolute', top: '70px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <GoogleIcon />
+        </a>
+      </div>)
   }
 
-  const RenderLinkedinIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderLinkedinIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Linkedin"
 
     return (
       <div style={{ position: 'absolute', top: '70px', left: '45px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
+        <a href={url} target="_blank" rel="noreferrer">
           <LinkedInIcon /></a>
       </div>)
   }
-  const RenderGitHubIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderGitHubIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Github"
 
     return (
-    <div style={{ position: 'absolute', top: '70px', left: '80px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <GitHubIcon />
-      </a>
-    </div>)
+      <div style={{ position: 'absolute', top: '70px', left: '80px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <GitHubIcon />
+        </a>
+      </div>)
   }
 
-  const RenderCBIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderCBIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase"
+    const cb_logo = "https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg"
 
     return (
-    <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <img src="https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg" alt="cb_logo" width="25px" height="25px"/>
-      </a>
-    </div>)
+      <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <img
+            className="w-[25px] h-[25px]"
+            src={cb_logo}
+            alt={cb_logo}
+          />
+        </a>
+      </div>)
   }
 
 
@@ -126,30 +131,30 @@ export const BlockchainsCreate = () => {
     setKeyword(e.target.value);
   }
   return (
-  <Create title="Create a Blockchain"
-    sx={{
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      }
-    }}
-  >
-  <div className='customForm' style={{ position: 'relative' }}>
+    <Create title="Create a Blockchain"
+      sx={{
+        '.MuiFormHelperText-root': {
+          display: 'none',
+        }
+      }}
+    >
+      <div className='customForm' style={{ position: 'relative' }}>
 
-    <SimpleForm>
-      <TextInput
-        className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="name"
-        onChange={handleIcon}
+        <SimpleForm>
+          <TextInput
+            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="name"
+            onChange={handleIcon}
 
-      />
-                {isIcon &&
+          />
+          {isIcon &&
             <>
-              <RenderGoogleIcon googleKeyWord={keyword}/>
-              <RenderLinkedinIcon googleKeyWord={keyword}/>
-              <RenderGitHubIcon googleKeyWord={keyword}/>
-              <RenderCBIcon googleKeyWord={keyword}/>
+              <RenderGoogleIcon googleKeyWord={keyword} />
+              <RenderLinkedinIcon googleKeyWord={keyword} />
+              <RenderGitHubIcon googleKeyWord={keyword} />
+              <RenderCBIcon googleKeyWord={keyword} />
             </>}
-    </SimpleForm>
-    </div>
-  </Create>)
+        </SimpleForm>
+      </div>
+    </Create>)
 }
