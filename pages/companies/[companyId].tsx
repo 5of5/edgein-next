@@ -26,7 +26,13 @@ import {
 	Investments,
 } from "../../graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import { getNewFollows, reactOnSentiment, getName, isFollowsExists, getNewTempSentiment } from "@/utils/reaction";
+import {
+	getNewFollows,
+	reactOnSentiment,
+	getName,
+	isFollowsExists,
+	getNewTempSentiment,
+} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import {
 	IconEditPencil,
@@ -97,36 +103,37 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-			async (
-				event: React.MouseEvent<
-					HTMLButtonElement | HTMLInputElement | HTMLElement
-				>
-			) => {
-				
-				setTemporary(sentiment, alreadyReacted)
-				const newSentiment = await reactOnSentiment({
-					company: company.id,
-					sentiment,
-					pathname: location.pathname,
-				})
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			setTemporary(sentiment, alreadyReacted);
+			const newSentiment = await reactOnSentiment({
+				company: company.id,
+				sentiment,
+				pathname: location.pathname,
+			});
 
-				setCompany((prev: Companies) => {
-					const newFollows = getNewFollows(sentiment) as Follows_Companies;
-					if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
-					else
-						remove(prev.follows, (item) => {
-							return getName(item.list!) === sentiment
-						})
-					return { ...prev, sentiment: newSentiment }
-				})
-				
-			}
+			setCompany((prev: Companies) => {
+				const newFollows = getNewFollows(sentiment) as Follows_Companies;
+				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
+					prev.follows.push(newFollows);
+				else
+					remove(prev.follows, (item) => {
+						return getName(item.list!) === sentiment;
+					});
+				return { ...prev, sentiment: newSentiment };
+			});
+		};
 
 	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
-		
 		setCompany((prev: Companies) => {
-
-			const newSentiment = getNewTempSentiment({ ...prev.sentiment }, sentiment, alreadyReacted)
+			const newSentiment = getNewTempSentiment(
+				{ ...prev.sentiment },
+				sentiment,
+				alreadyReacted
+			);
 
 			const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
@@ -137,7 +144,7 @@ const Company: NextPage<Props> = (props: Props) => {
 				});
 			return { ...prev, sentiment: newSentiment };
 		});
-	}
+	};
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -267,7 +274,11 @@ const Company: NextPage<Props> = (props: Props) => {
 					scrollToSection(index);
 				}}
 			/>
-			<div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7" ref={overviewRef}>
+			<div
+				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+				ref={overviewRef}
+				id="overview"
+			>
 				<div className="col-span-3">
 					<ElemKeyInfo
 						className="sticky top-4"
@@ -331,11 +342,11 @@ const Company: NextPage<Props> = (props: Props) => {
 												</span>
 
 												<div className="mb-4">
-													<h2 className="font-bold">{`Raised $${convertAmountRaised(
-														activity.amount
-													)} from ${getInvestorsNames(
-														activity.investments
-													)}`}</h2>
+													<h2 className="font-bold">
+														{`Raised $${convertAmountRaised(
+															activity.amount
+														)} from ${getInvestorsNames(activity.investments)}`}
+													</h2>
 													<p className="text-xs text-slate-600">
 														{formatDate(activity.round_date as string, {
 															month: "short",
