@@ -14,7 +14,7 @@ Modal.setAppElement("#modal-root");
 
 export default function OnBoardingStep1Modal(props) {
 
-    const [selectedOption, setSelectedOption] = useState('companies')
+    const [selectedOption, setSelectedOption] = useState(props.selectedOption)
 
     const onClose = () => {
         props.onClose();

@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import React from "react";
+import React, {useState} from "react";
 import { ElemButton } from "../ElemButton";
 import { IconFindCompanies, IconFindInvestors } from "../Icons";
 import { TagInputText } from "../TagInputText";
@@ -8,12 +8,19 @@ Modal.setAppElement("#modal-root");
 
 export default function OnBoardingStep2Modal(props: any) {
 
+    const [locationTags, setLocationTags] = useState(props.locationTags)
+    const [industryTags, setIndustryTags] = useState(props.industryTags)
+    
     const onClose = () => {
         props.onClose();
     };
 
     const onNext = () => {
-        props.onNext()
+        props.onNext(locationTags, industryTags)
+    }
+
+    const onBack = () => {
+        props.onBack(locationTags, industryTags)
     }
 
     return (
@@ -37,24 +44,26 @@ export default function OnBoardingStep2Modal(props: any) {
                     {`This will help you discover relevant companies and investors.`}
                 </div>
                 <TagInputText
+                    defaultTags={locationTags}
                     className="mt-8"
                     label="Location"
                     value=""
                     name="Location"
                     placeholder="e.g. Germany, San Francisco"
-                    onChange={(tags) => {}}
+                    onChange={(tags) => {setLocationTags(tags)}}
                 />
                  <TagInputText
+                    defaultTags={industryTags}
                     className="mt-5"
                     label="Industry"
                     value=""
                     name="Industry"
                     placeholder="e.g. Native Code, NFTs, Nodes"
-                    onChange={(tags) => {}}
+                    onChange={(tags) => {setIndustryTags(tags)}}
                 />
                 
                 <div className="w-full flex justify-end mt-8">
-                    <ElemButton onClick={props.onBack} btn="transparent" className="text-slate-600" >
+                    <ElemButton onClick={onBack} btn="transparent" className="text-slate-600" >
                         Back
                 </ElemButton>
                     <ElemButton onClick={onNext} btn="primary" >

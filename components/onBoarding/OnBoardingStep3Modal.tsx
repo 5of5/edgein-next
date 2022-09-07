@@ -1,7 +1,16 @@
 import Modal from "react-modal";
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import { ElemButton } from "../ElemButton";
 import { IconFindCompanies, IconFindInvestors } from "../Icons";
+import { DeepPartial } from "../Company/ElemCohort";
+import { Companies_Bool_Exp, Vc_Firms, Vc_Firms_Bool_Exp, useGetRelevantCompaniesQuery, useGetRelevantVcFirmsQuery } from "@/graphql/types";
+import {
+	getNewFollows,
+	reactOnSentiment,
+	getName,
+	isFollowsExists,
+	getNewTempSentiment,
+} from "@/utils/reaction";
 
 Modal.setAppElement("#modal-root");
 
@@ -14,15 +23,84 @@ Modal.setAppElement("#modal-root");
 
 export default function OnBoardingStep3Modal(props) {
 
-    const [selectedOption, setSelectedOption] = useState('companies')
+    const [list, setList] = useState([]);
+    const [locationTags, setLocationTags] = useState([])
+    const [industryTags, setIndustryTags] = useState([])
 
     const onClose = () => {
         props.onClose();
     };
 
-    const onNext = () => {
-        props.onNext(selectedOption)
+    // const handleCreateList =
+	// 	(sentiment: string, alreadyReacted: boolean) =>
+	// 	async (
+	// 	) => {
+	// 		const newSentiment = await reactOnSentiment({
+	// 			company: company.id,
+	// 			sentiment,
+	// 			pathname: location.pathname,//`/companies/${company.slug}`
+	// 		});
+	// 	};
+
+    const onFinishSetup = () => {
+        props.onClose();
+       // handleCreateList("My Edge List", false)
     }
+
+    const filtersCompanies: DeepPartial<Companies_Bool_Exp> = {
+        _or: [
+            ...locationTags.map(tag => ({
+                location: { _ilike: tag }
+            })),
+            ...industryTags.map(tag => ({
+                tags: { _contains: tag }
+            }))
+        ]
+    }
+
+    const filterVCFirms: DeepPartial<Vc_Firms_Bool_Exp> = {
+        _or: [
+            ...locationTags.map(tag => ({
+                location: { _ilike: tag }
+            })),
+            ...industryTags.map(tag => ({
+                tags: { _contains: tag }
+            }))
+        ]
+    }
+
+    const {
+        data: companiesData,
+        // error,
+        isLoading: loadingCompany,
+    } = useGetRelevantCompaniesQuery({
+        where: filtersCompanies as Companies_Bool_Exp,
+        current_user: props.user?.id ?? 0,
+    });
+
+    console.log("list ddata =", list)
+    const {
+        data: vcFirmsData,
+        // error,
+        isLoading: loadingVCFirm,
+    } = useGetRelevantVcFirmsQuery({
+        where: filterVCFirms as Vc_Firms_Bool_Exp,
+       current_user: props.user?.id ?? 0,
+    });
+
+    useEffect(() => {
+        setLocationTags(props.locationTags)
+        setIndustryTags(props.industryTags)
+    }, [props])
+
+    useEffect(() => {
+
+        if (props.selectedOption === "companies") {
+            setList(companiesData ? companiesData.companies : [])
+        } else {
+            setList(vcFirmsData ? vcFirmsData.vc_firms : [])
+        }
+    }, [companiesData, vcFirmsData])
 
     return (
         <Modal
@@ -38,17 +116,40 @@ export default function OnBoardingStep3Modal(props) {
         >
             <div className="p-10">
                 <h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
-                {`We started your first list`}
+                    {`We started your first list`}
                 </h3>
                 <p className="text-sm text-slate-500">Step 3 of 3</p>
                 <div className="mt-4 text-slate-600 grow line-clamp-3 text-base">
-                {`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My Edge List".`}
+                    {`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My Edge List".`}
                 </div>
+                <div className="w-full flex flex-wrap my-5 grid grid-cols-3 gap-5">
+                    {
+                        list.length > 0 && list.map(item => {
+                            return (
+                                <div className="flex flex-wrap items-center gap-x-2">
+                                    <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border-slate-200 shadow-lg">
+                                        <img
+                                            className="object-contain max-w-full max-h-full"
+                                            src={item.logo.url}
+                                            alt={""}
+                                        />
+                                    </div>
+                                    <h1 className="text-lg text-dark-500 font-bold">
+                                        {item.name}
+                                    </h1>
+                                </div>
+
+                            )
+                        })
+                    }
+                </div>
+
+
                 <div className="w-full flex justify-end mt-8">
                     <ElemButton onClick={props.onBack} btn="transparent" className="text-slate-600" >
                         Back
                     </ElemButton>
-                    <ElemButton onClick={onNext} btn="primary" >
+                    <ElemButton onClick={onFinishSetup} btn="primary" >
                         Finish Setup
                 </ElemButton>
                 </div>
