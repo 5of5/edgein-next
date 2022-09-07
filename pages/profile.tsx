@@ -1,11 +1,13 @@
-import { ElemButton } from "@/components/ElemButton";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { InputText } from "@/components/InputText";
-import { InputTextarea } from "@/components/InputTextarea";
-import { FC, useEffect, useState } from "react";
-import { People, useGetPersonQuery } from "@/graphql/types";
-import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
-import { useAuth } from "@/hooks/useAuth";
+import { ElemButton } from "@/components/ElemButton"
+import { ElemPhoto } from "@/components/ElemPhoto"
+import { InputText } from "@/components/InputText"
+import { InputTextarea } from "@/components/InputTextarea"
+import { FC, useEffect, useState } from "react"
+import { People, useGetPersonQuery } from "@/graphql/types"
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu"
+import { useAuth } from "@/hooks/useAuth"
+import { find } from "lodash"
+import validator from 'validator'
 
 type Props = {}
 
@@ -22,6 +24,20 @@ const Profile: FC<Props> = ({ }) => {
 	const [editAbout, setEditAbout] = useState(false)
 	const [editWorkspace, setEditWorkspace] = useState(false)
 
+	// fields
+	const [firstName, setFirstName] = useState('')
+	const [lasttName, setLastName] = useState('')
+	const [email, setEmail] = useState<any[]>([])
+	const [newEmail, setNewEmail] = useState('')
+	const [city, setCity] = useState('')
+	const [country, setCountry] = useState('')
+	const [website, setWebsite] = useState('')
+	const [linkedIn, setLinkedIn] = useState('')
+	const [facebook, setFacebook] = useState('')
+	const [twitter, setTwitter] = useState('')
+	const [about, setAbout] = useState('')
+	const [workspace, setWorkspace] = useState('')
+
 	const {
 		data: people
 	} = useGetPersonQuery({
@@ -32,6 +48,113 @@ const Profile: FC<Props> = ({ }) => {
 		if (people)
 			setPerson(people.people[0] as People)
 	}, [people]);
+
+	useEffect(() => {
+		if (person) {
+			const nameFragments = person?.name?.split(' ')
+			const firstName = nameFragments?.shift() || ''
+			const lastName = nameFragments?.join(' ') || ''
+
+			setFirstName(firstName)
+			setLastName(lastName)
+			setEmail(person?.email || [])
+			setCity(person?.city || '')
+			setCountry(person?.country || '')
+			setWebsite(person?.website_url || '')
+			setLinkedIn(person?.linkedin || '')
+			setFacebook(person?.facebook_url || '')
+			setTwitter(person?.twitter_url || '')
+			setAbout(person?.about || '')
+		}
+	}, [person])
+
+	const updateCall = async (payload: any) => {
+		const resp = await fetch('/api/update_profile', {
+			method: 'POST',
+			body: JSON.stringify({
+				id: person?.id,
+				payload
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			}
+		})
+
+		return resp.json()
+	}
+
+	const onSave = (entity: string) => async () => {
+
+		if (entity === 'name') {
+			const resp = await updateCall({
+				name: `${firstName} ${lasttName}`,
+			})
+			setPerson(resp.result)
+		}
+
+		if (entity === 'email') {
+			const exists = find(email, { email: newEmail })
+			setEmail((prev: any) => {
+				if (newEmail === '' || !validator.isEmail(newEmail)) return prev
+				const temp = [...prev]
+
+				if (!email) temp.push({ email: newEmail, isPrimary: false })
+				setNewEmail('')
+				return temp
+			})
+
+			const resp = await updateCall({
+				email: exists ? email : [...email, { email: newEmail, isPrimary: false }]
+			})
+
+			setPerson(resp.result)
+		}
+
+		if (entity === 'website') {
+			const resp = await updateCall({
+				website_url: website
+			})
+			setPerson(resp.result)
+		}
+
+		if (entity === 'facebook') {
+			const resp = await updateCall({
+				facebook_url: facebook
+			})
+			setPerson(resp.result)
+		}
+
+		if (entity === 'twitter') {
+			const resp = await updateCall({
+				twitter_url: twitter
+			})
+			setPerson(resp.result)
+		}
+
+		if (entity === 'about') {
+			const resp = await updateCall({
+				about: about
+			})
+			setPerson(resp.result)
+		}
+
+		if (entity === 'linkedin') {
+			const resp = await updateCall({
+				linkedin: linkedIn
+			})
+			setPerson(resp.result)
+		}
+
+		if (entity === 'location') {
+			const resp = await updateCall({
+				city,
+				country
+			})
+			setPerson(resp.result)
+		}
+
+	}
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -50,10 +173,10 @@ const Profile: FC<Props> = ({ }) => {
 						</div>
 
 
-						<div className="flex mt-3 mb-2 border-b border-gray-100 pb-3">
-							<h2 className="text-dark-500 font-bold text-md w-40">Profile Image</h2>
-							<div className="flex">
-								<div className="ml-4">
+						<div className="mt-3 mb-2 border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+							<h2 className="text-dark-500 font-bold text-md col-span-3">Profile Image</h2>
+							<div className="flex col-span-9">
+								<div className="">
 									<ElemPhoto
 										photo={person?.picture}
 										wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white rounded-lg shadow-md mr-2 rounded-full"
@@ -73,39 +196,41 @@ const Profile: FC<Props> = ({ }) => {
 						</div>
 
 						{
-							!editName && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Name</h2>
-								<div>
+							!editName && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Name</h2>
+
+								<div className="col-span-8">
 									<h2 className="text-slate-600 text-md">{person?.name}</h2>
 								</div>
 
 								<button
-									className="absolute right-0 text-md text-primary-500"
+									className="text-md text-primary-500 col-span-1 text-right w-auto"
 									onClick={() => setEditName(true)}
 								>Edit</button>
 							</div>
 						}
 						{/* hide content name */}
 						{
-							editName && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Name</h2>
-								<div>
+							editName && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Name</h2>
+								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
 											label="First Name"
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setFirstName(e.target.value)}
+											value={firstName}
+											name="first_name"
 											placeholder="Bram"
 											className="mb-4"
 										/>
 										<InputText
 											label="Last Name"
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setLastName(e.target.value)}
+											value={lasttName}
+											name="last_name"
 											placeholder="Cohen"
-											className="mb-3" />
+											className="mb-3"
+										/>
 
 										<span className="text-slate-500 m font-thin text-md"><b className="font-bold text-slate-600">Note:</b> If you change your name on EdgeIn, you won’t be able to change it again for 60 days.</span>
 
@@ -113,6 +238,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('name')}
 											>
 												Change
 											</ElemButton>
@@ -128,10 +254,20 @@ const Profile: FC<Props> = ({ }) => {
 						}
 
 						{
-							!editEmail && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Email</h2>
-								<div>
-									<h2 className="text-slate-600 text-md">{person?.personal_email}</h2>
+							!editEmail && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Email</h2>
+								<div className="col-span-8">
+									{
+										person?.email.map((email: any) => (
+											<p
+												key={email.email}
+												className="text-slate-600 mb-2"
+											>
+												{email.email}
+												{email.isPrimary && <b className="text-sm text-primary-500"> - Primary</b>}
+											</p>
+										))
+									}
 								</div>
 
 								<button
@@ -144,27 +280,31 @@ const Profile: FC<Props> = ({ }) => {
 
 						{/* hide content email */}
 						{
-							editEmail && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Email</h2>
-								<div>
-									<div className="mt-8 w-96">
+							editEmail &&
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Email</h2>
+								<div className="col-span-8">
+									<div className="w-96">
 										<h2 className="text-md font-bold text-slate-600">Current Emails</h2>
-										<div>
-											<span className="block mt-1 text-sm font-semibold text-slate-600">Bram@gmail.com</span>
-											<span className="mt-1 text-slate-500">primary</span>
-										</div>
+										{
+											email?.map((mail: any) => (
+												<div key={mail.email} className="mb-2">
+													<span className="block mt-1 text-sm font-semibold text-slate-600">{mail.email}</span>
+													<span className="mt-1 text-slate-500 text-sm">{mail.isPrimary ? 'Primary' : ''}</span>
+													{mail.isPrimary || <span className="mt-1 text-sm text-purple-800 cursor-pointer">Make Primary</span>}
+													{mail.isPrimary || <span className="mt-1 text-sm ml-2 text-purple-800 cursor-pointer">Remove</span>}
+												</div>
+											))
 
-										<div className="mb-3">
-											<span className="block mt-1 text-sm font-semibold text-slate-600">johndoe@gmail.com</span>
-											<span className="mt-1 text-sm text-purple-800 cursor-pointer">Make Primary</span>.
-											<span className="mt-1 text-sm ml-2 text-purple-800 cursor-pointer">Remove</span>
-										</div>
+										}
 
 										<InputText
 											label="New Email"
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => {
+												setNewEmail(e.target.value)
+											}}
+											value={newEmail}
+											name="new-email"
 											placeholder="Cohen@gmail.com"
 										/>
 
@@ -172,6 +312,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('email')}
 											>
 												Add
 											</ElemButton>
@@ -189,9 +330,9 @@ const Profile: FC<Props> = ({ }) => {
 						}
 
 						{
-							!editLocation && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Location</h2>
-								<div>
+							!editLocation && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Location</h2>
+								<div className="col-span-8">
 									<h2 className="text-slate-600 text-md">{person?.city}, {person?.country}</h2>
 								</div>
 
@@ -205,23 +346,23 @@ const Profile: FC<Props> = ({ }) => {
 
 						{/* hide content location */}
 						{
-							editLocation && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Location</h2>
-								<div>
+							editLocation && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Location</h2>
+								<div className="col-span-8">
 									<div className="w-96 ">
 										<InputText
 											label="City"
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setCity(e.target.value)}
+											value={city}
+											name="city"
 											placeholder="San Francisco"
 											className="mb-3"
 										/>
 										<InputText
 											label="Country"
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setCountry(e.target.value)}
+											value={country}
+											name="country"
 											placeholder="United State"
 											className="mb-3" />
 
@@ -229,6 +370,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('location')}
 											>
 												Save
 											</ElemButton>
@@ -246,9 +388,9 @@ const Profile: FC<Props> = ({ }) => {
 						}
 
 						{
-							!editWebsite && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Website URl</h2>
-								<div>
+							!editWebsite && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Website URl</h2>
+								<div className="col-span-8">
 									<h2 className="text-slate-600 text-md">{person?.website_url}</h2>
 								</div>
 
@@ -261,14 +403,14 @@ const Profile: FC<Props> = ({ }) => {
 						}
 						{/* hide content website */}
 						{
-							editWebsite && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Website URL</h2>
-								<div>
+							editWebsite && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Website URL</h2>
+								<div className="col-span-8">
 									<div className="w-96 ">
 										<InputText
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setWebsite(e.target.value)}
+											value={website}
+											name="website"
 											placeholder="www.brahm.com"
 										/>
 
@@ -276,6 +418,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('website')}
 											>
 												Save
 											</ElemButton>
@@ -292,9 +435,9 @@ const Profile: FC<Props> = ({ }) => {
 						}
 
 						{
-							!editLinkedIn && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">LinkedIn URL</h2>
-								<div>
+							!editLinkedIn && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">LinkedIn URL</h2>
+								<div className="col-span-8">
 									<h2 className="text-slate-600 text-md">{person?.linkedin}</h2>
 								</div>
 
@@ -308,15 +451,14 @@ const Profile: FC<Props> = ({ }) => {
 
 						{/* hide content linkedin */}
 						{
-							editLinkedIn && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">LinkedIn URL</h2>
-								<div>
+							editLinkedIn && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">LinkedIn URL</h2>
+								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
-
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setLinkedIn(e.target.value)}
+											value={linkedIn}
+											name="linkedIn"
 											placeholder="https://linkedin.com"
 										/>
 
@@ -324,6 +466,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('linkedin')}
 											>
 												Save
 											</ElemButton>
@@ -336,12 +479,13 @@ const Profile: FC<Props> = ({ }) => {
 
 									</div>
 								</div>
-							</div>}
+							</div>
+						}
 
 						{
-							!editFacebook && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Facebook URL</h2>
-								<div>
+							!editFacebook && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Facebook URL</h2>
+								<div className="col-span-8">
 									<h2 className="text-slate-600 text-md">{person?.facebook_url}</h2>
 								</div>
 
@@ -355,15 +499,14 @@ const Profile: FC<Props> = ({ }) => {
 
 						{/* hide content facebook*/}
 						{
-							editFacebook && <div className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Facebook URL</h2>
-								<div>
+							editFacebook && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Facebook URL</h2>
+								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
-
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setFacebook(e.target.value)}
+											value={facebook}
+											name="facebook"
 											placeholder="https://facebook.com"
 										/>
 
@@ -371,6 +514,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('facebook')}
 											>
 												Save
 											</ElemButton>
@@ -380,17 +524,15 @@ const Profile: FC<Props> = ({ }) => {
 												Cancel
 											</ElemButton>
 										</div>
-
 									</div>
-
 								</div>
 							</div>
 						}
 
 						{
-							!editTwitter && < div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Twitter URL</h2>
-								<div>
+							!editTwitter && < div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Twitter URL</h2>
+								<div className="col-span-8">
 									<h2 className="text-slate-600 text-md">{person?.twitter_url}</h2>
 								</div>
 
@@ -404,15 +546,14 @@ const Profile: FC<Props> = ({ }) => {
 
 						{/* hide content twitter*/}
 						{
-							editTwitter && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Twitter URL</h2>
-								<div>
+							editTwitter && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Twitter URL</h2>
+								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
-
-											onChange={() => { }}
-											value=""
-											name=""
+											onChange={(e) => setTwitter(e.target.value)}
+											value={twitter}
+											name="twitter"
 											placeholder="https://twitter.com"
 										/>
 
@@ -420,6 +561,7 @@ const Profile: FC<Props> = ({ }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('twitter')}
 											>
 												Save
 											</ElemButton>
@@ -437,9 +579,9 @@ const Profile: FC<Props> = ({ }) => {
 						}
 
 						{
-							!editAbout && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">About You</h2>
-								<div>
+							!editAbout && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">About You</h2>
+								<div className="col-span-8">
 									<p className="text-slate-600 text-md">{person?.about}</p>
 								</div>
 
@@ -453,18 +595,20 @@ const Profile: FC<Props> = ({ }) => {
 
 						{/* hide content about*/}
 						{
-							editAbout && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">About You</h2>
-								<div>
+							editAbout && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">About You</h2>
+								<div className="col-span-8">
 									<div className="w-96 ">
 										<InputTextarea
 											rows={3}
-
+											value={about}
+											onChange={(e) => setAbout(e.target.value)}
 										/>
 										<div className="flex mt-3 mb-2">
 											<ElemButton
 												btn="primary"
 												className="mr-2"
+												onClick={onSave('about')}
 											>
 												Save
 											</ElemButton>
@@ -482,16 +626,16 @@ const Profile: FC<Props> = ({ }) => {
 						}
 
 						{
-							!editWorkspace && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Work</h2>
+							!editWorkspace && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Work</h2>
 								<button className="absolute right-0 text-md text-primary-500">Add Workplace</button>
 
 							</div>
 						}
 						{/* hide content work */}
 						{
-							editWorkspace && <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md w-40">Work</h2>
+							editWorkspace && <div className="grid grid-cols-12 gap-2 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold text-md col-span-3">Work</h2>
 
 								<div className="w-96">
 									<InputText
@@ -544,18 +688,19 @@ const Profile: FC<Props> = ({ }) => {
 
 						{
 							person?.team_members.map((team_member) =>
-								<div key={team_member.id} className="flex  mt-3 mb-2 relative border-b border-gray-100 pb-3">
-									<span className="text-dark-500 font-bold text-md w-40"></span>
-									<div className="flex">
-										<ElemPhoto wrapClass="w-12 h-12 border p-1 rounded-md" photo={team_member.company?.logo} imgAlt="company logo" />
+								<div key={team_member.id} className="grid grid-cols-12 gap-2">
+									<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3 col-span-8">
+										<span className="text-dark-500 font-bold text-md col-span-3"></span>
+										<div className="flex">
+											<ElemPhoto wrapClass="w-12 h-12 border p-1 rounded-md" photo={team_member.company?.logo} imgAlt="company logo" />
 
-										<div className="ml-5">
-											<h2 className="font-bold font-Metropolis text-md text-slate-600">{team_member.title}</h2>
-											<span className="font-thin text-slate-500 ">{team_member.company?.name}</span>
-											<p className="font-thin text-slate-500">August 2017 - Present . 5 yrs 1 mo <br /> San Francisco Cow Boy Area</p>
+											<div className="ml-5">
+												<h2 className="font-bold font-Metropolis text-md text-slate-600">{team_member.title}</h2>
+												<span className="font-thin text-slate-500 ">{team_member.company?.name}</span>
+												<p className="font-thin text-slate-500">August 2017 - Present . 5 yrs 1 mo <br /> San Francisco Cow Boy Area</p>
+											</div>
 										</div>
 									</div>
-
 									<button className="absolute right-0 text-md text-primary-500">Edit</button>
 								</div>
 							)

@@ -358,6 +358,204 @@ export type Actions_Variance_Fields = {
   resource_id: Maybe<Scalars['Float']>;
 };
 
+/** Allowed email Ids */
+export type Allowed_Emails = {
+  __typename?: 'allowed_emails';
+  created_at: Scalars['date'];
+  email: Scalars['String'];
+  id: Scalars['Int'];
+  updated_at: Scalars['date'];
+};
+
+/** aggregated selection of "allowed_emails" */
+export type Allowed_Emails_Aggregate = {
+  __typename?: 'allowed_emails_aggregate';
+  aggregate: Maybe<Allowed_Emails_Aggregate_Fields>;
+  nodes: Array<Allowed_Emails>;
+};
+
+/** aggregate fields of "allowed_emails" */
+export type Allowed_Emails_Aggregate_Fields = {
+  __typename?: 'allowed_emails_aggregate_fields';
+  avg: Maybe<Allowed_Emails_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Allowed_Emails_Max_Fields>;
+  min: Maybe<Allowed_Emails_Min_Fields>;
+  stddev: Maybe<Allowed_Emails_Stddev_Fields>;
+  stddev_pop: Maybe<Allowed_Emails_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Allowed_Emails_Stddev_Samp_Fields>;
+  sum: Maybe<Allowed_Emails_Sum_Fields>;
+  var_pop: Maybe<Allowed_Emails_Var_Pop_Fields>;
+  var_samp: Maybe<Allowed_Emails_Var_Samp_Fields>;
+  variance: Maybe<Allowed_Emails_Variance_Fields>;
+};
+
+
+/** aggregate fields of "allowed_emails" */
+export type Allowed_Emails_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Allowed_Emails_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Allowed_Emails_Avg_Fields = {
+  __typename?: 'allowed_emails_avg_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "allowed_emails". All fields are combined with a logical 'AND'. */
+export type Allowed_Emails_Bool_Exp = {
+  _and: InputMaybe<Array<Allowed_Emails_Bool_Exp>>;
+  _not: InputMaybe<Allowed_Emails_Bool_Exp>;
+  _or: InputMaybe<Array<Allowed_Emails_Bool_Exp>>;
+  created_at: InputMaybe<Date_Comparison_Exp>;
+  email: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  updated_at: InputMaybe<Date_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "allowed_emails" */
+export enum Allowed_Emails_Constraint {
+  /** unique or primary key constraint */
+  AllowedEmailsEmailKey = 'allowed_emails_email_key',
+  /** unique or primary key constraint */
+  AllowedEmailsPkey = 'allowed_emails_pkey'
+}
+
+/** input type for incrementing numeric columns in table "allowed_emails" */
+export type Allowed_Emails_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "allowed_emails" */
+export type Allowed_Emails_Insert_Input = {
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
+/** aggregate max on columns */
+export type Allowed_Emails_Max_Fields = {
+  __typename?: 'allowed_emails_max_fields';
+  created_at: Maybe<Scalars['date']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['date']>;
+};
+
+/** aggregate min on columns */
+export type Allowed_Emails_Min_Fields = {
+  __typename?: 'allowed_emails_min_fields';
+  created_at: Maybe<Scalars['date']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['date']>;
+};
+
+/** response of any mutation on the table "allowed_emails" */
+export type Allowed_Emails_Mutation_Response = {
+  __typename?: 'allowed_emails_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Allowed_Emails>;
+};
+
+/** on_conflict condition type for table "allowed_emails" */
+export type Allowed_Emails_On_Conflict = {
+  constraint: Allowed_Emails_Constraint;
+  update_columns: Array<Allowed_Emails_Update_Column>;
+  where: InputMaybe<Allowed_Emails_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "allowed_emails". */
+export type Allowed_Emails_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  email: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: allowed_emails */
+export type Allowed_Emails_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "allowed_emails" */
+export enum Allowed_Emails_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "allowed_emails" */
+export type Allowed_Emails_Set_Input = {
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
+/** aggregate stddev on columns */
+export type Allowed_Emails_Stddev_Fields = {
+  __typename?: 'allowed_emails_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Allowed_Emails_Stddev_Pop_Fields = {
+  __typename?: 'allowed_emails_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Allowed_Emails_Stddev_Samp_Fields = {
+  __typename?: 'allowed_emails_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Allowed_Emails_Sum_Fields = {
+  __typename?: 'allowed_emails_sum_fields';
+  id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "allowed_emails" */
+export enum Allowed_Emails_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Allowed_Emails_Var_Pop_Fields = {
+  __typename?: 'allowed_emails_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Allowed_Emails_Var_Samp_Fields = {
+  __typename?: 'allowed_emails_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Allowed_Emails_Variance_Fields = {
+  __typename?: 'allowed_emails_variance_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "application_meta" */
 export type Application_Meta = {
   __typename?: 'application_meta';
@@ -5596,6 +5794,10 @@ export type Mutation_Root = {
   delete_actions: Maybe<Actions_Mutation_Response>;
   /** delete single row from the table: "actions" */
   delete_actions_by_pk: Maybe<Actions>;
+  /** delete data from the table: "allowed_emails" */
+  delete_allowed_emails: Maybe<Allowed_Emails_Mutation_Response>;
+  /** delete single row from the table: "allowed_emails" */
+  delete_allowed_emails_by_pk: Maybe<Allowed_Emails>;
   /** delete data from the table: "application_meta" */
   delete_application_meta: Maybe<Application_Meta_Mutation_Response>;
   /** delete single row from the table: "application_meta" */
@@ -5676,10 +5878,18 @@ export type Mutation_Root = {
   delete_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** delete single row from the table: "vc_firms" */
   delete_vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** delete data from the table: "waitlist_emails" */
+  delete_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
+  /** delete single row from the table: "waitlist_emails" */
+  delete_waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
   /** insert data into the table: "actions" */
   insert_actions: Maybe<Actions_Mutation_Response>;
   /** insert a single row into the table: "actions" */
   insert_actions_one: Maybe<Actions>;
+  /** insert data into the table: "allowed_emails" */
+  insert_allowed_emails: Maybe<Allowed_Emails_Mutation_Response>;
+  /** insert a single row into the table: "allowed_emails" */
+  insert_allowed_emails_one: Maybe<Allowed_Emails>;
   /** insert data into the table: "application_meta" */
   insert_application_meta: Maybe<Application_Meta_Mutation_Response>;
   /** insert a single row into the table: "application_meta" */
@@ -5764,10 +5974,18 @@ export type Mutation_Root = {
   insert_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** insert a single row into the table: "vc_firms" */
   insert_vc_firms_one: Maybe<Vc_Firms>;
+  /** insert data into the table: "waitlist_emails" */
+  insert_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
+  /** insert a single row into the table: "waitlist_emails" */
+  insert_waitlist_emails_one: Maybe<Waitlist_Emails>;
   /** update data of the table: "actions" */
   update_actions: Maybe<Actions_Mutation_Response>;
   /** update single row of the table: "actions" */
   update_actions_by_pk: Maybe<Actions>;
+  /** update data of the table: "allowed_emails" */
+  update_allowed_emails: Maybe<Allowed_Emails_Mutation_Response>;
+  /** update single row of the table: "allowed_emails" */
+  update_allowed_emails_by_pk: Maybe<Allowed_Emails>;
   /** update data of the table: "application_meta" */
   update_application_meta: Maybe<Application_Meta_Mutation_Response>;
   /** update single row of the table: "application_meta" */
@@ -5848,6 +6066,10 @@ export type Mutation_Root = {
   update_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** update single row of the table: "vc_firms" */
   update_vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** update data of the table: "waitlist_emails" */
+  update_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
+  /** update single row of the table: "waitlist_emails" */
+  update_waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
 };
 
 
@@ -5859,6 +6081,18 @@ export type Mutation_RootDelete_ActionsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Actions_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Allowed_EmailsArgs = {
+  where: Allowed_Emails_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Allowed_Emails_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -6104,6 +6338,18 @@ export type Mutation_RootDelete_Vc_Firms_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Waitlist_EmailsArgs = {
+  where: Waitlist_Emails_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Waitlist_Emails_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_ActionsArgs = {
   objects: Array<Actions_Insert_Input>;
   on_conflict: InputMaybe<Actions_On_Conflict>;
@@ -6114,6 +6360,20 @@ export type Mutation_RootInsert_ActionsArgs = {
 export type Mutation_RootInsert_Actions_OneArgs = {
   object: Actions_Insert_Input;
   on_conflict: InputMaybe<Actions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Allowed_EmailsArgs = {
+  objects: Array<Allowed_Emails_Insert_Input>;
+  on_conflict: InputMaybe<Allowed_Emails_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Allowed_Emails_OneArgs = {
+  object: Allowed_Emails_Insert_Input;
+  on_conflict: InputMaybe<Allowed_Emails_On_Conflict>;
 };
 
 
@@ -6408,6 +6668,20 @@ export type Mutation_RootInsert_Vc_Firms_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Waitlist_EmailsArgs = {
+  objects: Array<Waitlist_Emails_Insert_Input>;
+  on_conflict: InputMaybe<Waitlist_Emails_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Waitlist_Emails_OneArgs = {
+  object: Waitlist_Emails_Insert_Input;
+  on_conflict: InputMaybe<Waitlist_Emails_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_ActionsArgs = {
   _append: InputMaybe<Actions_Append_Input>;
   _delete_at_path: InputMaybe<Actions_Delete_At_Path_Input>;
@@ -6430,6 +6704,22 @@ export type Mutation_RootUpdate_Actions_By_PkArgs = {
   _prepend: InputMaybe<Actions_Prepend_Input>;
   _set: InputMaybe<Actions_Set_Input>;
   pk_columns: Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Allowed_EmailsArgs = {
+  _inc: InputMaybe<Allowed_Emails_Inc_Input>;
+  _set: InputMaybe<Allowed_Emails_Set_Input>;
+  where: Allowed_Emails_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Allowed_Emails_By_PkArgs = {
+  _inc: InputMaybe<Allowed_Emails_Inc_Input>;
+  _set: InputMaybe<Allowed_Emails_Set_Input>;
+  pk_columns: Allowed_Emails_Pk_Columns_Input;
 };
 
 
@@ -6792,6 +7082,22 @@ export type Mutation_RootUpdate_Vc_Firms_By_PkArgs = {
   pk_columns: Vc_Firms_Pk_Columns_Input;
 };
 
+
+/** mutation root */
+export type Mutation_RootUpdate_Waitlist_EmailsArgs = {
+  _inc: InputMaybe<Waitlist_Emails_Inc_Input>;
+  _set: InputMaybe<Waitlist_Emails_Set_Input>;
+  where: Waitlist_Emails_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Waitlist_Emails_By_PkArgs = {
+  _inc: InputMaybe<Waitlist_Emails_Inc_Input>;
+  _set: InputMaybe<Waitlist_Emails_Set_Input>;
+  pk_columns: Waitlist_Emails_Pk_Columns_Input;
+};
+
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type Numeric_Comparison_Exp = {
   _eq: InputMaybe<Scalars['numeric']>;
@@ -6828,6 +7134,8 @@ export type People = {
   city: Maybe<Scalars['String']>;
   country: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: Maybe<Scalars['jsonb']>;
   external_id: Maybe<Scalars['String']>;
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
@@ -6855,6 +7163,12 @@ export type People = {
   updated_at: Maybe<Scalars['timestamptz']>;
   website_url: Maybe<Scalars['String']>;
   work_email: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "people" */
+export type PeopleEmailArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -6955,6 +7269,8 @@ export type People_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type People_Append_Input = {
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -6973,6 +7289,7 @@ export type People_Bool_Exp = {
   city: InputMaybe<String_Comparison_Exp>;
   country: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  email: InputMaybe<Jsonb_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook_url: InputMaybe<String_Comparison_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
@@ -7005,16 +7322,22 @@ export enum People_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type People_Delete_At_Path_Input = {
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Array<Scalars['String']>>;
   picture: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type People_Delete_Elem_Input = {
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['Int']>;
   picture: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type People_Delete_Key_Input = {
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['String']>;
 };
 
@@ -7029,6 +7352,8 @@ export type People_Insert_Input = {
   city: InputMaybe<Scalars['String']>;
   country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['jsonb']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
@@ -7124,6 +7449,7 @@ export type People_Order_By = {
   city: InputMaybe<Order_By>;
   country: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  email: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   facebook_url: InputMaybe<Order_By>;
   github: InputMaybe<Order_By>;
@@ -7151,6 +7477,8 @@ export type People_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type People_Prepend_Input = {
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -7164,6 +7492,8 @@ export enum People_Select_Column {
   Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -7202,6 +7532,8 @@ export type People_Set_Input = {
   city: InputMaybe<Scalars['String']>;
   country: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
+  email: InputMaybe<Scalars['jsonb']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
@@ -7253,6 +7585,8 @@ export enum People_Update_Column {
   Country = 'country',
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -7311,6 +7645,12 @@ export type Query_Root = {
   actions_aggregate: Actions_Aggregate;
   /** fetch data from the table: "actions" using primary key columns */
   actions_by_pk: Maybe<Actions>;
+  /** fetch data from the table: "allowed_emails" */
+  allowed_emails: Array<Allowed_Emails>;
+  /** fetch aggregated fields from the table: "allowed_emails" */
+  allowed_emails_aggregate: Allowed_Emails_Aggregate;
+  /** fetch data from the table: "allowed_emails" using primary key columns */
+  allowed_emails_by_pk: Maybe<Allowed_Emails>;
   /** fetch data from the table: "application_meta" */
   application_meta: Array<Application_Meta>;
   /** fetch aggregated fields from the table: "application_meta" */
@@ -7433,6 +7773,12 @@ export type Query_Root = {
   vc_firms_aggregate: Vc_Firms_Aggregate;
   /** fetch data from the table: "vc_firms" using primary key columns */
   vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** fetch data from the table: "waitlist_emails" */
+  waitlist_emails: Array<Waitlist_Emails>;
+  /** fetch aggregated fields from the table: "waitlist_emails" */
+  waitlist_emails_aggregate: Waitlist_Emails_Aggregate;
+  /** fetch data from the table: "waitlist_emails" using primary key columns */
+  waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
 };
 
 
@@ -7455,6 +7801,29 @@ export type Query_RootActions_AggregateArgs = {
 
 
 export type Query_RootActions_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootAllowed_EmailsArgs = {
+  distinct_on: InputMaybe<Array<Allowed_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Allowed_Emails_Order_By>>;
+  where: InputMaybe<Allowed_Emails_Bool_Exp>;
+};
+
+
+export type Query_RootAllowed_Emails_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Allowed_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Allowed_Emails_Order_By>>;
+  where: InputMaybe<Allowed_Emails_Bool_Exp>;
+};
+
+
+export type Query_RootAllowed_Emails_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -7931,6 +8300,29 @@ export type Query_RootVc_Firms_By_PkArgs = {
   id: Scalars['Int'];
 };
 
+
+export type Query_RootWaitlist_EmailsArgs = {
+  distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Waitlist_Emails_Order_By>>;
+  where: InputMaybe<Waitlist_Emails_Bool_Exp>;
+};
+
+
+export type Query_RootWaitlist_Emails_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Waitlist_Emails_Order_By>>;
+  where: InputMaybe<Waitlist_Emails_Bool_Exp>;
+};
+
+
+export type Query_RootWaitlist_Emails_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "actions" */
@@ -7939,6 +8331,12 @@ export type Subscription_Root = {
   actions_aggregate: Actions_Aggregate;
   /** fetch data from the table: "actions" using primary key columns */
   actions_by_pk: Maybe<Actions>;
+  /** fetch data from the table: "allowed_emails" */
+  allowed_emails: Array<Allowed_Emails>;
+  /** fetch aggregated fields from the table: "allowed_emails" */
+  allowed_emails_aggregate: Allowed_Emails_Aggregate;
+  /** fetch data from the table: "allowed_emails" using primary key columns */
+  allowed_emails_by_pk: Maybe<Allowed_Emails>;
   /** fetch data from the table: "application_meta" */
   application_meta: Array<Application_Meta>;
   /** fetch aggregated fields from the table: "application_meta" */
@@ -8061,6 +8459,12 @@ export type Subscription_Root = {
   vc_firms_aggregate: Vc_Firms_Aggregate;
   /** fetch data from the table: "vc_firms" using primary key columns */
   vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** fetch data from the table: "waitlist_emails" */
+  waitlist_emails: Array<Waitlist_Emails>;
+  /** fetch aggregated fields from the table: "waitlist_emails" */
+  waitlist_emails_aggregate: Waitlist_Emails_Aggregate;
+  /** fetch data from the table: "waitlist_emails" using primary key columns */
+  waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
 };
 
 
@@ -8083,6 +8487,29 @@ export type Subscription_RootActions_AggregateArgs = {
 
 
 export type Subscription_RootActions_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootAllowed_EmailsArgs = {
+  distinct_on: InputMaybe<Array<Allowed_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Allowed_Emails_Order_By>>;
+  where: InputMaybe<Allowed_Emails_Bool_Exp>;
+};
+
+
+export type Subscription_RootAllowed_Emails_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Allowed_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Allowed_Emails_Order_By>>;
+  where: InputMaybe<Allowed_Emails_Bool_Exp>;
+};
+
+
+export type Subscription_RootAllowed_Emails_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -8559,6 +8986,29 @@ export type Subscription_RootVc_Firms_By_PkArgs = {
   id: Scalars['Int'];
 };
 
+
+export type Subscription_RootWaitlist_EmailsArgs = {
+  distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Waitlist_Emails_Order_By>>;
+  where: InputMaybe<Waitlist_Emails_Bool_Exp>;
+};
+
+
+export type Subscription_RootWaitlist_Emails_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Waitlist_Emails_Order_By>>;
+  where: InputMaybe<Waitlist_Emails_Bool_Exp>;
+};
+
+
+export type Subscription_RootWaitlist_Emails_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
 /** columns and relationships of "team_members" */
 export type Team_Members = {
   __typename?: 'team_members';
@@ -8986,12 +9436,11 @@ export type Users = {
   email: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
   id: Scalars['Int'];
+  is_auth0_verified: Maybe<Scalars['Boolean']>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
-  /** An object relationship */
-  person: Maybe<People>;
   person_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
 };
@@ -9062,8 +9511,8 @@ export type Users_Bool_Exp = {
   email: InputMaybe<String_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  is_auth0_verified: InputMaybe<Boolean_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
-  person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
 };
@@ -9090,8 +9539,8 @@ export type Users_Insert_Input = {
   email: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
-  person: InputMaybe<People_Obj_Rel_Insert_Input>;
   person_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
 };
@@ -9147,8 +9596,8 @@ export type Users_Order_By = {
   email: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  is_auth0_verified: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
-  person: InputMaybe<People_Order_By>;
   person_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
 };
@@ -9169,6 +9618,8 @@ export enum Users_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsAuth0Verified = 'is_auth0_verified',
+  /** column name */
   PersonId = 'person_id',
   /** column name */
   Role = 'role'
@@ -9180,6 +9631,7 @@ export type Users_Set_Input = {
   email: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   person_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
 };
@@ -9222,6 +9674,8 @@ export enum Users_Update_Column {
   ExternalId = 'external_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsAuth0Verified = 'is_auth0_verified',
   /** column name */
   PersonId = 'person_id',
   /** column name */
@@ -9722,6 +10176,204 @@ export type Vc_Firms_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** List of waitlist emailIds */
+export type Waitlist_Emails = {
+  __typename?: 'waitlist_emails';
+  created_at: Scalars['date'];
+  email: Scalars['String'];
+  id: Scalars['Int'];
+  updated_at: Scalars['date'];
+};
+
+/** aggregated selection of "waitlist_emails" */
+export type Waitlist_Emails_Aggregate = {
+  __typename?: 'waitlist_emails_aggregate';
+  aggregate: Maybe<Waitlist_Emails_Aggregate_Fields>;
+  nodes: Array<Waitlist_Emails>;
+};
+
+/** aggregate fields of "waitlist_emails" */
+export type Waitlist_Emails_Aggregate_Fields = {
+  __typename?: 'waitlist_emails_aggregate_fields';
+  avg: Maybe<Waitlist_Emails_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Waitlist_Emails_Max_Fields>;
+  min: Maybe<Waitlist_Emails_Min_Fields>;
+  stddev: Maybe<Waitlist_Emails_Stddev_Fields>;
+  stddev_pop: Maybe<Waitlist_Emails_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Waitlist_Emails_Stddev_Samp_Fields>;
+  sum: Maybe<Waitlist_Emails_Sum_Fields>;
+  var_pop: Maybe<Waitlist_Emails_Var_Pop_Fields>;
+  var_samp: Maybe<Waitlist_Emails_Var_Samp_Fields>;
+  variance: Maybe<Waitlist_Emails_Variance_Fields>;
+};
+
+
+/** aggregate fields of "waitlist_emails" */
+export type Waitlist_Emails_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Waitlist_Emails_Avg_Fields = {
+  __typename?: 'waitlist_emails_avg_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "waitlist_emails". All fields are combined with a logical 'AND'. */
+export type Waitlist_Emails_Bool_Exp = {
+  _and: InputMaybe<Array<Waitlist_Emails_Bool_Exp>>;
+  _not: InputMaybe<Waitlist_Emails_Bool_Exp>;
+  _or: InputMaybe<Array<Waitlist_Emails_Bool_Exp>>;
+  created_at: InputMaybe<Date_Comparison_Exp>;
+  email: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  updated_at: InputMaybe<Date_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "waitlist_emails" */
+export enum Waitlist_Emails_Constraint {
+  /** unique or primary key constraint */
+  WaitlistEmailsEmailKey = 'waitlist_emails_email_key',
+  /** unique or primary key constraint */
+  WaitlistEmailsPkey = 'waitlist_emails_pkey'
+}
+
+/** input type for incrementing numeric columns in table "waitlist_emails" */
+export type Waitlist_Emails_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "waitlist_emails" */
+export type Waitlist_Emails_Insert_Input = {
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
+/** aggregate max on columns */
+export type Waitlist_Emails_Max_Fields = {
+  __typename?: 'waitlist_emails_max_fields';
+  created_at: Maybe<Scalars['date']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['date']>;
+};
+
+/** aggregate min on columns */
+export type Waitlist_Emails_Min_Fields = {
+  __typename?: 'waitlist_emails_min_fields';
+  created_at: Maybe<Scalars['date']>;
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['date']>;
+};
+
+/** response of any mutation on the table "waitlist_emails" */
+export type Waitlist_Emails_Mutation_Response = {
+  __typename?: 'waitlist_emails_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Waitlist_Emails>;
+};
+
+/** on_conflict condition type for table "waitlist_emails" */
+export type Waitlist_Emails_On_Conflict = {
+  constraint: Waitlist_Emails_Constraint;
+  update_columns: Array<Waitlist_Emails_Update_Column>;
+  where: InputMaybe<Waitlist_Emails_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "waitlist_emails". */
+export type Waitlist_Emails_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  email: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: waitlist_emails */
+export type Waitlist_Emails_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "waitlist_emails" */
+export enum Waitlist_Emails_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "waitlist_emails" */
+export type Waitlist_Emails_Set_Input = {
+  created_at: InputMaybe<Scalars['date']>;
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['date']>;
+};
+
+/** aggregate stddev on columns */
+export type Waitlist_Emails_Stddev_Fields = {
+  __typename?: 'waitlist_emails_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Waitlist_Emails_Stddev_Pop_Fields = {
+  __typename?: 'waitlist_emails_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Waitlist_Emails_Stddev_Samp_Fields = {
+  __typename?: 'waitlist_emails_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Waitlist_Emails_Sum_Fields = {
+  __typename?: 'waitlist_emails_sum_fields';
+  id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "waitlist_emails" */
+export enum Waitlist_Emails_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Waitlist_Emails_Var_Pop_Fields = {
+  __typename?: 'waitlist_emails_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Waitlist_Emails_Var_Samp_Fields = {
+  __typename?: 'waitlist_emails_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Waitlist_Emails_Variance_Fields = {
+  __typename?: 'waitlist_emails_variance_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
 export type GetCompanyQueryVariables = Exact<{
   slug: Scalars['String'];
   current_user?: InputMaybe<Scalars['Int']>;
@@ -9786,7 +10438,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -10199,6 +10851,7 @@ export const GetPersonDocument = `
     twitter_url
     website_url
     about
+    email
     team_members {
       id
       end_date

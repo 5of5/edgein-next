@@ -16,6 +16,7 @@ query GetPerson($slug: String!) {
     twitter_url
     website_url
     about
+    email
     team_members {
       id
       end_date
