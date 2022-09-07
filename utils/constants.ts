@@ -10,6 +10,69 @@ export const validateUrl = regex(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,2
 export const validateEmail = email();
 export const crunchbaseImg = "/crunchbase-icon.svg";
 
+export const validateNameAndSlugAndEmailAndDomain = async (isEdit: boolean, values: any, data: any) => {
+	const errors: any = {};
+	if (!values?.name) {
+		errors.name = 'The Name is required';
+	}
+	if (!values?.slug) {
+		errors.slug = 'The Slug is required';
+	} else if (values?.slug.length < 3) {
+		errors.age = 'Must be over 3';
+	}
+
+	var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+		'((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+		'((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+		'(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+		'(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+		'(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+	var emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+	if (data && data?.length > 0) {
+		let filterName, filterSlug: any[] | undefined
+
+		filterName = data?.filter((f: any) => f.name === values?.name)
+		filterSlug = data?.filter((f: any) => f.slug === values?.slug)
+
+		if (filterName && filterName?.length > 0 && !isEdit) {
+			errors.name = 'Name already used';
+		}
+		if (filterSlug && filterSlug?.length > 0) {
+			errors.slug = 'Slug already used';
+		}
+		if (values.hasOwnProperty('website') && values?.website !== '' && !urlPattern.test(values?.website)) {
+			errors.website = 'Website URL is not valid';
+		}
+		if (values.hasOwnProperty('github') && values?.github !== '' && !urlPattern.test(values?.github)) {
+			errors.github = 'Github URL is not valid';
+		}
+		if (values.hasOwnProperty('twitter') && values?.twitter !== '' && !urlPattern.test(values?.twitter)) {
+			errors.twitter = 'Twitter URL is not valid';
+		}
+		if (values.hasOwnProperty('company_linkedin') && values?.company_linkedin !== '' && !urlPattern.test(values?.company_linkedin)) {
+			errors.company_linkedin = 'Linkedin URL is not valid';
+		}
+		if (values.hasOwnProperty('linkedin') && values?.linkedin !== '' && !urlPattern.test(values?.linkedin)) {
+			errors.linkedin = 'Linkedin URL is not valid';
+		}
+		if (values.hasOwnProperty('discord') && values?.discord !== '' && !urlPattern.test(values?.discord)) {
+			errors.discord = 'Discord URL is not valid';
+		}
+		if (values.hasOwnProperty('glassdoor') && values?.glassdoor !== '' && !urlPattern.test(values?.glassdoor)) {
+			errors.glassdoor = 'Glassdoor URL is not valid';
+		}
+		if (values.hasOwnProperty('work_email') && values?.work_email !== '' && !emailPattern.test(values?.work_email)) {
+			errors.work_email = 'Work Email is not valid';
+		}
+		if (values.hasOwnProperty('personal_email') && values?.personal_email !== '' && !emailPattern.test(values?.personal_email)) {
+			errors.personal_email = 'Personal Email is not valid';
+		}
+	}
+
+	return errors
+};
+
 export const functionChoicesTM = [
     {
       id: "Operations",
