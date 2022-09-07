@@ -40,10 +40,8 @@ export const getNewFollows = (sentiment: string, type: string = "company") => {
 };
 
 export const getName = (list: Lists) => {
-	if (list) {
-		const fragments = list.name.split("-");
-		return fragments[fragments.length - 1];
-	}
+	const fragments = list.name.split("-");
+	return fragments[fragments.length - 1];
 };
 
 export const isFollowsExists = (
