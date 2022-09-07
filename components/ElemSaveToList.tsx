@@ -24,22 +24,20 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 	const [newName, setNewName] = useState<string>("");
 	const [listsData, setListsData] = useState([] as Lists[]);
 
-	const {
-    data: lists,
-  } = useGetListsByUserQuery({
-    current_user: user?.id ?? 0
-  });
+	const { data: lists } = useGetListsByUserQuery({
+		current_user: user?.id ?? 0,
+	});
 
 	useEffect(() => {
-    if (lists)
-      setListsData(() => {
-        return lists?.lists?.filter((item) => {
-          const fragments = item.name.split('-');
-          const sentiment = fragments[fragments.length - 1];
-          return !['hot', 'like', 'crap'].includes(sentiment)
-        }) as Lists[]
-      })
-  }, [lists]);
+		if (lists)
+			setListsData(() => {
+				return lists?.lists?.filter((item) => {
+					const fragments = item.name.split("-");
+					const sentiment = fragments[fragments.length - 1];
+					return !["hot", "like", "crap"].includes(sentiment);
+				}) as Lists[];
+			});
+	}, [lists]);
 
 	const isSelected = (list: any) => {
 		const name = getName(list);
@@ -134,8 +132,8 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 								</div>
 
 								<ul className="divide-y divide-slate-100">
-									{listsData?.map((item, index) => (
-										<>
+									{listsData?.map((item, index: number) => {
+										return (
 											<li key={index}>
 												<label className="flex items-center p-3 w-full hover:bg-slate-100">
 													<input
@@ -147,8 +145,8 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 													<h1 className="ml-2">{getName(item)}</h1>
 												</label>
 											</li>
-										</>
-									))}
+										);
+									})}
 								</ul>
 
 								{!showNew && (

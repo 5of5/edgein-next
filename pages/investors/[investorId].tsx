@@ -217,8 +217,6 @@ const VCFirm: NextPage<Props> = (props) => {
 						</div>
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
-
-
 							{
 								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
 									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
@@ -226,7 +224,7 @@ const VCFirm: NextPage<Props> = (props) => {
 											return;
 										}
 										return (
-											<div key={index} className="inline-flex w-full mt-2">
+											<div key={index} className="flex w-full mt-2">
 												<div className="mt-1">
 													<IconEventDot title="dot" className="h-2 mr-2" />
 													<IconEventLine
