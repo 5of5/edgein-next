@@ -18,7 +18,7 @@ import {
   Pagination
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { validateName, validateSlug, validateUrl, status } from "../../utils/constants"
+import { validateName, validateSlug, validateUrl, status, crunchbaseImg } from "../../utils/constants"
 
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -259,50 +259,49 @@ export const VcFirmCreate = () => {
   type Props = {
     googleKeyWord: string,
   };
-  const RenderGoogleIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderGoogleIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord
-    return(
-    <div style={{ position: 'absolute', top: '70px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <GoogleIcon />
-      </a>
-    </div>)
+    return (
+      <div style={{ position: 'absolute', top: '70px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <GoogleIcon />
+        </a>
+      </div>)
   }
 
-  const RenderLinkedinIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderLinkedinIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Linkedin"
 
     return (
       <div style={{ position: 'absolute', top: '70px', left: '45px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
+        <a href={url} target="_blank" rel="noreferrer">
           <LinkedInIcon /></a>
       </div>)
   }
-  const RenderGitHubIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderGitHubIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Github"
 
     return (
-    <div style={{ position: 'absolute', top: '70px', left: '80px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <GitHubIcon />
-      </a>
-    </div>)
+      <div style={{ position: 'absolute', top: '70px', left: '80px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <GitHubIcon />
+        </a>
+      </div>)
   }
 
-  const RenderCBIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderCBIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase"
-    const cb_logo = "https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg"
 
     return (
-    <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <img
+      <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <img
             className="w-[25px] h-[25px]"
-            src={cb_logo}
-            alt={cb_logo}
+            src={crunchbaseImg}
+            alt={crunchbaseImg}
           />
-      </a>
-    </div>)
+        </a>
+      </div>)
   }
 
 
@@ -328,95 +327,95 @@ export const VcFirmCreate = () => {
         }
       }}
     >
-    <div className='customForm' style={{ position: 'relative' }}>
+      <div className='customForm' style={{ position: 'relative' }}>
 
-      <SimpleForm>
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="name"
-          validate={validateName}
-          onChange={handleIcon}
+        <SimpleForm>
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="name"
+            validate={validateName}
+            onChange={handleIcon}
 
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        {isIcon &&
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          {isIcon &&
             <>
-              <RenderGoogleIcon googleKeyWord={keyword}/>
-              <RenderLinkedinIcon googleKeyWord={keyword}/>
-              <RenderGitHubIcon googleKeyWord={keyword}/>
-              <RenderCBIcon googleKeyWord={keyword}/>
-          </>}
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="slug"
-          validate={validateSlug}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
-          <ImageField source="src" title="title" />
-        </FileInput>
-        <TextInput
-          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="overview"
-          multiline
-        />
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="status"
-          choices={status}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="location"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="year_founded"
-        />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          validate={validateUrl}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="linkedin"
-          validate={validateUrl}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          validate={validateUrl}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-      </SimpleForm>
+              <RenderGoogleIcon googleKeyWord={keyword} />
+              <RenderLinkedinIcon googleKeyWord={keyword} />
+              <RenderGitHubIcon googleKeyWord={keyword} />
+              <RenderCBIcon googleKeyWord={keyword} />
+            </>}
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="slug"
+            validate={validateSlug}
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+            <ImageField source="src" title="title" />
+          </FileInput>
+          <TextInput
+            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="overview"
+            multiline
+          />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="location"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="year_founded"
+          />
+          <TextInput
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="tags"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="website"
+            validate={validateUrl}
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="linkedin"
+            validate={validateUrl}
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="twitter"
+            validate={validateUrl}
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+        </SimpleForm>
       </div>
     </Create>
   )

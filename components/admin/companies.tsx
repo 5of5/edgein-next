@@ -3,7 +3,7 @@ import React, { FC, useRef, useState } from 'react';
 import { FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, Pagination } from 'react-admin';
 import BookIcon from '@mui/icons-material/Book';
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { companyLayerChoices, validateName, validateSlug, validateUrl, status } from "../../utils/constants"
+import { companyLayerChoices, validateName, validateSlug, validateUrl, status, crunchbaseImg } from "../../utils/constants"
 
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -418,15 +418,14 @@ export const CompanyCreate = () => {
 
   const RenderCBIcon: FC<Props> = ({googleKeyWord}) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase"
-		const cb_logo = "https://www.vectorlogo.zone/logos/crunchbase/crunchbase-icon.svg"
 
     return (
     <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
       <a href={url} target="_blank" rel="noreferrer">
         <img
           className="w-[25px] h-[25px]"
-          src={cb_logo}
-          alt={cb_logo}
+          src={crunchbaseImg}
+          alt={crunchbaseImg}
         />
       </a>
     </div>)
