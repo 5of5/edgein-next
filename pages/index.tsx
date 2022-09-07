@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import React, { useState } from "react";
 import Head from "next/head";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
 import { FigureIntroSplashNew } from "@/components/FigureIntroSplashNew";
@@ -8,9 +9,34 @@ import { ElemButton } from "@/components/ElemButton";
 import { useAuth } from "@/hooks/useAuth";
 
 import { FigureCircleDashes } from "@/components/Figures";
+import { useFormspark } from "@formspark/use-formspark";
 
 const Home: NextPage = () => {
+	const [submit, submitting] = useFormspark({
+		formId: "Kz4dKDvu",
+	});
 	const { user, error, loading } = useAuth();
+	const [formSent, setFormSent] = useState(false);
+	const [email, setEmail] = useState("");
+
+	const onSubmit = async (e: { preventDefault: () => void }) => {
+		if (e) e.preventDefault();
+		await submit({
+			//name: name,
+			email: email,
+			_email: {
+				from: name,
+				subject: "Waitlist - EdgeIn",
+				template: {
+					title: false,
+					footer: false,
+				},
+			},
+		});
+
+		setFormSent(true);
+	};
+
 	return (
 		<>
 			<section className="relative overflow-hidden">
@@ -28,7 +54,7 @@ const Home: NextPage = () => {
 								utility of blockchain technologies, to give you an unparalleled
 								edge in Web3.
 							</h2>
-							<div className="mt-8">
+							{/* <div className="mt-8">
 								{user ? (
 									<ElemButton href="/companies" btn="primary" arrow>
 										Start Exploring
@@ -38,7 +64,7 @@ const Home: NextPage = () => {
 										Log In
 									</ElemButton>
 								)}
-							</div>
+							</div> */}
 						</div>
 
 						<div className="mt-28 mx-6 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
@@ -46,6 +72,41 @@ const Home: NextPage = () => {
 							{/* <FigureIntroSplash className="hidden lg:block relative" /> */}
 						</div>
 					</div>
+					{/* <div className="bg-white rounded-2xl border border-dark-500/10 p-6 w-[30rem]">
+					
+					<p className="mt-2 text-xl text-dark-400">
+						{formSent &&
+							 `your email ${email} has been added to our list.  we'll be in touch soon!`
+						}
+					</p>
+
+					{!formSent && (
+						<>
+							<form
+								className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-5 sm:gap-x-4"
+								onSubmit= {() => {}} //{onSubmit}
+							>
+								<div className="group mb-6 sm:col-span-3">
+									<InputText
+										//label="Email"
+										type="email"
+										name="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+										placeholder="example@email.com"
+										required
+									/>
+								</div>
+								<div className="sm:col-span-2 mt-2">
+									<ElemButton roundedFull={true} btn="primary" loading={submitting}>
+										Join the waitlist
+									</ElemButton>
+								</div>
+							</form>
+						</>
+					)}
+				</div> */}
+						
 				</div>
 			</section>
 
