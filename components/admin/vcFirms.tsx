@@ -14,10 +14,14 @@ import {
   required,
   minLength,
   regex,
-  SelectInput
+  SelectInput,
+  useGetList,
+  FormDataConsumer
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { validateName, validateSlug, validateUrl, status } from "../../utils/constants"
+import { validateName, validateSlug, validateUrl, status, validateNameAndSlugAndEmailAndDomain } from "../../utils/constants"
+import { random } from "lodash";
+import { useFormContext } from "react-hook-form";
 
 const filters = [
   <TextInput key="search" source="name" label="Search in name" resettable alwaysOn />
@@ -59,10 +63,11 @@ const VcFirmTitle = ({ record }: TitleProps) => {
 };
 
 export const VcFirmEdit = () => {
-
   const [logo, setLogo] = React.useState(null)
   const [oldLogo, setOldLogo] = React.useState(null)
   const [isImageUpdated, setIsImageUpdated] = React.useState(false)
+  const { data: vcFirm } = useGetList('vc_firms', {});
+  const [slug, setSlug] = React.useState('')
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -105,6 +110,43 @@ export const VcFirmEdit = () => {
     setIsImageUpdated(true)
     setLogo(null)
   }
+
+  const handleNameBlur = (value: string, formData: any) => {
+    let filterSlug: any[] | undefined
+    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+		filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
+
+    if (formData.slug === '') {
+      if (filterSlug && filterSlug?.length > 0) {
+        handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+      }
+      if (filterSlug?.length === 0) {
+        setSlug(convertedValue)
+      }
+    }
+  }
+
+  const SlugInput = ({ slug }: any) => {
+    const { setValue } = useFormContext();
+
+    React.useEffect(() => {
+      if (slug !== '')
+        setValue('slug', slug)
+    }, [slug, setValue])
+
+    return (
+      <TextInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        sx={{
+          '.MuiFormHelperText-root': {
+            display: 'block !important',
+          }
+        }}
+      />
+    );
+  };
+
   return (
     <Edit title={<VcFirmTitle />} transform={transform}
       sx={{
@@ -122,34 +164,31 @@ export const VcFirmEdit = () => {
         }
       }}
     >
-      <SimpleForm>
+      <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
         <TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="name"
-          validate={validateName}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="slug"
-          validate={validateSlug}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+        <FormDataConsumer>
+          {({ formData, ...rest }) => (
+            <TextInput
+              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              source="name"
+              onBlur={e => handleNameBlur(e.target.value, formData)}
+              sx={{
+                '.MuiFormHelperText-root': {
+                  display: 'block !important',
+                }
+              }}
+              {...rest}
+            />
+          )}
+        </FormDataConsumer>
+        <SlugInput slug={slug} />
+
+        <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         {
           (!logo && !isImageUpdated) &&
-          <ImageField source="logo.url" title="Logo" />
+          <ImageField className="w-full" source="logo.url" title="Logo" />
         }
         <TextInput
           className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -177,7 +216,6 @@ export const VcFirmEdit = () => {
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="website"
-          validate={validateUrl}
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -187,7 +225,6 @@ export const VcFirmEdit = () => {
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="linkedin"
-          validate={validateUrl}
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -197,7 +234,6 @@ export const VcFirmEdit = () => {
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="twitter"
-          validate={validateUrl}
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -211,6 +247,8 @@ export const VcFirmEdit = () => {
 
 export const VcFirmCreate = () => {
   const [logo, setLogo] = React.useState(null)
+  const { data: vcFirm } = useGetList('vc_firms', {});
+  const [slug, setSlug] = React.useState('')
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -245,6 +283,42 @@ export const VcFirmCreate = () => {
     setLogo(null)
   }
 
+  const handleNameBlur = (value: string, formData: any) => {
+    let filterSlug: any[] | undefined
+    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+		filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
+
+    if (formData.slug === '') {
+      if (filterSlug && filterSlug?.length > 0) {
+        handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+      }
+      if (filterSlug?.length === 0) {
+        setSlug(convertedValue)
+      }
+    }
+  }
+
+  const SlugInput = ({ slug }: any) => {
+    const { setValue } = useFormContext();
+
+    React.useEffect(() => {
+      if (slug !== '')
+        setValue('slug', slug)
+    }, [slug, setValue])
+
+    return (
+      <TextInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        sx={{
+          '.MuiFormHelperText-root': {
+            display: 'block !important',
+          }
+        }}
+      />
+    );
+  };
+
   return (
     <Create title="Create a VC Firm" transform={transform}
       sx={{
@@ -262,27 +336,23 @@ export const VcFirmCreate = () => {
         }
       }}
     >
-      <SimpleForm>
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="name"
-          validate={validateName}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="slug"
-          validate={validateSlug}
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
+      <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
+        <FormDataConsumer>
+          {({ formData, ...rest }) => (
+            <TextInput
+              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              source="name"
+              onBlur={e => handleNameBlur(e.target.value, formData)}
+              sx={{
+                '.MuiFormHelperText-root': {
+                  display: 'block !important',
+                }
+              }}
+              {...rest}
+            />
+          )}
+        </FormDataConsumer>
+        <SlugInput slug={slug} />
         <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
@@ -312,7 +382,6 @@ export const VcFirmCreate = () => {
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="website"
-          validate={validateUrl}
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -322,7 +391,6 @@ export const VcFirmCreate = () => {
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="linkedin"
-          validate={validateUrl}
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',
@@ -332,7 +400,6 @@ export const VcFirmCreate = () => {
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="twitter"
-          validate={validateUrl}
           sx={{
             '.MuiFormHelperText-root': {
               display: 'block !important',

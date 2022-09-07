@@ -128,14 +128,15 @@ export const CompanyEdit = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    filterSlug = companies?.filter(f => f.slug === value)
+    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+    filterSlug = companies?.filter(f => f.slug === convertedValue)
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
         handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
       }
       if (filterSlug?.length === 0) {
-        setSlug(value)
+        setSlug(convertedValue)
       }
     }
   }
@@ -152,43 +153,48 @@ export const CompanyEdit = () => {
       <TextInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="slug"
+        sx={{
+          '.MuiFormHelperText-root': {
+            display: 'block !important',
+          }
+        }}
       />
     );
   };
 
   return (
     <Edit title={<CompanyTitle />} transform={transform}
-    sx={{
-      '.MuiCardContent-root': {
-        '& > div': {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexDirection: 'row !important',
+      sx={{
+        '.MuiCardContent-root': {
+          '& > div': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            flexDirection: 'row !important',
+          },
+          marginBottom: '60px'
         },
-        marginBottom: '60px'
-      },
-      '.MuiToolbar-root': {
-        position: 'fixed',
-        width: '100%',
-        maxWidth: 'inherit',
-        bottom: 0,
-        zIndex: 100
-      },
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      },
-      '.customForm': {
-        '& > form': {
-          maxWidth: formRef?.current?.offsetWidth || '100%'
+        '.MuiToolbar-root': {
+          position: 'fixed',
+          width: '100%',
+          maxWidth: 'inherit',
+          bottom: 0,
+          zIndex: 100
+        },
+        '.MuiFormHelperText-root': {
+          display: 'none',
+        },
+        '.customForm': {
+          '& > form': {
+            maxWidth: formRef?.current?.offsetWidth || '100%'
+          }
         }
-      }
-    }}
+      }}
     >
       <SimpleForm className="border rounded-lg" validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, companies)}>
         <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           disabled
           source="id"
         />
@@ -237,15 +243,6 @@ export const CompanyEdit = () => {
         />
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="github"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="notes"
           multiline
         />
@@ -253,33 +250,6 @@ export const CompanyEdit = () => {
           multiline
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="overview"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="careers_page"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="company_linkedin"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
         />
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -319,6 +289,47 @@ export const CompanyEdit = () => {
           source="location"
         />
         <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="tags"
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="github"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="website"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="careers_page"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="company_linkedin"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="twitter"
           sx={{
@@ -345,11 +356,7 @@ export const CompanyEdit = () => {
             }
           }}
         />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
+
       </SimpleForm>
     </Edit>
   )
@@ -398,14 +405,15 @@ export const CompanyCreate = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    filterSlug = companies?.filter(f => f.slug === value)
+    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+    filterSlug = companies?.filter(f => f.slug === convertedValue)
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
         handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
       }
       if (filterSlug?.length === 0) {
-        setSlug(value)
+        setSlug(convertedValue)
       }
     }
   }
@@ -422,39 +430,44 @@ export const CompanyCreate = () => {
       <TextInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="slug"
+        sx={{
+          '.MuiFormHelperText-root': {
+            display: 'block !important',
+          }
+        }}
       />
     );
   };
 
   return (
     <Create title="Create a Company" transform={transform}
-    sx={{
-      '.MuiCardContent-root': {
-        '& > div': {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexDirection: 'row !important',
+      sx={{
+        '.MuiCardContent-root': {
+          '& > div': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            flexDirection: 'row !important',
+          },
+          marginBottom: '60px'
         },
-        marginBottom: '60px'
-      },
-      '.MuiToolbar-root': {
-        position: 'fixed',
-        width: '100%',
-        maxWidth: 'inherit',
-        bottom: 0,
-        zIndex: 100
-      },
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      },
-      '.customForm': {
-        '& > form': {
-          maxWidth: formRef?.current?.offsetWidth || '100%'
+        '.MuiToolbar-root': {
+          position: 'fixed',
+          width: '100%',
+          maxWidth: 'inherit',
+          bottom: 0,
+          zIndex: 100
+        },
+        '.MuiFormHelperText-root': {
+          display: 'none',
+        },
+        '.customForm': {
+          '& > form': {
+            maxWidth: formRef?.current?.offsetWidth || '100%'
+          }
         }
-      }
-    }}>
+      }}>
       <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, companies)}>
         <FormDataConsumer>
           {({ formData, ...rest }) => (
@@ -495,15 +508,7 @@ export const CompanyCreate = () => {
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="total_employees"
         />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="github"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
+
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="notes"
@@ -514,33 +519,7 @@ export const CompanyCreate = () => {
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="overview"
         />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="careers_page"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="company_linkedin"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
+
         <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
@@ -579,6 +558,47 @@ export const CompanyCreate = () => {
           source="location"
         />
         <TextInput
+          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="tags"
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="github"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="website"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="careers_page"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="company_linkedin"
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="twitter"
           sx={{
@@ -605,11 +625,7 @@ export const CompanyCreate = () => {
             }
           }}
         />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
+
       </SimpleForm>
     </Create>
   );
