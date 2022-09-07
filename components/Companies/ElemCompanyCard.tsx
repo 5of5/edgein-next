@@ -1,7 +1,7 @@
 import { Companies, Follows_Companies } from "@/graphql/types";
-import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, getNewTempSentiment, isFollowsExists, reactOnSentiment } from "@/utils/reaction";
 import { getLayerClass } from "@/utils/style";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 import { FC, useEffect, useState } from "react";
 // import { ElemCredibility } from "@/components/Company/ElemCredibility";
 // import { ElemVelocity } from "@/components/Company/ElemVelocity";
@@ -25,44 +25,60 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				event.stopPropagation()
+				event.preventDefault()
+				setTemporary(sentiment, alreadyReacted)
+				const newSentiment = await reactOnSentiment({
+					company: company.id,
+					sentiment,
+					pathname: `/companies/${company.slug}`,
+				});
+				setCompanyData((prev: Companies) => {
+					const newFollows = getNewFollows(sentiment) as Follows_Companies
 
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`,
-			});
-			setCompanyData((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
+					if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment)) prev.follows.push(newFollows)
+					else
+						remove(prev.follows, (item) => {
+							return getName(item.list!) === sentiment
+						});
+					return { ...prev, sentiment: newSentiment }
+				});
+			};
 
-				if (!alreadyReacted) prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+
+		setCompanyData((prev: Companies) => {
+
+			const newSentiment = getNewTempSentiment({ ...prev.sentiment }, sentiment, alreadyReacted)
+
+			const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment }
+		})
+	}
 
 	return (
 		<a
 			href={`/companies/${companyData.slug}`}
-			className={`flex flex-col ${
-				toggleViewMode ? "md:flex-row md:items-center" : ""
-			} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
+			className={`flex flex-col ${toggleViewMode ? "md:flex-row md:items-center" : ""
+				} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
 		>
 			<div
-				className={`flex shrink-0 ${
-					toggleViewMode
+				className={`flex shrink-0 ${toggleViewMode
 						? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
 						: "w-full"
-				}`}
+					}`}
 			>
 				<ElemPhoto
 					photo={companyData.logo}

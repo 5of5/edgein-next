@@ -88,16 +88,17 @@ body {
 body {
   @apply bg-gray-50 text-dark-500 overscroll-y-none;
 }
-input[type="checkbox"]::before {
-  /* ...existing styles */
 
+input[type="checkbox"]::before {
   transform-origin: bottom left;
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
-/***************** 
-Mobile hamburger button
-******************/
+.dashes{
+  background: repeating-linear-gradient(to bottom, #ced6fe 0, #ced6fe 6px, transparent 6px, transparent 12px);
+}
+
+/* Mobile hamburger button */
 .main-nav {
   .hamburger-inner,
   .hamburger-inner::before,
@@ -133,8 +134,4 @@ Mobile hamburger button
       }
     }
   }
-}
-
-.dashes{
-  background: repeating-linear-gradient(to bottom, #ced6fe 0, #ced6fe 6px, transparent 6px, transparent 12px);
 }

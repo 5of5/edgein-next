@@ -1,4 +1,5 @@
 - "!include public_actions.yaml"
+- "!include public_allowed_emails.yaml"
 - "!include public_application_meta.yaml"
 - "!include public_blockchains.yaml"
 - "!include public_coins.yaml"
@@ -20,3 +21,4 @@
 - "!include public_team_members.yaml"
 - "!include public_users.yaml"
 - "!include public_vc_firms.yaml"
+- "!include public_waitlist_emails.yaml"

@@ -9755,12 +9755,24 @@ export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null }> };
 
+export type GetFollowsListsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFollowsListsStaticPathsQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null }> };
+
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
+
+export type GetVcFirmsByListIdQueryVariables = Exact<{
+  list_id?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null, slug: string | null } | null }> };
 
 export type GetListsByUserQueryVariables = Exact<{
   current_user: InputMaybe<Scalars['Int']>;
@@ -9813,13 +9825,6 @@ export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null }> };
-
-export type GetVcFirmsByListIdQueryVariables = Exact<{
-  list_id?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null, slug: string | null } | null }> };
 
 
 export const GetCompanyDocument = `
@@ -10040,9 +10045,37 @@ useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables)
 ;
 
 useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
+export const GetFollowsListsStaticPathsDocument = `
+    query GetFollowsListsStaticPaths {
+  follows {
+    id
+    list_id
+  }
+}
+    `;
+export const useGetFollowsListsStaticPathsQuery = <
+      TData = GetFollowsListsStaticPathsQuery,
+      TError = Error
+    >(
+      variables?: GetFollowsListsStaticPathsQueryVariables,
+      options?: UseQueryOptions<GetFollowsListsStaticPathsQuery, TError, TData>
+    ) =>
+    useQuery<GetFollowsListsStaticPathsQuery, TError, TData>(
+      variables === undefined ? ['GetFollowsListsStaticPaths'] : ['GetFollowsListsStaticPaths', variables],
+      fetcher<GetFollowsListsStaticPathsQuery, GetFollowsListsStaticPathsQueryVariables>(GetFollowsListsStaticPathsDocument, variables),
+      options
+    );
+useGetFollowsListsStaticPathsQuery.document = GetFollowsListsStaticPathsDocument;
+
+
+useGetFollowsListsStaticPathsQuery.getKey = (variables?: GetFollowsListsStaticPathsQueryVariables) => variables === undefined ? ['GetFollowsListsStaticPaths'] : ['GetFollowsListsStaticPaths', variables];
+;
+
+useGetFollowsListsStaticPathsQuery.fetcher = (variables?: GetFollowsListsStaticPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsListsStaticPathsQuery, GetFollowsListsStaticPathsQueryVariables>(GetFollowsListsStaticPathsDocument, variables, options);
 export const GetCompaniesByListIdDocument = `
     query GetCompaniesByListId($list_id: Int = 0) {
   follows_companies(where: {list_id: {_eq: $list_id}}) {
+    id
     company {
       id
       name
@@ -10084,6 +10117,41 @@ useGetCompaniesByListIdQuery.getKey = (variables?: GetCompaniesByListIdQueryVari
 ;
 
 useGetCompaniesByListIdQuery.fetcher = (variables?: GetCompaniesByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByListIdQuery, GetCompaniesByListIdQueryVariables>(GetCompaniesByListIdDocument, variables, options);
+export const GetVcFirmsByListIdDocument = `
+    query GetVcFirmsByListId($list_id: Int = 0) {
+  follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
+    id
+    vc_firm {
+      id
+      name
+      num_of_investments
+      latest_investments
+      sentiment
+      logo
+      slug
+    }
+  }
+}
+    `;
+export const useGetVcFirmsByListIdQuery = <
+      TData = GetVcFirmsByListIdQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsByListIdQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsByListIdQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsByListIdQuery, TError, TData>(
+      variables === undefined ? ['GetVcFirmsByListId'] : ['GetVcFirmsByListId', variables],
+      fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables),
+      options
+    );
+useGetVcFirmsByListIdQuery.document = GetVcFirmsByListIdDocument;
+
+
+useGetVcFirmsByListIdQuery.getKey = (variables?: GetVcFirmsByListIdQueryVariables) => variables === undefined ? ['GetVcFirmsByListId'] : ['GetVcFirmsByListId', variables];
+;
+
+useGetVcFirmsByListIdQuery.fetcher = (variables?: GetVcFirmsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables, options);
 export const GetListsByUserDocument = `
     query GetListsByUser($current_user: Int) {
   lists(where: {created_by_id: {_eq: $current_user}}) {
@@ -10395,37 +10463,3 @@ useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => va
 ;
 
 useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);
-export const GetVcFirmsByListIdDocument = `
-    query GetVcFirmsByListId($list_id: Int = 0) {
-  follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
-    vc_firm {
-      id
-      name
-      num_of_investments
-      latest_investments
-      sentiment
-      logo
-      slug
-    }
-  }
-}
-    `;
-export const useGetVcFirmsByListIdQuery = <
-      TData = GetVcFirmsByListIdQuery,
-      TError = Error
-    >(
-      variables?: GetVcFirmsByListIdQueryVariables,
-      options?: UseQueryOptions<GetVcFirmsByListIdQuery, TError, TData>
-    ) =>
-    useQuery<GetVcFirmsByListIdQuery, TError, TData>(
-      variables === undefined ? ['GetVcFirmsByListId'] : ['GetVcFirmsByListId', variables],
-      fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables),
-      options
-    );
-useGetVcFirmsByListIdQuery.document = GetVcFirmsByListIdDocument;
-
-
-useGetVcFirmsByListIdQuery.getKey = (variables?: GetVcFirmsByListIdQueryVariables) => variables === undefined ? ['GetVcFirmsByListId'] : ['GetVcFirmsByListId', variables];
-;
-
-useGetVcFirmsByListIdQuery.fetcher = (variables?: GetVcFirmsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables, options);
