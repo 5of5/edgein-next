@@ -79,7 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const token = await CookieService.createToken({id: userData.id, email: userData.email, role: userData.role, publicAddress: userData.external_id});
       CookieService.setTokenCookie(res, token)
     }
-  } catch (ex) {
+  } catch (ex: any) {
     return res.status(400).send(ex.message)
   }
 
