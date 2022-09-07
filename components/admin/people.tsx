@@ -1,5 +1,5 @@
 // in posts.js
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
 	FileInput, ImageField,
 	List,
@@ -13,7 +13,12 @@ import {
 	FormDataConsumer,
 	SelectInput,
 	useGetList,
-	Pagination
+	Pagination,
+	useRedirect,
+	Toolbar,
+	Button,
+	useCreate,
+	SaveButton
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { random } from "lodash";
@@ -23,11 +28,38 @@ import { validateNameAndSlugAndEmailAndDomain, status, crunchbaseImg } from "../
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ContentSave from '@mui/icons-material/Save';
 
 const filters = [
 	<TextInput key="search" source="name,type" label="Search in name,type" resettable alwaysOn />
 ];
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+const CustomToolbar = () => {
+	const form = useFormContext();
+	const [create] = useCreate();
+	const redirect = useRedirect()
+
+	const handleSaveDraft = () => {
+		let data = form.getValues()
+		data.status = 'draft'
+		create('people', { data })
+		redirect('/people')
+	}
+
+	return (
+		<Toolbar>
+			<SaveButton />
+			<Button
+				label="Save As Draft"
+				sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+				variant="outlined"
+				onClick={handleSaveDraft}
+				startIcon={<ContentSave />}
+			/>
+		</Toolbar>
+	);
+};
+
 
 export const PeopleList = () => (
 	<List filters={filters}
@@ -109,8 +141,8 @@ export const PeopleEdit = () => {
 
 	const handleNameBlur = (value: string, formData: any) => {
 		let filterSlug: any[] | undefined
-		let convertedValue  = value.replace(/ /g,"-").toLowerCase();
-		filterSlug = people?.filter(f => f.slug === convertedValue)
+		let convertedValue = value.replace(/ /g, "-").toLowerCase();
+		filterSlug = people?.filter(f => f.slug === convertedValue && f.status !== 'draft')
 
 		if (formData.slug === '') {
 			if (filterSlug && filterSlug?.length > 0) {
@@ -279,8 +311,8 @@ export const PeopleCreate = () => {
 
 	const handleNameBlur = (value: string, formData: any) => {
 		let filterSlug: any[] | undefined
-		let convertedValue  = value.replace(/ /g,"-").toLowerCase();
-		filterSlug = people?.filter(f => f.slug === convertedValue)
+		let convertedValue = value.replace(/ /g, "-").toLowerCase();
+		filterSlug = people?.filter(f => f.slug === convertedValue && f.status !== 'draft')
 
 		if (formData.slug === '') {
 			if (filterSlug && filterSlug?.length > 0) {
@@ -386,83 +418,82 @@ export const PeopleCreate = () => {
 			}}
 		>
 			<div className='customForm' style={{ position: 'relative' }}>
+				<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, people)} toolbar={<CustomToolbar />} >
+					<FormDataConsumer>
+						{({ formData, ...rest }) => (
+							<TextInput
+								className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+								source="name"
+								onBlur={e => handleNameBlur(e.target.value, formData)}
+								onChange={handleIcon}
+								sx={{
+									'.MuiFormHelperText-root': {
+										display: 'block !important',
+									}
+								}}
+								{...rest}
+							/>
 
-			<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, people)}>
-				<FormDataConsumer>
-					{({ formData, ...rest }) => (
-						<TextInput
-							className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-							source="name"
-							onBlur={e => handleNameBlur(e.target.value, formData)}
-							onChange={handleIcon}
-							sx={{
-								'.MuiFormHelperText-root': {
-									display: 'block !important',
-								}
-							}}
-							{...rest}
-						/>
-						
-					)}
-					
-				</FormDataConsumer>
-				{isIcon &&
-							<>
-								<RenderGoogleIcon googleKeyWord={keyword} />
-								<RenderLinkedinIcon googleKeyWord={keyword} />
-								<RenderGitHubIcon googleKeyWord={keyword} />
-								<RenderCBIcon googleKeyWord={keyword} />
-							</>}
-				<SlugInput slug={slug} />
-				<FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
-					<ImageField source="src" title="title" />
-				</FileInput>
-				<TextInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="type"
-				/>
-				<SelectInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="status"
-					choices={status}
-				/>
-				<TextInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="github"
-					sx={{
-						'.MuiFormHelperText-root': {
-							display: 'block !important',
-						}
-					}}
-				/>
-				<TextInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="personal_email"
-					sx={{
-						'.MuiFormHelperText-root': {
-							display: 'block !important',
-						}
-					}}
-				/>
-				<TextInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="work_email"
-					sx={{
-						'.MuiFormHelperText-root': {
-							display: 'block !important',
-						}
-					}}
-				/>
-				<TextInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-					source="linkedin"
-					sx={{
-						'.MuiFormHelperText-root': {
-							display: 'block !important',
-						}
-					}}
-				/>
-			</SimpleForm>
+						)}
+
+					</FormDataConsumer>
+					{isIcon &&
+						<>
+							<RenderGoogleIcon googleKeyWord={keyword} />
+							<RenderLinkedinIcon googleKeyWord={keyword} />
+							<RenderGitHubIcon googleKeyWord={keyword} />
+							<RenderCBIcon googleKeyWord={keyword} />
+						</>}
+					<SlugInput slug={slug} />
+					<FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="picture" label="picture" accept="image/*" placeholder={<p>Drop your file here</p>}>
+						<ImageField source="src" title="title" />
+					</FileInput>
+					<TextInput
+						className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+						source="type"
+					/>
+					<SelectInput
+						className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+						source="status"
+						choices={status}
+					/>
+					<TextInput
+						className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+						source="github"
+						sx={{
+							'.MuiFormHelperText-root': {
+								display: 'block !important',
+							}
+						}}
+					/>
+					<TextInput
+						className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+						source="personal_email"
+						sx={{
+							'.MuiFormHelperText-root': {
+								display: 'block !important',
+							}
+						}}
+					/>
+					<TextInput
+						className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+						source="work_email"
+						sx={{
+							'.MuiFormHelperText-root': {
+								display: 'block !important',
+							}
+						}}
+					/>
+					<TextInput
+						className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+						source="linkedin"
+						sx={{
+							'.MuiFormHelperText-root': {
+								display: 'block !important',
+							}
+						}}
+					/>
+				</SimpleForm>
 			</div>
 
 		</Create>

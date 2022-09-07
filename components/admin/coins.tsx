@@ -14,13 +14,20 @@ import {
 	ReferenceInput,
 	SelectInput,
 	AutocompleteInput,
-	Pagination
+	Pagination,
+	Toolbar,
+	SaveButton,
+	useCreate,
+	Button,
+	useRedirect
 } from "react-admin";
 
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { crunchbaseImg } from '@/utils/constants';
+import ContentSave from '@mui/icons-material/Save';
+import { useFormContext } from 'react-hook-form';
 
 const filters = [
 	<TextInput key="search" source="name,ticker" label="Search Name, Ticker" resettable alwaysOn />,
@@ -34,6 +41,32 @@ const filters = [
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+	const form = useFormContext();
+	const [create] = useCreate();
+	const redirect = useRedirect()
+
+	const handleSaveDraft = () => {
+		let data = form.getValues()
+		data.status = 'draft'
+		create('coins', { data })
+		redirect('/coins')
+	}
+
+	return (
+		<Toolbar>
+			<SaveButton />
+			<Button
+				label="Save As Draft"
+				sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+				variant="outlined"
+				onClick={handleSaveDraft}
+				startIcon={<ContentSave />}
+			/>
+		</Toolbar>
+	);
+};
 
 export const CoinsList = () => (
 	<List filters={filters}
@@ -142,23 +175,26 @@ export const CoinsCreate = () => {
 	}
 	return (
 		<Create title="Create a Coin"
+			sx={{
+				'.MuiFormHelperText-root': {
+					display: 'none',
+				}
+			}}
 		>
-			<div className='customForm' style={{ position: 'relative' }}>
-				<SimpleForm>
-					<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" onChange={handleIcon}
-					/>
-					{isIcon &&
-						<>
-							<RenderGoogleIcon googleKeyWord={keyword} />
-							<RenderLinkedinIcon googleKeyWord={keyword} />
-							<RenderGitHubIcon googleKeyWord={keyword} />
-							<RenderCBIcon googleKeyWord={keyword} />
-						</>}
-					<TextInput className="w-full mt-5 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
-					<ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
-						<SelectInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
-					</ReferenceInput>
-				</SimpleForm>
-			</div>
+			<SimpleForm toolbar={<CustomToolbar />}>
+				<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" onChange={handleIcon}
+				/>
+				{isIcon &&
+					<>
+						<RenderGoogleIcon googleKeyWord={keyword} />
+						<RenderLinkedinIcon googleKeyWord={keyword} />
+						<RenderGitHubIcon googleKeyWord={keyword} />
+						<RenderCBIcon googleKeyWord={keyword} />
+					</>}
+				<TextInput className="w-full mt-5 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
+				<ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
+					<SelectInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
+				</ReferenceInput>
+			</SimpleForm>
 		</Create>)
 }

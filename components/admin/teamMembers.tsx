@@ -19,9 +19,16 @@ import {
   BooleanInput,
   BooleanField,
   AutocompleteInput,
-  Pagination
+  Pagination,
+  useCreate,
+  useRedirect,
+  Toolbar,
+  SaveButton,
+  Button
 } from "react-admin";
+import { useFormContext } from "react-hook-form";
 import { functionChoicesTM, seniorityChoicesTM } from "../../utils/constants";
+import ContentSave from '@mui/icons-material/Save';
 
 const filters = [
   <TextInput key="search" source="function,seniority,title" label="Search in Function,Seniority,Title" resettable alwaysOn />,
@@ -42,6 +49,32 @@ const filters = [
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect()
+
+  const handleSaveDraft = () => {
+    let data = form.getValues()
+    data.status = 'draft'
+    create('team_members', { data })
+    redirect('/team_members')
+  }
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
 
 export const TeamMembersList = () => (
   <List filters={filters}
@@ -161,7 +194,7 @@ export const TeamMembersCreate = () => (
       }
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<CustomToolbar />}>
       <ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

@@ -1,8 +1,10 @@
 // in posts.js
 import React, { FC, useEffect, useRef, useState } from 'react';
 import {
+  Button,
   FunctionField,
-  FileInput, ImageField,
+  FileInput,
+  ImageField,
   List,
   Datagrid,
   Edit,
@@ -11,16 +13,17 @@ import {
   TextField,
   EditButton,
   TextInput,
-  required,
-  minLength,
-  regex,
   SelectInput,
-  useGetList,
   FormDataConsumer,
-  Pagination
+  Pagination,
+  SaveButton,
+  Toolbar,
+  useCreate,
+  useGetList,
+  useRedirect,
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { validateName, validateSlug, validateUrl, status, validateNameAndSlugAndEmailAndDomain, crunchbaseImg } from "../../utils/constants"
+import { status, validateNameAndSlugAndEmailAndDomain, crunchbaseImg } from "../../utils/constants"
 import { random } from "lodash";
 import { useFormContext } from "react-hook-form";
 
@@ -28,13 +31,39 @@ import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import useWindowDimensions from '@/hooks/useWindowDimensions';
-
+import ContentSave from '@mui/icons-material/Save';
 
 const filters = [
   <TextInput key="search" source="name" label="Search in name" resettable alwaysOn />
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect()
+
+  const handleSaveDraft = () => {
+    let data = form.getValues()
+    data.status = 'draft'
+    create('vc_firms', { data })
+    redirect('/vc_firms')
+  }
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
 
 export const VcFirmList = () => (
   <List filters={filters}
@@ -82,6 +111,11 @@ export const VcFirmEdit = () => {
   const { height } = useWindowDimensions();
   const [formHeight, setFormHeight] = useState(0)
 
+  useEffect(() => {
+    if (formRef?.current?.clientHeight + 100 >= height)
+      setFormHeight(formRef?.current?.clientHeight + 100)
+  }, [formRef?.current?.clientHeight, height])
+
   const transform = async (data: any) => {
     var formdata = { ...data };
     const tagValue = (formdata.tags) ? formdata.tags : []
@@ -127,7 +161,7 @@ export const VcFirmEdit = () => {
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
     let convertedValue = value.replace(/ /g, "-").toLowerCase();
-    filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
+    filterSlug = vcFirm?.filter(f => f.slug === convertedValue && f.status !== 'draft')
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
@@ -227,7 +261,7 @@ export const VcFirmEdit = () => {
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="overview"
-            onBlur={handleCheckScreenHeight}
+            onChange={handleCheckScreenHeight}
             multiline
           />
           <SelectInput
@@ -291,6 +325,11 @@ export const VcFirmCreate = () => {
   const { height } = useWindowDimensions();
   const [formHeight, setFormHeight] = useState(0)
 
+  useEffect(() => {
+    if (formRef?.current?.clientHeight + 100 >= height)
+      setFormHeight(formRef?.current?.clientHeight + 100)
+  }, [formRef?.current?.clientHeight, height])
+
   const transform = async (data: any) => {
     var formdata = { ...data };
     const tagValue = (formdata.tags) ? formdata.tags : [];
@@ -327,7 +366,7 @@ export const VcFirmCreate = () => {
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
     let convertedValue = value.replace(/ /g, "-").toLowerCase();
-    filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
+    filterSlug = vcFirm?.filter(f => f.slug === convertedValue && f.status !== 'draft')
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
@@ -452,7 +491,7 @@ export const VcFirmCreate = () => {
       }}
     >
       <div className='customForm' ref={formRef} style={{ position: 'relative' }}>
-        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
+        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)} toolbar={<CustomToolbar />}>
           <FormDataConsumer>
             {({ formData, ...rest }) => (
               <TextInput
@@ -483,7 +522,7 @@ export const VcFirmCreate = () => {
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="overview"
-            onBlur={handleCheckScreenHeight}
+            onChange={handleCheckScreenHeight}
             multiline
           />
           <SelectInput

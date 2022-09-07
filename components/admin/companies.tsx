@@ -1,7 +1,7 @@
 // in posts.js
 import React, { FC, useRef, useState } from 'react';
-import { FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, useGetList, FormDataConsumer, Pagination } from 'react-admin';
-import { useForm, useFormContext } from "react-hook-form";
+import { Button, FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput, useGetList, FormDataConsumer, Pagination, useCreate, useRedirect, Toolbar, SaveButton } from 'react-admin';
+import { useFormContext } from "react-hook-form";
 import BookIcon from '@mui/icons-material/Book';
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import { companyLayerChoices, validateNameAndSlugAndEmailAndDomain, status, crunchbaseImg } from "../../utils/constants"
@@ -10,6 +10,7 @@ import { random } from "lodash";
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import ContentSave from '@mui/icons-material/Save';
 
 export const companyIcon = BookIcon;
 
@@ -25,6 +26,32 @@ const filters = [
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect()
+
+  const handleSaveDraft = () => {
+    let data = form.getValues()
+    data.status = 'draft'
+    create('companies', { data })
+    redirect('/companies')
+  }
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
 
 export const CompanyList = () => (
 
@@ -136,7 +163,7 @@ export const CompanyEdit = () => {
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
     let convertedValue = value.replace(/ /g, "-").toLowerCase();
-    filterSlug = companies?.filter(f => f.slug === convertedValue)
+    filterSlug = companies?.filter(f => f.slug === convertedValue && f.status !== 'draft')
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
@@ -472,7 +499,7 @@ export const CompanyCreate = () => {
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
     let convertedValue = value.replace(/ /g, "-").toLowerCase();
-    filterSlug = companies?.filter(f => f.slug === convertedValue)
+    filterSlug = companies?.filter(f => f.slug === convertedValue && f.status !== 'draft')
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
@@ -538,7 +565,7 @@ export const CompanyCreate = () => {
         }
       }}>
       <div className='customForm' ref={formRef} style={{ position: 'relative' }}>
-        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, companies)}>
+        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, companies)} toolbar={<CustomToolbar />} >
           <FormDataConsumer>
             {({ formData, ...rest }) => (
               <TextInput

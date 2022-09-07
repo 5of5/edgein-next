@@ -13,9 +13,16 @@ import {
   ReferenceInput,
   SelectInput,
   AutocompleteInput,
-  Pagination
+  Pagination,
+  Toolbar,
+  useCreate,
+  SaveButton,
+  useRedirect,
+  Button
 } from "react-admin";
+import { useFormContext } from "react-hook-form";
 import { status } from "../../utils/constants"
+import ContentSave from '@mui/icons-material/Save';
 
 const filters = [
   //<TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
@@ -43,6 +50,32 @@ const filters = [
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect()
+
+  const handleSaveDraft = () => {
+    let data = form.getValues()
+    data.status = 'draft'
+    create('investments', { data })
+    redirect('/investments')
+  }
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
 
 export const InvestmentsList = () => (
   <List filters={filters}
@@ -157,7 +190,7 @@ export const InvestmentsCreate = () => (
       }
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<CustomToolbar />}>
       <ReferenceInput
         label="Partner or Angel"
         source="person_id"

@@ -11,19 +11,52 @@ import {
   TextField,
   EditButton,
   TextInput,
-  Pagination
+  Pagination,
+  Toolbar,
+  useCreate,
+  SaveButton,
+  Button,
+  useRedirect
 } from "react-admin";
 
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { crunchbaseImg } from '@/utils/constants';
+import ContentSave from '@mui/icons-material/Save';
+import { useFormContext } from 'react-hook-form';
 
 const filters = [
   <TextInput key="search" source="name" label="Search Name" resettable alwaysOn />
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect()
+
+  const handleSaveDraft = () => {
+    let data = form.getValues()
+    data.status = 'draft'
+    create('blockchains', { data })
+    redirect('/blockchains')
+  }
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
 
 export const BlockchainsList = () => (
   <List filters={filters}
@@ -138,23 +171,20 @@ export const BlockchainsCreate = () => {
         }
       }}
     >
-      <div className='customForm' style={{ position: 'relative' }}>
+      <SimpleForm toolbar={<CustomToolbar />}>
+        <TextInput
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="name"
+          onChange={handleIcon}
 
-        <SimpleForm>
-          <TextInput
-            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="name"
-            onChange={handleIcon}
-
-          />
-          {isIcon &&
-            <>
-              <RenderGoogleIcon googleKeyWord={keyword} />
-              <RenderLinkedinIcon googleKeyWord={keyword} />
-              <RenderGitHubIcon googleKeyWord={keyword} />
-              <RenderCBIcon googleKeyWord={keyword} />
-            </>}
-        </SimpleForm>
-      </div>
+        />
+        {isIcon &&
+          <>
+            <RenderGoogleIcon googleKeyWord={keyword} />
+            <RenderLinkedinIcon googleKeyWord={keyword} />
+            <RenderGitHubIcon googleKeyWord={keyword} />
+            <RenderCBIcon googleKeyWord={keyword} />
+          </>}
+      </SimpleForm>
     </Create>)
 }

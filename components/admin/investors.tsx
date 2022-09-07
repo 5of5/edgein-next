@@ -16,9 +16,16 @@ import {
   SelectField,
   DateInput,
   AutocompleteInput,
-  Pagination
+  Pagination,
+  useCreate,
+  useRedirect,
+  Toolbar,
+  SaveButton,
+  Button,
 } from "react-admin";
+import { useFormContext } from "react-hook-form";
 import { investorFunctionChoices, investorSeniorityChoices } from "../../utils/constants"
+import ContentSave from '@mui/icons-material/Save';
 
 const filters = [
   <TextInput key="search" source="function,seniority,title" label="Search in Function,Seniority,Title" resettable alwaysOn />,
@@ -39,6 +46,32 @@ const filters = [
 ];
 
 const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect()
+
+  const handleSaveDraft = () => {
+    let data = form.getValues()
+    data.status = 'draft'
+    create('investors', { data })
+    redirect('/investors')
+  }
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
 
 export const InvestorsList = () => (
   <List filters={filters}
@@ -158,7 +191,7 @@ export const InvestorCreate = () => (
       }
     }}
   >
-    <SimpleForm>
+    <SimpleForm toolbar={<CustomToolbar />}>
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
