@@ -15,15 +15,15 @@ import {
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 
-import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import { getName, getNewFollows, getNewTempSentiment, isFollowsExists, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
+		[P in keyof T]?: DeepPartial<T[P]>;
+	}
 	: T;
 
 type Props = {
@@ -71,38 +71,60 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 	const handleReactionClick =
 		(company: Companies) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			(sentiment: string, alreadyReacted: boolean) =>
+				async (
+					event: React.MouseEvent<
+						HTMLButtonElement | HTMLInputElement | HTMLElement
+					>
+				) => {
+					event.stopPropagation();
+					event.preventDefault();
+					setTemporary(company, sentiment, alreadyReacted)
+					const newSentiment = await reactOnSentiment({
+						company: company.id,
+						sentiment,
+						pathname: `/companies/${company.slug}`,
+					});
 
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`,
+					setCompanies((prev) => {
+						return [...(prev || ([] as Companies[]))].map((item) => {
+							if (item.id === company.id) {
+								const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+								if (!alreadyReacted && !isFollowsExists(item.follows as Follows_Companies[], sentiment)) item.follows.push(newFollows);
+								else
+									remove(item.follows, (list) => {
+										return getName(list.list! as Lists) === sentiment;
+									});
+
+								return { ...item, sentiment: newSentiment };
+							}
+							return item;
+						});
+					});
+				};
+
+	const setTemporary = (company: Companies, sentiment: string, alreadyReacted: boolean) => {
+		setCompanies((prev) => {
+			return [...(prev || ([] as Companies[]))].map((item) => {
+				if (item.id === company.id) {
+
+					const newSentiment = getNewTempSentiment({ ...item.sentiment }, sentiment, alreadyReacted)
+
+					const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+					if (!alreadyReacted) item.follows.push(newFollows);
+					else
+						remove(item.follows, (list) => {
+							return getName(list.list! as Lists) === sentiment;
+						});
+
+					return { ...item, sentiment: newSentiment };
+				}
+				return item;
 			});
-
-			setCompanies((prev) => {
-				return [...(prev || ([] as Companies[]))].map((item) => {
-					if (item.id === company.id) {
-						const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-						if (!alreadyReacted) item.follows.push(newFollows);
-						else
-							remove(item.follows, (list) => {
-								return getName(list.list! as Lists) === sentiment;
-							});
-
-						return { ...item, sentiment: newSentiment };
-					}
-					return item;
-				});
-			});
-		};
+		});
+	}
 
 	return (
 		<div className={`bg-white rounded-lg p-5 ${className}`}>
