@@ -78,7 +78,6 @@ export default function OnBoardingStep3Modal(props) {
         current_user: props.user?.id ?? 0,
     });
 
-    console.log("list ddata =", list)
     const {
         data: vcFirmsData,
         // error,

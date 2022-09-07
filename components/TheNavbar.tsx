@@ -20,7 +20,6 @@ import OnBoardingStep3Modal from "./onBoarding/OnBoardingStep3Modal";
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
-	const [isFirstTime, setIsFirstTime] = useState(false)
 
 	const [showLoginPopup, setShowLoginPopup] = useState(false)
 	const [showSignUp, setShowSignUp] = useState(false)
@@ -39,12 +38,19 @@ export const TheNavbar = () => {
 		setShowSearchModal(true);
 	});
 
-	useEffect(() => {
-		//console.log("user ==", user)
-		if (user) {
-			//setOnBoardingStep(1)
+	const showOnBoarding = async() => {
+		const isAlreadyShown = await localStorage.getItem("onBoardingShown")
+		if(!isAlreadyShown){
+			setOnBoardingStep(1)
+			localStorage.setItem("onBoardingShown", "true")
 		}
-	}, [user])
+	}
+
+	useEffect(() => {
+		if(!loading && user && user.isFirstLogin){
+			showOnBoarding()
+		}
+	}, [loading])
 
 	const siteNav = [
 		{
