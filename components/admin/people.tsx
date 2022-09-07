@@ -100,14 +100,15 @@ export const PeopleEdit = () => {
 
 	const handleNameBlur = (value: string, formData: any) => {
 		let filterSlug: any[] | undefined
-		filterSlug = people?.filter(f => f.slug === value)
+		let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+		filterSlug = people?.filter(f => f.slug === convertedValue)
 
 		if (formData.slug === '') {
 			if (filterSlug && filterSlug?.length > 0) {
 				handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
 			}
 			if (filterSlug?.length === 0) {
-				setSlug(value)
+				setSlug(convertedValue)
 			}
 		}
 	}
@@ -124,6 +125,11 @@ export const PeopleEdit = () => {
 			<TextInput
 				className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 				source="slug"
+				sx={{
+					'.MuiFormHelperText-root': {
+						display: 'block !important',
+					}
+				}}
 			/>
 		);
 	};
@@ -147,7 +153,7 @@ export const PeopleEdit = () => {
 		>
 			<SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, people)}>
 				<TextInput
-					className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					disabled
 					source="id"
 				/>
@@ -262,14 +268,15 @@ export const PeopleCreate = () => {
 
 	const handleNameBlur = (value: string, formData: any) => {
 		let filterSlug: any[] | undefined
-		filterSlug = people?.filter(f => f.slug === value)
+		let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+		filterSlug = people?.filter(f => f.slug === convertedValue)
 
 		if (formData.slug === '') {
 			if (filterSlug && filterSlug?.length > 0) {
 				handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
 			}
 			if (filterSlug?.length === 0) {
-				setSlug(value)
+				setSlug(convertedValue)
 			}
 		}
 	}
@@ -286,6 +293,11 @@ export const PeopleCreate = () => {
 			<TextInput
 				className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 				source="slug"
+				sx={{
+					'.MuiFormHelperText-root': {
+						display: 'block !important',
+					}
+				}}
 			/>
 		);
 	};
@@ -371,7 +383,7 @@ export const PeopleCreate = () => {
 							display: 'block !important',
 						}
 					}}
-				/>				
+				/>
 			</SimpleForm>
 		</Create>
 	)
