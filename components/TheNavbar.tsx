@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
@@ -7,6 +7,9 @@ import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
+import LoginModal from "./LoginModal";
+import ForgotPasswordModal from "./ForgotPasswordModal";
+import SignUpModal from "./SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import SearchModal from "./SearchModal";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -14,6 +17,12 @@ import { useHotkeys } from "react-hotkeys-hook";
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
+
+	const [showLoginPopup, setShowLoginPopup] = useState(false)
+	const [showSignUp, setShowSignUp] = useState(false)
+	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false)
+	const [emailFromLogin, setEmailFromLogin] = useState('')
+	const [passwordFromLogin, setPasswordFromLogin] = useState('')
 	const [showSearchModal, setShowSearchModal] = useState(false);
 
 	useHotkeys("ctrl+k, command+k", function (event) {
@@ -36,6 +45,31 @@ export const TheNavbar = () => {
 		// },
 	];
 
+	const getAccessTokenFromCode = async(code: string) => {
+		try {
+            const response = await fetch("/api/get_access_token/", {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ code, redirect_uri: 'http://localhost:3000/' }),
+            }).then(res => res.json());
+           	window.location.href = "/";
+        } catch (e) {
+            console.log(e);
+        }
+	}
+
+	useEffect(() => {
+		if(router.query.code){
+			(async () => {
+				//setFinishingLogin(true);
+				const res = await getAccessTokenFromCode(router.query.code as string);
+			})();
+		}
+	}, [router.query.code])
+
 	const logout = async () => {
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 		magic.user.logout();
@@ -57,6 +91,37 @@ export const TheNavbar = () => {
 	const toggleNav = () => {
 		setActive((isActive) => !isActive);
 	};
+
+	const onForgotPassword = () => {
+		setShowLoginPopup(false)
+		setShowForgotPasswordPopup(true)
+		setShowSignUp(false)
+	}
+
+	const onBackFromForgotPassword = () => {
+		setShowLoginPopup(true)
+		setShowForgotPasswordPopup(false)
+	}
+
+	const onModalClose = () => {
+		setShowLoginPopup(false)
+		setShowForgotPasswordPopup(false)
+		setShowSignUp(false)
+	}
+
+	const showLoginModal = () => {
+		setShowLoginPopup(true)
+		setShowForgotPasswordPopup(false)
+		setShowSignUp(false)
+	}
+
+	const showSignUpModal = (email: string, password: string) => {
+		setEmailFromLogin(email ? email : '')
+		setPasswordFromLogin(password? password : '')
+		setShowLoginPopup(false)
+		setShowForgotPasswordPopup(false)
+		setShowSignUp(true)
+	}
 
 	return (
 		<header className="overflow-y-visible z-30 shadow bg-white">
@@ -124,10 +189,15 @@ export const TheNavbar = () => {
 							{user ? (
 								<UserMenu />
 							) : (
-								<ElemButton href="/login" btn="primary" arrow>
-									Log In
-								</ElemButton>
-							)}
+									<>
+										<ElemButton onClick={() => setShowLoginPopup(true)} btn="primary" arrow>
+											Log In
+										</ElemButton>
+										<ElemButton className="ml-5" onClick={() => setShowSignUp(true)} btn="white">
+											Sign Up
+										</ElemButton>
+									</>
+								)}
 							<button
 								onClick={toggleNav}
 								className="hamburger relative w-8 h-[22px] ml-2 p-[3px] border-0 bg-none cursor-pointer inline-block lg:hidden"
@@ -136,7 +206,15 @@ export const TheNavbar = () => {
 								<span className="sr-only">Toggle menu</span>
 							</button>
 						</div>
-					</div>
+						</div>
+					{/* </nav>
+				</div>
+			</header> */}
+			<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
+			<SignUpModal passwordFromLogin={passwordFromLogin} emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose}/>
+			<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
+		{/* </>
+					</div> */}
 
 					<SearchModal
 						show={showSearchModal}

@@ -217,9 +217,9 @@ const VCFirm: NextPage<Props> = (props) => {
 						</div>
 
 						<div className="flex p-4 flex-col border rounded-lg py-10">
-							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
-								sortedInvestmentRounds.map(
-									(activity: Investment_Rounds, index: number) => {
+							{
+								(sortedInvestmentRounds &&  sortedInvestmentRounds.length> 0) ? (
+									sortedInvestmentRounds.map((activity : Investment_Rounds, index: number) => {
 										if (!activity) {
 											return;
 										}
