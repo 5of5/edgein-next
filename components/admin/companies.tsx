@@ -135,7 +135,7 @@ export const CompanyEdit = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
     filterSlug = companies?.filter(f => f.slug === convertedValue)
 
     if (formData.slug === '') {
@@ -187,7 +187,10 @@ export const CompanyEdit = () => {
           width: '100%',
           maxWidth: 'inherit',
           bottom: 0,
-          zIndex: 100
+          zIndex: 100,
+          background: '#fff',
+          borderRadius: '4px',
+          boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         },
         '.MuiFormHelperText-root': {
           display: 'none',
@@ -199,172 +202,173 @@ export const CompanyEdit = () => {
         }
       }}
     >
-      <SimpleForm className="border rounded-lg" validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, companies)}>
-        <TextInput
-          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          disabled
-          source="id"
-        />
-        <FormDataConsumer>
-          {({ formData, ...rest }) => (
-            <TextInput
-              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              source="name"
-              onBlur={e => handleNameBlur(e.target.value, formData)}
-              sx={{
-                '.MuiFormHelperText-root': {
-                  display: 'block !important',
-                }
-              }}
-              {...rest}
-            />
-          )}
-        </FormDataConsumer>
-        <SlugInput slug={slug} />
+      <div className='customForm' ref={formRef} style={{ position: 'relative' }}>
+        <SimpleForm className="border rounded-lg" validate={(value) => validateNameAndSlugAndEmailAndDomain(true, value, companies)}>
+          <TextInput
+            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            disabled
+            source="id"
+          />
+          <FormDataConsumer>
+            {({ formData, ...rest }) => (
+              <TextInput
+                className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+                source="name"
+                onBlur={e => handleNameBlur(e.target.value, formData)}
+                sx={{
+                  '.MuiFormHelperText-root': {
+                    display: 'block !important',
+                  }
+                }}
+                {...rest}
+              />
+            )}
+          </FormDataConsumer>
+          <SlugInput slug={slug} />
 
-        <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
-          <ImageField source="src" title="title" />
-        </FileInput>
-        {
-          (!logo && !isImageUpdated) &&
-          <ImageField className="w-full" source="logo.url" title="Logo" />
-        }
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="layer"
-          choices={companyLayerChoices}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="layer_detail"
-        />
-        <ReferenceInput label="Coin" source="coin_id" reference="coins">
+          <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+            <ImageField source="src" title="title" />
+          </FileInput>
+          {
+            (!logo && !isImageUpdated) &&
+            <ImageField className="w-full" source="logo.url" title="Logo" />
+          }
           <SelectInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            optionText="name"
+            source="layer"
+            choices={companyLayerChoices}
           />
-        </ReferenceInput>
-        <NumberInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="total_employees"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="notes"
-          multiline
-        />
-        <TextInput
-          multiline
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="overview"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="year_founded"
-        />
-        <NumberInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="investor_amount"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="total_valuation"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="white_paper"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="market_verified"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="velocity_linkedin"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="velocity_token"
-        />
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="status"
-          choices={status}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="location"
-        />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="github"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="careers_page"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="company_linkedin"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="discord"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="glassdoor"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-
-      </SimpleForm>
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="layer_detail"
+          />
+          <ReferenceInput label="Coin" source="coin_id" reference="coins">
+            <SelectInput
+              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              optionText="name"
+            />
+          </ReferenceInput>
+          <NumberInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="total_employees"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="notes"
+            multiline
+          />
+          <TextInput
+            multiline
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="overview"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="year_founded"
+          />
+          <NumberInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="investor_amount"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="total_valuation"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="white_paper"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="market_verified"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="velocity_linkedin"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="velocity_token"
+          />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="location"
+          />
+          <TextInput
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="tags"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="github"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="website"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="careers_page"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="company_linkedin"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="twitter"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="discord"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="glassdoor"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+        </SimpleForm>
+      </div>
     </Edit>
   )
 };
@@ -414,49 +418,49 @@ export const CompanyCreate = () => {
   type Props = {
     googleKeyWord: string,
   };
-  const RenderGoogleIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderGoogleIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord
-    return(
-    <div style={{ position: 'absolute', top: '70px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <GoogleIcon />
-      </a>
-    </div>)
+    return (
+      <div style={{ position: 'absolute', top: '70px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <GoogleIcon />
+        </a>
+      </div>)
   }
 
-  const RenderLinkedinIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderLinkedinIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Linkedin"
 
     return (
       <div style={{ position: 'absolute', top: '70px', left: '45px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
+        <a href={url} target="_blank" rel="noreferrer">
           <LinkedInIcon /></a>
       </div>)
   }
-  const RenderGitHubIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderGitHubIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Github"
 
     return (
-    <div style={{ position: 'absolute', top: '70px', left: '80px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <GitHubIcon />
-      </a>
-    </div>)
+      <div style={{ position: 'absolute', top: '70px', left: '80px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <GitHubIcon />
+        </a>
+      </div>)
   }
 
-  const RenderCBIcon: FC<Props> = ({googleKeyWord}) => {
+  const RenderCBIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase"
 
     return (
-    <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
-      <a href={url} target="_blank" rel="noreferrer">
-        <img
-          className="w-[25px] h-[25px]"
-          src={crunchbaseImg}
-          alt={crunchbaseImg}
-        />
-      </a>
-    </div>)
+      <div style={{ position: 'absolute', top: '70px', left: '115px' }}>
+        <a href={url} target="_blank" rel="noreferrer">
+          <img
+            className="w-[25px] h-[25px]"
+            src={crunchbaseImg}
+            alt={crunchbaseImg}
+          />
+        </a>
+      </div>)
   }
 
 
@@ -467,7 +471,7 @@ export const CompanyCreate = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
     filterSlug = companies?.filter(f => f.slug === convertedValue)
 
     if (formData.slug === '') {
@@ -519,7 +523,10 @@ export const CompanyCreate = () => {
           width: '100%',
           maxWidth: 'inherit',
           bottom: 0,
-          zIndex: 100
+          zIndex: 100,
+          background: '#fff',
+          borderRadius: '4px',
+          boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         },
         '.MuiFormHelperText-root': {
           display: 'none',
@@ -531,177 +538,175 @@ export const CompanyCreate = () => {
         }
       }}>
       <div className='customForm' ref={formRef} style={{ position: 'relative' }}>
+        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, companies)}>
+          <FormDataConsumer>
+            {({ formData, ...rest }) => (
+              <TextInput
+                className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+                source="name"
+                onBlur={e => handleNameBlur(e.target.value, formData)}
+                onChange={handleIcon}
 
-      <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, companies)}>
-        <FormDataConsumer>
-          {({ formData, ...rest }) => (
-            <TextInput
-              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              source="name"
-              onBlur={e => handleNameBlur(e.target.value, formData)}
-              onChange={handleIcon}
-
-              sx={{
-                '.MuiFormHelperText-root': {
-                  display: 'block !important',
-                }
-              }}
-              {...rest}
-            />
-          )}
-        </FormDataConsumer>
-        {isIcon &&
+                sx={{
+                  '.MuiFormHelperText-root': {
+                    display: 'block !important',
+                  }
+                }}
+                {...rest}
+              />
+            )}
+          </FormDataConsumer>
+          {isIcon &&
             <>
-              <RenderGoogleIcon googleKeyWord={keyword}/>
-              <RenderLinkedinIcon googleKeyWord={keyword}/>
-              <RenderGitHubIcon googleKeyWord={keyword}/>
-              <RenderCBIcon googleKeyWord={keyword}/>
+              <RenderGoogleIcon googleKeyWord={keyword} />
+              <RenderLinkedinIcon googleKeyWord={keyword} />
+              <RenderGitHubIcon googleKeyWord={keyword} />
+              <RenderCBIcon googleKeyWord={keyword} />
             </>}
-        <SlugInput slug={slug} />
+          <SlugInput slug={slug} />
 
-        <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
-          <ImageField source="src" title="title" />
-        </FileInput>
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="layer"
-          choices={companyLayerChoices}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="layer_detail"
-        />
-        <ReferenceInput label="Coin" source="coin_id" reference="coins">
+          <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+            <ImageField source="src" title="title" />
+          </FileInput>
           <SelectInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            optionText="name"
+            source="layer"
+            choices={companyLayerChoices}
           />
-        </ReferenceInput>
-        <NumberInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="total_employees"
-        />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="layer_detail"
+          />
+          <ReferenceInput label="Coin" source="coin_id" reference="coins">
+            <SelectInput
+              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              optionText="name"
+            />
+          </ReferenceInput>
+          <NumberInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="total_employees"
+          />
 
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="notes"
-          multiline
-        />
-        <TextInput
-          multiline
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="overview"
-        />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="notes"
+            multiline
+          />
+          <TextInput
+            multiline
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="overview"
+          />
 
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="year_founded"
-        />
-        <NumberInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="investor_amount"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="total_valuation"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="white_paper"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="market_verified"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="velocity_linkedin"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="velocity_token"
-        />
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="status"
-          choices={status}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="location"
-        />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="github"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="careers_page"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="company_linkedin"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="discord"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="glassdoor"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="year_founded"
+          />
+          <NumberInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="investor_amount"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="total_valuation"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="white_paper"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="market_verified"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="velocity_linkedin"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="velocity_token"
+          />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="location"
+          />
+          <TextInput
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="tags"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="github"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="website"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="careers_page"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="company_linkedin"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="twitter"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="discord"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="glassdoor"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
 
-      </SimpleForm>
+        </SimpleForm>
       </div>
-
     </Create>
   );
 };
