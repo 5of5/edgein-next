@@ -128,16 +128,14 @@ export const CompanyEdit = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
     filterSlug = companies?.filter(f => f.slug === convertedValue)
 
-    if (formData.slug === '') {
-      if (filterSlug && filterSlug?.length > 0) {
-        handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
-      }
-      if (filterSlug?.length === 0) {
-        setSlug(convertedValue)
-      }
+    if (filterSlug && filterSlug?.length > 0) {
+      handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+    }
+    if (filterSlug?.length === 0) {
+      setSlug(convertedValue)
     }
   }
 
@@ -405,16 +403,14 @@ export const CompanyCreate = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
     filterSlug = companies?.filter(f => f.slug === convertedValue)
 
-    if (formData.slug === '') {
-      if (filterSlug && filterSlug?.length > 0) {
-        handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
-      }
-      if (filterSlug?.length === 0) {
-        setSlug(convertedValue)
-      }
+    if (filterSlug && filterSlug?.length > 0) {
+      handleNameBlur(filterSlug[0].slug + '-' + random(10), formData)
+    }
+    if (filterSlug?.length === 0) {
+      setSlug(convertedValue)
     }
   }
 

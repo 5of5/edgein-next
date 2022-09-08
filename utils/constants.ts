@@ -31,15 +31,15 @@ export const validateNameAndSlugAndEmailAndDomain = async (isEdit: boolean, valu
   if (data && data?.length > 0) {
     let filterName, filterSlug, filterGithub, filterLinkedin, filterWebsite, filterGlassdoor, filterdiscord, filterCompanyLinkedin, filterTwitter: any[] | undefined
 
-    filterName = data?.filter((f: any) => f.name === values?.name)
-    filterSlug = data?.filter((f: any) => f.slug === values?.slug)
-    filterGithub = data?.filter((f: any) => f.github === values?.github)
-    filterLinkedin = data?.filter((f: any) => f.linkedin === values?.linkedin)
-    filterWebsite = data?.filter((f: any) => f.website === values?.website)
-    filterGlassdoor = data?.filter((f: any) => f.glassdoor === values?.glassdoor)
-    filterdiscord = data?.filter((f: any) => f.discord === values?.discord)
-    filterCompanyLinkedin = data?.filter((f: any) => f.company_linkedin === values?.company_linkedin)
-    filterTwitter = data?.filter((f: any) => f.twitter === values?.twitter)
+    filterName = values?.name && data?.filter((f: any) => f?.name === values?.name && f.id !== values?.id)
+    filterSlug = values?.slug && data?.filter((f: any) => f?.slug === values?.slug && f.id !== values?.id)
+    filterGithub = values?.github && data?.filter((f: any) => f?.github === values?.github && f.id !== values?.id)
+    filterLinkedin = values?.linkedin && data?.filter((f: any) => f?.linkedin === values?.linkedin && f.id !== values?.id)
+    filterWebsite = values?.website && data?.filter((f: any) => f?.website === values?.website && f.id !== values?.id)
+    filterGlassdoor = values?.glassdoor && data?.filter((f: any) => f?.glassdoor === values?.glassdoor && f.id !== values?.id)
+    filterdiscord = values?.discord && data?.filter((f: any) => f?.discord === values?.discord && f.id !== values?.id)
+    filterCompanyLinkedin = values?.company_linkedin && data?.filter((f: any) => f?.company_linkedin === values?.company_linkedin && f.id !== values?.id)
+    filterTwitter = values?.twitter && data?.filter((f: any) => f?.twitter === values?.twitter && f.id !== values?.id)
 
     if (filterName && filterName?.length > 0) {
       errors.name = 'Name already used';
