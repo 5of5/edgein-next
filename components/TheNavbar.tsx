@@ -47,7 +47,7 @@ export const TheNavbar = () => {
 
 	const getAccessTokenFromCode = async(code: string) => {
 		try {
-            const response = await fetch("/api/get_access_token/", {
+            const response = await fetch("/api/access_token_from_code/", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",

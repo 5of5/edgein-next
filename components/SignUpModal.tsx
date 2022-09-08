@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ElemButton } from "../components/ElemButton";
 import Modal from "react-modal";
 import { ElemLogo } from "./ElemLogo";
+import { IconLinkedIn } from "./Icons";
 const validator = require("validator");
 
 Modal.setAppElement("#modal-root");
@@ -125,6 +126,11 @@ export default function SignUpModal(props: Props) {
 		props.onClose();
 	};
 
+	const onLinkedInClick = () => {
+		const url = `https://dev-h9qh-dn9.us.auth0.com/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
+		window.location.href = url
+	}
+
 	return (
 		<Modal
 			isOpen={props.show}
@@ -171,14 +177,18 @@ export default function SignUpModal(props: Props) {
 							<h1 className="text-center text-2xl lg:text-3xl font-bold">
 								Welcome to EdgeIn
 							</h1>
-							{/* <div className="text-center sm:col-span-3 mt-5">
-                                    <ElemButton roundedFull={false} className="w-full rounded-md text-blue-md border border-slate-300" onClick={() => { }} btn="ol-primary" >
-                                        Continue with LinkedIn
-                                </ElemButton>
-                                </div> */}
-							{/* <div className="text-center sm:col-span-3 mt-5">
-                                    <span className="text-gray-300 text-sm text-light">----------------------------<b className="text-dark-600">{` or `}</b>----------------------------</span>
-                                </div> */}
+							<div className="text-center sm:col-span-3 mt-5">
+                                    <ElemButton roundedFull={false} className="w-full rounded-md text-[#0077B5] border border-slate-300 gap-x-2" onClick={onLinkedInClick} btn="ol-primary" >
+									<IconLinkedIn
+										title="LinkedIn"
+										className="h-6 w-6 text-[#0077B5]"
+									/>
+										Continue with LinkedIn
+                                	</ElemButton>
+                            </div>
+								<div className="h-3 border-b border-gray-300 text-center text-md mt-5">
+									<span className="bg-white px-5">or</span>
+								</div>
 							<div className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0">
 								<div className="group sm:col-span-1">
 									<input
