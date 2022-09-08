@@ -29,10 +29,14 @@ export const validateNameAndSlugAndEmailAndDomain = async (isEdit: boolean, valu
 	var emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 	if (data && data?.length > 0) {
-		let filterName, filterSlug: any[] | undefined
+		let filterName, filterSlug, filterGithub, filterLinkedin, filterWebsite : any[] | undefined
 
 		filterName = data?.filter((f: any) => f.name === values?.name)
 		filterSlug = data?.filter((f: any) => f.slug === values?.slug)
+    filterGithub = data?.filter((f: any) => f.github === values?.github)
+		filterLinkedin = data?.filter((f: any) => f.linkedin === values?.linkedin)
+		filterWebsite = data?.filter((f: any) => f.website === values?.website)
+
 
 		if (filterName && filterName?.length > 0 && !isEdit) {
 			errors.name = 'Name already used';
@@ -40,6 +44,7 @@ export const validateNameAndSlugAndEmailAndDomain = async (isEdit: boolean, valu
 		if (filterSlug && filterSlug?.length > 0) {
 			errors.slug = 'Slug already used';
 		}
+
 		if (values.hasOwnProperty('website') && values?.website !== '' && !urlPattern.test(values?.website)) {
 			errors.website = 'Website URL is not valid';
 		}
@@ -66,6 +71,15 @@ export const validateNameAndSlugAndEmailAndDomain = async (isEdit: boolean, valu
 		}
 		if (values.hasOwnProperty('personal_email') && values?.personal_email !== '' && !emailPattern.test(values?.personal_email)) {
 			errors.personal_email = 'Personal Email is not valid';
+		}
+    if (filterGithub && filterGithub?.length > 0 && values?.github !== '') {
+			errors.github = 'Github already used';
+		}
+    if (filterLinkedin && filterLinkedin?.length > 0 && values?.linkedin !== '') {
+			errors.linkedin = 'Linkedin already used';
+		}
+    if (filterWebsite && filterWebsite?.length > 0 && values?.github !== '') {
+			errors.website = 'Website already used';
 		}
 	}
 
