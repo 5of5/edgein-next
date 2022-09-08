@@ -1,23 +1,21 @@
-import React, { useState } from "react";
+import React, { MutableRefObject, useState } from "react";
+
+type Tabs = {
+	name?: string;
+	ref: MutableRefObject<HTMLDivElement>;
+};
 
 type Props = {
 	className?: string;
-	tabs?: string[];
-	onTabClick?: (index: number) => void;
-	selectedTab?: number;
+	tabs?: Array<Tabs>;
 };
 
-export const ElemTabBar: React.FC<Props> = ({
-	className,
-	tabs,
-	onTabClick = () => {},
-	selectedTab,
-}) => {
+export const ElemTabBar: React.FC<Props> = ({ className, tabs }) => {
 	const [isActive, setActive] = useState(0);
 
-	const onClick = (i: number) => {
-		setActive(i);
-		onTabClick(i);
+	const onClick = (index: number, ref: any) => {
+		setActive(index);
+		window.scrollTo(0, ref.current.offsetTop - 30);
 	};
 
 	return (
@@ -26,18 +24,17 @@ export const ElemTabBar: React.FC<Props> = ({
 			role="tablist"
 		>
 			{tabs &&
-				tabs.map((tab: string, i: number) => (
+				tabs.map((tab: any, index: number) => (
 					<button
-						key={i}
-						onClick={() => onClick(i)}
+						key={index}
+						onClick={() => onClick(index, tab.ref)}
 						className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-							isActive === i
+							isActive === index
 								? "text-primary-500 border-primary-500"
 								: "border-transparent  hover:bg-slate-200"
 						}`}
-						aria-current={isActive === i ? "true" : "false"}
 					>
-						{tab}
+						{tab.name}
 					</button>
 				))}
 		</nav>
