@@ -25,12 +25,7 @@ import {
 	useRecordContext,
 	RaRecord,
 	UseRecordContextParams,
-	FunctionField,
-	TopToolbar,
-	FilterButton,
-	ExportButton,
-	CreateButton,
-	useDelete
+	FunctionField
 
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
@@ -41,10 +36,7 @@ import { validateNameAndSlugAndEmailAndDomain, status, crunchbaseImg, functionCh
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import ContentSave from '@mui/icons-material/Save';
 import ContentEdit from '@mui/icons-material/Edit';
-import ContentCreate from '@mui/icons-material/Add';
-import ContentDelete from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
 
 const filters = [
@@ -154,8 +146,8 @@ export const PeopleEdit = () => {
 	const [isImageUpdated, setIsImageUpdated] = useState(false)
 	const { data: people } = useGetList('people', {});
 	const [slug, setSlug] = React.useState('')
-	
-	const paths = window.location.href.split('/')
+	const { asPath } = useRouter()
+	const paths = asPath.split('/')
 	const currentId = paths[paths.length - 1]
 
 	const { data } = useGetList(
@@ -236,6 +228,21 @@ export const PeopleEdit = () => {
 			/>
 		);
 	};
+
+	const CustomEditButton = (props) => {
+		const redirect = useRedirect()
+		const form = useFormContext();
+		console.log('props =============', props)
+
+		return (
+			<Button
+				label="Edit"
+				variant="text"
+				onClick={() => redirect('/team_members/' + props?.record?.id)}
+				startIcon={<ContentEdit />}
+			/>
+		)
+	}
 
 	return (
 		<>
@@ -333,82 +340,32 @@ export const PeopleEdit = () => {
 
 				</SimpleForm>
 			</Edit>
-			{filterData && filterData?.length > 0 &&
-				<List
-					actions={<ListActions />}
-					pagination={<PostPagination />}
-					sx={{
-						'.MuiToolbar-root': {
-							justifyContent: 'flex-start'
-						}
-					}}
-				>
-					<Datagrid
-						bulkActionButtons={false}
-						data={filterData}>
-						<TextField source="id" />
-						<ReferenceField label="Company" source="company_id" reference="companies">
-							<TextField source="name" />
-						</ReferenceField>
-						<SelectField
-							source="function"
-							choices={functionChoicesTM}
-						/>
-						<BooleanField source="founder" />
-						<CustomEditButton />
-						<CustomDeleteButton />
-					</Datagrid>
-				</List>
-			}
+			<List
+				pagination={<PostPagination />}
+				sx={{
+					'.MuiToolbar-root': {
+						justifyContent: 'flex-start'
+					}
+				}}
+			>
+				<Datagrid data={filterData}>
+					{/* <FunctionField cellClassName="btn" render={(record: any) => redirect('/team_members/' + record.id)}>
+						EDIT
+					</FunctionField> */}
+
+					<CustomEditButton  label="Assign To Self"/>
+					<TextField source="id" />
+					<ReferenceField label="Company" source="company_id" reference="companies">
+						<TextField source="name" />
+					</ReferenceField>
+					<SelectField
+						source="function"
+						choices={functionChoicesTM}
+					/>
+					<BooleanField source="founder" />
+				</Datagrid>
+			</List>
 		</>
-	)
-}
-
-export const ListActions = () => {
-	const redirect = useRedirect()
-
-	return (
-		<TopToolbar>
-			<Button
-				label="create"
-				variant="text"
-				onClick={() => redirect('/team_members/create')}
-				startIcon={<ContentCreate />}
-			/>
-		</TopToolbar>
-	)
-}
-
-export const CustomEditButton = () => {
-	const record = useRecordContext();
-	const redirect = useRedirect()
-
-	return (
-		<Button
-			label="Edit"
-			variant="text"
-			onClick={() => redirect('/team_members/' + record.id)}
-			startIcon={<ContentEdit />}
-		/>
-	)
-}
-
-export const CustomDeleteButton = () => {
-	const record = useRecordContext();
-
-	const [deleteOne] = useDelete(
-		'team_members',
-		{ id: record.id, previousData: record }
-	);
-
-	return (
-		<Button
-			label="Delete"
-			variant="text"
-			sx={{ color: 'red' }}
-			onClick={() => deleteOne()}
-			startIcon={<ContentDelete />}
-		/>
 	)
 }
 
