@@ -124,7 +124,7 @@ export const CompanyList = () => {
         <TextField source="id" />
         <TextField source="name" />
         <TextField source="slug" />
-        <ImageField source="logo.url" label="Logo" />
+        <ImageField className="logoFile" source="logo.url" label="Logo" />
         <SelectField source="layer" choices={companyLayerChoices} />
         <TextField source="layer_detail" />
         <ReferenceField label="Coin" source="coin_id" reference="coins">

@@ -111,7 +111,7 @@ export const PeopleList = () => {
 				<TextField source="id" />
 				<TextField source="name" />
 				<TextField source="slug" />
-				<ImageField source="picture.url" label="Picture" />
+				<ImageField className="logoFile" source="picture.url" label="Picture" />
 				<TextField source="github" />
 				<TextField source="type" />
 				<TextField source="personal_email" />

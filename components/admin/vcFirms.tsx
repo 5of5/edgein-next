@@ -111,7 +111,7 @@ export const VcFirmList = () => {
         <TextField source="id" />
         <TextField source="name" />
         <TextField source="slug" />
-        <ImageField source="logo.url" label="Logo" />
+        <ImageField className="logoFile" source="logo.url" label="Logo" />
         <TextField source="website" />
         <TextField source="linkedin" />
         <TextField source="status" />
