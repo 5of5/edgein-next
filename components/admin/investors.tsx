@@ -77,7 +77,7 @@ export const InvestorsList = () => (
   <List filters={filters}
     pagination={<PostPagination />}
     sx={{
-      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+      '.MuiToolbar-root': {
         justifyContent: 'flex-start'
       }
     }}

@@ -19,6 +19,7 @@ import {
 	Button,
 	useCreate,
 	SaveButton
+
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { random } from "lodash";
@@ -60,32 +61,68 @@ const CustomToolbar = () => {
 	);
 };
 
+export const PeopleList = () => {
+	const [customSort, setCustomSort] = useState({ field: 'id', order: 'ASC' })
+	const headers: string[] = [
+		'id', 'name', 'slug', 'picture', 'github',
+		"type", "personal_email",
+		"work_email",
+		"linkedin",
+		"status"
+	]
+	const { data } = useGetList(
+		'people',
+		{ pagination: { page: 1, perPage: 10 } }
+	);
+	let renderData = data?.map(v => {
+		let sum = 0
+		for (var index in v) {
+			v[index] && headers.includes(index) ? sum++ : sum
+		}
+		return ({ ...v, counter: sum + '/10' })
+	})
 
-export const PeopleList = () => (
-	<List filters={filters}
-		pagination={<PostPagination />}
-		sx={{
-			'.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
-				justifyContent: 'flex-start'
-			}
-		}}
-	>
-		<Datagrid>
-			<EditButton />
-			<TextField source="id" />
-			<TextField source="name" />
-			<TextField source="slug" />
-			<ImageField source="picture.url" label="Picture" />
-			<TextField source="github" />
-			{/* <TextInput source="title" /> */}
-			<TextField source="type" />
-			<TextField source="personal_email" />
-			<TextField source="work_email" />
-			<TextField source="linkedin" />
-			<TextField source="status" />
-		</Datagrid>
-	</List>
-);
+	const sortWithData = (sortData: any) => {
+		const isAscending = customSort.order === 'ASC'
+		if (isAscending) {
+			sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+		} else {
+			sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+		}
+		return sortData
+	}
+	renderData = renderData && sortWithData(renderData)
+
+	return (
+		<List filters={filters}
+			pagination={<PostPagination />}
+			sx={{
+				'.MuiToolbar-root': {
+					justifyContent: 'flex-start'
+				}
+			}}
+		>
+			<Datagrid
+				data={renderData}
+				sort={customSort}
+				setSort={(value) => setCustomSort(value)}
+			>
+				<EditButton />
+				<TextField source="id" />
+				<TextField source="name" />
+				<TextField source="slug" />
+				<ImageField source="picture.url" label="Picture" />
+				<TextField source="github" />
+				<TextField source="type" />
+				<TextField source="personal_email" />
+				<TextField source="work_email" />
+				<TextField source="linkedin" />
+				<TextField source="status" />
+				<TextField source="counter" />
+			</Datagrid>
+		</List>
+	)
+};
 
 interface TitleProps {
 	record?: Record<string, string>;
