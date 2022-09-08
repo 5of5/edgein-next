@@ -1,7 +1,6 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
 import { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-//import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
@@ -11,7 +10,7 @@ import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
 // import { ElemCohort } from "@/components/Company/ElemCohort";
-import { ElemTabBar } from "../../components/ElemTabBar";
+import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import {
 	Companies,
@@ -24,7 +23,7 @@ import {
 	Lists,
 	useGetCompanyQuery,
 	Investments,
-} from "../../graphql/types";
+} from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import {
 	getNewFollows,
@@ -34,15 +33,10 @@ import {
 	getNewTempSentiment,
 } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import {
-	IconEditPencil,
-	IconEventDot,
-	IconEventLine,
-	//IconSort,
-} from "@/components/Icons";
+import { IconEditPencil } from "@/components/Icons";
 // import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { companyLayerChoices } from "@/utils/constants";
-import { convertToInternationalCurrencySystem, formatDate } from "../../utils";
+import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { has, remove } from "lodash";
 
 type Props = {
@@ -75,7 +69,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	});
 
 	const getTokenInfo = async (ticker: string) => {
-		const data = await fetch("../../api/get_metrics_amount", {
+		const data = await fetch("@/api/get_metrics_amount", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -161,23 +155,16 @@ const Company: NextPage<Props> = (props: Props) => {
 	}
 
 	// Tabs
-	const tabBarItems = ["Overview"];
+	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 	if (company.teamMembers.length > 0) {
-		tabBarItems.push("Team");
+		tabBarItems.push({ name: "Team", ref: teamRef });
 	}
 	if (sortedInvestmentRounds.length > 0) {
-		tabBarItems.push("Investments");
+		tabBarItems.push({
+			name: "Investments",
+			ref: investmentRef,
+		});
 	}
-
-	const scrollToSection = (tab: number) => {
-		if (tab === 0 && overviewRef) {
-			window.scrollTo(0, overviewRef.current.offsetTop - 30);
-		} else if (tab === 1 && teamRef) {
-			window.scrollTo(0, teamRef.current.offsetTop - 30);
-		} else if (tab == 2 && investmentRef) {
-			window.scrollTo(0, investmentRef.current.offsetTop - 30);
-		}
-	};
 
 	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
@@ -231,7 +218,6 @@ const Company: NextPage<Props> = (props: Props) => {
 						<ElemReactions
 							data={company}
 							handleReactionClick={handleReactionClick}
-							// roundedFull
 						/>
 						<ElemSaveToList
 							follows={company?.follows}
@@ -267,13 +253,9 @@ const Company: NextPage<Props> = (props: Props) => {
 					</section>
 				</div>
 			</div>
-			<ElemTabBar
-				className="mt-7"
-				tabs={tabBarItems}
-				onTabClick={(index) => {
-					scrollToSection(index);
-				}}
-			/>
+
+			<ElemTabBar className="mt-7" tabs={tabBarItems} />
+
 			<div
 				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
 				ref={overviewRef}

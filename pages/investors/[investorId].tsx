@@ -2,24 +2,19 @@ import React, { useEffect, useState, useRef, MutableRefObject } from "react";
 import { NextPage, GetStaticProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemPhoto } from "../../components/ElemPhoto";
-import { ElemKeyInfo } from "../../components/ElemKeyInfo";
-import { ElemTable } from "../../components/ElemTable";
-import { ElemTableCell } from "../../components/ElemTableCell";
-import { ElemTabBar } from "../../components/ElemTabBar";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemKeyInfo } from "@/components/ElemKeyInfo";
+import { ElemTable } from "@/components/ElemTable";
+import { ElemTableCell } from "@/components/ElemTableCell";
+import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import {
-	IconEditPencil,
-	IconEventDot,
-	IconEventLine,
-	IconSort,
-} from "@/components/Icons";
+import { IconEditPencil } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
 	runGraphQl,
-} from "../../utils";
+} from "@/utils";
 import {
 	Follows_Vc_Firms,
 	GetVcFirmDocument,
@@ -27,7 +22,7 @@ import {
 	Investment_Rounds,
 	useGetVcFirmQuery,
 	Vc_Firms,
-} from "../../graphql/types";
+} from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import {
 	getNewFollows,
@@ -130,32 +125,17 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
-	// Tabs
-	const tabBarItems = ["Overview"];
+	//TabBar
+	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 	if (vcfirm.investors.length > 0) {
-		tabBarItems.push("Team");
+		tabBarItems.push({ name: "Team", ref: teamRef });
 	}
 	if (sortedInvestmentRounds.length > 0) {
-		tabBarItems.push("Investments");
+		tabBarItems.push({
+			name: "Investments",
+			ref: investmentRef,
+		});
 	}
-
-	const scrollToSection = (tab: number) => {
-		if (tab === 0 && overviewRef) {
-			window.scrollTo(0, overviewRef.current.offsetTop - 30);
-		} else if (tab === 1 && teamRef) {
-			window.scrollTo(0, teamRef.current.offsetTop - 30);
-		} else if (tab == 2 && investmentRef) {
-			window.scrollTo(0, investmentRef.current.offsetTop - 30);
-		}
-	};
-
-	// const scrollToSection = (tab: number) => {
-	// 	if (tab === 1 && teamRef) {
-	// 		window.scrollTo(0, teamRef.current.offsetTop - 30);
-	// 	} else if (tab == 2 && investmentRef) {
-	// 		window.scrollTo(0, investmentRef.current.offsetTop - 30);
-	// 	}
-	// };
 
 	return (
 		<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
@@ -200,13 +180,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				{/* <div className="col-span-3 mt-7 lg:mt-0">Placeholder</div> */}
 			</div>
 
-			<ElemTabBar
-				className="mt-7"
-				tabs={tabBarItems}
-				onTabClick={(index) => {
-					scrollToSection(index);
-				}}
-			/>
+			<ElemTabBar className="mt-7" tabs={tabBarItems} />
 
 			<div
 				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
@@ -292,7 +266,6 @@ const VCFirm: NextPage<Props> = (props) => {
 					<ElemInvestorGrid
 						// tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
 						showEdit={true}
-						//className="mt-12"
 						heading="Team"
 						people={vcfirm.investors}
 					/>
