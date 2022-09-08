@@ -53,7 +53,7 @@ export const TheNavbar = () => {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ code, redirect_uri: 'http://localhost:3000/' }),
+                body: JSON.stringify({ code, redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL }),
             }).then(res => res.json());
            	window.location.href = "/";
         } catch (e) {
