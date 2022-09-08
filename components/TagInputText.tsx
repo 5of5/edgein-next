@@ -30,11 +30,11 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 	const [tags, setTags] = useState(defaultTags)
 	const [inputValue, setInputValue] = useState('')
 
-	function onEnterTag(event) {
+	function onEnterTag(event: React.KeyboardEvent<HTMLInputElement>) {
 		if (event.key == "Enter") {
-			if (event.target.value) {
-				setTags([...tags, event.target.value])
-				onChange([...tags, event.target.value])
+			if ((event.target as HTMLInputElement).value) {
+				setTags([...tags, (event.target as HTMLInputElement).value])
+				onChange([...tags, (event.target as HTMLInputElement).value])
 			}
 			setInputValue('')
 		}
@@ -65,10 +65,10 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 				{
 					tags.map((tag, index) => {
 						return (
-							<div className="bg-primary-50 inline-flex items-center text-sm rounded-full border border-purple-50 mt-2 mr-1">
+							<div key={index} className="bg-primary-50 inline-flex items-center text-sm rounded-full border border-purple-50 mt-2 mr-1">
 								<span className="ml-2 mr-1 leading-relaxed truncate max-w-xs text-purple-50 font-bold">{tag}</span>
 								<button onClick={() => { onRmoveTag(index) }} className="w-6 h-8 inline-block align-middle text-purple-50 hover:text-purple-50 focus:outline-none">
-									<svg className="w-6 h-6 fill-current mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M15.78 14.36a1 1 0 0 1-1.42 1.42l-2.82-2.83-2.83 2.83a1 1 0 1 1-1.42-1.42l2.83-2.82L7.3 8.7a1 1 0 0 1 1.42-1.42l2.83 2.83 2.82-2.83a1 1 0 0 1 1.42 1.42l-2.83 2.83 2.83 2.82z" /></svg>
+									<svg className="w-6 h-6 fill-current mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fillRule="evenodd" d="M15.78 14.36a1 1 0 0 1-1.42 1.42l-2.82-2.83-2.83 2.83a1 1 0 1 1-1.42-1.42l2.83-2.82L7.3 8.7a1 1 0 0 1 1.42-1.42l2.83 2.83 2.82-2.83a1 1 0 0 1 1.42 1.42l-2.83 2.83 2.83 2.82z" /></svg>
 								</button>
 							</div>
 						)

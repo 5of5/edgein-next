@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { ElemButton } from "../ElemButton";
 import { IconFindCompanies, IconFindInvestors } from "../Icons";
 import { DeepPartial } from "../Company/ElemCohort";
-import { Companies_Bool_Exp, Vc_Firms, Vc_Firms_Bool_Exp, useGetRelevantCompaniesQuery, useGetRelevantVcFirmsQuery } from "@/graphql/types";
+import { Companies_Bool_Exp, Vc_Firms_Bool_Exp, useGetRelevantCompaniesQuery, useGetRelevantVcFirmsQuery } from "@/graphql/types";
 import {
     createListWithMultipleResourses,
 } from "@/utils/reaction";
@@ -18,14 +18,19 @@ type Props = {
     onClose: () => void,
     onNext: () => void,
     onBack: () => void,
-    user: object | null
+    user: {
+        name?:string,
+        email?: string,
+        id:number,
+        role:string
+    } | null
 }
 
 export default function OnBoardingStep3Modal(props: Props) {
 
-    const [list, setList] = useState([]);
-    const [locationTags, setLocationTags] = useState([])
-    const [industryTags, setIndustryTags] = useState([])
+    const [list, setList] = useState<any[]>([])
+    const [locationTags, setLocationTags] = useState<string[]>([])
+    const [industryTags, setIndustryTags] =  useState<string[]>([])
 
     const onClose = () => {
         props.onClose();
@@ -35,20 +40,17 @@ export default function OnBoardingStep3Modal(props: Props) {
             const path = props.selectedOption === "companies"? "companies" : "investors"
             const payload = {
                 sentiment : "My Edge List",
-                [props.selectedOption === "companies"? "companies" : "vcfirms"] : list.map(item => ({
+                [props.selectedOption === "companies"? "companies" : "vcfirms"] : list.map((item) => ({
                     [props.selectedOption === "companies"? "company" : "vcfirm"] : item.id,
                     pathname : `/${path}/${item.slug}`
-                }) )
+                }))
             }
-            console.log("before call==", payload)
             const newSentiment = await createListWithMultipleResourses(payload);
-            console.log("newSentiment==", newSentiment)
             props.onClose();
 		};
 
     const onFinishSetup = () => {
        // props.onClose();
-       console.log("hello")
        handleCreateList()
     }
 
@@ -104,7 +106,7 @@ export default function OnBoardingStep3Modal(props: Props) {
         } else {
             setList(vcFirmsData ? vcFirmsData.vc_firms : [])
         }
-    }, [companiesData, vcFirmsData])
+    }, [companiesData, vcFirmsData, props.selectedOption])
 
     return (
         <Modal
@@ -128,9 +130,9 @@ export default function OnBoardingStep3Modal(props: Props) {
                 </div>
                 <div className="w-full flex flex-wrap my-5 grid grid-cols-3 gap-5">
                     {
-                        list.length > 0 && list.map(item => {
+                        list.length > 0 && list.map((item, index) => {
                             return (
-                                <div className="flex flex-wrap items-center gap-x-2">
+                                <div key={index} className="flex flex-wrap items-center gap-x-2">
                                     <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border-slate-200 shadow-lg">
                                         <img
                                             className="object-contain max-w-full max-h-full"

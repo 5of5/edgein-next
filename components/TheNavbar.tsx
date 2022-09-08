@@ -30,8 +30,8 @@ export const TheNavbar = () => {
 	const [onBoardingStep, setOnBoardingStep] = useState(0)
 
 	const [selectedOption, setSelectedOption] = useState('companies')
-	const [locationTags, setLocationTags] = useState([])
-	const [industryTags, setIndustryTags] = useState([])
+	const [locationTags, setLocationTags] = useState<string[]>([])
+	const [industryTags, setIndustryTags] = useState<string[]>([])
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
@@ -50,7 +50,7 @@ export const TheNavbar = () => {
 		if(!loading && user && user.isFirstLogin){
 			showOnBoarding()
 		}
-	}, [loading])
+	}, [loading,user])
 
 	const siteNav = [
 		{

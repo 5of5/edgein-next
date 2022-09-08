@@ -10,7 +10,12 @@ type Props = {
     show: boolean,
     onClose: () => void,
     onNext: (selectedOption: string) => void,
-    user: object | null
+    user: {
+        name?:string,
+        email?: string,
+        id:number,
+        role:string
+    } | null
 }
 
 export default function OnBoardingStep1Modal(props : Props) {
