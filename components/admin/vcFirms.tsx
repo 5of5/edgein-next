@@ -1,5 +1,5 @@
 // in posts.js
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import {
   FunctionField,
   FileInput, ImageField,
@@ -27,6 +27,7 @@ import { useFormContext } from "react-hook-form";
 import GoogleIcon from '@mui/icons-material/Google';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
+import useWindowDimensions from '@/hooks/useWindowDimensions';
 
 
 const filters = [
@@ -77,6 +78,9 @@ export const VcFirmEdit = () => {
   const [isImageUpdated, setIsImageUpdated] = useState(false)
   const { data: vcFirm } = useGetList('vc_firms', {});
   const [slug, setSlug] = React.useState('')
+  const formRef = useRef<any>(null)
+  const { height } = useWindowDimensions();
+  const [formHeight, setFormHeight] = useState(0)
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -122,8 +126,8 @@ export const VcFirmEdit = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
-		filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
+    filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
@@ -156,6 +160,10 @@ export const VcFirmEdit = () => {
     );
   };
 
+  const handleCheckScreenHeight = () => {
+    setFormHeight(formRef?.current?.clientHeight + 100)
+  }
+
   return (
     <Edit title={<VcFirmTitle />} transform={transform}
       sx={{
@@ -167,89 +175,108 @@ export const VcFirmEdit = () => {
             flexWrap: 'wrap',
             flexDirection: 'row !important',
           },
+          marginBottom: formHeight >= height ? '60px' : 0
+        },
+        '.MuiToolbar-root': {
+          position: 'fixed',
+          width: '100%',
+          maxWidth: 'inherit',
+          bottom: 0,
+          zIndex: 100,
+          background: '#fff',
+          borderRadius: '4px',
+          boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         },
         '.MuiFormHelperText-root': {
           display: 'none',
+        },
+        '.customForm': {
+          '& > form': {
+            maxWidth: formRef?.current?.offsetWidth || '100%'
+          }
         }
       }}
     >
-      <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
-        <TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
-        <FormDataConsumer>
-          {({ formData, ...rest }) => (
-            <TextInput
-              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              source="name"
-              onBlur={e => handleNameBlur(e.target.value, formData)}
-              sx={{
-                '.MuiFormHelperText-root': {
-                  display: 'block !important',
-                }
-              }}
-              {...rest}
-            />
-          )}
-        </FormDataConsumer>
-        <SlugInput slug={slug} />
+      <div className='customForm' ref={formRef} style={{ position: 'relative' }}>
+        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
+          <TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
+          <FormDataConsumer>
+            {({ formData, ...rest }) => (
+              <TextInput
+                className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+                source="name"
+                onBlur={e => handleNameBlur(e.target.value, formData)}
+                sx={{
+                  '.MuiFormHelperText-root': {
+                    display: 'block !important',
+                  }
+                }}
+                {...rest}
+              />
+            )}
+          </FormDataConsumer>
+          <SlugInput slug={slug} />
 
-        <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
-          <ImageField source="src" title="title" />
-        </FileInput>
-        {
-          (!logo && !isImageUpdated) &&
-          <ImageField className="w-full" source="logo.url" title="Logo" />
-        }
-        <TextInput
-          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="overview"
-          multiline
-        />
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="status"
-          choices={status}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="location"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="year_founded"
-        />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="linkedin"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-      </SimpleForm>
+          <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+            <ImageField source="src" title="title" />
+          </FileInput>
+          {
+            (!logo && !isImageUpdated) &&
+            <ImageField className="w-full" source="logo.url" title="Logo" />
+          }
+          <TextInput
+            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="overview"
+            onBlur={handleCheckScreenHeight}
+            multiline
+          />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="location"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="year_founded"
+          />
+          <TextInput
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="tags"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="website"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="linkedin"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="twitter"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+        </SimpleForm>
+      </div>
     </Edit>
   )
 }
@@ -260,6 +287,9 @@ export const VcFirmCreate = () => {
   const [keyword, setKeyword] = useState('');
   const { data: vcFirm } = useGetList('vc_firms', {});
   const [slug, setSlug] = React.useState('')
+  const formRef = useRef<any>(null)
+  const { height } = useWindowDimensions();
+  const [formHeight, setFormHeight] = useState(0)
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -296,8 +326,8 @@ export const VcFirmCreate = () => {
 
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined
-    let convertedValue  = value.replace(/ /g,"-").toLowerCase();
-		filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
+    filterSlug = vcFirm?.filter(f => f.slug === convertedValue)
 
     if (formData.slug === '') {
       if (filterSlug && filterSlug?.length > 0) {
@@ -352,6 +382,7 @@ export const VcFirmCreate = () => {
           <LinkedInIcon /></a>
       </div>)
   }
+
   const RenderGitHubIcon: FC<Props> = ({ googleKeyWord }) => {
     const url = "https://www.google.com/search?q=" + googleKeyWord + " Github"
 
@@ -378,10 +409,13 @@ export const VcFirmCreate = () => {
       </div>)
   }
 
-
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);
     setKeyword(e.target.value);
+  }
+
+  const handleCheckScreenHeight = () => {
+    setFormHeight(formRef?.current?.clientHeight + 100)
   }
 
   return (
@@ -395,93 +429,109 @@ export const VcFirmCreate = () => {
             flexWrap: 'wrap',
             flexDirection: 'row !important',
           },
+          marginBottom: formHeight >= height ? '60px' : 0
+        },
+        '.MuiToolbar-root': {
+          position: 'fixed',
+          width: '100%',
+          maxWidth: 'inherit',
+          bottom: 0,
+          zIndex: 100,
+          background: '#fff',
+          borderRadius: '4px',
+          boxShadow: '0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)',
         },
         '.MuiFormHelperText-root': {
           display: 'none',
+        },
+        '.customForm': {
+          '& > form': {
+            maxWidth: formRef?.current?.offsetWidth || '100%'
+          }
         }
       }}
     >
-      <div className='customForm' style={{ position: 'relative' }}>
-
-      <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
-        <FormDataConsumer>
-          {({ formData, ...rest }) => (
-            <TextInput
-              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              source="name"
-              onBlur={e => handleNameBlur(e.target.value, formData)}
-              onChange={handleIcon}
-              sx={{
-                '.MuiFormHelperText-root': {
-                  display: 'block !important',
-                }
-              }}
-              {...rest}
-            />
-          )}
-        </FormDataConsumer>
-        {isIcon &&
+      <div className='customForm' ref={formRef} style={{ position: 'relative' }}>
+        <SimpleForm validate={(value) => validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)}>
+          <FormDataConsumer>
+            {({ formData, ...rest }) => (
+              <TextInput
+                className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+                source="name"
+                onBlur={e => handleNameBlur(e.target.value, formData)}
+                onChange={handleIcon}
+                sx={{
+                  '.MuiFormHelperText-root': {
+                    display: 'block !important',
+                  }
+                }}
+                {...rest}
+              />
+            )}
+          </FormDataConsumer>
+          {isIcon &&
             <>
               <RenderGoogleIcon googleKeyWord={keyword} />
               <RenderLinkedinIcon googleKeyWord={keyword} />
               <RenderGitHubIcon googleKeyWord={keyword} />
               <RenderCBIcon googleKeyWord={keyword} />
             </>}
-        <SlugInput slug={slug} />
-        <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
-          <ImageField source="src" title="title" />
-        </FileInput>
-        <TextInput
-          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="overview"
-          multiline
-        />
-        <SelectInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="status"
-          choices={status}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="location"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="year_founded"
-        />
-        <TextInput
-          placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="tags"
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="linkedin"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-        <TextInput
-          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          sx={{
-            '.MuiFormHelperText-root': {
-              display: 'block !important',
-            }
-          }}
-        />
-      </SimpleForm>
+          <SlugInput slug={slug} />
+          <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+            <ImageField source="src" title="title" />
+          </FileInput>
+          <TextInput
+            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="overview"
+            onBlur={handleCheckScreenHeight}
+            multiline
+          />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="location"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="year_founded"
+          />
+          <TextInput
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="tags"
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="website"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="linkedin"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="twitter"
+            sx={{
+              '.MuiFormHelperText-root': {
+                display: 'block !important',
+              }
+            }}
+          />
+        </SimpleForm>
       </div>
 
     </Create>
