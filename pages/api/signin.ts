@@ -70,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({id: emailExist.id, email: emailExist.email, role: emailExist.role, publicAddress: emailExist.external_id, isFirstLogin});
+      const token = await CookieService.createToken({id: emailExist.id, email: emailExist.email, role: emailExist.role, publicAddress: emailExist.external_id, isFirstLogin, display_name: emailExist.display_name});
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {

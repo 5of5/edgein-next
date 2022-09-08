@@ -51,6 +51,7 @@ async function findOneUserByEmail(email: string) {
       role
       external_id
       is_auth0_verified
+      display_name
     }
   }
   `
