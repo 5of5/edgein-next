@@ -5,14 +5,15 @@ import { IconFindCompanies, IconFindInvestors } from "../Icons";
 
 Modal.setAppElement("#modal-root");
 
-// type Props = {
-//     show: boolean,
-//     onClose: () => void,
-//     onNext: (selectedOption: string) => void,
-//     user: object | null
-// }
+type Props = {
+    selectedOption: string,
+    show: boolean,
+    onClose: () => void,
+    onNext: (selectedOption: string) => void,
+    user: object | null
+}
 
-export default function OnBoardingStep1Modal(props) {
+export default function OnBoardingStep1Modal(props : Props) {
 
     const [selectedOption, setSelectedOption] = useState(props.selectedOption)
 
@@ -38,7 +39,7 @@ export default function OnBoardingStep1Modal(props) {
         >
             <div className="p-10">
                 <h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
-                    {`Hi ${props.user && props.user.name ? props.user.name : (props.user) ? props.user.email: ''}, How will you use EdgeIn?`}
+                    {`Hi ${(props.user && props.user.name) ? props.user.name : (props.user) ? props.user.email: ''}, How will you use EdgeIn?`}
                 </h3>
                 <p className="text-sm text-slate-500">Step 1 of 3</p>
                 <div className="mt-4 text-slate-600 grow line-clamp-3 text-base">

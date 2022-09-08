@@ -5,23 +5,23 @@ import { IconFindCompanies, IconFindInvestors } from "../Icons";
 import { DeepPartial } from "../Company/ElemCohort";
 import { Companies_Bool_Exp, Vc_Firms, Vc_Firms_Bool_Exp, useGetRelevantCompaniesQuery, useGetRelevantVcFirmsQuery } from "@/graphql/types";
 import {
-	getNewFollows,
-	reactOnSentiment,
-	getName,
-	isFollowsExists,
-	getNewTempSentiment,
+    createListWithMultipleResourses,
 } from "@/utils/reaction";
 
 Modal.setAppElement("#modal-root");
 
-// type Props = {
-//     show: boolean,
-//     onClose: () => void,
-//     onNext: (selectedOption: string) => void,
-//     user: object | null
-// }
+type Props = {
+    selectedOption: string,
+    locationTags: string[],
+    industryTags: string[],
+    show: boolean,
+    onClose: () => void,
+    onNext: () => void,
+    onBack: () => void,
+    user: object | null
+}
 
-export default function OnBoardingStep3Modal(props) {
+export default function OnBoardingStep3Modal(props: Props) {
 
     const [list, setList] = useState([]);
     const [locationTags, setLocationTags] = useState([])
@@ -31,20 +31,25 @@ export default function OnBoardingStep3Modal(props) {
         props.onClose();
     };
 
-    // const handleCreateList =
-	// 	(sentiment: string, alreadyReacted: boolean) =>
-	// 	async (
-	// 	) => {
-	// 		const newSentiment = await reactOnSentiment({
-	// 			company: company.id,
-	// 			sentiment,
-	// 			pathname: location.pathname,//`/companies/${company.slug}`
-	// 		});
-	// 	};
+    const handleCreateList = async() => {
+            const path = props.selectedOption === "companies"? "companies" : "investors"
+            const payload = {
+                sentiment : "My Edge List",
+                [props.selectedOption === "companies"? "companies" : "vcfirms"] : list.map(item => ({
+                    [props.selectedOption === "companies"? "company" : "vcfirm"] : item.id,
+                    pathname : `/${path}/${item.slug}`
+                }) )
+            }
+            console.log("before call==", payload)
+            const newSentiment = await createListWithMultipleResourses(payload);
+            console.log("newSentiment==", newSentiment)
+            props.onClose();
+		};
 
     const onFinishSetup = () => {
-        props.onClose();
-       // handleCreateList("My Edge List", false)
+       // props.onClose();
+       console.log("hello")
+       handleCreateList()
     }
 
     const filtersCompanies: DeepPartial<Companies_Bool_Exp> = {
@@ -129,7 +134,7 @@ export default function OnBoardingStep3Modal(props) {
                                     <div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border-slate-200 shadow-lg">
                                         <img
                                             className="object-contain max-w-full max-h-full"
-                                            src={item.logo.url}
+                                            src={(item.logo) ? item.logo.url : ''}
                                             alt={""}
                                         />
                                     </div>

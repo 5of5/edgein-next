@@ -6,7 +6,17 @@ import { TagInputText } from "../TagInputText";
 
 Modal.setAppElement("#modal-root");
 
-export default function OnBoardingStep2Modal(props: any) {
+type Props = {
+    locationTags: string[],
+    industryTags: string[],
+    show: boolean,
+    onClose: () => void,
+    onNext: (locationTags: string[], industryTags: string[]) => void,
+    onBack: (locationTags: string[], industryTags: string[]) => void,
+    user: object | null
+}
+
+export default function OnBoardingStep2Modal(props: Props) {
 
     const [locationTags, setLocationTags] = useState(props.locationTags)
     const [industryTags, setIndustryTags] = useState(props.industryTags)
