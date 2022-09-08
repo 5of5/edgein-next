@@ -14,6 +14,7 @@ import {
 
 export const UserMenu = () => {
 	const logout = async () => {
+		localStorage.clear()
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
