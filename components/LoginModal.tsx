@@ -19,23 +19,17 @@ export default function LoginModal(props: Props) {
 	useEffect(() => {
 		setEmail("");
 		setPassword("");
-		setIsSignUp(false);
-		setIsWaitlisted(false);
-		setIsRegistered(false);
 		setEmailError("");
 		setErrorMessage("");
-		setIsUnauthorized(false);
+		setUnsuccessMessage("")
 	}, [props.show]);
 
 	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [isSignUp, setIsSignUp] = useState(false);
+	const [password, setPassword] = useState("");;
 	const [isLoading, setIsLoading] = useState(false);
-	const [isWaitlisted, setIsWaitlisted] = useState(false);
-	const [isRegistered, setIsRegistered] = useState(false);
 	const [emailError, setEmailError] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
-	const [isUnauthorized, setIsUnauthorized] = useState(false);
+	const [unsuccessMessage, setUnsuccessMessage] = useState('')
 
 	const validateEmail = (value: string) => {
 		setEmail(value);
@@ -80,17 +74,22 @@ export default function LoginModal(props: Props) {
 				},
 				body: JSON.stringify({ email, password }),
 			});
-			const res = await response.json();
 			if (response.status === 401) {
-				setIsUnauthorized(true);
-			} else if (res.nextStep && res.nextStep === "SIGNUP") {
-				setIsSignUp(true);
-				onSignUp(email, password);
-			} else if (res.success) {
-				window.location.href = "/"; //response.loginLink;
+				setUnsuccessMessage("Please verify your email before logging in.")
+			}else if(response.status === 403){
+				setUnsuccessMessage("Wrong email or password.")
 			}
+			else{
+				const res = await response.json();
+				if (res.nextStep && res.nextStep === "SIGNUP") {
+					onSignUp(email, password);
+				} else if (res.success) {
+					window.location.href = "/"; //response.loginLink;
+				}
+			}
+			
 		} catch (e) {
-			setIsWaitlisted(true);
+			setUnsuccessMessage(`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`)
 			console.log(e);
 			setIsLoading(false);
 		}
@@ -125,21 +124,14 @@ export default function LoginModal(props: Props) {
 		>
 			<div className="relative max-w-md mx-auto">
 				<div className="bg-white rounded-2xl p-10 center">
-					{isWaitlisted ? (
+					{unsuccessMessage ? (
 						<>
 							{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
 							<p className="mt-2 text-md text-dark-400 text-center">
-								{`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`}
+								{unsuccessMessage}
 							</p>
 						</>
-					) : isUnauthorized ? (
-						<>
-							{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-							<p className="mt-2 text-md text-dark-400 text-center">
-								{`Please verify your email before logging in.`}
-							</p>
-						</>
-					) : (
+					)  : (
 						<>
 							<ElemLogo
 								mode="icon"
