@@ -10,11 +10,11 @@ import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { ElemButton } from "@/components/ElemButton";
 import {
-  IconCash,
-  IconSearch,
-  IconGrid,
-  IconList,
-  IconAnnotation,
+	IconCash,
+	IconSearch,
+	IconGrid,
+	IconList,
+	IconAnnotation,
 } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
@@ -31,9 +31,15 @@ import { Pagination } from "../components/Pagination";
 import { runGraphQl } from "../utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import {
+	getName,
+	getNewFollows,
+	getNewTempSentiment,
+	isFollowsExists,
+	reactOnSentiment,
+} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 
 type Props = {
 	vcFirmCount: number;
@@ -91,16 +97,16 @@ const Investors: NextPage<Props> = ({
 		});
 	}
 
-  const {
-    data: vcFirmsData,
-    error,
-    isLoading,
-  } = useGetVcFirmsQuery({
-    offset,
-    limit,
-    where: filters as Vc_Firms_Bool_Exp,
-    current_user: user?.id ?? 0,
-  });
+	const {
+		data: vcFirmsData,
+		error,
+		isLoading,
+	} = useGetVcFirmsQuery({
+		offset,
+		limit,
+		where: filters as Vc_Firms_Bool_Exp,
+		current_user: user?.id ?? 0,
+	});
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
@@ -127,6 +133,8 @@ const Investors: NextPage<Props> = ({
 			event.stopPropagation();
 			event.preventDefault();
 
+			setTemporary(vcFirm, sentiment, alreadyReacted);
+
 			const newSentiment = await reactOnSentiment({
 				vcfirm: vcFirm?.id!,
 				sentiment,
@@ -141,10 +149,14 @@ const Investors: NextPage<Props> = ({
 							"vcfirm"
 						) as Follows_Vc_Firms;
 
-						if (!alreadyReacted) item.follows.push(newFollows);
+						if (
+							!alreadyReacted &&
+							!isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)
+						)
+							item.follows.push(newFollows);
 						else
 							remove(item.follows, (list) => {
-								return getName(list.list! as Lists) === sentiment;
+								//return getName(list.list! as Lists) === sentiment
 							});
 
 						return { ...item, sentiment: newSentiment };
@@ -153,6 +165,38 @@ const Investors: NextPage<Props> = ({
 				});
 			});
 		};
+
+	const setTemporary = (
+		vcFirm: GetVcFirmsQuery["vc_firms"][0],
+		sentiment: string,
+		alreadyReacted: boolean
+	) => {
+		setVcFirms((prev) => {
+			return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+				if (item.id === vcFirm.id) {
+					const newSentiment = getNewTempSentiment(
+						{ ...item.sentiment },
+						sentiment,
+						alreadyReacted
+					);
+
+					const newFollows = getNewFollows(
+						sentiment,
+						"vcfirm"
+					) as Follows_Vc_Firms;
+
+					if (!alreadyReacted) item.follows.push(newFollows);
+					else
+						remove(item.follows, (list) => {
+							//return getName(list.list! as Lists) === sentiment;
+						});
+
+					return { ...item, sentiment: newSentiment };
+				}
+				return item;
+			}) as Vc_Firms[];
+		});
+	};
 
 	return (
 		<div>

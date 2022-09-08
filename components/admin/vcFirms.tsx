@@ -40,8 +40,8 @@ export const VcFirmList = () => (
       <TextField source="website" />
       <TextField source="linkedin" />
       <TextField source="status" />
-       {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
-      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0,20)}...` : record.overview} />
+      {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
+      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
       <TextField source="year_founded" />
       <TextField source="twitter" />
       <TextField source="location" />
@@ -68,7 +68,7 @@ export const VcFirmEdit = () => {
     var formdata = { ...data };
     const tagValue = (formdata.tags) ? formdata.tags : []
     const finalValue = (typeof tagValue === "string") ? tagValue.split(',') : tagValue
-    
+
     if (oldLogo) {
       //delete old file from s3
       deleteFile(oldLogo)
@@ -106,18 +106,43 @@ export const VcFirmEdit = () => {
     setLogo(null)
   }
   return (
-    <Edit title={<VcFirmTitle />} transform={transform}>
+    <Edit title={<VcFirmTitle />} transform={transform}
+      sx={{
+        '.MuiCardContent-root': {
+          '& > div': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            flexDirection: 'row !important',
+          },
+        },
+        '.MuiFormHelperText-root': {
+          display: 'none',
+        }
+      }}
+    >
       <SimpleForm>
-        <TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
+        <TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="name"
           validate={validateName}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
         />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="slug"
           validate={validateSlug}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
         />
         <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
@@ -127,42 +152,57 @@ export const VcFirmEdit = () => {
           <ImageField source="logo.url" title="Logo" />
         }
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          validate={validateUrl}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="linkedin"
-          validate={validateUrl}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="overview"
           multiline
         />
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="status"
           choices={status}
         />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          validate={validateUrl}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="location"
         />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
         />
-         <TextInput
+        <TextInput
           placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="tags"
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="website"
+          validate={validateUrl}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="linkedin"
+          validate={validateUrl}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="twitter"
+          validate={validateUrl}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
         />
       </SimpleForm>
     </Edit>
@@ -206,58 +246,98 @@ export const VcFirmCreate = () => {
   }
 
   return (
-    <Create title="Create a VC Firm" transform={transform}>
+    <Create title="Create a VC Firm" transform={transform}
+      sx={{
+        '.MuiCardContent-root': {
+          '& > div': {
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            flexDirection: 'row !important',
+          },
+        },
+        '.MuiFormHelperText-root': {
+          display: 'none',
+        }
+      }}
+    >
       <SimpleForm>
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="name"
           validate={validateName}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
         />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="slug"
           validate={validateSlug}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
         />
-        <FileInput onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+        <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
           <ImageField source="src" title="title" />
         </FileInput>
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="website"
-          validate={validateUrl}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="linkedin"
-          validate={validateUrl}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="overview"
           multiline
         />
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="status"
           choices={status}
         />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="twitter"
-          validate={validateUrl}
-        />
-        <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="location"
         />
         <TextInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="year_founded"
         />
-         <TextInput
+        <TextInput
           placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="tags"
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="website"
+          validate={validateUrl}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="linkedin"
+          validate={validateUrl}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
+        />
+        <TextInput
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="twitter"
+          validate={validateUrl}
+          sx={{
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
+            }
+          }}
         />
       </SimpleForm>
     </Create>

@@ -29,21 +29,21 @@ const filters = [
     />
   </ReferenceInput>,
   <ReferenceInput key="searchPerson" source="person_id" reference="people">
-  <AutocompleteInput
-    optionText={choice =>
-      `${choice.name}`
-    }
-  />
-</ReferenceInput>
+    <AutocompleteInput
+      optionText={choice =>
+        `${choice.name}`
+      }
+    />
+  </ReferenceInput>
 ];
 
 export const InvestorsList = () => (
   <List filters={filters}
-  sx={{
-		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
-      justifyContent: 'flex-start'
-		}
-	   }}
+    sx={{
+      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+        justifyContent: 'flex-start'
+      }
+    }}
   >
     <Datagrid>
       <EditButton />
@@ -78,44 +78,59 @@ const InvestorsTitle = ({ record }: TitleProps) => {
 };
 
 export const InvestorsEdit = () => (
-  <Edit title={<InvestorsTitle />}>
+  <Edit title={<InvestorsTitle />}
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
         choices={investorFunctionChoices}
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="start_date"
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
-     {/* <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+      {/* <TextInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="founder"
       /> */}
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
         choices={investorSeniorityChoices}
       />
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="title"
       />
     </SimpleForm>
@@ -123,44 +138,59 @@ export const InvestorsEdit = () => (
 );
 
 export const InvestorCreate = () => (
-  <Create title="Add an investor to a VC firm">
+  <Create title="Add an investor to a VC firm"
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="function"
         choices={investorFunctionChoices}
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="start_date"
       />
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="end_date"
       />
       {/* <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="founder"
       /> */}
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="seniority"
         choices={investorSeniorityChoices}
       />
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 
         source="title"
       />
