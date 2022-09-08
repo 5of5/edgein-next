@@ -811,37 +811,6 @@ export const IconEditPencil: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconEventDot: React.FC<IconProps> = ({ className, title }) => {
-	return (
-		<svg
-			className={className}
-			width="8"
-			height="8"
-			viewBox="0 0 8 8"
-			fill="none"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<circle cx="4" cy="4" r="4" fill="#C6C8FF" />
-		</svg>
-	);
-};
-
-export const IconEventLine: React.FC<IconProps> = ({ className, title }) => {
-	return (
-		<svg
-			className={className}
-			xmlns="http://www.w3.org/2000/svg"
-			fill="none"
-			viewBox="0 0 24 24"
-			strokeWidth="2"
-			height="460"
-		>
-			<title>{title ? title : "Line"}</title>
-			<path d="M0.5 0L0.5 460" stroke="#C6C8FF" strokeDasharray="6 6" />
-		</svg>
-	);
-};
-
 export const IconSort: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
