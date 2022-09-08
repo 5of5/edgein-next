@@ -26,21 +26,21 @@ const filters = [
   <TextInput key="search" type="text" source="round" label="Search in Round" resettable alwaysOn />,
   <TextInput key="searchNumbers" type="number" source="valuation,amount" label="Valuation, Amount" resettable />,
   <ReferenceInput key="searchCompany" source="company_id" reference="companies">
-        <AutocompleteInput
-            optionText={choice =>
-                `${choice.name}`
-            }
-        />
-    </ReferenceInput>
+    <AutocompleteInput
+      optionText={choice =>
+        `${choice.name}`
+      }
+    />
+  </ReferenceInput>
 ];
 
 export const InvestmentRoundsList = () => (
   <List filters={filters}
-  sx={{
-		'.css-1d00q76-MuiToolbar-root-RaListToolbar-root' : {
-      justifyContent: 'flex-start'
-		}
-	   }}
+    sx={{
+      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
+        justifyContent: 'flex-start'
+      }
+    }}
   >
     <Datagrid>
       <EditButton />
@@ -74,40 +74,55 @@ const InvestmentRoundsTitle = ({ record }: InvestmentRoundsTitleProps) => {
 };
 
 export const InvestmentRoundsEdit = () => (
-  <Edit title={<InvestmentRoundsTitle />}>
+  <Edit title={<InvestmentRoundsTitle />}
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         disabled
         source="id"
       />
       <ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
-      <DateInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="round_date" />
+      <DateInput className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="round_date" />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round"
         choices={roundChoices}
       />
       <NumberInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="amount"
       />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="currency"
         choices={currencyChoices}
       />
       <NumberInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="valuation"
       />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="status"
         choices={status}
       />
@@ -116,38 +131,53 @@ export const InvestmentRoundsEdit = () => (
 );
 
 export const InvestmentRoundsCreate = () => (
-  <Create title="Create a Investment Round">
+  <Create title="Create a Investment Round"
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <ReferenceInput label="Company" source="company_id" reference="companies">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <DateInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round_date"
       />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round"
         choices={roundChoices}
       />
       <NumberInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="amount"
       />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="currency"
         choices={currencyChoices}
       />
       <NumberInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="valuation"
       />
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="status"
         choices={status}
       />

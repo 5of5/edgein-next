@@ -79,10 +79,25 @@ const InvestmentsTitle = ({ record }: TitleProps) => {
 };
 
 export const InvestmentsEdit = () => (
-  <Edit title={<InvestmentsTitle />}>
+  <Edit title={<InvestmentsTitle />}
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         disabled
         source="id"
       />
@@ -92,7 +107,7 @@ export const InvestmentsEdit = () => (
         reference="people"
       >
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
@@ -102,18 +117,18 @@ export const InvestmentsEdit = () => (
         reference="investment_rounds"
       >
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="round"
         />
       </ReferenceInput>
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="status"
         choices={status}
       />
@@ -122,7 +137,22 @@ export const InvestmentsEdit = () => (
 );
 
 export const InvestmentsCreate = () => (
-  <Create title="Add a vc or angel to an Investment Round">
+  <Create title="Add a vc or angel to an Investment Round"
+    sx={{
+      '.MuiCardContent-root': {
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          flexDirection: 'row !important',
+        },
+      },
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <ReferenceInput
         label="Partner or Angel"
@@ -130,7 +160,7 @@ export const InvestmentsCreate = () => (
         reference="people"
       >
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
@@ -140,19 +170,19 @@ export const InvestmentsCreate = () => (
         reference="investment_rounds"
       >
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="round"
         />
       </ReferenceInput>
 
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <SelectInput
-          className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
         />
       </ReferenceInput>
       <SelectInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="status"
         choices={status}
       />

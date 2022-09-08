@@ -56,25 +56,37 @@ const CoinsTitle = ({ record }: TitleProps) => {
 };
 
 export const CoinsEdit = () => (
-	<Edit title={<CoinsTitle />}>
+	<Edit title={<CoinsTitle />}
+		sx={{
+			'.MuiFormHelperText-root': {
+				display: 'none',
+			}
+		}}
+	>
 		<SimpleForm>
-			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
-			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
-			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
+			<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" disabled source="id" />
+			<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
+			<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
 			<ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
-				<SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
+				<SelectInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
 			</ReferenceInput>
 		</SimpleForm>
 	</Edit>
 );
 
 export const CoinsCreate = () => (
-	<Create title="Create a Coin">
+	<Create title="Create a Coin"
+		sx={{
+			'.MuiFormHelperText-root': {
+				display: 'none',
+			}
+		}}
+	>
 		<SimpleForm>
-			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
-			<TextInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
+			<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="name" />
+			<TextInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="ticker" />
 			<ReferenceInput label="Blockchain" source="blockchain_id" reference="blockchains">
-				<SelectInput className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
+				<SelectInput className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" optionText="name" />
 			</ReferenceInput>
 		</SimpleForm>
 	</Create>
