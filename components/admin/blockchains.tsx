@@ -16,7 +16,8 @@ import {
   useCreate,
   SaveButton,
   Button,
-  useRedirect
+  useRedirect,
+  useGetList
 } from "react-admin";
 
 import GoogleIcon from '@mui/icons-material/Google';
@@ -58,22 +59,56 @@ const CustomToolbar = () => {
   );
 };
 
-export const BlockchainsList = () => (
-  <List filters={filters}
-    pagination={<PostPagination />}
-    sx={{
-      '.MuiToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <TextField source="id" />
-      <TextField source="name" />
-    </Datagrid>
-  </List>
-);
+export const BlockchainsList = () => {
+  const [customSort, setCustomSort] = useState({ field: 'id', order: 'ASC' })
+  const headers: string[] = [
+    'id', 'name'
+  ]
+  const { data } = useGetList(
+    'blockchains',
+    { pagination: { page: 1, perPage: 10 } }
+  );
+  let renderData = data?.map(v => {
+    let sum = 0
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum
+    }
+    return ({ ...v, counter: sum + '/2' })
+  })
+
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === 'ASC'
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+    } else {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+    }
+    return sortData
+  }
+  renderData = renderData && sortWithData(renderData)
+
+  return (
+    <List filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        '.MuiToolbar-root': {
+          justifyContent: 'flex-start'
+        }
+      }}
+    >
+      <Datagrid
+				data={renderData}
+				sort={customSort}
+				setSort={(value) => setCustomSort(value)}
+			>
+        <EditButton />
+        <TextField source="id" />
+        <TextField source="name" />
+				<TextField source="counter" />
+      </Datagrid>
+    </List>
+  )
+}
 
 interface TitleProps {
   record?: Record<string, string>;

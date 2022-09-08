@@ -65,33 +65,67 @@ const CustomToolbar = () => {
   );
 };
 
-export const VcFirmList = () => (
-  <List filters={filters}
-    pagination={<PostPagination />}
-    sx={{
-      '.MuiToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="slug" />
-      <ImageField source="logo.url" label="Logo" />
-      <TextField source="website" />
-      <TextField source="linkedin" />
-      <TextField source="status" />
-      {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
-      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
-      <TextField source="year_founded" />
-      <TextField source="twitter" />
-      <TextField source="location" />
-      <FunctionField source="tags" render={(record: any) => (record.tags) ? record.tags.join() : ''} />
-    </Datagrid>
-  </List>
-);
+export const VcFirmList = () => {
+  const [customSort, setCustomSort] = useState({ field: 'id', order: 'ASC' })
+  const headers: string[] = [
+    'id', 'name', 'slug', 'logo', 'website', 'linkedin', 'status', 'overview', 'year_founded', 'twitter', 'location', 'tags'
+  ]
+  const { data } = useGetList(
+    'vc_firms',
+    { pagination: { page: 1, perPage: 10 } }
+  );
+  let renderData = data?.map(v => {
+    let sum = 0
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum
+    }
+    return ({ ...v, counter: sum + '/12' })
+  })
+
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === 'ASC'
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+    } else {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+    }
+    return sortData
+  }
+  renderData = renderData && sortWithData(renderData)
+
+  return (
+    <List filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        '.MuiToolbar-root': {
+          justifyContent: 'flex-start'
+        }
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        sort={customSort}
+        setSort={(value) => setCustomSort(value)}
+      >
+        <EditButton />
+        <TextField source="id" />
+        <TextField source="name" />
+        <TextField source="slug" />
+        <ImageField source="logo.url" label="Logo" />
+        <TextField source="website" />
+        <TextField source="linkedin" />
+        <TextField source="status" />
+        {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
+        <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
+        <TextField source="year_founded" />
+        <TextField source="twitter" />
+        <TextField source="location" />
+        <FunctionField source="tags" render={(record: any) => (record.tags) ? record.tags.join() : ''} />
+        <TextField source="counter" />
+      </Datagrid>
+    </List>
+  )
+}
 
 interface TitleProps {
   record?: Record<string, string>;

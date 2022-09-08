@@ -18,7 +18,8 @@ import {
   useCreate,
   SaveButton,
   useRedirect,
-  Button
+  Button,
+  useGetList
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { status } from "../../utils/constants"
@@ -77,35 +78,69 @@ const CustomToolbar = () => {
   );
 };
 
-export const InvestmentsList = () => (
-  <List filters={filters}
-    pagination={<PostPagination />}
-    sx={{
-      '.MuiToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <TextField source="id" />
-      <ReferenceField label="Partner" source="person_id" reference="people">
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField
-        label="Round"
-        source="round_id"
-        reference="investment_rounds"
+export const InvestmentsList = () => {
+  const [customSort, setCustomSort] = React.useState({ field: 'id', order: 'ASC' })
+  const headers: string[] = [
+    'id', 'person_id', 'round_id', 'vc_firm_id', 'status'
+  ]
+  const { data } = useGetList(
+    'investments',
+    { pagination: { page: 1, perPage: 10 } }
+  );
+  let renderData = data?.map(v => {
+    let sum = 0
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum
+    }
+    return ({ ...v, counter: sum + '/5' })
+  })
+
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === 'ASC'
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+    } else {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+    }
+    return sortData
+  }
+  renderData = renderData && sortWithData(renderData)
+
+  return (
+    <List filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        '.MuiToolbar-root': {
+          justifyContent: 'flex-start'
+        }
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        sort={customSort}
+        setSort={(value) => setCustomSort(value)}
       >
-        <TextField source="round" />
-      </ReferenceField>
-      <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">
-        <TextField source="name" />
-      </ReferenceField>
-      <TextField source="status" />
-    </Datagrid>
-  </List>
-);
+        <EditButton />
+        <TextField source="id" />
+        <ReferenceField label="Partner" source="person_id" reference="people">
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField
+          label="Round"
+          source="round_id"
+          reference="investment_rounds"
+        >
+          <TextField source="round" />
+        </ReferenceField>
+        <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">
+          <TextField source="name" />
+        </ReferenceField>
+        <TextField source="status" />
+        <TextField source="counter" />
+      </Datagrid>
+    </List>
+  )
+}
 
 interface TitleProps {
   record?: Record<string, string>;

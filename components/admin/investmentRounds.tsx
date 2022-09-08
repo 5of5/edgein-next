@@ -24,7 +24,8 @@ import {
   useCreate,
   SaveButton,
   useRedirect,
-  Button
+  Button,
+  useGetList
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { roundChoices, currencyChoices, status } from "../../utils/constants"
@@ -70,37 +71,67 @@ const CustomToolbar = () => {
   );
 };
 
-export const InvestmentRoundsList = () => (
-  <List filters={filters}
-    pagination={<PostPagination />}
-    sx={{
-      '.MuiToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <TextField source="id" />
-      <ReferenceField label="Company" source="company_id" reference="companies">
-        <TextField source="name" />
-      </ReferenceField>
-      <DateField source="round_date" />
-      <TextField source="round" />
-      {/* <SelectField
-        source="round"
-        choices={roundChoices}
-      /> */}
-      <NumberField source="amount" />
-      <SelectField
-        source="currency"
-        choices={currencyChoices}
-      />
-      <NumberField source="valuation" />
-      <TextField source="status" />
-    </Datagrid>
-  </List>
-);
+export const InvestmentRoundsList = () => {
+  const [customSort, setCustomSort] = React.useState({ field: 'id', order: 'ASC' })
+  const headers: string[] = [
+    'id', 'company_id', 'round_date', 'round', 'amount', 'currency', 'valuation', 'status'
+  ]
+  const { data } = useGetList(
+    'investment_rounds',
+    { pagination: { page: 1, perPage: 10 } }
+  );
+  let renderData = data?.map(v => {
+    let sum = 0
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum
+    }
+    return ({ ...v, counter: sum + '/8' })
+  })
+
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === 'ASC'
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+    } else {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+    }
+    return sortData
+  }
+  renderData = renderData && sortWithData(renderData)
+
+  return (
+    <List filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        '.MuiToolbar-root': {
+          justifyContent: 'flex-start'
+        }
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        sort={customSort}
+        setSort={(value) => setCustomSort(value)}
+      >
+        <EditButton />
+        <TextField source="id" />
+        <ReferenceField label="Company" source="company_id" reference="companies">
+          <TextField source="name" />
+        </ReferenceField>
+        <DateField source="round_date" />
+        <TextField source="round" />
+        <NumberField source="amount" />
+        <SelectField
+          source="currency"
+          choices={currencyChoices}
+        />
+        <NumberField source="valuation" />
+        <TextField source="status" />
+        <TextField source="counter" />
+      </Datagrid>
+    </List>
+  )
+}
 
 interface InvestmentRoundsTitleProps {
   record?: Record<string, string>;

@@ -24,7 +24,8 @@ import {
   useRedirect,
   Toolbar,
   SaveButton,
-  Button
+  Button,
+  useGetList
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { functionChoicesTM, seniorityChoicesTM } from "../../utils/constants";
@@ -76,38 +77,73 @@ const CustomToolbar = () => {
   );
 };
 
-export const TeamMembersList = () => (
-  <List filters={filters}
-    pagination={<PostPagination />}
-    sx={{
-      '.MuiToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <ReferenceField label="Company" source="company_id" reference="companies">
-        <TextField source="name" />
-      </ReferenceField>
-      <ReferenceField label="Perons" source="person_id" reference="people">
-        <TextField source="name" />
-      </ReferenceField>
-      <SelectField
-        source="function"
-        choices={functionChoicesTM}
-      />
-      <DateField source="start_date" />
-      <DateField source="end_date" />
-      <BooleanField source="founder" />
-      <SelectField
-        source="seniority"
-        choices={seniorityChoicesTM}
-      />
-      <TextField source="title" />
-    </Datagrid>
-  </List>
-);
+export const TeamMembersList = () => {
+  const [customSort, setCustomSort] = React.useState({ field: 'id', order: 'ASC' })
+  const headers: string[] = [
+    'id', 'company_id', 'person_id', 'function', 'start_date', 'end_date', 'founder', 'seniority', 'title'
+  ]
+  const { data } = useGetList(
+    'team_members',
+    { pagination: { page: 1, perPage: 10 } }
+  );
+  let renderData = data?.map(v => {
+    let sum = 0
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum
+    }
+    return ({ ...v, counter: sum + '/9' })
+  })
+
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === 'ASC'
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+    } else {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+    }
+    return sortData
+  }
+  renderData = renderData && sortWithData(renderData)
+
+  return (
+    <List filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        '.MuiToolbar-root': {
+          justifyContent: 'flex-start'
+        }
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        sort={customSort}
+        setSort={(value) => setCustomSort(value)}
+      >
+        <EditButton />
+        <TextField source="id" />
+        <ReferenceField label="Company" source="company_id" reference="companies">
+          <TextField source="name" />
+        </ReferenceField>
+        <ReferenceField label="Perons" source="person_id" reference="people">
+          <TextField source="name" />
+        </ReferenceField>
+        <SelectField
+          source="function"
+          choices={functionChoicesTM}
+        />
+        <DateField source="start_date" />
+        <DateField source="end_date" />
+        <BooleanField source="founder" />
+        <SelectField
+          source="seniority"
+          choices={seniorityChoicesTM}
+        />
+        <TextField source="title" />
+        <TextField source="counter" />
+      </Datagrid>
+    </List>
+  )
+}
 
 interface TitleProps {
   record?: Record<string, string>;

@@ -53,53 +53,111 @@ const CustomToolbar = () => {
   );
 };
 
-export const CompanyList = () => (
+export const CompanyList = () => {
+  const [customSort, setCustomSort] = useState({ field: 'id', order: 'ASC' })
+  const headers: string[] = [
+    'id', 'name', 'slug', 'logo', 'layer',
+    "layer_detail", "coin_id",
+    "total_employees",
+    "github",
+    "notes",
+    "overview",
+    "website",
+    "careers_page",
+    "company_linkedin",
+    "year_founded",
+    "investor_amount",
+    "total_valuation",
+    "white_paper",
+    "market_verified",
+    "velocity_linkedin",
+    "velocity_token",
+    "status",
+    "aliases",
+    "twitter",
+    "location",
+    "discord",
+    "glassdoor",
+    "tags",
+  ]
+  const { data } = useGetList(
+    'companies',
+    { pagination: { page: 1, perPage: 10 } }
+  );
+  let renderData = data?.map(v => {
+    let sum = 0
+    for (var index in v) {
+      if (index !== 'tags')
+        v[index] && headers.includes(index) ? sum++ : sum
+      else v[index] && headers.includes(index) && v[index].length > 0 ? sum++ : sum
+    }
+    return ({ ...v, counter: sum + '/28' })
+  })
 
-  <List filters={filters}
-    pagination={<PostPagination />}
-    sx={{
-      '.MuiToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="slug" />
-      <ImageField source="logo.url" label="Logo" />
-      <SelectField source="layer" choices={companyLayerChoices} />
-      <TextField source="layer_detail" />
-      <ReferenceField label="Coin" source="coin_id" reference="coins">
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === 'ASC'
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+    } else {
+      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+    }
+    return sortData
+  }
+  renderData = renderData && sortWithData(renderData)
+
+  return (
+
+    <List filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        '.MuiToolbar-root': {
+          justifyContent: 'flex-start'
+        }
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        sort={customSort}
+        setSort={(value) => setCustomSort(value)}
+      >
+        <EditButton />
+        <TextField source="id" />
         <TextField source="name" />
-      </ReferenceField>
-      <NumberField source="total_employees" />
-      <TextField source="github" />
-      {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
-      <FunctionField cellClassName="truncate" source="notes" render={(record: any) => (record.notes && record.notes.length > 25) ? `${record.notes.substring(0, 20)}...` : record.notes} />
-      {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
-      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
-      <TextField source="website" />
-      <TextField source="careers_page" />
-      <TextField source="company_linkedin" />
-      <TextField source="year_founded" />
-      <TextField source="investor_amount" />
-      <TextField source="total_valuation" />
-      <TextField source="white_paper" />
-      <TextField source="market_verified" />
-      <TextField source="velocity_linkedin" />
-      <TextField source="velocity_token" />
-      <TextField source="status" />
-      <TextField source="aliases" />
-      <TextField source="twitter" />
-      <TextField source="location" />
-      <TextField source="discord" />
-      <TextField source="glassdoor" />
-      <FunctionField source="tags" render={(record: any) => (record.tags) ? record.tags.join() : ''} />
-    </Datagrid>
-  </List>
-);
+        <TextField source="slug" />
+        <ImageField source="logo.url" label="Logo" />
+        <SelectField source="layer" choices={companyLayerChoices} />
+        <TextField source="layer_detail" />
+        <ReferenceField label="Coin" source="coin_id" reference="coins">
+          <TextField source="name" />
+        </ReferenceField>
+        <NumberField source="total_employees" />
+        <TextField source="github" />
+        {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
+        <FunctionField cellClassName="truncate" source="notes" render={(record: any) => (record.notes && record.notes.length > 25) ? `${record.notes.substring(0, 20)}...` : record.notes} />
+        {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
+        <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
+        <TextField source="website" />
+        <TextField source="careers_page" />
+        <TextField source="company_linkedin" />
+        <TextField source="year_founded" />
+        <TextField source="investor_amount" />
+        <TextField source="total_valuation" />
+        <TextField source="white_paper" />
+        <TextField source="market_verified" />
+        <TextField source="velocity_linkedin" />
+        <TextField source="velocity_token" />
+        <TextField source="status" />
+        <TextField source="aliases" />
+        <TextField source="twitter" />
+        <TextField source="location" />
+        <TextField source="discord" />
+        <TextField source="glassdoor" />
+        <FunctionField source="tags" render={(record: any) => (record.tags) ? record.tags.join() : ''} />
+        <TextField source="counter" />
+      </Datagrid>
+    </List>
+  )
+}
 
 interface CompanyTitleProps {
   record?: Record<string, string>;
