@@ -278,7 +278,6 @@ export const TheNavbar = () => {
 								setIndustryTags(industryTags)
 								setOnBoardingStep(1)
 							}}
-							user={user}
 						/>}
 					{(onBoardingStep === 3) &&
 						<OnBoardingStep3Modal

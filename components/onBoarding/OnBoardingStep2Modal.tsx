@@ -13,12 +13,6 @@ type Props = {
     onClose: () => void,
     onNext: (locationTags: string[], industryTags: string[]) => void,
     onBack: (locationTags: string[], industryTags: string[]) => void,
-    user: {
-        name?:string,
-        email?: string,
-        id:number,
-        role:string
-    } | null
 }
 
 export default function OnBoardingStep2Modal(props: Props) {

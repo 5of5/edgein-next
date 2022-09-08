@@ -11,7 +11,7 @@ type Props = {
     onClose: () => void,
     onNext: (selectedOption: string) => void,
     user: {
-        name?:string,
+        display_name?:string,
         email?: string,
         id:number,
         role:string
@@ -44,7 +44,7 @@ export default function OnBoardingStep1Modal(props : Props) {
         >
             <div className="p-10">
                 <h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
-                    {`Hi ${(props.user && props.user.name) ? props.user.name : (props.user) ? props.user.email: ''}, How will you use EdgeIn?`}
+                    {`Hi ${(props.user && props.user.display_name) ? props.user.display_name : (props.user) ? props.user.email: ''}, How will you use EdgeIn?`}
                 </h3>
                 <p className="text-sm text-slate-500">Step 1 of 3</p>
                 <div className="mt-4 text-slate-600 grow line-clamp-3 text-base">

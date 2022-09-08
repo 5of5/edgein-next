@@ -19,7 +19,7 @@ type Props = {
     onNext: () => void,
     onBack: () => void,
     user: {
-        name?:string,
+        display_name?:string,
         email?: string,
         id:number,
         role:string
