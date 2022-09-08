@@ -27,10 +27,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const list = await upsertList(listname, user, token)
 
   const reactions = await Promise.all(map(req.body.companies, async (resource) => {
-    // insert follow only if the follows don't exists
-    const follow = await upsertFollow(list, resource.company, resourceType, user, token)
 
-    const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resource.company, token, sentimentType, Boolean(follow), false)
+    const resourceId = resourceType === 'companies' ? resource.company : resource.vcfirm
+
+    // insert follow only if the follows don't exists
+    const follow = await upsertFollow(list, resourceId, resourceType, user, token)
+
+    const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), false)
 
     if (revalidatePath) {
       await res.unstable_revalidate(revalidatePath)
