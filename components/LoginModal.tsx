@@ -73,22 +73,29 @@ export default function LoginModal(props: Props) {
 				},
 				body: JSON.stringify({ email, password }),
 			});
-			if (response.status === 401) {
-				setUnsuccessMessage("Please verify your email before logging in.")
-			}else if(response.status === 403){
-				setUnsuccessMessage("Wrong email or password.")
+			
+			if (response.status === 401 || response.status === 403) {
+				const responseText = await response.clone().text();
+				setUnsuccessMessage(responseText)
 			}
-			else{
-				const res = await response.json();
-				if (res.nextStep && res.nextStep === "SIGNUP") {
-					onSignUp(email, password);
-				} else if (res.success) {
-					window.location.href = "/"; //response.loginLink;
+			else if(response.status ===  404){ // 404 returns in both cases
+				try{
+					const res = await response.clone().json();
+					if (res.nextStep && res.nextStep === "SIGNUP") {
+						onSignUp(email, password);
+					}
+				}catch(err){
+					const waitlistRes = await response.clone().text();
+					if(waitlistRes === "Invalid Email"){
+						setUnsuccessMessage(`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`)
+					}
 				}
+			}
+			else if(response.status === 200){
+				window.location.href = "/";
 			}
 			
 		} catch (e) {
-			setUnsuccessMessage(`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`)
 			console.log(e);
 			setIsLoading(false);
 		}
