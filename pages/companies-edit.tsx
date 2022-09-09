@@ -13,8 +13,21 @@ import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
 import { IconCamera } from "@/components/IconCamera";
 import { InputSearch } from "@/components/InputSearch";
-export default function Profile() {
-    const { user, error, loading } = useAuth();
+
+type Props = {
+    children: any
+    wrapperClass: string
+}
+
+const GridTwelve: React.FC<Props> = ({ children, wrapperClass }) => {
+    return (
+        <div className={`grid grid-cols-12 gap-2${wrapperClass ? ` ${wrapperClass}` : ''}`}>
+            {children}
+        </div>
+    )
+}
+
+export default function CompanyEdit() {
 
     return (
         <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -61,7 +74,7 @@ export default function Profile() {
                 </div>
 
                 <div className="col-span-3">
-                    <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 pb-3">
+                    <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 pb-3 z-50">
                         <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                             Edit Chia
                         </h2>
@@ -90,123 +103,145 @@ export default function Profile() {
                         </div>
 
                         {/* profile image */}
-                        <div className="flex mt-4 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Profile Image*</h2>
-                            <div className="flex">
-                                <div className=" relative">
-                                    <Image src={company} alt="person image">
-                                    </Image>
-                                    <span className="absolute right-0 bottom-2 cursor-pointer bg-gray-250 border-none rounded-3xl p-2"> <IconCamera /></span>
-                                </div>
-                                <div className="ml-8 mt-5">
-                                    <ul>
-                                        <li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">Square images work best (at least 300 x 300 pixels) </li>
-                                        <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Crop your image before you upload</li>
-                                        <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Image upoloads are limited to 2MB</li>
-                                        <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Accepted image types JPG SVG AND PNG</li>
-                                    </ul>
+                        <GridTwelve wrapperClass="mt-4 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Profile Image*</h2>
+                            </div>
+                            <div className="col-span-8">
+                                <div className="flex">
+                                    <div className=" relative">
+                                        <Image src={company} alt="person image">
+                                        </Image>
+                                        <span className="absolute right-0 bottom-2 cursor-pointer bg-gray-250 border-none rounded-3xl p-2"> <IconCamera /></span>
+                                    </div>
+                                    <div className="ml-8 mt-5">
+                                        <ul>
+                                            <li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">Square images work best (at least 300 x 300 pixels) </li>
+                                            <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Crop your image before you upload</li>
+                                            <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Image upoloads are limited to 2MB</li>
+                                            <li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Accepted image types JPG SVG AND PNG</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* name section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Name*</h2>
-                            <div className="w-96">
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Name*</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
                                     placeholder="Chia"
-                                    className="placeholder:text-gray-500"
+                                    className="placeholder:text-slate-300 w-80"
 
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* description section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Description*</h2>
-                            <div className="w-96">
-                                <InputTextarea
 
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Description*</h2>
+                            </div>
+                            <div className="col-span-8">
+                                <InputTextarea
                                     placeholder="Chia Network is building a better blockchain and smart transaction."
+
                                 />
                             </div>
-
-
-
-                        </div>
+                        </GridTwelve>
 
 
                         {/* company Type */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Company Type*</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Company Type*</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputSelect
                                     options={[]}
                                     placeholder="Layer 1 programmable/Blockchain/Netw..."
-
+                                    className="w-80"
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* industry */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Industry*</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Industry*</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputSearch
-                                    className=""
+                                    className="w-80"
                                     placeholder="Layer 1 programmable/Blockchain/Netw..."
+
                                 />
                                 <div className="mt-2 mb-3">
                                     <span className="border px-2.5 py-2 text-purple-50 rounded-2xl border-purple-50 bg-slate-400 font-Metropolis font-bold text-xs ">Financial Software X</span>
                                     <span className="border px-2.5 py-2 text-purple-50 rounded-2xl border-purple-50 bg-slate-400 font-Metropolis font-bold text-xs ml-2">Fintech X</span>
                                 </div>
                             </div>
-
-                        </div>
+                        </GridTwelve>
 
                         {/* crypto token  */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Crypto Token Ticker</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Crypto Token Ticker</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
                                     placeholder="XCH"
-                                    className="placeholder:text-gray-500"
-
+                                    className="placeholder:text-slate-300 w-80"
 
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* found date */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Founded Date*</h2>
-                            <div className="w-96 flex ">
-                                <InputSelect
-                                    options={[]}
-                                    className="text-gray-100"
-                                    placeholder="Layer 1 programmable/Blockchain/Netw..."
-                                />
 
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Founded Date*</h2>
                             </div>
-                        </div>
+                            <div className="col-span-8">
+                                <InputText
+                                    onChange={() => { }}
+                                    value=""
+                                    name=""
+                                    placeholder="Layer 1 programmable/Blockchain/Netw..."
+                                    className="placeholder:text-slate-300 w-80"
+
+                                />
+                            </div>
+                        </GridTwelve>
 
                         {/* Location  */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Location</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Location</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
                                     placeholder="San Francisco"
                                     label="City"
-                                    className="placeholder:text-gray-500 mb-5"
+                                    className="placeholder:text-slate-300 mb-5"
                                 />
                                 <InputText
                                     onChange={() => { }}
@@ -214,139 +249,174 @@ export default function Profile() {
                                     name=""
                                     placeholder="United State USA"
                                     label="Country"
-                                    className="placeholder:text-gray-500"
+                                    className="placeholder:text-slate-300"
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* employee  */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Number of Employees</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Number of Employees</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    placeholder="750"
-                                    className="placeholder:text-gray-500"
+                                    placeholder="745"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
                         {/* whitepaper section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">White Paper</h2>
-                            <div className="w-96">
-                                <InputText
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">White Paper</h2>
+                            </div>
+                            <div className="col-span-8">
+                                {/* <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    className="placeholder:text-gray-500"
-                                    placeholder="whitepaper"
-                                />
+                                    placeholder="Layer 1 programmable/Blockchain/Netw..."
+                                    className="placeholder:text-slate-300 w-80"
+
+                                /> */}
+                                <input type="file" placeholder="Browse"/>
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* website section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Website URL*</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Website URL*</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    placeholder="https://www.website.com"
-                                    className="placeholder:text-gray-500"
+                                    placeholder="www.website.com"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* LinkedIn section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">LinkedIN URL</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">LinkedIn URL</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
                                     placeholder="https://linkedin.com"
-                                    className="placeholder:text-gray-500"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* Github section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Github URL</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Github URL</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
                                     placeholder="https://github.com"
-                                    className="placeholder:text-gray-500"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* tWitter section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Twitter URL</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Twitter URL</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    className="placeholder:text-gray-500"
-                                    placeholder="https://twitter.com"
+                                    placeholder="https://www.twitter.com"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
                         {/* discord section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Discord URL</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Discord URL</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    placeholder="https://discord.com"
-                                    className="placeholder:text-gray-500"
+                                    placeholder="https://www.discord.com"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
 
                         {/* glassdoor section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Glassdoor URL</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Glassdoor URL</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    placeholder="https://glassdoor.com"
-                                    className="placeholder:text-gray-500"
+                                    placeholder="https://www.glassdoor.com"
+                                    className="placeholder:text-slate-300 w-80"
+
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
 
                         {/* career section */}
-                        <div className="flex items-center mt-6 mb-2 border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Careers URL</h2>
-                            <div className="w-96">
+
+                        <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
+                            <div className="col-span-3">
+                                <h2 className="text-dark-500 font-bold text-md w-40">Careers URL</h2>
+                            </div>
+                            <div className="col-span-8">
                                 <InputText
                                     onChange={() => { }}
                                     value=""
                                     name=""
-                                    placeholder="https://careers.com"
-                                    className="placeholder:text-gray-500"
-
+                                    placeholder="htpps://www.careers.coom"
+                                    className="placeholder:text-slate-300 w-80"
 
                                 />
                             </div>
-                        </div>
+                        </GridTwelve>
 
 
                     </div>
