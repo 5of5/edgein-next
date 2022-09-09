@@ -1,4 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
+import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC } from "react";
@@ -12,7 +13,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
   const router = useRouter()
 
   const getActiveClass = (path: string) => {
-    return path === router.asPath ? ' bg-slate-200 rounded-xl -ml-2 pl-2' : ''
+    return path === router.asPath ? ' bg-slate-200 rounded-xl pl-2' : ''
   }
 
   return (
@@ -21,7 +22,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
         <h3 className="text-xl font-bold py-1 text-dark-500">My EdgeIn</h3>
         <ul className="flex flex-col">
           {user?.profileName && <li
-            className={`py-2 text-slate-600 inline-flex items-center${getActiveClass('/profile')}`}
+            className={`py-2 text-slate-600 inline-flex items-center${getActiveClass('/profile/')}`}
             role="button"
           >
             <ElemPhoto
@@ -32,7 +33,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
             />
             <Link href={`/profile`}>
               <a className="inline-flex items-center">
-                {user?.profileName}
+                {truncate(user?.profileName, {length: 15})}
               </a>
             </Link>
           </li>}

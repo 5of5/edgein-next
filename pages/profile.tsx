@@ -14,6 +14,7 @@ import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload"
 import { uploadFile, deleteFile } from '@/utils/fileFunctions';
 import { InputDate } from "@/components/InputDate"
 import { GetStaticProps } from "next"
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
 
 const emptyTeamMember = {
 	startDate: null,
@@ -31,7 +32,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const { user } = useAuth()
 
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	
+
 	const [person, setPerson] = useState<People>()
 	const [editName, setEditName] = useState(false)
 	const [editEmail, setEditEmail] = useState(false)
@@ -463,15 +464,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<div className="grid grid-cols-4 gap-4">
-				<div className="col-span-1">
-					<ElemMyListsMenu
-						user={user}
-					/>
-				</div>
-
+			<DashboardLayout>
 				<div className="col-span-3">
-					<div className="max-w-6xl bg-white rounded-lg p-5">
+					<div className="bg-white rounded-lg p-5">
 						<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
 							<h2 className="text-dark-500 font-bold text-xl">Personal Profile</h2>
 							<ElemButton btn="white" className="text-dark-500 font-bold  text-md" arrow>View Profile</ElemButton>
@@ -984,8 +979,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 					</div>
 				</div>
-
-			</div>
+			</DashboardLayout>
 		</div>
 	);
 }

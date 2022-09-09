@@ -142,7 +142,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 					</Dialog>
 				</Transition.Root>
 
-				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:absolute md:inset-y-0">
+				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:absolute md:inset-y-0 mr-4">
 					<div className="pt-7 flex flex-col flex-grow overflow-y-auto">
 						<div className="flex-grow flex flex-col">
 							<nav className="space-y-2 border-l border-slate-200">
@@ -152,7 +152,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 					</div>
 				</div>
 
-				<div className="md:pl-24 lg:pl-52">
+				<div className="md:pl-28 lg:pl-56">
 					<div className="max-w-4xl mx-auto flex flex-col xl:px-0">
 						<main className="flex-1">
 							<div className="py-6">
