@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
 import { runGraphQl, formatDate, truncateWords } from "../../utils";
@@ -138,24 +138,25 @@ const Event: NextPage<Props> = ({ event }) => {
 	);
 };
 
-export async function getStaticPaths() {
-	return {
-		paths: [],
-		fallback: true, // false or 'blocking'
-	}
-	// const {
-	// 	data: events,
-	// } = await runGraphQl<{events?:{slug:string}[]}>("{ events { slug }}");
+// export async function getStaticPaths() {
+// 	return {
+// 		paths: [],
+// 		fallback: true, // false or 'blocking'
+// 	}
+// /*	const {
+// 		data: events,
+// 	} = await runGraphQl<{events?:{slug:string}[]}>("{ events { slug }}");
 
-	// return {
-	// 	paths: events?.events?.
-	// 		filter((ev: { slug: string }) => ev.slug)
-	// 		.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
-	// 	fallback: true, // false or 'blocking'
-	// };
-}
+// 	return {
+// 		paths: events?.events?.
+// 			filter((ev: { slug: string }) => ev.slug)
+// 			.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
+// 		fallback: true, // false or 'blocking'
+// 	};
+// */	
+// }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const gql = `{
     events(slug: "${context.params?.eventId}") {
       id

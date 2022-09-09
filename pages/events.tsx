@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -155,7 +155,7 @@ const Events: NextPage<Props> = ({ events, sortEvents }) => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	// const { data: events } = await runGraphQl<{events:Record<string, any>[]}>(
 	// 	'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
 	// );

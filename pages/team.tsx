@@ -1,5 +1,5 @@
 import React from "react";
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 
@@ -52,7 +52,7 @@ const Team: NextPage<Props> = ({ team }) => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	const redg = "/redg-snodgrass.jpg";
 	const ashley = "/ashley-brown.jpg";
 	const raymond = "/raymond-l-aleman.jpg";

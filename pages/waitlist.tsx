@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useFormspark } from "@formspark/use-formspark";
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { ElemButton } from "../components/ElemButton";
 import { InputText } from "../components/InputText";
 
@@ -87,7 +87,7 @@ const Waitlist: NextPage = ({}) => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	return {
 		props: {
 			metaTitle: "Join the waiting list - EdgeIn.io",

@@ -21,7 +21,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { runGraphQl } from "@/utils";
 import { has } from "lodash";
-import { GetStaticProps, NextPage } from "next";
+import { GetStaticProps, NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -169,22 +169,22 @@ const MyList: NextPage<Props> = ({
   );
 };
 
-export async function getStaticPaths() {
-  const { data: follows } = await runGraphQl<GetFollowsListsStaticPathsQuery>(
-    GetFollowsListsStaticPathsDocument
-  );
+// export async function getStaticPaths() {
+//   const { data: follows } = await runGraphQl<GetFollowsListsStaticPathsQuery>(
+//     GetFollowsListsStaticPathsDocument
+//   );
 
-  const paths = follows?.follows
-    ?.filter((follow) => follow.list_id)
-    .map((follow) => ({ params: { listId: follow.list_id?.toString() } }))
+//   const paths = follows?.follows
+//     ?.filter((follow) => follow.list_id)
+//     .map((follow) => ({ params: { listId: follow.list_id?.toString() } }))
 
-  return {
-    paths,
-    fallback: true, // false or 'blocking'
-  };
-}
+//   return {
+//     paths,
+//     fallback: true, // false or 'blocking'
+//   };
+// }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const { data: vcFirms } = await runGraphQl<GetVcFirmsByListIdQuery>(
     GetVcFirmsByListIdDocument,
     { list_id: context.params?.listId }
