@@ -16,10 +16,12 @@ import { useHotkeys } from "react-hotkeys-hook";
 import OnBoardingStep1Modal from "./onBoarding/OnBoardingStep1Modal";
 import OnBoardingStep2Modal from "./onBoarding/OnBoardingStep2Modal";
 import OnBoardingStep3Modal from "./onBoarding/OnBoardingStep3Modal";
+import { useWeb3Auth } from "../services/web3auth";
 
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
+	 const { provider, login, logout, getUserInfo, getAccounts, getBalance, signMessage, signTransaction, signAndSendTransaction, web3Auth, chain } = useWeb3Auth();
 
 	const [showLoginPopup, setShowLoginPopup] = useState(false)
 	const [showSignUp, setShowSignUp] = useState(false)
@@ -47,9 +49,13 @@ export const TheNavbar = () => {
 	}
 
 	useEffect(() => {
-		if(!loading && user && user.isFirstLogin){
-			showOnBoarding()
+		if(!loading && user){
+			
+			login(user.auth0_token)
 		}
+		// if(!loading && user && user.isFirstLogin){
+		// 	showOnBoarding()
+		// }
 	}, [loading,user])
 
 	const siteNav = [
@@ -76,7 +82,7 @@ export const TheNavbar = () => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ code, redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL }),
-            }).then(res => res.json());
+			}).then(res => res.json());
            	window.location.href = "/";
         } catch (e) {
             console.log(e);
@@ -92,21 +98,21 @@ export const TheNavbar = () => {
 		}
 	}, [router.query.code])
 
-	const logout = async () => {
-		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-		magic.user.logout();
-		const authRequest = await fetch("/api/logout/", {
-			method: "POST",
-		});
-		if (authRequest.ok) {
-			// We successfully logged in, our API
-			// set authorization cookies and now we
-			// can redirect to the dashboard!
-			location.href = "/login/?loggedout";
-		} else {
-			/* handle errors */
-		}
-	};
+	// const logout = async () => {
+	// 	const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
+	// 	magic.user.logout();
+	// 	const authRequest = await fetch("/api/logout/", {
+	// 		method: "POST",
+	// 	});
+	// 	if (authRequest.ok) {
+	// 		// We successfully logged in, our API
+	// 		// set authorization cookies and now we
+	// 		// can redirect to the dashboard!
+	// 		location.href = "/login/?loggedout";
+	// 	} else {
+	// 		/* handle errors */
+	// 	}
+	// };
 
 	const [isActive, setActive] = useState(false);
 

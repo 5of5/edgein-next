@@ -5,7 +5,6 @@ import Modal from "react-modal";
 import { ElemLogo } from "./ElemLogo";
 import { IconLinkedIn } from "./Icons";
 const validator = require("validator");
-import { useWeb3Auth } from "../services/web3auth";
 
 Modal.setAppElement("#modal-root");
 
@@ -33,7 +32,7 @@ export default function LoginModal(props: Props) {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [unsuccessMessage, setUnsuccessMessage] = useState('')
 
-	  const { provider, login, logout, getUserInfo, getAccounts, getBalance, signMessage, signTransaction, signAndSendTransaction, web3Auth, chain } = useWeb3Auth();
+	 
 
 	const validateEmail = (value: string) => {
 		setEmail(value);
@@ -97,9 +96,9 @@ export default function LoginModal(props: Props) {
 				}
 			}
 			else if(response.status === 200){
-			//	window.location.href = "/";
-			  props.onClose()
-                login()
+				window.location.href = "/";
+			  //props.onClose()
+                //login()
 			}
 			
 		} catch (e) {

@@ -24,6 +24,7 @@
 		"@magic-sdk/admin": "^1.4.1",
 		"@tailwindcss/line-clamp": "^0.4.0",
 		"@types/qs": "^6.9.7",
+		"@web3auth/core": "^2.1.2",
 		"@web3auth/solana-provider": "^2.0.0",
 		"@web3auth/web3auth": "^2.0.2",
 		"algoliasearch": "^4.14.2",

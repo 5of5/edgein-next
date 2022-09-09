@@ -1,18 +1,18 @@
-import { ADAPTER_EVENTS, SafeEventEmitterProvider, WALLET_ADAPTERS } from "@web3auth/base";
+import { ADAPTER_EVENTS, SafeEventEmitterProvider, WALLET_ADAPTERS ,CHAIN_NAMESPACES} from "@web3auth/base";
 import { Web3Auth } from "@web3auth/web3auth";
 import { createContext, FunctionComponent, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { CHAIN_CONFIG, CHAIN_CONFIG_TYPE } from "../config/chainConfig";
 import { WEB3AUTH_NETWORK_TYPE } from "../config/web3AuthNetwork";
 import { getWalletProvider, IWalletProvider } from "./walletProvider";
 import { OpenloginAdapter } from "@web3auth/openlogin-adapter";
-
+import { Web3AuthCore } from "@web3auth/core";
 export interface IWeb3AuthContext {
   web3Auth: Web3Auth | null;
   provider: IWalletProvider | null;
   isLoading: boolean;
   chain: string;
   user: unknown;
-  login: () => Promise<void>;
+  login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
   signMessage: () => Promise<any>;
@@ -28,7 +28,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   isLoading: false,
   chain: "",
   user: null,
-  login: async () => {},
+  login: async (token: string) => {},
   logout: async () => {},
   getUserInfo: async () => {},
   signMessage: async () => {},
@@ -58,6 +58,8 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const clientId = 'BHw8wzTrWD87CP4HwQHKx-visJIEshLLsCxZSU_oXMxOI27qO36al_wshW817Xs4kx6R-aDxY03aZO2sN4a_ujgBHw8wzTrWD87CP4HwQHKx-visJIEshLLsCxZSU_oXMxOI27qO36al_wshW817Xs4kx6R-aDxY03aZO2sN4a_ujg';
+  // const clientId = "BKPxkCtfC9gZ5dj-eg-W6yb5Xfr3XkxHuGZl2o2Bn8gKQ7UYike9Dh6c-_LaXlUN77x0cBoPwcSx-IVm0llVsLA";
 
   const setWalletProvider = useCallback(
     (web3authProvider: SafeEventEmitterProvider) => {
@@ -67,79 +69,116 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
     [chain]
   );
 
-  useEffect(() => {
-    const subscribeAuthEvents = (web3auth: Web3Auth) => {
-      // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
-      web3auth.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
-        console.log("Yeah!, you are successfully logged in", data);
-        setUser(data);
-        setWalletProvider(web3auth.provider!);
-      });
-
-      web3auth.on(ADAPTER_EVENTS.CONNECTING, () => {
-        console.log("connecting");
-      });
-
-      web3auth.on(ADAPTER_EVENTS.DISCONNECTED, () => {
-        console.log("disconnected");
-        setUser(null);
-      });
-
-      web3auth.on(ADAPTER_EVENTS.ERRORED, (error) => {
-        console.error("some error or user has cancelled login request", error);
-      });
-    };
-
+  const initialise = async(token) => {
+    // const subscribeAuthEvents = (web3auth1: Web3Auth) => {
+    //   // Can subscribe to all ADAPTER_EVENTS and LOGIN_MODAL_EVENTS
+    //   web3auth1.on(ADAPTER_EVENTS.CONNECTED, (data: unknown) => {
+    //     console.log("Yeah!, you are successfully logged in", data);
+    //     setUser(data);
+    //     setWalletProvider(web3auth1.provider!);
+    //   });
+  
+    //   web3auth1.on(ADAPTER_EVENTS.CONNECTING, () => {
+    //     console.log("connecting");
+    //   });
+  
+    //   web3auth1.on(ADAPTER_EVENTS.DISCONNECTED, () => {
+    //     console.log("disconnected");
+    //     setUser(null);
+    //   });
+  
+    //   web3auth1.on(ADAPTER_EVENTS.ERRORED, (error) => {
+    //     console.error("some error or user has cancelled login request", error);
+    //   });
+    // };
+  
     const currentChainConfig = CHAIN_CONFIG[chain];
+  
+    try {
+      setIsLoading(true);
+      const web3AuthInstance = new Web3Auth({
+        chainConfig: { // this is ethereum chain config, change if other chain(Solana, Polygon)
+          chainNamespace: CHAIN_NAMESPACES.EIP155,
+          chainId: "0x3",
+         // rpcTarget: "https://mainnet.infura.io/v3/776218ac4734478c90191dde8cae483c",
+         // blockExplorer: "https://etherscan.io/",
+          //ticker: "ETH",
+          //tickerName: "Ethereum"
+      },
+        // get your client id from https://dashboard.web3auth.io
+        clientId,
+      });
+     
+      const adapter = new OpenloginAdapter({ 
+        adapterSettings: {
+           network: web3AuthNetwork, 
+           clientId ,
+           loginConfig: {
+            jwt: {
+              name: "clientResponse",
+              verifier: "rainmaker-project",
+              typeOfLogin: "jwt",
+              clientId: "GQJNcsXDPCbPFo2OGCc1p3sAmY6T0b8p",
+            },
+          },
+          } });
 
-    async function init() {
-      try {
-        const clientId = 'BHw8wzTrWD87CP4HwQHKx-visJIEshLLsCxZSU_oXMxOI27qO36al_wshW817Xs4kx6R-aDxY03aZO2sN4a_ujgBHw8wzTrWD87CP4HwQHKx-visJIEshLLsCxZSU_oXMxOI27qO36al_wshW817Xs4kx6R-aDxY03aZO2sN4a_ujg';
-        setIsLoading(true);
-        const web3AuthInstance = new Web3Auth({
-          chainConfig: currentChainConfig,
-          // get your client id from https://dashboard.web3auth.io
-          clientId,
-        });
+      web3AuthInstance.configureAdapter(adapter);
+      //subscribeAuthEvents(web3AuthInstance);
+      // await web3AuthInstance.initModal();
+      web3AuthInstance.init().then(() => {
+        console.log("after init ==")
+        if(token){
+         // const localProvider = await 
+         console.log("after cinnnect to ==")
+          web3AuthInstance.connectTo(
+            WALLET_ADAPTERS.OPENLOGIN,
+            {
+              //relogin: true,
+              loginProvider: 'jwt',
+              extraLoginOptions: {
+                id_token: token,
+                domain: "https://dev-h9qh-dn9.us.auth0.com",
+                verifierIdField: 'ainmaker-project',
+              },
+            },
+          ).then(localProvider => {
+            console.log("after localProvider to ==")
+            // console.log("after connect to =", localProvider)
+            setWalletProvider(localProvider!);
+          }).catch(err => {
+            console.log("errr in providder =", err)
+          })
+            
+        }
+      });
+      
 
-        const adapter = new OpenloginAdapter({ 
-          adapterSettings: {
-             network: web3AuthNetwork, clientId 
-            } });
-        web3AuthInstance.configureAdapter(adapter);
-        subscribeAuthEvents(web3AuthInstance);
-        setWeb3Auth(web3AuthInstance);
-        // await web3AuthInstance.initModal();
-        await web3AuthInstance.init();
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
+      //setWeb3Auth(web3AuthInstance);
+      // await web3AuthInstance.initModal();
+   
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-    init();
+  }
+
+  useEffect(() => {
+   
+    //initialise()
   }, [chain, web3AuthNetwork, setWalletProvider]);
 
-  const login = async () => {
-    if (!web3Auth) {
-      console.log("web3auth not initialized yet");
-      uiConsole("web3auth not initialized yet");
-      return;
-    }
-   // const localProvider = await web3Auth.connect();
-   const localProvider = await web3Auth.connectTo(
-    WALLET_ADAPTERS.OPENLOGIN,
-    {
-      relogin: true,
-      loginProvider: 'jwt',
-      extraLoginOptions: {
-        id_token: "YOUR_ID_TOKEN_FETCHED_FROM_BACKEND_SERVER",
-        domain: "https://dev-h9qh-dn9.us.auth0.com",
-        verifierIdField: 'sub',
-      },
-    },
-  )
-    setWalletProvider(localProvider!);
+  const login = async (token: string) => {
+    // if (!web3Auth) {
+    //   console.log("web3auth not initialized yet");
+    //   uiConsole("web3auth not initialized yet");
+    //   return;
+    // }
+    await initialise(token)
+    //await web3Auth.init()
+  //  const localProvider = await web3Auth.connect();
+   
   };
 
   const logout = async () => {
