@@ -2,6 +2,10 @@ query GetFollowsListsStaticPaths {
   follows {
     id
     list_id
+    list{
+      id
+      name
+    }
   }
 }
 

@@ -20,7 +20,8 @@ import {
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { runGraphQl } from "@/utils";
-import { has } from "lodash";
+import { getName } from "@/utils/reaction";
+import { has, kebabCase } from "lodash";
 import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -176,7 +177,7 @@ export async function getStaticPaths() {
 
   const paths = follows?.follows
     ?.filter((follow) => follow.list_id)
-    .map((follow) => ({ params: { listId: follow.list_id?.toString() } }))
+    .map((follow) => ({ params: { listId: follow.list_id?.toString(), slug: kebabCase(getName(follow.list!)) } }))
 
   return {
     paths,
