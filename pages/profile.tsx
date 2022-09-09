@@ -31,8 +31,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const { user } = useAuth()
 
 	const fileInputRef = useRef<HTMLInputElement>(null)
-	// const [companiesDropdown, setCompaniesDropdown] = useState<any[]>([])
-
+	
 	const [person, setPerson] = useState<People>()
 	const [editName, setEditName] = useState(false)
 	const [editEmail, setEditEmail] = useState(false)
@@ -58,19 +57,6 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const [about, setAbout] = useState('')
 	const [activeWorkspace, setActiveWorkspace] = useState(0)
 	const [tmData, setTmData] = useState<any>(emptyTeamMember);
-
-	// const {
-	// 	data: companiesData,
-	// } = useGetCompaniesQuery({
-	// 	offset: 0,
-	// 	where: { slug: { _neq: "" }, status: { _eq: "published" } },
-	// 	limit: null
-	// })
-
-	// useEffect(() => {
-	// 	if (companiesData)
-	// 		setCompaniesDropdown(() => companiesData.companies.map((company) => ({ title: company.name, value: company.id })))
-	// }, [companiesData])
 
 	const {
 		data: people
