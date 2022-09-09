@@ -109,3 +109,23 @@ query GetVCFirmsPath {
 	}
 }
 
+query GetRelevantVCFirms(
+	$where: vc_firms_bool_exp!
+	$current_user: Int
+	) {
+		vc_firms(
+			where: $where
+		) {
+			id
+			logo
+			name
+			slug
+			sentiment
+			follows(where: {created_by_user_id: {_eq: $current_user}}) {
+			list {
+				name
+			}
+		}
+	}
+}
+

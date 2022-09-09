@@ -13,6 +13,9 @@ import SignUpModal from "./SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import SearchModal from "./SearchModal";
 import { useHotkeys } from "react-hotkeys-hook";
+import OnBoardingStep1Modal from "./onBoarding/OnBoardingStep1Modal";
+import OnBoardingStep2Modal from "./onBoarding/OnBoardingStep2Modal";
+import OnBoardingStep3Modal from "./onBoarding/OnBoardingStep3Modal";
 
 export const TheNavbar = () => {
 	const router = useRouter();
@@ -24,11 +27,30 @@ export const TheNavbar = () => {
 	const [emailFromLogin, setEmailFromLogin] = useState('')
 	const [passwordFromLogin, setPasswordFromLogin] = useState('')
 	const [showSearchModal, setShowSearchModal] = useState(false);
+	const [onBoardingStep, setOnBoardingStep] = useState(0)
+
+	const [selectedOption, setSelectedOption] = useState('companies')
+	const [locationTags, setLocationTags] = useState<string[]>([])
+	const [industryTags, setIndustryTags] = useState<string[]>([])
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
 		setShowSearchModal(true);
 	});
+
+	const showOnBoarding = async() => {
+		const isAlreadyShown = await localStorage.getItem("onBoardingShown")
+		if(!isAlreadyShown){
+			setOnBoardingStep(1)
+			localStorage.setItem("onBoardingShown", "true")
+		}
+	}
+
+	useEffect(() => {
+		if(!loading && user && user.isFirstLogin){
+			showOnBoarding()
+		}
+	}, [loading,user])
 
 	const siteNav = [
 		{
@@ -45,15 +67,15 @@ export const TheNavbar = () => {
 		// },
 	];
 
-	const getAccessTokenFromCode = async(code: string) => {
+	const getAccessTokenFromCode = async (code: string) => {
 		try {
-            const response = await fetch("/api/get_access_token/", {
+            const response = await fetch("/api/access_token_from_code/", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ code, redirect_uri: 'http://localhost:3000/' }),
+                body: JSON.stringify({ code, redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL }),
             }).then(res => res.json());
            	window.location.href = "/";
         } catch (e) {
@@ -62,7 +84,7 @@ export const TheNavbar = () => {
 	}
 
 	useEffect(() => {
-		if(router.query.code){
+		if (router.query.code) {
 			(async () => {
 				//setFinishingLogin(true);
 				const res = await getAccessTokenFromCode(router.query.code as string);
@@ -117,10 +139,17 @@ export const TheNavbar = () => {
 
 	const showSignUpModal = (email: string, password: string) => {
 		setEmailFromLogin(email ? email : '')
-		setPasswordFromLogin(password? password : '')
+		setPasswordFromLogin(password ? password : '')
 		setShowLoginPopup(false)
 		setShowForgotPasswordPopup(false)
 		setShowSignUp(true)
+	}
+
+	const onCloseBoarding = () => {
+		setOnBoardingStep(0);
+		setSelectedOption('companies');
+		setLocationTags([])
+		setIndustryTags([])
 	}
 
 	return (
@@ -129,7 +158,7 @@ export const TheNavbar = () => {
 				<nav
 					className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
 						isActive ? "nav-toggle-active" : ""
-					}`}
+						}`}
 					aria-label="Global"
 				>
 					<div className="flex items-center">
@@ -166,7 +195,7 @@ export const TheNavbar = () => {
 								isActive
 									? "flex h-auto opacity-100 translate-y-0"
 									: "h-0 opacity-0 overflow-hidden -translate-y-6 lg:h-auto lg:opacity-100 lg:translate-y-0"
-							} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
+								} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
 						>
 							{siteNav.map((navItem, i) => (
 								<li key={i}>
@@ -206,20 +235,61 @@ export const TheNavbar = () => {
 								<span className="sr-only">Toggle menu</span>
 							</button>
 						</div>
-						</div>
+					</div>
 					{/* </nav>
 				</div>
 			</header> */}
-			<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
-			<SignUpModal passwordFromLogin={passwordFromLogin} emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose}/>
-			<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
-		{/* </>
+					<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
+					<SignUpModal passwordFromLogin={passwordFromLogin} emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose} />
+					<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
+					{/* </>
 					</div> */}
 
 					<SearchModal
 						show={showSearchModal}
 						onClose={() => setShowSearchModal(false)}
 					/>
+					{
+						(onBoardingStep === 1) &&
+						<OnBoardingStep1Modal
+							selectedOption={selectedOption}
+							show={onBoardingStep === 1 && !loading}
+							onClose={() => setOnBoardingStep(0)}
+							onNext={(selectedOption) => {
+								setSelectedOption(selectedOption)
+								setOnBoardingStep(2)
+							}}
+							user={user}
+						/>
+					}
+					{(onBoardingStep === 2) &&
+						<OnBoardingStep2Modal
+							locationTags={locationTags}
+							industryTags={industryTags}
+							show={onBoardingStep === 2 && !loading}
+							onClose={() => { setOnBoardingStep(0) }}
+							onNext={(locationTags, industryTags) => {
+								setOnBoardingStep(3)
+								setLocationTags(locationTags)
+								setIndustryTags(industryTags)
+							}}
+							onBack={(locationTags, industryTags) => {
+								setLocationTags(locationTags)
+								setIndustryTags(industryTags)
+								setOnBoardingStep(1)
+							}}
+						/>}
+					{(onBoardingStep === 3) &&
+						<OnBoardingStep3Modal
+							selectedOption={selectedOption}
+							locationTags={locationTags}
+							industryTags={industryTags}
+							show={onBoardingStep === 3 && !loading}
+							onClose={() => { setOnBoardingStep(0) }}
+							onNext={() => { setOnBoardingStep(0) }}
+							onBack={() => setOnBoardingStep(2)}
+							user={user}
+						/>}
 				</nav>
 			</div>
 		</header>
