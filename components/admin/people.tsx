@@ -27,12 +27,17 @@ import {
 	UseRecordContextParams,
 	FunctionField,
 	TopToolbar,
+	Confirm,
 	FilterButton,
 	ExportButton,
 	CreateButton,
 	useDelete
-
 } from "react-admin";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+
 import { useFormContext } from "react-hook-form";
 import { random } from "lodash";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
@@ -43,6 +48,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ContentSave from '@mui/icons-material/Save';
 import ContentEdit from '@mui/icons-material/Edit';
+import IconCancel from '@mui/icons-material/Cancel';
 import ContentCreate from '@mui/icons-material/Add';
 import ContentDelete from '@mui/icons-material/Delete';
 import { useRouter } from 'next/router';
@@ -334,8 +340,9 @@ export const PeopleEdit = () => {
 				</SimpleForm>
 			</Edit>
 			<List
-				actions={<ListActions />}
-				pagination={<PostPagination />}
+				hasCreate
+				// actions={<ListActions />}
+				// pagination={<PostPagination />}
 				sx={{
 					'.MuiToolbar-root': {
 						justifyContent: 'flex-start'
@@ -343,7 +350,8 @@ export const PeopleEdit = () => {
 				}}
 			>
 				<Datagrid
-					bulkActionButtons={false}
+					rowClick="edit"
+					// bulkActionButtons={false}
 					data={filterData}>
 					<TextField source="id" />
 					<ReferenceField label="Company" source="company_id" reference="companies">
@@ -358,6 +366,34 @@ export const PeopleEdit = () => {
 					<CustomDeleteButton />
 				</Datagrid>
 			</List>
+			<Dialog
+				fullWidth
+				open={true}
+				onClose={() => { }}
+				aria-label="Create post"
+			>
+				<DialogTitle>Create post</DialogTitle>
+				<DialogContent>
+					<SimpleForm>
+						<TextInput source="title" />
+						<TextInput
+							source="teaser"
+						/>
+					</SimpleForm>
+				</DialogContent>
+				<DialogActions>
+					<SaveButton
+						saving={true}
+						onClick={() => { }}
+					/>
+					<Button
+						label="ra.action.cancel"
+						onClick={() => { }}
+					>
+						<IconCancel />
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</>
 	)
 }
@@ -378,8 +414,8 @@ export const ListActions = () => {
 }
 
 export const CustomEditButton = () => {
-	const record = useRecordContext();
 	const redirect = useRedirect()
+	const record = useRecordContext();
 
 	return (
 		<Button
@@ -393,20 +429,36 @@ export const CustomEditButton = () => {
 
 export const CustomDeleteButton = () => {
 	const record = useRecordContext();
+	const [open, setOpen] = useState(false);
 
 	const [deleteOne] = useDelete(
 		'team_members',
 		{ id: record.id, previousData: record }
 	);
+	const handleDialogClose = () => setOpen(false);
+	const handleConfirm = () => {
+		deleteOne()
+		setOpen(false);
+	};
 
 	return (
-		<Button
-			label="Delete"
-			variant="text"
-			sx={{ color: 'red' }}
-			onClick={() => deleteOne()}
-			startIcon={<ContentDelete />}
-		/>
+		<>
+			<Button
+				label="Delete"
+				variant="text"
+				sx={{ color: 'red' }}
+				onClick={() => setOpen(true)}
+				startIcon={<ContentDelete />}
+			/>
+			<Confirm
+				isOpen={open}
+				title="Remove Information"
+				content="Are you sure you want to delete these infos?"
+				onConfirm={handleConfirm}
+				onClose={handleDialogClose}
+			/>
+		</>
+
 	)
 }
 
