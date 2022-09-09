@@ -52,6 +52,10 @@ async function findOneUserByEmail(email: string) {
       external_id
       is_auth0_verified
       display_name
+      person {
+        name
+        picture
+      }
     }
   }
   `
