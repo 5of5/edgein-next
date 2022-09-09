@@ -1,5 +1,5 @@
 // in posts.js
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
 	FileInput, ImageField,
 	List,
@@ -23,20 +23,16 @@ import {
 	SelectField,
 	BooleanField,
 	useRecordContext,
-	RaRecord,
-	UseRecordContextParams,
-	FunctionField,
 	TopToolbar,
 	Confirm,
-	FilterButton,
-	ExportButton,
-	CreateButton,
-	useDelete
+	useDelete,
+	useUpdate
 } from "react-admin";
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
 
 import { useFormContext } from "react-hook-form";
 import { random } from "lodash";
@@ -48,10 +44,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ContentSave from '@mui/icons-material/Save';
 import ContentEdit from '@mui/icons-material/Edit';
-import IconCancel from '@mui/icons-material/Cancel';
 import ContentCreate from '@mui/icons-material/Add';
 import ContentDelete from '@mui/icons-material/Delete';
-import { useRouter } from 'next/router';
+import { InputLabel, MenuItem, FormControl, FormHelperText, FormControlLabel, Select, Switch } from '@mui/material';
 
 const filters = [
 	<TextInput key="search" source="name,type" label="Search in name,type" resettable alwaysOn />
@@ -82,6 +77,14 @@ const CustomToolbar = () => {
 		</Toolbar>
 	);
 };
+const Transition = React.forwardRef(function Transition(
+	props: TransitionProps & {
+		children: React.ReactElement<any, any>;
+	},
+	ref: React.Ref<unknown>,
+) {
+	return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export const PeopleList = () => {
 	const [customSort, setCustomSort] = useState({ field: 'id', order: 'ASC' })
@@ -158,17 +161,25 @@ export const PeopleEdit = () => {
 	const [logo, setLogo] = useState(null)
 	const [oldLogo, setOldLogo] = useState(null)
 	const [isImageUpdated, setIsImageUpdated] = useState(false)
+	const [slug, setSlug] = useState('')
+	const [isOpen, setIsOpen] = useState(false)
+	const [currRecord, setCurrRecord] = useState<any>(null)
+	const [teamData, setTeamData] = useState<any>({ company_id: '', founder: false, function: '' })
+	const [isError, setIsError] = useState(false)
+	const [filterData, setFilterData] = useState<any>([])
+
 	const { data: people } = useGetList('people', {});
-	const [slug, setSlug] = React.useState('')
+	const { data: company } = useGetList('companies', {});
+	const { data: member } = useGetList('team_members', {});
+	const [create] = useCreate();
+	const [update] = useUpdate();
 
 	const paths = window.location.href.split('/')
 	const currentId = paths[paths.length - 1]
 
-	const { data } = useGetList(
-		'team_members',
-		{ pagination: { page: 1, perPage: 10 } }
-	);
-	const filterData = data?.filter(f => f.person_id === parseInt(currentId));
+	useEffect(() => {
+		setFilterData(member?.filter(f => f.person_id === parseInt(currentId)))
+	}, [currentId, member])
 
 	const transform = async (data: any) => {
 		var formdata = { ...data };
@@ -242,6 +253,47 @@ export const PeopleEdit = () => {
 			/>
 		);
 	};
+
+	const handleEdit = (rec: any) => {
+		setIsOpen(true)
+		setCurrRecord(rec)
+		setTeamData({ company_id: rec.company_id, founder: rec.founder, function: rec.function })
+	}
+
+	const handleClose = () => {
+		setIsOpen(false)
+		setIsError(false)
+		setCurrRecord(null)
+		setTeamData({ company_id: null, founder: false, function: '' })
+	}
+
+	const handleChange = (target: number, value: any) => {
+		if (target === 0) setTeamData({ ...teamData, company_id: value })
+		else if (target === 1) setTeamData({ ...teamData, function: value })
+		else setTeamData({ ...teamData, founder: value })
+	}
+
+	const handleSave = () => {
+		if (!teamData.company_id) setIsError(true)
+		else {
+			const data = {
+				person_id: currentId,
+				company_id: teamData.company_id,
+				function: teamData.function,
+				founder: teamData.founder
+			}
+			if (!currRecord) {
+				create('team_members', { data })
+				setFilterData([...filterData, data])
+			} else {
+				update(
+					'team_members',
+					{ id: currRecord.id, data }
+				)
+			}
+			handleClose()
+		}
+	}
 
 	return (
 		<>
@@ -340,20 +392,21 @@ export const PeopleEdit = () => {
 				</SimpleForm>
 			</Edit>
 			<List
-				hasCreate
-				// actions={<ListActions />}
-				// pagination={<PostPagination />}
+				pagination={false}
+				actions={<ListActions onCreate={() => setIsOpen(true)} />}
 				sx={{
 					'.MuiToolbar-root': {
 						justifyContent: 'flex-start'
+					},
+					'.MuiPaper-root': {
+						marginBottom: '3rem'
 					}
 				}}
 			>
 				<Datagrid
-					rowClick="edit"
-					// bulkActionButtons={false}
-					data={filterData}>
-					<TextField source="id" />
+					bulkActionButtons={false}
+					data={filterData}
+				>
 					<ReferenceField label="Company" source="company_id" reference="companies">
 						<TextField source="name" />
 					</ReferenceField>
@@ -362,66 +415,95 @@ export const PeopleEdit = () => {
 						choices={functionChoicesTM}
 					/>
 					<BooleanField source="founder" />
-					<CustomEditButton />
+					<CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
 					<CustomDeleteButton />
 				</Datagrid>
 			</List>
 			<Dialog
+				open={isOpen}
+				TransitionComponent={Transition}
+				keepMounted
 				fullWidth
-				open={true}
-				onClose={() => { }}
-				aria-label="Create post"
+				maxWidth="xs"
+				onClose={handleClose}
 			>
-				<DialogTitle>Create post</DialogTitle>
+				<DialogTitle>TeamMember</DialogTitle>
 				<DialogContent>
-					<SimpleForm>
-						<TextInput source="title" />
-						<TextInput
-							source="teaser"
+					<FormControl variant="filled" sx={{ width: '100%' }}>
+						<InputLabel>Company</InputLabel>
+						<Select
+							value={teamData.company_id}
+							onChange={(e) => handleChange(0, e.target.value)}>
+							{company?.map(r =>
+								<MenuItem key={r.id} value={r.id}>{r.name}</MenuItem>
+							)}
+						</Select>
+						{isError && <FormHelperText sx={{ color: 'red' }}>Company is required</FormHelperText>}
+					</FormControl>
+					<FormControl variant="filled" sx={{ width: '100%' }}>
+						<InputLabel>Function</InputLabel>
+						<Select value={teamData.function} onChange={(e) => handleChange(1, e.target.value)}>
+							{functionChoicesTM?.map(r =>
+								<MenuItem key={r.id} value={r.id}>{r.name}</MenuItem>
+							)}
+						</Select>
+					</FormControl>
+					<FormControlLabel
+						control={
+							<Switch
+								checked={teamData.founder}
+								onChange={(e) => handleChange(2, e.target.checked)}
+							/>}
+						label="Founder" />
+					<FormControl variant="filled"
+						sx={{
+							display: 'flex',
+							justifyContent: 'space-evenly',
+							alignItems: 'center',
+							flexDirection: 'row',
+							width: '100%'
+						}}>
+						<Button
+							label="Cancel"
+							variant="text"
+							type='submit'
+							onClick={handleClose}
 						/>
-					</SimpleForm>
+						<Button
+							label="Save"
+							variant="contained"
+							type='submit'
+							onClick={handleSave}
+							startIcon={<ContentSave />}
+						/>
+					</FormControl>
 				</DialogContent>
-				<DialogActions>
-					<SaveButton
-						saving={true}
-						onClick={() => { }}
-					/>
-					<Button
-						label="ra.action.cancel"
-						onClick={() => { }}
-					>
-						<IconCancel />
-					</Button>
-				</DialogActions>
 			</Dialog>
 		</>
 	)
 }
 
-export const ListActions = () => {
-	const redirect = useRedirect()
-
+export const ListActions = ({ onCreate }: any) => {
 	return (
 		<TopToolbar>
 			<Button
-				label="create"
+				label="create team"
 				variant="text"
-				onClick={() => redirect('/team_members/create')}
+				onClick={onCreate}
 				startIcon={<ContentCreate />}
 			/>
 		</TopToolbar>
 	)
 }
 
-export const CustomEditButton = () => {
-	const redirect = useRedirect()
+export const CustomEditButton = ({ onEdit }: any) => {
 	const record = useRecordContext();
 
 	return (
 		<Button
 			label="Edit"
 			variant="text"
-			onClick={() => redirect('/team_members/' + record.id)}
+			onClick={() => onEdit(record)}
 			startIcon={<ContentEdit />}
 		/>
 	)
@@ -453,7 +535,7 @@ export const CustomDeleteButton = () => {
 			<Confirm
 				isOpen={open}
 				title="Remove Information"
-				content="Are you sure you want to delete these infos?"
+				content={`Are you sure you want to delete ${record.function}?`}
 				onConfirm={handleConfirm}
 				onClose={handleDialogClose}
 			/>
@@ -580,7 +662,6 @@ export const PeopleCreate = () => {
 				</a>
 			</div>)
 	}
-
 
 	const handleIcon = (e: any) => {
 		setIsIcon(e.target.value.length > 0 ? true : false);
