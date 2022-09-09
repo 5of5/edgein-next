@@ -1,10 +1,17 @@
 import { serialize } from "cookie"
-import type { NextApiResponse } from 'next'
-import { jwtVerify } from 'jose'
+import { nanoid } from 'nanoid'
 import { User } from "@/models/User"
+import { jwtVerify, SignJWT } from 'jose'
+import type { NextApiResponse } from 'next'
 
 const TOKEN_NAME = "api_token"
 const MAX_AGE = 60 * 60 * 24 * 90
+const hasuraClaims = {
+  "https://hasura.io/jwt/claims": {
+    "x-hasura-allowed-roles": ["user"],
+    "x-hasura-default-role": "user",
+  }
+}
 
 function createCookie(name: string, data: any, options = {}) {
   return serialize(name, data, {
@@ -61,4 +68,13 @@ async function getUser(token: string) {
   return user
 }
 
-export default { setTokenCookie, getAuthToken, getUser, clearTokenCookie }
+async function createToken(userData: {}) {
+  return new SignJWT({ user: JSON.stringify(userData), ...hasuraClaims })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setJti(nanoid())
+      .setIssuedAt()
+      .setExpirationTime('90d')
+      .sign(new TextEncoder().encode(process.env.ENCRYPTION_SECRET))
+}
+
+export default { setTokenCookie, getAuthToken, getUser, clearTokenCookie, createToken }

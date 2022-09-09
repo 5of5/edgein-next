@@ -9443,6 +9443,8 @@ export type Users = {
   list_members: Array<List_Members>;
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
+  /** An object relationship */
+  person: Maybe<People>;
   person_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
 };
@@ -9515,6 +9517,7 @@ export type Users_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   is_auth0_verified: InputMaybe<Boolean_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
+  person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
 };
@@ -9543,6 +9546,7 @@ export type Users_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
+  person: InputMaybe<People_Obj_Rel_Insert_Input>;
   person_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
 };
@@ -9600,6 +9604,7 @@ export type Users_Order_By = {
   id: InputMaybe<Order_By>;
   is_auth0_verified: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
+  person: InputMaybe<People_Order_By>;
   person_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
 };
@@ -10409,6 +10414,14 @@ export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null }> };
 
+export type GetRelevantCompaniesQueryVariables = Exact<{
+  where: Companies_Bool_Exp;
+  current_user?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
+
 export type GetFollowsListsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -10479,6 +10492,14 @@ export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null }> };
+
+export type GetRelevantVcFirmsQueryVariables = Exact<{
+  where: Vc_Firms_Bool_Exp;
+  current_user: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetRelevantVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_vc_firms', list: { __typename?: 'lists', name: string } | null }> }> };
 
 
 export const GetCompanyDocument = `
@@ -10699,6 +10720,41 @@ useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables)
 ;
 
 useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
+export const GetRelevantCompaniesDocument = `
+    query GetRelevantCompanies($where: companies_bool_exp!, $current_user: Int = 0) {
+  companies(where: $where) {
+    id
+    logo
+    name
+    slug
+    sentiment
+    follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
+  }
+}
+    `;
+export const useGetRelevantCompaniesQuery = <
+      TData = GetRelevantCompaniesQuery,
+      TError = Error
+    >(
+      variables: GetRelevantCompaniesQueryVariables,
+      options?: UseQueryOptions<GetRelevantCompaniesQuery, TError, TData>
+    ) =>
+    useQuery<GetRelevantCompaniesQuery, TError, TData>(
+      ['GetRelevantCompanies', variables],
+      fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables),
+      options
+    );
+useGetRelevantCompaniesQuery.document = GetRelevantCompaniesDocument;
+
+
+useGetRelevantCompaniesQuery.getKey = (variables: GetRelevantCompaniesQueryVariables) => ['GetRelevantCompanies', variables];
+;
+
+useGetRelevantCompaniesQuery.fetcher = (variables: GetRelevantCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables, options);
 export const GetFollowsListsStaticPathsDocument = `
     query GetFollowsListsStaticPaths {
   follows {
@@ -11120,3 +11176,38 @@ useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => va
 ;
 
 useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);
+export const GetRelevantVcFirmsDocument = `
+    query GetRelevantVCFirms($where: vc_firms_bool_exp!, $current_user: Int) {
+  vc_firms(where: $where) {
+    id
+    logo
+    name
+    slug
+    sentiment
+    follows(where: {created_by_user_id: {_eq: $current_user}}) {
+      list {
+        name
+      }
+    }
+  }
+}
+    `;
+export const useGetRelevantVcFirmsQuery = <
+      TData = GetRelevantVcFirmsQuery,
+      TError = Error
+    >(
+      variables: GetRelevantVcFirmsQueryVariables,
+      options?: UseQueryOptions<GetRelevantVcFirmsQuery, TError, TData>
+    ) =>
+    useQuery<GetRelevantVcFirmsQuery, TError, TData>(
+      ['GetRelevantVCFirms', variables],
+      fetcher<GetRelevantVcFirmsQuery, GetRelevantVcFirmsQueryVariables>(GetRelevantVcFirmsDocument, variables),
+      options
+    );
+useGetRelevantVcFirmsQuery.document = GetRelevantVcFirmsDocument;
+
+
+useGetRelevantVcFirmsQuery.getKey = (variables: GetRelevantVcFirmsQueryVariables) => ['GetRelevantVCFirms', variables];
+;
+
+useGetRelevantVcFirmsQuery.fetcher = (variables: GetRelevantVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantVcFirmsQuery, GetRelevantVcFirmsQueryVariables>(GetRelevantVcFirmsDocument, variables, options);

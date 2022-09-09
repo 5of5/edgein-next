@@ -145,3 +145,23 @@ query GetCompaniesPaths {
 		slug
 	}
 }
+
+query GetRelevantCompanies(
+	$where: companies_bool_exp!
+	$current_user: Int = 0
+	) {
+		companies(
+			where: $where
+		) {
+			id
+			logo
+			name
+			slug
+			sentiment
+			follows(where: {created_by_user_id: {_eq: $current_user}}) {
+			list {
+				name
+			}
+		}
+	}
+}
