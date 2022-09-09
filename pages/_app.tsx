@@ -12,6 +12,9 @@ import { TheNavbar } from "../components/TheNavbar";
 import { ElemFeedback } from "../components/ElemFeedback";
 import { TheFooter } from "../components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { CHAIN_CONFIG_TYPE } from "../config/chainConfig";
+import { WEB3AUTH_NETWORK_TYPE } from "../config/web3AuthNetwork";
+import { Web3AuthProvider } from "../services/web3auth";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
@@ -20,6 +23,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const queryClient = new QueryClient();
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
+
+	const [web3AuthNetwork, setWeb3AuthNetwork] = useState<WEB3AUTH_NETWORK_TYPE>("testnet");
+	const [chain, setChain] = useState<CHAIN_CONFIG_TYPE>("mainnet");
 
 	//google
 	React.useEffect(() => {
@@ -96,6 +102,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 						<Component {...pageProps} />
 					) : (
 						<>
+						 <Web3AuthProvider chain={chain} web3AuthNetwork={web3AuthNetwork}>
+						
 							<TheNavbar />
 							<main className="grow selection:bg-primary-200">
 								{pageLoading ? (
@@ -115,6 +123,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 									setToggleFeedbackForm={setToggleFeedbackForm}
 								/>
 							)}
+								 
+							</Web3AuthProvider>
 							<TheFooter />
 						</>
 					)}
