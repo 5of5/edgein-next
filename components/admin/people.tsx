@@ -154,7 +154,7 @@ export const PeopleEdit = () => {
 	const [isImageUpdated, setIsImageUpdated] = useState(false)
 	const { data: people } = useGetList('people', {});
 	const [slug, setSlug] = React.useState('')
-	
+
 	const paths = window.location.href.split('/')
 	const currentId = paths[paths.length - 1]
 
@@ -333,33 +333,31 @@ export const PeopleEdit = () => {
 
 				</SimpleForm>
 			</Edit>
-			{filterData && filterData?.length > 0 &&
-				<List
-					actions={<ListActions />}
-					pagination={<PostPagination />}
-					sx={{
-						'.MuiToolbar-root': {
-							justifyContent: 'flex-start'
-						}
-					}}
-				>
-					<Datagrid
-						bulkActionButtons={false}
-						data={filterData}>
-						<TextField source="id" />
-						<ReferenceField label="Company" source="company_id" reference="companies">
-							<TextField source="name" />
-						</ReferenceField>
-						<SelectField
-							source="function"
-							choices={functionChoicesTM}
-						/>
-						<BooleanField source="founder" />
-						<CustomEditButton />
-						<CustomDeleteButton />
-					</Datagrid>
-				</List>
-			}
+			<List
+				actions={<ListActions />}
+				pagination={<PostPagination />}
+				sx={{
+					'.MuiToolbar-root': {
+						justifyContent: 'flex-start'
+					}
+				}}
+			>
+				<Datagrid
+					bulkActionButtons={false}
+					data={filterData}>
+					<TextField source="id" />
+					<ReferenceField label="Company" source="company_id" reference="companies">
+						<TextField source="name" />
+					</ReferenceField>
+					<SelectField
+						source="function"
+						choices={functionChoicesTM}
+					/>
+					<BooleanField source="founder" />
+					<CustomEditButton />
+					<CustomDeleteButton />
+				</Datagrid>
+			</List>
 		</>
 	)
 }
