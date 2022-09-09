@@ -124,4 +124,30 @@ try {
   }
 }
 
-export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus }
+async function updateUserWalletById(id: number, wallet_address: string) {
+  const updateWalletById = `
+  mutation update_users($id: Int, $wallet_address: String) {
+    update_users(
+      where: {id: {_eq: $id}},
+      _set: { wallet_address: $wallet_address }
+    ) {
+      affected_rows
+      returning {
+        id
+        email
+        wallet_address
+      }
+    }
+  }
+`
+try {
+  await mutate({
+    mutation: updateWalletById,
+    variables: { id, wallet_address }
+  });
+  } catch (e) {
+    throw e
+  }
+}
+
+export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateUserWalletById }
