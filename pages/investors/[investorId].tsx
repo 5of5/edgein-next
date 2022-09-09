@@ -293,19 +293,6 @@ const VCFirm: NextPage<Props> = (props) => {
 				</section>
 			)}
 
-			{/* {props.theInvestments.length > 0 && (
-				<section
-					ref={investmentRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="investments"
-				>
-					<ElemInvestments
-						heading="Investments"
-						investments={props.theInvestments}
-					/>
-				</section>
-			)} */}
-
 			{/* <div className="mt-7 rounded-lg bg-white shadow">
 				{vcfirm && (
 					<ElemRecentInvestments heading="Similar Investors" />

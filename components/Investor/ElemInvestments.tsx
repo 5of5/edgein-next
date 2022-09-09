@@ -46,7 +46,9 @@ export const ElemInvestments: React.FC<Props> = ({
 				accessor: "company" as const,
 				Cell: (props: any) => (
 					<div className="flex items-center shrink-0 w-full">
-						{props.value.slug != "" && (
+						{!props.value ? (
+							<>&mdash;</>
+						) : (
 							<Link href={`/companies/${props.value.slug}`}>
 								<a className="company flex items-center space-x-3 hover:opacity-70">
 									<ElemPhoto
