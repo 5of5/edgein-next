@@ -8,6 +8,18 @@ type ReactionType = {
 	pathname: string;
 };
 
+type Resourceype = {
+	company?: number;
+	vcfirm?: number;
+	pathname: string;
+};
+
+type MultipleListResourceType = {
+	companies?: [Resourceype];
+	vcfirms?: [Resourceype];
+	sentiment: string;
+};
+
 export const reactOnSentiment = async ({
 	company,
 	vcfirm,
@@ -74,4 +86,16 @@ export const getNewTempSentiment = (
 			: (newSentiment[sentiment] = 0);
 
 	return newSentiment;
+};
+
+export const createListWithMultipleResourses = async (payload : MultipleListResourceType) => {
+	const resp = await fetch("/api/multiple_resources_to_list/", {
+		method: "POST",
+		headers: {
+			Accept: "application/json",
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(payload),
+	});
+	return resp.json();
 };

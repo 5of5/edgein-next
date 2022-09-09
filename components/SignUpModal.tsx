@@ -111,13 +111,17 @@ export default function SignUpModal(props: Props) {
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({ email, password, name }),
-			}).then((res) => res.json());
-			if (response.success === true) {
+			})
+			if (response.status === 200) {
 				setIsRegistered(true);
 			}
+			else if(response.status ===  404){
+				const waitlistRes = await response.clone().text();
+				if(waitlistRes === "Invalid Email"){
+					setIsWaitlisted(true);
+				}
+			}
 		} catch (e) {
-			setIsWaitlisted(true);
-			//console.log(e);
 			setIsLoading(false);
 		}
 	};
