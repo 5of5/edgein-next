@@ -6,11 +6,12 @@ import { Fragment } from "react";
 import {
 	IconChevronDown,
 	IconUserCircle,
-	//IconHome,
 	IconSignOut,
+	// IconHome,
 } from "./Icons";
+import { IconDashboard } from "./Dashboard/IconDashBoard";
 
-//const navigation = [{ name: "Dashboard", href: "/dashboard", icon: IconHome }];
+const navigation = [{ name: "Dashboard", href: "/dashboard", icon: IconDashboard }];
 
 export const UserMenu = () => {
 	const logout = async () => {
@@ -21,15 +22,19 @@ export const UserMenu = () => {
 			method: "POST",
 		}).then(res => res.json());
 		if (authRequest.success) {
-			
+
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
-			location.href =authRequest.logoutLink;
+			location.href = authRequest.logoutLink;
 		} else {
 			/* handle errors */
 		}
 	};
+
+	const handleNavigation = () => {
+
+	}
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
@@ -54,7 +59,7 @@ export const UserMenu = () => {
 					as="nav"
 					className="absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
-					{/* <div>
+					<div>
 						{navigation.map((item) => (
 							<Menu.Item key={item.name}>
 								{({ active }) => (
@@ -70,15 +75,15 @@ export const UserMenu = () => {
 								)}
 							</Menu.Item>
 						))}
-					</div> */}
+					</div>
+
 					<div>
 						<Menu.Item>
 							{({ active }) => (
 								<button
 									onClick={logout}
-									className={`${
-										active ? "bg-gray-50" : ""
-									} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+									className={`${active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
 								>
 									<IconSignOut className="mr-2 h-6 w-6" />
 									Sign out
