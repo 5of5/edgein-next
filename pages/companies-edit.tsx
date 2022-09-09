@@ -74,7 +74,7 @@ export default function CompanyEdit() {
                 </div>
 
                 <div className="col-span-3">
-                    <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 pb-3 z-50">
+                    <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-3 pb-3 z-50">
                         <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                             Edit Chia
                         </h2>
