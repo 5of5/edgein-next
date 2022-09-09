@@ -23,12 +23,14 @@ query GetPerson($slug: String!) {
       start_date
       founder
       function
+      title
       company {
         id
         slug
         name
         logo
         overview
+        location
       }
     }
     investments {
