@@ -1,5 +1,6 @@
 export type IconProps = {
 	className?: string;
+	strokeWidth?: number;
 	title?: string;
 };
 
@@ -29,14 +30,18 @@ export const IconSpinner: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconArrowUp: React.FC<IconProps> = ({ className, title }) => {
+export const IconArrowUp: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
 	return (
 		<svg
 			className={className}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
-			strokeWidth={3}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 		>
 			<title>{title ? title : "Arrow Up"}</title>
@@ -49,20 +54,25 @@ export const IconArrowUp: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconArrowDown: React.FC<IconProps> = ({ className, title }) => {
+export const IconArrowDown: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
 	return (
 		<svg
 			className={className}
-			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
-			strokeWidth={3}
 		>
 			<title>{title ? title : "Arrow Down"}</title>
 			<path
-				d="M12 21V3M4.5 13.5L12 21L4.5 13.5ZM12 21L19.5 13.5L12 21Z"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+				d="M19.5 13.5L12 21m0 0l-7.5-7.5M12 21V3"
 			/>
 		</svg>
 	);
