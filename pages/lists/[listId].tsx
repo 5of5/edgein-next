@@ -177,20 +177,20 @@ const MyList: NextPage<Props> = ({ companies, vcfirms }) => {
 	);
 };
 
-// export async function getStaticPaths() {
-//   const { data: follows } = await runGraphQl<GetFollowsListsStaticPathsQuery>(
-//     GetFollowsListsStaticPathsDocument
-//   );
+export async function getStaticPaths() {
+	const { data: follows } = await runGraphQl<GetFollowsListsStaticPathsQuery>(
+		GetFollowsListsStaticPathsDocument
+	);
 
-//   const paths = follows?.follows
-//     ?.filter((follow) => follow.list_id)
-//     .map((follow) => ({ params: { listId: follow.list_id?.toString() } }))
+	const paths = follows?.follows
+		?.filter((follow) => follow.list_id)
+		.map((follow) => ({ params: { listId: follow.list_id?.toString() } }));
 
-//   return {
-//     paths,
-//     fallback: true, // false or 'blocking'
-//   };
-// }
+	return {
+		paths,
+		fallback: true, // false or 'blocking'
+	};
+}
 
 export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmsByListIdQuery>(
