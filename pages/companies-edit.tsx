@@ -13,6 +13,9 @@ import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
 import { IconCamera } from "@/components/IconCamera";
 import { InputSearch } from "@/components/InputSearch";
+import { useState } from "react";
+import { CompanyEditModal } from "@/components/CompanyEditModal";
+import { TeamSideDrawer } from "@/components/TeamSideDrawer";
 
 type Props = {
     children: any
@@ -28,6 +31,9 @@ const GridTwelve: React.FC<Props> = ({ children, wrapperClass }) => {
 }
 
 export default function CompanyEdit() {
+
+    const [Modal, setModal] = useState(false)
+    const [teamdrawer, setteamdrawer] = useState(false)
 
     return (
         <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -74,7 +80,7 @@ export default function CompanyEdit() {
                 </div>
 
                 <div className="col-span-3">
-                    <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-3 pb-3 z-50">
+                    <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-3 pb-3 z-10">
                         <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                             Edit Chia
                         </h2>
@@ -90,9 +96,11 @@ export default function CompanyEdit() {
                             <p className="text-sm font-normal font-Metropolis">By verifying that you work here, you will be able to edit all fields on the company profile. </p>
                         </div>
                         <div>
-                            <ElemButton btn="ol-primary">Verify Now <IconChevronRight className="w-4 h-4" /></ElemButton>
+                            <ElemButton btn="ol-primary" onClick={() => setModal(true)}>Verify Now <IconChevronRight className="w-4 h-4" /></ElemButton>
                         </div>
                     </div>
+
+                    {Modal && <CompanyEditModal isOpen={Modal} onClose={() => setModal(false)} />}
 
                     <div className="max-w-6xl mt-7 bg-white rounded-lg p-5">
 
@@ -286,7 +294,7 @@ export default function CompanyEdit() {
                                     className="placeholder:text-slate-300 w-80"
 
                                 /> */}
-                                <input type="file" placeholder="Browse"/>
+                                <input type="file" placeholder="Browse" />
                             </div>
                         </GridTwelve>
 
@@ -432,8 +440,9 @@ export default function CompanyEdit() {
 
                         <div className="flex justify-between items-center mt-2 mb-5">
                             <h2 className="text-dark-500 font-bold font-Metropolis text-md">Employees</h2>
-                            <span className="text-md font-normal text-primary-500 font-Metropolis">Add Employee</span>
+                            <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => setteamdrawer(true)}>Add Employee</span>
                         </div>
+                        {teamdrawer && <TeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
 
                         <div className=" w-full border border-slate-200 rounded-lg overflow-auto">
                             <table className="w-full">
