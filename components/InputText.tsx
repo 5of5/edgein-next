@@ -3,7 +3,7 @@ import React, { PropsWithChildren } from "react";
 type Props = {
 	className?: string;
 	label?: string;
-	type?: "text" | "email" | "search" | "";
+	type?: "text" | "email" | "search" | "password" | "";
 	name: string;
 	value: string;
 	onChange: React.ChangeEventHandler<HTMLInputElement>;

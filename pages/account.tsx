@@ -14,32 +14,80 @@ import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
 import person from "../images/person.png"
 import { IconSetting } from "@/components/IconSetting";
+const validator = require("validator");
 
 export default function Account() {
 
     const { user, error, loading } = useAuth();
     const [isEditPassword, setEditPassword] = useState(false)
 
-    const [currentPassword, setCurrentPassword] = useState('')
     const [newPassword, setNewPassword] = useState('')
     const [reEnterPassword, setReEnterPassword] = useState('')
+    const [errorMessage, setErrorMessage] = useState("");
+    const [reEnterErrorMessage, setReEnterErrorMessage] = useState("");
 
-    // const [isLinkedInConnected, setIsLinkedInConnected] = useState(false)
-    // console.log("user ==", user)
-    // useEffect(() => {
-    //     if(!loading && user && user.auth0_linkedin_id){
-    //         setIsLinkedInConnected(true)
-    //     }
-
-    // },[user, loading])
+    const validate = (value: string) => {
+		setNewPassword(value);
+		if (
+			validator.isStrongPassword(value, {
+				minLength: 8,
+				minLowercase: 1,
+				minUppercase: 1,
+				minNumbers: 1,
+				minSymbols: 1,
+			})
+		) {
+			setErrorMessage("");
+		} else {
+			setErrorMessage(
+				"Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, a special character"
+			);
+		}
+    };
+    
+    const validateReEnterPasssword = (value: string) => {
+        setReEnterPassword(value);
+        if(newPassword !== value){
+            setReEnterErrorMessage("Password do noot match!")
+        }else{
+            setReEnterErrorMessage("")
+        }
+    }
 
     const onLinkedInClick = () => {
+        if(user && user.auth0_linkedin_id){
+            return;
+        }
 		const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
 		window.location.href = url
     }
+
+    const callChangePassword = async() => {
+        try {
+			const response = await fetch("/api/set_password/", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					password: newPassword
+				}),
+            })
+            setEditPassword(false)
+            setNewPassword('')
+            setReEnterPassword('')
+		} catch (e) {
+			console.log(e);
+		}
+    }
     
     const onChangePassword = () => {
-
+       if(newPassword.length > 0 &&  !errorMessage && !reEnterErrorMessage && newPassword ===reEnterPassword){
+           //call api
+           callChangePassword()
+         
+       }
     }
 
     return (
@@ -147,7 +195,7 @@ export default function Account() {
                         }
                        
                         {
-                            (user && !user.auth0_user_pass_id) && (
+                            (user && user.auth0_user_pass_id) && (
                                 <>
                                 {
                                     (!isEditPassword) ? (
@@ -166,26 +214,29 @@ export default function Account() {
                                             <div>
                                                 <div className="w-96 ">
                                                     <InputText
-                                                        label="Current"
-                                                        onChange={(event) => { setCurrentPassword(event.target.value) }}
-                                                        value={currentPassword}
-                                                        name=""
-                                                        className="mb-4 border border-gray-5"
-                                                    />
-                                                    <InputText
+                                                        type="password"
                                                         label="New"
-                                                        onChange={(event) => { setNewPassword(event.target.value)}}
+                                                        onChange={(event) => { validate(event.target.value)}}
                                                         value={newPassword}
                                                         name=""
                                                         className="mb-3 border border-gray-5" />
-                
+                                                            {errorMessage === "" ? null : (
+                                                                <span className="w-full text-start text-sm">
+                                                                    {errorMessage}
+                                                                </span>
+                                                            )}
                                                     <InputText
+                                                        type="password"
                                                         label="Re-type New"
-                                                        onChange={(event) => { setReEnterPassword(event.target.value)}}
+                                                        onChange={(event) => { validateReEnterPasssword(event.target.value)}}
                                                         value={reEnterPassword}
                                                         name=""
                                                         className="mb-3 border border-gray-5" />
-                
+                                                            {reEnterErrorMessage === "" ? null : (
+                                                                <span className="w-full text-start text-sm">
+                                                                    {reEnterErrorMessage}
+                                                                </span>
+                                                            )}
                 
                                                     <div className="flex mt-3 mb-2">
                                                         <ElemButton btn="primary" className="mr-2" onClick={onChangePassword}>
