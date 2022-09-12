@@ -138,6 +138,23 @@ const Event: NextPage<Props> = ({ event }) => {
 	);
 };
 
+export async function getStaticPaths() {
+	return {
+		paths: [],
+		fallback: true, // false or 'blocking'
+	};
+	// const {
+	// 	data: events,
+	// } = await runGraphQl<{events?:{slug:string}[]}>("{ events { slug }}");
+
+	// return {
+	// 	paths: events?.events?.
+	// 		filter((ev: { slug: string }) => ev.slug)
+	// 		.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
+	// 	fallback: true, // false or 'blocking'
+	// };
+}
+
 export const getStaticProps: GetStaticProps = async (context) => {
 	const gql = `{
     events(slug: "${context.params?.eventId}") {
