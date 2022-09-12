@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 
 type Props = {};
@@ -323,7 +323,7 @@ const Privacy: NextPage<Props> = (props) => {
 	);
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			metaTitle: "Privacy - EdgeIn.io",

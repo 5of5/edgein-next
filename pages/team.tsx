@@ -1,5 +1,5 @@
 import React from "react";
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import Image from "next/image";
 
 import { ElemHeading } from "../components/ElemHeading";
@@ -45,7 +45,7 @@ const Team: NextPage<Props> = ({ team }) => {
 	);
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	const team = [
 		{
 			image: "/images/redg-snodgrass.jpg",

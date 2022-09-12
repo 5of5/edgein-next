@@ -1,5 +1,5 @@
 import React from "react";
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { TableRecentCompanies } from "@/components/Dashboard/TableRecentCompanies";
 
@@ -15,7 +15,7 @@ const Dashboard: NextPage<Props> = ({}) => {
 	);
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			metaTitle: "Recently Added Companies- EdgeIn.io",

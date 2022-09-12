@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemButton } from "@/components/ElemButton";
@@ -112,7 +112,7 @@ const Contact: NextPage = () => {
 	);
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			metaTitle: "Contact - EdgeIn.io",

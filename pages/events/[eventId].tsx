@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
 import { runGraphQl, formatDate, truncateWords } from "../../utils";
@@ -138,8 +138,7 @@ const Event: NextPage<Props> = ({ event }) => {
 	);
 };
 
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
 	const gql = `{
     events(slug: "${context.params?.eventId}") {
       id
