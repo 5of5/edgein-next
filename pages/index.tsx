@@ -41,14 +41,14 @@ const Home: NextPage = () => {
 		<>
 			<section className="relative overflow-hidden">
 				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
-				<div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
+				<div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
 					<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:content-center">
 						<div className="mx-auto max-w-2xl lg:col-span-7 lg:max-w-none">
 							<h1 className="font-bold text-center text-4xl sm:text-left sm:text-6xl">
 								Web3-focused data intelligence for success.
 								{/* Web3 Project Company research delivered daily to save you time */}
 							</h1>
-							<h2 className="max-w-lg mt-5 text-xl text-center leading-relaxed text-slate-600 sm:text-left ">
+							<h2 className="max-w-lg mt-5 text-xl text-center leading-relaxed text-slate-600 sm:text-left">
 								EdgeIn combines highly refined automated processes, the
 								personalization of human intelligence, and the meaningful
 								utility of blockchain technologies, to give you an unparalleled
@@ -109,7 +109,7 @@ const Home: NextPage = () => {
 				</div>
 			</section>
 
-			<section className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
+			<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* <div className="pb-12 lg:pb-20">
 						<h2 className="relative max-w-3xl text-3xl font-bold text-dark-500 border-l-4 border-primary-500 pl-6 lg:text-4xl">
 							Actionable intelligence, strategic analysis and data sovereignty.
@@ -145,7 +145,7 @@ const Home: NextPage = () => {
 					</div>
 
 					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
-						<div className="relative z-10 text-center text-white">
+						<div className="text-center text-white">
 							<h2 className="max-w-2xl mx-auto mb-6 text-3xl font-bold sm:text-5xl">
 								Ready to start exploring?
 							</h2>
