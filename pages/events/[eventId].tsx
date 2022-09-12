@@ -28,7 +28,7 @@ const Event: NextPage<Props> = ({ event }) => {
 			</div>
 
 			<div className="relative z-10 pt-10 mb-44 px-4 sm:px-6 lg:px-8">
-				<div className="max-w-6xl mx-auto bg-white rounded-lg shadow-sm rounded-tl-lg rounded-tr-lg overflow-hidden">
+				<div className="max-w-7xl mx-auto bg-white rounded-lg shadow-sm rounded-tl-lg rounded-tr-lg overflow-hidden">
 					<div className="flex flex-col md:grid md:grid-cols-3">
 						<div className="col-span-2 h-72 sm:h-96">
 							<div className="object-contain w-full h-full bg-dark-700"></div>
@@ -138,23 +138,6 @@ const Event: NextPage<Props> = ({ event }) => {
 	);
 };
 
-// export async function getStaticPaths() {
-// 	return {
-// 		paths: [],
-// 		fallback: true, // false or 'blocking'
-// 	}
-// /*	const {
-// 		data: events,
-// 	} = await runGraphQl<{events?:{slug:string}[]}>("{ events { slug }}");
-
-// 	return {
-// 		paths: events?.events?.
-// 			filter((ev: { slug: string }) => ev.slug)
-// 			.map((ev: { slug: string }) => ({ params: { eventId: ev.slug } })),
-// 		fallback: true, // false or 'blocking'
-// 	};
-// */	
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const gql = `{
@@ -171,7 +154,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
   }
 `;
-	const { data: events } = await runGraphQl<{events:Record<string, any>[]}>(gql);
+	const { data: events } = await runGraphQl<{ events: Record<string, any>[] }>(
+		gql
+	);
 
 	if (!(events && events.events && events.events[0])) {
 		return {

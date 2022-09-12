@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemTable } from "@/components/ElemTable";
-import { ElemTableCell } from "@/components/ElemTableCell";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { IconEditPencil } from "@/components/Icons";
+import { ElemReactions } from "@/components/ElemReactions";
+import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
+import { ElemInvestments } from "@/components/Investor/ElemInvestments";
+
 import {
 	convertToInternationalCurrencySystem,
 	formatDate,
@@ -23,7 +25,7 @@ import {
 	useGetVcFirmQuery,
 	Vc_Firms,
 } from "@/graphql/types";
-import { ElemReactions } from "@/components/ElemReactions";
+
 import {
 	getNewFollows,
 	reactOnSentiment,
@@ -32,7 +34,6 @@ import {
 	getNewTempSentiment,
 } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { ElemInvestorGrid } from "@/components/Investors/ElemInvestorGrid";
 import { remove } from "lodash";
 type Props = {
 	vcfirm: Vc_Firms;
@@ -43,7 +44,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const { investorId } = router.query;
-	const goBack = () => router.back();
+	//const goBack = () => router.back();
 
 	const [vcfirm, setVcfirm] = useState(props.vcfirm);
 
@@ -119,10 +120,6 @@ const VCFirm: NextPage<Props> = (props) => {
 		});
 	};
 
-	if (!vcfirm) {
-		return <h1>Not Found</h1>;
-	}
-
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
 	//TabBar
@@ -144,7 +141,6 @@ const VCFirm: NextPage<Props> = (props) => {
 					Back
 				</ElemButton>
 			</div> */}
-
 			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
 				<div className="col-span-3">
 					<ElemPhoto
@@ -229,9 +225,22 @@ const VCFirm: NextPage<Props> = (props) => {
 														<h2 className="font-bold">
 															{`${
 																activity.company ? activity.company.name : ""
-															} raised $${convertAmountRaised(
+															}`}
+
+															{`
+															raised 
+															${
 																activity.amount
-															)} / ${activity.round} from ${vcfirm.name}`}
+																	? "$" +
+																	  convertToInternationalCurrencySystem(
+																			activity.amount
+																	  )
+																	: "capital"
+															} / ${
+																activity.round
+																	? activity.round
+																	: "Investment round"
+															} from ${vcfirm.name}`}
 														</h2>
 														<p className="text-xs text-slate-600">
 															{formatDate(activity.round_date as string, {
@@ -272,92 +281,16 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-			{Object.keys(sortedInvestmentRounds).map((key) => key != null).length >
-				0 && (
+			{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
 				<section
 					ref={investmentRef}
 					className="mt-7 p-5 rounded-lg bg-white shadow"
 					id="investments"
 				>
-					<div className="flex items-center justify-between">
-						<h2 className="text-xl font-bold">Investments</h2>
-
-						<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-							<IconEditPencil title="Edit" />
-						</button>
-					</div>
-
-					<ElemTable
-						className="mt-2 w-full border border-black/10 rounded-lg"
-						columns={[
-							{ label: "Date" },
-							{ label: "Company" },
-							{ label: "Round" },
-							{ label: "Money Raised" },
-						]}
-					>
-						{sortedInvestmentRounds.map(
-							(theRound: Investment_Rounds, index: number) => {
-								if (!theRound) {
-									return;
-								}
-
-								return (
-									<tr
-										key={index}
-										className="flex flex-col flex-nowrap overflow-hidden md:table-row"
-									>
-										<ElemTableCell header="Date">
-											{theRound.round_date ? (
-												formatDate(theRound.round_date, {
-													month: "short",
-													day: "2-digit",
-													year: "numeric",
-												})
-											) : (
-												<>&mdash;</>
-											)}
-										</ElemTableCell>
-										<ElemTableCell header="Company">
-											{theRound.company ? (
-												<Link
-													href={`/companies/${theRound.company.slug}`}
-													key={theRound.company.id}
-												>
-													<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-														<ElemPhoto
-															photo={theRound.company.logo}
-															wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
-															imgClass="object-fit max-w-full max-h-full"
-															imgAlt={theRound.company.name}
-														/>
-														<span className="line-clamp-2 font-bold">
-															{theRound.company.name}
-														</span>
-													</a>
-												</Link>
-											) : (
-												<>&mdash;</>
-											)}
-										</ElemTableCell>
-										<ElemTableCell header="Round">
-											{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
-										</ElemTableCell>
-										<ElemTableCell header="Money Raised">
-											{theRound.amount ? (
-												<>
-													<span>$</span>
-													{convertAmountRaised(theRound.amount)}
-												</>
-											) : (
-												<>&mdash;</>
-											)}
-										</ElemTableCell>
-									</tr>
-								);
-							}
-						)}
-					</ElemTable>
+					<ElemInvestments
+						heading="Investments"
+						investments={sortedInvestmentRounds.filter((n) => n)}
+					/>
 				</section>
 			)}
 
@@ -408,10 +341,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const sortByDateAscInvestments = getInvestments
 		.slice()
 		.sort((a, b) => {
-			const distantFuture = new Date(8640000000000000);
-
-			let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
-			let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
+			const distantPast = new Date("April 2, 1900 00:00:00");
+			let dateA = a?.round_date ? new Date(a.round_date) : distantPast;
+			let dateB = b?.round_date ? new Date(b.round_date) : distantPast;
 			return dateA.getTime() - dateB.getTime();
 		})
 		.reverse();
@@ -432,6 +364,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default VCFirm;
-function convertAmountRaised(theAmount: number) {
-	return convertToInternationalCurrencySystem(theAmount);
-}

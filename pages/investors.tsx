@@ -199,7 +199,7 @@ const Investors: NextPage<Props> = ({
 	};
 
 	return (
-		<div>
+		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Investors"
 				subtitle="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."

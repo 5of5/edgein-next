@@ -7,6 +7,7 @@ type Props = {
 	loading?: boolean;
 	arrow?: boolean;
 	arrowLeft?: boolean;
+	arrowClass?: string;
 	btn?:
 		| "danger"
 		| "dark"
@@ -28,6 +29,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	loading = false,
 	arrow = false,
 	arrowLeft = false,
+	arrowClass = "",
 	btn = "",
 	roundedFull = true,
 	size = "",
@@ -96,9 +98,9 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 			type="submit"
 		>
 			{loading && <IconSpinner className="animate-spin -ml-1 mr-3 h-5 w-5" />}
-			{arrowLeft && <IconArrowLeft className="h-3 w-4" />}
+			{arrowLeft && <IconArrowLeft className={`h-3 w-4 ${arrowClass}`} />}
 			{children}
-			{arrow && <IconArrow className="h-3 w-4 ml-1" />}
+			{arrow && <IconArrow className={`h-3 w-4 ml-1 ${arrowClass}`} />}
 		</button>
 	);
 

@@ -44,11 +44,11 @@ const Home: NextPage = () => {
 				<div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
 					<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:content-center">
 						<div className="mx-auto max-w-2xl lg:col-span-7 lg:max-w-none">
-							<h1 className="font-bold text-5xl lg:text-6xl">
+							<h1 className="font-bold text-center text-4xl sm:text-left sm:text-6xl">
 								Web3-focused data intelligence for success.
 								{/* Web3 Project Company research delivered daily to save you time */}
 							</h1>
-							<h2 className="max-w-lg mt-5 text-xl leading-relaxed text-slate-600">
+							<h2 className="max-w-lg mt-5 text-xl text-center leading-relaxed text-slate-600 sm:text-left ">
 								EdgeIn combines highly refined automated processes, the
 								personalization of human intelligence, and the meaningful
 								utility of blockchain technologies, to give you an unparalleled
@@ -67,7 +67,7 @@ const Home: NextPage = () => {
 							</div> */}
 						</div>
 
-						<div className="mt-28 mx-6 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
+						<div className="mt-28 mx-0 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
 							<FigureIntroSplashNew />
 							{/* <FigureIntroSplash className="hidden lg:block relative" /> */}
 						</div>
@@ -106,7 +106,6 @@ const Home: NextPage = () => {
 						</>
 					)}
 				</div> */}
-						
 				</div>
 			</section>
 
@@ -166,9 +165,9 @@ const Home: NextPage = () => {
 						<figure className="absolute -bottom-72 right-36 w-96 h-96 bg-[#F8DA4B] rounded-full blur-3xl"></figure>
 						<figure className="absolute -bottom-64 -right-36 w-96 h-96 bg-[#F72784] rounded-full blur-3xl opacity-50"></figure>
 						<FigureCircleDashes className="absolute -top-96 -left-36" />
-						<FigureCircleDashes className="absolute -top-88 -left-16" />
-						<FigureCircleDashes className="absolute -bottom-96 -right-32" />
-						<FigureCircleDashes className="absolute -bottom-112 -right-52" />
+						<FigureCircleDashes className="absolute hidden -top-88 -left-16 md:block" />
+						<FigureCircleDashes className="absolute hidden -bottom-96 -right-32 md:block" />
+						<FigureCircleDashes className="absolute -bottom-112 -right-52 " />
 					</div>
 				</div>
 			</section>

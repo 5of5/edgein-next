@@ -54,7 +54,7 @@ const Contact: NextPage = () => {
 							unoptimized
 						/>
 					</div>
-					<div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="relative z-10 7xl mx-auto px-4 sm:px-6 lg:px-8">
 						<div className="space-y-6 sm:space-y-0 sm:grid sm:grid-cols-2 sm:gap-16 ">
 							<div>
 								<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">

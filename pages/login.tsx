@@ -31,7 +31,11 @@ export default function Login() {
 			const redirectUrl = Array.isArray(router.query.redirect)
 				? router.query.redirect[0]
 				: router.query.redirect || redirect;
-			if (redirectUrl && redirectUrl.startsWith("/") && !redirectUrl.startsWith("/login")) {
+			if (
+				redirectUrl &&
+				redirectUrl.startsWith("/") &&
+				!redirectUrl.startsWith("/login")
+			) {
 				window.location.href = redirectUrl;
 			} else {
 				window.location.href = "/?loggedin";
@@ -79,7 +83,7 @@ export default function Login() {
 			const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 			const did = await magic.auth.loginWithMagicLink({
 				email,
-				redirectURI: location.href
+				redirectURI: location.href,
 			});
 			await login(did);
 		} catch (e) {
@@ -90,7 +94,7 @@ export default function Login() {
 	};
 
 	return (
-		<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
+		<div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10 lg:min-h-[40vh]">
 			<div className="max-w-xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<div className="bg-white rounded-2xl border border-dark-500/10 p-6">
 					{finishingLogin ? (

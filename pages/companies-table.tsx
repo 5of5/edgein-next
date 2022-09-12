@@ -3,58 +3,52 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { ElemHeading } from "../components/ElemHeading";
 import { Companies_Bool_Exp, useGetCompaniesQuery } from "../graphql/types";
-import { useTable } from 'react-table';
+import { useTable } from "react-table";
 import { ElemButton } from "../components/ElemButton";
 import { useAuth } from "@/hooks/useAuth";
 
-type Props = {
-};
+type Props = {};
 
 const CompaniesTable: NextPage<Props> = () => {
-	const { user } = useAuth()
-	const [page, setPage] = useState<number>(0)
-	const limit = 50
-	const offset = limit * page
+	const { user } = useAuth();
+	const [page, setPage] = useState<number>(0);
+	const limit = 50;
+	const offset = limit * page;
 
-	const filters = {}
+	const filters = {};
 
 	const {
 		data: companiesData,
 		error,
-		isLoading
+		isLoading,
 	} = useGetCompaniesQuery({
 		offset,
 		limit,
 		where: {} as Companies_Bool_Exp,
-		current_user: user?.id ?? 0
-	})
+		current_user: user?.id ?? 0,
+	});
 
 	const columns = React.useMemo(
 		() => [
 			{
-				Header: 'Name',
-				accessor: 'name' as const,
+				Header: "Name",
+				accessor: "name" as const,
 			},
 			{
-				Header: 'Layer',
-				accessor: 'layer' as const,
+				Header: "Layer",
+				accessor: "layer" as const,
 			},
 		],
 		[]
-	)
+	);
 
-	const companies = companiesData?.companies || []
+	const companies = companiesData?.companies || [];
 
-	const {
-		getTableProps,
-		getTableBodyProps,
-		headerGroups,
-		rows,
-		prepareRow,
-	} = useTable({ columns, data: companies })
+	const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+		useTable({ columns, data: companies });
 
 	if (isLoading) {
-		return <h1>Loading</h1>
+		return <h1>Loading</h1>;
 	}
 
 	return (
@@ -73,7 +67,7 @@ const CompaniesTable: NextPage<Props> = () => {
 				></ElemHeading>
 
 				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl px-4 py-4 mx-auto sm:px-6 lg:px-8 lg:py-10">
+					<div className="max-w-7xl px-4 py-4 mx-auto sm:px-6 lg:px-8 lg:py-10">
 						<div className="flex flex-col w-full gap-5 py-5 sm:grid sm:grid-cols-2 md:grid-cols-3"></div>
 						<div>
 							<table
@@ -138,8 +132,21 @@ const CompaniesTable: NextPage<Props> = () => {
 									})}
 								</tbody>
 							</table>
-							<ElemButton disabled={page === 0} onClick={() => { setPage((prev) => prev - 1) }}>Prev</ElemButton>
-							<ElemButton onClick={() => { setPage((prev) => prev + 1) }}>Next</ElemButton>
+							<ElemButton
+								disabled={page === 0}
+								onClick={() => {
+									setPage((prev) => prev - 1);
+								}}
+							>
+								Prev
+							</ElemButton>
+							<ElemButton
+								onClick={() => {
+									setPage((prev) => prev + 1);
+								}}
+							>
+								Next
+							</ElemButton>
 						</div>
 					</div>
 				</div>
