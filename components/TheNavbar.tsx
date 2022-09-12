@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
@@ -21,6 +21,7 @@ import { useWeb3Auth } from "../services/web3auth";
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
+	const afterLogin = useRef(0)
 	 const { provider, login, logout, getUserInfo, getAccounts, getBalance, signMessage, signTransaction, signAndSendTransaction, web3Auth, chain } = useWeb3Auth();
 
 	const [showLoginPopup, setShowLoginPopup] = useState(false)
@@ -49,8 +50,8 @@ export const TheNavbar = () => {
 	}
 
 	useEffect(() => {
-		if(!loading && user){
-			
+		if(!loading && user && afterLogin.current === 0){
+			afterLogin.current = afterLogin.current + 1;
 			login(user.auth0_token)
 		}
 		// if(!loading && user && user.isFirstLogin){
@@ -83,10 +84,17 @@ export const TheNavbar = () => {
                 },
                 body: JSON.stringify({ code, redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL }),
 			}).then(res => res.json());
+			// afterLogin.current = afterLogin.current + 1;
+			//onWeb3Login()
            	window.location.href = "/";
         } catch (e) {
             console.log(e);
         }
+	}
+
+	const onWeb3Login = () => {
+		console.log("login called =", user.auth0_token)
+		login(user.auth0_token)
 	}
 
 	useEffect(() => {
@@ -94,6 +102,7 @@ export const TheNavbar = () => {
 			(async () => {
 				//setFinishingLogin(true);
 				const res = await getAccessTokenFromCode(router.query.code as string);
+				
 			})();
 		}
 	}, [router.query.code])
@@ -245,7 +254,7 @@ export const TheNavbar = () => {
 					{/* </nav>
 				</div>
 			</header> */}
-					<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
+					<LoginModal onWeb3Login={onWeb3Login} onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
 					<SignUpModal passwordFromLogin={passwordFromLogin} emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose} />
 					<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
 					{/* </>

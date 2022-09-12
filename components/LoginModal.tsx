@@ -13,6 +13,7 @@ type Props = {
 	onSignUp: (email: string, password: string) => void;
 	onForgotPassword: () => void;
 	onClose: () => void;
+	onWeb3Login: () => void
 };
 
 export default function LoginModal(props: Props) {
@@ -96,6 +97,7 @@ export default function LoginModal(props: Props) {
 				}
 			}
 			else if(response.status === 200){
+				//props.onWeb3Login()
 				window.location.href = "/";
 			  //props.onClose()
                 //login()
