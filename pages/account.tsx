@@ -19,6 +19,11 @@ export default function Account() {
 
     const { user, error, loading } = useAuth();
     const [isEditPassword, setEditPassword] = useState(false)
+
+    const [currentPassword, setCurrentPassword] = useState('')
+    const [newPassword, setNewPassword] = useState('')
+    const [reEnterPassword, setReEnterPassword] = useState('')
+
     // const [isLinkedInConnected, setIsLinkedInConnected] = useState(false)
     // console.log("user ==", user)
     // useEffect(() => {
@@ -31,7 +36,11 @@ export default function Account() {
     const onLinkedInClick = () => {
 		const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
 		window.location.href = url
-	}
+    }
+    
+    const onChangePassword = () => {
+
+    }
 
     return (
         <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -158,28 +167,28 @@ export default function Account() {
                                                 <div className="w-96 ">
                                                     <InputText
                                                         label="Current"
-                                                        onChange={() => { }}
-                                                        value=""
+                                                        onChange={(event) => { setCurrentPassword(event.target.value) }}
+                                                        value={currentPassword}
                                                         name=""
                                                         className="mb-4 border border-gray-5"
                                                     />
                                                     <InputText
                                                         label="New"
-                                                        onChange={() => { }}
-                                                        value=""
+                                                        onChange={(event) => { setNewPassword(event.target.value)}}
+                                                        value={newPassword}
                                                         name=""
                                                         className="mb-3 border border-gray-5" />
                 
                                                     <InputText
                                                         label="Re-type New"
-                                                        onChange={() => { }}
-                                                        value=""
+                                                        onChange={(event) => { setReEnterPassword(event.target.value)}}
+                                                        value={reEnterPassword}
                                                         name=""
                                                         className="mb-3 border border-gray-5" />
                 
                 
                                                     <div className="flex mt-3 mb-2">
-                                                        <ElemButton btn="primary" className="mr-2">
+                                                        <ElemButton btn="primary" className="mr-2" onClick={onChangePassword}>
                                                             Save Changes
                                                         </ElemButton>
                                                         <ElemButton onClick={() => setEditPassword(false)} className="border-none font-bold text-slate-600 bg-transparent rounded-lg p-2">Cancel</ElemButton>
