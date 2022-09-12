@@ -1,5 +1,5 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
-import { NextPage, GetStaticProps } from "next";
+import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
@@ -389,20 +389,20 @@ const Company: NextPage<Props> = (props: Props) => {
 	);
 };
 
-export async function getStaticPaths() {
-	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
-		`{ companies(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { slug }}`
-	);
+// export async function getStaticPaths() {
+// 	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
+// 		`{ companies(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { slug }}`
+// 	);
 
-	return {
-		paths: companies?.companies
-			?.filter((comp) => comp.slug)
-			.map((comp) => ({ params: { companyId: comp.slug } })),
-		fallback: true, // false or 'blocking'
-	};
-}
+// 	return {
+// 		paths: companies?.companies
+// 			?.filter((comp) => comp.slug)
+// 			.map((comp) => ({ params: { companyId: comp.slug } })),
+// 		fallback: true, // false or 'blocking'
+// 	};
+// }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
 		{ slug: context.params?.companyId, current_user: 0 }
