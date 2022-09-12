@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAuth } from "../hooks/useAuth";
 import Link from "next/link"
 import { IconCrap } from "../components/reactions/IconCrap"
@@ -14,7 +15,9 @@ import { InputSelect } from "@/components/InputSelect";
 import person from "../images/person.png"
 import { IconSetting } from "@/components/IconSetting";
 
-export default function account() {
+export default function Account() {
+
+    const [isEditPassword, setEditPassword] = useState(false)
 
     return (
         <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -114,60 +117,58 @@ export default function account() {
                             </div>
 
                         </div>
-
-                        <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Change Password</h2>
-                            <div>
-                                <h2 className="text-gray-10 text-md">Use a strong password that you are not using elsewhere.</h2>
-                            </div>
-
-                            <button className="absolute right-0 text-md text-primary-500">Edit</button>
-
-
-                        </div>
-
-
-                        {/* hide content */}
-                        <div className="flex mt-3 mb-2 relative">
-                            <h2 className="text-dark-500 font-bold text-md w-40">Change Password</h2>
-                            <div>
-                                <div className="w-96 border-b border-gray-100 pb-3">
-                                    <InputText
-                                        label="Current"
-                                        onChange={() => { }}
-                                        value=""
-                                        name=""
-                                        className="mb-4"
-                                    />
-                                    <InputText
-                                        label="New"
-                                        onChange={() => { }}
-                                        value=""
-                                        name=""
-                                        className="mb-3" />
-
-                                    <InputText
-                                        label="Re-type New"
-                                        onChange={() => { }}
-                                        value=""
-                                        name=""
-                                        className="mb-3" />
-
-
-                                    <div className="flex mt-3 mb-2">
-                                        <ElemButton btn="primary" className="mr-2">
-                                            Save Changes
-                                        </ElemButton>
-                                        <ElemButton className="border-none font-bold text-slate-600 bg-transparent rounded-lg p-2">Cancel</ElemButton>
+                        {
+                            (!isEditPassword) ? (
+                                <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
+                                    <h2 className="text-dark-500 font-bold text-md w-40">Change Password</h2>
+                                    <div>
+                                        <h2 className="text-gray-10 text-md">Use a strong password that you are not using elsewhere.</h2>
                                     </div>
+                                    <button onClick={() => setEditPassword(true)} className="absolute right-0 text-md text-primary-500">Edit</button>
                                 </div>
-                            </div>
-
-
-
-                        </div>
-
-                        <hr></hr>
+                            )
+                                :
+                                (
+                                    <div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
+                                    <h2 className="text-dark-500 font-bold text-md w-40">Change Password</h2>
+                                    <div>
+                                        <div className="w-96 ">
+                                            <InputText
+                                                label="Current"
+                                                onChange={() => { }}
+                                                value=""
+                                                name=""
+                                                className="mb-4 border border-gray-5"
+                                            />
+                                            <InputText
+                                                label="New"
+                                                onChange={() => { }}
+                                                value=""
+                                                name=""
+                                                className="mb-3 border border-gray-5" />
+        
+                                            <InputText
+                                                label="Re-type New"
+                                                onChange={() => { }}
+                                                value=""
+                                                name=""
+                                                className="mb-3 border border-gray-5" />
+        
+        
+                                            <div className="flex mt-3 mb-2">
+                                                <ElemButton btn="primary" className="mr-2">
+                                                    Save Changes
+                                                </ElemButton>
+                                                <ElemButton onClick={() => setEditPassword(false)} className="border-none font-bold text-slate-600 bg-transparent rounded-lg p-2">Cancel</ElemButton>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            )
+                        }
+                        {/* hide content */}
+                        {/* <hr></hr> */}
 
                     </div>
                 </div>
