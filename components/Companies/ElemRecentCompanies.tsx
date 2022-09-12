@@ -3,27 +3,34 @@ import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { formatDate } from "@/utils";
+import { formatDate, numberWithCommas } from "@/utils";
 import { getLayerClass } from "@/utils/style";
+import { IconArrowUp } from "@/components/Icons";
 import {
-  Companies,
-  Companies_Bool_Exp,
-  Follows_Companies,
-  Lists,
-  useGetCompaniesRecentQuery,
+	Companies,
+	Companies_Bool_Exp,
+	Follows_Companies,
+	Lists,
+	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 
-import { getName, getNewFollows, getNewTempSentiment, isFollowsExists, reactOnSentiment } from "@/utils/reaction";
+import {
+	getName,
+	getNewFollows,
+	getNewTempSentiment,
+	isFollowsExists,
+	reactOnSentiment,
+} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 
 import { has, remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
-		[P in keyof T]?: DeepPartial<T[P]>;
-	}
+			[P in keyof T]?: DeepPartial<T[P]>;
+	  }
 	: T;
 
 type Props = {
@@ -34,9 +41,9 @@ type Props = {
 };
 
 export const ElemRecentCompanies: FC<Props> = ({
-  className = "",
-  heading,
-  itemsLimit,
+	className = "",
+	heading,
+	itemsLimit,
 }) => {
 	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
@@ -71,45 +78,56 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 	const handleReactionClick =
 		(company: Companies) =>
-			(sentiment: string, alreadyReacted: boolean) =>
-				async (
-					event: React.MouseEvent<
-						HTMLButtonElement | HTMLInputElement | HTMLElement
-					>
-				) => {
-					event.stopPropagation();
-					event.preventDefault();
-					setTemporary(company, sentiment, alreadyReacted)
-					const newSentiment = await reactOnSentiment({
-						company: company.id,
-						sentiment,
-						pathname: `/companies/${company.slug}`,
-					});
+		(sentiment: string, alreadyReacted: boolean) =>
+		async (
+			event: React.MouseEvent<
+				HTMLButtonElement | HTMLInputElement | HTMLElement
+			>
+		) => {
+			event.stopPropagation();
+			event.preventDefault();
+			setTemporary(company, sentiment, alreadyReacted);
+			const newSentiment = await reactOnSentiment({
+				company: company.id,
+				sentiment,
+				pathname: `/companies/${company.slug}`,
+			});
 
-					setCompanies((prev) => {
-						return [...(prev || ([] as Companies[]))].map((item) => {
-							if (item.id === company.id) {
-								const newFollows = getNewFollows(sentiment) as Follows_Companies;
+			setCompanies((prev) => {
+				return [...(prev || ([] as Companies[]))].map((item) => {
+					if (item.id === company.id) {
+						const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
-								if (!alreadyReacted && !isFollowsExists(item.follows as Follows_Companies[], sentiment)) item.follows.push(newFollows);
-								else
-									remove(item.follows, (list) => {
-										return getName(list.list! as Lists) === sentiment;
-									});
+						if (
+							!alreadyReacted &&
+							!isFollowsExists(item.follows as Follows_Companies[], sentiment)
+						)
+							item.follows.push(newFollows);
+						else
+							remove(item.follows, (list) => {
+								return getName(list.list! as Lists) === sentiment;
+							});
 
-								return { ...item, sentiment: newSentiment };
-							}
-							return item;
-						});
-					});
-				};
+						return { ...item, sentiment: newSentiment };
+					}
+					return item;
+				});
+			});
+		};
 
-	const setTemporary = (company: Companies, sentiment: string, alreadyReacted: boolean) => {
+	const setTemporary = (
+		company: Companies,
+		sentiment: string,
+		alreadyReacted: boolean
+	) => {
 		setCompanies((prev) => {
 			return [...(prev || ([] as Companies[]))].map((item) => {
 				if (item.id === company.id) {
-
-					const newSentiment = getNewTempSentiment({ ...item.sentiment }, sentiment, alreadyReacted)
+					const newSentiment = getNewTempSentiment(
+						{ ...item.sentiment },
+						sentiment,
+						alreadyReacted
+					);
 
 					const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
@@ -124,7 +142,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 				return item;
 			});
 		});
-	}
+	};
 
 	return (
 		<div className={`bg-white rounded-lg p-5 ${className}`}>
@@ -148,6 +166,13 @@ export const ElemRecentCompanies: FC<Props> = ({
 				companies && (
 					<ElemCarouselWrap>
 						{companies.map((company: any, index: number) => {
+							// Add 'amount' from investment_rounds array
+							const fundingTotal = company.investment_rounds?.reduce(
+								(total: number, currentValue: any) =>
+									(total = total + currentValue.amount),
+								0
+							);
+
 							return (
 								<ElemCarouselCard
 									key={index}
@@ -157,7 +182,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 										href={`/companies/${company.slug}`}
 										className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
 									>
-										<div className="flex">
+										<div className="flex items-center">
 											<ElemPhoto
 												photo={company.logo}
 												wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
@@ -165,20 +190,31 @@ export const ElemRecentCompanies: FC<Props> = ({
 												imgAlt={company.name}
 											/>
 
-											<div className="flex items-center justify-center pl-2 md:overflow-hidden">
+											<div className="pl-2 md:overflow-hidden">
 												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
 													{company.name}
 												</h3>
+
+												{fundingTotal?.length > 0 && (
+													<div className="flex items-center space-x-1">
+														<div className="uppercase text-sm">Raised</div>
+														<div className="flex items-center text-green-700">
+															${numberWithCommas(fundingTotal)}{" "}
+															<IconArrowUp className="h-4 w-4" />
+														</div>
+													</div>
+												)}
 											</div>
 										</div>
+
 										{company.layer && (
-										<div
-											className={`${getLayerClass(
-											company.layer
-											)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
-										>
-											{company.layer}
-										</div>
+											<div
+												className={`${getLayerClass(
+													company.layer
+												)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
+											>
+												{company.layer}
+											</div>
 										)}
 										<div className="mt-4 text-gray-400 grow line-clamp-3">
 											{company.overview}

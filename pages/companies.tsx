@@ -186,14 +186,14 @@ const Companies: NextPage<Props> = ({
 	};
 
 	return (
-		<div>
+		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Web3 Companies"
 				subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 			></ElemHeading>
 
-			<div className="relative">
-				<div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+			<div className="">
+				<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
 					{companies && (
 						<ElemRecentCompanies
 							onUpdateOfCompany={onUpdateOfCompany}
@@ -203,7 +203,7 @@ const Companies: NextPage<Props> = ({
 					)}
 				</div>
 
-				<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
+				<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 					<div className="bg-white rounded-lg p-5">
 						<h2 className="text-xl font-bold">All Companies</h2>
 						<ElemFiltersWrap className="pt-2 filters-wrap">
