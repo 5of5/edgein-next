@@ -11,6 +11,7 @@ import LoginModal from "./LoginModal";
 import ForgotPasswordModal from "./ForgotPasswordModal";
 import SignUpModal from "./SignUpModal";
 import { IconSearch } from "@/components/Icons";
+import { MobileNav } from "@/components/MobileNav";
 import SearchModal from "./SearchModal";
 import { useHotkeys } from "react-hotkeys-hook";
 import OnBoardingStep1Modal from "./onBoarding/OnBoardingStep1Modal";
@@ -111,12 +112,6 @@ export const TheNavbar = () => {
 		}
 	};
 
-	const [isActive, setActive] = useState(false);
-
-	const toggleNav = () => {
-		setActive((isActive) => !isActive);
-	};
-
 	const onForgotPassword = () => {
 		setShowLoginPopup(false);
 		setShowForgotPasswordPopup(true);
@@ -156,12 +151,10 @@ export const TheNavbar = () => {
 	};
 
 	return (
-		<header className="overflow-y-visible z-30 shadow bg-white">
+		<header className="overflow-y-visible z-40 shadow bg-white">
 			<div className="mx-auto px-1 py-1 sm:px-6 lg:px-8">
 				<nav
-					className={`main-nav flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all ${
-						isActive ? "nav-toggle-active" : ""
-					}`}
+					className="flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all"
 					aria-label="Global"
 				>
 					<div className="flex items-center">
@@ -180,11 +173,11 @@ export const TheNavbar = () => {
 							onClick={() => {
 								setShowSearchModal(true);
 							}}
-							className="hidden sm:flex items-center lg:w-64 text-left space-x-2 px-2 h-9 bg-white shadow-sm rounded-lg text-slate-400 ring-1 ring-slate-900/10 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
+							className="hidden sm:flex items-center text-left space-x-2 px-2 h-9 bg-white shadow-sm rounded-lg text-slate-400 ring-1 ring-slate-900/10 lg:w-64 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
 						>
 							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
 							<span className="flex-auto">Quick Search...</span>
-							<kbd className="text-sm font-semibold">
+							<kbd className="hidden lg:block text-sm font-semibold">
 								<abbr title="Command" className="no-underline text-slate-400">
 									⌘
 								</abbr>{" "}
@@ -193,71 +186,49 @@ export const TheNavbar = () => {
 						</button>
 					</div>
 
-					<div className="flex items-center">
-						<ul
-							className={`${
-								isActive
-									? "flex h-auto opacity-100 translate-y-0"
-									: "h-0 opacity-0 overflow-hidden -translate-y-6 lg:h-auto lg:opacity-100 lg:translate-y-0"
-							} absolute flex-col z-40 left-4 right-4 top-14 bg-white shadow-2xl rounded-lg transition duration-300 items-center justify-center group lg:relative lg:flex lg:flex-row lg:top-0 lg:m-0 lg:p-0 lg:bg-transparent lg:shadow-none`}
+					<div className="flex items-center space-x-2 lg:space-x-3 lg:ml-6">
+						{siteNav.map((link, index) => (
+							<Link href={link.path} key={index} passHref>
+								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100">
+									{link.name}
+								</a>
+							</Link>
+						))}
+
+						<button
+							onClick={() => {
+								setShowSearchModal(true);
+							}}
+							className="sm:hidden"
 						>
-							{siteNav.map((link, index) => (
-								<li key={index}>
-									<Link href={link.path}>
-										<a
-											onClick={toggleNav}
-											className="inline-block mx-1 px-5 py-3 font-bold transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100"
-										>
-											{link.name}
-										</a>
-									</Link>
-								</li>
-							))}
-						</ul>
+							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
+						</button>
 
-						<div className="flex items-center space-x-2 lg:space-x-3 lg:ml-6">
-							<button
-								onClick={() => {
-									setShowSearchModal(true);
-								}}
-								className="sm:hidden"
-							>
-								<IconSearch className="flex-none h-5 w-5 text-dark-500" />
-							</button>
-
-							{/* <ElemButton onClick={logout} btn="primary">
+						{/* <ElemButton onClick={logout} btn="primary">
 							Logout
 						 </ElemButton> */}
-							{user ? (
-								<UserMenu />
-							) : (
-								<>
-									<ElemButton
-										onClick={() => setShowLoginPopup(true)}
-										btn="white"
-										arrow
-										arrowClass="hidden sm:block"
-										className="px-2.5 sm:px-3"
-									>
-										Log In
-									</ElemButton>
-									<ElemButton
-										onClick={() => setShowSignUp(true)}
-										btn="primary"
-										className="px-2.5 sm:px-3"
-									>
-										Sign Up
-									</ElemButton>
-								</>
-							)}
-							<button
-								onClick={toggleNav}
-								className="hamburger relative w-8 h-[22px] ml-2 p-[3px] border-0 bg-none cursor-pointer inline-block lg:hidden"
-							>
-								<span className="hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-75 before:block before:content-[''] after:block after:content-['']"></span>
-								<span className="sr-only">Toggle menu</span>
-							</button>
-						</div>
+						{user ? (
+							<UserMenu />
+						) : (
+							<>
+								<ElemButton
+									onClick={() => setShowLoginPopup(true)}
+									btn="white"
+									className="px-2.5 sm:px-3"
+								>
+									Log In
+								</ElemButton>
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									btn="primary"
+									className="px-2.5 sm:px-3"
+								>
+									Sign Up
+								</ElemButton>
+							</>
+						)}
+
+						<MobileNav className="lg:hidden" />
 					</div>
 
 					<LoginModal
