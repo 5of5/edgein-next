@@ -41,15 +41,21 @@ const BlockchainsTitle = ({ record }: TitleProps) => {
 };
 
 export const BlockchainsEdit = () => (
-  <Edit title={<BlockchainsTitle />}>
+  <Edit title={<BlockchainsTitle />}
+    sx={{
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         disabled
         source="id"
       />
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="name"
       />
     </SimpleForm>
@@ -57,10 +63,16 @@ export const BlockchainsEdit = () => (
 );
 
 export const BlockchainsCreate = () => (
-  <Create title="Create a Blockchain">
+  <Create title="Create a Blockchain"
+    sx={{
+      '.MuiFormHelperText-root': {
+        display: 'none',
+      }
+    }}
+  >
     <SimpleForm>
       <TextInput
-        className="w-full mt-1 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="name"
       />
     </SimpleForm>

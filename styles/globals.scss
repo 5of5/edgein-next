@@ -88,49 +88,39 @@ body {
 body {
   @apply bg-gray-50 text-dark-500 overscroll-y-none;
 }
-input[type="checkbox"]::before {
-  /* ...existing styles */
 
+input[type="checkbox"]::before {
   transform-origin: bottom left;
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
-/***************** 
-Mobile hamburger button
-******************/
-.main-nav {
-  .hamburger-inner,
-  .hamburger-inner::before,
-  .hamburger-inner::after {
-    @apply absolute h-0.5 w-[26px] bg-current rounded-[1px] transition-transform;
+.dashes{
+  background: repeating-linear-gradient(to bottom, #ced6fe 0, #ced6fe 6px, transparent 6px, transparent 12px);
+}
+
+/* Mobile hamburger button */
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+  @apply absolute h-0.5 w-[26px] bg-current rounded-[1px] transition-transform;
+}
+
+.hamburger-inner {
+  &::before {
+    transition: top .075s .12s ease, opacity .075s ease;
+    @apply top-[7px];
   }
 
-  .hamburger-inner {
+  &::after {
+    transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
+    @apply bottom-[7px];
+  }
+  &.hamburger-active{
     &::before {
-      transition: top .075s .12s ease, opacity .075s ease;
-      @apply top-[7px];
+      transition: top .075s ease, opacity .075s .12s ease;
     }
-
     &::after {
-      transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
-      @apply bottom-[7px];
-    }
-  }
-
-  /* Active hamburger button  */
-  &.nav-toggle-active {
-    .hamburger-inner {
-      @apply delay-150 ease-linear rotate-45;
-
-      &::before {
-        transition: top .075s ease, opacity .075s .12s ease;
-        @apply top-0 opacity-0;
-      }
-
-      &::after {
-        transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
-        @apply bottom-0 rotate-90;
-      }
+      transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
     }
   }
 }

@@ -123,6 +123,7 @@ query GetCompaniesRecent(
 		id
 		name
 		slug
+		layer
 		logo
 		overview
 		total_employees
@@ -145,26 +146,22 @@ query GetCompaniesPaths {
 	}
 }
 
-query GetCompaniesByListId($list_id: Int = 0) {
-  follows_companies(where: {list_id: {_eq: $list_id}}) {
-    company {
+query GetRelevantCompanies(
+	$where: companies_bool_exp!
+	$current_user: Int = 0
+	) {
+		companies(
+			where: $where
+		) {
 			id
-      name
-      logo
-      sentiment
-			location
-      coin {
-        ticker
-        name
-      }
-      teamMembers {
-        id
-      }
-      investment_rounds {
-        amount
-      }
-      tags
+			logo
+			name
 			slug
-    }
-  }
+			sentiment
+			follows(where: {created_by_user_id: {_eq: $current_user}}) {
+			list {
+				name
+			}
+		}
+	}
 }

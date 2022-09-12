@@ -1,15 +1,21 @@
 import { Companies, Follows_Companies } from "@/graphql/types";
-import { getName, getNewFollows, reactOnSentiment } from "@/utils/reaction";
+import {
+	getName,
+	getNewFollows,
+	getNewTempSentiment,
+	isFollowsExists,
+	reactOnSentiment,
+} from "@/utils/reaction";
 import { getLayerClass } from "@/utils/style";
-import { remove } from "lodash";
+import { has, remove } from "lodash";
 import { FC, useEffect, useState } from "react";
-// import { ElemCredibility } from "@/components/Company/ElemCredibility";
-// import { ElemVelocity } from "@/components/Company/ElemVelocity";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemTooltip } from "@/components/ElemTooltip";
-import { IconArrowUp, IconArrowDown } from "@/components/Icons";
+// import { ElemCredibility } from "@/components/Company/ElemCredibility";
+// import { ElemVelocity } from "@/components/Company/ElemVelocity";
+//import { IconArrowUp, IconArrowDown } from "@/components/Icons";
 
 type Props = {
 	company: Companies;
@@ -32,7 +38,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 		) => {
 			event.stopPropagation();
 			event.preventDefault();
-
+			setTemporary(sentiment, alreadyReacted);
 			const newSentiment = await reactOnSentiment({
 				company: company.id,
 				sentiment,
@@ -41,7 +47,8 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 			setCompanyData((prev: Companies) => {
 				const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
-				if (!alreadyReacted) prev.follows.push(newFollows);
+				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
+					prev.follows.push(newFollows);
 				else
 					remove(prev.follows, (item) => {
 						return getName(item.list!) === sentiment;
@@ -49,6 +56,25 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				return { ...prev, sentiment: newSentiment };
 			});
 		};
+
+	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
+		setCompanyData((prev: Companies) => {
+			const newSentiment = getNewTempSentiment(
+				{ ...prev.sentiment },
+				sentiment,
+				alreadyReacted
+			);
+
+			const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+			if (!alreadyReacted) prev.follows.push(newFollows);
+			else
+				remove(prev.follows, (item) => {
+					return getName(item.list!) === sentiment;
+				});
+			return { ...prev, sentiment: newSentiment };
+		});
+	};
 
 	return (
 		<a
@@ -138,7 +164,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				/>
 				</div> */}
 
-			<div className="flex items-center justify-between mt-4">
+			<div className="flex items-center justify-between mt-4 gap-x-5">
 				<ElemReactions
 					data={companyData}
 					handleReactionClick={handleReactionClick}

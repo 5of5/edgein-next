@@ -11,41 +11,35 @@ type Props = {
 
 const Team: NextPage<Props> = ({ team }) => {
 	return (
-		<div>
-			<div>
-				<ElemHeading
-					title="Meet the EdgeIn Team"
-					subtitle="Get to know the people leading data insights for the web3 community"
-				></ElemHeading>
+		<div className="relative overflow-hidden">
+			<ElemHeading
+				title="Meet the EdgeIn Team"
+				subtitle="Get to know the people leading data insights for the web3 community"
+			></ElemHeading>
 
-				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-						<div className="space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
-							{team.map((person, index) => (
-								<div
-									key={index}
-									className="bg-white border border-dark-500 border-opacity-10 rounded-lg overflow-hidden flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out md:h-full"
-								>
-									<div className="relative aspect-square">
-										<Image
-											src={person.image}
-											alt={person.image}
-											layout="fill"
-											objectFit="contain"
-										/>
-									</div>
-									<div className="leading-6 font-medium px-4 py-4">
-										<h3 className="flex items-center font-bold text-lg text-primary-500">
-											{person.name}
-										</h3>
-										{person.role && (
-											<p className="text-gray-400">{person.role}</p>
-										)}
-									</div>
-								</div>
-							))}
+			<div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
+				<div className="space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+					{team.map((person, index) => (
+						<div
+							key={index}
+							className="bg-white border border-dark-500 border-opacity-10 rounded-lg overflow-hidden flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out md:h-full"
+						>
+							<div className="relative aspect-square">
+								<Image
+									src={person.image}
+									alt={person.image}
+									layout="fill"
+									objectFit="contain"
+								/>
+							</div>
+							<div className="leading-6 font-medium px-4 py-4">
+								<h3 className="flex items-center font-bold text-lg text-primary-500">
+									{person.name}
+								</h3>
+								{person.role && <p className="text-gray-400">{person.role}</p>}
+							</div>
 						</div>
-					</div>
+					))}
 				</div>
 			</div>
 		</div>

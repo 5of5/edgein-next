@@ -64,6 +64,7 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current
 		logo
 		num_of_investments
 		sentiment
+		overview
 		follows(where: {created_by_user_id: {_eq: $current_user}}) {
       list {
         name
@@ -89,7 +90,9 @@ query GetVCFirmsRecentInvestments(
 		slug
 		logo
 		latest_investments
+		num_of_investments
 		sentiment
+		overview
 		follows(where: {created_by_user_id: {_eq: $current_user}}) {
       list {
         name
@@ -106,16 +109,23 @@ query GetVCFirmsPath {
 	}
 }
 
-query GetVcFirmsByListId($list_id: Int = 0) {
-  follows_vc_firms(where: {list_id: {_eq: $list_id}}) {
-    vc_firm {
-      id
+query GetRelevantVCFirms(
+	$where: vc_firms_bool_exp!
+	$current_user: Int
+	) {
+		vc_firms(
+			where: $where
+		) {
+			id
+			logo
 			name
-      num_of_investments
-      latest_investments
-      sentiment
-      logo
 			slug
-    }
-  }
+			sentiment
+			follows(where: {created_by_user_id: {_eq: $current_user}}) {
+			list {
+				name
+			}
+		}
+	}
 }
+

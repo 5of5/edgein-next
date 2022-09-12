@@ -5,6 +5,7 @@
 		"codegen",
 		"dockerenv",
 		"edgein",
+		"fusionworks",
 		"glassdoor",
 		"hasura",
 		"headlessui",
@@ -14,6 +15,7 @@
 		"loggedout",
 		"overscroll",
 		"sindresorhus",
+		"sortees",
 		"vcfirm",
 		"vcfirms"
 	],
