@@ -45,7 +45,7 @@ const Team: NextPage<Props> = ({ team }) => {
 	);
 };
 
-export const getServerSideProps: getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	const team = [
 		{
 			image: "/images/redg-snodgrass.jpg",
