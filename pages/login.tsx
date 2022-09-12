@@ -1,5 +1,5 @@
 import { Magic } from "magic-sdk";
-import type { GetStaticProps } from "next";
+import type { GetStaticProps, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
 import { IconSpinner } from "../components/Icons";
@@ -155,7 +155,7 @@ export default function Login() {
 	);
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	return {
 		props: {
 			metaTitle: "Login - EdgeIn.io",

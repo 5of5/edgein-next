@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -434,7 +434,7 @@ const Terms: NextPage<Props> = (props) => {
 	);
 };
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async () => {
 	return {
 		props: {
 			metaTitle: "Terms of Use  - EdgeIn.io",

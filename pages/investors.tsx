@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemHeading } from "@/components/ElemHeading";
@@ -337,7 +337,7 @@ const Investors: NextPage<Props> = ({
 	);
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vcFirms } = await runGraphQl<GetVcFirmsQuery>(
 		GetVcFirmsDocument,
 		{
