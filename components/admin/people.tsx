@@ -199,6 +199,7 @@ export const PeopleEdit = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currRecord, setCurrRecord] = useState<any>(null);
   const [teamData, setTeamData] = useState<any>({
+    team_id: -1,
     company_id: "",
     founder: false,
     function: "",
@@ -302,6 +303,7 @@ export const PeopleEdit = () => {
     setIsOpen(true);
     setCurrRecord(rec);
     setTeamData({
+      team_id: rec.id,
       company_id: rec.company_id,
       founder: rec.founder,
       function: rec.function,
@@ -354,7 +356,15 @@ export const PeopleEdit = () => {
         create("team_members", { data });
         setFilterData([...filterData, data]);
       } else {
-        update("team_members", { id: currRecord.id, data });
+        let tData = filterData;
+        let foundIndex = tData.findIndex((r: any) => r.id === teamData.team_id);
+        update("team_members", {
+          id: currRecord.id,
+          data,
+          previousData: tData[foundIndex],
+        });
+        tData[foundIndex] = data;
+        setFilterData(tData);
       }
       handleClose();
     }
@@ -488,7 +498,6 @@ export const PeopleEdit = () => {
             <TextField source="name" />
           </ReferenceField>
           <SelectField source="function" choices={functionChoicesTM} />
-          <SelectField source="function" choices={functionChoicesTM} />
           <DateField source="start_date" />
           <DateField source="end_date" />
           <SelectField source="seniority" choices={seniorityChoicesTM} />
@@ -598,16 +607,10 @@ export const PeopleEdit = () => {
               width: "100%",
             }}
           >
-            <Button
-              label="Cancel"
-              variant="text"
-              type="submit"
-              onClick={handleClose}
-            />
+            <Button label="Cancel" variant="text" onClick={handleClose} />
             <Button
               label="Save"
               variant="contained"
-              type="submit"
               onClick={handleSave}
               startIcon={<ContentSave />}
             />
