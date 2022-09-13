@@ -3,7 +3,7 @@ import { ElemPhoto } from "@/components/ElemPhoto"
 import { InputText } from "@/components/InputText"
 import { InputTextarea } from "@/components/InputTextarea"
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react"
-import { GetCompaniesDocument, GetCompaniesQuery, People, Team_Members, useGetPersonQuery } from "@/graphql/types"
+import { GetCompaniesDocument, GetCompaniesQuery, People, Team_Members, useGetPersonQuery, useGetUserProfileQuery } from "@/graphql/types"
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu"
 import { useAuth } from "@/hooks/useAuth"
 import { find, findIndex } from "lodash"
@@ -60,16 +60,16 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const [tmData, setTmData] = useState<any>(emptyTeamMember);
 
 	const {
-		data: people
-	} = useGetPersonQuery({
-		slug: 'sagar'
+		data: users
+	} = useGetUserProfileQuery({
+		id: user?.id ?? 0
 	})
 
 	// set person
 	useEffect(() => {
-		if (people)
-			setPerson(people.people[0] as People)
-	}, [people]);
+		if (users)
+			setPerson(users.users_by_pk?.person as People)
+	}, [users])
 
 	// set workspace data in edit mode
 	useEffect(() => {
