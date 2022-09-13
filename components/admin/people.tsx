@@ -573,6 +573,7 @@ export const PeopleEdit = () => {
           <FormControl variant="filled" sx={{ width: "100%" }}>
             <MuiTextField
               label="Title"
+              value={teamData?.title}
               onChange={(e) => handleChange(5, e.target.value)}
               variant="filled"
             />
@@ -621,7 +622,7 @@ export const ListActions = ({ onCreate }: any) => {
   return (
     <TopToolbar>
       <Button
-        label="create team"
+        label="Add as Team Member"
         variant="text"
         onClick={onCreate}
         startIcon={<ContentCreate />}
