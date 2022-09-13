@@ -48,7 +48,7 @@ export default function Account() {
     const validateReEnterPasssword = (value: string) => {
         setReEnterPassword(value);
         if(newPassword !== value){
-            setReEnterErrorMessage("Password do noot match!")
+            setReEnterErrorMessage("Password do not match!")
         }else{
             setReEnterErrorMessage("")
         }
@@ -213,6 +213,7 @@ export default function Account() {
                                             <h2 className="text-dark-500 font-bold text-md w-40">Change Password</h2>
                                             <div>
                                                 <div className="w-96 ">
+                                                    <div>
                                                     <InputText
                                                         type="password"
                                                         label="New"
@@ -225,6 +226,8 @@ export default function Account() {
                                                                     {errorMessage}
                                                                 </span>
                                                             )}
+                                                    </div>
+                                                  
                                                     <InputText
                                                         type="password"
                                                         label="Re-type New"
