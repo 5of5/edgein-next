@@ -1,0 +1,6 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE OR REPLACE TRIGGER trigger_link_person_to_user_when_added_new
+-- AFTER INSERT ON public.people
+-- FOR EACH ROW
+-- EXECUTE PROCEDURE link_person_to_user_when_added_new();

@@ -1,6 +1,5 @@
 import React from "react";
 import type { NextPage, GetStaticProps } from "next";
-import Head from "next/head";
 import Image from "next/image";
 
 import { ElemHeading } from "../components/ElemHeading";
@@ -11,41 +10,35 @@ type Props = {
 
 const Team: NextPage<Props> = ({ team }) => {
 	return (
-		<div>
-			<div>
-				<ElemHeading
-					title="Meet the EdgeIn Team"
-					subtitle="Get to know the people leading data insights for the web3 community"
-				></ElemHeading>
+		<div className="relative overflow-hidden">
+			<ElemHeading
+				title="Meet the EdgeIn Team"
+				subtitle="Get to know the people leading data insights for the web3 community"
+			></ElemHeading>
 
-				<div className="bg-gray-50 relative z-10 rounded-t-3xl lg:rounded-t-8xl">
-					<div className="max-w-6xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-						<div className="space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
-							{team.map((person, index) => (
-								<div
-									key={index}
-									className="bg-white border border-dark-500 border-opacity-10 rounded-lg overflow-hidden flex flex-col mx-auto w-full max-w-md group transition duration-300 ease-in-out md:h-full"
-								>
-									<div className="relative aspect-square">
-										<Image
-											src={person.image}
-											alt={person.image}
-											layout="fill"
-											objectFit="contain"
-										/>
-									</div>
-									<div className="leading-6 font-medium px-4 py-4">
-										<h3 className="flex items-center font-bold text-lg text-primary-500">
-											{person.name}
-										</h3>
-										{person.role && (
-											<p className="text-gray-400">{person.role}</p>
-										)}
-									</div>
-								</div>
-							))}
+			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				<div className="space-y-12 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:gap-y-12 sm:space-y-0 lg:grid-cols-4 lg:gap-x-8">
+					{team.map((person, index) => (
+						<div
+							key={index}
+							className="bg-white rounded-lg shadow overflow-hidden flex flex-col mx-auto w-full max-w-md transition duration-300 ease-in-out md:h-full"
+						>
+							<div className="relative aspect-square">
+								<Image
+									src={person.image}
+									alt={person.image}
+									layout="fill"
+									objectFit="contain"
+								/>
+							</div>
+							<div className="leading-6 font-medium px-4 py-4">
+								<h3 className="flex items-center font-bold text-lg text-primary-500">
+									{person.name}
+								</h3>
+								{person.role && <p className="text-gray-400">{person.role}</p>}
+							</div>
 						</div>
-					</div>
+					))}
 				</div>
 			</div>
 		</div>
@@ -53,20 +46,9 @@ const Team: NextPage<Props> = ({ team }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-	const redg = "/redg-snodgrass.jpg";
-	const ashley = "/ashley-brown.jpg";
-	const raymond = "/raymond-l-aleman.jpg";
-	const ed = "/ed-parsons.jpg";
-	const dahn = "/dahn-tamir.jpg";
-	const jhen = "/jhen-de-leon.jpg";
-	const rocky = "/rocky-rimando.png";
-	const osman = "/osman-pulgar.jpg";
-	const jonnelle = "/jonnelle-gueco.jpg";
-	const patricia = "/patricia-pulgar.jpg";
-
 	const team = [
 		{
-			image: redg,
+			image: "/images/redg-snodgrass.jpg",
 			name: "Redg Snodgrass",
 			role: "Founder & CEO",
 			description:
@@ -74,7 +56,8 @@ export const getStaticProps: GetStaticProps = async () => {
 			linkedin: "https://www.linkedin.com/in/redgiesnodgrass/",
 		},
 		{
-			image: ashley,
+			image: "/images/ashley-brown.jpg",
+			//image: ashley,
 			name: "Ashley Brown",
 			role: "Co-Founder & COO",
 			description:
@@ -82,7 +65,7 @@ export const getStaticProps: GetStaticProps = async () => {
 			linkedin: "https://www.linkedin.com/in/brownashleyk/",
 		},
 		{
-			image: raymond,
+			image: "/images/raymond-l-aleman.jpg",
 			name: "Raymond L. Aleman",
 			role: "Co-Founder & Chief Design",
 			description:
@@ -90,49 +73,49 @@ export const getStaticProps: GetStaticProps = async () => {
 			linkedin: "https://www.linkedin.com/in/raylopezaleman/",
 		},
 		{
-			image: ed,
+			image: "/images/ed-parsons.jpg",
 			name: "Ed Parsons",
 			role: "Chief Technology Advisor",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/efparsons/",
 		},
 		{
-			image: dahn,
+			image: "/images/dahn-tamir.jpg",
 			name: "Dahn Tamir",
 			role: "Head of Data",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/dahntamir/",
 		},
 		{
-			image: jhen,
+			image: "/images/jhen-de-leon.jpg",
 			name: "Jhen de Leon",
 			role: "Chief of Staff",
 			//description: "",
 			//linkedin: "",
 		},
 		{
-			image: rocky,
+			image: "/images/rocky-rimando.png",
 			name: "Rocky Rimando",
 			role: "Virtual Strategic Analyst Lead",
 			//description: "",
 			linkedin: "https://www.linkedin.com/in/rocky-rimando/",
 		},
 		{
-			image: osman,
+			image: "/images/osman-pulgar.jpg",
 			name: "Osman Pulgar",
 			role: "Virtual Strategic Analyst",
 			//description: "",
 			//linkedin: maybe? "https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/",
 		},
 		{
-			image: jonnelle,
+			image: "/images/jonnelle-gueco.jpg",
 			name: "Jonnelle Gueco",
 			role: "Virtual Strategic Analyst",
 			//description: "",
 			//linkedin: maybe? "https://www.linkedin.com/in/jonnelle-gueco-826343200/",
 		},
 		{
-			image: patricia,
+			image: "/images/patricia-pulgar.jpg",
 			name: "Patricia Pulgar",
 			role: "Virtual Strategic Analyst",
 			//description: "",

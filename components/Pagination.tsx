@@ -22,19 +22,20 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 }) => {
 	const shownItemsStart = page === 0 ? 1 : page * itemsPerPage;
 	const shownItemsEnd =
-		shownItems < itemsPerPage ? shownItems : (page + 1) * itemsPerPage;
+		shownItems < itemsPerPage ? totalItems : (page + 1) * itemsPerPage;
 
 	return (
 		<nav
-			className={`${className} py-3 flex items-center justify-between`}
+			className={`${className} py-3 space-y-3 md:space-y-0 md:flex items-center justify-between`}
 			aria-label="Pagination"
 		>
-			<div className="hidden sm:block">
+			<div className="flex-1">
 				{shownItems === 0 ? (
 					<></>
-				) : shownItems < itemsPerPage ? (
+				) : shownItems == totalItems ? (
 					<span>
-						Results: {shownItemsEnd} of {totalItems}
+						Results: {shownItemsStart}
+						{" - "} {shownItemsEnd} of {totalItems}
 					</span>
 				) : (
 					<span>
@@ -45,13 +46,15 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 				)}
 			</div>
 			<div className="flex-1 flex justify-between sm:justify-end">
-				{page * itemsPerPage > 0 && (
-					<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
-						Prev
-					</ElemButton>
-				)}
+				<div>
+					{page * itemsPerPage > 0 && (
+						<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
+							Prev
+						</ElemButton>
+					)}
+				</div>
 
-				{shownItemsEnd >= itemsPerPage && (
+				{totalItems > shownItemsEnd && (
 					<ElemButton
 						onClick={onClickNext}
 						className="sm:ml-3"

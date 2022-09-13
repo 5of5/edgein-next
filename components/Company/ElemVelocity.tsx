@@ -85,8 +85,12 @@ export const ElemVelocity: React.FC<Props> = ({
 							{mini && item.icon && <item.icon className="h-4 w-4 mr-0.5" />}
 
 							<div>{numberWithCommas(item.number)}</div>
-							{item.number > 0 && <IconArrowUp className="h-4 w-4" />}
-							{item.number < 0 && <IconArrowDown className="h-4 w-4" />}
+							{item.number > 0 && (
+								<IconArrowUp className="h-3 w-3" strokeWidth={4} />
+							)}
+							{item.number < 0 && (
+								<IconArrowDown className="h-3 w-3" strokeWidth={4} />
+							)}
 						</div>
 					);
 
