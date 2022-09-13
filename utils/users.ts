@@ -75,8 +75,8 @@ async function findOneUserByEmail(email: string) {
 async function upsertUser(userData: any) {
   // prepare gql query
   const usertQuery = `
-    mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String) {
-      insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
+    mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String, $reference_user_id: Int) {
+      insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id, reference_user_id: $reference_user_id}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
         returning {
           id
           email
@@ -85,6 +85,8 @@ async function upsertUser(userData: any) {
           is_auth0_verified
           auth0_linkedin_id
           auth0_user_pass_id
+          reference_id
+          reference_user_id
         }
       }
     }
@@ -99,6 +101,7 @@ async function upsertUser(userData: any) {
         role: 'user',
         auth0_linkedin_id: userData.auth0_linkedin_id ? userData.auth0_linkedin_id : '',
         auth0_user_pass_id: userData.auth0_user_pass_id ? userData.auth0_user_pass_id : '',
+        reference_user_id: userData.reference_user_id,
       }
     })
 
@@ -184,4 +187,25 @@ try {
   }
 }
 
-export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId }
+async function findOneUserByReferenceId(reference_id: string) {
+  const fetchQuery = `
+  query query_reference_id($reference_id: String) {
+    users(where: {reference_id: {_eq: $reference_id}}, limit: 1) {
+      id
+      email
+      reference_id
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { reference_id }
+    })
+    return data.data.users[0] as User
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId }

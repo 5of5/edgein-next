@@ -81,6 +81,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         auth0_user_pass_id: emailExist.auth0_user_pass_id,
         profileName: emailExist.person?.name,
         profilePicture: emailExist.person?.picture,
+        reference_id: emailExist.reference_id,
       });
       CookieService.setTokenCookie(res, token)
     }
