@@ -13,6 +13,7 @@ type Props = {
 	onSignUp: (email: string, password: string) => void;
 	onForgotPassword: () => void;
 	onClose: () => void;
+	linkedInError: string;
 };
 
 export default function LoginModal(props: Props) {
@@ -21,8 +22,8 @@ export default function LoginModal(props: Props) {
 		setPassword("");
 		setEmailError("");
 		setErrorMessage("");
-		setUnsuccessMessage("")
-	}, [props.show]);
+		setUnsuccessMessage(props.linkedInError ? props.linkedInError : "")
+	}, [props.show, props.linkedInError]);
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");;

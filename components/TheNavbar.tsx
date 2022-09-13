@@ -33,6 +33,7 @@ export const TheNavbar = () => {
 	const [selectedOption, setSelectedOption] = useState("companies");
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
+	const [linkedInError,  setLinkedInError] = useState('')
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
@@ -80,8 +81,17 @@ export const TheNavbar = () => {
 					code,
 					redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
 				}),
-			}).then((res) => res.json());
-			window.location.href = "/";
+			})//.then((res) => res.json());
+			if(response.status == 404){
+				const responseText = await response.clone().text();
+				if(responseText === "Invalid Email"){
+						// showUnsuccessMessagge
+						setLinkedInError(responseText)
+						setShowLoginPopup(true);
+				}
+			}else{
+				window.location.href = "/";
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -232,6 +242,7 @@ export const TheNavbar = () => {
 					</div>
 
 					<LoginModal
+						linkedInError={linkedInError}
 						onSignUp={showSignUpModal}
 						onForgotPassword={() => setShowForgotPasswordPopup(true)}
 						show={showLoginPopup}

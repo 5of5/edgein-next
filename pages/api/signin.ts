@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check user has done signup or not
   const emailExist = await UserService.findOneUserByEmail(email);
   // if email does not exist, then redirect user for registartion
-  if (!emailExist) { return res.status(404).send({ nextStep: 'SIGNUP' }) }
+  if (!emailExist || !emailExist.auth0_user_pass_id) { return res.status(404).send({ nextStep: 'SIGNUP' }) }
 
   // send data to auth0 to make user login
   const data = qs.stringify({
@@ -79,6 +79,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         display_name: emailExist.display_name,
         profileName: emailExist.person?.name,
         profilePicture: emailExist.person?.picture,
+        auth0_linkedin_id: emailExist.auth0_linkedin_id,
+        auth0_user_pass_id: emailExist.auth0_user_pass_id,
       });
       CookieService.setTokenCookie(res, token)
     }
