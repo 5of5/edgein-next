@@ -23,7 +23,7 @@ export default function LoginModal(props: Props) {
 		setEmailError("");
 		setErrorMessage("");
 		setUnsuccessMessage(props.linkedInError ? props.linkedInError : "")
-	}, [props.show]);
+	}, [props.show, props.linkedInError]);
 
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");;
