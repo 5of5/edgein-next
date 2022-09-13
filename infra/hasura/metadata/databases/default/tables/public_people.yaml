@@ -30,28 +30,48 @@ insert_permissions:
       columns:
         - id
         - picture
+        - about
+        - city
+        - country
         - external_id
+        - facebook_url
         - github
         - linkedin
         - name
         - personal_email
         - slug
+        - status
+        - twitter_url
         - type
+        - website_url
         - work_email
+        - created_at
+        - updated_at
+        - email
       backend_only: false
 select_permissions:
   - role: user
     permission:
       columns:
-        - id
-        - picture
+        - about
+        - city
+        - country
+        - created_at
+        - email
         - external_id
+        - facebook_url
         - github
+        - id
         - linkedin
         - name
         - personal_email
+        - picture
         - slug
+        - status
+        - twitter_url
         - type
+        - updated_at
+        - website_url
         - work_email
       filter: {}
 update_permissions:
@@ -60,13 +80,23 @@ update_permissions:
       columns:
         - id
         - picture
+        - about
+        - city
+        - country
         - external_id
+        - facebook_url
         - github
         - linkedin
         - name
         - personal_email
         - slug
+        - status
+        - twitter_url
         - type
+        - website_url
         - work_email
+        - created_at
+        - updated_at
+        - email
       filter: {}
       check: {}

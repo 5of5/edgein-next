@@ -12,6 +12,9 @@ import {
 } from "@/components/Icons";
 import { IconCompanyList } from "../reactions/IconCompanyList";
 import { IconSetting } from "../IconSetting";
+import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
+import { useAuth } from "@/hooks/useAuth";
+import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ");
@@ -42,6 +45,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const router = useRouter();
+	const { user } = useAuth()
 
 	return (
 		<>
@@ -144,29 +148,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 					<div className="pt-7 flex flex-col flex-grow overflow-y-auto">
 						<div className="flex-grow flex flex-col">
 							<nav className="space-y-2 border-l border-slate-200">
-								{navigation.map((item) => (
-									<a
-										key={item.name}
-										href={item.href}
-										className={classNames(
-											router.pathname == item.href
-												? "border-primary-500"
-												: "border-transparent",
-											"flex flex-col items-center border-l pl-4 -ml-px hover:border-slate-400  lg:flex-row"
-										)}
-									>
-										<item.icon
-											className={classNames(
-												router.pathname == item.href
-													? "text-primary-500"
-													: "group-hover:text-gray-500",
-												"flex-shrink-0 h-6 w-6 lg:mr-2"
-											)}
-											aria-hidden="true"
-										/>
-										<div className="text-xs lg:text-base">{item.name}</div>
-									</a>
-								))}
+								<ElemDashboardSidebar />
 							</nav>
 						</div>
 					</div>
