@@ -15,7 +15,8 @@ import { IconCamera } from "@/components/IconCamera";
 import { InputSearch } from "@/components/InputSearch";
 import { useState } from "react";
 import { CompanyEditModal } from "@/components/CompanyEditModal";
-import { TeamSideDrawer } from "@/components/TeamSideDrawer";
+import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer";
+import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer";
 
 type Props = {
     children: any
@@ -34,6 +35,7 @@ export default function CompanyEdit() {
 
     const [Modal, setModal] = useState(false)
     const [teamdrawer, setteamdrawer] = useState(false)
+    const [investmentdrawer, setinvestmentdrawer] = useState(false)
 
     return (
         <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -442,7 +444,7 @@ export default function CompanyEdit() {
                             <h2 className="text-dark-500 font-bold font-Metropolis text-md">Employees</h2>
                             <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => setteamdrawer(true)}>Add Employee</span>
                         </div>
-                        {teamdrawer && <TeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
+                        {teamdrawer && <ElemTeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
 
                         <div className=" w-full border border-slate-200 rounded-lg overflow-auto">
                             <table className="w-full">
@@ -476,9 +478,10 @@ export default function CompanyEdit() {
                                             <span>-</span>
                                         </td>
                                         <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                            <span className="text-md cursor-pointer text-primary-500" onClick={() => setteamdrawer(true)}>Edit</span>
                                         </td>
                                     </tr>
+                                    {teamdrawer && <ElemTeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
 
                                     <tr>
                                         <td className="px-1 inline-flex items-center py-2">
@@ -499,8 +502,8 @@ export default function CompanyEdit() {
                                         <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500 cursor-pointer">
+                                            <div className="text-md text-primary-500 cursor-pointer">Edit</div>
                                         </td>
                                     </tr>
 
@@ -663,8 +666,10 @@ export default function CompanyEdit() {
 
                         <div className="flex justify-between items-center mt-2 mb-5">
                             <h2 className="text-dark-500 font-bold font-Metropolis text-md">All Investments</h2>
-                            <span className="text-md font-normal text-primary-500 font-Metropolis">Add Investmesnts Round</span>
+                            <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => setinvestmentdrawer(true)}>Add Investmesnts Round</span>
                         </div>
+                        {investmentdrawer && <ElemInvestmentSideDrawer isOpen={investmentdrawer} onClose={() => setinvestmentdrawer(false)} />}
+
 
                         <div className=" w-full border border-slate-200 rounded-lg overflow-auto">
                             <table className="w-full">
@@ -694,9 +699,12 @@ export default function CompanyEdit() {
 
                                         </td>
                                         <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                            <span className="text-md text-primary-500 cursor-pointer" onClick={() => setinvestmentdrawer(true)}>Edit</span>
+
                                         </td>
                                     </tr>
+                                    {investmentdrawer && <ElemInvestmentSideDrawer isOpen={investmentdrawer} onClose={() => setinvestmentdrawer(false)} />}
+
 
                                     <tr>
                                         <td className="px-1  py-2">
@@ -714,10 +722,9 @@ export default function CompanyEdit() {
 
                                         </td>
                                         <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                            <span className="text-md text-primary-500 cursor-pointer" onClick={() => setteamdrawer(true)}>Edit</span>
                                         </td>
                                     </tr>
-
                                     <tr>
                                         <td className="px-1  py-2">
 
