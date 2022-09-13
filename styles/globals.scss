@@ -106,39 +106,28 @@ input[type="checkbox"]::before {
 }
 
 /* Mobile hamburger button */
-.main-nav {
-  .hamburger-inner,
-  .hamburger-inner::before,
-  .hamburger-inner::after {
-    @apply absolute h-0.5 w-[26px] bg-current rounded-[1px] transition-transform;
+.hamburger-inner,
+.hamburger-inner::before,
+.hamburger-inner::after {
+  @apply absolute h-0.5 w-[26px] bg-current rounded-[1px] transition-transform;
+}
+
+.hamburger-inner {
+  &::before {
+    transition: top .075s .12s ease, opacity .075s ease;
+    @apply top-[7px];
   }
 
-  .hamburger-inner {
+  &::after {
+    transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
+    @apply bottom-[7px];
+  }
+  &.hamburger-active{
     &::before {
-      transition: top .075s .12s ease, opacity .075s ease;
-      @apply top-[7px];
+      transition: top .075s ease, opacity .075s .12s ease;
     }
-
     &::after {
-      transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
-      @apply bottom-[7px];
-    }
-  }
-
-  /* Active hamburger button  */
-  &.nav-toggle-active {
-    .hamburger-inner {
-      @apply delay-150 ease-linear rotate-45;
-
-      &::before {
-        transition: top .075s ease, opacity .075s .12s ease;
-        @apply top-0 opacity-0;
-      }
-
-      &::after {
-        transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
-        @apply bottom-0 rotate-90;
-      }
+      transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
     }
   }
 }

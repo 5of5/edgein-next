@@ -1,4 +1,4 @@
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemButton } from "../../components/ElemButton";
@@ -50,7 +50,7 @@ const Person: NextPage<Props> = (props) => {
 	}
 
 	return (
-		<div className="max-w-6xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
+		<div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
 			<div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
@@ -186,28 +186,28 @@ const Person: NextPage<Props> = (props) => {
 	);
 };
 
-export async function getStaticPaths() {
-	const { data: people } = await runGraphQl<GetPersonQuery>(`{ 
-    people( 
-			where: {slug: {_neq: ""}}, order_by: {slug: asc}
-    ){ 
-        id, 
-        name, 
-        slug,
-      }
-    }`);
+// export async function getStaticPaths() {
+// 	const { data: people } = await runGraphQl<GetPersonQuery>(`{ 
+//     people( 
+// 			where: {slug: {_neq: ""}}, order_by: {slug: asc}
+//     ){ 
+//         id, 
+//         name, 
+//         slug,
+//       }
+//     }`);
 
-	return {
-		paths: people?.people
-			?.filter((person) => person.slug)
-			.map((person) => ({
-				params: { personId: person.slug },
-			})),
-		fallback: true, // false or 'blocking'
-	};
-}
+// 	return {
+// 		paths: people?.people
+// 			?.filter((person) => person.slug)
+// 			.map((person) => ({
+// 				params: { personId: person.slug },
+// 			})),
+// 		fallback: true, // false or 'blocking'
+// 	};
+// }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {
 		slug: context.params?.personId,
 	});
