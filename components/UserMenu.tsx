@@ -9,7 +9,7 @@ import {
 	IconSignOut,
 	// IconHome,
 } from "./Icons";
-import { IconDashboard } from "./Dashboard/IconDashBoard";
+import { IconDashboard } from "./Dashboard/IconDashboard";
 
 const navigation = [{ name: "Dashboard", href: "/dashboard", icon: IconDashboard }];
 
