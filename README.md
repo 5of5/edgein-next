@@ -6,7 +6,7 @@ EdgeIn combines highly refined automated processes, the personalization of human
 
 Learn more at [EdgeIn.io](http://edgein.io/)
 
-## Getting Started
+### Getting Started
 
 - Install node 16
 - Run `npm run docker:start`, this should build a local database and hasura engine

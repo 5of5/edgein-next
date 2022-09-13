@@ -1,21 +1,14 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import Link from "next/link";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
-import { ElemHeading } from "../components/ElemHeading";
-import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
-import { ElemPhoto } from "../components/ElemPhoto";
-import { InputSearch } from "../components/InputSearch";
-import { InputSelect } from "../components/InputSelect";
+import { ElemHeading } from "@/components/ElemHeading";
+import { ElemFiltersWrap } from "@/components/ElemFiltersWrap";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { InputSearch } from "@/components/InputSearch";
+import { InputSelect } from "@/components/InputSelect";
 import { ElemButton } from "@/components/ElemButton";
-import {
-	IconCash,
-	IconSearch,
-	IconGrid,
-	IconList,
-	IconAnnotation,
-} from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -26,9 +19,9 @@ import {
 	Follows_Vc_Firms,
 } from "../graphql/types";
 import { DeepPartial, NumericFilter } from "./companies";
-import { useDebounce } from "../hooks/useDebounce";
-import { Pagination } from "../components/Pagination";
-import { runGraphQl } from "../utils";
+import { useDebounce } from "@/hooks/useDebounce";
+import { Pagination } from "@/components/Pagination";
+import { runGraphQl } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import {
@@ -111,8 +104,6 @@ const Investors: NextPage<Props> = ({
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
-
-	// const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms;
 
 	const [vcFirms, setVcFirms] = useState(
 		initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
@@ -203,11 +194,7 @@ const Investors: NextPage<Props> = ({
 			<ElemHeading
 				title="Investors"
 				subtitle="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."
-			>
-				{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
-						Submit VC Firm
-					</ElemButton> */}
-			</ElemHeading>
+			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
 				{vcFirms && <ElemRecentInvestments heading="Recent Investor Updates" />}
@@ -355,7 +342,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetVcFirmsDocument,
 		{
 			offset: 0,
-			limit: 50,
+			//limit: 50,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 			current_user: 0,
 		}
