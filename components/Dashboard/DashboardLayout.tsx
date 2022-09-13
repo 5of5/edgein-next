@@ -11,6 +11,9 @@ import {
 	IconCash,
 } from "@/components/Icons";
 import { IconCompanyList } from "../reactions/IconCompanyList";
+import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
+import { useAuth } from "@/hooks/useAuth";
+import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ");
@@ -40,6 +43,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const router = useRouter();
+	const { user } = useAuth()
 
 	return (
 		<>
@@ -138,39 +142,17 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 					</Dialog>
 				</Transition.Root>
 
-				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:absolute md:inset-y-0">
+				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:absolute md:inset-y-0 mr-4">
 					<div className="pt-7 flex flex-col flex-grow overflow-y-auto">
 						<div className="flex-grow flex flex-col">
 							<nav className="space-y-2 border-l border-slate-200">
-								{navigation.map((item) => (
-									<a
-										key={item.name}
-										href={item.href}
-										className={classNames(
-											router.pathname == item.href
-												? "border-primary-500"
-												: "border-transparent",
-											"flex flex-col items-center border-l pl-4 -ml-px hover:border-slate-400  lg:flex-row"
-										)}
-									>
-										<item.icon
-											className={classNames(
-												router.pathname == item.href
-													? "text-primary-500"
-													: "group-hover:text-gray-500",
-												"flex-shrink-0 h-6 w-6 lg:mr-2"
-											)}
-											aria-hidden="true"
-										/>
-										<div className="text-xs lg:text-base">{item.name}</div>
-									</a>
-								))}
+								<ElemDashboardSidebar />
 							</nav>
 						</div>
 					</div>
 				</div>
 
-				<div className="md:pl-24 lg:pl-52">
+				<div className="md:pl-28 lg:pl-56">
 					<div className="max-w-4xl mx-auto flex flex-col xl:px-0">
 						<main className="flex-1">
 							<div className="py-6">

@@ -5,4 +5,8 @@ export type User = {
   display_name?: string | null
   role: "user" | "admin"
   is_auth0_verified: boolean
+  person: {
+    name: string
+    picture: any
+  } | null
 }

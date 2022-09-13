@@ -39,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-  
+
   try {
     const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(userInfoFetchRequest.status).send(userInfoErrorResponse.error_description)
     }
     const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
-  
+
     if (userInfoInJson && userInfoInJson.email) {
       if (!emailExist.is_auth0_verified) {
         // update userInfo
@@ -70,7 +70,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({id: emailExist.id, email: emailExist.email, role: emailExist.role, publicAddress: emailExist.external_id, isFirstLogin, display_name: emailExist.display_name});
+      const token = await CookieService.createToken({
+        id: emailExist.id,
+        email: emailExist.email,
+        role: emailExist.role,
+        publicAddress: emailExist.external_id,
+        isFirstLogin,
+        display_name: emailExist.display_name,
+        profileName: emailExist.person?.name,
+        profilePicture: emailExist.person?.picture,
+      });
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {
