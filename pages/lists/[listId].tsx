@@ -5,9 +5,7 @@ import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
 import { ElemListOptionMenu } from "@/components/MyList/ElemListOptionMenu";
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { IconCompanyList } from "@/components/reactions/IconCompanyList";
-import { IconCrap } from "@/components/reactions/IconCrap";
-import { IconHot } from "@/components/reactions/IconHot";
-import { IconLike } from "@/components/reactions/IconLike";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import {
 	GetFollowsListsStaticPathsQuery,
 	GetVcFirmsByListIdQuery,
@@ -116,9 +114,9 @@ const MyList: NextPage<Props> = ({ companies, vcfirms }) => {
 					<div className="w-full mb-7">
 						<div className="inline-flex ">
 							<h1 className="flex font-bold text-xl capitalize mb-1 items-center">
-								{selectedListName === "hot" && <IconHot className="mr-2" />}
-								{selectedListName === "like" && <IconLike className="mr-2" />}
-								{selectedListName === "crap" && <IconCrap className="mr-2" />}
+								{selectedListName === "hot" && <EmojiHot className="mr-2" />}
+								{selectedListName === "like" && <EmojiLike className="mr-2" />}
+								{selectedListName === "crap" && <EmojiCrap className="mr-2" />}
 								{isCustomList && <IconCompanyList className="mr-2" />}
 								{selectedListName}
 							</h1>

@@ -11,6 +11,7 @@ import {
 	IconCash,
 } from "@/components/Icons";
 import { IconCompanyList } from "../reactions/IconCompanyList";
+import { IconSetting } from "../IconSetting";
 import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
@@ -31,6 +32,7 @@ type Props = {
 export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 	navigation = [
 		{ name: "Dashboard", href: "/dashboard", icon: IconHome },
+		{ name: "Account Settings", href: "/account", icon: IconSetting },
 		{
 			name: "Companies",
 			href: "/companies",

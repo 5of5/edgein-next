@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC, PropsWithChildren } from "react";
-import { IconSpinner } from "../components/Icons";
+import { IconSpinner } from "@/components/Icons";
 
 type Props = {
 	className?: string;
@@ -55,10 +55,10 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 			"text-white bg-transparent focus:ring-primary-800 border-white hover:bg-white hover:text-primary-500";
 	} else if (btn === "white") {
 		btnClass =
-			"text-dark-500 bg-white border border-dark-500/10 focus:ring-primary-800 hover:text-primary-500 hover:border-primary-500";
+			"text-dark-500 bg-white border border-black/10 focus:ring-primary-800 hover:text-primary-500 hover:border-primary-500";
 	} else if (btn === "ol-primary") {
 		btnClass =
-			"text-primary-500 bg-transparent focus:ring-primary-800 border border-primary-500 hover:bg-primary-100";
+			"text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:ring-2 focus:ring-2";
 	} else {
 		btnClass = "";
 	}
@@ -85,7 +85,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = btnClass + " opacity-40 cursor-not-allowed";
 	}
 
-	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition duration-150 in-hoverTransition group
+	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
 		${btnClass}
 		${roundedFull ? "rounded-full" : ""}
 		${arrow || arrowLeft ? "justify-between" : "justify-center"}
@@ -129,11 +129,11 @@ const IconArrowLeft: React.FC<IconProps> = ({
 			viewBox="0 0 10 10"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			className={`${className} group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition`}
+			className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}
 		>
 			<title>{title}</title>
 			<path
-				className="transition duration-150 in-hoverTransition group-hover:-translate-x-0.5"
+				className="transition ease-in-out duration-150 group-hover:-translate-x-0.5"
 				d="M5 1.36365L1 5.00001L5 8.63637"
 				stroke="currentColor"
 				strokeWidth="2"
@@ -158,11 +158,11 @@ const IconArrow: React.FC<IconProps> = ({ className, title = "Arrow" }) => {
 			viewBox="0 0 10 10"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			className={`${className} group-hover:transition group-hover:duration-150 group-hover:in-hoverTransition`}
+			className={`${className} group-hover:transition group-hover:duration-150 group-hover:ease-in-out`}
 		>
 			<title>{title}</title>
 			<path
-				className="transition duration-150 in-hoverTransition group-hover:translate-x-0.5"
+				className="transition ease-in-out duration-150 group-hover:translate-x-0.5"
 				d="M1 1.36365L5 5.00001L1 8.63637"
 				stroke="currentColor"
 				strokeWidth="2"
