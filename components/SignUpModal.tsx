@@ -4,7 +4,7 @@ import { useEffect, useState, Fragment } from "react";
 import { ElemButton } from "@/components/ElemButton";
 import Modal from "react-modal";
 import { ElemLogo } from "./ElemLogo";
-import { IconLinkedIn } from "./Icons";
+import { IconLinkedIn, IconCheck } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
 const validator = require("validator");
 
@@ -162,31 +162,42 @@ export default function SignUpModal(props: Props) {
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
 							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
-								<div className="max-w-xs mx-auto w-full lg:px-3">
+								<div className="max-w-xs mx-auto w-full">
 									{isRegistered ? (
 										<>
-											<h1 className="text-center text-2xl lg:text-3xl font-bold">
+											<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
+												<IconCheck className="w-10 aspect-square text-primary-500" />
+											</div>
+											<h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
 												Registration Complete
 											</h1>
-											<p className="mt-2  text-dark-400 text-center">
-												{`User has been successfully registered. Please Login!`}
+											<p className="mt-2 text-center text-slate-600">
+												Thank you for creating an account and joining EdgeIn.
+												Log in to get started.
 											</p>
-											<div className="text-center sm:col-span-3 mt-10">
+											<div className="mt-6">
 												<ElemButton
 													className="w-full"
 													onClick={onLogin}
 													btn="primary"
 													loading={isLoading}
 												>
-													Back to login
+													Login
 												</ElemButton>
 											</div>
 										</>
 									) : isWaitlisted ? (
 										<>
-											{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-											<p className="mt-2 text-dark-400 text-center">
-												{`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`}
+											<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
+												<IconCheck className="w-10 aspect-square text-primary-500" />
+											</div>
+											<h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
+												You&rsquo;re on the list!
+											</h1>
+											<p className="mt-2 text-center text-slate-600">
+												Your email <span className="font-bold">{email}</span>{" "}
+												has been added to the waitlist. We will update you soon
+												with your invite.
 											</p>
 										</>
 									) : (
