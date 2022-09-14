@@ -29,6 +29,7 @@ import {
   useDelete,
   useUpdate,
   DateField,
+  useRefresh
 } from "react-admin";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -215,8 +216,10 @@ export const PeopleEdit = () => {
   const { data: people } = useGetList("people", {});
   const { data: company } = useGetList("companies", {});
   const { data: member } = useGetList("team_members", {});
-  const [create] = useCreate();
-  const [update] = useUpdate();
+  
+  const refresh = useRefresh();
+  const [create, { isLoading: isCreateLoading }] = useCreate();
+  const [update, { isLoading: isUpdateLoading }] = useUpdate();
 
   const paths = window.location.href.split("/");
   const currentId = paths[paths.length - 1];
@@ -224,6 +227,10 @@ export const PeopleEdit = () => {
   useEffect(() => {
     setFilterData(member?.filter((f) => f.person_id === parseInt(currentId)));
   }, [currentId, member]);
+
+  useEffect(() => {
+    if (!isCreateLoading || !isUpdateLoading) refresh()
+  }, [isCreateLoading, isUpdateLoading])
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -354,7 +361,6 @@ export const PeopleEdit = () => {
       };
       if (!currRecord) {
         create("team_members", { data });
-        setFilterData([...filterData, data]);
       } else {
         let tData = filterData;
         let foundIndex = tData.findIndex((r: any) => r.id === teamData.team_id);
@@ -363,8 +369,6 @@ export const PeopleEdit = () => {
           data,
           previousData: tData[foundIndex],
         });
-        tData[foundIndex] = data;
-        setFilterData(tData);
       }
       handleClose();
     }
@@ -591,7 +595,7 @@ export const PeopleEdit = () => {
           <FormControlLabel
             control={
               <Switch
-                checked={teamData?.founder || false}
+                checked={teamData?.founder}
                 onChange={(e) => handleChange(6, e.target.checked)}
               />
             }
