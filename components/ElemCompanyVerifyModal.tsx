@@ -10,7 +10,7 @@ type Props = {
 }
 
 
-export const CompanyEditModal: React.FC<Props> = ({ isOpen, onClose }) => {
+export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
     const [next, setnext] = useState(false)
     const [finishmodal, setfinishmodal] = useState(false)
