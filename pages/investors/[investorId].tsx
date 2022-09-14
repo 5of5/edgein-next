@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, MutableRefObject } from "react";
-import { NextPage, GetStaticProps } from "next";
+import { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
@@ -302,22 +303,22 @@ const VCFirm: NextPage<Props> = (props) => {
 	);
 };
 
-export async function getStaticPaths() {
-	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(
-		`{vc_firms(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { name, slug, logo}}`
-	);
+// export async function getStaticPaths() {
+// 	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(
+// 		`{vc_firms(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { name, slug, logo}}`
+// 	);
 
-	return {
-		paths: vcFirms?.vc_firms
-			?.filter((vcfirm) => vcfirm.slug)
-			.map((vcfirm) => ({
-				params: { investorId: vcfirm.slug },
-			})),
-		fallback: true, // false or 'blocking'
-	};
-}
+// 	return {
+// 		paths: vcFirms?.vc_firms
+// 			?.filter((vcfirm) => vcfirm.slug)
+// 			.map((vcfirm) => ({
+// 				params: { investorId: vcfirm.slug },
+// 			})),
+// 		fallback: true, // false or 'blocking'
+// 	};
+// }
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
 		{ slug: context.params?.investorId, current_user: 0 }

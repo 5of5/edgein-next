@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check user has done signup or not
   const emailExist = await UserService.findOneUserByEmail(email);
   // if email does not exist, then redirect user for registartion
-  if (!emailExist) { return res.status(404).send({ nextStep: 'SIGNUP' }) }
+  if (!emailExist || !emailExist.auth0_user_pass_id) { return res.status(404).send({ nextStep: 'SIGNUP' }) }
 
   // send data to auth0 to make user login
   const data = qs.stringify({
@@ -39,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const myHeaders = new Headers();
   myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
-  
+
   try {
     const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
@@ -61,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(userInfoFetchRequest.status).send(userInfoErrorResponse.error_description)
     }
     const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
-  
+
     if (userInfoInJson && userInfoInJson.email) {
       if (!emailExist.is_auth0_verified) {
         // update userInfo
@@ -70,7 +70,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({id: emailExist.id, email: emailExist.email, role: emailExist.role, publicAddress: emailExist.external_id, isFirstLogin, display_name: emailExist.display_name});
+      const token = await CookieService.createToken({
+        id: emailExist.id,
+        email: emailExist.email,
+        role: emailExist.role,
+        publicAddress: emailExist.external_id,
+        isFirstLogin,
+        display_name: emailExist.display_name,
+        profileName: emailExist.person?.name,
+        profilePicture: emailExist.person?.picture,
+        auth0_linkedin_id: emailExist.auth0_linkedin_id,
+        auth0_user_pass_id: emailExist.auth0_user_pass_id,
+      });
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {

@@ -2,9 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { getName } from "@/utils/reaction";
 import { findIndex } from "lodash";
 import { FC, useEffect, useState } from "react";
-import { IconCrap } from "./reactions/IconCrap";
-import { IconHot } from "./reactions/IconHot";
-import { IconLike } from "./reactions/IconLike";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { ElemTooltip } from "@/components/ElemTooltip";
 
 type Props = {
@@ -82,7 +80,7 @@ export const ElemReactions: FC<Props> = ({
 			>
 				<ElemTooltip content="Hot">
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
-						<IconHot className="h-6 w-6" />{" "}
+						<EmojiHot className="h-6 w-6" />{" "}
 					</div>
 				</ElemTooltip>
 				{data?.sentiment?.hot || 0}
@@ -99,7 +97,7 @@ export const ElemReactions: FC<Props> = ({
 			>
 				<ElemTooltip content="Like">
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
-						<IconLike className="h-6 w-6" />{" "}
+						<EmojiLike className="h-6 w-6" />{" "}
 					</div>
 				</ElemTooltip>
 				{data?.sentiment?.like || 0}
@@ -116,7 +114,7 @@ export const ElemReactions: FC<Props> = ({
 			>
 				<ElemTooltip content="Sh**">
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
-						<IconCrap className="h-6 w-6" />{" "}
+						<EmojiCrap className="h-6 w-6" />{" "}
 					</div>
 				</ElemTooltip>
 				{data?.sentiment?.crap || 0}
