@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const resourceId: number = await resourceIdLookup(resourceType, resourceIdentifier, identifierColumn)
   if (resourceId === undefined)
-    return res.status(404).send({ message: 'Resource Not found' })
+    return res.status(404).send({ message: 'Resource Not Found' })
 
   const partnerId: number = partner.id
   const currentTime = new Date()
