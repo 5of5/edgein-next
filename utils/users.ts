@@ -54,6 +54,7 @@ async function findOneUserByEmail(email: string) {
       display_name
       auth0_linkedin_id
       auth0_user_pass_id
+      reference_id
       person {
         name
         picture
