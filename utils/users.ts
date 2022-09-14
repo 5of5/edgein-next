@@ -52,6 +52,12 @@ async function findOneUserByEmail(email: string) {
       external_id
       is_auth0_verified
       display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      person {
+        name
+        picture
+      }
     }
   }
   `
@@ -69,14 +75,16 @@ async function findOneUserByEmail(email: string) {
 async function upsertUser(userData: any) {
   // prepare gql query
   const usertQuery = `
-    mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String) {
-      insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
+    mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String) {
+      insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
         returning {
           id
           email
           display_name
           role
           is_auth0_verified
+          auth0_linkedin_id
+          auth0_user_pass_id
         }
       }
     }
@@ -89,6 +97,8 @@ async function upsertUser(userData: any) {
         email: userData.email,
         display_name: userData.name,
         role: 'user',
+        auth0_linkedin_id: userData.auth0_linkedin_id ? userData.auth0_linkedin_id : '',
+        auth0_user_pass_id: userData.auth0_user_pass_id ? userData.auth0_user_pass_id : '',
       }
     })
 
@@ -124,4 +134,54 @@ try {
   }
 }
 
-export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus }
+async function updateAuth0LinkedInId(email: string, auth0_linkedin_id: string) {
+  const updateAuth0LinkedIn = `
+  mutation update_users($email: String, $auth0_linkedin_id: String) {
+    update_users(
+      where: {email: {_eq: $email}},
+      _set: { auth0_linkedin_id: $auth0_linkedin_id }
+    ) {
+      affected_rows
+      returning {
+        id
+        email
+      }
+    }
+  }
+`
+try {
+  await mutate({
+    mutation: updateAuth0LinkedIn,
+    variables: { email, auth0_linkedin_id }
+  });
+  } catch (e) {
+    throw e
+  }
+}
+
+async function updateAuth0UserPassId(email: string, auth0_user_pass_id: string) {
+  const updateAuth0UserPass = `
+  mutation update_users($email: String, $auth0_user_pass_id: String) {
+    update_users(
+      where: {email: {_eq: $email}},
+      _set: { auth0_user_pass_id: $auth0_user_pass_id }
+    ) {
+      affected_rows
+      returning {
+        id
+        email
+      }
+    }
+  }
+`
+try {
+  await mutate({
+    mutation: updateAuth0UserPass,
+    variables: { email, auth0_user_pass_id }
+  });
+  } catch (e) {
+    throw e
+  }
+}
+
+export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId }

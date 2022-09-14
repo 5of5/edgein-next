@@ -41,14 +41,14 @@ const Home: NextPage = () => {
 		<>
 			<section className="relative overflow-hidden">
 				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
-				<div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
+				<div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
 					<div className="lg:grid lg:grid-cols-12 lg:gap-x-8 lg:content-center">
 						<div className="mx-auto max-w-2xl lg:col-span-7 lg:max-w-none">
-							<h1 className="font-bold text-5xl lg:text-6xl">
+							<h1 className="font-bold text-center text-4xl sm:text-left sm:text-6xl">
 								Web3-focused data intelligence for success.
 								{/* Web3 Project Company research delivered daily to save you time */}
 							</h1>
-							<h2 className="max-w-lg mt-5 text-xl leading-relaxed text-slate-600">
+							<h2 className="max-w-lg mt-5 text-xl text-center leading-relaxed text-slate-600 sm:text-left">
 								EdgeIn combines highly refined automated processes, the
 								personalization of human intelligence, and the meaningful
 								utility of blockchain technologies, to give you an unparalleled
@@ -67,7 +67,7 @@ const Home: NextPage = () => {
 							</div> */}
 						</div>
 
-						<div className="mt-28 mx-6 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
+						<div className="mt-28 mx-0 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
 							<FigureIntroSplashNew />
 							{/* <FigureIntroSplash className="hidden lg:block relative" /> */}
 						</div>
@@ -106,11 +106,10 @@ const Home: NextPage = () => {
 						</>
 					)}
 				</div> */}
-						
 				</div>
 			</section>
 
-			<section className="max-w-7xl mx-auto relative z-10 px-4 sm:px-6 lg:px-8">
+			<section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				{/* <div className="pb-12 lg:pb-20">
 						<h2 className="relative max-w-3xl text-3xl font-bold text-dark-500 border-l-4 border-primary-500 pl-6 lg:text-4xl">
 							Actionable intelligence, strategic analysis and data sovereignty.
@@ -122,7 +121,7 @@ const Home: NextPage = () => {
 						<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 							For founders
 						</h3>
-						<p className="mb-4 text-md text-slate-600 lg:text-lg">
+						<p className="mb-4  text-slate-600 lg:text-lg">
 							We give you unrestricted access to the most reliable market data
 							at hyper-speeds to help you drive growth, make critical
 							connections, and gain competitor insights to stay one step ahead
@@ -136,7 +135,7 @@ const Home: NextPage = () => {
 						<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
 							For investors
 						</h3>
-						<p className="mb-4 text-md text-slate-600 lg:text-lg">
+						<p className="mb-4  text-slate-600 lg:text-lg">
 							One login for all of the portfolio performance metrics you need,
 							web3 investment opportunities and comprehensive due diligence.
 						</p>
@@ -146,7 +145,7 @@ const Home: NextPage = () => {
 					</div>
 
 					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
-						<div className="relative z-10 text-center text-white">
+						<div className="text-center text-white">
 							<h2 className="max-w-2xl mx-auto mb-6 text-3xl font-bold sm:text-5xl">
 								Ready to start exploring?
 							</h2>
@@ -166,9 +165,9 @@ const Home: NextPage = () => {
 						<figure className="absolute -bottom-72 right-36 w-96 h-96 bg-[#F8DA4B] rounded-full blur-3xl"></figure>
 						<figure className="absolute -bottom-64 -right-36 w-96 h-96 bg-[#F72784] rounded-full blur-3xl opacity-50"></figure>
 						<FigureCircleDashes className="absolute -top-96 -left-36" />
-						<FigureCircleDashes className="absolute -top-88 -left-16" />
-						<FigureCircleDashes className="absolute -bottom-96 -right-32" />
-						<FigureCircleDashes className="absolute -bottom-112 -right-52" />
+						<FigureCircleDashes className="absolute hidden -top-88 -left-16 md:block" />
+						<FigureCircleDashes className="absolute hidden -bottom-96 -right-32 md:block" />
+						<FigureCircleDashes className="absolute -bottom-112 -right-52 " />
 					</div>
 				</div>
 			</section>

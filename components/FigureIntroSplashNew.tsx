@@ -11,7 +11,7 @@ export const FigureIntroSplashNew: FC<Props> = ({
 	isShowing = true,
 }) => {
 	return (
-		<figure className={`relative ${className}`}>
+		<figure className={`relative mt-4 ${className}`}>
 			{/* Grid */}
 			<Transition
 				appear={true}
