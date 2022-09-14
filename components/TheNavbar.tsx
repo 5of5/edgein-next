@@ -112,7 +112,7 @@ export const TheNavbar = () => {
 			setInviteCode(router.query.invite as string)
 			showSignUpModal('','')
 		}
-	}, [router.query.invite]);
+	}, [router.query.invite, user]);
 
 	const logout = async () => {
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
