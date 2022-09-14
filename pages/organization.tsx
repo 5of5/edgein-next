@@ -8,8 +8,9 @@ import company from "../images/company.png"
 import company2 from "../images/company2.png"
 import Image from "next/image";
 import { IconOrganization } from "@/components/IconOrganization";
+import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
 export default function Organization() {
-	const { user, error, loading } = useAuth();
+	const { user } = useAuth();
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -160,6 +161,7 @@ export default function Organization() {
 
 				</div>
 			</div>
+			<ElemCompanyVerifyModal isOpen onClose={() => { }} type='company' />
 		</div>
 	)
 }
