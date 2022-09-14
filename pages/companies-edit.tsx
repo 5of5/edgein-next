@@ -115,7 +115,7 @@ export default function CompanyEdit() {
                         {/* profile image */}
                         <GridTwelve wrapperClass="mt-4 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Profile Image*</h2>
+                                <h2 className="text-dark-500 font-bold w-40">Profile Image*</h2>
                             </div>
                             <div className="col-span-8">
                                 <div className="flex">
@@ -139,7 +139,7 @@ export default function CompanyEdit() {
                         {/* name section */}
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Name*</h2>
+                                <h2 className="text-dark-500 font-bold w-40">Name*</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -172,7 +172,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Company Type*</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Company Type*</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputSelect
@@ -187,7 +187,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Industry*</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Industry*</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputSearch
@@ -206,7 +206,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Crypto Token Ticker</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Crypto Token Ticker</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -224,7 +224,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Founded Date*</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Founded Date*</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -242,7 +242,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Location</h2>
+                                <h2 className="text-dark-500 font-bold w-40">Location</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -268,7 +268,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Number of Employees</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Number of Employees</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -285,7 +285,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">White Paper</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">White Paper</h2>
                             </div>
                             <div className="col-span-8">
                                 {/* <InputText
@@ -304,7 +304,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Website URL*</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Website URL*</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -322,7 +322,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">LinkedIn URL</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">LinkedIn URL</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -340,7 +340,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Github URL</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Github URL</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -358,7 +358,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Twitter URL</h2>
+                                <h2 className="text-dark-500 font-bold w-40">Twitter URL</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -376,7 +376,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Discord URL</h2>
+                                <h2 className="text-dark-500 font-bold w-40">Discord URL</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -395,7 +395,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Glassdoor URL</h2>
+                                <h2 className="text-dark-500 font-bold  w-40">Glassdoor URL</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -414,7 +414,7 @@ export default function CompanyEdit() {
 
                         <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3 items-center">
                             <div className="col-span-3">
-                                <h2 className="text-dark-500 font-bold text-md w-40">Careers URL</h2>
+                                <h2 className="text-dark-500 font-bold w-40">Careers URL</h2>
                             </div>
                             <div className="col-span-8">
                                 <InputText
@@ -444,7 +444,6 @@ export default function CompanyEdit() {
                             <h2 className="text-dark-500 font-bold font-Metropolis text-md">Employees</h2>
                             <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => setteamdrawer(true)}>Add Employee</span>
                         </div>
-                        {teamdrawer && <ElemTeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
 
                         <div className=" w-full border border-slate-200 rounded-lg overflow-auto">
                             <table className="w-full">
@@ -466,22 +465,21 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <span className="text-md cursor-pointer text-primary-500" onClick={() => setteamdrawer(true)}>Edit</span>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <span className=" cursor-pointer text-primary-500" onClick={() => setteamdrawer(true)}>Edit</span>
                                         </td>
                                     </tr>
-                                    {teamdrawer && <ElemTeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
 
                                     <tr>
                                         <td className="px-1 inline-flex items-center py-2">
@@ -515,19 +513,19 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
@@ -539,19 +537,19 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
@@ -563,19 +561,19 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
@@ -587,19 +585,19 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2 font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
@@ -611,19 +609,19 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+            <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
@@ -635,25 +633,29 @@ export default function CompanyEdit() {
                                                 imgClass="object-fit max-w-full max-h-full"
                                                 imgAlt={'chia'}
                                             />
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Brahm Cohen</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>Founder and CEO</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>2017</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>-</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
+
+                        {teamdrawer && <ElemTeamSideDrawer isOpen={teamdrawer} onClose={() => setteamdrawer(false)} />}
                     </div>
+
+
 
                     {/* Funding Investments section */}
                     <div className="max-w-6xl mt-7 bg-white rounded-lg p-5">
@@ -668,7 +670,6 @@ export default function CompanyEdit() {
                             <h2 className="text-dark-500 font-bold font-Metropolis text-md">All Investments</h2>
                             <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => setinvestmentdrawer(true)}>Add Investmesnts Round</span>
                         </div>
-                        {investmentdrawer && <ElemInvestmentSideDrawer isOpen={investmentdrawer} onClose={() => setinvestmentdrawer(false)} />}
 
 
                         <div className=" w-full border border-slate-200 rounded-lg overflow-auto">
@@ -688,126 +689,128 @@ export default function CompanyEdit() {
 
                                             <span className="text-md font-Metropolis font-normal text-dark-500">Series D</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>$61,00,000</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>May 24,2021 </span>
                                         </td>
                                         <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
                                             <p className="">Slow Ventures, </p>
 
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <span className="text-md text-primary-500 cursor-pointer" onClick={() => setinvestmentdrawer(true)}>Edit</span>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <span className=" text-primary-500 cursor-pointer" onClick={() => setinvestmentdrawer(true)}>Edit</span>
 
                                         </td>
                                     </tr>
-                                    {investmentdrawer && <ElemInvestmentSideDrawer isOpen={investmentdrawer} onClose={() => setinvestmentdrawer(false)} />}
 
 
                                     <tr>
                                         <td className="px-1  py-2">
 
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Series D</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Series D</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>$61,00,000</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>May 24,2021 </span>
                                         </td>
                                         <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
                                             <p className="">Slow Ventures, </p>
 
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <span className="text-md text-primary-500 cursor-pointer" onClick={() => setteamdrawer(true)}>Edit</span>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <span className=" text-primary-500 cursor-pointer" onClick={() => setteamdrawer(true)}>Edit</span>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td className="px-1  py-2">
 
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Series D</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Series D</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>$61,00,000</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>May 24,2021 </span>
                                         </td>
                                         <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
                                             <p className="">Slow Ventures, </p>
 
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td className="px-1  py-2">
-
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Series D</span>
-                                        </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <p>$61,00,000</p>
-                                        </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <span>May 24,2021 </span>
-                                        </td>
-                                        <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
-                                            <p className="">Slow Ventures, </p>
-
-                                        </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td className="px-1  py-2">
 
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Series D</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Series D</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <p>$61,00,000</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>May 24,2021 </span>
                                         </td>
                                         <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
                                             <p className="">Slow Ventures, </p>
 
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
 
                                     <tr>
                                         <td className="px-1  py-2">
 
-                                            <span className="text-md font-Metropolis font-normal text-dark-500">Series D</span>
+                                            <span className=" font-Metropolis font-normal text-dark-500">Series D</span>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2 font-Metropolis font-normal text-dark-500">
                                             <p>$61,00,000</p>
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
                                             <span>May 24,2021 </span>
                                         </td>
                                         <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
                                             <p className="">Slow Ventures, </p>
 
                                         </td>
-                                        <td className="px-1 py-2 text-md font-Metropolis font-normal text-dark-500">
-                                            <div className="text-md text-primary-500">Edit</div>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td className="px-1  py-2">
+
+                                            <span className=" font-Metropolis font-normal text-dark-500">Series D</span>
+                                        </td>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <p>$61,00,000</p>
+                                        </td>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <span>May 24,2021 </span>
+                                        </td>
+                                        <td className="px-1 py-2 text-sm font-Metropolis font-normal text-dark-500">
+                                            <p className="">Slow Ventures, </p>
+
+                                        </td>
+                                        <td className="px-1 py-2  font-Metropolis font-normal text-dark-500">
+                                            <div className=" text-primary-500">Edit</div>
                                         </td>
                                     </tr>
                                 </tbody>
 
                             </table>
                         </div>
+
+                        {investmentdrawer && <ElemInvestmentSideDrawer isOpen={investmentdrawer} onClose={() => setinvestmentdrawer(false)} />}
+
 
                     </div>
                 </div>

@@ -43,7 +43,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose }) => {
                                 <Dialog.Panel className="p-4 bg-white min-h-screen text-left" >
                                     <div>
 
-                                        <h2 className='font-Metropolis text-md text-dark-500 font-bold'>Add Employee</h2>
+                                        <h2 className='font-Metropolis text-dark-500 font-bold'>Add Employee</h2>
 
                                         <div className="mt-4">
                                             <label className='font-Metropolis text-sm font-bold text-slate-300'>Person</label>

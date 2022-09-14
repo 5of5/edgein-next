@@ -51,7 +51,7 @@ export const CompanyEditModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                         Search for the company or investment firm you work for.
                                     </Dialog.Title>
                                     <div className="mt-2">
-                                        <p className="text-md font-normal font-Metropolis text-slate-300">
+                                        <p className=" font-normal font-Metropolis text-slate-300">
                                             Find your company or investment firm to verify your employment. Verifying will allow you to access features for your business.
                                         </p>
                                     </div>
@@ -71,7 +71,7 @@ export const CompanyEditModal: React.FC<Props> = ({ isOpen, onClose }) => {
 
                                     {next && (
                                         <div className='clear-both'>
-                                            <label className='text-sm font-bold font-Metropolis text-slate-300'>Please provide your <IconChevronLeft className='w-3 h-3 inline-block' />company name<IconChevronRight className='w-3 h-3 inline-block'/> email address</label>
+                                            <label className='text-sm font-bold font-Metropolis text-slate-300'>Please provide your <IconChevronLeft className='w-3 h-3 inline-block' />company name<IconChevronRight className='w-3 h-3 inline-block' /> email address</label>
                                             <InputSearch
                                             />
                                             <ElemButton
@@ -94,7 +94,7 @@ export const CompanyEditModal: React.FC<Props> = ({ isOpen, onClose }) => {
                                                 Verification email is on the way!
                                             </Dialog.Title>
                                             <div className="mt-2">
-                                                <p className="text-md font-normal font-Metropolis text-slate-300">
+                                                <p className=" font-normal font-Metropolis text-slate-300">
                                                     If you have any questions about this process, please contact us.
                                                 </p>
                                             </div>
