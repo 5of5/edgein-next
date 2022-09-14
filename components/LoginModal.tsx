@@ -22,15 +22,15 @@ export default function LoginModal(props: Props) {
 		setPassword("");
 		setEmailError("");
 		setErrorMessage("");
-		setUnsuccessMessage(props.linkedInError ? props.linkedInError : "")
+		setUnsuccessMessage(props.linkedInError ? props.linkedInError : "");
 	}, [props.show, props.linkedInError]);
 
 	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");;
+	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [emailError, setEmailError] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
-	const [unsuccessMessage, setUnsuccessMessage] = useState('')
+	const [unsuccessMessage, setUnsuccessMessage] = useState("");
 
 	const validateEmail = (value: string) => {
 		setEmail(value);
@@ -75,28 +75,28 @@ export default function LoginModal(props: Props) {
 				},
 				body: JSON.stringify({ email, password }),
 			});
-			
+
 			if (response.status === 401 || response.status === 403) {
 				const responseText = await response.clone().text();
-				setUnsuccessMessage(responseText)
-			}
-			else if(response.status ===  404){ // 404 returns in both cases
-				try{
+				setUnsuccessMessage(responseText);
+			} else if (response.status === 404) {
+				// 404 returns in both cases
+				try {
 					const res = await response.clone().json();
 					if (res.nextStep && res.nextStep === "SIGNUP") {
 						onSignUp(email, password);
 					}
-				}catch(err){
+				} catch (err) {
 					const waitlistRes = await response.clone().text();
-					if(waitlistRes === "Invalid Email"){
-						setUnsuccessMessage(`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`)
+					if (waitlistRes === "Invalid Email") {
+						setUnsuccessMessage(
+							`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`
+						);
 					}
 				}
-			}
-			else if(response.status === 200){
+			} else if (response.status === 200) {
 				window.location.href = "/";
 			}
-			
 		} catch (e) {
 			console.log(e);
 			setIsLoading(false);
@@ -118,8 +118,8 @@ export default function LoginModal(props: Props) {
 
 	const onLinkedInClick = () => {
 		const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
-		window.location.href = url
-	}
+		window.location.href = url;
+	};
 
 	return (
 		<Modal
@@ -135,11 +135,11 @@ export default function LoginModal(props: Props) {
 					{unsuccessMessage ? (
 						<>
 							{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-							<p className="mt-2 text-md text-dark-400 text-center">
+							<p className="mt-2 text-dark-400 text-center">
 								{unsuccessMessage}
 							</p>
 						</>
-					)  : (
+					) : (
 						<>
 							<ElemLogo
 								mode="icon"
@@ -149,17 +149,22 @@ export default function LoginModal(props: Props) {
 								Welcome to EdgeIn
 							</h1>
 							<div className="text-center sm:col-span-3 mt-5">
-                                    <ElemButton roundedFull={false} className="w-full rounded-md text-[#0077B5] border border-slate-300 gap-x-2" onClick={onLinkedInClick} btn="ol-primary" >
+								<ElemButton
+									roundedFull={false}
+									className="w-full rounded-md text-[#0077B5] border border-slate-300 gap-x-2"
+									onClick={onLinkedInClick}
+									btn="ol-primary"
+								>
 									<IconLinkedIn
 										title="LinkedIn"
 										className="h-6 w-6 text-[#0077B5]"
 									/>
-										Continue with LinkedIn
-                                	</ElemButton>
-                            </div>
-								<div className="h-3 border-b border-gray-300 text-center text-md mt-5">
-									<span className="bg-white px-5">or</span>
-								</div>
+									Continue with LinkedIn
+								</ElemButton>
+							</div>
+							<div className="h-3 border-b border-gray-300 text-center mt-5">
+								<span className="bg-white px-5">or</span>
+							</div>
 							<div className="text-center relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-1 sm:gap-x-0">
 								<div className="group sm:col-span-1">
 									<input
@@ -169,12 +174,10 @@ export default function LoginModal(props: Props) {
 										disabled={isLoading}
 										onChange={(event) => validateEmail(event?.target.value)}
 										placeholder="Email"
-										className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+										className="w-full mt-1 px-3 py-1.5 text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
 									/>
 									{emailError === "" ? null : (
-										<span className="w-full text-start text-sm">
-											{emailError}
-										</span>
+										<span className="w-full  text-sm">{emailError}</span>
 									)}
 									<input
 										name="password"
@@ -183,12 +186,10 @@ export default function LoginModal(props: Props) {
 										disabled={isLoading}
 										onChange={(event) => validate(event?.target.value)}
 										placeholder="Password"
-										className="w-full mt-1 px-3 py-1.5 text-md text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
+										className="w-full mt-1 px-3 py-1.5 text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-gray-300  focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100"
 									/>
 									{errorMessage === "" ? null : (
-										<span className="w-full text-start text-sm">
-											{errorMessage}
-										</span>
+										<span className="w-full  text-sm">{errorMessage}</span>
 									)}
 								</div>
 

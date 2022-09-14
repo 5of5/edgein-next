@@ -1,86 +1,99 @@
-import { ElemButton } from "@/components/ElemButton"
-import { ElemPhoto } from "@/components/ElemPhoto"
-import { InputText } from "@/components/InputText"
-import { InputTextarea } from "@/components/InputTextarea"
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react"
-import { GetCompaniesDocument, GetCompaniesQuery, People, Team_Members, useGetPersonQuery, useGetUserProfileQuery } from "@/graphql/types"
-import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu"
-import { useAuth } from "@/hooks/useAuth"
-import { find, findIndex } from "lodash"
-import validator from 'validator'
-import { InputSelect } from "@/components/InputSelect"
-import { getTimeOfWork, getWorkDurationFromAndTo, runGraphQl } from "@/utils"
-import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload"
-import { uploadFile, deleteFile } from '@/utils/fileFunctions';
-import { InputDate } from "@/components/InputDate"
-import { GetStaticProps } from "next"
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
+import { ElemButton } from "@/components/ElemButton";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { InputText } from "@/components/InputText";
+import { InputTextarea } from "@/components/InputTextarea";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import {
+	GetCompaniesDocument,
+	GetCompaniesQuery,
+	People,
+	Team_Members,
+	useGetPersonQuery,
+	useGetUserProfileQuery,
+} from "@/graphql/types";
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
+import { useAuth } from "@/hooks/useAuth";
+import { find, findIndex } from "lodash";
+import validator from "validator";
+import { InputSelect } from "@/components/InputSelect";
+import { getTimeOfWork, getWorkDurationFromAndTo, runGraphQl } from "@/utils";
+import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
+import { uploadFile, deleteFile } from "@/utils/fileFunctions";
+import { InputDate } from "@/components/InputDate";
+import { GetStaticProps } from "next";
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 
 const emptyTeamMember = {
 	startDate: null,
 	endDate: null,
 	companyId: 0,
 	position: null,
-	positionType: null
-}
+	positionType: null,
+};
 
 type Props = {
-	companiesDropdown: any
-}
+	companiesDropdown: any;
+};
 
 const Profile: FC<Props> = ({ companiesDropdown }) => {
-	const { user } = useAuth()
+	const { user } = useAuth();
 
-	const fileInputRef = useRef<HTMLInputElement>(null)
+	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const [person, setPerson] = useState<People>()
-	const [editName, setEditName] = useState(false)
-	const [editEmail, setEditEmail] = useState(false)
-	const [editLocation, setEditLocation] = useState(false)
-	const [editWebsite, setEditWebsite] = useState(false)
-	const [editLinkedIn, setEditLinkedIn] = useState(false)
-	const [editFacebook, setEditFacebook] = useState(false)
-	const [editTwitter, setEditTwitter] = useState(false)
-	const [editAbout, setEditAbout] = useState(false)
-	const [editWorkspace, setEditWorkspace] = useState(false)
+	const [person, setPerson] = useState<People>();
+	const [editName, setEditName] = useState(false);
+	const [editEmail, setEditEmail] = useState(false);
+	const [editLocation, setEditLocation] = useState(false);
+	const [editWebsite, setEditWebsite] = useState(false);
+	const [editLinkedIn, setEditLinkedIn] = useState(false);
+	const [editFacebook, setEditFacebook] = useState(false);
+	const [editTwitter, setEditTwitter] = useState(false);
+	const [editAbout, setEditAbout] = useState(false);
+	const [editWorkspace, setEditWorkspace] = useState(false);
 
 	// fields
-	const [firstName, setFirstName] = useState('')
-	const [lasttName, setLastName] = useState('')
-	const [email, setEmail] = useState<any[]>([])
-	const [newEmail, setNewEmail] = useState('')
-	const [city, setCity] = useState('')
-	const [country, setCountry] = useState('')
-	const [website, setWebsite] = useState('')
-	const [linkedIn, setLinkedIn] = useState('')
-	const [facebook, setFacebook] = useState('')
-	const [twitter, setTwitter] = useState('')
-	const [about, setAbout] = useState('')
-	const [activeWorkspace, setActiveWorkspace] = useState(0)
+	const [firstName, setFirstName] = useState("");
+	const [lasttName, setLastName] = useState("");
+	const [email, setEmail] = useState<any[]>([]);
+	const [newEmail, setNewEmail] = useState("");
+	const [city, setCity] = useState("");
+	const [country, setCountry] = useState("");
+	const [website, setWebsite] = useState("");
+	const [linkedIn, setLinkedIn] = useState("");
+	const [facebook, setFacebook] = useState("");
+	const [twitter, setTwitter] = useState("");
+	const [about, setAbout] = useState("");
+	const [activeWorkspace, setActiveWorkspace] = useState(0);
 	const [tmData, setTmData] = useState<any>(emptyTeamMember);
 
-	const {
-		data: users
-	} = useGetUserProfileQuery({
-		id: user?.id ?? 0
-	})
+	const { data: users } = useGetUserProfileQuery({
+		id: user?.id ?? 0,
+	});
 
 	// set person
 	useEffect(() => {
-		if (users)
-			setPerson(users.users_by_pk?.person as People)
-	}, [users])
+		if (users) setPerson(users.users_by_pk?.person as People);
+	}, [users]);
 
 	// set workspace data in edit mode
 	useEffect(() => {
 		if (activeWorkspace)
 			setTmData((prev: any) => {
-				const findTM = find(person?.team_members, { id: activeWorkspace })
-				if (!findTM) return prev
+				const findTM = find(person?.team_members, { id: activeWorkspace });
+				if (!findTM) return prev;
 
-				const selectedCompany = find(companiesDropdown, { value: findTM?.company?.id })
-				const selectedPositionType = findTM?.function ? { title: `${findTM?.function?.charAt(0).toUpperCase()}${findTM?.function?.slice(1)}`, value: findTM?.function } : null
-				const currentlyWorking = findTM.end_date ? false : true
+				const selectedCompany = find(companiesDropdown, {
+					value: findTM?.company?.id,
+				});
+				const selectedPositionType = findTM?.function
+					? {
+							title: `${findTM?.function
+								?.charAt(0)
+								.toUpperCase()}${findTM?.function?.slice(1)}`,
+							value: findTM?.function,
+					  }
+					: null;
+				const currentlyWorking = findTM.end_date ? false : true;
 
 				const temp = {
 					...prev,
@@ -89,41 +102,43 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 					positionType: selectedPositionType,
 					startDate: findTM.start_date,
 					endDate: findTM.end_date,
-					currentlyWorking
-				}
-				return temp
-			})
-	}, [activeWorkspace, companiesDropdown, person?.team_members])
+					currentlyWorking,
+				};
+				return temp;
+			});
+	}, [activeWorkspace, companiesDropdown, person?.team_members]);
 
 	const renderWorkspaceForm = (id?: number) => {
 		return (
 			<div className="grid grid-cols-12 gap-2 mt-3 mb-2 relative pb-3">
-				<h2 className="text-dark-500 font-bold text-md col-span-3">Work</h2>
+				<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
 
 				<div className="col-span-7 flex flex-col">
 					<label className="text-slate-600 font-bold block ">Company</label>
 					<InputSelect
 						placeholder="Company"
-						onChange={setTMField('company')}
+						onChange={setTMField("company")}
 						value={tmData.companyId}
 						className="mb-3 max-w-xs"
 						options={companiesDropdown}
 					/>
-					<label className="text-slate-600 font-bold block ">Position Type (founder, investor, team member)</label>
+					<label className="text-slate-600 font-bold block ">
+						Position Type (founder, investor, team member)
+					</label>
 					<InputSelect
 						options={[
-							{ title: 'Founder', value: 'founder' },
-							{ title: 'Investor', value: 'investor' },
-							{ title: 'Team member', value: 'team member' }
+							{ title: "Founder", value: "founder" },
+							{ title: "Investor", value: "investor" },
+							{ title: "Team member", value: "team member" },
 						]}
 						placeholder="Position"
 						className="mb-3 max-w-xs"
 						value={tmData.positionType}
-						onChange={setTMField('positionType')}
+						onChange={setTMField("positionType")}
 					/>
 					<InputText
 						label="Position"
-						onChange={setTMField('position')}
+						onChange={setTMField("position")}
 						value={tmData.position}
 						name="position"
 						placeholder="Founder and CEO"
@@ -131,14 +146,22 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 					/>
 					<label className="text-slate-600 font-bold block ">Time Period</label>
 					<div className="flex items-center gap-2">
-						<input type="checkbox" onChange={setTMField('currentlyWorking')} checked={tmData.currentlyWorking} /><span className="text-slate-500 text-md font-Metropolis"> I currently work here</span>
+						<input
+							type="checkbox"
+							onChange={setTMField("currentlyWorking")}
+							checked={tmData.currentlyWorking}
+						/>
+						<span className="text-slate-500  font-Metropolis">
+							{" "}
+							I currently work here
+						</span>
 					</div>
 
 					<div className="grid grid-cols-3 gap-2 items-center w-full max-w-xs">
 						<InputDate
 							name="startDate"
 							value={tmData.startDate}
-							onChange={setTMField('startDate')}
+							onChange={setTMField("startDate")}
 							className="rounded-full col-span-3"
 						/>
 						<span className="text-center col-span-3">To</span>
@@ -146,7 +169,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							className="rounded-full col-span-3"
 							value={tmData.endDate}
 							name="endDate"
-							onChange={setTMField('endDate')}
+							onChange={setTMField("endDate")}
 							disabled={tmData.currentlyWorking}
 						/>
 					</div>
@@ -155,15 +178,15 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						<ElemButton
 							btn="primary"
 							className="mr-2"
-							onClick={onSave('teamMember')}
+							onClick={onSave("teamMember")}
 						>
 							Save
 						</ElemButton>
 						<ElemButton
 							btn="white"
 							onClick={() => {
-								if (id) setActiveWorkspace(0)
-								else setEditWorkspace(false)
+								if (id) setActiveWorkspace(0);
+								else setEditWorkspace(false);
 							}}
 						>
 							Cancel
@@ -171,246 +194,266 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 					</div>
 				</div>
 			</div>
-		)
-	}
+		);
+	};
 
 	const renderWorkspaceEditForm = (teamMember: Team_Members) => {
 		return (
-			<div key={teamMember.id} className="flex flex-col border-b border-gray-100">
-				{
-					activeWorkspace === teamMember.id || <div className="grid grid-cols-12 gap-2">
+			<div
+				key={teamMember.id}
+				className="flex flex-col border-b border-gray-100"
+			>
+				{activeWorkspace === teamMember.id || (
+					<div className="grid grid-cols-12 gap-2">
 						<div className="flex mt-3 mb-2 pb-3 col-start-4 col-span-8">
-							<span className="text-dark-500 font-bold text-md col-span-3"></span>
+							<span className="text-dark-500 font-bold  col-span-3"></span>
 							<div className="flex">
-								<ElemPhoto wrapClass="w-12 h-12 border p-1 rounded-md" photo={teamMember.company?.logo} imgAlt="company logo" />
+								<ElemPhoto
+									wrapClass="w-12 h-12 border p-1 rounded-md"
+									photo={teamMember.company?.logo}
+									imgAlt="company logo"
+								/>
 
 								<div className="ml-5">
-									<h2 className="font-bold font-Metropolis text-md text-slate-600">{teamMember.title}</h2>
-									<span className="font-thin text-slate-500 ">{teamMember.company?.name}</span>
-									<p className="font-thin text-slate-500"> {getWorkDurationFromAndTo(teamMember.start_date, teamMember.end_date)} . {getTimeOfWork(teamMember.start_date, teamMember.end_date)} <br /> {teamMember.company?.location}</p>
+									<h2 className="font-bold font-Metropolis  text-slate-600">
+										{teamMember.title}
+									</h2>
+									<span className="font-thin text-slate-500 ">
+										{teamMember.company?.name}
+									</span>
+									<p className="font-thin text-slate-500">
+										{" "}
+										{getWorkDurationFromAndTo(
+											teamMember.start_date,
+											teamMember.end_date
+										)}{" "}
+										.{" "}
+										{getTimeOfWork(teamMember.start_date, teamMember.end_date)}{" "}
+										<br /> {teamMember.company?.location}
+									</p>
 								</div>
 							</div>
 						</div>
 						<button
 							className="text-primary-500 col-span-1"
 							onClick={() => setActiveWorkspace(teamMember.id)}
-						>Edit</button>
+						>
+							Edit
+						</button>
 					</div>
-				}
-				{
-					activeWorkspace === teamMember.id &&
-					renderWorkspaceForm(teamMember.id)
-				}
+				)}
+				{activeWorkspace === teamMember.id &&
+					renderWorkspaceForm(teamMember.id)}
 			</div>
-		)
-	}
+		);
+	};
 
 	// set profile data
 	useEffect(() => {
 		if (person) {
-			const nameFragments = person?.name?.split(' ')
-			const firstName = nameFragments?.shift() || ''
-			const lastName = nameFragments?.join(' ') || ''
+			const nameFragments = person?.name?.split(" ");
+			const firstName = nameFragments?.shift() || "";
+			const lastName = nameFragments?.join(" ") || "";
 
-			setFirstName(firstName)
-			setLastName(lastName)
-			setEmail(person?.email || [])
-			setCity(person?.city || '')
-			setCountry(person?.country || '')
-			setWebsite(person?.website_url || '')
-			setLinkedIn(person?.linkedin || '')
-			setFacebook(person?.facebook_url || '')
-			setTwitter(person?.twitter_url || '')
-			setAbout(person?.about || '')
+			setFirstName(firstName);
+			setLastName(lastName);
+			setEmail(person?.email || []);
+			setCity(person?.city || "");
+			setCountry(person?.country || "");
+			setWebsite(person?.website_url || "");
+			setLinkedIn(person?.linkedin || "");
+			setFacebook(person?.facebook_url || "");
+			setTwitter(person?.twitter_url || "");
+			setAbout(person?.about || "");
 		}
-	}, [person])
+	}, [person]);
 
-	const updateCall = async (payload: any, type = 'profile') => {
-		if (type === 'profile') {
-			const resp = await fetch('/api/update_profile', {
-				method: 'POST',
+	const updateCall = async (payload: any, type = "profile") => {
+		if (type === "profile") {
+			const resp = await fetch("/api/update_profile", {
+				method: "POST",
 				body: JSON.stringify({
 					id: person?.id,
-					payload
+					payload,
 				}),
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
-				}
-			})
+				},
+			});
 
-			return resp.json()
+			return resp.json();
 		}
 
-		const resp = await fetch('/api/team_member', {
-			method: 'POST',
+		const resp = await fetch("/api/team_member", {
+			method: "POST",
 			body: JSON.stringify({
 				teammember: payload,
-				personId: person?.id
+				personId: person?.id,
 			}),
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
+			},
+		});
+
+		return resp.json();
+	};
+
+	const setTMField =
+		(field: string) => (event: ChangeEvent<HTMLInputElement> | any) => {
+			if (field === "company") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
+
+					temp["companyId"] = event;
+
+					return temp;
+				});
 			}
-		})
 
-		return resp.json()
+			if (field === "positionType") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
+					temp["positionType"] = event;
 
-	}
+					if (event.value === "founder") temp["founder"] = true;
+					else temp["founder"] = false;
 
-	const setTMField = (field: string) => (event: ChangeEvent<HTMLInputElement> | any) => {
-		if (field === 'company') {
-			setTmData((prev: any) => {
-				const temp = { ...prev }
+					return temp;
+				});
+			}
 
-				temp['companyId'] = event
+			if (field === "position") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
 
-				return temp
-			})
-		}
+					temp["position"] = event.target.value;
 
-		if (field === 'positionType') {
-			setTmData((prev: any) => {
-				const temp = { ...prev }
-				temp['positionType'] = event
+					return temp;
+				});
+			}
 
-				if (event.value === 'founder') temp['founder'] = true
-				else temp['founder'] = false
+			if (field === "currentlyWorking") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
+					if (event.target.checked) {
+						temp["currentlyWorking"] = true;
+						temp["endDate"] = null;
+					} else {
+						temp["currentlyWorking"] = false;
+					}
 
-				return temp
-			})
-		}
+					return temp;
+				});
+			}
 
-		if (field === 'position') {
-			setTmData((prev: any) => {
-				const temp = { ...prev }
+			if (field === "startDate") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
 
-				temp['position'] = event.target.value
+					temp["startDate"] = event.target.value;
 
-				return temp
-			})
-		}
+					return temp;
+				});
+			}
 
-		if (field === 'currentlyWorking') {
-			setTmData((prev: any) => {
-				const temp = { ...prev }
-				if (event.target.checked) {
-					temp['currentlyWorking'] = true
-					temp['endDate'] = null
-				} else {
-					temp['currentlyWorking'] = false
-				}
+			if (field === "endDate") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
 
-				return temp
-			})
-		}
+					temp["endDate"] = event.target.value;
 
-		if (field === 'startDate') {
-			setTmData((prev: any) => {
-				const temp = { ...prev }
-
-				temp['startDate'] = event.target.value
-
-				return temp
-			})
-		}
-
-		if (field === 'endDate') {
-			setTmData((prev: any) => {
-				const temp = { ...prev }
-
-				temp['endDate'] = event.target.value
-
-				return temp
-			})
-		}
-	}
+					return temp;
+				});
+			}
+		};
 
 	const onSave = (entity: string) => async () => {
-
-		if (entity === 'name') {
+		if (entity === "name") {
 			const resp = await updateCall({
 				name: `${firstName} ${lasttName}`,
-			})
-			setPerson(resp.result)
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'email') {
-			const exists = find(email, { email: newEmail })
+		if (entity === "email") {
+			const exists = find(email, { email: newEmail });
 			setEmail((prev: any) => {
-				if (newEmail === '' || !validator.isEmail(newEmail)) return prev
-				const temp = [...prev]
+				if (newEmail === "" || !validator.isEmail(newEmail)) return prev;
+				const temp = [...prev];
 
-				if (!email) temp.push({ email: newEmail, isPrimary: false })
-				setNewEmail('')
-				return temp
-			})
+				if (!email) temp.push({ email: newEmail, isPrimary: false });
+				setNewEmail("");
+				return temp;
+			});
 
 			const resp = await updateCall({
-				email: exists ? email : [...email, { email: newEmail, isPrimary: false }]
-			})
+				email: exists
+					? email
+					: [...email, { email: newEmail, isPrimary: false }],
+			});
 
-			setPerson(resp.result)
+			setPerson(resp.result);
 		}
 
-		if (entity === 'website') {
+		if (entity === "website") {
 			const resp = await updateCall({
-				website_url: website
-			})
-			setPerson(resp.result)
+				website_url: website,
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'facebook') {
+		if (entity === "facebook") {
 			const resp = await updateCall({
-				facebook_url: facebook
-			})
-			setPerson(resp.result)
+				facebook_url: facebook,
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'twitter') {
+		if (entity === "twitter") {
 			const resp = await updateCall({
-				twitter_url: twitter
-			})
-			setPerson(resp.result)
+				twitter_url: twitter,
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'about') {
+		if (entity === "about") {
 			const resp = await updateCall({
-				about: about
-			})
-			setPerson(resp.result)
+				about: about,
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'linkedin') {
+		if (entity === "linkedin") {
 			const resp = await updateCall({
-				linkedin: linkedIn
-			})
-			setPerson(resp.result)
+				linkedin: linkedIn,
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'location') {
+		if (entity === "location") {
 			const resp = await updateCall({
 				city,
-				country
-			})
-			setPerson(resp.result)
+				country,
+			});
+			setPerson(resp.result);
 		}
 
-		if (entity === 'teamMember') {
-			const temp = { ...tmData }
+		if (entity === "teamMember") {
+			const temp = { ...tmData };
 
-			temp.companyId = temp.companyId.value
-			temp.positionType = temp.positionType.value
-			delete temp.currentlyWorking
+			temp.companyId = temp.companyId.value;
+			temp.positionType = temp.positionType.value;
+			delete temp.currentlyWorking;
 
-			updateCall(temp, 'teammember')
+			updateCall(temp, "teammember");
 
-			setActiveWorkspace(0)
-			setEditWorkspace(false)
-			setTmData(emptyTeamMember)
+			setActiveWorkspace(0);
+			setEditWorkspace(false);
+			setTmData(emptyTeamMember);
 		}
-
-	}
+	};
 
 	const handleProfileEditClick = () => {
 		// 👇️ open file input box on click of other element
@@ -418,49 +461,48 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files ? event.target.files[0] : null
-		if (!file) return
+		const file = event.target.files ? event.target.files[0] : null;
+		if (!file) return;
 
-		const res = await uploadFile(file)
+		const res = await uploadFile(file);
 
-		deleteFile(person?.picture)
+		deleteFile(person?.picture);
 
-		const resp = await updateCall({ picture: res.file })
+		const resp = await updateCall({ picture: res.file });
 
-		setPerson(resp.result)
-
-	}
+		setPerson(resp.result);
+	};
 
 	const makePrimary = (email: string) => async () => {
-		const tempEmail = [...person?.email]
+		const tempEmail = [...person?.email];
 
-		const tempEmailIndex = findIndex(tempEmail, { email })
+		const tempEmailIndex = findIndex(tempEmail, { email });
 
-		tempEmail.splice(tempEmailIndex, 1)
+		tempEmail.splice(tempEmailIndex, 1);
 
-		tempEmail.push({ email: person?.work_email })
+		tempEmail.push({ email: person?.work_email });
 
 		const resp = await updateCall({
 			email: tempEmail,
 			work_email: email,
-		})
+		});
 
-		setPerson(resp.result)
-	}
+		setPerson(resp.result);
+	};
 
 	const removeEmail = (email: string) => async () => {
-		const tempEmail = [...person?.email]
+		const tempEmail = [...person?.email];
 
-		const tempEmailIndex = findIndex(tempEmail, { email })
+		const tempEmailIndex = findIndex(tempEmail, { email });
 
-		tempEmail.splice(tempEmailIndex, 1)
+		tempEmail.splice(tempEmailIndex, 1);
 
 		const resp = await updateCall({
 			email: tempEmail,
-		})
+		});
 
-		setPerson(resp.result)
-	}
+		setPerson(resp.result);
+	};
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -468,13 +510,22 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				<div className="col-span-3">
 					<div className="bg-white rounded-lg p-5">
 						<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
-							<h2 className="text-dark-500 font-bold text-xl">Personal Profile</h2>
-							<ElemButton btn="white" className="text-dark-500 font-bold  text-md" arrow>View Profile</ElemButton>
+							<h2 className="text-dark-500 font-bold text-xl">
+								Personal Profile
+							</h2>
+							<ElemButton
+								btn="white"
+								className="text-dark-500 font-bold  "
+								arrow
+							>
+								View Profile
+							</ElemButton>
 						</div>
 
-
 						<div className="mt-3 mb-2 border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-							<h2 className="text-dark-500 font-bold text-md col-span-3">Profile Image</h2>
+							<h2 className="text-dark-500 font-bold  col-span-3">
+								Profile Image
+							</h2>
 							<div className="flex col-span-9">
 								<div className=" block relative">
 									<ElemPhoto
@@ -490,37 +541,53 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									>
 										<IconProfilePictureUpload />
 									</span>
-									<input type="file" hidden={true} className="hidden" onChange={onFileUpload()} ref={fileInputRef} />
+									<input
+										type="file"
+										hidden={true}
+										className="hidden"
+										onChange={onFileUpload()}
+										ref={fileInputRef}
+									/>
 								</div>
 								<div className="ml-8 mt-5">
 									<ul>
-										<li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">Square images work best (at least 300 x 300 pixels) </li>
-										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Crop your image before you upload</li>
-										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Image upoloads are limited to 2MB</li>
-										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">Accepted image types JPG SVG AND PNG</li>
+										<li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">
+											Square images work best (at least 300 x 300 pixels){" "}
+										</li>
+										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+											Crop your image before you upload
+										</li>
+										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+											Image upoloads are limited to 2MB
+										</li>
+										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+											Accepted image types JPG SVG AND PNG
+										</li>
 									</ul>
 								</div>
 							</div>
 						</div>
 
-						{
-							!editName && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Name</h2>
+						{!editName && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
 
 								<div className="col-span-8">
-									<h2 className="text-slate-600 text-md">{person?.name}</h2>
+									<h2 className="text-slate-600 ">{person?.name}</h2>
 								</div>
 
 								<button
-									className="text-md text-primary-500 col-span-1 text-right w-auto"
+									className=" text-primary-500 col-span-1 text-right w-auto"
 									onClick={() => setEditName(true)}
-								>Edit</button>
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 						{/* hide content name */}
-						{
-							editName && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Name</h2>
+						{editName && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12">
+								<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
 								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
@@ -540,13 +607,17 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											className="mb-3"
 										/>
 
-										<span className="text-slate-500 m font-thin text-md"><b className="font-bold text-slate-600">Note:</b> If you change your name on EdgeIn, you won’t be able to change it again for 60 days.</span>
+										<span className="text-slate-500 m font-thin ">
+											<b className="font-bold text-slate-600">Note:</b> If you
+											change your name on EdgeIn, you won’t be able to change it
+											again for 60 days.
+										</span>
 
 										<div className="flex mt-3 mb-2">
 											<ElemButton
 												btn="primary"
 												className="mr-2"
-												onClick={onSave('name')}
+												onClick={onSave("name")}
 											>
 												Change
 											</ElemButton>
@@ -560,75 +631,73 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</div>
 								</div>
 							</div>
-						}
+						)}
 
-						{
-							!editEmail && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Email</h2>
+						{!editEmail && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
 								<div className="col-span-8">
-									<p
-										className="text-slate-600 mb-2"
-									>
+									<p className="text-slate-600 mb-2">
 										{person?.work_email}
 										<b className="text-sm text-primary-500"> - Primary</b>
 									</p>
-									{
-										person?.email.map((email: any) => (
-											<p
-												key={email.email}
-												className="text-slate-600 mb-2"
-											>
-												{email.email}
-											</p>
-										))
-									}
+									{person?.email.map((email: any) => (
+										<p key={email.email} className="text-slate-600 mb-2">
+											{email.email}
+										</p>
+									))}
 								</div>
 
 								<button
 									onClick={() => setEditEmail(true)}
-									className="absolute right-0 text-md text-primary-500"
-								>Edit</button>
-
+									className="absolute right-0  text-primary-500"
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 
 						{/* hide content email */}
-						{
-							editEmail &&
+						{editEmail && (
 							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Email</h2>
+								<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
 								<div className="col-span-8">
 									<div className="w-96">
-										<h2 className="text-md font-bold text-slate-600">Current Emails</h2>
+										<h2 className=" font-bold text-slate-600">
+											Current Emails
+										</h2>
 										<div className="mb-2">
-											<span className="block mt-1 text-sm font-semibold text-slate-600">{person?.work_email}</span>
-											<span className="mt-1 text-slate-500 text-sm">Primary</span>
+											<span className="block mt-1 text-sm font-semibold text-slate-600">
+												{person?.work_email}
+											</span>
+											<span className="mt-1 text-slate-500 text-sm">
+												Primary
+											</span>
 										</div>
-										{
-											email?.map((mail: any) => (
-												<div key={mail.email} className="mb-2">
-													<span className="block mt-1 text-sm font-semibold text-slate-600">{mail.email}</span>
-													<span
-														className="mt-1 text-sm text-purple-800 cursor-pointer"
-														onClick={makePrimary(mail.email)}
-													>
-														Make Primary
-													</span>
-													<span
-														className="mt-1 text-sm ml-2 text-purple-800 cursor-pointer"
-														onClick={removeEmail(mail.email)}
-													>
-														Remove
-													</span>
-												</div>
-											))
-
-										}
+										{email?.map((mail: any) => (
+											<div key={mail.email} className="mb-2">
+												<span className="block mt-1 text-sm font-semibold text-slate-600">
+													{mail.email}
+												</span>
+												<span
+													className="mt-1 text-sm text-purple-800 cursor-pointer"
+													onClick={makePrimary(mail.email)}
+												>
+													Make Primary
+												</span>
+												<span
+													className="mt-1 text-sm ml-2 text-purple-800 cursor-pointer"
+													onClick={removeEmail(mail.email)}
+												>
+													Remove
+												</span>
+											</div>
+										))}
 
 										<InputText
 											label="New Email"
 											onChange={(e) => {
-												setNewEmail(e.target.value)
+												setNewEmail(e.target.value);
 											}}
 											value={newEmail}
 											name="new-email"
@@ -639,7 +708,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
-												onClick={onSave('email')}
+												onClick={onSave("email")}
 											>
 												Add
 											</ElemButton>
@@ -650,32 +719,37 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 												Cancel
 											</ElemButton>
 										</div>
-
 									</div>
 								</div>
-
 							</div>
-						}
+						)}
 
-						{
-							!editLocation && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Location</h2>
+						{!editLocation && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Location
+								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 text-md">{person?.city}, {person?.country}</h2>
+									<h2 className="text-slate-600 ">
+										{person?.city}, {person?.country}
+									</h2>
 								</div>
 
 								<button
-									className="absolute right-0 text-md text-primary-500"
+									className="absolute right-0  text-primary-500"
 									onClick={() => setEditLocation(true)}
-								>Edit</button>
-
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 
 						{/* hide content location */}
-						{
-							editLocation && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Location</h2>
+						{editLocation && (
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Location
+								</h2>
 								<div className="col-span-8">
 									<div className="w-96 ">
 										<InputText
@@ -692,13 +766,14 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											value={country}
 											name="country"
 											placeholder="United State"
-											className="mb-3" />
+											className="mb-3"
+										/>
 
 										<div className="flex mt-3 mb-2">
 											<ElemButton
 												btn="primary"
 												className="mr-2"
-												onClick={onSave('location')}
+												onClick={onSave("location")}
 											>
 												Save
 											</ElemButton>
@@ -709,31 +784,34 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 												Cancel
 											</ElemButton>
 										</div>
-
 									</div>
 								</div>
-
 							</div>
-						}
+						)}
 
-						{
-							!editWebsite && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Website URl</h2>
+						{!editWebsite && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Website URl
+								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 text-md">{person?.website_url}</h2>
+									<h2 className="text-slate-600 ">{person?.website_url}</h2>
 								</div>
 
 								<button
-									className="absolute right-0 text-md text-primary-500"
+									className="absolute right-0  text-primary-500"
 									onClick={() => setEditWebsite(true)}
-								>Edit</button>
-
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 						{/* hide content website */}
-						{
-							editWebsite && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Website URL</h2>
+						{editWebsite && (
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Website URL
+								</h2>
 								<div className="col-span-8">
 									<div className="w-96 ">
 										<InputText
@@ -747,7 +825,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
-												onClick={onSave('website')}
+												onClick={onSave("website")}
 											>
 												Save
 											</ElemButton>
@@ -758,31 +836,35 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 												Cancel
 											</ElemButton>
 										</div>
-
 									</div>
 								</div>
 							</div>
-						}
+						)}
 
-						{
-							!editLinkedIn && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">LinkedIn URL</h2>
+						{!editLinkedIn && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									LinkedIn URL
+								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 text-md">{person?.linkedin}</h2>
+									<h2 className="text-slate-600 ">{person?.linkedin}</h2>
 								</div>
 
 								<button
-									className="absolute right-0 text-md text-primary-500"
+									className="absolute right-0  text-primary-500"
 									onClick={() => setEditLinkedIn(true)}
-								>Edit</button>
-
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 
 						{/* hide content linkedin */}
-						{
-							editLinkedIn && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">LinkedIn URL</h2>
+						{editLinkedIn && (
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									LinkedIn URL
+								</h2>
 								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
@@ -796,7 +878,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
-												onClick={onSave('linkedin')}
+												onClick={onSave("linkedin")}
 											>
 												Save
 											</ElemButton>
@@ -807,31 +889,35 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 												Cancel
 											</ElemButton>
 										</div>
-
 									</div>
 								</div>
 							</div>
-						}
+						)}
 
-						{
-							!editFacebook && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Facebook URL</h2>
+						{!editFacebook && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Facebook URL
+								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 text-md">{person?.facebook_url}</h2>
+									<h2 className="text-slate-600 ">{person?.facebook_url}</h2>
 								</div>
 
 								<button
-									className="absolute right-0 text-md text-primary-500"
+									className="absolute right-0  text-primary-500"
 									onClick={() => setEditFacebook(true)}
-								>Edit</button>
-
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 
 						{/* hide content facebook*/}
-						{
-							editFacebook && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Facebook URL</h2>
+						{editFacebook && (
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Facebook URL
+								</h2>
 								<div className="col-span-8">
 									<div className="w-96">
 										<InputText
@@ -845,7 +931,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											<ElemButton
 												btn="primary"
 												className="mr-2"
-												onClick={onSave('facebook')}
+												onClick={onSave("facebook")}
 											>
 												Save
 											</ElemButton>
@@ -859,29 +945,33 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</div>
 								</div>
 							</div>
-						}
+						)}
 
-						{
-							!editTwitter && < div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Twitter URL</h2>
+						{!editTwitter && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Twitter URL
+								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 text-md">{person?.twitter_url}</h2>
+									<h2 className="text-slate-600 ">{person?.twitter_url}</h2>
 								</div>
 
 								<button
 									onClick={() => setEditTwitter(true)}
-									className="absolute right-0 text-md text-primary-500"
-								>Edit</button>
-
+									className="absolute right-0  text-primary-500"
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 
 						{/* hide content twitter*/}
-						{
-							editTwitter && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Twitter URL</h2>
+						{editTwitter && (
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									Twitter URL
+								</h2>
 								<div className="col-span-8">
-
 									<InputText
 										onChange={(e) => setTwitter(e.target.value)}
 										value={twitter}
@@ -894,7 +984,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										<ElemButton
 											btn="primary"
 											className="mr-2"
-											onClick={onSave('twitter')}
+											onClick={onSave("twitter")}
 										>
 											Save
 										</ElemButton>
@@ -905,32 +995,34 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 											Cancel
 										</ElemButton>
 									</div>
-
-
-
 								</div>
 							</div>
-						}
+						)}
 
-						{
-							!editAbout && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">About You</h2>
+						{!editAbout && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									About You
+								</h2>
 								<div className="col-span-8">
-									<p className="text-slate-600 text-md">{person?.about}</p>
+									<p className="text-slate-600 ">{person?.about}</p>
 								</div>
 
 								<button
-									className="absolute right-0 text-md text-primary-500"
+									className="absolute right-0  text-primary-500"
 									onClick={() => setEditAbout(true)}
-								>Edit</button>
-
+								>
+									Edit
+								</button>
 							</div>
-						}
+						)}
 
 						{/* hide content about*/}
-						{
-							editAbout && <div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">About You</h2>
+						{editAbout && (
+							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  col-span-3">
+									About You
+								</h2>
 								<div className="col-span-8">
 									<InputTextarea
 										rows={3}
@@ -942,47 +1034,41 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										<ElemButton
 											btn="primary"
 											className="mr-2"
-											onClick={onSave('about')}
+											onClick={onSave("about")}
 										>
 											Save
 										</ElemButton>
-										<ElemButton
-											btn="white"
-											onClick={() => setEditAbout(false)}
-										>
+										<ElemButton btn="white" onClick={() => setEditAbout(false)}>
 											Cancel
 										</ElemButton>
 									</div>
 								</div>
 							</div>
-						}
+						)}
 
-						{
-							!editWorkspace && <div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold text-md col-span-3">Work</h2>
+						{!editWorkspace && (
+							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+								<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
 								<button
 									onClick={() => setEditWorkspace(true)}
-									className="absolute right-0 text-md text-primary-500"
-								>Add Workplace</button>
-
+									className="absolute right-0  text-primary-500"
+								>
+									Add Workplace
+								</button>
 							</div>
-						}
+						)}
 						{/* hide content work */}
-						{
-							editWorkspace &&
-							renderWorkspaceForm()
-						}
+						{editWorkspace && renderWorkspaceForm()}
 
-						{
-							person?.team_members.map((teamMember) => renderWorkspaceEditForm(teamMember))
-						}
-
+						{person?.team_members.map((teamMember) =>
+							renderWorkspaceEditForm(teamMember)
+						)}
 					</div>
 				</div>
 			</DashboardLayout>
 		</div>
 	);
-}
+};
 
 export const getStaticProps: GetStaticProps = async () => {
 	const { data: companiesData } = await runGraphQl<GetCompaniesQuery>(
@@ -996,7 +1082,11 @@ export const getStaticProps: GetStaticProps = async () => {
 
 	return {
 		props: {
-			companiesDropdown: companiesData?.companies.map((company) => ({ title: company.name, value: company.id })) || []
+			companiesDropdown:
+				companiesData?.companies.map((company) => ({
+					title: company.name,
+					value: company.id,
+				})) || [],
 		},
 	};
 };

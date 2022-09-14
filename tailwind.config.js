@@ -61,8 +61,8 @@ const blue = {
   900: "#1E3A8A"
 }
 
-const darkblue={
-  600:"#0077B5"
+const darkblue = {
+  600: "#0077B5"
 }
 
 
@@ -177,9 +177,6 @@ module.exports = {
             transform: 'translateY(0)'
           },
         },
-      },
-      transitionTimingFunction: {
-        'in-hoverTransition': 'cubic-bezier(0.215, 0.61, 0.355, 1)',
       },
       transitionProperty: {
         'transform': 'transform',
