@@ -22,8 +22,7 @@ import { uploadFile, deleteFile } from "@/utils/fileFunctions";
 import { InputDate } from "@/components/InputDate";
 import { GetStaticProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { Menu, Transition } from "@headlessui/react";
-import { IconChevronDown } from "@/components/Icons";
+import { ElemShareMenu } from "@/components/ElemShareMenu";
 
 const emptyTeamMember = {
 	startDate: null,
@@ -506,6 +505,28 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		setPerson(resp.result);
 	};
 
+	const getInviteLink = (invitecode: string) => {
+		const inviteLink = `${process.env.NEXT_PUBLIC_REDIRECT_URL}/?invite=${invitecode}`;
+		return inviteLink;
+	}
+
+	const onTelegram = () => {
+		window.open(`https://telegram.me/share/url?url=${getInviteLink(user.reference_id)}&text=${user.display_name} has invited you to join Edge In! Use the invite link to get started`, '_blank')
+	}
+
+	const onSMS = () => {
+		window.open(`sms:?&body=${user.display_name} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(user.reference_id)}`, '')
+	}
+
+	const onEmail = () => {
+		window.open(`mailto:?subject=${user.display_name} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
+	        ${user.display_name} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(user.reference_id)}`, '')
+	}
+
+	const onCopy = () => {
+		navigator.clipboard.writeText(getInviteLink(user.reference_id));
+	}
+
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
 			<DashboardLayout>
@@ -515,9 +536,13 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							<h2 className="text-dark-500 font-bold text-xl">
 								Invite Code
 							</h2>
-							<ShareMenu code={"hhdhdhyywywuu"} user={user} />
+							{
+								(user && user.reference_id) && (
+									<ElemShareMenu onCopy={onCopy} onTelegram={onTelegram} onEmail={onEmail} onSMS={onSMS} />
+								)
+							}
 						</div>
-						<p >{(user && user.reference_id) ? user.reference_id : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris n"}</p>
+						<p >{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
 
 					</div>
 					<div className="bg-white rounded-lg p-5">
@@ -653,7 +678,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										{person ?.work_email}
 										<b className="text-sm text-primary-500"> - Primary</b>
 									</p>
-									{person ?.email && person ?.email.map((email: any) => (
+									{person?.email && person?.email.map((email: any) => (
 										<p key={email.email} className="text-slate-600 mb-2">
 											{email.email}
 										</p>
@@ -1105,105 +1130,4 @@ export const getStaticProps: GetStaticProps = async () => {
 
 export default Profile;
 
-const ShareMenu = ({ code, user }) => {
 
-	const onTelegram = () => {
-		window.open(`https://t.me/share/url?text=${user.display_name} has invited you to join Edge In! Use the invite link to get started&url=${code}`, '_blank')
-	}
-
-	const onSMS = () => {
-		window.open(`sms:?&body=${user.display_name} has invited you to join Edge In! Use the invite link to get started : ${code}`, '')
-	}
-
-	const onEmail = () => {
-		window.open(`mailto:?subject=${user.display_name} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${user.display_name} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${code}`, '')
-	}
-
-	const onCopy = () => {
-		navigator.clipboard.writeText(code);
-	}
-
-	return (
-		<Menu as="div" className="relative inline-block text-left">
-			<div>
-				<Menu.Button as="div">
-					<ElemButton btn="white" className="px-2 font-medium group">
-						<h3>Share</h3>
-						<IconChevronDown className="ml-1 h-5 w-5" aria-hidden="true" />
-					</ElemButton>
-				</Menu.Button>
-			</div>
-			<Transition
-				as={Fragment}
-				enter="transition ease-out duration-100"
-				enterFrom="transform opacity-0 scale-95"
-				enterTo="transform opacity-100 scale-100"
-				leave="transition ease-in duration-75"
-				leaveFrom="transform opacity-100 scale-100"
-				leaveTo="transform opacity-0 scale-95"
-			>
-				<Menu.Items
-					as="nav"
-					className="z-10 absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-				>
-					<div>
-						<Menu.Item>
-							{({ active }) => (
-								<button
-									onClick={onCopy}
-									className={`${active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
-								>
-									{/* <IconSignOut className="mr-2 h-6 w-6" /> */}
-									Copy
-                                </button>
-							)}
-						</Menu.Item>
-					</div>
-					<div>
-						<Menu.Item>
-							{({ active }) => (
-								<button
-									onClick={onTelegram}
-									className={`${active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
-								>Telegram</button>
-							)}
-						</Menu.Item>
-					</div>
-					<div>
-						<Menu.Item>
-							{({ active }) => (
-								<button
-									onClick={onEmail}
-									className={`${active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
-								>
-									{/* <IconSignOut className="mr-2 h-6 w-6" /> */}
-									Email
-	                                </button>
-							)}
-						</Menu.Item>
-					</div>
-					<div>
-						<Menu.Item>
-							{({ active }) => (
-								//<a href="sms:(countrycode)(number)"> Text </a>
-								<button
-									onClick={onSMS}
-									className={`${active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
-								>
-									{/* <IconSignOut className="mr-2 h-6 w-6" /> */}
-									SMS
-	                                </button>
-							)}
-						</Menu.Item>
-					</div>
-				</Menu.Items>
-			</Transition>
-		</Menu>
-
-	)
-}
