@@ -2,7 +2,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState, Fragment } from "react";
 import {
 	GetCompaniesDocument,
 	GetCompaniesQuery,
@@ -22,6 +22,8 @@ import { uploadFile, deleteFile } from "@/utils/fileFunctions";
 import { InputDate } from "@/components/InputDate";
 import { GetStaticProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { Menu, Transition } from "@headlessui/react";
+import { IconChevronDown } from "@/components/Icons";
 
 const emptyTeamMember = {
 	startDate: null,
@@ -67,38 +69,38 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const [tmData, setTmData] = useState<any>(emptyTeamMember);
 
 	const { data: users } = useGetUserProfileQuery({
-		id: user?.id ?? 0,
+		id: user ?.id ?? 0,
 	});
 
 	// set person
 	useEffect(() => {
-		if (users) setPerson(users.users_by_pk?.person as People);
+		if (users) setPerson(users.users_by_pk ?.person as People);
 	}, [users]);
 
 	// set workspace data in edit mode
 	useEffect(() => {
 		if (activeWorkspace)
 			setTmData((prev: any) => {
-				const findTM = find(person?.team_members, { id: activeWorkspace });
+				const findTM = find(person ?.team_members, { id: activeWorkspace });
 				if (!findTM) return prev;
 
 				const selectedCompany = find(companiesDropdown, {
-					value: findTM?.company?.id,
+					value: findTM ?.company ?.id,
 				});
-				const selectedPositionType = findTM?.function
+				const selectedPositionType = findTM ?.function
 					? {
-							title: `${findTM?.function
-								?.charAt(0)
-								.toUpperCase()}${findTM?.function?.slice(1)}`,
-							value: findTM?.function,
-					  }
+						title: `${findTM ?.function
+							?.charAt(0)
+								.toUpperCase()}${findTM ?.function ?.slice(1)}`,
+						value: findTM ?.function,
+					}
 					: null;
 				const currentlyWorking = findTM.end_date ? false : true;
 
 				const temp = {
 					...prev,
 					companyId: selectedCompany,
-					position: findTM?.title,
+					position: findTM ?.title,
 					positionType: selectedPositionType,
 					startDate: findTM.start_date,
 					endDate: findTM.end_date,
@@ -106,7 +108,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				};
 				return temp;
 			});
-	}, [activeWorkspace, companiesDropdown, person?.team_members]);
+	}, [activeWorkspace, companiesDropdown, person ?.team_members]);
 
 	const renderWorkspaceForm = (id?: number) => {
 		return (
@@ -210,7 +212,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							<div className="flex">
 								<ElemPhoto
 									wrapClass="w-12 h-12 border p-1 rounded-md"
-									photo={teamMember.company?.logo}
+									photo={teamMember.company ?.logo}
 									imgAlt="company logo"
 								/>
 
@@ -219,7 +221,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										{teamMember.title}
 									</h2>
 									<span className="font-thin text-slate-500 ">
-										{teamMember.company?.name}
+										{teamMember.company ?.name}
 									</span>
 									<p className="font-thin text-slate-500">
 										{" "}
@@ -229,7 +231,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										)}{" "}
 										.{" "}
 										{getTimeOfWork(teamMember.start_date, teamMember.end_date)}{" "}
-										<br /> {teamMember.company?.location}
+										<br /> {teamMember.company ?.location}
 									</p>
 								</div>
 							</div>
@@ -251,20 +253,20 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	// set profile data
 	useEffect(() => {
 		if (person) {
-			const nameFragments = person?.name?.split(" ");
-			const firstName = nameFragments?.shift() || "";
-			const lastName = nameFragments?.join(" ") || "";
+			const nameFragments = person ?.name ?.split(" ");
+			const firstName = nameFragments ?.shift() || "";
+			const lastName = nameFragments ?.join(" ") || "";
 
 			setFirstName(firstName);
 			setLastName(lastName);
-			setEmail(person?.email || []);
-			setCity(person?.city || "");
-			setCountry(person?.country || "");
-			setWebsite(person?.website_url || "");
-			setLinkedIn(person?.linkedin || "");
-			setFacebook(person?.facebook_url || "");
-			setTwitter(person?.twitter_url || "");
-			setAbout(person?.about || "");
+			setEmail(person ?.email || []);
+			setCity(person ?.city || "");
+			setCountry(person ?.country || "");
+			setWebsite(person ?.website_url || "");
+			setLinkedIn(person ?.linkedin || "");
+			setFacebook(person ?.facebook_url || "");
+			setTwitter(person ?.twitter_url || "");
+			setAbout(person ?.about || "");
 		}
 	}, [person]);
 
@@ -273,7 +275,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			const resp = await fetch("/api/update_profile", {
 				method: "POST",
 				body: JSON.stringify({
-					id: person?.id,
+					id: person ?.id,
 					payload,
 				}),
 				headers: {
@@ -289,7 +291,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			method: "POST",
 			body: JSON.stringify({
 				teammember: payload,
-				personId: person?.id,
+				personId: person ?.id,
 			}),
 			headers: {
 				Accept: "application/json",
@@ -457,7 +459,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const handleProfileEditClick = () => {
 		// 👇️ open file input box on click of other element
-		fileInputRef?.current?.click();
+		fileInputRef ?.current ?.click();
 	};
 
 	const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
@@ -466,7 +468,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 		const res = await uploadFile(file);
 
-		deleteFile(person?.picture);
+		deleteFile(person ?.picture);
 
 		const resp = await updateCall({ picture: res.file });
 
@@ -474,13 +476,13 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const makePrimary = (email: string) => async () => {
-		const tempEmail = [...person?.email];
+		const tempEmail = [...person ?.email];
 
 		const tempEmailIndex = findIndex(tempEmail, { email });
 
 		tempEmail.splice(tempEmailIndex, 1);
 
-		tempEmail.push({ email: person?.work_email });
+		tempEmail.push({ email: person ?.work_email });
 
 		const resp = await updateCall({
 			email: tempEmail,
@@ -491,7 +493,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const removeEmail = (email: string) => async () => {
-		const tempEmail = [...person?.email];
+		const tempEmail = [...person ?.email];
 
 		const tempEmailIndex = findIndex(tempEmail, { email });
 
@@ -508,6 +510,16 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
 			<DashboardLayout>
 				<div className="col-span-3">
+					<div className="bg-white rounded-lg p-5 mb-5">
+						<div className="flex justify-between items-center mb-4 pb-3">
+							<h2 className="text-dark-500 font-bold text-xl">
+								Invite Code
+							</h2>
+							<ShareMenu code={"hhdhdhyywywuu"} user={user} />
+						</div>
+						<p >{(user && user.reference_id) ? user.reference_id : "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris n"}</p>
+
+					</div>
 					<div className="bg-white rounded-lg p-5">
 						<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
 							<h2 className="text-dark-500 font-bold text-xl">
@@ -529,10 +541,10 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							<div className="flex col-span-9">
 								<div className=" block relative">
 									<ElemPhoto
-										photo={person?.picture}
+										photo={person ?.picture}
 										wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white rounded-lg shadow-md mr-2 rounded-full"
 										imgClass="object-fit max-w-full max-h-full rounded-full"
-										imgAlt={person?.name}
+										imgAlt={person ?.name}
 									/>
 									<span
 										className="bg-gray-200 w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0"
@@ -573,7 +585,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
 
 								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person?.name}</h2>
+									<h2 className="text-slate-600 ">{person ?.name}</h2>
 								</div>
 
 								<button
@@ -638,10 +650,10 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
 								<div className="col-span-8">
 									<p className="text-slate-600 mb-2">
-										{person?.work_email}
+										{person ?.work_email}
 										<b className="text-sm text-primary-500"> - Primary</b>
 									</p>
-									{person?.email.map((email: any) => (
+									{person ?.email && person ?.email.map((email: any) => (
 										<p key={email.email} className="text-slate-600 mb-2">
 											{email.email}
 										</p>
@@ -668,13 +680,13 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										</h2>
 										<div className="mb-2">
 											<span className="block mt-1 text-sm font-semibold text-slate-600">
-												{person?.work_email}
+												{person ?.work_email}
 											</span>
 											<span className="mt-1 text-slate-500 text-sm">
 												Primary
 											</span>
 										</div>
-										{email?.map((mail: any) => (
+										{email ?.map((mail: any) => (
 											<div key={mail.email} className="mb-2">
 												<span className="block mt-1 text-sm font-semibold text-slate-600">
 													{mail.email}
@@ -731,7 +743,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</h2>
 								<div className="col-span-8">
 									<h2 className="text-slate-600 ">
-										{person?.city}, {person?.country}
+										{person ?.city}, {person ?.country}
 									</h2>
 								</div>
 
@@ -795,7 +807,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									Website URl
 								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person?.website_url}</h2>
+									<h2 className="text-slate-600 ">{person ?.website_url}</h2>
 								</div>
 
 								<button
@@ -847,7 +859,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									LinkedIn URL
 								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person?.linkedin}</h2>
+									<h2 className="text-slate-600 ">{person ?.linkedin}</h2>
 								</div>
 
 								<button
@@ -900,7 +912,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									Facebook URL
 								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person?.facebook_url}</h2>
+									<h2 className="text-slate-600 ">{person ?.facebook_url}</h2>
 								</div>
 
 								<button
@@ -953,7 +965,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									Twitter URL
 								</h2>
 								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person?.twitter_url}</h2>
+									<h2 className="text-slate-600 ">{person ?.twitter_url}</h2>
 								</div>
 
 								<button
@@ -1005,7 +1017,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									About You
 								</h2>
 								<div className="col-span-8">
-									<p className="text-slate-600 ">{person?.about}</p>
+									<p className="text-slate-600 ">{person ?.about}</p>
 								</div>
 
 								<button
@@ -1060,7 +1072,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						{/* hide content work */}
 						{editWorkspace && renderWorkspaceForm()}
 
-						{person?.team_members.map((teamMember) =>
+						{person ?.team_members.map((teamMember) =>
 							renderWorkspaceEditForm(teamMember)
 						)}
 					</div>
@@ -1083,7 +1095,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			companiesDropdown:
-				companiesData?.companies.map((company) => ({
+				companiesData ?.companies.map((company) => ({
 					title: company.name,
 					value: company.id,
 				})) || [],
@@ -1092,3 +1104,106 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default Profile;
+
+const ShareMenu = ({ code, user }) => {
+
+	const onTelegram = () => {
+		window.open(`https://t.me/share/url?text=${user.display_name} has invited you to join Edge In! Use the invite link to get started&url=${code}`, '_blank')
+	}
+
+	const onSMS = () => {
+		window.open(`sms:?&body=${user.display_name} has invited you to join Edge In! Use the invite link to get started : ${code}`, '')
+	}
+
+	const onEmail = () => {
+		window.open(`mailto:?subject=${user.display_name} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
+	        ${user.display_name} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${code}`, '')
+	}
+
+	const onCopy = () => {
+		navigator.clipboard.writeText(code);
+	}
+
+	return (
+		<Menu as="div" className="relative inline-block text-left">
+			<div>
+				<Menu.Button as="div">
+					<ElemButton btn="white" className="px-2 font-medium group">
+						<h3>Share</h3>
+						<IconChevronDown className="ml-1 h-5 w-5" aria-hidden="true" />
+					</ElemButton>
+				</Menu.Button>
+			</div>
+			<Transition
+				as={Fragment}
+				enter="transition ease-out duration-100"
+				enterFrom="transform opacity-0 scale-95"
+				enterTo="transform opacity-100 scale-100"
+				leave="transition ease-in duration-75"
+				leaveFrom="transform opacity-100 scale-100"
+				leaveTo="transform opacity-0 scale-95"
+			>
+				<Menu.Items
+					as="nav"
+					className="z-10 absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+				>
+					<div>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									onClick={onCopy}
+									className={`${active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+								>
+									{/* <IconSignOut className="mr-2 h-6 w-6" /> */}
+									Copy
+                                </button>
+							)}
+						</Menu.Item>
+					</div>
+					<div>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									onClick={onTelegram}
+									className={`${active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+								>Telegram</button>
+							)}
+						</Menu.Item>
+					</div>
+					<div>
+						<Menu.Item>
+							{({ active }) => (
+								<button
+									onClick={onEmail}
+									className={`${active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+								>
+									{/* <IconSignOut className="mr-2 h-6 w-6" /> */}
+									Email
+	                                </button>
+							)}
+						</Menu.Item>
+					</div>
+					<div>
+						<Menu.Item>
+							{({ active }) => (
+								//<a href="sms:(countrycode)(number)"> Text </a>
+								<button
+									onClick={onSMS}
+									className={`${active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+								>
+									{/* <IconSignOut className="mr-2 h-6 w-6" /> */}
+									SMS
+	                                </button>
+							)}
+						</Menu.Item>
+					</div>
+				</Menu.Items>
+			</Transition>
+		</Menu>
+
+	)
+}
