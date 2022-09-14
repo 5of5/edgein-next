@@ -121,7 +121,7 @@ const Home: NextPage = () => {
 						<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 							For founders
 						</h3>
-						<p className="mb-4 text-md text-slate-600 lg:text-lg">
+						<p className="mb-4  text-slate-600 lg:text-lg">
 							We give you unrestricted access to the most reliable market data
 							at hyper-speeds to help you drive growth, make critical
 							connections, and gain competitor insights to stay one step ahead
@@ -135,7 +135,7 @@ const Home: NextPage = () => {
 						<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
 							For investors
 						</h3>
-						<p className="mb-4 text-md text-slate-600 lg:text-lg">
+						<p className="mb-4  text-slate-600 lg:text-lg">
 							One login for all of the portfolio performance metrics you need,
 							web3 investment opportunities and comprehensive due diligence.
 						</p>

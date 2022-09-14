@@ -62,7 +62,7 @@ export default function ForgotPasswordModal(props: Props) {
 							<h1 className="text-center text-2xl lg:text-3xl font-bold">
 								Email Sent
 							</h1>
-							<p className="mt-2 text-md text-dark-400 text-center">
+							<p className="mt-2">
 								{`We sent an email to ${email}! if this email is connected to an EdgeIn account, you'll be able to reset your password.`}
 							</p>
 							<div className="text-center sm:col-span-3 mt-10">

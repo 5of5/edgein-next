@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const formatDate = (
 	dateString: string | number,
 	options?: Intl.DateTimeFormatOptions
@@ -83,11 +85,11 @@ export const convertToInternationalCurrencySystem = (amount: number) => {
 		? (Math.abs(Number(amount)) / 1.0e9).toFixed(2) + "B"
 		: // Six Zeroes for Millions
 		Math.abs(Number(amount)) >= 1.0e6
-		? (Math.abs(Number(amount)) / 1.0e6).toFixed(2) + "M"
-		: // Three Zeroes for Thousands
-		Math.abs(Number(amount)) >= 1.0e3
-		? (Math.abs(Number(amount)) / 1.0e3).toFixed(2) + "K"
-		: Math.abs(Number(amount)).toFixed(2);
+			? (Math.abs(Number(amount)) / 1.0e6).toFixed(2) + "M"
+			: // Three Zeroes for Thousands
+			Math.abs(Number(amount)) >= 1.0e3
+				? (Math.abs(Number(amount)) / 1.0e3).toFixed(2) + "K"
+				: Math.abs(Number(amount)).toFixed(2);
 };
 
 export const numberWithCommas = (num: number) => {
@@ -101,3 +103,23 @@ export const inRange = (value: number, min: number, max: number) => {
 // function inRange(value: number, min: number, max: number) {
 // 	return value >= min && value <= max;
 // }
+
+export const getWorkDurationFromAndTo = (startDate: string, endDate: string) => {
+	const start = startDate ? moment(startDate) : null
+	const end = endDate ? moment(endDate) : null
+
+	return `${start ? start.format('MMM YYYY') : 'from'} - ${end ? end.format('MMM YYYY') : 'Present'}`
+}
+
+export const getTimeOfWork = (startDate: string, endDate: string) => {
+	const today = moment()
+	const start = startDate ? moment(startDate) : null
+	const end = endDate ? moment(endDate) : null
+
+	if (!start) return null
+
+	const timeDiff = end ? end.diff(start) : today.diff(start)
+
+	return `${moment.duration(timeDiff).years()} yrs ${moment.duration(timeDiff).months()} mo`
+
+}

@@ -33,6 +33,7 @@ export const TheNavbar = () => {
 	const [selectedOption, setSelectedOption] = useState("companies");
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
+	const [linkedInError, setLinkedInError] = useState("");
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
@@ -80,8 +81,17 @@ export const TheNavbar = () => {
 					code,
 					redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
 				}),
-			}).then((res) => res.json());
-			window.location.href = "/";
+			}); //.then((res) => res.json());
+			if (response.status == 404) {
+				const responseText = await response.clone().text();
+				if (responseText === "Invalid Email") {
+					// showUnsuccessMessagge
+					setLinkedInError(responseText);
+					setShowLoginPopup(true);
+				}
+			} else {
+				window.location.href = "/";
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -189,7 +199,7 @@ export const TheNavbar = () => {
 					<div className="flex items-center space-x-2 lg:space-x-3 lg:ml-6">
 						{siteNav.map((link, index) => (
 							<Link href={link.path} key={index} passHref>
-								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 in-hoverTransition group-hover:opacity-50 hover:!opacity-100">
+								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
 									{link.name}
 								</a>
 							</Link>
@@ -213,7 +223,7 @@ export const TheNavbar = () => {
 							<>
 								<ElemButton
 									onClick={() => setShowLoginPopup(true)}
-									btn="white"
+									btn="ol-primary"
 									className="px-2.5 sm:px-3"
 								>
 									Log In
@@ -232,6 +242,7 @@ export const TheNavbar = () => {
 					</div>
 
 					<LoginModal
+						linkedInError={linkedInError}
 						onSignUp={showSignUpModal}
 						onForgotPassword={() => setShowForgotPasswordPopup(true)}
 						show={showLoginPopup}

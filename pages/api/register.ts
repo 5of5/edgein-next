@@ -40,8 +40,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(fetchRequest.status).send(errorResponse.description)
     }
     result = JSON.parse(await fetchRequest.text());
-    // upsert user info
-    await UserService.upsertUser(result);
+
+    let userData: any = await UserService.findOneUserByEmail(email);
+    if (!userData) {
+      const objectData = {
+        email: result.email,
+        name: result.name,
+        _id: result._id, // get Id from sub
+        auth0_user_pass_id: result._id
+      }
+      // upsert user info
+      userData = await UserService.upsertUser(objectData);
+    }
+    // update the linkedIn id in user
+    if (userData && !userData.auth0_user_pass_id) {
+      await UserService.updateAuth0UserPassId(result.email, result._id);
+    }
   } catch (ex: any) {
     return res.status(404).send(ex.message)
   }

@@ -1,6 +1,8 @@
-query GetPerson($slug: String!) {
-  people(where: {slug: {_eq: $slug}}) {
+query GetUserProfile ($id: Int!) {
+  users_by_pk(id: $id) {
     id
+    person {
+      id
     name
     personal_email
     picture
@@ -47,13 +49,6 @@ query GetPerson($slug: String!) {
         }
       }
     }
-  }
-}	
-
-query GetPersonsPath {
-  people(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
-    id
-    name
-    slug
+    }
   }
 }
