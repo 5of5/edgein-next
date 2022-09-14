@@ -230,7 +230,7 @@ export const PeopleEdit = () => {
 
   useEffect(() => {
     if (!isCreateLoading || !isUpdateLoading) refresh()
-  }, [isCreateLoading, isUpdateLoading])
+  }, [isCreateLoading, isUpdateLoading, refresh])
 
   const transform = async (data: any) => {
     var formdata = { ...data };
