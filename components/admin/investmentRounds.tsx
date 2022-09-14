@@ -1,7 +1,6 @@
 // in posts.js
 import * as React from "react";
 import {
-  SearchInput,
   List,
   Datagrid,
   Edit,
@@ -25,44 +24,55 @@ import {
   SaveButton,
   useRedirect,
   Button,
-  useGetList
+  useGetList,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import { roundChoices, currencyChoices, status } from "../../utils/constants"
-import ContentSave from '@mui/icons-material/Save';
+import { roundChoices, currencyChoices, status } from "../../utils/constants";
+import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
-  <TextInput key="search" type="text" source="round" label="Search in Round" resettable alwaysOn />,
-  <TextInput key="searchNumbers" type="number" source="valuation,amount" label="Valuation, Amount" resettable />,
+  <TextInput
+    key="search"
+    type="text"
+    source="round"
+    label="Search in Round"
+    resettable
+    alwaysOn
+  />,
+  <TextInput
+    key="searchNumbers"
+    type="number"
+    source="valuation,amount"
+    label="Valuation, Amount"
+    resettable
+  />,
   <ReferenceInput key="searchCompany" source="company_id" reference="companies">
-    <AutocompleteInput
-      optionText={choice =>
-        `${choice.name}`
-      }
-    />
-  </ReferenceInput>
+    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+  </ReferenceInput>,
 ];
 
-const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+const PostPagination = () => (
+  <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />
+);
 
 const CustomToolbar = () => {
   const form = useFormContext();
   const [create] = useCreate();
-  const redirect = useRedirect()
+  const redirect = useRedirect();
 
   const handleSaveDraft = () => {
-    let data = form.getValues()
-    data.status = 'draft'
-    create('investment_rounds', { data })
-    redirect('/investment_rounds')
-  }
+    let data = form.getValues();
+    data.status = "draft";
+    create("investment_rounds", { data });
+    redirect("/investment_rounds");
+  };
 
   return (
     <Toolbar>
       <SaveButton />
       <Button
         label="Save As Draft"
-        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        sx={{ marginLeft: "1rem", padding: "6px 16px", fontSize: "0.9rem" }}
         variant="outlined"
         onClick={handleSaveDraft}
         startIcon={<ContentSave />}
@@ -72,40 +82,75 @@ const CustomToolbar = () => {
 };
 
 export const InvestmentRoundsList = () => {
-  const [customSort, setCustomSort] = React.useState({ field: 'id', order: 'ASC' })
+  const [customSort, setCustomSort] = React.useState({
+    field: "id",
+    order: "ASC",
+  });
   const headers: string[] = [
-    'id', 'company_id', 'round_date', 'round', 'amount', 'currency', 'valuation', 'status'
-  ]
-  const { data } = useGetList(
-    'investment_rounds',
-    { pagination: { page: 1, perPage: 10 } }
-  );
-  let renderData = data?.map(v => {
-    let sum = 0
+    "id",
+    "company_id",
+    "round_date",
+    "round",
+    "amount",
+    "currency",
+    "valuation",
+    "status",
+  ];
+  const { data } = useGetList("investment_rounds", {
+    pagination: { page: 1, perPage: 10 },
+  });
+  let renderData = data?.map((v) => {
+    let sum = 0;
     for (var index in v) {
-      v[index] && headers.includes(index) ? sum++ : sum
+      v[index] && headers.includes(index) ? sum++ : sum;
     }
-    return ({ ...v, counter: sum + '/8' })
-  })
+    return { ...v, counter: sum + "/8" };
+  });
 
   const sortWithData = (sortData: any) => {
-    const isAscending = customSort.order === 'ASC'
+    const isAscending = customSort.order === "ASC";
     if (isAscending) {
-      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+      sortData = sortData.sort((a: any, b: any) =>
+        a[customSort.field] > b[customSort.field] ? 1 : -1
+      );
     } else {
-      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+      sortData = sortData.sort((a: any, b: any) =>
+        a[customSort.field] > b[customSort.field] ? -1 : 1
+      );
     }
-    return sortData
-  }
-  renderData = renderData && sortWithData(renderData)
+    return sortData;
+  };
+  renderData = renderData && sortWithData(renderData);
 
   return (
-    <List filters={filters}
+    <List
+      filters={filters}
       pagination={<PostPagination />}
       sx={{
-        '.MuiToolbar-root': {
-          justifyContent: 'flex-start'
-        }
+        ".MuiToolbar-root": {
+          justifyContent: "start !important",
+          paddingTop: 0,
+          marginBottom: "4px",
+        },
+        ".RaBulkActionsToolbar-toolbar": {
+          justifyContent: "start !important",
+        },
+        ".MuiToolbar-root .MuiButtonBase-root": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          margin: "4px",
+        },
+        ".RaBulkActionsToolbar-topToolbar": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+        ".MuiToolbar-root form": {
+          flex: "0 1 auto",
+        },
+        ".MuiToolbar-root form .MuiFormControl-root": {
+          margin: 0,
+        },
       }}
     >
       <Datagrid
@@ -115,23 +160,24 @@ export const InvestmentRoundsList = () => {
       >
         <EditButton />
         <TextField source="id" />
-        <ReferenceField label="Company" source="company_id" reference="companies">
+        <ReferenceField
+          label="Company"
+          source="company_id"
+          reference="companies"
+        >
           <TextField source="name" />
         </ReferenceField>
         <DateField source="round_date" />
         <TextField source="round" />
         <NumberField source="amount" />
-        <SelectField
-          source="currency"
-          choices={currencyChoices}
-        />
+        <SelectField source="currency" choices={currencyChoices} />
         <NumberField source="valuation" />
         <TextField source="status" />
         <TextField source="counter" />
       </Datagrid>
     </List>
-  )
-}
+  );
+};
 
 interface InvestmentRoundsTitleProps {
   record?: Record<string, string>;
@@ -142,20 +188,21 @@ const InvestmentRoundsTitle = ({ record }: InvestmentRoundsTitleProps) => {
 };
 
 export const InvestmentRoundsEdit = () => (
-  <Edit title={<InvestmentRoundsTitle />}
+  <Edit
+    title={<InvestmentRoundsTitle />}
     sx={{
-      '.MuiCardContent-root': {
-        '& > div': {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexDirection: 'row !important',
+      ".MuiCardContent-root": {
+        "& > div": {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          flexDirection: "row !important",
         },
       },
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      }
+      ".MuiFormHelperText-root": {
+        display: "none",
+      },
     }}
   >
     <SimpleForm>
@@ -170,7 +217,10 @@ export const InvestmentRoundsEdit = () => (
           optionText="name"
         />
       </ReferenceInput>
-      <DateInput className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none" source="round_date" />
+      <DateInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="round_date"
+      />
       <SelectInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round"
@@ -199,20 +249,21 @@ export const InvestmentRoundsEdit = () => (
 );
 
 export const InvestmentRoundsCreate = () => (
-  <Create title="Create a Investment Round"
+  <Create
+    title="Create a Investment Round"
     sx={{
-      '.MuiCardContent-root': {
-        '& > div': {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexDirection: 'row !important',
+      ".MuiCardContent-root": {
+        "& > div": {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          flexDirection: "row !important",
         },
       },
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      }
+      ".MuiFormHelperText-root": {
+        display: "none",
+      },
     }}
   >
     <SimpleForm toolbar={<CustomToolbar />}>

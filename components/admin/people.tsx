@@ -1,5 +1,5 @@
 // in posts.js
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FileInput,
   ImageField,
@@ -29,7 +29,7 @@ import {
   useDelete,
   useUpdate,
   DateField,
-  useRefresh
+  useRefresh,
 } from "react-admin";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -43,14 +43,10 @@ import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {
   validateNameAndSlugAndEmailAndDomain,
   status,
-  crunchbaseImg,
   functionChoicesTM,
   seniorityChoicesTM,
 } from "../../utils/constants";
 
-import GoogleIcon from "@mui/icons-material/Google";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import ContentSave from "@mui/icons-material/Save";
 import ContentEdit from "@mui/icons-material/Edit";
 import ContentCreate from "@mui/icons-material/Add";
@@ -65,6 +61,12 @@ import {
   Switch,
 } from "@mui/material";
 import MuiTextField from "@mui/material/TextField";
+import {
+  RenderCBIcon,
+  RenderGitHubIcon,
+  RenderGoogleIcon,
+  RenderLinkedinIcon,
+} from "@/utils/other";
 
 const filters = [
   <TextInput
@@ -158,7 +160,28 @@ export const PeopleList = () => {
       pagination={<PostPagination />}
       sx={{
         ".MuiToolbar-root": {
-          justifyContent: "flex-start",
+          justifyContent: "start !important",
+          paddingTop: 0,
+          marginBottom: "4px",
+        },
+        ".RaBulkActionsToolbar-toolbar": {
+          justifyContent: "start !important",
+        },
+        ".MuiToolbar-root .MuiButtonBase-root": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          margin: "4px",
+        },
+        ".RaBulkActionsToolbar-topToolbar": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+        ".MuiToolbar-root form": {
+          flex: "0 1 auto",
+        },
+        ".MuiToolbar-root form .MuiFormControl-root": {
+          margin: 0,
         },
       }}
     >
@@ -212,11 +235,13 @@ export const PeopleEdit = () => {
 
   const [isError, setIsError] = useState(false);
   const [filterData, setFilterData] = useState<any>([]);
+  const [isIcon, setIsIcon] = useState(false);
+  const [keyword, setKeyword] = useState("");
 
   const { data: people } = useGetList("people", {});
   const { data: company } = useGetList("companies", {});
   const { data: member } = useGetList("team_members", {});
-  
+
   const refresh = useRefresh();
   const [create, { isLoading: isCreateLoading }] = useCreate();
   const [update, { isLoading: isUpdateLoading }] = useUpdate();
@@ -229,8 +254,8 @@ export const PeopleEdit = () => {
   }, [currentId, member]);
 
   useEffect(() => {
-    if (!isCreateLoading || !isUpdateLoading) refresh()
-  }, [isCreateLoading, isUpdateLoading, refresh])
+    if (!isCreateLoading || !isUpdateLoading) refresh();
+  }, [isCreateLoading, isUpdateLoading, refresh]);
 
   const transform = async (data: any) => {
     var formdata = { ...data };
@@ -374,12 +399,20 @@ export const PeopleEdit = () => {
     }
   };
 
+  const handleIcon = (e: any) => {
+    setIsIcon(e.target.value.length > 0 ? true : false);
+    setKeyword(e.target.value);
+  };
+
   return (
     <>
       <Edit
         title={<PeopleTitle />}
         transform={transform}
         sx={{
+          ".MuiPaper-root": {
+            position: "relative",
+          },
           ".MuiCardContent-root": {
             "& > div": {
               display: "flex",
@@ -410,6 +443,7 @@ export const PeopleEdit = () => {
                 className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
                 source="name"
                 onBlur={(e) => handleNameBlur(e.target.value, formData)}
+                onChange={handleIcon}
                 sx={{
                   ".MuiFormHelperText-root": {
                     display: "block !important",
@@ -419,6 +453,30 @@ export const PeopleEdit = () => {
               />
             )}
           </FormDataConsumer>
+          {isIcon && (
+            <>
+              <RenderGoogleIcon
+                topPos="135px"
+                leftPos="36%"
+                googleKeyWord={keyword}
+              />
+              <RenderLinkedinIcon
+                topPos="135px"
+                leftPos="39%"
+                googleKeyWord={keyword}
+              />
+              <RenderGitHubIcon
+                topPos="135px"
+                leftPos="42%"
+                googleKeyWord={keyword}
+              />
+              <RenderCBIcon
+                topPos="135px"
+                leftPos="45%"
+                googleKeyWord={keyword}
+              />
+            </>
+          )}
           <SlugInput slug={slug} />
           <FileInput
             className="w-full"
@@ -486,10 +544,28 @@ export const PeopleEdit = () => {
         actions={<ListActions onCreate={() => setIsOpen(true)} />}
         sx={{
           ".MuiToolbar-root": {
-            justifyContent: "flex-start",
+            justifyContent: "start !important",
+            paddingTop: 0,
+            marginBottom: "4px",
           },
-          ".MuiPaper-root": {
-            marginBottom: "3rem",
+          ".RaBulkActionsToolbar-toolbar": {
+            justifyContent: "start !important",
+          },
+          ".MuiToolbar-root .MuiButtonBase-root": {
+            paddingTop: 0,
+            paddingBottom: 0,
+            margin: "4px",
+          },
+          ".RaBulkActionsToolbar-topToolbar": {
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginBottom: 0,
+          },
+          ".MuiToolbar-root form": {
+            flex: "0 1 auto",
+          },
+          ".MuiToolbar-root form .MuiFormControl-root": {
+            margin: 0,
           },
         }}
       >
@@ -756,61 +832,6 @@ export const PeopleCreate = () => {
     );
   };
 
-  type Props = {
-    googleKeyWord: string;
-  };
-  const RenderGoogleIcon: FC<Props> = ({ googleKeyWord }) => {
-    const url = "https://www.google.com/search?q=" + googleKeyWord;
-    return (
-      <div style={{ position: "absolute", top: "70px" }}>
-        <a href={url} target="_blank" rel="noreferrer">
-          <GoogleIcon />
-        </a>
-      </div>
-    );
-  };
-
-  const RenderLinkedinIcon: FC<Props> = ({ googleKeyWord }) => {
-    const url =
-      "https://www.google.com/search?q=" + googleKeyWord + " Linkedin";
-
-    return (
-      <div style={{ position: "absolute", top: "70px", left: "45px" }}>
-        <a href={url} target="_blank" rel="noreferrer">
-          <LinkedInIcon />
-        </a>
-      </div>
-    );
-  };
-  const RenderGitHubIcon: FC<Props> = ({ googleKeyWord }) => {
-    const url = "https://www.google.com/search?q=" + googleKeyWord + " Github";
-
-    return (
-      <div style={{ position: "absolute", top: "70px", left: "80px" }}>
-        <a href={url} target="_blank" rel="noreferrer">
-          <GitHubIcon />
-        </a>
-      </div>
-    );
-  };
-
-  const RenderCBIcon: FC<Props> = ({ googleKeyWord }) => {
-    const url =
-      "https://www.google.com/search?q=" + googleKeyWord + "  Crunchbase";
-
-    return (
-      <div style={{ position: "absolute", top: "70px", left: "115px" }}>
-        <a href={url} target="_blank" rel="noreferrer">
-          <img
-            className="w-[25px] h-[25px]"
-            src={crunchbaseImg}
-            alt={crunchbaseImg}
-          />
-        </a>
-      </div>
-    );
-  };
-
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);
     setKeyword(e.target.value);
@@ -860,10 +881,26 @@ export const PeopleCreate = () => {
           </FormDataConsumer>
           {isIcon && (
             <>
-              <RenderGoogleIcon googleKeyWord={keyword} />
-              <RenderLinkedinIcon googleKeyWord={keyword} />
-              <RenderGitHubIcon googleKeyWord={keyword} />
-              <RenderCBIcon googleKeyWord={keyword} />
+              <RenderGoogleIcon
+                topPos="75px"
+                leftPos="36%"
+                googleKeyWord={keyword}
+              />
+              <RenderLinkedinIcon
+                topPos="75px"
+                leftPos="39%"
+                googleKeyWord={keyword}
+              />
+              <RenderGitHubIcon
+                topPos="75px"
+                leftPos="42%"
+                googleKeyWord={keyword}
+              />
+              <RenderCBIcon
+                topPos="75px"
+                leftPos="45%"
+                googleKeyWord={keyword}
+              />
             </>
           )}
           <SlugInput slug={slug} />

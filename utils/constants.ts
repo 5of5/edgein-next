@@ -1,4 +1,3 @@
-
 import { email, required, minLength, number, minValue, maxValue, regex } from 'react-admin'
 
 export const validateName = [required(), minLength(3)];

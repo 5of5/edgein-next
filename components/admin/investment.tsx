@@ -19,57 +19,51 @@ import {
   SaveButton,
   useRedirect,
   Button,
-  useGetList
+  useGetList,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import { status } from "../../utils/constants"
-import ContentSave from '@mui/icons-material/Save';
+import { status } from "../../utils/constants";
+import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
   //<TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
   <ReferenceInput key="searchPeople" source="person_id" reference="people">
-    <AutocompleteInput
-      optionText={choice =>
-        `${choice.name}`
-      }
-    />
+    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,
-  <ReferenceInput key="searchRounds" source="round_id" reference="investment_rounds">
-    <AutocompleteInput
-      optionText={choice =>
-        `${choice.round}`
-      }
-    />
+  <ReferenceInput
+    key="searchRounds"
+    source="round_id"
+    reference="investment_rounds"
+  >
+    <AutocompleteInput optionText={(choice) => `${choice.round}`} />
   </ReferenceInput>,
   <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
-    <AutocompleteInput
-      optionText={choice =>
-        `${choice.name}`
-      }
-    />
-  </ReferenceInput>
+    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+  </ReferenceInput>,
 ];
 
-const PostPagination = () => <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />;
+const PostPagination = () => (
+  <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />
+);
 
 const CustomToolbar = () => {
   const form = useFormContext();
   const [create] = useCreate();
-  const redirect = useRedirect()
+  const redirect = useRedirect();
 
   const handleSaveDraft = () => {
-    let data = form.getValues()
-    data.status = 'draft'
-    create('investments', { data })
-    redirect('/investments')
-  }
+    let data = form.getValues();
+    data.status = "draft";
+    create("investments", { data });
+    redirect("/investments");
+  };
 
   return (
     <Toolbar>
       <SaveButton />
       <Button
         label="Save As Draft"
-        sx={{ marginLeft: '1rem', padding: '6px 16px', fontSize: '0.9rem', }}
+        sx={{ marginLeft: "1rem", padding: "6px 16px", fontSize: "0.9rem" }}
         variant="outlined"
         onClick={handleSaveDraft}
         startIcon={<ContentSave />}
@@ -79,40 +73,72 @@ const CustomToolbar = () => {
 };
 
 export const InvestmentsList = () => {
-  const [customSort, setCustomSort] = React.useState({ field: 'id', order: 'ASC' })
+  const [customSort, setCustomSort] = React.useState({
+    field: "id",
+    order: "ASC",
+  });
   const headers: string[] = [
-    'id', 'person_id', 'round_id', 'vc_firm_id', 'status'
-  ]
-  const { data } = useGetList(
-    'investments',
-    { pagination: { page: 1, perPage: 10 } }
-  );
-  let renderData = data?.map(v => {
-    let sum = 0
+    "id",
+    "person_id",
+    "round_id",
+    "vc_firm_id",
+    "status",
+  ];
+  const { data } = useGetList("investments", {
+    pagination: { page: 1, perPage: 10 },
+  });
+  let renderData = data?.map((v) => {
+    let sum = 0;
     for (var index in v) {
-      v[index] && headers.includes(index) ? sum++ : sum
+      v[index] && headers.includes(index) ? sum++ : sum;
     }
-    return ({ ...v, counter: sum + '/5' })
-  })
+    return { ...v, counter: sum + "/5" };
+  });
 
   const sortWithData = (sortData: any) => {
-    const isAscending = customSort.order === 'ASC'
+    const isAscending = customSort.order === "ASC";
     if (isAscending) {
-      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? 1 : -1);
+      sortData = sortData.sort((a: any, b: any) =>
+        a[customSort.field] > b[customSort.field] ? 1 : -1
+      );
     } else {
-      sortData = sortData.sort((a: any, b: any) => (a[customSort.field] > b[customSort.field]) ? -1 : 1);
+      sortData = sortData.sort((a: any, b: any) =>
+        a[customSort.field] > b[customSort.field] ? -1 : 1
+      );
     }
-    return sortData
-  }
-  renderData = renderData && sortWithData(renderData)
+    return sortData;
+  };
+  renderData = renderData && sortWithData(renderData);
 
   return (
-    <List filters={filters}
+    <List
+      filters={filters}
       pagination={<PostPagination />}
       sx={{
-        '.MuiToolbar-root': {
-          justifyContent: 'flex-start'
-        }
+        ".MuiToolbar-root": {
+          justifyContent: "start !important",
+          paddingTop: 0,
+          marginBottom: "4px",
+        },
+        ".RaBulkActionsToolbar-toolbar": {
+          justifyContent: "start !important",
+        },
+        ".MuiToolbar-root .MuiButtonBase-root": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          margin: "4px",
+        },
+        ".RaBulkActionsToolbar-topToolbar": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+        ".MuiToolbar-root form": {
+          flex: "0 1 auto",
+        },
+        ".MuiToolbar-root form .MuiFormControl-root": {
+          margin: 0,
+        },
       }}
     >
       <Datagrid
@@ -132,15 +158,19 @@ export const InvestmentsList = () => {
         >
           <TextField source="round" />
         </ReferenceField>
-        <ReferenceField label="VC Firm" source="vc_firm_id" reference="vc_firms">
+        <ReferenceField
+          label="VC Firm"
+          source="vc_firm_id"
+          reference="vc_firms"
+        >
           <TextField source="name" />
         </ReferenceField>
         <TextField source="status" />
         <TextField source="counter" />
       </Datagrid>
     </List>
-  )
-}
+  );
+};
 
 interface TitleProps {
   record?: Record<string, string>;
@@ -151,20 +181,21 @@ const InvestmentsTitle = ({ record }: TitleProps) => {
 };
 
 export const InvestmentsEdit = () => (
-  <Edit title={<InvestmentsTitle />}
+  <Edit
+    title={<InvestmentsTitle />}
     sx={{
-      '.MuiCardContent-root': {
-        '& > div': {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexDirection: 'row !important',
+      ".MuiCardContent-root": {
+        "& > div": {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          flexDirection: "row !important",
         },
       },
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      }
+      ".MuiFormHelperText-root": {
+        display: "none",
+      },
     }}
   >
     <SimpleForm>
@@ -209,20 +240,21 @@ export const InvestmentsEdit = () => (
 );
 
 export const InvestmentsCreate = () => (
-  <Create title="Add a vc or angel to an Investment Round"
+  <Create
+    title="Add a vc or angel to an Investment Round"
     sx={{
-      '.MuiCardContent-root': {
-        '& > div': {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          flexDirection: 'row !important',
+      ".MuiCardContent-root": {
+        "& > div": {
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          flexDirection: "row !important",
         },
       },
-      '.MuiFormHelperText-root': {
-        display: 'none',
-      }
+      ".MuiFormHelperText-root": {
+        display: "none",
+      },
     }}
   >
     <SimpleForm toolbar={<CustomToolbar />}>
