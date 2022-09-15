@@ -305,20 +305,6 @@ export const TheNavbar = () => {
 							}}
 						/>
 					)}
-					<OnBoardingStep3Modal
-						selectedOption={selectedOption}
-						locationTags={locationTags}
-						industryTags={industryTags}
-						show={true}
-						onClose={() => {
-							setOnBoardingStep(0);
-						}}
-						onNext={() => {
-							setOnBoardingStep(0);
-						}}
-						onBack={() => setOnBoardingStep(2)}
-						user={user}
-					/>
 					{onBoardingStep === 3 && (
 						<OnBoardingStep3Modal
 							selectedOption={selectedOption}
