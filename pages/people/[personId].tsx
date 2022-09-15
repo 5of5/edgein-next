@@ -131,12 +131,13 @@ const Person: NextPage<Props> = (props) => {
 			)} */}
 
 			{/* {person.team_members[0]?.company && (
-        <ElemCompaniesGrid
-          className="mt-12"
-          heading="Companies"
-          companies={[person.team_members[0]?.company]}
-        />
-      )} */}
+				<ElemCompaniesGrid
+				className="mt-12"
+				heading="Companies"
+				companies={[person.team_members[0]?.company]}
+				/>
+				)} 
+			*/}
 
 			{/* {person.vc.length > 0 && (
 				<ElemVcfirmsGrid
@@ -146,84 +147,83 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-			{/* {Object.keys(sortedInvestmentRounds).length > 0 && (
-        <div className="mt-16" id="investments">
-          <h2 className="text-2xl font-bold">Investments</h2>
+			{Object.keys(sortedInvestmentRounds).length > 0 && (
+				<div className="mt-16" id="investments">
+					<h2 className="text-2xl font-bold">Investments</h2>
 
-          <ElemTable
-            className="mt-3 w-full"
-            columns={[
-              { label: "Company" },
-              { label: "Round" },
-              { label: "Money Raised" },
-              { label: "Date" },
-            ]}
-          >
-            {sortedInvestmentRounds.map((theRound, index: number) => {
-              if (!theRound) {
-                return;
-              }
+					<ElemTable
+						className="mt-3 w-full"
+						columns={[
+							{ label: "Company" },
+							{ label: "Round" },
+							{ label: "Money Raised" },
+							{ label: "Date" },
+						]}
+					>
+						{sortedInvestmentRounds.map((theRound, index: number) => {
+							if (!theRound) {
+								return;
+							}
 
-              return (
-                <tr
-                  key={index}
-                  className={`${
-                    index % 2 === 0 ? "" : ""
-                  } flex flex-col flex-no wrap overflow-hidden md:table-row`}
-                >
-                  <ElemTableCell header="Company">
-                    {theRound.company ? (
-                      <Link
-                        href={`/companies/${theRound.company.slug}`}
-                        key={theRound.company.id}
-                      >
-                        <a className="investor flex items-center hover:opacity-70">
-                          <ElemPhoto
-                            photo={theRound.company.logo}
-                            wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
-                            imgClass="object-fit max-w-full max-h-full"
-                            imgAlt={theRound.company.name}
-                          />
-                          {theRound.company.name}
-                        </a>
-                      </Link>
-                    ) : (
-                      <>&mdash;</>
-                    )}
-                  </ElemTableCell>
+							return (
+								<tr
+									key={index}
+									className={`${index % 2 === 0 ? "" : ""
+										} flex flex-col flex-no wrap overflow-hidden md:table-row`}
+								>
+									<ElemTableCell header="Company">
+										{theRound.company ? (
+											<Link
+												href={`/companies/${theRound.company.slug}`}
+												key={theRound.company.id}
+											>
+												<a className="investor flex items-center hover:opacity-70">
+													<ElemPhoto
+														photo={theRound.company.logo}
+														wrapClass="flex items-center shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-2 bg-white shadow-md"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={theRound.company.name}
+													/>
+													{theRound.company.name}
+												</a>
+											</Link>
+										) : (
+											<>&mdash;</>
+										)}
+									</ElemTableCell>
 
-                  <ElemTableCell header="Round">
-                    {theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
-                  </ElemTableCell>
+									<ElemTableCell header="Round">
+										{theRound.round ? <>{theRound.round}</> : <>&mdash;</>}
+									</ElemTableCell>
 
-                  <ElemTableCell header="Money Raised">
-                    {theRound.amount ? (
-                      <>
-                        <span>$</span>
-                        {convertAmountRaised(theRound.amount)}
-                      </>
-                    ) : (
-                      <>&mdash;</>
-                    )}
-                  </ElemTableCell>
+									<ElemTableCell header="Money Raised">
+										{theRound.amount ? (
+											<>
+												<span>$</span>
+												{convertAmountRaised(theRound.amount)}
+											</>
+										) : (
+											<>&mdash;</>
+										)}
+									</ElemTableCell>
 
-                  <ElemTableCell header="Date">
-                    {theRound.round_date ? (
-                      formatDate(theRound.round_date, {
-                        month: "short",
-                        day: "2-digit",
-                        year: "numeric",
-                      })
-                    ) : (
-                      <>&mdash;</>
-                    )}
-                  </ElemTableCell>
-                </tr>
-              );
-            })}
-          </ElemTable>
-        </div>
-      )} */}
+									<ElemTableCell header="Date">
+										{theRound.round_date ? (
+											formatDate(theRound.round_date, {
+												month: "short",
+												day: "2-digit",
+												year: "numeric",
+											})
+										) : (
+											<>&mdash;</>
+										)}
+									</ElemTableCell>
+								</tr>
+							);
+						})}
+					</ElemTable>
+				</div>
+			)}
 		</div>
 	);
 };
