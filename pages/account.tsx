@@ -93,10 +93,10 @@ export default function Account() {
 	};
 
 	return (
-		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<div className="grid grid-cols-4 gap-4">
+		<div className="max-w-6xl mx-auto h-full relative px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
+			<div className="grid grid-cols-4 gap-4 h-full">
 				<DashboardLayout />
-				<div className="col-span-3">
+				<div className="col-span-3 mt-5">
 					<div className="bg-white rounded-lg p-5">
 						<div className="flex justify-between items-center mb-4">
 							<h2 className="text-dark-500 font-bold text-xl">

@@ -12,23 +12,27 @@ Learn more at [EdgeIn.io](http://edgein.io/)
 - Run `npm run docker:start`, this should build a local database and hasura engine
 - Run `npm run dev`, this will start next.js
 
-## Editting Graphql 
+## Editing Graphql
 
 - Make changes .graphql file (NOT TO EDIT types.ts)
 - Make sure a local instance of hasura is running
-- Run `npm run codegen` this will generate a 
+- Run `npm run codegen` this will generate a
 
 ## Migrations
+
 - Run `npm run hasura migrate apply`
 - Run `npm run hasura metadata apply`
 
 ## Creating Migrations
+
 - Run `npm run hasura console`
 - Use the hasura console to create the migration files
 
 ### Remove Hasura migrations
+
 This will update the `schema.sql` file to have all current migrations
 applied, and deletes them so that we don't reapply them.
+
 1. Create a "clean" Hasura instance locally:
 1. Dump the schemas and select Hasura metadata:
    ```
