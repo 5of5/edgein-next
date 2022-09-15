@@ -6,6 +6,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // check email exist in allowedEmail table or not
   const email = req.body.email;
+  const reference_id = req.body.reference_id;
   const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email)
 
   // when email does not exist in the allowed emails
@@ -40,8 +41,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(fetchRequest.status).send(errorResponse.description)
     }
     result = JSON.parse(await fetchRequest.text());
-    // upsert user info
-    await UserService.upsertUser(result);
+
+    let userData: any = await UserService.findOneUserByEmail(email);
+    if (!userData) {
+      let referenceUserId = null;
+      // check user exist or not for the current reference
+      if (reference_id) {
+        const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
+        if (referenceUser) referenceUserId = referenceUser.id
+      }
+
+      const objectData = {
+        email: result.email,
+        name: result.name,
+        _id: result._id, // get Id from sub
+        auth0_user_pass_id: result._id,
+        reference_user_id: referenceUserId
+      }
+      // upsert user info
+      userData = await UserService.upsertUser(objectData);
+    }
+    // update the linkedIn id in user
+    if (userData && !userData.auth0_user_pass_id) {
+      await UserService.updateAuth0UserPassId(result.email, result._id);
+    }
   } catch (ex: any) {
     return res.status(404).send(ex.message)
   }

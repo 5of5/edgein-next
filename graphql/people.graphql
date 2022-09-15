@@ -2,19 +2,35 @@ query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
     id
     name
-    slug
-    picture
-    type
     personal_email
+    picture
+    slug
+    status
+    type
     work_email
     linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    about
+    email
     team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      title
       company {
         id
         slug
         name
         logo
         overview
+        location
       }
     }
     investments {

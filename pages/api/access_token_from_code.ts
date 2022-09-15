@@ -17,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check email exist in allowedEmail table or not
   const code = req.body.code;
   const redirect_uri = req.body.redirect_uri;
+  const reference_id = req.body.reference_id;
   if (!code || !redirect_uri) return res.status(404).send('Invalid request');
 
   let isFirstLogin = false;
@@ -58,16 +59,37 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return res.status(404).send(`Invalid Email`)
       }
 
+      // check loggedin user and linkedin user email should be same
+      const userToken = CookieService.getAuthToken(req.cookies)
+      const loggedInUser = await CookieService.getUser(userToken);
+      if (loggedInUser && (loggedInUser.email !== userInfoInJson.email)) return res.status(404).send('Invalid Email');
+
       // get the user info from the user table
       let userData: any = await UserService.findOneUserByEmail(userInfoInJson.email);
       // create the user and return the response
+      const auth0SubInfo = userInfoInJson.sub.split('|');
+      const connectionType = auth0SubInfo[0];
+      const auth0Id = auth0SubInfo[1];
       if (!userData) {
-        const ObjectData = {
+        let referenceUserId = null;
+        // check user exist or not for the current reference
+        if (reference_id) {
+          const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
+          if (referenceUser) referenceUserId = referenceUser.id
+        }
+
+        const objectData = {
           email: userInfoInJson.email,
           name: userInfoInJson.name,
-          _id: userInfoInJson.sub.split('|').pop() // get Id from sub
+          _id: auth0SubInfo.pop(), // get Id from sub
+          auth0_linkedin_id: connectionType === 'linkedin' ? auth0Id : '',
+          reference_user_id: referenceUserId
         }
-        userData = await UserService.upsertUser(ObjectData);
+        userData = await UserService.upsertUser(objectData);
+      }
+      // update the linkedIn id in user
+      if (userData && !userData.auth0_linkedin_id && connectionType === 'linkedin') {
+        await UserService.updateAuth0LinkedInId(userInfoInJson.email, auth0SubInfo.pop());
       }
       // update the auth0_verified
       if (userData && !userData.is_auth0_verified) {
@@ -76,7 +98,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({id: userData.id, email: userData.email, role: userData.role, publicAddress: userData.external_id, isFirstLogin, display_name: userData.display_name, auth0_token: userTokenResult.access_token});
+      const token = await CookieService.createToken({
+        id: userData.id,
+        email: userData.email,
+        role: userData.role,
+        publicAddress: userData.external_id,
+        isFirstLogin,
+        display_name: userData.display_name,
+        auth0_linkedin_id: userData.auth0_linkedin_id,
+        auth0_user_pass_id: userData.auth0_user_pass_id,
+        profileName: userData.person?.name,
+        profilePicture: userData.person?.picture,
+        reference_id: userData.reference_id,
+        auth0_token: userTokenResult.access_token
+      });
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {
