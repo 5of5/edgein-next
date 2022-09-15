@@ -34,7 +34,7 @@ export const TheNavbar = () => {
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [linkedInError, setLinkedInError] = useState("");
-	const [inviteCode, setInviteCode] = useState('')
+	const [inviteCode, setInviteCode] = useState("");
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
@@ -109,8 +109,8 @@ export const TheNavbar = () => {
 
 	useEffect(() => {
 		if (router.query.invite && !user) {
-			setInviteCode(router.query.invite as string)
-			showSignUpModal('','')
+			setInviteCode(router.query.invite as string);
+			showSignUpModal("", "");
 		}
 	}, [router.query.invite, user]);
 
