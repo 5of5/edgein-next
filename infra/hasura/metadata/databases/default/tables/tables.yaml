@@ -19,6 +19,7 @@
 - "!include public_lists.yaml"
 - "!include public_people.yaml"
 - "!include public_team_members.yaml"
+- "!include public_tokens.yaml"
 - "!include public_users.yaml"
 - "!include public_vc_firms.yaml"
 - "!include public_waitlist_emails.yaml"
