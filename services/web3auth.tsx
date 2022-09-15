@@ -13,7 +13,7 @@ export interface IWeb3AuthContext {
   isLoading: boolean;
   chain: string;
   user: unknown;
-  login: (token: string) => Promise<void>;
+  login: (token: string) => string;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
   signMessage: () => Promise<any>;
@@ -29,7 +29,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   isLoading: false,
   chain: "",
   user: null,
-  login: async (token: string) => {},
+  login: (token: string) => {return ''},
   logout: async () => {},
   getUserInfo: async () => {},
   signMessage: async () => {},
@@ -59,7 +59,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
   const [provider, setProvider] = useState<IWalletProvider | null>(null);
   const [user, setUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const clientId = 'BHw8wzTrWD87CP4HwQHKx-visJIEshLLsCxZSU_oXMxOI27qO36al_wshW817Xs4kx6R-aDxY03aZO2sN4a_ujg';
+  const clientId = `${process.env.NEXT_PUBLIC_WEB3_CLIENT_ID}`;
 
   const setWalletProvider = useCallback((web3authProvider: SafeEventEmitterProvider) => {
     const walletProvider = getWalletProvider(chain, web3authProvider, uiConsole);
@@ -108,7 +108,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
               name: "clientResponse",
               verifier: "edgein",
               typeOfLogin: "jwt",
-              clientId: "GQJNcsXDPCbPFo2OGCc1p3sAmY6T0b8p",
+              clientId: `${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}`,
             },
           },
           } });
@@ -145,7 +145,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
               loginProvider: 'jwt',
               extraLoginOptions: {
                id_token: token,
-                domain: "https://dev-h9qh-dn9.us.auth0.com",
+                domain: `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}`,
                 verifierIdField: 'sub',
               },
             },

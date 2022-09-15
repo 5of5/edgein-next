@@ -95,6 +95,17 @@ export const TheNavbar = () => {
 			localStorage.setItem("isFirstLoadAfterLogin", "false")
 			const account = await login(user.auth0_token)
 			console.log("accounnt ==", account)
+			if(account){
+				const response = await fetch("/api/update_user_wallet/", {
+					method: "PUT",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ wallet_address : account }),
+				}).then(res => res.json());
+			}
+			
 		}
 	}
 
