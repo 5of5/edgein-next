@@ -52,12 +52,18 @@ export const TheNavbar = () => {
 	useEffect(() => {
 		if(!loading && user && afterLogin.current === 0){
 			afterLogin.current = afterLogin.current + 1;
-			login(user.auth0_token)
+			// login(user.auth0_token)
+			getWeb3()
 		}
-		// if(!loading && user && user.isFirstLogin){
-		// 	showOnBoarding()
-		// }
+		if(!loading && user && user.isFirstLogin){
+			showOnBoarding()
+		}
 	}, [loading,user])
+
+	const getWeb3 = async() => {
+		const account = await login(user.auth0_token)
+		console.log("account==",account)
+	}
 
 	const siteNav = [
 		{
@@ -90,11 +96,6 @@ export const TheNavbar = () => {
         } catch (e) {
             console.log(e);
         }
-	}
-
-	const onWeb3Login = () => {
-		console.log("login called =", user.auth0_token)
-		login(user.auth0_token)
 	}
 
 	useEffect(() => {
@@ -254,7 +255,7 @@ export const TheNavbar = () => {
 					{/* </nav>
 				</div>
 			</header> */}
-					<LoginModal onWeb3Login={onWeb3Login} onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
+					<LoginModal onSignUp={showSignUpModal} onForgotPassword={() => setShowForgotPasswordPopup(true)} show={showLoginPopup} onClose={onModalClose} />
 					<SignUpModal passwordFromLogin={passwordFromLogin} emailFromLogin={emailFromLogin} onLogin={showLoginModal} show={showSignUp} onClose={onModalClose} />
 					<ForgotPasswordModal show={showForgotPasswordPopup} onClose={onModalClose} onBack={onBackFromForgotPassword} />
 					{/* </>
