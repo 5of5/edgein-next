@@ -186,9 +186,9 @@ export const PeopleList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -201,7 +201,7 @@ export const PeopleList = () => {
         <TextField source="work_email" />
         <TextField source="linkedin" />
         <TextField source="status" />
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );
@@ -235,7 +235,7 @@ export const PeopleEdit = () => {
 
   const [isError, setIsError] = useState(false);
   const [filterData, setFilterData] = useState<any>([]);
-  const [isIcon, setIsIcon] = useState(false);
+  const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
 
   const { data: people } = useGetList("people", {});

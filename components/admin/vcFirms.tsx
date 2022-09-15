@@ -153,9 +153,9 @@ export const VcFirmList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -182,7 +182,7 @@ export const VcFirmList = () => {
           source="tags"
           render={(record: any) => (record.tags ? record.tags.join() : "")}
         />
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );
@@ -205,7 +205,7 @@ export const VcFirmEdit = () => {
   const formRef = useRef<any>(null);
   const { height } = useWindowDimensions();
   const [formHeight, setFormHeight] = useState(0);
-  const [isIcon, setIsIcon] = useState(false);
+  const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
 
   useEffect(() => {

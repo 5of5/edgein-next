@@ -139,9 +139,9 @@ export const CoinsList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -154,7 +154,7 @@ export const CoinsList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );
@@ -169,7 +169,7 @@ const CoinsTitle = ({ record }: TitleProps) => {
 };
 
 export const CoinsEdit = () => {
-  const [isIcon, setIsIcon] = useState(false);
+  const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
 
   const handleIcon = (e: any) => {

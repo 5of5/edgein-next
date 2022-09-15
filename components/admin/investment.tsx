@@ -26,7 +26,7 @@ import { status } from "../../utils/constants";
 import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
-  //<TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
+  <TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
   <ReferenceInput key="searchPeople" source="person_id" reference="people">
     <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,
@@ -142,9 +142,9 @@ export const InvestmentsList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -166,7 +166,7 @@ export const InvestmentsList = () => {
           <TextField source="name" />
         </ReferenceField>
         <TextField source="status" />
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );

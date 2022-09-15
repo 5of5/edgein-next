@@ -150,9 +150,9 @@ export const TeamMembersList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -172,7 +172,7 @@ export const TeamMembersList = () => {
         <BooleanField source="founder" />
         <SelectField source="seniority" choices={seniorityChoicesTM} />
         <TextField source="title" />
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );

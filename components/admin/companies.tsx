@@ -185,9 +185,9 @@ export const CompanyList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -241,7 +241,7 @@ export const CompanyList = () => {
           source="tags"
           render={(record: any) => (record.tags ? record.tags.join() : "")}
         />
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );
@@ -261,7 +261,7 @@ export const CompanyEdit = () => {
   const { data: companies } = useGetList("companies", {});
   const [slug, setSlug] = React.useState("");
   const formRef = useRef<any>(null);
-  const [isIcon, setIsIcon] = useState(false);
+  const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
 
   const transform = async (data: any) => {

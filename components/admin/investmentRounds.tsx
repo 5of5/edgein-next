@@ -154,9 +154,9 @@ export const InvestmentRoundsList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -173,7 +173,7 @@ export const InvestmentRoundsList = () => {
         <SelectField source="currency" choices={currencyChoices} />
         <NumberField source="valuation" />
         <TextField source="status" />
-        <TextField source="counter" />
+        {/* <TextField source="counter" /> */}
       </Datagrid>
     </List>
   );
