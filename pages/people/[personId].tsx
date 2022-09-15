@@ -1,14 +1,12 @@
 import React, { MutableRefObject, useRef } from "react";
 import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
-import { ElemPhoto } from "../../components/ElemPhoto";
-import { ElemKeyInfo } from "../../components/ElemKeyInfo";
-import { ElemCompaniesGrid } from "../../components/Person/ElemCompaniesGrid";
-import { ElemVcfirmsGrid } from "../../components/Person/ElemVcfirmsGrid";
-import { ElemTable } from "../../components/ElemTable";
-import { ElemTableCell } from "../../components/ElemTableCell";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemKeyInfo } from "@/components/ElemKeyInfo";
+// import { ElemCompaniesGrid } from "../../components/Person/ElemCompaniesGrid";
+// import { ElemVcfirmsGrid } from "../../components/Person/ElemVcfirmsGrid";
+// import { ElemTable } from "../../components/ElemTable";
+// import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import {
 	runGraphQl,
@@ -23,7 +21,7 @@ import {
 	Investment_Rounds,
 	People,
 } from "../../graphql/types";
-import { ElemJobsGrid } from "@/components/Person/ElemJobsGrid";
+import { ElemJobsList } from "@/components/Person/ElemJobsList";
 
 type Props = {
 	person: People;
@@ -58,38 +56,38 @@ const Person: NextPage<Props> = (props) => {
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 
 	return (
-		<div className="max-w-7xl mx-auto px-4 sm:px-6">
+		<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 			{/* <div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 				Back
 				</ElemButton>
 				</div> */}
 
-			<div className="flex-col sm:grid sm:grid-cols-4 gap-5 my-5">
-				<div className="col-span-1">
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+				<div className="col-span-3">
 					<ElemPhoto
 						photo={person.picture}
-						wrapClass="flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden p-4"
-						imgClass="object-fit min-w-full min-h-full"
+						wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
+						imgClass="object-contain w-full h-full"
 						imgAlt={person.name}
 					/>
 				</div>
-
-				<div className="col-span-3 flex min-h-full p-0 mt-7 lg:mt-0">
-					<div className="flex flex-col justify-center">
-						<div className="flex w-full items-center">
-							<span className="text-4xl md:text-6xl font-bold">
-								{person.name}
-							</span>
-							<span className="block ml-1 mt-5">
+				<div className="w-full col-span-5 mt-7 lg:mt-0">
+					<div className="flex shrink-0">
+						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
+							{person.name}
+						</h1>
+						{person.type && (
+							<div className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap text-lg">
 								{removeSpecialCharacterFromString(person.type as string)}
-							</span>
-						</div>
-
-						<div className="flex p-1 max-w-[700px] text-slate-600 text-sm">
-							{person.about}
-						</div>
+							</div>
+						)}
 					</div>
+					{person.about && (
+						<p className="mt-4 line-clamp-3 text-base text-slate-600">
+							{person.about}
+						</p>
+					)}
 				</div>
 			</div>
 
@@ -115,7 +113,7 @@ const Person: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="col-span-8">
-					<ElemJobsGrid team_members={person.team_members} />
+					<ElemJobsList heading="Jobs" team_members={person.team_members} />
 				</div>
 			</div>
 
