@@ -21,7 +21,6 @@ import { useWeb3Auth } from "../services/web3auth";
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
-	const afterLogin = useRef(0)
 	 const { provider, login, logout, getUserInfo, getAccounts, getBalance, signMessage, signTransaction, signAndSendTransaction, web3Auth, chain } = useWeb3Auth();
 
 	const [showLoginPopup, setShowLoginPopup] = useState(false)
@@ -50,20 +49,13 @@ export const TheNavbar = () => {
 	}
 
 	useEffect(() => {
-		if(!loading && user && afterLogin.current === 0){
-			afterLogin.current = afterLogin.current + 1;
-			// login(user.auth0_token)
-			getWeb3()
+		if(!loading && user){
+			onWeb3Login()
 		}
 		if(!loading && user && user.isFirstLogin){
 			showOnBoarding()
 		}
 	}, [loading,user])
-
-	const getWeb3 = async() => {
-		const account = await login(user.auth0_token)
-		console.log("account==",account)
-	}
 
 	const siteNav = [
 		{
@@ -90,21 +82,30 @@ export const TheNavbar = () => {
                 },
                 body: JSON.stringify({ code, redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL }),
 			}).then(res => res.json());
-			// afterLogin.current = afterLogin.current + 1;
-			//onWeb3Login()
-           	window.location.href = "/";
+		
+        	window.location.href = "/";
         } catch (e) {
             console.log(e);
         }
 	}
 
+	const onWeb3Login = async() => {
+		const isFirstLoadAfterLogin = await localStorage.getItem("isFirstLoadAfterLogin")
+		if(!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true"){
+			localStorage.setItem("isFirstLoadAfterLogin", "false")
+			const account = await login(user.auth0_token)
+			console.log("accounnt ==", account)
+		}
+	}
+
 	useEffect(() => {
 		if (router.query.code) {
-			(async () => {
-				//setFinishingLogin(true);
-				const res = await getAccessTokenFromCode(router.query.code as string);
+			getAccessTokenFromCode(router.query.code as string);
+			// (async () => {
+			// 	//setFinishingLogin(true);
+			// 	const res = await getAccessTokenFromCode(router.query.code as string);
 				
-			})();
+			// })();
 		}
 	}, [router.query.code])
 

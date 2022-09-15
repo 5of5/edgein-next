@@ -60,7 +60,6 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
   const [user, setUser] = useState<unknown | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const clientId = 'BHw8wzTrWD87CP4HwQHKx-visJIEshLLsCxZSU_oXMxOI27qO36al_wshW817Xs4kx6R-aDxY03aZO2sN4a_ujg';
-  // const clientId = "BKPxkCtfC9gZ5dj-eg-W6yb5Xfr3XkxHuGZl2o2Bn8gKQ7UYike9Dh6c-_LaXlUN77x0cBoPwcSx-IVm0llVsLA";
 
   const setWalletProvider = useCallback((web3authProvider: SafeEventEmitterProvider) => {
     const walletProvider = getWalletProvider(chain, web3authProvider, uiConsole);
@@ -74,11 +73,6 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
         setWeb3Auth(web3auth1)
         console.log("Yeah!, you are successfully logged in", data);
         setUser(data);
-        // setWalletProvider(web3auth1.provider!);
-        //getUserInfo();
-        // getAccounts(getWalletProvider(chain, web3auth1.provider!, uiConsole))
-        // getAccounts()
-       
       });
   
       web3auth1.on(ADAPTER_EVENTS.CONNECTING, () => {
@@ -156,7 +150,6 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
               },
             },
           )
-            console.log("localProvider =", localProvider)
             setWalletProvider(localProvider!);
             return await getAccount(localProvider)
         }catch(err){
@@ -194,12 +187,10 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
       uiConsole("provider not initialized yet");
       return;
     }
-    const accounts =  await provider.getAccounts();
-    console.log("web3auth accounts ==", accounts);
-    return accounts ? accounts[0] : ''
+    await provider.getAccounts();
   };
 
-  const getAccount = async (provider) => {
+  const getAccount = async(provider: any) => {
     if (!provider) {
       console.log("provider not initialized yet");
       uiConsole("provider not initialized yet");
