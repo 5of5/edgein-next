@@ -83,7 +83,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 			<ElemButton
 				onClick={onSaveButton}
 				roundedFull={true}
-				className="border border-black/10 hover:bg-slate-100 px-2"
+				className="px-2 ring-1 ring-black/10 ring-inset hover:ring-2 hover:ring-primary-500  hover:text-primary-500"
 			>
 				<IconSaveToList className="w-5 h-5 mr-1" />
 				Save
