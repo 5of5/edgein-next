@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 import Link from "next/link";
 import { ElemLogo } from "./ElemLogo";
@@ -51,12 +51,32 @@ export const TheNavbar = () => {
 		}
 	};
 
-	useEffect(() => {
-		if(!loading && user){
-			onWeb3Login()
+	const onWeb3Login = async() => {
+		const isFirstLoadAfterLogin = await localStorage.getItem("isFirstLoadAfterLogin")
+		if(!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true"){
+			localStorage.setItem("isFirstLoadAfterLogin", "false")
+			const account = await login(user.auth0_token)
+			if(account){
+				await fetch("/api/update_user_wallet/", {
+					method: "PUT",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ wallet_address : account }),
+				});//.then(res => res.json());
+			}
+			
 		}
+	}
+
+	useEffect(() => {
+		
 		if(!loading && user && user.isFirstLogin){
 			showOnBoarding()
+		}
+		if(!loading && user){
+			onWeb3Login();
 		}
 	}, [loading, user]);
 
@@ -103,33 +123,16 @@ export const TheNavbar = () => {
 		}
 	};
 
-	const onWeb3Login = async() => {
-		const isFirstLoadAfterLogin = await localStorage.getItem("isFirstLoadAfterLogin")
-		if(!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true"){
-			localStorage.setItem("isFirstLoadAfterLogin", "false")
-			const account = await login(user.auth0_token)
-			if(account){
-				const response = await fetch("/api/update_user_wallet/", {
-					method: "PUT",
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ wallet_address : account }),
-				}).then(res => res.json());
-			}
-			
-		}
-	}
+	
 
 	useEffect(() => {
 		if (router.query.code) {
-			getAccessTokenFromCode(router.query.code as string);
-			// (async () => {
-			// 	//setFinishingLogin(true);
-			// 	const res = await getAccessTokenFromCode(router.query.code as string);
+			// getAccessTokenFromCode(router.query.code as string);
+			(async () => {
+				//setFinishingLogin(true);
+				const res = await getAccessTokenFromCode(router.query.code as string);
 				
-			// })();
+			})();
 		}
 	}, [router.query.code]);
 

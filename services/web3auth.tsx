@@ -13,7 +13,7 @@ export interface IWeb3AuthContext {
   isLoading: boolean;
   chain: string;
   user: unknown;
-  login: (token: string) => string;
+  login: (token: string) => Promise<string|undefined>;
   logout: () => Promise<void>;
   getUserInfo: () => Promise<any>;
   signMessage: () => Promise<any>;
@@ -29,7 +29,7 @@ export const Web3AuthContext = createContext<IWeb3AuthContext>({
   isLoading: false,
   chain: "",
   user: null,
-  login: (token: string) => {return ''},
+  login: async (token: string) => {return ''},
   logout: async () => {},
   getUserInfo: async () => {},
   signMessage: async () => {},
@@ -61,10 +61,11 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
   const [isLoading, setIsLoading] = useState(false);
   const clientId = `${process.env.NEXT_PUBLIC_WEB3_CLIENT_ID}`;
 
-  const setWalletProvider = useCallback((web3authProvider: SafeEventEmitterProvider) => {
+  const setWalletProvider = //useCallback(
+    (web3authProvider: SafeEventEmitterProvider) => {
     const walletProvider = getWalletProvider(chain, web3authProvider, uiConsole);
     setProvider(walletProvider);
-  },[chain, web3AuthNetwork])
+  };//,[chain, web3AuthNetwork])
 
   const initialise = () => {
     const subscribeAuthEvents = (web3auth1: Web3Auth) => {
@@ -127,7 +128,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
 
   useEffect(() => {
     initialise()
-  }, [chain, web3AuthNetwork, setWalletProvider]);
+  }, [chain, web3AuthNetwork]);
 
   const login = async (token: string) => {
     if (!web3Auth) {
@@ -156,7 +157,7 @@ export const Web3AuthProvider: FunctionComponent<IWeb3AuthState> = ({ children, 
           console.log("connectTo error =", err)
         }
       }
-      return ''
+     return ''
   };
 
   const logout = async () => {
