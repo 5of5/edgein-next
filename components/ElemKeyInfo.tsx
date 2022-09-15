@@ -19,6 +19,7 @@ import {
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
+	removeSpecialCharacterFromString,
 } from "../utils";
 
 type Props = {
@@ -144,8 +145,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 				{roles && roles.length > 0 && (
 					<div className="flex flex-1 space-x-2 py-1 hover:bg-gray-200 rounded-md">
-						<IconRole title="Role" className="h-6 w-6 mt-1 ml-2 mr-1 text-slate-600" />
-						<div className="hover:text-primary-500 p-1">{roles}</div>
+						<IconRole title="Role" className="h-6 w-6 mt-1 ml-2 text-slate-600" />
+						<div className="hover:text-primary-500 p-1 pl-0">{removeSpecialCharacterFromString(roles as string)}</div>
 					</div>
 				)}
 
@@ -181,8 +182,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
 										{_email}
 									</span>
 									{/* // <Link key={i} href={`mailto:${email}`}>
-                      // 	<a className=">{email}</a>
-                      // </Link>, */}
+                      					// 	<a className=">{email}</a>
+                      					// </Link>, */}
 								</div>
 							</div>
 						</div>

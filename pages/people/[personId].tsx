@@ -60,10 +60,10 @@ const Person: NextPage<Props> = (props) => {
 	return (
 		<div className="max-w-7xl mx-auto px-4 sm:px-6">
 			{/* <div onClick={goBack}>
-        <ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
-          Back
-        </ElemButton>
-      </div> */}
+				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
+				Back
+				</ElemButton>
+				</div> */}
 
 			<div className="flex-col sm:grid sm:grid-cols-4 gap-5 my-5">
 				<div className="col-span-1">
@@ -86,11 +86,8 @@ const Person: NextPage<Props> = (props) => {
 							</span>
 						</div>
 
-						{/* To do  */}
 						<div className="flex p-1 max-w-[700px] text-slate-600 text-sm">
-							Bram Cohen is an American computer programmer, best known as the
-							author of the peer-to-peer BitTorrent protocol in 2001, as well as
-							the first file sharing program to use the protocol, also known as
+							{person.about}
 						</div>
 					</div>
 				</div>
@@ -107,18 +104,18 @@ const Person: NextPage<Props> = (props) => {
 					<ElemKeyInfo
 						className="sticky top-4"
 						heading="Key Info"
-						// roles={person.type}
-						linkedIn={"linkedin"}
-						// investmentsLength={person.investments?.length}
-						emails={["email@gmail.com", "email2@gmail.com"]}
-						github={"github"}
-						twitter={"twitter"}
-						location={"location"}
-						website={"https://google.com"}
+						roles={person.type}
+						linkedIn={person.linkedin}
+						investmentsLength={person.investments?.length}
+						emails={personEmails}
+						github={person.github}
+						twitter={person.twitter_url}
+						location={person.city}
+						website={person.website_url}
 					/>
 				</div>
 				<div className="col-span-8">
-					<ElemJobsGrid />
+					<ElemJobsGrid team_members={person.team_members} />
 				</div>
 			</div>
 
@@ -147,7 +144,7 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-			{Object.keys(sortedInvestmentRounds).length > 0 && (
+			{/* {Object.keys(sortedInvestmentRounds).length > 0 && (
 				<div className="mt-16" id="investments">
 					<h2 className="text-2xl font-bold">Investments</h2>
 
@@ -223,7 +220,7 @@ const Person: NextPage<Props> = (props) => {
 						})}
 					</ElemTable>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };
