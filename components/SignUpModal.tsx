@@ -13,6 +13,7 @@ type Props = {
 	emailFromLogin: string;
 	onLogin: () => void;
 	onClose: () => void;
+	inviteCode: string;
 };
 
 export default function SignUpModal(props: Props) {
@@ -108,7 +109,7 @@ export default function SignUpModal(props: Props) {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ email, password, name }),
+				body: JSON.stringify({ email, password, name, reference_id:props.inviteCode }),
 			});
 			if (response.status === 200) {
 				setIsRegistered(true);
