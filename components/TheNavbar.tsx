@@ -22,7 +22,7 @@ import { useWeb3Auth } from "../services/web3auth";
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
-	 const { provider, login, logout, getUserInfo, getAccounts, getBalance, signMessage, signTransaction, signAndSendTransaction, web3Auth, chain } = useWeb3Auth();
+	 const {login } = useWeb3Auth();
 
 	const [showLoginPopup, setShowLoginPopup] = useState(false);
 	const [showSignUp, setShowSignUp] = useState(false);
@@ -108,7 +108,6 @@ export const TheNavbar = () => {
 		if(!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true"){
 			localStorage.setItem("isFirstLoadAfterLogin", "false")
 			const account = await login(user.auth0_token)
-			console.log("accounnt ==", account)
 			if(account){
 				const response = await fetch("/api/update_user_wallet/", {
 					method: "PUT",
