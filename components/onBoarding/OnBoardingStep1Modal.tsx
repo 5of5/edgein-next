@@ -1,8 +1,6 @@
-import Modal from "react-modal";
 import React, { useState, Fragment } from "react";
 import { ElemButton } from "../ElemButton";
 import { IconFindCompanies, IconFindInvestors } from "../Icons";
-
 import { Dialog, Transition } from "@headlessui/react";
 
 type Props = {

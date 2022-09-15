@@ -8,15 +8,15 @@ type ReactionType = {
 	pathname: string;
 };
 
-type Resourceype = {
+type ResourceType = {
 	company?: number;
 	vcfirm?: number;
 	pathname: string;
 };
 
 type MultipleListResourceType = {
-	companies?: [Resourceype];
-	vcfirms?: [Resourceype];
+	companies?: [ResourceType];
+	vcfirms?: [ResourceType];
 	sentiment: string;
 };
 
@@ -52,9 +52,9 @@ export const getNewFollows = (sentiment: string, type: string = "company") => {
 };
 
 export const getName = (list: Lists) => {
-  if (!list) return ''
-  const fragments = list.name.split('-')
-  return fragments[fragments.length - 1]
+	if (!list) return "";
+	const fragments = list.name.split("-");
+	return fragments[fragments.length - 1];
 };
 
 export const isFollowsExists = (
@@ -88,7 +88,9 @@ export const getNewTempSentiment = (
 	return newSentiment;
 };
 
-export const createListWithMultipleResourses = async (payload : MultipleListResourceType) => {
+export const createListWithMultipleResources = async (
+	payload: MultipleListResourceType
+) => {
 	const resp = await fetch("/api/multiple_resources_to_list/", {
 		method: "POST",
 		headers: {
