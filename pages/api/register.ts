@@ -1,4 +1,5 @@
 import UserService from '../../utils/users'
+import auth0Library from '../../utils/auth0Library'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -15,6 +16,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await UserService.mutateForWaitlistEmail(email)
     return res.status(404).send(`Invalid Email`)
   }
+
+  let isUserPassPrimaryAccount = false;
+  let isLinkedInPrimaryAccount = true;
 
   const data = JSON.stringify({
     client_id: process.env.AUTH0_CLIENT_ID,
@@ -44,6 +48,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     let userData: any = await UserService.findOneUserByEmail(email);
     if (!userData) {
+      isUserPassPrimaryAccount = true;
+      isLinkedInPrimaryAccount = false;
       let referenceUserId = null;
       // check user exist or not for the current reference
       if (reference_id) {
@@ -63,7 +69,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     // update the linkedIn id in user
     if (userData && !userData.auth0_user_pass_id) {
-      await UserService.updateAuth0UserPassId(result.email, result._id);
+      isLinkedInPrimaryAccount = true;
+      isUserPassPrimaryAccount = false;
+      userData = await UserService.updateAuth0UserPassId(result.email, result._id);
+    }
+
+    if (userData && userData.auth0_linkedin_id && userData.auth0_user_pass_id) {
+      let primaryId = '';
+      let secondayProvider = '';
+      let secondayId = '';
+      if (isUserPassPrimaryAccount) {
+        primaryId = `auth0|${userData.auth0_user_pass_id}`;
+        secondayProvider = 'linkedin'
+        secondayId = `linkedin|${userData.auth0_linkedin_id}`
+      }
+      if (isLinkedInPrimaryAccount) {
+        primaryId = `linkedin|${userData.auth0_linkedin_id}`;
+        secondayProvider = 'auth0'
+        secondayId = `auth0|${userData.auth0_user_pass_id}`
+      }
+      if (primaryId !== '' && secondayId !== '') {
+        await auth0Library.linkTwoAccount(primaryId, secondayId, secondayProvider);
+      }
     }
   } catch (ex: any) {
     return res.status(404).send(ex.message)
