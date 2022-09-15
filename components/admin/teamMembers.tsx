@@ -163,7 +163,7 @@ export const TeamMembersList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
-        <ReferenceField label="Perons" source="person_id" reference="people">
+        <ReferenceField label="Person" source="person_id" reference="people">
           <TextField source="name" />
         </ReferenceField>
         <SelectField source="function" choices={functionChoicesTM} />

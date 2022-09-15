@@ -48,7 +48,7 @@ export function RenderCBIcon({ topPos, leftPos, googleKeyWord }: any) {
     <div style={{ position: "absolute", top: topPos, left: leftPos }}>
       <a href={url} target="_blank" rel="noreferrer">
         <img
-          className="w-[25px] h-[25px]"
+          className="crunchbase-icon"
           src={crunchbaseImg}
           alt={crunchbaseImg}
         />
