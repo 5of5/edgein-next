@@ -144,7 +144,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 				{roles && roles.length > 0 && (
 					<div className="flex space-x-2 py-1">
-						<IconRole title="Role" className="h-6 w-6 mr-1 text-primary-500" />
+						<IconRole title="Role" className="h-6 w-6" />
 						<div>{roles}</div>
 					</div>
 				)}
