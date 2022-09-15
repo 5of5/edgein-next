@@ -11,118 +11,118 @@ import { ElemTable } from "../../components/ElemTable";
 import { ElemTableCell } from "../../components/ElemTableCell";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import {
-   runGraphQl,
-   formatDate,
-   convertToInternationalCurrencySystem,
-   removeSpecialCharacterFromString,
+	runGraphQl,
+	formatDate,
+	convertToInternationalCurrencySystem,
+	removeSpecialCharacterFromString,
 } from "../../utils";
 import {
-   GetCompaniesQuery,
-   GetPersonDocument,
-   GetPersonQuery,
-   Investment_Rounds,
-   People,
+	GetCompaniesQuery,
+	GetPersonDocument,
+	GetPersonQuery,
+	Investment_Rounds,
+	People,
 } from "../../graphql/types";
 import { ElemJobsGrid } from "@/components/Person/ElemJobsGrid";
 
 type Props = {
-   person: People;
-   sortByDateAscInvestments: Investment_Rounds[];
+	person: People;
+	sortByDateAscInvestments: Investment_Rounds[];
 };
 
 const Person: NextPage<Props> = (props) => {
-   const router = useRouter();
-   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const router = useRouter();
+	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-   const goBack = () => router.back();
+	const goBack = () => router.back();
 
-   const person = props.person;
+	const person = props.person;
 
-   if (!person) {
-      return <h1>Not Found</h1>;
-   }
+	if (!person) {
+		return <h1>Not Found</h1>;
+	}
 
-   const sortedInvestmentRounds = props.sortByDateAscInvestments;
+	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
-   let personEmails: string[] = [];
+	let personEmails: string[] = [];
 
-   if (person.work_email) {
-      personEmails.push(person.work_email);
-   }
+	if (person.work_email) {
+		personEmails.push(person.work_email);
+	}
 
-   if (person.personal_email) {
-      personEmails.push(person.personal_email);
-   }
+	if (person.personal_email) {
+		personEmails.push(person.personal_email);
+	}
 
-   // Tabs
-   const tabBarItems = [{ name: "Overview", ref: overviewRef }];
+	// Tabs
+	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 
-   return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-         {/* <div onClick={goBack}>
+	return (
+		<div className="max-w-7xl mx-auto px-4 sm:px-6">
+			{/* <div onClick={goBack}>
         <ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
           Back
         </ElemButton>
       </div> */}
 
-         <div className="flex-col sm:grid sm:grid-cols-4 gap-5 my-5">
-            <div className="col-span-1">
-               <ElemPhoto
-                  photo={person.picture}
-                  wrapClass="flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden p-4"
-                  imgClass="object-fit min-w-full min-h-full"
-                  imgAlt={person.name}
-               />
-            </div>
+			<div className="flex-col sm:grid sm:grid-cols-4 gap-5 my-5">
+				<div className="col-span-1">
+					<ElemPhoto
+						photo={person.picture}
+						wrapClass="flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden p-4"
+						imgClass="object-fit min-w-full min-h-full"
+						imgAlt={person.name}
+					/>
+				</div>
 
-            <div className="col-span-3 flex min-h-full p-0 mt-7 lg:mt-0">
-               <div className="flex flex-col justify-center">
-                  <div className="flex w-full items-center">
-                     <span className="text-4xl md:text-6xl font-bold">
-                        {person.name}
-                     </span>
-                     <span className="block ml-1 mt-5">
-                        {removeSpecialCharacterFromString(person.type as string)}
-                     </span>
-                  </div>
+				<div className="col-span-3 flex min-h-full p-0 mt-7 lg:mt-0">
+					<div className="flex flex-col justify-center">
+						<div className="flex w-full items-center">
+							<span className="text-4xl md:text-6xl font-bold">
+								{person.name}
+							</span>
+							<span className="block ml-1 mt-5">
+								{removeSpecialCharacterFromString(person.type as string)}
+							</span>
+						</div>
 
-                  {/* To do  */}
-                  <div className="flex p-1 max-w-[700px] text-slate-600 text-sm">
-                     Bram Cohen is an American computer programmer, best known as the
-                     author of the peer-to-peer BitTorrent protocol in 2001, as well as
-                     the first file sharing program to use the protocol, also known as
-                  </div>
-               </div>
-            </div>
-         </div>
+						{/* To do  */}
+						<div className="flex p-1 max-w-[700px] text-slate-600 text-sm">
+							Bram Cohen is an American computer programmer, best known as the
+							author of the peer-to-peer BitTorrent protocol in 2001, as well as
+							the first file sharing program to use the protocol, also known as
+						</div>
+					</div>
+				</div>
+			</div>
 
-         <ElemTabBar className="mt-7" tabs={tabBarItems} />
+			<ElemTabBar className="mt-7" tabs={tabBarItems} />
 
-         <div
-            className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
-            ref={overviewRef}
-            id="overview"
-         >
-            <div className="col-span-3">
-               <ElemKeyInfo
-                  className="sticky top-4"
-                  heading="Key Info"
-                  // roles={person.type}
-                  linkedIn={"linkedin"}
-                  // investmentsLength={person.investments?.length}
-                  emails={["email@gmail.com", "email2@gmail.com"]}
-                  github={"github"}
-                  twitter={"twitter"}
-                  location={"location"}
-                  website={"https://google.com"}
-               />
-            </div>
-            <div className="col-span-8">
-               <ElemJobsGrid />
-            </div>
-         </div>
+			<div
+				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+				ref={overviewRef}
+				id="overview"
+			>
+				<div className="col-span-3">
+					<ElemKeyInfo
+						className="sticky top-4"
+						heading="Key Info"
+						// roles={person.type}
+						linkedIn={"linkedin"}
+						// investmentsLength={person.investments?.length}
+						emails={["email@gmail.com", "email2@gmail.com"]}
+						github={"github"}
+						twitter={"twitter"}
+						location={"location"}
+						website={"https://google.com"}
+					/>
+				</div>
+				<div className="col-span-8">
+					<ElemJobsGrid />
+				</div>
+			</div>
 
-         {/* {person.companies?.length > 0 && (
+			{/* {person.companies?.length > 0 && (
 				<ElemCompaniesGrid
 					className="mt-12"
 					heading="Companies"
@@ -130,7 +130,7 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-         {/* {person.team_members[0]?.company && (
+			{/* {person.team_members[0]?.company && (
         <ElemCompaniesGrid
           className="mt-12"
           heading="Companies"
@@ -138,7 +138,7 @@ const Person: NextPage<Props> = (props) => {
         />
       )} */}
 
-         {/* {person.vc.length > 0 && (
+			{/* {person.vc.length > 0 && (
 				<ElemVcfirmsGrid
 					className="mt-12"
 					heading="VC Firms"
@@ -146,7 +146,7 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-         {/* {Object.keys(sortedInvestmentRounds).length > 0 && (
+			{/* {Object.keys(sortedInvestmentRounds).length > 0 && (
         <div className="mt-16" id="investments">
           <h2 className="text-2xl font-bold">Investments</h2>
 
@@ -224,8 +224,8 @@ const Person: NextPage<Props> = (props) => {
           </ElemTable>
         </div>
       )} */}
-      </div>
-   );
+		</div>
+	);
 };
 
 // export async function getStaticPaths() {
@@ -250,45 +250,45 @@ const Person: NextPage<Props> = (props) => {
 // }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-   const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {
-      slug: context.params?.personId,
-   });
+	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {
+		slug: context.params?.personId,
+	});
 
-   if (!people?.people?.[0]) {
-      return {
-         notFound: true,
-      };
-   }
+	if (!people?.people?.[0]) {
+		return {
+			notFound: true,
+		};
+	}
 
-   const getInvestments = people.people[0].investments.map((round) => {
-      if (typeof round.investment_round === "object") {
-         return round.investment_round;
-      } else {
-         return null;
-      }
-   });
+	const getInvestments = people.people[0].investments.map((round) => {
+		if (typeof round.investment_round === "object") {
+			return round.investment_round;
+		} else {
+			return null;
+		}
+	});
 
-   const sortByDateAscInvestments = getInvestments
-      .slice()
-      .sort((a, b) => {
-         const distantFuture = new Date(8640000000000000);
+	const sortByDateAscInvestments = getInvestments
+		.slice()
+		.sort((a, b) => {
+			const distantFuture = new Date(8640000000000000);
 
-         let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
-         let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
-         return dateA.getTime() - dateB.getTime();
-      })
-      .reverse();
+			let dateA = a?.round_date ? new Date(a.round_date) : distantFuture;
+			let dateB = b?.round_date ? new Date(b.round_date) : distantFuture;
+			return dateA.getTime() - dateB.getTime();
+		})
+		.reverse();
 
-   return {
-      props: {
-         person: people.people[0],
-         sortByDateAscInvestments,
-      },
-   };
+	return {
+		props: {
+			person: people.people[0],
+			sortByDateAscInvestments,
+		},
+	};
 };
 
 export default Person;
 
 function convertAmountRaised(theAmount: number) {
-   return convertToInternationalCurrencySystem(theAmount);
+	return convertToInternationalCurrencySystem(theAmount);
 }
