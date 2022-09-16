@@ -109,7 +109,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
             className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 w-60 bg-slate-200 rounded-lg`}
             role="button"
           >
-            <Link href="">
+            <Link href="/organization">
               <a className="inline-flex items-center">
 
                 <IconOrganization className="mr-2" /><span>Manage Organization</span>
