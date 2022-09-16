@@ -18,8 +18,7 @@ const VerifyWorkplace: FC<Props> = ({ }) => {
   const router = useRouter()
 
   useEffect(() => {
-
-
+    verifyToken()
   }, [])
 
   const verifyToken = async () => {

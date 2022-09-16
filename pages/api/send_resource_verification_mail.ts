@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType, personId)
 
-  const url = `${process.env.SITE_URL}verify_workplace?token=${verifyWorkToken}`
+  const url = `${process.env.SITE_URL}verify-workplace?token=${verifyWorkToken}`
 
   await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id, token)
 
