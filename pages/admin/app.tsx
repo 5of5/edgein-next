@@ -65,8 +65,7 @@ const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(
     null
   );
-  const [loggedUser, setLoggedUser] = useState(null);
-  const { user, error, loading } = useAuth();
+  const { user } = useAuth();
 
   const authProvider = {
     // authentication
@@ -101,13 +100,15 @@ const AdminApp = () => {
     };
     buildDataProvider();
   }, []);
-console.log('dataProvider || loading ==========', dataProvider, loading)
-  if (!dataProvider || loading) return <p>Loading...</p>;
-  // if (!dataProvider) return <p>Loading...</p>;
+
+  if (!dataProvider || !user) return <p>Loading...</p>;
 
   return (
-    <Admin loginPage={MyLogin} dataProvider={dataProvider} authProvider={authProvider}>
-    {/* <Admin dataProvider={dataProvider}>  */}
+    <Admin
+      loginPage={MyLogin}
+      dataProvider={dataProvider}
+      authProvider={authProvider}
+    >
       <Resource
         name="blockchains"
         list={BlockchainsList}
