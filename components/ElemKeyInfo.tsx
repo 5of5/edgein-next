@@ -1,5 +1,6 @@
-import React, { Fragment } from "react";
+import React from "react";
 import {
+	IconProps,
 	IconGlobe,
 	IconCash,
 	IconDocumentDownload,
@@ -49,7 +50,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	whitePaper,
 	totalEmployees,
 	yearFounded,
-	roles = [],
+	roles,
 	investmentsLength = 0,
 	emails = [],
 	linkedIn,
@@ -60,182 +61,177 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	discord,
 	glassdoor,
 }) => {
-	const websiteName = website
-		?.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")
-		.replace(/\/$/, "");
+	let infoItems: {
+		icon?: React.FC<IconProps>;
+		link?: string;
+		text: string;
+		target?: string;
+	}[] = [];
+
+	if (website) {
+		const cleanUrl = website
+			.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")
+			.replace(/\/$/, "");
+
+		infoItems.push({
+			icon: IconGlobe,
+			text: cleanUrl,
+			link: website,
+		});
+	}
+	if (yearFounded) {
+		infoItems.push({
+			icon: IconFlag,
+			text: yearFounded + " Founded",
+		});
+	}
+	if (totalFundingRaised) {
+		infoItems.push({
+			icon: IconCash,
+			text:
+				convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
+				" Total Funding Raised",
+		});
+	}
+	if (location) {
+		infoItems.push({
+			icon: IconLocation,
+			text: location,
+		});
+	}
+	if (totalEmployees) {
+		infoItems.push({
+			icon: IconUsers,
+			text: numberWithCommas(totalEmployees) + " Employees",
+		});
+	}
+	if (whitePaper) {
+		infoItems.push({
+			icon: IconDocumentDownload,
+			text: "White Paper",
+			link: whitePaper,
+		});
+	}
+	if (careerPage) {
+		infoItems.push({
+			icon: IconBriefcase,
+			text: "Careers",
+			link: careerPage,
+		});
+	}
+	if (roles && roles.length > 0) {
+		infoItems.push({
+			icon: IconRole,
+			text: roles,
+		});
+	}
+	if (investmentsLength && investmentsLength > 0) {
+		infoItems.push({
+			icon: IconCash,
+			text: investmentsLength > 1 ? "Investments" : "Investment",
+			link: "#investments",
+			target: "_self",
+		});
+	}
+	if (linkedIn) {
+		infoItems.push({
+			icon: IconLinkedIn,
+			text: "LinkedIn",
+			link: linkedIn,
+		});
+	}
+	if (github) {
+		infoItems.push({
+			icon: IconGithub,
+			text: "Github",
+			link: github,
+		});
+	}
+	if (twitter) {
+		infoItems.push({
+			icon: IconTwitter,
+			text: "Twitter",
+			link: twitter,
+		});
+	}
+	if (discord) {
+		infoItems.push({
+			icon: IconDiscord,
+			text: "Discord",
+			link: discord,
+		});
+	}
+	if (glassdoor) {
+		infoItems.push({
+			icon: IconGlassdoor,
+			text: "Glassdoor",
+			link: glassdoor,
+		});
+	}
+
+	const baseClasses = "flex space-x-2 py-1 px-2 rounded-md";
 
 	return (
 		<section className={className}>
-			{heading && <h2 className="text-xl font-bold mb-3">{heading}</h2>}
+			{heading && <h2 className="text-xl font-bold mb-2">{heading}</h2>}
 
-			<div className="flex flex-col gap-x-6 gap-y-2">
-				{website && (
-					<a
-						href={website}
-						target="_blank"
-						className="flex flex-1 space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-						title={website}
-					>
-						<IconGlobe title={website} className="h-6 w-6" />
-						<span className="text-primary-500">{websiteName}</span>
-					</a>
-				)}
-				{totalFundingRaised && (
-					<div className="flex space-x-2 py-1">
-						<IconCash title="Total Funding Raised" className="h-6 w-6" />
-						<div className="inline-flex space-x-1">
-							<span>
-								{convertToInternationalCurrencySystem(
-									Number(totalFundingRaised)
-								)}
-							</span>
-							<span>Total Funding Raised</span>
-						</div>
-					</div>
-				)}
-				{yearFounded && (
-					<div className="flex space-x-2 py-1">
-						<IconFlag title="Year Founded" className="h-6 w-6" />
-						<div className="inline-flex space-x-1">
-							<span>{yearFounded}</span>
-							<span>Founded</span>
-						</div>
-					</div>
-				)}
-				{location && (
-					<div className="flex space-x-2 py-1">
-						<IconLocation title="Location" className="h-6 w-6" />
-						<div>{location}</div>
-					</div>
-				)}
-				{totalEmployees && (
-					<div className="flex space-x-2 py-1">
-						<IconUsers title="Total Employee Count" className="h-6 w-6" />
+			<ul className="flex flex-col space-y-2">
+				{infoItems.map((item, index: number) => {
+					const itemInner = (
+						<>
+							{item.icon && (
+								<item.icon
+									title={item.text}
+									className="h-6 w-6 text-dark-500"
+								/>
+							)}
+							<span>{item.text}</span>
+						</>
+					);
 
-						<div className="inline-flex space-x-1">
-							<span>{numberWithCommas(totalEmployees)}</span>
-							<span>Employees</span>
-						</div>
-					</div>
-				)}
-				{whitePaper && (
-					<a
-						href={whitePaper}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconDocumentDownload title="White Paper" className="h-6 w-6" />
-						<span className="text-primary-500">White Paper</span>
-					</a>
-				)}
-				{careerPage && (
-					<a
-						href={careerPage}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconBriefcase title="Careers" className="h-6 w-6" />
-						<span className="text-primary-500">Careers</span>
-					</a>
-				)}
-
-				{roles && roles.length > 0 && (
-					<div className="flex space-x-2 py-1">
-						<IconRole title="Role" className="h-6 w-6" />
-						<div>{roles}</div>
-					</div>
-				)}
-
-				{investmentsLength > 0 && (
-					<a
-						href="#investments"
-						className="flex space-x-2 py-1 hover:opacity-70"
-					>
-						<IconCash title="Investments" className="h-6 w-6" />
-						<div className="flex space-x-1">
-							<span className="font-bold">{investmentsLength}</span>
-							<span>Investment{investmentsLength > 1 && "s"}</span>
-						</div>
-					</a>
-				)}
-
+					if (item.link?.length) {
+						return (
+							<li key={index}>
+								<a
+									className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
+									href={item.link}
+									target={item.target ? item.target : "_blank"}
+									rel="noopener noreferrer"
+									title={item.text}
+								>
+									{itemInner}
+								</a>
+							</li>
+						);
+					}
+					return (
+						<li key={index} className={baseClasses}>
+							{itemInner}
+						</li>
+					);
+				})}
 				{emails && emails.length > 0 && (
-					<div className="flex space-x-2 py-1">
-						<IconEmail title="Email" className="h-6 w-6" />
-						<div>
-							{emails.map((_email, i: number) => [
-								i > 0 && ", ",
-								<span key={i} className="hover:opacity-70 cursor-not-allowed">
-									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-								</span>,
-								// <Link key={i} href={`mailto:${email}`}>
-								// 	<a className="hover:opacity-70">{email}</a>
-								// </Link>,
-							])}
-						</div>
-					</div>
+					<li>
+						{emails.map((_email, i: number) => [
+							i > 0 && ", ",
+							<a
+								key={i}
+								className={`${baseClasses} flex-1 transition-all cursor-not-allowed hover:blur-sm hover:bg-slate-200`}
+							>
+								&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+							</a>,
+							// <a
+							// 	key={i}
+							// 	href={`mailto:${_email}`}
+							// 	className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
+							// >
+							// 	<IconEmail title="Email" className="h-6 w-6 text-dark-500" />
+							// 	<span>{_email}</span>
+							// </a>,
+						])}
+					</li>
 				)}
-
-				{linkedIn && (
-					<a
-						href={linkedIn}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconLinkedIn title="LinkedIn" className="h-6 w-6" />
-						<span className="text-primary-500">LinkedIn</span>
-					</a>
-				)}
-
-				{github && (
-					<a
-						href={github}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconGithub title="Github" className="h-6 w-6" />
-						<span className="text-primary-500">Github</span>
-					</a>
-				)}
-				{discord && (
-					<a
-						href={discord}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconDiscord title="Discord" className="h-6 w-6" />
-						<span className="text-primary-500">Discord</span>
-					</a>
-				)}
-				{glassdoor && (
-					<a
-						href={glassdoor}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconGlassdoor title="Glassdoor" className="h-6 w-6" />
-						<span className="text-primary-500">Glassdoor</span>
-					</a>
-				)}
-				{twitter && (
-					<a
-						href={twitter}
-						target="_blank"
-						className="flex space-x-2 py-1 hover:opacity-70"
-						rel="noopener noreferrer"
-					>
-						<IconTwitter title="Twitter" className="h-6 w-6" />
-						<span className="text-primary-500">Twitter</span>
-					</a>
-				)}
-			</div>
+			</ul>
 		</section>
 	);
 };
