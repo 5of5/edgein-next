@@ -77,10 +77,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         publicAddress: emailExist.external_id,
         isFirstLogin,
         display_name: emailExist.display_name,
-        profileName: emailExist.person?.name,
-        profilePicture: emailExist.person?.picture,
         auth0_linkedin_id: emailExist.auth0_linkedin_id,
         auth0_user_pass_id: emailExist.auth0_user_pass_id,
+        profileName: emailExist.person?.name,
+        profilePicture: emailExist.person?.picture,
+        reference_id: emailExist.reference_id,
       });
       CookieService.setTokenCookie(res, token)
     }

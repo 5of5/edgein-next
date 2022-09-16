@@ -76,13 +76,22 @@ export const toLabel = (str?: string): string => {
 export const slugify = (text?: string): string | undefined => {
   if (!text) return text;
 
-  return text
-    .toString()
-    .toLowerCase()
-    .replace(/\s+/g, "-") // Replace spaces with -
-    .replace(/^\d+/g, "") // Remove Numbers
-    .replace(/--+/g, "-") // Replace multiple - with single -
-    .replace(/(\?|:)/g, "") // remove colons and question marks
-    .replace(/^-+/, "") // Trim - from start of text
-    .replace(/-+$/, ""); // Trim - from end of text
+	return text
+		.toString()
+		.toLowerCase()
+		.replace(/\s+/g, "-") // Replace spaces with -
+		.replace(/^\d+/g, "") // Remove Numbers
+		.replace(/--+/g, "-") // Replace multiple - with single -
+		.replace(/(\?|:)/g, "") // remove colons and question marks
+		.replace(/^-+/, "") // Trim - from start of text
+		.replace(/-+$/, ""); // Trim - from end of text
 };
+
+/**
+ * Remove all special character except space from a string
+ */
+export const removeSpecialCharacterFromString = (text?: string): string | undefined => {
+	if(!text) return text;
+
+	return text.replace(/[^a-zA-Z ]/g, "");
+}

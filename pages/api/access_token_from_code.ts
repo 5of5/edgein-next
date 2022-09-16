@@ -17,6 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check email exist in allowedEmail table or not
   const code = req.body.code;
   const redirect_uri = req.body.redirect_uri;
+  const reference_id = req.body.reference_id;
   if (!code || !redirect_uri) return res.status(404).send('Invalid request');
 
   let isFirstLogin = false;
@@ -70,11 +71,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const connectionType = auth0SubInfo[0];
       const auth0Id = auth0SubInfo[1];
       if (!userData) {
+        let referenceUserId = null;
+        // check user exist or not for the current reference
+        if (reference_id) {
+          const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
+          if (referenceUser) referenceUserId = referenceUser.id
+        }
+
         const objectData = {
           email: userInfoInJson.email,
           name: userInfoInJson.name,
           _id: auth0SubInfo.pop(), // get Id from sub
-          auth0_linkedin_id: connectionType === 'linkedin' ? auth0Id : ''
+          auth0_linkedin_id: connectionType === 'linkedin' ? auth0Id : '',
+          reference_user_id: referenceUserId
         }
         userData = await UserService.upsertUser(objectData);
       }
@@ -89,7 +98,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({id: userData.id, email: userData.email, role: userData.role, publicAddress: userData.external_id, isFirstLogin, display_name: userData.display_name, auth0_linkedin_id: userData.auth0_linkedin_id, auth0_user_pass_id: userData.auth0_user_pass_id});
+      const token = await CookieService.createToken({
+        id: userData.id,
+        email: userData.email,
+        role: userData.role,
+        publicAddress: userData.external_id,
+        isFirstLogin,
+        display_name: userData.display_name,
+        auth0_linkedin_id: userData.auth0_linkedin_id,
+        auth0_user_pass_id: userData.auth0_user_pass_id,
+        profileName: userData.person?.name,
+        profilePicture: userData.person?.picture,
+        reference_id: userData.reference_id,
+      });
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {
