@@ -134,10 +134,10 @@ export const CompanyList = () => {
     "tags",
   ];
 
-  const { data } = useGetList("companies", {
+  const { data: companies } = useGetList("companies", {
     pagination: { page: 1, perPage: 10 },
   });
-  let renderData = data?.map((v) => {
+  let renderData = companies?.map((v) => {
     let sum = 0;
     for (var index in v) {
       if (index !== "tags") v[index] && headers.includes(index) ? sum++ : sum;
@@ -163,7 +163,7 @@ export const CompanyList = () => {
     return sortData;
   };
   renderData = renderData && sortWithData(renderData);
-console.log('data ========', data)
+
   return (
     <List
       filters={filters}
