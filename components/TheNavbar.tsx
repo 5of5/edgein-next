@@ -51,9 +51,9 @@ export const TheNavbar = () => {
 		}
 	};
 
-	const onWeb3Login = async() => {
+	const onWeb3Login = useCallback(async(user: any) => {
 		const isFirstLoadAfterLogin = await localStorage.getItem("isFirstLoadAfterLogin")
-		if(!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true"){
+		if((!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true") && user){
 			localStorage.setItem("isFirstLoadAfterLogin", "false")
 			const account = await login(user.auth0_token)
 			if(account){
@@ -66,9 +66,8 @@ export const TheNavbar = () => {
 					body: JSON.stringify({ wallet_address : account }),
 				});//.then(res => res.json());
 			}
-			
 		}
-	}
+	},[login])
 
 	useEffect(() => {
 		
@@ -76,9 +75,9 @@ export const TheNavbar = () => {
 			showOnBoarding()
 		}
 		if(!loading && user){
-			onWeb3Login();
+			onWeb3Login(user);
 		}
-	}, [loading, user]);
+	}, [loading, user, onWeb3Login]);
 
 	const siteNav = [
 		{
