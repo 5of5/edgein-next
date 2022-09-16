@@ -3,6 +3,7 @@ import CookieService from '../../utils/cookie'
 import nodemailer from 'nodemailer'
 import { generateVerifyWorkplaceToken, saveToken } from "@/utils/tokens";
 import { tokenTypes } from "@/utils/constants";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -32,13 +33,13 @@ const sendVerificationMail = async (url: string, companyName: string, email: str
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST!,
+    host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
     auth: {
-      user: 'devon.balistreri@ethereal.email',
-      pass: 'xSHRPmh42zjWCFuFg4'
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
     }
-  })
+  } as SMTPTransport.Options)
 
   const html = `
     <b>Hi ${userName}</b>,
