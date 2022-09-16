@@ -21,6 +21,7 @@ import {
   useCreate,
   useGetList,
   useRedirect,
+  useGetOne,
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {
@@ -29,6 +30,7 @@ import {
 } from "../../utils/constants";
 import { random } from "lodash";
 import { useFormContext } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import ContentSave from "@mui/icons-material/Save";
@@ -208,6 +210,13 @@ export const VcFirmEdit = () => {
   const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
 
+  const { id } = useParams();
+  const { data: currentData } = useGetOne("vc_firms", { id });
+
+  useEffect(() => {
+    if (currentData) setKeyword(currentData.name)
+  }, [currentData])
+  
   useEffect(() => {
     if (formRef?.current?.clientHeight + 100 >= height)
       setFormHeight(formRef?.current?.clientHeight + 100);

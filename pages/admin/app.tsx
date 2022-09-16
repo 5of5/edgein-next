@@ -101,7 +101,7 @@ const AdminApp = () => {
     };
     buildDataProvider();
   }, []);
-
+console.log('dataProvider || loading ==========', dataProvider, loading)
   if (!dataProvider || loading) return <p>Loading...</p>;
   // if (!dataProvider) return <p>Loading...</p>;
 

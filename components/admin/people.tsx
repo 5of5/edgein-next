@@ -30,7 +30,9 @@ import {
   useUpdate,
   DateField,
   useRefresh,
+  useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -186,9 +188,9 @@ export const PeopleList = () => {
       }}
     >
       <Datagrid
-        // data={renderData}
-        // sort={customSort}
-        // setSort={(value) => setCustomSort(value)}
+      // data={renderData}
+      // sort={customSort}
+      // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -246,11 +248,16 @@ export const PeopleEdit = () => {
   const [create, { isLoading: isCreateLoading }] = useCreate();
   const [update, { isLoading: isUpdateLoading }] = useUpdate();
 
-  const paths = window.location.href.split("/");
-  const currentId = paths[paths.length - 1];
+  const { id: currentId } = useParams();
+  const { data: currentData } = useGetOne("companies", { id: currentId });
 
   useEffect(() => {
-    setFilterData(member?.filter((f) => f.person_id === parseInt(currentId)));
+    if (currentData) setKeyword(currentData.name)
+  }, [currentData])
+
+  useEffect(() => {
+    if (currentId)
+      setFilterData(member?.filter((f) => f.person_id === parseInt(currentId)));
   }, [currentId, member]);
 
   useEffect(() => {

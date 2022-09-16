@@ -1,5 +1,5 @@
 // in posts.js
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   List,
@@ -17,7 +17,9 @@ import {
   Button,
   useRedirect,
   useGetList,
+  useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 
 import ContentSave from "@mui/icons-material/Save";
 import { useFormContext } from "react-hook-form";
@@ -154,7 +156,13 @@ const BlockchainsTitle = ({ record }: TitleProps) => {
 export const BlockchainsEdit = () => {
   const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
+  const { id } = useParams();
+  const { data: currentData } = useGetOne("blockchains", { id });
 
+  useEffect(() => {
+    if (currentData) setKeyword(currentData.name)
+  }, [currentData])
+  
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);
     setKeyword(e.target.value);

@@ -1,5 +1,5 @@
 // in posts.js
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   FunctionField,
@@ -27,8 +27,12 @@ import {
   useRedirect,
   Toolbar,
   SaveButton,
+  useRecordContext,
+  useGetOne,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
+import { useParams } from "react-router-dom";
+
 import BookIcon from "@mui/icons-material/Book";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {
@@ -185,9 +189,9 @@ export const CompanyList = () => {
       }}
     >
       <Datagrid
-        // data={renderData}
-        // sort={customSort}
-        // setSort={(value) => setCustomSort(value)}
+      // data={renderData}
+      // sort={customSort}
+      // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />
@@ -263,6 +267,12 @@ export const CompanyEdit = () => {
   const formRef = useRef<any>(null);
   const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
+  const { id } = useParams();
+  const { data: currentData } = useGetOne("companies", { id });
+
+  useEffect(() => {
+    if (currentData) setKeyword(currentData.name)
+  }, [currentData])
 
   const transform = async (data: any) => {
     var formdata = { ...data };
