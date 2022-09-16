@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!isEmailAllowed) {
     // insert user in waitlist table
     await UserService.mutateForWaitlistEmail(email)
-    return res.status(404).send(`Invalid Email`)
+    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
   }
 
   const data = JSON.stringify({
