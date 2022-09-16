@@ -27,7 +27,6 @@ import {
   useRedirect,
   Toolbar,
   SaveButton,
-  useRecordContext,
   useGetOne,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
