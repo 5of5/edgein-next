@@ -51,7 +51,7 @@ query GetVCFirm($slug: String!, $current_user: Int) {
 	}
 }
 
-query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int) {
+query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int = 0) {
 	vc_firms(
 		where: $where
 		order_by: { num_of_investments: desc }
