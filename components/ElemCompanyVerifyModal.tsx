@@ -1,23 +1,81 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, MouseEvent, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { ElemButton } from './ElemButton';
-import { IconChevronLeft, IconChevronRight } from './Icons';
-import { InputSelect } from './InputSelect';
+import { ElemPhoto } from './ElemPhoto';
+import { IconX } from './Icons';
+import { InputText } from './InputText';
+import Select from 'react-select';
 
 type Props = {
   isOpen: boolean
   onClose: (e: any) => void
-  type: "vc_firm" | 'company'
+  dropdown?: any[]
 }
 
-export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, type }) => {
+export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropdown }) => {
 
-  const [next, setnext] = useState(false)
-  const [finishmodal, setfinishmodal] = useState(false)
+  const [isCompanySelected, setIsCompanySelected] = useState(false)
+  const [isEmailEntered, setIsEmailEntered] = useState(false)
+  const [finish, setFinish] = useState(false)
 
-  const [keyword, setKeyword] = useState('')
+  const [selectedCompany, setSelectedCompany] = useState<any>()
+  const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
 
+  const onFinishOrCancel = () => {
+    onClose(false)
+    setIsCompanySelected(false)
+    setIsEmailEntered(false)
+    setFinish(false)
+  }
 
+  const gotoNext = (step: 'company' | 'email' | 'finish') => async () => {
+    if (step === 'company') {
+      if (!selectedCompany) setError('Please select company')
+      else {
+        setIsCompanySelected(true)
+        setError('')
+      }
+      return
+    }
+
+    if (step === 'email') {
+      if (!email) setError('Please enter email')
+      else {
+        await sendVerificationMail()
+        setIsEmailEntered(true)
+        setError('')
+      }
+      return
+    }
+
+    if (step === 'finish') {
+      if (!email) setError('Please enter email')
+      else {
+        setError('')
+        onFinishOrCancel()
+      }
+      return
+    }
+  }
+
+  const sendVerificationMail = async () => {
+    await fetch('/api/send_resource_verification_mail', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({
+        resource: {
+          companyName: selectedCompany.label,
+          resourceId: selectedCompany.value,
+          type: selectedCompany.type,
+        },
+        email,
+      })
+    })
+  }
 
   return (
     <>
@@ -47,72 +105,119 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, type 
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-2xl text-dark-500 font-Metropolis font-bold"
-                  >
-                    Search for the company or investment firm you work for.
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-md font-normal font-Metropolis text-gray-10">
-                      Find your company or investment firm to verify your employment. Verifying will allow you to access features for your business.
-                    </p>
-                  </div>
-
-                  <div className="mt-4">
-                    <label className='text-sm font-bold font-Metropolis text-gray-10'>Search for your company</label>
-                    <InputSelect
-                      options={[]}
-                      onChange={(e) => setKeyword(e.target.value)}
-                      value={keyword}
-                    />
-                    <ElemButton
-                      className='float-right mt-5'
-                      btn="primary"
-                      onClick={() => setnext(true)}
-
-                    >Next</ElemButton>
-
-                  </div>
-
-                  {next && (
-                    <div className='clear-both'>
-                      <label className='text-sm font-bold font-Metropolis text-slate-300'>Please provide your <IconChevronLeft className='w-3 h-3 inline-block' />company name<IconChevronRight className='w-3 h-3 inline-block' /> email address</label>
-                      <InputSelect
-                        onChange={(e) => setKeyword(e.target.value)}
-                        value={keyword}
-                      />
-                      <ElemButton
-                        className='float-right mt-5'
-                        btn="primary"
-                        onClick={() => setfinishmodal(true)}
-                      >Next</ElemButton>
-                    </div>
-                  )}
-
-                  {finishmodal && (
-                    <div className='clear-both'>
-
+                  {!isEmailEntered ?
+                    <>
                       <Dialog.Title
                         as="h3"
                         className="text-2xl text-dark-500 font-Metropolis font-bold"
                       >
-                        Verification email is on the way!
+                        Search for the company or investment firm you work for.
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className="text-md font-normal font-Metropolis text-slate-300">
-                          If you have any questions about this process, please contact us.
+                        <p className="text-md font-normal font-Metropolis text-slate-600">
+                          Find your company or investment firm to verify your employment. Verifying will allow you to access features for your business.
                         </p>
                       </div>
-                      <ElemButton
-                        btn="primary"
-                        className='float-right mt-5'
-                        onClick={onClose}>
-                        Finish
-                      </ElemButton>
+                    </>
+                    :
+                    <Dialog.Title
+                      as="h3"
+                      className="text-2xl text-dark-500 font-Metropolis font-bold"
+                    >
+                      Verification email is on the way!
+                    </Dialog.Title>
+                  }
 
+
+
+                  <div className="mt-6">
+                    {!isEmailEntered && <label className='text-sm font-bold font-Metropolis text-slate-600'>Search for your company</label>}
+                    {
+                      !isCompanySelected ?
+                        <>
+                          <Select
+                            isClearable
+                            options={dropdown}
+                            onChange={(value: any) => setSelectedCompany(value)}
+                            name="colors"
+                            className="basic-multi-select border-2 rounded-t-md rounded-b-md border-primary-500 placeholder:text-slate-250"
+                            classNamePrefix="select"
+                            placeholder="e.g Edgein"
+                          />
+                          <p className="text-red-500">{error}</p>
+                          <ElemButton
+                            className='float-right mt-5'
+                            btn="primary"
+                            onClick={gotoNext('company')}
+                          >
+                            Next
+                          </ElemButton>
+                        </> :
+                        isCompanySelected && !isEmailEntered && <div className='flex flex-row items-center justify-between'>
+                          <div className='flex items-center'>
+                            <ElemPhoto
+                              wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
+                              imgClass="object-fit max-w-full max-h-full"
+                              photo={selectedCompany?.logo}
+                              imgAlt="company logo"
+                            />
+                            <span className='text-dark-500 ml-2'>{selectedCompany?.label}</span>
+                          </div>
+                          <button
+                            onClick={() => {
+                              setIsCompanySelected(false)
+                              setIsEmailEntered(false)
+                            }}
+                            type="button"
+                            className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
+                          >
+                            <IconX className="h-6 w-6 text-dark-500 justify-self-end" />
+                          </button>
+                        </div>
+                    }
+                  </div>
+
+                  {
+                    isCompanySelected && !isEmailEntered &&
+                    <div className='mt-4'>
+                      <label className='text-sm font-bold font-Metropolis text-slate-600'>{`Please provide your <company name> email address`}</label>
+                      <InputText
+                        label=""
+                        type='email'
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
+                        name="email"
+                        placeholder="e.g. name@yourcompany.com"
+                      />
+                      <p className="text-red-500">{error}</p>
+                      <ElemButton
+                        className='float-right mt-5'
+                        btn="primary"
+                        onClick={gotoNext('email')}
+                      >
+                        Next
+                      </ElemButton>
                     </div>
-                  )}
+                  }
+
+                  {
+                    isEmailEntered && isCompanySelected && !finish && (
+                      <div className='clear-both'>
+                        <div className="mt-2">
+                          <p className="text-md font-normal font-Metropolis text-slate-600">
+                            If you have any questions about this process, please contact us.
+                          </p>
+                        </div>
+                        <ElemButton
+                          btn="primary"
+                          className='float-right mt-5'
+                          onClick={gotoNext('finish')}>
+                          Finish
+                        </ElemButton>
+
+                      </div>
+                    )
+                  }
                 </Dialog.Panel>
               </Transition.Child>
             </div>
