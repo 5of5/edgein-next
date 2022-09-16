@@ -113,10 +113,14 @@ export default function SignUpModal(props: Props) {
 			});
 			if (response.status === 200) {
 				setIsRegistered(true);
-			} else if (response.status === 404) {
-				const waitlistRes = await response.clone().text();
-				if (waitlistRes === "Invalid Email") {
-					setIsWaitlisted(true);
+			} else {
+				try{
+					const res = await response.clone().json();
+					if(res.message &&  res.message.indexOf('waitlist') > 0){
+						setIsWaitlisted(true);
+					}
+				}catch(err){
+					setIsLoading(false);
 				}
 			}
 		} catch (e) {

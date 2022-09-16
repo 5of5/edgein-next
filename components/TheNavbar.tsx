@@ -83,11 +83,10 @@ export const TheNavbar = () => {
 					redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
 				}),
 			}); //.then((res) => res.json());
-			if (response.status == 404) {
-				const responseText = await response.clone().text();
-				if (responseText === "Invalid Email") {
-					// showUnsuccessMessagge
-					setLinkedInError(responseText);
+			if (response.status !== 200) {
+				const responseText = await response.clone().json();
+				if(responseText.message){
+					setLinkedInError(responseText.message);
 					setShowLoginPopup(true);
 				}
 			} else {
