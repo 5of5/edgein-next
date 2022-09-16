@@ -1,13 +1,5 @@
-import { useAuth } from "../hooks/useAuth"
-import { ElemPhoto } from "@/components/ElemPhoto"
-import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal"
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
-import { Companies, GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, People, useGetUserProfileQuery, Vc_Firms } from "@/graphql/types"
-import { runGraphQl } from "@/utils"
-import { GetStaticProps } from "next"
-import { FC, useEffect, useState } from "react"
-import Link from "next/link"
-import { kebabCase } from "lodash"
+import { FC, useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/router"
 
 type Props = {}
@@ -17,11 +9,8 @@ const VerifyWorkplace: FC<Props> = ({ }) => {
 
   const router = useRouter()
 
-  useEffect(() => {
-    verifyToken()
-  }, [])
 
-  const verifyToken = async () => {
+  const verifyToken = useCallback(async () => {
     const token = router.query.token as string
 
     const resp = await fetch(`/api/verify_workplace?token=${token}`, {
@@ -40,7 +29,11 @@ const VerifyWorkplace: FC<Props> = ({ }) => {
     if (resp.status === 400)
       setError((await resp.json()).message)
 
-  }
+  }, [router])
+
+  useEffect(() => {
+    verifyToken()
+  }, [verifyToken])
 
   return (
     <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
