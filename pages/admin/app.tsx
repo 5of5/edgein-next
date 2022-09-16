@@ -106,8 +106,8 @@ const AdminApp = () => {
   if (!dataProvider) return <p>Loading...</p>;
 
   return (
-    // <Admin loginPage={MyLogin} dataProvider={dataProvider} authProvider={authProvider}>
-    <Admin dataProvider={dataProvider}> 
+    <Admin loginPage={MyLogin} dataProvider={dataProvider} authProvider={authProvider}>
+    {/* <Admin dataProvider={dataProvider}>  */}
       <Resource
         name="blockchains"
         list={BlockchainsList}
