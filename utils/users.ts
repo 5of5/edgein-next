@@ -55,6 +55,7 @@ async function findOneUserByEmail(email: string) {
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      wallet_address
       person {
         name
         picture
@@ -88,6 +89,7 @@ async function upsertUser(userData: any) {
           auth0_user_pass_id
           reference_id
           reference_user_id
+          wallet_address
         }
       }
     }
@@ -124,6 +126,7 @@ async function updateEmailVerifiedStatus(email: string, is_auth0_verified: boole
       returning {
         id
         email
+        wallet_address
       }
     }
   }
@@ -149,6 +152,7 @@ async function updateAuth0LinkedInId(email: string, auth0_linkedin_id: string) {
       returning {
         id
         email
+        wallet_address
       }
     }
   }
@@ -174,6 +178,7 @@ async function updateAuth0UserPassId(email: string, auth0_user_pass_id: string) 
       returning {
         id
         email
+        wallet_address
       }
     }
   }
@@ -195,6 +200,7 @@ async function findOneUserByReferenceId(reference_id: string) {
       id
       email
       reference_id
+      wallet_address
     }
   }
   `
