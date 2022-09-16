@@ -17,12 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const resourceId = req.body.resource.resourceId
   const resourceType = req.body.resource.type
   const email = req.body.email
+  const personId = req.body.personId
 
-  const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType)
+  const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType, personId)
 
-  const url = `http://localhost:3000/api/verify_workplace?token=${verifyWorkToken}`
+  const url = `${process.env.SITE_URL}verify_workplace?token=${verifyWorkToken}`
 
-  await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id)
+  await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id, token)
 
   await sendVerificationMail(url, companyName, email, user.display_name || '')
 

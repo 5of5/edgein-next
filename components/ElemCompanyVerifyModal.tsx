@@ -10,9 +10,10 @@ type Props = {
   isOpen: boolean
   onClose: (e: any) => void
   dropdown?: any[]
+  personId: number
 }
 
-export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropdown }) => {
+export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropdown, personId }) => {
 
   const [isCompanySelected, setIsCompanySelected] = useState(false)
   const [isEmailEntered, setIsEmailEntered] = useState(false)
@@ -73,6 +74,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
           type: selectedCompany.type,
         },
         email,
+        personId,
       })
     })
   }
