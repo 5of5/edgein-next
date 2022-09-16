@@ -102,8 +102,8 @@ const AdminApp = () => {
     buildDataProvider();
   }, []);
 
-  // if (!dataProvider || loading) return <p>Loading...</p>;
-  if (!dataProvider) return <p>Loading...</p>;
+  if (!dataProvider || loading) return <p>Loading...</p>;
+  // if (!dataProvider) return <p>Loading...</p>;
 
   return (
     <Admin loginPage={MyLogin} dataProvider={dataProvider} authProvider={authProvider}>
