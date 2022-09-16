@@ -25,14 +25,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let payload = verified.payload
 
   if (!payload) res.status(400).send({ message: 'Bad request or token expired' })
+  try {
+    const existsToken = await findToken(verificationToken, tokenTypes.verifyWorkHereToken, token)
 
-  const existsToken = await findToken(verificationToken, tokenTypes.verifyWorkHereToken, token)
+    if (!existsToken) res.status(400).send({ message: 'Verification link already used' })
 
-  if (!existsToken) res.status(400).send({ message: 'Verification link already used' })
+    await addTeamMember(payload, token)
 
-  await addTeamMember(payload, token)
-
-  await deleteToken(existsToken.id, token)
+    await deleteToken(existsToken.id, token)
+  } catch (e: any) {
+    return res.status(500).send({ message: 'Some error occurred, please contact edgein.io' })
+  }
 
   res.send({ message: 'success' })
 
