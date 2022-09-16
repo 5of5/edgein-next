@@ -1,109 +1,40 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth"
+import { ElemPhoto } from "@/components/ElemPhoto"
+import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal"
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
+import { Companies, GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, People, useGetUserProfileQuery, Vc_Firms } from "@/graphql/types"
+import { runGraphQl } from "@/utils"
+import { GetStaticProps } from "next"
+import { FC, useEffect, useState } from "react"
 import Link from "next/link"
-import { IconCrap } from "../components/reactions/IconCrap"
-import { IconHot } from "../components/reactions/IconHot"
-import { IconLike } from "../components/reactions/IconLike"
-import { ElemPhoto } from "@/components/ElemPhoto";
-import company from "../images/company.png"
-import company2 from "../images/company2.png"
-import Image from "next/image";
-import { IconOrganization } from "@/components/IconOrganization";
-import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
-export default function Organization() {
+import { kebabCase } from "lodash"
+
+type Props = {
+	dropdown: any[]
+}
+
+const Organization: FC<Props> = ({ dropdown }) => {
 	const { user } = useAuth();
+
+	const [profile, setProfile] = useState({} as People)
+
+	const [showVerifyModal, setShowVerifyModal] = useState(false)
+
+	const {
+		data: users
+	} = useGetUserProfileQuery({
+		id: user?.id || 0
+	})
+
+	useEffect(() => {
+		if (users?.users_by_pk && users.users_by_pk.person) {
+			setProfile(users.users_by_pk.person as People)
+		}
+	}, [users])
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<div className="grid grid-cols-4 gap-4">
-				<div className="col-span-1">
-					<h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
-					<ul className="flex flex-col">
-						<li
-							className="py-2 text-slate-600 inline-flex items-center"
-							role="button"
-						>
-							<Link href="">
-								<a className="inline-flex items-center">
-									<IconHot className="mr-1 w-7" /> Hot
-								</a>
-							</Link>
-						</li>
-						<li
-							className="py-2 text-slate-600 inline-flex items-center"
-							role="button">
-							<Link href="">
-								<a className="inline-flex items-center">
-									<IconLike className="mr-1 w-7" /> Like
-								</a>
-							</Link>
-						</li>
-						<li
-							className={`py-2 text-slate-600 inline-flex items-center`}
-							role="button"
-						>
-							<Link href="">
-								<a className="inline-flex items-center">
-									<IconCrap className="mr-1 w-7" /> Crap
-
-								</a>
-							</Link>
-						</li>
-
-						{/* {renderMyCustomList()} */}
-					</ul>
-
-					{/* oragannisaTION CONTENT */}
-					<div className="mt-3">
-						<h3 className="text-xl font-bold font-Metropolis py-1 text-dark-500">My Organizations</h3>
-						<ul className="flex flex-col">
-							<li
-								className="py-1 text-slate-600 inline-flex items-center"
-								role="button"
-							>
-								<Link href=""
-								>
-									<a className="inline-flex items-center">
-										<Image
-											src={company}
-											alt="company logo"
-											className="rounded-lg"
-										/><span className="ml-2">Chia</span>
-									</a>
-								</Link>
-							</li>
-							<li
-								className="py-1 text-slate-600 inline-flex items-center"
-								role="button">
-								<Link href=""
-								>
-									<a className="inline-flex items-center">
-										<Image
-											src={company2}
-											alt="company logo"
-
-										/>
-										<span className="ml-4">IDEO Colab Ventures</span>
-									</a>
-								</Link>
-							</li>
-							<li
-								className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 w-60 bg-slate-200 rounded-lg`}
-								role="button"
-							>
-								<Link href=""
-								>
-									<a className="inline-flex items-center">
-
-										<IconOrganization /><span className="ml-4"> Manage Organization</span>
-									</a>
-								</Link>
-							</li>
-
-							{/* {renderMyCustomList()} */}
-						</ul>
-					</div>
-				</div>
-
+			<DashboardLayout>
 				<div className="col-span-3">
 					<div className="max-w-6xl bg-white rounded-lg p-5">
 						<div className="flex">
@@ -116,52 +47,86 @@ export default function Organization() {
 								<p className="text-slate-600 w-96 text-md">Verify your company or investment firm to access features specifically for your business.</p>
 							</div>
 
-							<button className="absolute right-0 text-md text-primary-500">Manage Oraganization</button>
+							<button className="absolute right-0 text-md text-primary-500" onClick={() => setShowVerifyModal(true)}>Manage Oraganization</button>
 
 						</div>
 
-						<div className=" mt-3 mb-2 relative border-b border-gray-100 pb-3">
-							<div className="grid grid-cols-10 gap-3">
-								<div className="col-start-3 col-span-6 flex">
-									<ElemPhoto
-										wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
-										imgClass="object-fit max-w-full max-h-full"
-										photo={{ "id": "atth6wpfA28Sqr81L", "url": "https://dl.airtable.com/.attachments/1e1ee497cce1959f1829b93f30a42b97/2e946d55/dc4282d28bdc3cd4dfa7f9e6df51ad0d.jpeg-resized?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=29a47a97b41d9c3b", "size": 2450, "type": "image/jpeg", "width": 128, "height": 128, "filename": "dc4282d28bdc3cd4dfa7f9e6df51ad0d.jpeg-resized", "thumbnails": { "full": { "url": "https://dl.airtable.com/.attachmentThumbnails/81028f5f35feea9f4d57de41b8586fea/bf7513bc?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=d987c3990248627b", "width": 3000, "height": 3000 }, "large": { "url": "https://dl.airtable.com/.attachmentThumbnails/b7a60acdbd21c915bd894e942fdcc06e/f7d0434c?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=bdf9a62b7629758b", "width": 128, "height": 128 }, "small": { "url": "https://dl.airtable.com/.attachmentThumbnails/77705b2245120e1326ad124ffdf936de/9cf84af8?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=4401fb727ecf3cd7", "width": 36, "height": 36 } } }}
-										imgAlt="company logo" />
+						{profile?.team_members?.map((teamMember) => {
+							const type = teamMember.company ? 'Company' : 'Investment Firm'
+							const data = teamMember.company || teamMember.vc_firm
+							return (
+								<div key={teamMember.id} className=" mt-3 mb-2 relative border-b border-gray-100 pb-3">
+									<div className="grid grid-cols-10 gap-3">
+										<div className="col-start-3 col-span-6 flex">
+											<ElemPhoto
+												wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
+												imgClass="object-fit max-w-full max-h-full"
+												photo={data?.logo}
+												imgAlt="company logo"
+											/>
 
-									<div className="ml-3">
-										<h2 className="font-bold font-Metropolis text-sm text-slate-600">Chia</h2>
-										<span className="font-thin text-slate-500 text-sm">Company</span>
+											<div className="ml-3">
+												<h2 className="font-bold font-Metropolis text-sm text-slate-600">{data?.name}</h2>
+												<span className="font-thin text-slate-500 text-sm">{type}</span>
+											</div>
+										</div>
+										<Link href={`/organization/${kebabCase(type)}/${data?.slug}`}>
+											<a
+												className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500"
+											>
+												Edit
+											</a>
+										</Link>
 									</div>
 								</div>
-								<button className=" col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500">Edit</button>
-							</div>
-						</div>
-
-						<div className=" mt-3 mb-2 relative border-b border-gray-100 pb-3">
-							<div className="grid grid-cols-10 gap-3">
-								<div className="col-start-3 col-span-6 flex">
-									<ElemPhoto
-										wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
-										imgClass="object-fit max-w-full max-h-full"
-										photo={{ "id": "atth6wpfA28Sqr81L", "url": "https://dl.airtable.com/.attachments/1e1ee497cce1959f1829b93f30a42b97/2e946d55/dc4282d28bdc3cd4dfa7f9e6df51ad0d.jpeg-resized?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=29a47a97b41d9c3b", "size": 2450, "type": "image/jpeg", "width": 128, "height": 128, "filename": "dc4282d28bdc3cd4dfa7f9e6df51ad0d.jpeg-resized", "thumbnails": { "full": { "url": "https://dl.airtable.com/.attachmentThumbnails/81028f5f35feea9f4d57de41b8586fea/bf7513bc?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=d987c3990248627b", "width": 3000, "height": 3000 }, "large": { "url": "https://dl.airtable.com/.attachmentThumbnails/b7a60acdbd21c915bd894e942fdcc06e/f7d0434c?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=bdf9a62b7629758b", "width": 128, "height": 128 }, "small": { "url": "https://dl.airtable.com/.attachmentThumbnails/77705b2245120e1326ad124ffdf936de/9cf84af8?ts=1658363794&userId=usr7CWMWLCRhTmk83&cs=4401fb727ecf3cd7", "width": 36, "height": 36 } } }}
-										imgAlt="company logo" />
-
-									<div className="ml-3 ">
-										<h2 className="font-bold font-Metropolis text-sm text-slate-600">
-											IDEO CoLab Ventures
-										</h2>
-										<span className="font-thin text-slate-500 text-sm ">Investment Firm</span>
-									</div>
-								</div>
-								<button className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500">Edit</button>
-							</div>
-						</div>
+							)
+						})}
 					</div>
-
+					<ElemCompanyVerifyModal
+						isOpen={showVerifyModal}
+						onClose={() => setShowVerifyModal(false)}
+						dropdown={dropdown}
+					/>
 				</div>
-			</div>
-			<ElemCompanyVerifyModal isOpen onClose={() => { }} type='company' />
+			</DashboardLayout>
 		</div>
 	)
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+	const { data: companiesData } = await runGraphQl<GetCompaniesQuery>(
+		GetCompaniesDocument,
+		{
+			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+		}
+	)
+
+	const { data: vcFirmsData } = await runGraphQl<GetVcFirmsQuery>(
+		GetVcFirmsDocument,
+		{
+			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+		}
+	)
+
+	const companiesDropdown = companiesData?.companies.map((company) => ({
+		label: company.name,
+		value: company.id,
+		type: 'companies',
+		logo: company.logo,
+	})) || []
+
+	const vcFirmsDropdown = vcFirmsData?.vc_firms.map((vcfirm) => ({
+		label: vcfirm.name,
+		value: vcfirm.id,
+		type: 'vc_firms',
+		logo: vcfirm.logo,
+	})) || []
+
+	return {
+		props: {
+			dropdown: companiesDropdown.concat(vcFirmsDropdown),
+		},
+	}
+}
+
+export default Organization
