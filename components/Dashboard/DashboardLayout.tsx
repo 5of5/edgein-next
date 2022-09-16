@@ -32,7 +32,6 @@ type Props = {
 export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 	navigation = [
 		{ name: "Dashboard", href: "/dashboard", icon: IconHome },
-		{ name: "Account Settings", href: "/account", icon: IconSetting },
 		{
 			name: "Companies",
 			href: "/companies",
@@ -145,7 +144,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 				</Transition.Root>
 
 				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:absolute md:inset-y-0 mr-4">
-					<div className="pt-7 flex flex-col flex-grow overflow-y-auto">
+					<div className="pt-7 flex flex-col flex-grow">
 						<div className="flex-grow flex flex-col">
 							<nav className="space-y-2 border-l border-slate-200">
 								<ElemDashboardSidebar />

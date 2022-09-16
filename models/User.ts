@@ -11,4 +11,6 @@ export type User = {
     name: string
     picture: any
   } | null
+  reference_id: string
+  reference_user_id: number
 }

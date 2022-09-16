@@ -86,3 +86,12 @@ export const slugify = (text?: string): string | undefined => {
 		.replace(/^-+/, "") // Trim - from start of text
 		.replace(/-+$/, ""); // Trim - from end of text
 };
+
+/**
+ * Remove all special character except space from a string
+ */
+export const removeSpecialCharacterFromString = (text?: string): string | undefined => {
+	if(!text) return text;
+
+	return text.replace(/[^a-zA-Z ]/g, "");
+}

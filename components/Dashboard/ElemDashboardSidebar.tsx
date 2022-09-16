@@ -7,6 +7,7 @@ import { ElemPhoto } from "../ElemPhoto";
 import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { IconOrganization } from "@/components/IconOrganization";
 import { Team_Members, useGetUserProfileQuery } from "@/graphql/types";
+import { IconSetting } from "../IconSetting";
 
 type Props = {}
 
@@ -51,8 +52,15 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
                 {truncate(user?.profileName, { length: 15 })}
               </a>
             </Link>
+          </li>}
+          <li className='py-2 text-slate-600 inline-flex items-center gap-x-2'>
+            <IconSetting />
+            <Link href={`/account`}>
+              <a className="inline-flex items-center">
+              Account Settings
+              </a>
+            </Link>
           </li>
-          }
         </ul>
       </div>
 
