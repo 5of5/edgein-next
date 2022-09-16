@@ -1,17 +1,18 @@
+import React, { MutableRefObject, useRef } from "react";
 import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
-import { ElemPhoto } from "../../components/ElemPhoto";
-import { ElemKeyInfo } from "../../components/ElemKeyInfo";
-import { ElemCompaniesGrid } from "../../components/Person/ElemCompaniesGrid";
-import { ElemVcfirmsGrid } from "../../components/Person/ElemVcfirmsGrid";
-import { ElemTable } from "../../components/ElemTable";
-import { ElemTableCell } from "../../components/ElemTableCell";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemKeyInfo } from "@/components/ElemKeyInfo";
+// import { ElemCompaniesGrid } from "../../components/Person/ElemCompaniesGrid";
+// import { ElemVcfirmsGrid } from "../../components/Person/ElemVcfirmsGrid";
+// import { ElemTable } from "../../components/ElemTable";
+// import { ElemTableCell } from "../../components/ElemTableCell";
+import { ElemTabBar } from "@/components/ElemTabBar";
 import {
 	runGraphQl,
 	formatDate,
 	convertToInternationalCurrencySystem,
+	removeSpecialCharacterFromString,
 } from "../../utils";
 import {
 	GetCompaniesQuery,
@@ -20,6 +21,7 @@ import {
 	Investment_Rounds,
 	People,
 } from "../../graphql/types";
+import { ElemJobsList } from "@/components/Person/ElemJobsList";
 
 type Props = {
 	person: People;
@@ -28,6 +30,7 @@ type Props = {
 
 const Person: NextPage<Props> = (props) => {
 	const router = useRouter();
+	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	const goBack = () => router.back();
 
@@ -49,34 +52,68 @@ const Person: NextPage<Props> = (props) => {
 		personEmails.push(person.personal_email);
 	}
 
-	return (
-		<div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:py-12 lg:px-8">
-			<div onClick={goBack}>
-				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
-					Back
-				</ElemButton>
-			</div>
+	// Tabs
+	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 
-			<div className="flex-col sm:grid sm:grid-cols-4 gap-5 my-8">
-				<div className="col-span-1">
+	return (
+		<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+			{/* <div onClick={goBack}>
+				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
+				Back
+				</ElemButton>
+				</div> */}
+
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+				<div className="col-span-3">
 					<ElemPhoto
 						photo={person.picture}
-						wrapClass="flex items-center justify-center bg-white rounded-lg shadow-md overflow-hidden"
-						imgClass="object-fit min-w-full min-h-full"
+						wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
+						imgClass="object-contain w-full h-full"
 						imgAlt={person.name}
 					/>
 				</div>
+				<div className="w-full col-span-5 mt-7 lg:mt-0">
+					<div className="flex shrink-0">
+						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
+							{person.name}
+						</h1>
+						{person.type && (
+							<div className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap text-lg">
+								{removeSpecialCharacterFromString(person.type as string)}
+							</div>
+						)}
+					</div>
+					{person.about && (
+						<p className="mt-4 line-clamp-3 text-base text-slate-600">
+							{person.about}
+						</p>
+					)}
+				</div>
+			</div>
 
-				<div className="w-full col-span-3 p-2">
-					<h1 className="text-4xl md:text-6xl font-bold my-5">{person.name}</h1>
+			<ElemTabBar className="mt-7" tabs={tabBarItems} />
 
+			<div
+				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+				ref={overviewRef}
+				id="overview"
+			>
+				<div className="col-span-3">
 					<ElemKeyInfo
-						heading=""
+						className="sticky top-4"
+						heading="Key Info"
 						roles={person.type}
 						linkedIn={person.linkedin}
 						investmentsLength={person.investments?.length}
 						emails={personEmails}
+						github={person.github}
+						twitter={person.twitter_url}
+						location={person.city}
+						website={person.website_url}
 					/>
+				</div>
+				<div className="col-span-8">
+					<ElemJobsList heading="Jobs" team_members={person.team_members} />
 				</div>
 			</div>
 
@@ -88,13 +125,14 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-			{person.team_members[0]?.company && (
+			{/* {person.team_members[0]?.company && (
 				<ElemCompaniesGrid
-					className="mt-12"
-					heading="Companies"
-					companies={[person.team_members[0]?.company]}
+				className="mt-12"
+				heading="Companies"
+				companies={[person.team_members[0]?.company]}
 				/>
-			)}
+				)} 
+			*/}
 
 			{/* {person.vc.length > 0 && (
 				<ElemVcfirmsGrid
@@ -104,7 +142,7 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-			{Object.keys(sortedInvestmentRounds).length > 0 && (
+			{/* {Object.keys(sortedInvestmentRounds).length > 0 && (
 				<div className="mt-16" id="investments">
 					<h2 className="text-2xl font-bold">Investments</h2>
 
@@ -125,9 +163,8 @@ const Person: NextPage<Props> = (props) => {
 							return (
 								<tr
 									key={index}
-									className={`${
-										index % 2 === 0 ? "" : ""
-									} flex flex-col flex-no wrap overflow-hidden md:table-row`}
+									className={`${index % 2 === 0 ? "" : ""
+										} flex flex-col flex-no wrap overflow-hidden md:table-row`}
 								>
 									<ElemTableCell header="Company">
 										{theRound.company ? (
@@ -181,18 +218,18 @@ const Person: NextPage<Props> = (props) => {
 						})}
 					</ElemTable>
 				</div>
-			)}
+			)} */}
 		</div>
 	);
 };
 
 // export async function getStaticPaths() {
-// 	const { data: people } = await runGraphQl<GetPersonQuery>(`{ 
-//     people( 
+// 	const { data: people } = await runGraphQl<GetPersonQuery>(`{
+//     people(
 // 			where: {slug: {_neq: ""}}, order_by: {slug: asc}
-//     ){ 
-//         id, 
-//         name, 
+//     ){
+//         id,
+//         name,
 //         slug,
 //       }
 //     }`);

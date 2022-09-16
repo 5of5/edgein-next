@@ -303,14 +303,6 @@ export const IconCash: React.FC<IconProps> = ({ className, title }) => {
 				strokeLinejoin="round"
 				d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"
 			/>
-
-			{/* <path
-				d="M15 5V3C15 2.46957 14.7893 1.96086 14.4142 1.58579C14.0391 1.21071 13.5304 1 13 1H3C2.46957 1 1.96086 1.21071 1.58579 1.58579C1.21071 1.96086 1 2.46957 1 3V9C1 9.53043 1.21071 10.0391 1.58579 10.4142C1.96086 10.7893 2.46957 11 3 11H5M7 15H17C17.5304 15 18.0391 14.7893 18.4142 14.4142C18.7893 14.0391 19 13.5304 19 13V7C19 6.46957 18.7893 5.96086 18.4142 5.58579C18.0391 5.21071 17.5304 5 17 5H7C6.46957 5 5.96086 5.21071 5.58579 5.58579C5.21071 5.96086 5 6.46957 5 7V13C5 13.5304 5.21071 14.0391 5.58579 14.4142C5.96086 14.7893 6.46957 15 7 15ZM14 10C14 10.5304 13.7893 11.0391 13.4142 11.4142C13.0391 11.7893 12.5304 12 12 12C11.4696 12 10.9609 11.7893 10.5858 11.4142C10.2107 11.0391 10 10.5304 10 10C10 9.46957 10.2107 8.96086 10.5858 8.58579C10.9609 8.21071 11.4696 8 12 8C12.5304 8 13.0391 8.21071 13.4142 8.58579C13.7893 8.96086 14 9.46957 14 10Z"
-				stroke="#64748B"
-				strokeWidth="2"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/> */}
 		</svg>
 	);
 };
@@ -318,6 +310,7 @@ export const IconCash: React.FC<IconProps> = ({ className, title }) => {
 export const IconDocumentDownload: React.FC<IconProps> = ({
 	className,
 	title,
+	strokeWidth,
 }) => {
 	return (
 		<svg
@@ -325,7 +318,7 @@ export const IconDocumentDownload: React.FC<IconProps> = ({
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
-			strokeWidth="1.5"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 		>
 			<title>{title ? title : "Document Download"}</title>
@@ -338,24 +331,11 @@ export const IconDocumentDownload: React.FC<IconProps> = ({
 	);
 };
 
-// <svg
-// 			className={className}
-// 			xmlns="http://www.w3.org/2000/svg"
-// 			fill="none"
-// 			viewBox="0 0 24 24"
-// 			stroke="currentColor"
-// 		>
-// 			<title>{title ? title : "Document Download"}</title>
-// 			<path
-// 				d="M8 8V14V8ZM8 14L5 11L8 14ZM8 14L11 11L8 14ZM13 19H3C2.46957 19 1.96086 18.7893 1.58579 18.4142C1.21071 18.0391 1 17.5304 1 17V3C1 2.46957 1.21071 1.96086 1.58579 1.58579C1.96086 1.21071 2.46957 1 3 1H8.586C8.8512 1.00006 9.10551 1.10545 9.293 1.293L14.707 6.707C14.8946 6.89449 14.9999 7.1488 15 7.414V17C15 17.5304 14.7893 18.0391 14.4142 18.4142C14.0391 18.7893 13.5304 19 13 19Z"
-// 				stroke="#64748B"
-// 				strokeWidth="2"
-// 				strokeLinecap="round"
-// 				strokeLinejoin="round"
-// 			/>
-// 		</svg>
-
-export const IconUsers: React.FC<IconProps> = ({ className, title }) => {
+export const IconUsers: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			className={className}
@@ -363,7 +343,7 @@ export const IconUsers: React.FC<IconProps> = ({ className, title }) => {
 			fill="none"
 			viewBox="0 0 24 24"
 			stroke="currentColor"
-			strokeWidth={1.5}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 		>
 			<title>{title ? title : "Users"}</title>
 			<path
@@ -375,14 +355,18 @@ export const IconUsers: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconUserCircle: React.FC<IconProps> = ({ className, title }) => {
+export const IconUserCircle: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			className={className}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			stroke="currentColor"
-			strokeWidth={2}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			viewBox="0 0 24 24"
 		>
 			<title>{title ? title : "User"}</title>
@@ -395,28 +379,11 @@ export const IconUserCircle: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconUserCircleSolid: React.FC<IconProps> = ({
+export const IconFlag: React.FC<IconProps> = ({
 	className,
 	title,
+	strokeWidth,
 }) => {
-	return (
-		<svg
-			className={className}
-			xmlns="http://www.w3.org/2000/svg"
-			fill="currentColor"
-			viewBox="0 0 20 20"
-		>
-			<title>{title ? title : "User"}</title>
-			<path
-				fillRule="evenodd"
-				d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-				clipRule="evenodd"
-			/>
-		</svg>
-	);
-};
-
-export const IconFlag: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
 			className={className}
@@ -424,7 +391,7 @@ export const IconFlag: React.FC<IconProps> = ({ className, title }) => {
 			fill="none"
 			viewBox="0 0 24 24"
 			stroke="currentColor"
-			strokeWidth={1.5}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 		>
 			<title>{title ? title : "Flag"}</title>
 			<path
@@ -519,22 +486,21 @@ export const IconTwitter: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconBriefcase: React.FC<IconProps> = ({ className, title }) => {
+export const IconBriefcase: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			className={className}
 			xmlns="http://www.w3.org/2000/svg"
 			fill="none"
 			viewBox="0 0 24 24"
-			strokeWidth="1.5"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 		>
 			<title>{title ? title : "Briefcase"}</title>
-			{/* <path
-				d="M19 12.255C16.1405 13.4112 13.0844 14.0038 10 14C6.817 14 3.78 13.38 1 12.255M10 11H10.01M14 5V3C14 2.46957 13.7893 1.96086 13.4142 1.58579C13.0391 1.21071 12.5304 1 12 1H8C7.46957 1 6.96086 1.21071 6.58579 1.58579C6.21071 1.96086 6 2.46957 6 3V5H14ZM3 19H17C17.5304 19 18.0391 18.7893 18.4142 18.4142C18.7893 18.0391 19 17.5304 19 17V7C19 6.46957 18.7893 5.96086 18.4142 5.58579C18.0391 5.21071 17.5304 5 17 5H3C2.46957 5 1.96086 5.21071 1.58579 5.58579C1.21071 5.96086 1 6.46957 1 7V17C1 17.5304 1.21071 18.0391 1.58579 18.4142C1.96086 18.7893 2.46957 19 3 19Z"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			/> */}
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
@@ -544,34 +510,40 @@ export const IconBriefcase: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconRole: React.FC<IconProps> = ({ className, title }) => {
+export const IconRole: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
-			className={className}
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2"
 			viewBox="0 0 24 24"
-			aria-hidden="true"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={className}
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			strokeLinecap="round"
+			strokeLinejoin="round"
 		>
 			<title>{title ? title : "Role"}</title>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"
-			/>
+			<path d="M9.58333 6.25H4.16667C3.59203 6.25 3.04093 6.47827 2.6346 6.8846C2.22827 7.29093 2 7.84203 2 8.41667V18.1667C2 18.7413 2.22827 19.2924 2.6346 19.6987C3.04093 20.1051 3.59203 20.3333 4.16667 20.3333H19.3333C19.908 20.3333 20.4591 20.1051 20.8654 19.6987C21.2717 19.2924 21.5 18.7413 21.5 18.1667V8.41667C21.5 7.84203 21.2717 7.29093 20.8654 6.8846C20.4591 6.47827 19.908 6.25 19.3333 6.25H13.9167M9.58333 6.25V5.16667C9.58333 4.59203 9.81161 4.04093 10.2179 3.6346C10.6243 3.22827 11.1754 3 11.75 3C12.3246 3 12.8757 3.22827 13.2821 3.6346C13.6884 4.04093 13.9167 4.59203 13.9167 5.16667V6.25M9.58333 6.25C9.58333 6.82464 9.81161 7.37574 10.2179 7.78206C10.6243 8.18839 11.1754 8.41667 11.75 8.41667C12.3246 8.41667 12.8757 8.18839 13.2821 7.78206C13.6884 7.37574 13.9167 6.82464 13.9167 6.25M8.5 14.9167C9.91483 14.9167 11.1184 15.8213 11.5658 17.0833M8.5 14.9167C7.82766 14.9165 7.17181 15.1247 6.62274 15.5128C6.07368 15.9008 5.65843 16.4495 5.43417 17.0833M15 11.6667H18.25M15 16H17.1667M8.5 14.9167C9.07464 14.9167 9.62574 14.6884 10.0321 14.2821C10.4384 13.8757 10.6667 13.3246 10.6667 12.75C10.6667 12.1754 10.4384 11.6243 10.0321 11.2179C9.62574 10.8116 9.07464 10.5833 8.5 10.5833C7.92536 10.5833 7.37426 10.8116 6.96794 11.2179C6.56161 11.6243 6.33333 12.1754 6.33333 12.75C6.33333 13.3246 6.56161 13.8757 6.96794 14.2821C7.37426 14.6884 7.92536 14.9167 8.5 14.9167Z" />
 		</svg>
 	);
 };
 
-export const IconGlobe: React.FC<IconProps> = ({ className, title }) => {
+export const IconGlobe: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			className={className}
 			viewBox="0 0 24 24"
 			fill="none"
-			strokeWidth={1.5}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 		>
 			<title>{title ? title : "Globe"}</title>
@@ -584,14 +556,18 @@ export const IconGlobe: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconEmail: React.FC<IconProps> = ({ className, title }) => {
+export const IconEmail: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			className={className}
 			fill="none"
 			viewBox="0 0 24 24"
 			aria-hidden="true"
-			strokeWidth={1.5}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 		>
 			<title>{title ? title : "Email"}</title>
@@ -630,13 +606,14 @@ export const IconCompanies: React.FC<IconProps> = ({
 export const IconPaperAirplane: React.FC<IconProps> = ({
 	className,
 	title,
+	strokeWidth,
 }) => {
 	return (
 		<svg
 			className={className}
 			fill="none"
 			stroke="currentColor"
-			strokeWidth="2"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			viewBox="0 0 24 24"
 			aria-hidden="true"
 		>
@@ -776,14 +753,18 @@ export const IconX: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconLocation: React.FC<IconProps> = ({ className, title }) => {
+export const IconLocation: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			className={className}
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
-			strokeWidth={1.5}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 		>
 			<title>{title ? title : "Location"}</title>
