@@ -31,24 +31,21 @@ import { roundChoices, currencyChoices, status } from "../../utils/constants";
 import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
-  <TextInput
-    key="search"
-    type="text"
-    source="round"
-    label="Search in Round"
-    resettable
-    alwaysOn
-  />,
-  <TextInput
-    key="searchNumbers"
-    type="number"
-    source="valuation,amount"
-    label="Valuation, Amount"
-    resettable
-  />,
   <ReferenceInput key="searchCompany" source="company_id" reference="companies">
     <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,
+  <SelectInput
+    key="round"
+    label="Round"
+    source="round"
+    choices={roundChoices}
+  />,
+  <SelectField
+    key="currency"
+    label="Cayer"
+    source="currency"
+    choices={currencyChoices}
+  />,
 ];
 
 const PostPagination = () => (
@@ -154,9 +151,9 @@ export const InvestmentRoundsList = () => {
       }}
     >
       <Datagrid
-        // data={renderData}
-        // sort={customSort}
-        // setSort={(value) => setCustomSort(value)}
+      // data={renderData}
+      // sort={customSort}
+      // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />

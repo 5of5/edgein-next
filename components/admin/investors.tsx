@@ -32,19 +32,25 @@ import {
 import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
-  <TextInput
-    key="search"
-    source="function,seniority,title"
-    label="Search in Function,Seniority,Title"
-    resettable
-    alwaysOn
-  />,
+  <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
   <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
     <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,
   <ReferenceInput key="searchPerson" source="person_id" reference="people">
     <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,
+  <SelectInput
+    key="function"
+    source="function"
+    label="Function"
+    choices={investorFunctionChoices}
+  />,
+  <SelectInput
+    key="seniority"
+    source="seniority"
+    label="Seniority"
+    choices={investorSeniorityChoices}
+  />,
 ];
 
 const PostPagination = () => (
@@ -150,9 +156,9 @@ export const InvestorsList = () => {
       }}
     >
       <Datagrid
-        // data={renderData}
-        // sort={customSort}
-        // setSort={(value) => setCustomSort(value)}
+      // data={renderData}
+      // sort={customSort}
+      // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />

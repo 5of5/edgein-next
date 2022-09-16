@@ -55,14 +55,21 @@ export const companyIcon = BookIcon;
 const filters = [
   <TextInput
     key="search"
-    source="name,layer"
-    label="Search in name, layer"
+    className="w-[500px]"
+    source="name,github,website,velocity_linkedin,twitter,discord,glassdoor,year_founded"
+    label="Name,Year Founded,Github,Website,Linkedin,Twitter,Discord,Glassdoor"
     resettable
     alwaysOn
   />,
   <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
     <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,
+  <SelectInput
+    key="layer"
+    source="layer"
+    label="Layer"
+    choices={companyLayerChoices}
+  />,
 ];
 
 const PostPagination = () => (
@@ -127,6 +134,7 @@ export const CompanyList = () => {
     "glassdoor",
     "tags",
   ];
+
   const { data } = useGetList("companies", {
     pagination: { page: 1, perPage: 10 },
   });
@@ -156,7 +164,7 @@ export const CompanyList = () => {
     return sortData;
   };
   renderData = renderData && sortWithData(renderData);
-
+console.log('data ========', data)
   return (
     <List
       filters={filters}
@@ -271,8 +279,8 @@ export const CompanyEdit = () => {
   const { data: currentData } = useGetOne("companies", { id });
 
   useEffect(() => {
-    if (currentData) setKeyword(currentData.name)
-  }, [currentData])
+    if (currentData) setKeyword(currentData.name);
+  }, [currentData]);
 
   const transform = async (data: any) => {
     var formdata = { ...data };

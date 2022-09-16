@@ -26,7 +26,6 @@ import { status } from "../../utils/constants";
 import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
-  <TextInput key="search" source="status" label="Search in status" resettable alwaysOn />,
   <ReferenceInput key="searchPeople" source="person_id" reference="people">
     <AutocompleteInput optionText={(choice) => `${choice.name}`} />
   </ReferenceInput>,

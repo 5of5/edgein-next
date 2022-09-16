@@ -44,8 +44,9 @@ import {
 const filters = [
   <TextInput
     key="search"
-    source="name"
-    label="Search in name"
+    className="w-[500px]"
+    source="name,website,linkedin,twitter,year_founded"
+    label="Name,Year Founded,Website,Linkedin,Twitter"
     resettable
     alwaysOn
   />,

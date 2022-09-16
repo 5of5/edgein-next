@@ -73,8 +73,9 @@ import {
 const filters = [
   <TextInput
     key="search"
-    source="name,type"
-    label="Search in name,type"
+    className="w-[500px]"
+    source="name,github,personal_email,work_email,linkedin"
+    label="Name,Github,Personal Email,Work Email,Linkedin"
     resettable
     alwaysOn
   />,
@@ -256,8 +257,7 @@ export const PeopleEdit = () => {
   }, [currentData])
 
   useEffect(() => {
-    if (currentId)
-      setFilterData(member?.filter((f) => f.person_id === parseInt(currentId)));
+      setFilterData(member?.filter((f) => f.person_id === parseInt(currentId!)));
   }, [currentId, member]);
 
   useEffect(() => {
@@ -382,7 +382,7 @@ export const PeopleEdit = () => {
     if (!teamData.company_id) setIsError(true);
     else {
       const data = {
-        person_id: parseInt(currentId),
+        person_id: parseInt(currentId!),
         company_id: teamData.company_id,
         function: teamData.function,
         seniority: teamData.seniority,
