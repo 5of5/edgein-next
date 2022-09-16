@@ -55,16 +55,18 @@ export const TheNavbar = () => {
 		const isFirstLoadAfterLogin = await localStorage.getItem("isFirstLoadAfterLogin")
 		if((!isFirstLoadAfterLogin || isFirstLoadAfterLogin === "true") && user){
 			localStorage.setItem("isFirstLoadAfterLogin", "false")
-			const account = await login(user.auth0_token)
-			if(account){
-				await fetch("/api/update_user_wallet/", {
-					method: "PUT",
-					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ wallet_address : account }),
-				});//.then(res => res.json());
+			if(!user.wallet_address){
+				const account = await login(user.auth0_token)
+				if(account){
+					await fetch("/api/update_user_wallet/", {
+						method: "PUT",
+						headers: {
+							Accept: "application/json",
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ wallet_address : account }),
+					});//.then(res => res.json());
+				}
 			}
 		}
 	},[login])
