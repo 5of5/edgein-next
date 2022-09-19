@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email = req.body.email
   const personId = req.body.personId
 
-  const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType, personId)
+  const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType, user.id, personId)
 
   const url = `${process.env.SITE_URL}verify-workplace?token=${verifyWorkToken}`
 

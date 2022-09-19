@@ -2,21 +2,21 @@ import { useAuth } from "../hooks/useAuth"
 import { ElemPhoto } from "@/components/ElemPhoto"
 import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal"
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
-import { Companies, GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, People, useGetUserProfileQuery, Vc_Firms } from "@/graphql/types"
+import { GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, Organization_Edit_Access, People, useGetUserProfileQuery } from "@/graphql/types"
 import { runGraphQl } from "@/utils"
 import { GetStaticProps } from "next"
 import { FC, useEffect, useState } from "react"
 import Link from "next/link"
-import { kebabCase } from "lodash"
 
 type Props = {
 	dropdown: any[]
 }
 
-const Organization: FC<Props> = ({ dropdown }) => {
+const Organizations: FC<Props> = ({ dropdown }) => {
 	const { user } = useAuth();
 
 	const [profile, setProfile] = useState({} as People)
+	const [organizations, setOrganization] = useState([] as Organization_Edit_Access[])
 
 	const [showVerifyModal, setShowVerifyModal] = useState(false)
 
@@ -29,6 +29,9 @@ const Organization: FC<Props> = ({ dropdown }) => {
 	useEffect(() => {
 		if (users?.users_by_pk && users.users_by_pk.person) {
 			setProfile(users.users_by_pk.person as People)
+		}
+		if (users?.users_by_pk?.organizations) {
+			setOrganization(users?.users_by_pk?.organizations as Organization_Edit_Access[])
 		}
 	}, [users])
 
@@ -51,7 +54,7 @@ const Organization: FC<Props> = ({ dropdown }) => {
 
 						</div>
 
-						{profile?.team_members?.map((teamMember) => {
+						{organizations?.map((teamMember) => {
 							const type = teamMember.company ? 'Company' : 'Investment Firm'
 							const data = teamMember.company || teamMember.vc_firm
 							return (
@@ -70,7 +73,7 @@ const Organization: FC<Props> = ({ dropdown }) => {
 												<span className="font-thin text-slate-500 text-sm">{type}</span>
 											</div>
 										</div>
-										<Link href={`/organization/${kebabCase(type)}/${data?.slug}`}>
+										<Link href={`/organizations/${type === 'Company' ? 'companies' : 'investors'}/${data?.slug}`}>
 											<a
 												className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500"
 											>
@@ -114,6 +117,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		value: company.id,
 		type: 'companies',
 		logo: company.logo,
+		website: company.website,
 	})) || []
 
 	const vcFirmsDropdown = vcFirmsData?.vc_firms.map((vcfirm) => ({
@@ -121,6 +125,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		value: vcfirm.id,
 		type: 'vc_firms',
 		logo: vcfirm.logo,
+		website: vcfirm.website,
 	})) || []
 
 	return {
@@ -130,4 +135,4 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 }
 
-export default Organization
+export default Organizations
