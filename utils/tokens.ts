@@ -22,8 +22,8 @@ export const saveToken = async (token: string, type: string, userId: number, acc
   return result
 }
 
-export const generateVerifyWorkplaceToken = async (resourceId: string, resourceType: string, userId: number, personId?: number) => {
-  return await new SignJWT({ resourceDetails: { resourceId, resourceType, userId, personId } })
+export const generateVerifyWorkplaceToken = async (resourceId: string, resourceType: string, userId: number, email: string, personId?: number) => {
+  return await new SignJWT({ resourceDetails: { resourceId, resourceType, userId, personId, email } })
     .setProtectedHeader({ alg: 'HS256' })
     .setJti(nanoid())
     .setIssuedAt()

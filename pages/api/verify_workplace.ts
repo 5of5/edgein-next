@@ -1,4 +1,4 @@
-import { mutate } from "@/graphql/hasuraAdmin";
+import { mutate, query } from "@/graphql/hasuraAdmin";
 import { tokenTypes } from "@/utils/constants";
 import { deleteToken, findToken } from "@/utils/tokens";
 import { jwtVerify } from "jose";
@@ -34,6 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (payload.resourceDetails.personId)
       await addTeamMember(payload, token)
+    
+    await updateUserEmails(payload.resourceDetails.userId, payload.resourceDetails.email, token)
 
     await deleteToken(existsToken.id, token)
   } catch (e: any) {
@@ -106,6 +108,44 @@ const addTeamMember = async (payload: any, accessToken: string) => {
     mutation: mutation || '',
     variables: variables || {}
   }, accessToken)
+}
+
+export const updateUserEmails = async (userId: number, email: string, accessToken: string) => {
+  const queryUser = `
+    query GetUserByPk($userId: Int!) {
+      users_by_pk(id: $userId) {
+        id
+        additional_emails
+      }
+    }
+  `
+
+  const result = await query({
+    query: queryUser,
+    variables: {
+      userId
+    }
+  }, accessToken)
+  if (!result.data.users_by_pk) return
+
+  const emails = result.data.users_by_pk?.additional_emails || []
+
+  if (!emails.includes(email)) emails.push(email)
+  const mutation = `
+    mutation UpdateUserByPk($userId: Int!, $emails: jsonb) {
+      update_users_by_pk(pk_columns: {id: $userId}, _set: {additional_emails: $emails}) {
+        id
+      }
+    }
+  `
+  await mutate({
+    mutation,
+    variables: {
+      userId,
+      emails
+    }
+  }, accessToken)
+
 }
 
 export default handler
