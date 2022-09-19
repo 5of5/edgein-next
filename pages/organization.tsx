@@ -86,6 +86,7 @@ const Organization: FC<Props> = ({ dropdown }) => {
 						isOpen={showVerifyModal}
 						onClose={() => setShowVerifyModal(false)}
 						dropdown={dropdown}
+						personId={profile.id}
 					/>
 				</div>
 			</DashboardLayout>

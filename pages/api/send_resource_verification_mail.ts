@@ -3,6 +3,7 @@ import CookieService from '../../utils/cookie'
 import nodemailer from 'nodemailer'
 import { generateVerifyWorkplaceToken, saveToken } from "@/utils/tokens";
 import { tokenTypes } from "@/utils/constants";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -16,12 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const resourceId = req.body.resource.resourceId
   const resourceType = req.body.resource.type
   const email = req.body.email
+  const personId = req.body.personId
 
-  const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType)
+  const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType, personId)
 
-  const url = `http://localhost:3000/api/verify_workplace?token=${verifyWorkToken}`
+  const url = `${process.env.SITE_URL}verify-workplace?token=${verifyWorkToken}`
 
-  await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id)
+  await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id, token)
 
   await sendVerificationMail(url, companyName, email, user.display_name || '')
 
@@ -32,13 +34,13 @@ const sendVerificationMail = async (url: string, companyName: string, email: str
 
   // create reusable transporter object using the default SMTP transport
   let transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST!,
+    host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
     auth: {
-      user: 'devon.balistreri@ethereal.email',
-      pass: 'xSHRPmh42zjWCFuFg4'
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD
     }
-  })
+  } as SMTPTransport.Options)
 
   const html = `
     <b>Hi ${userName}</b>,
@@ -55,11 +57,11 @@ const sendVerificationMail = async (url: string, companyName: string, email: str
     html, // html body
   });
 
-  console.log("Message sent: %s", info.messageId);
+  // console.log("Message sent: %s", info.messageId);
   // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
   // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
   // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 }
 
