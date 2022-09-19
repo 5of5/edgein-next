@@ -1,16 +1,18 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { ElemButton } from './ElemButton';
-import { ElemPhoto } from './ElemPhoto';
-import { IconX } from './Icons';
-import { InputText } from './InputText';
-import Select from 'react-select';
+import { ElemButton } from './ElemButton'
+import { ElemPhoto } from './ElemPhoto'
+import { IconX } from './Icons'
+import { InputText } from './InputText'
+import Select from 'react-select'
+import { validateCompanyEmail } from '@/utils'
+import extractDomain from "extract-domain"
 
 type Props = {
   isOpen: boolean
   onClose: (e: any) => void
   dropdown?: any[]
-  personId: number
+  personId?: number
 }
 
 export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropdown, personId }) => {
@@ -42,6 +44,8 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
 
     if (step === 'email') {
       if (!email) setError('Please enter email')
+      else if (!validateCompanyEmail([extractDomain(selectedCompany.website)], email))
+        setError('Please enter valid company email')
       else {
         await sendVerificationMail()
         setIsEmailEntered(true)

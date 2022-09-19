@@ -1,3 +1,5 @@
+import validator from "validator";
+
 /**
  * Make stop words lower case in a title
  * @param str - string to manipulate
@@ -49,10 +51,10 @@ export const kebabCase = (string: string): string => {
 	return !string
 		? string
 		: string
-				.replace(/([a-z])([A-Z])/g, "$1-$2")
-				.replace("-", "") // Remove string dashes
-				.replace(/[\s_]+/g, "-")
-				.toLowerCase();
+			.replace(/([a-z])([A-Z])/g, "$1-$2")
+			.replace("-", "") // Remove string dashes
+			.replace(/[\s_]+/g, "-")
+			.toLowerCase();
 };
 
 /**
@@ -91,7 +93,16 @@ export const slugify = (text?: string): string | undefined => {
  * Remove all special character except space from a string
  */
 export const removeSpecialCharacterFromString = (text?: string): string | undefined => {
-	if(!text) return text;
+	if (!text) return text;
 
 	return text.replace(/[^a-zA-Z ]/g, "");
+}
+export const validateCompanyEmail = (domains: string[], email: string) => {
+	if (!validator.isEmail(email)) return false
+
+	const emailParts = email.split('@')
+
+	if (!domains.includes(emailParts[1])) return false
+
+	return true
 }

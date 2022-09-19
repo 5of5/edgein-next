@@ -65,6 +65,7 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current
 		num_of_investments
 		sentiment
 		overview
+		website
 		follows(where: {created_by_user_id: {_eq: $current_user}}) {
       list {
         name
