@@ -243,3 +243,5 @@ export const functionChoicesTM = [
       name: "Published"
     }
   ]
+
+  export const sentimentLimit = 50;

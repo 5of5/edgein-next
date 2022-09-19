@@ -129,3 +129,9 @@ export const getTimeOfWork = (startDate: string, endDate: string) => {
 		.duration(timeDiff)
 		.months()} mo`;
 };
+
+export const getDateTomorrow = (): string => {
+	const date = new Date();
+	date.setDate(date.getDate() + 1)
+	return date.toISOString().replace(/T.*/, "").split("-").join("-");
+};

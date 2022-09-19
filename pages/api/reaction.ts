@@ -1,7 +1,9 @@
-import { mutate, query } from '@/graphql/hasuraAdmin'
-import { deleteIfExists, updateResourceSentimentCount, upsertFollow, upsertList } from '@/utils/lists'
-import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
+import { sentimentLimit } from '@/utils/constants';
+import { mutate, query } from '@/graphql/hasuraAdmin'
+import type { NextApiRequest, NextApiResponse } from 'next'
+import { getDateToday, getDateTomorrow } from '../../utils/numbers'
+import { deleteIfExists, updateResourceSentimentCount, upsertFollow, upsertList } from '@/utils/lists'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
@@ -15,6 +17,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies)
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end()
+
+  // check the count of the current date sentiments
+  const sentimentsCount = await getSentimentsCount(user.id);
+  if (sentimentsCount.length >= 50) return res.status(404).send({ message: 'Sentiment limit reached' });
 
   const resourceType = companyId ? 'companies' : vcFirmId ? 'vc_firms' : ''
   const resourceId = resourceType === 'companies' ? companyId : vcFirmId
@@ -67,6 +73,49 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
 
   res.send({ ...sentiment })
+}
+
+const getSentimentsCount = async (userId: number) => {
+  // prepare gql query
+  const fetchQuery = `
+  query MyQuery($hotProperties: jsonb, $likeProperties: jsonb, $crapProperties: jsonb, $todayDate: timestamptz, $nextDate: timestamptz, $user: Int) {
+    actions(where: {_or: [
+      {properties: {_contains: $hotProperties}}, 
+      {properties: {_contains: $likeProperties}},
+      {properties: {_contains: $crapProperties}}
+    ], 
+      created_at: {_gte: $todayDate, _lt: $nextDate}, 
+      user: {_eq: $user}}
+    ) {
+      action
+      id
+      created_at
+    }
+  }
+  
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: {
+        "hotProperties": {
+          "sentiment": "hot"
+        },
+         "likeProperties": {
+          "sentiment": "like"
+        },
+        "crapProperties": {
+          "sentiment": "crap"
+        },
+        "todayDate": getDateToday(),
+        "nextDate": getDateTomorrow(),
+        "user": userId
+      }
+    })
+    return data.data.actions
+  } catch (ex) {
+    throw ex;
+  }
 }
 
 export default handler
