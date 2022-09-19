@@ -13,7 +13,7 @@ type Props = {
 	dropdown: any[]
 }
 
-const Organization: FC<Props> = ({ dropdown }) => {
+const Organizations: FC<Props> = ({ dropdown }) => {
 	const { user } = useAuth();
 
 	const [profile, setProfile] = useState({} as People)
