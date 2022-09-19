@@ -90,7 +90,7 @@ export type Actions = {
   properties: Scalars['jsonb'];
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
-  user: Scalars['String'];
+  user: Scalars['Int'];
 };
 
 
@@ -139,6 +139,7 @@ export type Actions_Avg_Fields = {
   __typename?: 'actions_avg_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "actions". All fields are combined with a logical 'AND'. */
@@ -153,7 +154,7 @@ export type Actions_Bool_Exp = {
   properties: InputMaybe<Jsonb_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
-  user: InputMaybe<String_Comparison_Exp>;
+  user: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "actions" */
@@ -181,6 +182,7 @@ export type Actions_Delete_Key_Input = {
 export type Actions_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   resource_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "actions" */
@@ -192,7 +194,7 @@ export type Actions_Insert_Input = {
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
-  user: InputMaybe<Scalars['String']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
@@ -204,7 +206,7 @@ export type Actions_Max_Fields = {
   page: Maybe<Scalars['String']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
-  user: Maybe<Scalars['String']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
@@ -216,7 +218,7 @@ export type Actions_Min_Fields = {
   page: Maybe<Scalars['String']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
-  user: Maybe<Scalars['String']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** response of any mutation on the table "actions" */
@@ -286,7 +288,7 @@ export type Actions_Set_Input = {
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
-  user: InputMaybe<Scalars['String']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
@@ -294,6 +296,7 @@ export type Actions_Stddev_Fields = {
   __typename?: 'actions_stddev_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -301,6 +304,7 @@ export type Actions_Stddev_Pop_Fields = {
   __typename?: 'actions_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -308,6 +312,7 @@ export type Actions_Stddev_Samp_Fields = {
   __typename?: 'actions_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -315,6 +320,7 @@ export type Actions_Sum_Fields = {
   __typename?: 'actions_sum_fields';
   id: Maybe<Scalars['Int']>;
   resource_id: Maybe<Scalars['Int']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "actions" */
@@ -342,6 +348,7 @@ export type Actions_Var_Pop_Fields = {
   __typename?: 'actions_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -349,6 +356,7 @@ export type Actions_Var_Samp_Fields = {
   __typename?: 'actions_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -356,6 +364,7 @@ export type Actions_Variance_Fields = {
   __typename?: 'actions_variance_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** Allowed email Ids */
@@ -9829,7 +9838,10 @@ export type Users = {
   /** An object relationship */
   person: Maybe<People>;
   person_id: Maybe<Scalars['Int']>;
+  reference_id: Scalars['String'];
+  reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  wallet_address: Maybe<Scalars['String']>;
 };
 
 
@@ -9887,6 +9899,7 @@ export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
@@ -9904,7 +9917,10 @@ export type Users_Bool_Exp = {
   list_members: InputMaybe<List_Members_Bool_Exp>;
   person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
+  reference_id: InputMaybe<String_Comparison_Exp>;
+  reference_user_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
+  wallet_address: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
@@ -9921,6 +9937,7 @@ export enum Users_Constraint {
 export type Users_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "users" */
@@ -9935,7 +9952,10 @@ export type Users_Insert_Input = {
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   person: InputMaybe<People_Obj_Rel_Insert_Input>;
   person_id: InputMaybe<Scalars['Int']>;
+  reference_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
+  wallet_address: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -9948,7 +9968,10 @@ export type Users_Max_Fields = {
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+  reference_id: Maybe<Scalars['String']>;
+  reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  wallet_address: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -9961,7 +9984,10 @@ export type Users_Min_Fields = {
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+  reference_id: Maybe<Scalars['String']>;
+  reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  wallet_address: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "users" */
@@ -9999,7 +10025,10 @@ export type Users_Order_By = {
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   person: InputMaybe<People_Order_By>;
   person_id: InputMaybe<Order_By>;
+  reference_id: InputMaybe<Order_By>;
+  reference_user_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
+  wallet_address: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: users */
@@ -10026,7 +10055,13 @@ export enum Users_Select_Column {
   /** column name */
   PersonId = 'person_id',
   /** column name */
-  Role = 'role'
+  ReferenceId = 'reference_id',
+  /** column name */
+  ReferenceUserId = 'reference_user_id',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  WalletAddress = 'wallet_address'
 }
 
 /** input type for updating data in table "users" */
@@ -10039,7 +10074,10 @@ export type Users_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   person_id: InputMaybe<Scalars['Int']>;
+  reference_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
+  wallet_address: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -10047,6 +10085,7 @@ export type Users_Stddev_Fields = {
   __typename?: 'users_stddev_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -10054,6 +10093,7 @@ export type Users_Stddev_Pop_Fields = {
   __typename?: 'users_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -10061,6 +10101,7 @@ export type Users_Stddev_Samp_Fields = {
   __typename?: 'users_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -10068,6 +10109,7 @@ export type Users_Sum_Fields = {
   __typename?: 'users_sum_fields';
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+  reference_user_id: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "users" */
@@ -10089,7 +10131,13 @@ export enum Users_Update_Column {
   /** column name */
   PersonId = 'person_id',
   /** column name */
-  Role = 'role'
+  ReferenceId = 'reference_id',
+  /** column name */
+  ReferenceUserId = 'reference_user_id',
+  /** column name */
+  Role = 'role',
+  /** column name */
+  WalletAddress = 'wallet_address'
 }
 
 /** aggregate var_pop on columns */
@@ -10097,6 +10145,7 @@ export type Users_Var_Pop_Fields = {
   __typename?: 'users_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -10104,6 +10153,7 @@ export type Users_Var_Samp_Fields = {
   __typename?: 'users_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -10111,6 +10161,7 @@ export type Users_Variance_Fields = {
   __typename?: 'users_variance_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "vc_firms" */
@@ -10784,6 +10835,11 @@ export type Waitlist_Emails_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+export type GetAllCoinsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCoinsQuery = { __typename?: 'query_root', coins: Array<{ __typename?: 'coins', ticker: string, name: string, id: number }> };
+
 export type GetCompanyQueryVariables = Exact<{
   slug: Scalars['String'];
   current_user?: InputMaybe<Scalars['Int']>;
@@ -10912,6 +10968,34 @@ export type GetRelevantVcFirmsQueryVariables = Exact<{
 export type GetRelevantVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_vc_firms', list: { __typename?: 'lists', name: string } | null }> }> };
 
 
+export const GetAllCoinsDocument = `
+    query GetAllCoins {
+  coins {
+    ticker
+    name
+    id
+  }
+}
+    `;
+export const useGetAllCoinsQuery = <
+      TData = GetAllCoinsQuery,
+      TError = Error
+    >(
+      variables?: GetAllCoinsQueryVariables,
+      options?: UseQueryOptions<GetAllCoinsQuery, TError, TData>
+    ) =>
+    useQuery<GetAllCoinsQuery, TError, TData>(
+      variables === undefined ? ['GetAllCoins'] : ['GetAllCoins', variables],
+      fetcher<GetAllCoinsQuery, GetAllCoinsQueryVariables>(GetAllCoinsDocument, variables),
+      options
+    );
+useGetAllCoinsQuery.document = GetAllCoinsDocument;
+
+
+useGetAllCoinsQuery.getKey = (variables?: GetAllCoinsQueryVariables) => variables === undefined ? ['GetAllCoins'] : ['GetAllCoins', variables];
+;
+
+useGetAllCoinsQuery.fetcher = (variables?: GetAllCoinsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllCoinsQuery, GetAllCoinsQueryVariables>(GetAllCoinsDocument, variables, options);
 export const GetCompanyDocument = `
     query GetCompany($slug: String!, $current_user: Int = 0) {
   companies(where: {slug: {_eq: $slug}}) {
