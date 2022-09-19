@@ -44,7 +44,8 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
 
     if (step === 'email') {
       if (!email) setError('Please enter email')
-      else if (validateCompanyEmail([extractDomain(selectedCompany.website), extractDomain(selectedCompany.website, { tld: true })], email)) setError('Please enter valid company email')
+      else if (!validateCompanyEmail([extractDomain(selectedCompany.website)], email))
+        setError('Please enter valid company email')
       else {
         await sendVerificationMail()
         setIsEmailEntered(true)
