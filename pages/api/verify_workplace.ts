@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     new TextEncoder().encode(process.env.ENCRYPTION_SECRET)
   )
 
-  let payload = verified.payload
+  let payload: any = verified.payload
 
   if (!payload) res.status(400).send({ message: 'Bad request or token expired' })
   try {
@@ -30,7 +30,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!existsToken) res.status(400).send({ message: 'Verification link already used' })
 
-    await addTeamMember(payload, token)
+    await addOrganizationEditAccess(payload, token)
+
+    if (payload.resourceDetails.personId)
+      await addTeamMember(payload, token)
 
     await deleteToken(existsToken.id, token)
   } catch (e: any) {
@@ -38,6 +41,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   res.send({ message: 'success' })
+
+}
+
+const addOrganizationEditAccess = async (payload: any, accessToken: string) => {
+
+  const resourceType = payload.resourceDetails.resourceType
+  const resourceId = payload.resourceDetails.resourceId
+  const userId = payload.resourceDetails.userId
+  const mutation = `
+    mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
+      insert_organization_edit_access_one(object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}, on_conflict: {constraint: organization_edit_access_user_id_resource_id_resource_type_key, update_columns: []}) {
+        id
+        user_id
+        resource_id
+        resource_type
+      }
+    }
+  `
+
+  return await mutate({
+    mutation,
+    variables: {
+      resourceType,
+      resourceId,
+      userId,
+    }
+  }, accessToken);
 
 }
 

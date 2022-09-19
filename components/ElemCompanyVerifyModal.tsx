@@ -10,7 +10,7 @@ type Props = {
   isOpen: boolean
   onClose: (e: any) => void
   dropdown?: any[]
-  personId: number
+  personId?: number
 }
 
 export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropdown, personId }) => {
