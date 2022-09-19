@@ -2,12 +2,11 @@ import { useAuth } from "../hooks/useAuth"
 import { ElemPhoto } from "@/components/ElemPhoto"
 import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal"
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
-import { Companies, GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, Organization_Edit_Access, People, useGetUserProfileQuery, Vc_Firms } from "@/graphql/types"
+import { GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, Organization_Edit_Access, People, useGetUserProfileQuery } from "@/graphql/types"
 import { runGraphQl } from "@/utils"
 import { GetStaticProps } from "next"
 import { FC, useEffect, useState } from "react"
 import Link from "next/link"
-import { kebabCase } from "lodash"
 
 type Props = {
 	dropdown: any[]
@@ -118,6 +117,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		value: company.id,
 		type: 'companies',
 		logo: company.logo,
+		website: company.website,
 	})) || []
 
 	const vcFirmsDropdown = vcFirmsData?.vc_firms.map((vcfirm) => ({
@@ -125,6 +125,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		value: vcfirm.id,
 		type: 'vc_firms',
 		logo: vcfirm.logo,
+		website: vcfirm.website,
 	})) || []
 
 	return {
