@@ -34,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (payload.resourceDetails.personId)
       await addTeamMember(payload, token)
-    
+
     await updateUserEmails(payload.resourceDetails.userId, payload.resourceDetails.email, token)
 
     await deleteToken(existsToken.id, token)
@@ -131,6 +131,8 @@ export const updateUserEmails = async (userId: number, email: string, accessToke
   const emails = result.data.users_by_pk?.additional_emails || []
 
   if (!emails.includes(email)) emails.push(email)
+  else return
+  
   const mutation = `
     mutation UpdateUserByPk($userId: Int!, $emails: jsonb) {
       update_users_by_pk(pk_columns: {id: $userId}, _set: {additional_emails: $emails}) {
