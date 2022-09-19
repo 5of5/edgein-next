@@ -1,8 +1,10 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { InputSearch } from './InputSearch';
 import { InputSelect } from './InputSelect';
 import { InputText } from './InputText';
+import { useGetAllPersonsQuery, People, Team_Members } from "@/graphql/types";
+import { functionChoicesTM } from '@/utils/constants';
 
 type Props = {
     isOpen: boolean;
@@ -11,6 +13,43 @@ type Props = {
 
 
 export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose }) => {
+
+    const [persons, setPersons] = useState<People[]>();
+    const [personFilterValues, setPersonFilterValues] = useState([]);
+    const [employee, setEmployee] = useState<Team_Members>({})
+
+    const titleFilterValues = functionChoicesTM.map((option) => {
+        return {
+            title: option.name,
+            value: option.id,
+        };
+    });
+
+    const {
+        data: personsData
+    } = useGetAllPersonsQuery()
+
+    useEffect(() => {
+		if (personsData) {
+            setPersons(personsData?.people);
+            setPersonFilterValues(
+                personsData?.people ? personsData?.people.map(x =>  {
+                    return {
+                        title: x.name,
+                        value: x.id
+                    }
+                }) : []
+            )
+        }
+    }, [personsData]);
+
+    const setValues = (key: string, value: any) => {
+        const tempData = {
+            ...employee,
+            [key]: value
+        }
+        setEmployee(tempData)
+    }
 
     return (
         <>
@@ -47,8 +86,13 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose }) => {
 
                                         <div className="mt-4">
                                             <label className='font-Metropolis text-sm font-bold text-slate-300'>Person</label>
-                                            <InputSearch className=' max-w-sm placeholder:text-slate-250'
-                                                placeholder='find a person to add' />
+                                            <InputSelect
+                                                options={personFilterValues}
+                                                value={personFilterValues && employee.person_id ? personFilterValues.find(x => x.value === employee.person_id) : {}}
+                                                onChange={(e) =>  setValues('person_id', e.value)}
+                                            // placeholder="Layer 1 programmable/Blockchain/Netw..."
+                                                className="w-80 text-slate-600 text-base"
+                                            />
                                         </div>
 
                                         <div className='mt-4'>
@@ -61,12 +105,12 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose }) => {
                                         </div>
                                         <div className='mt-4'>
                                             <label className=' block  font-Metropolis text-sm font-bold text-slate-300'>Title</label>
-                                            <InputText
-                                                name=""
-                                                value=""
-                                                onChange={() => { }}
-                                                className=" max-w-sm placeholder:text-slate-500"
-                                                placeholder='Founder and CEO'
+                                            <InputSelect
+                                                options={titleFilterValues}
+                                                onChange={(e) =>  setValues('function', e.value)}
+                                                value={titleFilterValues && employee.function ? titleFilterValues.find(x=> x.value === employee.function):{}}
+                                                placeholder="Founder"
+                                                className='max-w-sm placeholder:text-slate-250'
                                             />
                                         </div>
 
@@ -75,8 +119,15 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose }) => {
                                             <input type="checkbox" checked /><span className='text-sm font-Metropolis font-normal text-slate-600 ml-2'>Current</span>
                                             <InputText
                                                 name=""
-                                                value=""
-                                                onChange={() => { }}
+                                                value={(employee.start_date) ? employee.start_date : ''}
+                                                onChange={(e) => { setValues('start_date', e.target.value) }}
+                                                className=" mt-2 block max-w-sm placeholder:text-slate-500"
+                                            />
+                                            to
+                                            <InputText
+                                                name=""
+                                                value={(employee.end_date) ? employee.end_date : ''}
+                                                onChange={(e) => { setValues('end_date', e.target.value)}}
                                                 className=" mt-2 block max-w-sm placeholder:text-slate-500"
                                             />
                                         </div>

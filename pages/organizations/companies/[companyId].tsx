@@ -281,7 +281,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 <div className="col-span-8">
                                     <InputSelect
                                         options={coinFilterValues}
-                                        value={coinFilterValues ? coinFilterValues.find(x => x.value === companyEditable.coin?.id) : []}
+                                        value={coinFilterValues ? coinFilterValues.find(x => x.value === companyEditable.coin?.id) : {}}
                                         onChange={(e) =>  setValues('coin', {id: e.value, ticker: e.title})}
                                        // placeholder="Layer 1 programmable/Blockchain/Netw..."
                                         className="w-80 text-slate-600 text-base"
@@ -546,10 +546,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 onEdit={(round) => console.log("round ==", round)}
                                 investments={company.investment_rounds}
                             />
-
                             {investmentDrawer && <ElemInvestmentSideDrawer isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
-
-
                         </div>
                     </div>
                 </div>

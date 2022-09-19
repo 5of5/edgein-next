@@ -11378,6 +11378,11 @@ export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string | null }> };
 
+export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPersonsQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null }> };
+
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -11944,6 +11949,33 @@ useGetPersonsPathQuery.getKey = (variables?: GetPersonsPathQueryVariables) => va
 ;
 
 useGetPersonsPathQuery.fetcher = (variables?: GetPersonsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables, options);
+export const GetAllPersonsDocument = `
+    query GetAllPersons {
+  people {
+    id
+    name
+  }
+}
+    `;
+export const useGetAllPersonsQuery = <
+      TData = GetAllPersonsQuery,
+      TError = Error
+    >(
+      variables?: GetAllPersonsQueryVariables,
+      options?: UseQueryOptions<GetAllPersonsQuery, TError, TData>
+    ) =>
+    useQuery<GetAllPersonsQuery, TError, TData>(
+      variables === undefined ? ['GetAllPersons'] : ['GetAllPersons', variables],
+      fetcher<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, variables),
+      options
+    );
+useGetAllPersonsQuery.document = GetAllPersonsDocument;
+
+
+useGetAllPersonsQuery.getKey = (variables?: GetAllPersonsQueryVariables) => variables === undefined ? ['GetAllPersons'] : ['GetAllPersons', variables];
+;
+
+useGetAllPersonsQuery.fetcher = (variables?: GetAllPersonsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, variables, options);
 export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
