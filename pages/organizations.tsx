@@ -74,7 +74,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 												<span className="font-thin text-slate-500 text-sm">{type}</span>
 											</div>
 										</div>
-										<Link href={`/organization/${type === 'Company' ? 'companies' : 'investors'}/${data?.slug}`}>
+										<Link href={`/organizations/${type === 'Company' ? 'companies' : 'investors'}/${data?.slug}`}>
 											<a
 												className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500"
 											>
@@ -134,4 +134,4 @@ export const getStaticProps: GetStaticProps = async () => {
 	}
 }
 
-export default Organization
+export default Organizations
