@@ -9,7 +9,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token)
   if (!user) return res.status(403).end()
 
-  const resp = await upserTeamMember(req.body.teammember, token)
+  const resp = await upserTeamMember({ data: req.body.teammember }, token)
 
   return res.json(resp)
 
