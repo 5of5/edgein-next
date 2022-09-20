@@ -1,12 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
-import Link from "next/link"
-import { IconCrap } from "../components/reactions/IconCrap"
-import { IconHot } from "../components/reactions/IconHot"
-import { IconLike } from "../components/reactions/IconLike"
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconChevronRight } from "@/components/Icons";
-import company from "../images/company.png"
 import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
@@ -15,6 +10,7 @@ import { IconCamera } from "@/components/IconCamera";
 import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer"
 import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer"
 import { useState } from "react";
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 
 
 type Props = {
@@ -37,48 +33,7 @@ export default function Investoredit() {
 
     return (
         <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-            <div className="grid grid-cols-4 gap-4">
-                <div className="col-span-1">
-                    <h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
-                    <ul className="flex flex-col">
-                        <li
-                            className="py-2 text-slate-600 inline-flex items-center"
-                            role="button"
-                        >
-                            <Link href="" //href={`/lists/${hotId}`}
-                            >
-                                <a className="inline-flex items-center">
-                                    <IconHot className="mr-1 w-7" /> Hot
-                                </a>
-                            </Link>
-                        </li>
-                        <li
-                            className="py-2 text-slate-600 inline-flex items-center"
-                            role="button">
-                            <Link href="" //href={`/lists/${likeId}`}
-                            >
-                                <a className="inline-flex items-center">
-                                    <IconLike className="mr-1 w-7" /> Like
-                                </a>
-                            </Link>
-                        </li>
-                        <li
-                            className={`py-2 text-slate-600 inline-flex items-center`}
-                            role="button"
-                        >
-                            <Link href="" //href={`/lists/${crapId}`}
-                            >
-                                <a className="inline-flex items-center">
-                                    <IconCrap className="mr-1 w-7" /> Crap
-
-                                </a>
-                            </Link>
-                        </li>
-
-                        {/* {renderMyCustomList()} */}
-                    </ul>
-                </div>
-
+            <DashboardLayout>
                 <div className="col-span-3">
                     <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 pb-3">
                         <h2 className="text-xl font-bold font-Metropolis text-dark-950">
@@ -833,7 +788,7 @@ export default function Investoredit() {
 
                     </div>
                 </div>
-            </div>
-        </div >
+            </DashboardLayout>
+        </div>
     )
 }
