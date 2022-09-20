@@ -4,6 +4,7 @@
 - "!include public_blockchains.yaml"
 - "!include public_coins.yaml"
 - "!include public_companies.yaml"
+- "!include public_companies_edit_access.yaml"
 - "!include public_data_actions.yaml"
 - "!include public_data_fields.yaml"
 - "!include public_data_partners.yaml"
@@ -23,4 +24,5 @@
 - "!include public_tokens.yaml"
 - "!include public_users.yaml"
 - "!include public_vc_firms.yaml"
+- "!include public_vc_firms_edit_access.yaml"
 - "!include public_waitlist_emails.yaml"
