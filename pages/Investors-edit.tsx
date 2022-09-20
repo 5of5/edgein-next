@@ -2,7 +2,6 @@ import { useAuth } from "../hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconChevronRight } from "@/components/Icons";
-import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
@@ -72,9 +71,12 @@ export default function Investoredit() {
                             <div className="col-span-8">
                                 <div className="flex">
                                     <div className=" relative">
-                                        <Image src={company} alt="person image">
-                                        </Image>
-                                        <span className="absolute right-0 bottom-2 cursor-pointer bg-gray-250 border-none rounded-3xl p-2"> <IconCamera /></span>
+                                        <ElemPhoto
+                                            wrapClass="w-12 h-12 border p-1 rounded-md"
+                                            photo={{"id":"attqlQW9sa7EHXA0F","url":"https://dl.airtable.com/.attachments/4c5dbf062c363e1963f91bcf0237f470/5c238f9c/0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=1ec1ef208dd22ddc","size":2572,"type":"image/jpeg","width":128,"height":128,"filename":"0fe61c9db8d613fdd505f74ef07b76ba.jpeg-resized","thumbnails":{"full":{"url":"https://dl.airtable.com/.attachmentThumbnails/380a0dbb32426fa1c4dfd594e215c73a/dba9fc7a?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=76de77a37734da7c","width":3000,"height":3000},"large":{"url":"https://dl.airtable.com/.attachmentThumbnails/10d7f0be666f8de9bcdddd2b9d05fc66/b0fdd585?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=56a8b542efc86201","width":128,"height":128},"small":{"url":"https://dl.airtable.com/.attachmentThumbnails/8a11fb7e4e2bca2ead2c79b69b02d5fa/9e676d41?ts=1658363793&userId=usr7CWMWLCRhTmk83&cs=fcc239f5fe6fb124","width":36,"height":36}}}}
+                                            imgAlt="company logo"
+                                        />
+                                        <span className="absolute right-0 bottom-2 cursor-pointer bg-gray-250 border-none rounded-3xl p-2"><IconCamera /></span>
                                     </div>
                                     <div className="ml-8 mt-5">
                                         <ul>
