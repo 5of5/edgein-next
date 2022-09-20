@@ -11305,7 +11305,7 @@ export type GetCompanyQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }>, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }>, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -11431,6 +11431,11 @@ export type GetRelevantVcFirmsQueryVariables = Exact<{
 
 export type GetRelevantVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_vc_firms', list: { __typename?: 'lists', name: string } | null }> }> };
 
+export type GetAllVcFirmsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string | null }> };
+
 
 export const GetAllCoinsDocument = `
     query GetAllCoins {
@@ -11509,12 +11514,14 @@ export const GetCompanyDocument = `
       start_date
       end_date
       founder
+      title
     }
     investment_rounds {
       id
       round_date
       round
       amount
+      valuation
       investments {
         id
         person {
@@ -12300,3 +12307,32 @@ useGetRelevantVcFirmsQuery.getKey = (variables: GetRelevantVcFirmsQueryVariables
 ;
 
 useGetRelevantVcFirmsQuery.fetcher = (variables: GetRelevantVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantVcFirmsQuery, GetRelevantVcFirmsQueryVariables>(GetRelevantVcFirmsDocument, variables, options);
+export const GetAllVcFirmsDocument = `
+    query GetAllVCFirms {
+  vc_firms {
+    id
+    name
+    logo
+    slug
+  }
+}
+    `;
+export const useGetAllVcFirmsQuery = <
+      TData = GetAllVcFirmsQuery,
+      TError = Error
+    >(
+      variables?: GetAllVcFirmsQueryVariables,
+      options?: UseQueryOptions<GetAllVcFirmsQuery, TError, TData>
+    ) =>
+    useQuery<GetAllVcFirmsQuery, TError, TData>(
+      variables === undefined ? ['GetAllVCFirms'] : ['GetAllVCFirms', variables],
+      fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables),
+      options
+    );
+useGetAllVcFirmsQuery.document = GetAllVcFirmsDocument;
+
+
+useGetAllVcFirmsQuery.getKey = (variables?: GetAllVcFirmsQueryVariables) => variables === undefined ? ['GetAllVCFirms'] : ['GetAllVCFirms', variables];
+;
+
+useGetAllVcFirmsQuery.fetcher = (variables?: GetAllVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables, options);

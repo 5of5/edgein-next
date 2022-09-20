@@ -130,3 +130,12 @@ query GetRelevantVCFirms(
 	}
 }
 
+query GetAllVCFirms {
+  vc_firms {
+    id
+    name
+    logo
+    slug
+  }
+}
+

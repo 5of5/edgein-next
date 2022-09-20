@@ -46,12 +46,14 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 			start_date
 			end_date
 			founder
+			title
 		}
 		investment_rounds {
 			id
 			round_date
 			round
 			amount
+			valuation
 			investments {
 				id
 				person {
