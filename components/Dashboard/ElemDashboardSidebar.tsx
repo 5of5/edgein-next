@@ -95,7 +95,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
           }
           )}
           <li
-            className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 w-60 bg-slate-200 rounded-lg`}
+            className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 bg-slate-200 rounded-lg`}
             role="button"
           >
             <Link href="/organizations">
