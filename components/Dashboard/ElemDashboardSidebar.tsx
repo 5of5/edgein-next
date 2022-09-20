@@ -23,9 +23,19 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
   })
 
   useEffect(() => {
-    if (users?.users_by_pk && users.users_by_pk.person) {
-      setOrganizations(users.users_by_pk.organizations as Organization_Edit_Access[])
-    }
+    if (users?.users_by_pk?.organization_companies) {
+			setOrganizations((prev) => {
+				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Organization_Edit_Access[]]
+				return temp
+			})
+		}
+
+		if (users?.users_by_pk?.organization_vc_firms) {
+			setOrganizations((prev) => {
+				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Organization_Edit_Access[]]
+				return temp
+			})
+		}
   }, [users])
 
   const getActiveClass = (path: string) => {

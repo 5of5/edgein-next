@@ -30,8 +30,18 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 		if (users?.users_by_pk && users.users_by_pk.person) {
 			setProfile(users.users_by_pk.person as People)
 		}
-		if (users?.users_by_pk?.organizations) {
-			setOrganization(users?.users_by_pk?.organizations as Organization_Edit_Access[])
+		if (users?.users_by_pk?.organization_companies) {
+			setOrganization((prev) => {
+				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Organization_Edit_Access[]]
+				return temp
+			})
+		}
+
+		if (users?.users_by_pk?.organization_vc_firms) {
+			setOrganization((prev) => {
+				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Organization_Edit_Access[]]
+				return temp
+			})
 		}
 	}, [users])
 
