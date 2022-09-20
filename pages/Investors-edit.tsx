@@ -12,7 +12,6 @@ import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer"
 import { useState } from "react";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 
-
 type Props = {
     children: any
     wrapperClass: string
@@ -27,7 +26,7 @@ const GridTwelve: React.FC<Props> = ({ children, wrapperClass }) => {
 }
 
 export default function Investoredit() {
-    const { user, error, loading } = useAuth();
+    const { user } = useAuth();
     const [teamdrawer, setteamdrawer] = useState(false)
     const [investmentdrawer, setinvestmentdrawer] = useState(false)
 
