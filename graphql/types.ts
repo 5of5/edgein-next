@@ -5567,6 +5567,10 @@ export type Lists = {
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
   id: Scalars['Int'];
+  /** An array relationship */
+  list_members: Array<List_Members>;
+  /** An aggregate relationship */
+  list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
@@ -5590,6 +5594,26 @@ export type ListsFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsList_MembersArgs = {
+  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<List_Members_Order_By>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsList_Members_AggregateArgs = {
+  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<List_Members_Order_By>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
 };
 
 /** aggregated selection of "lists" */
@@ -5637,6 +5661,7 @@ export type Lists_Bool_Exp = {
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
 };
@@ -5660,6 +5685,7 @@ export type Lists_Insert_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
+  list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
 };
 
@@ -5707,6 +5733,7 @@ export type Lists_Order_By = {
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
+  list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
 };
@@ -7156,7 +7183,12 @@ export type Mutation_RootUpdate_Tokens_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_UsersArgs = {
+  _append: InputMaybe<Users_Append_Input>;
+  _delete_at_path: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Users_Delete_Key_Input>;
   _inc: InputMaybe<Users_Inc_Input>;
+  _prepend: InputMaybe<Users_Prepend_Input>;
   _set: InputMaybe<Users_Set_Input>;
   where: Users_Bool_Exp;
 };
@@ -7164,7 +7196,12 @@ export type Mutation_RootUpdate_UsersArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _append: InputMaybe<Users_Append_Input>;
+  _delete_at_path: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Users_Delete_Key_Input>;
   _inc: InputMaybe<Users_Inc_Input>;
+  _prepend: InputMaybe<Users_Prepend_Input>;
   _set: InputMaybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
 };
@@ -9575,8 +9612,6 @@ export type Team_Members = {
   seniority: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
-  /** An object relationship */
-  vc_firm: Maybe<Vc_Firms>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -9666,7 +9701,6 @@ export type Team_Members_Bool_Exp = {
   seniority: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
   title: InputMaybe<String_Comparison_Exp>;
-  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
   vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -9677,9 +9711,7 @@ export enum Team_Members_Constraint {
   /** unique or primary key constraint */
   TeamMembersExternalIdKey = 'team_members_external_id_key',
   /** unique or primary key constraint */
-  TeamMembersPkey = 'team_members_pkey',
-  /** unique or primary key constraint */
-  TeamMembersVcFirmIdPersonIdKey = 'team_members_vc_firm_id_person_id_key'
+  TeamMembersPkey = 'team_members_pkey'
 }
 
 /** input type for incrementing numeric columns in table "team_members" */
@@ -9704,7 +9736,6 @@ export type Team_Members_Insert_Input = {
   seniority: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   title: InputMaybe<Scalars['String']>;
-  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -9796,7 +9827,6 @@ export type Team_Members_Order_By = {
   seniority: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
   title: InputMaybe<Order_By>;
-  vc_firm: InputMaybe<Vc_Firms_Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -10247,6 +10277,7 @@ export type Tokens_Variance_Fields = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
+  additional_emails: Scalars['jsonb'];
   auth0_linkedin_id: Maybe<Scalars['String']>;
   auth0_user_pass_id: Maybe<Scalars['String']>;
   display_name: Maybe<Scalars['String']>;
@@ -10265,7 +10296,15 @@ export type Users = {
   /** An object relationship */
   person: Maybe<People>;
   person_id: Maybe<Scalars['Int']>;
+  reference_id: Scalars['String'];
+  reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersAdditional_EmailsArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -10338,11 +10377,17 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Users_Append_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate avg on columns */
 export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'. */
@@ -10350,6 +10395,7 @@ export type Users_Bool_Exp = {
   _and: InputMaybe<Array<Users_Bool_Exp>>;
   _not: InputMaybe<Users_Bool_Exp>;
   _or: InputMaybe<Array<Users_Bool_Exp>>;
+  additional_emails: InputMaybe<Jsonb_Comparison_Exp>;
   auth0_linkedin_id: InputMaybe<String_Comparison_Exp>;
   auth0_user_pass_id: InputMaybe<String_Comparison_Exp>;
   display_name: InputMaybe<String_Comparison_Exp>;
@@ -10361,6 +10407,8 @@ export type Users_Bool_Exp = {
   organizations: InputMaybe<Organization_Edit_Access_Bool_Exp>;
   person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
+  reference_id: InputMaybe<String_Comparison_Exp>;
+  reference_user_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
 };
 
@@ -10374,14 +10422,31 @@ export enum Users_Constraint {
   UsersPkey = 'users_pkey'
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Users_Delete_At_Path_Input = {
+  additional_emails: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Users_Delete_Elem_Input = {
+  additional_emails: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Users_Delete_Key_Input = {
+  additional_emails: InputMaybe<Scalars['String']>;
+};
+
 /** input type for incrementing numeric columns in table "users" */
 export type Users_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
   auth0_linkedin_id: InputMaybe<Scalars['String']>;
   auth0_user_pass_id: InputMaybe<Scalars['String']>;
   display_name: InputMaybe<Scalars['String']>;
@@ -10393,6 +10458,8 @@ export type Users_Insert_Input = {
   organizations: InputMaybe<Organization_Edit_Access_Arr_Rel_Insert_Input>;
   person: InputMaybe<People_Obj_Rel_Insert_Input>;
   person_id: InputMaybe<Scalars['Int']>;
+  reference_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
 };
 
@@ -10406,6 +10473,8 @@ export type Users_Max_Fields = {
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+  reference_id: Maybe<Scalars['String']>;
+  reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
 };
 
@@ -10419,6 +10488,8 @@ export type Users_Min_Fields = {
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+  reference_id: Maybe<Scalars['String']>;
+  reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
 };
 
@@ -10447,6 +10518,7 @@ export type Users_On_Conflict = {
 
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
+  additional_emails: InputMaybe<Order_By>;
   auth0_linkedin_id: InputMaybe<Order_By>;
   auth0_user_pass_id: InputMaybe<Order_By>;
   display_name: InputMaybe<Order_By>;
@@ -10458,6 +10530,8 @@ export type Users_Order_By = {
   organizations_aggregate: InputMaybe<Organization_Edit_Access_Aggregate_Order_By>;
   person: InputMaybe<People_Order_By>;
   person_id: InputMaybe<Order_By>;
+  reference_id: InputMaybe<Order_By>;
+  reference_user_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
 };
 
@@ -10466,8 +10540,15 @@ export type Users_Pk_Columns_Input = {
   id: Scalars['Int'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Users_Prepend_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+};
+
 /** select columns of table "users" */
 export enum Users_Select_Column {
+  /** column name */
+  AdditionalEmails = 'additional_emails',
   /** column name */
   Auth0LinkedinId = 'auth0_linkedin_id',
   /** column name */
@@ -10485,11 +10566,16 @@ export enum Users_Select_Column {
   /** column name */
   PersonId = 'person_id',
   /** column name */
+  ReferenceId = 'reference_id',
+  /** column name */
+  ReferenceUserId = 'reference_user_id',
+  /** column name */
   Role = 'role'
 }
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
   auth0_linkedin_id: InputMaybe<Scalars['String']>;
   auth0_user_pass_id: InputMaybe<Scalars['String']>;
   display_name: InputMaybe<Scalars['String']>;
@@ -10498,6 +10584,8 @@ export type Users_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   person_id: InputMaybe<Scalars['Int']>;
+  reference_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
 };
 
@@ -10506,6 +10594,7 @@ export type Users_Stddev_Fields = {
   __typename?: 'users_stddev_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -10513,6 +10602,7 @@ export type Users_Stddev_Pop_Fields = {
   __typename?: 'users_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -10520,6 +10610,7 @@ export type Users_Stddev_Samp_Fields = {
   __typename?: 'users_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -10527,10 +10618,13 @@ export type Users_Sum_Fields = {
   __typename?: 'users_sum_fields';
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
+  reference_user_id: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "users" */
 export enum Users_Update_Column {
+  /** column name */
+  AdditionalEmails = 'additional_emails',
   /** column name */
   Auth0LinkedinId = 'auth0_linkedin_id',
   /** column name */
@@ -10547,6 +10641,10 @@ export enum Users_Update_Column {
   IsAuth0Verified = 'is_auth0_verified',
   /** column name */
   PersonId = 'person_id',
+  /** column name */
+  ReferenceId = 'reference_id',
+  /** column name */
+  ReferenceUserId = 'reference_user_id',
   /** column name */
   Role = 'role'
 }
@@ -10556,6 +10654,7 @@ export type Users_Var_Pop_Fields = {
   __typename?: 'users_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -10563,6 +10662,7 @@ export type Users_Var_Samp_Fields = {
   __typename?: 'users_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -10570,6 +10670,7 @@ export type Users_Variance_Fields = {
   __typename?: 'users_variance_fields';
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
+  reference_user_id: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "vc_firms" */
@@ -11327,7 +11428,7 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organizations: Array<{ __typename?: 'organization_edit_access', id: number, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organizations: Array<{ __typename?: 'organization_edit_access', id: number, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -11909,14 +12010,6 @@ export const GetUserProfileDocument = `
         function
         title
         company {
-          id
-          slug
-          name
-          logo
-          overview
-          location
-        }
-        vc_firm {
           id
           slug
           name
