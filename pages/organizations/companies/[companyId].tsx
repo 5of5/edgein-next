@@ -16,7 +16,7 @@ import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
 import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer";
 import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { Investment_Rounds, Companies, useGetCompanyQuery, GetCompanyDocument, GetCompanyQuery, useGetAllCoinsQuery, Coins } from "@/graphql/types";
+import { Investment_Rounds, Companies, useGetCompanyQuery, GetCompanyDocument, GetCompanyQuery, useGetAllCoinsQuery, Coins, Team_Members } from "@/graphql/types";
 import { useRouter } from "next/router";
 import { runGraphQl, convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
@@ -58,6 +58,9 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const [coins, setCoins] = useState<Coins[]>()
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [coinFilterValues, setCoinFilterValues] = useState([])
+    const [memberToEdit, setMemberToEdit] = useState<Team_Members>()
+    const [roundToEdit, setRoundToEdit] = useState<Investment_Rounds>()
+    const [selectedFile, setSelectedFile] = useState(null)
 
     const {
 		data: companyData,
@@ -72,7 +75,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         data: coinData
     } = useGetAllCoinsQuery()
 
-    console.log("companyData ==", companyData)
+    // console.log("companyData ==", companyData)
     
     useEffect(() => {
 		if (companyData) {
@@ -101,7 +104,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files ? event.target.files[0] : null;
 		if (!file) return;
-
+        setSelectedFile(file)
 		// const res = await uploadFile(file);
 
 		// deleteFile(person ?.picture);
@@ -110,6 +113,22 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
 		// setPerson(resp.result);
     };
+
+    const updateCall = async () => {
+			const resp = await fetch("/api/update_company", {
+				method: "POST",
+				body: JSON.stringify({
+					companyId: companyEditable?.id,
+					company: companyEditable,
+				}),
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			});
+
+			return resp.json();
+	};
     
     const setValues = (key: string, value: any) => {
         console.log("value ==", value)
@@ -118,6 +137,37 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             [key]: value
         }
         setCompanyEditable(tempComapny)
+    }
+
+    const onSaveEmployee = (employee : Team_Members) => {
+        setTeamDrawer(false)
+    }
+
+    const onSaveInvestmentRound = (round : Investment_Rounds) => {
+        setInvestmentDrawer(false)
+    }
+
+    const onSaveCompany = async () => {
+        //check logo and upload
+        if(selectedFile){
+            const res = await uploadFile(selectedFile);
+            console.log("file uploadedd=", res)
+            deleteFile(companyEditable?.logo);
+            console.log("file ddeleted=")
+            setCompanyEditable({
+                ...companyEditable,
+                logo: res
+            });
+        }
+        delete companyEditable.teamMembers;
+        delete companyEditable.investment_rounds;
+        const resp = await updateCall()
+        console.log("after upddate=", resp)
+        //save company data
+    }
+
+    const onCancelCompanyEdits = () => {
+        setCompanyEditable(company)
     }
 
     return (
@@ -132,8 +182,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 {`Edit  ${company.name}`}
                             </h2>
                             <div>
-                                <ElemButton btn="transparent" className="text-slate-300">Cancel</ElemButton>
-                                <ElemButton btn="primary">Save Edits</ElemButton>
+                                <ElemButton onClick={onCancelCompanyEdits} btn="transparent" className="text-slate-300">Cancel</ElemButton>
+                                <ElemButton onClick={onSaveCompany} btn="primary">Save Edits</ElemButton>
                             </div>
                         </div>
 
@@ -316,15 +366,15 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 <div className="col-span-8 w-80">
                                     <InputText
                                         onChange={(e) => { setValues('location', e.target.value)}}
-                                        value={(companyEditable.location) ? companyEditable.location : ''}
+                                        value={(companyEditable.location && companyEditable.location.indexOf(',') != -1) ? companyEditable.location.split(',')[0] : (companyEditable.location ? companyEditable.location : '')}
                                         name=""
                                         placeholder="San Francisco"
                                         label="City"
                                         className="placeholder:text-slate-300 mb-5 text-slate-600 text-base"
                                     />
                                     <InputText
-                                        onChange={() => { }}
-                                        value=""
+                                        onChange={(e) => { setValues('location', e.target.value)}}
+                                        value={(companyEditable.location && companyEditable.location.indexOf(',') != -1) ? companyEditable.location.split(',')[1] : ''}
                                         name=""
                                         placeholder="United State USA"
                                         label="Country"
@@ -511,21 +561,21 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <div className="flex justify-between items-center mt-2 mb-5">
                                 <h2 className="text-dark-500 font-bold font-Metropolis text-md">Employees</h2>
-                                <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => setTeamDrawer(true)}>Add Employee</span>
+                                <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => {setMemberToEdit({}) ; setTeamDrawer(true)}}>Add Employee</span>
                             </div>
 
                             {company.teamMembers.length > 0 && (
                                
                                     <ElemEditTeam
                                         className=""
-                                        onEdit={(member) => console.log("member ==", member)}
+                                        onEdit={(member) => {console.log("member ==", member);setMemberToEdit(member); setTeamDrawer(true)}}
                                         // showEdit={true}
                                         heading="Team"
                                         teamMembers={company.teamMembers}
                                     />
                             )}
 
-                            {teamDrawer && <ElemTeamSideDrawer isOpen={teamDrawer} onClose={() => setTeamDrawer(false)} />}
+                            {teamDrawer && <ElemTeamSideDrawer onSaveEmployee={onSaveEmployee} memberToEdit={memberToEdit} isOpen={teamDrawer} onClose={() => setTeamDrawer(false)} />}
                         </div>
 
                         {/* Funding Investments section */}
@@ -543,10 +593,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             </div>
 
                             <ElemEditInvestments
-                                onEdit={(round) => console.log("round ==", round)}
+                                onEdit={(round) => {console.log("round ==", round); setRoundToEdit(round); setInvestmentDrawer(true)}}
                                 investments={company.investment_rounds}
                             />
-                            {investmentDrawer && <ElemInvestmentSideDrawer isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
+                            {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={onSaveInvestmentRound} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
                         </div>
                     </div>
                 </div>

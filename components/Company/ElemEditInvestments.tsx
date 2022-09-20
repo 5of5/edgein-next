@@ -327,7 +327,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 											</td>
 										);
                                     })}
-                                     <button onClick={() => onEdit(row.values)} className="px-1 py-2 text-primary-500">
+                                     <button onClick={() => onEdit(row.original)} className="px-1 py-2 text-primary-500">
                                         Edit
                                     </button>
 								</tr>
