@@ -24,7 +24,7 @@ const GridTwelve: React.FC<Props> = ({ children, wrapperClass }) => {
     )
 }
 
-export default function Investoredit() {
+export default function InvestorsEdit() {
     const { user } = useAuth();
     const [teamdrawer, setteamdrawer] = useState(false)
     const [investmentdrawer, setinvestmentdrawer] = useState(false)
