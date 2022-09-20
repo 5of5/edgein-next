@@ -178,8 +178,9 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                         <div className="mt-4">
                                             <label className='block font-Metropolis text-sm font-bold text-slate-600'>Money Raised</label>
                                             <InputText
-                                                type='numeric'
+                                                type='number'
                                                 name=""
+                                                disabled={true}
                                                 value={(investmentRound.amount) ? investmentRound.amount : 0}
                                                 onChange={(e) => { setValues('amount', e.target.value)}}
                                                 className=" max-w-sm placeholder:text-slate-500"
@@ -202,7 +203,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                         <div className="mt-4">
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Amount Invested</label>
                                             <InputText
-                                                type='numeric'
+                                                type='number'
                                                 name=""
                                                 value=""//{(investmentRound.amount) ? investmentRound.amount : 0}
                                                 onChange={(e) => { }}

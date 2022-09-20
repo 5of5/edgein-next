@@ -75,7 +75,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         data: coinData
     } = useGetAllCoinsQuery()
 
-    // console.log("companyData ==", companyData)
+    console.log("companyData ==", companyData)
     
     useEffect(() => {
 		if (companyData) {
@@ -139,8 +139,25 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         setCompanyEditable(tempComapny)
     }
 
-    const onSaveEmployee = (employee : Team_Members) => {
+    const onSaveEmployee = async(employee : Team_Members) => {
         setTeamDrawer(false)
+        const updatedEmployee = {
+            ...employee,
+            company_id: company.id,
+            person_id: (employee.person)? employee.person.id : null
+        }
+        delete updatedEmployee.person
+        const resp = await fetch("/api/team_member", {
+            method: "POST",
+            body: JSON.stringify({
+                teammember: updatedEmployee
+            }),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        console.log("onSaveEmployee = ", resp)
     }
 
     const onSaveInvestmentRound = (round : Investment_Rounds) => {
@@ -159,8 +176,15 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 logo: res
             });
         }
+        
+        setCompanyEditable({
+            ...companyEditable,
+            coin_id: (companyEditable.coin) ?  companyEditable.coin.id : null
+        });
         delete companyEditable.teamMembers;
         delete companyEditable.investment_rounds;
+        delete companyEditable.coin;
+        delete companyEditable.follows;
         const resp = await updateCall()
         console.log("after upddate=", resp)
         //save company data
