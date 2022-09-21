@@ -144,7 +144,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             person_id: (employee.person)? employee.person.id : null
         }
         delete updatedEmployee.person;
-        const resp = await fetch("/api/team_member", {
+        await fetch("/api/team_member", {
             method: "POST",
             body: JSON.stringify({
                 teammember: updatedEmployee
@@ -156,8 +156,34 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         });
     }
 
-    const onSaveInvestmentRound = (round : Investment_Rounds) => {
+    const onSaveInvestmentRound = async(round : any) => {
+        console.log("final round =", round)
         setInvestmentDrawer(false)
+        const updatedInvestments = round.investments.map((item:  any) => {
+            const tempInvestment = {
+                ...item,
+                person_id: (item.person) ? item.person.id : null,
+                vc_firm_id: (item.vc_firm) ? item.vc_firm.id : null
+            };
+            delete tempInvestment.person;
+            delete tempInvestment.vc_firm;
+            return tempInvestment;
+        })
+        const tempRound = {
+            ...round,
+            investments: updatedInvestments
+        }
+        console.log("updatedInvestments =", tempRound);
+        await fetch("/api/upsert_investment_round", {
+            method: "POST",
+            body: JSON.stringify({
+                investmentRound: tempRound
+            }),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
     }
 
     const onSaveCompany = async () => {
@@ -616,7 +642,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 }}
                                 investments={company.investment_rounds}
                             />
-                            {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={onSaveInvestmentRound} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
+                            {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
                         </div>
                     </div>
                 </div>

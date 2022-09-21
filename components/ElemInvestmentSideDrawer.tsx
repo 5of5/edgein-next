@@ -26,7 +26,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({} as Investment_Rounds)
 
     const emptyInvestment = {
-        id:null,
+        //id:null,
         person:null,
         vc_firm: null,
         amount:0
