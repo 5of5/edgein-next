@@ -11,7 +11,7 @@ type Props = {
 	className?: string;
 	heading?: string;
     investments: Investment_Rounds[];
-    onEdit: (round: Investment_Rounds) => void;
+    onEdit: (round: any) => void;
 };
 
 export const ElemEditInvestments: React.FC<Props> = ({
@@ -185,6 +185,15 @@ export const ElemEditInvestments: React.FC<Props> = ({
 				// width: 650,
 				disableSortBy: true,
 			},
+			{
+				Header: " ",
+				accessor: "" as const,
+				Cell: (props: any) => (
+				<button onClick={() => {onEdit(props.row.original)}} className="px-1 py-2 text-primary-500">
+					Edit
+				</button>
+				),
+			},
 		],
 		[]
 	);
@@ -327,9 +336,9 @@ export const ElemEditInvestments: React.FC<Props> = ({
 											</td>
 										);
                                     })}
-                                     <button onClick={() => onEdit(row.original)} className="px-1 py-2 text-primary-500">
+                                     {/* <button onClick={() => onEdit(row.original)} className="px-1 py-2 text-primary-500">
                                         Edit
-                                    </button>
+                                    </button> */}
 								</tr>
 							);
 						})}

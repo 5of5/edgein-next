@@ -19,8 +19,8 @@ type Props = {
 export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToEdit, onSaveEmployee }) => {
 
     const [persons, setPersons] = useState<People[]>();
-    const [personFilterValues, setPersonFilterValues] = useState([]);
-    const [employee, setEmployee] = useState<Team_Members>({})
+    const [personFilterValues, setPersonFilterValues] = useState([{}]);
+    const [employee, setEmployee] = useState<Team_Members>({} as Team_Members)
     const [current, setCurrent] = useState(false)
 
     const titleFilterValues = functionChoicesTM.map((option) => {
@@ -42,7 +42,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
 
     useEffect(() => {
 		if (personsData) {
-            setPersons(personsData?.people);
+            setPersons(personsData?.people as People[]);
             setPersonFilterValues(
                 personsData?.people ? personsData?.people.map(x =>  {
                     return {
@@ -99,8 +99,8 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Person</label>
                                             <InputSelect
                                                 options={personFilterValues}
-                                                value={personFilterValues && (employee && employee.person && employee.person.id) ? personFilterValues.find(x => x.value === employee.person.id) : {}}
-                                                onChange={(e) =>  setValues('person',  (persons) ? persons.find(x => x.id === e.value): {})}
+                                                value={personFilterValues  ? personFilterValues.find((item: any) => (employee && employee.person) && (item.value === employee.person.id)) : {}}
+                                                onChange={(e: any) =>  setValues('person',  (persons) ? persons.find(x => x.id === e.value): {})}
                                             // placeholder="Layer 1 programmable/Blockchain/Netw..."
                                                 className="w-80 text-slate-600 text-base"
                                             />
@@ -110,14 +110,14 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Position</label>
                                             <InputSelect
                                                 options={titleFilterValues}
-                                                onChange={(e) =>  setValues('function', e.value)}
+                                                onChange={(e: any) =>  setValues('function', e.value)}
                                                 value={titleFilterValues && employee.function ? titleFilterValues.find(x=> x.value === employee.function):{}}
                                                 placeholder="Founder"
                                                 className='max-w-sm placeholder:text-slate-250'
                                             />
                                         </div>
                                         <div className='mt-4'>
-                                            <input type="checkbox" checked={employee.founder} onChange={() => setValues('founder', !employee.founder) } /><span className='text-sm font-Metropolis font-bold text-slate-600 ml-2'>Founder</span>
+                                            <input type="checkbox" checked={employee.founder as boolean} onChange={() => setValues('founder', !employee.founder) } /><span className='text-sm font-Metropolis font-bold text-slate-600 ml-2'>Founder</span>
                                         </div>
                                         <div className='mt-4'>
                                             <label className=' block  font-Metropolis text-sm font-bold text-slate-600'>Title</label>
@@ -159,7 +159,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                     <div className="absolute bottom-5 left-5">
                                         <ElemButton 
                                         onClick={() => {
-                                            if(!current){
+                                            if(current){
                                                 delete employee.end_date
                                             }
                                             onSaveEmployee(employee)

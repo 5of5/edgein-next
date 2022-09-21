@@ -11,7 +11,7 @@ import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
 import { IconCamera } from "@/components/IconCamera";
 import { InputSearch } from "@/components/InputSearch";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
 import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer";
 import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer";
@@ -54,13 +54,13 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const [teamDrawer, setTeamDrawer] = useState(false)
     const [investmentDrawer, setInvestmentDrawer] = useState(false)
     const [company, setCompany] = useState(props.company);
-    const [companyEditable, setCompanyEditable] = useState(props.company);
+    const [companyEditable, setCompanyEditable] = useState<any>(props.company);
     const [coins, setCoins] = useState<Coins[]>()
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [coinFilterValues, setCoinFilterValues] = useState([])
+    const [coinFilterValues, setCoinFilterValues] = useState([{}])
     const [memberToEdit, setMemberToEdit] = useState<Team_Members>()
     const [roundToEdit, setRoundToEdit] = useState<Investment_Rounds>()
-    const [selectedFile, setSelectedFile] = useState(null)
+    const [selectedFile, setSelectedFile] = useState<any>(null)
 
     const {
 		data: companyData,
@@ -74,8 +74,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const {
         data: coinData
     } = useGetAllCoinsQuery()
-
-    console.log("companyData ==", companyData)
     
     useEffect(() => {
 		if (companyData) {
@@ -131,7 +129,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 	};
     
     const setValues = (key: string, value: any) => {
-        console.log("value ==", value)
         const tempComapny = {
             ...companyEditable,
             [key]: value
@@ -139,14 +136,14 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         setCompanyEditable(tempComapny)
     }
 
-    const onSaveEmployee = async(employee : Team_Members) => {
+    const onSaveEmployee = async(employee : any) => {
         setTeamDrawer(false)
         const updatedEmployee = {
             ...employee,
             company_id: company.id,
             person_id: (employee.person)? employee.person.id : null
         }
-        delete updatedEmployee.person
+        delete updatedEmployee.person;
         const resp = await fetch("/api/team_member", {
             method: "POST",
             body: JSON.stringify({
@@ -157,7 +154,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
-        console.log("onSaveEmployee = ", resp)
     }
 
     const onSaveInvestmentRound = (round : Investment_Rounds) => {
@@ -168,9 +164,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         //check logo and upload
         if(selectedFile){
             const res = await uploadFile(selectedFile);
-            console.log("file uploadedd=", res)
             deleteFile(companyEditable?.logo);
-            console.log("file ddeleted=")
             setCompanyEditable({
                 ...companyEditable,
                 logo: res
@@ -186,7 +180,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         delete companyEditable.coin;
         delete companyEditable.follows;
         const resp = await updateCall()
-        console.log("after upddate=", resp)
         //save company data
     }
 
@@ -201,7 +194,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 <DashboardLayout />
 
                     <div className="col-span-3">
-                        <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-3 pb-3 z-10">
+                        <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-0 pt-3 pb-3 z-10 bg-primary-50">
                             <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                                 {`Edit  ${company.name}`}
                             </h2>
@@ -301,7 +294,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         onChange={(e) => { setValues('overview', e.target.value) }}
                                         value={(companyEditable.overview)? companyEditable.overview : ''}
                                         name="Overview"
-                                        placeholder=""
                                         className="placeholder:text-slate-300 w-100 text-slate-600 text-base"
                                     />
                                 </div>
@@ -318,7 +310,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                     <InputSelect
                                         options={layerFilterValues}
                                         value={layerFilterValues.find(x => x.value === companyEditable.layer) }
-                                        onChange={(e) =>  setValues('layer',e.value)}
+                                        onChange={(e:any) =>  setValues('layer',e.value)}
                                         placeholder="Layer 1 programmable/Blockchain/Netw..."
                                         className="w-100 text-slate-600 text-base"
                                     />
@@ -355,8 +347,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 <div className="col-span-8">
                                     <InputSelect
                                         options={coinFilterValues}
-                                        value={coinFilterValues ? coinFilterValues.find(x => x.value === companyEditable.coin?.id) : {}}
-                                        onChange={(e) =>  setValues('coin', {id: e.value, ticker: e.title})}
+                                        value={coinFilterValues ? coinFilterValues.find((x:any) => x.value === companyEditable.coin?.id) : {}}
+                                        onChange={(e:any) =>  setValues('coin', {id: e.value, ticker: e.title})}
                                        // placeholder="Layer 1 programmable/Blockchain/Netw..."
                                         className="w-80 text-slate-600 text-base"
                                     />
@@ -389,7 +381,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 </div>
                                 <div className="col-span-8 w-80">
                                     <InputText
-                                        onChange={(e) => { setValues('location', e.target.value)}}
+                                        onChange={(e) => { setValues('location', `${e.target.value},${(companyEditable.location && companyEditable.location.indexOf(',') != -1) ? companyEditable.location.split(',')[1] : ''}`)}}
                                         value={(companyEditable.location && companyEditable.location.indexOf(',') != -1) ? companyEditable.location.split(',')[0] : (companyEditable.location ? companyEditable.location : '')}
                                         name=""
                                         placeholder="San Francisco"
@@ -397,7 +389,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 mb-5 text-slate-600 text-base"
                                     />
                                     <InputText
-                                        onChange={(e) => { setValues('location', e.target.value)}}
+                                        onChange={(e) => { setValues('location', `${(companyEditable.location && companyEditable.location.indexOf(',') != -1) ? companyEditable.location.split(',')[0] : companyEditable.location},${e.target.value}`)}}
                                         value={(companyEditable.location && companyEditable.location.indexOf(',') != -1) ? companyEditable.location.split(',')[1] : ''}
                                         name=""
                                         placeholder="United State USA"
@@ -585,14 +577,14 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <div className="flex justify-between items-center mt-2 mb-5">
                                 <h2 className="text-dark-500 font-bold font-Metropolis text-md">Employees</h2>
-                                <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => {setMemberToEdit({}) ; setTeamDrawer(true)}}>Add Employee</span>
+                                <span className="text-md cursor-pointer font-normal text-primary-500 font-Metropolis" onClick={() => {setMemberToEdit({} as Team_Members) ; setTeamDrawer(true)}}>Add Employee</span>
                             </div>
 
                             {company.teamMembers.length > 0 && (
                                
                                     <ElemEditTeam
                                         className=""
-                                        onEdit={(member) => {console.log("member ==", member);setMemberToEdit(member); setTeamDrawer(true)}}
+                                        onEdit={(member) => {setMemberToEdit(member); setTeamDrawer(true)}}
                                         // showEdit={true}
                                         heading="Team"
                                         teamMembers={company.teamMembers}
@@ -613,11 +605,11 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <div className="flex justify-between items-center mt-2 mb-5">
                                 <h2 className="text-dark-500 font-bold font-Metropolis text-md">All Investments</h2>
-                                <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => {setRoundToEdit({}); setInvestmentDrawer(true)}}>Add Investmesnts Round</span>
+                                <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => {setRoundToEdit({} as Investment_Rounds); setInvestmentDrawer(true)}}>Add Investmesnts Round</span>
                             </div>
 
                             <ElemEditInvestments
-                                onEdit={(round) => {console.log("round ==", round); setRoundToEdit(round); setInvestmentDrawer(true)}}
+                                onEdit={(round) => {console.log("rounf==", round); setRoundToEdit(round); setInvestmentDrawer(true)}}
                                 investments={company.investment_rounds}
                             />
                             {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={onSaveInvestmentRound} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
@@ -671,9 +663,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			sortRounds,
 		},
 	};
-};
-const convertAmountRaised = (theAmount: number) => {
-	return convertToInternationalCurrencySystem(theAmount);
 };
 
 const layerFilterValues = companyLayerChoices.map((option) => {

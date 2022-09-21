@@ -21,9 +21,9 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
    
     const [persons, setPersons] = useState<People[]>();
     const [vcFirms, setVCFirms] = useState<Vc_Firms[]>()
-    const [personFilterValues, setPersonFilterValues] = useState([]);
-    const [firmFilterValues, setFirmFilterValues] = useState([]);
-    const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({})
+    const [personFilterValues, setPersonFilterValues] = useState([{}]);
+    const [firmFilterValues, setFirmFilterValues] = useState([{}]);
+    const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({} as Investment_Rounds)
 
     const emptyInvestment = {
         id:null,
@@ -55,9 +55,9 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
 
     useEffect(() => {
         if (personsData) {
-            setPersons(personsData ?.people);
+            setPersons(personsData?.people as People[]);
             setPersonFilterValues(
-                personsData ?.people ? personsData ?.people.map(x => {
+                personsData?.people ? personsData?.people.map(x => {
                     return {
                         title: x.name,
                         value: x.id
@@ -68,7 +68,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     }, [personsData]);
 
     useEffect(() => {
-        setVCFirms(vcFirmData ?.vc_firms);
+        setVCFirms(vcFirmData ?.vc_firms as Vc_Firms[]);
         setFirmFilterValues(
             vcFirmData ?.vc_firms ? vcFirmData ?.vc_firms.map(x => {
                 return {
@@ -92,7 +92,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
             ...investmentRound,
             investments : (investmentRound.investments)  ? [...investmentRound.investments, emptyInvestment] : [emptyInvestment]
         }
-        setInvestmentRound(tempData)
+        setInvestmentRound(tempData as Investment_Rounds)
     }
 
     const onUpdateInvestment = (investment: any, position: number) => {
@@ -149,7 +149,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             <label className=' block font-Metropolis text-sm font-bold text-slate-600'>Round Type</label>
                                             <InputSelect
                                                 options={roundFilterValues}
-                                                onChange={(e) => setValues('round', e.value)}
+                                                onChange={(e: any) => setValues('round', e.value)}
                                                 value={roundFilterValues && investmentRound.round ? roundFilterValues.find(x => x.value === investmentRound.round) : {}}
                                                 placeholder="Seed"
                                                 className='max-w-sm placeholder:text-slate-300'
@@ -182,7 +182,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                         </div>
                                         {
                                             (investmentRound.investments) && investmentRound.investments.map((investment, index) =>  
-                                                <InvestmentSection vcFirms={vcFirms} persons={persons} onUpdateInvestment={(investment) => onUpdateInvestment(investment, index)} investment={investment} personFilterValues={personFilterValues} firmFilterValues={firmFilterValues}/>
+                                                <InvestmentSection key={index} vcFirms={vcFirms} persons={persons} onUpdateInvestment={(investment: any) => onUpdateInvestment(investment, index)} investment={investment} personFilterValues={personFilterValues} firmFilterValues={firmFilterValues}/>
                                             )
                                         }
                                         <ElemButton onClick={onAddNew} btn="ol-primary" className="mt-5 mb-28">Add Investment</ElemButton>
@@ -201,7 +201,24 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     )
 }
 
-const InvestmentSection = ({investment, personFilterValues, firmFilterValues, onUpdateInvestment, persons, vcFirms}) => {
+type InvestmentProps = {
+	investment: any;
+	personFilterValues?: any;
+    firmFilterValues?: any;
+    onUpdateInvestment: (investment: any) => void;
+    persons: People[] | undefined;
+    vcFirms: Vc_Firms[] | undefined;
+};
+
+
+const InvestmentSection: React.FC<InvestmentProps> = ({
+    investment={},
+    personFilterValues= [], 
+    firmFilterValues= [], 
+    onUpdateInvestment= (investment: any) => {}, 
+    persons= [], 
+    vcFirms= []
+}) => {
 
     const [investorType, setInvestorType] = useState('investor')
     const [currentInvestment, setCurrentInnvestment] = useState(investment)
@@ -238,16 +255,16 @@ const InvestmentSection = ({investment, personFilterValues, firmFilterValues, on
                     (investorType === "investor") ?
                         <InputSelect
                             options={personFilterValues}
-                            value={personFilterValues && (currentInvestment.person && currentInvestment.person.id) ? personFilterValues.find(x => x.value === currentInvestment.person.id) : {}}
-                            onChange= {(e) => setValues('person', (persons) ? persons.find(x => x.id === e.value) : {})}
+                            value={personFilterValues && (currentInvestment.person && currentInvestment.person.id) ? personFilterValues.find((item: any) => item.value === currentInvestment.person.id) : {}}
+                            onChange= {(e: any) => setValues('person', (persons) ? persons.find(x => x.id === e.value) : {})}
                             placeholder='find angel investor'
                             className="w-80 text-slate-600 text-base"
                         />
                         :
                         <InputSelect
                             options={firmFilterValues}
-                            value={firmFilterValues && (currentInvestment.vc_firm && currentInvestment.vc_firm.id) ? firmFilterValues.find(x => x.value === currentInvestment.vc_firm.id) : {}}
-                            onChange={(e) => setValues('vc_firm', (vcFirms) ? vcFirms.find(x => x.id === e.value) : {})}
+                            value={firmFilterValues && (currentInvestment.vc_firm && currentInvestment.vc_firm.id) ? firmFilterValues.find((item: any) => item.value === currentInvestment.vc_firm.id) : {}}
+                            onChange={(e: any) => setValues('vc_firm', (vcFirms) ? vcFirms.find(x => x.id === e.value) : {})}
                             placeholder='find investment firm'
                             className="w-80 text-slate-600 text-base"
                         />

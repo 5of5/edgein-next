@@ -11,7 +11,7 @@ type Props = {
 	className?: string;
 	heading?: string;
     teamMembers: Team_Members[];
-    onEdit: (member: Team_Members) => void;
+    onEdit: (member: any) => void;
 };
 
 export const ElemEditTeam: React.FC<Props> = ({
@@ -85,15 +85,15 @@ export const ElemEditTeam: React.FC<Props> = ({
 					</div>
 				),
 			},
-			// {
-			// 	Header: "Edit",
-			// 	accessor: "edit" as const,
-			// 	Cell: (props: any) => {
-			// 		<div>Edit</div>
-			// 	},
-			// 	width: 650,
-			// 	disableSortBy: true,
-			// },
+			{
+				Header: " ",
+				accessor: "" as const,
+				Cell: (props: any) => (
+				<button onClick={() => {onEdit(props.row.original)}} className="px-1 py-2 text-primary-500">
+					Edit
+				</button>
+				),
+			},
 		],
 		[]
 	);
@@ -214,9 +214,9 @@ export const ElemEditTeam: React.FC<Props> = ({
                                                 </td>
                                             );
                                         })}
-                                     <button onClick={() => onEdit(row.values)} className="px-1 py-2 text-primary-500">
+                                     {/* <button onClick={() => onEdit(row.values)} className="px-1 py-2 text-primary-500">
                                         Edit
-                                    </button>
+                                    </button> */}
 								</tr>
 							);
 						})}
