@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (emailExist) {
     nextStep = 'LOGIN';
     // create the login link
-    loginLink = `${process.env.AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.AUTH0_CLIENT_ID}&connection=Username-Password-Authentication&redirect_uri=${process.env.AUTH0_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`
+    loginLink = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&connection=Username-Password-Authentication&redirect_uri=${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`
   }
 
   res.send({ success: true, nextStep, loginLink });

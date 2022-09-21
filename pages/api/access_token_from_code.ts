@@ -24,12 +24,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const userTokenHeader = new Headers();
   userTokenHeader.append('Content-Type', 'application/x-www-form-urlencoded');
   try {
-    const userTokenResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const userTokenResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: userTokenHeader,
       body: qs.stringify({
         grant_type: 'authorization_code',
-        client_id: process.env.AUTH0_CLIENT_ID,
+        client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
         client_secret: process.env.AUTH0_CLIENT_SECRET,
         code,
         redirect_uri
@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!isEmailAllowed) {
         // insert user in waitlist table
         await UserService.mutateForWaitlistEmail(userInfoInJson.email)
-        return res.status(404).send(`Invalid Email`)
+        return res.status(404).send({ message: `Your email ${userInfoInJson.email} has been added to our waitlist.  We'll be in touch soon!` });
       }
 
       // check loggedin user and linkedin user email should be same
