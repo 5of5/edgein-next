@@ -148,7 +148,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
-        window.location.reload(false)
+        window.location.reload()
     }
 
     const onSaveInvestmentRound = async(round : any) => {
@@ -177,7 +177,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
-        window.location.reload(false)
+        window.location.reload()
     }
 
     const onSaveCompany = async () => {
@@ -200,7 +200,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         delete companyEditable.coin;
         delete companyEditable.follows;
         const resp = await updateCall()
-        window.location.reload(false)
+        window.location.reload()
         //save company data
     }
 
