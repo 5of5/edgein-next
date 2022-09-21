@@ -74,8 +74,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const {
         data: coinData
     } = useGetAllCoinsQuery()
-
-    console.log("companyData ==", companyData)
     
     useEffect(() => {
 		if (companyData) {
@@ -131,7 +129,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 	};
     
     const setValues = (key: string, value: any) => {
-        console.log("value ==", value)
         const tempComapny = {
             ...companyEditable,
             [key]: value
@@ -157,7 +154,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
-        console.log("onSaveEmployee = ", resp)
     }
 
     const onSaveInvestmentRound = (round : Investment_Rounds) => {
@@ -168,9 +164,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         //check logo and upload
         if(selectedFile){
             const res = await uploadFile(selectedFile);
-            console.log("file uploadedd=", res)
             deleteFile(companyEditable?.logo);
-            console.log("file ddeleted=")
             setCompanyEditable({
                 ...companyEditable,
                 logo: res
@@ -186,7 +180,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         delete companyEditable.coin;
         delete companyEditable.follows;
         const resp = await updateCall()
-        console.log("after upddate=", resp)
         //save company data
     }
 
@@ -201,7 +194,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 <DashboardLayout />
 
                     <div className="col-span-3">
-                        <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-3 pb-3 z-10">
+                        <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-0 pt-3 pb-3 z-10 bg-primary-50">
                             <h2 className="text-xl font-bold font-Metropolis text-dark-950">
                                 {`Edit  ${company.name}`}
                             </h2>
@@ -592,7 +585,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                
                                     <ElemEditTeam
                                         className=""
-                                        onEdit={(member) => {console.log("member ==", member);setMemberToEdit(member); setTeamDrawer(true)}}
+                                        onEdit={(member) => {setMemberToEdit(member); setTeamDrawer(true)}}
                                         // showEdit={true}
                                         heading="Team"
                                         teamMembers={company.teamMembers}
@@ -617,7 +610,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             </div>
 
                             <ElemEditInvestments
-                                onEdit={(round) => {console.log("round ==", round); setRoundToEdit(round); setInvestmentDrawer(true)}}
+                                onEdit={(round) => {setRoundToEdit(round); setInvestmentDrawer(true)}}
                                 investments={company.investment_rounds}
                             />
                             {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={onSaveInvestmentRound} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
