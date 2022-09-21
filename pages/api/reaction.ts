@@ -66,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           sentiment: sentimentType,
         },
         resource_id: resourceId,
-        resource_type: resourceType,
+        resource: resourceType,
         user: user.id,
       },
     },
