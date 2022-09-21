@@ -71,6 +71,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		current_user: user?.id ?? 0,
     });
 
+
     const {
         data: coinData
     } = useGetAllCoinsQuery()
@@ -103,13 +104,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		const file = event.target.files ? event.target.files[0] : null;
 		if (!file) return;
         setSelectedFile(file)
-		// const res = await uploadFile(file);
-
-		// deleteFile(person ?.picture);
-
-		// const resp = await updateCall({ picture: res.file });
-
-		// setPerson(resp.result);
     };
 
     const updateCall = async () => {
@@ -154,10 +148,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
+        window.location.reload(false)
     }
 
     const onSaveInvestmentRound = async(round : any) => {
-        console.log("final round =", round)
         setInvestmentDrawer(false)
         const updatedInvestments = round.investments.map((item:  any) => {
             const tempInvestment = {
@@ -173,7 +167,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             ...round,
             investments: updatedInvestments
         }
-        console.log("updatedInvestments =", tempRound);
         await fetch("/api/upsert_investment_round", {
             method: "POST",
             body: JSON.stringify({
@@ -184,6 +177,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
+        window.location.reload(false)
     }
 
     const onSaveCompany = async () => {
@@ -206,6 +200,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         delete companyEditable.coin;
         delete companyEditable.follows;
         const resp = await updateCall()
+        window.location.reload(false)
         //save company data
     }
 
@@ -636,7 +631,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <ElemEditInvestments
                                 onEdit={(round) => {
-                                    console.log("rounf==", round); 
                                     setRoundToEdit([...companyEditable.investment_rounds].find((item: any) => item.id===round.id)); 
                                     setInvestmentDrawer(true)
                                 }}
