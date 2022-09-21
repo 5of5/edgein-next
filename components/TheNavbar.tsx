@@ -80,7 +80,7 @@ export const TheNavbar = () => {
 				},
 				body: JSON.stringify({
 					code,
-					redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
+					redirect_uri: process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL,
 				}),
 			}); //.then((res) => res.json());
 			if (response.status == 404) {

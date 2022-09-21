@@ -24,12 +24,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const userTokenHeader = new Headers();
   userTokenHeader.append('Content-Type', 'application/x-www-form-urlencoded');
   try {
-    const userTokenResponse = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const userTokenResponse = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: userTokenHeader,
       body: qs.stringify({
         grant_type: 'authorization_code',
-        client_id: process.env.AUTH0_CLIENT_ID,
+        client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
         client_secret: process.env.AUTH0_CLIENT_SECRET,
         code,
         redirect_uri

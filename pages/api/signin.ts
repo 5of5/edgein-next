@@ -33,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     username: email,
     scope: 'offline_access',
     password: password,
-    client_id: process.env.AUTH0_CLIENT_ID,
+    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
     client_secret: process.env.AUTH0_CLIENT_SECRET
   });
 
@@ -41,7 +41,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
   try {
-    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const fetchRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: myHeaders,
       body: data,

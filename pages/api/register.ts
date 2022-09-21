@@ -17,7 +17,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const data = JSON.stringify({
-    client_id: process.env.AUTH0_CLIENT_ID,
+    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
     email,
     password: req.body.password,
     name: req.body.name,
@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   myHeaders.append('Content-Type', 'application/json');
 
   try {
-    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/signup`, {
+    const fetchRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/dbconnections/signup`, {
       method: 'POST',
       headers: myHeaders,
       body: data,
