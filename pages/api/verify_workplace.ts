@@ -53,7 +53,7 @@ const addOrganizationEditAccess = async (payload: any, accessToken: string) => {
   const userId = payload.resourceDetails.userId
   const mutation = `
     mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
-      insert_organization_edit_access_one(object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}, on_conflict: {constraint: organization_edit_access_user_id_resource_id_resource_type_key, update_columns: []}) {
+      insert_resource_edit_access_one(object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}, on_conflict: {constraint: resource_edit_access_user_id_resource_id_resource_type_key, update_columns: []}) {
         id
         user_id
         resource_id
@@ -79,7 +79,7 @@ const addTeamMember = async (payload: any, accessToken: string) => {
   if (resourceType === 'companies') {
     mutation = `
       mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
-        insert_team_members_one(object: {person_id: $personId, company_id: $companyId, vc_firm_id: $vcFirmId}, on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: []}) {
+        insert_team_members_one(object: {person_id: $personId, company_id: $companyId}, on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: []}) {
           id
         }
       }
@@ -91,8 +91,8 @@ const addTeamMember = async (payload: any, accessToken: string) => {
   }
   if (resourceType === 'vc_firms') {
     mutation = `
-      mutation InsertTeamMember($personId: Int, $vcFirmId: Int) {
-        insert_team_members_one(object: {person_id: $personId vc_firm_id: $vcFirmId}, on_conflict: {constraint: team_members_vc_firm_id_person_id_key, update_columns: []}) {
+      mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
+        insert_investors_one(object: {person_id: $personId vc_firm_id: $vcFirmId}, on_conflict: {constraint: investors_vc_firm_id_person_id_key, update_columns: []}) {
           id
         }
       }
