@@ -34,6 +34,7 @@ export default function SignUpModal(props: Props) {
 	const [isRegistered, setIsRegistered] = useState(false);
 	const [emailError, setEmailError] = useState("");
 	const [nameError, setNameError] = useState("");
+	const [unsuccessMessage, setUnsuccessMessage] = useState("");
 	// const [finishingLogin, setFinishingLogin] = useState(
 	//     Boolean(router.query.email)
 	// );
@@ -86,6 +87,7 @@ export default function SignUpModal(props: Props) {
 		setErrorMessage("");
 		setEmailError("");
 		setNameError("");
+		setUnsuccessMessage('')
 	}, [props.show, props.emailFromLogin, props.passwordFromLogin]);
 
 	const onLogin = () => {
@@ -113,10 +115,16 @@ export default function SignUpModal(props: Props) {
 			});
 			if (response.status === 200) {
 				setIsRegistered(true);
-			} else if (response.status === 404) {
-				const waitlistRes = await response.clone().text();
-				if (waitlistRes === "Invalid Email") {
-					setIsWaitlisted(true);
+			} else {
+				try{
+					const res = await response.clone().json();
+					if(res.message &&  res.message.indexOf('waitlist') > 0){
+						setIsWaitlisted(true);
+					}else{
+						setUnsuccessMessage(res.message)
+					}
+				}catch(err){
+					setIsLoading(false);
 				}
 			}
 		} catch (e) {
@@ -160,7 +168,15 @@ export default function SignUpModal(props: Props) {
 					>
 						<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
 							<div className="max-w-xs mx-auto w-full">
-								{isRegistered ? (
+								{unsuccessMessage ? (
+										<>
+											{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
+											<p className="mt-2 text-dark-400 text-center">
+												{unsuccessMessage}
+											</p>
+										</>
+									) :
+									isRegistered ? (
 									<>
 										<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
 											<IconCheck className="w-10 aspect-square text-primary-500" />
@@ -169,7 +185,7 @@ export default function SignUpModal(props: Props) {
 											Registration Complete
 										</h1>
 										<p className="mt-2 text-center text-slate-600">
-											Thank you for creating an account and joining EdgeIn. Log
+											Thank you for creating an account and joining EdgeIn. Verify your email and Log
 											in to get started.
 										</p>
 										<div className="mt-6">

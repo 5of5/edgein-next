@@ -56,7 +56,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!isEmailAllowed) {
         // insert user in waitlist table
         await UserService.mutateForWaitlistEmail(userInfoInJson.email)
-        return res.status(404).send(`Invalid Email`)
+        return res.status(404).send({ message: `Your email ${userInfoInJson.email} has been added to our waitlist.  We'll be in touch soon!` });
       }
 
       // check loggedin user and linkedin user email should be same
