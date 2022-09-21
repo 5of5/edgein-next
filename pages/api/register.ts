@@ -13,11 +13,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!isEmailAllowed) {
     // insert user in waitlist table
     await UserService.mutateForWaitlistEmail(email)
-    return res.status(404).send(`Invalid Email`)
+    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
   }
 
   const data = JSON.stringify({
-    client_id: process.env.AUTH0_CLIENT_ID,
+    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
     email,
     password: req.body.password,
     name: req.body.name,
@@ -30,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   myHeaders.append('Content-Type', 'application/json');
 
   try {
-    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/signup`, {
+    const fetchRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/dbconnections/signup`, {
       method: 'POST',
       headers: myHeaders,
       body: data,
@@ -38,7 +38,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     if (!fetchRequest.ok) {
       const errorResponse = JSON.parse(await fetchRequest.text());
-      return res.status(fetchRequest.status).send(errorResponse.description)
+      return res.status(fetchRequest.status).send({ message: errorResponse.description })
     }
     result = JSON.parse(await fetchRequest.text());
 
@@ -66,7 +66,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await UserService.updateAuth0UserPassId(result.email, result._id);
     }
   } catch (ex: any) {
-    return res.status(404).send(ex.message)
+    return res.status(404).send({ message: ex.message })
   }
 
   res.send({ success: true, result });

@@ -17,11 +17,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: priceHeader,
     });
     if (!currentPriceFetchResponse.ok) {
+      console.log('response not ok', currentPriceFetchResponse)
       return res.status(currentPriceFetchResponse.status).send(currentPriceFetchResponse.statusText)
     }
     const currentPriceData = JSON.parse(await currentPriceFetchResponse.text());
     currentPrice = +currentPriceData.payload.priceUSD;
   } catch (ex: any) {
+    console.log(ex)
     return res.status(404).send(ex.message)
   }
 
@@ -31,16 +33,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers: priceHeader,
     });
     if (!circulatingSupplyFetchResponse.ok) {
+      console.log('response not ok', circulatingSupplyFetchResponse)
       return res.status(circulatingSupplyFetchResponse.status).send(circulatingSupplyFetchResponse.statusText)
     }
     const circulatingSupplyData = JSON.parse(await circulatingSupplyFetchResponse.text());
     circulatingSupply = +circulatingSupplyData.payload.circulatingSupply;
   } catch (ex: any) {
+    console.log(ex)
     return res.status(404).send(ex.message)
   }
 
   // get the Market Cap value (Market Cap = Current Price x Circulating Supply)
   const marketCap = currentPrice * circulatingSupply
+
+  console.log({ success: true, currentPrice, marketCap })
 
   res.send({ success: true, currentPrice, marketCap })
 };

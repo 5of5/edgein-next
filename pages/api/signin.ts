@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check email exist in allowedEmail table or not
   const email = req.body.email;
   const password = req.body.password;
-  if (!email || !password) return res.status(404).send('Invalid request');
+  if (!email || !password) return res.status(404).send({ message: 'Invalid request' });
 
   let isFirstLogin = false;
   const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email)
@@ -19,13 +19,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!isEmailAllowed) {
     // insert user in waitlist table
     await UserService.mutateForWaitlistEmail(email)
-    return res.status(404).send(`Invalid Email`)
+    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
   }
 
   // check user has done signup or not
   const emailExist = await UserService.findOneUserByEmail(email);
   // if email does not exist, then redirect user for registartion
-  if (!emailExist || !emailExist.auth0_user_pass_id) { return res.status(404).send({ nextStep: 'SIGNUP' }) }
+  if (!emailExist) return res.status(404).send({ nextStep: 'SIGNUP' });
+  if (!emailExist.auth0_user_pass_id) return res.status(404).send({ message: 'Email already registered with other provider' });
 
   // send data to auth0 to make user login
   const data = qs.stringify({
@@ -33,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     username: email,
     scope: 'offline_access',
     password: password,
-    client_id: process.env.AUTH0_CLIENT_ID,
+    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
     client_secret: process.env.AUTH0_CLIENT_SECRET
   });
 
@@ -41,7 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
 
   try {
-    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const fetchRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: myHeaders,
       body: data,
@@ -49,7 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     if (!fetchRequest.ok) {
       const errorResponse = JSON.parse(await fetchRequest.text());
-      return res.status(fetchRequest.status).send(errorResponse.error_description)
+      return res.status(fetchRequest.status).send({ message: errorResponse.error_description });
     }
     const tokenResponse = JSON.parse(await fetchRequest.text());
 
@@ -58,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const userInfoFetchRequest = await auth0Library.getUserInfoFromToken(tokenResponse.access_token);
     if (!userInfoFetchRequest.ok) {
       const userInfoErrorResponse = JSON.parse(await userInfoFetchRequest.text());
-      return res.status(userInfoFetchRequest.status).send(userInfoErrorResponse.error_description)
+      return res.status(userInfoFetchRequest.status).send({ message: userInfoErrorResponse.error_description });
     }
     const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
 
@@ -86,7 +87,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       CookieService.setTokenCookie(res, token)
     }
   } catch (ex: any) {
-    return res.status(404).send(ex.message)
+    return res.status(404).send({ message: ex.message });
   }
 
   res.send({ success: true });
