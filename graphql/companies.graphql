@@ -68,6 +68,7 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 					name
 					logo
 				}
+				amount
 			}
 		}
 		follows(where: {created_by_user_id: {_eq: $current_user}}) {
