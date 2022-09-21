@@ -4,7 +4,7 @@ import { InputSearch } from './InputSearch';
 import { InputSelect } from './InputSelect';
 import { InputText } from './InputText';
 import { InputDate } from './InputDate';
-import { People, useGetAllPersonsQuery, Investment_Rounds, useGetAllVcFirmsQuery, Vc_Firms } from '@/graphql/types';
+import { People, useGetAllPersonsQuery, Investment_Rounds, useGetAllVcFirmsQuery, Vc_Firms, Investments } from '@/graphql/types';
 import { roundChoices } from '@/utils/constants';
 import { ElemButton } from './ElemButton';
 
@@ -12,18 +12,25 @@ type Props = {
     isOpen: boolean;
     onClose: any;
     investmentRoundToEdit: Investment_Rounds | undefined;
-    onSaveInvestmentRound: (round : Investment_Rounds) => void;
+    onSaveInvestmentRound: (round: Investment_Rounds) => void;
 }
 
 
 export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, investmentRoundToEdit, onSaveInvestmentRound }) => {
 
-    const [investorType, setInvestorType] = useState('investor')
+   
     const [persons, setPersons] = useState<People[]>();
     const [vcFirms, setVCFirms] = useState<Vc_Firms[]>()
     const [personFilterValues, setPersonFilterValues] = useState([]);
     const [firmFilterValues, setFirmFilterValues] = useState([]);
     const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({})
+
+    const emptyInvestment = {
+        id:null,
+        person:null,
+        vc_firm: null,
+        amount:0
+    }
 
     const roundFilterValues = roundChoices.map((option) => {
         return {
@@ -33,7 +40,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     });
 
     useEffect(() => {
-        if(investmentRoundToEdit){
+        if (investmentRoundToEdit) {
             setInvestmentRound(investmentRoundToEdit)
         }
     }, [investmentRoundToEdit])
@@ -47,10 +54,10 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     } = useGetAllVcFirmsQuery()
 
     useEffect(() => {
-		if (personsData) {
-            setPersons(personsData?.people);
+        if (personsData) {
+            setPersons(personsData ?.people);
             setPersonFilterValues(
-                personsData?.people ? personsData?.people.map(x =>  {
+                personsData ?.people ? personsData ?.people.map(x => {
                     return {
                         title: x.name,
                         value: x.id
@@ -61,9 +68,9 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     }, [personsData]);
 
     useEffect(() => {
-        setVCFirms(vcFirmData?.vc_firms);
+        setVCFirms(vcFirmData ?.vc_firms);
         setFirmFilterValues(
-            vcFirmData?.vc_firms ? vcFirmData?.vc_firms.map(x =>  {
+            vcFirmData ?.vc_firms ? vcFirmData ?.vc_firms.map(x => {
                 return {
                     title: x.name,
                     value: x.id
@@ -76,6 +83,24 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
         const tempData = {
             ...investmentRound,
             [key]: value
+        }
+        setInvestmentRound(tempData)
+    }
+
+    const onAddNew = () => {
+        const tempData = {
+            ...investmentRound,
+            investments : (investmentRound.investments)  ? [...investmentRound.investments, emptyInvestment] : [emptyInvestment]
+        }
+        setInvestmentRound(tempData)
+    }
+
+    const onUpdateInvestment = (investment: any, position: number) => {
+        const tempData = {
+            ...investmentRound,
+            investments : investmentRound.investments.map((item: any, index: number) => {
+                return (index == position) ? investment : item
+            })
         }
         setInvestmentRound(tempData)
     }
@@ -108,10 +133,8 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                 leaveFrom="opacity-100 scale-100"
                                 leaveTo="opacity-0 scale-95"
                             >
-                                <Dialog.Panel className="p-4 bg-white min-h-screen text-left" >
-                                    <div>
-
-
+                                <Dialog.Panel className="p-4 bg-white min-h-screen max-h-screen text-left" >
+                                    <div className="overflow-y-scroll max-h-screen">
                                         <div className="mt-4">
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Announced Date</label>
                                             <InputDate
@@ -123,53 +146,11 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                         </div>
 
                                         <div className='mt-4'>
-                                            <label className='font-Metropolis text-sm font-bold text-slate-600'>Investor Type</label>
-                                            <div className='flex justify-start items-center'>
-                                                <div className='flex items-center'>
-                                                    <input type="radio" checked={investorType === 'investor'} onClick={() => {setInvestorType('investor')}}/>
-                                                    <label className='ml-2 text-sm font-Metropolis font-normal text-slate-600'>Angel Investor</label>
-                                                </div>
-                                                <div className='ml-4 flex items-center'>
-                                                    <input type="radio" checked={investorType === 'firm'} onClick={() => {setInvestorType('firm')}} />
-                                                    <label className='ml-2 text-sm font-Metropolis font-normal text-slate-600'>Investment Firm</label>
-                                                </div>
-
-                                            </div>
-                                        </div>
-
-                                        <div className='mt-4'>
-                                            <label className=' block  font-Metropolis text-sm font-bold text-slate-600'>Angel Investor</label>
-                                            {/* <InputSearch
-                                                placeholder='find angel investor'
-                                                className='mt-1 max-w-sm'
-                                            /> */}
-                                            {
-                                                (investorType === "investor") ? 
-                                                <InputSelect
-                                                options={personFilterValues}
-                                                value={personFilterValues && (investmentRound && investmentRound.investments && investmentRound.investments.person && investmentRound.investments.person.id) ? personFilterValues.find(x => x.value === investmentRound.investments.person.id) : {}}
-                                                onChange={(e) =>  setValues('person',  (persons) ? persons.find(x => x.id === e.value): {})}
-                                                placeholder='find angel investor'
-                                                className="w-80 text-slate-600 text-base"
-                                            />
-                                            :
-                                            <InputSelect
-                                                options={firmFilterValues}
-                                                value={firmFilterValues && (investmentRound && investmentRound.person && employee.person.id) ? personFilterValues.find(x => x.value === employee.person.id) : {}}
-                                                onChange={(e) =>  setValues('person',  (persons) ? persons.find(x => x.id === e.value): {})}
-                                                placeholder='find investment firm'
-                                                className="w-80 text-slate-600 text-base"
-                                            />
-                                            }
-                                            
-                                        </div>
-
-                                        <div className='mt-4'>
                                             <label className=' block font-Metropolis text-sm font-bold text-slate-600'>Round Type</label>
                                             <InputSelect
                                                 options={roundFilterValues}
-                                                onChange={(e) =>  setValues('round', e.value)}
-                                                value={roundFilterValues && investmentRound.round ? roundFilterValues.find(x=> x.value === investmentRound.round):{}}
+                                                onChange={(e) => setValues('round', e.value)}
+                                                value={roundFilterValues && investmentRound.round ? roundFilterValues.find(x => x.value === investmentRound.round) : {}}
                                                 placeholder="Seed"
                                                 className='max-w-sm placeholder:text-slate-300'
                                             />
@@ -182,7 +163,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 name=""
                                                 disabled={true}
                                                 value={(investmentRound.amount) ? investmentRound.amount : 0}
-                                                onChange={(e) => { setValues('amount', e.target.value)}}
+                                                onChange={(e) => { setValues('amount', e.target.value) }}
                                                 className=" max-w-sm placeholder:text-slate-500"
                                                 placeholder='$'
                                             />
@@ -194,26 +175,21 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 type='number'
                                                 name=""
                                                 value={(investmentRound.valuation) ? investmentRound.valuation : 0}
-                                                onChange={(e) => { setValues('valuation', e.target.value)}}
+                                                onChange={(e) => { setValues('valuation', e.target.value) }}
                                                 className=" max-w-sm placeholder:text-slate-500"
                                                 placeholder='$'
                                             />
                                         </div>
-
-                                        <div className="mt-4">
-                                            <label className='font-Metropolis text-sm font-bold text-slate-600'>Amount Invested</label>
-                                            <InputText
-                                                type='number'
-                                                name=""
-                                                value=""//{(investmentRound.amount) ? investmentRound.amount : 0}
-                                                onChange={(e) => { }}
-                                                className=" max-w-sm placeholder:text-slate-500"
-                                                placeholder='$'
-                                            />
-                                        </div>
+                                        {
+                                            (investmentRound.investments) && investmentRound.investments.map((investment, index) =>  
+                                                <InvestmentSection vcFirms={vcFirms} persons={persons} onUpdateInvestment={(investment) => onUpdateInvestment(investment, index)} investment={investment} personFilterValues={personFilterValues} firmFilterValues={firmFilterValues}/>
+                                            )
+                                        }
+                                        <ElemButton onClick={onAddNew} btn="ol-primary" className="mt-5 mb-28">Add Investment</ElemButton>
+                                   
                                     </div>
-                                    <div className="absolute bottom-5 left-5">
-                                        <ElemButton onClick={() => onSaveInvestmentRound(investmentRound)} btn="ol-primary" className="">Add Investment Round</ElemButton> 
+                                    <div className="absolute bottom-5">
+                                        <ElemButton onClick={() => onSaveInvestmentRound(investmentRound)} btn="white" className="bg-white">Add Investment Round</ElemButton>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
@@ -222,5 +198,74 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                 </Dialog>
             </Transition>
         </>
+    )
+}
+
+const InvestmentSection = ({investment, personFilterValues, firmFilterValues, onUpdateInvestment, persons, vcFirms}) => {
+
+    const [investorType, setInvestorType] = useState('investor')
+    const [currentInvestment, setCurrentInnvestment] = useState(investment)
+
+    const setValues = (key: string, value: any) => {
+        const temp = {
+            ...currentInvestment,
+            [key]: value
+        }
+        setCurrentInnvestment(temp)
+        onUpdateInvestment(temp)
+    }
+
+    return (
+        <div>
+            <div className='mt-4'>
+                <label className='font-Metropolis text-sm font-bold text-slate-600'>Investor Type</label>
+                <div className='flex justify-start items-center'>
+                    <div className='flex items-center'>
+                        <input type="radio" checked={investorType === 'investor'} onClick={() => { setInvestorType('investor') }} />
+                        <label className='ml-2 text-sm font-Metropolis font-normal text-slate-600'>Angel Investor</label>
+                    </div>
+                    <div className='ml-4 flex items-center'>
+                        <input type="radio" checked={investorType === 'firm'} onClick={() => { setInvestorType('firm') }} />
+                        <label className='ml-2 text-sm font-Metropolis font-normal text-slate-600'>Investment Firm</label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div className='mt-4'>
+                <label className=' block  font-Metropolis text-sm font-bold text-slate-600'>Angel Investor</label>
+                {
+                    (investorType === "investor") ?
+                        <InputSelect
+                            options={personFilterValues}
+                            value={personFilterValues && (currentInvestment.person && currentInvestment.person.id) ? personFilterValues.find(x => x.value === currentInvestment.person.id) : {}}
+                            onChange= {(e) => setValues('person', (persons) ? persons.find(x => x.id === e.value) : {})}
+                            placeholder='find angel investor'
+                            className="w-80 text-slate-600 text-base"
+                        />
+                        :
+                        <InputSelect
+                            options={firmFilterValues}
+                            value={firmFilterValues && (currentInvestment.vc_firm && currentInvestment.vc_firm.id) ? firmFilterValues.find(x => x.value === currentInvestment.vc_firm.id) : {}}
+                            onChange={(e) => setValues('vc_firm', (vcFirms) ? vcFirms.find(x => x.id === e.value) : {})}
+                            placeholder='find investment firm'
+                            className="w-80 text-slate-600 text-base"
+                        />
+                }
+
+            </div>
+            <div className="mt-4">
+                <label className='font-Metropolis text-sm font-bold text-slate-600'>Amount Invested</label>
+                <InputText
+                    type='number'
+                    name=""
+                    value={(currentInvestment.amount) ? currentInvestment.amount : 0}
+                    onChange={(e) => { setValues('amount', e.target.value)}}
+                    className=" max-w-sm placeholder:text-slate-500"
+                    placeholder='$'
+                />
+            </div>
+
+        </div>
     )
 }

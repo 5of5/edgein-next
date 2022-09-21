@@ -613,7 +613,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <div className="flex justify-between items-center mt-2 mb-5">
                                 <h2 className="text-dark-500 font-bold font-Metropolis text-md">All Investments</h2>
-                                <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => setInvestmentDrawer(true)}>Add Investmesnts Round</span>
+                                <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => {setRoundToEdit({}); setInvestmentDrawer(true)}}>Add Investmesnts Round</span>
                             </div>
 
                             <ElemEditInvestments

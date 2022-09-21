@@ -117,6 +117,9 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                             />
                                         </div>
                                         <div className='mt-4'>
+                                            <input type="checkbox" checked={employee.founder} onChange={() => setValues('founder', !employee.founder) } /><span className='text-sm font-Metropolis font-bold text-slate-600 ml-2'>Founder</span>
+                                        </div>
+                                        <div className='mt-4'>
                                             <label className=' block  font-Metropolis text-sm font-bold text-slate-600'>Title</label>
                                             {/* <InputSelect
                                                 options={titleFilterValues}
@@ -154,7 +157,14 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                     </div>
                                 
                                     <div className="absolute bottom-5 left-5">
-                                        <ElemButton onClick={() => onSaveEmployee(employee)} btn="ol-primary" className="">Add Employee</ElemButton> 
+                                        <ElemButton 
+                                        onClick={() => {
+                                            if(!current){
+                                                delete employee.end_date
+                                            }
+                                            onSaveEmployee(employee)
+                                        }} 
+                                        btn="ol-primary" className="">Add Employee</ElemButton> 
                                     </div>
                                    
                                 </Dialog.Panel>
