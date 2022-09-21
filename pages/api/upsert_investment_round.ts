@@ -43,11 +43,11 @@ const upsertInvestmentRound = async (payload: any, token: string) => {
     }
   })
 
-  const investmentsData = investments.map((investment: any) => ({ ...investment, round_id: data.data.insert_investment_round_one.id }))
+  const investmentsData = investments.map((investment: any) => ({ ...investment, round_id: data.data.insert_investment_rounds_one.id }))
 
   const resultInvestments = await upsertInvestments(investmentsData, token)
 
-  return { ...data.data.insert_investment_round_one, investments: resultInvestments }
+  return { ...data.data.insert_investment_rounds_one, investments: resultInvestments }
 }
 
 const upsertInvestments = async (payload: any, token: string) => {
