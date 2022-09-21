@@ -2,7 +2,7 @@ import { useAuth } from "../hooks/useAuth"
 import { ElemPhoto } from "@/components/ElemPhoto"
 import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal"
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout"
-import { GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, Organization_Edit_Access, People, useGetUserProfileQuery } from "@/graphql/types"
+import { GetCompaniesDocument, GetCompaniesQuery, GetVcFirmsDocument, GetVcFirmsQuery, People, Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types"
 import { runGraphQl } from "@/utils"
 import { GetStaticProps } from "next"
 import { FC, useEffect, useState } from "react"
@@ -16,7 +16,7 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 	const { user } = useAuth();
 
 	const [profile, setProfile] = useState({} as People)
-	const [organizations, setOrganization] = useState([] as Organization_Edit_Access[])
+	const [organizations, setOrganization] = useState([] as Resource_Edit_Access[])
 
 	const [showVerifyModal, setShowVerifyModal] = useState(false)
 
@@ -32,14 +32,14 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 		}
 		if (users?.users_by_pk?.organization_companies) {
 			setOrganization((prev) => {
-				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Organization_Edit_Access[]]
+				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Resource_Edit_Access[]]
 				return temp
 			})
 		}
 
 		if (users?.users_by_pk?.organization_vc_firms) {
 			setOrganization((prev) => {
-				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Organization_Edit_Access[]]
+				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Resource_Edit_Access[]]
 				return temp
 			})
 		}

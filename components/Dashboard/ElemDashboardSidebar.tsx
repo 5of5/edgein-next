@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { IconOrganization } from "@/components/IconOrganization";
-import { Organization_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
+import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import { IconSetting } from "../IconSetting";
 
 type Props = {}
@@ -14,7 +14,7 @@ type Props = {}
 export const ElemDashboardSidebar: FC<Props> = ({ }) => {
   const { user } = useAuth()
   const router = useRouter()
-  const [organizations, setOrganizations] = useState([] as Organization_Edit_Access[])
+  const [organizations, setOrganizations] = useState([] as Resource_Edit_Access[])
 
   const {
     data: users
@@ -25,14 +25,14 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
   useEffect(() => {
     if (users?.users_by_pk?.organization_companies) {
 			setOrganizations((prev) => {
-				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Organization_Edit_Access[]]
+				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Resource_Edit_Access[]]
 				return temp
 			})
 		}
 
 		if (users?.users_by_pk?.organization_vc_firms) {
 			setOrganizations((prev) => {
-				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Organization_Edit_Access[]]
+				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Resource_Edit_Access[]]
 				return temp
 			})
 		}
