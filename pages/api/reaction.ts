@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), Boolean(existsFollows))
   if (revalidatePath) {
-    await res.unstable_revalidate(revalidatePath)
+    // await res.unstable_revalidate(revalidatePath)
   }
 
   // create action
@@ -65,8 +65,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           listId: list.id,
           sentiment: sentimentType,
         },
-        resourceId,
-        resourceType,
+        resource_id: resourceId,
+        resource_type: resourceType,
         user: user.id,
       },
     },
