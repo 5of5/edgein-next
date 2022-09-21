@@ -34,6 +34,7 @@ export const TheNavbar = () => {
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [linkedInError, setLinkedInError] = useState("");
+	const [inviteCode, setInviteCode] = useState("");
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
@@ -79,14 +80,13 @@ export const TheNavbar = () => {
 				},
 				body: JSON.stringify({
 					code,
-					redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
+					redirect_uri: process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL,
 				}),
 			}); //.then((res) => res.json());
-			if (response.status == 404) {
-				const responseText = await response.clone().text();
-				if (responseText === "Invalid Email") {
-					// showUnsuccessMessagge
-					setLinkedInError(responseText);
+			if (response.status !== 200) {
+				const responseText = await response.clone().json();
+				if(responseText.message){
+					setLinkedInError(responseText.message);
 					setShowLoginPopup(true);
 				}
 			} else {
@@ -105,6 +105,13 @@ export const TheNavbar = () => {
 			})();
 		}
 	}, [router.query.code]);
+
+	useEffect(() => {
+		if (router.query.invite && !user) {
+			setInviteCode(router.query.invite as string);
+			showSignUpModal("", "");
+		}
+	}, [router.query.invite, user]);
 
 	const logout = async () => {
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
@@ -249,6 +256,7 @@ export const TheNavbar = () => {
 						onClose={onModalClose}
 					/>
 					<SignUpModal
+						inviteCode={inviteCode}
 						passwordFromLogin={passwordFromLogin}
 						emailFromLogin={emailFromLogin}
 						onLogin={showLoginModal}

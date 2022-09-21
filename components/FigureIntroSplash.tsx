@@ -11,41 +11,29 @@ export const FigureIntroSplash: FC<Props> = ({
 	isShowing = true,
 }) => {
 	return (
-		<figure className={`${className} hidden lg:block relative`}>
-			{/* <Transition
+		<figure className={`relative mt-4 ${className}`}>
+			{/* Grid */}
+			<Transition
 				appear={true}
 				show={isShowing}
-				enter="transition-all delay-1000 ease-in duration-300"
-				enterFrom="opacity-0 translate-x-0"
-				enterTo="opacity-100 translate-x-full"
-				className="relative z-10"
-			> */}
-			<div className="relative z-10 grid grid-cols-2 gap-3 w-96 p-4 rounded-[40px] bg-white/75 box-border border border-white/50 -skew-x-6 transition duration-500 ease-in shadow-[0_30px_60px_-12px_rgba(50,50,93,0.25),_0_18px_36px_-18px_rgba(0,0,0,0.3)]">
-				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
-				<div className="col-span-1 h-44 rounded-[26px] bg-dark-100"></div>
-				<div className="col-span-2 h-44 rounded-[26px] bg-dark-100"></div>
-			</div>
-			{/* </Transition> */}
+				enter="transition ease-in-out delay-500 duration-500"
+				enterFrom="opacity-0"
+				enterTo="opacity-100"
+				className="absolute scale-[1.5] -bottom-12 left-0 right-0 mx-auto opacity-80 text-dark-500"
+			>
+				<FigurePerspectiveGrid />
+			</Transition>
 
-			<div className="absolute z-10 -left-16 top-1/2 -translate-y-3/4 w-2/3 rounded-xl bg-[#f6f9fc] border border-white/50 -skew-x-6 p-1.5 transition delay-500 duration-300 ease-in shadow-[0_30px_60px_-12px_rgba(50,50,93,0.25),_0_18px_36px_-18px_rgba(0,0,0,0.3)]">
-				<div className="flex h-full w-full bg-white rounded-lg p-1.5">
-					<div className="mr-2 h-20 w-20 rounded-full overflow-hidden relative bg-dark-100"></div>
-					<div className="flex flex-col justify-between">
-						<div className="h-6 w-2/3 overflow-hidden relative bg-dark-100 rounded-lg"></div>
-						<div className="mt-2 h-2 w-40 overflow-hidden relative bg-dark-100 rounded-xl"></div>
-						<div
-							data-placeholder
-							className="mt-2 h-2 w-40 overflow-hidden relative bg-dark-100 rounded-xl"
-						></div>
-						<div
-							data-placeholder
-							className="mt-2 h-2 w-3/4 overflow-hidden relative bg-dark-100 rounded-xl"
-						></div>
-					</div>
-				</div>
-			</div>
+			{/* Spheres */}
+			<div className="absolute w-28 h-28 sm:w-36 sm:h-36 left-0 right-0 mx-auto -top-16 bg-gradient-to-br from-[#ADD3FF] to-blue-800 rounded-full animate-blob"></div>
+			<div className="absolute w-28 h-28 sm:w-36 sm:h-36 top-4 -right-12 bg-gradient-to-br from-[#CDAAFF] to-[#954DFF] rounded-full animate-blob animation-delay-3000"></div>
+			<div className="absolute w-20 h-20 sm:w-28 sm:h-28 bottom-4 -right-16 bg-gradient-to-br from-[#FFC1F1] to-[#D018A7] rounded-full animate-blob animation-delay-2000"></div>
+			<div className="absolute w-20 h-20 sm:w-28 sm:h-28 top-28 -left-10 bg-gradient-to-br from-[#FFFBEB] to-[#F8DA4B] rounded-full animate-blob animation-delay-5000"></div>
 
-			<FigurePerspectiveGrid className="block absolute z-0 w-full scale-[2.5] bottom-0 opacity-80 text-dark-500" />
+			{/* Cards */}
+			<div className="absolute -top-8 left-0 right-0 aspect-video w-10/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
+			<div className="absolute -top-4 left-0 right-0 aspect-video w-11/12 mx-auto rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl"></div>
+			<div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl shadow-[10px_14px_25px_rgba(0,0,0,0.10)]"></div>
 		</figure>
 	);
 };

@@ -74,26 +74,19 @@ export default function LoginModal(props: Props) {
 				body: JSON.stringify({ email, password }),
 			});
 
-			if (response.status === 401 || response.status === 403) {
-				const responseText = await response.clone().text();
-				setUnsuccessMessage(responseText);
-			} else if (response.status === 404) {
-				// 404 returns in both cases
-				try {
+			if (response.status === 200) {
+				window.location.href = "/";
+			}else{
+				try{
 					const res = await response.clone().json();
 					if (res.nextStep && res.nextStep === "SIGNUP") {
 						onSignUp(email, password);
+					}else{
+						setUnsuccessMessage(res.message);
 					}
-				} catch (err) {
-					const waitlistRes = await response.clone().text();
-					if (waitlistRes === "Invalid Email") {
-						setUnsuccessMessage(
-							`Your email ${email} has been added to our waitlist.  We'll be in touch soon!`
-						);
-					}
+				}catch(err){
+					setIsLoading(false)
 				}
-			} else if (response.status === 200) {
-				window.location.href = "/";
 			}
 		} catch (e) {
 			console.log(e);
@@ -115,7 +108,7 @@ export default function LoginModal(props: Props) {
 	};
 
 	const onLinkedInClick = () => {
-		const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_LINKEDIN_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
+		const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
 		window.location.href = url;
 	};
 

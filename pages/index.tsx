@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import React, { useState } from "react";
 import Head from "next/head";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
-import { FigureIntroSplashNew } from "@/components/FigureIntroSplashNew";
 
 import { FigureBlurredBg } from "@/components/FigureBlurredBg";
 import { ElemButton } from "@/components/ElemButton";
@@ -68,44 +67,9 @@ const Home: NextPage = () => {
 						</div>
 
 						<div className="mt-28 mx-0 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
-							<FigureIntroSplashNew />
-							{/* <FigureIntroSplash className="hidden lg:block relative" /> */}
+							<FigureIntroSplash />
 						</div>
 					</div>
-					{/* <div className="bg-white rounded-2xl border border-dark-500/10 p-6 w-[30rem]">
-					
-					<p className="mt-2 text-xl text-dark-400">
-						{formSent &&
-							 `your email ${email} has been added to our list.  we'll be in touch soon!`
-						}
-					</p>
-
-					{!formSent && (
-						<>
-							<form
-								className="relative grid grid-cols-1 gap-y-4 mt-6 sm:grid-cols-5 sm:gap-x-4"
-								onSubmit= {() => {}} //{onSubmit}
-							>
-								<div className="group mb-6 sm:col-span-3">
-									<InputText
-										//label="Email"
-										type="email"
-										name="email"
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
-										placeholder="example@email.com"
-										required
-									/>
-								</div>
-								<div className="sm:col-span-2 mt-2">
-									<ElemButton roundedFull={true} btn="primary" loading={submitting}>
-										Join the waitlist
-									</ElemButton>
-								</div>
-							</form>
-						</>
-					)}
-				</div> */}
 				</div>
 			</section>
 
