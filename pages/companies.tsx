@@ -322,7 +322,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
 		{
-			//limit: 50,
 			offset: 0,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 		}
