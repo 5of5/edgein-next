@@ -1,3 +1,0 @@
--- Could not auto-generate a down migration.
--- Please write an appropriate down migration for the SQL below:
--- CREATE TRIGGER update_tokens_updated_at_column BEFORE UPDATE ON tokens FOR EACH ROW EXECUTE PROCEDURE  update_updated_at_column();

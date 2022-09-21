@@ -1,6 +1,6 @@
 table:
   schema: public
-  name: organization_edit_access
+  name: resource_edit_access
 object_relationships:
   - name: company
     using:
