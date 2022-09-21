@@ -87,12 +87,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												key={investment.vc_firm.id}
 											>
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-													{/* <ElemPhoto
-														photo={investment.vc_firm.logo}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
-														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={investment.vc_firm.name}
-													/> */}
+													
 													<span className="line-clamp-2">
 														{`${investment.vc_firm.name}, `}
 													</span>
@@ -106,12 +101,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												key={investment.person.id}
 											>
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
-													{/* <ElemPhoto
-														photo={investment.person.picture}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-														imgClass="object-cover w-12 h-12"
-														imgAlt={investment.person.name}
-													/> */}
+													
 													<span className="line-clamp-2">
 														{`${investment.person.name}, `}
 													</span>
@@ -134,13 +124,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												key={investment.vc_firm.id}
 											>
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-													{/* <ElemPhoto
-														photo={investment.vc_firm.logo}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
-														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={investment.vc_firm.name}
-														placeholder="company"
-													/> */}
+													
 													<span className="line-clamp-2">
 														{`${investment.vc_firm.name}, `}
 													</span>
@@ -163,13 +147,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												key={investment.person.id}
 											>
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
-													{/* <ElemPhoto
-														photo={investment.person.picture}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-														imgClass="object-cover w-12 h-12"
-														imgAlt={investment.person.name}
-														placeholder="user"
-													/> */}
+													
 													<span className="line-clamp-2">
 														{`${investment.person.name}, `}
 													</span>
@@ -204,16 +182,6 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
 	const investmentsCount = dataInvestments.length;
 
-	// const sortees = React.useMemo(
-	// 	() => [
-	// 		{
-	// 			id: "round_date",
-	// 			desc: true,
-	// 		},
-	// 	],
-	// 	[]
-	// );
-
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -240,30 +208,9 @@ export const ElemEditInvestments: React.FC<Props> = ({
 		usePagination
 	);
 
-	// const generateSortingIndicator = (column: any) => {
-	// 	return column.isSorted ? (
-	// 		column.isSortedDesc ? (
-	// 			<IconSortDown className="ml-1 h-5 w-5 inline-block" />
-	// 		) : (
-	// 			<IconSortUp className="ml-1 h-5 w-5 inline-block" />
-	// 		)
-	// 	) : (
-	// 		<IconSortUp className="ml-1 h-5 w-5 inline-block opacity-0 group-hover:opacity-100" />
-	// 	);
-	// };
-
 	return (
 		<section className={className}>
-			{/* {heading && (
-				<div className="flex items-center justify-between">
-					<h2 className="text-xl font-bold">{heading}</h2>
-
-					<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-						<IconEditPencil title="Edit" />
-					</button>
-				</div>
-			)} */}
-
+			
 			<div className="mt-2 overflow-scroll border border-black/10 rounded-lg">
 				<table
 					{...getTableProps()}
@@ -336,23 +283,14 @@ export const ElemEditInvestments: React.FC<Props> = ({
 											</td>
 										);
                                     })}
-                                     {/* <button onClick={() => onEdit(row.original)} className="px-1 py-2 text-primary-500">
-                                        Edit
-                                    </button> */}
+                                    
 								</tr>
 							);
 						})}
 					</tbody>
 				</table>
 			</div>
-			{/* <Pagination
-				shownItems={page?.length}
-				totalItems={investmentsCount}
-				page={pageIndex}
-				itemsPerPage={pageSize}
-				onClickPrev={() => previousPage()}
-				onClickNext={() => nextPage()}
-			/> */}
+			
 		</section>
 	);
 };

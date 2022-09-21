@@ -41,7 +41,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
 
     useEffect(() => {
         if (investmentRoundToEdit) {
-            setInvestmentRound(investmentRoundToEdit)
+            setInvestmentRound({...investmentRoundToEdit})
         }
     }, [investmentRoundToEdit])
 
@@ -102,7 +102,18 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                 return (index == position) ? investment : item
             })
         }
+       
         setInvestmentRound(tempData)
+    }
+
+    const onRemove = (position: number) => {
+        console.log("position ===", position)
+        const tempData = {
+            ...investmentRound
+        }
+        tempData.investments.splice(position, 1)
+        console.log("tempData ===", tempData)
+        setInvestmentRound(tempData as Investment_Rounds)
     }
 
     return (
@@ -181,8 +192,15 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             />
                                         </div>
                                         {
-                                            (investmentRound.investments) && investmentRound.investments.map((investment, index) =>  
-                                                <InvestmentSection key={index} vcFirms={vcFirms} persons={persons} onUpdateInvestment={(investment: any) => onUpdateInvestment(investment, index)} investment={investment} personFilterValues={personFilterValues} firmFilterValues={firmFilterValues}/>
+                                            (investmentRound.investments) && [...investmentRound.investments].map((investment, index) =>  
+                                                <InvestmentSection 
+                                                key={index}  
+                                                onRemove={() => onRemove(index)} 
+                                                vcFirms={vcFirms} 
+                                                persons={persons} 
+                                                onUpdateInvestment={(investment: any) => onUpdateInvestment(investment, index)} 
+                                                investment={investment} personFilterValues={personFilterValues} 
+                                                firmFilterValues={firmFilterValues}/>
                                             )
                                         }
                                         <ElemButton onClick={onAddNew} btn="ol-primary" className="mt-5 mb-28">Add Investment</ElemButton>
@@ -208,6 +226,7 @@ type InvestmentProps = {
     onUpdateInvestment: (investment: any) => void;
     persons: People[] | undefined;
     vcFirms: Vc_Firms[] | undefined;
+    onRemove: () => void;
 };
 
 
@@ -217,7 +236,8 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
     firmFilterValues= [], 
     onUpdateInvestment= (investment: any) => {}, 
     persons= [], 
-    vcFirms= []
+    vcFirms= [],
+    onRemove= () => {}
 }) => {
 
     const [investorType, setInvestorType] = useState('investor')
@@ -232,9 +252,16 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
         onUpdateInvestment(temp)
     }
 
+    useEffect(() => {
+        setCurrentInnvestment(investment)
+    }, [investment])
+
     return (
-        <div>
-            <div className='mt-4'>
+        <div className="border border-gray-5 p-5 pt-0 rounded-md my-4">
+            <div className="flex w-full justify-end">
+                <button onClick={onRemove}>x</button>
+            </div>
+            <div className='mt-0'>
                 <label className='font-Metropolis text-sm font-bold text-slate-600'>Investor Type</label>
                 <div className='flex justify-start items-center'>
                     <div className='flex items-center'>

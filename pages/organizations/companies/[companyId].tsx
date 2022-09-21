@@ -609,7 +609,11 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             </div>
 
                             <ElemEditInvestments
-                                onEdit={(round) => {console.log("rounf==", round); setRoundToEdit(round); setInvestmentDrawer(true)}}
+                                onEdit={(round) => {
+                                    console.log("rounf==", round); 
+                                    setRoundToEdit([...companyEditable.investment_rounds].find((item: any) => item.id===round.id)); 
+                                    setInvestmentDrawer(true)
+                                }}
                                 investments={company.investment_rounds}
                             />
                             {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={onSaveInvestmentRound} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
