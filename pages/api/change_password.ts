@@ -4,7 +4,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
 
   const data = JSON.stringify({
-    client_id: process.env.AUTH0_CLIENT_ID,
+    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
     email: req.body.email,
     connection: "Username-Password-Authentication"
   });
@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let result;
   try {
-    const fetchRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/dbconnections/change_password`, {
+    const fetchRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/dbconnections/change_password`, {
       method: 'POST',
       headers: myHeaders,
       body: data,
