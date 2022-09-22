@@ -10,8 +10,12 @@ import {
 	// IconHome,
 } from "./Icons";
 import { IconDashboard } from "./Dashboard/IconDashboard";
+import { IconSetting } from "./IconSetting";
 
-const navigation = [{ name: "Dashboard", href: "/dashboard", icon: IconDashboard }];
+const navigation = [
+	{ name: "Dashboard", href: "/dashboard", icon: IconDashboard },
+	{ name: "Account Settings", href: "/account", icon: IconSetting },
+];
 
 export const UserMenu = () => {
 	const logout = async () => {
@@ -31,10 +35,6 @@ export const UserMenu = () => {
 			/* handle errors */
 		}
 	};
-
-	const handleNavigation = () => {
-
-	}
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">
@@ -65,9 +65,8 @@ export const UserMenu = () => {
 								{({ active }) => (
 									<a
 										href={item.href}
-										className={`${
-											active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+										className={`${active ? "bg-gray-50" : ""
+											} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
 									>
 										<item.icon className="mr-2 h-6 w-6" aria-hidden="true" />
 										{item.name}
