@@ -506,7 +506,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const getInviteLink = (invitecode: string) => {
-		const inviteLink = `${process.env.NEXT_PUBLIC_REDIRECT_URL}/?invite=${invitecode}`;
+		const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${invitecode}`;
 		return inviteLink;
 	}
 
