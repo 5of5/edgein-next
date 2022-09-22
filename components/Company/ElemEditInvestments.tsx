@@ -18,7 +18,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 	className,
 	heading,
     investments,
-    onEdit
+    onEdit = () => {}
 }) => {
 	const columns = React.useMemo(
 		() => [
@@ -173,7 +173,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 				),
 			},
 		],
-		[]
+		[onEdit]
 	);
 
 	const dataInvestments = React.useMemo(() => {

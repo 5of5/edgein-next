@@ -71,6 +71,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		current_user: user?.id ?? 0,
     });
 
+
     const {
         data: coinData
     } = useGetAllCoinsQuery()
@@ -103,13 +104,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		const file = event.target.files ? event.target.files[0] : null;
 		if (!file) return;
         setSelectedFile(file)
-		// const res = await uploadFile(file);
-
-		// deleteFile(person ?.picture);
-
-		// const resp = await updateCall({ picture: res.file });
-
-		// setPerson(resp.result);
     };
 
     const updateCall = async () => {
@@ -144,7 +138,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             person_id: (employee.person)? employee.person.id : null
         }
         delete updatedEmployee.person;
-        const resp = await fetch("/api/team_member", {
+        await fetch("/api/team_member", {
             method: "POST",
             body: JSON.stringify({
                 teammember: updatedEmployee
@@ -154,10 +148,36 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                 "Content-Type": "application/json",
             },
         });
+        window.location.reload()
     }
 
-    const onSaveInvestmentRound = (round : Investment_Rounds) => {
+    const onSaveInvestmentRound = async(round : any) => {
         setInvestmentDrawer(false)
+        const updatedInvestments = round.investments.map((item:  any) => {
+            const tempInvestment = {
+                ...item,
+                person_id: (item.person) ? item.person.id : null,
+                vc_firm_id: (item.vc_firm) ? item.vc_firm.id : null
+            };
+            delete tempInvestment.person;
+            delete tempInvestment.vc_firm;
+            return tempInvestment;
+        })
+        const tempRound = {
+            ...round,
+            investments: updatedInvestments
+        }
+        await fetch("/api/upsert_investment_round", {
+            method: "POST",
+            body: JSON.stringify({
+                investmentRound: tempRound
+            }),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        window.location.reload()
     }
 
     const onSaveCompany = async () => {
@@ -180,6 +200,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         delete companyEditable.coin;
         delete companyEditable.follows;
         const resp = await updateCall()
+        window.location.reload()
         //save company data
     }
 
@@ -610,13 +631,12 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <ElemEditInvestments
                                 onEdit={(round) => {
-                                    console.log("rounf==", round); 
                                     setRoundToEdit([...companyEditable.investment_rounds].find((item: any) => item.id===round.id)); 
                                     setInvestmentDrawer(true)
                                 }}
                                 investments={company.investment_rounds}
                             />
-                            {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={onSaveInvestmentRound} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
+                            {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
                         </div>
                     </div>
                 </div>

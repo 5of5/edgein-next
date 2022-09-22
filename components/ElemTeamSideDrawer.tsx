@@ -93,7 +93,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                 <Dialog.Panel className="p-4 bg-white min-h-screen text-left content-between" >
                                     <div>
 
-                                        <h2 className='font-Metropolis text-dark-500 font-bold'>Add Employee</h2>
+                                        <h2 className='font-Metropolis text-dark-500 font-bold'>{`${memberToEdit && memberToEdit.id ? 'Edit Employee' : 'Add Employee'}`}</h2>
 
                                         <div className="mt-4">
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Person</label>
@@ -164,7 +164,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                             }
                                             onSaveEmployee(employee)
                                         }} 
-                                        btn="ol-primary" className="">Add Employee</ElemButton> 
+                                        btn="ol-primary" className="">{`${memberToEdit && memberToEdit.id ? 'Edit Employee' : 'Add Employee'}`}</ElemButton> 
                                     </div>
                                    
                                 </Dialog.Panel>

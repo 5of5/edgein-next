@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const data = JSON.stringify({
     client_id: process.env.AUTH0_MANAGEMENT_CLIENT_ID,
     client_secret: process.env.AUTH0_MANAGEMENT_CLIENT_SECRET,
-    audience: `${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/`,
+    audience: `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/`,
     grant_type: "client_credentials"
   });
 
@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let result;
   try {
-    const managementTokenRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/oauth/token`, {
+    const managementTokenRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
       method: 'POST',
       headers: myHeaders,
       body: data,
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // set user password
     myHeaders.append('Authorization', `Bearer ${managementTokenData.access_token}`);
     const setPasswordObject = JSON.stringify({ password, connection: "Username-Password-Authentication" });
-    const setPasswordRequest = await fetch(`${process.env.AUTH0_ISSUER_BASE_URL}/api/v2/users/auth0|${user.auth0_user_pass_id}`, {
+    const setPasswordRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/api/v2/users/auth0|${user.auth0_user_pass_id}`, {
       method: 'PATCH',
       headers: myHeaders,
       body: setPasswordObject,

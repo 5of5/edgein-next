@@ -342,7 +342,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetVcFirmsDocument,
 		{
 			offset: 0,
-			//limit: 50,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 			current_user: 0,
 		}
@@ -354,7 +353,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaDescription:
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
 			vcFirmCount: vcFirms?.vc_firms?.length || null,
-			initialVCFirms: vcFirms?.vc_firms || null,
+			initialVCFirms: vcFirms?.vc_firms.slice(0, 50) || null,
 			numberOfInvestments: InvestmentsFilters,
 		},
 	};

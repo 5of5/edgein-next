@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useMemo } from 'react'
 import { InputSearch } from './InputSearch';
 import { InputSelect } from './InputSelect';
 import { InputText } from './InputText';
@@ -18,19 +18,24 @@ type Props = {
 
 export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, investmentRoundToEdit, onSaveInvestmentRound }) => {
 
-   
+    const getEmptyInvestment = () => {
+        return {
+            person: null,
+            vc_firm: null,
+            amount:0
+        }
+    }
+
+    const emptyInvestment = useMemo(
+		() => getEmptyInvestment(),
+		[]
+	);
+
     const [persons, setPersons] = useState<People[]>();
     const [vcFirms, setVCFirms] = useState<Vc_Firms[]>()
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
     const [firmFilterValues, setFirmFilterValues] = useState([{}]);
     const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({} as Investment_Rounds)
-
-    const emptyInvestment = {
-        id:null,
-        person:null,
-        vc_firm: null,
-        amount:0
-    }
 
     const roundFilterValues = roundChoices.map((option) => {
         return {
@@ -41,9 +46,12 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
 
     useEffect(() => {
         if (investmentRoundToEdit) {
-            setInvestmentRound({...investmentRoundToEdit})
+            setInvestmentRound({
+                ...investmentRoundToEdit,
+                investments: (investmentRoundToEdit && investmentRoundToEdit.investments) ? investmentRoundToEdit.investments as Investments[] : [emptyInvestment]  as Investments[]
+            })
         }
-    }, [investmentRoundToEdit])
+    }, [investmentRoundToEdit, emptyInvestment])
 
     const {
         data: personsData
@@ -107,12 +115,10 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     }
 
     const onRemove = (position: number) => {
-        console.log("position ===", position)
         const tempData = {
             ...investmentRound
         }
         tempData.investments.splice(position, 1)
-        console.log("tempData ===", tempData)
         setInvestmentRound(tempData as Investment_Rounds)
     }
 
@@ -207,7 +213,10 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                    
                                     </div>
                                     <div className="absolute bottom-5">
-                                        <ElemButton onClick={() => onSaveInvestmentRound(investmentRound)} btn="white" className="bg-white">Add Investment Round</ElemButton>
+                                        <ElemButton 
+                                        onClick={() => onSaveInvestmentRound(investmentRound)} 
+                                        btn="white" 
+                                        className="bg-white">{`${investmentRoundToEdit && investmentRoundToEdit.id ? 'Edit Investment Round': 'Add Investment Round'}`}</ElemButton>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>
@@ -241,26 +250,26 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
 }) => {
 
     const [investorType, setInvestorType] = useState('investor')
-    const [currentInvestment, setCurrentInnvestment] = useState(investment)
+    const [currentInvestment, setCurrentInvestment] = useState(investment)
 
     const setValues = (key: string, value: any) => {
         const temp = {
             ...currentInvestment,
             [key]: value
         }
-        setCurrentInnvestment(temp)
+        setCurrentInvestment(temp)
         onUpdateInvestment(temp)
     }
 
     useEffect(() => {
-        setCurrentInnvestment(investment)
+        setCurrentInvestment(investment)
     }, [investment])
 
     return (
         <div className="border border-gray-5 p-5 pt-0 rounded-md my-4">
-            <div className="flex w-full justify-end">
+            {/* <div className="flex w-full justify-end">
                 <button onClick={onRemove}>x</button>
-            </div>
+            </div> */}
             <div className='mt-0'>
                 <label className='font-Metropolis text-sm font-bold text-slate-600'>Investor Type</label>
                 <div className='flex justify-start items-center'>

@@ -1,69 +1,262 @@
 // in posts.js
-import React, { useRef, useState } from 'react';
-import { FunctionField, AutocompleteInput, FileInput, ImageField, List, Datagrid, Edit, Create, SimpleForm, TextField, EditButton, TextInput, SelectField, ReferenceField, NumberField, ReferenceInput, SelectInput, NumberInput } from 'react-admin';
-import BookIcon from '@mui/icons-material/Book';
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Button,
+  FunctionField,
+  AutocompleteInput,
+  FileInput,
+  ImageField,
+  List,
+  Datagrid,
+  Edit,
+  Create,
+  SimpleForm,
+  TextField,
+  EditButton,
+  TextInput,
+  SelectField,
+  ReferenceField,
+  NumberField,
+  ReferenceInput,
+  SelectInput,
+  NumberInput,
+  useGetList,
+  FormDataConsumer,
+  Pagination,
+  useCreate,
+  useRedirect,
+  Toolbar,
+  SaveButton,
+  useGetOne,
+} from "react-admin";
+import { useFormContext } from "react-hook-form";
+import { useParams } from "react-router-dom";
+
+import BookIcon from "@mui/icons-material/Book";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
-import { companyLayerChoices, validateName, validateSlug, validateUrl, status } from "../../utils/constants"
+import {
+  companyLayerChoices,
+  validateNameAndSlugAndEmailAndDomain,
+  status,
+} from "../../utils/constants";
+import { random } from "lodash";
+
+import ContentSave from "@mui/icons-material/Save";
+import {
+  RenderCBIcon,
+  RenderGitHubIcon,
+  RenderGoogleIcon,
+  RenderLinkedinIcon,
+} from "@/utils/other";
 
 export const companyIcon = BookIcon;
 
 const filters = [
-  <TextInput key="search" source="name,layer" label="Search in name, layer" resettable alwaysOn />,
+  <TextInput
+    key="search"
+    className="w-[500px]"
+    source="name,github,website,velocity_linkedin,twitter,discord,glassdoor,year_founded"
+    label="Name,Year Founded,Github,Website,Linkedin,Twitter,Discord,Glassdoor"
+    resettable
+    alwaysOn
+  />,
   <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
-    <AutocompleteInput
-      optionText={choice =>
-        `${choice.name}`
-      }
-    />
-  </ReferenceInput>
+    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+  </ReferenceInput>,
+  <SelectInput
+    key="layer"
+    source="layer"
+    label="Layer"
+    choices={companyLayerChoices}
+  />,
 ];
 
-export const CompanyList = () => (
-
-  <List filters={filters}
-    sx={{
-      '.css-1d00q76-MuiToolbar-root-RaListToolbar-root': {
-        justifyContent: 'flex-start'
-      }
-    }}
-  >
-    <Datagrid>
-      <EditButton />
-      <TextField source="id" />
-      <TextField source="name" />
-      <TextField source="slug" />
-      <ImageField source="logo.url" label="Logo" />
-      <SelectField source="layer" choices={companyLayerChoices} />
-      <TextField source="layer_detail" />
-      <ReferenceField label="Coin" source="coin_id" reference="coins">
-        <TextField source="name" />
-      </ReferenceField>
-      <NumberField source="total_employees" />
-      <TextField source="github" />
-      {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
-      <FunctionField cellClassName="truncate" source="notes" render={(record: any) => (record.notes && record.notes.length > 25) ? `${record.notes.substring(0, 20)}...` : record.notes} />
-      {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
-      <FunctionField cellClassName="truncate" source="overview" render={(record: any) => (record.overview && record.overview.length > 25) ? `${record.overview.substring(0, 20)}...` : record.overview} />
-      <TextField source="website" />
-      <TextField source="careers_page" />
-      <TextField source="company_linkedin" />
-      <TextField source="year_founded" />
-      <TextField source="investor_amount" />
-      <TextField source="total_valuation" />
-      <TextField source="white_paper" />
-      <TextField source="market_verified" />
-      <TextField source="velocity_linkedin" />
-      <TextField source="velocity_token" />
-      <TextField source="status" />
-      <TextField source="aliases" />
-      <TextField source="twitter" />
-      <TextField source="location" />
-      <TextField source="discord" />
-      <TextField source="glassdoor" />
-      <FunctionField source="tags" render={(record: any) => (record.tags) ? record.tags.join() : ''} />
-    </Datagrid>
-  </List>
+const PostPagination = () => (
+  <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />
 );
+
+const CustomToolbar = () => {
+  const form = useFormContext();
+  const [create] = useCreate();
+  const redirect = useRedirect();
+
+  const handleSaveDraft = () => {
+    let data = form.getValues();
+    data.status = "draft";
+    create("companies", { data });
+    redirect("/companies");
+  };
+
+  return (
+    <Toolbar>
+      <SaveButton />
+      <Button
+        label="Save As Draft"
+        sx={{ marginLeft: "1rem", padding: "6px 16px", fontSize: "0.9rem" }}
+        variant="outlined"
+        onClick={handleSaveDraft}
+        startIcon={<ContentSave />}
+      />
+    </Toolbar>
+  );
+};
+
+export const CompanyList = () => {
+  const [customSort, setCustomSort] = useState({ field: "id", order: "ASC" });
+  const headers: string[] = [
+    "id",
+    "name",
+    "slug",
+    "logo",
+    "layer",
+    "layer_detail",
+    "coin_id",
+    "total_employees",
+    "github",
+    "notes",
+    "overview",
+    "website",
+    "careers_page",
+    "company_linkedin",
+    "year_founded",
+    "investor_amount",
+    "total_valuation",
+    "white_paper",
+    "market_verified",
+    "velocity_linkedin",
+    "velocity_token",
+    "status",
+    "aliases",
+    "twitter",
+    "location",
+    "discord",
+    "glassdoor",
+    "tags",
+  ];
+
+  const { data: companies } = useGetList("companies", {
+    pagination: { page: 1, perPage: 10 },
+  });
+  let renderData = companies?.map((v) => {
+    let sum = 0;
+    for (var index in v) {
+      if (index !== "tags") v[index] && headers.includes(index) ? sum++ : sum;
+      else
+        v[index] && headers.includes(index) && v[index].length > 0
+          ? sum++
+          : sum;
+    }
+    return { ...v, counter: sum + "/28" };
+  });
+
+  const sortWithData = (sortData: any) => {
+    const isAscending = customSort.order === "ASC";
+    if (isAscending) {
+      sortData = sortData.sort((a: any, b: any) =>
+        a[customSort.field] > b[customSort.field] ? 1 : -1
+      );
+    } else {
+      sortData = sortData.sort((a: any, b: any) =>
+        a[customSort.field] > b[customSort.field] ? -1 : 1
+      );
+    }
+    return sortData;
+  };
+  renderData = renderData && sortWithData(renderData);
+
+  return (
+    <List
+      filters={filters}
+      pagination={<PostPagination />}
+      sx={{
+        ".MuiToolbar-root": {
+          justifyContent: "start !important",
+          paddingTop: 0,
+          marginBottom: "4px",
+        },
+        ".RaBulkActionsToolbar-toolbar": {
+          justifyContent: "start !important",
+        },
+        ".MuiToolbar-root .MuiButtonBase-root": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          margin: "4px",
+        },
+        ".RaBulkActionsToolbar-topToolbar": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+        ".MuiToolbar-root form": {
+          flex: "0 1 auto",
+        },
+        ".MuiToolbar-root form .MuiFormControl-root": {
+          margin: 0,
+        },
+      }}
+    >
+      <Datagrid
+      // data={renderData}
+      // sort={customSort}
+      // setSort={(value) => setCustomSort(value)}
+      >
+        <EditButton />
+        <TextField source="id" />
+        <TextField source="name" />
+        <TextField source="slug" />
+        <ImageField className="logoFile" source="logo.url" label="Logo" />
+        <SelectField source="layer" choices={companyLayerChoices} />
+        <TextField source="layer_detail" />
+        <ReferenceField label="Coin" source="coin_id" reference="coins">
+          <TextField source="name" />
+        </ReferenceField>
+        <NumberField source="total_employees" />
+        <TextField source="github" />
+        {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
+        <FunctionField
+          cellClassName="truncate"
+          source="notes"
+          render={(record: any) =>
+            record.notes && record.notes.length > 25
+              ? `${record.notes.substring(0, 20)}...`
+              : record.notes
+          }
+        />
+        {/* <TextField cellClassName=" truncate h-5%" source="overview" /> */}
+        <FunctionField
+          cellClassName="truncate"
+          source="overview"
+          render={(record: any) =>
+            record.overview && record.overview.length > 25
+              ? `${record.overview.substring(0, 20)}...`
+              : record.overview
+          }
+        />
+        <TextField source="website" />
+        <TextField source="careers_page" />
+        <TextField source="company_linkedin" />
+        <TextField source="year_founded" />
+        <TextField source="investor_amount" />
+        <TextField source="total_valuation" />
+        <TextField source="white_paper" />
+        <TextField source="market_verified" />
+        <TextField source="velocity_linkedin" />
+        <TextField source="velocity_token" />
+        <TextField source="status" />
+        <TextField source="aliases" />
+        <TextField source="twitter" />
+        <TextField source="location" />
+        <TextField source="discord" />
+        <TextField source="glassdoor" />
+        <FunctionField
+          source="tags"
+          render={(record: any) => (record.tags ? record.tags.join() : "")}
+        />
+        {/* <TextField source="counter" /> */}
+      </Datagrid>
+    </List>
+  );
+};
 
 interface CompanyTitleProps {
   record?: Record<string, string>;
@@ -73,130 +266,214 @@ const CompanyTitle = ({ record }: CompanyTitleProps) => {
 };
 
 export const CompanyEdit = () => {
-  const [logo, setLogo] = useState(null)
-  const [oldLogo, setOldLogo] = useState(null)
-  const [isImageUpdated, setIsImageUpdated] = useState(false)
-  const formRef = useRef<any>(null)
+  const [logo, setLogo] = React.useState(null);
+  const [oldLogo, setOldLogo] = React.useState(null);
+  const [isImageUpdated, setIsImageUpdated] = React.useState(false);
+  const { data: companies } = useGetList("companies", {});
+  const [slug, setSlug] = React.useState("");
+  const formRef = useRef<any>(null);
+  const [isIcon, setIsIcon] = useState(true);
+  const [keyword, setKeyword] = useState("");
+  const { id } = useParams();
+  const { data: currentData } = useGetOne("companies", { id });
+
+  useEffect(() => {
+    if (currentData) setKeyword(currentData.name);
+  }, [currentData]);
 
   const transform = async (data: any) => {
     var formdata = { ...data };
-    const tagValue = (formdata.tags) ? formdata.tags : []
-    const finalValue = (typeof tagValue === "string") ? tagValue.split(',') : tagValue
+    const tagValue = formdata.tags ? formdata.tags : [];
+    const finalValue =
+      typeof tagValue === "string" ? tagValue.split(",") : tagValue;
     if (oldLogo) {
       //delete old file from s3
-      deleteFile(oldLogo)
+      deleteFile(oldLogo);
     }
     if (logo) {
       const res = await uploadFile(logo);
       formdata = {
         ...data,
-        coin_id: (!data.coin_id) ? null : data.coin_id,
+        coin_id: !data.coin_id ? null : data.coin_id,
         logo: res.file,
-        tags: finalValue
-      }
-      return formdata
+        tags: finalValue,
+      };
+      return formdata;
     } else {
       formdata = {
         ...data,
-        coin_id: (!data.coin_id) ? null : data.coin_id,
-        tags: finalValue
-      }
-      return formdata
+        coin_id: !data.coin_id ? null : data.coin_id,
+        tags: finalValue,
+      };
+      return formdata;
     }
   };
 
   const onSelect = (files: any) => {
-
     if (files && files.length > 0) {
-      setLogo(files[0])
+      setLogo(files[0]);
     } else {
-      setLogo(null)
+      setLogo(null);
     }
-  }
+  };
 
   const onDropRejected = (files: any) => {
     if (files.id) {
-      setOldLogo(files)
+      setOldLogo(files);
     }
-    setIsImageUpdated(true)
-    setLogo(null)
-  }
+    setIsImageUpdated(true);
+    setLogo(null);
+  };
+
+  const handleNameBlur = (value: string, formData: any) => {
+    let filterSlug: any[] | undefined;
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
+    filterSlug = companies?.filter(
+      (f) => f.slug === convertedValue && f.status !== "draft"
+    );
+
+    if (filterSlug && filterSlug?.length > 0) {
+      handleNameBlur(filterSlug[0].slug + "-" + random(10), formData);
+    }
+    if (filterSlug?.length === 0) {
+      setSlug(convertedValue);
+    }
+  };
+
+  const SlugInput = ({ slug }: any) => {
+    const { setValue } = useFormContext();
+
+    React.useEffect(() => {
+      if (slug !== "") setValue("slug", slug);
+    }, [slug, setValue]);
+
+    return (
+      <TextInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        sx={{
+          ".MuiFormHelperText-root": {
+            display: "block !important",
+          },
+        }}
+      />
+    );
+  };
+
+  const handleIcon = (e: any) => {
+    setIsIcon(e.target.value.length > 0 ? true : false);
+    setKeyword(e.target.value);
+  };
 
   return (
-    <Edit title={<CompanyTitle />} transform={transform}
+    <Edit
+      title={<CompanyTitle />}
+      transform={transform}
       sx={{
-        '.MuiCardContent-root': {
-          '& > div': {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            flexDirection: 'row !important',
+        ".MuiCardContent-root": {
+          "& > div": {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "row !important",
           },
-          marginBottom: '60px'
+          marginBottom: "60px",
         },
-        '.MuiToolbar-root': {
-          position: 'fixed',
-          width: '100%',
-          maxWidth: 'inherit',
+        ".MuiToolbar-root": {
+          position: "fixed",
+          width: "100%",
+          maxWidth: "inherit",
           bottom: 0,
-          zIndex: 100
+          zIndex: 100,
+          background: "#fff",
+          borderRadius: "4px",
+          boxShadow:
+            "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
         },
-        '.MuiFormHelperText-root': {
-          display: 'none',
+        ".MuiFormHelperText-root": {
+          display: "none",
         },
-        '.customForm': {
-          '& > form': {
-            maxWidth: formRef?.current?.offsetWidth || '100%'
-          }
-        }
+        ".customForm": {
+          "& > form": {
+            maxWidth: formRef?.current?.offsetWidth || "100%",
+          },
+        },
       }}
     >
-      <div className='customForm' ref={formRef}>
-        <SimpleForm className="border rounded-lg">
+      <div
+        className="customForm"
+        ref={formRef}
+        style={{ position: "relative" }}
+      >
+        <SimpleForm
+          className="border rounded-lg"
+          validate={(value) =>
+            validateNameAndSlugAndEmailAndDomain(true, value, companies)
+          }
+        >
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             disabled
             source="id"
           />
-          <TextInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="name"
-            validate={validateName}
-            sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
-            }}
-          />
-          <TextInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="slug"
-            validate={validateSlug}
-            sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
-            }}
-          />
-          <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+          <FormDataConsumer>
+            {({ formData, ...rest }) => (
+              <TextInput
+                className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+                source="name"
+                onBlur={(e) => handleNameBlur(e.target.value, formData)}
+                onChange={handleIcon}
+                sx={{
+                  ".MuiFormHelperText-root": {
+                    display: "block !important",
+                  },
+                }}
+                {...rest}
+              />
+            )}
+          </FormDataConsumer>
+          {isIcon && (
+            <>
+              <RenderGoogleIcon
+                topPos="135px"
+                leftPos="36%"
+                googleKeyWord={keyword}
+              />
+              <RenderLinkedinIcon
+                topPos="135px"
+                leftPos="39%"
+                googleKeyWord={keyword}
+              />
+              <RenderGitHubIcon
+                topPos="135px"
+                leftPos="42%"
+                googleKeyWord={keyword}
+              />
+              <RenderCBIcon
+                topPos="135px"
+                leftPos="45%"
+                googleKeyWord={keyword}
+              />
+            </>
+          )}
+
+          <SlugInput slug={slug} />
+
+          <FileInput
+            className="w-full"
+            onRemove={onDropRejected}
+            options={{ onDrop: onSelect }}
+            source="logo"
+            label="logo"
+            accept="image/*"
+            placeholder={<p>Drop your file here</p>}
+          >
             <ImageField source="src" title="title" />
           </FileInput>
-          {
-            (!logo && !isImageUpdated) &&
+          {!logo && !isImageUpdated && (
             <ImageField className="w-full" source="logo.url" title="Logo" />
-          }
-          <ReferenceInput label="Coin" source="coin_id" reference="coins">
-            <SelectInput
-              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              optionText="name"
-            />
-          </ReferenceInput>
-          <SelectInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="status"
-            choices={status}
-          />
+          )}
           <SelectInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="layer"
@@ -206,6 +483,12 @@ export const CompanyEdit = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="layer_detail"
           />
+          <ReferenceInput label="Coin" source="coin_id" reference="coins">
+            <SelectInput
+              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              optionText="name"
+            />
+          </ReferenceInput>
           <NumberInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="total_employees"
@@ -223,9 +506,6 @@ export const CompanyEdit = () => {
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="year_founded"
-          // min="1900"
-          // max="2099"
-          // validate={validateYearFounded}
           />
           <NumberInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -251,6 +531,11 @@ export const CompanyEdit = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="velocity_token"
           />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="location"
@@ -263,189 +548,257 @@ export const CompanyEdit = () => {
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="github"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="website"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="careers_page"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="company_linkedin"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="twitter"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="discord"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="glassdoor"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
         </SimpleForm>
       </div>
     </Edit>
-  )
+  );
 };
 
 export const CompanyCreate = () => {
-  const [logo, setLogo] = useState(null)
-  const formRef = useRef<any>(null)
+  const [logo, setLogo] = React.useState(null);
+  const { data: companies } = useGetList("companies", {});
+  const [slug, setSlug] = React.useState("");
+  const formRef = useRef<any>(null);
+  const [isIcon, setIsIcon] = useState(false);
+  const [keyword, setKeyword] = useState("");
 
   const transform = async (data: any) => {
     var formdata = { ...data };
-    const tagValue = (formdata.tags) ? formdata.tags : []
-    const finalValue = (typeof tagValue === "string") ? tagValue.split(',') : tagValue
+    const tagValue = formdata.tags ? formdata.tags : [];
+    const finalValue =
+      typeof tagValue === "string" ? tagValue.split(",") : tagValue;
     if (logo) {
       const res = await uploadFile(logo);
       formdata = {
         ...data,
-        coin_id: (!data.coin_id) ? null : data.coin_id,
+        coin_id: !data.coin_id ? null : data.coin_id,
         logo: res.file,
-        tags: finalValue
-      }
-      return formdata
+        tags: finalValue,
+      };
+      return formdata;
     } else {
       formdata = {
         ...data,
-        coin_id: (!data.coin_id) ? null : data.coin_id,
-        tags: finalValue
-      }
-      return formdata
+        coin_id: !data.coin_id ? null : data.coin_id,
+        tags: finalValue,
+      };
+      return formdata;
     }
   };
 
   const onSelect = (files: any) => {
     if (files && files.length > 0) {
-      setLogo(files[0])
+      setLogo(files[0]);
     } else {
-      setLogo(null)
+      setLogo(null);
     }
-  }
+  };
 
   const onDropRejected = (files: any) => {
-    setLogo(null)
-  }
+    setLogo(null);
+  };
+
+  const handleIcon = (e: any) => {
+    setIsIcon(e.target.value.length > 0 ? true : false);
+    setKeyword(e.target.value);
+  };
+
+  const handleNameBlur = (value: string, formData: any) => {
+    let filterSlug: any[] | undefined;
+    let convertedValue = value.replace(/ /g, "-").toLowerCase();
+    filterSlug = companies?.filter(
+      (f) => f.slug === convertedValue && f.status !== "draft"
+    );
+
+    if (filterSlug && filterSlug?.length > 0) {
+      handleNameBlur(filterSlug[0].slug + "-" + random(10), formData);
+    }
+    if (filterSlug?.length === 0) {
+      setSlug(convertedValue);
+    }
+  };
+
+  const SlugInput = ({ slug }: any) => {
+    const { setValue } = useFormContext();
+
+    React.useEffect(() => {
+      if (slug !== "") setValue("slug", slug);
+    }, [slug, setValue]);
+
+    return (
+      <TextInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="slug"
+        sx={{
+          ".MuiFormHelperText-root": {
+            display: "block !important",
+          },
+        }}
+      />
+    );
+  };
 
   return (
-    <Create title="Create a Company" transform={transform}
+    <Create
+      title="Create a Company"
+      transform={transform}
       sx={{
-        '.MuiCardContent-root': {
-          '& > div': {
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            flexDirection: 'row !important',
+        ".MuiCardContent-root": {
+          "& > div": {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "row !important",
           },
-          marginBottom: '60px'
+          marginBottom: "60px",
         },
-        '.MuiToolbar-root': {
-          position: 'fixed',
-          width: '100%',
-          maxWidth: 'inherit',
+        ".MuiToolbar-root": {
+          position: "fixed",
+          width: "100%",
+          maxWidth: "inherit",
           bottom: 0,
-          zIndex: 100
+          zIndex: 100,
+          background: "#fff",
+          borderRadius: "4px",
+          boxShadow:
+            "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
         },
-        '.MuiFormHelperText-root': {
-          display: 'none',
+        ".MuiFormHelperText-root": {
+          display: "none",
         },
-        '.customForm': {
-          '& > form': {
-            maxWidth: formRef?.current?.offsetWidth || '100%'
-          }
-        }
+        ".customForm": {
+          "& > form": {
+            maxWidth: formRef?.current?.offsetWidth || "100%",
+          },
+        },
       }}
     >
-      <div className='customForm' ref={formRef}>
-        <SimpleForm>
-          <TextInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="name"
-            validate={validateName}
-            sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
-            }}
-          />
-          <TextInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="slug"
-            validate={validateSlug}
-            sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
-            }}
-          />
-          <FileInput className="w-full" onRemove={onDropRejected} options={{ onDrop: onSelect }} source="logo" label="logo" accept="image/*" placeholder={<p>Drop your file here</p>}>
+      <div
+        className="customForm"
+        ref={formRef}
+        style={{ position: "relative" }}
+      >
+        <SimpleForm
+          validate={(value) =>
+            validateNameAndSlugAndEmailAndDomain(false, value, companies)
+          }
+          toolbar={<CustomToolbar />}
+        >
+          <FormDataConsumer>
+            {({ formData, ...rest }) => (
+              <TextInput
+                className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+                source="name"
+                onBlur={(e) => handleNameBlur(e.target.value, formData)}
+                onChange={handleIcon}
+                sx={{
+                  ".MuiFormHelperText-root": {
+                    display: "block !important",
+                  },
+                }}
+                {...rest}
+              />
+            )}
+          </FormDataConsumer>
+          {isIcon && (
+            <>
+              <>
+                <RenderGoogleIcon
+                  topPos="75px"
+                  leftPos="36%"
+                  googleKeyWord={keyword}
+                />
+                <RenderLinkedinIcon
+                  topPos="75px"
+                  leftPos="39%"
+                  googleKeyWord={keyword}
+                />
+                <RenderGitHubIcon
+                  topPos="75px"
+                  leftPos="42%"
+                  googleKeyWord={keyword}
+                />
+                <RenderCBIcon
+                  topPos="75px"
+                  leftPos="45%"
+                  googleKeyWord={keyword}
+                />
+              </>
+            </>
+          )}
+          <SlugInput slug={slug} />
+
+          <FileInput
+            onRemove={onDropRejected}
+            options={{ onDrop: onSelect }}
+            source="logo"
+            label="logo"
+            accept="image/*"
+            placeholder={<p>Drop your file here</p>}
+          >
             <ImageField source="src" title="title" />
           </FileInput>
-          <ReferenceInput label="Coin" source="coin_id" reference="coins">
-            <SelectInput
-              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              optionText="name"
-            />
-          </ReferenceInput>
-          <SelectInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="status"
-            choices={status}
-            sx={{
-              '.MuiFormHelperText-root': {
-                display: 'none',
-              }
-            }}
-          />
           <SelectInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="layer"
@@ -455,10 +808,17 @@ export const CompanyCreate = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="layer_detail"
           />
+          <ReferenceInput label="Coin" source="coin_id" reference="coins">
+            <SelectInput
+              className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              optionText="name"
+            />
+          </ReferenceInput>
           <NumberInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="total_employees"
           />
+
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="notes"
@@ -466,19 +826,13 @@ export const CompanyCreate = () => {
           />
           <TextInput
             multiline
-            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="overview"
           />
-          <TextInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="careers_page"
-          />
+
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="year_founded"
-          // min="1900"
-          // max="2099"
-          // validate={validateYearFounded}
           />
           <NumberInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -504,6 +858,11 @@ export const CompanyCreate = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="velocity_token"
           />
+          <SelectInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="status"
+            choices={status}
+          />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="location"
@@ -516,61 +875,64 @@ export const CompanyCreate = () => {
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="github"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="website"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
+            }}
+          />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="careers_page"
+            sx={{
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="company_linkedin"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="twitter"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="discord"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="glassdoor"
-            validate={validateUrl}
             sx={{
-              '.MuiFormHelperText-root': {
-                display: 'block !important',
-              }
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
             }}
           />
         </SimpleForm>

@@ -95,7 +95,7 @@ export const ElemEditTeam: React.FC<Props> = ({
 				),
 			},
 		],
-		[]
+		[onEdit]
 	);
 
 	const dataInvestments = React.useMemo(() => {
