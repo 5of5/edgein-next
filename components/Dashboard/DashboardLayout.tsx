@@ -11,8 +11,6 @@ import {
 	IconCash,
 } from "@/components/Icons";
 import { IconCompanyList } from "../reactions/IconCompanyList";
-import { IconSetting } from "../IconSetting";
-import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
 
