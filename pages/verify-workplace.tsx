@@ -11,23 +11,28 @@ const VerifyWorkplace: FC<Props> = ({ }) => {
 
 
   const verifyToken = useCallback(async () => {
-    const token = router.query.token as string
+    const token = router.query.vtoken as string
 
-    const resp = await fetch(`/api/verify_workplace?token=${token}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
+    if (token) {
+      const resp = await fetch(`/api/verify_workplace?vtoken=${token}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        }
+      })
+
+      if (resp.ok) {
+        router.push('/organizations')
+        return
       }
-    })
 
-    if (resp.ok) {
-      router.push('/organizations')
-      return
+      if (resp.status === 400)
+        setError((await resp.json()).message)
+
+      if (resp.status === 500)
+        setError('Some server error, please contact edgein.io support!')
     }
-
-    if (resp.status === 400)
-      setError((await resp.json()).message)
 
   }, [router])
 

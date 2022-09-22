@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const verifyWorkToken = await generateVerifyWorkplaceToken(resourceId, resourceType, user.id, email, personId)
 
-  const url = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?token=${verifyWorkToken}`
+  const url = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/verify-workplace?vtoken=${verifyWorkToken}`
 
   await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id, token)
 
