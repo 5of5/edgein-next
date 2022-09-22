@@ -7,15 +7,17 @@ import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { IconCompanyList } from "@/components/reactions/IconCompanyList";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import {
-  GetFollowsListsStaticPathsQuery,
-  GetVcFirmsByListIdQuery,
-  GetVcFirmsByListIdDocument,
-  GetCompaniesByListIdQuery,
-  GetCompaniesByListIdDocument,
-  Follows_Companies,
-  Follows_Vc_Firms,
-  GetFollowsListsStaticPathsDocument,
-  Lists
+	GetFollowsListsStaticPathsQuery,
+	GetVcFirmsByListIdQuery,
+	GetVcFirmsByListIdDocument,
+	GetCompaniesByListIdQuery,
+	GetCompaniesByListIdDocument,
+	Follows_Companies,
+	Follows_Vc_Firms,
+	GetFollowsListsStaticPathsDocument,
+	Lists,
+	useGetVcFirmsByListIdQuery,
+	useGetCompaniesByListIdQuery
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { runGraphQl } from "@/utils";
@@ -25,12 +27,9 @@ import { GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-type Props = {
-	companies?: Follows_Companies[];
-	vcfirms?: Follows_Vc_Firms[];
-};
+type Props = {};
 
-const MyList: NextPage<Props> = ({ companies, vcfirms }) => {
+const MyList: NextPage<Props> = ({ }) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const [selectedListName, setSelectedListName] = useState<null | string>(
@@ -44,6 +43,9 @@ const MyList: NextPage<Props> = ({ companies, vcfirms }) => {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
 	const [isUpdated, setIsUpdated] = useState(0);
+
+	const [companies, setCompanies] = useState<Follows_Companies[]>([])
+	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([])
 
 	useEffect(() => {
 		if (companies) {
@@ -102,6 +104,21 @@ const MyList: NextPage<Props> = ({ companies, vcfirms }) => {
 			setIsUpdated(new Date().getTime());
 		}
 	};
+
+	const { data: companiesData } = useGetCompaniesByListIdQuery({
+		list_id: parseInt(router.query?.listId as string)
+	})
+
+	const { data: vcFirms } = useGetVcFirmsByListIdQuery({
+		list_id: parseInt(router.query?.listId as string)
+	})
+
+	useEffect(() => {
+		if (companiesData)
+			setCompanies(companiesData?.follows_companies as Follows_Companies[])
+		if (vcFirms)
+			setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[])
+	}, [companiesData, vcFirms])
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -175,40 +192,6 @@ const MyList: NextPage<Props> = ({ companies, vcfirms }) => {
 			</div>
 		</div>
 	);
-};
-
-export async function getStaticPaths() {
-  const { data: follows } = await runGraphQl<GetFollowsListsStaticPathsQuery>(
-    GetFollowsListsStaticPathsDocument
-  );
-
-  const paths = follows?.follows
-    ?.filter((follow) => follow.list_id)
-    .map((follow) => ({ params: { listId: follow.list_id?.toString(), slug: kebabCase(getName(follow.list as Lists)) } }))
-
-  return {
-    paths,
-    fallback: true, // false or 'blocking'
-  };
-}
-
-export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: vcFirms } = await runGraphQl<GetVcFirmsByListIdQuery>(
-		GetVcFirmsByListIdDocument,
-		{ list_id: context.params?.listId }
-	);
-
-	const { data: companies } = await runGraphQl<GetCompaniesByListIdQuery>(
-		GetCompaniesByListIdDocument,
-		{ list_id: context.params?.listId }
-	);
-
-	return {
-		props: {
-			companies: companies?.follows_companies,
-			vcfirms: vcFirms?.follows_vc_firms,
-		},
-	};
 };
 
 export default MyList;
