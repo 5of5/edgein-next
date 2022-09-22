@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await deleteToken(existsToken.id, token)
   } catch (e: any) {
-    return res.status(500).send({ message: 'Some error occurred, please contact edgein.io' })
+    return res.status(500).send({ message: 'Some error occurred, please contact edgein.io', error: e.message })
   }
 
   res.send({ message: 'success' })
