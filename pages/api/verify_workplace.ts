@@ -54,7 +54,7 @@ const addOrganizationEditAccess = async (payload: any, accessToken: string) => {
   const userId = payload.resourceDetails.userId
   const mutation = `
     mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
-      insert_resource_edit_access_one(object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}, on_conflict: {constraint: resource_edit_access_user_id_resource_id_resource_type_key, update_columns: []}) {
+      insert_resource_edit_access_one(object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}, on_conflict: {constraint: resource_edit_access_resource_id_user_id_resource_type_key, update_columns: []}) {
         id
         user_id
         resource_id
