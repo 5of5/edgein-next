@@ -10,8 +10,12 @@ import {
 	// IconHome,
 } from "./Icons";
 import { IconDashboard } from "./Dashboard/IconDashboard";
+import { IconOrganization } from "./IconOrganization";
 
-const navigation = [{ name: "Dashboard", href: "/dashboard", icon: IconDashboard }];
+const navigation = [
+	{ name: "Dashboard", href: "/dashboard", icon: IconDashboard },
+	{ name: "My Organization", href: "/organizations", icon: IconOrganization }
+];
 
 export const UserMenu = () => {
 	const logout = async () => {
