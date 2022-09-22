@@ -6,7 +6,7 @@ import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { IconOrganization } from "@/components/IconOrganization";
-import { Organization_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
+import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import { IconSetting } from "../IconSetting";
 
 type Props = {}
@@ -14,7 +14,7 @@ type Props = {}
 export const ElemDashboardSidebar: FC<Props> = ({ }) => {
   const { user } = useAuth()
   const router = useRouter()
-  const [organizations, setOrganizations] = useState([] as Organization_Edit_Access[])
+  const [organizations, setOrganizations] = useState([] as Resource_Edit_Access[])
 
   const {
     data: users
@@ -23,9 +23,19 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
   })
 
   useEffect(() => {
-    if (users?.users_by_pk && users.users_by_pk.person) {
-      setOrganizations(users.users_by_pk.organizations as Organization_Edit_Access[])
-    }
+    if (users?.users_by_pk?.organization_companies) {
+			setOrganizations((prev) => {
+				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Resource_Edit_Access[]]
+				return temp
+			})
+		}
+
+		if (users?.users_by_pk?.organization_vc_firms) {
+			setOrganizations((prev) => {
+				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Resource_Edit_Access[]]
+				return temp
+			})
+		}
   }, [users])
 
   const getActiveClass = (path: string) => {
@@ -96,7 +106,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
           }
           )}
           <li
-            className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 w-60 bg-slate-200 rounded-lg`}
+            className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 bg-slate-200 rounded-lg`}
             role="button"
           >
             <Link href="/organizations">

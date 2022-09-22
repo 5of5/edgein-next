@@ -1462,6 +1462,287 @@ export type Companies_Delete_Key_Input = {
   tags: InputMaybe<Scalars['String']>;
 };
 
+/** columns and relationships of "companies_edit_access" */
+export type Companies_Edit_Access = {
+  __typename?: 'companies_edit_access';
+  /** An object relationship */
+  company: Maybe<Companies>;
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregated selection of "companies_edit_access" */
+export type Companies_Edit_Access_Aggregate = {
+  __typename?: 'companies_edit_access_aggregate';
+  aggregate: Maybe<Companies_Edit_Access_Aggregate_Fields>;
+  nodes: Array<Companies_Edit_Access>;
+};
+
+/** aggregate fields of "companies_edit_access" */
+export type Companies_Edit_Access_Aggregate_Fields = {
+  __typename?: 'companies_edit_access_aggregate_fields';
+  avg: Maybe<Companies_Edit_Access_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Companies_Edit_Access_Max_Fields>;
+  min: Maybe<Companies_Edit_Access_Min_Fields>;
+  stddev: Maybe<Companies_Edit_Access_Stddev_Fields>;
+  stddev_pop: Maybe<Companies_Edit_Access_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Companies_Edit_Access_Stddev_Samp_Fields>;
+  sum: Maybe<Companies_Edit_Access_Sum_Fields>;
+  var_pop: Maybe<Companies_Edit_Access_Var_Pop_Fields>;
+  var_samp: Maybe<Companies_Edit_Access_Var_Samp_Fields>;
+  variance: Maybe<Companies_Edit_Access_Variance_Fields>;
+};
+
+
+/** aggregate fields of "companies_edit_access" */
+export type Companies_Edit_Access_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "companies_edit_access" */
+export type Companies_Edit_Access_Aggregate_Order_By = {
+  avg: InputMaybe<Companies_Edit_Access_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Companies_Edit_Access_Max_Order_By>;
+  min: InputMaybe<Companies_Edit_Access_Min_Order_By>;
+  stddev: InputMaybe<Companies_Edit_Access_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Companies_Edit_Access_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Companies_Edit_Access_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Companies_Edit_Access_Sum_Order_By>;
+  var_pop: InputMaybe<Companies_Edit_Access_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Companies_Edit_Access_Var_Samp_Order_By>;
+  variance: InputMaybe<Companies_Edit_Access_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "companies_edit_access" */
+export type Companies_Edit_Access_Arr_Rel_Insert_Input = {
+  data: Array<Companies_Edit_Access_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Companies_Edit_Access_Avg_Fields = {
+  __typename?: 'companies_edit_access_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Avg_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "companies_edit_access". All fields are combined with a logical 'AND'. */
+export type Companies_Edit_Access_Bool_Exp = {
+  _and: InputMaybe<Array<Companies_Edit_Access_Bool_Exp>>;
+  _not: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+  _or: InputMaybe<Array<Companies_Edit_Access_Bool_Exp>>;
+  company: InputMaybe<Companies_Bool_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "companies_edit_access" */
+export type Companies_Edit_Access_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "companies_edit_access" */
+export type Companies_Edit_Access_Insert_Input = {
+  company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Companies_Edit_Access_Max_Fields = {
+  __typename?: 'companies_edit_access_max_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Max_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Companies_Edit_Access_Min_Fields = {
+  __typename?: 'companies_edit_access_min_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Min_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "companies_edit_access" */
+export type Companies_Edit_Access_Mutation_Response = {
+  __typename?: 'companies_edit_access_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Companies_Edit_Access>;
+};
+
+/** Ordering options when selecting data from "companies_edit_access". */
+export type Companies_Edit_Access_Order_By = {
+  company: InputMaybe<Companies_Order_By>;
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** select columns of table "companies_edit_access" */
+export enum Companies_Edit_Access_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "companies_edit_access" */
+export type Companies_Edit_Access_Set_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Companies_Edit_Access_Stddev_Fields = {
+  __typename?: 'companies_edit_access_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Stddev_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Companies_Edit_Access_Stddev_Pop_Fields = {
+  __typename?: 'companies_edit_access_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Stddev_Pop_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Companies_Edit_Access_Stddev_Samp_Fields = {
+  __typename?: 'companies_edit_access_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Stddev_Samp_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Companies_Edit_Access_Sum_Fields = {
+  __typename?: 'companies_edit_access_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Sum_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Companies_Edit_Access_Var_Pop_Fields = {
+  __typename?: 'companies_edit_access_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Var_Pop_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Companies_Edit_Access_Var_Samp_Fields = {
+  __typename?: 'companies_edit_access_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Var_Samp_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Companies_Edit_Access_Variance_Fields = {
+  __typename?: 'companies_edit_access_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "companies_edit_access" */
+export type Companies_Edit_Access_Variance_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
 /** input type for incrementing numeric columns in table "companies" */
 export type Companies_Inc_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
@@ -4933,7 +5214,9 @@ export enum Investors_Constraint {
   /** unique or primary key constraint */
   InvestorsExternalIdKey = 'investors_external_id_key',
   /** unique or primary key constraint */
-  InvestorsPkey = 'investors_pkey'
+  InvestorsPkey = 'investors_pkey',
+  /** unique or primary key constraint */
+  InvestorsVcFirmIdPersonIdKey = 'investors_vc_firm_id_person_id_key'
 }
 
 /** input type for incrementing numeric columns in table "investors" */
@@ -5606,6 +5889,10 @@ export type Lists = {
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
   id: Scalars['Int'];
+  /** An array relationship */
+  list_members: Array<List_Members>;
+  /** An aggregate relationship */
+  list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
@@ -5629,6 +5916,26 @@ export type ListsFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsList_MembersArgs = {
+  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<List_Members_Order_By>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsList_Members_AggregateArgs = {
+  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<List_Members_Order_By>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
 };
 
 /** aggregated selection of "lists" */
@@ -5676,6 +5983,7 @@ export type Lists_Bool_Exp = {
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
 };
@@ -5699,6 +6007,7 @@ export type Lists_Insert_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
+  list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
 };
 
@@ -5746,6 +6055,7 @@ export type Lists_Order_By = {
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
+  list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
 };
@@ -5858,6 +6168,8 @@ export type Mutation_Root = {
   delete_companies: Maybe<Companies_Mutation_Response>;
   /** delete single row from the table: "companies" */
   delete_companies_by_pk: Maybe<Companies>;
+  /** delete data from the table: "companies_edit_access" */
+  delete_companies_edit_access: Maybe<Companies_Edit_Access_Mutation_Response>;
   /** delete data from the table: "data_actions" */
   delete_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** delete single row from the table: "data_actions" */
@@ -5906,22 +6218,22 @@ export type Mutation_Root = {
   delete_lists: Maybe<Lists_Mutation_Response>;
   /** delete single row from the table: "lists" */
   delete_lists_by_pk: Maybe<Lists>;
-  /** delete data from the table: "organization_edit_access" */
-  delete_organization_edit_access: Maybe<Organization_Edit_Access_Mutation_Response>;
-  /** delete single row from the table: "organization_edit_access" */
-  delete_organization_edit_access_by_pk: Maybe<Organization_Edit_Access>;
   /** delete data from the table: "people" */
   delete_people: Maybe<People_Mutation_Response>;
   /** delete single row from the table: "people" */
   delete_people_by_pk: Maybe<People>;
+  /** delete data from the table: "resource_edit_access" */
+  delete_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
+  /** delete single row from the table: "resource_edit_access" */
+  delete_resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
   /** delete data from the table: "team_members" */
   delete_team_members: Maybe<Team_Members_Mutation_Response>;
   /** delete single row from the table: "team_members" */
   delete_team_members_by_pk: Maybe<Team_Members>;
-  /** delete data from the table: "tokens" */
-  delete_tokens: Maybe<Tokens_Mutation_Response>;
-  /** delete single row from the table: "tokens" */
-  delete_tokens_by_pk: Maybe<Tokens>;
+  /** delete data from the table: "user_tokens" */
+  delete_user_tokens: Maybe<User_Tokens_Mutation_Response>;
+  /** delete single row from the table: "user_tokens" */
+  delete_user_tokens_by_pk: Maybe<User_Tokens>;
   /** delete data from the table: "users" */
   delete_users: Maybe<Users_Mutation_Response>;
   /** delete single row from the table: "users" */
@@ -5930,6 +6242,8 @@ export type Mutation_Root = {
   delete_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** delete single row from the table: "vc_firms" */
   delete_vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** delete data from the table: "vc_firms_edit_access" */
+  delete_vc_firms_edit_access: Maybe<Vc_Firms_Edit_Access_Mutation_Response>;
   /** delete data from the table: "waitlist_emails" */
   delete_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** delete single row from the table: "waitlist_emails" */
@@ -5956,6 +6270,10 @@ export type Mutation_Root = {
   insert_coins_one: Maybe<Coins>;
   /** insert data into the table: "companies" */
   insert_companies: Maybe<Companies_Mutation_Response>;
+  /** insert data into the table: "companies_edit_access" */
+  insert_companies_edit_access: Maybe<Companies_Edit_Access_Mutation_Response>;
+  /** insert a single row into the table: "companies_edit_access" */
+  insert_companies_edit_access_one: Maybe<Companies_Edit_Access>;
   /** insert a single row into the table: "companies" */
   insert_companies_one: Maybe<Companies>;
   /** insert data into the table: "data_actions" */
@@ -6010,28 +6328,32 @@ export type Mutation_Root = {
   insert_lists: Maybe<Lists_Mutation_Response>;
   /** insert a single row into the table: "lists" */
   insert_lists_one: Maybe<Lists>;
-  /** insert data into the table: "organization_edit_access" */
-  insert_organization_edit_access: Maybe<Organization_Edit_Access_Mutation_Response>;
-  /** insert a single row into the table: "organization_edit_access" */
-  insert_organization_edit_access_one: Maybe<Organization_Edit_Access>;
   /** insert data into the table: "people" */
   insert_people: Maybe<People_Mutation_Response>;
   /** insert a single row into the table: "people" */
   insert_people_one: Maybe<People>;
+  /** insert data into the table: "resource_edit_access" */
+  insert_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
+  /** insert a single row into the table: "resource_edit_access" */
+  insert_resource_edit_access_one: Maybe<Resource_Edit_Access>;
   /** insert data into the table: "team_members" */
   insert_team_members: Maybe<Team_Members_Mutation_Response>;
   /** insert a single row into the table: "team_members" */
   insert_team_members_one: Maybe<Team_Members>;
-  /** insert data into the table: "tokens" */
-  insert_tokens: Maybe<Tokens_Mutation_Response>;
-  /** insert a single row into the table: "tokens" */
-  insert_tokens_one: Maybe<Tokens>;
+  /** insert data into the table: "user_tokens" */
+  insert_user_tokens: Maybe<User_Tokens_Mutation_Response>;
+  /** insert a single row into the table: "user_tokens" */
+  insert_user_tokens_one: Maybe<User_Tokens>;
   /** insert data into the table: "users" */
   insert_users: Maybe<Users_Mutation_Response>;
   /** insert a single row into the table: "users" */
   insert_users_one: Maybe<Users>;
   /** insert data into the table: "vc_firms" */
   insert_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
+  /** insert data into the table: "vc_firms_edit_access" */
+  insert_vc_firms_edit_access: Maybe<Vc_Firms_Edit_Access_Mutation_Response>;
+  /** insert a single row into the table: "vc_firms_edit_access" */
+  insert_vc_firms_edit_access_one: Maybe<Vc_Firms_Edit_Access>;
   /** insert a single row into the table: "vc_firms" */
   insert_vc_firms_one: Maybe<Vc_Firms>;
   /** insert data into the table: "waitlist_emails" */
@@ -6062,6 +6384,8 @@ export type Mutation_Root = {
   update_companies: Maybe<Companies_Mutation_Response>;
   /** update single row of the table: "companies" */
   update_companies_by_pk: Maybe<Companies>;
+  /** update data of the table: "companies_edit_access" */
+  update_companies_edit_access: Maybe<Companies_Edit_Access_Mutation_Response>;
   /** update data of the table: "data_actions" */
   update_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** update single row of the table: "data_actions" */
@@ -6110,22 +6434,22 @@ export type Mutation_Root = {
   update_lists: Maybe<Lists_Mutation_Response>;
   /** update single row of the table: "lists" */
   update_lists_by_pk: Maybe<Lists>;
-  /** update data of the table: "organization_edit_access" */
-  update_organization_edit_access: Maybe<Organization_Edit_Access_Mutation_Response>;
-  /** update single row of the table: "organization_edit_access" */
-  update_organization_edit_access_by_pk: Maybe<Organization_Edit_Access>;
   /** update data of the table: "people" */
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
   update_people_by_pk: Maybe<People>;
+  /** update data of the table: "resource_edit_access" */
+  update_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
+  /** update single row of the table: "resource_edit_access" */
+  update_resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
   /** update data of the table: "team_members" */
   update_team_members: Maybe<Team_Members_Mutation_Response>;
   /** update single row of the table: "team_members" */
   update_team_members_by_pk: Maybe<Team_Members>;
-  /** update data of the table: "tokens" */
-  update_tokens: Maybe<Tokens_Mutation_Response>;
-  /** update single row of the table: "tokens" */
-  update_tokens_by_pk: Maybe<Tokens>;
+  /** update data of the table: "user_tokens" */
+  update_user_tokens: Maybe<User_Tokens_Mutation_Response>;
+  /** update single row of the table: "user_tokens" */
+  update_user_tokens_by_pk: Maybe<User_Tokens>;
   /** update data of the table: "users" */
   update_users: Maybe<Users_Mutation_Response>;
   /** update single row of the table: "users" */
@@ -6134,6 +6458,8 @@ export type Mutation_Root = {
   update_vc_firms: Maybe<Vc_Firms_Mutation_Response>;
   /** update single row of the table: "vc_firms" */
   update_vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** update data of the table: "vc_firms_edit_access" */
+  update_vc_firms_edit_access: Maybe<Vc_Firms_Edit_Access_Mutation_Response>;
   /** update data of the table: "waitlist_emails" */
   update_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** update single row of the table: "waitlist_emails" */
@@ -6210,6 +6536,12 @@ export type Mutation_RootDelete_CompaniesArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Companies_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Companies_Edit_AccessArgs = {
+  where: Companies_Edit_Access_Bool_Exp;
 };
 
 
@@ -6358,18 +6690,6 @@ export type Mutation_RootDelete_Lists_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_Organization_Edit_AccessArgs = {
-  where: Organization_Edit_Access_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Organization_Edit_Access_By_PkArgs = {
-  id: Scalars['Int'];
-};
-
-
-/** mutation root */
 export type Mutation_RootDelete_PeopleArgs = {
   where: People_Bool_Exp;
 };
@@ -6377,6 +6697,18 @@ export type Mutation_RootDelete_PeopleArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_People_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Resource_Edit_AccessArgs = {
+  where: Resource_Edit_Access_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Resource_Edit_Access_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -6394,13 +6726,13 @@ export type Mutation_RootDelete_Team_Members_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_TokensArgs = {
-  where: Tokens_Bool_Exp;
+export type Mutation_RootDelete_User_TokensArgs = {
+  where: User_Tokens_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Tokens_By_PkArgs = {
+export type Mutation_RootDelete_User_Tokens_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -6426,6 +6758,12 @@ export type Mutation_RootDelete_Vc_FirmsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Vc_Firms_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Vc_Firms_Edit_AccessArgs = {
+  where: Vc_Firms_Edit_Access_Bool_Exp;
 };
 
 
@@ -6515,6 +6853,18 @@ export type Mutation_RootInsert_Coins_OneArgs = {
 export type Mutation_RootInsert_CompaniesArgs = {
   objects: Array<Companies_Insert_Input>;
   on_conflict: InputMaybe<Companies_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Companies_Edit_AccessArgs = {
+  objects: Array<Companies_Edit_Access_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Companies_Edit_Access_OneArgs = {
+  object: Companies_Edit_Access_Insert_Input;
 };
 
 
@@ -6704,20 +7054,6 @@ export type Mutation_RootInsert_Lists_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_Organization_Edit_AccessArgs = {
-  objects: Array<Organization_Edit_Access_Insert_Input>;
-  on_conflict: InputMaybe<Organization_Edit_Access_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Organization_Edit_Access_OneArgs = {
-  object: Organization_Edit_Access_Insert_Input;
-  on_conflict: InputMaybe<Organization_Edit_Access_On_Conflict>;
-};
-
-
-/** mutation root */
 export type Mutation_RootInsert_PeopleArgs = {
   objects: Array<People_Insert_Input>;
   on_conflict: InputMaybe<People_On_Conflict>;
@@ -6728,6 +7064,20 @@ export type Mutation_RootInsert_PeopleArgs = {
 export type Mutation_RootInsert_People_OneArgs = {
   object: People_Insert_Input;
   on_conflict: InputMaybe<People_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Resource_Edit_AccessArgs = {
+  objects: Array<Resource_Edit_Access_Insert_Input>;
+  on_conflict: InputMaybe<Resource_Edit_Access_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Resource_Edit_Access_OneArgs = {
+  object: Resource_Edit_Access_Insert_Input;
+  on_conflict: InputMaybe<Resource_Edit_Access_On_Conflict>;
 };
 
 
@@ -6746,16 +7096,16 @@ export type Mutation_RootInsert_Team_Members_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInsert_TokensArgs = {
-  objects: Array<Tokens_Insert_Input>;
-  on_conflict: InputMaybe<Tokens_On_Conflict>;
+export type Mutation_RootInsert_User_TokensArgs = {
+  objects: Array<User_Tokens_Insert_Input>;
+  on_conflict: InputMaybe<User_Tokens_On_Conflict>;
 };
 
 
 /** mutation root */
-export type Mutation_RootInsert_Tokens_OneArgs = {
-  object: Tokens_Insert_Input;
-  on_conflict: InputMaybe<Tokens_On_Conflict>;
+export type Mutation_RootInsert_User_Tokens_OneArgs = {
+  object: User_Tokens_Insert_Input;
+  on_conflict: InputMaybe<User_Tokens_On_Conflict>;
 };
 
 
@@ -6777,6 +7127,18 @@ export type Mutation_RootInsert_Users_OneArgs = {
 export type Mutation_RootInsert_Vc_FirmsArgs = {
   objects: Array<Vc_Firms_Insert_Input>;
   on_conflict: InputMaybe<Vc_Firms_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Vc_Firms_Edit_AccessArgs = {
+  objects: Array<Vc_Firms_Edit_Access_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Vc_Firms_Edit_Access_OneArgs = {
+  object: Vc_Firms_Edit_Access_Insert_Input;
 };
 
 
@@ -6914,6 +7276,14 @@ export type Mutation_RootUpdate_Companies_By_PkArgs = {
   _prepend: InputMaybe<Companies_Prepend_Input>;
   _set: InputMaybe<Companies_Set_Input>;
   pk_columns: Companies_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Companies_Edit_AccessArgs = {
+  _inc: InputMaybe<Companies_Edit_Access_Inc_Input>;
+  _set: InputMaybe<Companies_Edit_Access_Set_Input>;
+  where: Companies_Edit_Access_Bool_Exp;
 };
 
 
@@ -7120,22 +7490,6 @@ export type Mutation_RootUpdate_Lists_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Organization_Edit_AccessArgs = {
-  _inc: InputMaybe<Organization_Edit_Access_Inc_Input>;
-  _set: InputMaybe<Organization_Edit_Access_Set_Input>;
-  where: Organization_Edit_Access_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Organization_Edit_Access_By_PkArgs = {
-  _inc: InputMaybe<Organization_Edit_Access_Inc_Input>;
-  _set: InputMaybe<Organization_Edit_Access_Set_Input>;
-  pk_columns: Organization_Edit_Access_Pk_Columns_Input;
-};
-
-
-/** mutation root */
 export type Mutation_RootUpdate_PeopleArgs = {
   _append: InputMaybe<People_Append_Input>;
   _delete_at_path: InputMaybe<People_Delete_At_Path_Input>;
@@ -7162,6 +7516,22 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Resource_Edit_AccessArgs = {
+  _inc: InputMaybe<Resource_Edit_Access_Inc_Input>;
+  _set: InputMaybe<Resource_Edit_Access_Set_Input>;
+  where: Resource_Edit_Access_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Resource_Edit_Access_By_PkArgs = {
+  _inc: InputMaybe<Resource_Edit_Access_Inc_Input>;
+  _set: InputMaybe<Resource_Edit_Access_Set_Input>;
+  pk_columns: Resource_Edit_Access_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Team_MembersArgs = {
   _inc: InputMaybe<Team_Members_Inc_Input>;
   _set: InputMaybe<Team_Members_Set_Input>;
@@ -7178,24 +7548,29 @@ export type Mutation_RootUpdate_Team_Members_By_PkArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpdate_TokensArgs = {
-  _inc: InputMaybe<Tokens_Inc_Input>;
-  _set: InputMaybe<Tokens_Set_Input>;
-  where: Tokens_Bool_Exp;
+export type Mutation_RootUpdate_User_TokensArgs = {
+  _inc: InputMaybe<User_Tokens_Inc_Input>;
+  _set: InputMaybe<User_Tokens_Set_Input>;
+  where: User_Tokens_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootUpdate_Tokens_By_PkArgs = {
-  _inc: InputMaybe<Tokens_Inc_Input>;
-  _set: InputMaybe<Tokens_Set_Input>;
-  pk_columns: Tokens_Pk_Columns_Input;
+export type Mutation_RootUpdate_User_Tokens_By_PkArgs = {
+  _inc: InputMaybe<User_Tokens_Inc_Input>;
+  _set: InputMaybe<User_Tokens_Set_Input>;
+  pk_columns: User_Tokens_Pk_Columns_Input;
 };
 
 
 /** mutation root */
 export type Mutation_RootUpdate_UsersArgs = {
+  _append: InputMaybe<Users_Append_Input>;
+  _delete_at_path: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Users_Delete_Key_Input>;
   _inc: InputMaybe<Users_Inc_Input>;
+  _prepend: InputMaybe<Users_Prepend_Input>;
   _set: InputMaybe<Users_Set_Input>;
   where: Users_Bool_Exp;
 };
@@ -7203,7 +7578,12 @@ export type Mutation_RootUpdate_UsersArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_Users_By_PkArgs = {
+  _append: InputMaybe<Users_Append_Input>;
+  _delete_at_path: InputMaybe<Users_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Users_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Users_Delete_Key_Input>;
   _inc: InputMaybe<Users_Inc_Input>;
+  _prepend: InputMaybe<Users_Prepend_Input>;
   _set: InputMaybe<Users_Set_Input>;
   pk_columns: Users_Pk_Columns_Input;
 };
@@ -7232,6 +7612,14 @@ export type Mutation_RootUpdate_Vc_Firms_By_PkArgs = {
   _prepend: InputMaybe<Vc_Firms_Prepend_Input>;
   _set: InputMaybe<Vc_Firms_Set_Input>;
   pk_columns: Vc_Firms_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Vc_Firms_Edit_AccessArgs = {
+  _inc: InputMaybe<Vc_Firms_Edit_Access_Inc_Input>;
+  _set: InputMaybe<Vc_Firms_Edit_Access_Set_Input>;
+  where: Vc_Firms_Edit_Access_Bool_Exp;
 };
 
 
@@ -7278,326 +7666,6 @@ export enum Order_By {
   /** in descending order, nulls last */
   DescNullsLast = 'desc_nulls_last'
 }
-
-/** Add access to user if he has verified the access to organization */
-export type Organization_Edit_Access = {
-  __typename?: 'organization_edit_access';
-  /** An object relationship */
-  company: Maybe<Companies>;
-  id: Scalars['Int'];
-  resource_id: Scalars['Int'];
-  resource_type: Scalars['String'];
-  user_id: Scalars['Int'];
-  /** An object relationship */
-  vc_firm: Maybe<Vc_Firms>;
-};
-
-/** aggregated selection of "organization_edit_access" */
-export type Organization_Edit_Access_Aggregate = {
-  __typename?: 'organization_edit_access_aggregate';
-  aggregate: Maybe<Organization_Edit_Access_Aggregate_Fields>;
-  nodes: Array<Organization_Edit_Access>;
-};
-
-/** aggregate fields of "organization_edit_access" */
-export type Organization_Edit_Access_Aggregate_Fields = {
-  __typename?: 'organization_edit_access_aggregate_fields';
-  avg: Maybe<Organization_Edit_Access_Avg_Fields>;
-  count: Scalars['Int'];
-  max: Maybe<Organization_Edit_Access_Max_Fields>;
-  min: Maybe<Organization_Edit_Access_Min_Fields>;
-  stddev: Maybe<Organization_Edit_Access_Stddev_Fields>;
-  stddev_pop: Maybe<Organization_Edit_Access_Stddev_Pop_Fields>;
-  stddev_samp: Maybe<Organization_Edit_Access_Stddev_Samp_Fields>;
-  sum: Maybe<Organization_Edit_Access_Sum_Fields>;
-  var_pop: Maybe<Organization_Edit_Access_Var_Pop_Fields>;
-  var_samp: Maybe<Organization_Edit_Access_Var_Samp_Fields>;
-  variance: Maybe<Organization_Edit_Access_Variance_Fields>;
-};
-
-
-/** aggregate fields of "organization_edit_access" */
-export type Organization_Edit_Access_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
-  distinct: InputMaybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "organization_edit_access" */
-export type Organization_Edit_Access_Aggregate_Order_By = {
-  avg: InputMaybe<Organization_Edit_Access_Avg_Order_By>;
-  count: InputMaybe<Order_By>;
-  max: InputMaybe<Organization_Edit_Access_Max_Order_By>;
-  min: InputMaybe<Organization_Edit_Access_Min_Order_By>;
-  stddev: InputMaybe<Organization_Edit_Access_Stddev_Order_By>;
-  stddev_pop: InputMaybe<Organization_Edit_Access_Stddev_Pop_Order_By>;
-  stddev_samp: InputMaybe<Organization_Edit_Access_Stddev_Samp_Order_By>;
-  sum: InputMaybe<Organization_Edit_Access_Sum_Order_By>;
-  var_pop: InputMaybe<Organization_Edit_Access_Var_Pop_Order_By>;
-  var_samp: InputMaybe<Organization_Edit_Access_Var_Samp_Order_By>;
-  variance: InputMaybe<Organization_Edit_Access_Variance_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "organization_edit_access" */
-export type Organization_Edit_Access_Arr_Rel_Insert_Input = {
-  data: Array<Organization_Edit_Access_Insert_Input>;
-  /** upsert condition */
-  on_conflict: InputMaybe<Organization_Edit_Access_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Organization_Edit_Access_Avg_Fields = {
-  __typename?: 'organization_edit_access_avg_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by avg() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Avg_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "organization_edit_access". All fields are combined with a logical 'AND'. */
-export type Organization_Edit_Access_Bool_Exp = {
-  _and: InputMaybe<Array<Organization_Edit_Access_Bool_Exp>>;
-  _not: InputMaybe<Organization_Edit_Access_Bool_Exp>;
-  _or: InputMaybe<Array<Organization_Edit_Access_Bool_Exp>>;
-  company: InputMaybe<Companies_Bool_Exp>;
-  id: InputMaybe<Int_Comparison_Exp>;
-  resource_id: InputMaybe<Int_Comparison_Exp>;
-  resource_type: InputMaybe<String_Comparison_Exp>;
-  user_id: InputMaybe<Int_Comparison_Exp>;
-  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
-};
-
-/** unique or primary key constraints on table "organization_edit_access" */
-export enum Organization_Edit_Access_Constraint {
-  /** unique or primary key constraint */
-  OrganizationEditAccessPkey = 'organization_edit_access_pkey',
-  /** unique or primary key constraint */
-  OrganizationEditAccessUserIdResourceIdResourceTypeKey = 'organization_edit_access_user_id_resource_id_resource_type_key'
-}
-
-/** input type for incrementing numeric columns in table "organization_edit_access" */
-export type Organization_Edit_Access_Inc_Input = {
-  id: InputMaybe<Scalars['Int']>;
-  resource_id: InputMaybe<Scalars['Int']>;
-  user_id: InputMaybe<Scalars['Int']>;
-};
-
-/** input type for inserting data into table "organization_edit_access" */
-export type Organization_Edit_Access_Insert_Input = {
-  company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
-  id: InputMaybe<Scalars['Int']>;
-  resource_id: InputMaybe<Scalars['Int']>;
-  resource_type: InputMaybe<Scalars['String']>;
-  user_id: InputMaybe<Scalars['Int']>;
-  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
-};
-
-/** aggregate max on columns */
-export type Organization_Edit_Access_Max_Fields = {
-  __typename?: 'organization_edit_access_max_fields';
-  id: Maybe<Scalars['Int']>;
-  resource_id: Maybe<Scalars['Int']>;
-  resource_type: Maybe<Scalars['String']>;
-  user_id: Maybe<Scalars['Int']>;
-};
-
-/** order by max() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Max_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  resource_type: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Organization_Edit_Access_Min_Fields = {
-  __typename?: 'organization_edit_access_min_fields';
-  id: Maybe<Scalars['Int']>;
-  resource_id: Maybe<Scalars['Int']>;
-  resource_type: Maybe<Scalars['String']>;
-  user_id: Maybe<Scalars['Int']>;
-};
-
-/** order by min() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Min_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  resource_type: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "organization_edit_access" */
-export type Organization_Edit_Access_Mutation_Response = {
-  __typename?: 'organization_edit_access_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Organization_Edit_Access>;
-};
-
-/** on_conflict condition type for table "organization_edit_access" */
-export type Organization_Edit_Access_On_Conflict = {
-  constraint: Organization_Edit_Access_Constraint;
-  update_columns: Array<Organization_Edit_Access_Update_Column>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "organization_edit_access". */
-export type Organization_Edit_Access_Order_By = {
-  company: InputMaybe<Companies_Order_By>;
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  resource_type: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-  vc_firm: InputMaybe<Vc_Firms_Order_By>;
-};
-
-/** primary key columns input for table: organization_edit_access */
-export type Organization_Edit_Access_Pk_Columns_Input = {
-  id: Scalars['Int'];
-};
-
-/** select columns of table "organization_edit_access" */
-export enum Organization_Edit_Access_Select_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  ResourceId = 'resource_id',
-  /** column name */
-  ResourceType = 'resource_type',
-  /** column name */
-  UserId = 'user_id'
-}
-
-/** input type for updating data in table "organization_edit_access" */
-export type Organization_Edit_Access_Set_Input = {
-  id: InputMaybe<Scalars['Int']>;
-  resource_id: InputMaybe<Scalars['Int']>;
-  resource_type: InputMaybe<Scalars['String']>;
-  user_id: InputMaybe<Scalars['Int']>;
-};
-
-/** aggregate stddev on columns */
-export type Organization_Edit_Access_Stddev_Fields = {
-  __typename?: 'organization_edit_access_stddev_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Stddev_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Organization_Edit_Access_Stddev_Pop_Fields = {
-  __typename?: 'organization_edit_access_stddev_pop_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_pop() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Stddev_Pop_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Organization_Edit_Access_Stddev_Samp_Fields = {
-  __typename?: 'organization_edit_access_stddev_samp_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by stddev_samp() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Stddev_Samp_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** aggregate sum on columns */
-export type Organization_Edit_Access_Sum_Fields = {
-  __typename?: 'organization_edit_access_sum_fields';
-  id: Maybe<Scalars['Int']>;
-  resource_id: Maybe<Scalars['Int']>;
-  user_id: Maybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Sum_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** update columns of table "organization_edit_access" */
-export enum Organization_Edit_Access_Update_Column {
-  /** column name */
-  Id = 'id',
-  /** column name */
-  ResourceId = 'resource_id',
-  /** column name */
-  ResourceType = 'resource_type',
-  /** column name */
-  UserId = 'user_id'
-}
-
-/** aggregate var_pop on columns */
-export type Organization_Edit_Access_Var_Pop_Fields = {
-  __typename?: 'organization_edit_access_var_pop_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by var_pop() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Var_Pop_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Organization_Edit_Access_Var_Samp_Fields = {
-  __typename?: 'organization_edit_access_var_samp_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by var_samp() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Var_Samp_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Organization_Edit_Access_Variance_Fields = {
-  __typename?: 'organization_edit_access_variance_fields';
-  id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
-  user_id: Maybe<Scalars['Float']>;
-};
-
-/** order by variance() on columns of table "organization_edit_access" */
-export type Organization_Edit_Access_Variance_Order_By = {
-  id: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  user_id: InputMaybe<Order_By>;
-};
 
 /** columns and relationships of "people" */
 export type People = {
@@ -8147,6 +8215,10 @@ export type Query_Root = {
   companies_aggregate: Companies_Aggregate;
   /** fetch data from the table: "companies" using primary key columns */
   companies_by_pk: Maybe<Companies>;
+  /** fetch data from the table: "companies_edit_access" */
+  companies_edit_access: Array<Companies_Edit_Access>;
+  /** fetch aggregated fields from the table: "companies_edit_access" */
+  companies_edit_access_aggregate: Companies_Edit_Access_Aggregate;
   /** fetch data from the table: "data_actions" */
   data_actions: Array<Data_Actions>;
   /** fetch aggregated fields from the table: "data_actions" */
@@ -8221,30 +8293,30 @@ export type Query_Root = {
   lists_aggregate: Lists_Aggregate;
   /** fetch data from the table: "lists" using primary key columns */
   lists_by_pk: Maybe<Lists>;
-  /** fetch data from the table: "organization_edit_access" */
-  organization_edit_access: Array<Organization_Edit_Access>;
-  /** fetch aggregated fields from the table: "organization_edit_access" */
-  organization_edit_access_aggregate: Organization_Edit_Access_Aggregate;
-  /** fetch data from the table: "organization_edit_access" using primary key columns */
-  organization_edit_access_by_pk: Maybe<Organization_Edit_Access>;
   /** fetch data from the table: "people" */
   people: Array<People>;
   /** fetch aggregated fields from the table: "people" */
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "resource_edit_access" */
+  resource_edit_access: Array<Resource_Edit_Access>;
+  /** fetch aggregated fields from the table: "resource_edit_access" */
+  resource_edit_access_aggregate: Resource_Edit_Access_Aggregate;
+  /** fetch data from the table: "resource_edit_access" using primary key columns */
+  resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
   /** An array relationship */
   team_members: Array<Team_Members>;
   /** An aggregate relationship */
   team_members_aggregate: Team_Members_Aggregate;
   /** fetch data from the table: "team_members" using primary key columns */
   team_members_by_pk: Maybe<Team_Members>;
-  /** fetch data from the table: "tokens" */
-  tokens: Array<Tokens>;
-  /** fetch aggregated fields from the table: "tokens" */
-  tokens_aggregate: Tokens_Aggregate;
-  /** fetch data from the table: "tokens" using primary key columns */
-  tokens_by_pk: Maybe<Tokens>;
+  /** fetch data from the table: "user_tokens" */
+  user_tokens: Array<User_Tokens>;
+  /** fetch aggregated fields from the table: "user_tokens" */
+  user_tokens_aggregate: User_Tokens_Aggregate;
+  /** fetch data from the table: "user_tokens" using primary key columns */
+  user_tokens_by_pk: Maybe<User_Tokens>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -8257,6 +8329,10 @@ export type Query_Root = {
   vc_firms_aggregate: Vc_Firms_Aggregate;
   /** fetch data from the table: "vc_firms" using primary key columns */
   vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** fetch data from the table: "vc_firms_edit_access" */
+  vc_firms_edit_access: Array<Vc_Firms_Edit_Access>;
+  /** fetch aggregated fields from the table: "vc_firms_edit_access" */
+  vc_firms_edit_access_aggregate: Vc_Firms_Edit_Access_Aggregate;
   /** fetch data from the table: "waitlist_emails" */
   waitlist_emails: Array<Waitlist_Emails>;
   /** fetch aggregated fields from the table: "waitlist_emails" */
@@ -8401,6 +8477,24 @@ export type Query_RootCompanies_AggregateArgs = {
 
 export type Query_RootCompanies_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Query_RootCompanies_Edit_AccessArgs = {
+  distinct_on: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Companies_Edit_Access_Order_By>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+};
+
+
+export type Query_RootCompanies_Edit_Access_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Companies_Edit_Access_Order_By>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
 };
 
 
@@ -8693,29 +8787,6 @@ export type Query_RootLists_By_PkArgs = {
 };
 
 
-export type Query_RootOrganization_Edit_AccessArgs = {
-  distinct_on: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Organization_Edit_Access_Order_By>>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
-};
-
-
-export type Query_RootOrganization_Edit_Access_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Organization_Edit_Access_Order_By>>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
-};
-
-
-export type Query_RootOrganization_Edit_Access_By_PkArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type Query_RootPeopleArgs = {
   distinct_on: InputMaybe<Array<People_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -8735,6 +8806,29 @@ export type Query_RootPeople_AggregateArgs = {
 
 
 export type Query_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootResource_Edit_AccessArgs = {
+  distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Edit_Access_Order_By>>;
+  where: InputMaybe<Resource_Edit_Access_Bool_Exp>;
+};
+
+
+export type Query_RootResource_Edit_Access_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Edit_Access_Order_By>>;
+  where: InputMaybe<Resource_Edit_Access_Bool_Exp>;
+};
+
+
+export type Query_RootResource_Edit_Access_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -8762,25 +8856,25 @@ export type Query_RootTeam_Members_By_PkArgs = {
 };
 
 
-export type Query_RootTokensArgs = {
-  distinct_on: InputMaybe<Array<Tokens_Select_Column>>;
+export type Query_RootUser_TokensArgs = {
+  distinct_on: InputMaybe<Array<User_Tokens_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Tokens_Order_By>>;
-  where: InputMaybe<Tokens_Bool_Exp>;
+  order_by: InputMaybe<Array<User_Tokens_Order_By>>;
+  where: InputMaybe<User_Tokens_Bool_Exp>;
 };
 
 
-export type Query_RootTokens_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Tokens_Select_Column>>;
+export type Query_RootUser_Tokens_AggregateArgs = {
+  distinct_on: InputMaybe<Array<User_Tokens_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Tokens_Order_By>>;
-  where: InputMaybe<Tokens_Bool_Exp>;
+  order_by: InputMaybe<Array<User_Tokens_Order_By>>;
+  where: InputMaybe<User_Tokens_Bool_Exp>;
 };
 
 
-export type Query_RootTokens_By_PkArgs = {
+export type Query_RootUser_Tokens_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -8831,6 +8925,24 @@ export type Query_RootVc_Firms_By_PkArgs = {
 };
 
 
+export type Query_RootVc_Firms_Edit_AccessArgs = {
+  distinct_on: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Vc_Firms_Edit_Access_Order_By>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+};
+
+
+export type Query_RootVc_Firms_Edit_Access_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Vc_Firms_Edit_Access_Order_By>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+};
+
+
 export type Query_RootWaitlist_EmailsArgs = {
   distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -8851,6 +8963,232 @@ export type Query_RootWaitlist_Emails_AggregateArgs = {
 
 export type Query_RootWaitlist_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+/** Add access to user if he has verified the access to organization */
+export type Resource_Edit_Access = {
+  __typename?: 'resource_edit_access';
+  /** An object relationship */
+  company: Maybe<Companies>;
+  id: Scalars['Int'];
+  resource_id: Scalars['Int'];
+  resource_type: Scalars['String'];
+  user_id: Scalars['Int'];
+  /** An object relationship */
+  vc_firm: Maybe<Vc_Firms>;
+};
+
+/** aggregated selection of "resource_edit_access" */
+export type Resource_Edit_Access_Aggregate = {
+  __typename?: 'resource_edit_access_aggregate';
+  aggregate: Maybe<Resource_Edit_Access_Aggregate_Fields>;
+  nodes: Array<Resource_Edit_Access>;
+};
+
+/** aggregate fields of "resource_edit_access" */
+export type Resource_Edit_Access_Aggregate_Fields = {
+  __typename?: 'resource_edit_access_aggregate_fields';
+  avg: Maybe<Resource_Edit_Access_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Resource_Edit_Access_Max_Fields>;
+  min: Maybe<Resource_Edit_Access_Min_Fields>;
+  stddev: Maybe<Resource_Edit_Access_Stddev_Fields>;
+  stddev_pop: Maybe<Resource_Edit_Access_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Resource_Edit_Access_Stddev_Samp_Fields>;
+  sum: Maybe<Resource_Edit_Access_Sum_Fields>;
+  var_pop: Maybe<Resource_Edit_Access_Var_Pop_Fields>;
+  var_samp: Maybe<Resource_Edit_Access_Var_Samp_Fields>;
+  variance: Maybe<Resource_Edit_Access_Variance_Fields>;
+};
+
+
+/** aggregate fields of "resource_edit_access" */
+export type Resource_Edit_Access_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Resource_Edit_Access_Avg_Fields = {
+  __typename?: 'resource_edit_access_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "resource_edit_access". All fields are combined with a logical 'AND'. */
+export type Resource_Edit_Access_Bool_Exp = {
+  _and: InputMaybe<Array<Resource_Edit_Access_Bool_Exp>>;
+  _not: InputMaybe<Resource_Edit_Access_Bool_Exp>;
+  _or: InputMaybe<Array<Resource_Edit_Access_Bool_Exp>>;
+  company: InputMaybe<Companies_Bool_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+};
+
+/** unique or primary key constraints on table "resource_edit_access" */
+export enum Resource_Edit_Access_Constraint {
+  /** unique or primary key constraint */
+  OrganizationEditAccessPkey = 'organization_edit_access_pkey',
+  /** unique or primary key constraint */
+  ResourceEditAccessUserIdResourceIdResourceTypeKey = 'resource_edit_access_user_id_resource_id_resource_type_key'
+}
+
+/** input type for incrementing numeric columns in table "resource_edit_access" */
+export type Resource_Edit_Access_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "resource_edit_access" */
+export type Resource_Edit_Access_Insert_Input = {
+  company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Resource_Edit_Access_Max_Fields = {
+  __typename?: 'resource_edit_access_max_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Resource_Edit_Access_Min_Fields = {
+  __typename?: 'resource_edit_access_min_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "resource_edit_access" */
+export type Resource_Edit_Access_Mutation_Response = {
+  __typename?: 'resource_edit_access_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Resource_Edit_Access>;
+};
+
+/** on_conflict condition type for table "resource_edit_access" */
+export type Resource_Edit_Access_On_Conflict = {
+  constraint: Resource_Edit_Access_Constraint;
+  update_columns: Array<Resource_Edit_Access_Update_Column>;
+  where: InputMaybe<Resource_Edit_Access_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "resource_edit_access". */
+export type Resource_Edit_Access_Order_By = {
+  company: InputMaybe<Companies_Order_By>;
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+  vc_firm: InputMaybe<Vc_Firms_Order_By>;
+};
+
+/** primary key columns input for table: resource_edit_access */
+export type Resource_Edit_Access_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "resource_edit_access" */
+export enum Resource_Edit_Access_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "resource_edit_access" */
+export type Resource_Edit_Access_Set_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Resource_Edit_Access_Stddev_Fields = {
+  __typename?: 'resource_edit_access_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Resource_Edit_Access_Stddev_Pop_Fields = {
+  __typename?: 'resource_edit_access_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Resource_Edit_Access_Stddev_Samp_Fields = {
+  __typename?: 'resource_edit_access_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Resource_Edit_Access_Sum_Fields = {
+  __typename?: 'resource_edit_access_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "resource_edit_access" */
+export enum Resource_Edit_Access_Update_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Resource_Edit_Access_Var_Pop_Fields = {
+  __typename?: 'resource_edit_access_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Resource_Edit_Access_Var_Samp_Fields = {
+  __typename?: 'resource_edit_access_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Resource_Edit_Access_Variance_Fields = {
+  __typename?: 'resource_edit_access_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 export type Subscription_Root = {
@@ -8891,6 +9229,10 @@ export type Subscription_Root = {
   companies_aggregate: Companies_Aggregate;
   /** fetch data from the table: "companies" using primary key columns */
   companies_by_pk: Maybe<Companies>;
+  /** fetch data from the table: "companies_edit_access" */
+  companies_edit_access: Array<Companies_Edit_Access>;
+  /** fetch aggregated fields from the table: "companies_edit_access" */
+  companies_edit_access_aggregate: Companies_Edit_Access_Aggregate;
   /** fetch data from the table: "data_actions" */
   data_actions: Array<Data_Actions>;
   /** fetch aggregated fields from the table: "data_actions" */
@@ -8965,30 +9307,30 @@ export type Subscription_Root = {
   lists_aggregate: Lists_Aggregate;
   /** fetch data from the table: "lists" using primary key columns */
   lists_by_pk: Maybe<Lists>;
-  /** fetch data from the table: "organization_edit_access" */
-  organization_edit_access: Array<Organization_Edit_Access>;
-  /** fetch aggregated fields from the table: "organization_edit_access" */
-  organization_edit_access_aggregate: Organization_Edit_Access_Aggregate;
-  /** fetch data from the table: "organization_edit_access" using primary key columns */
-  organization_edit_access_by_pk: Maybe<Organization_Edit_Access>;
   /** fetch data from the table: "people" */
   people: Array<People>;
   /** fetch aggregated fields from the table: "people" */
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "resource_edit_access" */
+  resource_edit_access: Array<Resource_Edit_Access>;
+  /** fetch aggregated fields from the table: "resource_edit_access" */
+  resource_edit_access_aggregate: Resource_Edit_Access_Aggregate;
+  /** fetch data from the table: "resource_edit_access" using primary key columns */
+  resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
   /** An array relationship */
   team_members: Array<Team_Members>;
   /** An aggregate relationship */
   team_members_aggregate: Team_Members_Aggregate;
   /** fetch data from the table: "team_members" using primary key columns */
   team_members_by_pk: Maybe<Team_Members>;
-  /** fetch data from the table: "tokens" */
-  tokens: Array<Tokens>;
-  /** fetch aggregated fields from the table: "tokens" */
-  tokens_aggregate: Tokens_Aggregate;
-  /** fetch data from the table: "tokens" using primary key columns */
-  tokens_by_pk: Maybe<Tokens>;
+  /** fetch data from the table: "user_tokens" */
+  user_tokens: Array<User_Tokens>;
+  /** fetch aggregated fields from the table: "user_tokens" */
+  user_tokens_aggregate: User_Tokens_Aggregate;
+  /** fetch data from the table: "user_tokens" using primary key columns */
+  user_tokens_by_pk: Maybe<User_Tokens>;
   /** fetch data from the table: "users" */
   users: Array<Users>;
   /** fetch aggregated fields from the table: "users" */
@@ -9001,6 +9343,10 @@ export type Subscription_Root = {
   vc_firms_aggregate: Vc_Firms_Aggregate;
   /** fetch data from the table: "vc_firms" using primary key columns */
   vc_firms_by_pk: Maybe<Vc_Firms>;
+  /** fetch data from the table: "vc_firms_edit_access" */
+  vc_firms_edit_access: Array<Vc_Firms_Edit_Access>;
+  /** fetch aggregated fields from the table: "vc_firms_edit_access" */
+  vc_firms_edit_access_aggregate: Vc_Firms_Edit_Access_Aggregate;
   /** fetch data from the table: "waitlist_emails" */
   waitlist_emails: Array<Waitlist_Emails>;
   /** fetch aggregated fields from the table: "waitlist_emails" */
@@ -9145,6 +9491,24 @@ export type Subscription_RootCompanies_AggregateArgs = {
 
 export type Subscription_RootCompanies_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+
+export type Subscription_RootCompanies_Edit_AccessArgs = {
+  distinct_on: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Companies_Edit_Access_Order_By>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+};
+
+
+export type Subscription_RootCompanies_Edit_Access_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Companies_Edit_Access_Order_By>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
 };
 
 
@@ -9437,29 +9801,6 @@ export type Subscription_RootLists_By_PkArgs = {
 };
 
 
-export type Subscription_RootOrganization_Edit_AccessArgs = {
-  distinct_on: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Organization_Edit_Access_Order_By>>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
-};
-
-
-export type Subscription_RootOrganization_Edit_Access_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Organization_Edit_Access_Order_By>>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
-};
-
-
-export type Subscription_RootOrganization_Edit_Access_By_PkArgs = {
-  id: Scalars['Int'];
-};
-
-
 export type Subscription_RootPeopleArgs = {
   distinct_on: InputMaybe<Array<People_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -9479,6 +9820,29 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 
 export type Subscription_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootResource_Edit_AccessArgs = {
+  distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Edit_Access_Order_By>>;
+  where: InputMaybe<Resource_Edit_Access_Bool_Exp>;
+};
+
+
+export type Subscription_RootResource_Edit_Access_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Edit_Access_Order_By>>;
+  where: InputMaybe<Resource_Edit_Access_Bool_Exp>;
+};
+
+
+export type Subscription_RootResource_Edit_Access_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9506,25 +9870,25 @@ export type Subscription_RootTeam_Members_By_PkArgs = {
 };
 
 
-export type Subscription_RootTokensArgs = {
-  distinct_on: InputMaybe<Array<Tokens_Select_Column>>;
+export type Subscription_RootUser_TokensArgs = {
+  distinct_on: InputMaybe<Array<User_Tokens_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Tokens_Order_By>>;
-  where: InputMaybe<Tokens_Bool_Exp>;
+  order_by: InputMaybe<Array<User_Tokens_Order_By>>;
+  where: InputMaybe<User_Tokens_Bool_Exp>;
 };
 
 
-export type Subscription_RootTokens_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Tokens_Select_Column>>;
+export type Subscription_RootUser_Tokens_AggregateArgs = {
+  distinct_on: InputMaybe<Array<User_Tokens_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Tokens_Order_By>>;
-  where: InputMaybe<Tokens_Bool_Exp>;
+  order_by: InputMaybe<Array<User_Tokens_Order_By>>;
+  where: InputMaybe<User_Tokens_Bool_Exp>;
 };
 
 
-export type Subscription_RootTokens_By_PkArgs = {
+export type Subscription_RootUser_Tokens_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9575,6 +9939,24 @@ export type Subscription_RootVc_Firms_By_PkArgs = {
 };
 
 
+export type Subscription_RootVc_Firms_Edit_AccessArgs = {
+  distinct_on: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Vc_Firms_Edit_Access_Order_By>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+};
+
+
+export type Subscription_RootVc_Firms_Edit_Access_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Vc_Firms_Edit_Access_Order_By>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+};
+
+
 export type Subscription_RootWaitlist_EmailsArgs = {
   distinct_on: InputMaybe<Array<Waitlist_Emails_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -9614,9 +9996,6 @@ export type Team_Members = {
   seniority: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
-  /** An object relationship */
-  vc_firm: Maybe<Vc_Firms>;
-  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "team_members" */
@@ -9677,7 +10056,6 @@ export type Team_Members_Avg_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "team_members" */
@@ -9685,7 +10063,6 @@ export type Team_Members_Avg_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to filter rows from the table "team_members". All fields are combined with a logical 'AND'. */
@@ -9705,8 +10082,6 @@ export type Team_Members_Bool_Exp = {
   seniority: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
   title: InputMaybe<String_Comparison_Exp>;
-  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
-  vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "team_members" */
@@ -9716,9 +10091,7 @@ export enum Team_Members_Constraint {
   /** unique or primary key constraint */
   TeamMembersExternalIdKey = 'team_members_external_id_key',
   /** unique or primary key constraint */
-  TeamMembersPkey = 'team_members_pkey',
-  /** unique or primary key constraint */
-  TeamMembersVcFirmIdPersonIdKey = 'team_members_vc_firm_id_person_id_key'
+  TeamMembersPkey = 'team_members_pkey'
 }
 
 /** input type for incrementing numeric columns in table "team_members" */
@@ -9726,7 +10099,6 @@ export type Team_Members_Inc_Input = {
   company_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
-  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "team_members" */
@@ -9743,8 +10115,6 @@ export type Team_Members_Insert_Input = {
   seniority: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   title: InputMaybe<Scalars['String']>;
-  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
-  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
@@ -9759,7 +10129,6 @@ export type Team_Members_Max_Fields = {
   seniority: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
-  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** order by max() on columns of table "team_members" */
@@ -9773,7 +10142,6 @@ export type Team_Members_Max_Order_By = {
   seniority: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
   title: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate min on columns */
@@ -9788,7 +10156,6 @@ export type Team_Members_Min_Fields = {
   seniority: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
-  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** order by min() on columns of table "team_members" */
@@ -9802,7 +10169,6 @@ export type Team_Members_Min_Order_By = {
   seniority: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
   title: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** response of any mutation on the table "team_members" */
@@ -9835,8 +10201,6 @@ export type Team_Members_Order_By = {
   seniority: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
   title: InputMaybe<Order_By>;
-  vc_firm: InputMaybe<Vc_Firms_Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: team_members */
@@ -9865,9 +10229,7 @@ export enum Team_Members_Select_Column {
   /** column name */
   StartDate = 'start_date',
   /** column name */
-  Title = 'title',
-  /** column name */
-  VcFirmId = 'vc_firm_id'
+  Title = 'title'
 }
 
 /** input type for updating data in table "team_members" */
@@ -9882,7 +10244,6 @@ export type Team_Members_Set_Input = {
   seniority: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   title: InputMaybe<Scalars['String']>;
-  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
@@ -9891,7 +10252,6 @@ export type Team_Members_Stddev_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "team_members" */
@@ -9899,7 +10259,6 @@ export type Team_Members_Stddev_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -9908,7 +10267,6 @@ export type Team_Members_Stddev_Pop_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "team_members" */
@@ -9916,7 +10274,6 @@ export type Team_Members_Stddev_Pop_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -9925,7 +10282,6 @@ export type Team_Members_Stddev_Samp_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "team_members" */
@@ -9933,7 +10289,6 @@ export type Team_Members_Stddev_Samp_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate sum on columns */
@@ -9942,7 +10297,6 @@ export type Team_Members_Sum_Fields = {
   company_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
-  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "team_members" */
@@ -9950,7 +10304,6 @@ export type Team_Members_Sum_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** update columns of table "team_members" */
@@ -9974,9 +10327,7 @@ export enum Team_Members_Update_Column {
   /** column name */
   StartDate = 'start_date',
   /** column name */
-  Title = 'title',
-  /** column name */
-  VcFirmId = 'vc_firm_id'
+  Title = 'title'
 }
 
 /** aggregate var_pop on columns */
@@ -9985,7 +10336,6 @@ export type Team_Members_Var_Pop_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "team_members" */
@@ -9993,7 +10343,6 @@ export type Team_Members_Var_Pop_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
@@ -10002,7 +10351,6 @@ export type Team_Members_Var_Samp_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "team_members" */
@@ -10010,7 +10358,6 @@ export type Team_Members_Var_Samp_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
@@ -10019,7 +10366,6 @@ export type Team_Members_Variance_Fields = {
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "team_members" */
@@ -10027,7 +10373,6 @@ export type Team_Members_Variance_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
@@ -10057,143 +10402,137 @@ export type Timestamptz_Comparison_Exp = {
 };
 
 /** Store various tokens for user which we can invalidate by deleting them */
-export type Tokens = {
-  __typename?: 'tokens';
+export type User_Tokens = {
+  __typename?: 'user_tokens';
   created_at: Scalars['timestamptz'];
   id: Scalars['Int'];
   token: Scalars['String'];
   type: Scalars['String'];
-  updated_at: Scalars['timestamptz'];
   user_id: Scalars['Int'];
 };
 
-/** aggregated selection of "tokens" */
-export type Tokens_Aggregate = {
-  __typename?: 'tokens_aggregate';
-  aggregate: Maybe<Tokens_Aggregate_Fields>;
-  nodes: Array<Tokens>;
+/** aggregated selection of "user_tokens" */
+export type User_Tokens_Aggregate = {
+  __typename?: 'user_tokens_aggregate';
+  aggregate: Maybe<User_Tokens_Aggregate_Fields>;
+  nodes: Array<User_Tokens>;
 };
 
-/** aggregate fields of "tokens" */
-export type Tokens_Aggregate_Fields = {
-  __typename?: 'tokens_aggregate_fields';
-  avg: Maybe<Tokens_Avg_Fields>;
+/** aggregate fields of "user_tokens" */
+export type User_Tokens_Aggregate_Fields = {
+  __typename?: 'user_tokens_aggregate_fields';
+  avg: Maybe<User_Tokens_Avg_Fields>;
   count: Scalars['Int'];
-  max: Maybe<Tokens_Max_Fields>;
-  min: Maybe<Tokens_Min_Fields>;
-  stddev: Maybe<Tokens_Stddev_Fields>;
-  stddev_pop: Maybe<Tokens_Stddev_Pop_Fields>;
-  stddev_samp: Maybe<Tokens_Stddev_Samp_Fields>;
-  sum: Maybe<Tokens_Sum_Fields>;
-  var_pop: Maybe<Tokens_Var_Pop_Fields>;
-  var_samp: Maybe<Tokens_Var_Samp_Fields>;
-  variance: Maybe<Tokens_Variance_Fields>;
+  max: Maybe<User_Tokens_Max_Fields>;
+  min: Maybe<User_Tokens_Min_Fields>;
+  stddev: Maybe<User_Tokens_Stddev_Fields>;
+  stddev_pop: Maybe<User_Tokens_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<User_Tokens_Stddev_Samp_Fields>;
+  sum: Maybe<User_Tokens_Sum_Fields>;
+  var_pop: Maybe<User_Tokens_Var_Pop_Fields>;
+  var_samp: Maybe<User_Tokens_Var_Samp_Fields>;
+  variance: Maybe<User_Tokens_Variance_Fields>;
 };
 
 
-/** aggregate fields of "tokens" */
-export type Tokens_Aggregate_FieldsCountArgs = {
-  columns: InputMaybe<Array<Tokens_Select_Column>>;
+/** aggregate fields of "user_tokens" */
+export type User_Tokens_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<User_Tokens_Select_Column>>;
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
 /** aggregate avg on columns */
-export type Tokens_Avg_Fields = {
-  __typename?: 'tokens_avg_fields';
+export type User_Tokens_Avg_Fields = {
+  __typename?: 'user_tokens_avg_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
 
-/** Boolean expression to filter rows from the table "tokens". All fields are combined with a logical 'AND'. */
-export type Tokens_Bool_Exp = {
-  _and: InputMaybe<Array<Tokens_Bool_Exp>>;
-  _not: InputMaybe<Tokens_Bool_Exp>;
-  _or: InputMaybe<Array<Tokens_Bool_Exp>>;
+/** Boolean expression to filter rows from the table "user_tokens". All fields are combined with a logical 'AND'. */
+export type User_Tokens_Bool_Exp = {
+  _and: InputMaybe<Array<User_Tokens_Bool_Exp>>;
+  _not: InputMaybe<User_Tokens_Bool_Exp>;
+  _or: InputMaybe<Array<User_Tokens_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   token: InputMaybe<String_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
-  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_id: InputMaybe<Int_Comparison_Exp>;
 };
 
-/** unique or primary key constraints on table "tokens" */
-export enum Tokens_Constraint {
+/** unique or primary key constraints on table "user_tokens" */
+export enum User_Tokens_Constraint {
   /** unique or primary key constraint */
   TokensPkey = 'tokens_pkey'
 }
 
-/** input type for incrementing numeric columns in table "tokens" */
-export type Tokens_Inc_Input = {
+/** input type for incrementing numeric columns in table "user_tokens" */
+export type User_Tokens_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   user_id: InputMaybe<Scalars['Int']>;
 };
 
-/** input type for inserting data into table "tokens" */
-export type Tokens_Insert_Input = {
+/** input type for inserting data into table "user_tokens" */
+export type User_Tokens_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   token: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
-  updated_at: InputMaybe<Scalars['timestamptz']>;
   user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
-export type Tokens_Max_Fields = {
-  __typename?: 'tokens_max_fields';
+export type User_Tokens_Max_Fields = {
+  __typename?: 'user_tokens_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   token: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
-  updated_at: Maybe<Scalars['timestamptz']>;
   user_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
-export type Tokens_Min_Fields = {
-  __typename?: 'tokens_min_fields';
+export type User_Tokens_Min_Fields = {
+  __typename?: 'user_tokens_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   token: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
-  updated_at: Maybe<Scalars['timestamptz']>;
   user_id: Maybe<Scalars['Int']>;
 };
 
-/** response of any mutation on the table "tokens" */
-export type Tokens_Mutation_Response = {
-  __typename?: 'tokens_mutation_response';
+/** response of any mutation on the table "user_tokens" */
+export type User_Tokens_Mutation_Response = {
+  __typename?: 'user_tokens_mutation_response';
   /** number of rows affected by the mutation */
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
-  returning: Array<Tokens>;
+  returning: Array<User_Tokens>;
 };
 
-/** on_conflict condition type for table "tokens" */
-export type Tokens_On_Conflict = {
-  constraint: Tokens_Constraint;
-  update_columns: Array<Tokens_Update_Column>;
-  where: InputMaybe<Tokens_Bool_Exp>;
+/** on_conflict condition type for table "user_tokens" */
+export type User_Tokens_On_Conflict = {
+  constraint: User_Tokens_Constraint;
+  update_columns: Array<User_Tokens_Update_Column>;
+  where: InputMaybe<User_Tokens_Bool_Exp>;
 };
 
-/** Ordering options when selecting data from "tokens". */
-export type Tokens_Order_By = {
+/** Ordering options when selecting data from "user_tokens". */
+export type User_Tokens_Order_By = {
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   token: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
-  updated_at: InputMaybe<Order_By>;
   user_id: InputMaybe<Order_By>;
 };
 
-/** primary key columns input for table: tokens */
-export type Tokens_Pk_Columns_Input = {
+/** primary key columns input for table: user_tokens */
+export type User_Tokens_Pk_Columns_Input = {
   id: Scalars['Int'];
 };
 
-/** select columns of table "tokens" */
-export enum Tokens_Select_Column {
+/** select columns of table "user_tokens" */
+export enum User_Tokens_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -10203,51 +10542,48 @@ export enum Tokens_Select_Column {
   /** column name */
   Type = 'type',
   /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
   UserId = 'user_id'
 }
 
-/** input type for updating data in table "tokens" */
-export type Tokens_Set_Input = {
+/** input type for updating data in table "user_tokens" */
+export type User_Tokens_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   token: InputMaybe<Scalars['String']>;
   type: InputMaybe<Scalars['String']>;
-  updated_at: InputMaybe<Scalars['timestamptz']>;
   user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
-export type Tokens_Stddev_Fields = {
-  __typename?: 'tokens_stddev_fields';
+export type User_Tokens_Stddev_Fields = {
+  __typename?: 'user_tokens_stddev_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
-export type Tokens_Stddev_Pop_Fields = {
-  __typename?: 'tokens_stddev_pop_fields';
+export type User_Tokens_Stddev_Pop_Fields = {
+  __typename?: 'user_tokens_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
-export type Tokens_Stddev_Samp_Fields = {
-  __typename?: 'tokens_stddev_samp_fields';
+export type User_Tokens_Stddev_Samp_Fields = {
+  __typename?: 'user_tokens_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
-export type Tokens_Sum_Fields = {
-  __typename?: 'tokens_sum_fields';
+export type User_Tokens_Sum_Fields = {
+  __typename?: 'user_tokens_sum_fields';
   id: Maybe<Scalars['Int']>;
   user_id: Maybe<Scalars['Int']>;
 };
 
-/** update columns of table "tokens" */
-export enum Tokens_Update_Column {
+/** update columns of table "user_tokens" */
+export enum User_Tokens_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -10257,28 +10593,26 @@ export enum Tokens_Update_Column {
   /** column name */
   Type = 'type',
   /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
   UserId = 'user_id'
 }
 
 /** aggregate var_pop on columns */
-export type Tokens_Var_Pop_Fields = {
-  __typename?: 'tokens_var_pop_fields';
+export type User_Tokens_Var_Pop_Fields = {
+  __typename?: 'user_tokens_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
-export type Tokens_Var_Samp_Fields = {
-  __typename?: 'tokens_var_samp_fields';
+export type User_Tokens_Var_Samp_Fields = {
+  __typename?: 'user_tokens_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
-export type Tokens_Variance_Fields = {
-  __typename?: 'tokens_variance_fields';
+export type User_Tokens_Variance_Fields = {
+  __typename?: 'user_tokens_variance_fields';
   id: Maybe<Scalars['Float']>;
   user_id: Maybe<Scalars['Float']>;
 };
@@ -10286,6 +10620,7 @@ export type Tokens_Variance_Fields = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
+  additional_emails: Scalars['jsonb'];
   auth0_linkedin_id: Maybe<Scalars['String']>;
   auth0_user_pass_id: Maybe<Scalars['String']>;
   display_name: Maybe<Scalars['String']>;
@@ -10298,9 +10633,13 @@ export type Users = {
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
   /** An array relationship */
-  organizations: Array<Organization_Edit_Access>;
+  organization_companies: Array<Companies_Edit_Access>;
   /** An aggregate relationship */
-  organizations_aggregate: Organization_Edit_Access_Aggregate;
+  organization_companies_aggregate: Companies_Edit_Access_Aggregate;
+  /** An array relationship */
+  organization_vc_firms: Array<Vc_Firms_Edit_Access>;
+  /** An aggregate relationship */
+  organization_vc_firms_aggregate: Vc_Firms_Edit_Access_Aggregate;
   /** An object relationship */
   person: Maybe<People>;
   person_id: Maybe<Scalars['Int']>;
@@ -10308,6 +10647,12 @@ export type Users = {
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
   wallet_address: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersAdditional_EmailsArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -10332,22 +10677,42 @@ export type UsersList_Members_AggregateArgs = {
 
 
 /** columns and relationships of "users" */
-export type UsersOrganizationsArgs = {
-  distinct_on: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
+export type UsersOrganization_CompaniesArgs = {
+  distinct_on: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Organization_Edit_Access_Order_By>>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
+  order_by: InputMaybe<Array<Companies_Edit_Access_Order_By>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
 };
 
 
 /** columns and relationships of "users" */
-export type UsersOrganizations_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Organization_Edit_Access_Select_Column>>;
+export type UsersOrganization_Companies_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Companies_Edit_Access_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Organization_Edit_Access_Order_By>>;
-  where: InputMaybe<Organization_Edit_Access_Bool_Exp>;
+  order_by: InputMaybe<Array<Companies_Edit_Access_Order_By>>;
+  where: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersOrganization_Vc_FirmsArgs = {
+  distinct_on: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Vc_Firms_Edit_Access_Order_By>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersOrganization_Vc_Firms_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Vc_Firms_Edit_Access_Order_By>>;
+  where: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
 };
 
 /** aggregated selection of "users" */
@@ -10380,6 +10745,11 @@ export type Users_Aggregate_FieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Users_Append_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate avg on columns */
 export type Users_Avg_Fields = {
   __typename?: 'users_avg_fields';
@@ -10393,6 +10763,7 @@ export type Users_Bool_Exp = {
   _and: InputMaybe<Array<Users_Bool_Exp>>;
   _not: InputMaybe<Users_Bool_Exp>;
   _or: InputMaybe<Array<Users_Bool_Exp>>;
+  additional_emails: InputMaybe<Jsonb_Comparison_Exp>;
   auth0_linkedin_id: InputMaybe<String_Comparison_Exp>;
   auth0_user_pass_id: InputMaybe<String_Comparison_Exp>;
   display_name: InputMaybe<String_Comparison_Exp>;
@@ -10401,7 +10772,8 @@ export type Users_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   is_auth0_verified: InputMaybe<Boolean_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
-  organizations: InputMaybe<Organization_Edit_Access_Bool_Exp>;
+  organization_companies: InputMaybe<Companies_Edit_Access_Bool_Exp>;
+  organization_vc_firms: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
   person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
   reference_id: InputMaybe<String_Comparison_Exp>;
@@ -10420,6 +10792,21 @@ export enum Users_Constraint {
   UsersPkey = 'users_pkey'
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Users_Delete_At_Path_Input = {
+  additional_emails: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Users_Delete_Elem_Input = {
+  additional_emails: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Users_Delete_Key_Input = {
+  additional_emails: InputMaybe<Scalars['String']>;
+};
+
 /** input type for incrementing numeric columns in table "users" */
 export type Users_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
@@ -10429,6 +10816,7 @@ export type Users_Inc_Input = {
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
   auth0_linkedin_id: InputMaybe<Scalars['String']>;
   auth0_user_pass_id: InputMaybe<Scalars['String']>;
   display_name: InputMaybe<Scalars['String']>;
@@ -10437,7 +10825,8 @@ export type Users_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
-  organizations: InputMaybe<Organization_Edit_Access_Arr_Rel_Insert_Input>;
+  organization_companies: InputMaybe<Companies_Edit_Access_Arr_Rel_Insert_Input>;
+  organization_vc_firms: InputMaybe<Vc_Firms_Edit_Access_Arr_Rel_Insert_Input>;
   person: InputMaybe<People_Obj_Rel_Insert_Input>;
   person_id: InputMaybe<Scalars['Int']>;
   reference_id: InputMaybe<Scalars['String']>;
@@ -10503,6 +10892,7 @@ export type Users_On_Conflict = {
 
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
+  additional_emails: InputMaybe<Order_By>;
   auth0_linkedin_id: InputMaybe<Order_By>;
   auth0_user_pass_id: InputMaybe<Order_By>;
   display_name: InputMaybe<Order_By>;
@@ -10511,7 +10901,8 @@ export type Users_Order_By = {
   id: InputMaybe<Order_By>;
   is_auth0_verified: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
-  organizations_aggregate: InputMaybe<Organization_Edit_Access_Aggregate_Order_By>;
+  organization_companies_aggregate: InputMaybe<Companies_Edit_Access_Aggregate_Order_By>;
+  organization_vc_firms_aggregate: InputMaybe<Vc_Firms_Edit_Access_Aggregate_Order_By>;
   person: InputMaybe<People_Order_By>;
   person_id: InputMaybe<Order_By>;
   reference_id: InputMaybe<Order_By>;
@@ -10525,8 +10916,15 @@ export type Users_Pk_Columns_Input = {
   id: Scalars['Int'];
 };
 
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Users_Prepend_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+};
+
 /** select columns of table "users" */
 export enum Users_Select_Column {
+  /** column name */
+  AdditionalEmails = 'additional_emails',
   /** column name */
   Auth0LinkedinId = 'auth0_linkedin_id',
   /** column name */
@@ -10555,6 +10953,7 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  additional_emails: InputMaybe<Scalars['jsonb']>;
   auth0_linkedin_id: InputMaybe<Scalars['String']>;
   auth0_user_pass_id: InputMaybe<Scalars['String']>;
   display_name: InputMaybe<Scalars['String']>;
@@ -10603,6 +11002,8 @@ export type Users_Sum_Fields = {
 
 /** update columns of table "users" */
 export enum Users_Update_Column {
+  /** column name */
+  AdditionalEmails = 'additional_emails',
   /** column name */
   Auth0LinkedinId = 'auth0_linkedin_id',
   /** column name */
@@ -10866,6 +11267,287 @@ export type Vc_Firms_Delete_Key_Input = {
   logo: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
   tags: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access = {
+  __typename?: 'vc_firms_edit_access';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  vc_firm: Maybe<Vc_Firms>;
+};
+
+/** aggregated selection of "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Aggregate = {
+  __typename?: 'vc_firms_edit_access_aggregate';
+  aggregate: Maybe<Vc_Firms_Edit_Access_Aggregate_Fields>;
+  nodes: Array<Vc_Firms_Edit_Access>;
+};
+
+/** aggregate fields of "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Aggregate_Fields = {
+  __typename?: 'vc_firms_edit_access_aggregate_fields';
+  avg: Maybe<Vc_Firms_Edit_Access_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Vc_Firms_Edit_Access_Max_Fields>;
+  min: Maybe<Vc_Firms_Edit_Access_Min_Fields>;
+  stddev: Maybe<Vc_Firms_Edit_Access_Stddev_Fields>;
+  stddev_pop: Maybe<Vc_Firms_Edit_Access_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Vc_Firms_Edit_Access_Stddev_Samp_Fields>;
+  sum: Maybe<Vc_Firms_Edit_Access_Sum_Fields>;
+  var_pop: Maybe<Vc_Firms_Edit_Access_Var_Pop_Fields>;
+  var_samp: Maybe<Vc_Firms_Edit_Access_Var_Samp_Fields>;
+  variance: Maybe<Vc_Firms_Edit_Access_Variance_Fields>;
+};
+
+
+/** aggregate fields of "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Vc_Firms_Edit_Access_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Aggregate_Order_By = {
+  avg: InputMaybe<Vc_Firms_Edit_Access_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Vc_Firms_Edit_Access_Max_Order_By>;
+  min: InputMaybe<Vc_Firms_Edit_Access_Min_Order_By>;
+  stddev: InputMaybe<Vc_Firms_Edit_Access_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Vc_Firms_Edit_Access_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Vc_Firms_Edit_Access_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Vc_Firms_Edit_Access_Sum_Order_By>;
+  var_pop: InputMaybe<Vc_Firms_Edit_Access_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Vc_Firms_Edit_Access_Var_Samp_Order_By>;
+  variance: InputMaybe<Vc_Firms_Edit_Access_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Arr_Rel_Insert_Input = {
+  data: Array<Vc_Firms_Edit_Access_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Vc_Firms_Edit_Access_Avg_Fields = {
+  __typename?: 'vc_firms_edit_access_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Avg_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "vc_firms_edit_access". All fields are combined with a logical 'AND'. */
+export type Vc_Firms_Edit_Access_Bool_Exp = {
+  _and: InputMaybe<Array<Vc_Firms_Edit_Access_Bool_Exp>>;
+  _not: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
+  _or: InputMaybe<Array<Vc_Firms_Edit_Access_Bool_Exp>>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Insert_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+};
+
+/** aggregate max on columns */
+export type Vc_Firms_Edit_Access_Max_Fields = {
+  __typename?: 'vc_firms_edit_access_max_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Max_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Vc_Firms_Edit_Access_Min_Fields = {
+  __typename?: 'vc_firms_edit_access_min_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Min_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Mutation_Response = {
+  __typename?: 'vc_firms_edit_access_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Vc_Firms_Edit_Access>;
+};
+
+/** Ordering options when selecting data from "vc_firms_edit_access". */
+export type Vc_Firms_Edit_Access_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+  vc_firm: InputMaybe<Vc_Firms_Order_By>;
+};
+
+/** select columns of table "vc_firms_edit_access" */
+export enum Vc_Firms_Edit_Access_Select_Column {
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Set_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Vc_Firms_Edit_Access_Stddev_Fields = {
+  __typename?: 'vc_firms_edit_access_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Stddev_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Vc_Firms_Edit_Access_Stddev_Pop_Fields = {
+  __typename?: 'vc_firms_edit_access_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Stddev_Pop_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Vc_Firms_Edit_Access_Stddev_Samp_Fields = {
+  __typename?: 'vc_firms_edit_access_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Stddev_Samp_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Vc_Firms_Edit_Access_Sum_Fields = {
+  __typename?: 'vc_firms_edit_access_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Sum_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Vc_Firms_Edit_Access_Var_Pop_Fields = {
+  __typename?: 'vc_firms_edit_access_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Var_Pop_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Vc_Firms_Edit_Access_Var_Samp_Fields = {
+  __typename?: 'vc_firms_edit_access_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Var_Samp_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Vc_Firms_Edit_Access_Variance_Fields = {
+  __typename?: 'vc_firms_edit_access_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "vc_firms_edit_access" */
+export type Vc_Firms_Edit_Access_Variance_Order_By = {
+  id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
 };
 
 /** input type for incrementing numeric columns in table "vc_firms" */
@@ -11418,7 +12100,7 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organizations: Array<{ __typename?: 'organization_edit_access', id: number, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -12018,7 +12700,7 @@ export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
     id
-    organizations {
+    organization_companies {
       id
       company {
         id
@@ -12028,6 +12710,9 @@ export const GetUserProfileDocument = `
         overview
         location
       }
+    }
+    organization_vc_firms {
+      id
       vc_firm {
         id
         slug
@@ -12063,14 +12748,6 @@ export const GetUserProfileDocument = `
         function
         title
         company {
-          id
-          slug
-          name
-          logo
-          overview
-          location
-        }
-        vc_firm {
           id
           slug
           name

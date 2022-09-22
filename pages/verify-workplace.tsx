@@ -22,7 +22,7 @@ const VerifyWorkplace: FC<Props> = ({ }) => {
     })
 
     if (resp.ok) {
-      router.push('/organization')
+      router.push('/organizations')
       return
     }
 
