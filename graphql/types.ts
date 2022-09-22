@@ -1212,6 +1212,8 @@ export type Companies = {
   __typename?: 'companies';
   aliases: Maybe<Scalars['String']>;
   audit_file: Maybe<Scalars['String']>;
+  bitcointalk: Maybe<Scalars['String']>;
+  blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   /** An object relationship */
   coin: Maybe<Coins>;
@@ -1221,6 +1223,7 @@ export type Companies = {
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
+  facebook: Maybe<Scalars['String']>;
   /** An array relationship */
   follows: Array<Follows_Companies>;
   /** An aggregate relationship */
@@ -1230,6 +1233,7 @@ export type Companies = {
   ico_end: Maybe<Scalars['date']>;
   ico_start: Maybe<Scalars['date']>;
   id: Scalars['Int'];
+  instagram: Maybe<Scalars['String']>;
   /** An array relationship */
   investment_rounds: Array<Investment_Rounds>;
   /** An aggregate relationship */
@@ -1240,9 +1244,11 @@ export type Companies = {
   location: Maybe<Scalars['String']>;
   logo: Maybe<Scalars['jsonb']>;
   market_verified: Maybe<Scalars['String']>;
+  medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
+  reddit: Maybe<Scalars['String']>;
   sentiment: Maybe<Scalars['jsonb']>;
   slug: Maybe<Scalars['String']>;
   status: Scalars['String'];
@@ -1251,6 +1257,7 @@ export type Companies = {
   teamMembers: Array<Team_Members>;
   /** An aggregate relationship */
   teamMembers_aggregate: Team_Members_Aggregate;
+  telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
@@ -1260,6 +1267,7 @@ export type Companies = {
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
+  youtube: Maybe<Scalars['String']>;
 };
 
 
@@ -1393,6 +1401,8 @@ export type Companies_Bool_Exp = {
   _or: InputMaybe<Array<Companies_Bool_Exp>>;
   aliases: InputMaybe<String_Comparison_Exp>;
   audit_file: InputMaybe<String_Comparison_Exp>;
+  bitcointalk: InputMaybe<String_Comparison_Exp>;
+  blockchain_explorer: InputMaybe<String_Comparison_Exp>;
   careers_page: InputMaybe<String_Comparison_Exp>;
   coin: InputMaybe<Coins_Bool_Exp>;
   coin_id: InputMaybe<Int_Comparison_Exp>;
@@ -1401,12 +1411,14 @@ export type Companies_Bool_Exp = {
   date_added: InputMaybe<Date_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
+  facebook: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Companies_Bool_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   glassdoor: InputMaybe<String_Comparison_Exp>;
   ico_end: InputMaybe<Date_Comparison_Exp>;
   ico_start: InputMaybe<Date_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  instagram: InputMaybe<String_Comparison_Exp>;
   investment_rounds: InputMaybe<Investment_Rounds_Bool_Exp>;
   investor_amount: InputMaybe<Bigint_Comparison_Exp>;
   layer: InputMaybe<String_Comparison_Exp>;
@@ -1414,14 +1426,17 @@ export type Companies_Bool_Exp = {
   location: InputMaybe<String_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   market_verified: InputMaybe<String_Comparison_Exp>;
+  medium: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
+  reddit: InputMaybe<String_Comparison_Exp>;
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   tags: InputMaybe<Jsonb_Comparison_Exp>;
   teamMembers: InputMaybe<Team_Members_Bool_Exp>;
+  telegram: InputMaybe<String_Comparison_Exp>;
   total_employees: InputMaybe<Numeric_Comparison_Exp>;
   total_valuation: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
@@ -1431,6 +1446,7 @@ export type Companies_Bool_Exp = {
   website: InputMaybe<String_Comparison_Exp>;
   white_paper: InputMaybe<String_Comparison_Exp>;
   year_founded: InputMaybe<String_Comparison_Exp>;
+  youtube: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "companies" */
@@ -1755,6 +1771,8 @@ export type Companies_Inc_Input = {
 export type Companies_Insert_Input = {
   aliases: InputMaybe<Scalars['String']>;
   audit_file: InputMaybe<Scalars['String']>;
+  bitcointalk: InputMaybe<Scalars['String']>;
+  blockchain_explorer: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin: InputMaybe<Coins_Obj_Rel_Insert_Input>;
   coin_id: InputMaybe<Scalars['Int']>;
@@ -1763,12 +1781,14 @@ export type Companies_Insert_Input = {
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
+  facebook: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   github: InputMaybe<Scalars['String']>;
   glassdoor: InputMaybe<Scalars['String']>;
   ico_end: InputMaybe<Scalars['date']>;
   ico_start: InputMaybe<Scalars['date']>;
   id: InputMaybe<Scalars['Int']>;
+  instagram: InputMaybe<Scalars['String']>;
   investment_rounds: InputMaybe<Investment_Rounds_Arr_Rel_Insert_Input>;
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
@@ -1776,14 +1796,17 @@ export type Companies_Insert_Input = {
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
   market_verified: InputMaybe<Scalars['String']>;
+  medium: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
   overview: InputMaybe<Scalars['String']>;
+  reddit: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
   tags: InputMaybe<Scalars['jsonb']>;
   teamMembers: InputMaybe<Team_Members_Arr_Rel_Insert_Input>;
+  telegram: InputMaybe<Scalars['String']>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
@@ -1793,6 +1816,7 @@ export type Companies_Insert_Input = {
   website: InputMaybe<Scalars['String']>;
   white_paper: InputMaybe<Scalars['String']>;
   year_founded: InputMaybe<Scalars['String']>;
+  youtube: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -1800,6 +1824,8 @@ export type Companies_Max_Fields = {
   __typename?: 'companies_max_fields';
   aliases: Maybe<Scalars['String']>;
   audit_file: Maybe<Scalars['String']>;
+  bitcointalk: Maybe<Scalars['String']>;
+  blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
@@ -1807,21 +1833,26 @@ export type Companies_Max_Fields = {
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
+  facebook: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   glassdoor: Maybe<Scalars['String']>;
   ico_end: Maybe<Scalars['date']>;
   ico_start: Maybe<Scalars['date']>;
   id: Maybe<Scalars['Int']>;
+  instagram: Maybe<Scalars['String']>;
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
+  medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
+  reddit: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
@@ -1831,6 +1862,7 @@ export type Companies_Max_Fields = {
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
+  youtube: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -1838,6 +1870,8 @@ export type Companies_Min_Fields = {
   __typename?: 'companies_min_fields';
   aliases: Maybe<Scalars['String']>;
   audit_file: Maybe<Scalars['String']>;
+  bitcointalk: Maybe<Scalars['String']>;
+  blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
   coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
@@ -1845,21 +1879,26 @@ export type Companies_Min_Fields = {
   date_added: Maybe<Scalars['date']>;
   discord: Maybe<Scalars['String']>;
   external_id: Maybe<Scalars['String']>;
+  facebook: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   glassdoor: Maybe<Scalars['String']>;
   ico_end: Maybe<Scalars['date']>;
   ico_start: Maybe<Scalars['date']>;
   id: Maybe<Scalars['Int']>;
+  instagram: Maybe<Scalars['String']>;
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
+  medium: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
+  reddit: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
@@ -1869,6 +1908,7 @@ export type Companies_Min_Fields = {
   website: Maybe<Scalars['String']>;
   white_paper: Maybe<Scalars['String']>;
   year_founded: Maybe<Scalars['String']>;
+  youtube: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "companies" */
@@ -1898,6 +1938,8 @@ export type Companies_On_Conflict = {
 export type Companies_Order_By = {
   aliases: InputMaybe<Order_By>;
   audit_file: InputMaybe<Order_By>;
+  bitcointalk: InputMaybe<Order_By>;
+  blockchain_explorer: InputMaybe<Order_By>;
   careers_page: InputMaybe<Order_By>;
   coin: InputMaybe<Coins_Order_By>;
   coin_id: InputMaybe<Order_By>;
@@ -1906,12 +1948,14 @@ export type Companies_Order_By = {
   date_added: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
+  facebook: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   github: InputMaybe<Order_By>;
   glassdoor: InputMaybe<Order_By>;
   ico_end: InputMaybe<Order_By>;
   ico_start: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  instagram: InputMaybe<Order_By>;
   investment_rounds_aggregate: InputMaybe<Investment_Rounds_Aggregate_Order_By>;
   investor_amount: InputMaybe<Order_By>;
   layer: InputMaybe<Order_By>;
@@ -1919,14 +1963,17 @@ export type Companies_Order_By = {
   location: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
   market_verified: InputMaybe<Order_By>;
+  medium: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
+  reddit: InputMaybe<Order_By>;
   sentiment: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
   tags: InputMaybe<Order_By>;
   teamMembers_aggregate: InputMaybe<Team_Members_Aggregate_Order_By>;
+  telegram: InputMaybe<Order_By>;
   total_employees: InputMaybe<Order_By>;
   total_valuation: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
@@ -1936,6 +1983,7 @@ export type Companies_Order_By = {
   website: InputMaybe<Order_By>;
   white_paper: InputMaybe<Order_By>;
   year_founded: InputMaybe<Order_By>;
+  youtube: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: companies */
@@ -1957,6 +2005,10 @@ export enum Companies_Select_Column {
   /** column name */
   AuditFile = 'audit_file',
   /** column name */
+  Bitcointalk = 'bitcointalk',
+  /** column name */
+  BlockchainExplorer = 'blockchain_explorer',
+  /** column name */
   CareersPage = 'careers_page',
   /** column name */
   CoinId = 'coin_id',
@@ -1971,6 +2023,8 @@ export enum Companies_Select_Column {
   /** column name */
   ExternalId = 'external_id',
   /** column name */
+  Facebook = 'facebook',
+  /** column name */
   Github = 'github',
   /** column name */
   Glassdoor = 'glassdoor',
@@ -1980,6 +2034,8 @@ export enum Companies_Select_Column {
   IcoStart = 'ico_start',
   /** column name */
   Id = 'id',
+  /** column name */
+  Instagram = 'instagram',
   /** column name */
   InvestorAmount = 'investor_amount',
   /** column name */
@@ -1993,11 +2049,15 @@ export enum Companies_Select_Column {
   /** column name */
   MarketVerified = 'market_verified',
   /** column name */
+  Medium = 'medium',
+  /** column name */
   Name = 'name',
   /** column name */
   Notes = 'notes',
   /** column name */
   Overview = 'overview',
+  /** column name */
+  Reddit = 'reddit',
   /** column name */
   Sentiment = 'sentiment',
   /** column name */
@@ -2006,6 +2066,8 @@ export enum Companies_Select_Column {
   Status = 'status',
   /** column name */
   Tags = 'tags',
+  /** column name */
+  Telegram = 'telegram',
   /** column name */
   TotalEmployees = 'total_employees',
   /** column name */
@@ -2023,13 +2085,17 @@ export enum Companies_Select_Column {
   /** column name */
   WhitePaper = 'white_paper',
   /** column name */
-  YearFounded = 'year_founded'
+  YearFounded = 'year_founded',
+  /** column name */
+  Youtube = 'youtube'
 }
 
 /** input type for updating data in table "companies" */
 export type Companies_Set_Input = {
   aliases: InputMaybe<Scalars['String']>;
   audit_file: InputMaybe<Scalars['String']>;
+  bitcointalk: InputMaybe<Scalars['String']>;
+  blockchain_explorer: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
   coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
@@ -2037,24 +2103,29 @@ export type Companies_Set_Input = {
   date_added: InputMaybe<Scalars['date']>;
   discord: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
+  facebook: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
   glassdoor: InputMaybe<Scalars['String']>;
   ico_end: InputMaybe<Scalars['date']>;
   ico_start: InputMaybe<Scalars['date']>;
   id: InputMaybe<Scalars['Int']>;
+  instagram: InputMaybe<Scalars['String']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
   market_verified: InputMaybe<Scalars['String']>;
+  medium: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
   overview: InputMaybe<Scalars['String']>;
+  reddit: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
   tags: InputMaybe<Scalars['jsonb']>;
+  telegram: InputMaybe<Scalars['String']>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
@@ -2064,6 +2135,7 @@ export type Companies_Set_Input = {
   website: InputMaybe<Scalars['String']>;
   white_paper: InputMaybe<Scalars['String']>;
   year_founded: InputMaybe<Scalars['String']>;
+  youtube: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -2109,6 +2181,10 @@ export enum Companies_Update_Column {
   /** column name */
   AuditFile = 'audit_file',
   /** column name */
+  Bitcointalk = 'bitcointalk',
+  /** column name */
+  BlockchainExplorer = 'blockchain_explorer',
+  /** column name */
   CareersPage = 'careers_page',
   /** column name */
   CoinId = 'coin_id',
@@ -2123,6 +2199,8 @@ export enum Companies_Update_Column {
   /** column name */
   ExternalId = 'external_id',
   /** column name */
+  Facebook = 'facebook',
+  /** column name */
   Github = 'github',
   /** column name */
   Glassdoor = 'glassdoor',
@@ -2132,6 +2210,8 @@ export enum Companies_Update_Column {
   IcoStart = 'ico_start',
   /** column name */
   Id = 'id',
+  /** column name */
+  Instagram = 'instagram',
   /** column name */
   InvestorAmount = 'investor_amount',
   /** column name */
@@ -2145,11 +2225,15 @@ export enum Companies_Update_Column {
   /** column name */
   MarketVerified = 'market_verified',
   /** column name */
+  Medium = 'medium',
+  /** column name */
   Name = 'name',
   /** column name */
   Notes = 'notes',
   /** column name */
   Overview = 'overview',
+  /** column name */
+  Reddit = 'reddit',
   /** column name */
   Sentiment = 'sentiment',
   /** column name */
@@ -2158,6 +2242,8 @@ export enum Companies_Update_Column {
   Status = 'status',
   /** column name */
   Tags = 'tags',
+  /** column name */
+  Telegram = 'telegram',
   /** column name */
   TotalEmployees = 'total_employees',
   /** column name */
@@ -2175,7 +2261,9 @@ export enum Companies_Update_Column {
   /** column name */
   WhitePaper = 'white_paper',
   /** column name */
-  YearFounded = 'year_founded'
+  YearFounded = 'year_founded',
+  /** column name */
+  Youtube = 'youtube'
 }
 
 /** aggregate var_pop on columns */
@@ -5889,10 +5977,6 @@ export type Lists = {
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
   id: Scalars['Int'];
-  /** An array relationship */
-  list_members: Array<List_Members>;
-  /** An aggregate relationship */
-  list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
@@ -5916,26 +6000,6 @@ export type ListsFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
-};
-
-
-/** columns and relationships of "lists" */
-export type ListsList_MembersArgs = {
-  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<List_Members_Order_By>>;
-  where: InputMaybe<List_Members_Bool_Exp>;
-};
-
-
-/** columns and relationships of "lists" */
-export type ListsList_Members_AggregateArgs = {
-  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<List_Members_Order_By>>;
-  where: InputMaybe<List_Members_Bool_Exp>;
 };
 
 /** aggregated selection of "lists" */
@@ -5983,7 +6047,6 @@ export type Lists_Bool_Exp = {
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
-  list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
 };
@@ -6007,7 +6070,6 @@ export type Lists_Insert_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
-  list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
 };
 
@@ -6055,7 +6117,6 @@ export type Lists_Order_By = {
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
-  list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
 };

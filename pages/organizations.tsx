@@ -111,6 +111,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	const { data: companiesData } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
 		{
+			limit: 20,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 		}
 	)
@@ -118,6 +119,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	const { data: vcFirmsData } = await runGraphQl<GetVcFirmsQuery>(
 		GetVcFirmsDocument,
 		{
+			limit: 20,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 		}
 	)

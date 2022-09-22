@@ -13,9 +13,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end()
 
-  const verificationToken = req.query.token as string
+  const verificationToken = req.query.vtoken as string
 
-  if (!verificationToken) res.status(400).send({ message: 'Bad request' })
+  if (!verificationToken) return res.status(400).send({ message: 'Bad request' })
 
   const verified = await jwtVerify(
     verificationToken,
@@ -24,11 +24,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   let payload: any = verified.payload
 
-  if (!payload) res.status(400).send({ message: 'Bad request or token expired' })
+  if (!payload) return res.status(400).send({ message: 'Bad request or token expired' })
+
   try {
     const existsToken = await findToken(verificationToken, tokenTypes.verifyWorkHereToken, token)
 
-    if (!existsToken) res.status(400).send({ message: 'Verification link already used' })
+    if (!existsToken) return res.status(400).send({ message: 'Verification link already used' })
 
     await addOrganizationEditAccess(payload, token)
 
@@ -39,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await deleteToken(existsToken.id, token)
   } catch (e: any) {
-    return res.status(500).send({ message: 'Some error occurred, please contact edgein.io' })
+    return res.status(500).send({ message: 'Some error occurred, please contact edgein.io', error: e.message })
   }
 
   res.send({ message: 'success' })
