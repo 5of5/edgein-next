@@ -38,6 +38,7 @@ import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { has, remove } from "lodash";
+import ElemConfirmationMessageModal from "@/components/ElemConfirmationMessageModal";
 
 type Props = {
 	company: Companies;
@@ -58,7 +59,8 @@ const Company: NextPage<Props> = (props: Props) => {
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
-
+	const [reactionError, setReactionError] = useState(null)
+	
 	const {
 		data: companyData,
 		error,
@@ -108,7 +110,9 @@ const Company: NextPage<Props> = (props: Props) => {
 				sentiment,
 				pathname: location.pathname,
 			});
-
+			if(newSentiment && newSentiment.message){
+				setReactionError(newSentiment.message)
+			}
 			setCompany((prev: Companies) => {
 				const newFollows = getNewFollows(sentiment) as Follows_Companies;
 				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
@@ -385,6 +389,12 @@ const Company: NextPage<Props> = (props: Props) => {
 					heading="Similar Companies"
 				/>
 			</div> */}
+			<ElemConfirmationMessageModal 
+				show={(reactionError) ? true : false}
+				onCancel={() => {setReactionError(null)}}
+				type="response"
+				message={(reactionError) ? reactionError : ''}
+			/>
 		</div>
 	);
 };

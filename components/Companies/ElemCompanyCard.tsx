@@ -13,6 +13,7 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemTooltip } from "@/components/ElemTooltip";
+import ElemConfirmationMessageModal from "../ElemConfirmationMessageModal";
 // import { ElemCredibility } from "@/components/Company/ElemCredibility";
 // import { ElemVelocity } from "@/components/Company/ElemVelocity";
 //import { IconArrowUp, IconArrowDown } from "@/components/Icons";
@@ -24,7 +25,7 @@ type Props = {
 
 export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 	const [companyData, setCompanyData] = useState(company);
-
+	const [reactionError, setReactionError] = useState(null)
 	useEffect(() => {
 		setCompanyData(company);
 	}, [company]);
@@ -44,6 +45,9 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				sentiment,
 				pathname: `/companies/${company.slug}`,
 			});
+			if(newSentiment && newSentiment.message){
+				setReactionError(newSentiment.message)
+			}
 			setCompanyData((prev: Companies) => {
 				const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
@@ -174,6 +178,12 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					onCreateNew={handleReactionClick}
 				/>
 			</div>
+			<ElemConfirmationMessageModal 
+				show={(reactionError) ? true : false}
+				onCancel={() => {setReactionError(null)}}
+				type="response"
+				message={(reactionError) ? reactionError : ''}
+			/>
 		</a>
 	);
 };

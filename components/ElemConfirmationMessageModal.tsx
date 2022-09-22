@@ -4,10 +4,11 @@ import { ElemButton } from "./ElemButton";
 
 type Props = {
     show: boolean;
-	type: string;
+	type: | "response"
+		| "confimation";
 	onConfirm?: () => void;
     onCancel: () => void;
-    message: string;
+    message: string | null;
 };
 
 const ElemConfirmationMessageModal: React.FC<Props> =({

@@ -16,6 +16,7 @@ import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getName, getNewFollows, getNewTempSentiment, isFollowsExists, reactOnSentiment } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { has, remove } from "lodash";
+import ElemConfirmationMessageModal from "../ElemConfirmationMessageModal";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -54,6 +55,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 	});
 
 	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
+	const [reactionError, setReactionError] = useState(null)
 
 	useEffect(() => {
 		setVcFirms(vcFirmsData?.vc_firms);
@@ -77,7 +79,9 @@ export const ElemRecentInvestments: FC<Props> = ({
 						sentiment,
 						pathname: `/investors/${vcFirm.slug}`,
 					});
-
+					if(newSentiment && newSentiment.message){
+						setReactionError(newSentiment.message)
+					}
 					setVcFirms((prev) => {
 						return [...(prev || ([] as Vc_Firms[]))].map((item) => {
 							if (item.id === vcFirm.id) {
@@ -231,6 +235,12 @@ export const ElemRecentInvestments: FC<Props> = ({
 					</ElemCarouselWrap>
 				)
 			)}
+			<ElemConfirmationMessageModal 
+				show={(reactionError) ? true : false}
+				onCancel={() => {setReactionError(null)}}
+				type="response"
+				message={(reactionError) ? reactionError : ''}
+			/>
 		</div>
 	);
 };

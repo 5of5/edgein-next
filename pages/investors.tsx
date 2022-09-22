@@ -33,6 +33,7 @@ import {
 } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { has, remove } from "lodash";
+import ElemConfirmationMessageModal from "@/components/ElemConfirmationMessageModal";
 
 type Props = {
 	vcFirmCount: number;
@@ -62,6 +63,7 @@ const Investors: NextPage<Props> = ({
 	const [page, setPage] = useState<number>(0);
 	const limit = 50;
 	const offset = limit * page;
+	const [reactionError, setReactionError] = useState(null)
 
 	useEffect(() => {
 		setPage(0);
@@ -131,7 +133,9 @@ const Investors: NextPage<Props> = ({
 				sentiment,
 				pathname: `/investors/${vcFirm?.slug!}`,
 			});
-
+			if(newSentiment && newSentiment.message){
+				setReactionError(newSentiment.message)
+			}
 			setVcFirms((prev) => {
 				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
 					if (item.id === vcFirm.id) {
@@ -333,6 +337,12 @@ const Investors: NextPage<Props> = ({
 					/>
 				</div>
 			</div>
+			<ElemConfirmationMessageModal 
+				show={(reactionError) ? true : false}
+				onCancel={() => {setReactionError(null)}}
+				type="response"
+				message={(reactionError) ? reactionError : ''}
+			/>
 		</div>
 	);
 };

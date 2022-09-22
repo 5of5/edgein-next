@@ -26,6 +26,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 
 import { has, remove } from "lodash";
+import ElemConfirmationMessageModal from "../ElemConfirmationMessageModal";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -71,7 +72,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 	});
 
 	const [companies, setCompanies] = useState(companiesData?.companies);
-
+	const [reactionError, setReactionError] = useState(null)
 	useEffect(() => {
 		setCompanies(companiesData?.companies);
 	}, [companiesData?.companies]);
@@ -92,7 +93,9 @@ export const ElemRecentCompanies: FC<Props> = ({
 				sentiment,
 				pathname: `/companies/${company.slug}`,
 			});
-
+			if(newSentiment && newSentiment.message){
+				setReactionError(newSentiment.message)
+			}
 			setCompanies((prev) => {
 				return [...(prev || ([] as Companies[]))].map((item) => {
 					if (item.id === company.id) {
@@ -238,6 +241,12 @@ export const ElemRecentCompanies: FC<Props> = ({
 												onCreateNew={handleReactionClick(company)}
 											/>
 										</div>
+										<ElemConfirmationMessageModal 
+											show={(reactionError) ? true : false}
+											onCancel={() => {setReactionError(null)}}
+											type="response"
+											message={(reactionError) ? reactionError : ''}
+										/>
 									</a>
 								</ElemCarouselCard>
 							);

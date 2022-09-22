@@ -35,6 +35,7 @@ import {
 } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { remove } from "lodash";
+import ElemConfirmationMessageModal from "@/components/ElemConfirmationMessageModal";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
@@ -51,7 +52,8 @@ const VCFirm: NextPage<Props> = (props) => {
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
-
+	const [reactionError, setReactionError] = useState(null)
+	
 	const {
 		data: vcFirmData,
 		error,
@@ -86,7 +88,9 @@ const VCFirm: NextPage<Props> = (props) => {
 				sentiment,
 				pathname: location.pathname,
 			});
-
+			if(newSentiment && newSentiment.message){
+				setReactionError(newSentiment.message)
+			}
 			setVcfirm((prev: Vc_Firms) => {
 				const newFollows = getNewFollows(
 					sentiment,
@@ -299,6 +303,12 @@ const VCFirm: NextPage<Props> = (props) => {
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}
 			</div> */}
+			<ElemConfirmationMessageModal 
+				show={(reactionError) ? true : false}
+				onCancel={() => {setReactionError(null)}}
+				type="response"
+				message={(reactionError) ? reactionError : ''}
+			/>
 		</div>
 	);
 };
