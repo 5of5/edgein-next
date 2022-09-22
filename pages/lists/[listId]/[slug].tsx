@@ -7,25 +7,17 @@ import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { IconCompanyList } from "@/components/reactions/IconCompanyList";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import {
-	GetFollowsListsStaticPathsQuery,
-	GetVcFirmsByListIdQuery,
-	GetVcFirmsByListIdDocument,
-	GetCompaniesByListIdQuery,
-	GetCompaniesByListIdDocument,
 	Follows_Companies,
 	Follows_Vc_Firms,
-	GetFollowsListsStaticPathsDocument,
-	Lists,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
-import { runGraphQl } from "@/utils";
-import { getName } from "@/utils/reaction";
-import { has, kebabCase } from "lodash";
-import { GetStaticProps, NextPage } from "next";
+import { has } from "lodash";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 
 type Props = {};
 
@@ -122,13 +114,7 @@ const MyList: NextPage<Props> = ({ }) => {
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<div className="grid grid-cols-4 gap-4">
-				<ElemMyListsMenu
-					user={user}
-					setIsCustom={setIsCustomList}
-					setSelectedListName={setSelectedListName}
-					isUpdated={isUpdated}
-				/>
+			<DashboardLayout>
 				<div className="col-span-3">
 					<div className="w-full mb-7">
 						<div className="inline-flex ">
@@ -189,7 +175,7 @@ const MyList: NextPage<Props> = ({ }) => {
 						setIsUpdated={setIsUpdated}
 					/>
 				</div>
-			</div>
+			</DashboardLayout>
 		</div>
 	);
 };
