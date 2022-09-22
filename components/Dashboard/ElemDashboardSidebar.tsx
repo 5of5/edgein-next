@@ -20,7 +20,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
 
   return (
     <>
-      <div className="mb-6">
+      <div className="">
         <h3 className="text-xl font-bold py-1 text-dark-500">My EdgeIn</h3>
         <ul className="flex flex-col">
           {user?.profileName && <li
@@ -54,7 +54,7 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
         user={user}
       />
 
-      <div className="mb-6">
+      <div className="">
         <h3 className="text-xl font-bold py-1 text-dark-500">Explore</h3>
         <ul className="flex flex-col">
           <li

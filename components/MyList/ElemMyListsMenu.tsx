@@ -108,7 +108,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 	};
 
 	return (
-		<div>
+		<div className="">
 			<h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
 			<ul className="flex flex-col">
 				<li
