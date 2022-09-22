@@ -19,3 +19,21 @@ array_relationships:
         table:
           schema: public
           name: list_members
+  - name: organization_companies
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: companies_edit_access
+        insertion_order: null
+        column_mapping:
+          id: user_id
+  - name: organization_vc_firms
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: vc_firms_edit_access
+        insertion_order: null
+        column_mapping:
+          id: user_id
