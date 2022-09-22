@@ -25,6 +25,7 @@ import { companyLayerChoices } from "@/utils/constants";
 import { TagInputText } from "@/components/TagInputText";
 import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
 import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
+import { InputDate } from "@/components/InputDate";
 
 type GridProps = {
     children: any
@@ -212,6 +213,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
     const onCancelCompanyEdits = () => {
         setCompanyEditable(company)
+        window.history.back()
     }
 
     return (
@@ -231,7 +233,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             </div>
                         </div>
 
-                        <div className="max-w-6xl flex justify-between items-center mt-16 bg-white rounded-lg p-5 shadow-md">
+                        {/* <div className="max-w-6xl flex justify-between items-center mt-16 bg-white rounded-lg p-5 shadow-md">
                             <div>
                                 <p className="text-xl font-bold font-Metropolis text-dark-950">{`Do you work at ${company.name}?`}</p>
                                 <p className="text-sm font-normal font-Metropolis">By verifying that you work here, you will be able to edit all fields on the company profile. </p>
@@ -239,7 +241,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             <div>
                                 <ElemButton btn="ol-primary" onClick={() => setModal(true)}>Verify Now <IconChevronRight className="w-4 h-4" /></ElemButton>
                             </div>
-                        </div>
+                        </div> */}
 
                         {modal && <ElemCompanyVerifyModal isOpen={modal} onClose={() => setModal(false)} />}
 
@@ -389,13 +391,11 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                     <h2 className="text-dark-500 font-bold  w-40 text-base">Founded Date*</h2>
                                 </div>
                                 <div className="col-span-8">
-                                    <InputText
-                                        onChange={(e) => { setValues('year_founded', e.target.value)}}
-                                        value=""
+                                    <InputDate
                                         name=""
-                                        placeholder="2017-Aug-15"
-                                        className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
-
+                                        value={(companyEditable.year_founded)? companyEditable.year_founded : ''}
+                                        onChange={(e) => { setValues('year_founded', e.target.value)}}
+                                        className=" mt-2 block max-w-sm placeholder-slate-500"
                                     />
                                 </div>
                             </GridTwelve>
