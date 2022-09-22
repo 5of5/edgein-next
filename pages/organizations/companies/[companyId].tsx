@@ -104,6 +104,11 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		const file = event.target.files ? event.target.files[0] : null;
 		if (!file) return;
         setSelectedFile(file)
+        const res = await uploadFile(file);
+        setCompanyEditable({
+            ...companyEditable,
+            logo: res.file
+        });
     };
 
     const updateCall = async () => {
@@ -165,7 +170,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         })
         const tempRound = {
             ...round,
-            investments: updatedInvestments
+            investments: updatedInvestments,
+            company_id: company.id
         }
         await fetch("/api/upsert_investment_round", {
             method: "POST",
@@ -182,14 +188,14 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
     const onSaveCompany = async () => {
         //check logo and upload
-        if(selectedFile){
-            const res = await uploadFile(selectedFile);
-            deleteFile(companyEditable?.logo);
-            setCompanyEditable({
-                ...companyEditable,
-                logo: res
-            });
-        }
+        // if(selectedFile){
+        //     const res = await uploadFile(selectedFile);
+        //     deleteFile(companyEditable?.logo);
+        //     setCompanyEditable({
+        //         ...companyEditable,
+        //         logo: res
+        //     });
+        // }
         
         setCompanyEditable({
             ...companyEditable,
@@ -254,10 +260,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                     <div className="flex">
                                         <div className=" relative">
                                         <ElemPhoto
-                                            photo={company.logo}
+                                            photo={companyEditable.logo}
                                             wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
                                             imgClass="object-contain w-16 h-16"
-                                            imgAlt={company.name}
+                                            imgAlt={companyEditable.name}
                                         />
                                            <span
                                                 className="bg-gray-200 w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0"

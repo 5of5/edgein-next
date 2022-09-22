@@ -7,6 +7,7 @@ import { InputDate } from './InputDate';
 import { People, useGetAllPersonsQuery, Investment_Rounds, useGetAllVcFirmsQuery, Vc_Firms, Investments } from '@/graphql/types';
 import { roundChoices } from '@/utils/constants';
 import { ElemButton } from './ElemButton';
+import ElemConfirmationMessageModal from './ElemConfirmationMessageModal';
 
 type Props = {
     isOpen: boolean;
@@ -36,6 +37,8 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
     const [firmFilterValues, setFirmFilterValues] = useState([{}]);
     const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({} as Investment_Rounds)
+    const [deletedInvestments, setDeletedInvestments] = useState<Investments>({} as Investments)
+    const [showConfirmation, setShowConfirmation] = useState(false)
 
     const roundFilterValues = roundChoices.map((option) => {
         return {
@@ -118,8 +121,35 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
         const tempData = {
             ...investmentRound
         }
+        if(tempData.investments[position].id && tempData.investments[position].id !==null){
+            setDeletedInvestments(tempData.investments[position] as Investments)
+            setShowConfirmation(true)
+        }else{
+            tempData.investments.splice(position, 1)
+            setInvestmentRound(tempData as Investment_Rounds)
+        }
+    }
+
+    const onConfirm = async () => {
+        const tempData = {
+            ...investmentRound
+        }
+        const position = (tempData.investments as any[]).indexOf((item: any) => item.id === deletedInvestments.id)
+        // call delete api
+        await fetch("/api/delete_investments", {
+            method: "POST",
+            body: JSON.stringify({
+                investmentId: deletedInvestments.id
+            }),
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            },
+        });
         tempData.investments.splice(position, 1)
         setInvestmentRound(tempData as Investment_Rounds)
+        setShowConfirmation(false)
+        setDeletedInvestments({} as Investments)
     }
 
     return (
@@ -168,7 +198,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 options={roundFilterValues}
                                                 onChange={(e: any) => setValues('round', e.value)}
                                                 value={roundFilterValues && investmentRound.round ? roundFilterValues.find(x => x.value === investmentRound.round) : {}}
-                                                placeholder="Seed"
+                                                placeholder=""
                                                 className='max-w-sm placeholder:text-slate-300'
                                             />
                                         </div>
@@ -197,6 +227,8 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 placeholder='$'
                                             />
                                         </div>
+                                        <div className="mt-4">
+                                        <label className='font-Metropolis text-sm font-bold text-slate-600'>Investments</label>
                                         {
                                             (investmentRound.investments) && [...investmentRound.investments].map((investment, index) =>  
                                                 <InvestmentSection 
@@ -210,7 +242,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             )
                                         }
                                         <ElemButton onClick={onAddNew} btn="ol-primary" className="mt-5 mb-28">Add Investment</ElemButton>
-                                   
+                                        </div>
                                     </div>
                                     <div className="absolute bottom-5">
                                         <ElemButton 
@@ -222,6 +254,13 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                             </Transition.Child>
                         </div>
                     </div>
+                    <ElemConfirmationMessageModal
+                        type="confimation"
+                        show={showConfirmation}
+                        onCancel={() => {setShowConfirmation(false)}}
+                        onConfirm={onConfirm}
+                        message={"Are you sure you want to delete this investment?"}
+                    />
                 </Dialog>
             </Transition>
         </>
@@ -267,9 +306,9 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
 
     return (
         <div className="border border-gray-5 p-5 pt-0 rounded-md my-4">
-            {/* <div className="flex w-full justify-end">
+            <div className="flex w-full justify-end">
                 <button onClick={onRemove}>x</button>
-            </div> */}
+            </div>
             <div className='mt-0'>
                 <label className='font-Metropolis text-sm font-bold text-slate-600'>Investor Type</label>
                 <div className='flex justify-start items-center'>
@@ -318,7 +357,6 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
                     placeholder='$'
                 />
             </div>
-
         </div>
     )
 }
