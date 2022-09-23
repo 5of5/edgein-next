@@ -196,7 +196,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="col-span-8">
-					<div className="w-full p-5 bg-white shadow rounded-lg">
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>
 							<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
