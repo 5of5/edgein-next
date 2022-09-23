@@ -61,7 +61,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const [coinFilterValues, setCoinFilterValues] = useState([{}])
     const [memberToEdit, setMemberToEdit] = useState<Team_Members>()
     const [roundToEdit, setRoundToEdit] = useState<Investment_Rounds>()
-    const [errors, setErrors] = useState({})
+    const [errors, setErrors] = useState({} as any)
 
     const {
 		data: companyData,
@@ -294,8 +294,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                             </ul>
                                         </div>
                                     </div>
-                                    {(errors?.file) && <p className="text-red-500 text-xs italic mt-2">{errors?.file}</p>}
-                                    {(errors?.logo) && <p className="text-red-500 text-xs italic mt-2">{errors?.logo}</p>}
+                                    {(errors.file) && <p className="text-red-500 text-xs italic mt-2">{errors.file}</p>}
+                                    {(errors.logo) && <p className="text-red-500 text-xs italic mt-2">{errors.logo}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -313,7 +313,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                    {(errors?.name) && <p className="text-red-500 text-xs italic mt-2">{errors?.name}</p>}
+                                    {(errors.name) && <p className="text-red-500 text-xs italic mt-2">{errors.name}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -331,7 +331,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         name="Overview"
                                         className="placeholder:text-slate-300 w-100 text-slate-600 text-base"
                                     />
-                                    {(errors?.overview) && <p className="text-red-500 text-xs italic mt-2">{errors?.overview}</p>}
+                                    {(errors.overview) && <p className="text-red-500 text-xs italic mt-2">{errors.overview}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -350,7 +350,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         placeholder="Layer 1 programmable/Blockchain/Netw..."
                                         className="w-100 text-slate-600 text-base"
                                     />
-                                    {(errors?.layer) && <p className="text-red-500 text-xs italic mt-2">{errors?.layer}</p>}
+                                    {(errors.layer) && <p className="text-red-500 text-xs italic mt-2">{errors.layer}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -372,7 +372,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                             setValues('tags', tags);
                                         }}
                                     />
-                                    {(errors?.tags) && <p className="text-red-500 text-xs italic mt-2">{errors?.tags}</p>}
+                                    {(errors.tags) && <p className="text-red-500 text-xs italic mt-2">{errors.tags}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -406,7 +406,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         onChange={(e) => { setValues('year_founded', e.target.value)}}
                                         className=" mt-2 block max-w-sm placeholder-slate-500"
                                     />
-                                    {(errors?.year_founded) && <p className="text-red-500 text-xs italic mt-2">{errors?.year_founded}</p>}
+                                    {(errors.year_founded) && <p className="text-red-500 text-xs italic mt-2">{errors.year_founded}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -487,7 +487,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                     {(errors?.website) && <p className="text-red-500 text-xs italic mt-2">{errors?.website}</p>}
+                                     {(errors.website) && <p className="text-red-500 text-xs italic mt-2">{errors.website}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -506,7 +506,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                    {(errors?.company_linkedin) && <p className="text-red-500 text-xs italic mt-2">{errors?.company_linkedin}</p>}
+                                    {(errors.company_linkedin) && <p className="text-red-500 text-xs italic mt-2">{errors.company_linkedin}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -525,7 +525,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                    {(errors?.github) && <p className="text-red-500 text-xs italic mt-2">{errors?.github}</p>}
+                                    {(errors.github) && <p className="text-red-500 text-xs italic mt-2">{errors.github}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -544,7 +544,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                    {(errors?.twitter) && <p className="text-red-500 text-xs italic mt-2">{errors?.twitter}</p>}
+                                    {(errors.twitter) && <p className="text-red-500 text-xs italic mt-2">{errors.twitter}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -563,7 +563,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                    {(errors?.discord) && <p className="text-red-500 text-xs italic mt-2">{errors?.discord}</p>}
+                                    {(errors.discord) && <p className="text-red-500 text-xs italic mt-2">{errors.discord}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -583,7 +583,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                     {(errors?.glassdoor) && <p className="text-red-500 text-xs italic mt-2">{errors?.glassdoor}</p>}
+                                     {(errors.glassdoor) && <p className="text-red-500 text-xs italic mt-2">{errors.glassdoor}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -603,7 +603,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
-                                    {(errors?.careers_page) && <p className="text-red-500 text-xs italic mt-2">{errors?.careers_page}</p>}
+                                    {(errors.careers_page) && <p className="text-red-500 text-xs italic mt-2">{errors.careers_page}</p>}
                                 </div>
                             </GridTwelve>
                         </div>
