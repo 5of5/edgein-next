@@ -75,7 +75,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 						<div className="flex-wrap">
 							{!props.value && <>&mdash;</>}
 
-							{vcsWithPartner.map((investment: any) => {
+							{vcsWithPartner.map((investment: any, index: number) => {
 								return (
 									<div
 										key={investment.id}
@@ -103,7 +103,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
 													
 													<span className="line-clamp-2">
-														{`${investment.person.name}, `}
+														{`${investment.person.name}${(index < vcsWithPartner.length-1 ? ', ' : '')}`}
 													</span>
 												</a>
 											</Link>
@@ -112,7 +112,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 								);
 							})}
 
-							{vcs.map((investment: any) => {
+							{vcs.map((investment: any, index: number) => {
 								return (
 									<div
 										key={investment.id}
@@ -126,7 +126,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
 													
 													<span className="line-clamp-2">
-														{`${investment.vc_firm.name}, `}
+														{`${investment.vc_firm.name}${(index < vcs.length-1 ? ', ' : '')}`}
 													</span>
 												</a>
 											</Link>
@@ -135,7 +135,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 								);
 							})}
 
-							{angels.map((investment: any) => {
+							{angels.map((investment: any, index:number) => {
 								return (
 									<div
 										key={investment.id}
@@ -149,7 +149,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
 													
 													<span className="line-clamp-2">
-														{`${investment.person.name}, `}
+														{`${investment.person.name}${(index < angels.length-1 ? ', ' : '')}`}
 													</span>
 												</a>
 											</Link>

@@ -208,7 +208,6 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             <InputText
                                                 type='number'
                                                 name=""
-                                                disabled={true}
                                                 value={(investmentRound.amount) ? investmentRound.amount : 0}
                                                 onChange={(e) => { setValues('amount', e.target.value) }}
                                                 className=" max-w-sm placeholder:text-slate-500"

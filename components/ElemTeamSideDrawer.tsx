@@ -112,7 +112,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                                 options={titleFilterValues}
                                                 onChange={(e: any) =>  setValues('function', e.value)}
                                                 value={titleFilterValues && employee.function ? titleFilterValues.find(x=> x.value === employee.function):{}}
-                                                placeholder="Founder"
+                                                placeholder=""
                                                 className='max-w-sm placeholder:text-slate-250'
                                             />
                                         </div>

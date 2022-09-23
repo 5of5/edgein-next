@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import { runGraphQl, convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
 import { uploadFile, deleteFile } from "@/utils/fileFunctions";
-import { companyLayerChoices } from "@/utils/constants";
+import { companyLayerChoices, validateFieldsForEdit } from "@/utils/constants";
 import { TagInputText } from "@/components/TagInputText";
 import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
 import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
@@ -61,7 +61,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const [coinFilterValues, setCoinFilterValues] = useState([{}])
     const [memberToEdit, setMemberToEdit] = useState<Team_Members>()
     const [roundToEdit, setRoundToEdit] = useState<Investment_Rounds>()
-    const [selectedFile, setSelectedFile] = useState<any>(null)
+    const [errors, setErrors] = useState({})
 
     const {
 		data: companyData,
@@ -103,21 +103,29 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     
     const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files ? event.target.files[0] : null;
-		if (!file) return;
-        setSelectedFile(file)
-        const res = await uploadFile(file);
-        setCompanyEditable({
-            ...companyEditable,
-            logo: res.file
-        });
+        if (!file) return;
+        if(!file) {
+            setErrors({file: "Please choose a file"})
+        }else if(file.size && (file.size/1024) > 2048){
+            setErrors({file: "File size is greater than 2MB"})
+        }else if(['image/png', 'image/jpg', 'image/jpeg','image/svg+xml'].indexOf(file.type) === -1){
+            setErrors({file: "Invalid file type"})
+        }else{
+            setErrors({})
+            const res = await uploadFile(file);
+            setCompanyEditable({
+                ...companyEditable,
+                logo: res.file
+            });
+        }
     };
 
-    const updateCall = async () => {
+    const updateCall = async (companyData: Companies) => {
 			const resp = await fetch("/api/update_company", {
 				method: "POST",
 				body: JSON.stringify({
-					companyId: companyEditable?.id,
-					company: companyEditable,
+					companyId: companyData?.id,
+					company: companyData,
 				}),
 				headers: {
 					Accept: "application/json",
@@ -188,27 +196,22 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     }
 
     const onSaveCompany = async () => {
-        //check logo and upload
-        // if(selectedFile){
-        //     const res = await uploadFile(selectedFile);
-        //     deleteFile(companyEditable?.logo);
-        //     setCompanyEditable({
-        //         ...companyEditable,
-        //         logo: res
-        //     });
-        // }
-        
-        setCompanyEditable({
+        const tempData = {
             ...companyEditable,
             coin_id: (companyEditable.coin) ?  companyEditable.coin.id : null
-        });
-        delete companyEditable.teamMembers;
-        delete companyEditable.investment_rounds;
-        delete companyEditable.coin;
-        delete companyEditable.follows;
-        const resp = await updateCall()
-        window.location.reload()
-        //save company data
+        }
+        delete tempData.teamMembers;
+        delete tempData.investment_rounds;
+        delete tempData.coin;
+        delete tempData.follows;
+        setCompanyEditable(tempData);
+        const error = await validateFieldsForEdit(true, tempData, company)
+        setErrors(error)
+        console.log("errror =", error)
+        if (Object.keys(error).length == 0) {
+            const resp = await updateCall(tempData  as Companies)
+            window.location.reload()
+        }
     }
 
     const onCancelCompanyEdits = () => {
@@ -291,6 +294,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                             </ul>
                                         </div>
                                     </div>
+                                    {(errors?.file) && <p className="text-red-500 text-xs italic mt-2">{errors?.file}</p>}
+                                    {(errors?.logo) && <p className="text-red-500 text-xs italic mt-2">{errors?.logo}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -308,6 +313,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                    {(errors?.name) && <p className="text-red-500 text-xs italic mt-2">{errors?.name}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -325,6 +331,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         name="Overview"
                                         className="placeholder:text-slate-300 w-100 text-slate-600 text-base"
                                     />
+                                    {(errors?.overview) && <p className="text-red-500 text-xs italic mt-2">{errors?.overview}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -343,6 +350,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         placeholder="Layer 1 programmable/Blockchain/Netw..."
                                         className="w-100 text-slate-600 text-base"
                                     />
+                                    {(errors?.layer) && <p className="text-red-500 text-xs italic mt-2">{errors?.layer}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -364,6 +372,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                             setValues('tags', tags);
                                         }}
                                     />
+                                    {(errors?.tags) && <p className="text-red-500 text-xs italic mt-2">{errors?.tags}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -397,6 +406,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         onChange={(e) => { setValues('year_founded', e.target.value)}}
                                         className=" mt-2 block max-w-sm placeholder-slate-500"
                                     />
+                                    {(errors?.year_founded) && <p className="text-red-500 text-xs italic mt-2">{errors?.year_founded}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -455,7 +465,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         onChange={(e) => { setValues('white_paper', e.target.value)}}
                                         value={(companyEditable.white_paper) ? companyEditable.white_paper : ''}
                                         name=""
-                                        placeholder="www.website.com"
+                                        placeholder="https://www.white-paper.com"
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
@@ -473,10 +483,11 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         onChange={(e) => { setValues('website', e.target.value)}}
                                         value={(companyEditable.website) ? companyEditable.website : ''}
                                         name=""
-                                        placeholder="www.website.com"
+                                        placeholder="https://www.website.com"
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                     {(errors?.website) && <p className="text-red-500 text-xs italic mt-2">{errors?.website}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -495,6 +506,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                    {(errors?.company_linkedin) && <p className="text-red-500 text-xs italic mt-2">{errors?.company_linkedin}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -513,6 +525,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                    {(errors?.github) && <p className="text-red-500 text-xs italic mt-2">{errors?.github}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -531,6 +544,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                    {(errors?.twitter) && <p className="text-red-500 text-xs italic mt-2">{errors?.twitter}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -549,6 +563,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                    {(errors?.discord) && <p className="text-red-500 text-xs italic mt-2">{errors?.discord}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -568,6 +583,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                     {(errors?.glassdoor) && <p className="text-red-500 text-xs italic mt-2">{errors?.glassdoor}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -583,14 +599,13 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         onChange={(e) => { setValues('careers_page', e.target.value)}}
                                         value={(companyEditable.careers_page) ? companyEditable.careers_page : ''}
                                         name=""
-                                        placeholder="htpps://www.careers.coom"
+                                        placeholder="htpps://www.careers.com"
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                    {(errors?.careers_page) && <p className="text-red-500 text-xs italic mt-2">{errors?.careers_page}</p>}
                                 </div>
                             </GridTwelve>
-
-
                         </div>
 
                         {/* Team section starts here.. */}
@@ -632,7 +647,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 
                             <div className="flex justify-between items-center mt-2 mb-5">
                                 <h2 className="text-dark-500 font-bold font-Metropolis text-md">All Investments</h2>
-                                <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => {setRoundToEdit({} as Investment_Rounds); setInvestmentDrawer(true)}}>Add Investmesnts Round</span>
+                                <span className="text-md font-normal cursor-pointer text-primary-500 font-Metropolis" onClick={() => {setRoundToEdit({} as Investment_Rounds); setInvestmentDrawer(true)}}>Add Investments Round</span>
                             </div>
 
                             <ElemEditInvestments

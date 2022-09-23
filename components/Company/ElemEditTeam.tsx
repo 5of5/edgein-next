@@ -42,7 +42,7 @@ export const ElemEditTeam: React.FC<Props> = ({
 				Header: "Title",
 				accessor: "function" as const,
 				Cell: (props: any) => (
-					<div>
+					<div className="items-center mt-4">
 						{props.value ? <>{props.value}</> : <>&mdash;</>}
 					</div>
 				),
@@ -51,7 +51,7 @@ export const ElemEditTeam: React.FC<Props> = ({
 				Header: "Start Date",
 				accessor: "start_date" as const,
 				Cell: (props: any) => (
-					<div>
+					<div className="items-center mt-4">
 						{props.value ? (
 							<>
 								{formatDate(props.value, {
@@ -70,7 +70,7 @@ export const ElemEditTeam: React.FC<Props> = ({
 				Header: "End Date",
 				accessor: "end_date" as const,
 				Cell: (props: any) => (
-					<div>
+					<div className="items-center mt-4">
 						{props.value ? (
 							<>
 								{formatDate(props.value, {
