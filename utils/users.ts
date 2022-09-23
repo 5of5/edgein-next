@@ -1,10 +1,14 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
 import { User } from '@/models/User';
 
-async function queryForAllowedEmailCheck(email: string) {
+async function queryForAllowedEmailCheck(email: string, domain: string) {
   const fetchQuery = `
-  query query_allowed_emails($email: String) {
-    allowed_emails(where: {email: {_eq: $email}}, limit: 1) {
+  query query_allowed_emails($email: String, $domain: String) {
+    allowed_emails(where: {_or: [
+      {email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, 
+      {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}
+    ]}, 
+      limit: 1) {
       id
       email
     }
@@ -13,7 +17,7 @@ async function queryForAllowedEmailCheck(email: string) {
   try {
     const data = await query({
       query: fetchQuery,
-      variables: { email }
+      variables: { email, domain }
     })
     return data.data.allowed_emails[0] as User
   } catch (ex) {

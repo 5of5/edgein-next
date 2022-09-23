@@ -49,8 +49,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const userInfoInJson = JSON.parse(await userInfo.text());
 
     if (userInfoInJson && userInfoInJson.email) {
+      // get the domain from the email
+      const domain = userInfoInJson.email.split('@').pop();
       // check email is in allowed_emails or not
-      const isEmailAllowed = await UserService.queryForAllowedEmailCheck(userInfoInJson.email)
+      const isEmailAllowed = await UserService.queryForAllowedEmailCheck(userInfoInJson.email, domain)
 
       // when email does not exist in the allowed emails
       if (!isEmailAllowed) {
