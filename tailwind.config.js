@@ -61,37 +61,6 @@ const blue = {
   900: "#1E3A8A"
 }
 
-const darkblue = {
-  600: "#0077B5"
-}
-
-
-// const yellow = {
-//   50: "#FEFBEB",
-//   100: "#FEF8DD",
-//   200: "#FCF0B5",
-//   300: "#FBE993",
-//   400: "#F9E371",
-//   500: "#F8DA4B",
-//   600: "#F6CF0E",
-//   700: "#BB9D07",
-//   800: "#7B6705",
-//   900: "#403602"
-// }
-
-const purple = {
-  50: "#5E41FE"
-}
-
-const slate = {
-  50: "#F8FAFC",
-  200: "#E2E8F0",
-  400: "#94A3B8",
-  500: "#64748B",
-  600: "#475569"
-}
-
-
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -109,14 +78,7 @@ module.exports = {
         dark,
         gray,
         blue,
-        //yellow,
-        slate,
         transparent: 'transparent',
-        purple,
-        darkblue,
-      },
-      borderRadius: {
-        '8xl': '4rem',
       },
       spacing: {
         '88': '22rem',
@@ -131,7 +93,6 @@ module.exports = {
       },
       boxShadow: {
         'shadow': '0px 2px 4px rgba(0, 0, 0, 0.1)',
-        'inner-top': 'inset 0px 2px 2px rgba(0, 0, 0, 0.1)',
       },
       animation: {
         'blob': 'blob 20s infinite',
