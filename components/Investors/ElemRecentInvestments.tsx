@@ -71,45 +71,48 @@ export const ElemRecentInvestments: FC<Props> = ({
 				) => {
 					event.stopPropagation();
 					event.preventDefault();
-
+					// maintain previous state to revert state in case of error
+					const previousState = vcFirms
 					setTemporary(vcFirm, sentiment, alreadyReacted)
 
-					const newSentiment = await reactOnSentiment({
+					const { newSentiment, error } = await reactOnSentiment({
 						vcfirm: vcFirm.id,
 						sentiment,
 						pathname: `/investors/${vcFirm.slug}`,
 					});
-					if(newSentiment && newSentiment.message){
-						setReactionError(newSentiment.message)
-					}
-					setVcFirms((prev) => {
-						return [...(prev || ([] as Vc_Firms[]))].map((item) => {
-							if (item.id === vcFirm.id) {
-								const newFollows = getNewFollows(
-									sentiment,
-									"vcfirm"
-								) as Follows_Vc_Firms;
 
-								if (!alreadyReacted && !isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)) item.follows.push(newFollows)
-								else
-									remove(item.follows, (list) => {
-										return getName(list.list! as Lists) === sentiment
-									});
+					if (error && error.message) {
+						setReactionError(error.message)
+						setVcFirms(previousState)
+					} else
+						setVcFirms((prev) => {
+							return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+								if (item.id === vcFirm.id) {
+									const newFollows = getNewFollows(
+										sentiment,
+										"vcfirm"
+									) as Follows_Vc_Firms;
 
-								return { ...item, sentiment: newSentiment }
-							}
-							return item
+									if (!alreadyReacted && !isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)) item.follows.push(newFollows)
+									else
+										remove(item.follows, (list) => {
+											return getName(list.list! as Lists) === sentiment
+										});
+
+									return { ...item, sentiment: newSentiment }
+								}
+								return item
+							})
 						})
-					})
 				}
 
 	const setTemporary = (vcFirm: Vc_Firms, sentiment: string, alreadyReacted: boolean) => {
 		setVcFirms((prev) => {
 			return [...(prev || ([] as Vc_Firms[]))].map((item) => {
 				if (item.id === vcFirm.id) {
-					
+
 					const newSentiment = getNewTempSentiment({ ...item.sentiment }, sentiment, alreadyReacted)
-					
+
 					const newFollows = getNewFollows(
 						sentiment,
 						"vcfirm"
@@ -235,9 +238,9 @@ export const ElemRecentInvestments: FC<Props> = ({
 					</ElemCarouselWrap>
 				)
 			)}
-			<ElemConfirmationMessageModal 
+			<ElemConfirmationMessageModal
 				show={(reactionError) ? true : false}
-				onCancel={() => {setReactionError(null)}}
+				onCancel={() => { setReactionError(null) }}
 				type="response"
 				message={(reactionError) ? reactionError : ''}
 			/>

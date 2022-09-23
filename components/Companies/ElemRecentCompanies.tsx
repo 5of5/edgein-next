@@ -30,8 +30,8 @@ import ElemConfirmationMessageModal from "../ElemConfirmationMessageModal";
 
 export type DeepPartial<T> = T extends object
 	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
+		[P in keyof T]?: DeepPartial<T[P]>;
+	}
 	: T;
 
 type Props = {
@@ -79,44 +79,47 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 	const handleReactionClick =
 		(company: Companies) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-			setTemporary(company, sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`,
-			});
-			if(newSentiment && newSentiment.message){
-				setReactionError(newSentiment.message)
-			}
-			setCompanies((prev) => {
-				return [...(prev || ([] as Companies[]))].map((item) => {
-					if (item.id === company.id) {
-						const newFollows = getNewFollows(sentiment) as Follows_Companies;
+			(sentiment: string, alreadyReacted: boolean) =>
+				async (
+					event: React.MouseEvent<
+						HTMLButtonElement | HTMLInputElement | HTMLElement
+					>
+				) => {
+					event.stopPropagation();
+					event.preventDefault();
+					// maintain previous state to revert state in case of error
+					const previousState = companies
+					setTemporary(company, sentiment, alreadyReacted);
+					const { newSentiment, error } = await reactOnSentiment({
+						company: company.id,
+						sentiment,
+						pathname: `/companies/${company.slug}`,
+					});
+					if (error && error.message) {
+						setReactionError(error.message)
+						setCompanies(previousState)
+					} else
+						setCompanies((prev) => {
+							return [...(prev || ([] as Companies[]))].map((item) => {
+								if (item.id === company.id) {
+									const newFollows = getNewFollows(sentiment) as Follows_Companies;
 
-						if (
-							!alreadyReacted &&
-							!isFollowsExists(item.follows as Follows_Companies[], sentiment)
-						)
-							item.follows.push(newFollows);
-						else
-							remove(item.follows, (list) => {
-								return getName(list.list! as Lists) === sentiment;
+									if (
+										!alreadyReacted &&
+										!isFollowsExists(item.follows as Follows_Companies[], sentiment)
+									)
+										item.follows.push(newFollows);
+									else
+										remove(item.follows, (list) => {
+											return getName(list.list! as Lists) === sentiment;
+										});
+
+									return { ...item, sentiment: newSentiment };
+								}
+								return item;
 							});
-
-						return { ...item, sentiment: newSentiment };
-					}
-					return item;
-				});
-			});
-		};
+						});
+				};
 
 	const setTemporary = (
 		company: Companies,
@@ -241,9 +244,9 @@ export const ElemRecentCompanies: FC<Props> = ({
 												onCreateNew={handleReactionClick(company)}
 											/>
 										</div>
-										<ElemConfirmationMessageModal 
+										<ElemConfirmationMessageModal
 											show={(reactionError) ? true : false}
-											onCancel={() => {setReactionError(null)}}
+											onCancel={() => { setReactionError(null) }}
 											type="response"
 											message={(reactionError) ? reactionError : ''}
 										/>

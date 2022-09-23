@@ -53,7 +53,7 @@ const VCFirm: NextPage<Props> = (props) => {
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const [reactionError, setReactionError] = useState(null)
-	
+
 	const {
 		data: vcFirmData,
 		error,
@@ -73,38 +73,40 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				event.stopPropagation();
+				event.preventDefault();
+				// maintain previous state to revert state in case of error
+				const previousState = vcfirm
+				setTemporary(sentiment, alreadyReacted);
 
-			setTemporary(sentiment, alreadyReacted);
-
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcfirm.id,
-				sentiment,
-				pathname: location.pathname,
-			});
-			if(newSentiment && newSentiment.message){
-				setReactionError(newSentiment.message)
-			}
-			setVcfirm((prev: Vc_Firms) => {
-				const newFollows = getNewFollows(
+				const { newSentiment, error } = await reactOnSentiment({
+					vcfirm: vcfirm.id,
 					sentiment,
-					"vcfirm"
-				) as Follows_Vc_Firms;
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
+					pathname: location.pathname,
+				});
+				if (error && error.message) {
+					setReactionError(error.message)
+					setVcfirm(previousState)
+				} else
+					setVcfirm((prev: Vc_Firms) => {
+						const newFollows = getNewFollows(
+							sentiment,
+							"vcfirm"
+						) as Follows_Vc_Firms;
+						if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
+							prev.follows.push(newFollows);
+						else
+							remove(prev.follows, (item) => {
+								return getName(item.list!) === sentiment;
+							});
+						return { ...prev, sentiment: newSentiment };
 					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+			};
 
 	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
 		setVcfirm((prev: Vc_Firms) => {
@@ -227,24 +229,21 @@ const VCFirm: NextPage<Props> = (props) => {
 													</span>
 													<div className="mb-4">
 														<h2 className="font-bold">
-															{`${
-																activity.company ? activity.company.name : ""
-															}`}
+															{`${activity.company ? activity.company.name : ""
+																}`}
 
 															{`
 															raised 
-															${
-																activity.amount
+															${activity.amount
 																	? "$" +
-																	  convertToInternationalCurrencySystem(
-																			activity.amount
-																	  )
+																	convertToInternationalCurrencySystem(
+																		activity.amount
+																	)
 																	: "capital"
-															} / ${
-																activity.round
+																} / ${activity.round
 																	? activity.round
 																	: "Investment round"
-															} from ${vcfirm.name}`}
+																} from ${vcfirm.name}`}
 														</h2>
 														<p className="text-xs text-slate-600">
 															{formatDate(activity.round_date as string, {
@@ -303,9 +302,9 @@ const VCFirm: NextPage<Props> = (props) => {
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}
 			</div> */}
-			<ElemConfirmationMessageModal 
+			<ElemConfirmationMessageModal
 				show={(reactionError) ? true : false}
-				onCancel={() => {setReactionError(null)}}
+				onCancel={() => { setReactionError(null) }}
 				type="response"
 				message={(reactionError) ? reactionError : ''}
 			/>

@@ -32,34 +32,38 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-			setTemporary(sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`,
-			});
-			if(newSentiment && newSentiment.message){
-				setReactionError(newSentiment.message)
-			}
-			setCompanyData((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				event.stopPropagation();
+				event.preventDefault();
+				// maintain previous state to revert state in case of error
+				const previousState = companyData
+				setTemporary(sentiment, alreadyReacted);
+				const { newSentiment, error } = await reactOnSentiment({
+					company: company.id,
+					sentiment,
+					pathname: `/companies/${company.slug}`,
+				});
 
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
+				if (error && error.message) {
+					setReactionError(error.message)
+					setCompanyData(previousState)
+				} else
+					setCompanyData((prev: Companies) => {
+						const newFollows = getNewFollows(sentiment) as Follows_Companies;
+
+						if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
+							prev.follows.push(newFollows);
+						else
+							remove(prev.follows, (item) => {
+								return getName(item.list!) === sentiment;
+							});
+						return { ...prev, sentiment: newSentiment };
 					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+			};
 
 	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
 		setCompanyData((prev: Companies) => {
@@ -83,16 +87,14 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 	return (
 		<a
 			href={`/companies/${companyData.slug}`}
-			className={`flex flex-col ${
-				toggleViewMode ? "md:flex-row md:items-center" : ""
-			} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
+			className={`flex flex-col ${toggleViewMode ? "md:flex-row md:items-center" : ""
+				} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
 		>
 			<div
-				className={`flex shrink-0 ${
-					toggleViewMode
-						? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
-						: "w-full"
-				}`}
+				className={`flex shrink-0 ${toggleViewMode
+					? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
+					: "w-full"
+					}`}
 			>
 				<ElemPhoto
 					photo={companyData.logo}
@@ -178,9 +180,9 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					onCreateNew={handleReactionClick}
 				/>
 			</div>
-			<ElemConfirmationMessageModal 
+			<ElemConfirmationMessageModal
 				show={(reactionError) ? true : false}
-				onCancel={() => {setReactionError(null)}}
+				onCancel={() => { setReactionError(null) }}
 				type="response"
 				message={(reactionError) ? reactionError : ''}
 			/>

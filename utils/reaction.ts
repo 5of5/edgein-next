@@ -39,7 +39,10 @@ export const reactOnSentiment = async ({
 			pathname,
 		}),
 	});
-	return resp.json();
+
+	if (resp.status !== 200) return { newSentiment: null, error: await resp.json() }
+
+	return { newSentiment: await resp.json(), error: null,}
 };
 
 export const getNewFollows = (sentiment: string, type: string = "company") => {

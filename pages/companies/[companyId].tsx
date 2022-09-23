@@ -60,7 +60,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const [reactionError, setReactionError] = useState(null)
-	
+
 	const {
 		data: companyData,
 		error,
@@ -99,31 +99,34 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const handleReactionClick =
 		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			setTemporary(sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: location.pathname,
-			});
-			if(newSentiment && newSentiment.message){
-				setReactionError(newSentiment.message)
-			}
-			setCompany((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
+			async (
+				event: React.MouseEvent<
+					HTMLButtonElement | HTMLInputElement | HTMLElement
+				>
+			) => {
+				// maintain previous state to revert state in case of error
+				const previousState = company
+				setTemporary(sentiment, alreadyReacted);
+				const { newSentiment, error } = await reactOnSentiment({
+					company: company.id,
+					sentiment,
+					pathname: location.pathname,
+				});
+				if (error && error.message) {
+					setReactionError(error.message)
+					setCompany(previousState)
+				} else
+					setCompany((prev: Companies) => {
+						const newFollows = getNewFollows(sentiment) as Follows_Companies;
+						if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
+							prev.follows.push(newFollows);
+						else
+							remove(prev.follows, (item) => {
+								return getName(item.list!) === sentiment;
+							});
+						return { ...prev, sentiment: newSentiment };
 					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
+			};
 
 	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
 		setCompany((prev: Companies) => {
@@ -172,11 +175,9 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const getInvestorsNames = (investments: Array<Investments>) => {
 		if (investments && investments.length > 0) {
-			const names = `${
-				investments[0].person ? investments[0].person.name + "," : ""
-			} ${
-				investments[0].vc_firm ? investments[0].vc_firm.name : ""
-			} and others`;
+			const names = `${investments[0].person ? investments[0].person.name + "," : ""
+				} ${investments[0].vc_firm ? investments[0].vc_firm.name : ""
+				} and others`;
 			return names;
 		}
 		return "";
@@ -236,21 +237,19 @@ const Company: NextPage<Props> = (props: Props) => {
 							<div className="flex items-center space-x-2">
 								<div className=" text-slate-600">Price (USD)</div>
 								<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-									{`$${
-										tokenInfo && tokenInfo.currentPrice
-											? convertAmountRaised(tokenInfo.currentPrice)
-											: 0
-									}`}
+									{`$${tokenInfo && tokenInfo.currentPrice
+										? convertAmountRaised(tokenInfo.currentPrice)
+										: 0
+										}`}
 								</div>
 							</div>
 							<div className="flex items-center space-x-2">
 								<div className=" text-slate-600">Market Cap</div>
 								<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-									{`$${
-										tokenInfo && tokenInfo.marketCap
-											? convertAmountRaised(tokenInfo.marketCap)
-											: 0
-									}`}
+									{`$${tokenInfo && tokenInfo.marketCap
+										? convertAmountRaised(tokenInfo.marketCap)
+										: 0
+										}`}
 								</div>
 							</div>
 						</div>
@@ -289,22 +288,22 @@ const Company: NextPage<Props> = (props: Props) => {
 						company.company_linkedin ||
 						company.velocity_linkedin ||
 						company.velocity_token) && (
-						<div className="lg:grid lg:grid-cols-8 lg:gap-7">
-							<ElemCredibility
-								className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-								heading="Credibility"
-								marketVerified={company.market_verified}
-								githubVerified={company.github}
-								linkedInVerified={company.company_linkedin}
-							/>
-							<ElemVelocity
-								className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-								heading="Velocity"
-								employeeListings={"4"}
-								tokenExchangeValue={"2.3"}
-							/>
-						</div>
-					)}
+							<div className="lg:grid lg:grid-cols-8 lg:gap-7">
+								<ElemCredibility
+									className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+									heading="Credibility"
+									marketVerified={company.market_verified}
+									githubVerified={company.github}
+									linkedInVerified={company.company_linkedin}
+								/>
+								<ElemVelocity
+									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+									heading="Velocity"
+									employeeListings={"4"}
+									tokenExchangeValue={"2.3"}
+								/>
+							</div>
+						)}
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>
@@ -389,9 +388,9 @@ const Company: NextPage<Props> = (props: Props) => {
 					heading="Similar Companies"
 				/>
 			</div> */}
-			<ElemConfirmationMessageModal 
+			<ElemConfirmationMessageModal
 				show={(reactionError) ? true : false}
-				onCancel={() => {setReactionError(null)}}
+				onCancel={() => { setReactionError(null) }}
 				type="response"
 				message={(reactionError) ? reactionError : ''}
 			/>

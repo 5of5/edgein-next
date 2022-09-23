@@ -117,49 +117,51 @@ const Investors: NextPage<Props> = ({
 
 	const handleReactionClick =
 		(vcFirm: GetVcFirmsQuery["vc_firms"][0]) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
+			(sentiment: string, alreadyReacted: boolean) =>
+				async (
+					event: React.MouseEvent<
+						HTMLButtonElement | HTMLInputElement | HTMLElement
+					>
+				) => {
+					event.stopPropagation();
+					event.preventDefault();
+					// maintain previous state to revert state in case of error
+					const previousState = vcFirms
+					setTemporary(vcFirm, sentiment, alreadyReacted);
 
-			setTemporary(vcFirm, sentiment, alreadyReacted);
+					const { newSentiment, error } = await reactOnSentiment({
+						vcfirm: vcFirm?.id!,
+						sentiment,
+						pathname: `/investors/${vcFirm?.slug!}`,
+					});
+					if (error && error.message) {
+						setReactionError(error.message)
+						setVcFirms(previousState)
+					} else
+						setVcFirms((prev) => {
+							return [...(prev || ([] as Vc_Firms[]))].map((item) => {
+								if (item.id === vcFirm.id) {
+									const newFollows = getNewFollows(
+										sentiment,
+										"vcfirm"
+									) as Follows_Vc_Firms;
 
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcFirm?.id!,
-				sentiment,
-				pathname: `/investors/${vcFirm?.slug!}`,
-			});
-			if(newSentiment && newSentiment.message){
-				setReactionError(newSentiment.message)
-			}
-			setVcFirms((prev) => {
-				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
-					if (item.id === vcFirm.id) {
-						const newFollows = getNewFollows(
-							sentiment,
-							"vcfirm"
-						) as Follows_Vc_Firms;
+									if (
+										!alreadyReacted &&
+										!isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)
+									)
+										item.follows.push(newFollows);
+									else
+										remove(item.follows, (list) => {
+											//return getName(list.list! as Lists) === sentiment
+										});
 
-						if (
-							!alreadyReacted &&
-							!isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)
-						)
-							item.follows.push(newFollows);
-						else
-							remove(item.follows, (list) => {
-								//return getName(list.list! as Lists) === sentiment
+									return { ...item, sentiment: newSentiment };
+								}
+								return item;
 							});
-
-						return { ...item, sentiment: newSentiment };
-					}
-					return item;
-				});
-			});
-		};
+						});
+				};
 
 	const setTemporary = (
 		vcFirm: GetVcFirmsQuery["vc_firms"][0],
@@ -337,9 +339,9 @@ const Investors: NextPage<Props> = ({
 					/>
 				</div>
 			</div>
-			<ElemConfirmationMessageModal 
+			<ElemConfirmationMessageModal
 				show={(reactionError) ? true : false}
-				onCancel={() => {setReactionError(null)}}
+				onCancel={() => { setReactionError(null) }}
 				type="response"
 				message={(reactionError) ? reactionError : ''}
 			/>
