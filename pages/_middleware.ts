@@ -26,6 +26,7 @@ export async function middleware(req: NextRequest) {
 			`/api/user/`,
 			`/api/register/`,
 			`/api/signin/`,
+			`/api/access_token_form_code/`,
 
 			`/admin/app/`,
 		].includes(url.pathname) ||

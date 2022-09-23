@@ -76,16 +76,16 @@ export default function LoginModal(props: Props) {
 
 			if (response.status === 200) {
 				window.location.href = "/";
-			}else{
-				try{
+			} else {
+				try {
 					const res = await response.clone().json();
 					if (res.nextStep && res.nextStep === "SIGNUP") {
 						onSignUp(email, password);
-					}else{
+					} else {
 						setUnsuccessMessage(res.message);
 					}
-				}catch(err){
-					setIsLoading(false)
+				} catch (err) {
+					setIsLoading(false);
 				}
 			}
 		} catch (e) {
@@ -153,7 +153,7 @@ export default function LoginModal(props: Props) {
 												<ElemLogo mode="icon" className="w-10 aspect-square" />
 											</div>
 											<h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-												Welcome to EdgeIn
+												Log In
 											</h1>
 											<ElemButton
 												roundedFull={false}
@@ -165,10 +165,10 @@ export default function LoginModal(props: Props) {
 													title="LinkedIn"
 													className="h-6 w-6 text-[#0077B5]"
 												/>
-												Continue with LinkedIn
+												Login with LinkedIn
 											</ElemButton>
 
-											<div className=" flex py-3 items-center">
+											<div className="flex py-3 items-center">
 												<div className="flex-grow border-t border-black/10"></div>
 												<span className="flex-shrink mx-4 font-bold">or</span>
 												<div className="flex-grow border-t border-black/10"></div>
@@ -217,32 +217,34 @@ export default function LoginModal(props: Props) {
 														</div>
 													)}
 												</label>
-
-												<ElemButton
-													className="w-full"
-													onClick={onLogin}
-													btn="primary"
-													loading={isLoading}
-												>
-													Login
-												</ElemButton>
-
-												<ElemButton
-													className="w-full font-normal text-primary-500"
+												<button
 													onClick={onForgotPassword}
-													loading={isLoading}
+													className="w-full text-right text-sm underline text-slate-600 hover:text-primary-500"
 												>
 													Forgot Password?
-												</ElemButton>
+												</button>
+
 												<div>
 													<ElemButton
-														className="w-full mt-4"
-														onClick={() => onSignUp("", "")}
-														btn="ol-primary"
+														className="w-full my-2"
+														onClick={onLogin}
+														btn="primary"
 														loading={isLoading}
 													>
-														Create an account
+														Login
 													</ElemButton>
+												</div>
+
+												<div>
+													<div className="w-full mt-4 text-sm text-center text-slate-600">
+														Don&rsquo;t have an account?
+														<button
+															onClick={() => onSignUp("", "")}
+															className="inline underline ml-0.5 text-dark-500 hover:text-primary-500"
+														>
+															Sign up
+														</button>
+													</div>
 												</div>
 											</div>
 										</>

@@ -1,7 +1,7 @@
 import { Lists, useGetListsByUserQuery } from "@/graphql/types";
 import { User } from "@/models/User";
 import { getName } from "@/utils/reaction";
-import { find } from "lodash";
+import { find, kebabCase } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
@@ -97,7 +97,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					role="button"
 				>
 					<IconCompanyList className="w-7" /> {getName(list)} (
-					<Link href={`/lists/${list.id}`}>
+					<Link href={`/lists/${list.id}/${kebabCase(getName(list))}`}>
 						<a className="inline-flex items-center">
 
 							{getCountForList(getName(list))})
@@ -118,7 +118,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					role="button"
 				>
 					<EmojiHot className="w-7" />
-					<Link href={`/lists/${hotId}`}>
+					<Link href={`/lists/${hotId}/hot`}>
 						<a className="inline-flex items-center">
 							Hot ({getCountForList("hot")})
 						</a>
@@ -131,7 +131,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					role="button"
 				>
 					<EmojiLike className="w-7" />
-					<Link href={`/lists/${likeId}`}>
+					<Link href={`/lists/${likeId}/like`}>
 						<a className="inline-flex items-center">
 							Like ({getCountForList("like")})
 						</a>
@@ -144,7 +144,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					role="button"
 				>
 					<EmojiCrap className="w-7" />
-					<Link href={`/lists/${crapId}`}>
+					<Link href={`/lists/${crapId}/crap`}>
 						<a className="inline-flex items-center">
 							Crap ({getCountForList("crap")})
 						</a>
