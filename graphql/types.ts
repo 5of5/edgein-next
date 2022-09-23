@@ -12116,7 +12116,7 @@ export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: 
 export type GetFollowsListsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetFollowsListsStaticPathsQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null }> };
+export type GetFollowsListsStaticPathsQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null, list: { __typename?: 'lists', id: number, name: string } | null }> };
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -12500,6 +12500,10 @@ export const GetFollowsListsStaticPathsDocument = `
   follows {
     id
     list_id
+    list {
+      id
+      name
+    }
   }
 }
     `;

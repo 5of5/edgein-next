@@ -151,7 +151,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 				<h4>Error loading companies</h4>
 			) : isLoading ? (
 				<>
-					<div className="flex p-3 mt-2 overflow-hidden">
+					<div className="flex overflow-hidden -mx-3">
 						{Array.from({ length: 3 }, (_, i) => (
 							<div
 								key={i}
@@ -216,17 +216,17 @@ export const ElemRecentCompanies: FC<Props> = ({
 												{company.layer}
 											</div>
 										)}
-										<div className="mt-4 text-gray-400 grow line-clamp-3">
-											{company.overview}
-										</div>
-										{/* <div className="mt-3 text-xs font-bold text-gray-400">
+										<div className="mt-4 text-xs font-bold text-gray-400">
 											Added{" "}
 											{formatDate(company.date_added, {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",
 											})}
-										</div> */}
+										</div>
+										<div className="mt-4 text-gray-400 grow line-clamp-3">
+											{company.overview}
+										</div>
 
 										<div className="flex items-center justify-between mt-4">
 											<ElemReactions

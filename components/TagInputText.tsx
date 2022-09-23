@@ -39,7 +39,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 		}
 	}
 
-	function onRmoveTag(index: number) {
+	function onRemoveTag(index: number) {
 		let updatedTags = [...tags];
 		updatedTags.splice(index, 1);
 		setTags(updatedTags);
@@ -70,16 +70,16 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 					return (
 						<div
 							key={index}
-							className="bg-primary-50 inline-flex items-center text-sm rounded-full border border-purple-50 mt-2 mr-1"
+							className="bg-primary-50 inline-flex items-center text-sm rounded-full border border-primary-500 mt-2 mr-1"
 						>
-							<span className="ml-2 mr-1 leading-relaxed truncate max-w-xs text-purple-50 font-bold">
+							<span className="ml-2 mr-1 leading-relaxed truncate max-w-xs text-primary-500 font-bold">
 								{tag}
 							</span>
 							<button
 								onClick={() => {
-									onRmoveTag(index);
+									onRemoveTag(index);
 								}}
-								className="w-6 h-8 inline-block align-middle text-purple-50 hover:text-purple-50 focus:outline-none"
+								className="w-6 h-8 inline-block align-middle text-primary-500 hover:text-primary-500 focus:outline-none"
 							>
 								<svg
 									className="w-6 h-6 fill-current mx-auto"

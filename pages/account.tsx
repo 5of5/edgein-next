@@ -124,7 +124,7 @@ export default function Account() {
 										btn="transparent"
 									>
 										<IconLinkedIn />{" "}
-										<span className="text-darkblue-600 ml-2">
+										<span className="text-[#0077B5] ml-2">
 											Connect LinkedIn
 										</span>
 									</ElemButton>
