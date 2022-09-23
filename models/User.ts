@@ -13,4 +13,5 @@ export type User = {
   } | null
   reference_id: string
   reference_user_id: number
+  additional_emails : string[]
 }

@@ -62,39 +62,79 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // check loggedin user and linkedin user email should be same
       const userToken = CookieService.getAuthToken(req.cookies)
       const loggedInUser = await CookieService.getUser(userToken);
-      if (loggedInUser && (loggedInUser.email !== userInfoInJson.email)) return res.status(404).send('Invalid Email');
-
-      // get the user info from the user table
-      let userData: any = await UserService.findOneUserByEmail(userInfoInJson.email);
-      // create the user and return the response
       const auth0SubInfo = userInfoInJson.sub.split('|');
       const connectionType = auth0SubInfo[0];
-      const auth0Id = auth0SubInfo[1];
-      if (!userData) {
-        let referenceUserId = null;
-        // check user exist or not for the current reference
-        if (reference_id) {
-          const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
-          if (referenceUser) referenceUserId = referenceUser.id
-        }
+      let userData: any = {};
+      let isUserPassPrimaryAccount = false;
+      let isLinkedInPrimaryAccount = false;
+      if (!loggedInUser) {
+        // get the user info from the user table
+        userData = await UserService.findOneUserByEmail(userInfoInJson.email);
+        // create the user and return the response
+        const auth0Id = auth0SubInfo[1];
+        if (!userData) {
+          // check user exist in additional_emails or not
+          userData = await UserService.findOneUserByAdditionalEmail(userInfoInJson.email);
+          if (!userData) {
+            let referenceUserId = null;
+            isLinkedInPrimaryAccount = true;
+            // check user exist or not for the current reference
+            if (reference_id) {
+              const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
+              if (referenceUser) referenceUserId = referenceUser.id
+            }
 
-        const objectData = {
-          email: userInfoInJson.email,
-          name: userInfoInJson.name,
-          _id: auth0SubInfo.pop(), // get Id from sub
-          auth0_linkedin_id: connectionType === 'linkedin' ? auth0Id : '',
-          reference_user_id: referenceUserId
+            const objectData = {
+              email: userInfoInJson.email,
+              name: userInfoInJson.name,
+              _id: auth0SubInfo.pop(), // get Id from sub
+              auth0_linkedin_id: connectionType === 'linkedin' ? auth0Id : '',
+              reference_user_id: referenceUserId
+            }
+            userData = await UserService.upsertUser(objectData);
+          }
         }
-        userData = await UserService.upsertUser(objectData);
+      } else {
+        userData = await UserService.findOneUserByEmail(loggedInUser.email);
+        // check if loggedin email and linkedin email is same or not
+        if (loggedInUser.email !== userInfoInJson.email) {
+          // update in email array as additional email
+          userData = await UserService.findOneUserByEmail(loggedInUser.email);
+          if (!userData.additional_emails.includes(userInfoInJson.email)) {
+            userData.additional_emails.push(userInfoInJson.email)
+            userData = await UserService.updateAllowedEmailArray(userData.id, userData.additional_emails);
+          }
+        }
       }
+      
       // update the linkedIn id in user
       if (userData && !userData.auth0_linkedin_id && connectionType === 'linkedin') {
-        await UserService.updateAuth0LinkedInId(userInfoInJson.email, auth0SubInfo.pop());
+        isUserPassPrimaryAccount = true;
+        userData = await UserService.updateAuth0LinkedInId(userData.email, auth0SubInfo.pop());
       }
       // update the auth0_verified
       if (userData && !userData.is_auth0_verified) {
         isFirstLogin = true;
-        await UserService.updateEmailVerifiedStatus(userInfoInJson.email, true);
+        await UserService.updateEmailVerifiedStatus(userData.email, true);
+      }
+
+      if (userData && userData.auth0_linkedin_id && userData.auth0_user_pass_id) {
+        let primaryId = '';
+        let secondayProvider = '';
+        let secondayId = '';
+        if (isUserPassPrimaryAccount) {
+          primaryId = `auth0|${userData.auth0_user_pass_id}`;
+          secondayProvider = 'linkedin'
+          secondayId = `linkedin|${userData.auth0_linkedin_id}`
+        }
+        if (isLinkedInPrimaryAccount) {
+          primaryId = `linkedin|${userData.auth0_linkedin_id}`;
+          secondayProvider = 'auth0'
+          secondayId = `auth0|${userData.auth0_user_pass_id}`
+        }
+        if (primaryId !== '' && secondayId !== '') {
+          await auth0Library.linkTwoAccount(primaryId, secondayId, secondayProvider);
+        }
       }
 
       // Author a couple of cookies to persist a user's session
