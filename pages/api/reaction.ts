@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // check the count of the current date sentiments
   const sentimentsCount = await getSentimentsCount(user.id);
-  if (sentimentsCount.length >= sentimentLimit) return res.status(404).send({ message: 'Sentiment limit reached' });
+  if (sentimentsCount.length >= sentimentLimit) return res.status(404).send({ message: 'Sorry, you have reached your reactions limit for today' });
 
   const resourceType = companyId ? 'companies' : vcFirmId ? 'vc_firms' : ''
   const resourceId = resourceType === 'companies' ? companyId : vcFirmId
