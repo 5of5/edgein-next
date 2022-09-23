@@ -336,4 +336,4 @@ export const status = [
   }
 ]
 
-export const sentimentLimit = 3;
+export const sentimentLimit = 50;
