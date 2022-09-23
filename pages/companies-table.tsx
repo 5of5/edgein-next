@@ -66,7 +66,7 @@ const CompaniesTable: NextPage<Props> = () => {
 					subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
 				></ElemHeading>
 
-				<div className="relative z-10 bg-gray-50 rounded-t-3xl lg:rounded-t-8xl">
+				<div className="relative z-10 bg-gray-50 rounded-t-3xl">
 					<div className="max-w-7xl px-4 py-4 mx-auto sm:px-6 lg:px-8 lg:py-10">
 						<div className="flex flex-col w-full gap-5 py-5 sm:grid sm:grid-cols-2 md:grid-cols-3"></div>
 						<div>

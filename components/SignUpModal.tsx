@@ -87,7 +87,7 @@ export default function SignUpModal(props: Props) {
 		setErrorMessage("");
 		setEmailError("");
 		setNameError("");
-		setUnsuccessMessage('')
+		setUnsuccessMessage("");
 	}, [props.show, props.emailFromLogin, props.passwordFromLogin]);
 
 	const onLogin = () => {
@@ -111,19 +111,24 @@ export default function SignUpModal(props: Props) {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ email, password, name, reference_id:props.inviteCode }),
+				body: JSON.stringify({
+					email,
+					password,
+					name,
+					reference_id: props.inviteCode,
+				}),
 			});
 			if (response.status === 200) {
 				setIsRegistered(true);
 			} else {
-				try{
+				try {
 					const res = await response.clone().json();
-					if(res.message &&  res.message.indexOf('waitlist') > 0){
+					if (res.message && res.message.indexOf("waitlist") > 0) {
 						setIsWaitlisted(true);
-					}else{
-						setUnsuccessMessage(res.message)
+					} else {
+						setUnsuccessMessage(res.message);
 					}
-				}catch(err){
+				} catch (err) {
 					setIsLoading(false);
 				}
 			}
@@ -169,14 +174,13 @@ export default function SignUpModal(props: Props) {
 						<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
 							<div className="max-w-xs mx-auto w-full">
 								{unsuccessMessage ? (
-										<>
-											{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-											<p className="mt-2 text-dark-400 text-center">
-												{unsuccessMessage}
-											</p>
-										</>
-									) :
-									isRegistered ? (
+									<>
+										{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
+										<p className="mt-2 text-dark-400 text-center">
+											{unsuccessMessage}
+										</p>
+									</>
+								) : isRegistered ? (
 									<>
 										<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
 											<IconCheck className="w-10 aspect-square text-primary-500" />
@@ -185,8 +189,8 @@ export default function SignUpModal(props: Props) {
 											Registration Complete
 										</h1>
 										<p className="mt-2 text-center text-slate-600">
-											Thank you for creating an account and joining EdgeIn. Verify your email and Log
-											in to get started.
+											Thank you for creating an account and joining EdgeIn.
+											Verify your email and Log in to get started.
 										</p>
 										<div className="mt-6">
 											<ElemButton
@@ -231,7 +235,7 @@ export default function SignUpModal(props: Props) {
 												title="LinkedIn"
 												className="h-6 w-6 text-[#0077B5]"
 											/>
-											Continue with LinkedIn
+											Sign up with LinkedIn
 										</ElemButton>
 
 										<div className=" flex py-3 items-center">
@@ -308,38 +312,42 @@ export default function SignUpModal(props: Props) {
 												)}
 											</label>
 
-											<ElemButton
-												onClick={onSignUp}
-												btn="primary"
-												loading={isLoading}
-											>
-												Sign up and explore
-											</ElemButton>
-											<p className="text-xs text-slate-600">
-												Creating an account means you&rsquo;re okay with our{" "}
-												<Link href="/terms">
-													<a className="hover:text-primary-500">
-														terms of service
-													</a>
-												</Link>
-												,{" "}
-												<Link href="/privacy">
-													<a className="hover:text-primary-500">
-														privacy policy
-													</a>
-												</Link>
-												, and default notification settings.
-											</p>
-
 											<div>
 												<ElemButton
-													className="mt-4 w-full"
-													onClick={onLogin}
-													btn="ol-primary"
+													onClick={onSignUp}
+													btn="primary"
 													loading={isLoading}
+													className="w-full my-2"
 												>
-													Login
+													Sign up and explore
 												</ElemButton>
+												<p className="text-sm text-center text-slate-600">
+													By signing up, you agree to the{" "}
+													<Link href="/terms">
+														<a className="text-dark-500 underline hover:text-primary-500">
+															Terms
+														</a>
+													</Link>{" "}
+													&amp;{" "}
+													<Link href="/privacy">
+														<a className="text-dark-500 underline hover:text-primary-500">
+															Policy
+														</a>
+													</Link>
+													.
+												</p>
+											</div>
+
+											<div>
+												<div className="w-full mt-4 text-sm text-center text-slate-600">
+													Already have an account?
+													<button
+														onClick={onLogin}
+														className="inline underline ml-0.5 text-dark-500 hover:text-primary-500"
+													>
+														Log In
+													</button>
+												</div>
 											</div>
 										</div>
 									</>
