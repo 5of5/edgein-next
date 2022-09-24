@@ -39,7 +39,7 @@ export default function OnBoardingStep3Modal(props: Props) {
 		const path =
 			props.selectedOption === "companies" ? "companies" : "investors";
 		const payload = {
-			sentiment: "My Edge List",
+			sentiment: "My First List",
 			[props.selectedOption === "companies" ? "companies" : "vcfirms"]:
 				list.map((item) => ({
 					[props.selectedOption === "companies" ? "company" : "vcfirm"]:
