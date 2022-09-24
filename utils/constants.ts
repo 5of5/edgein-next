@@ -335,3 +335,7 @@ export const status = [
     name: "Published"
   }
 ]
+
+export const tokenTypes = {
+  verifyWorkHereToken: 'token-verifyworkhere'
+}
