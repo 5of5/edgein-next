@@ -16,7 +16,7 @@ export const ElemFilterTags: React.FC<Props> = ({
 	selectedTag = "All Members",
 }) => {
 	return (
-		<section className={className}>
+		<div className={className}>
 			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			<ul className="flex flex-wrap gap-y-3 space-x-2 lg:gap-y-0">
 				{tags.map((tag, index: number) => {
@@ -33,6 +33,6 @@ export const ElemFilterTags: React.FC<Props> = ({
 					);
 				})}
 			</ul>
-		</section>
+		</div>
 	);
 };
