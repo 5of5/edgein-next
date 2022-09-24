@@ -13,7 +13,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!email || !password) return res.status(404).send({ message: 'Invalid request' });
 
   let isFirstLogin = false;
-  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email)
+  // get the domain from the email
+  const domain = email.split('@').pop();
+  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
 
   // when email does not exist in the allowed emails
   if (!isEmailAllowed) {

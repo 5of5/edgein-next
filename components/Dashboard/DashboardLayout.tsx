@@ -46,7 +46,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<>
-			<div className="relative">
+			<div className="flex gap-3">
 				<Transition.Root show={sidebarOpen} as={Fragment}>
 					<Dialog
 						as="div"
@@ -141,7 +141,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 					</Dialog>
 				</Transition.Root>
 
-				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:absolute md:inset-y-0 mr-4">
+				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:inset-y-0 mr-4">
 					<div className="pt-7 flex flex-col flex-grow">
 						<div className="flex-grow flex flex-col">
 							<nav className="space-y-2 border-l border-slate-200 flex flex-col gap-y-3">
@@ -151,8 +151,8 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 					</div>
 				</div>
 
-				<div className="md:pl-28 lg:pl-56">
-					<div className="max-w-4xl mx-auto flex flex-col xl:px-0">
+				<div className="flex flex-grow">
+					<div className="flex flex-grow flex-col xl:px-0">
 						<main className="flex-1">
 							<div className="py-6">
 								{/* <ElemButton

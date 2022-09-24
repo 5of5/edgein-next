@@ -100,6 +100,7 @@ query GetCompanies($limit: Int, $offset: Int, $current_user: Int = 0, $where: co
 		market_verified
 		velocity_linkedin
 		velocity_token
+		website
 		follows(where: {created_by_user_id: {_eq: $current_user}}) {
       list {
         name

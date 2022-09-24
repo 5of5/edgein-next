@@ -11,10 +11,12 @@ import {
 } from "./Icons";
 import { IconDashboard } from "./Dashboard/IconDashboard";
 import { IconSetting } from "./IconSetting";
+import { IconOrganization } from "./IconOrganization";
 
 const navigation = [
 	{ name: "Dashboard", href: "/dashboard", icon: IconDashboard },
 	{ name: "Account Settings", href: "/account", icon: IconSetting },
+	{ name: "My Organization", href: "/organizations", icon: IconOrganization },
 ];
 
 export const UserMenu = () => {
