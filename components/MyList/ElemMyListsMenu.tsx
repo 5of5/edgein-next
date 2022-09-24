@@ -91,14 +91,15 @@ export const ElemMyListsMenu: FC<Props> = ({
 			.map((list) => (
 				<li
 					key={list.id}
-					className={`py-1 text-slate-600 inline-flex items-center${getActiveClass(
+					className={`py-1 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
 						list.id
 					)}`}
 					role="button"
 				>
+					<IconCompanyList className="w-7" /> {getName(list)} (
 					<Link href={`/lists/${list.id}/${kebabCase(getName(list))}`}>
 						<a className="inline-flex items-center">
-							<IconCompanyList className="mr-1 w-7" /> {getName(list)} (
+
 							{getCountForList(getName(list))})
 						</a>
 					</Link>
@@ -107,44 +108,45 @@ export const ElemMyListsMenu: FC<Props> = ({
 	};
 
 	return (
-		<div>
+		<div className="">
 			<h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
 			<ul className="flex flex-col">
 				<li
-					className={`py-2 text-slate-600 inline-flex items-center${getActiveClass(
+					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
 						hotId
 					)}`}
 					role="button"
 				>
+					<EmojiHot className="w-7" />
 					<Link href={`/lists/${hotId}/hot`}>
 						<a className="inline-flex items-center">
-							<EmojiHot className="mr-1 w-7" /> Hot ({getCountForList("hot")})
+							Hot ({getCountForList("hot")})
 						</a>
 					</Link>
 				</li>
 				<li
-					className={`py-2 text-slate-600 inline-flex items-center${getActiveClass(
+					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
 						likeId
 					)}`}
 					role="button"
 				>
+					<EmojiLike className="w-7" />
 					<Link href={`/lists/${likeId}/like`}>
 						<a className="inline-flex items-center">
-							<EmojiLike className="mr-1 w-7" /> Like ({getCountForList("like")}
-							)
+							Like ({getCountForList("like")})
 						</a>
 					</Link>
 				</li>
 				<li
-					className={`py-2 text-slate-600 inline-flex items-center${getActiveClass(
+					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
 						crapId
 					)}`}
 					role="button"
 				>
+					<EmojiCrap className="w-7" />
 					<Link href={`/lists/${crapId}/crap`}>
 						<a className="inline-flex items-center">
-							<EmojiCrap className="mr-1 w-7" /> Crap ({getCountForList("crap")}
-							)
+							Crap ({getCountForList("crap")})
 						</a>
 					</Link>
 				</li>

@@ -11,8 +11,6 @@ import {
 	IconCash,
 } from "@/components/Icons";
 import { IconCompanyList } from "../reactions/IconCompanyList";
-import { IconSetting } from "../IconSetting";
-import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
 
@@ -146,7 +144,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:inset-y-0 mr-4">
 					<div className="pt-7 flex flex-col flex-grow">
 						<div className="flex-grow flex flex-col">
-							<nav className="space-y-2 border-l border-slate-200">
+							<nav className="space-y-2 border-l border-slate-200 flex flex-col gap-y-3">
 								<ElemDashboardSidebar />
 							</nav>
 						</div>

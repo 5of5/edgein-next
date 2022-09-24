@@ -8,6 +8,7 @@ import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
 import { IconOrganization } from "@/components/IconOrganization";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import { IconSetting } from "../IconSetting";
+import { IconCash, IconCompanies } from "../Icons";
 
 type Props = {}
 
@@ -44,16 +45,16 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
 
   return (
     <>
-      <div className="mb-6">
+      <div className="">
         <h3 className="text-xl font-bold py-1 text-dark-500">My EdgeIn</h3>
         <ul className="flex flex-col">
           {user?.profileName && <li
-            className={`py-2 text-slate-600 inline-flex items-center${getActiveClass('/profile/')}`}
+            className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/profile/')}`}
             role="button"
           >
             <ElemPhoto
               photo={user?.profilePicture}
-              wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg shadow-md mr-2 rounded-full"
+              wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg shadow-md mr-1 rounded-full"
               imgClass="object-fit max-w-full max-h-full rounded-full"
               imgAlt={'profile'}
             />
@@ -63,8 +64,8 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
               </a>
             </Link>
           </li>}
-          <li className='py-2 text-slate-600 inline-flex items-center gap-x-2'>
-            <IconSetting />
+          <li className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/profile/')}`}>
+            <IconSetting className="w-7" />
             <Link href={`/account`}>
               <a className="inline-flex items-center">
                 Account Settings
@@ -78,6 +79,33 @@ export const ElemDashboardSidebar: FC<Props> = ({ }) => {
         user={user}
       />
 
+      <div className="">
+        <h3 className="text-xl font-bold py-1 text-dark-500">Explore</h3>
+        <ul className="flex flex-col">
+          <li
+            className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/companies/')}`}
+            role="button"
+          >
+            <IconCompanies className="w-7 h-7" />
+            <Link href={`/companies`}>
+              <a className="inline-flex items-center">
+                Companies
+              </a>
+            </Link>
+          </li>
+          <li
+            className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/investors/')}`}
+          >
+            <IconCash className="w-7 h-7" />
+            <Link href={`/investors`}>
+              <a className="inline-flex">
+                Investors
+              </a>
+            </Link>
+          </li>
+        </ul>
+      </div>
+      
       <div className="mt-3">
         <h3 className="text-xl font-bold font-Metropolis py-1 text-dark-500">My Organizations</h3>
         <ul className="flex flex-col">
