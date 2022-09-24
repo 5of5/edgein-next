@@ -8,7 +8,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // check email exist in allowedEmail table or not
   const email = req.body.email;
   const reference_id = req.body.reference_id;
-  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email)
+  // get the domain from the email
+  const domain = email.split('@').pop();
+  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
 
   // when email does not exist in the allowed emails
   if (!isEmailAllowed) {

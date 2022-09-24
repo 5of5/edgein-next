@@ -19,7 +19,6 @@ export async function middleware(req: NextRequest) {
 			`/team/`,
 			`/404/`,
 			`/api/login_attempt/`,
-			`/api/check_email/`,
 			`/api/get_access_token/`,
 			`/api/refresh_token/`,
 			`/api/login/`,
