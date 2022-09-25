@@ -99,7 +99,6 @@ export const ElemMyListsMenu: FC<Props> = ({
 					<IconCompanyList className="w-7" /> {getName(list)} (
 					<Link href={`/lists/${list.id}/${kebabCase(getName(list))}`}>
 						<a className="inline-flex items-center">
-
 							{getCountForList(getName(list))})
 						</a>
 					</Link>
@@ -109,7 +108,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 
 	return (
 		<div className="">
-			<h3 className="text-xl font-bold py-1 text-dark-500">My List</h3>
+			<h3 className="text-xl font-bold py-1">My Lists</h3>
 			<ul className="flex flex-col">
 				<li
 					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
@@ -117,7 +116,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					)}`}
 					role="button"
 				>
-					<EmojiHot className="w-7" />
+					<EmojiHot className="w-6" />
 					<Link href={`/lists/${hotId}/hot`}>
 						<a className="inline-flex items-center">
 							Hot ({getCountForList("hot")})
@@ -130,7 +129,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					)}`}
 					role="button"
 				>
-					<EmojiLike className="w-7" />
+					<EmojiLike className="w-6" />
 					<Link href={`/lists/${likeId}/like`}>
 						<a className="inline-flex items-center">
 							Like ({getCountForList("like")})
@@ -143,7 +142,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					)}`}
 					role="button"
 				>
-					<EmojiCrap className="w-7" />
+					<EmojiCrap className="w-6" />
 					<Link href={`/lists/${crapId}/crap`}>
 						<a className="inline-flex items-center">
 							Crap ({getCountForList("crap")})

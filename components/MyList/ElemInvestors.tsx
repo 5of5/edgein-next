@@ -125,7 +125,7 @@ export const ElemInvestors: FC<Props> = ({
 				</>
 			)}
 
-			<div className="mt-3 w-full rounded-lg border border-slate-200 max-h-80 overflow-auto">
+			<div className="mt-3 w-full rounded-lg border border-slate-200">
 				<table className="w-full">
 					<thead className="">
 						<tr className="text-left text-sm border-b-slate-200">
@@ -190,15 +190,15 @@ export const ElemInvestors: FC<Props> = ({
 								<td className="px-1 py-2">
 									<div>
 										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiHot className="mr-1" />
+											<EmojiHot className="w-6 h-6 mr-1" />
 											{vc_firm?.sentiment.hot || 0}
 										</span>
 										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiLike className="mr-1" />
+											<EmojiLike className="w-6 h-6 mr-1" />
 											{vc_firm?.sentiment.like || 0}
 										</span>
 										<span className="text-slate-600 font-bold items-center inline-flex">
-											<EmojiCrap className="mr-1" />
+											<EmojiCrap className="w-6 h-6 mr-1" />
 											{vc_firm?.sentiment.crap || 0}
 										</span>
 									</div>

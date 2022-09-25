@@ -36,13 +36,13 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 			icon: IconCompanies,
 		},
 		{ name: "Investors", href: "/investors", icon: IconCash },
-		{ name: "My list", href: "/my-list", icon: IconCompanyList }
+		{ name: "My Lists", href: "/my-list", icon: IconCompanyList },
 	],
 	children,
 }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const router = useRouter();
-	const { user } = useAuth()
+	const { user } = useAuth();
 
 	return (
 		<>
@@ -144,29 +144,27 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 				<div className="hidden md:w-20 md:flex lg:w-52 md:flex-col md:inset-y-0 mr-4">
 					<div className="pt-7 flex flex-col flex-grow">
 						<div className="flex-grow flex flex-col">
-							<nav className="space-y-2 border-l border-slate-200 flex flex-col gap-y-3">
+							<nav className="space-y-2 flex flex-col gap-y-3">
 								<ElemDashboardSidebar />
 							</nav>
 						</div>
 					</div>
 				</div>
 
-				<div className="flex flex-grow">
-					<div className="flex flex-grow flex-col xl:px-0">
-						<main className="flex-1">
-							<div className="py-6">
-								{/* <ElemButton
-									btn="white"
-									onClick={() => setSidebarOpen(true)}
-									className="mb-2 hover:border-primary-500 md:hidden"
-								>
-									<span className="sr-only">Open Dashboard Menu</span>
-									Menu
-								</ElemButton> */}
-								{children}
-							</div>
-						</main>
-					</div>
+				<div className="flex flex-grow flex-col xl:px-0">
+					<main className="flex-1">
+						<div className="py-6">
+							{/* <ElemButton
+								btn="white"
+								onClick={() => setSidebarOpen(true)}
+								className="mb-2 hover:border-primary-500 md:hidden"
+							>
+								<span className="sr-only">Open Dashboard Menu</span>
+								Menu
+							</ElemButton> */}
+							{children}
+						</div>
+					</main>
 				</div>
 			</div>
 		</>

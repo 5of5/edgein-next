@@ -10,7 +10,7 @@ import {
 	Follows_Companies,
 	Follows_Vc_Firms,
 	useGetVcFirmsByListIdQuery,
-	useGetCompaniesByListIdQuery
+	useGetCompaniesByListIdQuery,
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { has } from "lodash";
@@ -21,7 +21,7 @@ import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 
 type Props = {};
 
-const MyList: NextPage<Props> = ({ }) => {
+const MyList: NextPage<Props> = ({}) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const [selectedListName, setSelectedListName] = useState<null | string>(
@@ -36,8 +36,8 @@ const MyList: NextPage<Props> = ({ }) => {
 
 	const [isUpdated, setIsUpdated] = useState(0);
 
-	const [companies, setCompanies] = useState<Follows_Companies[]>([])
-	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([])
+	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
+	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
 	useEffect(() => {
 		if (companies) {
@@ -98,19 +98,18 @@ const MyList: NextPage<Props> = ({ }) => {
 	};
 
 	const { data: companiesData } = useGetCompaniesByListIdQuery({
-		list_id: parseInt(router.query?.listId as string)
-	})
+		list_id: parseInt(router.query?.listId as string),
+	});
 
 	const { data: vcFirms } = useGetVcFirmsByListIdQuery({
-		list_id: parseInt(router.query?.listId as string)
-	})
+		list_id: parseInt(router.query?.listId as string),
+	});
 
 	useEffect(() => {
 		if (companiesData)
-			setCompanies(companiesData?.follows_companies as Follows_Companies[])
-		if (vcFirms)
-			setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[])
-	}, [companiesData, vcFirms])
+			setCompanies(companiesData?.follows_companies as Follows_Companies[]);
+		if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
+	}, [companiesData, vcFirms]);
 
 	return (
 		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
@@ -119,9 +118,15 @@ const MyList: NextPage<Props> = ({ }) => {
 					<div className="w-full mb-7">
 						<div className="inline-flex ">
 							<h1 className="flex font-bold text-xl capitalize mb-1 items-center">
-								{selectedListName === "hot" && <EmojiHot className="mr-2" />}
-								{selectedListName === "like" && <EmojiLike className="mr-2" />}
-								{selectedListName === "crap" && <EmojiCrap className="mr-2" />}
+								{selectedListName === "hot" && (
+									<EmojiHot className="w-6 h-6 mr-2" />
+								)}
+								{selectedListName === "like" && (
+									<EmojiLike className="w-6 h-6 mr-2" />
+								)}
+								{selectedListName === "crap" && (
+									<EmojiCrap className="w-6 h-6 mr-2" />
+								)}
 								{isCustomList && <IconCompanyList className="mr-2" />}
 								{selectedListName}
 							</h1>
@@ -149,7 +154,7 @@ const MyList: NextPage<Props> = ({ }) => {
 								</>
 							)}
 						</div>
-						<p className="first-letter:uppercase">
+						<p className="first-letter:uppercase text-slate-600">
 							{selectedListName} lists are generated from your{" "}
 							{selectedListName?.toLowerCase()} reactions.
 						</p>

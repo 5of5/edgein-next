@@ -213,14 +213,13 @@ export const TheNavbar = () => {
 							</Link>
 						))}
 
-						<button
-							onClick={() => {
-								setShowSearchModal(true);
-							}}
-							className="sm:hidden"
+						<ElemButton
+							onClick={() => setShowSearchModal(true)}
+							btn="slate"
+							className="h-9 w-9 px-0 py-0 sm:hidden"
 						>
-							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
-						</button>
+							<IconSearch className="h-5 w-5 text-dark-500" />
+						</ElemButton>
 
 						{user ? (
 							<>

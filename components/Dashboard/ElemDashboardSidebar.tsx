@@ -5,148 +5,147 @@ import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
 import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
-import { IconOrganization } from "@/components/IconOrganization";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
-import { IconSetting } from "../IconSetting";
-import { IconCash, IconCompanies } from "../Icons";
+import {
+	IconCash,
+	IconCompanies,
+	IconSettings,
+	IconOrganization,
+} from "../Icons";
 
-type Props = {}
+type Props = {};
 
-export const ElemDashboardSidebar: FC<Props> = ({ }) => {
-  const { user } = useAuth()
-  const router = useRouter()
-  const [organizations, setOrganizations] = useState([] as Resource_Edit_Access[])
+export const ElemDashboardSidebar: FC<Props> = ({}) => {
+	const { user } = useAuth();
+	const router = useRouter();
+	const [organizations, setOrganizations] = useState(
+		[] as Resource_Edit_Access[]
+	);
 
-  const {
-    data: users
-  } = useGetUserProfileQuery({
-    id: user?.id || 0
-  })
+	const { data: users } = useGetUserProfileQuery({
+		id: user?.id || 0,
+	});
 
-  useEffect(() => {
-    if (users?.users_by_pk?.organization_companies) {
+	useEffect(() => {
+		if (users?.users_by_pk?.organization_companies) {
 			setOrganizations((prev) => {
-				const temp = [...prev, ...users?.users_by_pk?.organization_companies as Resource_Edit_Access[]]
-				return temp
-			})
+				const temp = [
+					...prev,
+					...(users?.users_by_pk
+						?.organization_companies as Resource_Edit_Access[]),
+				];
+				return temp;
+			});
 		}
 
 		if (users?.users_by_pk?.organization_vc_firms) {
 			setOrganizations((prev) => {
-				const temp = [...prev, ...users?.users_by_pk?.organization_vc_firms as Resource_Edit_Access[]]
-				return temp
-			})
+				const temp = [
+					...prev,
+					...(users?.users_by_pk
+						?.organization_vc_firms as Resource_Edit_Access[]),
+				];
+				return temp;
+			});
 		}
-  }, [users])
+	}, [users]);
 
-  const getActiveClass = (path: string) => {
-    return path === router.asPath ? ' bg-slate-200 rounded-xl pl-2' : ''
-  }
+	const getActiveClass = (path: string) => {
+		return path === router.asPath ? " bg-slate-200 rounded-xl pl-2" : "";
+	};
 
-  return (
-    <>
-      <div className="">
-        <h3 className="text-xl font-bold py-1 text-dark-500">My EdgeIn</h3>
-        <ul className="flex flex-col">
-          {user?.profileName && <li
-            className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/profile/')}`}
-            role="button"
-          >
-            <ElemPhoto
-              photo={user?.profilePicture}
-              wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg shadow-md mr-1 rounded-full"
-              imgClass="object-fit max-w-full max-h-full rounded-full"
-              imgAlt={'profile'}
-            />
-            <Link href={`/profile`}>
-              <a className="inline-flex items-center">
-                {truncate(user?.profileName, { length: 15 })}
-              </a>
-            </Link>
-          </li>}
-          <li className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/profile/')}`}>
-            <IconSetting className="w-7" />
-            <Link href={`/account`}>
-              <a className="inline-flex items-center">
-                Account Settings
-              </a>
-            </Link>
-          </li>
-        </ul>
-      </div>
+	return (
+		<>
+			<div className="">
+				<h3 className="text-xl font-bold">My EdgeIn</h3>
+				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+					{user?.profileName && (
+						<li className={`${getActiveClass("/profile/")}`} role="button">
+							<Link href={`/profile`}>
+								<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+									<ElemPhoto
+										photo={user?.profilePicture}
+										wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg rounded-full"
+										imgClass="object-fit max-w-full max-h-full rounded-full"
+										imgAlt={"profile"}
+										placeholder="user"
+									/>
+									<span className="first-letter:uppercase">
+										{truncate(user?.profileName, { length: 15 })}
+									</span>
+								</a>
+							</Link>
+						</li>
+					)}
+					<li className={`${getActiveClass("/profile/")}`}>
+						<Link href={`/account`}>
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+								<IconSettings className="h-6 w-6" />
+								<span>Account Settings</span>
+							</a>
+						</Link>
+					</li>
+				</ul>
+			</div>
 
-      <ElemMyListsMenu
-        user={user}
-      />
+			<ElemMyListsMenu user={user} />
 
-      <div className="">
-        <h3 className="text-xl font-bold py-1 text-dark-500">Explore</h3>
-        <ul className="flex flex-col">
-          <li
-            className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/companies/')}`}
-            role="button"
-          >
-            <IconCompanies className="w-7 h-7" />
-            <Link href={`/companies`}>
-              <a className="inline-flex items-center">
-                Companies
-              </a>
-            </Link>
-          </li>
-          <li
-            className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass('/investors/')}`}
-          >
-            <IconCash className="w-7 h-7" />
-            <Link href={`/investors`}>
-              <a className="inline-flex">
-                Investors
-              </a>
-            </Link>
-          </li>
-        </ul>
-      </div>
-      
-      <div className="mt-3">
-        <h3 className="text-xl font-bold font-Metropolis py-1 text-dark-500">My Organizations</h3>
-        <ul className="flex flex-col">
-          {organizations?.map((teamMember) => {
-            const type = teamMember.company ? 'companies' : 'investors'
-            const data = teamMember.company || teamMember.vc_firm
-            return (
-              <li
-                key={teamMember.id}
-                className="py-1 text-slate-600 inline-flex items-center"
-                role="button"
-              >
-                <Link href={`/organizations/${type}/${data?.slug}`}>
-                  <a className="inline-flex items-center">
-                    <ElemPhoto
-                      photo={data?.logo}
-                      imgAlt="company logo"
-                      wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg shadow-md mr-2 rounded-full"
-                      imgClass="object-fit max-w-full max-h-full rounded-full"
-                    /><span>{data?.name}</span>
-                  </a>
-                </Link>
-              </li>
-            )
-          }
-          )}
-          <li
-            className={`py-1 mt-1 px-2 text-slate-600 inline-flex items-center relative right-2 bg-slate-200 rounded-lg`}
-            role="button"
-          >
-            <Link href="/organizations">
-              <a className="inline-flex items-center">
+			<div className="">
+				<h3 className="text-xl font-bold">Explore</h3>
+				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+					<li className={`${getActiveClass("/companies/")}`} role="button">
+						<Link href={`/companies`}>
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+								<IconCompanies className="w-6 h-6" />
+								<span>Companies</span>
+							</a>
+						</Link>
+					</li>
+					<li className={`${getActiveClass("/investors/")}`} role="button">
+						<Link href={`/investors`}>
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+								<IconCash className="w-6 h-6" />
+								<span>Investors</span>
+							</a>
+						</Link>
+					</li>
+				</ul>
+			</div>
 
-                <IconOrganization className="mr-2" /><span>Manage Organization</span>
-              </a>
-            </Link>
-          </li>
+			<div className="mt-3">
+				<h3 className="text-xl font-bold">My Organizations</h3>
+				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+					{organizations?.map((teamMember) => {
+						const type = teamMember.company ? "companies" : "investors";
+						const data = teamMember.company || teamMember.vc_firm;
+						return (
+							<li key={teamMember.id} role="button" className="">
+								<Link href={`/organizations/${type}/${data?.slug}`}>
+									<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+										<ElemPhoto
+											photo={data?.logo}
+											imgAlt="company logo"
+											wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg shadow-md mr-2 rounded-full"
+											imgClass="object-fit max-w-full max-h-full rounded-full"
+										/>
+										<span>{data?.name}</span>
+									</a>
+								</Link>
+							</li>
+						);
+					})}
+					<li className={``} role="button">
+						<Link href="/organizations">
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+								<IconOrganization className="w-6 h-6" />
+								<span>Manage Organization</span>
+							</a>
+						</Link>
+					</li>
 
-          {/* {renderMyCustomList()} */}
-        </ul>
-      </div>
-    </>
-  )
-} 
+					{/* {renderMyCustomList()} */}
+				</ul>
+			</div>
+		</>
+	);
+};

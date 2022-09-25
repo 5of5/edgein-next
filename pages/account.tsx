@@ -93,7 +93,7 @@ export default function Account() {
 	};
 
 	return (
-		<div className="max-w-6xl mx-auto h-full relative px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
+		<div className="max-w-7xl mx-auto h-full relative px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
 			<div className="grid grid-cols-4 gap-4 h-full">
 				<DashboardLayout />
 				<div className="col-span-3 mt-5">
