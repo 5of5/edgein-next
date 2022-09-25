@@ -156,7 +156,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 											onClick={() => setShowNew(true)}
 											className="flex items-center justify-center p-3"
 										>
-											<IconSaveToList className="w-7 h-7 mr-1" />
+											<IconSaveToList className="w-6 h-6 mr-1" />
 											Create new list
 										</button>
 									</div>

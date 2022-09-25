@@ -80,9 +80,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 	};
 
 	const getActiveClass = (id: number) => {
-		return `/lists/${id}/` === router.asPath
-			? "  bg-slate-200 rounded-xl -ml-2 pl-2"
-			: "";
+		return `/lists/${id}/` === router.asPath ? "  text-primary-500" : "";
 	};
 
 	const renderMyCustomList = () => {
@@ -91,15 +89,19 @@ export const ElemMyListsMenu: FC<Props> = ({
 			.map((list) => (
 				<li
 					key={list.id}
-					className={`py-1 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
-						list.id
-					)}`}
+					className={`${getActiveClass(list.id)}`}
 					role="button"
 				>
-					<IconCompanyList className="w-7" /> {getName(list)} (
 					<Link href={`/lists/${list.id}/${kebabCase(getName(list))}`}>
-						<a className="inline-flex items-center">
-							{getCountForList(getName(list))})
+						<a
+							className={`flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 ${getActiveClass(
+								list.id
+							)}`}
+						>
+							<IconCompanyList className="h-6 w-6" />
+							<span>
+								{getName(list)} ({getCountForList(getName(list))})
+							</span>
 						</a>
 					</Link>
 				</li>
@@ -108,48 +110,32 @@ export const ElemMyListsMenu: FC<Props> = ({
 
 	return (
 		<div className="">
-			<h3 className="text-xl font-bold py-1">My Lists</h3>
-			<ul className="flex flex-col">
-				<li
-					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
-						hotId
-					)}`}
-					role="button"
-				>
-					<EmojiHot className="w-6" />
+			<h3 className="text-xl font-bold">My Lists</h3>
+			<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+				<li className={`${getActiveClass(hotId)}`} role="button">
 					<Link href={`/lists/${hotId}/hot`}>
-						<a className="inline-flex items-center">
-							Hot ({getCountForList("hot")})
+						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<EmojiHot className="h-6 w-6" />
+							<span>Hot ({getCountForList("hot")})</span>
 						</a>
 					</Link>
 				</li>
-				<li
-					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
-						likeId
-					)}`}
-					role="button"
-				>
-					<EmojiLike className="w-6" />
+				<li className={`${getActiveClass(likeId)}`} role="button">
 					<Link href={`/lists/${likeId}/like`}>
-						<a className="inline-flex items-center">
-							Like ({getCountForList("like")})
+						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<EmojiLike className="h-6 w-6" />
+							<span>Like ({getCountForList("like")})</span>
 						</a>
 					</Link>
 				</li>
-				<li
-					className={`py-2 text-slate-600 inline-flex items-center gap-x-2${getActiveClass(
-						crapId
-					)}`}
-					role="button"
-				>
-					<EmojiCrap className="w-6" />
+				<li className={`${getActiveClass(crapId)}`} role="button">
 					<Link href={`/lists/${crapId}/crap`}>
-						<a className="inline-flex items-center">
-							Crap ({getCountForList("crap")})
+						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<EmojiCrap className="h-6 w-6" />
+							<span>Crap ({getCountForList("crap")})</span>
 						</a>
 					</Link>
 				</li>
-
 				{renderMyCustomList()}
 			</ul>
 		</div>
