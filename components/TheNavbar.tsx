@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import { ElemLogo } from "./ElemLogo";
-import { ElemButton } from "./ElemButton";
-import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
-import LoginModal from "./LoginModal";
-import ForgotPasswordModal from "./ForgotPasswordModal";
-import SignUpModal from "./SignUpModal";
+import { useHotkeys } from "react-hotkeys-hook";
+import { ElemLogo } from "@/components/ElemLogo";
+import { ElemButton } from "@/components/ElemButton";
+import { NotificationAlerts } from "@/components/NotificationAlerts";
+import { UserMenu } from "@/components/UserMenu";
+import LoginModal from "@/components/LoginModal";
+import ForgotPasswordModal from "@/components/ForgotPasswordModal";
+import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import { MobileNav } from "@/components/MobileNav";
-import SearchModal from "./SearchModal";
-import { useHotkeys } from "react-hotkeys-hook";
-import OnBoardingStep1Modal from "./onBoarding/OnBoardingStep1Modal";
-import OnBoardingStep2Modal from "./onBoarding/OnBoardingStep2Modal";
-import OnBoardingStep3Modal from "./onBoarding/OnBoardingStep3Modal";
+import SearchModal from "@/components/SearchModal";
+import OnBoardingStep1Modal from "@/components/onBoarding/OnBoardingStep1Modal";
+import OnBoardingStep2Modal from "@/components/onBoarding/OnBoardingStep2Modal";
+import OnBoardingStep3Modal from "@/components/onBoarding/OnBoardingStep3Modal";
 
 export const TheNavbar = () => {
 	const router = useRouter();
@@ -85,7 +86,7 @@ export const TheNavbar = () => {
 			}); //.then((res) => res.json());
 			if (response.status !== 200) {
 				const responseText = await response.clone().json();
-				if(responseText.message){
+				if (responseText.message) {
 					setLinkedInError(responseText.message);
 					setShowLoginPopup(true);
 				}
@@ -221,11 +222,11 @@ export const TheNavbar = () => {
 							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
 						</button>
 
-						{/* <ElemButton onClick={logout} btn="primary">
-							Logout
-						 </ElemButton> */}
 						{user ? (
-							<UserMenu />
+							<>
+								<NotificationAlerts />
+								<UserMenu />
+							</>
 						) : (
 							<>
 								<ElemButton

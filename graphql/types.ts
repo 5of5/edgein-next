@@ -90,7 +90,7 @@ export type Actions = {
   properties: Scalars['jsonb'];
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
-  user: Scalars['String'];
+  user: Scalars['Int'];
 };
 
 
@@ -139,6 +139,7 @@ export type Actions_Avg_Fields = {
   __typename?: 'actions_avg_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "actions". All fields are combined with a logical 'AND'. */
@@ -153,7 +154,7 @@ export type Actions_Bool_Exp = {
   properties: InputMaybe<Jsonb_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
-  user: InputMaybe<String_Comparison_Exp>;
+  user: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "actions" */
@@ -181,6 +182,7 @@ export type Actions_Delete_Key_Input = {
 export type Actions_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   resource_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "actions" */
@@ -192,7 +194,7 @@ export type Actions_Insert_Input = {
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
-  user: InputMaybe<Scalars['String']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
@@ -204,7 +206,7 @@ export type Actions_Max_Fields = {
   page: Maybe<Scalars['String']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
-  user: Maybe<Scalars['String']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
@@ -216,7 +218,7 @@ export type Actions_Min_Fields = {
   page: Maybe<Scalars['String']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
-  user: Maybe<Scalars['String']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** response of any mutation on the table "actions" */
@@ -286,7 +288,7 @@ export type Actions_Set_Input = {
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
-  user: InputMaybe<Scalars['String']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
@@ -294,6 +296,7 @@ export type Actions_Stddev_Fields = {
   __typename?: 'actions_stddev_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -301,6 +304,7 @@ export type Actions_Stddev_Pop_Fields = {
   __typename?: 'actions_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -308,6 +312,7 @@ export type Actions_Stddev_Samp_Fields = {
   __typename?: 'actions_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -315,6 +320,7 @@ export type Actions_Sum_Fields = {
   __typename?: 'actions_sum_fields';
   id: Maybe<Scalars['Int']>;
   resource_id: Maybe<Scalars['Int']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "actions" */
@@ -342,6 +348,7 @@ export type Actions_Var_Pop_Fields = {
   __typename?: 'actions_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -349,6 +356,7 @@ export type Actions_Var_Samp_Fields = {
   __typename?: 'actions_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -356,6 +364,7 @@ export type Actions_Variance_Fields = {
   __typename?: 'actions_variance_fields';
   id: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** Allowed email Ids */
@@ -4782,7 +4791,6 @@ export type Investment_Rounds_Variance_Order_By = {
 /** columns and relationships of "investments" */
 export type Investments = {
   __typename?: 'investments';
-  amount: Maybe<Scalars['numeric']>;
   external_id: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An object relationship */
@@ -4852,7 +4860,6 @@ export type Investments_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Investments_Avg_Fields = {
   __typename?: 'investments_avg_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -4861,7 +4868,6 @@ export type Investments_Avg_Fields = {
 
 /** order by avg() on columns of table "investments" */
 export type Investments_Avg_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -4873,7 +4879,6 @@ export type Investments_Bool_Exp = {
   _and: InputMaybe<Array<Investments_Bool_Exp>>;
   _not: InputMaybe<Investments_Bool_Exp>;
   _or: InputMaybe<Array<Investments_Bool_Exp>>;
-  amount: InputMaybe<Numeric_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investment_round: InputMaybe<Investment_Rounds_Bool_Exp>;
@@ -4895,7 +4900,6 @@ export enum Investments_Constraint {
 
 /** input type for incrementing numeric columns in table "investments" */
 export type Investments_Inc_Input = {
-  amount: InputMaybe<Scalars['numeric']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
   round_id: InputMaybe<Scalars['Int']>;
@@ -4904,7 +4908,6 @@ export type Investments_Inc_Input = {
 
 /** input type for inserting data into table "investments" */
 export type Investments_Insert_Input = {
-  amount: InputMaybe<Scalars['numeric']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   investment_round: InputMaybe<Investment_Rounds_Obj_Rel_Insert_Input>;
@@ -4919,7 +4922,6 @@ export type Investments_Insert_Input = {
 /** aggregate max on columns */
 export type Investments_Max_Fields = {
   __typename?: 'investments_max_fields';
-  amount: Maybe<Scalars['numeric']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
@@ -4930,7 +4932,6 @@ export type Investments_Max_Fields = {
 
 /** order by max() on columns of table "investments" */
 export type Investments_Max_Order_By = {
-  amount: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
@@ -4942,7 +4943,6 @@ export type Investments_Max_Order_By = {
 /** aggregate min on columns */
 export type Investments_Min_Fields = {
   __typename?: 'investments_min_fields';
-  amount: Maybe<Scalars['numeric']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
@@ -4953,7 +4953,6 @@ export type Investments_Min_Fields = {
 
 /** order by min() on columns of table "investments" */
 export type Investments_Min_Order_By = {
-  amount: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
@@ -4980,7 +4979,6 @@ export type Investments_On_Conflict = {
 
 /** Ordering options when selecting data from "investments". */
 export type Investments_Order_By = {
-  amount: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   investment_round: InputMaybe<Investment_Rounds_Order_By>;
@@ -5000,8 +4998,6 @@ export type Investments_Pk_Columns_Input = {
 /** select columns of table "investments" */
 export enum Investments_Select_Column {
   /** column name */
-  Amount = 'amount',
-  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Id = 'id',
@@ -5017,7 +5013,6 @@ export enum Investments_Select_Column {
 
 /** input type for updating data in table "investments" */
 export type Investments_Set_Input = {
-  amount: InputMaybe<Scalars['numeric']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
@@ -5029,7 +5024,6 @@ export type Investments_Set_Input = {
 /** aggregate stddev on columns */
 export type Investments_Stddev_Fields = {
   __typename?: 'investments_stddev_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5038,7 +5032,6 @@ export type Investments_Stddev_Fields = {
 
 /** order by stddev() on columns of table "investments" */
 export type Investments_Stddev_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5048,7 +5041,6 @@ export type Investments_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Investments_Stddev_Pop_Fields = {
   __typename?: 'investments_stddev_pop_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5057,7 +5049,6 @@ export type Investments_Stddev_Pop_Fields = {
 
 /** order by stddev_pop() on columns of table "investments" */
 export type Investments_Stddev_Pop_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5067,7 +5058,6 @@ export type Investments_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Investments_Stddev_Samp_Fields = {
   __typename?: 'investments_stddev_samp_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5076,7 +5066,6 @@ export type Investments_Stddev_Samp_Fields = {
 
 /** order by stddev_samp() on columns of table "investments" */
 export type Investments_Stddev_Samp_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5086,7 +5075,6 @@ export type Investments_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Investments_Sum_Fields = {
   __typename?: 'investments_sum_fields';
-  amount: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
   round_id: Maybe<Scalars['Int']>;
@@ -5095,7 +5083,6 @@ export type Investments_Sum_Fields = {
 
 /** order by sum() on columns of table "investments" */
 export type Investments_Sum_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5104,8 +5091,6 @@ export type Investments_Sum_Order_By = {
 
 /** update columns of table "investments" */
 export enum Investments_Update_Column {
-  /** column name */
-  Amount = 'amount',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -5123,7 +5108,6 @@ export enum Investments_Update_Column {
 /** aggregate var_pop on columns */
 export type Investments_Var_Pop_Fields = {
   __typename?: 'investments_var_pop_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5132,7 +5116,6 @@ export type Investments_Var_Pop_Fields = {
 
 /** order by var_pop() on columns of table "investments" */
 export type Investments_Var_Pop_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5142,7 +5125,6 @@ export type Investments_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Investments_Var_Samp_Fields = {
   __typename?: 'investments_var_samp_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5151,7 +5133,6 @@ export type Investments_Var_Samp_Fields = {
 
 /** order by var_samp() on columns of table "investments" */
 export type Investments_Var_Samp_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5161,7 +5142,6 @@ export type Investments_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Investments_Variance_Fields = {
   __typename?: 'investments_variance_fields';
-  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5170,7 +5150,6 @@ export type Investments_Variance_Fields = {
 
 /** order by variance() on columns of table "investments" */
 export type Investments_Variance_Order_By = {
-  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -9084,9 +9063,9 @@ export type Resource_Edit_Access_Bool_Exp = {
 /** unique or primary key constraints on table "resource_edit_access" */
 export enum Resource_Edit_Access_Constraint {
   /** unique or primary key constraint */
-  OrganizationEditAccessPkey = 'organization_edit_access_pkey',
+  ResourceEditAccessPkey = 'resource_edit_access_pkey',
   /** unique or primary key constraint */
-  ResourceEditAccessUserIdResourceIdResourceTypeKey = 'resource_edit_access_user_id_resource_id_resource_type_key'
+  ResourceEditAccessResourceIdUserIdResourceTypeKey = 'resource_edit_access_resource_id_user_id_resource_type_key'
 }
 
 /** input type for incrementing numeric columns in table "resource_edit_access" */
@@ -10515,7 +10494,7 @@ export type User_Tokens_Bool_Exp = {
 /** unique or primary key constraints on table "user_tokens" */
 export enum User_Tokens_Constraint {
   /** unique or primary key constraint */
-  TokensPkey = 'tokens_pkey'
+  UserTokensPkey = 'user_tokens_pkey'
 }
 
 /** input type for incrementing numeric columns in table "user_tokens" */
