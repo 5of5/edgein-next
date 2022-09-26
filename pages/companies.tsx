@@ -365,7 +365,6 @@ export default Companies;
 interface TextFilter {
 	title: string;
 	description?: string;
-	icon?: any;
 	value: string;
 }
 
@@ -492,7 +491,6 @@ const companyFilterValues = companyChoices.map((option) => {
 	return {
 		title: option.name,
 		value: option.id,
-		icon: option.id,
 	};
 });
 
