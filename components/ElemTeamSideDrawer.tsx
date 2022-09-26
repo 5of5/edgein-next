@@ -12,6 +12,12 @@ type Props = {
     isOpen: boolean;
     onClose: any;
     memberToEdit: Team_Members | undefined;
+    onSaveEmployee: (employee:  Team_Members) => void
+}
+
+
+export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToEdit, onSaveEmployee }) => {
+
     const [persons, setPersons] = useState<People[]>();
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
     const [employee, setEmployee] = useState<Team_Members>({} as Team_Members)
@@ -61,6 +67,7 @@ type Props = {
             <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" className="relative z-50" onClose={onClose}>
                     <Transition.Child
+                        as={Fragment}
                         enter="ease-out duration-300"
                         enterFrom="opacity-0"
                         enterTo="opacity-100"
