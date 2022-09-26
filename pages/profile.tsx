@@ -165,7 +165,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 					</div>
 
 					<InputText
-						label="Position"
+						label="Title"
 						onChange={setTMField("title")}
 						value={tmData.title}
 						name="title"
