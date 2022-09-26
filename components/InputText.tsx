@@ -10,6 +10,7 @@ type Props = {
 	placeholder?: string;
 	required?: boolean;
 	autoComplete?: string;
+	disabled?: boolean;
 };
 
 export const InputText: React.FC<PropsWithChildren<Props>> = ({
@@ -22,6 +23,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 	placeholder = "",
 	required = false,
 	autoComplete = "on",
+	disabled,
 }) => {
 	return (
 		<>
@@ -39,6 +41,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 				placeholder={placeholder}
 				required={required}
 				autoComplete={autoComplete}
+				disabled={disabled}
 			/>
 		</>
 	);

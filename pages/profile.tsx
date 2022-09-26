@@ -23,13 +23,16 @@ import { InputDate } from "@/components/InputDate";
 import { GetStaticProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemShareMenu } from "@/components/ElemShareMenu";
+import { functionChoicesTM } from '@/utils/constants';
+import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
 const emptyTeamMember = {
-	startDate: null,
-	endDate: null,
-	companyId: 0,
-	position: null,
-	positionType: null,
+	start_date: null,
+	end_date: null,
+	company_id: 0,
+	title: null,
+	function: null,
+	founder: false,
 };
 
 type Props = {
@@ -67,7 +70,14 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const [activeWorkspace, setActiveWorkspace] = useState(0);
 	const [tmData, setTmData] = useState<any>(emptyTeamMember);
 
-	const { data: users } = useGetUserProfileQuery({
+	const titles = functionChoicesTM.map((option) => {
+		return {
+			title: option.name,
+			value: option.id,
+		}
+	})
+
+	const { data: users, refetch } = useGetUserProfileQuery({
 		id: user?.id ?? 0,
 	});
 
@@ -88,60 +98,77 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				});
 				const selectedPositionType = findTM?.function
 					? {
-							title: `${findTM?.function
-								?.charAt(0)
-								.toUpperCase()}${findTM?.function?.slice(1)}`,
-							value: findTM?.function,
-					  }
+						title: `${findTM?.function
+							?.charAt(0)
+							.toUpperCase()}${findTM?.function?.slice(1)}`,
+						value: findTM?.function,
+					}
 					: null;
 				const currentlyWorking = findTM.end_date ? false : true;
 
 				const temp = {
 					...prev,
-					companyId: selectedCompany,
-					position: findTM?.title,
-					positionType: selectedPositionType,
-					startDate: findTM.start_date,
-					endDate: findTM.end_date,
+					company_id: selectedCompany,
+					person_id: findTM?.person_id,
+					title: findTM?.title,
+					function: selectedPositionType,
+					start_date: findTM.start_date,
+					end_date: findTM.end_date,
 					currentlyWorking,
+					founder: findTM?.founder,
 				};
 				return temp;
 			});
 	}, [activeWorkspace, companiesDropdown, person?.team_members]);
 
-	const renderWorkspaceForm = (id?: number) => {
+	const renderWorkspaceForm = (teamMember?: Team_Members) => {
 		return (
 			<div className="grid grid-cols-12 gap-2 mt-3 mb-2 relative pb-3">
 				<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
 
 				<div className="col-span-7 flex flex-col">
-					<label className="text-slate-600 font-bold block ">Company</label>
-					<InputSelect
-						placeholder="Company"
-						onChange={setTMField("company")}
-						value={tmData.companyId}
-						className="mb-3 max-w-xs"
-						options={companiesDropdown}
-					/>
-					<label className="text-slate-600 font-bold block ">
-						Position Type (founder, investor, team member)
+					{teamMember?.id ?
+						<InputText
+							disabled={true}
+							name="Company"
+							label="Company"
+							onChange={() => { }}
+							value={teamMember?.company?.name!}
+							className="mb-3 max-w-xs"
+						/> : <ElemCompaniesSearchInput
+							label="Company"
+							onChange={setTMField('company')}
+							name="company"
+							inputClassname="mb-3"
+						/>
+					}
+					<label className="text-slate-600 font-bold block">
+						Position
 					</label>
 					<InputSelect
-						options={[
-							{ title: "Founder", value: "founder" },
-							{ title: "Investor", value: "investor" },
-							{ title: "Team member", value: "team member" },
-						]}
+						options={titles || []}
 						placeholder="Position"
 						className="mb-3 max-w-xs"
-						value={tmData.positionType}
-						onChange={setTMField("positionType")}
+						value={tmData.function}
+						onChange={setTMField("function")}
 					/>
+
+					<div className="flex items-center gap-2 mb-3">
+						<input
+							type="checkbox"
+							onChange={setTMField("founder")}
+							checked={tmData.founder}
+						/>
+						<span className="text-slate-500 font-Metropolis">
+							Founder
+						</span>
+					</div>
+
 					<InputText
 						label="Position"
-						onChange={setTMField("position")}
-						value={tmData.position}
-						name="position"
+						onChange={setTMField("title")}
+						value={tmData.title}
+						name="title"
 						placeholder="Founder and CEO"
 						className="mb-3 max-w-xs"
 					/>
@@ -160,17 +187,17 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 					<div className="grid grid-cols-3 gap-2 items-center w-full max-w-xs">
 						<InputDate
-							name="startDate"
-							value={tmData.startDate}
-							onChange={setTMField("startDate")}
+							name="start_date"
+							value={tmData.start_date}
+							onChange={setTMField("start_date")}
 							className="rounded-full col-span-3"
 						/>
 						<span className="text-center col-span-3">To</span>
 						<InputDate
 							className="rounded-full col-span-3"
-							value={tmData.endDate}
-							name="endDate"
-							onChange={setTMField("endDate")}
+							value={tmData.end_date}
+							name="end_date"
+							onChange={setTMField("end_date")}
 							disabled={tmData.currentlyWorking}
 						/>
 					</div>
@@ -186,8 +213,10 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						<ElemButton
 							btn="white"
 							onClick={() => {
-								if (id) setActiveWorkspace(0);
+								if (teamMember?.id) setActiveWorkspace(0);
 								else setEditWorkspace(false);
+
+								setTmData(emptyTeamMember)
 							}}
 						>
 							Cancel
@@ -244,7 +273,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 					</div>
 				)}
 				{activeWorkspace === teamMember.id &&
-					renderWorkspaceForm(teamMember.id)}
+					renderWorkspaceForm(teamMember)}
 			</div>
 		);
 	};
@@ -307,29 +336,37 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				setTmData((prev: any) => {
 					const temp = { ...prev };
 
-					temp["companyId"] = event;
+					temp["company_id"] = event;
 
 					return temp;
 				});
 			}
 
-			if (field === "positionType") {
+			if (field === "function") {
 				setTmData((prev: any) => {
 					const temp = { ...prev };
-					temp["positionType"] = event;
-
-					if (event.value === "founder") temp["founder"] = true;
-					else temp["founder"] = false;
+					temp["function"] = event;
 
 					return temp;
 				});
 			}
 
-			if (field === "position") {
+			if (field === 'founder') {
 				setTmData((prev: any) => {
 					const temp = { ...prev };
 
-					temp["position"] = event.target.value;
+					if (event.target.checked) temp["founder"] = true
+					else temp["founder"] = false
+
+					return temp;
+				});
+			}
+
+			if (field === "title") {
+				setTmData((prev: any) => {
+					const temp = { ...prev };
+
+					temp["title"] = event.target.value;
 
 					return temp;
 				});
@@ -340,7 +377,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 					const temp = { ...prev };
 					if (event.target.checked) {
 						temp["currentlyWorking"] = true;
-						temp["endDate"] = null;
+						temp["end_date"] = null;
 					} else {
 						temp["currentlyWorking"] = false;
 					}
@@ -349,21 +386,21 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				});
 			}
 
-			if (field === "startDate") {
+			if (field === "start_date") {
 				setTmData((prev: any) => {
 					const temp = { ...prev };
 
-					temp["startDate"] = event.target.value;
+					temp["start_date"] = event.target.value;
 
 					return temp;
 				});
 			}
 
-			if (field === "endDate") {
+			if (field === "end_date") {
 				setTmData((prev: any) => {
 					const temp = { ...prev };
 
-					temp["endDate"] = event.target.value;
+					temp["end_date"] = event.target.value;
 
 					return temp;
 				});
@@ -444,15 +481,17 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		if (entity === "teamMember") {
 			const temp = { ...tmData };
 
-			temp.companyId = temp.companyId.value;
-			temp.positionType = temp.positionType.value;
+			temp.company_id = temp.company_id.value;
+			temp.function = temp.function.value;
+			temp.person_id = person?.id;
 			delete temp.currentlyWorking;
 
-			updateCall(temp, "teammember");
+			await updateCall(temp, "teammember");
 
 			setActiveWorkspace(0);
 			setEditWorkspace(false);
 			setTmData(emptyTeamMember);
+			refetch()
 		}
 	};
 
@@ -514,8 +553,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		window.open(
 			`https://telegram.me/share/url?url=${getInviteLink(
 				user.reference_id
-			)}&text=${
-				user.display_name
+			)}&text=${user.display_name
 			} has invited you to join Edge In! Use the invite link to get started`,
 			"_blank"
 		);
@@ -523,8 +561,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const onSMS = () => {
 		window.open(
-			`sms:?&body=${
-				user.display_name
+			`sms:?&body=${user.display_name
 			} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
 				user.reference_id
 			)}`,
@@ -534,12 +571,10 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const onEmail = () => {
 		window.open(
-			`mailto:?subject=${
-				user.display_name
+			`mailto:?subject=${user.display_name
 			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${
-		user.display_name
-	} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
+	        ${user.display_name
+			} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
 				user.reference_id
 			)}`,
 			""
