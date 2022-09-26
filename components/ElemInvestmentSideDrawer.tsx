@@ -14,10 +14,11 @@ type Props = {
     onClose: any;
     investmentRoundToEdit: Investment_Rounds | undefined;
     onSaveInvestmentRound: (round: Investment_Rounds) => void;
+    errorsRounds: any;
 }
 
 
-export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, investmentRoundToEdit, onSaveInvestmentRound }) => {
+export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, investmentRoundToEdit, onSaveInvestmentRound, errorsRounds }) => {
 
     const getEmptyInvestment = () => {
         return {
@@ -201,6 +202,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 placeholder=""
                                                 className='max-w-sm placeholder:text-slate-300'
                                             />
+                                              {(errorsRounds.round) && <p className="text-red-500 text-xs italic mt-2">{errorsRounds.round}</p>}
                                         </div>
 
                                         <div className="mt-4">
@@ -213,6 +215,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 className=" max-w-sm placeholder:text-slate-500"
                                                 placeholder='$'
                                             />
+                                             {(errorsRounds.amount) && <p className="text-red-500 text-xs italic mt-2">{errorsRounds.amount}</p>}
                                         </div>
 
                                         <div className="mt-4">

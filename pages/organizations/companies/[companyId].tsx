@@ -21,7 +21,7 @@ import { useRouter } from "next/router";
 import { runGraphQl, convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
 import { uploadFile, deleteFile } from "@/utils/fileFunctions";
-import { companyLayerChoices, validateFieldsForEdit } from "@/utils/constants";
+import { companyLayerChoices, validateFieldsForEdit, validateTeamMember, validateInvestmentRounds } from "@/utils/constants";
 import { TagInputText } from "@/components/TagInputText";
 import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
 import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
@@ -62,6 +62,9 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const [memberToEdit, setMemberToEdit] = useState<Team_Members>()
     const [roundToEdit, setRoundToEdit] = useState<Investment_Rounds>()
     const [errors, setErrors] = useState({} as any)
+    const [errorsTeamMembers, setErrorsTeamMembers] = useState({} as any)
+    const [errorsRounds, setErrorsRounds] = useState({} as any)
+
 
     const {
 		data: companyData,
@@ -145,29 +148,33 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     }
 
     const onSaveEmployee = async(employee : any) => {
-        setTeamDrawer(false)
         const updatedEmployee = {
             ...employee,
             company_id: company.id,
             person_id: (employee.person)? employee.person.id : null
         }
         delete updatedEmployee.person;
-        await fetch("/api/team_member", {
-            method: "POST",
-            body: JSON.stringify({
-                teammember: updatedEmployee
-            }),
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        });
-        window.location.reload()
+        const error = await validateTeamMember(true, updatedEmployee)
+        setErrorsTeamMembers(error)
+        if (Object.keys(error).length == 0) {
+            setTeamDrawer(false)
+            await fetch("/api/team_member", {
+                method: "POST",
+                body: JSON.stringify({
+                    teammember: updatedEmployee
+                }),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+            window.location.reload()
+        }
     }
 
     const onSaveInvestmentRound = async(round : any) => {
-        setInvestmentDrawer(false)
-        const updatedInvestments = round.investments.map((item:  any) => {
+       
+        const updatedInvestments = round.investments.filter((item: any) => (item.person || item.vc_firm)).map((item:  any) => {
             const tempInvestment = {
                 ...item,
                 person_id: (item.person) ? item.person.id : null,
@@ -182,17 +189,22 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
             investments: updatedInvestments,
             company_id: company.id
         }
-        await fetch("/api/upsert_investment_round", {
-            method: "POST",
-            body: JSON.stringify({
-                investmentRound: tempRound
-            }),
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-            },
-        });
-        window.location.reload()
+        const error = await validateInvestmentRounds(true, tempRound)
+        setErrorsRounds(error)
+        if (Object.keys(error).length == 0) {
+            setInvestmentDrawer(false)
+            await fetch("/api/upsert_investment_round", {
+                method: "POST",
+                body: JSON.stringify({
+                    investmentRound: tempRound
+                }),
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+            });
+            window.location.reload()
+        }
     }
 
     const onSaveCompany = async () => {
@@ -467,6 +479,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                         className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                                     />
+                                     {(errors.white_paper) && <p className="text-red-500 text-xs italic mt-2">{errors.white_paper}</p>}
                                 </div>
                             </GridTwelve>
 
@@ -624,14 +637,14 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                
                                     <ElemEditTeam
                                         className=""
-                                        onEdit={(member) => {setMemberToEdit(member); setTeamDrawer(true)}}
+                                        onEdit={(member) => {setMemberToEdit(member); setErrorsTeamMembers({}); setTeamDrawer(true)}}
                                         // showEdit={true}
                                         heading="Team"
                                         teamMembers={company.teamMembers}
                                     />
                             )}
 
-                            {teamDrawer && <ElemTeamSideDrawer onSaveEmployee={onSaveEmployee} memberToEdit={memberToEdit} isOpen={teamDrawer} onClose={() => setTeamDrawer(false)} />}
+                            {teamDrawer && <ElemTeamSideDrawer errorsTeamMembers={errorsTeamMembers} onSaveEmployee={onSaveEmployee} memberToEdit={memberToEdit} isOpen={teamDrawer} onClose={() => setTeamDrawer(false)} />}
                         </div>
 
                         {/* Funding Investments section */}
@@ -651,11 +664,12 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             <ElemEditInvestments
                                 onEdit={(round) => {
                                     setRoundToEdit([...companyEditable.investment_rounds].find((item: any) => item.id===round.id)); 
+                                    setErrorsRounds({})
                                     setInvestmentDrawer(true)
                                 }}
                                 investments={company.investment_rounds}
                             />
-                            {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
+                            {investmentDrawer && <ElemInvestmentSideDrawer errorsRounds={errorsRounds} onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
                         </div>
                     </div>
                 

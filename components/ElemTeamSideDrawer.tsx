@@ -13,10 +13,11 @@ type Props = {
     onClose: any;
     memberToEdit: Team_Members | undefined;
     onSaveEmployee: (employee:  Team_Members) => void
+    errorsTeamMembers: any;
 }
 
 
-export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToEdit, onSaveEmployee }) => {
+export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToEdit, onSaveEmployee, errorsTeamMembers}) => {
 
     const [persons, setPersons] = useState<People[]>();
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
@@ -104,6 +105,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                             // placeholder="Layer 1 programmable/Blockchain/Netw..."
                                                 className="w-80 text-slate-600 text-base"
                                             />
+                                            {(errorsTeamMembers.person) && <p className="text-red-500 text-xs italic mt-2">{errorsTeamMembers.person}</p>}
                                         </div>
 
                                         <div className='mt-4'>
@@ -115,6 +117,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                                 placeholder=""
                                                 className='max-w-sm placeholder:text-slate-250'
                                             />
+                                            {(errorsTeamMembers.function) && <p className="text-red-500 text-xs italic mt-2">{errorsTeamMembers.function}</p>}
                                         </div>
                                         <div className='mt-4'>
                                             <input type="checkbox" checked={employee.founder as boolean} onChange={() => setValues('founder', !employee.founder) } /><span className='text-sm font-Metropolis font-bold text-slate-600 ml-2'>Founder</span>
