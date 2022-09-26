@@ -9,6 +9,7 @@ import { IconCompanyList } from "../reactions/IconCompanyList";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 
 type Props = {
+	className?: string;
 	user: User;
 	setIsCustom?: Function;
 	setSelectedListName?: Function;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export const ElemMyListsMenu: FC<Props> = ({
+	className = "",
 	user,
 	setIsCustom,
 	setSelectedListName,
@@ -94,7 +96,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 				>
 					<Link href={`/lists/${list.id}/${kebabCase(getName(list))}`}>
 						<a
-							className={`flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 ${getActiveClass(
+							className={`flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 								list.id
 							)}`}
 						>
@@ -109,20 +111,20 @@ export const ElemMyListsMenu: FC<Props> = ({
 	};
 
 	return (
-		<div className="">
+		<div className={className}>
 			<h3 className="text-xl font-bold">My Lists</h3>
-			<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+			<ul className="mt-1 space-y-2 text-slate-600">
 				<li className={`${getActiveClass(hotId)}`} role="button">
 					<Link href={`/lists/${hotId}/hot`}>
-						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
-							<EmojiHot className="h-6 w-6" />
+						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+							<EmojiHot className="h-6 w-6" />{" "}
 							<span>Hot ({getCountForList("hot")})</span>
 						</a>
 					</Link>
 				</li>
 				<li className={`${getActiveClass(likeId)}`} role="button">
 					<Link href={`/lists/${likeId}/like`}>
-						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 							<EmojiLike className="h-6 w-6" />
 							<span>Like ({getCountForList("like")})</span>
 						</a>
@@ -130,7 +132,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 				</li>
 				<li className={`${getActiveClass(crapId)}`} role="button">
 					<Link href={`/lists/${crapId}/crap`}>
-						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 							<EmojiCrap className="h-6 w-6" />
 							<span>Crap ({getCountForList("crap")})</span>
 						</a>

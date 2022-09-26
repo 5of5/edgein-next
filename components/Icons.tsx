@@ -662,14 +662,15 @@ export const IconEmail: React.FC<IconProps> = ({
 
 export const IconCompanies: React.FC<IconProps> = ({
 	className,
-	title = "Companies",
+	title,
+	strokeWidth,
 }) => {
 	return (
 		<svg
 			className={className}
 			fill="none"
 			stroke="currentColor"
-			strokeWidth="2"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			viewBox="0 0 24 24"
 			aria-hidden="true"
 		>
@@ -707,7 +708,11 @@ export const IconPaperAirplane: React.FC<IconProps> = ({
 	);
 };
 
-export const IconChevronLeft: React.FC<IconProps> = ({ className, title }) => {
+export const IconChevronLeft: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -715,7 +720,7 @@ export const IconChevronLeft: React.FC<IconProps> = ({ className, title }) => {
 			fill="none"
 			viewBox="0 0 24 24"
 			stroke="currentColor"
-			strokeWidth={2}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 		>
 			<title>{title ? title : "Left"}</title>
 			<path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />

@@ -62,84 +62,80 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 	}, [users]);
 
 	return (
-		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<DashboardLayout>
-				<div className="col-span-3">
-					<div className="max-w-6xl bg-white rounded-lg p-5">
-						<div className="flex">
-							<h2 className="text-dark-500 font-Metropolis font-bold text-xl">
-								My Organization(s)
-							</h2>
-						</div>
+		<DashboardLayout>
+			<div className="bg-white shadow rounded-lg p-5">
+				<div className="flex">
+					<h2 className="text-dark-500 font-Metropolis font-bold text-xl">
+						My Organization(s)
+					</h2>
+				</div>
 
-						<div className="flex mt-6 mb-2 relative border-b border-gray-100 pb-3">
-							<h2 className="text-dark-500 font-Metropolis font-bold text-md w-40">
-								Verified Organization(s)
-							</h2>
-							<div>
-								<p className="text-slate-600 w-96 text-md">
-									Verify your company or investment firm to access features
-									specifically for your business.
-								</p>
-							</div>
+				<div className="flex mt-6 mb-2 relative border-b border-gray-100 pb-3">
+					<h2 className="text-dark-500 font-Metropolis font-bold text-md w-40">
+						Verified Organization(s)
+					</h2>
+					<div>
+						<p className="text-slate-600 w-96 text-md">
+							Verify your company or investment firm to access features
+							specifically for your business.
+						</p>
+					</div>
 
-							<button
-								className="absolute right-0 text-md text-primary-500"
-								onClick={() => setShowVerifyModal(true)}
-							>
-								Manage Organization
-							</button>
-						</div>
+					<button
+						className="absolute right-0 text-md text-primary-500"
+						onClick={() => setShowVerifyModal(true)}
+					>
+						Manage Organization
+					</button>
+				</div>
 
-						{organizations?.map((teamMember) => {
-							const type = teamMember.company ? "Company" : "Investment Firm";
-							const data = teamMember.company || teamMember.vc_firm;
-							return (
-								<div
-									key={teamMember.id}
-									className=" mt-3 mb-2 relative border-b border-gray-100 pb-3"
-								>
-									<div className="grid grid-cols-10 gap-3">
-										<div className="col-start-3 col-span-6 flex">
-											<ElemPhoto
-												wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
-												imgClass="object-fit max-w-full max-h-full"
-												photo={data?.logo}
-												imgAlt="company logo"
-											/>
+				{organizations?.map((teamMember) => {
+					const type = teamMember.company ? "Company" : "Investment Firm";
+					const data = teamMember.company || teamMember.vc_firm;
+					return (
+						<div
+							key={teamMember.id}
+							className=" mt-3 mb-2 relative border-b border-gray-100 pb-3"
+						>
+							<div className="grid grid-cols-10 gap-3">
+								<div className="col-start-3 col-span-6 flex">
+									<ElemPhoto
+										wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 border border-black/10 rounded-lg overflow-hidden"
+										imgClass="object-fit max-w-full max-h-full"
+										photo={data?.logo}
+										imgAlt="company logo"
+									/>
 
-											<div className="ml-3">
-												<h2 className="font-bold font-Metropolis text-sm text-slate-600">
-													{data?.name}
-												</h2>
-												<span className="font-thin text-slate-500 text-sm">
-													{type}
-												</span>
-											</div>
-										</div>
-										<Link
-											href={`/organizations/${
-												type === "Company" ? "companies" : "investors"
-											}/${data?.slug}`}
-										>
-											<a className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500">
-												Edit
-											</a>
-										</Link>
+									<div className="ml-3">
+										<h2 className="font-bold font-Metropolis text-sm text-slate-600">
+											{data?.name}
+										</h2>
+										<span className="font-thin text-slate-500 text-sm">
+											{type}
+										</span>
 									</div>
 								</div>
-							);
-						})}
-					</div>
-					<ElemCompanyVerifyModal
-						isOpen={showVerifyModal}
-						onClose={() => setShowVerifyModal(false)}
-						dropdown={dropdown}
-						personId={profile.id}
-					/>
-				</div>
-			</DashboardLayout>
-		</div>
+								<Link
+									href={`/organizations/${
+										type === "Company" ? "companies" : "investors"
+									}/${data?.slug}`}
+								>
+									<a className="col-end-11 col-span-1 flex justify-end items-center text-md text-primary-500">
+										Edit
+									</a>
+								</Link>
+							</div>
+						</div>
+					);
+				})}
+			</div>
+			<ElemCompanyVerifyModal
+				isOpen={showVerifyModal}
+				onClose={() => setShowVerifyModal(false)}
+				dropdown={dropdown}
+				personId={profile.id}
+			/>
+		</DashboardLayout>
 	);
 };
 

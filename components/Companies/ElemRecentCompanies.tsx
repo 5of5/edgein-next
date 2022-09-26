@@ -3,7 +3,7 @@ import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { formatDate, numberWithCommas } from "@/utils";
+import { formatDate, convertToInternationalCurrencySystem } from "@/utils";
 import { getLayerClass } from "@/utils/style";
 import { IconArrowUp } from "@/components/Icons";
 import {
@@ -198,7 +198,10 @@ export const ElemRecentCompanies: FC<Props> = ({
 													<div className="flex items-center space-x-1">
 														<div className="">Raised</div>
 														<div className="flex items-center text-green-700">
-															${numberWithCommas(fundingTotal)}
+															$
+															{convertToInternationalCurrencySystem(
+																Number(fundingTotal)
+															)}
 														</div>
 													</div>
 												)}
@@ -228,7 +231,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 													<div className="flex items-center space-x-1">
 														<div className="">Raised</div>
 														<div className="flex items-center text-green-700">
-															${numberWithCommas(fundingTotal)}
+															${convertToInternationalCurrencySystem(fundingTotal)}
 														</div>
 													</div>
 												)}

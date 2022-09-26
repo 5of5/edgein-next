@@ -7,11 +7,9 @@ type Props = {};
 
 const Dashboard: NextPage<Props> = ({}) => {
 	return (
-		<div className="max-w-6xl mx-auto h-full relative px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-			<DashboardLayout>
-				<TableRecentCompanies heading="Recently Added Projects" />
-			</DashboardLayout>
-		</div>
+		<DashboardLayout>
+			<TableRecentCompanies heading="Recently Added Projects" />
+		</DashboardLayout>
 	);
 };
 

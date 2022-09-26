@@ -51,7 +51,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 	}, [users]);
 
 	const getActiveClass = (path: string) => {
-		return path === router.asPath ? " bg-slate-200 rounded-xl pl-2" : "";
+		return path === router.asPath ? "" : "";
 	};
 
 	return (
@@ -59,27 +59,30 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 			<div className="">
 				<h3 className="text-xl font-bold">My EdgeIn</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					{user?.profileName && (
-						<li className={`${getActiveClass("/profile/")}`} role="button">
-							<Link href={`/profile`}>
-								<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
-									<ElemPhoto
-										photo={user?.profilePicture}
-										wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg rounded-full"
-										imgClass="object-fit max-w-full max-h-full rounded-full"
-										imgAlt={"profile"}
-										placeholder="user"
-									/>
+					<li className={`${getActiveClass("/profile/")}`} role="button">
+						<Link href={`/profile`}>
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+								<ElemPhoto
+									photo={user?.profilePicture}
+									wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg rounded-full"
+									imgClass="object-fit max-w-full max-h-full rounded-full"
+									imgAlt={"profile"}
+									placeholder="user"
+								/>
+								{user?.profileName ? (
 									<span className="first-letter:uppercase">
 										{truncate(user?.profileName, { length: 15 })}
 									</span>
-								</a>
-							</Link>
-						</li>
-					)}
-					<li className={`${getActiveClass("/profile/")}`}>
+								) : (
+									<span>Profile Settings</span>
+								)}
+							</a>
+						</Link>
+					</li>
+
+					<li className={`${getActiveClass("/account/")}`}>
 						<Link href={`/account`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconSettings className="h-6 w-6" />
 								<span>Account Settings</span>
 							</a>
@@ -88,14 +91,14 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 				</ul>
 			</div>
 
-			<ElemMyListsMenu user={user} />
+			<ElemMyListsMenu user={user} className="mt-4" />
 
-			<div className="">
+			<div className="mt-4">
 				<h3 className="text-xl font-bold">Explore</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					<li className={`${getActiveClass("/companies/")}`} role="button">
 						<Link href={`/companies`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconCompanies className="w-6 h-6" />
 								<span>Companies</span>
 							</a>
@@ -103,7 +106,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 					</li>
 					<li className={`${getActiveClass("/investors/")}`} role="button">
 						<Link href={`/investors`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconCash className="w-6 h-6" />
 								<span>Investors</span>
 							</a>
@@ -112,7 +115,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 				</ul>
 			</div>
 
-			<div className="mt-3">
+			<div className="mt-4">
 				<h3 className="text-xl font-bold">My Organizations</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					{organizations?.map((teamMember) => {
@@ -121,7 +124,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 						return (
 							<li key={teamMember.id} role="button" className="">
 								<Link href={`/organizations/${type}/${data?.slug}`}>
-									<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+									<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 										<ElemPhoto
 											photo={data?.logo}
 											imgAlt="company logo"
@@ -136,7 +139,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 					})}
 					<li className={``} role="button">
 						<Link href="/organizations">
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200">
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconOrganization className="w-6 h-6" />
 								<span>Manage Organization</span>
 							</a>

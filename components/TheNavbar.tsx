@@ -204,7 +204,7 @@ export const TheNavbar = () => {
 						</button>
 					</div>
 
-					<div className="flex items-center space-x-2 lg:space-x-3 lg:ml-6">
+					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-6">
 						{siteNav.map((link, index) => (
 							<Link href={link.path} key={index} passHref>
 								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
@@ -213,16 +213,15 @@ export const TheNavbar = () => {
 							</Link>
 						))}
 
-						<ElemButton
-							onClick={() => setShowSearchModal(true)}
-							btn="slate"
-							className="h-9 w-9 px-0 py-0 sm:hidden"
-						>
-							<IconSearch className="h-5 w-5 text-dark-500" />
-						</ElemButton>
-
 						{user ? (
 							<>
+								<ElemButton
+									onClick={() => setShowSearchModal(true)}
+									btn="slate"
+									className="h-9 w-9 px-0 py-0 sm:hidden"
+								>
+									<IconSearch className="h-5 w-5" />
+								</ElemButton>
 								<NotificationAlerts />
 								<UserMenu />
 							</>
