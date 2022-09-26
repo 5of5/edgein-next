@@ -3,7 +3,6 @@ import type { NextPage, GetStaticProps } from "next";
 import { ElemHeading } from "../components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
-// import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
 import { ElemButton } from "@/components/ElemButton";
@@ -57,7 +56,6 @@ const Companies: NextPage<Props> = ({
 
 	// Search Box
 	const [search, setSearch] = useState("");
-	const [savedEmptySearches, setSavedEmptySearches] = useState<string[]>([]);
 	const debouncedSearchTerm = useDebounce(search, 500);
 
 	const searchCompanies = (e: {
@@ -218,14 +216,6 @@ const Companies: NextPage<Props> = ({
 				<div className="bg-white rounded-lg p-5">
 					<h2 className="text-xl font-bold">All Companies</h2>
 					<ElemFiltersWrap className="pt-2 filters-wrap">
-						{/* <InputSearch
-							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							label="Search"
-							name="search"
-							value={search}
-							placeholder="Quick Search..."
-							onChange={searchCompanies}
-						/> */}
 						<InputSelect
 							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
 							value={selectedCompany}
