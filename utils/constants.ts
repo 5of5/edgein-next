@@ -159,6 +159,12 @@ export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: 
     if (values.hasOwnProperty('glassdoor') && values?.glassdoor !== '' && !urlPattern.test(values?.glassdoor)) {
       errors.glassdoor = 'Glassdoor URL is not valid';
     }
+    if (values.hasOwnProperty('white_paper') && values?.white_paper !== '' && !urlPattern.test(values?.white_paper)) {
+      errors.white_paper = 'White paper URL is not valid';
+    }
+    if (values.hasOwnProperty('careers_page') && values?.careers_page !== '' && !urlPattern.test(values?.careers_page)) {
+      errors.careers_page = 'Careers page URL is not valid';
+    }
     if (values.hasOwnProperty('work_email') && values?.work_email !== '' && !emailPattern.test(values?.work_email)) {
       errors.work_email = 'Work Email is not valid';
     }
@@ -169,6 +175,27 @@ export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: 
   return errors
 };
 
+export const validateTeamMember = async (isEdit: boolean, values: any) => {
+  const errors: any = {};
+  if (!values?.person_id) {
+    errors.person = 'Person is required';
+  }
+  if (!values?.function) {
+    errors.function = 'Position is required';
+  }
+  return errors
+}
+
+export const validateInvestmentRounds = async (isEdit: boolean, values: any) => {
+  const errors: any = {};
+  if (!values?.round) {
+    errors.round = 'Round Type is required';
+  }
+  if (!values?.amount) {
+    errors.amount = 'Money Raised is required';
+  }
+  return errors
+}
 
 export const functionChoicesTM = [
   {
