@@ -1,4 +1,5 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
+import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconChevronRight } from "@/components/Icons";
@@ -8,15 +9,29 @@ import { InputSelect } from "@/components/InputSelect";
 import { IconCamera } from "@/components/IconCamera";
 import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer"
 import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer"
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { useRouter } from "next/router";
+import {
+	Follows_Vc_Firms,
+	GetVcFirmDocument,
+	GetVcFirmQuery,
+	Investment_Rounds,
+	useGetVcFirmQuery,
+	Vc_Firms,
+} from "@/graphql/types";
+import {
+	convertToInternationalCurrencySystem,
+	formatDate,
+	runGraphQl,
+} from "@/utils";
 
-type Props = {
+type GridProps = {
   children: any
   wrapperClass: string
 }
 
-const GridTwelve: React.FC<Props> = ({ children, wrapperClass }) => {
+const GridTwelve: React.FC<GridProps> = ({ children, wrapperClass }) => {
   return (
     <div className={`grid grid-cols-12 gap-2${wrapperClass ? ` ${wrapperClass}` : ''}`}>
       {children}
@@ -24,21 +39,48 @@ const GridTwelve: React.FC<Props> = ({ children, wrapperClass }) => {
   )
 }
 
-export default function InvestorsEdit() {
+type Props = {
+	vcfirm: Vc_Firms;
+	sortByDateAscInvestments: Array<Investment_Rounds>;
+};
+
+const InvestorsEdit: NextPage<Props> = (props: Props) => {
   const { user } = useAuth();
+  const router = useRouter();
   const [teamdrawer, setteamdrawer] = useState(false)
   const [investmentdrawer, setinvestmentdrawer] = useState(false)
+  const [vcfirm, setVcfirm] = useState(props.vcfirm);
+  const [vcfirmEditable, setVcfirmEditable] = useState<any>(props.vcfirm);
+  const { investorId } = router.query;
+  const [errors, setErrors] = useState({} as any)
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const {
+		data: vcFirmData,
+		error,
+		isLoading,
+	} = useGetVcFirmQuery({
+		slug: investorId as string,
+		current_user: user?.id ?? 0,
+	});
+
+  useEffect(() => {
+		if (vcFirmData) {
+      setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
+      setVcfirmEditable(vcFirmData?.vc_firms[0] as any);
+    }
+  }, [vcFirmData]);
+  
   const handleProfileEditClick = () => {
     // 👇️ open file input box on click of other element
     fileInputRef?.current?.click();
   };
 
   return (
+    <DashboardLayout>
     <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-      <DashboardLayout>
+     
         <div className="col-span-3">
           <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 pb-3">
             <h2 className="text-xl font-bold font-Metropolis text-dark-950">
@@ -801,7 +843,56 @@ export default function InvestorsEdit() {
 
           </div>
         </div>
-      </DashboardLayout>
+    
     </div>
+    </DashboardLayout>
   )
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
+		GetVcFirmDocument,
+		{ slug: context.params?.investorId, current_user: 0 }
+	);
+
+	if (!vc_firms?.vc_firms[0]) {
+		return {
+			notFound: true,
+		};
+	}
+
+	const getInvestments = vc_firms.vc_firms[0].investments.map((round) => {
+		if (typeof round.investment_round === "object" && round.investment_round) {
+			return round.investment_round;
+		} else {
+			return null;
+		}
+	});
+
+	const sortByDateAscInvestments = getInvestments
+		.slice()
+		.sort((a, b) => {
+			const distantPast = new Date("April 2, 1900 00:00:00");
+			let dateA = a?.round_date ? new Date(a.round_date) : distantPast;
+			let dateB = b?.round_date ? new Date(b.round_date) : distantPast;
+			return dateA.getTime() - dateB.getTime();
+		})
+		.reverse();
+
+	let metaTitle = null;
+	if (vc_firms.vc_firms[0].name) {
+		metaTitle =
+			vc_firms.vc_firms[0].name + " Investor Profile & Funding - EdgeIn.io";
+	}
+
+	return {
+		props: {
+			metaTitle,
+			vcfirm: vc_firms.vc_firms[0],
+			sortByDateAscInvestments,
+		},
+	};
+};
+
+
+export default InvestorsEdit;
