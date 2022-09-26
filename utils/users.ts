@@ -1,10 +1,14 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
 import { User } from '@/models/User';
 
-async function queryForAllowedEmailCheck(email: string) {
+async function queryForAllowedEmailCheck(email: string, domain: string) {
   const fetchQuery = `
-  query query_allowed_emails($email: String) {
-    allowed_emails(where: {email: {_eq: $email}}, limit: 1) {
+  query query_allowed_emails($email: String, $domain: String) {
+    allowed_emails(where: {_or: [
+      {email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, 
+      {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}
+    ]}, 
+      limit: 1) {
       id
       email
     }
@@ -13,7 +17,7 @@ async function queryForAllowedEmailCheck(email: string) {
   try {
     const data = await query({
       query: fetchQuery,
-      variables: { email }
+      variables: { email, domain }
     })
     return data.data.allowed_emails[0] as User
   } catch (ex) {
@@ -59,6 +63,7 @@ async function findOneUserByEmail(email: string) {
         name
         picture
       }
+      additional_emails
     }
   }
   `
@@ -81,13 +86,18 @@ async function upsertUser(userData: any) {
         returning {
           id
           email
-          display_name
           role
+          external_id
           is_auth0_verified
+          display_name
           auth0_linkedin_id
           auth0_user_pass_id
           reference_id
-          reference_user_id
+          person {
+            name
+            picture
+          }
+          additional_emails
         }
       }
     }
@@ -124,15 +134,28 @@ async function updateEmailVerifiedStatus(email: string, is_auth0_verified: boole
       returning {
         id
         email
+        role
+        external_id
+        is_auth0_verified
+        display_name
+        auth0_linkedin_id
+        auth0_user_pass_id
+        reference_id
+        person {
+          name
+          picture
+        }
+        additional_emails
       }
     }
   }
 `
 try {
-  await mutate({
+  const data = await mutate({
     mutation: updateEmailVerified,
     variables: { email, is_auth0_verified }
   });
+  return data.data.update_users.returning[0] as User
   } catch (e) {
     throw e
   }
@@ -149,15 +172,28 @@ async function updateAuth0LinkedInId(email: string, auth0_linkedin_id: string) {
       returning {
         id
         email
+        role
+        external_id
+        is_auth0_verified
+        display_name
+        auth0_linkedin_id
+        auth0_user_pass_id
+        reference_id
+        person {
+          name
+          picture
+        }
+        additional_emails
       }
     }
   }
 `
 try {
-  await mutate({
+  const data = await mutate({
     mutation: updateAuth0LinkedIn,
     variables: { email, auth0_linkedin_id }
   });
+  return data.data.update_users.returning[0] as User
   } catch (e) {
     throw e
   }
@@ -174,15 +210,28 @@ async function updateAuth0UserPassId(email: string, auth0_user_pass_id: string) 
       returning {
         id
         email
+        role
+        external_id
+        is_auth0_verified
+        display_name
+        auth0_linkedin_id
+        auth0_user_pass_id
+        reference_id
+        person {
+          name
+          picture
+        }
+        additional_emails
       }
     }
   }
 `
 try {
-  await mutate({
+  const data = await mutate({
     mutation: updateAuth0UserPass,
     variables: { email, auth0_user_pass_id }
   });
+  return data.data.update_users.returning[0] as User
   } catch (e) {
     throw e
   }
@@ -194,7 +243,18 @@ async function findOneUserByReferenceId(reference_id: string) {
     users(where: {reference_id: {_eq: $reference_id}}, limit: 1) {
       id
       email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
       reference_id
+      person {
+        name
+        picture
+      }
+      additional_emails
     }
   }
   `
@@ -209,4 +269,74 @@ async function findOneUserByReferenceId(reference_id: string) {
   }
 }
 
-export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId }
+async function updateAllowedEmailArray(id: number, additional_emails: string[]) {
+  const updateAllowedEmail = `
+  mutation update_users($id: Int, $additional_emails: jsonb) {
+    update_users(
+      where: {id: {_eq: $id}},
+      _set: { additional_emails: $additional_emails }
+    ) {
+      affected_rows
+      returning {
+        id
+        email
+        role
+        external_id
+        is_auth0_verified
+        display_name
+        auth0_linkedin_id
+        auth0_user_pass_id
+        reference_id
+        person {
+          name
+          picture
+        }
+        additional_emails
+      }
+    }
+  }
+`
+try {
+  const data = await mutate({
+    mutation: updateAllowedEmail,
+    variables: { id, additional_emails }
+  });
+  return data.data.update_users.returning[0] as User
+  } catch (e) {
+    throw e
+  }
+}
+
+async function findOneUserByAdditionalEmail(email: string) {
+  const fetchQuery = `
+  query query_additional_email_users($email: jsonb) {
+    users(where: {additional_emails: {_contains: $email}}, limit: 1) {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      person {
+        name
+        picture
+      }
+      additional_emails
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { email }
+    })
+    return data.data.users[0] as User
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId, updateAllowedEmailArray, findOneUserByAdditionalEmail }

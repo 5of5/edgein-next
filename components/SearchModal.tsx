@@ -11,7 +11,13 @@ import {
 	Index,
 	Configure,
 } from "react-instantsearch-hooks-web";
-import { IconSearch, IconChevronRight } from "@/components/Icons";
+
+import {
+	IconSearch,
+	IconChevronRight,
+	IconUser,
+	IconImage,
+} from "@/components/Icons";
 
 const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -50,21 +56,6 @@ type HitPeopleProps = {
 	}>;
 };
 
-// const transformItems: InfiniteHitsProps["transformItems"] = (
-// 	items: any,
-// 	{ results }
-// ) => {
-// 	if (results?.hits.length === 0) {
-// 		return {
-// 			empty: true,
-// 		};
-// 	}
-// 	return items.map((item: any, index: any) => ({
-// 		...item,
-// 		position: { index, page: results?.page },
-// 	}));
-// };
-
 function HitCompanies({ hit }: HitCompaniesProps) {
 	return (
 		<a
@@ -72,11 +63,15 @@ function HitCompanies({ hit }: HitCompaniesProps) {
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
-				<img
-					className="object-contain max-w-full max-h-full"
-					src={hit.logo}
-					alt={hit.logo}
-				/>
+				{hit.logo ? (
+					<img
+						className="object-contain max-w-full max-h-full"
+						src={hit.logo}
+						alt={hit.name}
+					/>
+				) : (
+					<IconImage className="object-contain max-w-full max-h-full text-slate-200" />
+				)}
 			</div>
 			<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
 				<Highlight
@@ -109,11 +104,15 @@ function HitInvestors({ hit }: HitInvestorsProps) {
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
-				<img
-					className="object-contain max-w-full max-h-full"
-					src={hit.logo}
-					alt={""}
-				/>
+				{hit.logo ? (
+					<img
+						className="object-contain max-w-full max-h-full"
+						src={hit.logo}
+						alt={hit.name}
+					/>
+				) : (
+					<IconImage className="object-contain max-w-full max-h-full text-slate-200" />
+				)}
 			</div>
 			<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
 				<Highlight
@@ -137,11 +136,15 @@ function HitPeople({ hit }: HitPeopleProps) {
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
-				<img
-					className="object-contain max-w-full max-h-full"
-					src={hit.picture}
-					alt={hit.picture}
-				/>
+				{hit.picture ? (
+					<img
+						className="object-contain max-w-full max-h-full"
+						src={hit.picture}
+						alt={hit.name}
+					/>
+				) : (
+					<IconUser className="object-contain max-w-full max-h-full text-slate-200" />
+				)}
 			</div>
 			<h2 className="min-w-fit grow font-bold whitespace nowrap ml-2 text-slate-600">
 				<Highlight
@@ -163,57 +166,44 @@ export default function SearchModal(props: any) {
 		props.onClose();
 	};
 
-	const onAfterOpen = () => {
-		const focusSearchInput = () => {
-			const inputs = document.getElementsByClassName(
-				"search-input"
-			) as HTMLCollectionOf<HTMLElement>;
-
-			for (let i = 0; i < inputs.length; i++) {
-				inputs[i].focus();
-			}
-		};
-		setTimeout(focusSearchInput, 250);
-	};
-
-	function NoResults() {
+	function EmptyQueryBoundary({ children, emptyText = "" }: any) {
 		const { results } = useInstantSearch();
 
-		if (results?.nbHits === 0) {
+		if (results._state.query === "") {
+			return <div className="px-6 py-1 text-slate-600">{emptyText}</div>;
+		} else if (results?.nbHits === 0) {
 			return (
-				<div className="px-6 py-1">
-					{/* {results.nbHits}  */}
-					<h1 className="text-slate-600">No results for “{results.query}“</h1>
+				<div className="px-6 py-1 text-slate-600">
+					No results for “{results.query}“
 				</div>
 			);
 		}
-		return <></>;
+		return children;
 	}
 
 	return (
 		<Modal
 			isOpen={props.show}
-			onAfterOpen={onAfterOpen}
 			onRequestClose={onClose}
 			shouldCloseOnOverlayClick={true}
 			overlayClassName="fixed top-0 left-0 z-[50] flex flex-col h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
-			className="animate-fade-in-up max-w-3xl w-full mx-auto my-0 min-h-0 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0"
+			className="animate-fade-in-up max-w-3xl w-full mx-auto my-0 min-h-0 pb-5 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0"
 			contentLabel="Search EdgeIn"
 		>
 			<InstantSearch searchClient={searchClient} indexName="companies">
 				<header className="relative flex items-center z-10 p-0 px-4 border-b border-slate-100">
 					<IconSearch className="h-6 w-6 text-slate-600" />
-
 					<SearchBox
 						className="w-full"
-						placeholder="Search"
+						placeholder="Search for Companies, Investors, or People"
+						autoFocus={true}
 						classNames={{
 							submitIcon: "hidden",
 							resetIcon: "hidden",
 							loadingIndicator: "hidden",
 							form: "flex",
 							input:
-								"search-input appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 placeholder:text-slate-400 focus:bg-transparent focus:outline-none",
+								"appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 placeholder:text-slate-400 focus:bg-transparent focus:outline-none",
 						}}
 					/>
 					<button
@@ -226,50 +216,55 @@ export default function SearchModal(props: any) {
 					</button>
 				</header>
 
-				<Configure analytics={false} hitsPerPage={3} />
 				<Index indexName="companies">
+					<Configure hitsPerPage={4} />
 					<h1 className="font-bold mt-5 mx-6">Companies</h1>
-					<NoResults />
-
-					<InfiniteHits
-						hitComponent={HitCompanies}
-						showPrevious={false}
-						classNames={{
-							list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
-							loadMore:
-								"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-purple-50 bg-transparent border border-purple-50 rounded-full hover:bg-primary-100 focus:ring-purple-50",
-							disabledLoadMore: "hidden",
-						}}
-					/>
+					<EmptyQueryBoundary>
+						<InfiniteHits
+							hitComponent={HitCompanies}
+							showPrevious={false}
+							classNames={{
+								list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+								loadMore:
+									"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
+								disabledLoadMore: "hidden",
+							}}
+						/>
+					</EmptyQueryBoundary>
 				</Index>
 
 				<Index indexName="vc_firms">
+					<Configure hitsPerPage={4} />
 					<h1 className="font-bold mt-5 mx-6">Investors</h1>
-					<NoResults />
-					<InfiniteHits
-						hitComponent={HitInvestors}
-						showPrevious={false}
-						classNames={{
-							list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
-							loadMore:
-								"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-purple-50 bg-transparent border border-purple-50 rounded-full hover:bg-primary-100 focus:ring-purple-50",
-							disabledLoadMore: "hidden",
-						}}
-					/>
+					<EmptyQueryBoundary>
+						<InfiniteHits
+							hitComponent={HitInvestors}
+							showPrevious={false}
+							classNames={{
+								list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+								loadMore:
+									"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
+								disabledLoadMore: "hidden",
+							}}
+						/>
+					</EmptyQueryBoundary>
 				</Index>
+
 				<Index indexName="people">
+					<Configure hitsPerPage={4} />
 					<h1 className="font-bold mt-5 mx-6">People</h1>
-					<NoResults />
-					<InfiniteHits
-						hitComponent={HitPeople}
-						showPrevious={false}
-						classNames={{
-							list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
-							loadMore:
-								"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-purple-50 bg-transparent border border-purple-50 rounded-full hover:bg-primary-100 focus:ring-purple-50",
-							disabledLoadMore: "hidden",
-						}}
-					/>
+					<EmptyQueryBoundary>
+						<InfiniteHits
+							hitComponent={HitPeople}
+							showPrevious={false}
+							classNames={{
+								list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+								loadMore:
+									"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500",
+								disabledLoadMore: "hidden",
+							}}
+						/>
+					</EmptyQueryBoundary>
 				</Index>
 			</InstantSearch>
 		</Modal>

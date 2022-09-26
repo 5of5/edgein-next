@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import Link from "next/link";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
-import { IconLinkedIn } from "@/components/reactions/IconLinkedIn";
+//import { IconLinkedIn } from "@/components/reactions/IconLinkedIn";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconChevronLeft } from "@/components/Icons";
@@ -12,6 +12,7 @@ import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
 import person from "../images/person.png";
 import { IconSetting } from "@/components/IconSetting";
+import { IconLinkedIn } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 const validator = require("validator");
 
@@ -93,132 +94,130 @@ export default function Account() {
 	};
 
 	return (
-		<div className="max-w-6xl mx-auto h-full relative px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-			<div className="grid grid-cols-4 gap-4 h-full">
-				<DashboardLayout />
-				<div className="col-span-3 mt-5">
-					<div className="bg-white rounded-lg p-5">
-						<div className="flex justify-between items-center mb-4">
-							<h2 className="text-dark-500 font-bold text-xl">
-								Account Setting
-							</h2>
-						</div>
-						{
-							// (user && !user.auth0_linkedin_id) && (
-							<div className="flex mb-4  border-b border-gray-100 pb-3">
-								<h2 className="font-bold w-40  font-Metropolis">
-									Authentication
-								</h2>
-								<div className="ml-12">
-									<p className="font-Metropolis font-normal  text-gray-10 tracking-wide">
+		<DashboardLayout>
+			<div className="bg-white shadow rounded-lg p-5">
+				<div className="flex justify-between items-center mb-4">
+					<h2 className="font-bold text-xl">Account Settings</h2>
+				</div>
+
+				<dl className="w-full divide-y divide-black/10">
+					{
+						// (user && !user.auth0_linkedin_id) && (
+						<div className="py-4 sm:grid sm:grid-cols-5 sm:gap-4 sm:py-5">
+							<dt className="font-bold">Authentication</dt>
+							<dd className="mt-1 sm:flex sm:col-span-4 sm:mt-0">
+								<div className="flex-grow">
+									<p className="text-slate-600">
 										Connect your LinkedIn account to validate your profile and
 										contribute to EdgeIn. Our team will then review your account
 										and enable it for contribution (this may take up to one
 										business day).
 									</p>
-									{/* <button className=" border border-slate-200 mt-2  px-4 py-2 rounded-md"><IconLinkedIn className="inline-block" /> <span className="text-darkblue-600 ml-2 font-bold">Connect LinkedIn</span></button> */}
 									<ElemButton
 										onClick={onLinkedInClick}
 										disabled={user && user.auth0_linkedin_id}
-										className="mt-2 border border-gray-100 rounded-t-lg rounded-b-lg"
-										btn="transparent"
+										className="mt-2 gap-x-2 rounded-md text-[#0077B5] border border-black/10 hover:border-[#0077B5] hover:bg-slate-50"
+										roundedFull={false}
 									>
-										<IconLinkedIn />{" "}
-										<span className="text-[#0077B5] ml-2">
-											Connect LinkedIn
-										</span>
+										<IconLinkedIn className="h-6 w-6" />{" "}
+										<span>Connect LinkedIn</span>
 									</ElemButton>
 								</div>
+								{/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-4">
+									<ElemButton
+										btn="transparent"
+										roundedFull={false}
+										className="py-0 px-0 font-normal"
+									>
+										Edit
+									</ElemButton>
+								</div> */}
+							</dd>
+						</div>
+						// )
+					}
+				</dl>
+
+				{user && user.auth0_user_pass_id && (
+					<>
+						{!isEditPassword ? (
+							<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  w-40">
+									Change Password
+								</h2>
+								<div>
+									<h2 className="text-gray-10 ">
+										Use a strong password that you are not using elsewhere.
+									</h2>
+								</div>
+								<button
+									onClick={() => setEditPassword(true)}
+									className="absolute right-0  text-primary-500"
+								>
+									Edit
+								</button>
 							</div>
-							// )
-						}
-
-						{user && user.auth0_user_pass_id && (
-							<>
-								{!isEditPassword ? (
-									<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-										<h2 className="text-dark-500 font-bold  w-40">
-											Change Password
-										</h2>
+						) : (
+							<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
+								<h2 className="text-dark-500 font-bold  w-40">
+									Change Password
+								</h2>
+								<div>
+									<div className="w-96 ">
 										<div>
-											<h2 className="text-gray-10 ">
-												Use a strong password that you are not using elsewhere.
-											</h2>
+											<InputText
+												type="password"
+												label="New"
+												onChange={(event) => {
+													validate(event.target.value);
+												}}
+												value={newPassword}
+												name=""
+												className="mb-3 border border-gray-5"
+											/>
+											{errorMessage === "" ? null : (
+												<span className="w-full  text-sm">{errorMessage}</span>
+											)}
 										</div>
-										<button
-											onClick={() => setEditPassword(true)}
-											className="absolute right-0  text-primary-500"
-										>
-											Edit
-										</button>
-									</div>
-								) : (
-									<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-										<h2 className="text-dark-500 font-bold  w-40">
-											Change Password
-										</h2>
-										<div>
-											<div className="w-96 ">
-												<div>
-													<InputText
-														type="password"
-														label="New"
-														onChange={(event) => {
-															validate(event.target.value);
-														}}
-														value={newPassword}
-														name=""
-														className="mb-3 border border-gray-5"
-													/>
-													{errorMessage === "" ? null : (
-														<span className="w-full  text-sm">
-															{errorMessage}
-														</span>
-													)}
-												</div>
 
-												<InputText
-													type="password"
-													label="Re-type New"
-													onChange={(event) => {
-														validateReEnterPasssword(event.target.value);
-													}}
-													value={reEnterPassword}
-													name=""
-													className="mb-3 border border-gray-5"
-												/>
-												{reEnterErrorMessage === "" ? null : (
-													<span className="w-full  text-sm">
-														{reEnterErrorMessage}
-													</span>
-												)}
+										<InputText
+											type="password"
+											label="Re-type New"
+											onChange={(event) => {
+												validateReEnterPasssword(event.target.value);
+											}}
+											value={reEnterPassword}
+											name=""
+											className="mb-3 border border-gray-5"
+										/>
+										{reEnterErrorMessage === "" ? null : (
+											<span className="w-full  text-sm">
+												{reEnterErrorMessage}
+											</span>
+										)}
 
-												<div className="flex mt-3 mb-2">
-													<ElemButton
-														btn="primary"
-														className="mr-2"
-														onClick={onChangePassword}
-													>
-														Save Changes
-													</ElemButton>
-													<ElemButton
-														onClick={() => setEditPassword(false)}
-														className="border-none font-bold text-slate-600 bg-transparent rounded-lg p-2"
-													>
-														Cancel
-													</ElemButton>
-												</div>
-											</div>
+										<div className="flex mt-3 mb-2">
+											<ElemButton
+												btn="primary"
+												className="mr-2"
+												onClick={onChangePassword}
+											>
+												Save Changes
+											</ElemButton>
+											<ElemButton
+												onClick={() => setEditPassword(false)}
+												className="border-none font-bold text-slate-600 bg-transparent rounded-lg p-2"
+											>
+												Cancel
+											</ElemButton>
 										</div>
 									</div>
-								)}
-							</>
+								</div>
+							</div>
 						)}
-						{/* hide content */}
-						{/* <hr></hr> */}
-					</div>
-				</div>
+					</>
+				)}
 			</div>
-		</div>
+		</DashboardLayout>
 	);
 }

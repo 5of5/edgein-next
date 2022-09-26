@@ -4,29 +4,29 @@ import { Magic } from "magic-sdk";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import {
-	IconChevronDown,
+	IconChevronDownMini,
 	IconUserCircle,
 	IconSignOut,
-	// IconHome,
+	IconDashboard,
+	IconSettings,
+	IconOrganization,
 } from "./Icons";
-import { IconDashboard } from "./Dashboard/IconDashboard";
-import { IconSetting } from "./IconSetting";
 
 const navigation = [
 	{ name: "Dashboard", href: "/dashboard", icon: IconDashboard },
-	{ name: "Account Settings", href: "/account", icon: IconSetting },
+	{ name: "Account Settings", href: "/account", icon: IconSettings },
+	{ name: "My Organization", href: "/organizations", icon: IconOrganization },
 ];
 
 export const UserMenu = () => {
 	const logout = async () => {
-		localStorage.clear()
+		localStorage.clear();
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
 		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
-		}).then(res => res.json());
+		}).then((res) => res.json());
 		if (authRequest.success) {
-
 			// We successfully logged in, our API
 			// set authorization cookies and now we
 			// can redirect to the dashboard!
@@ -40,9 +40,9 @@ export const UserMenu = () => {
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
 				<Menu.Button as="div">
-					<ElemButton btn="white" className="px-2 font-medium group">
+					<ElemButton btn="slate" className="h-9 w-auto px-1.5 py-0 group">
 						<IconUserCircle className="h-6 w-6" aria-hidden="true" />
-						<IconChevronDown className="ml-1 h-5 w-5" aria-hidden="true" />
+						<IconChevronDownMini className="h-5 w-5" aria-hidden="true" />
 					</ElemButton>
 				</Menu.Button>
 			</div>
@@ -65,8 +65,9 @@ export const UserMenu = () => {
 								{({ active }) => (
 									<a
 										href={item.href}
-										className={`${active ? "bg-gray-50" : ""
-											} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+										className={`${
+											active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center px-2 py-2`}
 									>
 										<item.icon className="mr-2 h-6 w-6" aria-hidden="true" />
 										{item.name}
@@ -81,8 +82,9 @@ export const UserMenu = () => {
 							{({ active }) => (
 								<button
 									onClick={logout}
-									className={`${active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center font-medium px-2 py-2`}
+									className={`${
+										active ? "bg-gray-50" : ""
+									} hover:text-primary-500 flex w-full items-center px-2 py-2`}
 								>
 									<IconSignOut className="mr-2 h-6 w-6" />
 									Sign out

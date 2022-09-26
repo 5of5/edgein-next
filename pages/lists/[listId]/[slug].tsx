@@ -10,7 +10,7 @@ import {
 	Follows_Companies,
 	Follows_Vc_Firms,
 	useGetVcFirmsByListIdQuery,
-	useGetCompaniesByListIdQuery
+	useGetCompaniesByListIdQuery,
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { has } from "lodash";
@@ -21,7 +21,7 @@ import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 
 type Props = {};
 
-const MyList: NextPage<Props> = ({ }) => {
+const MyList: NextPage<Props> = ({}) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const [selectedListName, setSelectedListName] = useState<null | string>(
@@ -36,8 +36,8 @@ const MyList: NextPage<Props> = ({ }) => {
 
 	const [isUpdated, setIsUpdated] = useState(0);
 
-	const [companies, setCompanies] = useState<Follows_Companies[]>([])
-	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([])
+	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
+	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
 	useEffect(() => {
 		if (companies) {
@@ -98,85 +98,88 @@ const MyList: NextPage<Props> = ({ }) => {
 	};
 
 	const { data: companiesData } = useGetCompaniesByListIdQuery({
-		list_id: parseInt(router.query?.listId as string)
-	})
+		list_id: parseInt(router.query?.listId as string),
+	});
 
 	const { data: vcFirms } = useGetVcFirmsByListIdQuery({
-		list_id: parseInt(router.query?.listId as string)
-	})
+		list_id: parseInt(router.query?.listId as string),
+	});
 
 	useEffect(() => {
 		if (companiesData)
-			setCompanies(companiesData?.follows_companies as Follows_Companies[])
-		if (vcFirms)
-			setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[])
-	}, [companiesData, vcFirms])
+			setCompanies(companiesData?.follows_companies as Follows_Companies[]);
+		if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
+	}, [companiesData, vcFirms]);
 
 	return (
-		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<DashboardLayout>
-				<div className="col-span-3">
-					<div className="w-full mb-7">
-						<div className="inline-flex ">
-							<h1 className="flex font-bold text-xl capitalize mb-1 items-center">
-								{selectedListName === "hot" && <EmojiHot className="mr-2" />}
-								{selectedListName === "like" && <EmojiLike className="mr-2" />}
-								{selectedListName === "crap" && <EmojiCrap className="mr-2" />}
-								{isCustomList && <IconCompanyList className="mr-2" />}
-								{selectedListName}
-							</h1>
-
-							{isCustomList && (
-								<>
-									<ElemListOptionMenu
-										onUpdateBtn={() => setShowEditModal(true)}
-										onDeleteBtn={() => setShowDeleteModal(true)}
-									/>
-
-									<ElemListEditModal
-										onCloseModal={() => setShowEditModal(false)}
-										isOpen={showEditModal}
-										onSave={onSave}
-									/>
-
-									<ElemDeleteListModal
-										onCloseModal={() => setShowDeleteModal(false)}
-										onDelete={onDeleteList}
-										isOpen={showDeleteModal}
-										listName={selectedListName}
-										deleteId={parseInt(router.query.listId as string)}
-									/>
-								</>
+		<DashboardLayout>
+			<div className="col-span-3">
+				<div className="w-full mb-7">
+					<div className="inline-flex ">
+						<h1 className="flex font-bold text-xl capitalize mb-1 items-center">
+							{selectedListName === "hot" && (
+								<EmojiHot className="w-6 h-6 mr-2" />
 							)}
-						</div>
-						<p className="first-letter:uppercase">
-							{selectedListName} lists are generated from your{" "}
-							{selectedListName?.toLowerCase()} reactions.
-						</p>
+							{selectedListName === "like" && (
+								<EmojiLike className="w-6 h-6 mr-2" />
+							)}
+							{selectedListName === "crap" && (
+								<EmojiCrap className="w-6 h-6 mr-2" />
+							)}
+							{isCustomList && <IconCompanyList className="mr-2" />}
+							{selectedListName}
+						</h1>
+
+						{isCustomList && (
+							<>
+								<ElemListOptionMenu
+									onUpdateBtn={() => setShowEditModal(true)}
+									onDeleteBtn={() => setShowDeleteModal(true)}
+								/>
+
+								<ElemListEditModal
+									onCloseModal={() => setShowEditModal(false)}
+									isOpen={showEditModal}
+									onSave={onSave}
+								/>
+
+								<ElemDeleteListModal
+									onCloseModal={() => setShowDeleteModal(false)}
+									onDelete={onDeleteList}
+									isOpen={showDeleteModal}
+									listName={selectedListName}
+									deleteId={parseInt(router.query.listId as string)}
+								/>
+							</>
+						)}
 					</div>
-
-					<ElemCompanies
-						handleNavigation={handleRowClick}
-						companies={companies}
-						selectedListName={selectedListName}
-						totalFunding={totalFunding}
-						getAlternateRowColor={getAlternateRowColor}
-						tagsCount={tagsCount}
-						isCustomList={isCustomList}
-						setIsUpdated={setIsUpdated}
-					/>
-
-					<ElemInvestors
-						handleNavigation={handleRowClick}
-						vcfirms={vcfirms}
-						selectedListName={selectedListName}
-						getAlternateRowColor={getAlternateRowColor}
-						isCustomList={isCustomList}
-						setIsUpdated={setIsUpdated}
-					/>
+					<p className="first-letter:uppercase text-slate-600">
+						{selectedListName} lists are generated from your{" "}
+						{selectedListName?.toLowerCase()} reactions.
+					</p>
 				</div>
-			</DashboardLayout>
-		</div>
+
+				<ElemCompanies
+					handleNavigation={handleRowClick}
+					companies={companies}
+					selectedListName={selectedListName}
+					totalFunding={totalFunding}
+					getAlternateRowColor={getAlternateRowColor}
+					tagsCount={tagsCount}
+					isCustomList={isCustomList}
+					setIsUpdated={setIsUpdated}
+				/>
+
+				<ElemInvestors
+					handleNavigation={handleRowClick}
+					vcfirms={vcfirms}
+					selectedListName={selectedListName}
+					getAlternateRowColor={getAlternateRowColor}
+					isCustomList={isCustomList}
+					setIsUpdated={setIsUpdated}
+				/>
+			</div>
+		</DashboardLayout>
 	);
 };
 
