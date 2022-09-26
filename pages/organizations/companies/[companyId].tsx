@@ -207,7 +207,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         setCompanyEditable(tempData);
         const error = await validateFieldsForEdit(true, tempData, company)
         setErrors(error)
-        console.log("errror =", error)
+        
         if (Object.keys(error).length == 0) {
             const resp = await updateCall(tempData  as Companies)
             window.location.reload()
