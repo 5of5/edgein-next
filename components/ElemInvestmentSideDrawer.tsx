@@ -51,7 +51,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
         if (investmentRoundToEdit) {
             setInvestmentRound({
                 ...investmentRoundToEdit,
-                investments: (investmentRoundToEdit && investmentRoundToEdit.investments) ? investmentRoundToEdit.investments as Investments[] : [emptyInvestment]  as Investments[]
+                investments: (investmentRoundToEdit && investmentRoundToEdit.investments) ? investmentRoundToEdit.investments as Investments[] : [emptyInvestment]  as any[]
             })
         }
     }, [investmentRoundToEdit, emptyInvestment])

@@ -54,7 +54,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     const [modal, setModal] = useState(false)
     const [teamDrawer, setTeamDrawer] = useState(false)
     const [investmentDrawer, setInvestmentDrawer] = useState(false)
-    const [company, setCompany] = useState(props.company);
+    const [company, setCompany] = useState<Companies>(props.company);
     const [companyEditable, setCompanyEditable] = useState<any>(props.company);
     const [coins, setCoins] = useState<Coins[]>()
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -79,8 +79,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     
     useEffect(() => {
 		if (companyData) {
-            setCompany(companyData?.companies[0] as Companies);
-            setCompanyEditable(companyData?.companies[0] as Companies);
+            setCompany(companyData?.companies[0] as any);
+            setCompanyEditable(companyData?.companies[0] as any);
         }
     }, [companyData]);
     
@@ -220,10 +220,10 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     }
 
     return (
-        <>
-            <div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
+        <DashboardLayout>
+            <div className="max-w-6xl mx-auto">
                 <div className="grid grid-cols-4 gap-4">
-                <DashboardLayout />
+              
 
                     <div className="col-span-3">
                         <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-0 pt-3 pb-3 z-10 bg-primary-50">
@@ -662,7 +662,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                     </div>
                 </div>
             </div>
-        </>
+        </DashboardLayout>
     )
 }
 
