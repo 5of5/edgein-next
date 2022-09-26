@@ -207,7 +207,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
         setCompanyEditable(tempData);
         const error = await validateFieldsForEdit(true, tempData, company)
         setErrors(error)
-        console.log("errror =", error)
+        
         if (Object.keys(error).length == 0) {
             const resp = await updateCall(tempData  as Companies)
             window.location.reload()
@@ -222,8 +222,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
     return (
         <DashboardLayout>
             <div className="max-w-6xl mx-auto">
-                <div className="grid grid-cols-4 gap-4">
-              
 
                     <div className="col-span-3">
                         <div className="flex pl-6 justify-between items-center border-b-4 border-primary-500 sticky top-0 pt-3 pb-3 z-10 bg-primary-50">
@@ -660,7 +658,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             {investmentDrawer && <ElemInvestmentSideDrawer onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
                         </div>
                     </div>
-                </div>
+                
             </div>
         </DashboardLayout>
     )
