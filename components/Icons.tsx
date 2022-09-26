@@ -110,23 +110,6 @@ export const IconQuestion: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-<svg
-	width="24"
-	height="24"
-	viewBox="0 0 24 24"
-	fill="none"
-	xmlns="http://www.w3.org/2000/svg"
->
-	<path
-		d="M11.7804 6.59981C11.4747 6.5995 11.1743 6.68253 10.9095 6.84053C10.6447 6.99853 10.4248 7.22593 10.272 7.49982C10.1616 7.712 10.0112 7.8991 9.82962 8.05002C9.64807 8.20094 9.43907 8.31261 9.21503 8.37842C8.99098 8.44422 8.75645 8.46282 8.52532 8.43311C8.2942 8.4034 8.0712 8.32598 7.86953 8.20545C7.66787 8.08492 7.49165 7.92373 7.35131 7.73143C7.21098 7.53913 7.10939 7.31964 7.05257 7.08597C6.99575 6.8523 6.98486 6.6092 7.02053 6.37109C7.05621 6.13298 7.13773 5.90471 7.26026 5.6998C7.8348 4.67039 8.72158 3.86587 9.7831 3.411C10.8446 2.95614 12.0215 2.87635 13.1314 3.18401C14.2412 3.49167 15.2219 4.16959 15.9213 5.11263C16.6208 6.05567 16.9999 7.21114 17 8.39983C17.0003 9.51696 16.6658 10.6067 16.0427 11.519C15.4195 12.4313 14.5382 13.1213 13.5203 13.4939V13.7999C13.5203 14.2773 13.337 14.7351 13.0107 15.0727C12.6844 15.4103 12.2419 15.5999 11.7804 15.5999C11.319 15.5999 10.8764 15.4103 10.5502 15.0727C10.2239 14.7351 10.0406 14.2773 10.0406 13.7999V11.9999C10.0406 11.5225 10.2239 11.0646 10.5502 10.7271C10.8764 10.3895 11.319 10.1999 11.7804 10.1999C12.2419 10.1999 12.6844 10.0102 13.0107 9.67264C13.337 9.33507 13.5203 8.87723 13.5203 8.39983C13.5203 7.92244 13.337 7.4646 13.0107 7.12703C12.6844 6.78946 12.2419 6.59981 11.7804 6.59981Z"
-		fill="#0E0067"
-	/>
-	<path
-		d="M11.7804 21C12.2419 21 12.6844 20.8104 13.0107 20.4728C13.337 20.1352 13.5203 19.6774 13.5203 19.2C13.5203 18.7226 13.337 18.2647 13.0107 17.9272C12.6844 17.5896 12.2419 17.4 11.7804 17.4C11.319 17.4 10.8764 17.5896 10.5502 17.9272C10.2239 18.2647 10.0406 18.7226 10.0406 19.2C10.0406 19.6774 10.2239 20.1352 10.5502 20.4728C10.8764 20.8104 11.319 21 11.7804 21Z"
-		fill="#0E0067"
-	/>
-</svg>;
-
 export const IconChartUp: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
@@ -287,6 +270,29 @@ export const IconList: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
+export const IconCustomList: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "List"}</title>
+			<rect x="14" y="10" width="7" height="7" />
+			<line x1="2" y1="16" x2="11" y2="16" />
+			<line x1="2" y1="11" x2="11" y2="11" />
+			<line x1="2" y1="6" x2="22" y2="6" />
+		</svg>
+	);
+};
+
 export const IconCash: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
@@ -393,6 +399,27 @@ export const IconUserCircle: React.FC<IconProps> = ({
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+			/>
+		</svg>
+	);
+};
+
+export const IconUserCircleSolid: React.FC<IconProps> = ({
+	className,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="currentColor"
+			viewBox="0 0 24 24"
+		>
+			<title>{title ? title : "User"}</title>
+			<path
+				fillRule="evenodd"
+				d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"
+				clipRule="evenodd"
 			/>
 		</svg>
 	);
@@ -765,17 +792,6 @@ export const IconChevronDownMini: React.FC<IconProps> = ({
 	title,
 }) => {
 	return (
-		// <svg
-		// 	xmlns="http://www.w3.org/2000/svg"
-		// 	className={className}
-		// 	fill="none"
-		// 	viewBox="0 0 24 24"
-		// 	stroke="currentColor"
-		// 	strokeWidth={2}
-		// >
-		// 	<title>{title ? title : "Down"}</title>
-		// 	<path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-		// </svg>
 		<svg
 			className={className}
 			xmlns="http://www.w3.org/2000/svg"

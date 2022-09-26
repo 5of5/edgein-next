@@ -167,6 +167,7 @@ export const ElemInvestments: React.FC<Props> = ({
 														imgClass="object-cover w-12 h-12"
 														imgAlt={investment.person.name}
 														placeholder="user"
+														placeholderClass="text-slate-300"
 													/>
 													<span className="line-clamp-2 font-bold">
 														{investment.person.name}
