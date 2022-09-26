@@ -1,12 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 import { ElemButton } from './ElemButton'
 import { ElemPhoto } from './ElemPhoto'
 import { IconX } from './Icons'
 import { InputText } from './InputText'
-import Select from 'react-select'
+import AsyncSelect from 'react-select/async';
 import { validateCompanyEmail } from '@/utils'
 import extractDomain from "extract-domain"
+import { Companies_Bool_Exp, useGetCompaniesQuery, useGetVcFirmsQuery, Vc_Firms_Bool_Exp } from '@/graphql/types'
 
 type Props = {
   isOpen: boolean
@@ -24,6 +25,8 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
   const [selectedCompany, setSelectedCompany] = useState<any>()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+
+  const [search, setSearch] = useState('')
 
   const onFinishOrCancel = () => {
     onClose(false)
@@ -83,6 +86,53 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
     })
   }
 
+  const { data: companiesData } = useGetCompaniesQuery({
+    limit: null,
+    offset: null,
+    where: {
+      slug: { _neq: "" },
+      status: { _eq: "published" },
+      name: { _ilike: `%${search}%` }
+    } as Companies_Bool_Exp,
+  })
+
+  const {data: vcFirmsData} = useGetVcFirmsQuery({
+    limit: null,
+    offset: null,
+    where: {
+      slug: { _neq: "" },
+      status: { _eq: "published" },
+      name: { _ilike: `%${search}%` }
+    } as Vc_Firms_Bool_Exp,
+  })
+
+  const compileOptions = useCallback(() => {
+    const companiesDropdown = companiesData?.companies.map((company) => ({
+      label: company.name,
+      value: company.id,
+      type: 'companies',
+      logo: company.logo,
+      website: company.website,
+    })) || []
+  
+    const vcFirmsDropdown = vcFirmsData?.vc_firms.map((vcfirm) => ({
+      label: vcfirm.name,
+      value: vcfirm.id,
+      type: 'vc_firms',
+      logo: vcfirm.logo,
+      website: vcfirm.website,
+    })) || []
+
+    const compiledDropdown = companiesDropdown.concat(vcFirmsDropdown)
+
+    return compiledDropdown.length ? compiledDropdown : dropdown as any[]
+  }, [companiesData, vcFirmsData, dropdown])
+
+  const loadOptions = useCallback((search: string) => {
+    setSearch(search)
+    return new Promise<any[]>((resolve) => resolve(compileOptions()))
+  }, [compileOptions])
+
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -110,7 +160,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="w-full max-w-xl transform overflow-y-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   {!isEmailEntered ?
                     <>
                       <Dialog.Title
@@ -141,9 +191,11 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({ isOpen, onClose, dropd
                     {
                       !isCompanySelected ?
                         <>
-                          <Select
+                          <AsyncSelect
                             isClearable
-                            options={dropdown}
+                            defaultOptions
+                            cacheOptions
+                            loadOptions={loadOptions}
                             onChange={(value: any) => setSelectedCompany(value)}
                             name="colors"
                             className="basic-multi-select border-2 rounded-t-md rounded-b-md border-primary-500 placeholder:text-slate-250"

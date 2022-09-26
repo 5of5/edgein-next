@@ -57,3 +57,10 @@ query GetPersonsPath {
     slug
   }
 }
+
+query GetAllPersons {
+  people {
+    id
+    name
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Team_Members } from "../../graphql/types";
-import { ElemPersonCard } from "../ElemPersonCard";
+import { Team_Members } from "@/graphql/types";
+import { ElemPersonCard } from "@/components/ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
 import { ElemFilterTags } from "@/components/ElemFilterTags";
 import { uniq, compact, sortBy } from "lodash";
@@ -46,7 +46,6 @@ export const ElemTeamGrid: React.FC<Props> = ({
 					)}
 				</div>
 			)}
-
 			<ElemFilterTags
 				onClick={(tag, index) => setSelectedTag(tag)}
 				selectedTag={selectedTag}

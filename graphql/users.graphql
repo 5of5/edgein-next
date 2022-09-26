@@ -1,7 +1,7 @@
 query GetUserProfile ($id: Int!) {
   users_by_pk(id: $id) {
     id
-    organizations{
+    organization_companies {
       id
       company {
         id
@@ -11,6 +11,9 @@ query GetUserProfile ($id: Int!) {
         overview
         location
       }
+    }
+    organization_vc_firms {
+      id
       vc_firm {
         id
         slug
@@ -46,14 +49,6 @@ query GetUserProfile ($id: Int!) {
         function
         title
         company {
-          id
-          slug
-          name
-          logo
-          overview
-          location
-        }
-        vc_firm {
           id
           slug
           name

@@ -3,13 +3,14 @@ import React, { PropsWithChildren } from "react";
 type Props = {
 	className?: string;
 	label?: string;
-	type?: "text" | "email" | "search" | "password" | "";
+	type?: "text" | "email" | "search" | "password" | "number";
 	name: string;
 	value: string;
 	onChange: React.ChangeEventHandler<HTMLInputElement>;
 	placeholder?: string;
 	required?: boolean;
 	autoComplete?: string;
+	disabled?:  boolean
 };
 
 export const InputText: React.FC<PropsWithChildren<Props>> = ({
@@ -22,6 +23,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 	placeholder = "",
 	required = false,
 	autoComplete = "on",
+	disabled= false
 }) => {
 	return (
 		<>
@@ -39,6 +41,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 				placeholder={placeholder}
 				required={required}
 				autoComplete={autoComplete}
+				disabled={disabled}
 			/>
 		</>
 	);

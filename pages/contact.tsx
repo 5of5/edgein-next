@@ -37,7 +37,7 @@ const Contact: NextPage = () => {
 	};
 
 	return (
-		<div className="lg:py-10 lg:min-h-[40vh] -mb-24 pb-36 bg-[url('/images/bg-shapes1.svg')] bg-cover bg-no-repeat bg-center">
+		<div className="lg:py-10 lg:min-h-[40vh] -mb-24 pb-36 bg-[url('/images/bg-shapes1.svg')] bg-cover bg-no-repeat bg-center overflow-hidden">
 			<div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
 					Contact

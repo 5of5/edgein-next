@@ -68,38 +68,38 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const [tmData, setTmData] = useState<any>(emptyTeamMember);
 
 	const { data: users } = useGetUserProfileQuery({
-		id: user ?.id ?? 0,
+		id: user?.id ?? 0,
 	});
 
 	// set person
 	useEffect(() => {
-		if (users) setPerson(users.users_by_pk ?.person as People);
+		if (users) setPerson(users.users_by_pk?.person as People);
 	}, [users]);
 
 	// set workspace data in edit mode
 	useEffect(() => {
 		if (activeWorkspace)
 			setTmData((prev: any) => {
-				const findTM = find(person ?.team_members, { id: activeWorkspace });
+				const findTM = find(person?.team_members, { id: activeWorkspace });
 				if (!findTM) return prev;
 
 				const selectedCompany = find(companiesDropdown, {
-					value: findTM ?.company ?.id,
+					value: findTM?.company?.id,
 				});
-				const selectedPositionType = findTM ?.function
+				const selectedPositionType = findTM?.function
 					? {
-						title: `${findTM ?.function
-							?.charAt(0)
-								.toUpperCase()}${findTM ?.function ?.slice(1)}`,
-						value: findTM ?.function,
-					}
+							title: `${findTM?.function
+								?.charAt(0)
+								.toUpperCase()}${findTM?.function?.slice(1)}`,
+							value: findTM?.function,
+					  }
 					: null;
 				const currentlyWorking = findTM.end_date ? false : true;
 
 				const temp = {
 					...prev,
 					companyId: selectedCompany,
-					position: findTM ?.title,
+					position: findTM?.title,
 					positionType: selectedPositionType,
 					startDate: findTM.start_date,
 					endDate: findTM.end_date,
@@ -107,7 +107,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				};
 				return temp;
 			});
-	}, [activeWorkspace, companiesDropdown, person ?.team_members]);
+	}, [activeWorkspace, companiesDropdown, person?.team_members]);
 
 	const renderWorkspaceForm = (id?: number) => {
 		return (
@@ -211,7 +211,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							<div className="flex">
 								<ElemPhoto
 									wrapClass="w-12 h-12 border p-1 rounded-md"
-									photo={teamMember.company ?.logo}
+									photo={teamMember.company?.logo}
 									imgAlt="company logo"
 								/>
 
@@ -220,7 +220,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										{teamMember.title}
 									</h2>
 									<span className="font-thin text-slate-500 ">
-										{teamMember.company ?.name}
+										{teamMember.company?.name}
 									</span>
 									<p className="font-thin text-slate-500">
 										{" "}
@@ -230,7 +230,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 										)}{" "}
 										.{" "}
 										{getTimeOfWork(teamMember.start_date, teamMember.end_date)}{" "}
-										<br /> {teamMember.company ?.location}
+										<br /> {teamMember.company?.location}
 									</p>
 								</div>
 							</div>
@@ -252,20 +252,20 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	// set profile data
 	useEffect(() => {
 		if (person) {
-			const nameFragments = person ?.name ?.split(" ");
-			const firstName = nameFragments ?.shift() || "";
-			const lastName = nameFragments ?.join(" ") || "";
+			const nameFragments = person?.name?.split(" ");
+			const firstName = nameFragments?.shift() || "";
+			const lastName = nameFragments?.join(" ") || "";
 
 			setFirstName(firstName);
 			setLastName(lastName);
-			setEmail(person ?.email || []);
-			setCity(person ?.city || "");
-			setCountry(person ?.country || "");
-			setWebsite(person ?.website_url || "");
-			setLinkedIn(person ?.linkedin || "");
-			setFacebook(person ?.facebook_url || "");
-			setTwitter(person ?.twitter_url || "");
-			setAbout(person ?.about || "");
+			setEmail(person?.email || []);
+			setCity(person?.city || "");
+			setCountry(person?.country || "");
+			setWebsite(person?.website_url || "");
+			setLinkedIn(person?.linkedin || "");
+			setFacebook(person?.facebook_url || "");
+			setTwitter(person?.twitter_url || "");
+			setAbout(person?.about || "");
 		}
 	}, [person]);
 
@@ -274,7 +274,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			const resp = await fetch("/api/update_profile", {
 				method: "POST",
 				body: JSON.stringify({
-					id: person ?.id,
+					id: person?.id,
 					payload,
 				}),
 				headers: {
@@ -290,7 +290,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			method: "POST",
 			body: JSON.stringify({
 				teammember: payload,
-				personId: person ?.id,
+				personId: person?.id,
 			}),
 			headers: {
 				Accept: "application/json",
@@ -458,7 +458,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const handleProfileEditClick = () => {
 		// 👇️ open file input box on click of other element
-		fileInputRef ?.current ?.click();
+		fileInputRef?.current?.click();
 	};
 
 	const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
@@ -467,7 +467,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 		const res = await uploadFile(file);
 
-		deleteFile(person ?.picture);
+		deleteFile(person?.picture);
 
 		const resp = await updateCall({ picture: res.file });
 
@@ -475,13 +475,13 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const makePrimary = (email: string) => async () => {
-		const tempEmail = [...person ?.email];
+		const tempEmail = [...person?.email];
 
 		const tempEmailIndex = findIndex(tempEmail, { email });
 
 		tempEmail.splice(tempEmailIndex, 1);
 
-		tempEmail.push({ email: person ?.work_email });
+		tempEmail.push({ email: person?.work_email });
 
 		const resp = await updateCall({
 			email: tempEmail,
@@ -492,7 +492,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const removeEmail = (email: string) => async () => {
-		const tempEmail = [...person ?.email];
+		const tempEmail = [...person?.email];
 
 		const tempEmailIndex = findIndex(tempEmail, { email });
 
@@ -506,604 +506,585 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	};
 
 	const getInviteLink = (invitecode: string) => {
-		const inviteLink = `${process.env.NEXT_PUBLIC_REDIRECT_URL}/?invite=${invitecode}`;
+		const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${invitecode}`;
 		return inviteLink;
-	}
+	};
 
 	const onTelegram = () => {
-		window.open(`https://telegram.me/share/url?url=${getInviteLink(user.reference_id)}&text=${user.display_name} has invited you to join Edge In! Use the invite link to get started`, '_blank')
-	}
+		window.open(
+			`https://telegram.me/share/url?url=${getInviteLink(
+				user.reference_id
+			)}&text=${
+				user.display_name
+			} has invited you to join Edge In! Use the invite link to get started`,
+			"_blank"
+		);
+	};
 
 	const onSMS = () => {
-		window.open(`sms:?&body=${user.display_name} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(user.reference_id)}`, '')
-	}
+		window.open(
+			`sms:?&body=${
+				user.display_name
+			} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
+				user.reference_id
+			)}`,
+			""
+		);
+	};
 
 	const onEmail = () => {
-		window.open(`mailto:?subject=${user.display_name} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${user.display_name} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(user.reference_id)}`, '')
-	}
+		window.open(
+			`mailto:?subject=${
+				user.display_name
+			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
+	        ${
+		user.display_name
+	} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
+				user.reference_id
+			)}`,
+			""
+		);
+	};
 
 	const onCopy = () => {
 		navigator.clipboard.writeText(getInviteLink(user.reference_id));
-	}
+	};
 
 	return (
-		<div className="max-w-6xl px-4 pt-4 mx-auto sm:px-6 lg:px-8 lg:pt-10 mt-10">
-			<DashboardLayout>
-				<div className="col-span-3">
-					<div className="bg-white rounded-lg p-5 mb-5">
-						<div className="flex justify-between items-center mb-4 pb-3">
-							<h2 className="text-dark-500 font-bold text-xl">
-								Invite Code
-							</h2>
-							{
-								(user && user.reference_id) && (
-									<ElemShareMenu onCopy={onCopy} onTelegram={onTelegram} onEmail={onEmail} onSMS={onSMS} />
-								)
-							}
-						</div>
-						<p >{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+		<DashboardLayout>
+			<div className="bg-white shadow rounded-lg p-5 mb-5">
+				<div className="flex justify-between items-center">
+					<h2 className="font-bold text-xl">Invite Code</h2>
+					{user && user.reference_id && (
+						<ElemShareMenu
+							onCopy={onCopy}
+							onTelegram={onTelegram}
+							onEmail={onEmail}
+							onSMS={onSMS}
+						/>
+					)}
+				</div>
+				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+			</div>
+			<div className="bg-white rounded-lg p-5">
+				<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
+					<h2 className="text-dark-500 font-bold text-xl">Personal Profile</h2>
+					<ElemButton btn="white" className="text-dark-500 font-bold  " arrow>
+						View Profile
+					</ElemButton>
+				</div>
 
-					</div>
-					<div className="bg-white rounded-lg p-5">
-						<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
-							<h2 className="text-dark-500 font-bold text-xl">
-								Personal Profile
-							</h2>
-							<ElemButton
-								btn="white"
-								className="text-dark-500 font-bold  "
-								arrow
+				<div className="mt-3 mb-2 border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+					<h2 className="text-dark-500 font-bold  col-span-3">Profile Image</h2>
+					<div className="flex col-span-9">
+						<div className=" block relative">
+							<ElemPhoto
+								photo={person?.picture}
+								wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white rounded-lg shadow-md mr-2 rounded-full"
+								imgClass="object-fit max-w-full max-h-full rounded-full"
+								imgAlt={person?.name}
+								placeholder="user"
+							/>
+							<span
+								className="w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0 bg-slate-200 hover:bg-slate-300"
+								role="button"
+								onClick={handleProfileEditClick}
 							>
-								View Profile
-							</ElemButton>
+								<IconProfilePictureUpload />
+							</span>
+							<input
+								type="file"
+								hidden={true}
+								className="hidden"
+								onChange={onFileUpload()}
+								ref={fileInputRef}
+							/>
 						</div>
-
-						<div className="mt-3 mb-2 border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-							<h2 className="text-dark-500 font-bold  col-span-3">
-								Profile Image
-							</h2>
-							<div className="flex col-span-9">
-								<div className=" block relative">
-									<ElemPhoto
-										photo={person ?.picture}
-										wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white rounded-lg shadow-md mr-2 rounded-full"
-										imgClass="object-fit max-w-full max-h-full rounded-full"
-										imgAlt={person ?.name}
-									/>
-									<span
-										className="bg-gray-200 w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0"
-										role="button"
-										onClick={handleProfileEditClick}
-									>
-										<IconProfilePictureUpload />
-									</span>
-									<input
-										type="file"
-										hidden={true}
-										className="hidden"
-										onChange={onFileUpload()}
-										ref={fileInputRef}
-									/>
-								</div>
-								<div className="ml-8 mt-5">
-									<ul>
-										<li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">
-											Square images work best (at least 300 x 300 pixels){" "}
-										</li>
-										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
-											Crop your image before you upload
-										</li>
-										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
-											Image upoloads are limited to 2MB
-										</li>
-										<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
-											Accepted image types JPG SVG AND PNG
-										</li>
-									</ul>
-								</div>
-							</div>
+						<div className="ml-8 mt-5">
+							<ul>
+								<li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">
+									Square images work best (at least 300 x 300 pixels){" "}
+								</li>
+								<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+									Crop your image before you upload
+								</li>
+								<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+									Image upoloads are limited to 2MB
+								</li>
+								<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
+									Accepted image types JPG SVG AND PNG
+								</li>
+							</ul>
 						</div>
-
-						{!editName && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
-
-								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person ?.name}</h2>
-								</div>
-
-								<button
-									className=" text-primary-500 col-span-1 text-right w-auto"
-									onClick={() => setEditName(true)}
-								>
-									Edit
-								</button>
-							</div>
-						)}
-						{/* hide content name */}
-						{editName && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12">
-								<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
-								<div className="col-span-8">
-									<div className="w-96">
-										<InputText
-											label="First Name"
-											onChange={(e) => setFirstName(e.target.value)}
-											value={firstName}
-											name="first_name"
-											placeholder="Bram"
-											className="mb-4"
-										/>
-										<InputText
-											label="Last Name"
-											onChange={(e) => setLastName(e.target.value)}
-											value={lasttName}
-											name="last_name"
-											placeholder="Cohen"
-											className="mb-3"
-										/>
-
-										<span className="text-slate-500 m font-thin ">
-											<b className="font-bold text-slate-600">Note:</b> If you
-											change your name on EdgeIn, you won’t be able to change it
-											again for 60 days.
-										</span>
-
-										<div className="flex mt-3 mb-2">
-											<ElemButton
-												btn="primary"
-												className="mr-2"
-												onClick={onSave("name")}
-											>
-												Change
-											</ElemButton>
-											<ElemButton
-												btn="white"
-												onClick={() => setEditName(false)}
-											>
-												Cancel
-											</ElemButton>
-										</div>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editEmail && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
-								<div className="col-span-8">
-									<p className="text-slate-600 mb-2">
-										{person ?.work_email}
-										<b className="text-sm text-primary-500"> - Primary</b>
-									</p>
-									{person?.email && person?.email.map((email: any) => (
-										<p key={email.email} className="text-slate-600 mb-2">
-											{email.email}
-										</p>
-									))}
-								</div>
-
-								<button
-									onClick={() => setEditEmail(true)}
-									className="absolute right-0  text-primary-500"
-								>
-									Edit
-								</button>
-							</div>
-						)}
-
-						{/* hide content email */}
-						{editEmail && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
-								<div className="col-span-8">
-									<div className="w-96">
-										<h2 className=" font-bold text-slate-600">
-											Current Emails
-										</h2>
-										<div className="mb-2">
-											<span className="block mt-1 text-sm font-semibold text-slate-600">
-												{person ?.work_email}
-											</span>
-											<span className="mt-1 text-slate-500 text-sm">
-												Primary
-											</span>
-										</div>
-										{email ?.map((mail: any) => (
-											<div key={mail.email} className="mb-2">
-												<span className="block mt-1 text-sm font-semibold text-slate-600">
-													{mail.email}
-												</span>
-												<span
-													className="mt-1 text-sm text-purple-800 cursor-pointer"
-													onClick={makePrimary(mail.email)}
-												>
-													Make Primary
-												</span>
-												<span
-													className="mt-1 text-sm ml-2 text-purple-800 cursor-pointer"
-													onClick={removeEmail(mail.email)}
-												>
-													Remove
-												</span>
-											</div>
-										))}
-
-										<InputText
-											label="New Email"
-											onChange={(e) => {
-												setNewEmail(e.target.value);
-											}}
-											value={newEmail}
-											name="new-email"
-											placeholder="Cohen@gmail.com"
-										/>
-
-										<div className="flex mt-3 mb-2">
-											<ElemButton
-												btn="primary"
-												className="mr-2"
-												onClick={onSave("email")}
-											>
-												Add
-											</ElemButton>
-											<ElemButton
-												btn="white"
-												onClick={() => setEditEmail(false)}
-											>
-												Cancel
-											</ElemButton>
-										</div>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editLocation && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Location
-								</h2>
-								<div className="col-span-8">
-									<h2 className="text-slate-600 ">
-										{person ?.city}, {person ?.country}
-									</h2>
-								</div>
-
-								<button
-									className="absolute right-0  text-primary-500"
-									onClick={() => setEditLocation(true)}
-								>
-									Edit
-								</button>
-							</div>
-						)}
-
-						{/* hide content location */}
-						{editLocation && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Location
-								</h2>
-								<div className="col-span-8">
-									<div className="w-96 ">
-										<InputText
-											label="City"
-											onChange={(e) => setCity(e.target.value)}
-											value={city}
-											name="city"
-											placeholder="San Francisco"
-											className="mb-3"
-										/>
-										<InputText
-											label="Country"
-											onChange={(e) => setCountry(e.target.value)}
-											value={country}
-											name="country"
-											placeholder="United State"
-											className="mb-3"
-										/>
-
-										<div className="flex mt-3 mb-2">
-											<ElemButton
-												btn="primary"
-												className="mr-2"
-												onClick={onSave("location")}
-											>
-												Save
-											</ElemButton>
-											<ElemButton
-												btn="white"
-												onClick={() => setEditLocation(false)}
-											>
-												Cancel
-											</ElemButton>
-										</div>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editWebsite && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Website URl
-								</h2>
-								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person ?.website_url}</h2>
-								</div>
-
-								<button
-									className="absolute right-0  text-primary-500"
-									onClick={() => setEditWebsite(true)}
-								>
-									Edit
-								</button>
-							</div>
-						)}
-						{/* hide content website */}
-						{editWebsite && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Website URL
-								</h2>
-								<div className="col-span-8">
-									<div className="w-96 ">
-										<InputText
-											onChange={(e) => setWebsite(e.target.value)}
-											value={website}
-											name="website"
-											placeholder="www.brahm.com"
-										/>
-
-										<div className="flex mt-3 mb-2">
-											<ElemButton
-												btn="primary"
-												className="mr-2"
-												onClick={onSave("website")}
-											>
-												Save
-											</ElemButton>
-											<ElemButton
-												btn="white"
-												onClick={() => setEditWebsite(false)}
-											>
-												Cancel
-											</ElemButton>
-										</div>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editLinkedIn && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									LinkedIn URL
-								</h2>
-								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person ?.linkedin}</h2>
-								</div>
-
-								<button
-									className="absolute right-0  text-primary-500"
-									onClick={() => setEditLinkedIn(true)}
-								>
-									Edit
-								</button>
-							</div>
-						)}
-
-						{/* hide content linkedin */}
-						{editLinkedIn && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									LinkedIn URL
-								</h2>
-								<div className="col-span-8">
-									<div className="w-96">
-										<InputText
-											onChange={(e) => setLinkedIn(e.target.value)}
-											value={linkedIn}
-											name="linkedIn"
-											placeholder="https://linkedin.com"
-										/>
-
-										<div className="flex mt-3 mb-2">
-											<ElemButton
-												btn="primary"
-												className="mr-2"
-												onClick={onSave("linkedin")}
-											>
-												Save
-											</ElemButton>
-											<ElemButton
-												btn="white"
-												onClick={() => setEditLinkedIn(false)}
-											>
-												Cancel
-											</ElemButton>
-										</div>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editFacebook && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Facebook URL
-								</h2>
-								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person ?.facebook_url}</h2>
-								</div>
-
-								<button
-									className="absolute right-0  text-primary-500"
-									onClick={() => setEditFacebook(true)}
-								>
-									Edit
-								</button>
-							</div>
-						)}
-
-						{/* hide content facebook*/}
-						{editFacebook && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Facebook URL
-								</h2>
-								<div className="col-span-8">
-									<div className="w-96">
-										<InputText
-											onChange={(e) => setFacebook(e.target.value)}
-											value={facebook}
-											name="facebook"
-											placeholder="https://facebook.com"
-										/>
-
-										<div className="flex mt-3 mb-2">
-											<ElemButton
-												btn="primary"
-												className="mr-2"
-												onClick={onSave("facebook")}
-											>
-												Save
-											</ElemButton>
-											<ElemButton
-												btn="white"
-												onClick={() => setEditFacebook(false)}
-											>
-												Cancel
-											</ElemButton>
-										</div>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editTwitter && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Twitter URL
-								</h2>
-								<div className="col-span-8">
-									<h2 className="text-slate-600 ">{person ?.twitter_url}</h2>
-								</div>
-
-								<button
-									onClick={() => setEditTwitter(true)}
-									className="absolute right-0  text-primary-500"
-								>
-									Edit
-								</button>
-							</div>
-						)}
-
-						{/* hide content twitter*/}
-						{editTwitter && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									Twitter URL
-								</h2>
-								<div className="col-span-8">
-									<InputText
-										onChange={(e) => setTwitter(e.target.value)}
-										value={twitter}
-										name="twitter"
-										placeholder="https://twitter.com"
-										className="max-w-xs"
-									/>
-
-									<div className="flex mt-3 mb-2">
-										<ElemButton
-											btn="primary"
-											className="mr-2"
-											onClick={onSave("twitter")}
-										>
-											Save
-										</ElemButton>
-										<ElemButton
-											btn="white"
-											onClick={() => setEditTwitter(false)}
-										>
-											Cancel
-										</ElemButton>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editAbout && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									About You
-								</h2>
-								<div className="col-span-8">
-									<p className="text-slate-600 ">{person ?.about}</p>
-								</div>
-
-								<button
-									className="absolute right-0  text-primary-500"
-									onClick={() => setEditAbout(true)}
-								>
-									Edit
-								</button>
-							</div>
-						)}
-
-						{/* hide content about*/}
-						{editAbout && (
-							<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  col-span-3">
-									About You
-								</h2>
-								<div className="col-span-8">
-									<InputTextarea
-										rows={3}
-										value={about}
-										onChange={(e) => setAbout(e.target.value)}
-										className="max-w-xs"
-									/>
-									<div className="flex mt-3 mb-2">
-										<ElemButton
-											btn="primary"
-											className="mr-2"
-											onClick={onSave("about")}
-										>
-											Save
-										</ElemButton>
-										<ElemButton btn="white" onClick={() => setEditAbout(false)}>
-											Cancel
-										</ElemButton>
-									</div>
-								</div>
-							</div>
-						)}
-
-						{!editWorkspace && (
-							<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-								<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
-								<button
-									onClick={() => setEditWorkspace(true)}
-									className="absolute right-0  text-primary-500"
-								>
-									Add Workplace
-								</button>
-							</div>
-						)}
-						{/* hide content work */}
-						{editWorkspace && renderWorkspaceForm()}
-
-						{person ?.team_members.map((teamMember) =>
-							renderWorkspaceEditForm(teamMember)
-						)}
 					</div>
 				</div>
-			</DashboardLayout>
-		</div>
+
+				{!editName && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
+
+						<div className="col-span-8">
+							<h2 className="text-slate-600 ">{person?.name}</h2>
+						</div>
+
+						<button
+							className=" text-primary-500 col-span-1 text-right w-auto"
+							onClick={() => setEditName(true)}
+						>
+							Edit
+						</button>
+					</div>
+				)}
+				{/* hide content name */}
+				{editName && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12">
+						<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
+						<div className="col-span-8">
+							<div className="w-96">
+								<InputText
+									label="First Name"
+									onChange={(e) => setFirstName(e.target.value)}
+									value={firstName}
+									name="first_name"
+									placeholder="Bram"
+									className="mb-4"
+								/>
+								<InputText
+									label="Last Name"
+									onChange={(e) => setLastName(e.target.value)}
+									value={lasttName}
+									name="last_name"
+									placeholder="Cohen"
+									className="mb-3"
+								/>
+
+								<span className="text-slate-500 m font-thin ">
+									<b className="font-bold text-slate-600">Note:</b> If you
+									change your name on EdgeIn, you won’t be able to change it
+									again for 60 days.
+								</span>
+
+								<div className="flex mt-3 mb-2">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("name")}
+									>
+										Change
+									</ElemButton>
+									<ElemButton btn="white" onClick={() => setEditName(false)}>
+										Cancel
+									</ElemButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editEmail && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
+						<div className="col-span-8">
+							<p className="text-slate-600 mb-2">
+								{person?.work_email}
+								<b className="text-sm text-primary-500"> - Primary</b>
+							</p>
+							{person?.email &&
+								person?.email.map((email: any) => (
+									<p key={email.email} className="text-slate-600 mb-2">
+										{email.email}
+									</p>
+								))}
+						</div>
+
+						<button
+							onClick={() => setEditEmail(true)}
+							className="absolute right-0  text-primary-500"
+						>
+							Edit
+						</button>
+					</div>
+				)}
+
+				{/* hide content email */}
+				{editEmail && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
+						<div className="col-span-8">
+							<div className="w-96">
+								<h2 className=" font-bold text-slate-600">Current Emails</h2>
+								<div className="mb-2">
+									<span className="block mt-1 text-sm font-semibold text-slate-600">
+										{person?.work_email}
+									</span>
+									<span className="mt-1 text-slate-500 text-sm">Primary</span>
+								</div>
+								{email?.map((mail: any) => (
+									<div key={mail.email} className="mb-2">
+										<span className="block mt-1 text-sm font-semibold text-slate-600">
+											{mail.email}
+										</span>
+										<span
+											className="mt-1 text-sm text-primary-850 cursor-pointer"
+											onClick={makePrimary(mail.email)}
+										>
+											Make Primary
+										</span>
+										<span
+											className="mt-1 text-sm ml-2 text-primary-500 cursor-pointer"
+											onClick={removeEmail(mail.email)}
+										>
+											Remove
+										</span>
+									</div>
+								))}
+
+								<InputText
+									label="New Email"
+									onChange={(e) => {
+										setNewEmail(e.target.value);
+									}}
+									value={newEmail}
+									name="new-email"
+									placeholder="Cohen@gmail.com"
+								/>
+
+								<div className="flex mt-3 mb-2">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("email")}
+									>
+										Add
+									</ElemButton>
+									<ElemButton btn="white" onClick={() => setEditEmail(false)}>
+										Cancel
+									</ElemButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editLocation && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">Location</h2>
+						<div className="col-span-8">
+							<h2 className="text-slate-600 ">
+								{person?.city}, {person?.country}
+							</h2>
+						</div>
+
+						<button
+							className="absolute right-0  text-primary-500"
+							onClick={() => setEditLocation(true)}
+						>
+							Edit
+						</button>
+					</div>
+				)}
+
+				{/* hide content location */}
+				{editLocation && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">Location</h2>
+						<div className="col-span-8">
+							<div className="w-96 ">
+								<InputText
+									label="City"
+									onChange={(e) => setCity(e.target.value)}
+									value={city}
+									name="city"
+									placeholder="San Francisco"
+									className="mb-3"
+								/>
+								<InputText
+									label="Country"
+									onChange={(e) => setCountry(e.target.value)}
+									value={country}
+									name="country"
+									placeholder="United State"
+									className="mb-3"
+								/>
+
+								<div className="flex mt-3 mb-2">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("location")}
+									>
+										Save
+									</ElemButton>
+									<ElemButton
+										btn="white"
+										onClick={() => setEditLocation(false)}
+									>
+										Cancel
+									</ElemButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editWebsite && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">Website URl</h2>
+						<div className="col-span-8">
+							<h2 className="text-slate-600 ">{person?.website_url}</h2>
+						</div>
+
+						<button
+							className="absolute right-0  text-primary-500"
+							onClick={() => setEditWebsite(true)}
+						>
+							Edit
+						</button>
+					</div>
+				)}
+				{/* hide content website */}
+				{editWebsite && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">Website URL</h2>
+						<div className="col-span-8">
+							<div className="w-96 ">
+								<InputText
+									onChange={(e) => setWebsite(e.target.value)}
+									value={website}
+									name="website"
+									placeholder="www.brahm.com"
+								/>
+
+								<div className="flex mt-3 mb-2">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("website")}
+									>
+										Save
+									</ElemButton>
+									<ElemButton btn="white" onClick={() => setEditWebsite(false)}>
+										Cancel
+									</ElemButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editLinkedIn && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">
+							LinkedIn URL
+						</h2>
+						<div className="col-span-8">
+							<h2 className="text-slate-600 ">{person?.linkedin}</h2>
+						</div>
+
+						<button
+							className="absolute right-0  text-primary-500"
+							onClick={() => setEditLinkedIn(true)}
+						>
+							Edit
+						</button>
+					</div>
+				)}
+
+				{/* hide content linkedin */}
+				{editLinkedIn && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">
+							LinkedIn URL
+						</h2>
+						<div className="col-span-8">
+							<div className="w-96">
+								<InputText
+									onChange={(e) => setLinkedIn(e.target.value)}
+									value={linkedIn}
+									name="linkedIn"
+									placeholder="https://linkedin.com"
+								/>
+
+								<div className="flex mt-3 mb-2">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("linkedin")}
+									>
+										Save
+									</ElemButton>
+									<ElemButton
+										btn="white"
+										onClick={() => setEditLinkedIn(false)}
+									>
+										Cancel
+									</ElemButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editFacebook && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">
+							Facebook URL
+						</h2>
+						<div className="col-span-8">
+							<h2 className="text-slate-600 ">{person?.facebook_url}</h2>
+						</div>
+
+						<button
+							className="absolute right-0  text-primary-500"
+							onClick={() => setEditFacebook(true)}
+						>
+							Edit
+						</button>
+					</div>
+				)}
+
+				{/* hide content facebook*/}
+				{editFacebook && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">
+							Facebook URL
+						</h2>
+						<div className="col-span-8">
+							<div className="w-96">
+								<InputText
+									onChange={(e) => setFacebook(e.target.value)}
+									value={facebook}
+									name="facebook"
+									placeholder="https://facebook.com"
+								/>
+
+								<div className="flex mt-3 mb-2">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("facebook")}
+									>
+										Save
+									</ElemButton>
+									<ElemButton
+										btn="white"
+										onClick={() => setEditFacebook(false)}
+									>
+										Cancel
+									</ElemButton>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editTwitter && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">Twitter URL</h2>
+						<div className="col-span-8">
+							<h2 className="text-slate-600 ">{person?.twitter_url}</h2>
+						</div>
+
+						<button
+							onClick={() => setEditTwitter(true)}
+							className="absolute right-0  text-primary-500"
+						>
+							Edit
+						</button>
+					</div>
+				)}
+
+				{/* hide content twitter*/}
+				{editTwitter && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">Twitter URL</h2>
+						<div className="col-span-8">
+							<InputText
+								onChange={(e) => setTwitter(e.target.value)}
+								value={twitter}
+								name="twitter"
+								placeholder="https://twitter.com"
+								className="max-w-xs"
+							/>
+
+							<div className="flex mt-3 mb-2">
+								<ElemButton
+									btn="primary"
+									className="mr-2"
+									onClick={onSave("twitter")}
+								>
+									Save
+								</ElemButton>
+								<ElemButton btn="white" onClick={() => setEditTwitter(false)}>
+									Cancel
+								</ElemButton>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editAbout && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">About You</h2>
+						<div className="col-span-8">
+							<p className="text-slate-600 ">{person?.about}</p>
+						</div>
+
+						<button
+							className="absolute right-0  text-primary-500"
+							onClick={() => setEditAbout(true)}
+						>
+							Edit
+						</button>
+					</div>
+				)}
+
+				{/* hide content about*/}
+				{editAbout && (
+					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
+						<h2 className="text-dark-500 font-bold  col-span-3">About You</h2>
+						<div className="col-span-8">
+							<InputTextarea
+								rows={3}
+								value={about}
+								onChange={(e) => setAbout(e.target.value)}
+								className="max-w-xs"
+							/>
+							<div className="flex mt-3 mb-2">
+								<ElemButton
+									btn="primary"
+									className="mr-2"
+									onClick={onSave("about")}
+								>
+									Save
+								</ElemButton>
+								<ElemButton btn="white" onClick={() => setEditAbout(false)}>
+									Cancel
+								</ElemButton>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{!editWorkspace && (
+					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
+						<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
+						<button
+							onClick={() => setEditWorkspace(true)}
+							className="absolute right-0  text-primary-500"
+						>
+							Add Workplace
+						</button>
+					</div>
+				)}
+				{/* hide content work */}
+				{editWorkspace && renderWorkspaceForm()}
+
+				{person?.team_members.map((teamMember) =>
+					renderWorkspaceEditForm(teamMember)
+				)}
+			</div>
+		</DashboardLayout>
 	);
 };
 
@@ -1120,7 +1101,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	return {
 		props: {
 			companiesDropdown:
-				companiesData ?.companies.map((company) => ({
+				companiesData?.companies.map((company) => ({
 					title: company.name,
 					value: company.id,
 				})) || [],
@@ -1129,5 +1110,3 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 export default Profile;
-
-

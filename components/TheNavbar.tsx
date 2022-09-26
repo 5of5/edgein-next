@@ -1,22 +1,23 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import { ElemLogo } from "./ElemLogo";
-import { ElemButton } from "./ElemButton";
-import { UserMenu } from "@/components/UserMenu";
 import { useAuth } from "../hooks/useAuth";
 import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
-import LoginModal from "./LoginModal";
-import ForgotPasswordModal from "./ForgotPasswordModal";
-import SignUpModal from "./SignUpModal";
+import { useHotkeys } from "react-hotkeys-hook";
+import { ElemLogo } from "@/components/ElemLogo";
+import { ElemButton } from "@/components/ElemButton";
+import { NotificationAlerts } from "@/components/NotificationAlerts";
+import { UserMenu } from "@/components/UserMenu";
+import LoginModal from "@/components/LoginModal";
+import ForgotPasswordModal from "@/components/ForgotPasswordModal";
+import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import { MobileNav } from "@/components/MobileNav";
-import SearchModal from "./SearchModal";
-import { useHotkeys } from "react-hotkeys-hook";
-import OnBoardingStep1Modal from "./onBoarding/OnBoardingStep1Modal";
-import OnBoardingStep2Modal from "./onBoarding/OnBoardingStep2Modal";
-import OnBoardingStep3Modal from "./onBoarding/OnBoardingStep3Modal";
+import SearchModal from "@/components/SearchModal";
+import OnBoardingStep1Modal from "@/components/onBoarding/OnBoardingStep1Modal";
+import OnBoardingStep2Modal from "@/components/onBoarding/OnBoardingStep2Modal";
+import OnBoardingStep3Modal from "@/components/onBoarding/OnBoardingStep3Modal";
 
 export const TheNavbar = () => {
 	const router = useRouter();
@@ -80,14 +81,13 @@ export const TheNavbar = () => {
 				},
 				body: JSON.stringify({
 					code,
-					redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
+					redirect_uri: process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL,
 				}),
 			}); //.then((res) => res.json());
-			if (response.status == 404) {
-				const responseText = await response.clone().text();
-				if (responseText === "Invalid Email") {
-					// showUnsuccessMessagge
-					setLinkedInError(responseText);
+			if (response.status !== 200) {
+				const responseText = await response.clone().json();
+				if (responseText.message) {
+					setLinkedInError(responseText.message);
 					setShowLoginPopup(true);
 				}
 			} else {
@@ -204,7 +204,7 @@ export const TheNavbar = () => {
 						</button>
 					</div>
 
-					<div className="flex items-center space-x-2 lg:space-x-3 lg:ml-6">
+					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-6">
 						{siteNav.map((link, index) => (
 							<Link href={link.path} key={index} passHref>
 								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
@@ -213,20 +213,18 @@ export const TheNavbar = () => {
 							</Link>
 						))}
 
-						<button
-							onClick={() => {
-								setShowSearchModal(true);
-							}}
-							className="sm:hidden"
-						>
-							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
-						</button>
-
-						{/* <ElemButton onClick={logout} btn="primary">
-							Logout
-						 </ElemButton> */}
 						{user ? (
-							<UserMenu />
+							<>
+								<ElemButton
+									onClick={() => setShowSearchModal(true)}
+									btn="slate"
+									className="h-9 w-9 px-0 py-0 sm:hidden"
+								>
+									<IconSearch className="h-5 w-5" />
+								</ElemButton>
+								<NotificationAlerts />
+								<UserMenu />
+							</>
 						) : (
 							<>
 								<ElemButton

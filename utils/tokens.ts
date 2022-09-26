@@ -1,11 +1,11 @@
 import { mutate, query } from "@/graphql/hasuraAdmin"
-import { SignJWT, jwtVerify } from "jose"
+import { SignJWT } from "jose"
 import { nanoid } from 'nanoid'
 
 export const saveToken = async (token: string, type: string, userId: number, accessToken: string) => {
   const mutation = `
     mutation SaveToken($token: String, $type: String, $userId: Int){
-      insert_tokens_one(object: {token: $token, type: $type, user_id: $userId}) {
+      insert_user_tokens_one(object: {token: $token, type: $type, user_id: $userId}) {
         id,
         token
       }
@@ -34,7 +34,7 @@ export const generateVerifyWorkplaceToken = async (resourceId: string, resourceT
 export const findToken = async (token: string, type: string, accessToken: string) => {
   const getQuery = `
     query GetToken($token: String, $type: String) {
-      tokens(where: {token: {_eq: $token}, type: {_eq: $type}}, limit: 1) {
+      user_tokens(where: {token: {_eq: $token}, type: {_eq: $type}}, limit: 1) {
         id
       }
     }
@@ -47,13 +47,13 @@ export const findToken = async (token: string, type: string, accessToken: string
     }
   }, accessToken)
 
-  return result.data.tokens.length ? result.data.tokens[0] : null
+  return result.data.user_tokens.length ? result.data.user_tokens[0] : null
 }
 
 export const deleteToken = async (id: number, accessToken: string) => {
   const mutation = `
     mutation DeleteToken($id: Int!) {
-      delete_tokens_by_pk(id: $id) {
+      delete_user_tokens_by_pk(id: $id) {
         id
       }
     }

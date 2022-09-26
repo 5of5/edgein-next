@@ -46,12 +46,14 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 			start_date
 			end_date
 			founder
+			title
 		}
 		investment_rounds {
 			id
 			round_date
 			round
 			amount
+			valuation
 			investments {
 				id
 				person {
@@ -66,17 +68,23 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 					name
 					logo
 				}
+				amount
 			}
 		}
-		follows(where: {created_by_user_id: {_eq: $current_user}}) {
-      list {
-        name
-      }
-    }
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
+			list {
+				name
+			}
+		}
 	}
 }
 
-query GetCompanies($limit: Int, $offset: Int, $current_user: Int = 0, $where: companies_bool_exp!) {
+query GetCompanies(
+	$limit: Int
+	$offset: Int
+	$current_user: Int = 0
+	$where: companies_bool_exp!
+) {
 	companies(
 		where: $where
 		order_by: { slug: asc }
@@ -101,11 +109,11 @@ query GetCompanies($limit: Int, $offset: Int, $current_user: Int = 0, $where: co
 		velocity_linkedin
 		velocity_token
 		website
-		follows(where: {created_by_user_id: {_eq: $current_user}}) {
-      list {
-        name
-      }
-    }
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
+			list {
+				name
+			}
+		}
 	}
 }
 
@@ -131,11 +139,15 @@ query GetCompaniesRecent(
 		investor_amount
 		date_added
 		sentiment
-		follows(where: {created_by_user_id: {_eq: $current_user}}) {
-      list {
-        name
-      }
-    }
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
+			list {
+				name
+			}
+		}
+		investment_rounds {
+			id
+			amount
+		}
 	}
 }
 
@@ -150,16 +162,14 @@ query GetCompaniesPaths {
 query GetRelevantCompanies(
 	$where: companies_bool_exp!
 	$current_user: Int = 0
-	) {
-		companies(
-			where: $where
-		) {
-			id
-			logo
-			name
-			slug
-			sentiment
-			follows(where: {created_by_user_id: {_eq: $current_user}}) {
+) {
+	companies(where: $where) {
+		id
+		logo
+		name
+		slug
+		sentiment
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
 			list {
 				name
 			}

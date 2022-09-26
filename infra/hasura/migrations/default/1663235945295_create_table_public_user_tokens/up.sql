@@ -1,0 +1,1 @@
+CREATE TABLE "public"."user_tokens" ("id" serial NOT NULL, "token" text NOT NULL, "type" text NOT NULL, "user_id" integer NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );COMMENT ON TABLE "public"."user_tokens" IS E'Store various tokens for user which we can invalidate by deleting them';

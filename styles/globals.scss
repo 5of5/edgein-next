@@ -89,6 +89,18 @@ body {
   @apply bg-gray-50 text-dark-500 overscroll-y-none;
 }
 
+.logoFile {
+  img {
+    max-height: 50px !important;
+    max-width: 50px !important;
+  }
+}
+
+.crunchbase-icon {
+  height: 25px;
+  width: 25px;
+}
+
 input[type="checkbox"]::before {
   transform-origin: bottom left;
   clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
@@ -96,6 +108,16 @@ input[type="checkbox"]::before {
 
 .dashes{
   background: repeating-linear-gradient(to bottom, #ced6fe 0, #ced6fe 6px, transparent 6px, transparent 12px);
+}
+
+/* Chrome, Safari and Opera */
+ .no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* Mobile hamburger button */
