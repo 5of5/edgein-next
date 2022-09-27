@@ -10,25 +10,27 @@ import { Investment_Rounds } from "@/graphql/types";
 type Props = {
 	className?: string;
 	heading?: string;
-	investments: Investment_Rounds[];
+    investments: Investment_Rounds[];
+    onEdit: (round: any) => void;
 };
 
-export const ElemInvestments: React.FC<Props> = ({
+export const ElemEditInvestments: React.FC<Props> = ({
 	className,
 	heading,
-	investments,
+    investments,
+    onEdit = () => {}
 }) => {
 	const columns = React.useMemo(
 		() => [
 			{
-				Header: "Round",
+				Header: "Type",
 				accessor: "round" as const,
 				Cell: (props: any) => (
 					<div>{props.value ? <>{props.value}</> : <>&mdash;</>}</div>
 				),
 			},
 			{
-				Header: "Amount Raised",
+				Header: "Money Raised",
 				accessor: "amount" as const,
 				Cell: (props: any) => (
 					<div>
@@ -70,14 +72,14 @@ export const ElemInvestments: React.FC<Props> = ({
 					);
 
 					return (
-						<div className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal">
+						<div className="flex-wrap">
 							{!props.value && <>&mdash;</>}
 
-							{vcsWithPartner.map((investment: any) => {
+							{vcsWithPartner.map((investment: any, index: number) => {
 								return (
 									<div
 										key={investment.id}
-										className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+										className="flex"
 									>
 										{investment.vc_firm && (
 											<Link
@@ -85,15 +87,9 @@ export const ElemInvestments: React.FC<Props> = ({
 												key={investment.vc_firm.id}
 											>
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-													<ElemPhoto
-														photo={investment.vc_firm.logo}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
-														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={investment.vc_firm.name}
-														placeholderClass="text-slate-300"
-													/>
-													<span className="line-clamp-2 font-bold">
-														{investment.vc_firm.name}
+													
+													<span className="line-clamp-2">
+														{`${investment.vc_firm.name}, `}
 													</span>
 												</a>
 											</Link>
@@ -105,16 +101,9 @@ export const ElemInvestments: React.FC<Props> = ({
 												key={investment.person.id}
 											>
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
-													<ElemPhoto
-														photo={investment.person.picture}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-														imgClass="object-cover w-12 h-12"
-														imgAlt={investment.person.name}
-														placeholder="user"
-														placeholderClass="text-slate-300"
-													/>
-													<span className="line-clamp-2 font-bold">
-														{investment.person.name}
+													
+													<span className="line-clamp-2">
+														{`${investment.person.name}${(index < vcsWithPartner.length-1 ? ', ' : '')}`}
 													</span>
 												</a>
 											</Link>
@@ -123,11 +112,11 @@ export const ElemInvestments: React.FC<Props> = ({
 								);
 							})}
 
-							{vcs.map((investment: any) => {
+							{vcs.map((investment: any, index: number) => {
 								return (
 									<div
 										key={investment.id}
-										className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+										className="flex"
 									>
 										{investment.vc_firm && (
 											<Link
@@ -135,15 +124,9 @@ export const ElemInvestments: React.FC<Props> = ({
 												key={investment.vc_firm.id}
 											>
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-													<ElemPhoto
-														photo={investment.vc_firm.logo}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
-														imgClass="object-fit max-w-full max-h-full"
-														imgAlt={investment.vc_firm.name}
-														placeholderClass="text-slate-300"
-													/>
-													<span className="line-clamp-2 font-bold">
-														{investment.vc_firm.name}
+													
+													<span className="line-clamp-2">
+														{`${investment.vc_firm.name}${(index < vcs.length-1 ? ', ' : '')}`}
 													</span>
 												</a>
 											</Link>
@@ -152,11 +135,11 @@ export const ElemInvestments: React.FC<Props> = ({
 								);
 							})}
 
-							{angels.map((investment: any) => {
+							{angels.map((investment: any, index:number) => {
 								return (
 									<div
 										key={investment.id}
-										className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+										className="flex"
 									>
 										{investment.person && (
 											<Link
@@ -164,16 +147,9 @@ export const ElemInvestments: React.FC<Props> = ({
 												key={investment.person.id}
 											>
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
-													<ElemPhoto
-														photo={investment.person.picture}
-														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
-														imgClass="object-cover w-12 h-12"
-														imgAlt={investment.person.name}
-														placeholder="user"
-														placeholderClass="text-slate-300"
-													/>
-													<span className="line-clamp-2 font-bold">
-														{investment.person.name}
+													
+													<span className="line-clamp-2">
+														{`${investment.person.name}${(index < angels.length-1 ? ', ' : '')}`}
 													</span>
 												</a>
 											</Link>
@@ -184,11 +160,20 @@ export const ElemInvestments: React.FC<Props> = ({
 						</div>
 					);
 				},
-				width: 650,
+				// width: 650,
 				disableSortBy: true,
 			},
+			{
+				Header: " ",
+				accessor: "" as const,
+				Cell: (props: any) => (
+				<button onClick={() => {onEdit(props.row.original)}} className="px-1 py-2 text-primary-500">
+					Edit
+				</button>
+				),
+			},
 		],
-		[]
+		[onEdit]
 	);
 
 	const dataInvestments = React.useMemo(() => {
@@ -196,16 +181,6 @@ export const ElemInvestments: React.FC<Props> = ({
 	}, [investments]);
 
 	const investmentsCount = dataInvestments.length;
-
-	const sortees = React.useMemo(
-		() => [
-			{
-				id: "round_date",
-				desc: true,
-			},
-		],
-		[]
-	);
 
 	const {
 		getTableProps,
@@ -224,39 +199,18 @@ export const ElemInvestments: React.FC<Props> = ({
 			//autoResetPage: true, true by default
 			disableSortRemove: true,
 			autoResetSortBy: false,
-			initialState: {
-				sortBy: sortees,
-				pageSize: 50,
-			},
+			// initialState: {
+			// 	sortBy: sortees,
+			// 	pageSize: 50,
+			// },
 		},
 		useSortBy,
 		usePagination
 	);
 
-	const generateSortingIndicator = (column: any) => {
-		return column.isSorted ? (
-			column.isSortedDesc ? (
-				<IconSortDown className="ml-1 h-5 w-5 inline-block" />
-			) : (
-				<IconSortUp className="ml-1 h-5 w-5 inline-block" />
-			)
-		) : (
-			<IconSortUp className="ml-1 h-5 w-5 inline-block opacity-0 group-hover:opacity-100" />
-		);
-	};
-
 	return (
 		<section className={className}>
-			{heading && (
-				<div className="flex items-center justify-between">
-					<h2 className="text-xl font-bold">{heading}</h2>
-
-					<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-						<IconEditPencil title="Edit" />
-					</button>
-				</div>
-			)}
-
+			
 			<div className="mt-2 overflow-scroll border border-black/10 rounded-lg">
 				<table
 					{...getTableProps()}
@@ -288,7 +242,7 @@ export const ElemInvestments: React.FC<Props> = ({
 												title={column.canSort ? `Sort By ${column.Header}` : ""}
 											>
 												{column.render("Header")}
-												{generateSortingIndicator(column)}
+												{/* {generateSortingIndicator(column)} */}
 											</th>
 										);
 									})}
@@ -328,21 +282,15 @@ export const ElemInvestments: React.FC<Props> = ({
 												{cell.render("Cell")}
 											</td>
 										);
-									})}
+                                    })}
+                                    
 								</tr>
 							);
 						})}
 					</tbody>
 				</table>
 			</div>
-			<Pagination
-				shownItems={page?.length}
-				totalItems={investmentsCount}
-				page={pageIndex}
-				itemsPerPage={pageSize}
-				onClickPrev={() => previousPage()}
-				onClickNext={() => nextPage()}
-			/>
+			
 		</section>
 	);
 };

@@ -13,7 +13,6 @@ import {
 } from "./Icons";
 
 const navigation = [
-	{ name: "Dashboard", href: "/dashboard", icon: IconDashboard },
 	{ name: "Account Settings", href: "/account", icon: IconSettings },
 	{ name: "My Organization", href: "/organizations", icon: IconOrganization },
 ];

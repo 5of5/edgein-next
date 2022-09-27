@@ -8,7 +8,7 @@ export const NotificationAlerts = () => {
 		<ElemButton
 			btn="slate"
 			href="/notifications"
-			className="h-9 w-9 px-0 py-0 group"
+			className="h-9 w-9 !px-0 !py-0 group"
 		>
 			{notifications.length > 0 ? (
 				<IconAlertSolid
