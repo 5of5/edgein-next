@@ -51,7 +51,7 @@ query GetVCFirm($slug: String!, $current_user: Int) {
 	}
 }
 
-query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int) {
+query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int = 0) {
 	vc_firms(
 		where: $where
 		order_by: { num_of_investments: desc }
@@ -65,6 +65,7 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current
 		num_of_investments
 		sentiment
 		overview
+		website
 		follows(where: {created_by_user_id: {_eq: $current_user}}) {
       list {
         name
@@ -127,5 +128,14 @@ query GetRelevantVCFirms(
 			}
 		}
 	}
+}
+
+query GetAllVCFirms {
+  vc_firms {
+    id
+    name
+    logo
+    slug
+  }
 }
 

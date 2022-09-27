@@ -5,6 +5,7 @@ import { ElemPhoto } from "../ElemPhoto";
 import { EmojiHot, EmojiCrap, EmojiLike } from "@/components/Emojis";
 import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
+import { convertToInternationalCurrencySystem } from "@/utils";
 
 type Props = {
 	companies?: Follows_Companies[];
@@ -107,7 +108,7 @@ export const ElemCompanies: FC<Props> = ({
 	return (
 		<div className="rounded-lg p-3 bg-white col-span-3">
 			<div className="inline-flex">
-				<h2 className="font-bold text-dark-500 text-xl capitalize mr-2">
+				<h2 className="font-bold text-xl capitalize mr-2">
 					{selectedListName}: Companies
 				</h2>
 
@@ -129,29 +130,29 @@ export const ElemCompanies: FC<Props> = ({
 			</div>
 
 			<div className="w-full mt-1 flex justify-between">
-				<div className="inline-flex items-center">
-					<span className="font-semibold text-sm mr-2">Tags: </span>
-					<span>
+				<div className="inline-flex items-start">
+					<span className="font-bold text-sm mr-2">Tags:</span>
+					<div className="inline-flex gap-2 flex-wrap">
 						{tagsCount &&
 							Object.keys(tagsCount).map((tag) => (
 								<span
 									key={tag}
-									className="px-2 py-1 bg-slate-200 rounded-md text-sm mr-2"
+									className="shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
 								>
 									{tag} ({tagsCount[tag]})
 								</span>
 							))}
-					</span>
+					</div>
 				</div>
 
-				<div className="inline-flex items-center">
+				<div className="inline-flex items-start shrink-0">
 					<span className="font-semibold text-sm mr-2">
-						Total Funding: {totalFunding}
+						Total Funding: ${convertToInternationalCurrencySystem(totalFunding)}
 					</span>
 				</div>
 			</div>
 
-			<div className="mt-3 w-full rounded-lg border border-slate-200 max-h-80 overflow-auto">
+			<div className="mt-3 w-full rounded-lg border border-slate-200">
 				<table className="w-full">
 					<thead>
 						<tr className="text-left text-sm border-b-slate-200">
@@ -220,15 +221,15 @@ export const ElemCompanies: FC<Props> = ({
 								<td className="px-1 py-2">
 									<div>
 										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiHot className="mr-1" />
+											<EmojiHot className="w-6 h-6 mr-1" />
 											{company?.sentiment.hot || 0}
 										</span>
 										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiLike className="mr-1" />
+											<EmojiLike className="w-6 h-6 mr-1" />
 											{company?.sentiment.like || 0}
 										</span>
 										<span className="text-slate-600 font-bold items-center inline-flex">
-											<EmojiCrap className="mr-1" />
+											<EmojiCrap className="w-6 h-6 mr-1" />
 											{company?.sentiment.crap || 0}
 										</span>
 									</div>

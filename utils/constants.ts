@@ -101,6 +101,102 @@ export const validateNameAndSlugAndEmailAndDomain = async (isEdit: boolean, valu
   return errors
 };
 
+export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: any) => {
+  const errors: any = {};
+  if (!values?.logo) {
+    errors.logo = 'The Image is required';
+  }
+  if (!values?.name) {
+    errors.name = 'The Name is required';
+  }
+  if (!values?.slug) {
+    errors.slug = 'The Slug is required';
+  } else if (values?.slug.length < 3) {
+    errors.age = 'Must be over 3';
+  }
+  if (!values?.overview) {
+    errors.overview = 'The description is required';
+  }
+  if(!values?.layer) {
+    errors.layer = 'Company type is required';
+  }
+  if(!values?.tags || values?.tags.length < 1){
+    errors.tags = 'Industry is required';
+  }
+  if(!values?.year_founded){
+    errors.year_founded = 'Founded Date is required';
+  }
+  if(!values?.website){
+    errors.website = 'Website URL is required';
+  }
+
+  var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+    '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+  var emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
+    if (values.hasOwnProperty('website') && values?.website !== '' && !urlPattern.test(values?.website)) {
+      errors.website = 'Website URL is not valid';
+    }
+    if (values.hasOwnProperty('github') && values?.github !== '' && !urlPattern.test(values?.github)) {
+      errors.github = 'Github URL is not valid';
+    }
+    if (values.hasOwnProperty('twitter') && values?.twitter !== '' && !urlPattern.test(values?.twitter)) {
+      errors.twitter = 'Twitter URL is not valid';
+    }
+    if (values.hasOwnProperty('company_linkedin') && values?.company_linkedin !== '' && !urlPattern.test(values?.company_linkedin)) {
+      errors.company_linkedin = 'Linkedin URL is not valid';
+    }
+    if (values.hasOwnProperty('linkedin') && values?.linkedin !== '' && !urlPattern.test(values?.linkedin)) {
+      errors.linkedin = 'Linkedin URL is not valid';
+    }
+    if (values.hasOwnProperty('discord') && values?.discord !== '' && !urlPattern.test(values?.discord)) {
+      errors.discord = 'Discord URL is not valid';
+    }
+    if (values.hasOwnProperty('glassdoor') && values?.glassdoor !== '' && !urlPattern.test(values?.glassdoor)) {
+      errors.glassdoor = 'Glassdoor URL is not valid';
+    }
+    if (values.hasOwnProperty('white_paper') && values?.white_paper !== '' && !urlPattern.test(values?.white_paper)) {
+      errors.white_paper = 'White paper URL is not valid';
+    }
+    if (values.hasOwnProperty('careers_page') && values?.careers_page !== '' && !urlPattern.test(values?.careers_page)) {
+      errors.careers_page = 'Careers page URL is not valid';
+    }
+    if (values.hasOwnProperty('work_email') && values?.work_email !== '' && !emailPattern.test(values?.work_email)) {
+      errors.work_email = 'Work Email is not valid';
+    }
+    if (values.hasOwnProperty('personal_email') && values?.personal_email !== '' && !emailPattern.test(values?.personal_email)) {
+      errors.personal_email = 'Personal Email is not valid';
+    }
+
+  return errors
+};
+
+export const validateTeamMember = async (isEdit: boolean, values: any) => {
+  const errors: any = {};
+  if (!values?.person_id) {
+    errors.person = 'Person is required';
+  }
+  if (!values?.function) {
+    errors.function = 'Position is required';
+  }
+  return errors
+}
+
+export const validateInvestmentRounds = async (isEdit: boolean, values: any) => {
+  const errors: any = {};
+  if (!values?.round) {
+    errors.round = 'Round Type is required';
+  }
+  if (!values?.amount) {
+    errors.amount = 'Money Raised is required';
+  }
+  return errors
+}
+
 export const functionChoicesTM = [
   {
     id: "Operations",
@@ -337,3 +433,6 @@ export const status = [
 ]
 
 export const sentimentLimit = 50;
+export const tokenTypes = {
+  verifyWorkHereToken: 'token-verifyworkhere'
+}

@@ -33,6 +33,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 						imgClass="object-cover w-full h-full"
 						imgAlt={heading}
 						placeholder="user"
+						placeholderClass="text-slate-300"
 					/>
 					<div className="overflow-hidden px-2">
 						{heading && (

@@ -3,7 +3,7 @@ import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { formatDate, numberWithCommas } from "@/utils";
+import { formatDate, convertToInternationalCurrencySystem } from "@/utils";
 import { getLayerClass } from "@/utils/style";
 import { IconArrowUp } from "@/components/Icons";
 import {
@@ -200,13 +200,14 @@ export const ElemRecentCompanies: FC<Props> = ({
 												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
 													{company.name}
 												</h3>
-
-												{fundingTotal?.length > 0 && (
+												{fundingTotal > 0 && (
 													<div className="flex items-center space-x-1">
-														<div className="uppercase text-sm">Raised</div>
+														<div className="">Raised</div>
 														<div className="flex items-center text-green-700">
-															${numberWithCommas(fundingTotal)}{" "}
-															<IconArrowUp className="h-4 w-4" />
+															$
+															{convertToInternationalCurrencySystem(
+																Number(fundingTotal)
+															)}
 														</div>
 													</div>
 												)}
@@ -222,13 +223,25 @@ export const ElemRecentCompanies: FC<Props> = ({
 												{company.layer}
 											</div>
 										)}
-										<div className="mt-4 text-xs font-bold text-gray-400">
-											Added{" "}
-											{formatDate(company.date_added, {
-												month: "short",
-												day: "2-digit",
-												year: "numeric",
-											})}
+										<div className="mt-4 flex gap-6 text-xs font-bold text-slate-600">
+											<span>
+												Added{" "}
+												{formatDate(company.date_added, {
+													month: "short",
+													day: "2-digit",
+													year: "numeric",
+												})}
+											</span>
+											{/* <span>
+												{fundingTotal > 0 && (
+													<div className="flex items-center space-x-1">
+														<div className="">Raised</div>
+														<div className="flex items-center text-green-700">
+															${convertToInternationalCurrencySystem(fundingTotal)}
+														</div>
+													</div>
+												)}
+											</span> */}
 										</div>
 										<div className="mt-4 text-gray-400 grow line-clamp-3">
 											{company.overview}

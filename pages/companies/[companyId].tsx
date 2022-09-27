@@ -12,6 +12,7 @@ import { runGraphQl } from "@/utils";
 // import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemButton } from "@/components/ElemButton";
 import {
 	Companies,
 	Follows_Companies,
@@ -52,9 +53,15 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	//const goBack = () => router.back();
 
-	const [company, setCompany] = useState(props.company);
+	const [company, setCompany] = useState<Companies>(props.company);
 
 	const [tokenInfo, setTokenInfo] = useState({ currentPrice: 0, marketCap: 0 });
+
+	//Limit Activity
+	const [activityLimit, setActivityLimit] = useState(10);
+	const showMoreActivity = () => {
+		setActivityLimit(activityLimit + 10);
+	};
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -90,7 +97,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	}, [company]);
 
 	useEffect(() => {
-		if (companyData) setCompany(companyData?.companies[0] as Companies);
+		if (companyData) setCompany(companyData?.companies[0] as any);
 	}, [companyData]);
 
 	if (!company) {
@@ -192,6 +199,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
 						imgClass="object-contain w-full h-full"
 						imgAlt={company.name}
+						placeholderClass="text-slate-300"
 					/>
 				</div>
 				<div className="w-full col-span-5 mt-7 lg:mt-0">
@@ -314,36 +322,53 @@ const Company: NextPage<Props> = (props: Props) => {
 
 						<div className="mt-2 p-4 border border-black/10 rounded-lg">
 							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
-								<ul className="flex flex-col">
-									{sortedInvestmentRounds.map((activity, index) => {
-										return (
-											<li
-												key={index}
-												className="relative pl-6 overflow-hidden group last:-mb-4"
-											>
-												<span className="absolute h-full top-0 bottom-0 left-0">
-													<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-													<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-												</span>
+								<>
+									<ul className="flex flex-col">
+										{sortedInvestmentRounds
+											.slice(0, activityLimit)
+											.map((activity, index) => {
+												return (
+													<li
+														key={index}
+														className="relative pl-6 overflow-hidden group last:-mb-4"
+													>
+														<span className="absolute h-full top-0 bottom-0 left-0">
+															<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+															<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+														</span>
 
-												<div className="mb-4">
-													<h2 className="font-bold">
-														{`Raised $${convertAmountRaised(
-															activity.amount
-														)} from ${getInvestorsNames(activity.investments)}`}
-													</h2>
-													<p className="text-xs text-slate-600">
-														{formatDate(activity.round_date as string, {
-															month: "short",
-															day: "2-digit",
-															year: "numeric",
-														})}
-													</p>
-												</div>
-											</li>
-										);
-									})}
-								</ul>
+														<div className="mb-4">
+															<h2 className="font-bold">
+																{`Raised $${convertAmountRaised(
+																	activity.amount
+																)} from ${getInvestorsNames(
+																	activity.investments
+																)}`}
+															</h2>
+															<p className="text-xs text-slate-600">
+																{formatDate(activity.round_date as string, {
+																	month: "short",
+																	day: "2-digit",
+																	year: "numeric",
+																})}
+															</p>
+														</div>
+													</li>
+												);
+											})}
+									</ul>
+									{activityLimit < sortedInvestmentRounds.length && (
+										<div className="mt-6">
+											<ElemButton
+												btn="ol-primary"
+												onClick={showMoreActivity}
+												className="w-full"
+											>
+												Show More Activity
+											</ElemButton>
+										</div>
+									)}
+								</>
 							) : (
 								<div className="flex items-center justify-center p-5">
 									<div className="text-xl text-slate-600">

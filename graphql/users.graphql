@@ -1,31 +1,8 @@
 query GetUserProfile ($id: Int!) {
   users_by_pk(id: $id) {
     id
-    person {
+    organization_companies {
       id
-    name
-    personal_email
-    picture
-    slug
-    status
-    type
-    work_email
-    linkedin
-    github
-    city
-    country
-    facebook_url
-    twitter_url
-    website_url
-    about
-    email
-    team_members {
-      id
-      end_date
-      start_date
-      founder
-      function
-      title
       company {
         id
         slug
@@ -35,20 +12,65 @@ query GetUserProfile ($id: Int!) {
         location
       }
     }
-    investments {
-      investment_round {
+    organization_vc_firms {
+      id
+      vc_firm {
         id
-        round_date
-        round
-        amount
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    person {
+      id
+      name
+      personal_email
+      picture
+      slug
+      status
+      type
+      work_email
+      linkedin
+      github
+      city
+      country
+      facebook_url
+      twitter_url
+      website_url
+      about
+      email
+      team_members {
+        id
+        end_date
+        start_date
+        founder
+        function
+        title
         company {
           id
           slug
           name
           logo
+          overview
+          location
         }
       }
-    }
+      investments {
+        investment_round {
+          id
+          round_date
+          round
+          amount
+          company {
+            id
+            slug
+            name
+            logo
+          }
+        }
+      }
     }
   }
 }
