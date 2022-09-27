@@ -218,7 +218,7 @@ export const TheNavbar = () => {
 								<ElemButton
 									onClick={() => setShowSearchModal(true)}
 									btn="slate"
-									className="h-9 w-9 px-0 py-0 sm:hidden"
+									className="h-9 w-9 !px-0 !py-0 sm:hidden"
 								>
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>

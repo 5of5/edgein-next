@@ -31,7 +31,7 @@ export default function OnBoardingStep2Modal(props: Props) {
 	return (
 		<>
 			<Transition.Root show={props.show} as={Fragment}>
-				<Dialog as="div" onClose={onClose} className="relative z-[60]">
+				<Dialog as="div" onClose={() => {}} className="relative z-[60]">
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
