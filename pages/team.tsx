@@ -57,7 +57,6 @@ export const getStaticProps: GetStaticProps = async () => {
 		},
 		{
 			image: "/images/ashley-brown.jpg",
-			//image: ashley,
 			name: "Ashley Brown",
 			role: "Co-Founder & COO",
 			description:
@@ -105,22 +104,52 @@ export const getStaticProps: GetStaticProps = async () => {
 			name: "Osman Pulgar",
 			role: "Virtual Strategic Analyst",
 			//description: "",
-			//linkedin: maybe? "https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/",
+			linkedin:
+				"https://www.linkedin.com/in/osman-eduardo-pulgar-zada-6a20b122a/",
 		},
 		{
 			image: "/images/jonnelle-gueco.jpg",
 			name: "Jonnelle Gueco",
 			role: "Virtual Strategic Analyst",
 			//description: "",
-			//linkedin: maybe? "https://www.linkedin.com/in/jonnelle-gueco-826343200/",
+			linkedin: "https://www.linkedin.com/in/jonnelle-gueco-826343200/",
 		},
 		{
 			image: "/images/patricia-pulgar.jpg",
 			name: "Patricia Pulgar",
 			role: "Virtual Strategic Analyst",
 			//description: "",
-			//linkedin: maybe? "https://www.linkedin.com/in/ana-patricia-pulgar-zada-796301173/",
+			linkedin:
+				"https://www.linkedin.com/in/ana-patricia-pulgar-zada-796301173/",
 		},
+		{
+			image: "/images/juan-panno.jpg",
+			name: "Juan Panno",
+			role: "Virtual Strategic Analyst",
+			//description: "",
+			linkedin: "https://www.linkedin.com/in/juan-manuel-panno-942a89248/",
+		},
+		{
+			image: "/images/carlos-mendoza.jpg",
+			name: "Carlos Mendoza",
+			role: "Virtual Strategic Analyst",
+			//description: "",
+			linkedin: "https://www.linkedin.com/in/carlos-hubert-mendoza-12448b249/",
+		},
+		// {
+		// 	//image: "/images/juan-panno.jpg",
+		// 	name: "Colet Mendoza",
+		// 	role: "Virtual Strategic Analyst",
+		// 	//description: "",
+		// 	//linkedin: "",
+		// },
+		// {
+		// 	//image: "/images/juan-panno.jpg",
+		// 	name: "Ricardo Riverdo",
+		// 	role: "Virtual Strategic Analyst",
+		// 	//description: "",
+		// 	//linkedin: "",
+		// },
 	];
 
 	return {
