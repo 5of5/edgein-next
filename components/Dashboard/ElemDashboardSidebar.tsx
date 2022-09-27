@@ -56,7 +56,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 
 	return (
 		<>
-			<div className="">
+			<div>
 				<h3 className="text-xl font-bold">My EdgeIn</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					<li className={`${getActiveClass("/profile/")}`} role="button">
@@ -68,6 +68,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 									imgClass="object-fit max-w-full max-h-full rounded-full"
 									imgAlt={"profile"}
 									placeholder="user"
+									placeholderClass="text-slate-300"
 								/>
 								{user?.profileName ? (
 									<span className="first-letter:uppercase">
@@ -91,9 +92,9 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 				</ul>
 			</div>
 
-			<ElemMyListsMenu user={user} className="mt-4" />
+			<ElemMyListsMenu user={user} className="mt-6" />
 
-			<div className="mt-4">
+			<div className="mt-6">
 				<h3 className="text-xl font-bold">Explore</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					<li className={`${getActiveClass("/companies/")}`} role="button">
@@ -115,7 +116,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 				</ul>
 			</div>
 
-			<div className="mt-4">
+			<div className="mt-6">
 				<h3 className="text-xl font-bold">My Organizations</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					{organizations?.map((teamMember) => {

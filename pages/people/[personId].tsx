@@ -72,6 +72,7 @@ const Person: NextPage<Props> = (props) => {
 						imgClass="object-contain w-full h-full"
 						imgAlt={person.name}
 						placeholder="user"
+						placeholderClass="text-slate-300"
 					/>
 				</div>
 				<div className="w-full col-span-5 mt-7 lg:mt-0">

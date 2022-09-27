@@ -1,17 +1,10 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import Link from "next/link";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
-//import { IconLinkedIn } from "@/components/reactions/IconLinkedIn";
 import { ElemButton } from "@/components/ElemButton";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { IconChevronLeft } from "@/components/Icons";
-import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
-import person from "../images/person.png";
-import { IconSetting } from "@/components/IconSetting";
 import { IconLinkedIn } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 const validator = require("validator");
