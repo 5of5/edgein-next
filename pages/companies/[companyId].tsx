@@ -52,7 +52,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	//const goBack = () => router.back();
 
-	const [company, setCompany] = useState(props.company);
+	const [company, setCompany] = useState<Companies>(props.company);
 
 	const [tokenInfo, setTokenInfo] = useState({ currentPrice: 0, marketCap: 0 });
 
@@ -95,7 +95,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	}, [company]);
 
 	useEffect(() => {
-		if (companyData) setCompany(companyData?.companies[0] as Companies);
+		if (companyData) setCompany(companyData?.companies[0] as any);
 	}, [companyData]);
 
 	if (!company) {

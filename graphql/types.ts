@@ -10677,6 +10677,7 @@ export type Users = {
   reference_id: Scalars['String'];
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  wallet_address: Maybe<Scalars['String']>;
 };
 
 
@@ -10809,6 +10810,7 @@ export type Users_Bool_Exp = {
   reference_id: InputMaybe<String_Comparison_Exp>;
   reference_user_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
+  wallet_address: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
@@ -10861,6 +10863,7 @@ export type Users_Insert_Input = {
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
+  wallet_address: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -10876,6 +10879,7 @@ export type Users_Max_Fields = {
   reference_id: Maybe<Scalars['String']>;
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  wallet_address: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -10891,6 +10895,7 @@ export type Users_Min_Fields = {
   reference_id: Maybe<Scalars['String']>;
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
+  wallet_address: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "users" */
@@ -10934,6 +10939,7 @@ export type Users_Order_By = {
   reference_id: InputMaybe<Order_By>;
   reference_user_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
+  wallet_address: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: users */
@@ -10971,7 +10977,9 @@ export enum Users_Select_Column {
   /** column name */
   ReferenceUserId = 'reference_user_id',
   /** column name */
-  Role = 'role'
+  Role = 'role',
+  /** column name */
+  WalletAddress = 'wallet_address'
 }
 
 /** input type for updating data in table "users" */
@@ -10988,6 +10996,7 @@ export type Users_Set_Input = {
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
+  wallet_address: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -11047,7 +11056,9 @@ export enum Users_Update_Column {
   /** column name */
   ReferenceUserId = 'reference_user_id',
   /** column name */
-  Role = 'role'
+  Role = 'role',
+  /** column name */
+  WalletAddress = 'wallet_address'
 }
 
 /** aggregate var_pop on columns */
@@ -12026,13 +12037,18 @@ export type Waitlist_Emails_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+export type GetAllCoinsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCoinsQuery = { __typename?: 'query_root', coins: Array<{ __typename?: 'coins', ticker: string, name: string, id: number }> };
+
 export type GetCompanyQueryVariables = Exact<{
   slug: Scalars['String'];
   current_user?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, investments: Array<{ __typename?: 'investments', id: number, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }>, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string | null, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }>, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -12105,6 +12121,11 @@ export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetPersonsPathQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, slug: string | null }> };
 
+export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllPersonsQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null }> };
+
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -12153,7 +12174,40 @@ export type GetRelevantVcFirmsQueryVariables = Exact<{
 
 export type GetRelevantVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_vc_firms', list: { __typename?: 'lists', name: string } | null }> }> };
 
+export type GetAllVcFirmsQueryVariables = Exact<{ [key: string]: never; }>;
 
+
+export type GetAllVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string | null }> };
+
+
+export const GetAllCoinsDocument = `
+    query GetAllCoins {
+  coins {
+    ticker
+    name
+    id
+  }
+}
+    `;
+export const useGetAllCoinsQuery = <
+      TData = GetAllCoinsQuery,
+      TError = Error
+    >(
+      variables?: GetAllCoinsQueryVariables,
+      options?: UseQueryOptions<GetAllCoinsQuery, TError, TData>
+    ) =>
+    useQuery<GetAllCoinsQuery, TError, TData>(
+      variables === undefined ? ['GetAllCoins'] : ['GetAllCoins', variables],
+      fetcher<GetAllCoinsQuery, GetAllCoinsQueryVariables>(GetAllCoinsDocument, variables),
+      options
+    );
+useGetAllCoinsQuery.document = GetAllCoinsDocument;
+
+
+useGetAllCoinsQuery.getKey = (variables?: GetAllCoinsQueryVariables) => variables === undefined ? ['GetAllCoins'] : ['GetAllCoins', variables];
+;
+
+useGetAllCoinsQuery.fetcher = (variables?: GetAllCoinsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllCoinsQuery, GetAllCoinsQueryVariables>(GetAllCoinsDocument, variables, options);
 export const GetCompanyDocument = `
     query GetCompany($slug: String!, $current_user: Int = 0) {
   companies(where: {slug: {_eq: $slug}}) {
@@ -12203,12 +12257,14 @@ export const GetCompanyDocument = `
       start_date
       end_date
       founder
+      title
     }
     investment_rounds {
       id
       round_date
       round
       amount
+      valuation
       investments {
         id
         person {
@@ -12223,6 +12279,7 @@ export const GetCompanyDocument = `
           name
           logo
         }
+        amount
       }
     }
     follows(where: {created_by_user_id: {_eq: $current_user}}) {
@@ -12651,6 +12708,33 @@ useGetPersonsPathQuery.getKey = (variables?: GetPersonsPathQueryVariables) => va
 ;
 
 useGetPersonsPathQuery.fetcher = (variables?: GetPersonsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetPersonsPathQuery, GetPersonsPathQueryVariables>(GetPersonsPathDocument, variables, options);
+export const GetAllPersonsDocument = `
+    query GetAllPersons {
+  people {
+    id
+    name
+  }
+}
+    `;
+export const useGetAllPersonsQuery = <
+      TData = GetAllPersonsQuery,
+      TError = Error
+    >(
+      variables?: GetAllPersonsQueryVariables,
+      options?: UseQueryOptions<GetAllPersonsQuery, TError, TData>
+    ) =>
+    useQuery<GetAllPersonsQuery, TError, TData>(
+      variables === undefined ? ['GetAllPersons'] : ['GetAllPersons', variables],
+      fetcher<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, variables),
+      options
+    );
+useGetAllPersonsQuery.document = GetAllPersonsDocument;
+
+
+useGetAllPersonsQuery.getKey = (variables?: GetAllPersonsQueryVariables) => variables === undefined ? ['GetAllPersons'] : ['GetAllPersons', variables];
+;
+
+useGetAllPersonsQuery.fetcher = (variables?: GetAllPersonsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, variables, options);
 export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
@@ -12970,3 +13054,32 @@ useGetRelevantVcFirmsQuery.getKey = (variables: GetRelevantVcFirmsQueryVariables
 ;
 
 useGetRelevantVcFirmsQuery.fetcher = (variables: GetRelevantVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantVcFirmsQuery, GetRelevantVcFirmsQueryVariables>(GetRelevantVcFirmsDocument, variables, options);
+export const GetAllVcFirmsDocument = `
+    query GetAllVCFirms {
+  vc_firms {
+    id
+    name
+    logo
+    slug
+  }
+}
+    `;
+export const useGetAllVcFirmsQuery = <
+      TData = GetAllVcFirmsQuery,
+      TError = Error
+    >(
+      variables?: GetAllVcFirmsQueryVariables,
+      options?: UseQueryOptions<GetAllVcFirmsQuery, TError, TData>
+    ) =>
+    useQuery<GetAllVcFirmsQuery, TError, TData>(
+      variables === undefined ? ['GetAllVCFirms'] : ['GetAllVCFirms', variables],
+      fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables),
+      options
+    );
+useGetAllVcFirmsQuery.document = GetAllVcFirmsDocument;
+
+
+useGetAllVcFirmsQuery.getKey = (variables?: GetAllVcFirmsQueryVariables) => variables === undefined ? ['GetAllVCFirms'] : ['GetAllVCFirms', variables];
+;
+
+useGetAllVcFirmsQuery.fetcher = (variables?: GetAllVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables, options);

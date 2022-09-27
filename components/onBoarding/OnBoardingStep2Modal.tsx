@@ -76,7 +76,7 @@ export default function OnBoardingStep2Modal(props: Props) {
 								<TagInputText
 									defaultTags={industryTags}
 									className="mt-5"
-									label="Industry"
+									//label="Industry"
 									value=""
 									name="Industry"
 									placeholder="e.g. Native Code, NFTs, Nodes"
