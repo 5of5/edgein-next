@@ -267,6 +267,25 @@ export const seniorityChoicesTM = [
   }
 ]
 
+export const companyChoices = [
+  {
+    id: "Trending",
+    name: "Trending",
+  },
+  {
+    id: "Following",
+    name: "Following",
+  },
+  {
+    id: "Acquired",
+    name: "Acquired",
+  },
+  {
+    id: "Dead",
+    name: "Dead",
+  },
+]
+
 export const companyLayerChoices = [
   {
     id: "Layer 0",
