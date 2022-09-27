@@ -10,7 +10,7 @@ type Props = {
 	placeholder?: string;
 	required?: boolean;
 	autoComplete?: string;
-	disabled?:  boolean
+	disabled?: boolean;
 };
 
 export const InputText: React.FC<PropsWithChildren<Props>> = ({
@@ -23,17 +23,18 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 	placeholder = "",
 	required = false,
 	autoComplete = "on",
-	disabled= false
+	disabled = false,
 }) => {
 	return (
 		<>
 			{label && (
-				<label htmlFor={name} className="font-bold text-gray-400 cursor-text">
+				<label htmlFor={name} className="font-bold text-slate-600 cursor-text">
 					{label}
 				</label>
 			)}
+
 			<input
-				className={`w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-gray-100 outline-none placeholder:text-slate-400 focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100 ${className}`}
+				className={`w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400 ${className}`}
 				type={type ? type : "text"}
 				name={name}
 				value={value}
