@@ -21,6 +21,7 @@
 - "!include public_people.yaml"
 - "!include public_resource_edit_access.yaml"
 - "!include public_team_members.yaml"
+- "!include public_user_notifications.yaml"
 - "!include public_user_tokens.yaml"
 - "!include public_users.yaml"
 - "!include public_vc_firms.yaml"
