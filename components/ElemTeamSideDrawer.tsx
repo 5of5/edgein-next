@@ -13,7 +13,7 @@ type Props = {
     isOpen: boolean;
     onClose: any;
     memberToEdit: Team_Members | Investors | undefined;
-    onSaveEmployee: (employee:  Team_Members) => void
+    onSaveEmployee: (employee:  Team_Members | Investors) => void
     errorsTeamMembers: any;
 }
 

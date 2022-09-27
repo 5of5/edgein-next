@@ -22,8 +22,9 @@ export const ElemEditInvestments: React.FC<Props> = ({
 	onEdit = () => {},
 	type
 }) => {
-	const columns = (type === 'Company') ? React.useMemo(
-		() => [
+	const columns = React.useMemo(
+		() => (type === 'Company') ? 
+		[
 			{
 				Header: "Type",
 				accessor: "round" as const,
@@ -174,11 +175,9 @@ export const ElemEditInvestments: React.FC<Props> = ({
 				</button>
 				),
 			},
-		],
-		[onEdit]
-	)
-	: React.useMemo(
-		() => [
+		] 
+		: 
+		[
 			{
 				Header: "Date",
 				accessor: "investment_round.round_date" as const,
@@ -248,7 +247,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 				),
 			},
 		],
-		[onEdit]
+		[onEdit, type]
 	);
 
 	const dataInvestments = React.useMemo(() => {

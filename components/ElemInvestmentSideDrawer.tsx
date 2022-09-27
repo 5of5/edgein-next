@@ -60,7 +60,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
         }else{
             setInvestmentRound(investmentRoundToEdit) 
         }
-    }, [investmentRoundToEdit, emptyInvestment])
+    }, [investmentRoundToEdit, emptyInvestment, type])
 
     const {
         data: personsData
