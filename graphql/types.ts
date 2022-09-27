@@ -12224,6 +12224,11 @@ export type GetRelevantCompaniesQueryVariables = Exact<{
 
 export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
 
+export type GetAllCompaniesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, logo: any | null, slug: string | null }> };
+
 export type GetFollowsListsStaticPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -12610,6 +12615,35 @@ useGetRelevantCompaniesQuery.getKey = (variables: GetRelevantCompaniesQueryVaria
 ;
 
 useGetRelevantCompaniesQuery.fetcher = (variables: GetRelevantCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables, options);
+export const GetAllCompaniesDocument = `
+    query GetAllCompanies {
+  companies {
+    id
+    name
+    logo
+    slug
+  }
+}
+    `;
+export const useGetAllCompaniesQuery = <
+      TData = GetAllCompaniesQuery,
+      TError = Error
+    >(
+      variables?: GetAllCompaniesQueryVariables,
+      options?: UseQueryOptions<GetAllCompaniesQuery, TError, TData>
+    ) =>
+    useQuery<GetAllCompaniesQuery, TError, TData>(
+      variables === undefined ? ['GetAllCompanies'] : ['GetAllCompanies', variables],
+      fetcher<GetAllCompaniesQuery, GetAllCompaniesQueryVariables>(GetAllCompaniesDocument, variables),
+      options
+    );
+useGetAllCompaniesQuery.document = GetAllCompaniesDocument;
+
+
+useGetAllCompaniesQuery.getKey = (variables?: GetAllCompaniesQueryVariables) => variables === undefined ? ['GetAllCompanies'] : ['GetAllCompanies', variables];
+;
+
+useGetAllCompaniesQuery.fetcher = (variables?: GetAllCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllCompaniesQuery, GetAllCompaniesQueryVariables>(GetAllCompaniesDocument, variables, options);
 export const GetFollowsListsStaticPathsDocument = `
     query GetFollowsListsStaticPaths {
   follows {

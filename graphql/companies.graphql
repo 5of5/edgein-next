@@ -176,3 +176,12 @@ query GetRelevantCompanies(
 		}
 	}
 }
+
+query GetAllCompanies {
+  companies {
+    id
+    name
+    logo
+    slug
+  }
+}
