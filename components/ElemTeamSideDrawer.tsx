@@ -121,15 +121,19 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                             <InputSelect
                                                 options={(type === 'Team_Members') ? titleFilterValues : functionFilterValues}
                                                 onChange={(e: any) =>  setValues('function', e.value)}
-                                                value={titleFilterValues && employee.function ? titleFilterValues.find(x=> x.value === employee.function):{}}
+                                                value={(titleFilterValues && employee.function && type === 'Team_Members') ? titleFilterValues.find(x=> x.value === employee.function): ((functionFilterValues && employee.function && type === 'Investors') ? functionFilterValues.find(x=> x.value === employee.function) : {})}
                                                 placeholder=""
                                                 className='max-w-sm placeholder:text-slate-250'
                                             />
                                             {(errorsTeamMembers.function) && <p className="text-red-500 text-xs italic mt-2">{errorsTeamMembers.function}</p>}
                                         </div>
-                                        <div className='mt-4'>
-                                            <input type="checkbox" checked={employee.founder as boolean} onChange={() => setValues('founder', !employee.founder) } /><span className='text-sm font-Metropolis font-bold text-slate-600 ml-2'>Founder</span>
-                                        </div>
+                                        {
+                                            (type === "Team_Members") && (
+                                                <div className='mt-4'>
+                                                    <input type="checkbox" checked={(employee as Team_Members).founder as boolean} onChange={() => setValues('founder', !(employee as Team_Members).founder) } /><span className='text-sm font-Metropolis font-bold text-slate-600 ml-2'>Founder</span>
+                                                </div>
+                                            )
+                                        }
                                         <div className='mt-4'>
                                             <label className=' block  font-Metropolis text-sm font-bold text-slate-600'>Title</label>
                                             {/* <InputSelect

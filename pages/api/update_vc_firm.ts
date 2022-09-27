@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateVcFirm = async (payload: any, vcFirmId: number, token: string) => {
   const mutation = `
-    mutation UpdateVcFirmByPk($vcFirmId: Int!, $data: companies_set_input) {
+    mutation UpdateVcFirmByPk($vcFirmId: Int!, $data: vc_firms_set_input) {
       update_vc_firms_by_pk(pk_columns: {id: $vcFirmId}, _set: $data) {
         id
       }

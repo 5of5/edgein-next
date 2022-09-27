@@ -117,7 +117,7 @@ export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: 
   if (!values?.overview) {
     errors.overview = 'The description is required';
   }
-  if(!values?.layer) {
+  if(values.hasOwnProperty('layer') && !values?.layer) {
     errors.layer = 'Company type is required';
   }
   if(!values?.tags || values?.tags.length < 1){
@@ -141,31 +141,31 @@ export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: 
     '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
   var emailPattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-    if (values.hasOwnProperty('website') && values?.website !== '' && !urlPattern.test(values?.website)) {
+    if (values.hasOwnProperty('website') && values?.website  && !urlPattern.test(values?.website)) {
       errors.website = 'Website URL is not valid';
     }
-    if (values.hasOwnProperty('github') && values?.github !== '' && !urlPattern.test(values?.github)) {
+    if (values.hasOwnProperty('github') && values?.github  && !urlPattern.test(values?.github)) {
       errors.github = 'Github URL is not valid';
     }
-    if (values.hasOwnProperty('twitter') && values?.twitter !== '' && !urlPattern.test(values?.twitter)) {
+    if (values.hasOwnProperty('twitter') && values?.twitter  && !urlPattern.test(values?.twitter)) {
       errors.twitter = 'Twitter URL is not valid';
     }
-    if (values.hasOwnProperty('company_linkedin') && values?.company_linkedin !== '' && !urlPattern.test(values?.company_linkedin)) {
+    if (values.hasOwnProperty('company_linkedin') && values?.company_linkedin  && !urlPattern.test(values?.company_linkedin)) {
       errors.company_linkedin = 'Linkedin URL is not valid';
     }
-    if (values.hasOwnProperty('linkedin') && values?.linkedin !== '' && !urlPattern.test(values?.linkedin)) {
+    if (values.hasOwnProperty('linkedin') && values?.linkedin && !urlPattern.test(values?.linkedin)) {
       errors.linkedin = 'Linkedin URL is not valid';
     }
-    if (values.hasOwnProperty('discord') && values?.discord !== '' && !urlPattern.test(values?.discord)) {
+    if (values.hasOwnProperty('discord') && values?.discord && !urlPattern.test(values?.discord)) {
       errors.discord = 'Discord URL is not valid';
     }
-    if (values.hasOwnProperty('glassdoor') && values?.glassdoor !== '' && !urlPattern.test(values?.glassdoor)) {
+    if (values.hasOwnProperty('glassdoor') && values?.glassdoor && !urlPattern.test(values?.glassdoor)) {
       errors.glassdoor = 'Glassdoor URL is not valid';
     }
-    if (values.hasOwnProperty('white_paper') && values?.white_paper !== '' && !urlPattern.test(values?.white_paper)) {
+    if (values.hasOwnProperty('white_paper') && values?.white_paper  && !urlPattern.test(values?.white_paper)) {
       errors.white_paper = 'White paper URL is not valid';
     }
-    if (values.hasOwnProperty('careers_page') && values?.careers_page !== '' && !urlPattern.test(values?.careers_page)) {
+    if (values.hasOwnProperty('careers_page') && values?.careers_page && !urlPattern.test(values?.careers_page)) {
       errors.careers_page = 'Careers page URL is not valid';
     }
     if (values.hasOwnProperty('work_email') && values?.work_email !== '' && !emailPattern.test(values?.work_email)) {

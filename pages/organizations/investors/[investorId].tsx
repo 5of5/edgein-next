@@ -83,11 +83,6 @@ const InvestorsEdit: NextPage<Props> = (props: Props) => {
       setVcfirmEditable(vcFirmData?.vc_firms[0] as any);
     }
   }, [vcFirmData]);
-  
-  const handleProfileEditClick = () => {
-    // 👇️ open file input box on click of other element
-    fileInputRef?.current?.click();
-  };
 
   console.log("vcfirm ==", vcfirm)
 
@@ -108,27 +103,31 @@ const InvestorsEdit: NextPage<Props> = (props: Props) => {
 };
 
 const onSaveEmployee = async(employee : any) => {
+ 
   const updatedEmployee = {
       ...employee,
-      company_id: vcfirm.id,
+      vc_firm_id: vcfirm.id,
       person_id: (employee.person)? employee.person.id : null
   }
   delete updatedEmployee.person;
   const error = await validateTeamMember(true, updatedEmployee)
   setErrorsTeamMembers(error)
+  console.log("employee ==",updatedEmployee)
+  console.log("employee error ==",error)
   if (Object.keys(error).length == 0) {
       setTeamDrawer(false)
-      await fetch("/api/team_member", {
+      await fetch("/api/upsert_investor", {
           method: "POST",
           body: JSON.stringify({
-              teammember: updatedEmployee
+            investor: updatedEmployee,
+            vcFirmId: vcfirm.id,
           }),
           headers: {
               Accept: "application/json",
               "Content-Type": "application/json",
           },
       });
-      window.location.reload()
+      // window.location.reload()
   }
 }
 
@@ -180,10 +179,11 @@ const onSaveInvestmentRound = async(round : any) => {
     setVcfirmEditable(tempData);
     const error = await validateFieldsForEdit(true, tempData, vcfirm)
     setErrors(error)
-    
+    console.log('error', error)
     if (Object.keys(error).length == 0) {
+      console.log('final data  ==', tempData)
         const resp = await updateCall(tempData  as Vc_Firms)
-        window.location.reload()
+       // window.location.reload()
     }
 }
 
@@ -567,7 +567,7 @@ const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
                       onChange={(e) => { setValues('careers_page', e.target.value)}}
                       value={(vcfirmEditable.careers_page) ? vcfirmEditable.careers_page : ''}
                       name=""
-                      placeholder="htpps://www.careers.com"
+                      placeholder="https://www.careers.com"
                       className="placeholder:text-slate-300 w-80 text-slate-600 text-base"
 
                   />
