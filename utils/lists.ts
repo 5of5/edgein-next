@@ -58,7 +58,7 @@ export const updateCompaniesSentimentCount = async (companyId: string, token: st
     variables: { "companyId": companyId, sentiment }
   }, token)
 
-  return { sentiment, revalidatePath: shouldInc ? `/companies/${company.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}` : '' }
+  return { sentiment }
 }
 
 export const updateVCFirmsSentimentCount = async (vcFirmId: string, token: string, sentimentType: string, shouldInc: boolean, shouldDec: boolean) => {
@@ -108,7 +108,7 @@ export const updateVCFirmsSentimentCount = async (vcFirmId: string, token: strin
     variables: { "vcFirmId": vcFirmId, sentiment }
   }, token)
 
-  return { sentiment, revalidatePath: shouldInc ? `/investors/${vcfirm.slug}/?revalidation_auth=${process.env.REVALIDATION_AUTH_TOKEN}` : '' }
+  return { sentiment }
 }
 
 export const upsertList = async (listname: string, user: User, token: string) => {

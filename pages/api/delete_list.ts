@@ -27,8 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await deleteIfExists(list, followResult.resource_id, followResult.resource_type, user, token) // delete follows
     await deleteListMemberIfExist(user, token, list); // delete list member
     await deleteListIfExist(user, token, list); // delete lists
-    const { sentiment, revalidatePath } = await updateResourceSentimentCount(followResult.resource_type, followResult.resource_id, token, sentimentType, false, true)
-    res.status(200).json({ sentiment, revalidatePath });
+    const { sentiment } = await updateResourceSentimentCount(followResult.resource_type, followResult.resource_id, token, sentimentType, false, true)
+    res.status(200).json({ sentiment });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }

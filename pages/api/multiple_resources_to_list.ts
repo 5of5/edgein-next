@@ -33,11 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // insert follow only if the follows don't exists
     const follow = await upsertFollow(list, resourceId, resourceType, user, token)
 
-    const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), false)
-
-    if (revalidatePath) {
-      await res.unstable_revalidate(revalidatePath)
-    }
+    const { sentiment } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), false)
 
     return { company: resource.company, sentiment: { ...sentiment } }
   }))
