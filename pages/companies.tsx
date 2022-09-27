@@ -29,7 +29,7 @@ import { companyChoices, companyLayerChoices } from "../utils/constants";
 type Props = {
 	companiesCount: number;
 	initialCompanies: GetCompaniesQuery["companies"];
-	company: TextFilter[];
+	companyFilters: TextFilter[];
 	companyLayers: TextFilter[];
 	amountRaised: NumericFilter[];
 	totalEmployees: NumericFilter[];
@@ -45,7 +45,7 @@ export type DeepPartial<T> = T extends object
 const Companies: NextPage<Props> = ({
 	companiesCount,
 	initialCompanies,
-	company,
+	companyFilters,
 	companyLayers,
 	amountRaised,
 	totalEmployees,
@@ -70,8 +70,8 @@ const Companies: NextPage<Props> = ({
 	};
 
 	// Company Filter
-	const [selectedCompany, setSelectedCompany] = useState(
-		company[0]
+	const [selectedCompanyFilters, setSelectedCompanyFilters] = useState(
+		companyFilters[0]
 	);
 
 	// Company Layers Filter
@@ -100,7 +100,7 @@ const Companies: NextPage<Props> = ({
 			initialLoad &&
 			debouncedSearchTerm !== "" &&
 			selectedLayer.value !== "" &&
-			selectedCompany.value !== "" &&
+			selectedCompanyFilters.value !== "" &&
 			selectedAmountRaised.rangeEnd !== 0 &&
 			selectedTotalEmployees.rangeEnd !== 0
 		) {
@@ -112,7 +112,7 @@ const Companies: NextPage<Props> = ({
 		selectedAmountRaised,
 		selectedLayer,
 		selectedTotalEmployees,
-		selectedCompany,
+		selectedCompanyFilters,
 	]);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
@@ -129,8 +129,8 @@ const Companies: NextPage<Props> = ({
 	if (selectedLayer.value) {
 		filters._and?.push({ layer: { _eq: selectedLayer.value } });
 	}
-	if (selectedCompany.value) {
-		filters._and?.push({ layer: { _eq: selectedCompany.value } });
+	if (selectedCompanyFilters.value) {
+		filters._and?.push({ layer: { _eq: selectedCompanyFilters.value } });
 	}
 	if (selectedAmountRaised.rangeEnd !== 0) {
 		filters._and?.push({
@@ -218,9 +218,9 @@ const Companies: NextPage<Props> = ({
 					<ElemFiltersWrap className="pt-2 filters-wrap">
 						<InputSelect
 							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							value={selectedCompany}
-							onChange={setSelectedCompany}
-							options={company}
+							value={selectedCompanyFilters}
+							onChange={setSelectedCompanyFilters}
+							options={companyFilters}
 						/>
 
 						<InputSelect
@@ -342,7 +342,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
 			companiesCount: companies?.companies.length,
 			initialCompanies: companies?.companies.slice(0, 50),
-			company: CompaniesFilters,
+			companyFilters: CompaniesFilters,
 			companyLayers: LayersFilters,
 			amountRaised: AmountRaisedFilters,
 			totalEmployees: EmployeesFilters,
