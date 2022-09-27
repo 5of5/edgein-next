@@ -1,0 +1,12 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE OR REPLACE FUNCTION after_update_companies_create_action()
+--   RETURNS trigger AS
+-- $$
+-- BEGIN
+-- INSERT INTO public.actions (action, page, properties, resource, resource_id)
+--     VALUES ('company_update', CONCAT('/companies/', NEW.slug), CONCAT('{"notification": "updated information", ', '"resourceType": "companies", ' , '"resourceId": ', NEW.id ,'}'), "companies", NEW.id);
+-- RETURN NEW;
+-- END;
+-- $$
+-- LANGUAGE 'plpgsql';

@@ -1,0 +1,7 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TRIGGER trigger_after_company_update_create_action
+--   AFTER INSERT
+--   ON companies
+--   FOR EACH ROW
+--   EXECUTE PROCEDURE after_update_companies_create_action();

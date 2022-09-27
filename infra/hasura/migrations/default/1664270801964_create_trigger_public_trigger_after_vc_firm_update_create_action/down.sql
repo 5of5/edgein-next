@@ -1,0 +1,7 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TRIGGER trigger_after_vc_firm_update_create_action
+--   AFTER UPDATE
+--   ON vc_firms
+--   FOR EACH ROW
+--   EXECUTE PROCEDURE after_update_vc_firm_create_action();
