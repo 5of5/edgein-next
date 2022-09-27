@@ -132,6 +132,9 @@ export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: 
   if(values.hasOwnProperty('investor_type') && !values?.investor_type){
     errors.investor_type = 'Investor Type is required';
   }
+  if(values.hasOwnProperty('investment_stage') && (!values?.investment_stage || values?.investment_stage.length === 0)){
+    errors.investment_stage = 'Investment Stage is required';
+  }
 
   var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -196,6 +199,9 @@ export const validateInvestmentRounds = async (isEdit: boolean, values: any) => 
   }
   if (!values?.amount) {
     errors.amount = 'Money Raised is required';
+  }
+  if(!values?.company_id) {
+    errors.company = 'Company is required';
   }
   return errors
 }

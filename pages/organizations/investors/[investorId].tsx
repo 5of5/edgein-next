@@ -2,11 +2,9 @@ import { useAuth } from "../../../hooks/useAuth";
 import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { IconChevronRight } from "@/components/Icons";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
-import { IconCamera } from "@/components/IconCamera";
 import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer"
 import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer"
 import { useRef, useState, useEffect, ChangeEvent } from "react";
@@ -14,7 +12,6 @@ import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { useRouter } from "next/router";
 import { uploadFile, deleteFile } from "@/utils/fileFunctions";
 import {
-	Follows_Vc_Firms,
 	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
@@ -24,8 +21,6 @@ import {
   Investments,
 } from "@/graphql/types";
 import {
-	convertToInternationalCurrencySystem,
-	formatDate,
 	runGraphQl,
 } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
@@ -84,8 +79,6 @@ const InvestorsEdit: NextPage<Props> = (props: Props) => {
     }
   }, [vcFirmData]);
 
-  console.log("vcfirm ==", vcfirm)
-
   const updateCall = async (vcfirmData: Vc_Firms) => {
     const resp = await fetch("/api/update_vc_firm", {
       method: "POST",
@@ -112,8 +105,6 @@ const onSaveEmployee = async(employee : any) => {
   delete updatedEmployee.person;
   const error = await validateTeamMember(true, updatedEmployee)
   setErrorsTeamMembers(error)
-  console.log("employee ==",updatedEmployee)
-  console.log("employee error ==",error)
   if (Object.keys(error).length == 0) {
       setTeamDrawer(false)
       await fetch("/api/upsert_investor", {
@@ -127,45 +118,47 @@ const onSaveEmployee = async(employee : any) => {
               "Content-Type": "application/json",
           },
       });
-      // window.location.reload()
+      window.location.reload()
   }
 }
 
 const onSaveInvestmentRound = async(round : any) => {
+  const investment_round = {
+    ...round.investment_round,
+    company_id : (round.investment_round && round.investment_round.company) ? round.investment_round.company.id : null
+  };
 
-  console.log('updated  rounf =', round)
-       
-  // const updatedInvestments = round.investments.filter((item: any) => (item.person || item.vc_firm)).map((item:  any) => {
-  //     const tempInvestment = {
-  //         ...item,
-  //         person_id: (item.person) ? item.person.id : null,
-  //         vc_firm_id: (item.vc_firm) ? item.vc_firm.id : null
-  //     };
-  //     delete tempInvestment.person;
-  //     delete tempInvestment.vc_firm;
-  //     return tempInvestment;
-  // })
-  // const tempRound = {
-  //     ...round,
-  //     investments: updatedInvestments,
-  //     company_id: company.id
-  // }
-  // const error = await validateInvestmentRounds(true, tempRound)
-  // setErrorsRounds(error)
-  // if (Object.keys(error).length == 0) {
-  //     setInvestmentDrawer(false)
-  //     await fetch("/api/upsert_investment_round", {
-  //         method: "POST",
-  //         body: JSON.stringify({
-  //             investmentRound: tempRound
-  //         }),
-  //         headers: {
-  //             Accept: "application/json",
-  //             "Content-Type": "application/json",
-  //         },
-  //     });
-  //     window.location.reload()
-  // }
+  const investment = {
+    ...round,
+    person_id: (round.person) ? round.person.id : null,
+    vc_firm_id: (round.vc_firm) ? round.vc_firm.id : null
+  };
+
+  delete investment_round.company;
+  delete investment.person;
+  delete investment.vc_firm
+  delete investment.investment_round
+
+  const finalRound = {
+    ...investment_round,
+    investments : [investment]
+  }
+  const error = await validateInvestmentRounds(true, finalRound)
+  setErrorsRounds(error)
+  if (Object.keys(error).length == 0) {
+      setInvestmentDrawer(false)
+      await fetch("/api/upsert_investment_round", {
+          method: "POST",
+          body: JSON.stringify({
+              investmentRound: finalRound
+          }),
+          headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+          },
+      });
+      window.location.reload()
+  }
 }
 
   const onSaveVcFirm = async () => {
@@ -179,11 +172,9 @@ const onSaveInvestmentRound = async(round : any) => {
     setVcfirmEditable(tempData);
     const error = await validateFieldsForEdit(true, tempData, vcfirm)
     setErrors(error)
-    console.log('error', error)
     if (Object.keys(error).length == 0) {
-      console.log('final data  ==', tempData)
         const resp = await updateCall(tempData  as Vc_Firms)
-       // window.location.reload()
+       window.location.reload()
     }
 }
 
@@ -366,7 +357,7 @@ const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
 
             <GridTwelve wrapperClass="mt-6 mb-2 border-b border-gray-100 pb-3">
               <div className="col-span-3">
-                <h2 className="text-dark-500 font-bold  ">Investors Stage*</h2>
+                <h2 className="text-dark-500 font-bold  ">Investmennt Stage*</h2>
 
               </div>
               <div className="col-span-8">
@@ -624,7 +615,6 @@ const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
           <ElemEditInvestments
               type='Investors'
               onEdit={(investment) => {
-                console.log("investment edit ==", investment);
                   setInvestmentToEdit([...vcfirmEditable.investments].find((item: any) => item.id===investment.id)); 
                   setErrorsRounds({})
                   setInvestmentDrawer(true)

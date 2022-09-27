@@ -4,7 +4,7 @@ import { InputSearch } from './InputSearch';
 import { InputSelect } from './InputSelect';
 import { InputText } from './InputText';
 import { InputDate } from './InputDate';
-import { People, useGetAllPersonsQuery, Investment_Rounds, useGetAllVcFirmsQuery, Vc_Firms, Investments } from '@/graphql/types';
+import { People, useGetAllPersonsQuery, Investment_Rounds, useGetAllVcFirmsQuery, Vc_Firms, Investments, useGetAllCompaniesQuery, Companies } from '@/graphql/types';
 import { roundChoices } from '@/utils/constants';
 import { ElemButton } from './ElemButton';
 import ElemConfirmationMessageModal from './ElemConfirmationMessageModal';
@@ -36,13 +36,13 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
 
     const [persons, setPersons] = useState<People[]>();
     const [vcFirms, setVCFirms] = useState<Vc_Firms[]>()
+    const [companies, setCompanies] = useState<Companies[]>()
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
     const [firmFilterValues, setFirmFilterValues] = useState([{}]);
+    const [companyFilterValues, setCompanyFilterValues] = useState([{}]);
     const [investmentRound, setInvestmentRound] = useState<any>({} as any)
     const [deletedInvestments, setDeletedInvestments] = useState<Investments>({} as Investments)
     const [showConfirmation, setShowConfirmation] = useState(false)
-
-    console.log("investmentRoundToEdit =", investmentRoundToEdit)
 
     const roundFilterValues = roundChoices.map((option) => {
         return {
@@ -70,6 +70,10 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
         data: vcFirmData
     } = useGetAllVcFirmsQuery()
 
+    const {
+        data: companyData
+    } = useGetAllCompaniesQuery()
+
     useEffect(() => {
         if (personsData) {
             setPersons(personsData?.people as People[]);
@@ -95,6 +99,20 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
             }) : []
         )
     }, [vcFirmData])
+
+    useEffect(() => {
+        if (companyData) {
+            setCompanies(companyData?.companies as Companies[]);
+            setCompanyFilterValues(
+                companyData?.companies ? companyData?.companies.map(x => {
+                    return {
+                        title: x.name,
+                        value: x.id
+                    }
+                }) : []
+            )
+        }
+    }, [companyData]);
 
     const setValues = (key: string, value: any) => {
         const tempData = (type === 'Company') ? {
@@ -240,6 +258,22 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                                 placeholder='$'
                                             />
                                         </div>
+                                        {
+                                            (type === "Investors") && (
+                                                <div className='mt-4'>
+                                                    <label className=' block font-Metropolis text-sm font-bold text-slate-600'>Company</label>
+                                                    <InputSelect
+                                                        options={companyFilterValues}
+                                                        value={companyFilterValues && (investmentRound.investment_round && investmentRound.investment_round.company) ? companyFilterValues.find((item: any) => item.value === investmentRound.investment_round.company.id) : {}}
+                                                        onChange={(e: any) => setValues('company', (companies) ? companies.find(x => x.id === e.value) : {})}
+                                                        placeholder='Select Comany'
+                                                        className="w-80 text-slate-600 text-base"
+                                                    />
+                                                    {(errorsRounds.company) && <p className="text-red-500 text-xs italic mt-2">{errorsRounds.company}</p>}
+                                                </div>
+                                            )
+                                        }
+                                       
                                         <div className="mt-4">
                                         <label className='font-Metropolis text-sm font-bold text-slate-600'>Investments</label>
                                         {
@@ -337,7 +371,6 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
 
     useEffect(() => {
         setCurrentInvestment(investment)
-        console.log("currentInvestment =", investment)
     }, [investment])
 
     return (

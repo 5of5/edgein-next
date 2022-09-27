@@ -2,19 +2,6 @@ import React, { useState, PropsWithChildren, Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { IconSelector, IconCheck } from "../components/Icons";
 
-const people = [
-  "Wade Cooper",
-  "Arlene Mccoy",
-  "Devon Webb",
-  "Tom Cook",
-  "Tanya Fox",
-  "Hellen Schmidt",
-  "Caroline Schultz",
-  "Mason Heaney",
-  "Claudie Smitham",
-  "Emil Schaefer"
-];
-
 type Props = {
 	className?: string;
 	value?: any;
@@ -30,16 +17,17 @@ export const InputMultiSelect: React.FC<PropsWithChildren<Props>> = ({
 	options,
     onChange,
 }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className={className}>
         <Listbox
             value={value} onChange={onChange}
         >
-          {({open}) => (
+          {() => (
             <>
               <div className="relative">
-                <Listbox.Button className="relative w-full text-dark-500 bg-white border border-dark-500/10 rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
+                <Listbox.Button  onClick={() => setIsOpen(!isOpen)} className="relative w-full text-dark-500 bg-white border border-dark-500/10 rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
                     <div className={` ${className} truncate`}>
                         {(value) ? value.join(', ') : placeholder}
                         <span className="text-gray-400 text-sm ml-2">
@@ -52,7 +40,7 @@ export const InputMultiSelect: React.FC<PropsWithChildren<Props>> = ({
                 </Listbox.Button>
 
                 <Transition
-                  show={open}
+                  show={isOpen}
                   as={Fragment}
                   leave="transition ease-in duration-100"
                   leaveFrom="opacity-100"

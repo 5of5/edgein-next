@@ -1,16 +1,10 @@
 import { useAuth } from "../../../hooks/useAuth";
 import { NextPage, GetStaticProps, GetServerSideProps } from "next";
-import Link from "next/link"
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { IconChevronLeft, IconChevronRight } from "@/components/Icons";
-import company from "../../../images/company.png"
-import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { InputSelect } from "@/components/InputSelect";
-import { IconCamera } from "@/components/IconCamera";
-import { InputSearch } from "@/components/InputSearch";
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
 import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer";
@@ -18,7 +12,7 @@ import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer"
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { Investment_Rounds, Companies, useGetCompanyQuery, GetCompanyDocument, GetCompanyQuery, useGetAllCoinsQuery, Coins, Team_Members } from "@/graphql/types";
 import { useRouter } from "next/router";
-import { runGraphQl, convertToInternationalCurrencySystem, formatDate } from "@/utils";
+import { runGraphQl } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
 import { uploadFile, deleteFile } from "@/utils/fileFunctions";
 import { companyLayerChoices, validateFieldsForEdit, validateTeamMember, validateInvestmentRounds } from "@/utils/constants";
