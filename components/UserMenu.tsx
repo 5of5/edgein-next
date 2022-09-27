@@ -1,24 +1,39 @@
+import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "./ElemButton";
 import { Magic } from "magic-sdk";
-
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { Lists, useGetListsByUserQuery } from "@/graphql/types";
+import { find } from "lodash";
+import { getName } from "@/utils/reaction";
 import {
 	IconChevronDownMini,
 	IconUserCircle,
 	IconSignOut,
 	IconDashboard,
+	IconCustomList,
 	IconSettings,
 	IconOrganization,
 } from "./Icons";
 
-const navigation = [
-	{ name: "Dashboard", href: "/dashboard", icon: IconDashboard },
-	{ name: "Account Settings", href: "/account", icon: IconSettings },
-	{ name: "My Organization", href: "/organizations", icon: IconOrganization },
-];
-
 export const UserMenu = () => {
+	const { user } = useAuth();
+
+	const [hotId, setHotId] = useState(0);
+
+	const { data: lists } = useGetListsByUserQuery({
+		current_user: user?.id ?? 0,
+	});
+
+	useEffect(() => {
+		if (lists) {
+			setHotId(
+				() =>
+					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
+			);
+		}
+	}, [lists]);
+
 	const logout = async () => {
 		localStorage.clear();
 		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
@@ -35,6 +50,16 @@ export const UserMenu = () => {
 			/* handle errors */
 		}
 	};
+
+	const navigation = [
+		{ name: "My Lists", href: `/lists/${hotId}/hot`, icon: IconCustomList },
+		{
+			name: "My Organizations",
+			href: "/organizations",
+			icon: IconOrganization,
+		},
+		{ name: "Account Settings", href: "/account", icon: IconSettings },
+	];
 
 	return (
 		<Menu as="div" className="relative inline-block text-left">

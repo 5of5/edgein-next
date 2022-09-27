@@ -118,10 +118,10 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
 						</Dialog>
 					</Transition.Root>
 
-					<aside className="py-6 hidden md:block md:px-6 lg:col-span-3 lg:py-0 lg:px-0">
+					<aside className="py-6 hidden lg:block lg:col-span-3 lg:py-0">
 						<ElemDashboardSidebar />
 					</aside>
-					<div className="md:px-6 lg:col-span-9 lg:px-0">
+					<div className="lg:col-span-9">
 						<ElemButton
 							btn="white"
 							roundedFull={false}

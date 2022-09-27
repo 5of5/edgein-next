@@ -5,7 +5,7 @@ import { find, kebabCase } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { IconCompanyList } from "../reactions/IconCompanyList";
+import { IconCustomList } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 
 type Props = {
@@ -100,7 +100,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 								list.id
 							)}`}
 						>
-							<IconCompanyList className="h-6 w-6" />
+							<IconCustomList className="h-6 w-6" />
 							<span>
 								{getName(list)} ({getCountForList(getName(list))})
 							</span>

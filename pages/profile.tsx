@@ -566,10 +566,10 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				</div>
 				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
 			</div>
-			<div className="bg-white rounded-lg p-5">
+			<div className="bg-white shadow rounded-lg p-5">
 				<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
 					<h2 className="text-dark-500 font-bold text-xl">Personal Profile</h2>
-					<ElemButton btn="white" className="text-dark-500 font-bold  " arrow>
+					<ElemButton btn="white" className="font-bold" arrow>
 						View Profile
 					</ElemButton>
 				</div>
@@ -580,10 +580,11 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						<div className=" block relative">
 							<ElemPhoto
 								photo={person?.picture}
-								wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white rounded-lg shadow-md mr-2 rounded-full"
+								wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white  border border-slate-100 mr-2 rounded-full"
 								imgClass="object-fit max-w-full max-h-full rounded-full"
 								imgAlt={person?.name}
 								placeholder="user"
+								placeholderClass="text-slate-300"
 							/>
 							<span
 								className="w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0 bg-slate-200 hover:bg-slate-300"
