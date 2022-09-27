@@ -5,12 +5,12 @@ import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons";
 import { Pagination } from "@/components/Pagination";
 import Link from "next/link";
 import { numberWithCommas, formatDate } from "@/utils";
-import { Team_Members } from "@/graphql/types";
+import { Team_Members, Investors } from "@/graphql/types";
 
 type Props = {
 	className?: string;
 	heading?: string;
-    teamMembers: Team_Members[];
+    teamMembers: Team_Members[] | Investors[];
     onEdit: (member: any) => void;
 };
 

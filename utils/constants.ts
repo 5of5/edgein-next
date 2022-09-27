@@ -129,6 +129,9 @@ export const validateFieldsForEdit = async (isEdit: boolean, values: any, data: 
   if(!values?.website){
     errors.website = 'Website URL is required';
   }
+  if(values.hasOwnProperty('investor_type') && !values?.investor_type){
+    errors.investor_type = 'Investor Type is required';
+  }
 
   var urlPattern = new RegExp('^(https?:\\/\\/)?' + // protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
@@ -429,6 +432,17 @@ export const status = [
   {
     id: "published",
     name: "Published"
+  }
+]
+
+export const investorTypeChoices = [
+  {
+    id: "Venture Capital",
+    name: "Venture Capital",
+  },
+  {
+    id: "Accelerator",
+    name: "Accelerator",
   }
 ]
 

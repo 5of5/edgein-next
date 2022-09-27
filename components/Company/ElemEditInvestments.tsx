@@ -5,12 +5,13 @@ import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons";
 import { Pagination } from "@/components/Pagination";
 import Link from "next/link";
 import { numberWithCommas, formatDate } from "@/utils";
-import { Investment_Rounds } from "@/graphql/types";
+import { Investment_Rounds, Investments } from "@/graphql/types";
 
 type Props = {
+	type: 'Company' | 'Investors';
 	className?: string;
 	heading?: string;
-    investments: Investment_Rounds[];
+    investments: Investment_Rounds[] | Investments[];
     onEdit: (round: any) => void;
 };
 
@@ -18,9 +19,10 @@ export const ElemEditInvestments: React.FC<Props> = ({
 	className,
 	heading,
     investments,
-    onEdit = () => {}
+	onEdit = () => {},
+	type
 }) => {
-	const columns = React.useMemo(
+	const columns = (type === 'Company') ? React.useMemo(
 		() => [
 			{
 				Header: "Type",
@@ -162,6 +164,79 @@ export const ElemEditInvestments: React.FC<Props> = ({
 				},
 				// width: 650,
 				disableSortBy: true,
+			},
+			{
+				Header: " ",
+				accessor: "" as const,
+				Cell: (props: any) => (
+				<button onClick={() => {onEdit(props.row.original)}} className="px-1 py-2 text-primary-500">
+					Edit
+				</button>
+				),
+			},
+		],
+		[onEdit]
+	)
+	: React.useMemo(
+		() => [
+			{
+				Header: "Date",
+				accessor: "investment_round.round_date" as const,
+				Cell: (props: any) => (
+					<div>
+						{props.value ? (
+							<>
+								{formatDate(props.value, {
+									month: "short",
+									day: "2-digit",
+									year: "numeric",
+								})}
+							</>
+						) : (
+							<>&mdash;</>
+						)}
+					</div>
+				),
+			},
+			{
+				Header: "Organization",
+				accessor: "investment_round.company" as const,
+				Cell: (props: any) => (
+					<div className=" inline-flex items-center">
+						{(props.value) && <ElemPhoto
+						photo={(props.value) ? props.value.logo : ''}
+						wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-lg overflow-hidden"
+						imgClass="object-cover w-full h-full"
+						imgAlt={(props.value) ? props.value.name : ''}
+						/>}
+					<span className="text-md font-Metropolis font-normal text-dark-500 ml-3">{(props.value) ? props.value.name : '-'}</span>
+				</div>
+				),
+			},
+			{
+				Header: "Round Type",
+				accessor: "investment_round.round" as const,
+				Cell: (props: any) => (
+					<div>{props.value ? <>{props.value}</> : <>&mdash;</>}</div>
+				),
+			},
+			{
+				Header: "Money Raised",
+				accessor: "investment_round.amount" as const,
+				Cell: (props: any) => (
+					<div>
+						{props.value ? <>${numberWithCommas(props.value)}</> : <>&mdash;</>}
+					</div>
+				),
+			},
+			{
+				Header: "Valuation",
+				accessor: "investment_round.valuation" as const,
+				Cell: (props: any) => (
+					<div>
+						{props.value ? <>${numberWithCommas(props.value)}</> : <>&mdash;</>}
+					</div>
+				),
 			},
 			{
 				Header: " ",

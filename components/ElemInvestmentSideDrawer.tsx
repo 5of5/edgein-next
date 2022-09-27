@@ -10,15 +10,16 @@ import { ElemButton } from './ElemButton';
 import ElemConfirmationMessageModal from './ElemConfirmationMessageModal';
 
 type Props = {
+    type: 'Company' | 'Investors';
     isOpen: boolean;
     onClose: any;
-    investmentRoundToEdit: Investment_Rounds | undefined;
-    onSaveInvestmentRound: (round: Investment_Rounds) => void;
+    investmentRoundToEdit: Investment_Rounds | Investments | undefined;
+    onSaveInvestmentRound: (round: Investment_Rounds | Investments) => void;
     errorsRounds: any;
 }
 
 
-export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, investmentRoundToEdit, onSaveInvestmentRound, errorsRounds }) => {
+export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, investmentRoundToEdit, onSaveInvestmentRound, errorsRounds, type }) => {
 
     const getEmptyInvestment = () => {
         return {
@@ -37,9 +38,11 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     const [vcFirms, setVCFirms] = useState<Vc_Firms[]>()
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
     const [firmFilterValues, setFirmFilterValues] = useState([{}]);
-    const [investmentRound, setInvestmentRound] = useState<Investment_Rounds>({} as Investment_Rounds)
+    const [investmentRound, setInvestmentRound] = useState<any>({} as any)
     const [deletedInvestments, setDeletedInvestments] = useState<Investments>({} as Investments)
     const [showConfirmation, setShowConfirmation] = useState(false)
+
+    console.log("investmentRoundToEdit =", investmentRoundToEdit)
 
     const roundFilterValues = roundChoices.map((option) => {
         return {
@@ -49,11 +52,13 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     });
 
     useEffect(() => {
-        if (investmentRoundToEdit) {
+        if (investmentRoundToEdit && type === 'Company') {
             setInvestmentRound({
                 ...investmentRoundToEdit,
-                investments: (investmentRoundToEdit && investmentRoundToEdit.investments) ? investmentRoundToEdit.investments as Investments[] : [emptyInvestment]  as any[]
-            })
+                investments: (investmentRoundToEdit && (investmentRoundToEdit as Investment_Rounds).investments) ?  (investmentRoundToEdit as Investment_Rounds).investments as Investments[] : [emptyInvestment]  as any[]
+            } as any)
+        }else{
+            setInvestmentRound(investmentRoundToEdit) 
         }
     }, [investmentRoundToEdit, emptyInvestment])
 
@@ -92,9 +97,15 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     }, [vcFirmData])
 
     const setValues = (key: string, value: any) => {
-        const tempData = {
+        const tempData = (type === 'Company') ? {
             ...investmentRound,
             [key]: value
+        } : {
+            ...investmentRound,
+            investment_round : {
+                ...investmentRound.investment_round,
+                [key]: value
+            }
         }
         setInvestmentRound(tempData)
     }
@@ -108,12 +119,12 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
     }
 
     const onUpdateInvestment = (investment: any, position: number) => {
-        const tempData = {
+        const tempData = (type === "Company") ? {
             ...investmentRound,
             investments : investmentRound.investments.map((item: any, index: number) => {
                 return (index == position) ? investment : item
             })
-        }
+        } : {...investment};
        
         setInvestmentRound(tempData)
     }
@@ -187,7 +198,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Announced Date</label>
                                             <InputDate
                                                 name=""
-                                                value={(investmentRound.round_date) ? investmentRound.round_date : ''}
+                                                value={(type === 'Company' && investmentRound.round_date) ? investmentRound.round_date : ((type === 'Investors' && investmentRound.investment_round && investmentRound.investment_round.round_date) ? investmentRound.investment_round.round_date : '')}
                                                 onChange={(e) => { setValues('round_date', e.target.value) }}
                                                 className=" mt-2 block max-w-sm placeholder:text-slate-500"
                                             />
@@ -198,7 +209,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             <InputSelect
                                                 options={roundFilterValues}
                                                 onChange={(e: any) => setValues('round', e.value)}
-                                                value={roundFilterValues && investmentRound.round ? roundFilterValues.find(x => x.value === investmentRound.round) : {}}
+                                                value={roundFilterValues && (type === 'Company' ? investmentRound.round: investmentRound.investment_round) ? roundFilterValues.find(x => x.value === (type === 'Company' ? investmentRound.round : investmentRound.investment_round.round)) : {}}
                                                 placeholder=""
                                                 className='max-w-sm placeholder:text-slate-300'
                                             />
@@ -210,7 +221,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             <InputText
                                                 type='number'
                                                 name=""
-                                                value={(investmentRound.amount) ? investmentRound.amount : 0}
+                                                value={(type === 'Company' && investmentRound.amount) ? investmentRound.amount : ((type === "Investors"&& investmentRound.investment_round  && investmentRound.investment_round.amount) ? investmentRound.investment_round.amount : 0)}
                                                 onChange={(e) => { setValues('amount', e.target.value) }}
                                                 className=" max-w-sm placeholder:text-slate-500"
                                                 placeholder='$'
@@ -223,7 +234,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                             <InputText
                                                 type='number'
                                                 name=""
-                                                value={(investmentRound.valuation) ? investmentRound.valuation : 0}
+                                                value={(type === 'Company' && investmentRound.valuation) ? investmentRound.valuation : ((type === "Investors" && investmentRound.investment_round  && investmentRound.investment_round.valuation) ? investmentRound.investment_round.valuation : 0)}
                                                 onChange={(e) => { setValues('valuation', e.target.value) }}
                                                 className=" max-w-sm placeholder:text-slate-500"
                                                 placeholder='$'
@@ -232,18 +243,38 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
                                         <div className="mt-4">
                                         <label className='font-Metropolis text-sm font-bold text-slate-600'>Investments</label>
                                         {
-                                            (investmentRound.investments) && [...investmentRound.investments].map((investment, index) =>  
-                                                <InvestmentSection 
-                                                key={index}  
-                                                onRemove={() => onRemove(index)} 
+                                            (type === 'Company') ? (
+                                                <>
+                                                {
+                                                    (investmentRound.investments) && [...investmentRound.investments].map((investment, index) =>  
+                                                        <InvestmentSection 
+                                                        type={type}
+                                                        key={index}  
+                                                        onRemove={() => onRemove(index)} 
+                                                        vcFirms={vcFirms} 
+                                                        persons={persons} 
+                                                        onUpdateInvestment={(investment: any) => onUpdateInvestment(investment, index)} 
+                                                        investment={investment} personFilterValues={personFilterValues} 
+                                                        firmFilterValues={firmFilterValues}/>
+                                                    )
+                                                }
+                                                <ElemButton onClick={onAddNew} btn="ol-primary" className="mt-5 mb-28">Add Investment</ElemButton>
+                                                
+                                                </>
+                                            )
+                                            : 
+                                            
+                                            <InvestmentSection 
+                                                type={type}
+                                                onRemove={() => {}} 
                                                 vcFirms={vcFirms} 
                                                 persons={persons} 
-                                                onUpdateInvestment={(investment: any) => onUpdateInvestment(investment, index)} 
-                                                investment={investment} personFilterValues={personFilterValues} 
+                                                onUpdateInvestment={(investment: any) => onUpdateInvestment(investment, 0)} 
+                                                investment={investmentRound} 
+                                                personFilterValues={personFilterValues} 
                                                 firmFilterValues={firmFilterValues}/>
-                                            )
+                                          
                                         }
-                                        <ElemButton onClick={onAddNew} btn="ol-primary" className="mt-5 mb-28">Add Investment</ElemButton>
                                         </div>
                                     </div>
                                     <div className="absolute bottom-5">
@@ -270,6 +301,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({ isOpen, onClose, inv
 }
 
 type InvestmentProps = {
+    type: 'Company' | 'Investors';
 	investment: any;
 	personFilterValues?: any;
     firmFilterValues?: any;
@@ -287,7 +319,8 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
     onUpdateInvestment= (investment: any) => {}, 
     persons= [], 
     vcFirms= [],
-    onRemove= () => {}
+    onRemove= () => {},
+    type
 }) => {
 
     const [investorType, setInvestorType] = useState('investor')
@@ -304,13 +337,19 @@ const InvestmentSection: React.FC<InvestmentProps> = ({
 
     useEffect(() => {
         setCurrentInvestment(investment)
+        console.log("currentInvestment =", investment)
     }, [investment])
 
     return (
         <div className="border border-gray-5 p-5 pt-0 rounded-md my-4">
-            <div className="flex w-full justify-end">
-                <button onClick={onRemove}>x</button>
-            </div>
+            {
+                (type ==='Company') && (
+                    <div className="flex w-full justify-end">
+                        <button onClick={onRemove}>x</button>
+                    </div>
+                )
+            }
+          
             <div className='mt-0'>
                 <label className='font-Metropolis text-sm font-bold text-slate-600'>Investor Type</label>
                 <div className='flex justify-start items-center'>

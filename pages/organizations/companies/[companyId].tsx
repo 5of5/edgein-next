@@ -644,7 +644,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                     />
                             )}
 
-                            {teamDrawer && <ElemTeamSideDrawer errorsTeamMembers={errorsTeamMembers} onSaveEmployee={onSaveEmployee} memberToEdit={memberToEdit} isOpen={teamDrawer} onClose={() => setTeamDrawer(false)} />}
+                            {teamDrawer && <ElemTeamSideDrawer type={'Team_Members'} errorsTeamMembers={errorsTeamMembers} onSaveEmployee={onSaveEmployee} memberToEdit={memberToEdit} isOpen={teamDrawer} onClose={() => setTeamDrawer(false)} />}
                         </div>
 
                         {/* Funding Investments section */}
@@ -662,6 +662,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                             </div>
 
                             <ElemEditInvestments
+                                type='Company'
                                 onEdit={(round) => {
                                     setRoundToEdit([...companyEditable.investment_rounds].find((item: any) => item.id===round.id)); 
                                     setErrorsRounds({})
@@ -669,7 +670,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
                                 }}
                                 investments={company.investment_rounds}
                             />
-                            {investmentDrawer && <ElemInvestmentSideDrawer errorsRounds={errorsRounds} onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
+                            {investmentDrawer && <ElemInvestmentSideDrawer type={'Company'} errorsRounds={errorsRounds} onSaveInvestmentRound={(round) => onSaveInvestmentRound(round)} investmentRoundToEdit={roundToEdit} isOpen={investmentDrawer} onClose={() => setInvestmentDrawer(false)} />}
                         </div>
                     </div>
                 

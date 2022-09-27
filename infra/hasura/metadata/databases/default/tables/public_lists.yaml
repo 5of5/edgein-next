@@ -11,6 +11,13 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: list_id
+  - name: list_members
+    using:
+      foreign_key_constraint_on:
+        column: list_id
+        table:
+          schema: public
+          name: list_members
 computed_fields:
   - name: total_no_of_resources
     definition:

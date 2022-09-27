@@ -3,28 +3,36 @@ import { Fragment, useState, useEffect } from 'react'
 import { InputSearch } from './InputSearch';
 import { InputSelect } from './InputSelect';
 import { InputText } from './InputText';
-import { useGetAllPersonsQuery, People, Team_Members } from "@/graphql/types";
-import { functionChoicesTM } from '@/utils/constants';
+import { useGetAllPersonsQuery, People, Team_Members, Investors } from "@/graphql/types";
+import { functionChoicesTM, investorFunctionChoices } from '@/utils/constants';
 import { ElemButton } from './ElemButton';
 import { InputDate } from './InputDate';
 
 type Props = {
+    type: 'Team_Members' | 'Investors';
     isOpen: boolean;
     onClose: any;
-    memberToEdit: Team_Members | undefined;
+    memberToEdit: Team_Members | Investors | undefined;
     onSaveEmployee: (employee:  Team_Members) => void
     errorsTeamMembers: any;
 }
 
 
-export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToEdit, onSaveEmployee, errorsTeamMembers}) => {
+export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToEdit, onSaveEmployee, errorsTeamMembers, type}) => {
 
     const [persons, setPersons] = useState<People[]>();
     const [personFilterValues, setPersonFilterValues] = useState([{}]);
-    const [employee, setEmployee] = useState<Team_Members>({} as Team_Members)
+    const [employee, setEmployee] = useState<Team_Members| Investors>({} as any)
     const [current, setCurrent] = useState(false)
 
     const titleFilterValues = functionChoicesTM.map((option) => {
+        return {
+            title: option.name,
+            value: option.id,
+        };
+    });
+
+    const functionFilterValues = investorFunctionChoices.map((option) => {
         return {
             title: option.name,
             value: option.id,
@@ -37,7 +45,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
 
     useEffect(() => {
         if(memberToEdit){
-            setEmployee(memberToEdit)
+            setEmployee(memberToEdit as any)
         }
     }, [memberToEdit])
 
@@ -111,7 +119,7 @@ export const ElemTeamSideDrawer: React.FC<Props> = ({ isOpen, onClose, memberToE
                                         <div className='mt-4'>
                                             <label className='font-Metropolis text-sm font-bold text-slate-600'>Position</label>
                                             <InputSelect
-                                                options={titleFilterValues}
+                                                options={(type === 'Team_Members') ? titleFilterValues : functionFilterValues}
                                                 onChange={(e: any) =>  setValues('function', e.value)}
                                                 value={titleFilterValues && employee.function ? titleFilterValues.find(x=> x.value === employee.function):{}}
                                                 placeholder=""
