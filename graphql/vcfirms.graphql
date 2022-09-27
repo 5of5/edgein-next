@@ -12,6 +12,12 @@ query GetVCFirm($slug: String!, $current_user: Int) {
     	year_founded
     	location
     	twitter
+		discord
+		glassdoor
+		careers_page
+		total_employees
+		investor_type
+		investment_stage
 		investors {
 			id
 			person {
@@ -30,11 +36,26 @@ query GetVCFirm($slug: String!, $current_user: Int) {
 			title
 			}
 		investments {
+			amount
+			id
+			person {
+				id
+				slug
+				name
+				picture
+			}
+			vc_firm {
+				id
+				slug
+				name
+				logo
+			}
 			investment_round {
 				id
 				round_date
 				round
 				amount
+				valuation
 				company {
 					id
 					slug
