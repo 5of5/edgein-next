@@ -95,28 +95,6 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 			<ElemMyListsMenu user={user} className="mt-6" />
 
 			<div className="mt-6">
-				<h3 className="text-xl font-bold">Explore</h3>
-				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					<li className={`${getActiveClass("/companies/")}`} role="button">
-						<Link href={`/companies`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-								<IconCompanies className="w-6 h-6" />
-								<span>Companies</span>
-							</a>
-						</Link>
-					</li>
-					<li className={`${getActiveClass("/investors/")}`} role="button">
-						<Link href={`/investors`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-								<IconCash className="w-6 h-6" />
-								<span>Investors</span>
-							</a>
-						</Link>
-					</li>
-				</ul>
-			</div>
-
-			<div className="mt-6">
 				<h3 className="text-xl font-bold">My Organizations</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					{organizations?.map((teamMember) => {
@@ -148,6 +126,28 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 					</li>
 
 					{/* {renderMyCustomList()} */}
+				</ul>
+			</div>
+
+			<div className="mt-6">
+				<h3 className="text-xl font-bold">Explore</h3>
+				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+					<li className={`${getActiveClass("/companies/")}`} role="button">
+						<Link href={`/companies`}>
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+								<IconCompanies className="w-6 h-6" />
+								<span>Companies</span>
+							</a>
+						</Link>
+					</li>
+					<li className={`${getActiveClass("/investors/")}`} role="button">
+						<Link href={`/investors`}>
+							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+								<IconCash className="w-6 h-6" />
+								<span>Investors</span>
+							</a>
+						</Link>
+					</li>
 				</ul>
 			</div>
 		</>
