@@ -5,7 +5,6 @@ import { find, kebabCase } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { IconCompanyList } from "../reactions/IconCompanyList";
 import { IconCustomList } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 

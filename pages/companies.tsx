@@ -3,7 +3,6 @@ import type { NextPage, GetStaticProps } from "next";
 import { ElemHeading } from "../components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
-import { InputSearch } from "../components/InputSearch";
 import { InputSelect } from "../components/InputSelect";
 import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
 import { ElemButton } from "@/components/ElemButton";
@@ -25,11 +24,12 @@ import { useDebounce } from "../hooks/useDebounce";
 import { Pagination } from "../components/Pagination";
 import { useAuth } from "../hooks/useAuth";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
-import { companyLayerChoices } from "../utils/constants";
+import { companyChoices, companyLayerChoices } from "../utils/constants";
 
 type Props = {
 	companiesCount: number;
 	initialCompanies: GetCompaniesQuery["companies"];
+	companyFilters: TextFilter[];
 	companyLayers: TextFilter[];
 	amountRaised: NumericFilter[];
 	totalEmployees: NumericFilter[];
@@ -45,6 +45,7 @@ export type DeepPartial<T> = T extends object
 const Companies: NextPage<Props> = ({
 	companiesCount,
 	initialCompanies,
+	companyFilters,
 	companyLayers,
 	amountRaised,
 	totalEmployees,
@@ -55,7 +56,6 @@ const Companies: NextPage<Props> = ({
 
 	// Search Box
 	const [search, setSearch] = useState("");
-	const [savedEmptySearches, setSavedEmptySearches] = useState<string[]>([]);
 	const debouncedSearchTerm = useDebounce(search, 500);
 
 	const searchCompanies = (e: {
@@ -68,6 +68,11 @@ const Companies: NextPage<Props> = ({
 		// 	shallow: true,
 		// });
 	};
+
+	// Company Filter
+	const [selectedCompanyFilters, setSelectedCompanyFilters] = useState(
+		companyFilters[0]
+	);
 
 	// Company Layers Filter
 	const [selectedLayer, setSelectedLayer] = useState(companyLayers[0]);
@@ -95,6 +100,7 @@ const Companies: NextPage<Props> = ({
 			initialLoad &&
 			debouncedSearchTerm !== "" &&
 			selectedLayer.value !== "" &&
+			selectedCompanyFilters.value !== "" &&
 			selectedAmountRaised.rangeEnd !== 0 &&
 			selectedTotalEmployees.rangeEnd !== 0
 		) {
@@ -106,6 +112,7 @@ const Companies: NextPage<Props> = ({
 		selectedAmountRaised,
 		selectedLayer,
 		selectedTotalEmployees,
+		selectedCompanyFilters,
 	]);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
@@ -121,6 +128,9 @@ const Companies: NextPage<Props> = ({
 	}
 	if (selectedLayer.value) {
 		filters._and?.push({ layer: { _eq: selectedLayer.value } });
+	}
+	if (selectedCompanyFilters.value) {
+		filters._and?.push({ layer: { _eq: selectedCompanyFilters.value } });
 	}
 	if (selectedAmountRaised.rangeEnd !== 0) {
 		filters._and?.push({
@@ -206,13 +216,11 @@ const Companies: NextPage<Props> = ({
 				<div className="bg-white rounded-lg p-5">
 					<h2 className="text-xl font-bold">All Companies</h2>
 					<ElemFiltersWrap className="pt-2 filters-wrap">
-						<InputSearch
+						<InputSelect
 							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							label="Search"
-							name="search"
-							value={search}
-							placeholder="Quick Search..."
-							onChange={searchCompanies}
+							value={selectedCompanyFilters}
+							onChange={setSelectedCompanyFilters}
+							options={companyFilters}
 						/>
 
 						<InputSelect
@@ -334,6 +342,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
 			companiesCount: companies?.companies.length,
 			initialCompanies: companies?.companies.slice(0, 50),
+			companyFilters: CompaniesFilters,
 			companyLayers: LayersFilters,
 			amountRaised: AmountRaisedFilters,
 			totalEmployees: EmployeesFilters,
@@ -346,6 +355,7 @@ export default Companies;
 interface TextFilter {
 	title: string;
 	description?: string;
+	icon?: string;
 	value: string;
 }
 
@@ -466,4 +476,20 @@ const EmployeesFilters: NumericFilter[] = [
 		rangeStart: 1001,
 		rangeEnd: 1000000000,
 	},
+];
+
+const companyFilterValues = companyChoices.map((option) => {
+	return {
+		title: option.name,
+		value: option.id,
+		icon: option.id
+	};
+});
+
+const CompaniesFilters: TextFilter[] = [
+	{
+		title: "All Companies",
+		value: "",
+	},
+	...companyFilterValues,
 ];

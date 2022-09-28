@@ -1,10 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import Link from "next/link";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
-import { InputTextarea } from "@/components/InputTextarea";
-import { InputSelect } from "@/components/InputSelect";
 import { IconLinkedIn } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 const validator = require("validator");
@@ -96,7 +93,7 @@ export default function Account() {
 				<dl className="w-full divide-y divide-black/10">
 					{
 						// (user && !user.auth0_linkedin_id) && (
-						<div className="py-4 sm:grid sm:grid-cols-5 sm:gap-4 sm:py-5">
+						<div className="py-4 sm:grid sm:grid-cols-5 sm:gap-6 sm:py-5">
 							<dt className="font-bold">Authentication</dt>
 							<dd className="mt-1 sm:flex sm:col-span-4 sm:mt-0">
 								<div className="flex-grow">
@@ -117,77 +114,70 @@ export default function Account() {
 									</ElemButton>
 								</div>
 								{/* <div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-4">
-									<ElemButton
-										btn="transparent"
-										roundedFull={false}
-										className="py-0 px-0 font-normal"
+									<button
+										className=" text-primary-500 hover:text-dark-500"
 									>
 										Edit
-									</ElemButton>
+									</button>
 								</div> */}
 							</dd>
 						</div>
 						// )
 					}
-				</dl>
 
-				{user && user.auth0_user_pass_id && (
-					<>
-						{!isEditPassword ? (
-							<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  w-40">
-									Change Password
-								</h2>
-								<div>
-									<h2 className="text-gray-10 ">
-										Use a strong password that you are not using elsewhere.
-									</h2>
-								</div>
-								<button
-									onClick={() => setEditPassword(true)}
-									className="absolute right-0  text-primary-500"
-								>
-									Edit
-								</button>
-							</div>
-						) : (
-							<div className="flex mt-3 mb-2 relative border-b border-gray-100 pb-3">
-								<h2 className="text-dark-500 font-bold  w-40">
-									Change Password
-								</h2>
-								<div>
-									<div className="w-96 ">
+					{user && user.auth0_user_pass_id && (
+						<div className="py-4 sm:grid sm:grid-cols-5 sm:gap-6 sm:py-5">
+							<dt className="font-bold">Change Password</dt>
+							<dd className="mt-1 sm:flex sm:col-span-4 sm:mt-0">
+								{!isEditPassword ? (
+									<>
+										<div className="flex-grow">
+											<p className="text-slate-600">
+												Use a strong password that you are not using elsewhere.
+											</p>
+										</div>
+										<div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-4">
+											<button
+												onClick={() => setEditPassword(true)}
+												className=" text-primary-500 hover:text-dark-500"
+											>
+												Edit
+											</button>
+										</div>
+									</>
+								) : (
+									<div className="max-w-sm">
 										<div>
 											<InputText
 												type="password"
-												label="New"
+												label="New Password"
 												onChange={(event) => {
 													validate(event.target.value);
 												}}
 												value={newPassword}
 												name=""
-												className="mb-3 border border-gray-5"
 											/>
 											{errorMessage === "" ? null : (
-												<span className="w-full  text-sm">{errorMessage}</span>
+												<span className="mt-2 text-sm">{errorMessage}</span>
 											)}
 										</div>
 
-										<InputText
-											type="password"
-											label="Re-type New"
-											onChange={(event) => {
-												validateReEnterPasssword(event.target.value);
-											}}
-											value={reEnterPassword}
-											name=""
-											className="mb-3 border border-gray-5"
-										/>
-										{reEnterErrorMessage === "" ? null : (
-											<span className="w-full  text-sm">
-												{reEnterErrorMessage}
-											</span>
-										)}
+										<div className="mt-4">
+											<InputText
+												type="password"
+												label="Re-type New Password"
+												onChange={(event) => {
+													validateReEnterPasssword(event.target.value);
+												}}
+												value={reEnterPassword}
+												name=""
+											/>
+											{reEnterErrorMessage === "" ? null : (
+												<span className="mt-2 text-sm">
+													{reEnterErrorMessage}
+												</span>
+											)}
+										</div>
 
 										<div className="flex mt-3 mb-2">
 											<ElemButton
@@ -205,11 +195,11 @@ export default function Account() {
 											</ElemButton>
 										</div>
 									</div>
-								</div>
-							</div>
-						)}
-					</>
-				)}
+								)}
+							</dd>
+						</div>
+					)}
+				</dl>
 			</div>
 		</DashboardLayout>
 	);
