@@ -3,14 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { ElemLogo } from "@/components/ElemLogo";
 import { ElemButton } from "@/components/ElemButton";
-import {
-	IconProps,
-	IconHome,
-	IconX,
-	IconCompanies,
-	IconCash,
-} from "@/components/Icons";
-import { IconCompanyList } from "../reactions/IconCompanyList";
+import { IconX } from "@/components/Icons";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
 
@@ -18,28 +11,9 @@ function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(" ");
 }
 
-type Props = {
-	navigation?: Array<{
-		name: string;
-		href: string;
-		icon: FC<IconProps>;
-		current: boolean;
-	}>;
-};
+type Props = {};
 
-export const DashboardLayout: FC<PropsWithChildren<Props>> = ({
-	navigation = [
-		{ name: "Dashboard", href: "/dashboard", icon: IconHome },
-		{
-			name: "Companies",
-			href: "/companies",
-			icon: IconCompanies,
-		},
-		{ name: "Investors", href: "/investors", icon: IconCash },
-		{ name: "My Lists", href: "/my-list", icon: IconCompanyList },
-	],
-	children,
-}) => {
+export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 	const router = useRouter();
 	const { user } = useAuth();

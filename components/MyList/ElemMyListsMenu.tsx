@@ -134,7 +134,7 @@ export const ElemMyListsMenu: FC<Props> = ({
 					<Link href={`/lists/${crapId}/crap`}>
 						<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 							<EmojiCrap className="h-6 w-6" />
-							<span>Crap ({getCountForList("crap")})</span>
+							<span>Sh** ({getCountForList("crap")})</span>
 						</a>
 					</Link>
 				</li>

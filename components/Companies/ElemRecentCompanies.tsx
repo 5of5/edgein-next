@@ -188,6 +188,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 												wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
 												imgClass="object-contain w-full h-full"
 												imgAlt={company.name}
+												placeholderClass="text-slate-300"
 											/>
 
 											<div className="pl-2 md:overflow-hidden">
