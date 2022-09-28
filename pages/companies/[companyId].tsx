@@ -38,7 +38,7 @@ import { IconEditPencil } from "@/components/Icons";
 // import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
-import { has, remove } from "lodash";
+import { has, remove, sortBy } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -439,8 +439,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
+	const company = sortBy(companies?.companies, 'status').reverse()[0]
+
 	const sortRounds =
-		companies.companies[0].investment_rounds
+	company.investment_rounds
 			?.slice()
 			.sort((a, b) => {
 				return (
@@ -451,21 +453,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			.reverse() || [];
 
 	let metaTitle = null;
-	if (companies.companies[0].name) {
+	if (company.name) {
 		metaTitle =
-			companies.companies[0].name +
+		company.name +
 			" Company Profile: Credibility, Velocity & Investors - EdgeIn.io";
 	}
 	let metaDescription = null;
-	if (companies.companies[0].overview) {
-		metaDescription = companies.companies[0].overview;
+	if (company.overview) {
+		metaDescription = company.overview;
 	}
 
 	return {
 		props: {
 			metaTitle,
 			metaDescription,
-			company: companies.companies[0],
+			company,
 			sortRounds,
 		},
 	};
