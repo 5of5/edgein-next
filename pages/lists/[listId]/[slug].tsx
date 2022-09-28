@@ -4,7 +4,7 @@ import { ElemInvestors } from "@/components/MyList/ElemInvestors";
 import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
 import { ElemListOptionMenu } from "@/components/MyList/ElemListOptionMenu";
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
-import { IconCompanyList } from "@/components/reactions/IconCompanyList";
+import { IconCustomList } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import {
 	Follows_Companies,
@@ -27,7 +27,7 @@ const MyList: NextPage<Props> = ({}) => {
 	const [selectedListName, setSelectedListName] = useState<null | string>(
 		"hot"
 	);
-	const [totalFunding, setTotalFuncding] = useState(0);
+	const [totalFunding, setTotalFunding] = useState(0);
 	const [tagsCount, setTagsCount] = useState({});
 	const [isCustomList, setIsCustomList] = useState(false);
 
@@ -56,7 +56,7 @@ const MyList: NextPage<Props> = ({}) => {
 				});
 			});
 
-			setTotalFuncding(funding);
+			setTotalFunding(funding);
 		}
 	}, [companies]);
 
@@ -126,7 +126,9 @@ const MyList: NextPage<Props> = ({}) => {
 							{selectedListName === "crap" && (
 								<EmojiCrap className="w-6 h-6 mr-2" />
 							)}
-							{isCustomList && <IconCompanyList className="mr-2" />}
+							{isCustomList && (
+								<IconCustomList className="h-6 w-6 text-slate-600 mr-2" />
+							)}
 							{selectedListName}
 						</h1>
 
