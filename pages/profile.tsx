@@ -13,7 +13,7 @@ import {
 } from "@/graphql/types";
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
-import { find, findIndex } from "lodash";
+import { divide, find, findIndex } from "lodash";
 import validator from "validator";
 import { InputSelect } from "@/components/InputSelect";
 import { getTimeOfWork, getWorkDurationFromAndTo, runGraphQl } from "@/utils";
@@ -22,8 +22,9 @@ import { uploadFile, deleteFile } from "@/utils/fileFunctions";
 import { InputDate } from "@/components/InputDate";
 import { GetStaticProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { EditSection } from "@/components/Dashboard/EditSection";
 import { ElemShareMenu } from "@/components/ElemShareMenu";
-import { functionChoicesTM } from '@/utils/constants';
+import { functionChoicesTM } from "@/utils/constants";
 import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
 const emptyTeamMember = {
@@ -74,8 +75,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		return {
 			title: option.name,
 			value: option.id,
-		}
-	})
+		};
+	});
 
 	const { data: users, refetch } = useGetUserProfileQuery({
 		id: user?.id ?? 0,
@@ -98,11 +99,11 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				});
 				const selectedPositionType = findTM?.function
 					? {
-						title: `${findTM?.function
-							?.charAt(0)
-							.toUpperCase()}${findTM?.function?.slice(1)}`,
-						value: findTM?.function,
-					}
+							title: `${findTM?.function
+								?.charAt(0)
+								.toUpperCase()}${findTM?.function?.slice(1)}`,
+							value: findTM?.function,
+					  }
 					: null;
 				const currentlyWorking = findTM.end_date ? false : true;
 
@@ -123,105 +124,93 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const renderWorkspaceForm = (teamMember?: Team_Members) => {
 		return (
-			<div className="grid grid-cols-12 gap-2 mt-3 mb-2 relative pb-3">
-				<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
-
-				<div className="col-span-7 flex flex-col">
-					{teamMember?.id ?
-						<InputText
-							disabled={true}
-							name="Company"
-							label="Company"
-							onChange={() => { }}
-							value={teamMember?.company?.name!}
-							className="mb-3 max-w-xs"
-						/> : <ElemCompaniesSearchInput
-							label="Company"
-							onChange={setTMField('company')}
-							name="company"
-							inputClassname="mb-3"
-						/>
-					}
-					<label className="text-slate-600 font-bold block">
-						Position
-					</label>
+			<div className="">
+				{teamMember?.id ? (
+					<InputText
+						disabled={true}
+						name="Company"
+						label="Company"
+						onChange={() => {}}
+						value={teamMember?.company?.name!}
+						className="mb-3"
+					/>
+				) : (
+					<ElemCompaniesSearchInput
+						label="Company"
+						onChange={setTMField("company")}
+						name="company"
+						inputClassname="mb-3"
+					/>
+				)}
+				<div className="mb-3">
+					<label className="text-slate-600 font-bold block">Position</label>
 					<InputSelect
 						options={titles || []}
 						placeholder="Position"
-						className="mb-3 max-w-xs"
 						value={tmData.function}
 						onChange={setTMField("function")}
 					/>
-
-					<div className="flex items-center gap-2 mb-3">
-						<input
-							type="checkbox"
-							onChange={setTMField("founder")}
-							checked={tmData.founder}
-						/>
-						<span className="text-slate-500 font-Metropolis">
-							Founder
-						</span>
-					</div>
-
-					<InputText
-						label="Title"
-						onChange={setTMField("title")}
-						value={tmData.title}
-						name="title"
-						placeholder="Founder and CEO"
-						className="mb-3 max-w-xs"
+				</div>
+				<div className="flex items-center gap-2 mb-3">
+					<input
+						type="checkbox"
+						onChange={setTMField("founder")}
+						checked={tmData.founder}
 					/>
-					<label className="text-slate-600 font-bold block ">Time Period</label>
-					<div className="flex items-center gap-2">
-						<input
-							type="checkbox"
-							onChange={setTMField("currentlyWorking")}
-							checked={tmData.currentlyWorking}
-						/>
-						<span className="text-slate-500  font-Metropolis">
-							{" "}
-							I currently work here
-						</span>
-					</div>
+					<span className="text-slate-500">Founder</span>
+				</div>
+				<InputText
+					label="Title"
+					onChange={setTMField("title")}
+					value={tmData.title}
+					name="title"
+					placeholder="Founder and CEO"
+					className="mb-3"
+				/>
+				<label className="text-slate-600 font-bold block">Time Period</label>
+				<div className="flex items-center gap-2">
+					<input
+						type="checkbox"
+						onChange={setTMField("currentlyWorking")}
+						checked={tmData.currentlyWorking}
+					/>
+					<span className="text-slate-600"> I currently work here</span>
+				</div>
+				<div className="sm:flex items-center">
+					<InputDate
+						name="start_date"
+						value={tmData.start_date}
+						onChange={setTMField("start_date")}
+						className="rounded-full"
+					/>
+					<div className="my-1 text-center font-bold sm:my-0 sm:mx-2">to</div>
+					<InputDate
+						className="rounded-full"
+						value={tmData.end_date}
+						name="end_date"
+						onChange={setTMField("end_date")}
+						disabled={tmData.currentlyWorking}
+					/>
+				</div>
+				<div className="flex mt-4">
+					<ElemButton
+						btn="primary"
+						className="mr-2"
+						onClick={onSave("teamMember")}
+					>
+						Save
+					</ElemButton>
+					<ElemButton
+						btn="white"
+						onClick={() => {
+							if (teamMember?.id) setActiveWorkspace(0);
+							else setEditWorkspace(false);
 
-					<div className="grid grid-cols-3 gap-2 items-center w-full max-w-xs">
-						<InputDate
-							name="start_date"
-							value={tmData.start_date}
-							onChange={setTMField("start_date")}
-							className="rounded-full col-span-3"
-						/>
-						<span className="text-center col-span-3">To</span>
-						<InputDate
-							className="rounded-full col-span-3"
-							value={tmData.end_date}
-							name="end_date"
-							onChange={setTMField("end_date")}
-							disabled={tmData.currentlyWorking}
-						/>
-					</div>
-
-					<div className="flex mt-3 mb-2">
-						<ElemButton
-							btn="primary"
-							className="mr-2"
-							onClick={onSave("teamMember")}
-						>
-							Save
-						</ElemButton>
-						<ElemButton
-							btn="white"
-							onClick={() => {
-								if (teamMember?.id) setActiveWorkspace(0);
-								else setEditWorkspace(false);
-
-								setTmData(emptyTeamMember)
-							}}
-						>
-							Cancel
-						</ElemButton>
-					</div>
+							setTmData(emptyTeamMember);
+						}}
+					>
+						Cancel
+					</ElemButton>
 				</div>
 			</div>
 		);
@@ -229,10 +218,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const renderWorkspaceEditForm = (teamMember: Team_Members) => {
 		return (
-			<div
-				key={teamMember.id}
-				className="flex flex-col border-b border-gray-100"
-			>
+			<div key={teamMember.id}>
 				{activeWorkspace === teamMember.id || (
 					<div className="grid grid-cols-12 gap-2">
 						<div className="flex mt-3 mb-2 pb-3 col-start-4 col-span-8">
@@ -272,8 +258,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						</button>
 					</div>
 				)}
-				{activeWorkspace === teamMember.id &&
-					renderWorkspaceForm(teamMember)}
+				{activeWorkspace === teamMember.id && renderWorkspaceForm(teamMember)}
 			</div>
 		);
 	};
@@ -351,12 +336,12 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				});
 			}
 
-			if (field === 'founder') {
+			if (field === "founder") {
 				setTmData((prev: any) => {
 					const temp = { ...prev };
 
-					if (event.target.checked) temp["founder"] = true
-					else temp["founder"] = false
+					if (event.target.checked) temp["founder"] = true;
+					else temp["founder"] = false;
 
 					return temp;
 				});
@@ -491,7 +476,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			setActiveWorkspace(0);
 			setEditWorkspace(false);
 			setTmData(emptyTeamMember);
-			refetch()
+			refetch();
 		}
 	};
 
@@ -553,7 +538,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		window.open(
 			`https://telegram.me/share/url?url=${getInviteLink(
 				user.reference_id
-			)}&text=${user.display_name
+			)}&text=${
+				user.display_name
 			} has invited you to join Edge In! Use the invite link to get started`,
 			"_blank"
 		);
@@ -561,7 +547,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const onSMS = () => {
 		window.open(
-			`sms:?&body=${user.display_name
+			`sms:?&body=${
+				user.display_name
 			} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
 				user.reference_id
 			)}`,
@@ -571,10 +558,12 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const onEmail = () => {
 		window.open(
-			`mailto:?subject=${user.display_name
+			`mailto:?subject=${
+				user.display_name
 			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${user.display_name
-			} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
+	        ${
+		user.display_name
+	} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
 				user.reference_id
 			)}`,
 			""
@@ -587,8 +576,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	return (
 		<DashboardLayout>
-			<div className="bg-white shadow rounded-lg p-5 mb-5">
-				<div className="flex justify-between items-center">
+			<div className="bg-white shadow rounded-lg p-5">
+				<div className="flex justify-between items-center mb-2">
 					<h2 className="font-bold text-xl">Invite Code</h2>
 					{user && user.reference_id && (
 						<ElemShareMenu
@@ -601,106 +590,97 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 				</div>
 				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
 			</div>
-			<div className="bg-white shadow rounded-lg p-5">
-				<div className="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
-					<h2 className="text-dark-500 font-bold text-xl">Personal Profile</h2>
-					<ElemButton btn="white" className="font-bold" arrow>
+			<div className="bg-white shadow rounded-lg p-5 mt-5">
+				<div className="sm:flex justify-between items-center mb-2">
+					<h2 className="font-bold text-xl">Personal Profile</h2>
+					<ElemButton btn="white" arrow className="mt-2 sm:mt-0">
 						View Profile
 					</ElemButton>
 				</div>
 
-				<div className="mt-3 mb-2 border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-					<h2 className="text-dark-500 font-bold  col-span-3">Profile Image</h2>
-					<div className="flex col-span-9">
-						<div className=" block relative">
-							<ElemPhoto
-								photo={person?.picture}
-								wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white  border border-slate-100 mr-2 rounded-full"
-								imgClass="object-fit max-w-full max-h-full rounded-full"
-								imgAlt={person?.name}
-								placeholder="user"
-								placeholderClass="text-slate-300"
-							/>
-							<span
-								className="w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0 bg-slate-200 hover:bg-slate-300"
-								role="button"
-								onClick={handleProfileEditClick}
+				<dl className="w-full divide-y divide-black/10 border-y border-black/10">
+					<EditSection heading="Profile Image">
+						<div className="sm:flex items-center">
+							<div className="relative w-32 h-32 mx-auto sm:mx-0">
+								<ElemPhoto
+									photo={person?.picture}
+									wrapClass="flex items-center justify-center shrink-0 w-32 h-32 bg-white border border-slate-100 rounded-full"
+									imgClass="object-fit max-w-full max-h-full rounded-full"
+									imgAlt={person?.name}
+									placeholder="user"
+									placeholderClass="text-slate-300"
+								/>
+								<span
+									className="w-9 h-9 absolute flex items-center justify-center rounded-full bottom-0 right-0 bg-slate-200 hover:bg-slate-300"
+									role="button"
+									onClick={handleProfileEditClick}
+								>
+									<IconProfilePictureUpload />
+								</span>
+								<input
+									type="file"
+									hidden={true}
+									className="hidden"
+									onChange={onFileUpload()}
+									ref={fileInputRef}
+								/>
+							</div>
+							<ul
+								role="list"
+								className="mt-4 list-disc list-inside text-sm text-slate-600 sm:ml-8"
 							>
-								<IconProfilePictureUpload />
-							</span>
-							<input
-								type="file"
-								hidden={true}
-								className="hidden"
-								onChange={onFileUpload()}
-								ref={fileInputRef}
-							/>
-						</div>
-						<div className="ml-8 mt-5">
-							<ul>
-								<li className=" list-disc text-gray-400 font-Metropolis text-sm font-thin">
-									Square images work best (at least 300 x 300 pixels){" "}
-								</li>
-								<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
-									Crop your image before you upload
-								</li>
-								<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
-									Image upoloads are limited to 2MB
-								</li>
-								<li className=" list-disc text-gray-400 font-metropolis text-sm font-thin">
-									Accepted image types JPG SVG AND PNG
-								</li>
+								<li>Square images work best (at least 300 x 300 pixels)</li>
+								<li>Crop your image before you upload</li>
+								<li>Image uploads are limited to 2MB</li>
+								<li>Accepted image types JPG SVG AND PNG</li>
 							</ul>
 						</div>
-					</div>
-				</div>
+					</EditSection>
 
-				{!editName && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
+					<EditSection
+						heading="Name"
+						right={
+							!editName ? (
+								<button
+									onClick={() => setEditName(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Edit Name
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editName ? (
+							<p className="text-slate-600">{person?.name}</p>
+						) : (
+							<div className="max-w-sm">
+								<div>
+									<InputText
+										label="First Name"
+										onChange={(e) => setFirstName(e.target.value)}
+										value={firstName}
+										name="first_name"
+										placeholder="First Name"
+									/>
+								</div>
+								<div className="mt-4">
+									<InputText
+										label="Last Name"
+										onChange={(e) => setLastName(e.target.value)}
+										value={lasttName}
+										name="last_name"
+										placeholder="Last Name"
+									/>
+								</div>
+								<div className="mt-2 text-sm text-slate-600">
+									<span className="font-bold">Note:</span> If you change your
+									name on EdgeIn, you won’t be able to change it again for 60
+									days.
+								</div>
 
-						<div className="col-span-8">
-							<h2 className="text-slate-600 ">{person?.name}</h2>
-						</div>
-
-						<button
-							className=" text-primary-500 col-span-1 text-right w-auto"
-							onClick={() => setEditName(true)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-				{/* hide content name */}
-				{editName && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12">
-						<h2 className="text-dark-500 font-bold  col-span-3">Name</h2>
-						<div className="col-span-8">
-							<div className="w-96">
-								<InputText
-									label="First Name"
-									onChange={(e) => setFirstName(e.target.value)}
-									value={firstName}
-									name="first_name"
-									placeholder="Bram"
-									className="mb-4"
-								/>
-								<InputText
-									label="Last Name"
-									onChange={(e) => setLastName(e.target.value)}
-									value={lasttName}
-									name="last_name"
-									placeholder="Cohen"
-									className="mb-3"
-								/>
-
-								<span className="text-slate-500 m font-thin ">
-									<b className="font-bold text-slate-600">Note:</b> If you
-									change your name on EdgeIn, you won’t be able to change it
-									again for 60 days.
-								</span>
-
-								<div className="flex mt-3 mb-2">
+								<div className="flex mt-4">
 									<ElemButton
 										btn="primary"
 										className="mr-2"
@@ -713,41 +693,44 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</ElemButton>
 								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editEmail && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
-						<div className="col-span-8">
-							<p className="text-slate-600 mb-2">
-								{person?.work_email}
-								<b className="text-sm text-primary-500"> - Primary</b>
-							</p>
-							{person?.email &&
-								person?.email.map((email: any) => (
-									<p key={email.email} className="text-slate-600 mb-2">
-										{email.email}
-									</p>
-								))}
-						</div>
-
-						<button
-							onClick={() => setEditEmail(true)}
-							className="absolute right-0  text-primary-500"
-						>
-							Edit
-						</button>
-					</div>
-				)}
-
-				{/* hide content email */}
-				{editEmail && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">Email</h2>
-						<div className="col-span-8">
-							<div className="w-96">
+					<EditSection
+						heading="Email"
+						right={
+							!editEmail ? (
+								<button
+									onClick={() => setEditEmail(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Edit Email
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editEmail ? (
+							<div>
+								<p className="text-slate-600">
+									{person?.work_email}
+									{person?.work_email != null && (
+										<span className="font-bold text-sm text-primary-500">
+											{" "}
+											- Primary
+										</span>
+									)}
+								</p>
+								{person?.email &&
+									person?.email.map((email: any) => (
+										<p key={email.email} className="text-slate-600 mb-2">
+											{email.email}
+										</p>
+									))}
+							</div>
+						) : (
+							<div className="max-w-sm">
 								<h2 className=" font-bold text-slate-600">Current Emails</h2>
 								<div className="mb-2">
 									<span className="block mt-1 text-sm font-semibold text-slate-600">
@@ -757,11 +740,11 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 								{email?.map((mail: any) => (
 									<div key={mail.email} className="mb-2">
-										<span className="block mt-1 text-sm font-semibold text-slate-600">
+										<span className="block mt-1 text-sm text-slate-600">
 											{mail.email}
 										</span>
 										<span
-											className="mt-1 text-sm text-primary-850 cursor-pointer"
+											className="mt-1 text-sm text-primary-500 cursor-pointer"
 											onClick={makePrimary(mail.email)}
 										>
 											Make Primary
@@ -782,10 +765,10 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									}}
 									value={newEmail}
 									name="new-email"
-									placeholder="Cohen@gmail.com"
+									placeholder="name@email.com"
 								/>
 
-								<div className="flex mt-3 mb-2">
+								<div className="flex mt-4">
 									<ElemButton
 										btn="primary"
 										className="mr-2"
@@ -798,34 +781,32 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</ElemButton>
 								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editLocation && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">Location</h2>
-						<div className="col-span-8">
-							<h2 className="text-slate-600 ">
-								{person?.city}, {person?.country}
-							</h2>
-						</div>
-
-						<button
-							className="absolute right-0  text-primary-500"
-							onClick={() => setEditLocation(true)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-
-				{/* hide content location */}
-				{editLocation && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">Location</h2>
-						<div className="col-span-8">
-							<div className="w-96 ">
+					<EditSection
+						heading="Location"
+						right={
+							!editLocation ? (
+								<button
+									onClick={() => setEditLocation(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Edit Location
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editLocation ? (
+							<p className="text-slate-600">
+								{person?.city}
+								{person?.city && person?.country && <>,</>}
+								{person?.country}
+							</p>
+						) : (
+							<div className="max-w-sm">
 								<InputText
 									label="City"
 									onChange={(e) => setCity(e.target.value)}
@@ -843,7 +824,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									className="mb-3"
 								/>
 
-								<div className="flex mt-3 mb-2">
+								<div className="flex mt-4">
 									<ElemButton
 										btn="primary"
 										className="mr-2"
@@ -859,39 +840,36 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</ElemButton>
 								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editWebsite && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">Website URl</h2>
-						<div className="col-span-8">
-							<h2 className="text-slate-600 ">{person?.website_url}</h2>
-						</div>
-
-						<button
-							className="absolute right-0  text-primary-500"
-							onClick={() => setEditWebsite(true)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-				{/* hide content website */}
-				{editWebsite && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">Website URL</h2>
-						<div className="col-span-8">
-							<div className="w-96 ">
+					<EditSection
+						heading="Website URL"
+						right={
+							!editWebsite ? (
+								<button
+									onClick={() => setEditWebsite(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Edit Website
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editWebsite ? (
+							<p className="text-slate-600">{person?.website_url}</p>
+						) : (
+							<div className="max-w-sm">
 								<InputText
 									onChange={(e) => setWebsite(e.target.value)}
 									value={website}
 									name="website"
-									placeholder="www.brahm.com"
+									placeholder="https://example.io"
 								/>
 
-								<div className="flex mt-3 mb-2">
+								<div className="flex mt-4">
 									<ElemButton
 										btn="primary"
 										className="mr-2"
@@ -904,36 +882,28 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</ElemButton>
 								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editLinkedIn && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">
-							LinkedIn URL
-						</h2>
-						<div className="col-span-8">
-							<h2 className="text-slate-600 ">{person?.linkedin}</h2>
-						</div>
-
-						<button
-							className="absolute right-0  text-primary-500"
-							onClick={() => setEditLinkedIn(true)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-
-				{/* hide content linkedin */}
-				{editLinkedIn && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">
-							LinkedIn URL
-						</h2>
-						<div className="col-span-8">
-							<div className="w-96">
+					<EditSection
+						heading="LinkedIn URL"
+						right={
+							!editLinkedIn ? (
+								<button
+									onClick={() => setEditLinkedIn(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Edit LinkedIn
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editLinkedIn ? (
+							<p className="text-slate-600">{person?.linkedin}</p>
+						) : (
+							<div className="max-w-sm">
 								<InputText
 									onChange={(e) => setLinkedIn(e.target.value)}
 									value={linkedIn}
@@ -941,7 +911,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									placeholder="https://linkedin.com"
 								/>
 
-								<div className="flex mt-3 mb-2">
+								<div className="flex mt-4">
 									<ElemButton
 										btn="primary"
 										className="mr-2"
@@ -957,36 +927,28 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</ElemButton>
 								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editFacebook && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">
-							Facebook URL
-						</h2>
-						<div className="col-span-8">
-							<h2 className="text-slate-600 ">{person?.facebook_url}</h2>
-						</div>
-
-						<button
-							className="absolute right-0  text-primary-500"
-							onClick={() => setEditFacebook(true)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-
-				{/* hide content facebook*/}
-				{editFacebook && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">
-							Facebook URL
-						</h2>
-						<div className="col-span-8">
-							<div className="w-96">
+					<EditSection
+						heading="Facebook URL"
+						right={
+							!editFacebook ? (
+								<button
+									onClick={() => setEditFacebook(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Edit Facebook
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editFacebook ? (
+							<p className="text-slate-600">{person?.facebook_url}</p>
+						) : (
+							<div className="max-w-sm">
 								<InputText
 									onChange={(e) => setFacebook(e.target.value)}
 									value={facebook}
@@ -994,7 +956,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									placeholder="https://facebook.com"
 								/>
 
-								<div className="flex mt-3 mb-2">
+								<div className="flex mt-4">
 									<ElemButton
 										btn="primary"
 										className="mr-2"
@@ -1010,115 +972,121 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									</ElemButton>
 								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editTwitter && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">Twitter URL</h2>
-						<div className="col-span-8">
-							<h2 className="text-slate-600 ">{person?.twitter_url}</h2>
-						</div>
-
-						<button
-							onClick={() => setEditTwitter(true)}
-							className="absolute right-0  text-primary-500"
-						>
-							Edit
-						</button>
-					</div>
-				)}
-
-				{/* hide content twitter*/}
-				{editTwitter && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">Twitter URL</h2>
-						<div className="col-span-8">
-							<InputText
-								onChange={(e) => setTwitter(e.target.value)}
-								value={twitter}
-								name="twitter"
-								placeholder="https://twitter.com"
-								className="max-w-xs"
-							/>
-
-							<div className="flex mt-3 mb-2">
-								<ElemButton
-									btn="primary"
-									className="mr-2"
-									onClick={onSave("twitter")}
+					<EditSection
+						heading="Twitter URL"
+						right={
+							!editTwitter ? (
+								<button
+									onClick={() => setEditTwitter(true)}
+									className="text-primary-500 hover:text-dark-500"
 								>
-									Save
-								</ElemButton>
-								<ElemButton btn="white" onClick={() => setEditTwitter(false)}>
-									Cancel
-								</ElemButton>
+									Edit Twitter
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editTwitter ? (
+							<p className="text-slate-600">{person?.twitter_url}</p>
+						) : (
+							<div className="max-w-sm">
+								<InputText
+									onChange={(e) => setTwitter(e.target.value)}
+									value={twitter}
+									name="twitter"
+									placeholder="https://twitter.com"
+								/>
+
+								<div className="flex mt-4">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("twitter")}
+									>
+										Save
+									</ElemButton>
+									<ElemButton btn="white" onClick={() => setEditTwitter(false)}>
+										Cancel
+									</ElemButton>
+								</div>
 							</div>
-						</div>
-					</div>
-				)}
+						)}
+					</EditSection>
 
-				{!editAbout && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">About You</h2>
-						<div className="col-span-8">
-							<p className="text-slate-600 ">{person?.about}</p>
-						</div>
-
-						<button
-							className="absolute right-0  text-primary-500"
-							onClick={() => setEditAbout(true)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-
-				{/* hide content about*/}
-				{editAbout && (
-					<div className="grid grid-cols-12 mt-3 mb-2 relative border-b border-gray-100 pb-3">
-						<h2 className="text-dark-500 font-bold  col-span-3">About You</h2>
-						<div className="col-span-8">
-							<InputTextarea
-								rows={3}
-								value={about}
-								onChange={(e) => setAbout(e.target.value)}
-								className="max-w-xs"
-							/>
-							<div className="flex mt-3 mb-2">
-								<ElemButton
-									btn="primary"
-									className="mr-2"
-									onClick={onSave("about")}
+					<EditSection
+						heading="About You"
+						right={
+							!editAbout ? (
+								<button
+									onClick={() => setEditAbout(true)}
+									className="text-primary-500 hover:text-dark-500"
 								>
-									Save
-								</ElemButton>
-								<ElemButton btn="white" onClick={() => setEditAbout(false)}>
-									Cancel
-								</ElemButton>
+									Edit About
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{!editAbout ? (
+							<p className="text-slate-600">{person?.about}</p>
+						) : (
+							<div className="max-w-lg">
+								<InputTextarea
+									rows={3}
+									value={about}
+									onChange={(e) => setAbout(e.target.value)}
+								/>
+								<div className="flex mt-4">
+									<ElemButton
+										btn="primary"
+										className="mr-2"
+										onClick={onSave("about")}
+									>
+										Save
+									</ElemButton>
+									<ElemButton btn="white" onClick={() => setEditAbout(false)}>
+										Cancel
+									</ElemButton>
+								</div>
 							</div>
+						)}
+					</EditSection>
+
+					<EditSection
+						heading="Work"
+						right={
+							!editWorkspace ? (
+								<button
+									onClick={() => setEditWorkspace(true)}
+									className="text-primary-500 hover:text-dark-500"
+								>
+									Add Workplace
+								</button>
+							) : (
+								<></>
+							)
+						}
+					>
+						{/* {editWorkspace && renderWorkspaceForm()} */}
+
+						{!editWorkspace ? (
+							<></>
+						) : (
+							<div className="max-w-sm">{renderWorkspaceForm()}</div>
+						)}
+
+						<div className="max-w-sm">
+							{person?.team_members.map((teamMember) =>
+								renderWorkspaceEditForm(teamMember)
+							)}
 						</div>
-					</div>
-				)}
-
-				{!editWorkspace && (
-					<div className="mt-3 mb-2 relative border-b border-gray-100 pb-3 grid grid-cols-12 gap-2">
-						<h2 className="text-dark-500 font-bold  col-span-3">Work</h2>
-						<button
-							onClick={() => setEditWorkspace(true)}
-							className="absolute right-0  text-primary-500"
-						>
-							Add Workplace
-						</button>
-					</div>
-				)}
-				{/* hide content work */}
-				{editWorkspace && renderWorkspaceForm()}
-
-				{person?.team_members.map((teamMember) =>
-					renderWorkspaceEditForm(teamMember)
-				)}
+					</EditSection>
+				</dl>
 			</div>
 		</DashboardLayout>
 	);
