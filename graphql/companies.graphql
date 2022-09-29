@@ -95,6 +95,7 @@ query GetCompanies(
 		name
 		slug
 		layer
+		tags
 		coin {
 			ticker
 		}
@@ -133,6 +134,7 @@ query GetCompaniesRecent(
 		name
 		slug
 		layer
+		tags
 		logo
 		overview
 		total_employees

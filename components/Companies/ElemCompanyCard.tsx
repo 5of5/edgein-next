@@ -123,13 +123,28 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				</div>
 			</div>
 
-			{companyData.layer && (
-				<div
-					className={`${getLayerClass(
-						companyData.layer
-					)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
-				>
-					{companyData.layer}
+			{(companyData.layer || companyData.tags) && (
+				<div className="mt-4 flex flex-wrap gap-2">
+					{companyData.layer && (
+						<div
+							className={`${getLayerClass(
+								companyData.layer
+							)} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+						>
+							{companyData.layer}
+						</div>
+					)}
+
+					{companyData.tags?.map((tag: string, index: number) => {
+						return (
+							<div
+								key={index}
+								className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+							>
+								{tag}
+							</div>
+						);
+					})}
 				</div>
 			)}
 

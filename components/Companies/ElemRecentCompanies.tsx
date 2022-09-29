@@ -195,29 +195,9 @@ export const ElemRecentCompanies: FC<Props> = ({
 												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
 													{company.name}
 												</h3>
-												{fundingTotal > 0 && (
-													<div className="flex items-center space-x-1">
-														<div className="">Raised</div>
-														<div className="flex items-center text-green-700">
-															$
-															{convertToInternationalCurrencySystem(
-																Number(fundingTotal)
-															)}
-														</div>
-													</div>
-												)}
 											</div>
 										</div>
 
-										{company.layer && (
-											<div
-												className={`${getLayerClass(
-													company.layer
-												)} self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full mt-4`}
-											>
-												{company.layer}
-											</div>
-										)}
 										<div className="mt-4 flex gap-6 text-xs font-bold text-slate-600">
 											<span>
 												Added{" "}
@@ -227,19 +207,49 @@ export const ElemRecentCompanies: FC<Props> = ({
 													year: "numeric",
 												})}
 											</span>
-											{/* <span>
+											<span>
 												{fundingTotal > 0 && (
 													<div className="flex items-center space-x-1">
 														<div className="">Raised</div>
 														<div className="flex items-center text-green-700">
-															${convertToInternationalCurrencySystem(fundingTotal)}
+															$
+															{convertToInternationalCurrencySystem(
+																fundingTotal
+															)}
 														</div>
 													</div>
 												)}
-											</span> */}
+											</span>
 										</div>
-										<div className="mt-4 text-gray-400 grow line-clamp-3">
-											{company.overview}
+
+										{(company.layer || company.tags) && (
+											<div className="mt-4 flex flex-wrap gap-2">
+												{company.layer && (
+													<div
+														className={`${getLayerClass(
+															company.layer
+														)} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+													>
+														{company.layer}
+													</div>
+												)}
+
+												{company.tags?.map((tag: string, index: number) => {
+													return (
+														<div
+															key={index}
+															className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+														>
+															{tag}
+														</div>
+													);
+												})}
+											</div>
+										)}
+										<div className="mt-4 grow">
+											<div className="text-gray-400 line-clamp-3">
+												{company.overview}
+											</div>
 										</div>
 
 										<div className="flex items-center justify-between mt-4">

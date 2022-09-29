@@ -482,7 +482,7 @@ const companyFilterValues = companyChoices.map((option) => {
 	return {
 		title: option.name,
 		value: option.id,
-		icon: option.id
+		icon: option.id,
 	};
 });
 

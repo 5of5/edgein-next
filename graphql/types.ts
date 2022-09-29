@@ -373,6 +373,7 @@ export type Allowed_Emails = {
   created_at: Scalars['date'];
   email: Scalars['String'];
   id: Scalars['Int'];
+  match_type: Scalars['String'];
   updated_at: Scalars['date'];
 };
 
@@ -420,6 +421,7 @@ export type Allowed_Emails_Bool_Exp = {
   created_at: InputMaybe<Date_Comparison_Exp>;
   email: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  match_type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Date_Comparison_Exp>;
 };
 
@@ -441,6 +443,7 @@ export type Allowed_Emails_Insert_Input = {
   created_at: InputMaybe<Scalars['date']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  match_type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['date']>;
 };
 
@@ -450,6 +453,7 @@ export type Allowed_Emails_Max_Fields = {
   created_at: Maybe<Scalars['date']>;
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  match_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['date']>;
 };
 
@@ -459,6 +463,7 @@ export type Allowed_Emails_Min_Fields = {
   created_at: Maybe<Scalars['date']>;
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  match_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['date']>;
 };
 
@@ -483,6 +488,7 @@ export type Allowed_Emails_Order_By = {
   created_at: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  match_type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
 };
 
@@ -500,6 +506,8 @@ export enum Allowed_Emails_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  MatchType = 'match_type',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
@@ -508,6 +516,7 @@ export type Allowed_Emails_Set_Input = {
   created_at: InputMaybe<Scalars['date']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  match_type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['date']>;
 };
 
@@ -543,6 +552,8 @@ export enum Allowed_Emails_Update_Column {
   Email = 'email',
   /** column name */
   Id = 'id',
+  /** column name */
+  MatchType = 'match_type',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -4791,6 +4802,7 @@ export type Investment_Rounds_Variance_Order_By = {
 /** columns and relationships of "investments" */
 export type Investments = {
   __typename?: 'investments';
+  amount: Maybe<Scalars['numeric']>;
   external_id: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   /** An object relationship */
@@ -4860,6 +4872,7 @@ export type Investments_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Investments_Avg_Fields = {
   __typename?: 'investments_avg_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -4868,6 +4881,7 @@ export type Investments_Avg_Fields = {
 
 /** order by avg() on columns of table "investments" */
 export type Investments_Avg_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -4879,6 +4893,7 @@ export type Investments_Bool_Exp = {
   _and: InputMaybe<Array<Investments_Bool_Exp>>;
   _not: InputMaybe<Investments_Bool_Exp>;
   _or: InputMaybe<Array<Investments_Bool_Exp>>;
+  amount: InputMaybe<Numeric_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investment_round: InputMaybe<Investment_Rounds_Bool_Exp>;
@@ -4900,6 +4915,7 @@ export enum Investments_Constraint {
 
 /** input type for incrementing numeric columns in table "investments" */
 export type Investments_Inc_Input = {
+  amount: InputMaybe<Scalars['numeric']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
   round_id: InputMaybe<Scalars['Int']>;
@@ -4908,6 +4924,7 @@ export type Investments_Inc_Input = {
 
 /** input type for inserting data into table "investments" */
 export type Investments_Insert_Input = {
+  amount: InputMaybe<Scalars['numeric']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   investment_round: InputMaybe<Investment_Rounds_Obj_Rel_Insert_Input>;
@@ -4922,6 +4939,7 @@ export type Investments_Insert_Input = {
 /** aggregate max on columns */
 export type Investments_Max_Fields = {
   __typename?: 'investments_max_fields';
+  amount: Maybe<Scalars['numeric']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
@@ -4932,6 +4950,7 @@ export type Investments_Max_Fields = {
 
 /** order by max() on columns of table "investments" */
 export type Investments_Max_Order_By = {
+  amount: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
@@ -4943,6 +4962,7 @@ export type Investments_Max_Order_By = {
 /** aggregate min on columns */
 export type Investments_Min_Fields = {
   __typename?: 'investments_min_fields';
+  amount: Maybe<Scalars['numeric']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
@@ -4953,6 +4973,7 @@ export type Investments_Min_Fields = {
 
 /** order by min() on columns of table "investments" */
 export type Investments_Min_Order_By = {
+  amount: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
@@ -4979,6 +5000,7 @@ export type Investments_On_Conflict = {
 
 /** Ordering options when selecting data from "investments". */
 export type Investments_Order_By = {
+  amount: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   investment_round: InputMaybe<Investment_Rounds_Order_By>;
@@ -4998,6 +5020,8 @@ export type Investments_Pk_Columns_Input = {
 /** select columns of table "investments" */
 export enum Investments_Select_Column {
   /** column name */
+  Amount = 'amount',
+  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Id = 'id',
@@ -5013,6 +5037,7 @@ export enum Investments_Select_Column {
 
 /** input type for updating data in table "investments" */
 export type Investments_Set_Input = {
+  amount: InputMaybe<Scalars['numeric']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
@@ -5024,6 +5049,7 @@ export type Investments_Set_Input = {
 /** aggregate stddev on columns */
 export type Investments_Stddev_Fields = {
   __typename?: 'investments_stddev_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5032,6 +5058,7 @@ export type Investments_Stddev_Fields = {
 
 /** order by stddev() on columns of table "investments" */
 export type Investments_Stddev_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5041,6 +5068,7 @@ export type Investments_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type Investments_Stddev_Pop_Fields = {
   __typename?: 'investments_stddev_pop_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5049,6 +5077,7 @@ export type Investments_Stddev_Pop_Fields = {
 
 /** order by stddev_pop() on columns of table "investments" */
 export type Investments_Stddev_Pop_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5058,6 +5087,7 @@ export type Investments_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type Investments_Stddev_Samp_Fields = {
   __typename?: 'investments_stddev_samp_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5066,6 +5096,7 @@ export type Investments_Stddev_Samp_Fields = {
 
 /** order by stddev_samp() on columns of table "investments" */
 export type Investments_Stddev_Samp_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5075,6 +5106,7 @@ export type Investments_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type Investments_Sum_Fields = {
   __typename?: 'investments_sum_fields';
+  amount: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
   round_id: Maybe<Scalars['Int']>;
@@ -5083,6 +5115,7 @@ export type Investments_Sum_Fields = {
 
 /** order by sum() on columns of table "investments" */
 export type Investments_Sum_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5091,6 +5124,8 @@ export type Investments_Sum_Order_By = {
 
 /** update columns of table "investments" */
 export enum Investments_Update_Column {
+  /** column name */
+  Amount = 'amount',
   /** column name */
   ExternalId = 'external_id',
   /** column name */
@@ -5108,6 +5143,7 @@ export enum Investments_Update_Column {
 /** aggregate var_pop on columns */
 export type Investments_Var_Pop_Fields = {
   __typename?: 'investments_var_pop_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5116,6 +5152,7 @@ export type Investments_Var_Pop_Fields = {
 
 /** order by var_pop() on columns of table "investments" */
 export type Investments_Var_Pop_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5125,6 +5162,7 @@ export type Investments_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type Investments_Var_Samp_Fields = {
   __typename?: 'investments_var_samp_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5133,6 +5171,7 @@ export type Investments_Var_Samp_Fields = {
 
 /** order by var_samp() on columns of table "investments" */
 export type Investments_Var_Samp_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -5142,6 +5181,7 @@ export type Investments_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type Investments_Variance_Fields = {
   __typename?: 'investments_variance_fields';
+  amount: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
   round_id: Maybe<Scalars['Float']>;
@@ -5150,6 +5190,7 @@ export type Investments_Variance_Fields = {
 
 /** order by variance() on columns of table "investments" */
 export type Investments_Variance_Order_By = {
+  amount: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
   round_id: InputMaybe<Order_By>;
@@ -10677,7 +10718,6 @@ export type Users = {
   reference_id: Scalars['String'];
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
-  wallet_address: Maybe<Scalars['String']>;
 };
 
 
@@ -10810,7 +10850,6 @@ export type Users_Bool_Exp = {
   reference_id: InputMaybe<String_Comparison_Exp>;
   reference_user_id: InputMaybe<Int_Comparison_Exp>;
   role: InputMaybe<String_Comparison_Exp>;
-  wallet_address: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "users" */
@@ -10863,7 +10902,6 @@ export type Users_Insert_Input = {
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
-  wallet_address: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -10879,7 +10917,6 @@ export type Users_Max_Fields = {
   reference_id: Maybe<Scalars['String']>;
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
-  wallet_address: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -10895,7 +10932,6 @@ export type Users_Min_Fields = {
   reference_id: Maybe<Scalars['String']>;
   reference_user_id: Maybe<Scalars['Int']>;
   role: Maybe<Scalars['String']>;
-  wallet_address: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "users" */
@@ -10939,7 +10975,6 @@ export type Users_Order_By = {
   reference_id: InputMaybe<Order_By>;
   reference_user_id: InputMaybe<Order_By>;
   role: InputMaybe<Order_By>;
-  wallet_address: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: users */
@@ -10977,9 +11012,7 @@ export enum Users_Select_Column {
   /** column name */
   ReferenceUserId = 'reference_user_id',
   /** column name */
-  Role = 'role',
-  /** column name */
-  WalletAddress = 'wallet_address'
+  Role = 'role'
 }
 
 /** input type for updating data in table "users" */
@@ -10996,7 +11029,6 @@ export type Users_Set_Input = {
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
   role: InputMaybe<Scalars['String']>;
-  wallet_address: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -11056,9 +11088,7 @@ export enum Users_Update_Column {
   /** column name */
   ReferenceUserId = 'reference_user_id',
   /** column name */
-  Role = 'role',
-  /** column name */
-  WalletAddress = 'wallet_address'
+  Role = 'role'
 }
 
 /** aggregate var_pop on columns */
@@ -12058,7 +12088,7 @@ export type GetCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, tags: any | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, coin: { __typename?: 'coins', ticker: string } | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }> }> };
 
 export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -12068,7 +12098,7 @@ export type GetCompaniesRecentQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesRecentQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, logo: any | null, overview: string | null, total_employees: any | null, investor_amount: any | null, date_added: any | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, amount: any | null }> }> };
+export type GetCompaniesRecentQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string | null, layer: string | null, tags: any | null, logo: any | null, overview: string | null, total_employees: any | null, investor_amount: any | null, date_added: any | null, sentiment: any | null, follows: Array<{ __typename?: 'follows_companies', list: { __typename?: 'lists', name: string } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, amount: any | null }> }> };
 
 export type GetCompaniesPathsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -12316,6 +12346,7 @@ export const GetCompaniesDocument = `
     name
     slug
     layer
+    tags
     coin {
       ticker
     }
@@ -12369,6 +12400,7 @@ export const GetCompaniesRecentDocument = `
     name
     slug
     layer
+    tags
     logo
     overview
     total_employees
