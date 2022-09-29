@@ -113,6 +113,13 @@ const MyList: NextPage<Props> = ({}) => {
 
 	return (
 		<DashboardLayout>
+			<ElemMyListsMenu
+				user={user}
+				setIsCustom={setIsCustomList}
+				setSelectedListName={setSelectedListName}
+				isUpdated={isUpdated}
+				className="hidden"
+			/>
 			<div className="col-span-3">
 				<div className="w-full mb-7">
 					<div className="inline-flex ">

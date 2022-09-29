@@ -577,15 +577,18 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
-				<div className="flex justify-between items-center mb-2">
+				<div className="sm:flex justify-between items-center mb-2">
 					<h2 className="font-bold text-xl">Invite Code</h2>
+
 					{user && user.reference_id && (
-						<ElemShareMenu
-							onCopy={onCopy}
-							onTelegram={onTelegram}
-							onEmail={onEmail}
-							onSMS={onSMS}
-						/>
+						<div className="mt-2 sm:mt-0">
+							<ElemShareMenu
+								onCopy={onCopy}
+								onTelegram={onTelegram}
+								onEmail={onEmail}
+								onSMS={onSMS}
+							/>
+						</div>
 					)}
 				</div>
 				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
