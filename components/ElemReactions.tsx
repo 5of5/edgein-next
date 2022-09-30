@@ -8,18 +8,20 @@ import { ElemTooltip } from "@/components/ElemTooltip";
 type Props = {
 	className?: string;
 	data: any;
-	handleReactionClick: (
+	handleReactionClick?: (
 		reaction: string,
 		isSelected: boolean
 	) => (
 		e: React.MouseEvent<HTMLButtonElement | HTMLInputElement | HTMLElement>
 	) => void;
+	isInteractive?: boolean;
 };
 
 export const ElemReactions: FC<Props> = ({
 	className = "",
 	data,
 	handleReactionClick,
+	isInteractive = true
 }) => {
 	const { user } = useAuth();
 
@@ -61,7 +63,7 @@ export const ElemReactions: FC<Props> = ({
 		} else if (sentiment !== -1 && reaction === "crap") {
 			classes = "text-yellow-800 hover:text-yellow-800";
 		} else {
-			classes = "text-slate-400 hover:text-slate-600";
+			classes = isInteractive ? "text-slate-400 hover:text-slate-600" : "text-slate-600";
 		}
 
 		return classes;
@@ -70,13 +72,13 @@ export const ElemReactions: FC<Props> = ({
 	return (
 		<div className={`flex flex-nowrap space-x-3 -ml-1 ${className}`}>
 			<div
-				onClick={handleReactionClick("hot", alreadyReacted(hot))}
+				onClick={handleReactionClick && handleReactionClick("hot", alreadyReacted(hot))}
 				title="Hot"
 				role="button"
-				className={`flex items-center cursor-pointer font-bold group ease-in-out duration-150 ${alreadyReactedClasses(
+				className={`flex items-center cursor-pointer font-bold ease-in-out duration-150 ${alreadyReactedClasses(
 					hot,
 					"hot"
-				)}`}
+				)} ${isInteractive ? 'group': ''}`}
 			>
 				<ElemTooltip content="Hot">
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
@@ -87,13 +89,13 @@ export const ElemReactions: FC<Props> = ({
 			</div>
 
 			<div
-				onClick={handleReactionClick("like", alreadyReacted(like))}
+				onClick={handleReactionClick && handleReactionClick("like", alreadyReacted(like))}
 				title="Like"
 				role="button"
-				className={`flex items-center cursor-pointer font-bold group ease-in-out duration-150 ${alreadyReactedClasses(
+				className={`flex items-center cursor-pointer font-bold ease-in-out duration-150 ${alreadyReactedClasses(
 					like,
 					"like"
-				)}`}
+				)} ${isInteractive ? 'group': ''}`}
 			>
 				<ElemTooltip content="Like">
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
@@ -104,13 +106,13 @@ export const ElemReactions: FC<Props> = ({
 			</div>
 
 			<div
-				onClick={handleReactionClick("crap", alreadyReacted(crap))}
+				onClick={handleReactionClick && handleReactionClick("crap", alreadyReacted(crap))}
 				title="Sh**"
 				role="button"
-				className={`flex items-center cursor-pointer font-bold group ease-in-out duration-150 ${alreadyReactedClasses(
+				className={`flex items-center cursor-pointer font-bold ease-in-out duration-150 ${alreadyReactedClasses(
 					crap,
 					"crap"
-				)}`}
+				)} ${isInteractive ? 'group': ''}`}
 			>
 				<ElemTooltip content="Sh**">
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">

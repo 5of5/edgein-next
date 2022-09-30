@@ -3,12 +3,11 @@ import {
 	GetCompaniesByListIdQuery,
 	GetVcFirmsByListIdQuery,
 } from "@/graphql/types";
-import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
+import { ElemReactions } from "../ElemReactions";
 
 type Props = {
 	vcfirms?: Follows_Vc_Firms[];
@@ -188,20 +187,7 @@ export const ElemInvestors: FC<Props> = ({
 									May 12, 2022 {vc_firm?.latest_investments}
 								</td>
 								<td className="px-1 py-2">
-									<div>
-										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiHot className="w-6 h-6 mr-1" />
-											{vc_firm?.sentiment.hot || 0}
-										</span>
-										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiLike className="w-6 h-6 mr-1" />
-											{vc_firm?.sentiment.like || 0}
-										</span>
-										<span className="text-slate-600 font-bold items-center inline-flex">
-											<EmojiCrap className="w-6 h-6 mr-1" />
-											{vc_firm?.sentiment.crap || 0}
-										</span>
-									</div>
+									<ElemReactions data={vc_firm} isInteractive={false} />
 								</td>
 							</tr>
 						))}
