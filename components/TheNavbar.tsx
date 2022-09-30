@@ -222,7 +222,7 @@ export const TheNavbar = () => {
 								>
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
-								<NotificationAlerts />
+								{/* <NotificationAlerts /> */}
 								<UserMenu />
 							</>
 						) : (

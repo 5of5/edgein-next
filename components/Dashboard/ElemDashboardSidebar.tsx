@@ -94,7 +94,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 
 			<ElemMyListsMenu user={user} className="mt-6" />
 
-			<div className="mt-6">
+			{/* <div className="mt-6">
 				<h3 className="text-xl font-bold">My Organizations</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
 					{organizations?.map((teamMember) => {
@@ -125,9 +125,9 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 						</Link>
 					</li>
 
-					{/* {renderMyCustomList()} */}
+					{renderMyCustomList()}
 				</ul>
-			</div>
+			</div> */}
 
 			<div className="mt-6">
 				<h3 className="text-xl font-bold">Explore</h3>

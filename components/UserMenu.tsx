@@ -53,11 +53,11 @@ export const UserMenu = () => {
 
 	const navigation = [
 		{ name: "My Lists", href: `/lists/${hotId}/hot`, icon: IconCustomList },
-		{
-			name: "My Organizations",
-			href: "/organizations",
-			icon: IconOrganization,
-		},
+		// {
+		// 	name: "My Organizations",
+		// 	href: "/organizations",
+		// 	icon: IconOrganization,
+		// },
 		{ name: "Account Settings", href: "/account", icon: IconSettings },
 	];
 
