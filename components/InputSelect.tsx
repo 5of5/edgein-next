@@ -1,6 +1,13 @@
 import { Listbox, Transition } from "@headlessui/react";
 import React, { PropsWithChildren, Fragment } from "react";
-import { IconSelector, IconCheck, IconFollowing, IconDead, IconAcquired, IconTrending } from "../components/Icons";
+import {
+	IconSelector,
+	IconCheck,
+	IconFollowing,
+	IconDead,
+	IconAcquired,
+	IconTrending,
+} from "../components/Icons";
 
 type Props = {
 	className?: string;
@@ -17,21 +24,21 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 	options,
 	onChange,
 }) => {
-	
 	const displayIcon = (val: string | number, className: string) => {
-		const basicInfo = 'h-5 w-5 mr-1'
-		switch(val) {
+		const basicInfo = "h-5 w-5 mr-1";
+		switch (val) {
 			case "Following":
-				return <IconFollowing className={`${basicInfo} ${className}`} />
+				return <IconFollowing className={`${basicInfo} ${className}`} />;
 			case "Dead":
-				return <IconDead className={`${basicInfo} ${className}`} />
+				return <IconDead className={`${basicInfo} ${className}`} />;
 			case "Acquired":
-				return <IconAcquired className={`${basicInfo} ${className}`} />
+				return <IconAcquired className={`${basicInfo} ${className}`} />;
 			case "Trending":
-				return <IconTrending className={`${basicInfo} ${className}`} />
-			default: return ""
+				return <IconTrending className={`${basicInfo} ${className}`} />;
+			default:
+				return "";
 		}
-	}
+	};
 
 	return (
 		<div className={className}>
@@ -68,10 +75,14 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 													active
 														? "text-primary-500 bg-primary-100"
 														: "text-dark-500"
-												} cursor-default select-none relative py-2 pl-3 pr-9`
+												}  select-none relative py-2 pl-3 pr-9 ${
+													option.disabled
+														? "cursor-not-allowed"
+														: "cursor-default"
+												}`
 											}
+											disabled={option.disabled ? option.disabled : false}
 										>
-
 											{({ selected }) => (
 												<>
 													<div
@@ -82,9 +93,12 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 															option.title ? option.title : placeholder
 														}${option.description ? option.description : ""}`}
 													>
-														{option.icon ? displayIcon(option.icon,`${
-															selected ? "font-bold" : "font-normal"
-														}`) : ""}
+														{option.icon
+															? displayIcon(
+																	option.icon,
+																	`${selected ? "font-bold" : "font-normal"}`
+															  )
+															: ""}
 														{option.title ? option.title : placeholder}
 													</div>
 													<div className="text-gray-400 text-xs">

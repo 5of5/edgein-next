@@ -483,6 +483,7 @@ const companyFilterValues = companyChoices.map((option) => {
 		title: option.name,
 		value: option.id,
 		icon: option.id,
+		disabled: option.disabled ? option.disabled : false,
 	};
 });
 
