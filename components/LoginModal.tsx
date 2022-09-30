@@ -158,8 +158,8 @@ export default function LoginModal(props: Props) {
 											<ElemButton
 												roundedFull={false}
 												onClick={onLinkedInClick}
-												btn="white"
-												className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] border border-black/10 hover:text-[#0077B5] hover:border-[#0077B5] hover:bg-slate-50"
+												btn="transparent"
+												className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] ring-1 ring-inset ring-black/10 hover:ring-2 hover:ring-[#0077B5] hover:text-[#0077B5] hover:bg-slate-50"
 											>
 												<IconLinkedIn
 													title="LinkedIn"
@@ -185,7 +185,7 @@ export default function LoginModal(props: Props) {
 															validateEmail(event?.target.value)
 														}
 														placeholder="Email"
-														className={`mt-2 appearance-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
+														className={`mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
 															emailError === ""
 																? "ring-1 ring-slate-200"
 																: "ring-2 ring-rose-400 focus:ring-rose-400"
@@ -205,7 +205,7 @@ export default function LoginModal(props: Props) {
 														disabled={isLoading}
 														onChange={(event) => validate(event?.target.value)}
 														placeholder="Password"
-														className={`mt-2 appearance-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
+														className={`mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
 															errorMessage === ""
 																? "ring-1 ring-slate-200"
 																: "ring-2 ring-rose-400 focus:ring-rose-400"

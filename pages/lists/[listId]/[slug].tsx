@@ -1,4 +1,5 @@
 import { ElemCompanies } from "@/components/MyList/ElemCompanies";
+import { ElemCompaniesNew } from "@/components/MyList/ElemCompaniesNew";
 import { ElemDeleteListModal } from "@/components/MyList/ElemDeleteListModal";
 import { ElemInvestors } from "@/components/MyList/ElemInvestors";
 import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
@@ -97,12 +98,20 @@ const MyList: NextPage<Props> = ({}) => {
 		}
 	};
 
+	const [theListId, setTheListId] = useState(0);
+
+	useEffect(() => {
+		if (router.isReady) {
+			setTheListId(parseInt(router.query?.listId as string));
+		}
+	}, [router]);
+
 	const { data: companiesData } = useGetCompaniesByListIdQuery({
-		list_id: parseInt(router.query?.listId as string),
+		list_id: theListId,
 	});
 
 	const { data: vcFirms } = useGetVcFirmsByListIdQuery({
-		list_id: parseInt(router.query?.listId as string),
+		list_id: theListId,
 	});
 
 	useEffect(() => {
@@ -120,74 +129,87 @@ const MyList: NextPage<Props> = ({}) => {
 				isUpdated={isUpdated}
 				className="hidden"
 			/>
-			<div className="col-span-3">
-				<div className="w-full mb-7">
-					<div className="inline-flex ">
-						<h1 className="flex font-bold text-xl capitalize mb-1 items-center">
-							{selectedListName === "hot" && (
-								<EmojiHot className="w-6 h-6 mr-2" />
-							)}
-							{selectedListName === "like" && (
-								<EmojiLike className="w-6 h-6 mr-2" />
-							)}
-							{selectedListName === "crap" && (
-								<EmojiCrap className="w-6 h-6 mr-2" />
-							)}
-							{isCustomList && (
-								<IconCustomList className="h-6 w-6 text-slate-600 mr-2" />
-							)}
-							{selectedListName}
-						</h1>
-
-						{isCustomList && (
-							<>
-								<ElemListOptionMenu
-									onUpdateBtn={() => setShowEditModal(true)}
-									onDeleteBtn={() => setShowDeleteModal(true)}
-								/>
-
-								<ElemListEditModal
-									onCloseModal={() => setShowEditModal(false)}
-									isOpen={showEditModal}
-									onSave={onSave}
-								/>
-
-								<ElemDeleteListModal
-									onCloseModal={() => setShowDeleteModal(false)}
-									onDelete={onDeleteList}
-									isOpen={showDeleteModal}
-									listName={selectedListName}
-									deleteId={parseInt(router.query.listId as string)}
-								/>
-							</>
+			<div className="w-full mb-4">
+				<div className="flex items-center">
+					<h1 className="flex font-bold text-xl capitalize items-center">
+						{selectedListName === "hot" && (
+							<EmojiHot className="w-6 h-6 mr-2" />
 						)}
-					</div>
+						{selectedListName === "like" && (
+							<EmojiLike className="w-6 h-6 mr-2" />
+						)}
+						{selectedListName === "crap" && (
+							<EmojiCrap className="w-6 h-6 mr-2" />
+						)}
+						{isCustomList && (
+							<IconCustomList className="h-6 w-6 text-slate-600 mr-2" />
+						)}
+						{selectedListName}
+					</h1>
+
+					{isCustomList && (
+						<>
+							<ElemListOptionMenu
+								onUpdateBtn={() => setShowEditModal(true)}
+								onDeleteBtn={() => setShowDeleteModal(true)}
+							/>
+
+							<ElemListEditModal
+								onCloseModal={() => setShowEditModal(false)}
+								isOpen={showEditModal}
+								onSave={onSave}
+							/>
+
+							<ElemDeleteListModal
+								onCloseModal={() => setShowDeleteModal(false)}
+								onDelete={onDeleteList}
+								isOpen={showDeleteModal}
+								listName={selectedListName}
+								deleteId={parseInt(router.query.listId as string)}
+							/>
+						</>
+					)}
+				</div>
+				{(selectedListName === "hot" ||
+					selectedListName === "like" ||
+					selectedListName === "crap") && (
 					<p className="first-letter:uppercase text-slate-600">
 						{selectedListName} lists are generated from your{" "}
 						{selectedListName?.toLowerCase()} reactions.
 					</p>
-				</div>
-
-				<ElemCompanies
-					handleNavigation={handleRowClick}
-					companies={companies}
-					selectedListName={selectedListName}
-					totalFunding={totalFunding}
-					getAlternateRowColor={getAlternateRowColor}
-					tagsCount={tagsCount}
-					isCustomList={isCustomList}
-					setIsUpdated={setIsUpdated}
-				/>
-
-				<ElemInvestors
-					handleNavigation={handleRowClick}
-					vcfirms={vcfirms}
-					selectedListName={selectedListName}
-					getAlternateRowColor={getAlternateRowColor}
-					isCustomList={isCustomList}
-					setIsUpdated={setIsUpdated}
-				/>
+				)}
 			</div>
+
+			{/* <ElemCompaniesNew
+				//handleNavigation={handleRowClick}
+				companies={companies}
+				selectedListName={selectedListName}
+				//totalFunding={totalFunding}
+				//getAlternateRowColor={getAlternateRowColor}
+				tagsCount={tagsCount}
+				isCustomList={isCustomList}
+				setIsUpdated={setIsUpdated}
+			/> */}
+
+			<ElemCompanies
+				handleNavigation={handleRowClick}
+				companies={companies}
+				selectedListName={selectedListName}
+				totalFunding={totalFunding}
+				getAlternateRowColor={getAlternateRowColor}
+				tagsCount={tagsCount}
+				isCustomList={isCustomList}
+				setIsUpdated={setIsUpdated}
+			/>
+
+			<ElemInvestors
+				handleNavigation={handleRowClick}
+				vcfirms={vcfirms}
+				selectedListName={selectedListName}
+				getAlternateRowColor={getAlternateRowColor}
+				isCustomList={isCustomList}
+				setIsUpdated={setIsUpdated}
+			/>
 		</DashboardLayout>
 	);
 };

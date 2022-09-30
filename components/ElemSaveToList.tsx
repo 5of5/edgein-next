@@ -5,6 +5,7 @@ import { findIndex } from "lodash";
 import { getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
+import { InputText } from "@/components/InputText";
 import { IconX, IconSaveToList } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
 
@@ -164,14 +165,14 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 
 								{showNew && (
 									<div className="p-3 ease-in-out duration-300">
-										<label className="block font-bold ">Name</label>
-										<input
-											onChange={(e) => setNewName(e.target.value)}
-											className="pl-4 mt-1 h-10 w-full relative bg-white rounded-md border border-black/10 outline-none placeholder:text-slate-400 focus:bg-white focus:outline-none`"
+										<InputText
+											label="Name"
 											type="text"
-											placeholder="Enter List Name..."
+											onChange={(e) => setNewName(e.target.value)}
 											value={newName}
-										></input>
+											name="name"
+											placeholder="Enter List Name..."
+										/>
 										<div className="flex">
 											<ElemButton
 												onClick={(e) => onCreate(e)}

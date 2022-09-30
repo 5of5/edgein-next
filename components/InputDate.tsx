@@ -1,20 +1,22 @@
 import React, { PropsWithChildren } from "react";
 
 type Props = {
-	className?: string
-	label?: string
-	type?: "date"
-	name: string
-	value: string
-	onChange: React.ChangeEventHandler<HTMLInputElement>
-	placeholder?: string
-	required?: boolean
-	autoComplete?: string
-	disabled?: boolean
+	className?: string;
+	labelClass?: string;
+	label?: string;
+	type?: "date";
+	name: string;
+	value: string;
+	onChange: React.ChangeEventHandler<HTMLInputElement>;
+	placeholder?: string;
+	required?: boolean;
+	autoComplete?: string;
+	disabled?: boolean;
 };
 
 export const InputDate: React.FC<PropsWithChildren<Props>> = ({
 	className = "",
+	labelClass = "",
 	label,
 	name,
 	value,
@@ -22,17 +24,19 @@ export const InputDate: React.FC<PropsWithChildren<Props>> = ({
 	placeholder = "",
 	required = false,
 	autoComplete = "on",
-	disabled
+	disabled,
 }) => {
 	return (
 		<>
 			{label && (
-				<label htmlFor={name} className="font-bold text-gray-400 cursor-text">
+				<label htmlFor={name} className={`font-bold cursor-text ${labelClass}`}>
 					{label}
 				</label>
 			)}
 			<input
-				className={`w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none placeholder:text-slate-400 focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100 ${className} ${disabled ? 'text-slate-300' : ''}`}
+				className={`w-full appearance-none border-none mt-1 px-3 py-1.5 text-dark-500 relative bg-white rounded-md outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400 ${className} ${
+					disabled ? "text-slate-300" : ""
+				}`}
 				type="date"
 				name={name}
 				value={value}

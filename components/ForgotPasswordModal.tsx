@@ -114,7 +114,7 @@ export default function ForgotPasswordModal(props: Props) {
 														disabled={isLoading}
 														onChange={(event) => setEmail(event?.target.value)}
 														placeholder="example@email.com"
-														className="mt-2 appearance-none rounded-md block w-full px-3 h-10 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+														className="mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
 													/>
 												</label>
 

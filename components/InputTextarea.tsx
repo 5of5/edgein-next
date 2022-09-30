@@ -2,6 +2,7 @@ import React, { PropsWithChildren } from "react";
 
 type Props = {
 	className?: string;
+	labelClass?: string;
 	label?: string;
 	name?: string;
 	value?: string;
@@ -13,6 +14,7 @@ type Props = {
 
 export const InputTextarea: React.FC<PropsWithChildren<Props>> = ({
 	className = "",
+	labelClass = "",
 	label,
 	name,
 	value,
@@ -24,12 +26,12 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = ({
 	return (
 		<>
 			{label && (
-				<label htmlFor={name} className="font-bold text-gray-400 cursor-text">
+				<label htmlFor={name} className={`font-bold cursor-text ${labelClass}`}>
 					{label}
 				</label>
 			)}
 			<textarea
-				className={`w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-gray-100 outline-none resize-none hover:ring-primary-100 focus:outline-none focus:border-primary-500 hover:ring focus:ring focus:ring-primary-100 ${className}`}
+				className={`appearance-none resize-none w-full mt-1 px-3 py-1.5 text-dark-500 relative bg-white rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400 ${className}`}
 				name={name}
 				value={value}
 				onChange={onChange}
@@ -37,16 +39,6 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = ({
 				placeholder={placeholder}
 				rows={rows}
 			/>
-
-			{/* <input
-				className={`${className} w-full mt-1 px-3 py-1.5 text-lg text-dark-500 relative bg-white rounded-md border border-slate-300 outline-none focus:outline-none focus:border-primary-500 focus:ring focus:ring-primary-100`}
-				type="text"
-				name={name}
-				value={value}
-				onChange={onChange}
-				required={required}
-				placeholder={placeholder}
-			/> */}
 		</>
 	);
 };
