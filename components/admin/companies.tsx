@@ -484,9 +484,11 @@ export const CompanyEdit = () => {
             source="layer_detail"
           />
           <ReferenceInput label="Coin" source="coin_id" reference="coins">
-            <SelectInput
+            <AutocompleteInput
+              style={{padding: 0, border: "none"}}
               className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
               optionText="name"
+              filterToQuery={search => ({ name: search })}
             />
           </ReferenceInput>
           <NumberInput
