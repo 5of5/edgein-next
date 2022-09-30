@@ -79,12 +79,15 @@ export const ElemReactions: FC<Props> = ({
 				}
 				title="Hot"
 				role="button"
-				className={`flex items-center cursor-pointer font-bold ease-in-out duration-150 ${alreadyReactedClasses(
+				className={`flex items-center font-bold ease-in-out duration-150 ${alreadyReactedClasses(
 					hot,
 					"hot"
-				)} ${isInteractive ? "group" : ""}`}
+				)} ${isInteractive ? "group cursor-pointer" : "cursor-default"}`}
 			>
-				<ElemTooltip content="Hot">
+				<ElemTooltip
+					content="Hot"
+					className={`${isInteractive ? "cursor-pointer" : "cursor-default"}`}
+				>
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
 						<EmojiHot className="h-6 w-6" />{" "}
 					</div>
@@ -99,12 +102,15 @@ export const ElemReactions: FC<Props> = ({
 				}
 				title="Like"
 				role="button"
-				className={`flex items-center cursor-pointer font-bold ease-in-out duration-150 ${alreadyReactedClasses(
+				className={`flex items-center font-bold ease-in-out duration-150 ${alreadyReactedClasses(
 					like,
 					"like"
-				)} ${isInteractive ? "group" : ""}`}
+				)} ${isInteractive ? "group cursor-pointer" : "cursor-default"}`}
 			>
-				<ElemTooltip content="Like">
+				<ElemTooltip
+					content="Like"
+					className={`${isInteractive ? "cursor-pointer" : "cursor-default"}`}
+				>
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
 						<EmojiLike className="h-6 w-6" />{" "}
 					</div>
@@ -119,12 +125,15 @@ export const ElemReactions: FC<Props> = ({
 				}
 				title="Sh**"
 				role="button"
-				className={`flex items-center cursor-pointer font-bold ease-in-out duration-150 ${alreadyReactedClasses(
+				className={`flex items-center font-bold ease-in-out duration-150 ${alreadyReactedClasses(
 					crap,
 					"crap"
-				)} ${isInteractive ? "group" : ""}`}
+				)} ${isInteractive ? "group cursor-pointer" : "cursor-default"}`}
 			>
-				<ElemTooltip content="Sh**">
+				<ElemTooltip
+					content="Sh**"
+					className={`${isInteractive ? "cursor-pointer" : "cursor-default"}`}
+				>
 					<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
 						<EmojiCrap className="h-6 w-6" />{" "}
 					</div>
