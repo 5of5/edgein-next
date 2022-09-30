@@ -78,7 +78,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 					} absolute left-4 bottom-6 w-96 max-w-xs bg-white shadow-xl rounded-xl overflow-hidden`}
 				>
 					<header className="relative py-2 text-center font-bold bg-primary-500 text-white">
-						{heading ? heading : "Feedback"}
+						{heading ? heading : "Request Data"}
 						<div
 							className="absolute top-0 right-2 bottom-0 flex items-center"
 							onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
@@ -88,7 +88,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 					</header>
 					{feedbackSent ? (
 						<div className="flex grow-1 p-4 font-bold w-auto">
-							Feedback sent! Thank you!
+							Request sent! Thank you!
 						</div>
 					) : (
 						<>
@@ -131,7 +131,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>
 				<IconAnnotation className="h-6 w-6 mr-1" />
-				Feedback
+				Request Data
 			</ElemButton>
 		</div>
 	);
