@@ -1,11 +1,10 @@
 import { Follows_Companies } from "@/graphql/types";
-import { useRouter } from "next/router";
 import { FC, useCallback, useEffect, useState } from "react";
 import { ElemPhoto } from "../ElemPhoto";
-import { EmojiHot, EmojiCrap, EmojiLike } from "@/components/Emojis";
 import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
 import { convertToInternationalCurrencySystem } from "@/utils";
+import { ElemReactions } from "../ElemReactions";
 
 type Props = {
 	companies?: Follows_Companies[];
@@ -219,20 +218,7 @@ export const ElemCompanies: FC<Props> = ({
 								<td className="px-1 py-2">{company?.teamMembers.length}</td>
 								<td className="px-1 py-2">{company?.location}</td>
 								<td className="px-1 py-2">
-									<div>
-										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiHot className="w-6 h-6 mr-1" />
-											{company?.sentiment.hot || 0}
-										</span>
-										<span className="text-slate-600 font-bold items-center inline-flex mr-2">
-											<EmojiLike className="w-6 h-6 mr-1" />
-											{company?.sentiment.like || 0}
-										</span>
-										<span className="text-slate-600 font-bold items-center inline-flex">
-											<EmojiCrap className="w-6 h-6 mr-1" />
-											{company?.sentiment.crap || 0}
-										</span>
-									</div>
+                                    <ElemReactions data={company} isInteractive={false}/>
 								</td>
 							</tr>
 						))}
