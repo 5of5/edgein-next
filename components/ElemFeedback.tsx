@@ -23,18 +23,18 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 
 	// On componentDidMount set the timer
 	useEffect(() => {
-		const timeId = setTimeout(() => {
-			// Show form after 3 seconds
-			setToggleFeedbackForm(true);
-		}, 3000);
+		// const timeId = setTimeout(() => {
+		// 	// Show form after 3 seconds
+		// 	setToggleFeedbackForm(true);
+		// }, 3000);
 
 		setTimeout(function () {
 			setFeedbackSent(false);
 		}, 3000);
 
-		return () => {
-			clearTimeout(timeId);
-		};
+		// return () => {
+		// 	clearTimeout(timeId);
+		// };
 	}, [setToggleFeedbackForm]);
 
 	// Feedback Form
