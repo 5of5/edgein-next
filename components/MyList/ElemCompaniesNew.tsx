@@ -294,7 +294,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 					{selectedListName}: Companies
 				</h2>
 
-				{isCustomList && selected.length > 0 && (
+				{/* {isCustomList && selected.length > 0 && (
 					<>
 						<ElemListsOptionMenu
 							onRemoveBtn={() => setShowDeleteItemsModal(true)}
@@ -308,7 +308,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 							onDelete={onRemove}
 						/>
 					</>
-				)}
+				)} */}
 
 				{isCustomList && Object.keys(selectedRowIds).length > 0 && (
 					<>
@@ -368,17 +368,31 @@ export const ElemCompaniesNew: FC<Props> = ({
 						<IconTrash className="h-5 w-5 mr-1" title="Remove" />
 						Remove from list
 					</ElemButton>
-					{selectedFlatRows.map((selectedRow, index) => (
+					{selectedFlatRows.map((row: any, index: number) => (
 						<div key={index}>
-							{selectedRow.original?.id}
+							{row.original?.id}
 
-							{/* {selectedRow.original.map(item, index) => (
+							{/* {row.original.map(item, index) => (
 								<div key={index}>
 									{item.id}
 								</div>
 							)} */}
 						</div>
 					))}
+					<pre>
+						<code>
+							{JSON.stringify(
+								{
+									//selectedRowIds: selectedRowIds,
+									"selectedFlatRows[].original": selectedFlatRows.map(
+										(d) => d.original
+									),
+								},
+								null,
+								2
+							)}
+						</code>
+					</pre>
 					{/* {selectedFlatRows.map((d) => d.original)} */}
 				</div>
 			)}
@@ -434,7 +448,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 								<tr
 									key={key}
 									{...restRowProps}
-									className="table-row bg-white  even:bg-slate-50 hover:bg-slate-100"
+									className="table-row bg-white  even:bg-slate-50"
 									// onClick={(e) => goToCompany(e, row?.original)}
 								>
 									{row.cells.map((cell) => {
@@ -461,21 +475,6 @@ export const ElemCompaniesNew: FC<Props> = ({
 						})}
 					</tbody>
 				</table>
-				<p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-				<pre>
-					<code>
-						{JSON.stringify(
-							{
-								selectedRowIds: selectedRowIds,
-								"selectedFlatRows[].original": selectedFlatRows.map(
-									(d) => d.original
-								),
-							},
-							null,
-							2
-						)}
-					</code>
-				</pre>
 			</div>
 			<Pagination
 				shownItems={page?.length}
