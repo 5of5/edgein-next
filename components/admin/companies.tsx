@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
   FunctionField,
+  AutocompleteArrayInput,
   AutocompleteInput,
   FileInput,
   ImageField,
@@ -38,6 +39,7 @@ import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
   status,
+  tags,
 } from "../../utils/constants";
 import { random } from "lodash";
 
@@ -540,10 +542,12 @@ export const CompanyEdit = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="location"
           />
-          <TextInput
-            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+          <AutocompleteArrayInput
+            choices={tags}
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
             source="tags"
+            style={{padding: 0, border: "none"}}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
