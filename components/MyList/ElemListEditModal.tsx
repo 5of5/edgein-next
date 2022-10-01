@@ -4,7 +4,7 @@ import { ElemButton } from "../ElemButton";
 
 type Props = {
 	isOpen: boolean;
-	currentName?: string | null;
+	currentName?: string;
 	onCloseModal: () => void;
 	onSave: (name: string) => void;
 };
@@ -59,7 +59,7 @@ export const ElemListEditModal: FC<Props> = ({
 									<label className="block font-bold ">Name</label>
 									<input
 										onChange={(event) => setName(event.target.value)}
-										defaultValue={currentName}
+										defaultValue={currentName ? currentName : ""}
 										className="pl-4 mt-1 h-10 w-full relative bg-white rounded-md border border-black/10 outline-none placeholder:text-slate-400 focus:bg-white focus:outline-none"
 									/>
 									{error && <p className=" text-red-400">{error}</p>}
