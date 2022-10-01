@@ -4,8 +4,8 @@ import path from "path";
 
 //AWS config set
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID || "",
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "",
+  accessKeyId: process.env.AWS_BUCKET_ACCESS_KEY_ID || "",
+  secretAccessKey: process.env.AWS_BUCKET_SECRET_ACCESS_KEY || "",
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // create s3 instance.
     const s3 = new AWS.S3({
       signatureVersion: "v4",
-      region: process.env.AWS_REGION || "",
+      region: process.env.AWS_BUCKET_REGION || "",
     });
 
     // url generation options
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const url = await s3.getSignedUrlPromise("putObject", options);
     res.status(200).json({ url, file: {
       id: fileName,
-      url: `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileNameWithExtension}`,
+      url: `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${fileNameWithExtension}`,
       type: req.body.fileType,
       filename: fileNameWithExtension,
     } });
