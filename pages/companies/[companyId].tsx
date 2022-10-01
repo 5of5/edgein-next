@@ -312,9 +312,9 @@ const Company: NextPage<Props> = (props: Props) => {
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>
-							<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+							{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
 								<IconEditPencil title="Edit" />
-							</button>
+							</button> */}
 						</div>
 
 						<div className="mt-2 p-4 border border-black/10 rounded-lg">
@@ -384,7 +384,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					id="team"
 				>
 					<ElemTeamGrid
-						showEdit={true}
+						showEdit={false}
 						heading="Team"
 						people={company.teamMembers}
 					/>
@@ -397,6 +397,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					id="investments"
 				>
 					<ElemInvestments
+						showEdit={false}
 						heading="Investments"
 						investments={sortedInvestmentRounds}
 					/>
@@ -439,10 +440,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
-	const company = sortBy(companies?.companies, 'status').reverse()[0]
+	const company = sortBy(companies?.companies, "status").reverse()[0];
 
 	const sortRounds =
-	company.investment_rounds
+		company.investment_rounds
 			?.slice()
 			.sort((a, b) => {
 				return (
@@ -455,7 +456,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let metaTitle = null;
 	if (company.name) {
 		metaTitle =
-		company.name +
+			company.name +
 			" Company Profile: Credibility, Velocity & Investors - EdgeIn.io";
 	}
 	let metaDescription = null;
