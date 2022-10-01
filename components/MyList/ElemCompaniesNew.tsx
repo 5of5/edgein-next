@@ -1,4 +1,5 @@
 import { Follows_Companies } from "@/graphql/types";
+import { has } from "lodash";
 import React, {
 	FC,
 	forwardRef,
@@ -14,6 +15,7 @@ import {
 	IconEditPencil,
 	IconSortUp,
 	IconSortDown,
+	IconX,
 	IconTrash,
 } from "@/components/Icons";
 import { Pagination } from "@/components/Pagination";
@@ -31,7 +33,7 @@ type Props = {
 	//totalFunding: number;
 	//getAlternateRowColor: (index: number) => string;
 	//handleNavigation: (link: string) => void;
-	tagsCount: any;
+	//tagsCount: any;
 	setIsUpdated: Function;
 };
 
@@ -42,7 +44,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 	//totalFunding,
 	//getAlternateRowColor,
 	//handleNavigation,
-	tagsCount,
+	//tagsCount,
 	setIsUpdated,
 }) => {
 	const router = useRouter();
@@ -54,6 +56,32 @@ export const ElemCompaniesNew: FC<Props> = ({
 	const [resourceList, setResourceList] = useState<Follows_Companies[]>();
 
 	const [fundingTotal, setFundingTotal] = useState(0);
+	const [tagsCount, setTagsCount] = useState<any>({});
+
+	const handleRowClick = (link: string) => {
+		router.push(link);
+	};
+
+	useEffect(() => {
+		if (companies) {
+			let funding = 0;
+			companies.forEach(({ company }) => {
+				setTagsCount(() => {
+					let prev: any = {};
+					company?.tags?.forEach((tag: string) => {
+						if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
+						else prev[tag] += 1;
+					});
+					return prev;
+				});
+				company?.investment_rounds.forEach((round) => {
+					funding += round.amount;
+				});
+			});
+
+			setFundingTotal(funding);
+		}
+	}, [companies]);
 
 	useEffect(() => {
 		let funding = 0;
@@ -165,7 +193,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 					<div>{props.value?.ticker ? props.value.ticker : <>&mdash;</>}</div>
 				),
 				disableSortBy: true,
-				width: 10,
+				width: 50,
 			},
 			{
 				Header: "Team Size",
@@ -178,7 +206,9 @@ export const ElemCompaniesNew: FC<Props> = ({
 			{
 				Header: "Location",
 				accessor: "company.location" as const,
-				Cell: (props: any) => <div>{props.value}</div>,
+				Cell: (props: any) => {
+					return <div>{!props.value ? <>&mdash;</> : props.value}</div>;
+				},
 				width: 300,
 			},
 			{
@@ -214,20 +244,6 @@ export const ElemCompaniesNew: FC<Props> = ({
 	// 	[]
 	// );
 
-	// export const IndeterminateCheckbox = forwardRef(function Checkbox(
-	// 	{ indeterminate, ...rest },
-	// 	ref
-	// ) {
-	// 	const defaultRef = useRef();
-	// 	const resolvedRef = ref || defaultRef;
-
-	// 	useEffect(() => {
-	// 		resolvedRef.current.indeterminate = indeterminate;
-	// 	}, [resolvedRef, indeterminate]);
-
-	// 	return <input type="checkbox" ref={resolvedRef} {...rest} />;
-	// });
-
 	const {
 		getTableProps,
 		getTableBodyProps,
@@ -239,6 +255,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 		previousPage,
 		selectedFlatRows,
 		state: { pageIndex, pageSize, selectedRowIds },
+		toggleAllRowsSelected,
 	} = useTable(
 		{
 			columns: columns,
@@ -288,34 +305,18 @@ export const ElemCompaniesNew: FC<Props> = ({
 	};
 
 	return (
-		<div className="rounded-lg p-3 bg-white shadow mb-8">
+		<div className="rounded-lg p-5 bg-white shadow mb-8">
 			<div className="inline-flex">
 				<h2 className="font-bold text-xl capitalize mr-2">
 					{selectedListName}: Companies
 				</h2>
 
-				{/* {isCustomList && selected.length > 0 && (
-					<>
-						<ElemListsOptionMenu
-							onRemoveBtn={() => setShowDeleteItemsModal(true)}
-							onClearSelection={toggleCheckboxes(true)}
-						/>
-
-						<ElemDeleteListsModal
-							isOpen={showDeleteItemsModal}
-							onCloseModal={() => setShowDeleteItemsModal(false)}
-							listName={selectedListName}
-							onDelete={onRemove}
-						/>
-					</>
-				)} */}
-
 				{isCustomList && Object.keys(selectedRowIds).length > 0 && (
 					<>
-						<ElemListsOptionMenu
+						{/* <ElemListsOptionMenu
 							onRemoveBtn={() => setShowDeleteItemsModal(true)}
 							onClearSelection={toggleCheckboxes(true)}
-						/>
+						/> */}
 
 						<ElemDeleteListsModal
 							isOpen={showDeleteItemsModal}
@@ -327,13 +328,13 @@ export const ElemCompaniesNew: FC<Props> = ({
 				)}
 			</div>
 
-			<div className="flex justify-between w-full mt-1">
+			<div className="flex justify-between w-full my-4">
 				<div>
 					{Object.keys(tagsCount).length > 0 && (
 						<>
 							<div className="font-bold text-sm">Tags</div>
 							<div className="flex gap-2 flex-wrap">
-								{Object.keys(tagsCount).map((tag) => (
+								{Object.keys(tagsCount).map((tag: string) => (
 									<div
 										key={tag}
 										className="shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
@@ -357,29 +358,49 @@ export const ElemCompaniesNew: FC<Props> = ({
 			</div>
 
 			{Object.keys(selectedRowIds).length > 0 && (
-				<div className="border border-red-500 p-4">
-					{Object.keys(selectedRowIds).length} Selected
-					<ElemButton
+				<div className="flex items-center gap-4">
+					<div className="text-sm">
+						{Object.keys(selectedRowIds).length} Selected
+					</div>
+					{/* <ElemButton
 						onClick={onRemove}
 						roundedFull
 						btn="transparent"
 						size="sm"
+						className="text-red-500 px-0"
 					>
-						<IconTrash className="h-5 w-5 mr-1" title="Remove" />
+						<IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
+						Remove from list
+					</ElemButton> */}
+					<ElemButton
+						onClick={() => setShowDeleteItemsModal(true)}
+						roundedFull
+						btn="transparent"
+						size="sm"
+						className="text-red-500 px-0"
+					>
+						<IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
 						Remove from list
 					</ElemButton>
+					<ElemButton
+						onClick={() => toggleAllRowsSelected()}
+						roundedFull
+						btn="transparent"
+						size="sm"
+						className="px-0"
+					>
+						<IconX className="h-5 w-5 mr-1" title="Clear Selection" />
+						Clear Selection
+					</ElemButton>
+
 					{selectedFlatRows.map((row: any, index: number) => (
 						<div key={index}>
-							{row.original?.id}
-
-							{/* {row.original.map(item, index) => (
-								<div key={index}>
-									{item.id}
-								</div>
-							)} */}
+							{row.original?.company.name}
+							<br />
+							ID:{row.original?.id}
 						</div>
 					))}
-					<pre>
+					{/* <pre>
 						<code>
 							{JSON.stringify(
 								{
@@ -392,12 +413,11 @@ export const ElemCompaniesNew: FC<Props> = ({
 								2
 							)}
 						</code>
-					</pre>
-					{/* {selectedFlatRows.map((d) => d.original)} */}
+					</pre> */}
 				</div>
 			)}
 
-			<div className="mt-2 overflow-scroll border border-black/10 rounded-lg">
+			<div className="mt-1 overflow-scroll border border-black/10 rounded-lg">
 				<table
 					{...getTableProps()}
 					className="table-auto min-w-full divide-y divide-black/10"
@@ -448,8 +468,10 @@ export const ElemCompaniesNew: FC<Props> = ({
 								<tr
 									key={key}
 									{...restRowProps}
-									className="table-row bg-white  even:bg-slate-50"
-									// onClick={(e) => goToCompany(e, row?.original)}
+									className="table-row bg-white even:bg-slate-50"
+									// onClick={() =>
+									// 	handleRowClick(`/companies/${row?.original.company?.slug}`)
+									// }
 								>
 									{row.cells.map((cell) => {
 										const { key, ...restCellProps } = cell.getCellProps({

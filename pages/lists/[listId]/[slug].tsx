@@ -28,8 +28,8 @@ const MyList: NextPage<Props> = ({}) => {
 	const [selectedListName, setSelectedListName] = useState<null | string>(
 		"hot"
 	);
-	const [totalFunding, setTotalFunding] = useState(0);
-	const [tagsCount, setTagsCount] = useState({});
+	// const [totalFunding, setTotalFunding] = useState(0);
+	// const [tagsCount, setTagsCount] = useState({});
 	const [isCustomList, setIsCustomList] = useState(false);
 
 	const [showEditModal, setShowEditModal] = useState(false);
@@ -40,26 +40,26 @@ const MyList: NextPage<Props> = ({}) => {
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
-	useEffect(() => {
-		if (companies) {
-			let funding = 0;
-			companies.forEach(({ company }) => {
-				setTagsCount(() => {
-					let prev: any = {};
-					company?.tags?.forEach((tag: string) => {
-						if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
-						else prev[tag] += 1;
-					});
-					return prev;
-				});
-				company?.investment_rounds.forEach((round) => {
-					funding += round.amount;
-				});
-			});
+	// useEffect(() => {
+	// 	if (companies) {
+	// 		let funding = 0;
+	// 		companies.forEach(({ company }) => {
+	// 			setTagsCount(() => {
+	// 				let prev: any = {};
+	// 				company?.tags?.forEach((tag: string) => {
+	// 					if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
+	// 					else prev[tag] += 1;
+	// 				});
+	// 				return prev;
+	// 			});
+	// 			company?.investment_rounds.forEach((round) => {
+	// 				funding += round.amount;
+	// 			});
+	// 		});
 
-			setTotalFunding(funding);
-		}
-	}, [companies]);
+	// 		setTotalFunding(funding);
+	// 	}
+	// }, [companies]);
 
 	const handleRowClick = (link: string) => {
 		router.push(link);
@@ -180,18 +180,18 @@ const MyList: NextPage<Props> = ({}) => {
 				)}
 			</div>
 
-			{/* <ElemCompaniesNew
+			<ElemCompaniesNew
 				//handleNavigation={handleRowClick}
 				companies={companies}
 				selectedListName={selectedListName}
 				//totalFunding={totalFunding}
 				//getAlternateRowColor={getAlternateRowColor}
-				tagsCount={tagsCount}
+				//tagsCount={tagsCount}
 				isCustomList={isCustomList}
 				setIsUpdated={setIsUpdated}
-			/> */}
+			/>
 
-			<ElemCompanies
+			{/* <ElemCompanies
 				handleNavigation={handleRowClick}
 				companies={companies}
 				selectedListName={selectedListName}
@@ -200,7 +200,7 @@ const MyList: NextPage<Props> = ({}) => {
 				tagsCount={tagsCount}
 				isCustomList={isCustomList}
 				setIsUpdated={setIsUpdated}
-			/>
+			/> */}
 
 			<ElemInvestors
 				handleNavigation={handleRowClick}

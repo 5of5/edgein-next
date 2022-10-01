@@ -985,7 +985,11 @@ export const IconSignOut: React.FC<IconProps> = ({
 	);
 };
 
-export const IconX: React.FC<IconProps> = ({ className, title }) => {
+export const IconX: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -993,7 +997,7 @@ export const IconX: React.FC<IconProps> = ({ className, title }) => {
 			fill="none"
 			viewBox="0 0 24 24"
 			stroke="currentColor"
-			strokeWidth={2}
+			strokeWidth={strokeWidth ? strokeWidth : 2}
 		>
 			<title>{title ? title : "Sign out"}</title>
 			<path
