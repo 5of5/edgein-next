@@ -207,9 +207,9 @@ const VCFirm: NextPage<Props> = (props) => {
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>
-							<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+							{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
 								<IconEditPencil title="Edit" />
-							</button>
+							</button> */}
 						</div>
 
 						<div className="mt-2 p-4 border border-black/10 rounded-lg">
@@ -295,7 +295,7 @@ const VCFirm: NextPage<Props> = (props) => {
 				>
 					<ElemInvestorGrid
 						// tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
-						showEdit={true}
+						showEdit={false}
 						heading="Team"
 						people={vcfirm.investors}
 					/>
@@ -309,6 +309,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					id="investments"
 				>
 					<ElemInvestments
+						showEdit={false}
 						heading="Investments"
 						investments={sortedInvestmentRounds.filter((n) => n)}
 					/>
