@@ -1,5 +1,5 @@
 import { Follows_Companies } from "@/graphql/types";
-import { has } from "lodash";
+import { compact, has } from "lodash";
 import React, {
 	FC,
 	forwardRef,
@@ -142,27 +142,6 @@ export const ElemCompaniesNew: FC<Props> = ({
 		);
 	};
 
-	const onRemove = async () => {
-		const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
-			method: "POST",
-			body: JSON.stringify({ followIds: selected }),
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-		});
-
-		if (deleteCompaniesRes.ok) {
-			setResourceList((prev) => {
-				return prev?.filter(
-					(resource) => !selected.includes(resource.id as number)
-				);
-			});
-			setSelected([]);
-			setIsUpdated(new Date().getTime());
-		}
-	};
-
 	const columns = React.useMemo(
 		() => [
 			{
@@ -289,6 +268,28 @@ export const ElemCompaniesNew: FC<Props> = ({
 			window.open(companyUrl, "_blank");
 		} else {
 			router.push(companyUrl);
+		}
+	};
+
+	const onRemove = async () => {
+		const followIds = compact(selectedFlatRows.map((row: any, index: number) => row.original?.id))
+
+		const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
+			method: "POST",
+			body: JSON.stringify({ followIds }),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		});
+
+		if (deleteCompaniesRes.ok) {
+			setResourceList((prev) => {
+				return prev?.filter(
+					(resource) => !followIds.includes(resource.id as number)
+				);
+			});
+			setIsUpdated(new Date().getTime());
 		}
 	};
 
