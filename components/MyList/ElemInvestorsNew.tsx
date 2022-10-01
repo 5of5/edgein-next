@@ -58,7 +58,6 @@ export const ElemInvestorsNew: FC<Props> = ({
 					if (getAmount > 0) {
 						funding += round.investment_round?.amount as number;
 					}
-					console.log(funding);
 				});
 			});
 		}

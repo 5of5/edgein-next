@@ -118,7 +118,7 @@ const MyList: NextPage<Props> = ({}) => {
 							<ElemListEditModal
 								onCloseModal={() => setShowEditModal(false)}
 								isOpen={showEditModal}
-								currentName={selectedListName}
+								currentName={selectedListName ? selectedListName : ""}
 								onSave={onSave}
 							/>
 
