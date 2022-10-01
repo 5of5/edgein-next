@@ -1,4 +1,4 @@
-import { Follows_Companies } from "@/graphql/types";
+import { Follows_Vc_Firms } from "@/graphql/types";
 import { compact, has } from "lodash";
 import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -9,18 +9,18 @@ import { Pagination } from "@/components/Pagination";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { useCheckboxes } from "./IndeterminateCheckbox";
-import { convertToInternationalCurrencySystem } from "@/utils";
+import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
 
 type Props = {
-	companies?: Follows_Companies[];
+	vcfirms?: Follows_Vc_Firms[];
 	isCustomList?: boolean;
 	selectedListName: string | null;
 	setIsUpdated: Function;
 };
 
-export const ElemCompaniesNew: FC<Props> = ({
-	companies,
+export const ElemInvestorsNew: FC<Props> = ({
+	vcfirms,
 	isCustomList,
 	selectedListName,
 	setIsUpdated,
@@ -29,7 +29,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
-	const [resourceList, setResourceList] = useState<Follows_Companies[]>();
+	const [resourceList, setResourceList] = useState<Follows_Vc_Firms[]>();
 
 	const [fundingTotal, setFundingTotal] = useState(0);
 
@@ -41,37 +41,42 @@ export const ElemCompaniesNew: FC<Props> = ({
 
 	useEffect(() => {
 		let funding = 0;
-		if (companies) setResourceList(companies);
-		if (companies) {
-			companies.forEach(({ company }) => {
+		if (vcfirms) setResourceList(vcfirms);
+		if (vcfirms) {
+			vcfirms.forEach(({ vc_firm }) => {
 				setTagsCount(() => {
 					let prev: any = {};
-					company?.tags?.forEach((tag: string) => {
+					vc_firm?.tags?.forEach((tag: string) => {
 						if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
 						else prev[tag] += 1;
 					});
 					return prev;
 				});
-				company?.investment_rounds.forEach((round) => {
-					funding += round.amount;
+
+				vc_firm?.investments?.forEach((round) => {
+					const getAmount = round.investment_round?.amount as number;
+					if (getAmount > 0) {
+						funding += round.investment_round?.amount as number;
+					}
+					console.log(funding);
 				});
 			});
 		}
 		setFundingTotal(funding);
-	}, [companies]);
+	}, [vcfirms]);
 
 	const columns = React.useMemo(
 		() => [
 			{
 				Header: "Name",
-				accessor: "company.name" as const,
+				accessor: "vc_firm.name" as const,
 				Cell: (props: any) => (
 					<a
-						href={`/companies/` + props.row.original.company?.slug}
+						href={`/investors/` + props.row.original.vc_firm?.slug}
 						className="flex items-center space-x-3 shrink-0 group transition-all hover:-translate-y-0.5"
 					>
 						<ElemPhoto
-							photo={props.row.original.company?.logo}
+							photo={props.row.original.vc_firm?.logo}
 							wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
 							imgClass="object-fit max-w-full max-h-full"
 							imgAlt={props.value}
@@ -85,39 +90,42 @@ export const ElemCompaniesNew: FC<Props> = ({
 				width: 170,
 			},
 			{
-				Header: "Token/Value",
-				accessor: "company.coin" as const,
-				Cell: (props: any) => (
-					<div>{props.value?.ticker ? props.value.ticker : <>&mdash;</>}</div>
-				),
-				disableSortBy: true,
-				width: 50,
-			},
-			{
-				Header: "Team Size",
-				accessor: "company.teamMembers.length" as const,
+				Header: "# of Investments",
+				accessor: "vc_firm.num_of_investments" as const,
 				Cell: (props: any) => {
 					return <div>{!props.value ? <>&mdash;</> : props.value}</div>;
 				},
-				width: 20,
+				width: 40,
 			},
 			{
-				Header: "Location",
-				accessor: "company.location" as const,
+				Header: "Latest Investment Date",
+				accessor: "vc_firm.latest_investments" as const,
 				Cell: (props: any) => {
-					return <div>{!props.value ? <>&mdash;</> : props.value}</div>;
+					return (
+						<>
+							{!props.value ? (
+								<>&mdash;</>
+							) : (
+								formatDate(props.value, {
+									month: "short",
+									day: "2-digit",
+									year: "numeric",
+								})
+							)}
+						</>
+					);
 				},
-				width: 300,
+				width: 200,
 			},
 			{
 				Header: "Reactions",
-				accessor: "company" as const,
+				accessor: "vc_firm" as const,
 				Cell: (props: any) => (
-					<div>
+					<>
 						{props.value && (
 							<ElemReactions data={props.value} isInteractive={false} />
 						)}
-					</div>
+					</>
 				),
 				width: 200,
 				disableSortBy: true,
@@ -136,7 +144,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 		getTableProps,
 		getTableBodyProps,
 		headerGroups,
-		//rows, "rows" gets replaced with "page" for pagination
+		//rows, gets replaced with "page" for pagination
 		prepareRow,
 		page,
 		nextPage,
@@ -165,7 +173,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 			selectedFlatRows.map((row: any, index: number) => row.original?.id)
 		);
 
-		const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
+		const deleteVcfirmsRes = await fetch(`/api/delete_follows`, {
 			method: "POST",
 			body: JSON.stringify({ followIds }),
 			headers: {
@@ -174,7 +182,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 			},
 		});
 
-		if (deleteCompaniesRes.ok) {
+		if (deleteVcfirmsRes.ok) {
 			setResourceList((prev) => {
 				return prev?.filter(
 					(resource) => !followIds.includes(resource.id as number)
@@ -200,14 +208,14 @@ export const ElemCompaniesNew: FC<Props> = ({
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="flex items-start justify-between">
+			<div className="flex items-start justify-between mb-4">
 				<h2 className="font-bold text-lg capitalize mr-2">
-					{selectedListName}: Companies
+					{selectedListName}: Investors
 				</h2>
 
 				{fundingTotal > 0 && (
 					<div className="font-bold text-right shrink-0 mr-2">
-						<div className="text-sm">Total Funding</div>
+						<div className="text-sm">Total Invested</div>
 						<div className="text-green-700 text-lg">
 							${convertToInternationalCurrencySystem(fundingTotal)}
 						</div>
@@ -226,10 +234,10 @@ export const ElemCompaniesNew: FC<Props> = ({
 				)}
 			</div>
 
-			<div className="flex items-start w-full mb-4">
-				{Object.keys(tagsCount).length > 0 && (
+			{Object.keys(tagsCount).length > 0 && (
+				<div className="flex justify-between w-full my-4">
 					<>
-						<div className="font-bold text-sm mr-2 py-0.5">Tags</div>
+						<div className="font-bold text-sm">Tags</div>
 						<div className="flex gap-2 flex-wrap">
 							{Object.keys(tagsCount).map((tag: string) => (
 								<div
@@ -241,8 +249,8 @@ export const ElemCompaniesNew: FC<Props> = ({
 							))}
 						</div>
 					</>
-				)}
-			</div>
+				</div>
+			)}
 
 			{Object.keys(selectedRowIds).length > 0 && (
 				<div className="flex items-center gap-4">
@@ -327,7 +335,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 									{...restRowProps}
 									className="table-row bg-white even:bg-slate-50"
 									// onClick={() =>
-									// 	handleRowClick(`/companies/${row?.original.company?.slug}`)
+									// 	handleRowClick(`/investors/${row?.original.vcfirm?.slug}`)
 									// }
 								>
 									{row.cells.map((cell) => {

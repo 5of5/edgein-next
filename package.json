@@ -50,6 +50,7 @@
 		"react-dom": "18.1.0",
 		"react-gtm-module": "^2.0.11",
 		"react-hook-form": "^7.34.2",
+		"react-hot-toast": "^2.4.0",
 		"react-hotjar": "^5.0.0",
 		"react-hotkeys-hook": "^3.4.7",
 		"react-instantsearch-hooks-web": "^6.31.1",

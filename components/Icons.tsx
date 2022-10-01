@@ -273,19 +273,46 @@ export const IconList: React.FC<IconProps> = ({ className, title }) => {
 export const IconEllipsisVertical: React.FC<IconProps> = ({
 	className,
 	title,
+	strokeWidth,
 }) => {
 	return (
 		<svg
-			viewBox="0 0 20 20"
-			fill="currentColor"
-			xmlns="http://www.w3.org/2000/svg"
 			className={`${className}`}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
 		>
 			<title>{title ? title : "Options"}</title>
 			<path
-				fillRule="evenodd"
-				d="M10.5 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0zm0 6a1.5 1.5 0 113 0 1.5 1.5 0 01-3 0z"
-				clipRule="evenodd"
+				d="M11.75 6.5C11.5511 6.5 11.3603 6.42098 11.2197 6.28033C11.079 6.13968 11 5.94891 11 5.75C11 5.55109 11.079 5.36032 11.2197 5.21967C11.3603 5.07902 11.5511 5 11.75 5C11.9489 5 12.1397 5.07902 12.2803 5.21967C12.421 5.36032 12.5 5.55109 12.5 5.75C12.5 5.94891 12.421 6.13968 12.2803 6.28033C12.1397 6.42098 11.9489 6.5 11.75 6.5ZM11.75 12.5C11.5511 12.5 11.3603 12.421 11.2197 12.2803C11.079 12.1397 11 11.9489 11 11.75C11 11.5511 11.079 11.3603 11.2197 11.2197C11.3603 11.079 11.5511 11 11.75 11C11.9489 11 12.1397 11.079 12.2803 11.2197C12.421 11.3603 12.5 11.5511 12.5 11.75C12.5 11.9489 12.421 12.1397 12.2803 12.2803C12.1397 12.421 11.9489 12.5 11.75 12.5ZM11.75 18.5C11.5511 18.5 11.3603 18.421 11.2197 18.2803C11.079 18.1397 11 17.9489 11 17.75C11 17.5511 11.079 17.3603 11.2197 17.2197C11.3603 17.079 11.5511 17 11.75 17C11.9489 17 12.1397 17.079 12.2803 17.2197C12.421 17.3603 12.5 17.5511 12.5 17.75C12.5 17.9489 12.421 18.1397 12.2803 18.2803C12.1397 18.421 11.9489 18.5 11.75 18.5Z"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+};
+
+export const IconEllipsisHorizontal: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={`${className}`}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Options"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M6.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM12.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0zM18.75 12a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"
 			/>
 		</svg>
 	);
