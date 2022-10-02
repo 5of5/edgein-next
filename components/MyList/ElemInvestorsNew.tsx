@@ -11,6 +11,7 @@ import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	vcfirms?: Follows_Vc_Firms[];
@@ -188,7 +189,21 @@ export const ElemInvestorsNew: FC<Props> = ({
 				);
 			});
 			setIsUpdated(new Date().getTime());
-			console.log("Notification: Removed from LIST_NAME");
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Removed from {listNameTitle}
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
 		}
 	};
 
@@ -205,11 +220,13 @@ export const ElemInvestorsNew: FC<Props> = ({
 		);
 	};
 
+	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
+
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
 			<div className="flex items-start justify-between mb-4">
 				<h2 className="font-bold text-lg capitalize mr-2">
-					{selectedListName}: Investors
+					{listNameTitle}: Investors
 				</h2>
 
 				{fundingTotal > 0 && (
@@ -370,6 +387,7 @@ export const ElemInvestorsNew: FC<Props> = ({
 				onClickPrev={() => previousPage()}
 				onClickNext={() => nextPage()}
 			/>
+			<Toaster />
 		</div>
 	);
 };

@@ -1,3 +1,4 @@
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemCompaniesNew } from "@/components/MyList/ElemCompaniesNew";
 import { ElemInvestorsNew } from "@/components/MyList/ElemInvestorsNew";
 import { ElemDeleteListModal } from "@/components/MyList/ElemDeleteListModal";
@@ -15,7 +16,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {};
 
@@ -61,6 +62,21 @@ const MyList: NextPage<Props> = ({}) => {
 			setShowEditModal(false);
 			setSelectedListName(name);
 			setIsUpdated(new Date().getTime());
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						List updated
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
 		}
 	};
 
@@ -86,6 +102,8 @@ const MyList: NextPage<Props> = ({}) => {
 		if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
 	}, [companiesData, vcFirms]);
 
+	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
+
 	return (
 		<DashboardLayout>
 			<ElemMyListsMenu
@@ -104,8 +122,9 @@ const MyList: NextPage<Props> = ({}) => {
 					{selectedListName === "crap" && (
 						<EmojiCrap className="w-6 h-6 mr-2" />
 					)}
+
 					<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-						{selectedListName}
+						{listNameTitle}
 					</h1>
 
 					{isCustomList && (
@@ -136,8 +155,8 @@ const MyList: NextPage<Props> = ({}) => {
 					selectedListName === "like" ||
 					selectedListName === "crap") && (
 					<p className="first-letter:uppercase text-slate-600">
-						{selectedListName} lists are generated from your{" "}
-						{selectedListName?.toLowerCase()} reactions.
+						{listNameTitle} lists are generated from your {listNameTitle}{" "}
+						reactions.
 					</p>
 				)}
 			</div>
@@ -174,6 +193,7 @@ const MyList: NextPage<Props> = ({}) => {
 				isCustomList={isCustomList}
 				setIsUpdated={setIsUpdated}
 			/> */}
+			<Toaster />
 		</DashboardLayout>
 	);
 };

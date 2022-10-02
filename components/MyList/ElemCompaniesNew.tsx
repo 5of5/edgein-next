@@ -11,6 +11,7 @@ import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	companies?: Follows_Companies[];
@@ -34,6 +35,8 @@ export const ElemCompaniesNew: FC<Props> = ({
 	const [fundingTotal, setFundingTotal] = useState(0);
 
 	const [tagsCount, setTagsCount] = useState<any>({});
+
+	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
 
 	// const handleRowClick = (link: string) => {
 	// 	router.push(link);
@@ -181,7 +184,21 @@ export const ElemCompaniesNew: FC<Props> = ({
 				);
 			});
 			setIsUpdated(new Date().getTime());
-			console.log("Notification: Removed from LIST_NAME");
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Removed from {listNameTitle}
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
 		}
 	};
 
@@ -202,7 +219,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
 			<div className="flex items-start justify-between">
 				<h2 className="font-bold text-lg capitalize mr-2">
-					{selectedListName}: Companies
+					{listNameTitle}: Companies
 				</h2>
 
 				{fundingTotal > 0 && (
@@ -363,6 +380,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 				onClickPrev={() => previousPage()}
 				onClickNext={() => nextPage()}
 			/>
+			<Toaster />
 		</div>
 	);
 };
