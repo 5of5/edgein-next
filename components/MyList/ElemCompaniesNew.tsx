@@ -110,7 +110,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 				Cell: (props: any) => {
 					return <div>{!props.value ? <>&mdash;</> : props.value}</div>;
 				},
-				width: 300,
+				width: 260,
 			},
 			{
 				Header: "Reactions",
@@ -209,9 +209,10 @@ export const ElemCompaniesNew: FC<Props> = ({
 			) : (
 				<IconSortUp className="ml-1 h-5 w-5 inline-block" />
 			)
+		) : column.canSort ? (
+			<IconSortDown className="ml-1 h-5 w-5 inline-block text-slate-400 group-hover:text-primary-500" />
 		) : (
 			<></>
-			// <IconSortUp className="ml-1 h-5 w-5 group-hover:opacity-100" />
 		);
 	};
 
