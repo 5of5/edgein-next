@@ -24,6 +24,12 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 	const shownItemsEnd =
 		shownItems < itemsPerPage ? totalItems : (page + 1) * itemsPerPage;
 
+	const hide = totalItems < itemsPerPage ? true : false;
+
+	if (hide) {
+		return <></>;
+	}
+
 	return (
 		<nav
 			className={`${className} py-3 space-y-3 md:space-y-0 md:flex items-center justify-between`}

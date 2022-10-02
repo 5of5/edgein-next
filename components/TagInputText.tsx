@@ -1,8 +1,9 @@
 import React, { PropsWithChildren, useState } from "react";
-import { IconSearch } from "./Icons";
+import { IconSearch, IconX } from "./Icons";
 
 type Props = {
 	className?: string;
+	labelClass?: string;
 	label?: string;
 	type?: "text" | "email" | "search" | "";
 	name: string;
@@ -16,6 +17,7 @@ type Props = {
 
 export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 	className = "",
+	labelClass = "",
 	label,
 	type = "",
 	name,
@@ -49,52 +51,45 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 	return (
 		<div className={className}>
 			{label && (
-				<label htmlFor={name} className={`font-bold cursor-text`}>
+				<label htmlFor={name} className={`font-bold cursor-text ${labelClass}`}>
 					{label}
 				</label>
 			)}
 			<div>
-				<div className="rounded-md w-full flex items-center px-2 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-primary-500">
+				<div className="rounded-md w-full flex items-center mt-1 px-2 ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500">
 					<IconSearch className="flex-none h-5 w-5" />
 					<input
 						value={inputValue}
+						name={name}
 						onChange={(event) => setInputValue(event.target.value)}
 						type="text"
 						onKeyDown={(event) => onEnterTag(event)}
-						className="w-full appearance-none block px-3 h-10 leading-tight focus:outline-none focus:shadow-outline placeholder:text-slate-400"
+						className="w-full appearance-none border-none block px-3 h-10 focus:ring-0 placeholder:text-slate-400"
 						placeholder={placeholder}
-					></input>
+					/>
 				</div>
-
-				{tags.map((tag, index) => {
-					return (
-						<div
-							key={index}
-							className="bg-primary-50 inline-flex items-center text-sm rounded-full border border-primary-500 mt-2 mr-1"
-						>
-							<span className="ml-2 mr-1 leading-relaxed truncate max-w-xs text-primary-500 font-bold">
-								{tag}
-							</span>
-							<button
-								onClick={() => {
-									onRemoveTag(index);
-								}}
-								className="w-6 h-8 inline-block align-middle text-primary-500 hover:text-primary-500 focus:outline-none"
+				<div className="flex flex-wrap gap-2 mt-2">
+					{tags.map((tag, index) => {
+						return (
+							<div
+								key={index}
+								className="bg-primary-50 inline-flex items-center gap-1 text-sm px-2 py-1 rounded-full border border-primary-500"
 							>
-								<svg
-									className="w-6 h-6 fill-current mx-auto"
-									xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 24 24"
+								<span className="truncate max-w-xs text-primary-500 font-bold">
+									{tag}
+								</span>
+								<button
+									onClick={() => {
+										onRemoveTag(index);
+									}}
+									className="text-primary-500 hover:opacity-70 focus:outline-none"
 								>
-									<path
-										fillRule="evenodd"
-										d="M15.78 14.36a1 1 0 0 1-1.42 1.42l-2.82-2.83-2.83 2.83a1 1 0 1 1-1.42-1.42l2.83-2.82L7.3 8.7a1 1 0 0 1 1.42-1.42l2.83 2.83 2.82-2.83a1 1 0 0 1 1.42 1.42l-2.83 2.83 2.83 2.82z"
-									/>
-								</svg>
-							</button>
-						</div>
-					);
-				})}
+									<IconX className="w-4 h-4" strokeWidth={3} />
+								</button>
+							</div>
+						);
+					})}
+				</div>
 			</div>
 		</div>
 	);

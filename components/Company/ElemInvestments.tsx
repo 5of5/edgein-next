@@ -242,8 +242,10 @@ export const ElemInvestments: React.FC<Props> = ({
 			) : (
 				<IconSortUp className="ml-1 h-5 w-5 inline-block" />
 			)
+		) : column.canSort ? (
+			<IconSortDown className="ml-1 h-5 w-5 inline-block text-slate-400 group-hover:text-primary-500" />
 		) : (
-			<IconSortUp className="ml-1 h-5 w-5 inline-block opacity-0 group-hover:opacity-100" />
+			<></>
 		);
 	};
 

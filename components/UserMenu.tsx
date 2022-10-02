@@ -10,10 +10,10 @@ import {
 	IconChevronDownMini,
 	IconUserCircle,
 	IconSignOut,
-	IconDashboard,
+	//IconDashboard,
 	IconCustomList,
 	IconSettings,
-	IconOrganization,
+	//IconOrganization,
 } from "./Icons";
 
 export const UserMenu = () => {

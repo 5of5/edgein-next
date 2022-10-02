@@ -8,6 +8,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconX, IconSaveToList } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	follows: any;
@@ -62,6 +63,21 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 			// hide input
 			setShowNew(false);
 			setNewName("");
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Added to &ldquo;{newName}&rdquo; list
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
 		}
 	};
 
@@ -188,6 +204,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
+					<Toaster />
 				</Dialog>
 			</Transition.Root>
 		</>

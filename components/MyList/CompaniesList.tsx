@@ -1,70 +1,51 @@
 import { Follows_Companies } from "@/graphql/types";
 import { compact, has } from "lodash";
-import React, {
-	FC,
-	forwardRef,
-	useCallback,
-	useEffect,
-	useRef,
-	useState,
-} from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import {
-	IconEditPencil,
-	IconSortUp,
-	IconSortDown,
-	IconX,
-	IconTrash,
-} from "@/components/Icons";
+import { IconSortUp, IconSortDown, IconX, IconTrash } from "@/components/Icons";
 import { Pagination } from "@/components/Pagination";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
-import { ElemListsOptionMenu } from "./ElemListsOptionMenu";
-import { IndeterminateCheckbox, useCheckboxes } from "./IndeterminateCheckbox";
+import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	companies?: Follows_Companies[];
 	isCustomList?: boolean;
 	selectedListName: string | null;
-	//totalFunding: number;
-	//getAlternateRowColor: (index: number) => string;
-	//handleNavigation: (link: string) => void;
-	//tagsCount: any;
 	setIsUpdated: Function;
 };
 
-export const ElemCompaniesNew: FC<Props> = ({
+export const CompaniesList: FC<Props> = ({
 	companies,
 	isCustomList,
 	selectedListName,
-	//totalFunding,
-	//getAlternateRowColor,
-	//handleNavigation,
-	//tagsCount,
 	setIsUpdated,
 }) => {
 	const router = useRouter();
-
-	const [selected, setSelected] = useState<number[]>([]);
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
 	const [resourceList, setResourceList] = useState<Follows_Companies[]>();
 
 	const [fundingTotal, setFundingTotal] = useState(0);
+
 	const [tagsCount, setTagsCount] = useState<any>({});
 
-	const handleRowClick = (link: string) => {
-		router.push(link);
-	};
+	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
+
+	// const handleRowClick = (link: string) => {
+	// 	router.push(link);
+	// };
 
 	useEffect(() => {
+		let funding = 0;
+		if (companies) setResourceList(companies);
 		if (companies) {
-			let funding = 0;
 			companies.forEach(({ company }) => {
 				setTagsCount(() => {
 					let prev: any = {};
@@ -78,69 +59,9 @@ export const ElemCompaniesNew: FC<Props> = ({
 					funding += round.amount;
 				});
 			});
-
-			setFundingTotal(funding);
 		}
-	}, [companies]);
-
-	useEffect(() => {
-		let funding = 0;
-		if (companies) setResourceList(companies);
-		if (companies)
-			companies.forEach(({ company }) => {
-				company?.investment_rounds.forEach((round) => {
-					funding += round.amount;
-				});
-			});
-
 		setFundingTotal(funding);
 	}, [companies]);
-
-	const toggleCheckboxes =
-		(clearAll: boolean = false) =>
-		() => {
-			if (clearAll) {
-				setSelected([]);
-				return;
-			}
-
-			if (selected.length > 0 && resourceList?.length === selected.length) {
-				setSelected([]);
-			} else if ((resourceList?.length || 0) > selected.length) {
-				setSelected((prev) => {
-					const items = [...prev];
-					resourceList?.forEach(({ id }) => {
-						if (!items.includes(id!)) items.push(id!);
-					});
-					return items;
-				});
-			}
-		};
-
-	const toggleCheckbox = (id: number) => () => {
-		setSelected((prev) => {
-			const items = [...prev];
-
-			const index = items.indexOf(id);
-			if (index === -1) items.push(id);
-			else items.splice(index, 1);
-
-			return items;
-		});
-	};
-
-	const isChecked = useCallback(
-		(id: number) => {
-			return selected.includes(id);
-		},
-		[selected]
-	);
-
-	const isCheckedAll = () => {
-		return (
-			selected.length === resourceList?.length && Boolean(resourceList?.length)
-		);
-	};
 
 	const columns = React.useMemo(
 		() => [
@@ -157,6 +78,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 							wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden"
 							imgClass="object-fit max-w-full max-h-full"
 							imgAlt={props.value}
+							placeholderClass="text-slate-300"
 						/>
 						<p className="line-clamp-2 break-words group-hover:text-primary-500">
 							{props.value}
@@ -188,7 +110,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 				Cell: (props: any) => {
 					return <div>{!props.value ? <>&mdash;</> : props.value}</div>;
 				},
-				width: 300,
+				width: 260,
 			},
 			{
 				Header: "Reactions",
@@ -213,21 +135,11 @@ export const ElemCompaniesNew: FC<Props> = ({
 
 	const theResourceListCount = theResourceList.length;
 
-	// const sortees = React.useMemo(
-	// 	() => [
-	// 		{
-	// 			id: "date_added",
-	// 			desc: true,
-	// 		},
-	// 	],
-	// 	[]
-	// );
-
 	const {
 		getTableProps,
 		getTableBodyProps,
 		headerGroups,
-		//rows, //"rows" gets replaced with "page" for pagination
+		//rows, "rows" gets replaced with "page" for pagination
 		prepareRow,
 		page,
 		nextPage,
@@ -239,11 +151,9 @@ export const ElemCompaniesNew: FC<Props> = ({
 		{
 			columns: columns,
 			data: theResourceList,
-			//autoResetPage: true, true by default
 			disableSortRemove: true,
 			autoResetSortBy: false,
 			initialState: {
-				//sortBy: sortees,
 				pageSize: 10,
 			},
 		},
@@ -253,26 +163,10 @@ export const ElemCompaniesNew: FC<Props> = ({
 		useCheckboxes
 	);
 
-	const goToCompany = (
-		e: React.MouseEvent<Element, MouseEvent>,
-		company: any
-	): void => {
-		e.preventDefault();
-
-		if (!company) return;
-		const { slug }: { slug: string } = company;
-		const companyUrl = "/companies/" + slug;
-
-		if (e.metaKey || e.ctrlKey) {
-			//Open in new tab
-			window.open(companyUrl, "_blank");
-		} else {
-			router.push(companyUrl);
-		}
-	};
-
 	const onRemove = async () => {
-		const followIds = compact(selectedFlatRows.map((row: any, index: number) => row.original?.id))
+		const followIds = compact(
+			selectedFlatRows.map((row: any, index: number) => row.original?.id)
+		);
 
 		const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
 			method: "POST",
@@ -290,6 +184,21 @@ export const ElemCompaniesNew: FC<Props> = ({
 				);
 			});
 			setIsUpdated(new Date().getTime());
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Removed from {listNameTitle}
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
 		}
 	};
 
@@ -300,25 +209,31 @@ export const ElemCompaniesNew: FC<Props> = ({
 			) : (
 				<IconSortUp className="ml-1 h-5 w-5 inline-block" />
 			)
+		) : column.canSort ? (
+			<IconSortDown className="ml-1 h-5 w-5 inline-block text-slate-400 group-hover:text-primary-500" />
 		) : (
-			<IconSortUp className="ml-1 h-5 w-5 opacity-0 hidden group-hover:opacity-100" />
+			<></>
 		);
 	};
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="inline-flex">
-				<h2 className="font-bold text-xl capitalize mr-2">
-					{selectedListName}: Companies
+			<div className="flex items-start justify-between">
+				<h2 className="font-bold text-lg capitalize mr-2">
+					{listNameTitle}: Companies
 				</h2>
+
+				{fundingTotal > 0 && (
+					<div className="font-bold text-right shrink-0 mr-2">
+						<div className="text-sm">Total Funding</div>
+						<div className="text-green-700 text-lg">
+							${convertToInternationalCurrencySystem(fundingTotal)}
+						</div>
+					</div>
+				)}
 
 				{isCustomList && Object.keys(selectedRowIds).length > 0 && (
 					<>
-						{/* <ElemListsOptionMenu
-							onRemoveBtn={() => setShowDeleteItemsModal(true)}
-							onClearSelection={toggleCheckboxes(true)}
-						/> */}
-
 						<ElemDeleteListsModal
 							isOpen={showDeleteItemsModal}
 							onCloseModal={() => setShowDeleteItemsModal(false)}
@@ -329,59 +244,36 @@ export const ElemCompaniesNew: FC<Props> = ({
 				)}
 			</div>
 
-			<div className="flex justify-between w-full my-4">
-				<div>
-					{Object.keys(tagsCount).length > 0 && (
-						<>
-							<div className="font-bold text-sm">Tags</div>
-							<div className="flex gap-2 flex-wrap">
-								{Object.keys(tagsCount).map((tag: string) => (
-									<div
-										key={tag}
-										className="shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
-									>
-										{tag} ({tagsCount[tag]})
-									</div>
-								))}
-							</div>
-						</>
-					)}
-				</div>
-
-				{fundingTotal > 0 && (
-					<div className="font-bold text-right shrink-0 mr-2">
-						<div className="text-sm">Total Funding</div>
-						<div className="text-green-700 text-lg">
-							${convertToInternationalCurrencySystem(fundingTotal)}
+			<div className="flex items-start w-full mb-4">
+				{Object.keys(tagsCount).length > 0 && (
+					<>
+						<div className="font-bold text-sm mr-2 py-0.5">Tags</div>
+						<div className="flex gap-2 flex-wrap">
+							{Object.keys(tagsCount).map((tag: string) => (
+								<div
+									key={tag}
+									className="shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
+								>
+									{tag} ({tagsCount[tag]})
+								</div>
+							))}
 						</div>
-					</div>
+					</>
 				)}
 			</div>
 
 			{Object.keys(selectedRowIds).length > 0 && (
 				<div className="flex items-center gap-4">
-					<div className="text-sm">
-						{Object.keys(selectedRowIds).length} Selected
-					</div>
-					{/* <ElemButton
-						onClick={onRemove}
-						roundedFull
-						btn="transparent"
-						size="sm"
-						className="text-red-500 px-0"
-					>
-						<IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
-						Remove from list
-					</ElemButton> */}
 					<ElemButton
-						onClick={() => setShowDeleteItemsModal(true)}
+						onClick={onRemove}
+						//onClick={() => setShowDeleteItemsModal(true)}
 						roundedFull
 						btn="transparent"
 						size="sm"
 						className="text-red-500 px-0"
 					>
 						<IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
-						Remove from list
+						Remove
 					</ElemButton>
 					<ElemButton
 						onClick={() => toggleAllRowsSelected()}
@@ -393,28 +285,10 @@ export const ElemCompaniesNew: FC<Props> = ({
 						<IconX className="h-5 w-5 mr-1" title="Clear Selection" />
 						Clear Selection
 					</ElemButton>
-
-					{selectedFlatRows.map((row: any, index: number) => (
-						<div key={index}>
-							{row.original?.company.name}
-							<br />
-							ID:{row.original?.id}
-						</div>
-					))}
-					{/* <pre>
-						<code>
-							{JSON.stringify(
-								{
-									//selectedRowIds: selectedRowIds,
-									"selectedFlatRows[].original": selectedFlatRows.map(
-										(d) => d.original
-									),
-								},
-								null,
-								2
-							)}
-						</code>
-					</pre> */}
+					<div className="text-sm">
+						{Object.keys(selectedRowIds).length} Result
+						{Object.keys(selectedRowIds).length > 1 && "s"} Selected
+					</div>
 				</div>
 			)}
 
@@ -461,6 +335,26 @@ export const ElemCompaniesNew: FC<Props> = ({
 						{...getTableBodyProps()}
 						className="bg-white divide-y divide-black/10"
 					>
+						{page.length === 0 && (
+							<tr>
+								<td colSpan={6}>
+									<div className="flex flex-col items-center justify-center  p-5 text-slate-600">
+										<div className="max-w-sm text-center">
+											There are no companies in this list.
+										</div>
+										<ElemButton
+											href="/companies"
+											btn="transparent"
+											arrow
+											className="px-0"
+										>
+											Explore Companies
+										</ElemButton>
+									</div>
+								</td>
+							</tr>
+						)}
+
 						{page.map((row) => {
 							prepareRow(row);
 							const { key, ...restRowProps } = row.getRowProps();
@@ -507,68 +401,7 @@ export const ElemCompaniesNew: FC<Props> = ({
 				onClickPrev={() => previousPage()}
 				onClickNext={() => nextPage()}
 			/>
-
-			{/* <div className="mt-3 w-full rounded-lg border border-slate-200">
-				<table className="w-full">
-					<thead>
-						<tr className="text-left text-sm border-b-slate-200">
-							{isCustomList && (
-								<th className="pl-2 px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">
-									<input
-										type="checkbox"
-										className="align-middle"
-										onChange={toggleCheckboxes()}
-										checked={isCheckedAll()}
-									/>
-								</th>
-							)}
-							<th className="px-1 border border-b-slate-200 border-r-0 border-l-0 border-t-0">
-								Name
-							</th>
-						</tr>
-					</thead>
-
-					<tbody>
-						{resourceList?.map(({ company, id }, index) => (
-							<tr
-								key={company?.id}
-								className={`text-left text-sm hover:bg-slate-100`}
-								//onClick={() => handleNavigation(`/companies/${company?.slug}`)}
-								role="button"
-							>
-								{isCustomList && (
-									<td className="pl-2 px-1 py-2">
-										{id}
-										<input
-											type="checkbox"
-											onChange={toggleCheckbox(id as number)}
-											onClick={(e) => e.stopPropagation()}
-											checked={isChecked(id as number)}
-										/>
-									</td>
-								)}
-								<td className="px-1 inline-flex items-center py-2">
-									<ElemPhoto
-										photo={company?.logo}
-										wrapClass="flex items-center justify-center shrink-0 w-10 h-10 p-1 bg-white border border-black/10 rounded-lg overflow-hidden mr-2"
-										imgClass="object-fit max-w-full max-h-full"
-										imgAlt={"chia"}
-									/>
-									{company?.name}
-								</td>
-							</tr>
-						))}
-
-						{(!resourceList || resourceList?.length === 0) && (
-							<tr>
-								<td colSpan={5} className="text-center px-1 py-2">
-									No Companies
-								</td>
-							</tr>
-						)}
-					</tbody>
-				</table>
-			</div> */}
+			<Toaster />
 		</div>
 	);
 };
