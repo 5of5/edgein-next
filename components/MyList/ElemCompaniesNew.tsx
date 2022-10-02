@@ -334,6 +334,26 @@ export const ElemCompaniesNew: FC<Props> = ({
 						{...getTableBodyProps()}
 						className="bg-white divide-y divide-black/10"
 					>
+						{page.length === 0 && (
+							<tr>
+								<td colSpan={6}>
+									<div className="flex flex-col items-center justify-center  p-5 text-slate-600">
+										<div className="max-w-sm text-center">
+											There are no companies in this list.
+										</div>
+										<ElemButton
+											href="/companies"
+											btn="transparent"
+											arrow
+											className="px-0"
+										>
+											Explore Companies
+										</ElemButton>
+									</div>
+								</td>
+							</tr>
+						)}
+
 						{page.map((row) => {
 							prepareRow(row);
 							const { key, ...restRowProps } = row.getRowProps();

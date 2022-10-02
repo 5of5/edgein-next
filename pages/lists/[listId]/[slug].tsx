@@ -168,16 +168,6 @@ const MyList: NextPage<Props> = ({}) => {
 				setIsUpdated={setIsUpdated}
 			/>
 
-			{/* <ElemCompanies
-				handleNavigation={handleRowClick}
-				companies={companies}
-				selectedListName={selectedListName}
-				totalFunding={totalFunding}
-				getAlternateRowColor={getAlternateRowColor}
-				tagsCount={tagsCount}
-				isCustomList={isCustomList}
-				setIsUpdated={setIsUpdated}
-			/> */}
 			<ElemInvestorsNew
 				vcfirms={vcfirms}
 				selectedListName={selectedListName}
@@ -185,14 +175,6 @@ const MyList: NextPage<Props> = ({}) => {
 				setIsUpdated={setIsUpdated}
 			/>
 
-			{/* <ElemInvestors
-				handleNavigation={handleRowClick}
-				vcfirms={vcfirms}
-				selectedListName={selectedListName}
-				getAlternateRowColor={getAlternateRowColor}
-				isCustomList={isCustomList}
-				setIsUpdated={setIsUpdated}
-			/> */}
 			<Toaster />
 		</DashboardLayout>
 	);
