@@ -18,6 +18,13 @@ export const ElemListEditModal: FC<Props> = ({
 	const [name, setName] = useState<string | undefined>();
 	const [error, setError] = useState<string | null>(null);
 
+	const handleKeypress = (e: any) => {
+		//it triggers by pressing the enter key
+		if (e.keyCode === 13) {
+			onSaveBtn();
+		}
+	};
+
 	const onSaveBtn = () => {
 		if (name) onSave(name);
 	};
@@ -59,6 +66,7 @@ export const ElemListEditModal: FC<Props> = ({
 									<label className="block font-bold ">Name</label>
 									<input
 										onChange={(event) => setName(event.target.value)}
+										onKeyDown={handleKeypress}
 										defaultValue={currentName}
 										className="pl-4 mt-1 h-10 w-full relative bg-white rounded-md border border-black/10 outline-none placeholder:text-slate-400 focus:bg-white focus:outline-none"
 									/>

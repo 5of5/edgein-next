@@ -20,7 +20,7 @@ type Props = {
 	setIsUpdated: Function;
 };
 
-export const ElemCompaniesNew: FC<Props> = ({
+export const CompaniesList: FC<Props> = ({
 	companies,
 	isCustomList,
 	selectedListName,

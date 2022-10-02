@@ -1,6 +1,6 @@
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ElemCompaniesNew } from "@/components/MyList/ElemCompaniesNew";
-import { ElemInvestorsNew } from "@/components/MyList/ElemInvestorsNew";
+import { CompaniesList } from "@/components/MyList/CompaniesList";
+import { InvestorsList } from "@/components/MyList/InvestorsList";
 import { ElemDeleteListModal } from "@/components/MyList/ElemDeleteListModal";
 import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
 import { ElemListOptionMenu } from "@/components/MyList/ElemListOptionMenu";
@@ -11,11 +11,15 @@ import {
 	Follows_Vc_Firms,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
+	Lists,
+	useGetListsByUserQuery,
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { find } from "lodash";
+import { getName } from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
 
 type Props = {};
@@ -37,12 +41,44 @@ const MyList: NextPage<Props> = ({}) => {
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
+	const [hotId, setHotId] = useState(0);
+
+	const { data: lists } = useGetListsByUserQuery({
+		current_user: user?.id ?? 0,
+	});
+
+	useEffect(() => {
+		if (lists) {
+			setHotId(
+				() =>
+					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
+			);
+		}
+	}, [lists]);
+
 	const onDeleteList = async (id: number) => {
 		const deleteRes = await fetch(`/api/delete_list?listId=${id}`, {
 			method: "DELETE",
 		});
 
-		if (deleteRes.ok) router.push("/my-list");
+		if (deleteRes.ok) {
+			router.push(`/lists/${hotId}/hot`);
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						List Deleted
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
+		}
 	};
 
 	const onSave = async (name: string) => {
@@ -161,14 +197,14 @@ const MyList: NextPage<Props> = ({}) => {
 				)}
 			</div>
 
-			<ElemCompaniesNew
+			<CompaniesList
 				companies={companies}
 				selectedListName={selectedListName}
 				isCustomList={isCustomList}
 				setIsUpdated={setIsUpdated}
 			/>
 
-			<ElemInvestorsNew
+			<InvestorsList
 				vcfirms={vcfirms}
 				selectedListName={selectedListName}
 				isCustomList={isCustomList}
