@@ -102,6 +102,7 @@ module.exports = {
         'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'fade-in-up': 'fade-in-up 0.3s ease-out',
         'fade-in-down': 'fade-in-down 0.3s ease-out',
+        'scale-and-fade': 'scale-and-fade 0.3s ease-out',
       },
       keyframes: {
         'blob': {
@@ -116,6 +117,16 @@ module.exports = {
           },
           '75%': {
             transform: 'translate(-20px, -15px) scale(0.9)',
+          },
+        },
+        'scale-and-fade': {
+          '0%': {
+            opacity: '0',
+            transform: 'scale(.75)'
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'scale(1)'
           },
         },
         'fade-in-down': {

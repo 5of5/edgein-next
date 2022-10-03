@@ -19,10 +19,6 @@ type Props = {
 export default function OnBoardingStep1Modal(props: Props) {
 	const [selectedOption, setSelectedOption] = useState(props.selectedOption);
 
-	const onClose = () => {
-		props.onClose();
-	};
-
 	const onNext = () => {
 		props.onNext(selectedOption);
 	};
@@ -76,7 +72,7 @@ export default function OnBoardingStep1Modal(props: Props) {
 											selectedOption === "companies"
 												? "ring-2 ring-primary-500"
 												: "ring-1 ring-slate-300"
-										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg`}
+										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg focus-visible:outline-0`}
 									>
 										<IconFindCompanies className="w-6 h-6" />
 										<h2>Find companies</h2>
@@ -89,7 +85,7 @@ export default function OnBoardingStep1Modal(props: Props) {
 											selectedOption === "investors"
 												? "ring-2 ring-primary-500"
 												: "ring-1 ring-slate-300"
-										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg`}
+										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg focus-visible:outline-0`}
 									>
 										<IconFindInvestors className="w-6 h-6" />
 										<h2 className="self-center">Find investors</h2>
