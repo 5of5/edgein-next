@@ -36,9 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const follow = !existsFollows && await upsertFollow(list, resourceId, resourceType, user, token)
 
   const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), Boolean(existsFollows))
-  if (revalidatePath) {
-    await res.unstable_revalidate(revalidatePath)
-  }
+  // if (revalidatePath) {
+  //   await res.unstable_revalidate(revalidatePath)
+  // }
 
   // create action
   mutate({
@@ -59,8 +59,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           listId: list.id,
           sentiment: sentimentType,
         },
-        resourceId,
-        resourceType,
+        resource_id: resourceId,
+        resource: resourceType,
         user: user.id,
       },
     },

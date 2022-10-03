@@ -203,7 +203,7 @@ export default function SearchModal(props: any) {
 							loadingIndicator: "hidden",
 							form: "flex",
 							input:
-								"appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 placeholder:text-slate-400 focus:bg-transparent focus:outline-none",
+								"appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-slate-400 focus:bg-transparent focus:border-none focus:ring-0",
 						}}
 					/>
 					<button

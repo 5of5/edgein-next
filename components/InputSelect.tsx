@@ -46,7 +46,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 				{({ open }) => (
 					<>
 						<div className="relative">
-							<Listbox.Button className="relative w-full text-dark-500 bg-white border border-dark-500/10 rounded-md pl-3 pr-10 py-1.5 text-left cursor-default focus:outline-none focus:border-primary-500 hover:ring hover:ring-primary-100 focus:ring focus:ring-primary-100">
+							<Listbox.Button className="relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500">
 								<div className={` ${className} truncate`}>
 									{value?.title ? value.title : placeholder}
 									<span className="text-gray-400 text-sm ml-2">

@@ -21,7 +21,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 	return (
 		<>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div className="mt-10 lg:grid lg:grid-cols-12 lg:gap-x-5">
+				<div className="mt-10 lg:grid lg:grid-cols-9 lg:gap-x-5">
 					<Transition.Root show={sidebarOpen} as={Fragment}>
 						<Dialog
 							as="div"
@@ -92,10 +92,10 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 						</Dialog>
 					</Transition.Root>
 
-					<aside className="py-6 hidden lg:block lg:col-span-3 lg:py-0">
+					<aside className="py-6 hidden lg:block lg:col-span-2 lg:py-0">
 						<ElemDashboardSidebar />
 					</aside>
-					<div className="lg:col-span-9">
+					<div className="lg:col-span-7">
 						<ElemButton
 							btn="white"
 							roundedFull={false}

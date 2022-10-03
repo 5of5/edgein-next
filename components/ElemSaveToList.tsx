@@ -5,8 +5,10 @@ import { findIndex } from "lodash";
 import { getName } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
+import { InputText } from "@/components/InputText";
 import { IconX, IconSaveToList } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	follows: any;
@@ -61,6 +63,21 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 			// hide input
 			setShowNew(false);
 			setNewName("");
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Added to &ldquo;{newName}&rdquo; list
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
 		}
 	};
 
@@ -164,14 +181,14 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 
 								{showNew && (
 									<div className="p-3 ease-in-out duration-300">
-										<label className="block font-bold ">Name</label>
-										<input
-											onChange={(e) => setNewName(e.target.value)}
-											className="pl-4 mt-1 h-10 w-full relative bg-white rounded-md border border-black/10 outline-none placeholder:text-slate-400 focus:bg-white focus:outline-none`"
+										<InputText
+											label="Name"
 											type="text"
-											placeholder="Enter List Name..."
+											onChange={(e) => setNewName(e.target.value)}
 											value={newName}
-										></input>
+											name="name"
+											placeholder="Enter List Name..."
+										/>
 										<div className="flex">
 											<ElemButton
 												onClick={(e) => onCreate(e)}
@@ -187,6 +204,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
+					<Toaster />
 				</Dialog>
 			</Transition.Root>
 		</>

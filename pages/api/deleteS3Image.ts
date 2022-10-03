@@ -3,8 +3,8 @@ import AWS from "aws-sdk";
 
 //AWS config set
 AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  accessKeyId: process.env.AWS_BUCKET_ACCESS_KEY_ID!,
+  secretAccessKey: process.env.AWS_BUCKET_SECRET_ACCESS_KEY!,
 });
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // create s3 instance.
     const s3 = new AWS.S3({
       signatureVersion: "v4",
-      region: process.env.AWS_REGION!,
+      region: process.env.AWS_BUCKET_REGION!,
     });
 
     const objects = { Bucket: process.env.AWS_BUCKET!, Key: fileName };

@@ -11,12 +11,14 @@ type Props = {
 	className?: string;
 	heading?: string;
 	investments: Investment_Rounds[];
+	showEdit?: boolean;
 };
 
 export const ElemInvestments: React.FC<Props> = ({
 	className,
 	heading,
 	investments,
+	showEdit,
 }) => {
 	const columns = React.useMemo(
 		() => [
@@ -240,8 +242,10 @@ export const ElemInvestments: React.FC<Props> = ({
 			) : (
 				<IconSortUp className="ml-1 h-5 w-5 inline-block" />
 			)
+		) : column.canSort ? (
+			<IconSortDown className="ml-1 h-5 w-5 inline-block text-slate-400 group-hover:text-primary-500" />
 		) : (
-			<IconSortUp className="ml-1 h-5 w-5 inline-block opacity-0 group-hover:opacity-100" />
+			<></>
 		);
 	};
 
@@ -251,9 +255,15 @@ export const ElemInvestments: React.FC<Props> = ({
 				<div className="flex items-center justify-between">
 					<h2 className="text-xl font-bold">{heading}</h2>
 
-					<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+					{showEdit && (
+						<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+							<IconEditPencil title="Edit" />
+						</button>
+					)}
+
+					{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
 						<IconEditPencil title="Edit" />
-					</button>
+					</button> */}
 				</div>
 			)}
 
