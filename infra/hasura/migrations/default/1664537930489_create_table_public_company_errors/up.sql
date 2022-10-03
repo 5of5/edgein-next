@@ -19,6 +19,7 @@ CREATE TABLE public.company_errors (
 	market_verified text NULL,
 	velocity_linkedin text NULL,
 	velocity_token text NULL,
+	external_id text NULL,
 	id serial4 NOT NULL,
 	date_added date NULL,
 	ico_start date NULL,
