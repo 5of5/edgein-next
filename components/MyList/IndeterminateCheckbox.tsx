@@ -60,15 +60,28 @@ export const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
 				: undefined;
 
 		return (
-			<input
-				type="checkbox"
-				ref={resolvedRef}
-				{...rest}
-				onChange={onChange}
-				data-testid={isIndeterminate ? "indeterminate" : "not-indeterminate"}
-				onClick={(e) => e.stopPropagation()}
-				className="appearance-none w-4 h-4 rounded border-gray-300 checked:bg-primary-500 checked:hover:opacity-75 focus:checked:bg-primary-500 focus:ring-0"
-			/>
+			<>
+				{isIndeterminate}
+				{/* <InputCheckbox
+					ref={resolvedRef}
+					{...rest}
+					onChange={onChange}
+					onClick={(e) => e.stopPropagation()}
+					data-testid={isIndeterminate ? "indeterminate" : "not-indeterminate"}
+					isIndeterminate={isIndeterminate ? true : false}
+				/> */}
+				<input
+					type="checkbox"
+					ref={resolvedRef}
+					{...rest}
+					onChange={onChange}
+					onClick={(e) => e.stopPropagation()}
+					data-indeterminate={
+						isIndeterminate ? "indeterminate" : "not-indeterminate"
+					}
+					className={`relative appearance-none w-4 h-4 border rounded border-slate-300 cursor-pointer transition-all hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:checked:bg-primary-500 indeterminate:bg-primary-500 indeterminate:hover:bg-primary-500`}
+				/>
+			</>
 		);
 	}
 );

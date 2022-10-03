@@ -8,6 +8,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconX, IconSaveToList } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
+import { InputCheckbox } from "@/components/InputCheckbox";
 import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
@@ -41,16 +42,6 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 			});
 	}, [lists]);
 
-	const isSelected = (list: any) => {
-		const name = getName(list);
-		// check and return index if the company or investor is added to list already
-		return (
-			findIndex(follows, (item: any) => {
-				return getName(item.list) === name;
-			}) !== -1
-		);
-	};
-
 	const onCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		if (newName) {
@@ -81,12 +72,40 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 		}
 	};
 
+	const isSelected = (list: any) => {
+		const name = getName(list);
+		// check and return index if the company or investor is added to list already
+		return (
+			findIndex(follows, (item: any) => {
+				return getName(item.list) === name;
+			}) !== -1
+		);
+	};
+
 	const onClickHandler = (
 		event: React.MouseEvent<HTMLInputElement>,
 		list: Lists
 	) => {
-		// TODO: handle uncheck
 		onCreateNew(getName(list), isSelected(list))(event);
+
+		// console.log(isSelected(list));
+		// toast.custom(
+		// 	(t) => (
+		// 		<div
+		// 			className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+		// 				t.visible ? "animate-fade-in-up" : "opacity-0"
+		// 			}`}
+		// 		>
+		// 			{isSelected(list)
+		// 				? `Added to ${getName(list)}`
+		// 				: `Removed from ${getName(list)}`}
+		// 		</div>
+		// 	),
+		// 	{
+		// 		duration: 3000,
+		// 		position: "bottom-left",
+		// 	}
+		// );
 	};
 
 	const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -109,7 +128,9 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 			<Transition.Root show={isOpen} as={Fragment}>
 				<Dialog
 					as="div"
-					onClose={() => setIsOpen(false)}
+					onClose={() => {
+						setIsOpen(false), setShowNew(false);
+					}}
 					className="relative z-[60]"
 				>
 					<Transition.Child
@@ -139,7 +160,9 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 									<h2 className="text-lg font-bold text-white">Save to List</h2>
 
 									<button
-										onClick={() => setIsOpen(false)}
+										onClick={() => {
+											setIsOpen(false), setShowNew(false);
+										}}
 										type="button"
 										className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-black/10 focus:bg-black/20"
 									>
@@ -148,20 +171,19 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 									</button>
 								</div>
 
-								<ul className="divide-y divide-slate-100">
+								<ul className="divide-y divide-slate-100 border-b border-b-slate-100">
 									{listsData?.map((item, index: number) => {
 										return (
 											<li key={index}>
-												<label className="flex items-center p-3 w-full hover:bg-slate-100">
-													<input
-														type="checkbox"
-														checked={isSelected(item)}
-														onClick={(e) => onClickHandler(e, item)}
-														onChange={(e) => {}}
-														className="accent-primary-500 border border-slate-100 rounded"
-													></input>
-													<h1 className="ml-2">{getName(item)}</h1>
-												</label>
+												<InputCheckbox
+													defaultChecked={isSelected(item)}
+													onClick={(e) => onClickHandler(e, item)}
+													onChange={(e) => {}}
+													className="w-full hover:bg-slate-100"
+													inputClass="ml-3"
+													label={getName(item)}
+													labelClass="grow py-3 pr-3"
+												/>
 											</li>
 										);
 									})}
@@ -169,13 +191,14 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 
 								{!showNew && (
 									<div>
-										<button
+										<ElemButton
+											btn="transparent"
 											onClick={() => setShowNew(true)}
-											className="flex items-center justify-center p-3"
+											className="py-3"
 										>
 											<IconSaveToList className="w-6 h-6 mr-1" />
 											Create new list
-										</button>
+										</ElemButton>
 									</div>
 								)}
 

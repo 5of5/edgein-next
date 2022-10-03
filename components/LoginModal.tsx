@@ -1,6 +1,7 @@
 import type { GetStaticProps } from "next";
 import { useEffect, useState, Fragment } from "react";
-import { ElemButton } from "../components/ElemButton";
+import { ElemButton } from "@/components/ElemButton";
+import { InputText } from "@/components/InputText";
 import { ElemLogo } from "./ElemLogo";
 import { IconLinkedIn } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
@@ -176,7 +177,7 @@ export default function LoginModal(props: Props) {
 
 											<div className="flex flex-col space-y-2">
 												<label>
-													<input
+													<InputText
 														name="email"
 														type="email"
 														value={email}
@@ -185,7 +186,7 @@ export default function LoginModal(props: Props) {
 															validateEmail(event?.target.value)
 														}
 														placeholder="Email"
-														className={`mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
+														className={`${
 															emailError === ""
 																? "ring-1 ring-slate-200"
 																: "ring-2 ring-rose-400 focus:ring-rose-400"
@@ -198,15 +199,15 @@ export default function LoginModal(props: Props) {
 													)}
 												</label>
 												<label>
-													<input
+													<InputText
 														name="password"
 														type="password"
 														value={password}
 														disabled={isLoading}
 														onChange={(event) => validate(event?.target.value)}
 														placeholder="Password"
-														className={`mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
-															errorMessage === ""
+														className={`${
+															emailError === ""
 																? "ring-1 ring-slate-200"
 																: "ring-2 ring-rose-400 focus:ring-rose-400"
 														}`}
