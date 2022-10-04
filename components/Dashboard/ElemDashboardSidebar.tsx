@@ -59,7 +59,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 			<div>
 				<h3 className="text-xl font-bold">My EdgeIn</h3>
 				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					<li className={`${getActiveClass("/profile/")}`} role="button">
+					{/* <li className={`${getActiveClass("/profile/")}`} role="button">
 						<Link href={`/profile`}>
 							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<ElemPhoto
@@ -79,7 +79,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 								)}
 							</a>
 						</Link>
-					</li>
+					</li> */}
 
 					<li className={`${getActiveClass("/account/")}`}>
 						<Link href={`/account`}>
