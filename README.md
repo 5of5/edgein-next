@@ -12,7 +12,7 @@ Learn more at [EdgeIn.io](http://edgein.io/)
 
 https://nodejs.org/en/download/
 
-### Install docker-desktop 
+### Install Docker-Desktop 
 
 https://docs.docker.com/desktop/ 
 
@@ -20,9 +20,9 @@ If you already have docker installed make sure the following command runs:
 ```
 docker compose version
 ```
-any issues and you probably have an outdated docker install (command used to be docker-compoose)
+any issues and you probably have an outdated docker install (command used to be docker-compose)
 
-### Start Docker containers 
+### Start Docker Containers 
 ```
 npm run docker:start
 ```
