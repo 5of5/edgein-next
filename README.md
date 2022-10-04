@@ -15,16 +15,25 @@ docker compose version
 ```
 any issues and you probably have an out dated docker install (command used to be docker-compoose)
 
-- Run `npm run docker:start`, this should build a local database and hasura engine. Check they are up with:
+- With docker installed, run: 
+```
+npm run docker:start
+```
+this should build a local database and hasura engine. Check they are up with:
 ```
 docker ps
 ```
+your outpue should look something like:
 ```
 968caa7ae2fe   postgres:14.1                  "docker-entrypoint.s…"   23 hours ago   Up 23 hours (healthy)   0.0.0.0:5432->5432/tcp   infra-postgres-1
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
 
-- Run `npm run dev`, this will start next.js
+- To start the local app run 
+```
+npm run dev
+``` 
+this will start next.js
 
 ## Editing Graphql
 
