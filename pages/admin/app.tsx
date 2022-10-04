@@ -51,11 +51,14 @@ import {
   CoinsCreate,
 } from "../../components/admin/coins";
 import {
-  AllowListList,
-  AllowListEdit,
-  AllowListCreate,
-} from "../../components/admin/allowList";
-import { ActionsList } from "../../components/admin/actions";
+  AllowedEmailsList,
+  AllowedEmailsEdit,
+  AllowedEmailsCreate,
+} from "../../components/admin/alloedEmails";
+import {
+  UsersList,
+  UsersEdit,
+} from "../../components/admin/users";
 import { useAuth } from "../../hooks/useAuth";
 
 const MyLogin = () => {
@@ -173,6 +176,11 @@ const AdminApp = () => {
         list={AllowListList}
         edit={AllowListEdit}
         create={AllowListCreate}
+      />
+      <Resource
+        name="users"
+        list={UsersList}
+        edit={UsersEdit}
       />
 
       {/* <Resource

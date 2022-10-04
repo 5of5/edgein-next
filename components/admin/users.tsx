@@ -28,7 +28,7 @@ const PostPagination = () => (
   <Pagination rowsPerPageOptions={[5, 10, 25, 50, 100, 250]} />
 );
 
-export const AllowListList = () => {
+export const UsersList = () => {
   return (
     <List
       pagination={<PostPagination />}
@@ -67,7 +67,9 @@ export const AllowListList = () => {
         <EditButton />
         <TextField source="id" />
         <TextField source="email" />
-        <SelectField source="type" choices={typeChoices} />
+        <TextField source="display_name" />
+        <TextField source="person_id" />
+        <TextField source="role" />
       </Datagrid>
     </List>
   );
@@ -77,14 +79,14 @@ interface TitleProps {
   record?: Record<string, string>;
 }
 
-const AllowListTitle = ({ record }: TitleProps) => {
-  return <span>Allow List {record ? `"${record.name}"` : ""}</span>;
+const UsersTitle = ({ record }: TitleProps) => {
+  return <span>Users {record ? `"${record.name}"` : ""}</span>;
 };
 
-export const AllowListEdit = () => {
+export const UsersEdit = () => {
   return (
     <Edit
-      title={<AllowListTitle />}
+      title={<UsersTitle />}
       sx={{
         ".MuiFormHelperText-root": {
           display: "none",
@@ -102,46 +104,22 @@ export const AllowListEdit = () => {
         />
         <TextInput
           className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          disabled
           source="email"
         />
-        <SelectInput
+        <TextInput
           className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="type"
-          key="type"
-          label="Type"
-          choices={typeChoices}
+          source="display_name"
+        />
+        <TextInput
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="person_id"
+        />
+        <TextInput
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          source="role"
         />
       </SimpleForm>
     </Edit>
-  );
-};
-
-export const AllowListCreate = () => {
-  return (
-    <Create
-      title="Create a entry in allow list"
-      sx={{
-        ".MuiFormHelperText-root": {
-          display: "none",
-        },
-        ".MuiPaper-root": {
-          position: "relative",
-        },
-      }}
-    >
-      <SimpleForm>
-        <TextInput
-          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="email"
-        />
-        <SelectInput
-          className="w-full mt-5 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          source="type"
-          key="type"
-          label="Type"
-          choices={typeChoices}
-        />
-      </SimpleForm>
-    </Create>
   );
 };
