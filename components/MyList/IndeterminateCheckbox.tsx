@@ -61,15 +61,6 @@ export const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
 
 		return (
 			<>
-				{isIndeterminate}
-				{/* <InputCheckbox
-					ref={resolvedRef}
-					{...rest}
-					onChange={onChange}
-					onClick={(e) => e.stopPropagation()}
-					data-testid={isIndeterminate ? "indeterminate" : "not-indeterminate"}
-					isIndeterminate={isIndeterminate ? true : false}
-				/> */}
 				<input
 					type="checkbox"
 					ref={resolvedRef}

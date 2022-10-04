@@ -149,7 +149,7 @@ export default function Account() {
 											name=""
 										/>
 										{errorMessage === "" ? null : (
-											<span className="mt-2 text-sm">{errorMessage}</span>
+											<div className="mt-2 text-sm">{errorMessage}</div>
 										)}
 									</div>
 
@@ -164,9 +164,7 @@ export default function Account() {
 											name=""
 										/>
 										{reEnterErrorMessage === "" ? null : (
-											<span className="mt-2 text-sm">
-												{reEnterErrorMessage}
-											</span>
+											<div className="mt-2 text-sm">{reEnterErrorMessage}</div>
 										)}
 									</div>
 
