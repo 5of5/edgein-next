@@ -13,7 +13,7 @@ Learn more at [EdgeIn.io](http://edgein.io/)
 ```
 docker compose version
 ```
-any issues and you probably have an out dated docker install (command used to be docker-compoose)
+any issues and you probably have an outdated docker install (command used to be docker-compoose)
 
 - With docker installed, run: 
 ```
@@ -23,7 +23,7 @@ this should build a local database and hasura engine. Check they are up with:
 ```
 docker ps
 ```
-your outpue should look something like:
+your output should look something like:
 ```
 968caa7ae2fe   postgres:14.1                  "docker-entrypoint.s…"   23 hours ago   Up 23 hours (healthy)   0.0.0.0:5432->5432/tcp   infra-postgres-1
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
