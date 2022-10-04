@@ -1,5 +1,5 @@
 // in posts.js
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   List,
   Datagrid,
@@ -9,19 +9,9 @@ import {
   TextField,
   EditButton,
   TextInput,
-  ReferenceInput,
   SelectInput,
-  AutocompleteInput,
   Pagination,
-  Toolbar,
-  SaveButton,
-  useCreate,
-  Button,
-  useRedirect,
-  useGetList,
-  useGetOne,
 } from "react-admin";
-import { useParams } from "react-router-dom";
 
 export const typeChoices = [
 	{
