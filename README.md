@@ -35,9 +35,10 @@ your output should look something like:
 968caa7ae2fe   postgres:14.1                  "docker-entrypoint.s…"   23 hours ago   Up 23 hours (healthy)   0.0.0.0:5432->5432/tcp   infra-postgres-1
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
+The Hasura web console should now be available at `http://localhost:8080`. Check `/infra/hasura/config.yaml` for the password.
 
 ### Load Schema and Initial Data
-
+This is taken care of using the `docker-entrypoint-initdb.d` directory populated from `infra/hasura/bootstrap-dev`. No further action should be required.
 
 ### Run Migrations
 ```
@@ -47,6 +48,7 @@ npm run hasura metadata apply
 
 ### Start Next App 
 ```
+npm install
 npm run dev
 ``` 
 
