@@ -50,6 +50,11 @@ import {
   CoinsEdit,
   CoinsCreate,
 } from "../../components/admin/coins";
+import {
+  AllowListList,
+  AllowListEdit,
+  AllowListCreate,
+} from "../../components/admin/allowList";
 import { ActionsList } from "../../components/admin/actions";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -163,6 +168,13 @@ const AdminApp = () => {
         edit={InvestorsEdit}
         create={InvestorCreate}
       />
+      <Resource
+        name="allow list"
+        list={AllowListList}
+        edit={AllowListEdit}
+        create={AllowListCreate}
+      />
+
       {/* <Resource
         name="actions"
         list={ActionsList}
