@@ -41,5 +41,6 @@ CREATE TABLE public.company_errors (
 	telegram text NULL,
 	youtube text NULL,
 	blockchain_explorer text NULL,
-	duplicated_id int4 NULL
+	duplicated_id int4 NULL,
+	"data_source" text NULL
 );
