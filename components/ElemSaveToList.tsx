@@ -176,13 +176,13 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 										return (
 											<li key={index}>
 												<InputCheckbox
-													defaultChecked={isSelected(item)}
+													checked={isSelected(item)}
 													onClick={(e) => onClickHandler(e, item)}
 													onChange={(e) => {}}
 													className="w-full hover:bg-slate-100"
-													inputClass="ml-3"
 													label={getName(item)}
 													labelClass="grow py-3 pr-3"
+													inputClass="ml-3"
 												/>
 											</li>
 										);
@@ -194,7 +194,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 										<ElemButton
 											btn="transparent"
 											onClick={() => setShowNew(true)}
-											className="py-3"
+											className="py-3 w-full !justify-start"
 										>
 											<IconSaveToList className="w-6 h-6 mr-1" />
 											Create new list

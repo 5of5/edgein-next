@@ -190,7 +190,7 @@ const MyList: NextPage<Props> = ({}) => {
 				{(selectedListName === "hot" ||
 					selectedListName === "like" ||
 					selectedListName === "crap") && (
-					<p className="first-letter:uppercase text-slate-600">
+					<p className="mt-1 first-letter:uppercase text-slate-600">
 						{listNameTitle} lists are generated from your {listNameTitle}{" "}
 						reactions.
 					</p>
