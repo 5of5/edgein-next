@@ -6,16 +6,23 @@ EdgeIn combines highly refined automated processes, the personalization of human
 
 Learn more at [EdgeIn.io](http://edgein.io/)
 
-### Getting Started
+## Getting Started
 
-- Install node 16
-- Install docker-desktop (https://docs.docker.com/desktop/) if you already have docker installed make sure the following command runs: 
+### Install Node 16
+
+https://nodejs.org/en/download/
+
+### Install docker-desktop 
+
+https://docs.docker.com/desktop/ 
+
+If you already have docker installed make sure the following command runs: 
 ```
 docker compose version
 ```
 any issues and you probably have an outdated docker install (command used to be docker-compoose)
 
-- With docker installed, run: 
+### Start Docker containers 
 ```
 npm run docker:start
 ```
@@ -29,11 +36,10 @@ your output should look something like:
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
 
-- To start the local app run 
+### Start Next App 
 ```
 npm run dev
 ``` 
-this will start next.js
 
 ## Editing Graphql
 
