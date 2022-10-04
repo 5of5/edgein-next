@@ -11,6 +11,7 @@ import {
   TextInput,
   SelectInput,
   Pagination,
+  SelectField,
 } from "react-admin";
 
 export const typeChoices = [
@@ -66,7 +67,7 @@ export const AllowListList = () => {
         <EditButton />
         <TextField source="id" />
         <TextField source="email" />
-        <TextField source="type" />
+        <SelectField source="type" choices={typeChoices} />
       </Datagrid>
     </List>
   );

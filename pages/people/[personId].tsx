@@ -16,6 +16,8 @@ import {
 	People,
 } from "../../graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
+import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
+
 
 type Props = {
 	person: People;
@@ -117,6 +119,9 @@ const Person: NextPage<Props> = (props) => {
 				</div>
 				<div className="col-span-8">
 					<ElemJobsList heading="Jobs" team_members={person.team_members} />
+					{!person.investors || person.investors.length === 0 ? null : (
+					<ElemInvestorsList heading="Investment Firms" investors={person.investors} className="mt-5" />
+					)}
 				</div>
 			</div>
 

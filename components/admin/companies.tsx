@@ -28,6 +28,7 @@ import {
   Toolbar,
   SaveButton,
   useGetOne,
+  Link
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -201,6 +202,7 @@ export const CompanyList = () => {
       // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
+        <FunctionField render= {(record: any) => (<a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${record.slug}`}><Button label="Preview" /></a>)} />
         <TextField source="id" />
         <TextField source="name" />
         <TextField source="slug" />
@@ -435,6 +437,11 @@ export const CompanyEdit = () => {
           </FormDataConsumer>
           {isIcon && (
             <>
+              <div style={{position: 'absolute', top: 135, left: 18}}>
+                <a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${currentData.slug}`}>
+                  <Button label="Preview" />
+                </a>
+              </div>
               <RenderGoogleIcon
                 topPos="135px"
                 leftPos="36%"

@@ -169,7 +169,7 @@ const AdminApp = () => {
         create={InvestorCreate}
       />
       <Resource
-        name="allow list"
+        name="allowed_emails"
         list={AllowListList}
         edit={AllowListEdit}
         create={AllowListCreate}
