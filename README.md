@@ -36,23 +36,29 @@ your output should look something like:
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
 
+### Load Schema and Initial Data
+
+
+### Run Migrations
+```
+npm run hasura migrate apply
+npm run hasura metadata apply
+```
+
 ### Start Next App 
 ```
 npm run dev
 ``` 
 
-## Editing Graphql
+## Hasura / GraphQL
+
+### Editing Graphql
 
 - Make changes .graphql file (NOT TO EDIT types.ts)
 - Make sure a local instance of hasura is running
 - Run `npm run codegen` this will generate a
 
-## Migrations
-
-- Run `npm run hasura migrate apply`
-- Run `npm run hasura metadata apply`
-
-## Creating Migrations
+### Creating Migrations
 
 - Run `npm run hasura console`
 - Use the hasura console to create the migration files
