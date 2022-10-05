@@ -105,7 +105,7 @@ const Person: NextPage<Props> = (props) => {
 				>
 					<div className="col-span-3">
 						<ElemKeyInfo
-							className="sticky top-4"
+							className="sticky top-4 mb-7 lg:mb-0"
 							heading="Key Info"
 							roles={removeSpecialCharacterFromString(person.type as string)}
 							linkedIn={person.linkedin}
@@ -118,16 +118,18 @@ const Person: NextPage<Props> = (props) => {
 						/>
 					</div>
 					<div className="col-span-8">
-						<ElemJobsList
-							heading="Jobs"
-							team_members={person.team_members}
-							className="mt-7 lg:mt-0"
-						/>
+						{person.team_members.length > 0 && (
+							<ElemJobsList
+								heading="Jobs"
+								team_members={person.team_members}
+								className="mb-7"
+							/>
+						)}
 						{!person.investors || person.investors.length === 0 ? null : (
 							<ElemInvestorsList
 								heading="Investment Firms"
 								investors={person.investors}
-								className="mt-5"
+								className="mb-7"
 							/>
 						)}
 					</div>
