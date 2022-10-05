@@ -68,7 +68,7 @@ const Person: NextPage<Props> = (props) => {
 					<div className="col-span-2 flex justify-center">
 						<ElemPhoto
 							photo={person.picture}
-							wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-auto"
+							wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-full"
 							imgClass="object-contain w-full h-full rounded-full overflow-hidden"
 							imgAlt={person.name}
 							placeholder="user"
