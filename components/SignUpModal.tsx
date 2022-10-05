@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { useEffect, useState, Fragment } from "react";
 import { ElemButton } from "@/components/ElemButton";
+import { InputText } from "@/components/InputText";
 import { ElemLogo } from "./ElemLogo";
 import { IconLinkedIn, IconCheck } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
@@ -246,7 +247,7 @@ export default function SignUpModal(props: Props) {
 
 										<div className="flex flex-col space-y-2">
 											<label>
-												<input
+												<InputText
 													name="name"
 													type="text"
 													value={name}
@@ -255,21 +256,21 @@ export default function SignUpModal(props: Props) {
 														validateName(event?.target.value)
 													}
 													placeholder="Full Name"
-													className={`mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
+													className={`${
 														nameError === ""
 															? "ring-1 ring-slate-200"
-															: "ring-2 ring-rose-400 focus:ring-rose-400"
+															: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
 													}`}
 												/>
 												{nameError === "" ? null : (
-													<div className="mt-2 font-bold text-sm">
+													<div className="mt-2 font-bold text-sm text-rose-400">
 														{nameError}
 													</div>
 												)}
 											</label>
 
 											<label>
-												<input
+												<InputText
 													name="email"
 													type="email"
 													value={email}
@@ -278,31 +279,31 @@ export default function SignUpModal(props: Props) {
 														validateEmail(event?.target.value)
 													}
 													placeholder="Email"
-													className={`mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
+													className={`${
 														emailError === ""
 															? "ring-1 ring-slate-200"
-															: "ring-2 ring-rose-400 focus:ring-rose-400"
+															: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
 													}`}
 												/>
 												{emailError === "" ? null : (
-													<div className="mt-2 font-bold text-sm">
+													<div className="mt-2 font-bold text-sm text-rose-400">
 														{emailError}
 													</div>
 												)}
 											</label>
 
 											<label>
-												<input
+												<InputText
 													name="password"
 													type="password"
 													value={password}
 													disabled={isLoading || props.passwordFromLogin != ""}
 													onChange={(event) => validate(event?.target.value)}
 													placeholder="Password"
-													className={`mt-2 appearance-none border-none rounded-md w-full px-3 h-10 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500  ${
+													className={`${
 														errorMessage === ""
 															? "ring-1 ring-slate-200"
-															: "ring-2 ring-rose-400 focus:ring-rose-400"
+															: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
 													}`}
 												/>
 												{errorMessage === "" ? null : (

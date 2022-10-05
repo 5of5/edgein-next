@@ -60,9 +60,10 @@ export default function LoginModal(props: Props) {
 	};
 
 	const onLogin = async () => {
+		validate(password);
 		validateEmail(email);
 
-		if (emailError || !email) {
+		if (emailError || !email || !password) {
 			return;
 		}
 		try {
@@ -189,11 +190,11 @@ export default function LoginModal(props: Props) {
 														className={`${
 															emailError === ""
 																? "ring-1 ring-slate-200"
-																: "ring-2 ring-rose-400 focus:ring-rose-400"
+																: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
 														}`}
 													/>
 													{emailError === "" ? null : (
-														<div className="mt-2 font-bold text-sm">
+														<div className="mt-2 font-bold text-sm text-rose-400">
 															{emailError}
 														</div>
 													)}
@@ -207,13 +208,13 @@ export default function LoginModal(props: Props) {
 														onChange={(event) => validate(event?.target.value)}
 														placeholder="Password"
 														className={`${
-															emailError === ""
+															errorMessage === ""
 																? "ring-1 ring-slate-200"
-																: "ring-2 ring-rose-400 focus:ring-rose-400"
+																: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
 														}`}
 													/>
 													{errorMessage === "" ? null : (
-														<div className="mt-2 font-bold text-sm">
+														<div className="mt-2 font-bold text-sm text-rose-400">
 															{errorMessage}
 														</div>
 													)}
