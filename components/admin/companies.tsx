@@ -64,7 +64,11 @@ const filters = [
     alwaysOn
   />,
   <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      style={{padding: 0, border: "none"}}
+      optionText="name"
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <SelectInput
     key="layer"
@@ -822,9 +826,11 @@ export const CompanyCreate = () => {
             source="layer_detail"
           />
           <ReferenceInput label="Coin" source="coin_id" reference="coins">
-            <SelectInput
+            <AutocompleteInput
               className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              style={{padding: 0, border: "none"}}
               optionText="name"
+              filterToQuery={search => ({ name: search })}
             />
           </ReferenceInput>
           <NumberInput
