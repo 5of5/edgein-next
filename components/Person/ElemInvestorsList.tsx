@@ -1,5 +1,6 @@
 import { Investors } from "@/graphql/types";
 import { IconEditPencil } from "@/components/Icons";
+import { ElemPhoto } from "@/components/ElemPhoto";
 import { getTimeOfWork, getWorkDurationFromAndTo } from "@/utils";
 import Link from "next/link";
 type Props = {
@@ -26,63 +27,31 @@ export const ElemInvestorsList: React.FC<Props> = ({
 						</button>
 					)}
 				</div>
-
-				<div className="mt-2 border border-black/10 rounded-lg">
-					<div className="flex flex-col divide-y divide-y-black/10">
-						{ investors.map((investor, index: number) => (
-								<div className="flex space-x-4 p-4" key={index}>
-									{investor.vc_firm?.slug ? (
-										<Link href={`/investors/${investor.vc_firm.slug}`}>
-											<a className="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10">
-												<img
-													className="object-contain w-full h-full"
-													src={investor.vc_firm?.logo.url}
-													alt={investor.vc_firm?.name || "Logo"}
-												/>
-											</a>
-										</Link>
-									) : (
-										<div className="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg  border border-black/10">
-											<img
-												className="object-contain w-full h-full"
-												src={investor.vc_firm?.logo.url}
-												alt={investor.vc_firm?.name || "Logo"}
-											/>
-										</div>
-									)}
-
-									<div className="text-slate-600">
-										<h3 className="font-bold">{investor.title}</h3>
-										{investor.vc_firm?.slug ? (
-											<Link href={`/investors/${investor.vc_firm.slug}`}>
-												<a className="block hover:text-primary-500">
-													{investor.vc_firm?.name}
-												</a>
-											</Link>
-										) : (
-											<>{investor.vc_firm?.name}</>
-										)}
-
-										<div className="flex space-x-2">
-											<span>
-												{getWorkDurationFromAndTo(
-													investor.start_date,
-													investor.end_date
-												)}
-											</span>
-											<span>&middot;</span>
-											<span>
-												{getTimeOfWork(investor.start_date, investor.end_date)}
-											</span>
-										</div>
-										{investor.vc_firm?.location && (
-											<span>{investor.vc_firm?.location}</span>
-										)}
-									</div>
+				<div className="mt-2 flex flex-col w-full gap-5 sm:grid sm:grid-cols-2">
+					{investors.map((investor, index: number) => (
+						<a
+							href={`/investors/${investor.vc_firm?.slug}`}
+							key={investor.vc_firm?.id}
+							className="flex flex-col mx-auto w-full p-5 cursor-pointer rounded-lg border border-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
+						>
+							<div className="flex shrink-0 w-full">
+								<ElemPhoto
+									photo={investor.vc_firm?.logo}
+									wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow"
+									imgClass="object-fit max-w-full max-h-full"
+									imgAlt={investor.vc_firm?.name}
+								/>
+								<div className="flex items-center justify-center pl-2 md:overflow-hidden">
+									<h3
+										className="inline min-w-0 text-lg font-bold break-words align-middle"
+										title={investor.vc_firm?.name ?? ""}
+									>
+										{investor.vc_firm?.name}
+									</h3>
 								</div>
-							))
-						}
-					</div>
+							</div>
+						</a>
+					))}
 				</div>
 			</div>
 		</>

@@ -3,8 +3,6 @@ import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-// import { ElemCompaniesGrid } from "@/components/Person/ElemCompaniesGrid";
-// import { ElemVcfirmsGrid } from "@/components/Person/ElemVcfirmsGrid";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
@@ -17,7 +15,6 @@ import {
 } from "../../graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
-
 
 type Props = {
 	person: People;
@@ -49,7 +46,6 @@ const Person: NextPage<Props> = (props) => {
 		personEmails.push(person.personal_email);
 	}
 
-	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 	if (sortedInvestmentRounds.length > 0) {
 		tabBarItems.push({
@@ -59,73 +55,85 @@ const Person: NextPage<Props> = (props) => {
 	}
 
 	return (
-		<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+		<div className="relative">
 			{/* <div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 				Back
 				</ElemButton>
 				</div> */}
+			<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div>
 
-			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
-				<div className="col-span-3">
-					<ElemPhoto
-						photo={person.picture}
-						wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
-						imgClass="object-contain w-full h-full"
-						imgAlt={person.name}
-						placeholder="user"
-						placeholderClass="text-slate-300"
-					/>
-				</div>
-				<div className="w-full col-span-5 mt-7 lg:mt-0">
-					<div className="flex shrink-0">
-						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
-							{person.name}
-						</h1>
-						{person.type && (
-							<div className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap text-lg">
-								{removeSpecialCharacterFromString(person.type as string)}
+			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+				<div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+					<div className="col-span-2 flex justify-center">
+						<ElemPhoto
+							photo={person.picture}
+							wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-auto"
+							imgClass="object-contain w-full h-full rounded-full overflow-hidden"
+							imgAlt={person.name}
+							placeholder="user"
+							placeholderClass="text-slate-300"
+						/>
+					</div>
+					<div className="w-full col-span-9 mt-7">
+						<div className="flex justify-center text-center lg:justify-start lg:text-left lg:shrink-0">
+							<div>
+								<h1 className="text-3xl font-bold lg:text-4xl">
+									{person.name}
+								</h1>
+								{person.type && (
+									<div className="pb-0.5 whitespace-nowrap text-lg text-slate-600">
+										{removeSpecialCharacterFromString(person.type as string)}
+									</div>
+								)}
 							</div>
+						</div>
+						{person.about && (
+							<p className="mt-4 line-clamp-3 text-base text-slate-600">
+								{person.about}
+							</p>
 						)}
 					</div>
-					{person.about && (
-						<p className="mt-4 line-clamp-3 text-base text-slate-600">
-							{person.about}
-						</p>
-					)}
 				</div>
-			</div>
 
-			<ElemTabBar className="mt-7" tabs={tabBarItems} />
+				<ElemTabBar className="mt-7" tabs={tabBarItems} />
 
-			<div
-				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
-				ref={overviewRef}
-				id="overview"
-			>
-				<div className="col-span-3">
-					<ElemKeyInfo
-						className="sticky top-4"
-						heading="Key Info"
-						roles={person.type}
-						linkedIn={person.linkedin}
-						investmentsLength={person.investments?.length}
-						emails={personEmails}
-						github={person.github}
-						twitter={person.twitter_url}
-						location={person.city}
-						website={person.website_url}
-					/>
+				<div
+					className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+					ref={overviewRef}
+					id="overview"
+				>
+					<div className="col-span-3">
+						<ElemKeyInfo
+							className="sticky top-4"
+							heading="Key Info"
+							roles={removeSpecialCharacterFromString(person.type as string)}
+							linkedIn={person.linkedin}
+							investmentsLength={person.investments?.length}
+							emails={personEmails}
+							github={person.github}
+							twitter={person.twitter_url}
+							location={person.city}
+							website={person.website_url}
+						/>
+					</div>
+					<div className="col-span-8">
+						<ElemJobsList
+							heading="Jobs"
+							team_members={person.team_members}
+							className="mt-7 lg:mt-0"
+						/>
+						{!person.investors || person.investors.length === 0 ? null : (
+							<ElemInvestorsList
+								heading="Investment Firms"
+								investors={person.investors}
+								className="mt-5"
+							/>
+						)}
+					</div>
 				</div>
-				<div className="col-span-8">
-					<ElemJobsList heading="Jobs" team_members={person.team_members} />
-					{!person.investors || person.investors.length === 0 ? null : (
-					<ElemInvestorsList heading="Investment Firms" investors={person.investors} className="mt-5" />
-					)}
-				</div>
-			</div>
 
-			{/* {person.companies?.length > 0 && (
+				{/* {person.companies?.length > 0 && (
 				<ElemCompaniesGrid
 					className="mt-12"
 					heading="Companies"
@@ -133,26 +141,19 @@ const Person: NextPage<Props> = (props) => {
 				/>
 			)} */}
 
-			{/* {person.vcFirms?.length > 0 && (
-				<ElemVcfirmsGrid
-					className="mt-12"
-					heading="VC Firms"
-					vcfirms={person.vcFirms}
-				/>
-			)} */}
-
-			{sortedInvestmentRounds.length > 0 && (
-				<div
-					ref={investmentRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="investments"
-				>
-					<ElemInvestments
-						heading="Investments"
-						investments={sortedInvestmentRounds}
-					/>
-				</div>
-			)}
+				{sortedInvestmentRounds.length > 0 && (
+					<div
+						ref={investmentRef}
+						className="mt-7 p-5 rounded-lg bg-white shadow"
+						id="investments"
+					>
+						<ElemInvestments
+							heading="Investments"
+							investments={sortedInvestmentRounds}
+						/>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
