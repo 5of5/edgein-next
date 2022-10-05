@@ -70,12 +70,12 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 	};
 
 	return (
-		<div className={`${className} fixed z-30 left-4 bottom-4`}>
+		<div className={`${className} fixed z-20 left-4 bottom-4`}>
 			{toggleFeedbackForm && (
 				<div
 					className={`${
 						toggleFeedbackForm && "animate-fade-in-up"
-					} absolute left-4 bottom-6 w-96 max-w-xs bg-white shadow-xl rounded-xl overflow-hidden`}
+					} absolute z-10 left-0 bottom-0 w-96 max-w-xs bg-white shadow-xl rounded-xl overflow-hidden`}
 				>
 					<header className="relative py-2 text-center font-bold bg-primary-500 text-white">
 						{heading ? heading : "Request Data"}
@@ -112,6 +112,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 										rows={3}
 										onChange={(e) => setMessage(e.target.value)}
 										required
+										className="ring-inset focus:ring-inset"
 									/>
 								</div>
 								<div className="text-right sm:col-span-2">

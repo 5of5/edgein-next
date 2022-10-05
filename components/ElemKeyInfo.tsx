@@ -129,9 +129,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 		infoItems.push({
 			icon: IconCash,
 			text:
-				investmentsLength > 1
-					? investmentsLength + " Investments"
-					: "Investment",
+				investmentsLength === 1
+					? investmentsLength + " Investment"
+					: investmentsLength + " Investments",
 			link: "#investments",
 			target: "_self",
 		});

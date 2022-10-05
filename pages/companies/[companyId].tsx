@@ -234,31 +234,33 @@ const Company: NextPage<Props> = (props: Props) => {
 					</div>
 				</div>
 				<div className="col-span-3 mt-7 lg:mt-0">
-					<section className="bg-white shadow rounded-lg p-5 md:mt-0">
-						<h2 className="text-xl font-bold">Token Info</h2>
-						<div className="flex flex-col space-y-2 mt-2">
-							<div className="flex items-center space-x-2">
-								<div className=" text-slate-600">Price (USD)</div>
-								<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-									{`$${
-										tokenInfo && tokenInfo.currentPrice
-											? convertAmountRaised(tokenInfo.currentPrice)
-											: 0
-									}`}
+					{(tokenInfo.currentPrice > 0 || tokenInfo.marketCap > 0) && (
+						<section className="bg-white shadow rounded-lg p-5 md:mt-0">
+							<h2 className="text-xl font-bold">Token Info</h2>
+							<div className="flex flex-col space-y-2 mt-2">
+								<div className="flex items-center space-x-2">
+									<div className=" text-slate-600">Price (USD)</div>
+									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
+										{`$${
+											tokenInfo && tokenInfo.currentPrice
+												? convertAmountRaised(tokenInfo.currentPrice)
+												: 0
+										}`}
+									</div>
+								</div>
+								<div className="flex items-center space-x-2">
+									<div className=" text-slate-600">Market Cap</div>
+									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
+										{`$${
+											tokenInfo && tokenInfo.marketCap
+												? convertAmountRaised(tokenInfo.marketCap)
+												: 0
+										}`}
+									</div>
 								</div>
 							</div>
-							<div className="flex items-center space-x-2">
-								<div className=" text-slate-600">Market Cap</div>
-								<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-									{`$${
-										tokenInfo && tokenInfo.marketCap
-											? convertAmountRaised(tokenInfo.marketCap)
-											: 0
-									}`}
-								</div>
-							</div>
-						</div>
-					</section>
+						</section>
+					)}
 				</div>
 			</div>
 
@@ -404,13 +406,6 @@ const Company: NextPage<Props> = (props: Props) => {
 				</div>
 			)}
 			{/* <ElemCohort className="mt-7" heading="Similar Companies" /> */}
-			{/* <div className="mt-7 rounded-lg bg-white shadow">
-				<ElemRecentCompanies
-					onUpdateOfCompany={() => { }}
-					//className="px-5 bg-white border rounded-lg border-black/10"
-					heading="Similar Companies"
-				/>
-			</div> */}
 		</div>
 	);
 };

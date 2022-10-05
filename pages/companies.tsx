@@ -245,22 +245,24 @@ const Companies: NextPage<Props> = ({
 						/>
 
 						<div className="hidden md:block md:shrink md:basis-0">
-							<div
-								className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
+							<ElemButton
 								onClick={() => setToggleViewMode(!toggleViewMode)}
+								btn="white"
+								roundedFull={false}
+								className="rounded-md focus:ring-1 focus:ring-slate-200"
 							>
 								{toggleViewMode ? (
-									<div className="flex items-center">
+									<>
 										<IconGrid className="w-5 h-5 mr-1" />
 										Grid
-									</div>
+									</>
 								) : (
-									<div className="flex items-center">
+									<>
 										<IconList className="w-5 h-5 mr-1" />
 										List
-									</div>
+									</>
 								)}
-							</div>
+							</ElemButton>
 						</div>
 					</ElemFiltersWrap>
 

@@ -1,8 +1,6 @@
 import { Investors } from "@/graphql/types";
 import { IconEditPencil } from "@/components/Icons";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { getTimeOfWork, getWorkDurationFromAndTo } from "@/utils";
-import Link from "next/link";
 type Props = {
 	className?: string;
 	heading?: string;
@@ -18,7 +16,7 @@ export const ElemInvestorsList: React.FC<Props> = ({
 }) => {
 	return (
 		<>
-			<div className={`w-full p-5 bg-white shadow rounded-lg ${className}`}>
+			<div className={`w-full p-4 bg-white shadow rounded-lg ${className}`}>
 				<div className="flex items-center justify-between">
 					<h2 className="text-xl font-bold">{heading}</h2>
 					{showEdit && (
