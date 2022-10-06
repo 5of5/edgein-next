@@ -58,7 +58,7 @@ export default function OnBoardingStep2Modal(props: Props) {
 								<h3 className="text-2xl font-bold">
 									Let&rsquo;s set up your areas of interest
 								</h3>
-								<p className="text-sm text-slate-500">Step 2 of 3</p>
+								<p className="text-sm text-slate-500">Step 2 of 2</p>
 								<div className="mt-4 text-slate-600">
 									This will help you discover relevant companies and investors.
 								</div>
