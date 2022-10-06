@@ -120,7 +120,7 @@ const Person: NextPage<Props> = (props) => {
 					<div className="col-span-8">
 						{person.team_members.length > 0 && (
 							<ElemJobsList
-								heading="Jobs"
+								heading="Experience"
 								team_members={person.team_members}
 								className="mb-7"
 							/>

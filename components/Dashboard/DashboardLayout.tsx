@@ -60,18 +60,16 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 											leaveFrom="opacity-100"
 											leaveTo="opacity-0"
 										>
-											<div className="absolute top-0 right-0 -mr-12 pt-2">
-												<button
-													type="button"
-													className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+											<div className="absolute top-0 right-0 pt-2">
+												<ElemButton
+													btn="white"
+													roundedFull={false}
 													onClick={() => setSidebarOpen(false)}
+													className="rounded-lg hover:border-primary-500 md:hidden"
 												>
-													<span className="sr-only">Close sidebar</span>
-													<IconX
-														className="h-6 w-6 text-white"
-														aria-hidden="true"
-													/>
-												</button>
+													<span className="sr-only">Close Sidebar</span>
+													<IconX className="h-6 w-6" aria-hidden="true" />
+												</ElemButton>
 											</div>
 										</Transition.Child>
 										{/* <div className="flex-shrink-0 px-4 flex items-center">
