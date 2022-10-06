@@ -127,7 +127,6 @@ const AdminApp = () => {
     buildDataProvider();
   }, []);
 
-// { FIELD_NAME: { format: "hasura-raw-query", value: { _is_null: true } } }
   if (!dataProvider || !user) return <p>Loading...</p>;
 
   return (
