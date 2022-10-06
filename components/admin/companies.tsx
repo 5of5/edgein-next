@@ -206,9 +206,9 @@ export const CompanyList = () => {
       }}
     >
       <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <FunctionField render= {(record: any) => (<a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${record.slug}`}><Button label="Preview" /></a>)} />
