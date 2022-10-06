@@ -30,6 +30,7 @@ import {
   Toolbar,
   SaveButton,
   useGetOne,
+  useGetManyReference,
   Link
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
@@ -656,8 +657,9 @@ const InvestmentRoundsList = () => {
     "valuation",
     "status",
   ];
-  const { data } = useGetList("investment_rounds", {
-    where: { company_id: id },
+  const { data } = useGetManyReference("investment_rounds", {
+    target: 'company_id',
+    id: id,
     pagination: { page: 1, perPage: 100 },
     sort: { field: 'round_date', order: 'DESC' }
   });
