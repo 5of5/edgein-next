@@ -3,6 +3,7 @@ import React from "react";
 import GoogleIcon from "@mui/icons-material/Google";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import CrunchBaseIcon from './CrunchBaseIcon';
 
 import { crunchbaseImg } from "./constants";
 
@@ -47,11 +48,7 @@ export function RenderCBIcon({ topPos, leftPos, googleKeyWord }: any) {
   return (
     <div style={{ position: "absolute", top: topPos, left: leftPos }}>
       <a href={url} target="_blank" rel="noreferrer">
-        <img
-          className="crunchbase-icon"
-          src={crunchbaseImg}
-          alt={crunchbaseImg}
-        />
+        <CrunchBaseIcon />
       </a>
     </div>
   );
