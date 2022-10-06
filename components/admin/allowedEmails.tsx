@@ -81,9 +81,15 @@ const AllowedEmailsTitle = ({ record }: TitleProps) => {
 	return <span>Allow List {record ? `"${record.name}"` : ""}</span>;
 };
 
+const transform = (data: any) => {
+  data.email = (data.email || '').toLowerCase()
+  return data
+}
+
 export const AllowedEmailsEdit = () => {
 	return (
 		<Edit
+      transform={transform}
 			title={<AllowedEmailsTitle />}
 			sx={{
 				".MuiFormHelperText-root": {
@@ -119,6 +125,7 @@ export const AllowedEmailsEdit = () => {
 export const AllowedEmailsCreate = () => {
 	return (
 		<Create
+      transform={transform}
 			title="Create a entry in allow list"
 			sx={{
 				".MuiFormHelperText-root": {
