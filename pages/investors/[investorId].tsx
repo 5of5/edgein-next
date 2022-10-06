@@ -175,10 +175,12 @@ const VCFirm: NextPage<Props> = (props) => {
 				<div className="w-full col-span-5 mt-7 lg:mt-0">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
 
-					{/* {vcfirm.tags && <ElemTags className="mt-4" tags={vcfirm.tags} />} */}
-
-					{vcfirmTagsUnique.length > 0 && (
+					{vcfirm.tags != "" ? (
+						<ElemTags className="mt-4" tags={vcfirm.tags} />
+					) : vcfirmTagsUnique.length > 0 ? (
 						<ElemTags className="mt-4" tags={vcfirmTagsUnique} />
+					) : (
+						<></>
 					)}
 
 					{vcfirm.overview && (
