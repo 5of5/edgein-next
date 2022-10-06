@@ -66,7 +66,11 @@ const MyLogin = () => {
   return <div />;
 };
 
-const nullableInputs = {
+type NullableInputs = {
+  [key: string]: Array<string>
+};
+
+const nullableInputs: NullableInputs = {
   investments: ['person_id', 'vc_firm_id', 'round_id']
 };
 
@@ -96,7 +100,7 @@ const AdminApp = () => {
     getPermissions: () => Promise.resolve(),
   } as AuthProvider;
 
-  const nullInputTransform = (type, obj) => {
+  const nullInputTransform = (type: string, obj: any): any => {
     const nullableInputsForType = nullableInputs[type];
     if (nullableInputsForType && obj.data) {
       nullableInputsForType.forEach(input => {
