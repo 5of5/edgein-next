@@ -96,6 +96,18 @@ const AdminApp = () => {
     getPermissions: () => Promise.resolve(),
   } as AuthProvider;
 
+  const nullInputTransform = (type, obj) => {
+    const nullableInputsForType = nullableInputs[type];
+    if (nullableInputsForType && obj.data) {
+      nullableInputsForType.forEach(input => {
+        if (obj.data[input] == "") {
+          obj.data[input] = null;
+        }
+      });
+    }
+    return obj;
+  };
+
   useEffect(() => {
     const buildDataProvider = async () => {
       const myClientWithAuth = new ApolloClient({
@@ -106,32 +118,11 @@ const AdminApp = () => {
         client: myClientWithAuth,
       });
       // Fix nullable inputs for graphql
-      const newDataProvider = {
+      setDataProvider({
         ...dataProvider,
-        create: (type, obj) => {
-          const nullableInputsForType = nullableInputs[type];
-          if (nullableInputsForType && obj.data) {
-            nullableInputsForType.forEach(input => {
-              if (obj.data[input] == "") {
-                obj.data[input] = null;
-              }
-            });
-          }
-          return dataProvider.create(type, obj);
-        },
-        update: (type, obj) => {
-          const nullableInputsForType = nullableInputs[type];
-          if (nullableInputsForType && obj.data) {
-            nullableInputsForType.forEach(input => {
-              if (obj.data[input] == "") {
-                obj.data[input] = null;
-              }
-            });
-          }
-          return dataProvider.update(type, obj);
-        },
-      }
-      setDataProvider(() => newDataProvider);
+        create: (type, obj) => dataProvider.create(type, nullInputTransform(type, obj)),
+        update: (type, obj) => dataProvider.update(type, nullInputTransform(type, obj))
+      });
     };
     buildDataProvider();
   }, []);
