@@ -119,7 +119,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						</>
 					)}
 				</QueryClientProvider>
-				<Script
+				{/* <Script
 					id="webpushr-script"
 					strategy="afterInteractive"
 					dangerouslySetInnerHTML={{
@@ -128,7 +128,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						fjs.parentNode.appendChild(js);}(window,document, 'script', 'webpushr-jssdk'));
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
-				/>
+				/> */}
 			</div>
 		</>
 	);
