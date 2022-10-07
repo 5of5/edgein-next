@@ -15,6 +15,7 @@ import {
 	IconSettings,
 	//IconOrganization,
 } from "./Icons";
+import Link from "next/link";
 
 export const UserMenu = () => {
 	const { user } = useAuth();
@@ -87,15 +88,16 @@ export const UserMenu = () => {
 					{navigation.map((item) => (
 						<Menu.Item key={item.name}>
 							{({ active }) => (
-								<a
-									href={item.href}
-									className={`${
-										active ? "bg-gray-50" : ""
-									} hover:text-primary-500 flex w-full items-center px-2 py-2`}
-								>
-									<item.icon className="mr-2 h-6 w-6" aria-hidden="true" />
-									{item.name}
-								</a>
+								<Link href={item.href} passHref>
+									<a
+										className={`${
+											active ? "bg-gray-50" : ""
+										} hover:text-primary-500 flex w-full items-center px-2 py-2`}
+									>
+										<item.icon className="mr-2 h-6 w-6" aria-hidden="true" />
+										{item.name}
+									</a>
+								</Link>
 							)}
 						</Menu.Item>
 					))}

@@ -13,6 +13,7 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemTooltip } from "@/components/ElemTooltip";
+import Link from "next/link";
 // import { ElemCredibility } from "@/components/Company/ElemCredibility";
 // import { ElemVelocity } from "@/components/Company/ElemVelocity";
 //import { IconArrowUp, IconArrowDown } from "@/components/Icons";
@@ -77,8 +78,8 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 	};
 
 	return (
+		<Link href={`/companies/${companyData.slug}`} passHref>
 		<a
-			href={`/companies/${companyData.slug}`}
 			className={`flex flex-col ${
 				toggleViewMode ? "md:flex-row md:items-center" : ""
 			} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
@@ -189,6 +190,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					onCreateNew={handleReactionClick}
 				/>
 			</div>
-		</a>
+		</a></Link>
 	);
 };
