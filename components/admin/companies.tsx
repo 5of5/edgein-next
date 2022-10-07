@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
+  DateField,
   FunctionField,
   AutocompleteArrayInput,
   AutocompleteInput,
@@ -29,11 +30,13 @@ import {
   Toolbar,
   SaveButton,
   useGetOne,
+  useGetManyReference,
   Link
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+import { roundChoices, currencyChoices } from "../../utils/constants";
 import BookIcon from "@mui/icons-material/Book";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {
@@ -203,9 +206,9 @@ export const CompanyList = () => {
       }}
     >
       <Datagrid
-      // data={renderData}
-      // sort={customSort}
-      // setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <FunctionField render= {(record: any) => (<a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${record.slug}`}><Button label="Preview" /></a>)} />
@@ -374,6 +377,7 @@ export const CompanyEdit = () => {
   };
 
   return (
+    <>
     <Edit
       title={<CompanyTitle />}
       transform={transform}
@@ -444,7 +448,7 @@ export const CompanyEdit = () => {
           {isIcon && (
             <>
               <div style={{position: 'absolute', top: 135, left: 18}}>
-                <a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${currentData.slug}`}>
+                <a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${currentData && currentData.slug}`}>
                   <Button label="Preview" />
                 </a>
               </div>
@@ -625,9 +629,90 @@ export const CompanyEdit = () => {
               },
             }}
           />
+          <div className="w-full">
+            <InvestmentRoundsList />
+          </div>
         </SimpleForm>
       </div>
+
     </Edit>
+
+    </>
+  );
+};
+
+const InvestmentRoundsList = () => {
+  const [customSort, setCustomSort] = React.useState({
+    field: "id",
+    order: "ASC",
+  });
+  const { id } = useParams();
+  const headers: string[] = [
+    "id",
+    "company_id",
+    "round_date",
+    "round",
+    "amount",
+    "currency",
+    "valuation",
+    "status",
+  ];
+  const { data } = useGetManyReference("investment_rounds", {
+    target: 'company_id',
+    id: id,
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'round_date', order: 'DESC' }
+  });
+  let renderData = data?.map((v) => {
+    let sum = 0;
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum;
+    }
+    return { ...v, edit: '#/round/' + v.id };
+  });
+
+  return (
+    <List
+      sx={{
+        ".MuiToolbar-root": {
+          justifyContent: "start !important",
+          paddingTop: 0,
+          marginBottom: "4px",
+        },
+        ".RaBulkActionsToolbar-toolbar": {
+          justifyContent: "start !important",
+        },
+        ".MuiToolbar-root .MuiButtonBase-root": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          margin: "4px",
+        },
+        ".RaBulkActionsToolbar-topToolbar": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+        ".MuiToolbar-root form": {
+          flex: "0 1 auto",
+        },
+        ".MuiToolbar-root form .MuiFormControl-root": {
+          margin: 0,
+        },
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        bulkActionButtons={false}
+      >
+        <DateField source="round_date" sortable={false} />
+        <TextField source="round" sortable={false} />
+        <NumberField source="amount" sortable={false} />
+        <SelectField source="currency" choices={currencyChoices} sortable={false} />
+        <NumberField source="valuation" sortable={false} />
+        <TextField source="status" sortable={false} />
+        <EditButton resource={"investment_rounds"} />
+      </Datagrid>
+    </List>
   );
 };
 

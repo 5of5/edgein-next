@@ -8,10 +8,10 @@ query GetVCFirm($slug: String!, $current_user: Int) {
 		linkedin
 		sentiment
 		tags
-    	overview
-    	year_founded
-    	location
-    	twitter
+		overview
+		year_founded
+		location
+		twitter
 		investors {
 			id
 			person {
@@ -28,7 +28,7 @@ query GetVCFirm($slug: String!, $current_user: Int) {
 			end_date
 			seniority
 			title
-			}
+		}
 		investments {
 			investment_round {
 				id
@@ -43,15 +43,20 @@ query GetVCFirm($slug: String!, $current_user: Int) {
 				}
 			}
 		}
-		follows(where: {created_by_user_id: {_eq: $current_user}}) {
-      list {
-        name
-      }
-    }
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
+			list {
+				name
+			}
+		}
 	}
 }
 
-query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int = 0) {
+query GetVCFirms(
+	$limit: Int
+	$offset: Int
+	$where: vc_firms_bool_exp!
+	$current_user: Int = 0
+) {
 	vc_firms(
 		where: $where
 		order_by: { num_of_investments: desc }
@@ -66,11 +71,11 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current
 		sentiment
 		overview
 		website
-		follows(where: {created_by_user_id: {_eq: $current_user}}) {
-      list {
-        name
-      }
-    }
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
+			list {
+				name
+			}
+		}
 	}
 }
 
@@ -94,11 +99,11 @@ query GetVCFirmsRecentInvestments(
 		num_of_investments
 		sentiment
 		overview
-		follows(where: {created_by_user_id: {_eq: $current_user}}) {
-      list {
-        name
-      }
-    }
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
+			list {
+				name
+			}
+		}
 	}
 }
 
@@ -110,19 +115,14 @@ query GetVCFirmsPath {
 	}
 }
 
-query GetRelevantVCFirms(
-	$where: vc_firms_bool_exp!
-	$current_user: Int
-	) {
-		vc_firms(
-			where: $where
-		) {
-			id
-			logo
-			name
-			slug
-			sentiment
-			follows(where: {created_by_user_id: {_eq: $current_user}}) {
+query GetRelevantVCFirms($where: vc_firms_bool_exp!, $current_user: Int) {
+	vc_firms(where: $where) {
+		id
+		logo
+		name
+		slug
+		sentiment
+		follows(where: { created_by_user_id: { _eq: $current_user } }) {
 			list {
 				name
 			}
@@ -131,11 +131,10 @@ query GetRelevantVCFirms(
 }
 
 query GetAllVCFirms {
-  vc_firms {
-    id
-    name
-    logo
-    slug
-  }
+	vc_firms {
+		id
+		name
+		logo
+		slug
+	}
 }
-

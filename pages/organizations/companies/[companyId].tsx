@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconChevronLeft, IconChevronRight } from "@/components/Icons";
-import company from "../../../images/company.png";
 import Image from "next/image";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
