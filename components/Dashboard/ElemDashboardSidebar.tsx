@@ -82,7 +82,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 					</li> */}
 
 					<li className={`${getActiveClass("/account/")}`}>
-						<Link href={`/account`}>
+						<Link href={`/account`} passHref>
 							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconSettings className="h-6 w-6" />
 								<span>Account Settings</span>
