@@ -18,6 +18,7 @@ import {
 	IconUser,
 	IconImage,
 } from "@/components/Icons";
+import Link from "next/link";
 
 const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -58,8 +59,8 @@ type HitPeopleProps = {
 
 function HitCompanies({ hit }: HitCompaniesProps) {
 	return (
+		<Link href={`/companies/${hit.slug}`} passHref>
 		<a
-			href={`/companies/${hit.slug}`}
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
@@ -94,13 +95,14 @@ function HitCompanies({ hit }: HitCompaniesProps) {
 			</p>
 			<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 		</a>
+		</Link>
 	);
 }
 
 function HitInvestors({ hit }: HitInvestorsProps) {
 	return (
+		<Link href={`/investors/${hit.slug}`} passHref>
 		<a
-			href={`/investors/${hit.slug}`}
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
@@ -126,13 +128,14 @@ function HitInvestors({ hit }: HitInvestorsProps) {
 			</h2>
 			<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 		</a>
+		</Link>
 	);
 }
 
 function HitPeople({ hit }: HitPeopleProps) {
 	return (
+		<Link href={`/people/${hit.slug}`} passHref>
 		<a
-			href={`/people/${hit.slug}`}
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
@@ -158,6 +161,7 @@ function HitPeople({ hit }: HitPeopleProps) {
 			</h2>
 			<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 		</a>
+		</Link>
 	);
 }
 

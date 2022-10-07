@@ -223,14 +223,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							>
 								&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
 							</a>,
-							// <a
-							// 	key={i}
-							// 	href={`mailto:${_email}`}
-							// 	className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
-							// >
-							// 	<IconEmail title="Email" className="h-6 w-6 text-dark-500" />
-							// 	<span>{_email}</span>
-							// </a>,
 						])}
 					</li>
 				)}
