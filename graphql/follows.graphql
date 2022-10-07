@@ -41,7 +41,7 @@ query GetVcFirmsByListId($list_id: Int = 0) {
 			id
 			name
 			num_of_investments
-			latest_investments
+			latest_investment
 			sentiment
 			logo
 			slug

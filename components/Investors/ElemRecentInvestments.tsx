@@ -221,10 +221,10 @@ export const ElemRecentInvestments: FC<Props> = ({
 											</p>
 										)}
 										{/* <div className="mt-3 text-xs font-bold text-gray-400">
-										{investor.latest_investments && (
+										{investor. && (
 											<div>
 											Latest Investment
-											{formatDate(investor.latest_investments, {
+											{formatDate(investor.latest_investment, {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",

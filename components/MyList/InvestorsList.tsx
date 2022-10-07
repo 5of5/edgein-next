@@ -99,7 +99,7 @@ export const InvestorsList: FC<Props> = ({
 			},
 			{
 				Header: "Latest Investment Date",
-				accessor: "vc_firm.latest_investments" as const,
+				accessor: "vc_firm.latest_investment" as const,
 				Cell: (props: any) => {
 					return (
 						<>
