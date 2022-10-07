@@ -57,10 +57,11 @@ type HitPeopleProps = {
 	}>;
 };
 
-function HitCompanies({ hit }: HitCompaniesProps) {
+const HitCompanies = (onClose: () => void) => function HitCompanies({ hit }: HitCompaniesProps) {
 	return (
 		<Link href={`/companies/${hit.slug}`} passHref>
 		<a
+			onClick={onClose}
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
@@ -99,11 +100,12 @@ function HitCompanies({ hit }: HitCompaniesProps) {
 	);
 }
 
-function HitInvestors({ hit }: HitInvestorsProps) {
+const HitInvestors = (onClose: () => void) => function HitInvestors({ hit }: HitInvestorsProps) {
 	return (
 		<Link href={`/investors/${hit.slug}`} passHref>
 		<a
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
+			onClick={onClose}
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 				{hit.logo ? (
@@ -132,11 +134,12 @@ function HitInvestors({ hit }: HitInvestorsProps) {
 	);
 }
 
-function HitPeople({ hit }: HitPeopleProps) {
+const HitPeople = (onClose: () => void) => function HitPeople ({ hit }: HitPeopleProps) {
 	return (
 		<Link href={`/people/${hit.slug}`} passHref>
 		<a
 			className="flex items-center px-6 py-1 group hover:bg-slate-100"
+			onClick={onClose}
 		>
 			<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 				{hit.picture ? (
@@ -225,7 +228,7 @@ export default function SearchModal(props: any) {
 					<h1 className="font-bold mt-5 mx-6">Companies</h1>
 					<EmptyQueryBoundary>
 						<InfiniteHits
-							hitComponent={HitCompanies}
+							hitComponent={HitCompanies(onClose)}
 							showPrevious={false}
 							classNames={{
 								list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
@@ -242,7 +245,7 @@ export default function SearchModal(props: any) {
 					<h1 className="font-bold mt-5 mx-6">Investors</h1>
 					<EmptyQueryBoundary>
 						<InfiniteHits
-							hitComponent={HitInvestors}
+							hitComponent={HitInvestors(onClose)}
 							showPrevious={false}
 							classNames={{
 								list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
@@ -259,7 +262,7 @@ export default function SearchModal(props: any) {
 					<h1 className="font-bold mt-5 mx-6">People</h1>
 					<EmptyQueryBoundary>
 						<InfiniteHits
-							hitComponent={HitPeople}
+							hitComponent={HitPeople(onClose)}
 							showPrevious={false}
 							classNames={{
 								list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
