@@ -32,7 +32,12 @@ import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
   <ReferenceInput key="searchCompany" source="company_id" reference="companies">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      style={{padding: 0, border: "none"}}
+      className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+      optionText="name"
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <SelectInput
     key="round"
@@ -209,9 +214,11 @@ export const InvestmentRoundsEdit = () => (
         source="id"
       />
       <ReferenceInput label="Company" source="company_id" reference="companies">
-        <SelectInput
+        <AutocompleteInput
+          style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <DateInput
@@ -265,9 +272,11 @@ export const InvestmentRoundsCreate = () => (
   >
     <SimpleForm toolbar={<CustomToolbar />}>
       <ReferenceInput label="Company" source="company_id" reference="companies">
-        <SelectInput
+        <AutocompleteInput
+          style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <DateInput
