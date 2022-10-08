@@ -85,20 +85,15 @@ export const UserMenu = () => {
 					as="nav"
 					className="absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
-					{navigation.map((item) => (
-						<Menu.Item key={item.name}>
-							{({ active }) => (
-								<Link href={item.href} passHref>
-									<a
-										className={`${
-											active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center px-2 py-2`}
-									>
-										<item.icon className="mr-2 h-6 w-6" aria-hidden="true" />
-										{item.name}
-									</a>
-								</Link>
-							)}
+					{navigation.map((link) => (
+						<Menu.Item
+							key={link.href}
+							as="a"
+							href={link.href}
+							className="flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
+						>
+							<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
+							{link.name}
 						</Menu.Item>
 					))}
 					<Menu.Item>
