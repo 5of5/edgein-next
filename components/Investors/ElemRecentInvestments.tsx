@@ -148,7 +148,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 				<h4>Error loading investors</h4>
 			) : isLoading ? (
 				<>
-					<div className="flex p-3 overflow-hidden">
+					<div className="flex -mx-3  overflow-hidden">
 						{Array.from({ length: 3 }, (_, i) => (
 							<div
 								key={i}
