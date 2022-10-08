@@ -25,7 +25,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 	onChange,
 }) => {
 	const displayIcon = (val: string | number, className: string) => {
-		const basicInfo = "h-5 w-5 mr-1";
+		const basicInfo = "h-5 w-5 mr-1 shrink-0";
 		switch (val) {
 			case "Following":
 				return <IconFollowing className={`${basicInfo} ${className}`} />;
