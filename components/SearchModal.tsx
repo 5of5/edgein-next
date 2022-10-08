@@ -1,5 +1,5 @@
-import Modal from "react-modal";
-import React from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment } from "react";
 import algoliasearch from "algoliasearch/lite";
 import { Hit as AlgoliaHit } from "instantsearch.js";
 import { every } from "lodash";
@@ -25,8 +25,6 @@ const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
 	process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!
 );
-
-Modal.setAppElement("#modal-root");
 
 type HitCompaniesProps = {
 	hit: AlgoliaHit<{
@@ -179,10 +177,6 @@ export default function SearchModal(props: any) {
 		props.onClose();
 	};
 
-	const missingData = () => {
-		props.onClose();
-	};
-
 	function MasterEmptyQueryBoundary({ children, emptyText = "" }: any) {
 		const { scopedResults, results } = useInstantSearch();
 
@@ -247,97 +241,124 @@ export default function SearchModal(props: any) {
 	}
 
 	return (
-		<Modal
-			isOpen={props.show}
-			onRequestClose={onClose}
-			shouldCloseOnOverlayClick={true}
-			overlayClassName="fixed top-0 left-0 z-[50] flex flex-col h-screen w-screen p-6 cursor-auto bg-black/20 backdrop-blur-sm"
-			className="animate-fade-in-up max-w-3xl w-full mx-auto my-0 min-h-0 pb-5 flex flex-col rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden focus:outline-none focus:ring-0"
-			contentLabel="Search EdgeIn"
-		>
-			<InstantSearch searchClient={searchClient} indexName="companies">
-				<header className="relative flex items-center z-10 p-0 px-4 border-b border-slate-100">
-					<IconSearch className="h-6 w-6 text-slate-600" />
-					<SearchBox
-						className="w-full"
-						placeholder="Quick Search..."
-						autoFocus={true}
-						queryHook={(query, search) => {
-							emptyView.current = query.length === 0;
-							search(query);
-						}}
-						classNames={{
-							submitIcon: "hidden",
-							resetIcon: "hidden",
-							loadingIndicator: "hidden",
-							form: "flex",
-							input:
-								"appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-slate-400 focus:bg-transparent focus:border-none focus:ring-0",
-						}}
-					/>
-					<button
-						onClick={onClose}
-						type="reset"
-						arial-label="cancel"
-						className="appearance-none w-8 justify-items-end p-1 bg-white border border-slate-100 rounded-md text-slate-600 font-bold text-[9px] hover:shadow-sm"
+		<>
+			<Transition appear show={props.show} as={Fragment}>
+				<Dialog as="div" className="relative z-50" onClose={onClose}>
+					<Transition.Child
+						as={Fragment}
+						enter="ease-out duration-300"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
 					>
-						ESC
-					</button>
-				</header>
+						<div className="fixed inset-0 bg-black bg-opacity-25" />
+					</Transition.Child>
+					<div className="fixed inset-0 overflow-y-auto">
+						<div className="flex min-h-full items-start justify-center p-4 text-center">
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 scale-95"
+								enterTo="opacity-100 scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 scale-100"
+								leaveTo="opacity-0 scale-95"
+							>
+								<Dialog.Panel className="w-full max-w-3xl pb-5 transform rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden text-left align-middle transition-all">
+									<InstantSearch
+										searchClient={searchClient}
+										indexName="companies"
+									>
+										<header className="relative flex items-center z-10 p-0 px-4 border-b border-slate-100">
+											<IconSearch className="h-6 w-6 text-slate-600" />
+											<SearchBox
+												className="w-full"
+												placeholder="Quick Search..."
+												autoFocus={true}
+												queryHook={(query, search) => {
+													emptyView.current = query.length === 0;
+													search(query);
+												}}
+												classNames={{
+													submitIcon: "hidden",
+													resetIcon: "hidden",
+													loadingIndicator: "hidden",
+													form: "flex",
+													input:
+														"appearance-none bg-transparent ml-3 mr-4 flex-1 h-14 min-w-0 border-none placeholder:text-slate-400 focus:bg-transparent focus:border-none focus:ring-0",
+												}}
+											/>
+											<button
+												onClick={onClose}
+												type="reset"
+												arial-label="cancel"
+												className="appearance-none w-8 justify-items-end p-1 bg-white border border-slate-100 rounded-md text-slate-600 font-bold text-[9px] hover:shadow-sm"
+											>
+												ESC
+											</button>
+										</header>
 
-				<MasterEmptyQueryBoundary>
-					<Index indexName="companies">
-						<Configure hitsPerPage={4} />
-						<h3 className="font-bold mt-5 mx-6">Companies</h3>
-						<EmptyQueryBoundary>
-							<InfiniteHits
-								hitComponent={HitCompanies(onClose)}
-								showPrevious={false}
-								classNames={{
-									list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
-									loadMore:
-										"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
-									disabledLoadMore: "hidden",
-								}}
-							/>
-						</EmptyQueryBoundary>
-					</Index>
+										<MasterEmptyQueryBoundary>
+											<Index indexName="companies">
+												<Configure hitsPerPage={4} />
+												<h3 className="font-bold mt-5 mx-6">Companies</h3>
+												<EmptyQueryBoundary>
+													<InfiniteHits
+														hitComponent={HitCompanies(onClose)}
+														showPrevious={false}
+														classNames={{
+															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+															loadMore:
+																"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
+															disabledLoadMore: "hidden",
+														}}
+													/>
+												</EmptyQueryBoundary>
+											</Index>
 
-					<Index indexName="vc_firms">
-						<Configure hitsPerPage={4} />
-						<h3 className="font-bold mt-5 mx-6">Investors</h3>
-						<EmptyQueryBoundary>
-							<InfiniteHits
-								hitComponent={HitInvestors(onClose)}
-								showPrevious={false}
-								classNames={{
-									list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
-									loadMore:
-										"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
-									disabledLoadMore: "hidden",
-								}}
-							/>
-						</EmptyQueryBoundary>
-					</Index>
+											<Index indexName="vc_firms">
+												<Configure hitsPerPage={4} />
+												<h3 className="font-bold mt-5 mx-6">Investors</h3>
+												<EmptyQueryBoundary>
+													<InfiniteHits
+														hitComponent={HitInvestors(onClose)}
+														showPrevious={false}
+														classNames={{
+															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+															loadMore:
+																"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
+															disabledLoadMore: "hidden",
+														}}
+													/>
+												</EmptyQueryBoundary>
+											</Index>
 
-					<Index indexName="people">
-						<Configure hitsPerPage={4} />
-						<h3 className="font-bold mt-5 mx-6">People</h3>
-						<EmptyQueryBoundary>
-							<InfiniteHits
-								hitComponent={HitPeople(onClose)}
-								showPrevious={false}
-								classNames={{
-									list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
-									loadMore:
-										"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500",
-									disabledLoadMore: "hidden",
-								}}
-							/>
-						</EmptyQueryBoundary>
-					</Index>
-				</MasterEmptyQueryBoundary>
-			</InstantSearch>
-		</Modal>
+											<Index indexName="people">
+												<Configure hitsPerPage={4} />
+												<h3 className="font-bold mt-5 mx-6">People</h3>
+												<EmptyQueryBoundary>
+													<InfiniteHits
+														hitComponent={HitPeople(onClose)}
+														showPrevious={false}
+														classNames={{
+															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+															loadMore:
+																"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500",
+															disabledLoadMore: "hidden",
+														}}
+													/>
+												</EmptyQueryBoundary>
+											</Index>
+										</MasterEmptyQueryBoundary>
+									</InstantSearch>
+								</Dialog.Panel>
+							</Transition.Child>
+						</div>
+					</div>
+				</Dialog>
+			</Transition>
+		</>
 	);
 }
