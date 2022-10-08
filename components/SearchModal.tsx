@@ -12,7 +12,7 @@ import {
 	Index,
 	Configure,
 } from "react-instantsearch-hooks-web";
-
+import { FigureSearch } from "@/components/Figures";
 import {
 	IconSearch,
 	IconChevronRight,
@@ -193,11 +193,11 @@ export default function SearchModal(props: any) {
 
 		if (emptyView.current) {
 			return (
-				<div className="px-6 py-1 mt-5  text-center">
-					<div className="text-xl font-bold">
+				<div className="px-6 py-1 mt-5 text-center">
+					<FigureSearch className="mx-auto h-36" />
+					<div className="mt-3 text-xl font-bold">
 						Search for Companies, Investors, &amp; People
 					</div>
-					<span>Enter your query above</span>
 					<div style={{ display: "none" }}>{children}</div>
 				</div>
 			);

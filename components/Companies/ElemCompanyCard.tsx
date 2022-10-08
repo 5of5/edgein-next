@@ -16,7 +16,6 @@ import { ElemTooltip } from "@/components/ElemTooltip";
 import Link from "next/link";
 // import { ElemCredibility } from "@/components/Company/ElemCredibility";
 // import { ElemVelocity } from "@/components/Company/ElemVelocity";
-//import { IconArrowUp, IconArrowDown } from "@/components/Icons";
 
 type Props = {
 	company: Companies;
@@ -112,12 +111,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 									className="inline-flex items-center overflow-visible"
 								>
 									<span className="uppercase">{companyData.coin.ticker}</span>
-									{/* <span className="text-green-500">
-									$7.75 <IconArrowUp className="h-4 w-4 inline" />
-								</span>
-								<div className="inline-flex items-center text-red-500">
-									$0.0258 <IconArrowDown className="h-4 w-4 inline" />
-								</div> */}
 								</ElemTooltip>
 							)}
 						</div>
@@ -128,7 +121,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					{(companyData.layer || companyData.tags) && (
 						<div
 							className={`mt-4 flex flex-wrap gap-2 ${
-								toggleViewMode && "mt-0"
+								toggleViewMode && "lg:mt-0"
 							}`}
 						>
 							{companyData.layer && (
@@ -162,29 +155,6 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 						</div>
 					)}
 				</div>
-
-				{/* <div
-				className={`flex flex-row justify-between mt-4 shrink-0 lg:flex-row ${toggleViewMode
-					? "md:flex-col md:justify-center md:ml-auto md:flex md:items-end md:mt-0 lg:flex-row lg:items-center"
-					: ""
-					}`}
-				>
-				<ElemCredibility
-					mini={true}
-					className={`pr-4 ${toggleViewMode ? "md:pr-0 lg:pr-4" : ""
-					}`}
-					marketVerified={companyData.market_verified}
-					githubVerified={companyData.github}
-					linkedInVerified={companyData.company_linkedin}
-				/>
-				<ElemVelocity
-					mini={true}
-					className={`${toggleViewMode ? "md:pt-2 lg:pt-0" : ""
-					}`}
-					employeeListings={companyData.velocity_linkedin}
-					tokenExchangeValue={companyData.velocity_token}
-				/>
-				</div> */}
 
 				<div className="flex items-center justify-between mt-4 gap-x-5">
 					<ElemReactions
