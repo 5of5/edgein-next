@@ -369,8 +369,8 @@ const Company: NextPage<Props> = (props: Props) => {
 									)}
 								</>
 							) : (
-								<div className="flex items-center justify-center p-5">
-									<div className="text-xl text-slate-600">
+								<div className="flex items-center justify-center lg:p-5">
+									<div className="text-slate-600 lg:text-xl">
 										There is no recent activity for this organization.
 									</div>
 								</div>

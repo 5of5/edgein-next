@@ -39,10 +39,16 @@ const filters = [
     alwaysOn
   />,
   <ReferenceInput key="searchCompany" source="company_id" reference="companies">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      optionText={(choice) => `${choice.name}`}
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <ReferenceInput key="searchPerson" source="person_id" reference="people">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      optionText={(choice) => `${choice.name}`}
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <SelectInput
     key="function"
@@ -218,15 +224,19 @@ export const TeamMembersEdit = () => (
   >
     <SimpleForm>
       <ReferenceInput label="Company" source="company_id" reference="companies">
-        <SelectInput
+        <AutocompleteInput
+          style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
-        <SelectInput
+        <AutocompleteInput
+          style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <SelectInput
@@ -276,15 +286,19 @@ export const TeamMembersCreate = () => (
   >
     <SimpleForm toolbar={<CustomToolbar />}>
       <ReferenceInput label="Company" source="company_id" reference="companies">
-        <SelectInput
+        <AutocompleteInput
+          style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
-        <SelectInput
+        <AutocompleteInput
+          style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <SelectInput

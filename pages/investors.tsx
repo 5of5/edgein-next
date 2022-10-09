@@ -4,10 +4,7 @@ import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemHeading } from "@/components/ElemHeading";
 import { ElemFiltersWrap } from "@/components/ElemFiltersWrap";
-import { InputSearch } from "@/components/InputSearch";
 import { InputSelect } from "@/components/InputSelect";
-import { ElemButton } from "@/components/ElemButton";
-import { IconSearch, IconAnnotation } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -21,10 +18,12 @@ import { Pagination } from "@/components/Pagination";
 import { runGraphQl } from "@/utils";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
+import { investorChoices } from "../utils/constants";
 
 type Props = {
 	vcFirmCount: number;
 	initialVCFirms: GetVcFirmsQuery["vc_firms"];
+	investorFilters: TextFilter[];
 	numberOfInvestments: NumericFilter[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -32,15 +31,17 @@ type Props = {
 const Investors: NextPage<Props> = ({
 	vcFirmCount,
 	initialVCFirms,
+	investorFilters,
 	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
 	const { user } = useAuth();
 	const [initialLoad, setInitialLoad] = useState(true);
 
-	// Search Box
-	const [search, setSearch] = useState("");
-	const debouncedSearchTerm = useDebounce(search, 500);
+	// Investor Filter
+	const [selectedInvestorFilters, setSelectedInvestorFilters] = useState(
+		investorFilters[0]
+	);
 
 	// Investments Count
 	const [selectedInvestmentCount, setSelectedInvestmentCount] = useState(
@@ -53,22 +54,16 @@ const Investors: NextPage<Props> = ({
 
 	useEffect(() => {
 		setPage(0);
-		if (
-			initialLoad &&
-			debouncedSearchTerm !== "" &&
-			selectedInvestmentCount.rangeEnd !== 0
-		) {
+		if (initialLoad && selectedInvestmentCount.rangeEnd !== 0) {
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [debouncedSearchTerm, selectedInvestmentCount]);
+	}, [selectedInvestmentCount]);
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
-	if (debouncedSearchTerm !== "") {
-		filters._and?.push({ name: { _ilike: `%${debouncedSearchTerm}%` } });
-	}
+
 	if (selectedInvestmentCount.rangeEnd !== 0) {
 		filters._and?.push({
 			_and: [
@@ -93,7 +88,7 @@ const Investors: NextPage<Props> = ({
 		setInitialLoad(false);
 	}
 
-	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms
+	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms;
 
 	return (
 		<div className="relative overflow-hidden">
@@ -105,19 +100,15 @@ const Investors: NextPage<Props> = ({
 			<div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
 				{vcFirms && <ElemRecentInvestments heading="Recent Investor Updates" />}
 			</div>
-			<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
-				<div className="bg-white rounded-lg p-5">
+			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+				<div className="bg-white rounded-lg shadow p-5">
 					<h2 className="text-xl font-bold">All Investors</h2>
 					<ElemFiltersWrap className="pt-2 filters-wrap">
-						<InputSearch
+						<InputSelect
 							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							label="Search"
-							name="search"
-							value={search}
-							placeholder="Quick Search..."
-							onChange={(e: {
-								target: { value: React.SetStateAction<string> };
-							}) => setSearch(e.target.value)}
+							value={selectedInvestorFilters}
+							onChange={setSelectedInvestorFilters}
+							options={investorFilters}
 						/>
 						<InputSelect
 							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
@@ -126,29 +117,6 @@ const Investors: NextPage<Props> = ({
 							options={numberOfInvestments}
 						/>
 					</ElemFiltersWrap>
-
-					{vcFirms?.length === 0 && (
-						<>
-							<div className="flex items-center justify-center  mx-auto min-h-[40vh]">
-								<div className="w-full max-w-2xl py-8 text-center bg-white border rounded-2xl border-dark-500/10">
-									<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-									<h2 className="mt-5 text-3xl font-bold">No results found</h2>
-									<div className="mt-1 text-lg text-dark-400">
-										Please check spelling, try different filters, or tell us
-										about missing data.
-									</div>
-									<ElemButton
-										onClick={() => setToggleFeedbackForm(true)}
-										btn="white"
-										className="mt-3"
-									>
-										<IconAnnotation className="w-6 h-6 mr-1" />
-										Tell us about missing data
-									</ElemButton>
-								</div>
-							</div>
-						</>
-					)}
 
 					<div className="flex flex-col w-full gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
 						{error ? (
@@ -161,10 +129,7 @@ const Investors: NextPage<Props> = ({
 							</>
 						) : (
 							vcFirms?.map((vcfirm) => (
-								<ElemInvestorCard
-								key={vcfirm.id}
-								vcFirm={vcfirm as Vc_Firms}
-							/>
+								<ElemInvestorCard key={vcfirm.id} vcFirm={vcfirm as Vc_Firms} />
 							))
 						)}
 					</div>
@@ -199,12 +164,20 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
 			vcFirmCount: vcFirms?.vc_firms?.length || null,
 			initialVCFirms: vcFirms?.vc_firms.slice(0, 50) || null,
+			investorFilters: investorsFilters,
 			numberOfInvestments: InvestmentsFilters,
 		},
 	};
 };
 
 export default Investors;
+
+interface TextFilter {
+	title: string;
+	description?: string;
+	icon?: string;
+	value: string;
+}
 
 // Total Investments Filter
 const InvestmentsFilters: NumericFilter[] = [
@@ -233,4 +206,21 @@ const InvestmentsFilters: NumericFilter[] = [
 		rangeStart: 25,
 		rangeEnd: 1000000000,
 	},
+];
+
+const investorFilterValue = investorChoices.map((option) => {
+	return {
+		title: option.name,
+		value: option.id,
+		icon: option.id,
+		disabled: option.disabled ? option.disabled : false,
+	};
+});
+
+const investorsFilters: TextFilter[] = [
+	{
+		title: "All Investors",
+		value: "",
+	},
+	...investorFilterValue,
 ];

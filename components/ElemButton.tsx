@@ -51,7 +51,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = "text-primary-500 bg-transparent hover:text-dark-500";
 	} else if (btn === "white") {
 		btnClass =
-			"text-dark-500 bg-white ring-inset ring-1 ring-slate-200 focus:ring-primary-800 hover:text-primary-500 hover:bg-slate-200";
+			"text-dark-500 bg-white ring-inset ring-1 ring-slate-200 focus:ring-primary-800 focus:!ring-1 focus:!ring-slate-200 hover:text-primary-500 hover:bg-slate-200";
 	} else if (btn === "slate") {
 		btnClass =
 			"text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300";

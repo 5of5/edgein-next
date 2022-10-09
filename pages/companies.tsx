@@ -182,14 +182,14 @@ const Companies: NextPage<Props> = ({
 				{companies && (
 					<ElemRecentCompanies
 						onUpdateOfCompany={onUpdateOfCompany}
-						className="bg-white rounded-lg shadow-sm hover:shadow"
+						className="bg-white rounded-lg shadow"
 						heading="Recently Discovered"
 					/>
 				)}
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-				<div className="bg-white rounded-lg p-5">
+				<div className="bg-white rounded-lg shadow p-5">
 					<h2 className="text-xl font-bold">All Companies</h2>
 					<ElemFiltersWrap className="pt-2 filters-wrap">
 						<InputSelect
