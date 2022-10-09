@@ -1,6 +1,6 @@
 // Initialize the dataProvider before rendering react-admin resources.
 import React, { useState, useEffect } from "react";
-import buildHasuraProvider from "ra-data-hasura";
+import buildHasuraProvider, { BuildFields, buildFields } from "ra-data-hasura";
 import { Admin, DataProvider, Resource, AuthProvider } from "react-admin";
 
 import {
@@ -9,7 +9,7 @@ import {
 	CompanyList,
 } from "../../components/admin/companies";
 
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
 import {
 	InvestmentRoundsCreate,
 	InvestmentRoundsEdit,
@@ -66,6 +66,35 @@ const MyLogin = () => {
 	return <div />;
 };
 
+const extractFieldsFromQuery = (queryAst: any) => {
+  return queryAst.definitions[0].selectionSet.selections;
+};
+
+// Define the additional fields that we want.
+const EXTENDED_GET_LIST_INVESTMENT_ROUNDS = gql`
+  {
+    company {
+      name
+    }
+  }
+`;
+
+const customBuildFields: BuildFields = (type, fetchType) => {
+  const resourceName = type.name;
+
+  // First take the default fields (all, but no related or nested).
+  const defaultFields = buildFields(type, fetchType);
+
+  if (resourceName === 'investment_rounds') {
+    const relatedEntities = extractFieldsFromQuery(EXTENDED_GET_LIST_INVESTMENT_ROUNDS);
+    defaultFields.push(...relatedEntities);
+  }
+
+  // Extend other queries for other resources/fetchTypes here...
+
+  return defaultFields;
+};
+
 const AdminApp = () => {
 	const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(
 		null
@@ -100,7 +129,7 @@ const AdminApp = () => {
 			});
 			const dataProvider = await buildHasuraProvider({
 				client: myClientWithAuth,
-			});
+			}, {buildFields: customBuildFields});
 			setDataProvider(() => dataProvider);
 		};
 		buildDataProvider();
