@@ -311,8 +311,8 @@ export const InvestmentsCreate = () => (
         <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           style={{padding: 0, border: "none"}}
-          optionText="round"
-          filterToQuery={search => ({ name: search })}
+          optionText={(rec) => `${rec.company.name} ${rec.round}`}
+          filterToQuery={search => ({ 'company#name@_ilike': search })}
           emptyValue={null}
         />
       </ReferenceInput>
