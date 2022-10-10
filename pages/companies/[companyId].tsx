@@ -1,5 +1,5 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
-import { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
@@ -9,7 +9,7 @@ import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
-// import { ElemCohort } from "@/components/Company/ElemCohort";
+import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
@@ -17,7 +17,6 @@ import {
 	Companies,
 	Follows_Companies,
 	Follows_Companies_Aggregate,
-	GetCompaniesPathsQuery,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
@@ -34,11 +33,10 @@ import {
 	getNewTempSentiment,
 } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { IconEditPencil } from "@/components/Icons";
-// import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
+//import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
-import { has, remove, sortBy } from "lodash";
+import { remove, sortBy } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -49,8 +47,6 @@ const Company: NextPage<Props> = (props: Props) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
-
-	//const goBack = () => router.back();
 
 	const [company, setCompany] = useState<Companies>(props.company);
 
@@ -150,7 +146,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	const sortedInvestmentRounds = props.sortRounds;
 
 	// Company tags
-	const companyTags = [];
+	let companyTags: string[] = [];
 	if (company.layer) {
 		const layer = companyLayerChoices.find(
 			(layer) => layer.id === company.layer
@@ -160,6 +156,9 @@ const Company: NextPage<Props> = (props: Props) => {
 	if (company.tags) {
 		company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
 	}
+
+	const firstTag = companyTags ? companyTags[0] : "";
+	const secondTag = companyTags ? companyTags[1] : "";
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -215,13 +214,11 @@ const Company: NextPage<Props> = (props: Props) => {
 					{companyTags.length > 0 && (
 						<ElemTags className="mt-4" tags={companyTags} />
 					)}
-
 					{company.overview && (
 						<p className="mt-4 line-clamp-3 text-base text-slate-600">
 							{company.overview}
 						</p>
 					)}
-
 					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions
 							data={company}
@@ -263,9 +260,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					)}
 				</div>
 			</div>
-
 			<ElemTabBar className="mt-7" tabs={tabBarItems} />
-
 			<div
 				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
 				ref={overviewRef}
@@ -405,23 +400,19 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 			)}
-			{/* <ElemCohort className="mt-7" heading="Similar Companies" /> */}
+
+			{company.tags && (
+				<ElemCohort
+					className="mt-7"
+					heading="Similar Companies"
+					currentSlug={company.slug}
+					tag1={firstTag}
+					tag2={secondTag}
+				/>
+			)}
 		</div>
 	);
 };
-
-// export async function getStaticPaths() {
-// 	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
-// 		`{ companies(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { slug }}`
-// 	);
-
-// 	return {
-// 		paths: companies?.companies
-// 			?.filter((comp) => comp.slug)
-// 			.map((comp) => ({ params: { companyId: comp.slug } })),
-// 		fallback: true, // false or 'blocking'
-// 	};
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
