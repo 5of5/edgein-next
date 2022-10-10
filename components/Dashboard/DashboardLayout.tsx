@@ -65,7 +65,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 													btn="white"
 													roundedFull={false}
 													onClick={() => setSidebarOpen(false)}
-													className="rounded-lg hover:border-primary-500 md:hidden"
+													className="rounded-lg hover:border-primary-500 lg:hidden"
 												>
 													<span className="sr-only">Close Sidebar</span>
 													<IconX className="h-6 w-6" aria-hidden="true" />
