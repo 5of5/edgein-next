@@ -11,7 +11,13 @@ export const uploadFile = async (files: any) => {
     }).then(res => res.json());
 
     //upload to s3
-    const response = await axios.put(s3url.url, files)
+    var options = {
+        headers: {
+          'Content-Type': files.type,
+          'Access-Control-Allow-Origin': "*",
+        }
+    };
+    const response = await axios.put(s3url.url, files, options)
     return s3url
 
 }
