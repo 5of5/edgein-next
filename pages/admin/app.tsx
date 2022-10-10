@@ -7,7 +7,7 @@ import {
   CompanyCreate,
   CompanyEdit,
   CompanyList,
-} from "../../components/admin/companies";
+} from "../../components/admin/company";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client";
 import {
