@@ -34,6 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       Key: fileNameWithExtension,
       Expires: 5 * 60, // in seconds
       ACL: "public-read",
+      ContentType: req.body.fileType,
     };
 
     //creating signed url for frontend
