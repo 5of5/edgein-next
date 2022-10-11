@@ -43,9 +43,17 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [hotId, setHotId] = useState(0);
 
-	const { data: lists } = useGetListsByUserQuery({
+	// const { data: lists } = useGetListsByUserQuery({
+	// 	current_user: user?.id ?? 0,
+	// });
+
+	const { data: lists, refetch } = useGetListsByUserQuery({
 		current_user: user?.id ?? 0,
 	});
+
+	useEffect(() => {
+		if (isUpdated) refetch();
+	}, [isUpdated, refetch]);
 
 	useEffect(() => {
 		if (lists) {
