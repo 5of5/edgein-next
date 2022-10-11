@@ -1,5 +1,4 @@
-import React, { FC, useEffect } from "react";
-import { useState, Fragment } from "react";
+import React, { FC, useEffect, useState, Fragment } from "react";
 import { Lists, useGetListsByUserQuery } from "@/graphql/types";
 import { findIndex } from "lodash";
 import { getName } from "@/utils/reaction";
@@ -88,7 +87,6 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 	) => {
 		onCreateNew(getName(list), isSelected(list))(event);
 
-		// console.log(isSelected(list));
 		// toast.custom(
 		// 	(t) => (
 		// 		<div
@@ -109,8 +107,8 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 	};
 
 	const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-		event.stopPropagation();
+		// event.preventDefault();
+		// event.stopPropagation();
 		setIsOpen(true);
 	};
 
@@ -173,17 +171,17 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 								</div>
 
 								<ul className="divide-y divide-slate-100 border-b border-b-slate-100">
-									{listsData?.map((item, index: number) => {
+									{listsData?.map((item) => {
 										return (
-											<li key={index}>
+											<li key={item.id}>
 												<InputCheckbox
-													checked={isSelected(item)}
-													onClick={(e) => onClickHandler(e, item)}
-													onChange={(e) => {}}
 													className="w-full hover:bg-slate-100"
-													label={getName(item)}
-													labelClass="grow py-3 pr-3"
 													inputClass="ml-3"
+													labelClass="grow py-3 pr-3"
+													label={getName(item)}
+													checked={isSelected(item)}
+													//onChange={(e) => {}}
+													onClick={(e) => onClickHandler(e, item)}
 												/>
 											</li>
 										);
