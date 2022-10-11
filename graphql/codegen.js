@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-dotenv.config({ path: './.env.local' });
+dotenv.config({ path: './.env' });
 
 const reactQueryConfig = {
     dedupeFragments: true,
@@ -17,7 +17,7 @@ const reactQueryConfig = {
 module.exports = {
     schema: [
         {
-            'https://graphql.edgein.dev/v1/graphql': {
+            'http://localhost:8080/v1/graphql': {
                 headers: {
                     'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET,
                 },
