@@ -107,8 +107,8 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 	};
 
 	const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-		// event.preventDefault();
-		// event.stopPropagation();
+		event.preventDefault();
+		event.stopPropagation();
 		setIsOpen(true);
 	};
 
