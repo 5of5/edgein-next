@@ -210,7 +210,7 @@ export default function Account() {
 					{ user.email.includes('@edgein.io') && <EditSection heading="Billing">
 						<div>
 							<p className="text-slate-600">
-								Manage your EdgeIn billing.
+								Manage your EdgeIn billing. (Currently: Only available for edgein team member)
 							</p>
 							<ElemButton
 								onClick={onBillingClick}
