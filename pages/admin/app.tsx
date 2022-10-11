@@ -26,10 +26,10 @@ import {
   InvestorCreate,
 } from "../../components/admin/investors";
 import {
-  PeopleList,
-  PeopleEdit,
-  PeopleCreate,
-} from "../../components/admin/people";
+  PersonList,
+  PersonEdit,
+  PersonCreate,
+} from "../../components/admin/person";
 import {
   TeamMembersList,
   TeamMembersEdit,
@@ -183,9 +183,9 @@ const AdminApp = () => {
       />
       <Resource
         name="people"
-        list={PeopleList}
-        edit={PeopleEdit}
-        create={PeopleCreate}
+        list={PersonList}
+        edit={PersonEdit}
+        create={PersonCreate}
       />
       <Resource
         name="vc_firms"

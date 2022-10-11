@@ -15,7 +15,7 @@ import {
   InputLabel,
   MenuItem,
   FormControl,
-  // FormHelperText,
+  FormHelperText,
   FormControlLabel,
   Select,
   Switch,
@@ -291,8 +291,9 @@ export const TeamMemberEdit = () => {
     <DialogTitle>TeamMember</DialogTitle>
     <DialogContent>
       <Form>
-      <FormControl variant="filled" sx={{ width: "100%" }}>
-        <ReferenceInput label="Company" source="company_id" reference="companies">
+      <FormControl variant="filled" sx={{ width: "100%", ".MuiAutocomplete-root .MuiFormHelperText-root": { display: "none" }}}>
+        <ReferenceInput
+         label="Company" source="company_id" reference="companies">
           <AutocompleteInput
             defaultValue={currRecord?.company_id}
             optionText="name"
@@ -301,6 +302,11 @@ export const TeamMemberEdit = () => {
             onChange={(company_id) => { handleChange(0, company_id)} }
           />
        </ReferenceInput>
+       {isError && (
+          <FormHelperText sx={{ color: "red" }}>
+            Company is required
+          </FormHelperText>
+        )}
      </FormControl>
      <FormControl variant="filled" sx={{ width: "100%" }}>
        <InputLabel>Function</InputLabel>
