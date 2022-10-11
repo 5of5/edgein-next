@@ -1,2 +1,1 @@
-alter table "public"."billing_org" add column "customer_id" text
- null;
+alter table "public"."billing_org" add column "customer_id" text NOT NULL;
