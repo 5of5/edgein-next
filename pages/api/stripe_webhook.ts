@@ -52,16 +52,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           .send({ error: `Webhook event parse failed. ${err.message}` });
       }
     }
+    let customerId: string;
     // Handle the event
     switch (event.type) {
       case "customer.subscription.updated": {
         // update customer plan
+        const subscription = event.data.object as Stripe.Subscription;
+        customerId = getCustomerId(subscription.customer);
+        const billingOrg = await BillingService.getBillingOrgByCustomerId(customerId);
+        await BillingService.updateBillingOrg(
+          billingOrg.id,
+          subscription.status === "active" ? "active" : "inactive",
+        );
         break;
       }
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
         const metadata = session.metadata as any;
-        const customerId = getCustomerId(session.customer || '')
+        customerId = getCustomerId(session.customer || '')
 
         const userId = metadata.userId
         if (!userId) {
@@ -74,8 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
         if (!user.billing_org_id) {
           // create billing org
-          const billingOrg = await  BillingService.insertBillingOrg(customerId, "basic")
-          console.log(billingOrg)
+          const billingOrg = await  BillingService.insertBillingOrg(customerId, "active", "basic")
           // update user
           UserService.updateBillingOrg(userId, billingOrg.id)
         }
