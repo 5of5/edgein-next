@@ -79,6 +79,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         role: emailExist.role,
         publicAddress: emailExist.external_id,
         isFirstLogin,
+        billing_org_id: emailExist.billing_org_id,
         display_name: emailExist.display_name,
         auth0_linkedin_id: emailExist.auth0_linkedin_id,
         auth0_user_pass_id: emailExist.auth0_user_pass_id,
