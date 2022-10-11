@@ -207,7 +207,7 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
-					{ user.email.includes('@edgein.io') && <EditSection heading="Billing">
+					{ user?.email.includes('@edgein.io') && <EditSection heading="Billing">
 						<div>
 							<p className="text-slate-600">
 								Manage your EdgeIn billing. (Currently: Only available for edgein team member)
