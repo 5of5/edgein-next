@@ -104,35 +104,6 @@ const customBuildFields: BuildFields = (type, fetchType) => {
   return defaultFields;
 };
 
-const extractFieldsFromQuery = (queryAst: any) => {
-  return queryAst.definitions[0].selectionSet.selections;
-};
-
-// Define the additional fields that we want.
-const EXTENDED_GET_LIST_INVESTMENT_ROUNDS = gql`
-  {
-    company {
-      name
-    }
-  }
-`;
-
-const customBuildFields: BuildFields = (type, fetchType) => {
-  const resourceName = type.name;
-
-  // First take the default fields (all, but no related or nested).
-  const defaultFields = buildFields(type, fetchType);
-
-  if (resourceName === 'investment_rounds') {
-    const relatedEntities = extractFieldsFromQuery(EXTENDED_GET_LIST_INVESTMENT_ROUNDS);
-    defaultFields.push(...relatedEntities);
-  }
-
-  // Extend other queries for other resources/fetchTypes here...
-
-  return defaultFields;
-};
-
 const AdminApp = () => {
   const [dataProvider, setDataProvider] = useState<DataProvider<string> | null>(
     null
