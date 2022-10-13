@@ -4,7 +4,7 @@ import { Magic } from "magic-sdk";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { Lists, useGetListsByUserQuery } from "@/graphql/types";
-import { find } from "lodash";
+import { find, kebabCase, first } from "lodash";
 import { getName } from "@/utils/reaction";
 import {
 	IconChevronDownMini,
@@ -15,12 +15,12 @@ import {
 	IconSettings,
 	//IconOrganization,
 } from "./Icons";
-import Link from "next/link";
 
 export const UserMenu = () => {
 	const { user } = useAuth();
 
 	const [hotId, setHotId] = useState(0);
+	const [userLists, setUserLists] = useState<Lists[]>();
 
 	const { data: lists } = useGetListsByUserQuery({
 		current_user: user?.id ?? 0,
@@ -28,12 +28,28 @@ export const UserMenu = () => {
 
 	useEffect(() => {
 		if (lists) {
+			setUserLists(lists.lists as Lists[]);
 			setHotId(
 				() =>
 					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
 			);
 		}
 	}, [lists]);
+
+	const firstCustomList = first(
+		userLists?.filter(
+			(list) => !["hot", "crap", "like"].includes(getName(list))
+		)
+	);
+
+	let myListsUrl = "";
+	if (firstCustomList) {
+		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
+			getName(firstCustomList)
+		)}`;
+	} else {
+		myListsUrl = `/lists/${hotId}/hot`;
+	}
 
 	const logout = async () => {
 		localStorage.clear();
@@ -53,7 +69,7 @@ export const UserMenu = () => {
 	};
 
 	const navigation = [
-		{ name: "My Lists", href: `/lists/${hotId}/hot`, icon: IconCustomList },
+		{ name: "My Lists", href: myListsUrl, icon: IconCustomList },
 		// {
 		// 	name: "My Organizations",
 		// 	href: "/organizations",

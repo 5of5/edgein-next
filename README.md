@@ -52,6 +52,34 @@ npm install
 npm run dev
 ``` 
 
+### Creating a User
+- Open the Hasura admin panel and navigate to the "allowed_emails" table, then add a row with your email address. 
+- Return to the local site and signup as normal
+- Check your email and validate the email address with Auth0
+- Open the local app admin at
+```
+http://localhost:3000/admin/app
+```
+- Find your user in the users table, click edit and change the role to admin
+- Login!!!
+
+NOTE: once an email is registed with Auth0 if you delete the user from the local database and try to use it again the signup will fail. You will need to use another address.
+
+
+### Companies
+Although the database will be initialized with some seed data all the companies are in draft. To change this in bulk connect to the PG instance in docker using:
+```
+docker exec -it bash [CONTAINER_ID found from docker ps]
+```
+Once logged into the instance run:
+```
+psql -U edgeu -d edgedb
+```
+This will log you into the postgres cli, then you can update all the companies using:
+```
+UPDATE companies SET status='published' WHERE status='draft';
+```
+
 ## Hasura / GraphQL
 
 ### Editing Graphql

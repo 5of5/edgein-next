@@ -53,6 +53,24 @@ export default function Account() {
 		window.location.href = url;
 	};
 
+	const onBillingClick = async () => {
+		try {
+			const response = await fetch("/api/stripe_load/", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			});
+			const json = await response.json()
+			if (json && json.success && json.redirect) {
+				window.location.href = json.redirect;
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	}
+
 	const callChangePassword = async () => {
 		try {
 			const response = await fetch("/api/set_password/", {
@@ -189,6 +207,22 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
+					{ user?.email.includes('@edgein.io') && <EditSection heading="Billing">
+						<div>
+							<p className="text-slate-600">
+								Manage your EdgeIn billing. (Currently: Only available for edgein team member)
+							</p>
+							<ElemButton
+								onClick={onBillingClick}
+								size="sm"
+								className="mt-2 gap-x-2 rounded-md text-[#0077B5] border border-black/10 hover:border-[#0077B5] hover:bg-slate-50"
+								roundedFull={false}
+							>
+								{user && user.billing_org_id ? (
+								<span>Go To Billing</span>) : (<span>Checkout</span>)}
+							</ElemButton>
+						</div>
+					</EditSection> }
 				</dl>
 			</div>
 		</DashboardLayout>

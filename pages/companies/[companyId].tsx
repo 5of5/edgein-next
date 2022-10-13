@@ -16,11 +16,9 @@ import { ElemButton } from "@/components/ElemButton";
 import {
 	Companies,
 	Follows_Companies,
-	Follows_Companies_Aggregate,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
-	Lists,
 	useGetCompanyQuery,
 	Investments,
 } from "@/graphql/types";
@@ -85,8 +83,8 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	useEffect(() => {
 		if (company && company.coin) {
-			getTokenInfo(company.coin.ticker);
-			// getTokenInfo('bnb')
+			//getTokenInfo(company.coin.ticker);
+			//getTokenInfo("bnb");
 		}
 	}, [company]);
 
@@ -157,8 +155,8 @@ const Company: NextPage<Props> = (props: Props) => {
 		company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
 	}
 
-	const firstTag = companyTags ? companyTags[0] : "";
-	const secondTag = companyTags ? companyTags[1] : "";
+	const firstTag = company.tags ? company.tags[0] : "";
+	const secondTag = company.tags ? company.tags[1] : "";
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -298,12 +296,12 @@ const Company: NextPage<Props> = (props: Props) => {
 								githubVerified={company.github}
 								linkedInVerified={company.company_linkedin}
 							/>
-							<ElemVelocity
+							{/* <ElemVelocity
 								className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
 								heading="Velocity"
 								employeeListings={"4"}
 								tokenExchangeValue={"2.3"}
-							/>
+							/> */}
 						</div>
 					)}
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">

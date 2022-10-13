@@ -51,14 +51,14 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 	}, [users]);
 
 	const getActiveClass = (path: string) => {
-		return path === router.asPath ? "" : "";
+		return path === router.asPath ? "text-primary-500 bg-slate-200" : "";
 	};
 
 	return (
 		<>
 			<div>
 				<h3 className="text-xl font-bold">My EdgeIn</h3>
-				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
+				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
 					{/* <li className={`${getActiveClass("/profile/")}`} role="button">
 						<Link href={`/profile`}>
 							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
@@ -81,9 +81,13 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 						</Link>
 					</li> */}
 
-					<li className={`${getActiveClass("/account/")}`}>
-						<Link href={`/account`} passHref>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+					<li>
+						<Link href="/account/" passHref>
+							<a
+								className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+									"/account/"
+								)}`}
+							>
 								<IconSettings className="h-6 w-6" />
 								<span>Account Settings</span>
 							</a>
@@ -131,18 +135,18 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 
 			<div className="mt-6">
 				<h3 className="text-xl font-bold">Explore</h3>
-				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					<li className={`${getActiveClass("/companies/")}`} role="button">
+				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
+					<li role="button">
 						<Link href={`/companies`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+							<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconCompanies className="w-6 h-6" />
 								<span>Companies</span>
 							</a>
 						</Link>
 					</li>
-					<li className={`${getActiveClass("/investors/")}`} role="button">
+					<li role="button">
 						<Link href={`/investors`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+							<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconCash className="w-6 h-6" />
 								<span>Investors</span>
 							</a>

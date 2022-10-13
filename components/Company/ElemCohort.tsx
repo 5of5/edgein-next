@@ -142,16 +142,16 @@ export const ElemCohort: FC<Props> = ({
 											</div>
 										</div>
 
-										<div className="flex items-center justify-between mt-4">
-											{/* <ElemReactions
+										{/* <div className="flex items-center justify-between mt-4">
+											<ElemReactions
 												data={company}
 												handleReactionClick={handleReactionClick(company)}
-											/> */}
-											{/* <ElemSaveToList
+											/>
+											<ElemSaveToList
 												follows={company?.follows}
 												onCreateNew={handleReactionClick(company)}
-											/> */}
-										</div>
+											/>
+										</div> */}
 									</a>
 								</ElemCarouselCard>
 							);

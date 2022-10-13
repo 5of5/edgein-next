@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment, useState, useEffect } from "react";
 import { ElemButton } from "../ElemButton";
+import { InputText } from "@/components/InputText";
 
 type Props = {
 	isOpen: boolean;
@@ -15,18 +16,32 @@ export const ElemListEditModal: FC<Props> = ({
 	onCloseModal,
 	onSave,
 }) => {
-	const [name, setName] = useState<string | undefined>();
+	useEffect(() => {
+		setName(currentName);
+		setError("");
+	}, [currentName]);
+
+	const [name, setName] = useState<string>();
 	const [error, setError] = useState<string | null>(null);
 
-	const handleKeypress = (e: any) => {
-		//it triggers by pressing the enter key
-		if (e.keyCode === 13) {
-			onSaveBtn();
+	const validateName = (value: string) => {
+		setName(value);
+		if (value.length >= 3) {
+			setError("");
+		} else {
+			setError("List name should have at least 3 characters.");
 		}
 	};
 
 	const onSaveBtn = () => {
-		if (name) onSave(name);
+		if (error || !name) {
+			return;
+		}
+
+		if (name) {
+			validateName(name);
+			onSave(name);
+		}
 	};
 
 	return (
@@ -63,14 +78,22 @@ export const ElemListEditModal: FC<Props> = ({
 									Edit List
 								</Dialog.Title>
 								<div className="mt-2">
-									<label className="block font-bold ">Name</label>
-									<input
-										onChange={(event) => setName(event.target.value)}
-										onKeyDown={handleKeypress}
-										defaultValue={currentName}
-										className="pl-4 mt-1 h-10 w-full relative bg-white rounded-md border border-black/10 outline-none placeholder:text-slate-400 focus:bg-white focus:outline-none"
+									<InputText
+										onChange={(event) => validateName(event?.target.value)}
+										name="name"
+										type="text"
+										value={name}
+										className={`${
+											error === ""
+												? "ring-1 ring-slate-200"
+												: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+										}`}
 									/>
-									{error && <p className=" text-red-400">{error}</p>}
+									{error === "" ? null : (
+										<div className="mt-2 font-bold text-sm text-rose-400">
+											{error}
+										</div>
+									)}
 								</div>
 
 								<div className="mt-4">
