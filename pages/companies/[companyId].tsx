@@ -36,14 +36,14 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { IconEditPencil } from "@/components/Icons";
 // import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
-import { companyLayerChoices } from "@/utils/constants";
+import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { has, remove, sortBy } from "lodash";
-import { ElemTokenInfo } from "@/components/ElemTokenInfo";
 
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
+    metrics: Metric[];
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -55,7 +55,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const [company, setCompany] = useState<Companies>(props.company);
 
-	const [tokenInfo, setTokenInfo] = useState({ currentPrice: 0, marketCap: 0, marketCapRank: 0, low24H: 0, high24H: 0, vol24H: 0 });
+	const [tokenInfo, setTokenInfo] = useState<TokenInfo>({ currentPrice: 0, marketCap: 0, marketCapRank: 0, low24H: 0, high24H: 0, vol24H: 0 });
 
 	//Limit Activity
 	const [activityLimit, setActivityLimit] = useState(10);
@@ -239,35 +239,19 @@ const Company: NextPage<Props> = (props: Props) => {
 						<section className="bg-white shadow rounded-lg p-5 md:mt-0">
 							<h2 className="text-xl font-bold">Token Info</h2>
 							<div className="flex flex-col space-y-2 mt-2">
-								<ElemTokenInfo title="Current Price" tokenInfo={`$${
-									tokenInfo && tokenInfo.currentPrice
-										? convertAmountRaised(tokenInfo.currentPrice)
-										: 0
-								}`}/>
-								<ElemTokenInfo title="Market Cap" tokenInfo={`$${
-									tokenInfo && tokenInfo.marketCap
-										? convertAmountRaised(tokenInfo.marketCap)
-										: 0
-								}`}/>
-								<ElemTokenInfo title="Market Cap Rank" tokenInfo={`#${
-									tokenInfo && tokenInfo.marketCapRank
-										? convertAmountRaised(tokenInfo.marketCapRank)
-										: 0
-								}`}/>
-								<ElemTokenInfo title="24-Hour High/Low" tokenInfo={`$${
-									tokenInfo && tokenInfo.low24H
-										? convertAmountRaised(tokenInfo.low24H)
-										: 0
-								}/$${
-									tokenInfo && tokenInfo.high24H
-										? convertAmountRaised(tokenInfo.high24H)
-										: 0
-								}`}/>
-								<ElemTokenInfo title="24-Hour Volume" tokenInfo={`$${
-									tokenInfo && tokenInfo.vol24H
-										? convertAmountRaised(tokenInfo.vol24H)
-										: 0
-								}`}/>
+                                {props.metrics.map((item) => (
+                                    <div className="flex items-center space-x-2" key={item.id}>
+                                        <div className=" text-slate-600">{item.name}</div>
+                                        <div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
+                                        {item.id === "highLow24H"
+                                            ? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
+                                                tokenInfo.low24H
+                                            )}`
+                                            : `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
+                                        }
+                                        </div>
+                                    </div>
+                                ))}
 							</div>
 						</section>
 					)}
@@ -475,10 +459,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			metaDescription,
 			company,
 			sortRounds,
+            metrics: tokenInfoMetrics,
 		},
 	};
 };
 const convertAmountRaised = (theAmount: number) => {
-	return convertToInternationalCurrencySystem(theAmount);
+	return theAmount ?  convertToInternationalCurrencySystem(theAmount) : 0;
 };
+interface Metric  {
+	id: string;
+	name: string;
+}
+
+interface TokenInfo  {
+    currentPrice: number;
+    marketCap: number;
+    marketCapRank: number;
+    low24H: number;
+    high24H: number;
+    vol24H: number;
+};
+
 export default Company;

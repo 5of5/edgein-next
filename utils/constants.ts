@@ -646,6 +646,29 @@ export const tokenTypes = {
 	verifyWorkHereToken: "token-verifyworkhere",
 };
 
+export const tokenInfoMetrics = [
+	{
+		id: 'currentPrice',
+		name: 'Current Price',
+	},
+	{
+		id: 'marketCap',
+		name: 'Market Cap',
+	},
+	{
+		id: 'marketCapRank',
+		name: 'Market Cap Rank',
+	},
+	{
+		id: 'highLow24H',
+		name: '24-Hour High/Low',
+	},
+	{
+		id: 'vol24H',
+		name: '24-Hour Volume',
+	},
+];
+
 export const tags = [
 	"Layer 0",
 	"Layer 1",
