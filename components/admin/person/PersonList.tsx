@@ -102,9 +102,9 @@ export const PersonList = () => {
       }}
     >
       <Datagrid
-      // data={renderData}
-      // sort={customSort}
-      // setSort={(value) => setCustomSort(value)}
+        data={renderData}
+        sort={customSort}
+        setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
         <TextField source="id" />

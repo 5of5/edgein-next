@@ -55,6 +55,8 @@ import {
   RenderLinkedinIcon,
 } from "@/utils/other";
 
+import { TeamMemberEdit } from './TeamMemberEdit';
+
 interface CompanyTitleProps {
   record?: Record<string, string>;
 }
@@ -163,7 +165,7 @@ export const CompanyEdit = () => {
   };
 
   return (
-    <>
+    <div style={{paddingBottom: "20px"}}>
     <Edit
       title={<CompanyTitle />}
       transform={transform}
@@ -410,9 +412,8 @@ export const CompanyEdit = () => {
           />
         </SimpleForm>
       </div>
-
     </Edit>
-
-    </>
+    <TeamMemberEdit/>
+    </div>
   );
 };

@@ -69,7 +69,7 @@ const ListActions = ({ onCreate }: any) => {
   return (
     <TopToolbar>
       <Button
-        label="Add as Team Member"
+        label="Add Team Member"
         variant="text"
         onClick={onCreate}
         startIcon={<ContentCreate />}
@@ -145,7 +145,7 @@ export const TeamMemberEdit = () => {
 
   const [teamData, setTeamData] = useState<any>({
     team_id: -1,
-    company_id: "",
+    person_id: "",
     founder: false,
     function: "",
     seniority: "",
@@ -157,7 +157,7 @@ export const TeamMemberEdit = () => {
   const [filterData, setFilterData] = useState<any>([]);
 
   useEffect(() => {
-      setFilterData(member?.filter((f) => f.person_id === parseInt(currentId!)));
+      setFilterData(member?.filter((f) => f.company_id === parseInt(currentId!)));
   }, [currentId, member]);
 
   const handleEdit = (rec: any) => {
@@ -165,7 +165,7 @@ export const TeamMemberEdit = () => {
     setCurrRecord(rec);
     setTeamData({
       team_id: rec.id,
-      company_id: rec.company_id,
+      person_id: rec.person_id,
       founder: rec.founder,
       function: rec.function,
       seniority: rec.seniority,
@@ -180,7 +180,7 @@ export const TeamMemberEdit = () => {
     setIsError(false);
     setCurrRecord(null);
     setTeamData({
-      company_id: "",
+      person_id: "",
       founder: false,
       function: "",
       seniority: "",
@@ -191,7 +191,7 @@ export const TeamMemberEdit = () => {
   };
 
   const handleChange = (target: number, value: any) => {
-    if (target === 0) setTeamData({ ...teamData, company_id: value });
+    if (target === 0) setTeamData({ ...teamData, person_id: value });
     else if (target === 1) setTeamData({ ...teamData, function: value });
     else if (target === 2) setTeamData({ ...teamData, seniority: value });
     else if (target === 3) setTeamData({ ...teamData, start_date: value });
@@ -201,11 +201,11 @@ export const TeamMemberEdit = () => {
   };
 
   const handleSave = () => {
-    if (!teamData.company_id) setIsError(true);
+    if (!teamData.person_id) setIsError(true);
     else {
       const data = {
-        person_id: parseInt(currentId!),
-        company_id: teamData.company_id,
+        company_id: parseInt(currentId!),
+        person_id: teamData.person_id,
         function: teamData.function,
         seniority: teamData.seniority,
         start_date: teamData.start_date,
@@ -262,9 +262,9 @@ export const TeamMemberEdit = () => {
       data={filterData}
     >
       <ReferenceField
-        label="Company"
-        source="company_id"
-        reference="companies"
+        label="Person"
+        source="person_id"
+        reference="people"
         sortable={false}
       >
         <TextField source="name"/>
@@ -292,18 +292,18 @@ export const TeamMemberEdit = () => {
       <Form>
       <FormControl variant="filled" sx={{ width: "100%", ".MuiAutocomplete-root .MuiFormHelperText-root": { display: "none" }}}>
         <ReferenceInput
-         label="Company" source="company_id" reference="companies">
+         label="Person" source="person_id" reference="people">
           <AutocompleteInput
-            defaultValue={currRecord?.company_id}
+            defaultValue={currRecord?.person_id}
             optionText="name"
             optionValue="id"
             filterToQuery={search => ({ name: search })}
-            onChange={(company_id) => { handleChange(0, company_id)} }
+            onChange={(person_id) => { handleChange(0, person_id)} }
           />
        </ReferenceInput>
        {isError && (
           <FormHelperText sx={{ color: "red" }}>
-            Company is required
+            Person is required
           </FormHelperText>
         )}
      </FormControl>

@@ -39,8 +39,6 @@ import {
   status,
 } from "../../../utils/constants";
 
-
-
 import { useParams } from "react-router-dom";
 import { TeamMemberEdit } from './TeamMemberEdit';
 
@@ -154,7 +152,7 @@ export const PersonEdit = () => {
   };
 
   return (
-    <>
+    <div style={{paddingBottom: "20px"}}>
       <Edit
         title={<PeopleTitle />}
         transform={transform}
@@ -289,6 +287,6 @@ export const PersonEdit = () => {
         </SimpleForm>
       </Edit>
       <TeamMemberEdit/>
-    </>
+    </div>
   );
 };
