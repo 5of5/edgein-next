@@ -291,6 +291,7 @@ export const TeamMemberEdit = () => {
             optionValue="id"
             filterToQuery={search => ({ name: search })}
             onChange={(company_id) => { handleChange(0, company_id)} }
+            onCreate={(company_id) => { handleChange(0, company_id)} }
           />
        </ReferenceInput>
        {isError && (
