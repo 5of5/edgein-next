@@ -129,7 +129,7 @@ const CustomDeleteButton = () => {
 export const TeamMemberEdit = () => {
   const { record, isLoading } = useEditContext();
   const { id: currentId } = useParams();
-  const { data: member } = useGetList("team_members");
+  const { data: member } = useGetList("team_members", { filter: { "person_id": parseInt(currentId!) } });
   const [isOpen, setIsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currRecord, setCurrRecord] = useState<any>(null);
@@ -153,12 +153,6 @@ export const TeamMemberEdit = () => {
     end_date: "",
     title: "",
   });
-
-  const [filterData, setFilterData] = useState<any>([]);
-
-  useEffect(() => {
-      setFilterData(member?.filter((f) => f.person_id === parseInt(currentId!)));
-  }, [currentId, member]);
 
   const handleEdit = (rec: any) => {
     setIsOpen(true);
@@ -216,12 +210,11 @@ export const TeamMemberEdit = () => {
       if (!currRecord) {
         create("team_members", { data });
       } else {
-        let tData = filterData;
-        let foundIndex = tData.findIndex((r: any) => r.id === teamData.team_id);
+        let foundIndex = member.findIndex((r: any) => r.id === teamData.team_id);
         update("team_members", {
           id: currRecord.id,
           data,
-          previousData: tData[foundIndex],
+          previousData: member[foundIndex],
         });
       }
       handleClose();
@@ -259,7 +252,7 @@ export const TeamMemberEdit = () => {
     }}
   >
     <Datagrid bulkActionButtons={false}
-      data={filterData}
+      data={member}
     >
       <ReferenceField
         label="Company"
