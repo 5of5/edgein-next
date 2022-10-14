@@ -80,6 +80,12 @@ This will log you into the postgres cli, then you can update all the companies u
 UPDATE companies SET status='published' WHERE status='draft';
 ```
 
+## Local Scripts
+There are multiple helper scripts in the scripts directory. To run these you will need a .env file. Ask for this. You can then run:
+```
+npx ts-node ./awesome-script.ts
+```
+
 ## Hasura / GraphQL
 
 ### Editing Graphql
@@ -111,3 +117,14 @@ applied, and deletes them so that we don't reapply them.
    ```
    rm -rf hasura/migrations/*
    ```
+
+## AWS
+
+### DNS / Domains
+All managed in Route 53
+
+### GraphQL
+ELB and EC2 cluster hosted in US-East-2
+
+### Jenkins
+ELB and EC2 hosted in US-West-2
