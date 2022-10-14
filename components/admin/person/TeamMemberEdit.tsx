@@ -210,7 +210,7 @@ export const TeamMemberEdit = () => {
       if (!currRecord) {
         create("team_members", { data });
       } else {
-        let foundIndex = member.findIndex((r: any) => r.id === teamData.team_id);
+        let foundIndex = member && member.findIndex((r: any) => r.id === teamData.team_id);
         update("team_members", {
           id: currRecord.id,
           data,
