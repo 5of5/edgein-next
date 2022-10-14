@@ -214,7 +214,7 @@ export const TeamMemberEdit = () => {
         update("team_members", {
           id: currRecord.id,
           data,
-          previousData: member[foundIndex],
+          previousData: member && member[foundIndex],
         });
       }
       handleClose();
