@@ -142,7 +142,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 	};
 
 	return (
-		<div className={`bg-white rounded-lg p-5 ${className}`}>
+		<div className={`bg-white rounded-lg p-5 shadow ${className}`}>
 			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			{error ? (
 				<h4>Error loading investors</h4>
