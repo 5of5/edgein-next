@@ -5,6 +5,7 @@ type Props = {
 	className?: string;
 	labelClass?: string;
 	label?: string;
+	sublabel?: string;
 	type?: "text" | "email" | "search" | "";
 	name: string;
 	value: string;
@@ -19,6 +20,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 	className = "",
 	labelClass = "",
 	label,
+	sublabel,
 	type = "",
 	name,
 	value,
@@ -55,6 +57,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 					{label}
 				</label>
 			)}
+			{sublabel && <p className="text-sm mb-2 text-slate-600">{sublabel}</p>}
 			<div>
 				<div className="rounded-md w-full flex items-center mt-1 px-2 ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500">
 					<IconSearch className="flex-none h-5 w-5" />

@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from "react";
-import { ElemButton } from "../ElemButton";
-import { TagInputText } from "../TagInputText";
+import { ElemButton } from "@/components/ElemButton";
+import { TagInputText } from "@/components/TagInputText";
+import { TagInputSelect } from "@/components/TagInputSelect";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 
@@ -17,6 +18,7 @@ type Props = {
 export default function OnBoardingStep2Modal(props: Props) {
 	const [locationTags, setLocationTags] = useState(props.locationTags);
 	const [industryTags, setIndustryTags] = useState(props.industryTags);
+
 	const router = useRouter();
 
 	const onNext = () => {
@@ -27,6 +29,35 @@ export default function OnBoardingStep2Modal(props: Props) {
 	const onBack = () => {
 		props.onBack(locationTags, industryTags);
 	};
+
+	const interestsSuggestions = [
+		"Analytics",
+		"API",
+		"Asset",
+		"Bitcoin",
+		"Blockchain",
+		"Centralized",
+		"Chain Tools",
+		"Crypto",
+		"DAO",
+		"D-App",
+		"Database",
+		"DeFi",
+		"Dev Tools",
+		"Ethereum",
+		"Exchange",
+		"Gaming",
+		"Marketplace",
+		"Messaging",
+		"Metaverse",
+		"NFT",
+		"Oracle",
+		"Platform",
+		"Storage",
+		"Wallet",
+		"Native Code",
+		"Nodes",
+	];
 
 	return (
 		<>
@@ -62,10 +93,12 @@ export default function OnBoardingStep2Modal(props: Props) {
 								<div className="mt-4 text-slate-600">
 									This will help you discover relevant companies and investors.
 								</div>
+
 								<TagInputText
 									defaultTags={locationTags}
 									className="mt-8"
-									label="Location"
+									label="Locations"
+									sublabel="Type and press enter"
 									value=""
 									name="Location"
 									placeholder="e.g. Germany, San Francisco"
@@ -73,18 +106,21 @@ export default function OnBoardingStep2Modal(props: Props) {
 										setLocationTags(tags);
 									}}
 								/>
-								<TagInputText
+
+								<TagInputSelect
 									defaultTags={industryTags}
+									suggestions={interestsSuggestions}
 									className="mt-5"
-									label="Industry"
+									label="Interests"
+									sublabel="Type or select"
 									value=""
-									name="Industry"
-									placeholder="e.g. Native Code, NFTs, Nodes"
+									name="Interests"
+									placeholder="e.g. DeFi, D-App, NFT, Gaming..."
 									onChange={(tags) => {
 										setIndustryTags(tags);
 									}}
 								/>
-								<div className="w-full flex justify-end mt-8">
+								<div className="w-full flex justify-end mt-20">
 									<ElemButton
 										onClick={onBack}
 										btn="transparent"

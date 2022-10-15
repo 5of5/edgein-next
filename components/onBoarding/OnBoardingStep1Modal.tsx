@@ -63,7 +63,7 @@ export default function OnBoardingStep1Modal(props: Props) {
 								<div className="mt-4 text-slate-600">
 									We&rsquo;ll get you set so you can start exploring
 								</div>
-								<div className="mt-4 flex flex-col items-center space-y-4">
+								<div className="mt-8 flex flex-col items-center space-y-4">
 									<button
 										onClick={() => {
 											setSelectedOption("companies");
@@ -90,11 +90,11 @@ export default function OnBoardingStep1Modal(props: Props) {
 										<IconFindInvestors className="w-6 h-6" />
 										<h2 className="self-center">Find investors</h2>
 									</button>
-									<div className="w-full flex justify-end">
-										<ElemButton onClick={onNext} btn="primary">
-											Next
-										</ElemButton>
-									</div>
+								</div>
+								<div className="w-full flex justify-end mt-8">
+									<ElemButton onClick={onNext} btn="primary">
+										Next
+									</ElemButton>
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>
