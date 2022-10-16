@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import { useAuth } from "../hooks/useAuth";
-import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ElemLogo } from "@/components/ElemLogo";
@@ -23,7 +21,7 @@ export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, error, loading } = useAuth();
 
-	const [showLoginPopup, setShowLoginPopup] = useState(false);
+	const [showLoginPopup, setShowLoginPopup] = useState(router.asPath === '/login/');
 	const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
@@ -115,8 +113,6 @@ export const TheNavbar = () => {
 	}, [router.query.invite, user]);
 
 	const logout = async () => {
-		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
 		});
@@ -142,7 +138,7 @@ export const TheNavbar = () => {
 	};
 
 	const onModalClose = () => {
-		setShowLoginPopup(false);
+		setShowLoginPopup(router.asPath === '/login/');
 		setShowForgotPasswordPopup(false);
 		setShowSignUp(false);
 	};
