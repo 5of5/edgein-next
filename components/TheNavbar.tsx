@@ -18,10 +18,11 @@ import SearchModal from "@/components/SearchModal";
 import OnBoardingStep1Modal from "@/components/onBoarding/OnBoardingStep1Modal";
 import OnBoardingStep2Modal from "@/components/onBoarding/OnBoardingStep2Modal";
 import OnBoardingStep3Modal from "@/components/onBoarding/OnBoardingStep3Modal";
+import { useUser } from "@/context/userContext";
 
 export const TheNavbar = () => {
 	const router = useRouter();
-	const { user, error, loading } = useAuth();
+	const { user, loading } = useUser();
 
 	const [showLoginPopup, setShowLoginPopup] = useState(false);
 	const [showSignUp, setShowSignUp] = useState(false);

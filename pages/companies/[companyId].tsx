@@ -3,7 +3,6 @@ import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
-import { ElemVelocity } from "@/components/Company/ElemVelocity";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
@@ -15,7 +14,6 @@ import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
 import {
 	Companies,
-	Follows_Companies,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
@@ -23,18 +21,11 @@ import {
 	Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import {
-	getNewFollows,
-	reactOnSentiment,
-	getName,
-	isFollowsExists,
-	getNewTempSentiment,
-} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
 //import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
-import { remove, sortBy } from "lodash";
+import { sortBy } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -66,7 +57,6 @@ const Company: NextPage<Props> = (props: Props) => {
 		isLoading,
 	} = useGetCompanyQuery({
 		slug: companyId as string,
-		current_user: user?.id ?? 0,
 	});
 
 	const getTokenInfo = async (ticker: string) => {
@@ -95,51 +85,6 @@ const Company: NextPage<Props> = (props: Props) => {
 	if (!company) {
 		return <h1>Not Found</h1>;
 	}
-
-	const handleReactionClick =
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			setTemporary(sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: location.pathname,
-			});
-
-			setCompany((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
-
-	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
-		setCompany((prev: Companies) => {
-			const newSentiment = getNewTempSentiment(
-				{ ...prev.sentiment },
-				sentiment,
-				alreadyReacted
-			);
-
-			const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-			if (!alreadyReacted) prev.follows.push(newFollows);
-			else
-				remove(prev.follows, (item) => {
-					return getName(item.list!) === sentiment;
-				});
-			return { ...prev, sentiment: newSentiment };
-		});
-	};
 
 	const sortedInvestmentRounds = props.sortRounds;
 
@@ -219,12 +164,13 @@ const Company: NextPage<Props> = (props: Props) => {
 					)}
 					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions
-							data={company}
-							handleReactionClick={handleReactionClick}
+							resource={company}
+							resourceType={"companies"}
 						/>
 						<ElemSaveToList
-							follows={company?.follows}
-							onCreateNew={handleReactionClick}
+							resourceId={company.id}
+							resourceType={"companies"}
+							slug={company.slug!}
 						/>
 					</div>
 				</div>
@@ -415,7 +361,7 @@ const Company: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId, current_user: 0 }
+		{ slug: context.params?.companyId }
 	);
 
 	if (!companies?.companies[0]) {

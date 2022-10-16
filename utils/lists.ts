@@ -162,7 +162,7 @@ export const upsertFollow = async (list: Lists, resourceId: string, resourceType
   return insert_follows_one
 }
 
-export const deleteIfExists = async (list: Lists, resourceId: string, resourceType: string, user: User, token: string) => {
+export const deleteFollowIfExists = async (list: Lists, resourceId: string, resourceType: string, user: User, token: string) => {
   const { data: { delete_follows: { returning } } } = await mutate({
     mutation: `
     mutation delete_follows($where: follows_bool_exp!) {

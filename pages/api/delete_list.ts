@@ -1,7 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { query, mutate } from '@/graphql/hasuraAdmin'
 import CookieService from '../../utils/cookie'
-import { deleteIfExists, updateResourceSentimentCount } from '@/utils/lists'
+import { deleteFollowIfExists, updateResourceSentimentCount } from '@/utils/lists'
 import { User } from '@/models/User';
 import { Lists } from '@/graphql/types';
 
@@ -19,16 +19,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const list = await queryForLists(listId);
   if (!list) return res.status(400).json({ message: 'Invalid List' });
 
-  const sentimentType = list.name.split('-').pop(); 
-
   try {
-    const followResult = await queryForFollows(listId);
-    if (!followResult) return res.status(400).json({ message: 'Invalid Follow' });
-    await deleteIfExists(list, followResult.resource_id, followResult.resource_type, user, token) // delete follows
+    await deleteFollowsForList(user, token, list) // delete follows
     await deleteListMemberIfExist(user, token, list); // delete list member
     await deleteListIfExist(user, token, list); // delete lists
-    const { sentiment, revalidatePath } = await updateResourceSentimentCount(followResult.resource_type, followResult.resource_id, token, sentimentType, false, true)
-    res.status(200).json({ sentiment, revalidatePath });
+    res.status(200).json({ success: true });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }
@@ -55,31 +50,29 @@ const queryForLists = async (id: string) => {
   }
 }
 
-const queryForFollows = async (list_id: string) => {
-  // prepare gql query
-  const fetchQuery = `
-  query query_follows($list_id: Int!) {
-    follows(where: {list_id: {_eq: $list_id}}, limit: 1) {
-      id
-      created_by_user_id
-      resource_type
-      resource_id
-      list_id
+const deleteFollowsForList = async (user: User, token: string, list: Lists) => {
+const { data: { delete_follows: { returning } } } = await mutate({
+  mutation: `
+  mutation delete_follows($where: follows_bool_exp!) {
+    delete_follows(where: $where) {
+      returning {
+        id
+      }
     }
   }
-  `
-  try {
-    const data = await query({
-      query: fetchQuery,
-      variables: { list_id }
-    })
-    return data.data.follows[0]
-  } catch (ex) {
-    throw ex;
+  `,
+  variables: {
+    where: {
+      created_by_user_id: { _eq: user.id },
+      list_id: { _eq: list.id }
+    }
   }
+}, token)
+
+return returning.length
 }
 
-export const deleteListMemberIfExist = async (user: User, token: string, list: Lists) => {
+const deleteListMemberIfExist = async (user: User, token: string, list: Lists) => {
   const { data: { delete_list_members: { returning } } } = await mutate({
     mutation: `
     mutation delete_list_members($where: list_members_bool_exp!) {
@@ -101,7 +94,7 @@ export const deleteListMemberIfExist = async (user: User, token: string, list: L
   return returning.length
 }
 
-export const deleteListIfExist = async (user: User, token: string, list: Lists) => {
+const deleteListIfExist = async (user: User, token: string, list: Lists) => {
   const { data: { delete_lists: { returning } } } = await mutate({
     mutation: `
     mutation delete_lists($where: lists_bool_exp!) {

@@ -16,7 +16,7 @@ export function useClearAuth() {
 }
 
 export function useAuth() {
-  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher, {revalidateOnMount: true});
+  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher);
   const loading = isValidating;
   if (user) {
     try { 

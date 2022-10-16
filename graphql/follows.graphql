@@ -1,12 +1,18 @@
-query GetFollowsListsStaticPaths {
-	follows {
-		id
-		list_id
-		list {
-			id
-			name
-		}
-	}
+query GetFollowsByUser($user_id: Int!) {
+  list_members(where: {user_id: {_eq: $user_id}}) {
+    list {
+      name
+      id
+      created_by_id
+			total_no_of_resources
+      follows_companies {
+        resource_id
+      }
+      follows_vcfirms {
+        resource_id
+      }
+    }
+  }
 }
 
 query GetCompaniesByListId($list_id: Int = 0) {

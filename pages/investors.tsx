@@ -81,7 +81,6 @@ const Investors: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
-		current_user: user?.id ?? 0,
 	});
 
 	if (!isLoading && initialLoad) {
@@ -153,7 +152,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
-			current_user: 0,
 		}
 	);
 

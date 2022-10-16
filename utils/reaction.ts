@@ -1,10 +1,22 @@
 import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types";
+import { DeepPartial } from "@/pages/companies";
 import { find, has } from "lodash";
 
-type ReactionType = {
-	company?: number;
-	vcfirm?: number;
-	sentiment: string;
+type ReactionType = SentimentReactionType | ListReactionType;
+
+type SentimentReactionType = {
+	resourceId: number;
+	resourceType: 'companies' | 'vc_firms';
+	sentiment: 'hot' | 'like' | 'crap';
+	listName?: undefined
+	pathname: string;
+};
+
+type ListReactionType = {
+	resourceId: number;
+	resourceType: 'companies' | 'vc_firms';
+	sentiment?: undefined;
+	listName: string;
 	pathname: string;
 };
 
@@ -20,9 +32,10 @@ type MultipleListResourceType = {
 	sentiment: string;
 };
 
-export const reactOnSentiment = async ({
-	company,
-	vcfirm,
+export const toggleFollowOnList = async ({
+	resourceId,
+	resourceType,
+	listName,
 	sentiment,
 	pathname,
 }: ReactionType) => {
@@ -33,8 +46,9 @@ export const reactOnSentiment = async ({
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({
-			company,
-			vcfirm,
+			resourceId,
+			resourceType,		
+			listName,
 			sentiment,
 			pathname,
 		}),
@@ -51,11 +65,13 @@ export const getNewFollows = (sentiment: string, type: string = "company") => {
 	return follows;
 };
 
-export const getName = (list: Lists) => {
+export const getNameFromListName = (list: DeepPartial<Lists>) => {
 	if (!list) return "";
-	const fragments = list.name.split("-");
-	return fragments[fragments.length - 1];
+	const fragments = list?.name?.split("-");
+	return fragments?.[fragments.length - 1] || "";
 };
+
+export const isOnList = (list: DeepPartial<Lists> | undefined, resourceId: number) => Boolean(find(list?.follows_companies, follow => follow?.resource_id === resourceId))
 
 export const isFollowsExists = (
 	follows: Follows_Companies[] | Follows_Vc_Firms[],
@@ -64,7 +80,7 @@ export const isFollowsExists = (
 	return find(
 		follows,
 		(follow: Follows_Companies | Follows_Vc_Firms) =>
-			getName(follow?.list!) === sentiment
+			getNameFromListName(follow?.list!) === sentiment
 	);
 };
 
@@ -101,3 +117,5 @@ export const createListWithMultipleResources = async (
 	});
 	return resp.json();
 };
+
+

@@ -1,7 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { query, mutate } from '@/graphql/hasuraAdmin'
 import CookieService from '../../utils/cookie'
-import { deleteIfExists, updateResourceSentimentCount } from '@/utils/lists'
+import { deleteFollowIfExists, updateResourceSentimentCount } from '@/utils/lists'
 import { User } from '@/models/User';
 import { Lists } from '@/graphql/types';
 
@@ -27,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!list) return res.status(400).json({ message: 'Invalid List' });
 
       const sentimentType = list.name.split('-').pop();
-      await deleteIfExists(list, followResult.resource_id, followResult.resource_type, user, token) // delete follows
+      await deleteFollowIfExists(list, followResult.resource_id, followResult.resource_type, user, token) // delete follows
       await updateResourceSentimentCount(followResult.resource_type, followResult.resource_id, token, sentimentType, false, true)
     }
     res.status(200).json({ message: 'success' });
