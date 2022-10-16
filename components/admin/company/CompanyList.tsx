@@ -212,6 +212,7 @@ export const CompanyList = () => {
         <TextField source="careers_page" />
         <TextField source="company_linkedin" />
         <TextField source="year_founded" />
+        <TextField source="date_added" />
         <TextField source="investor_amount" />
         <TextField source="total_valuation" />
         <TextField source="white_paper" />

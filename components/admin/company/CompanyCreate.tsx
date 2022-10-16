@@ -20,6 +20,8 @@ import {
   Toolbar,
   SaveButton,
   useGetList,
+  regex,
+  required,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import ContentSave from "@mui/icons-material/Save";
@@ -141,6 +143,7 @@ export const CompanyCreate = () => {
       <TextInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="slug"
+        validate={required()}
         sx={{
           ".MuiFormHelperText-root": {
             display: "block !important",
@@ -275,6 +278,12 @@ export const CompanyCreate = () => {
             multiline
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="overview"
+          />
+
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="date_added"
+            validate={regex("[0-9]{4}-[0-9]{2}-[0-9]{2}", "")}
           />
 
           <TextInput
