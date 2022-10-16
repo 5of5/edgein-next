@@ -4,7 +4,7 @@ import { Magic } from "magic-sdk";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { Lists, useGetListsByUserQuery } from "@/graphql/types";
-import { find } from "lodash";
+import { find, kebabCase, first } from "lodash";
 import { getName } from "@/utils/reaction";
 import {
 	IconChevronDownMini,
@@ -20,6 +20,7 @@ export const UserMenu = () => {
 	const { user } = useAuth();
 
 	const [hotId, setHotId] = useState(0);
+	const [userLists, setUserLists] = useState<Lists[]>();
 
 	const { data: lists } = useGetListsByUserQuery({
 		current_user: user?.id ?? 0,
@@ -27,12 +28,28 @@ export const UserMenu = () => {
 
 	useEffect(() => {
 		if (lists) {
+			setUserLists(lists.lists as Lists[]);
 			setHotId(
 				() =>
 					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
 			);
 		}
 	}, [lists]);
+
+	const firstCustomList = first(
+		userLists?.filter(
+			(list) => !["hot", "crap", "like"].includes(getName(list))
+		)
+	);
+
+	let myListsUrl = "";
+	if (firstCustomList) {
+		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
+			getName(firstCustomList)
+		)}`;
+	} else {
+		myListsUrl = `/lists/${hotId}/hot`;
+	}
 
 	const logout = async () => {
 		localStorage.clear();
@@ -52,7 +69,7 @@ export const UserMenu = () => {
 	};
 
 	const navigation = [
-		{ name: "My Lists", href: `/lists/${hotId}/hot`, icon: IconCustomList },
+		{ name: "My Lists", href: myListsUrl, icon: IconCustomList },
 		// {
 		// 	name: "My Organizations",
 		// 	href: "/organizations",
@@ -84,39 +101,30 @@ export const UserMenu = () => {
 					as="nav"
 					className="absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
-					<div>
-						{navigation.map((item) => (
-							<Menu.Item key={item.name}>
-								{({ active }) => (
-									<a
-										href={item.href}
-										className={`${
-											active ? "bg-gray-50" : ""
-										} hover:text-primary-500 flex w-full items-center px-2 py-2`}
-									>
-										<item.icon className="mr-2 h-6 w-6" aria-hidden="true" />
-										{item.name}
-									</a>
-								)}
-							</Menu.Item>
-						))}
-					</div>
-
-					<div>
-						<Menu.Item>
-							{({ active }) => (
-								<button
-									onClick={logout}
-									className={`${
-										active ? "bg-gray-50" : ""
-									} hover:text-primary-500 flex w-full items-center px-2 py-2`}
-								>
-									<IconSignOut className="mr-2 h-6 w-6" />
-									Sign out
-								</button>
-							)}
+					{navigation.map((link) => (
+						<Menu.Item
+							key={link.href}
+							as="a"
+							href={link.href}
+							className="flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
+						>
+							<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
+							{link.name}
 						</Menu.Item>
-					</div>
+					))}
+					<Menu.Item>
+						{({ active }) => (
+							<button
+								onClick={logout}
+								className={`${
+									active ? "bg-gray-50" : ""
+								} hover:text-primary-500 flex w-full items-center px-2 py-2`}
+							>
+								<IconSignOut className="mr-2 h-6 w-6" />
+								Sign out
+							</button>
+						)}
+					</Menu.Item>
 				</Menu.Items>
 			</Transition>
 		</Menu>

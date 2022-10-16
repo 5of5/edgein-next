@@ -129,9 +129,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 		infoItems.push({
 			icon: IconCash,
 			text:
-				investmentsLength > 1
-					? investmentsLength + " Investments"
-					: "Investment",
+				investmentsLength === 1
+					? investmentsLength + " Investment"
+					: investmentsLength + " Investments",
 			link: "#investments",
 			target: "_self",
 		});
@@ -185,7 +185,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							{item.icon && (
 								<item.icon
 									title={item.text}
-									className="h-6 w-6 text-dark-500"
+									className="h-6 w-6 shrink-0 text-dark-500"
 								/>
 							)}
 							<span>{item.text}</span>
@@ -223,14 +223,6 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							>
 								&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
 							</a>,
-							// <a
-							// 	key={i}
-							// 	href={`mailto:${_email}`}
-							// 	className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
-							// >
-							// 	<IconEmail title="Email" className="h-6 w-6 text-dark-500" />
-							// 	<span>{_email}</span>
-							// </a>,
 						])}
 					</li>
 				)}

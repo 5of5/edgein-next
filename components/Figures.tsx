@@ -209,3 +209,35 @@ export const FigurePerspectiveGrid: React.FC<FigureProps> = ({ className }) => {
 		</svg>
 	);
 };
+
+export const FigureSearch: React.FC<FigureProps> = ({ className }) => {
+	return (
+		<svg
+			viewBox="0 0 373 222"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={className}
+		>
+			<rect y="72.0117" width="111" height="59" rx="9" fill="#E2E8F0" />
+			<rect x="45" y="101" width="26" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="15" y="101" width="25" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="76" y="101" width="20" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="15" y="112.012" width="63" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="130.998" y="72" width="111" height="59" rx="9" fill="#E2E8F0" />
+			<rect x="145.998" y="101" width="81" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="146" y="112" width="27" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="178" y="112" width="27" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="261.998" y="72" width="111" height="59" rx="9" fill="#E2E8F0" />
+			<rect x="277" y="101" width="51" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="333" y="101" width="25" height="5" rx="2.5" fill="#BAC5D5" />
+			<rect x="276.998" y="112" width="63" height="5" rx="2.5" fill="#BAC5D5" />
+			<path
+				d="M262.998 213.009L204.099 154.11M204.099 154.11C220.04 138.168 228.996 116.547 228.996 94.0032C228.996 71.4589 220.04 49.838 204.099 33.8969C188.158 17.9557 166.537 9 143.992 9C121.448 9 99.8273 17.9557 83.8861 33.8969C67.9449 49.838 58.9893 71.4589 58.9893 94.0032C58.9893 116.547 67.9449 138.168 83.8861 154.11C99.8273 170.051 121.448 179.006 143.992 179.006C166.537 179.006 188.158 170.051 204.099 154.11V154.11Z"
+				stroke="#5E41FE"
+				strokeWidth="17"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+};

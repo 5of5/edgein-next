@@ -142,13 +142,13 @@ export const ElemRecentInvestments: FC<Props> = ({
 	};
 
 	return (
-		<div className={`bg-white rounded-lg p-5 ${className}`}>
+		<div className={`bg-white rounded-lg p-5 shadow ${className}`}>
 			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			{error ? (
 				<h4>Error loading investors</h4>
 			) : isLoading ? (
 				<>
-					<div className="flex p-3 overflow-hidden">
+					<div className="flex -mx-3  overflow-hidden">
 						{Array.from({ length: 3 }, (_, i) => (
 							<div
 								key={i}
@@ -221,10 +221,10 @@ export const ElemRecentInvestments: FC<Props> = ({
 											</p>
 										)}
 										{/* <div className="mt-3 text-xs font-bold text-gray-400">
-										{investor.latest_investments && (
+										{investor. && (
 											<div>
 											Latest Investment
-											{formatDate(investor.latest_investments, {
+											{formatDate(investor.latest_investment, {
 												month: "short",
 												day: "2-digit",
 												year: "numeric",

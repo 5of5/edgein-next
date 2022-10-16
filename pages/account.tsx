@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconLinkedIn } from "@/components/Icons";
@@ -51,6 +51,24 @@ export default function Account() {
 		}
 		const url = `${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}&connection=linkedin&redirect_uri=${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}&scope=openid%20profile%20email%20offline_access`;
 		window.location.href = url;
+	};
+
+	const onBillingClick = async () => {
+		try {
+			const response = await fetch("/api/stripe_load/", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			});
+			const json = await response.json();
+			if (json && json.success && json.redirect) {
+				window.location.href = json.redirect;
+			}
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	const callChangePassword = async () => {
@@ -149,7 +167,7 @@ export default function Account() {
 											name=""
 										/>
 										{errorMessage === "" ? null : (
-											<span className="mt-2 text-sm">{errorMessage}</span>
+											<div className="mt-2 text-sm">{errorMessage}</div>
 										)}
 									</div>
 
@@ -164,9 +182,7 @@ export default function Account() {
 											name=""
 										/>
 										{reEnterErrorMessage === "" ? null : (
-											<span className="mt-2 text-sm">
-												{reEnterErrorMessage}
-											</span>
+											<div className="mt-2 text-sm">{reEnterErrorMessage}</div>
 										)}
 									</div>
 
@@ -189,6 +205,28 @@ export default function Account() {
 									</div>
 								</div>
 							)}
+						</EditSection>
+					)}
+					{user?.email.includes("@edgein.io") && (
+						<EditSection heading="Billing">
+							<div>
+								<p className="text-slate-600">
+									Manage your EdgeIn billing. (Currently: Only available for
+									edgein team member)
+								</p>
+								<ElemButton
+									onClick={onBillingClick}
+									size="sm"
+									className="mt-2 gap-x-2 rounded-md text-[#0077B5] border border-black/10 hover:border-[#0077B5] hover:bg-slate-50"
+									roundedFull={false}
+								>
+									{user && user.billing_org_id ? (
+										<span>Go To Billing</span>
+									) : (
+										<span>Checkout</span>
+									)}
+								</ElemButton>
+							</div>
 						</EditSection>
 					)}
 				</dl>

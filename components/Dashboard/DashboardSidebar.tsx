@@ -1,21 +1,23 @@
 import { useAuth } from "@/hooks/useAuth";
-import { truncate } from "lodash";
+//import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { ElemPhoto } from "../ElemPhoto";
-import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
+//import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
 	IconCash,
 	IconCompanies,
 	IconSettings,
 	IconOrganization,
-} from "../Icons";
+} from "@/components/Icons";
 
-type Props = {};
+type Props = {
+	className?: string;
+};
 
-export const ElemDashboardSidebar: FC<Props> = ({}) => {
+export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const [organizations, setOrganizations] = useState(
@@ -51,15 +53,15 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 	}, [users]);
 
 	const getActiveClass = (path: string) => {
-		return path === router.asPath ? "" : "";
+		return path === router.asPath ? "text-primary-500 bg-slate-200" : "";
 	};
 
 	return (
-		<>
+		<aside className={className}>
 			<div>
 				<h3 className="text-xl font-bold">My EdgeIn</h3>
-				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					<li className={`${getActiveClass("/profile/")}`} role="button">
+				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
+					{/* <li className={`${getActiveClass("/profile/")}`} role="button">
 						<Link href={`/profile`}>
 							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<ElemPhoto
@@ -79,11 +81,15 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 								)}
 							</a>
 						</Link>
-					</li>
+					</li> */}
 
-					<li className={`${getActiveClass("/account/")}`}>
-						<Link href={`/account`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+					<li>
+						<Link href="/account/" passHref>
+							<a
+								className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+									"/account/"
+								)}`}
+							>
 								<IconSettings className="h-6 w-6" />
 								<span>Account Settings</span>
 							</a>
@@ -131,18 +137,18 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 
 			<div className="mt-6">
 				<h3 className="text-xl font-bold">Explore</h3>
-				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					<li className={`${getActiveClass("/companies/")}`} role="button">
+				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
+					<li role="button">
 						<Link href={`/companies`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+							<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconCompanies className="w-6 h-6" />
 								<span>Companies</span>
 							</a>
 						</Link>
 					</li>
-					<li className={`${getActiveClass("/investors/")}`} role="button">
+					<li role="button">
 						<Link href={`/investors`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+							<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 								<IconCash className="w-6 h-6" />
 								<span>Investors</span>
 							</a>
@@ -150,6 +156,6 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 					</li>
 				</ul>
 			</div>
-		</>
+		</aside>
 	);
 };

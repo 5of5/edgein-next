@@ -43,9 +43,17 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [hotId, setHotId] = useState(0);
 
-	const { data: lists } = useGetListsByUserQuery({
+	// const { data: lists } = useGetListsByUserQuery({
+	// 	current_user: user?.id ?? 0,
+	// });
+
+	const { data: lists, refetch } = useGetListsByUserQuery({
 		current_user: user?.id ?? 0,
 	});
+
+	useEffect(() => {
+		if (isUpdated) refetch();
+	}, [isUpdated, refetch]);
 
 	useEffect(() => {
 		if (lists) {
@@ -190,7 +198,7 @@ const MyList: NextPage<Props> = ({}) => {
 				{(selectedListName === "hot" ||
 					selectedListName === "like" ||
 					selectedListName === "crap") && (
-					<p className="first-letter:uppercase text-slate-600">
+					<p className="mt-1 first-letter:uppercase text-slate-600">
 						{listNameTitle} lists are generated from your {listNameTitle}{" "}
 						reactions.
 					</p>

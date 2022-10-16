@@ -25,7 +25,10 @@ export async function middleware(req: NextRequest) {
 			`/api/user/`,
 			`/api/register/`,
 			`/api/signin/`,
+			`/api/change_password/`,
 			`/api/access_token_from_code/`,
+
+			`/api/stripe_webhook/`,
 
 			`/admin/app/`,
 		].includes(url.pathname) ||

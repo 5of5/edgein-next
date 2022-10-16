@@ -6,17 +6,17 @@ import validator from "validator";
  * @param lib - stopwords array
  */
 export const stopWordLowercase = (str: string, lib: string[] = []): string => {
-  if (lib.length === 0) {
-    lib = ["and", "an", "a", "the", "or", "am"];
-  }
+	if (lib.length === 0) {
+		lib = ["and", "an", "a", "the", "or", "am"];
+	}
 
-  const words = str.split(" ");
+	const words = str.split(" ");
 
-  if (words.length <= 1) return str;
+	if (words.length <= 1) return str;
 
-  const regex = new RegExp("\\b(" + lib.join("|") + ")\\b", "gi");
+	const regex = new RegExp("\\b(" + lib.join("|") + ")\\b", "gi");
 
-  return str.replace(regex, (match) => match.toLowerCase());
+	return str.replace(regex, (match) => match.toLowerCase());
 };
 
 /**
@@ -24,17 +24,17 @@ export const stopWordLowercase = (str: string, lib: string[] = []): string => {
  * @param string - string to manipulate
  */
 export const truncateWords = (string: string, wordCount?: number): string => {
-  if (string.length <= 1) return string;
+	if (string.length <= 1) return string;
 
-  if (!wordCount) {
-    wordCount = 25;
-  }
+	if (!wordCount) {
+		wordCount = 25;
+	}
 
-  const stringWordCount = string.split(" ").length;
+	const stringWordCount = string.split(" ").length;
 
-  return stringWordCount > wordCount
-    ? string.split(" ").splice(0, wordCount).join(" ") + "..."
-    : string;
+	return stringWordCount > wordCount
+		? string.split(" ").splice(0, wordCount).join(" ") + "..."
+		: string;
 };
 
 /**
@@ -42,41 +42,41 @@ export const truncateWords = (string: string, wordCount?: number): string => {
  * @param string - string to manipulate
  */
 export const camelToKebab = (string: string): string => {
-  return !string
-    ? string
-    : string.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+	return !string
+		? string
+		: string.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
 };
 
 export const kebabCase = (string: string): string => {
 	return !string
 		? string
 		: string
-			.replace(/([a-z])([A-Z])/g, "$1-$2")
-			.replace("-", "") // Remove string dashes
-			.replace(/[\s_]+/g, "-")
-			.toLowerCase();
+				.replace(/([a-z])([A-Z])/g, "$1-$2")
+				.replace("-", "") // Remove string dashes
+				.replace(/[\s_]+/g, "-")
+				.toLowerCase();
 };
 
 /**
  * Coverts a slug or variable into a title-like string
  */
 export const toLabel = (str?: string): string => {
-  if (!str || typeof str !== "string") return "";
+	if (!str || typeof str !== "string") return "";
 
-  const label = camelToKebab(str)
-    .replace(/-|_/g, " ") // turn dashes to spaces
-    .replace(/\//g, " ") // remove slashes and special chars
-    .replace(/\b\w/g, (l) => l.toUpperCase())
-    .trim();
+	const label = camelToKebab(str)
+		.replace(/-|_/g, " ") // turn dashes to spaces
+		.replace(/\//g, " ") // remove slashes and special chars
+		.replace(/\b\w/g, (l) => l.toUpperCase())
+		.trim();
 
-  return stopWordLowercase(label, ["and", "an", "a", "the", "or", "am"]);
+	return stopWordLowercase(label, ["and", "an", "a", "the", "or", "am"]);
 };
 
 /**
  * Converts regular space delimited text into a hyphenated slug
  */
 export const slugify = (text?: string): string | undefined => {
-  if (!text) return text;
+	if (!text) return text;
 
 	return text
 		.toString()
@@ -92,17 +92,24 @@ export const slugify = (text?: string): string | undefined => {
 /**
  * Remove all special character except space from a string
  */
-export const removeSpecialCharacterFromString = (text?: string): string | undefined => {
+export const removeSpecialCharacterFromString = (
+	text?: string
+): string | undefined => {
 	if (!text) return text;
 
-	return text.replace(/[^a-zA-Z ]/g, "");
-}
+	const addComma = text.replace(/,/g, ", ");
+	//return text.replace(/,/g, ", ");
+
+	//return addComma.replace(/[^a-zA-Z ]/g, "");
+
+	return addComma.replace(/[^a-zA-Z_, ]/g, "");
+};
 export const validateCompanyEmail = (domains: string[], email: string) => {
-	if (!validator.isEmail(email)) return false
+	if (!validator.isEmail(email)) return false;
 
-	const emailParts = email.split('@')
+	const emailParts = email.split("@");
 
-	if (!domains.includes(emailParts[1])) return false
+	if (!domains.includes(emailParts[1])) return false;
 
-	return true
-}
+	return true;
+};

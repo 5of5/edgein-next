@@ -570,6 +570,29 @@ export const currencyChoices = [
 	},
 ];
 
+export const investorChoices = [
+	{
+		id: "Trending",
+		name: "Trending (Coming soon!)",
+		disabled: true,
+	},
+	{
+		id: "Following",
+		name: "Following (Coming soon!)",
+		disabled: true,
+	},
+	// {
+	// 	id: "Acquired",
+	// 	name: "Acquired (Coming soon!)",
+	// 	disabled: true,
+	// },
+	// {
+	// 	id: "Dead",
+	// 	name: "Dead (Coming soon!)",
+	// 	disabled: true,
+	// },
+];
+
 export const investorFunctionChoices = [
 	{
 		id: "Investment",
@@ -622,3 +645,42 @@ export const status = [
 export const tokenTypes = {
 	verifyWorkHereToken: "token-verifyworkhere",
 };
+
+export const tags = [
+	"Layer 0",
+	"Layer 1",
+	"Layer 2",
+	"Layer 3",
+	"Layer 4",
+	"Layer 5",
+	"Layer 6",
+	"API/Platforms",
+	"API",
+	"Platforms",
+	"Dev Tools",
+	"Chain Tools",
+	"Analytics",
+	"D-Apps",
+	"Wallet",
+	"Oracle",
+	"Side-Chain",
+	"Database",
+	"Messaging",
+	"Asset",
+	"Storage",
+	"Marketplace",
+	"Exchange",
+	"Gaming",
+	"Defi",
+	"Blockchain",
+	"Crypto",
+	"NFT",
+	"Bitcoin",
+	"Ethereum",
+	"NEAR/OWC",
+	"Cosmos",
+	"Cardano",
+	"OWC",
+	"DAO",
+	"Centralized",
+].map((tag) => ({ id: tag, name: tag }));

@@ -1,6 +1,6 @@
 import { Companies_Bool_Exp, useGetCompaniesQuery } from "@/graphql/types";
 import { FC, useCallback, useEffect, useState } from "react";
-import { ActionMeta } from "react-select";
+import { ActionMeta, createFilter } from "react-select";
 import AsyncSelect from "react-select/async";
 
 type Props = {
@@ -49,6 +49,25 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
 		[compileOptions]
 	);
 
+	const customStyles = {
+		control: (provided: object, state: { isFocused: any }) => ({
+			...provided,
+			boxShadow: state.isFocused ? "none" : "none",
+			border: state.isFocused ? "none" : "none",
+		}),
+		option: (provided: object, state: { isFocused: any }) => ({
+			...provided,
+			backgroundColor: state.isFocused && "rgb(226 232 240)",
+			color: state.isFocused && "#5E41FE",
+		}),
+		input: (provided: any) => ({
+			...provided,
+			"input:focus": {
+				boxShadow: "none",
+			},
+		}),
+	};
+
 	return (
 		<>
 			{label && (
@@ -64,9 +83,13 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
 				onChange={onChange}
 				defaultValue
 				name="colors"
-				className={`basic-multi-select ${inputClassname}`}
+				className={`basic-multi-select border rounded-t-md rounded-b-md border-slate-300 hover:border-slate-400 transition-all placeholder:text-slate-250 focus-visible:outline-none focus:outline-none ${inputClassname}`}
 				classNamePrefix="select"
+				styles={customStyles}
 				placeholder="e.g Edgein"
+				filterOption={createFilter({
+					ignoreAccents: false,
+				})}
 			/>
 		</>
 	);

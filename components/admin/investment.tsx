@@ -20,6 +20,8 @@ import {
   useRedirect,
   Button,
   useGetList,
+  NumberField,
+  NumberInput,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { status } from "../../utils/constants";
@@ -27,17 +29,29 @@ import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
   <ReferenceInput key="searchPeople" source="person_id" reference="people">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      style={{padding: 0, border: "none"}}
+      optionText="name"
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <ReferenceInput
     key="searchRounds"
     source="round_id"
     reference="investment_rounds"
   >
-    <AutocompleteInput optionText={(choice) => `${choice.round}`} />
+    <AutocompleteInput
+      style={{padding: 0, border: "none"}}
+      optionText="name"
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      style={{padding: 0, border: "none"}}
+      optionText="name"
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
 ];
 
@@ -164,6 +178,7 @@ export const InvestmentsList = () => {
         >
           <TextField source="name" />
         </ReferenceField>
+        <NumberField source="amount" />
         <TextField source="status" />
         {/* <TextField source="counter" /> */}
       </Datagrid>
@@ -207,28 +222,40 @@ export const InvestmentsEdit = () => (
         label="Partner or Angel"
         source="person_id"
         reference="people"
+        allowEmpty
       >
-        <SelectInput
+        <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          style={{padding: 0, border: "none"}}
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <ReferenceInput
         label="Round"
         source="round_id"
         reference="investment_rounds"
+        allowEmpty
       >
-        <SelectInput
+        <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          style={{padding: 0, border: "none"}}
           optionText="round"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
-      <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
-        <SelectInput
+      <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms" allowEmpty>
+        <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          style={{padding: 0, border: "none"}}
           optionText="name"
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
+      <NumberInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="amount"
+      />
       <SelectInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="status"
@@ -261,29 +288,55 @@ export const InvestmentsCreate = () => (
         label="Partner or Angel"
         source="person_id"
         reference="people"
+        resettable
+        allowEmpty
+        emptyValue={null}
       >
-        <SelectInput
+        <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          style={{padding: 0, border: "none"}}
           optionText="name"
+          filterToQuery={search => ({ name: search })}
+          emptyValue={null}
         />
       </ReferenceInput>
       <ReferenceInput
         label="Round"
         source="round_id"
         reference="investment_rounds"
+        resettable
+        allowEmpty
+        emptyValue={null}
       >
-        <SelectInput
+        <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-          optionText="round"
+          style={{padding: 0, border: "none"}}
+          optionText={(rec) => `${rec.company.name} ${rec.round}`}
+          filterToQuery={search => ({ 'company#name@_ilike': search })}
+          emptyValue={null}
         />
       </ReferenceInput>
 
-      <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
-        <SelectInput
+      <ReferenceInput
+        label="VC Firm"
+        source="vc_firm_id"
+        reference="vc_firms"
+        resettable
+        allowEmpty
+        emptyValue={null}
+      >
+        <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          style={{padding: 0, border: "none"}}
           optionText="name"
+          filterToQuery={search => ({ name: search })}
+          emptyValue={null}
         />
       </ReferenceInput>
+      <NumberInput
+        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+        source="amount"
+      />
       <SelectInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="status"

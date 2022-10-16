@@ -6,21 +6,25 @@ type Props = {
 	className?: string;
 	heading?: string;
 	team_members?: Team_Members[];
+	showEdit?: boolean;
 };
 
 export const ElemJobsList: React.FC<Props> = ({
 	className,
 	heading,
 	team_members,
+	showEdit,
 }) => {
 	return (
 		<>
 			<div className={`w-full p-5 bg-white shadow rounded-lg ${className}`}>
 				<div className="flex items-center justify-between">
 					<h2 className="text-xl font-bold">{heading}</h2>
-					<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-						<IconEditPencil title="Edit" />
-					</button>
+					{showEdit && (
+						<button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+							<IconEditPencil title="Edit" />
+						</button>
+					)}
 				</div>
 
 				<div className="mt-2 border border-black/10 rounded-lg">

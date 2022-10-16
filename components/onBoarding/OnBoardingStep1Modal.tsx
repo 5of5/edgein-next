@@ -19,10 +19,6 @@ type Props = {
 export default function OnBoardingStep1Modal(props: Props) {
 	const [selectedOption, setSelectedOption] = useState(props.selectedOption);
 
-	const onClose = () => {
-		props.onClose();
-	};
-
 	const onNext = () => {
 		props.onNext(selectedOption);
 	};
@@ -63,11 +59,11 @@ export default function OnBoardingStep1Modal(props: Props) {
 											: ""
 									}, How will you use EdgeIn?`}
 								</h3>
-								<p className="text-sm text-slate-500">Step 1 of 3</p>
+								<p className="text-sm text-slate-500">Step 1 of 2</p>
 								<div className="mt-4 text-slate-600">
 									We&rsquo;ll get you set so you can start exploring
 								</div>
-								<div className="mt-4 flex flex-col items-center space-y-4">
+								<div className="mt-8 flex flex-col items-center space-y-4">
 									<button
 										onClick={() => {
 											setSelectedOption("companies");
@@ -76,7 +72,7 @@ export default function OnBoardingStep1Modal(props: Props) {
 											selectedOption === "companies"
 												? "ring-2 ring-primary-500"
 												: "ring-1 ring-slate-300"
-										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg`}
+										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg focus:!outline-none`}
 									>
 										<IconFindCompanies className="w-6 h-6" />
 										<h2>Find companies</h2>
@@ -89,16 +85,16 @@ export default function OnBoardingStep1Modal(props: Props) {
 											selectedOption === "investors"
 												? "ring-2 ring-primary-500"
 												: "ring-1 ring-slate-300"
-										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg`}
+										} flex items-center space-x-3 w-full font-bold border-0 px-6 py-4 ring-inset rounded-lg focus:!outline-none`}
 									>
 										<IconFindInvestors className="w-6 h-6" />
 										<h2 className="self-center">Find investors</h2>
 									</button>
-									<div className="w-full flex justify-end">
-										<ElemButton onClick={onNext} btn="primary">
-											Next
-										</ElemButton>
-									</div>
+								</div>
+								<div className="w-full flex justify-end mt-8">
+									<ElemButton onClick={onNext} btn="primary">
+										Next
+									</ElemButton>
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>

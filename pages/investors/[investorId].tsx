@@ -34,7 +34,7 @@ import {
 	getNewTempSentiment,
 } from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { remove } from "lodash";
+import { remove, uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
 type Props = {
 	vcfirm: Vc_Firms;
@@ -129,6 +129,19 @@ const VCFirm: NextPage<Props> = (props) => {
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
+	// Investor tags
+	const vcfirmTags: any = [];
+	if (sortedInvestmentRounds.length > 0) {
+		{
+			sortedInvestmentRounds.map((item: Investment_Rounds, index: number) => {
+				item?.company?.tags?.map((tag: string, i: number) => [
+					vcfirmTags.push(tag),
+				]);
+			});
+		}
+	}
+	const vcfirmTagsUnique = uniq(vcfirmTags as String);
+
 	//TabBar
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
 	if (vcfirm.investors.length > 0) {
@@ -162,7 +175,13 @@ const VCFirm: NextPage<Props> = (props) => {
 				<div className="w-full col-span-5 mt-7 lg:mt-0">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
 
-					{vcfirm.tags && <ElemTags className="mt-4" tags={vcfirm.tags} />}
+					{vcfirm.tags != "" ? (
+						<ElemTags className="mt-4" tags={vcfirm.tags} />
+					) : vcfirmTagsUnique.length > 0 ? (
+						<ElemTags className="mt-4" tags={vcfirmTagsUnique} />
+					) : (
+						<></>
+					)}
 
 					{vcfirm.overview && (
 						<p className="mt-4 line-clamp-3 text-base text-slate-600">
@@ -277,8 +296,8 @@ const VCFirm: NextPage<Props> = (props) => {
 									)}
 								</>
 							) : (
-								<div className="flex items-center justify-center p-5">
-									<div className="text-xl text-slate-600">
+								<div className="flex items-center justify-center lg:p-5">
+									<div className="text-slate-600 lg:text-xl">
 										There is no recent activity for this organization.
 									</div>
 								</div>

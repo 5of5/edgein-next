@@ -1,15 +1,10 @@
 import { Fragment, useState, FC, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
-import { ElemLogo } from "@/components/ElemLogo";
 import { ElemButton } from "@/components/ElemButton";
 import { IconX } from "@/components/Icons";
 import { useAuth } from "@/hooks/useAuth";
-import { ElemDashboardSidebar } from "./ElemDashboardSidebar";
-
-function classNames(...classes: string[]) {
-	return classes.filter(Boolean).join(" ");
-}
+import { DashboardSidebar } from "./DashboardSidebar";
 
 type Props = {};
 
@@ -60,28 +55,21 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 											leaveFrom="opacity-100"
 											leaveTo="opacity-0"
 										>
-											<div className="absolute top-0 right-0 -mr-12 pt-2">
-												<button
-													type="button"
-													className="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+											<div className="absolute top-0 right-0 pt-2">
+												<ElemButton
+													btn="white"
+													roundedFull={false}
 													onClick={() => setSidebarOpen(false)}
+													className="rounded-lg hover:border-primary-500 lg:hidden"
 												>
-													<span className="sr-only">Close sidebar</span>
-													<IconX
-														className="h-6 w-6 text-white"
-														aria-hidden="true"
-													/>
-												</button>
+													<span className="sr-only">Close Sidebar</span>
+													<IconX className="h-6 w-6" aria-hidden="true" />
+												</ElemButton>
 											</div>
 										</Transition.Child>
-										{/* <div className="flex-shrink-0 px-4 flex items-center">
-										<ElemLogo
-											className="h-8 w-auto scale-90 transition duration-200 ease-in-out hover:scale-95"
-											mode="logo"
-										/>
-									</div> */}
+
 										<div className="px-4 flex-1 h-0 overflow-y-auto">
-											<ElemDashboardSidebar />
+											<DashboardSidebar />
 										</div>
 									</Dialog.Panel>
 								</Transition.Child>
@@ -92,9 +80,8 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 						</Dialog>
 					</Transition.Root>
 
-					<aside className="py-6 hidden lg:block lg:col-span-2 lg:py-0">
-						<ElemDashboardSidebar />
-					</aside>
+					<DashboardSidebar className="py-6 hidden lg:block lg:col-span-2 lg:py-0" />
+
 					<div className="lg:col-span-7">
 						<ElemButton
 							btn="white"

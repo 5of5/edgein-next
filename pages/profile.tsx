@@ -823,7 +823,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									onChange={(e) => setCountry(e.target.value)}
 									value={country}
 									name="country"
-									placeholder="United State"
+									placeholder="United States"
 									className="mb-3"
 								/>
 
@@ -1040,7 +1040,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						) : (
 							<div className="max-w-lg">
 								<InputTextarea
-									rows={3}
+									rows={5}
 									value={about}
 									onChange={(e) => setAbout(e.target.value)}
 								/>

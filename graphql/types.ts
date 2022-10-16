@@ -11133,8 +11133,7 @@ export type Vc_Firms = {
   investors: Array<Investors>;
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
-  /** A computed field, executes function "vc_firms_latest_investments" */
-  latest_investments: Maybe<Scalars['String']>;
+  latest_investment: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   logo: Maybe<Scalars['jsonb']>;
@@ -11284,7 +11283,7 @@ export type Vc_Firms_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
-  latest_investments: InputMaybe<String_Comparison_Exp>;
+  latest_investment: InputMaybe<String_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
@@ -11624,6 +11623,7 @@ export type Vc_Firms_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
+  latest_investment: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -11645,6 +11645,7 @@ export type Vc_Firms_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  latest_investment: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -11663,6 +11664,7 @@ export type Vc_Firms_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  latest_investment: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -11706,7 +11708,7 @@ export type Vc_Firms_Order_By = {
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
-  latest_investments: InputMaybe<Order_By>;
+  latest_investment: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
@@ -11744,6 +11746,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  LatestInvestment = 'latest_investment',
+  /** column name */
   Linkedin = 'linkedin',
   /** column name */
   Location = 'location',
@@ -11776,6 +11780,7 @@ export type Vc_Firms_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  latest_investment: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -11823,6 +11828,8 @@ export enum Vc_Firms_Update_Column {
   ExternalId = 'external_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  LatestInvestment = 'latest_investment',
   /** column name */
   Linkedin = 'linkedin',
   /** column name */
@@ -12130,7 +12137,7 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investments: string | null, sentiment: any | null, logo: any | null, slug: string | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null } | null }> } | null }> };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: string | null, sentiment: any | null, logo: any | null, slug: string | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null } | null }> } | null }> };
 
 export type GetListsByUserQueryVariables = Exact<{
   current_user: InputMaybe<Scalars['Int']>;
@@ -12144,7 +12151,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string | null, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string | null, name: string | null, logo: any | null } | null } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -12189,7 +12196,7 @@ export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, latest_investments: string | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, follows: Array<{ __typename?: 'follows_vc_firms', list: { __typename?: 'lists', name: string } | null }> }> };
+export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, latest_investment: string | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, follows: Array<{ __typename?: 'follows_vc_firms', list: { __typename?: 'lists', name: string } | null }> }> };
 
 export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -12585,7 +12592,7 @@ export const GetVcFirmsByListIdDocument = `
       id
       name
       num_of_investments
-      latest_investments
+      latest_investment
       sentiment
       logo
       slug
@@ -12666,6 +12673,21 @@ export const GetPersonDocument = `
     website_url
     about
     email
+    investors {
+      id
+      end_date
+      start_date
+      function
+      title
+      vc_firm {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
     team_members {
       id
       end_date
@@ -12990,7 +13012,7 @@ export const GetVcFirmsRecentInvestmentsDocument = `
     query GetVCFirmsRecentInvestments($limit: Int, $offset: Int, $where: vc_firms_bool_exp!, $current_user: Int) {
   vc_firms(
     where: $where
-    order_by: {latest_investments: desc_nulls_last}
+    order_by: {latest_investment: desc_nulls_last}
     limit: $limit
     offset: $offset
   ) {
@@ -12998,7 +13020,7 @@ export const GetVcFirmsRecentInvestmentsDocument = `
     name
     slug
     logo
-    latest_investments
+    latest_investment
     num_of_investments
     sentiment
     overview

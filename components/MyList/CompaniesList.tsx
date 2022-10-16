@@ -276,7 +276,7 @@ export const CompaniesList: FC<Props> = ({
 						Remove
 					</ElemButton>
 					<ElemButton
-						onClick={() => toggleAllRowsSelected()}
+						onClick={() => toggleAllRowsSelected(false)}
 						roundedFull
 						btn="transparent"
 						size="sm"

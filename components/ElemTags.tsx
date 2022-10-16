@@ -3,10 +3,13 @@ import React from "react";
 type Props = {
 	className?: string;
 	heading?: string;
-	tags: (string | null)[];
+	tags?: (string | null)[];
 };
 
 export const ElemTags: React.FC<Props> = ({ className, heading, tags }) => {
+	if (!tags) {
+		return <span></span>
+	}
 	return (
 		<section className={className}>
 			{heading && <h2 className="text-2xl font-bold">{heading}</h2>}

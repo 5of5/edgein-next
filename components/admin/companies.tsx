@@ -2,7 +2,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
   Button,
+  DateField,
   FunctionField,
+  AutocompleteArrayInput,
   AutocompleteInput,
   FileInput,
   ImageField,
@@ -28,16 +30,20 @@ import {
   Toolbar,
   SaveButton,
   useGetOne,
+  useGetManyReference,
+  Link
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
+import { roundChoices, currencyChoices } from "../../utils/constants";
 import BookIcon from "@mui/icons-material/Book";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
   status,
+  tags,
 } from "../../utils/constants";
 import { random } from "lodash";
 
@@ -61,7 +67,11 @@ const filters = [
     alwaysOn
   />,
   <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
-    <AutocompleteInput optionText={(choice) => `${choice.name}`} />
+    <AutocompleteInput
+      style={{padding: 0, border: "none"}}
+      optionText="name"
+      filterToQuery={search => ({ name: search })}
+    />
   </ReferenceInput>,
   <SelectInput
     key="layer"
@@ -196,11 +206,12 @@ export const CompanyList = () => {
       }}
     >
       <Datagrid
-      // data={renderData}
-      // sort={customSort}
-      // setSort={(value) => setCustomSort(value)}
+        // data={renderData}
+        // sort={customSort}
+        // setSort={(value) => setCustomSort(value)}
       >
         <EditButton />
+        <FunctionField render= {(record: any) => (<a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${record.slug}`}><Button label="Preview" /></a>)} />
         <TextField source="id" />
         <TextField source="name" />
         <TextField source="slug" />
@@ -366,6 +377,7 @@ export const CompanyEdit = () => {
   };
 
   return (
+    <>
     <Edit
       title={<CompanyTitle />}
       transform={transform}
@@ -435,6 +447,11 @@ export const CompanyEdit = () => {
           </FormDataConsumer>
           {isIcon && (
             <>
+              <div style={{position: 'absolute', top: 135, left: 18}}>
+                <a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${currentData && currentData.slug}`}>
+                  <Button label="Preview" />
+                </a>
+              </div>
               <RenderGoogleIcon
                 topPos="135px"
                 leftPos="36%"
@@ -484,9 +501,11 @@ export const CompanyEdit = () => {
             source="layer_detail"
           />
           <ReferenceInput label="Coin" source="coin_id" reference="coins">
-            <SelectInput
+            <AutocompleteInput
+              style={{padding: 0, border: "none"}}
               className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
               optionText="name"
+              filterToQuery={search => ({ name: search })}
             />
           </ReferenceInput>
           <NumberInput
@@ -540,10 +559,12 @@ export const CompanyEdit = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="location"
           />
-          <TextInput
-            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+          <AutocompleteArrayInput
+            choices={tags}
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
             source="tags"
+            style={{padding: 0, border: "none"}}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -608,9 +629,90 @@ export const CompanyEdit = () => {
               },
             }}
           />
+          <div className="w-full">
+            <InvestmentRoundsList />
+          </div>
         </SimpleForm>
       </div>
+
     </Edit>
+
+    </>
+  );
+};
+
+const InvestmentRoundsList = () => {
+  const [customSort, setCustomSort] = React.useState({
+    field: "id",
+    order: "ASC",
+  });
+  const { id } = useParams();
+  const headers: string[] = [
+    "id",
+    "company_id",
+    "round_date",
+    "round",
+    "amount",
+    "currency",
+    "valuation",
+    "status",
+  ];
+  const { data } = useGetManyReference("investment_rounds", {
+    target: 'company_id',
+    id: id,
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'round_date', order: 'DESC' }
+  });
+  let renderData = data?.map((v) => {
+    let sum = 0;
+    for (var index in v) {
+      v[index] && headers.includes(index) ? sum++ : sum;
+    }
+    return { ...v, edit: '#/round/' + v.id };
+  });
+
+  return (
+    <List
+      sx={{
+        ".MuiToolbar-root": {
+          justifyContent: "start !important",
+          paddingTop: 0,
+          marginBottom: "4px",
+        },
+        ".RaBulkActionsToolbar-toolbar": {
+          justifyContent: "start !important",
+        },
+        ".MuiToolbar-root .MuiButtonBase-root": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          margin: "4px",
+        },
+        ".RaBulkActionsToolbar-topToolbar": {
+          paddingTop: 0,
+          paddingBottom: 0,
+          marginBottom: 0,
+        },
+        ".MuiToolbar-root form": {
+          flex: "0 1 auto",
+        },
+        ".MuiToolbar-root form .MuiFormControl-root": {
+          margin: 0,
+        },
+      }}
+    >
+      <Datagrid
+        data={renderData}
+        bulkActionButtons={false}
+      >
+        <DateField source="round_date" sortable={false} />
+        <TextField source="round" sortable={false} />
+        <NumberField source="amount" sortable={false} />
+        <SelectField source="currency" choices={currencyChoices} sortable={false} />
+        <NumberField source="valuation" sortable={false} />
+        <TextField source="status" sortable={false} />
+        <EditButton resource={"investment_rounds"} />
+      </Datagrid>
+    </List>
   );
 };
 
@@ -809,9 +911,11 @@ export const CompanyCreate = () => {
             source="layer_detail"
           />
           <ReferenceInput label="Coin" source="coin_id" reference="coins">
-            <SelectInput
+            <AutocompleteInput
               className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+              style={{padding: 0, border: "none"}}
               optionText="name"
+              filterToQuery={search => ({ name: search })}
             />
           </ReferenceInput>
           <NumberInput

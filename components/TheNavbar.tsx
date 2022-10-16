@@ -285,6 +285,7 @@ export const TheNavbar = () => {
 					)}
 					{onBoardingStep === 2 && (
 						<OnBoardingStep2Modal
+							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
 							show={onBoardingStep === 2 && !loading}
@@ -292,7 +293,8 @@ export const TheNavbar = () => {
 								setOnBoardingStep(0);
 							}}
 							onNext={(locationTags, industryTags) => {
-								setOnBoardingStep(3);
+								//setOnBoardingStep(3);
+								setOnBoardingStep(0);
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
 							}}
@@ -303,7 +305,7 @@ export const TheNavbar = () => {
 							}}
 						/>
 					)}
-					{onBoardingStep === 3 && (
+					{/* {onBoardingStep === 3 && (
 						<OnBoardingStep3Modal
 							selectedOption={selectedOption}
 							locationTags={locationTags}
@@ -318,7 +320,7 @@ export const TheNavbar = () => {
 							onBack={() => setOnBoardingStep(2)}
 							user={user}
 						/>
-					)}
+					)} */}
 				</nav>
 			</div>
 		</header>

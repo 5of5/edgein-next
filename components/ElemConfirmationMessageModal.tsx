@@ -3,22 +3,22 @@ import { Fragment } from "react";
 import { ElemButton } from "./ElemButton";
 
 type Props = {
-    show: boolean;
-	type: string;
+	show: boolean;
+	messageType: string;
 	onConfirm?: () => void;
-    onCancel: () => void;
-    message: string;
+	onCancel: () => void;
+	message: string;
 };
 
-const ElemConfirmationMessageModal: React.FC<Props> =({
-    show,
-    type,
-    onConfirm = () => {},
-    onCancel = () => {},
-    message
+const ElemConfirmationMessageModal: React.FC<Props> = ({
+	show,
+	messageType,
+	onConfirm = () => {},
+	onCancel = () => {},
+	message,
 }) => {
-    return (
-<>
+	return (
+		<>
 			<Transition.Root show={show} as={Fragment}>
 				<Dialog as="div" onClose={onCancel} className="relative z-[60]">
 					<Transition.Child
@@ -45,19 +45,27 @@ const ElemConfirmationMessageModal: React.FC<Props> =({
 						>
 							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
 								<div className="max-w-xs mx-auto w-full">
-										<>
-											<p className="mt-2 text-dark-400 text-center">
-												{message}
-											</p>
-                                            {
-                                                type === 'confimation' && (
-                                                    <div className="flex justify-center gap-x-5">
-                                                    <ElemButton onClick={onCancel} btn="ol-primary" className="mt-5">Cancel</ElemButton>
-                                                    <ElemButton onClick={onConfirm} btn="primary" className="mt-5">Confirm</ElemButton> 
-                                                </div>
-                                                )
-                                            }
-										</>
+									<>
+										<p className="mt-2 text-dark-400 text-center">{message}</p>
+										{messageType === "confirmation" && (
+											<div className="flex justify-center gap-x-5">
+												<ElemButton
+													onClick={onCancel}
+													btn="ol-primary"
+													className="mt-5"
+												>
+													Cancel
+												</ElemButton>
+												<ElemButton
+													onClick={onConfirm}
+													btn="primary"
+													className="mt-5"
+												>
+													Confirm
+												</ElemButton>
+											</div>
+										)}
+									</>
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>
@@ -65,7 +73,7 @@ const ElemConfirmationMessageModal: React.FC<Props> =({
 				</Dialog>
 			</Transition.Root>
 		</>
-    )
-}
+	);
+};
 
 export default ElemConfirmationMessageModal;

@@ -140,43 +140,43 @@ const Organizations: FC<Props> = ({ dropdown }) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-	const { data: companiesData } = await runGraphQl<GetCompaniesQuery>(
-		GetCompaniesDocument,
-		{
-			limit: 20,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
-		}
-	);
+	// const { data: companiesData } = await runGraphQl<GetCompaniesQuery>(
+	// 	GetCompaniesDocument,
+	// 	{
+	// 		limit: 20,
+	// 		where: { slug: { _neq: "" }, status: { _eq: "published" } },
+	// 	}
+	// );
 
-	const { data: vcFirmsData } = await runGraphQl<GetVcFirmsQuery>(
-		GetVcFirmsDocument,
-		{
-			limit: 20,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
-		}
-	);
+	// const { data: vcFirmsData } = await runGraphQl<GetVcFirmsQuery>(
+	// 	GetVcFirmsDocument,
+	// 	{
+	// 		limit: 20,
+	// 		where: { slug: { _neq: "" }, status: { _eq: "published" } },
+	// 	}
+	// );
 
-	const companiesDropdown =
-		companiesData?.companies.map((company) => ({
-			label: company.name,
-			value: company.id,
-			type: "companies",
-			logo: company.logo,
-			website: company.website,
-		})) || [];
+	// const companiesDropdown =
+	// 	companiesData?.companies.map((company) => ({
+	// 		label: company.name,
+	// 		value: company.id,
+	// 		type: "companies",
+	// 		logo: company.logo,
+	// 		website: company.website,
+	// 	})) || [];
 
-	const vcFirmsDropdown =
-		vcFirmsData?.vc_firms.map((vcfirm) => ({
-			label: vcfirm.name,
-			value: vcfirm.id,
-			type: "vc_firms",
-			logo: vcfirm.logo,
-			website: vcfirm.website,
-		})) || [];
+	// const vcFirmsDropdown =
+	// 	vcFirmsData?.vc_firms.map((vcfirm) => ({
+	// 		label: vcfirm.name,
+	// 		value: vcfirm.id,
+	// 		type: "vc_firms",
+	// 		logo: vcfirm.logo,
+	// 		website: vcfirm.website,
+	// 	})) || [];
 
 	return {
 		props: {
-			dropdown: companiesDropdown.concat(vcFirmsDropdown),
+			dropdown: [] // companiesDropdown.concat(vcFirmsDropdown),
 		},
 	};
 };

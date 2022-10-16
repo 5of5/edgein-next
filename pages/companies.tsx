@@ -161,30 +161,6 @@ const Companies: NextPage<Props> = ({
 		current_user: user?.id ?? 0,
 	});
 
-	//   const { mutate: insertAction } = useInsertActionMutation();
-
-	//   if (
-	//     !isLoading &&
-	//     debouncedSearchTerm !== "" &&
-	//     companiesData?.companies.length === 0 &&
-	//     !savedEmptySearches.includes(debouncedSearchTerm)
-	//   ) {
-	//     insertAction({
-	//       action: "Empty Search",
-	//       page: location.pathname,
-	//       properties: {
-	//         search: debouncedSearchTerm,
-	//         layer: selectedLayer.value,
-	//         investor_amount: selectedAmountRaised.rangeStart,
-	//         total_employees: selectedTotalEmployees.rangeStart,
-	//       },
-	//       user: user?.email ?? "",
-	//     });
-	//     setSavedEmptySearches((prev) =>
-	//       prev.includes(debouncedSearchTerm) ? prev : [...prev, debouncedSearchTerm]
-	//     );
-	//   }
-
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
@@ -206,14 +182,14 @@ const Companies: NextPage<Props> = ({
 				{companies && (
 					<ElemRecentCompanies
 						onUpdateOfCompany={onUpdateOfCompany}
-						className="bg-white rounded-lg shadow-sm hover:shadow"
+						className="bg-white rounded-lg shadow"
 						heading="Recently Discovered"
 					/>
 				)}
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-				<div className="bg-white rounded-lg p-5">
+				<div className="bg-white rounded-lg shadow p-5">
 					<h2 className="text-xl font-bold">All Companies</h2>
 					<ElemFiltersWrap className="pt-2 filters-wrap">
 						<InputSelect
@@ -245,22 +221,24 @@ const Companies: NextPage<Props> = ({
 						/>
 
 						<div className="hidden md:block md:shrink md:basis-0">
-							<div
-								className="px-4 py-1.5 cursor-pointer rounded-md bg-white border border-dark-500/10 hover:text-primary-500 hover:ring hover:ring-primary-100"
+							<ElemButton
 								onClick={() => setToggleViewMode(!toggleViewMode)}
+								btn="white"
+								roundedFull={false}
+								className="rounded-md focus:ring-1 focus:ring-slate-200"
 							>
 								{toggleViewMode ? (
-									<div className="flex items-center">
+									<>
 										<IconGrid className="w-5 h-5 mr-1" />
 										Grid
-									</div>
+									</>
 								) : (
-									<div className="flex items-center">
+									<>
 										<IconList className="w-5 h-5 mr-1" />
 										List
-									</div>
+									</>
 								)}
-							</div>
+							</ElemButton>
 						</div>
 					</ElemFiltersWrap>
 

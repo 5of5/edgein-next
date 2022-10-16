@@ -84,7 +84,6 @@ export const ElemShareMenu = ({
 					<div>
 						<Menu.Item>
 							{({ active }) => (
-								//<a href="sms:(countrycode)(number)"> Text </a>
 								<button
 									onClick={onSMS}
 									className={`${
