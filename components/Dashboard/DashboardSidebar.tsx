@@ -1,21 +1,23 @@
 import { useAuth } from "@/hooks/useAuth";
-import { truncate } from "lodash";
+//import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { ElemPhoto } from "../ElemPhoto";
-import { ElemMyListsMenu } from "../MyList/ElemMyListsMenu";
+//import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
 	IconCash,
 	IconCompanies,
 	IconSettings,
 	IconOrganization,
-} from "../Icons";
+} from "@/components/Icons";
 
-type Props = {};
+type Props = {
+	className?: string;
+};
 
-export const ElemDashboardSidebar: FC<Props> = ({}) => {
+export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const [organizations, setOrganizations] = useState(
@@ -55,7 +57,7 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 	};
 
 	return (
-		<>
+		<aside className={className}>
 			<div>
 				<h3 className="text-xl font-bold">My EdgeIn</h3>
 				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
@@ -154,6 +156,6 @@ export const ElemDashboardSidebar: FC<Props> = ({}) => {
 					</li>
 				</ul>
 			</div>
-		</>
+		</aside>
 	);
 };
