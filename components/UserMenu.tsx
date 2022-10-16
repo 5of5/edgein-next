@@ -1,6 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "./ElemButton";
-import { Magic } from "magic-sdk";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import { Lists, useGetListsByUserQuery } from "@/graphql/types";
@@ -53,8 +52,6 @@ export const UserMenu = () => {
 
 	const logout = async () => {
 		localStorage.clear();
-		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
 		}).then((res) => res.json());
