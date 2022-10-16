@@ -994,10 +994,12 @@ export type Coins = {
   /** An object relationship */
   blockchain: Maybe<Blockchains>;
   blockchain_id: Maybe<Scalars['Int']>;
+  company_id: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   id: Scalars['Int'];
   name: Scalars['String'];
   ticker: Scalars['String'];
+  type: Maybe<Scalars['String']>;
 };
 
 /** aggregated selection of "coins" */
@@ -1034,6 +1036,7 @@ export type Coins_Aggregate_FieldsCountArgs = {
 export type Coins_Avg_Fields = {
   __typename?: 'coins_avg_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1044,10 +1047,12 @@ export type Coins_Bool_Exp = {
   _or: InputMaybe<Array<Coins_Bool_Exp>>;
   blockchain: InputMaybe<Blockchains_Bool_Exp>;
   blockchain_id: InputMaybe<Int_Comparison_Exp>;
+  company_id: InputMaybe<Int_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   ticker: InputMaybe<String_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "coins" */
@@ -1055,12 +1060,15 @@ export enum Coins_Constraint {
   /** unique or primary key constraint */
   CoinsExternalIdKey = 'coins_external_id_key',
   /** unique or primary key constraint */
-  CoinsPkey = 'coins_pkey'
+  CoinsPkey = 'coins_pkey',
+  /** unique or primary key constraint */
+  CoinsTickerIdx = 'coins_ticker_idx'
 }
 
 /** input type for incrementing numeric columns in table "coins" */
 export type Coins_Inc_Input = {
   blockchain_id: InputMaybe<Scalars['Int']>;
+  company_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
 };
 
@@ -1068,30 +1076,36 @@ export type Coins_Inc_Input = {
 export type Coins_Insert_Input = {
   blockchain: InputMaybe<Blockchains_Obj_Rel_Insert_Input>;
   blockchain_id: InputMaybe<Scalars['Int']>;
+  company_id: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
   ticker: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type Coins_Max_Fields = {
   __typename?: 'coins_max_fields';
   blockchain_id: Maybe<Scalars['Int']>;
+  company_id: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   ticker: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type Coins_Min_Fields = {
   __typename?: 'coins_min_fields';
   blockchain_id: Maybe<Scalars['Int']>;
+  company_id: Maybe<Scalars['Int']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   ticker: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "coins" */
@@ -1121,10 +1135,12 @@ export type Coins_On_Conflict = {
 export type Coins_Order_By = {
   blockchain: InputMaybe<Blockchains_Order_By>;
   blockchain_id: InputMaybe<Order_By>;
+  company_id: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   ticker: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: coins */
@@ -1137,28 +1153,35 @@ export enum Coins_Select_Column {
   /** column name */
   BlockchainId = 'blockchain_id',
   /** column name */
+  CompanyId = 'company_id',
+  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
   /** column name */
-  Ticker = 'ticker'
+  Ticker = 'ticker',
+  /** column name */
+  Type = 'type'
 }
 
 /** input type for updating data in table "coins" */
 export type Coins_Set_Input = {
   blockchain_id: InputMaybe<Scalars['Int']>;
+  company_id: InputMaybe<Scalars['Int']>;
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
   ticker: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
 export type Coins_Stddev_Fields = {
   __typename?: 'coins_stddev_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1166,6 +1189,7 @@ export type Coins_Stddev_Fields = {
 export type Coins_Stddev_Pop_Fields = {
   __typename?: 'coins_stddev_pop_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1173,6 +1197,7 @@ export type Coins_Stddev_Pop_Fields = {
 export type Coins_Stddev_Samp_Fields = {
   __typename?: 'coins_stddev_samp_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1180,6 +1205,7 @@ export type Coins_Stddev_Samp_Fields = {
 export type Coins_Sum_Fields = {
   __typename?: 'coins_sum_fields';
   blockchain_id: Maybe<Scalars['Int']>;
+  company_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
 };
 
@@ -1188,19 +1214,24 @@ export enum Coins_Update_Column {
   /** column name */
   BlockchainId = 'blockchain_id',
   /** column name */
+  CompanyId = 'company_id',
+  /** column name */
   ExternalId = 'external_id',
   /** column name */
   Id = 'id',
   /** column name */
   Name = 'name',
   /** column name */
-  Ticker = 'ticker'
+  Ticker = 'ticker',
+  /** column name */
+  Type = 'type'
 }
 
 /** aggregate var_pop on columns */
 export type Coins_Var_Pop_Fields = {
   __typename?: 'coins_var_pop_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1208,6 +1239,7 @@ export type Coins_Var_Pop_Fields = {
 export type Coins_Var_Samp_Fields = {
   __typename?: 'coins_var_samp_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1215,6 +1247,7 @@ export type Coins_Var_Samp_Fields = {
 export type Coins_Variance_Fields = {
   __typename?: 'coins_variance_fields';
   blockchain_id: Maybe<Scalars['Float']>;
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -1465,7 +1498,9 @@ export enum Companies_Constraint {
   /** unique or primary key constraint */
   CompaniesExternalIdKey = 'companies_external_id_key',
   /** unique or primary key constraint */
-  CompaniesPkey = 'companies_pkey'
+  CompaniesPkey = 'companies_pkey',
+  /** unique or primary key constraint */
+  CompaniesSlugIdx = 'companies_slug_idx'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -5988,6 +6023,10 @@ export type Lists = {
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
   id: Scalars['Int'];
+  /** An array relationship */
+  list_members: Array<List_Members>;
+  /** An aggregate relationship */
+  list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
@@ -6011,6 +6050,26 @@ export type ListsFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsList_MembersArgs = {
+  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<List_Members_Order_By>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsList_Members_AggregateArgs = {
+  distinct_on: InputMaybe<Array<List_Members_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<List_Members_Order_By>>;
+  where: InputMaybe<List_Members_Bool_Exp>;
 };
 
 /** aggregated selection of "lists" */
@@ -6058,6 +6117,7 @@ export type Lists_Bool_Exp = {
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
 };
@@ -6081,6 +6141,7 @@ export type Lists_Insert_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
+  list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
 };
 
@@ -6128,6 +6189,7 @@ export type Lists_Order_By = {
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
+  list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
 };
@@ -11305,7 +11367,9 @@ export enum Vc_Firms_Constraint {
   /** unique or primary key constraint */
   VcFirmsExternalIdKey = 'vc_firms_external_id_key',
   /** unique or primary key constraint */
-  VcFirmsPkey = 'vc_firms_pkey'
+  VcFirmsPkey = 'vc_firms_pkey',
+  /** unique or primary key constraint */
+  VcFirmsSlugIdx = 'vc_firms_slug_idx'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
