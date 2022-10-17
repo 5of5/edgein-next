@@ -22,7 +22,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 	}, [company]);
 
 	return (
-		<Link href={`/companies/${companyData.slug}`} passHref>
+		<Link href={`/companies/${companyData.slug}`}>
 			<a
 				className={`flex flex-col ${
 					toggleViewMode ? "md:flex-row md:items-center" : ""
@@ -101,11 +101,11 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					)}
 				</div>
 
-				<div className="flex items-center justify-between mt-4 gap-x-5">
-					<ElemReactions
-						resource={company}
-						resourceType={"companies"}
-					/>
+				<div
+					className="flex items-center justify-between mt-4 gap-x-5"
+					onClick={(e) => e.stopPropagation()}
+				>
+					<ElemReactions resource={company} resourceType={"companies"} />
 					<ElemSaveToList
 						resourceId={company.id}
 						resourceType={"companies"}
