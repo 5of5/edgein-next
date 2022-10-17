@@ -12,6 +12,7 @@ import { TheNavbar } from "../components/TheNavbar";
 import { ElemFeedback } from "../components/ElemFeedback";
 import { TheFooter } from "../components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { UserProvider } from "../context/userContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
@@ -92,32 +93,34 @@ function MyApp({ Component, pageProps }: AppProps) {
 			></Script>
 			<div className="flex flex-col min-h-screen">
 				<QueryClientProvider client={queryClient}>
-					{pageProps.noLayout ? (
-						<Component {...pageProps} />
-					) : (
-						<>
-							<TheNavbar />
-							<main className="grow selection:bg-primary-200">
-								{pageLoading ? (
-									<LoaderPlasma />
-								) : (
-									<Component
-										{...pageProps}
+					<UserProvider>
+						{pageProps.noLayout ? (
+							<Component {...pageProps} />
+						) : (
+							<>
+								<TheNavbar />
+								<main className="grow selection:bg-primary-200">
+									{pageLoading ? (
+										<LoaderPlasma />
+									) : (
+										<Component
+											{...pageProps}
+											setToggleFeedbackForm={setToggleFeedbackForm}
+										/>
+									)}
+								</main>
+
+								{(router.asPath.includes("/companies/") ||
+									router.asPath.includes("/investors/")) && (
+									<ElemFeedback
+										toggleFeedbackForm={toggleFeedbackForm}
 										setToggleFeedbackForm={setToggleFeedbackForm}
 									/>
 								)}
-							</main>
-
-							{(router.asPath.includes("/companies/") ||
-								router.asPath.includes("/investors/")) && (
-								<ElemFeedback
-									toggleFeedbackForm={toggleFeedbackForm}
-									setToggleFeedbackForm={setToggleFeedbackForm}
-								/>
-							)}
-							<TheFooter />
-						</>
-					)}
+								<TheFooter />
+							</>
+						)}
+					</UserProvider>
 				</QueryClientProvider>
 				{/* <Script
 					id="webpushr-script"

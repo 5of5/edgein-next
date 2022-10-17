@@ -1,10 +1,8 @@
-import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "./ElemButton";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-import { Lists, useGetListsByUserQuery } from "@/graphql/types";
+import { Fragment } from "react";
 import { find, kebabCase, first } from "lodash";
-import { getName } from "@/utils/reaction";
+import { getNameFromListName } from "@/utils/reaction";
 import {
 	IconChevronDownMini,
 	IconUserCircle,
@@ -14,39 +12,24 @@ import {
 	IconSettings,
 	//IconOrganization,
 } from "./Icons";
+import { useUser } from "@/context/userContext";
+import Link from "next/link";
 
 export const UserMenu = () => {
-	const { user } = useAuth();
-
-	const [hotId, setHotId] = useState(0);
-	const [userLists, setUserLists] = useState<Lists[]>();
-
-	const { data: lists } = useGetListsByUserQuery({
-		current_user: user?.id ?? 0,
-	});
-
-	useEffect(() => {
-		if (lists) {
-			setUserLists(lists.lists as Lists[]);
-			setHotId(
-				() =>
-					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
-			);
-		}
-	}, [lists]);
+	const { listAndFollows, user } = useUser();
 
 	const firstCustomList = first(
-		userLists?.filter(
-			(list) => !["hot", "crap", "like"].includes(getName(list))
+		listAndFollows?.filter(
+			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
 		)
 	);
-
 	let myListsUrl = "";
 	if (firstCustomList) {
 		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
-			getName(firstCustomList)
+			getNameFromListName(firstCustomList)
 		)}`;
 	} else {
+		const hotId = find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id || 0
 		myListsUrl = `/lists/${hotId}/hot`;
 	}
 
@@ -101,12 +84,13 @@ export const UserMenu = () => {
 					{navigation.map((link) => (
 						<Menu.Item
 							key={link.href}
-							as="a"
+							as={Link}
 							href={link.href}
-							className="flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
 						>
-							<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
-							{link.name}
+							<a className="flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500">
+								<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
+								{link.name}
+							</a>
 						</Menu.Item>
 					))}
 					<Menu.Item>

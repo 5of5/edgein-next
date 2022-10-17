@@ -157,8 +157,6 @@ const Companies: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
-		// TODO: pass logged in user's id
-		current_user: user?.id ?? 0,
 	});
 
 	if (!isLoading && initialLoad) {
@@ -166,10 +164,6 @@ const Companies: NextPage<Props> = ({
 	}
 
 	const companies = initialLoad ? initialCompanies : companiesData?.companies;
-
-	const onUpdateOfCompany = (company: Companies) => {
-		// TODO if company is currently displayed update it
-	};
 
 	return (
 		<div className="relative overflow-hidden">
@@ -181,7 +175,6 @@ const Companies: NextPage<Props> = ({
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
 				{companies && (
 					<ElemRecentCompanies
-						onUpdateOfCompany={onUpdateOfCompany}
 						className="bg-white rounded-lg shadow"
 						heading="Recently Discovered"
 					/>

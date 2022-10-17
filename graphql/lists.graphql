@@ -1,7 +1,0 @@
-query GetListsByUser($current_user: Int) {
-  lists(where: {created_by_id: {_eq: $current_user}}) {
-    id
-    name
-    total_no_of_resources
-  }
-}

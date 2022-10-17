@@ -9,10 +9,9 @@ type Props = {
 	onClose: () => void;
 	onNext: (selectedOption: string) => void;
 	user: {
-		display_name?: string;
-		email?: string;
+		display_name?: string | null;
+		email?: string | null;
 		id: number;
-		role: string;
 	} | null;
 };
 

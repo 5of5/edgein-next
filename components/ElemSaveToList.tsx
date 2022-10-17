@@ -1,58 +1,85 @@
 import React, { FC, useEffect, useState, Fragment } from "react";
-import { Lists, useGetListsByUserQuery } from "@/graphql/types";
-import { findIndex } from "lodash";
-import { getName } from "@/utils/reaction";
-import { useAuth } from "@/hooks/useAuth";
+import { GetFollowsByUserQuery } from "@/graphql/types";
+import { getNameFromListName, isOnList, toggleFollowOnList } from "@/utils/reaction";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconX, IconSaveToList } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
 import { InputCheckbox } from "@/components/InputCheckbox";
 import toast, { Toaster } from "react-hot-toast";
+import { useUser } from "@/context/userContext";
+import { find } from "lodash";
 
 type Props = {
-	follows: any;
-	onCreateNew: (
-		reaction: string,
-		alreadyReacted: boolean
-	) => (e: React.MouseEvent<HTMLButtonElement | HTMLInputElement>) => void;
-};
+	resourceId: number;
+	resourceType: 'companies' | 'vc_firms';
+	slug: string
+}
 
-export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
-	const { user } = useAuth();
+type List = GetFollowsByUserQuery['list_members'][0]['list']
 
+export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) => {
 	let [isOpen, setIsOpen] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 	const [newName, setNewName] = useState<string>("");
-	const [listsData, setListsData] = useState([] as Lists[]);
+	const [listsData, setListsData] = useState([] as List[]);
 
-	const { data: lists } = useGetListsByUserQuery({
-		current_user: user?.id ?? 0,
-	});
+	const { user, listAndFollows, refreshProfile } = useUser()
 
 	useEffect(() => {
-		if (lists)
+		if (listAndFollows)
 			setListsData(() => {
-				return lists?.lists?.filter((item) => {
-					const fragments = item.name.split("-");
-					const sentiment = fragments[fragments.length - 1];
+				return listAndFollows.filter((item) => {
+					const sentiment = getNameFromListName(item)
 					return !["hot", "like", "crap"].includes(sentiment);
-				}) as Lists[];
+				}) || []
 			});
-	}, [lists]);
+	}, [listAndFollows]);
 
-	const onCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-		if (newName) {
-			// pass event and reaction name to handleReactionClick function
-			onCreateNew(newName, false)(event);
-			// push sentiment to list
-			setListsData((prev: Lists[]) => {
-				return [...prev, { name: `sentiment-${user.id}-${newName}` } as Lists];
+	const toggleToList = async (listName: string, action: 'add' | 'remove') => {
+		if (listName && user) {
+			setListsData((prev) => {
+				let newLists = [...prev]
+				let list = find(prev, (list) => list.name === listName)
+				if (!list) {
+					list = {
+						__typename: "lists",
+						name: listName,
+						id: -1,
+						created_by_id: user.id,
+						follows_companies: [],
+						follows_vcfirms: [],
+						total_no_of_resources: 0,
+					}
+					newLists.push(list)
+				} else {
+					list = {...list}
+				}
+				if (action === 'add') {
+					if (resourceType === 'companies') {
+						list.follows_companies = [...list.follows_companies, {__typename:'follows_companies', resource_id: resourceId }]
+					}
+					if (resourceType === 'vc_firms') {
+						list.follows_vcfirms = [...list.follows_vcfirms, {__typename:'follows_vc_firms', resource_id: resourceId }]
+					}	
+				} else {
+					if (resourceType === 'companies') {
+						list.follows_companies = [...list.follows_companies.filter(i => i.resource_id !== resourceId)]
+					}
+					if (resourceType === 'vc_firms') {
+						list.follows_vcfirms = [...list.follows_vcfirms.filter(i => i.resource_id !== resourceId)]
+					}	
+				}
+				return newLists
 			});
-			// hide input
-			setShowNew(false);
-			setNewName("");
+			// pass event and reaction name to handleReactionClick function
+			const newSentiment = await toggleFollowOnList({
+				resourceId,
+				resourceType,
+				listName,
+				pathname: `/companies/${slug}`,
+			});	
+			refreshProfile()
 			toast.custom(
 				(t) => (
 					<div
@@ -60,7 +87,7 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 							t.visible ? "animate-fade-in-up" : "opacity-0"
 						}`}
 					>
-						Added to &ldquo;{newName}&rdquo; list
+						{action === 'add' ? 'Added to' : 'Removed from'} &ldquo;{getNameFromListName({name: listName})}&rdquo; list
 					</div>
 				),
 				{
@@ -69,41 +96,30 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 				}
 			);
 		}
+	}
+
+	const onCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		if (user) {
+			await toggleToList(`${user.id}-${newName}`, 'add')
+			// hide input
+			setShowNew(false);
+			setNewName("");			
+		}
 	};
 
-	const isSelected = (list: any) => {
-		const name = getName(list);
-		// check and return index if the company or investor is added to list already
-		return (
-			findIndex(follows, (item: any) => {
-				return getName(item.list) === name;
-			}) !== -1
-		);
+	const isSelected = (list: List) => {
+		return isOnList(list, resourceId)
 	};
 
 	const onClickHandler = (
 		event: React.MouseEvent<HTMLInputElement>,
-		list: Lists
+		list: List,
+		isSelected: boolean
 	) => {
-		onCreateNew(getName(list), isSelected(list))(event);
-
-		// toast.custom(
-		// 	(t) => (
-		// 		<div
-		// 			className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-		// 				t.visible ? "animate-fade-in-up" : "opacity-0"
-		// 			}`}
-		// 		>
-		// 			{isSelected(list)
-		// 				? `Added to ${getName(list)}`
-		// 				: `Removed from ${getName(list)}`}
-		// 		</div>
-		// 	),
-		// 	{
-		// 		duration: 3000,
-		// 		position: "bottom-left",
-		// 	}
-		// );
+		event.preventDefault();
+		event.stopPropagation();
+		toggleToList(list.name, isSelected ? 'remove' : 'add')
 	};
 
 	const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -171,17 +187,18 @@ export const ElemSaveToList: FC<Props> = ({ follows, onCreateNew }) => {
 								</div>
 
 								<ul className="divide-y divide-slate-100 border-b border-b-slate-100">
-									{listsData?.map((item) => {
+									{listsData?.map((list) => {
+										const selected = isSelected(list)
 										return (
-											<li key={item.id}>
+											<li key={list.id}>
 												<InputCheckbox
 													className="w-full hover:bg-slate-100"
 													inputClass="ml-3"
 													labelClass="grow py-3 pr-3"
-													label={getName(item)}
-													checked={isSelected(item)}
+													label={getNameFromListName(list)}
+													checked={selected}
 													//onChange={(e) => {}}
-													onClick={(e) => onClickHandler(e, item)}
+													onClick={(e) => onClickHandler(e, list, selected)}
 												/>
 											</li>
 										);

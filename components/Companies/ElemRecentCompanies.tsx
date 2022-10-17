@@ -5,27 +5,12 @@ import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { formatDate, convertToInternationalCurrencySystem } from "@/utils";
 import { getLayerClass } from "@/utils/style";
-import { IconArrowUp } from "@/components/Icons";
 import {
-	Companies,
 	Companies_Bool_Exp,
-	Follows_Companies,
-	Lists,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-
-import {
-	getName,
-	getNewFollows,
-	getNewTempSentiment,
-	isFollowsExists,
-	reactOnSentiment,
-} from "@/utils/reaction";
-import { useAuth } from "@/hooks/useAuth";
-
-import { has, remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -37,7 +22,6 @@ type Props = {
 	className?: string;
 	heading?: string;
 	itemsLimit?: number;
-	onUpdateOfCompany: (company: Companies) => void;
 };
 
 export const ElemRecentCompanies: FC<Props> = ({
@@ -45,7 +29,6 @@ export const ElemRecentCompanies: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
-	const { user } = useAuth();
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -67,82 +50,9 @@ export const ElemRecentCompanies: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
-		current_user: user?.id ?? 0,
 	});
 
-	const [companies, setCompanies] = useState(companiesData?.companies);
-
-	useEffect(() => {
-		setCompanies(companiesData?.companies);
-	}, [companiesData?.companies]);
-
-	const handleReactionClick =
-		(company: Companies) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-			setTemporary(company, sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`,
-			});
-
-			setCompanies((prev) => {
-				return [...(prev || ([] as Companies[]))].map((item) => {
-					if (item.id === company.id) {
-						const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-						if (
-							!alreadyReacted &&
-							!isFollowsExists(item.follows as Follows_Companies[], sentiment)
-						)
-							item.follows.push(newFollows);
-						else
-							remove(item.follows, (list) => {
-								return getName(list.list! as Lists) === sentiment;
-							});
-
-						return { ...item, sentiment: newSentiment };
-					}
-					return item;
-				});
-			});
-		};
-
-	const setTemporary = (
-		company: Companies,
-		sentiment: string,
-		alreadyReacted: boolean
-	) => {
-		setCompanies((prev) => {
-			return [...(prev || ([] as Companies[]))].map((item) => {
-				if (item.id === company.id) {
-					const newSentiment = getNewTempSentiment(
-						{ ...item.sentiment },
-						sentiment,
-						alreadyReacted
-					);
-
-					const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-					if (!alreadyReacted) item.follows.push(newFollows);
-					else
-						remove(item.follows, (list) => {
-							return getName(list.list! as Lists) === sentiment;
-						});
-
-					return { ...item, sentiment: newSentiment };
-				}
-				return item;
-			});
-		});
-	};
+	const companies = companiesData?.companies || []
 
 	return (
 		<div className={`bg-white rounded-lg p-5 ${className}`}>
@@ -254,12 +164,13 @@ export const ElemRecentCompanies: FC<Props> = ({
 
 										<div className="flex items-center justify-between mt-4">
 											<ElemReactions
-												data={company}
-												handleReactionClick={handleReactionClick(company)}
+												resource={company}
+												resourceType={"companies"}
 											/>
 											<ElemSaveToList
-												follows={company?.follows}
-												onCreateNew={handleReactionClick(company)}
+												resourceId={company.id}
+												resourceType={"companies"}
+												slug={company.slug}
 											/>
 										</div>
 									</a>

@@ -141,17 +141,6 @@ export const ElemCohort: FC<Props> = ({
 												{company.overview}
 											</div>
 										</div>
-
-										{/* <div className="flex items-center justify-between mt-4">
-											<ElemReactions
-												data={company}
-												handleReactionClick={handleReactionClick(company)}
-											/>
-											<ElemSaveToList
-												follows={company?.follows}
-												onCreateNew={handleReactionClick(company)}
-											/>
-										</div> */}
 									</a>
 								</ElemCarouselCard>
 							);

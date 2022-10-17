@@ -90,7 +90,6 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		isLoading,
 	} = useGetCompanyQuery({
 		slug: companyId as string,
-		current_user: user?.id ?? 0,
 	});
 
 	const { data: coinData } = useGetAllCoinsQuery();
@@ -931,7 +930,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId, current_user: 0 }
+		{ slug: context.params?.companyId }
 	);
 
 	if (!companies?.companies[0]) {

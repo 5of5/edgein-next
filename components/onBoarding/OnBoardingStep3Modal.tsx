@@ -83,8 +83,7 @@ export default function OnBoardingStep3Modal(props: Props) {
 		// error,
 		isLoading: loadingCompany,
 	} = useGetRelevantCompaniesQuery({
-		where: filtersCompanies as Companies_Bool_Exp,
-		current_user: props.user?.id ?? 0,
+		where: filtersCompanies as Companies_Bool_Exp
 	});
 
 	const {
@@ -92,8 +91,7 @@ export default function OnBoardingStep3Modal(props: Props) {
 		// error,
 		isLoading: loadingVCFirm,
 	} = useGetRelevantVcFirmsQuery({
-		where: filterVCFirms as Vc_Firms_Bool_Exp,
-		current_user: props.user?.id ?? 0,
+		where: filterVCFirms as Vc_Firms_Bool_Exp
 	});
 
 	useEffect(() => {

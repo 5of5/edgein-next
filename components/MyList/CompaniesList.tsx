@@ -1,7 +1,6 @@
 import { Follows_Companies } from "@/graphql/types";
 import { compact, has } from "lodash";
 import React, { FC, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconSortUp, IconSortDown, IconX, IconTrash } from "@/components/Icons";
@@ -12,22 +11,21 @@ import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import toast, { Toaster } from "react-hot-toast";
+import { useUser } from "@/context/userContext";
 
 type Props = {
 	companies?: Follows_Companies[];
 	isCustomList?: boolean;
 	selectedListName: string | null;
-	setIsUpdated: Function;
 };
 
 export const CompaniesList: FC<Props> = ({
 	companies,
 	isCustomList,
 	selectedListName,
-	setIsUpdated,
 }) => {
-	const router = useRouter();
-
+	const { refreshProfile } = useUser()
+	
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
 	const [resourceList, setResourceList] = useState<Follows_Companies[]>();
@@ -118,7 +116,7 @@ export const CompaniesList: FC<Props> = ({
 				Cell: (props: any) => (
 					<div>
 						{props.value && (
-							<ElemReactions data={props.value} isInteractive={false} />
+							<ElemReactions resource={props.value} resourceType={'companies'} isInteractive={false} />
 						)}
 					</div>
 				),
@@ -183,7 +181,7 @@ export const CompaniesList: FC<Props> = ({
 					(resource) => !followIds.includes(resource.id as number)
 				);
 			});
-			setIsUpdated(new Date().getTime());
+			refreshProfile()
 			toast.custom(
 				(t) => (
 					<div

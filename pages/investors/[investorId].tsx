@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, MutableRefObject } from "react";
-import { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -7,7 +7,6 @@ import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { IconEditPencil } from "@/components/Icons";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
@@ -18,7 +17,6 @@ import {
 	runGraphQl,
 } from "@/utils";
 import {
-	Follows_Vc_Firms,
 	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
@@ -26,15 +24,8 @@ import {
 	Vc_Firms,
 } from "@/graphql/types";
 
-import {
-	getNewFollows,
-	reactOnSentiment,
-	getName,
-	isFollowsExists,
-	getNewTempSentiment,
-} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { remove, uniq } from "lodash";
+import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
 type Props = {
 	vcfirm: Vc_Firms;
@@ -65,7 +56,6 @@ const VCFirm: NextPage<Props> = (props) => {
 		isLoading,
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
-		current_user: user?.id ?? 0,
 	});
 
 	useEffect(() => {
@@ -75,57 +65,6 @@ const VCFirm: NextPage<Props> = (props) => {
 	if (!vcfirm) {
 		return <h1>Not Found</h1>;
 	}
-
-	const handleReactionClick =
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-
-			setTemporary(sentiment, alreadyReacted);
-
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcfirm.id,
-				sentiment,
-				pathname: location.pathname,
-			});
-
-			setVcfirm((prev: Vc_Firms) => {
-				const newFollows = getNewFollows(
-					sentiment,
-					"vcfirm"
-				) as Follows_Vc_Firms;
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
-
-	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
-		setVcfirm((prev: Vc_Firms) => {
-			const newSentiment = getNewTempSentiment(
-				{ ...prev.sentiment },
-				sentiment,
-				alreadyReacted
-			);
-
-			const newFollows = getNewFollows(sentiment, "vcfirm") as Follows_Vc_Firms;
-			if (!alreadyReacted) prev.follows.push(newFollows);
-			else
-				remove(prev.follows, (item) => {
-					return getName(item.list!) === sentiment;
-				});
-			return { ...prev, sentiment: newSentiment };
-		});
-	};
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
@@ -191,12 +130,13 @@ const VCFirm: NextPage<Props> = (props) => {
 
 					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions
-							data={vcfirm}
-							handleReactionClick={handleReactionClick}
+							resource={vcfirm}
+							resourceType={"vc_firms"}
 						/>
 						<ElemSaveToList
-							follows={vcfirm?.follows}
-							onCreateNew={handleReactionClick}
+							resourceId={vcfirm.id}
+							resourceType={"vc_firms"}
+							slug={vcfirm.slug!}
 						/>
 					</div>
 				</div>
@@ -362,7 +302,7 @@ const VCFirm: NextPage<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
-		{ slug: context.params?.investorId, current_user: 0 }
+		{ slug: context.params?.investorId }
 	);
 
 	if (!vc_firms?.vc_firms[0]) {
