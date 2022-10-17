@@ -1,9 +1,16 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import CookieService from '../../utils/cookie'
-import nodemailer from 'nodemailer'
 import { generateVerifyWorkplaceToken, saveToken } from "@/utils/tokens";
 import { tokenTypes } from "@/utils/constants";
-import SMTPTransport from "nodemailer/lib/smtp-transport";
+import AWS from "aws-sdk";
+
+//AWS config set
+AWS.config.update({
+  accessKeyId: process.env.AWS_SES_ACCESS_KEY_ID!,
+  secretAccessKey: process.env.AWS_SES_ACCESS_SECRET_KEY!,
+});
+const SES_SOURCE = 'support@edgein.io'
+
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -25,44 +32,47 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   await saveToken(verifyWorkToken, tokenTypes.verifyWorkHereToken, user.id, token)
 
-  await sendVerificationMail(url, companyName, email, user.display_name || '')
+  const ret = await sendVerificationMail(url, companyName, email, user.display_name || '')
 
-  res.send({ status: 200, message: 'success' })
+  res.send(ret)
 }
 
 const sendVerificationMail = async (url: string, companyName: string, email: string, userName?: string) => {
+  try {
+    const html = `
+      <b>Hi ${userName}</b>,
+      <p>Please verify you work for <b>${companyName}</b> </p> <br/>
 
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: process.env.SMTP_PORT,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASSWORD
-    }
-  } as SMTPTransport.Options)
+      <a href="${url}">${url}</a>
+    `
 
-  const html = `
-    <b>Hi ${userName}</b>,
-    <p>Please verify you work for <b>${companyName}</b> </p> <br/>
+    const params = {
+      Destination: {
+        ToAddresses: [email],
+      },
+      Message: {
+        Body: {
+          Html: {
+            Charset: 'UTF-8',
+            Data: html,
+          }
+        },
+        Subject: {
+          Charset: 'UTF-8',
+          Data: `Verify you work for ${companyName}`,
+        }
+      },
+      Source: SES_SOURCE,
+    };
 
-    <a href="${url}">${url}</a>
-  `
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: `${email}`, // list of receivers
-    subject: `Verify you work for ${companyName}`, // Subject line
-    html, // html body
-  });
-
-  // console.log("Message sent: %s", info.messageId);
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-
-  // Preview only available when sending through an Ethereal account
-  // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    await new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    return { status: 200, message: 'success' }
+  } catch (err) {
+    return {
+      status: 500,
+      message: `Failed to send verification email to ${email}. ${err}`,
+    };
+  }
 }
 
 export default handler
