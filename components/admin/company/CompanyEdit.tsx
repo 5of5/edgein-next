@@ -32,7 +32,8 @@ import {
   useGetOne,
   useGetManyReference,
   Link,
-  regex
+  regex,
+  required
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -151,6 +152,7 @@ export const CompanyEdit = () => {
       <TextInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="slug"
+        validate={required()}
         sx={{
           ".MuiFormHelperText-root": {
             display: "block !important",
@@ -307,6 +309,8 @@ export const CompanyEdit = () => {
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="date_added"
+            placeholder="YYYY-MM-DD"
+            label="Date Added YYYY-MM-DD"
             validate={regex("[0-9]{4}-[0-9]{2}-[0-9]{2}", "")}
           />
           <TextInput
