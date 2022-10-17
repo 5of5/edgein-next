@@ -1,6 +1,6 @@
 import { ElemButton } from "./ElemButton";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import {
@@ -29,7 +29,9 @@ export const UserMenu = () => {
 			getNameFromListName(firstCustomList)
 		)}`;
 	} else {
-		const hotId = find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id || 0
+		const hotId =
+			find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
+			0;
 		myListsUrl = `/lists/${hotId}/hot`;
 	}
 
@@ -58,6 +60,18 @@ export const UserMenu = () => {
 		{ name: "Account Settings", href: "/account", icon: IconSettings },
 	];
 
+	//eslint-disable-next-line react/display-name
+	const NextLink = React.forwardRef((props: any, ref: any) => {
+		const { href, children, ...rest } = props;
+		return (
+			<Link href={href}>
+				<a {...rest} ref={ref}>
+					{children}
+				</a>
+			</Link>
+		);
+	});
+
 	return (
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
@@ -82,15 +96,18 @@ export const UserMenu = () => {
 					className="absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
 					{navigation.map((link) => (
-						<Menu.Item
-							key={link.href}
-							as={Link}
-							href={link.href}
-						>
-							<a className="flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500">
-								<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
-								{link.name}
-							</a>
+						<Menu.Item key={link.name}>
+							{({ active }) => (
+								<NextLink
+									href={link.href}
+									className={`${
+										active ? "bg-gray-50 text-primary-500" : ""
+									} flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500`}
+								>
+									<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
+									{link.name}
+								</NextLink>
+							)}
 						</Menu.Item>
 					))}
 					<Menu.Item>
