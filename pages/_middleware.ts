@@ -66,7 +66,7 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (![`/api/`].includes(url.pathname) && user?.id) {
+	if (!url.pathname.includes(`/api/`) && user?.id) {
 		mutate({
 			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {

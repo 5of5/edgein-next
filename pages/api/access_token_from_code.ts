@@ -3,6 +3,7 @@ import UserService from '../../utils/users'
 import CookieService from '../../utils/cookie'
 import auth0Library from '../../utils/auth0Library'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { createHmac } from 'crypto'
 
 const hasuraClaims = {
   "https://hasura.io/jwt/claims": {
@@ -139,9 +140,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
 
+      const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
+      hmac.update(String(userData.id));
+  
       // Author a couple of cookies to persist a user's session
       const token = await CookieService.createToken({
         id: userData.id,
+        intercomUserHash: hmac.digest('hex'),
         email: userData.email,
         role: userData.role,
         publicAddress: userData.external_id,

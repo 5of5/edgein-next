@@ -3,6 +3,7 @@ import UserService from '../../utils/users'
 import auth0Library from '../../utils/auth0Library'
 import CookieService from '../../utils/cookie'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { createHmac } from 'crypto'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
@@ -72,9 +73,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await UserService.updateEmailVerifiedStatus(userInfoInJson.email, userInfoInJson.email_verified);
       }
 
+      const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
+      hmac.update(String(emailExist.id));
+  
       // Author a couple of cookies to persist a user's session
       const token = await CookieService.createToken({
         id: emailExist.id,
+        intercomUserHash: hmac.digest('hex'),
         email: emailExist.email,
         role: emailExist.role,
         publicAddress: emailExist.external_id,
