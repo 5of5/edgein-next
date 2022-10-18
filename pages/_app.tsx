@@ -95,39 +95,39 @@ function MyApp({ Component, pageProps }: AppProps) {
 			></Script>
 			<div className="flex flex-col min-h-screen">
 				<QueryClientProvider client={queryClient}>
-					<UserProvider>
-						{pageProps.noLayout ? (
-							<Component {...pageProps} />
-						) : (
-							<>
-							<IntercomProvider
-								appId={INTERCOM_APP_ID}
-								autoBoot
-							>
-								<TheNavbar />
-								<main className="grow selection:bg-primary-200">
-									{pageLoading ? (
-										<LoaderPlasma />
-									) : (
-										<Component
-											{...pageProps}
+					{pageProps.noLayout ? (
+						<Component {...pageProps} />
+					) : (
+						<IntercomProvider
+							appId={INTERCOM_APP_ID}
+							autoBoot
+						>
+							<UserProvider>
+								<>
+									<TheNavbar />
+									<main className="grow selection:bg-primary-200">
+										{pageLoading ? (
+											<LoaderPlasma />
+										) : (
+											<Component
+												{...pageProps}
+												setToggleFeedbackForm={setToggleFeedbackForm}
+											/>
+										)}
+									</main>
+
+									{(router.asPath.includes("/companies/") ||
+										router.asPath.includes("/investors/")) && (
+										<ElemFeedback
+											toggleFeedbackForm={toggleFeedbackForm}
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-								</main>
-
-								{(router.asPath.includes("/companies/") ||
-									router.asPath.includes("/investors/")) && (
-									<ElemFeedback
-										toggleFeedbackForm={toggleFeedbackForm}
-										setToggleFeedbackForm={setToggleFeedbackForm}
-									/>
-								)}
-								<TheFooter />
-								</IntercomProvider>
-							</>
-						)}
-					</UserProvider>
+									<TheFooter />
+								</>
+							</UserProvider>
+						</IntercomProvider>
+					)}
 				</QueryClientProvider>
 				{/* <Script
 					id="webpushr-script"

@@ -5,6 +5,7 @@ import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
+import { startCase } from 'lodash';
 
 type UserValue = {
   user: User | null
@@ -27,7 +28,7 @@ type Props = {
 
 const UserProvider: React.FC<Props> = (props) => {
   const { user, error: userError, loading } = useAuth();
-  const { update } = useIntercom();
+  const { boot, shutdown } = useIntercom();
   const Provider = userContext.Provider;
 
   const {
@@ -36,22 +37,29 @@ const UserProvider: React.FC<Props> = (props) => {
 		isLoading,
 	} = useGetFollowsByUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
 
-  if (user) {
-    try { 
-      if (hotjar.identify) {
-        hotjar.identify(user.id, { name: user.display_name, publicAddress: user.publicAddress, email: user.email, role: user.role });
-      }
-      update({
-        name: user.display_name, // Full name
-        email: user.email, // Email address
-        // created_at: user._createdAt // Signup date as a Unix timestamp    
-        userId: user.id, // User ID
-        // user_hash: "INSERT_HMAC_VALUE_HERE" // HMAC using SHA-256
-      })
-    } catch(e) {
-         // hotjar not loaded
+  React.useEffect(() => {
+    if (user) {
+      try { 
+        if (hotjar.identify) {
+          hotjar.identify(user.id, { name: user.display_name, publicAddress: user.publicAddress, email: user.email, role: user.role });
+        }
+      } catch(e) {
+           // hotjar not loaded
+      }  
+      try { 
+        shutdown()
+        boot({
+          name: startCase(user.display_name), // Full name
+          email: user.email, // Email address
+          // created_at: user._createdAt // Signup date as a Unix timestamp    
+          userId: user.id, // User ID
+          // user_hash: "INSERT_HMAC_VALUE_HERE" // HMAC using SHA-256
+        })
+      } catch(e) {
+         // intercom not loaded
+      }  
     }
-  }
+  }, [user])
 
 
   const listAndFollows = listMemberships?.list_members.map(li => li.list) || []
