@@ -16,15 +16,8 @@ export function useClearAuth() {
 }
 
 export function useAuth() {
-  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher, {revalidateOnMount: true});
+  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher);
   const loading = isValidating;
-  if (user) {
-    try { 
-      hotjar.identify(user.publicAddress, { email: user.email, role: user.role });
-    } catch(e) {
-         // hotjar not loaded
-    }
-  }
 
   return {
     user,

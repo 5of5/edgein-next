@@ -12,6 +12,7 @@ import { TheNavbar } from "../components/TheNavbar";
 import { ElemFeedback } from "../components/ElemFeedback";
 import { TheFooter } from "../components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { UserProvider } from "../context/userContext";
 import { IntercomProvider } from 'react-use-intercom';
 const INTERCOM_APP_ID = 'jm3hf6lp';
 
@@ -94,10 +95,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 			></Script>
 			<div className="flex flex-col min-h-screen">
 				<QueryClientProvider client={queryClient}>
-					{pageProps.noLayout ? (
-						<Component {...pageProps} />
-					) : (
-						<>
+					<UserProvider>
+						{pageProps.noLayout ? (
+							<Component {...pageProps} />
+						) : (
+							<>
 							<IntercomProvider
 								appId={INTERCOM_APP_ID}
 								autoBoot
@@ -122,9 +124,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 									/>
 								)}
 								<TheFooter />
-							</IntercomProvider>
-						</>
-					)}
+								</IntercomProvider>
+							</>
+						)}
+					</UserProvider>
 				</QueryClientProvider>
 				{/* <Script
 					id="webpushr-script"

@@ -1,7 +1,6 @@
 import { Follows_Vc_Firms } from "@/graphql/types";
 import { compact, has } from "lodash";
 import React, { FC, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconSortUp, IconSortDown, IconX, IconTrash } from "@/components/Icons";
@@ -12,21 +11,20 @@ import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import toast, { Toaster } from "react-hot-toast";
+import { useUser } from "@/context/userContext";
 
 type Props = {
 	vcfirms?: Follows_Vc_Firms[];
 	isCustomList?: boolean;
 	selectedListName: string | null;
-	setIsUpdated: Function;
 };
 
 export const InvestorsList: FC<Props> = ({
 	vcfirms,
 	isCustomList,
 	selectedListName,
-	setIsUpdated,
 }) => {
-	const router = useRouter();
+	const { refreshProfile } = useUser()
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
@@ -123,7 +121,7 @@ export const InvestorsList: FC<Props> = ({
 				Cell: (props: any) => (
 					<>
 						{props.value && (
-							<ElemReactions data={props.value} isInteractive={false} />
+							<ElemReactions resource={props.value} resourceType={'vc_firms'} isInteractive={false} />
 						)}
 					</>
 				),
@@ -188,7 +186,7 @@ export const InvestorsList: FC<Props> = ({
 					(resource) => !followIds.includes(resource.id as number)
 				);
 			});
-			setIsUpdated(new Date().getTime());
+			refreshProfile()
 			toast.custom(
 				(t) => (
 					<div

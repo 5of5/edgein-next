@@ -1,13 +1,5 @@
-import { Companies, Follows_Companies } from "@/graphql/types";
-import {
-	getName,
-	getNewFollows,
-	getNewTempSentiment,
-	isFollowsExists,
-	reactOnSentiment,
-} from "@/utils/reaction";
+import { Companies } from "@/graphql/types";
 import { getLayerClass } from "@/utils/style";
-import { has, remove } from "lodash";
 import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
@@ -29,55 +21,8 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 		setCompanyData(company);
 	}, [company]);
 
-	const handleReactionClick =
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-			setTemporary(sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: `/companies/${company.slug}`,
-			});
-			setCompanyData((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
-
-	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
-		setCompanyData((prev: Companies) => {
-			const newSentiment = getNewTempSentiment(
-				{ ...prev.sentiment },
-				sentiment,
-				alreadyReacted
-			);
-
-			const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-			if (!alreadyReacted) prev.follows.push(newFollows);
-			else
-				remove(prev.follows, (item) => {
-					return getName(item.list!) === sentiment;
-				});
-			return { ...prev, sentiment: newSentiment };
-		});
-	};
-
 	return (
-		<Link href={`/companies/${companyData.slug}`} passHref>
+		<Link href={`/companies/${companyData.slug}`}>
 			<a
 				className={`flex flex-col ${
 					toggleViewMode ? "md:flex-row md:items-center" : ""
@@ -156,14 +101,15 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					)}
 				</div>
 
-				<div className="flex items-center justify-between mt-4 gap-x-5">
-					<ElemReactions
-						data={companyData}
-						handleReactionClick={handleReactionClick}
-					/>
+				<div
+					className="flex items-center justify-between mt-4 gap-x-5"
+					onClick={(e) => e.stopPropagation()}
+				>
+					<ElemReactions resource={company} resourceType={"companies"} />
 					<ElemSaveToList
-						follows={company?.follows}
-						onCreateNew={handleReactionClick}
+						resourceId={company.id}
+						resourceType={"companies"}
+						slug={company.slug!}
 					/>
 				</div>
 			</a>

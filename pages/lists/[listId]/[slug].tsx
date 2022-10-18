@@ -11,58 +11,32 @@ import {
 	Follows_Vc_Firms,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
-	Lists,
-	useGetListsByUserQuery,
 } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { find } from "lodash";
-import { getName } from "@/utils/reaction";
+import { getNameFromListName } from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
+import { useUser } from "@/context/userContext";
 
 type Props = {};
 
 const MyList: NextPage<Props> = ({}) => {
 	const { user } = useAuth();
 	const router = useRouter();
-	const [selectedListName, setSelectedListName] = useState<null | string>(
-		"hot"
-	);
+	const [selectedListName, setSelectedListName] = useState<null | string>(router.query.slug as string);
 
 	const [isCustomList, setIsCustomList] = useState(false);
 
 	const [showEditModal, setShowEditModal] = useState(false);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-	const [isUpdated, setIsUpdated] = useState(0);
-
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
-	const [hotId, setHotId] = useState(0);
-
-	// const { data: lists } = useGetListsByUserQuery({
-	// 	current_user: user?.id ?? 0,
-	// });
-
-	const { data: lists, refetch } = useGetListsByUserQuery({
-		current_user: user?.id ?? 0,
-	});
-
-	useEffect(() => {
-		if (isUpdated) refetch();
-	}, [isUpdated, refetch]);
-
-	useEffect(() => {
-		if (lists) {
-			setHotId(
-				() =>
-					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
-			);
-		}
-	}, [lists]);
+	const { listAndFollows: lists } = useUser();
 
 	const onDeleteList = async (id: number) => {
 		const deleteRes = await fetch(`/api/delete_list?listId=${id}`, {
@@ -70,6 +44,7 @@ const MyList: NextPage<Props> = ({}) => {
 		});
 
 		if (deleteRes.ok) {
+			const hotId = find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0
 			router.push(`/lists/${hotId}/hot`);
 			toast.custom(
 				(t) => (
@@ -105,7 +80,6 @@ const MyList: NextPage<Props> = ({}) => {
 		if (updateNameRes.ok) {
 			setShowEditModal(false);
 			setSelectedListName(name);
-			setIsUpdated(new Date().getTime());
 			toast.custom(
 				(t) => (
 					<div
@@ -154,16 +128,15 @@ const MyList: NextPage<Props> = ({}) => {
 				user={user}
 				setIsCustom={setIsCustomList}
 				setSelectedListName={setSelectedListName}
-				isUpdated={isUpdated}
 				className="hidden"
 			/>
 			<div className="w-full mb-4">
 				<div className="flex items-center">
-					{selectedListName === "hot" && <EmojiHot className="w-6 h-6 mr-2" />}
-					{selectedListName === "like" && (
+					{listNameTitle === "hot" && <EmojiHot className="w-6 h-6 mr-2" />}
+					{listNameTitle === "like" && (
 						<EmojiLike className="w-6 h-6 mr-2" />
 					)}
-					{selectedListName === "crap" && (
+					{listNameTitle === "sh**" && (
 						<EmojiCrap className="w-6 h-6 mr-2" />
 					)}
 
@@ -195,9 +168,9 @@ const MyList: NextPage<Props> = ({}) => {
 						</>
 					)}
 				</div>
-				{(selectedListName === "hot" ||
-					selectedListName === "like" ||
-					selectedListName === "crap") && (
+				{(listNameTitle === "hot" ||
+					listNameTitle === "like" ||
+					listNameTitle === "sh**") && (
 					<p className="mt-1 first-letter:uppercase text-slate-600">
 						{listNameTitle} lists are generated from your {listNameTitle}{" "}
 						reactions.
@@ -209,14 +182,12 @@ const MyList: NextPage<Props> = ({}) => {
 				companies={companies}
 				selectedListName={selectedListName}
 				isCustomList={isCustomList}
-				setIsUpdated={setIsUpdated}
 			/>
 
 			<InvestorsList
 				vcfirms={vcfirms}
 				selectedListName={selectedListName}
 				isCustomList={isCustomList}
-				setIsUpdated={setIsUpdated}
 			/>
 
 			<Toaster />
