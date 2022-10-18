@@ -105,6 +105,11 @@ query GetCompanies(
 		velocity_token
 		website
 	}
+	companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
 }
 
 query GetCompaniesRecent(

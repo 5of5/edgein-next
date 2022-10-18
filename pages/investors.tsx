@@ -88,6 +88,7 @@ const Investors: NextPage<Props> = ({
 	}
 
 	const vcFirms = initialLoad ? initialVCFirms : vcFirmsData?.vc_firms;
+	const vcfirm_aggregate = initialLoad ? vcFirmCount : vcFirmsData?.vc_firms_aggregate?.aggregate?.count || 0;
 
 	return (
 		<div className="relative overflow-hidden">
@@ -134,7 +135,7 @@ const Investors: NextPage<Props> = ({
 					</div>
 					<Pagination
 						shownItems={vcFirms?.length}
-						totalItems={vcFirmCount}
+						totalItems={vcfirm_aggregate}
 						page={page}
 						itemsPerPage={limit}
 						onClickPrev={() => setPage((prev) => prev - 1)}
@@ -151,6 +152,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetVcFirmsDocument,
 		{
 			offset: 0,
+			limit: 50,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 		}
 	);
@@ -160,8 +162,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Investors - EdgeIn.io",
 			metaDescription:
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
-			vcFirmCount: vcFirms?.vc_firms?.length || null,
-			initialVCFirms: vcFirms?.vc_firms.slice(0, 50) || null,
+			vcFirmCount: vcFirms?.vc_firms_aggregate.aggregate?.count || 0,
+			initialVCFirms: vcFirms?.vc_firms || [],
 			investorFilters: investorsFilters,
 			numberOfInvestments: InvestmentsFilters,
 		},

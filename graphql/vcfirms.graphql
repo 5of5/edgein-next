@@ -66,6 +66,11 @@ query GetVCFirms(
 		overview
 		website
 	}
+	vc_firms_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
 }
 
 query GetVCFirmsRecentInvestments(
