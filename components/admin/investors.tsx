@@ -23,6 +23,7 @@ import {
   SaveButton,
   Button,
   useGetList,
+  required,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import {
@@ -33,13 +34,13 @@ import ContentSave from "@mui/icons-material/Save";
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
-  <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms">
+  <ReferenceInput key="searchVCFirm" source="vc_firm_id" reference="vc_firms" validate={required()}>
     <AutocompleteInput
       optionText={(choice) => `${choice.name}`}
       filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
-  <ReferenceInput key="searchPerson" source="person_id" reference="people">
+  <ReferenceInput key="searchPerson" source="person_id" reference="people" validate={required()}>
     <AutocompleteInput
       optionText={(choice) => `${choice.name}`}
       filterToQuery={search => ({ name: search })}

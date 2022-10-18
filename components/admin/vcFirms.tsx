@@ -22,6 +22,7 @@ import {
   useGetList,
   useRedirect,
   useGetOne,
+  required,
 } from "react-admin";
 import { uploadFile, deleteFile } from "../../utils/fileFunctions";
 import {
@@ -292,6 +293,7 @@ export const VcFirmEdit = () => {
       <TextInput
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="slug"
+        validate={required()}
         sx={{
           ".MuiFormHelperText-root": {
             display: "block !important",

@@ -22,6 +22,7 @@ import {
   useGetList,
   NumberField,
   NumberInput,
+  required,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { status } from "../../utils/constants";
@@ -235,7 +236,7 @@ export const InvestmentsEdit = () => (
         label="Round"
         source="round_id"
         reference="investment_rounds"
-        allowEmpty
+        validate={required()}
       >
         <AutocompleteInput
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -305,7 +306,7 @@ export const InvestmentsCreate = () => (
         source="round_id"
         reference="investment_rounds"
         resettable
-        allowEmpty
+        validate={required()}
         emptyValue={null}
       >
         <AutocompleteInput
