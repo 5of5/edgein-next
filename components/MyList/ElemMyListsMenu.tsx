@@ -28,7 +28,10 @@ export const ElemMyListsMenu: FC<Props> = ({
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
-			const list = find(lists, (item) => getNameFromListName(item) === listName);
+			const list = find(
+				lists,
+				(item) => getNameFromListName(item) === listName
+			);
 			return list?.total_no_of_resources ?? 0;
 		}
 		return 0;
@@ -40,9 +43,12 @@ export const ElemMyListsMenu: FC<Props> = ({
 			: "";
 	};
 
-	const hotId = find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0
-	const likeId = find(lists, (list) => "like" === getNameFromListName(list))?.id || 0
-	const crapId = find(lists, (list) => "crap" === getNameFromListName(list))?.id || 0
+	const hotId =
+		find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
+	const likeId =
+		find(lists, (list) => "like" === getNameFromListName(list))?.id || 0;
+	const crapId =
+		find(lists, (list) => "crap" === getNameFromListName(list))?.id || 0;
 	const getCustomLists = lists?.filter(
 		(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
 	);
@@ -93,7 +99,9 @@ export const ElemMyListsMenu: FC<Props> = ({
 
 				{getCustomLists?.map((list) => (
 					<li key={list.id} role="button">
-						<Link href={`/lists/${list.id}/${kebabCase(getNameFromListName(list))}`}>
+						<Link
+							href={`/lists/${list.id}/${kebabCase(getNameFromListName(list))}`}
+						>
 							<a
 								className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 									list.id,
@@ -102,7 +110,8 @@ export const ElemMyListsMenu: FC<Props> = ({
 							>
 								<IconCustomList className="h-6 w-6" />
 								<span>
-									{getNameFromListName(list)} ({getCountForList(getNameFromListName(list))})
+									{getNameFromListName(list)} (
+									{getCountForList(getNameFromListName(list))})
 								</span>
 							</a>
 						</Link>

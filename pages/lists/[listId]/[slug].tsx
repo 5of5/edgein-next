@@ -4,7 +4,6 @@ import { InvestorsList } from "@/components/MyList/InvestorsList";
 import { ElemDeleteListModal } from "@/components/MyList/ElemDeleteListModal";
 import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
 import { ElemListOptionMenu } from "@/components/MyList/ElemListOptionMenu";
-import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import {
 	Follows_Companies,
@@ -26,7 +25,9 @@ type Props = {};
 const MyList: NextPage<Props> = ({}) => {
 	const { user } = useAuth();
 	const router = useRouter();
-	const [selectedListName, setSelectedListName] = useState<null | string>(router.query.slug as string);
+	const [selectedListName, setSelectedListName] = useState<null | string>(
+		router.query.slug as string
+	);
 
 	const [isCustomList, setIsCustomList] = useState(false);
 
@@ -44,7 +45,8 @@ const MyList: NextPage<Props> = ({}) => {
 		});
 
 		if (deleteRes.ok) {
-			const hotId = find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0
+			const hotId =
+				find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
 			router.push(`/lists/${hotId}/hot`);
 			toast.custom(
 				(t) => (
@@ -101,6 +103,26 @@ const MyList: NextPage<Props> = ({}) => {
 	const [theListId, setTheListId] = useState(0);
 
 	useEffect(() => {
+		if (lists) {
+			const list = find(lists, {
+				id: parseInt((router.query.listId as string) || "0"),
+			});
+
+			if (setSelectedListName)
+				setSelectedListName(() => {
+					return list ? getNameFromListName(list) : "";
+				});
+
+			if (setIsCustomList)
+				setIsCustomList(() => {
+					return list
+						? !["hot", "like", "crap"].includes(getNameFromListName(list))
+						: false;
+				});
+		}
+	}, [lists, router.query.listId, setSelectedListName, setIsCustomList]);
+
+	useEffect(() => {
 		if (router.isReady) {
 			setTheListId(parseInt(router.query?.listId as string));
 		}
@@ -124,22 +146,11 @@ const MyList: NextPage<Props> = ({}) => {
 
 	return (
 		<DashboardLayout>
-			<ElemMyListsMenu
-				user={user}
-				setIsCustom={setIsCustomList}
-				setSelectedListName={setSelectedListName}
-				className="hidden"
-			/>
 			<div className="w-full mb-4">
 				<div className="flex items-center">
 					{listNameTitle === "hot" && <EmojiHot className="w-6 h-6 mr-2" />}
-					{listNameTitle === "like" && (
-						<EmojiLike className="w-6 h-6 mr-2" />
-					)}
-					{listNameTitle === "sh**" && (
-						<EmojiCrap className="w-6 h-6 mr-2" />
-					)}
-
+					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
+					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
 					<h1 className="h-6 mr-2 font-bold text-xl capitalize">
 						{listNameTitle}
 					</h1>
