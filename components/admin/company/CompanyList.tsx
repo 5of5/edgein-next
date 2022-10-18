@@ -77,68 +77,6 @@ const PostPagination = () => (
 );
 
 export const CompanyList = () => {
-  const [customSort, setCustomSort] = useState({ field: "id", order: "ASC" });
-  const headers: string[] = [
-    "id",
-    "name",
-    "slug",
-    "logo",
-    "layer",
-    "layer_detail",
-    "coin_id",
-    "total_employees",
-    "github",
-    "notes",
-    "overview",
-    "website",
-    "careers_page",
-    "company_linkedin",
-    "year_founded",
-    "investor_amount",
-    "total_valuation",
-    "white_paper",
-    "market_verified",
-    "velocity_linkedin",
-    "velocity_token",
-    "status",
-    "aliases",
-    "twitter",
-    "location",
-    "discord",
-    "glassdoor",
-    "tags",
-  ];
-
-  const { data: companies } = useGetList("companies", {
-    pagination: { page: 1, perPage: 10 },
-  });
-  let renderData = companies?.map((v) => {
-    let sum = 0;
-    for (var index in v) {
-      if (index !== "tags") v[index] && headers.includes(index) ? sum++ : sum;
-      else
-        v[index] && headers.includes(index) && v[index].length > 0
-          ? sum++
-          : sum;
-    }
-    return { ...v, counter: sum + "/28" };
-  });
-
-  const sortWithData = (sortData: any) => {
-    const isAscending = customSort.order === "ASC";
-    if (isAscending) {
-      sortData = sortData.sort((a: any, b: any) =>
-        a[customSort.field] > b[customSort.field] ? 1 : -1
-      );
-    } else {
-      sortData = sortData.sort((a: any, b: any) =>
-        a[customSort.field] > b[customSort.field] ? -1 : 1
-      );
-    }
-    return sortData;
-  };
-  renderData = renderData && sortWithData(renderData);
-
   return (
     <List
       filters={filters}
@@ -170,11 +108,7 @@ export const CompanyList = () => {
         },
       }}
     >
-      <Datagrid
-        // data={renderData}
-        // sort={customSort}
-        // setSort={(value) => setCustomSort(value)}
-      >
+      <Datagrid>
         <EditButton />
         <FunctionField render= {(record: any) => (<a target={"_blank"} rel="noreferrer" href={`https://edgein.io/companies/${record.slug}`}><Button label="Preview" /></a>)} />
         <TextField source="id" />

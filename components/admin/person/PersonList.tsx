@@ -31,45 +31,6 @@ const PostPagination = () => (
 );
 
 export const PersonList = () => {
-  const [customSort, setCustomSort] = useState({ field: "id", order: "ASC" });
-  const headers: string[] = [
-    "id",
-    "name",
-    "slug",
-    "picture",
-    "github",
-    "type",
-    "personal_email",
-    "work_email",
-    "linkedin",
-    "status",
-  ];
-  const { data } = useGetList("people", {
-    pagination: { page: 1, perPage: 10 },
-  });
-  let renderData = data?.map((v) => {
-    let sum = 0;
-    for (var index in v) {
-      v[index] && headers.includes(index) ? sum++ : sum;
-    }
-    return { ...v, counter: sum + "/10" };
-  });
-
-  const sortWithData = (sortData: any) => {
-    const isAscending = customSort.order === "ASC";
-    if (isAscending) {
-      sortData = sortData.sort((a: any, b: any) =>
-        a[customSort.field] > b[customSort.field] ? 1 : -1
-      );
-    } else {
-      sortData = sortData.sort((a: any, b: any) =>
-        a[customSort.field] > b[customSort.field] ? -1 : 1
-      );
-    }
-    return sortData;
-  };
-  renderData = renderData && sortWithData(renderData);
-
   return (
     <List
       filters={filters}
@@ -101,11 +62,7 @@ export const PersonList = () => {
         },
       }}
     >
-      <Datagrid
-        data={renderData}
-        sort={customSort}
-        setSort={(value) => setCustomSort(value)}
-      >
+      <Datagrid>
         <EditButton />
         <TextField source="id" />
         <TextField source="name" />

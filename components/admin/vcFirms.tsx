@@ -84,47 +84,6 @@ const CustomToolbar = () => {
 };
 
 export const VcFirmList = () => {
-  const [customSort, setCustomSort] = useState({ field: "id", order: "ASC" });
-  const headers: string[] = [
-    "id",
-    "name",
-    "slug",
-    "logo",
-    "website",
-    "linkedin",
-    "status",
-    "overview",
-    "year_founded",
-    "twitter",
-    "location",
-    "tags",
-  ];
-  const { data } = useGetList("vc_firms", {
-    pagination: { page: 1, perPage: 10 },
-  });
-  let renderData = data?.map((v) => {
-    let sum = 0;
-    for (var index in v) {
-      v[index] && headers.includes(index) ? sum++ : sum;
-    }
-    return { ...v, counter: sum + "/12" };
-  });
-
-  const sortWithData = (sortData: any) => {
-    const isAscending = customSort.order === "ASC";
-    if (isAscending) {
-      sortData = sortData.sort((a: any, b: any) =>
-        a[customSort.field] > b[customSort.field] ? 1 : -1
-      );
-    } else {
-      sortData = sortData.sort((a: any, b: any) =>
-        a[customSort.field] > b[customSort.field] ? -1 : 1
-      );
-    }
-    return sortData;
-  };
-  renderData = renderData && sortWithData(renderData);
-
   return (
     <List
       filters={filters}
@@ -156,11 +115,7 @@ export const VcFirmList = () => {
         },
       }}
     >
-      <Datagrid
-        // data={renderData}
-        // sort={customSort}
-        // setSort={(value) => setCustomSort(value)}
-      >
+      <Datagrid>
         <EditButton />
         <TextField source="id" />
         <TextField source="name" />
