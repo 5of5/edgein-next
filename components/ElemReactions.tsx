@@ -1,4 +1,8 @@
-import { getNameFromListName, isOnList, toggleFollowOnList } from "@/utils/reaction";
+import {
+	getNameFromListName,
+	isOnList,
+	toggleFollowOnList,
+} from "@/utils/reaction";
 import { find } from "lodash";
 import { FC, useEffect, useState } from "react";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
@@ -8,8 +12,12 @@ import hashSum from 'hash-sum';
 
 type Props = {
 	className?: string;
-	resource: { id: number, sentiment: Record<'hot' | 'like' | 'crap', number>, slug: string | null}
-	resourceType: 'companies' | 'vc_firms';
+	resource: {
+		id: number;
+		sentiment: Record<"hot" | "like" | "crap", number>;
+		slug: string | null;
+	};
+	resourceType: "companies" | "vc_firms";
 	isInteractive?: boolean;
 };
 
@@ -21,45 +29,44 @@ export const ElemReactions: FC<Props> = ({
 }) => {
 	return (
 		<div className={`flex flex-nowrap space-x-2 ${className}`}>
-			<ElemReaction 
-					type="hot"
-					label="Hot"
-					count={resource.sentiment?.hot}
-					slug={resource.slug!}
-					resourceId={resource.id}
-					resourceType={resourceType}
-					isInteractive={isInteractive}
+			<ElemReaction
+				type="hot"
+				label="Hot"
+				count={resource.sentiment?.hot}
+				slug={resource.slug!}
+				resourceId={resource.id}
+				resourceType={resourceType}
+				isInteractive={isInteractive}
 			/>
-			<ElemReaction 
-					type="like"
-					label="Like"
-					count={resource.sentiment?.like}
-					slug={resource.slug!}
-					resourceId={resource.id}
-					resourceType={resourceType}
-					isInteractive={isInteractive}
+			<ElemReaction
+				type="like"
+				label="Like"
+				count={resource.sentiment?.like}
+				slug={resource.slug!}
+				resourceId={resource.id}
+				resourceType={resourceType}
+				isInteractive={isInteractive}
 			/>
-			<ElemReaction 
-					type="crap"
-					label="Sh**"
-					count={resource.sentiment?.crap}
-					slug={resource.slug!}
-					resourceId={resource.id}
-					resourceType={resourceType}
-					isInteractive={isInteractive}
+			<ElemReaction
+				type="crap"
+				label="Sh**"
+				count={resource.sentiment?.crap}
+				slug={resource.slug!}
+				resourceId={resource.id}
+				resourceType={resourceType}
+				isInteractive={isInteractive}
 			/>
 		</div>
 	);
 };
 
-
 type ReactionProps = {
-	type: 'hot' | 'like' | 'crap'
-	label: 'Hot' | 'Like' | 'Sh**'
-	count: number
-	slug: string
+	type: "hot" | "like" | "crap";
+	label: "Hot" | "Like" | "Sh**";
+	count: number;
+	slug: string;
 	resourceId: number;
-	resourceType: 'companies' | 'vc_firms';
+	resourceType: "companies" | "vc_firms";
 	isInteractive: boolean;
 };
 
@@ -72,14 +79,14 @@ export const ElemReaction: FC<ReactionProps> = ({
 	resourceType,
 	isInteractive,
 }) => {
-	const { listAndFollows, refreshProfile } = useUser()
+	const { listAndFollows, refreshProfile } = useUser();
 
 	const [reactionState, setReactionState] = useState(() => {
 		const list = find(listAndFollows, (item) => {
 			return getNameFromListName(item) === type;
-		})
-		const alreadyReacted = isOnList(list, resourceId)
-		return { count, alreadyReacted }
+		});
+		const alreadyReacted = isOnList(list, resourceId);
+		return { count, alreadyReacted };
 	});
 
 	useEffect(() => {
@@ -87,11 +94,10 @@ export const ElemReaction: FC<ReactionProps> = ({
 			console.log({listAndFollowsHashed: hashSum(listAndFollows)})
 			const list = find(listAndFollows, (item) => {
 				return getNameFromListName(item) === type;
-			})
-			const alreadyReacted = isOnList(list, resourceId)
-			return { count: prev.count, alreadyReacted }	
-		})
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+			});
+			const alreadyReacted = isOnList(list, resourceId);
+			return { count: prev.count, alreadyReacted };
+		});
 	}, [listAndFollows, resourceId, type]);
 
 	const alreadyReactedClasses = () => {
@@ -112,7 +118,9 @@ export const ElemReaction: FC<ReactionProps> = ({
 		return classes;
 	};
 
-	const handleReactionClick = async (event: React.MouseEvent<HTMLDivElement>) => {
+	const handleReactionClick = async (
+		event: React.MouseEvent<HTMLDivElement>
+	) => {
 		event.stopPropagation();
 		event.preventDefault();
 		setReactionState(prev => {
@@ -128,8 +136,8 @@ export const ElemReaction: FC<ReactionProps> = ({
 			resourceType,
 			sentiment: type,
 			pathname: `/${resourceType}/${slug}`,
-		});	
-		refreshProfile()
+		});
+		refreshProfile();
 	};
 
 	return (
@@ -137,20 +145,21 @@ export const ElemReaction: FC<ReactionProps> = ({
 			onClick={handleReactionClick}
 			title={label}
 			role="button"
-			className={`flex items-center font-bold ease-in-out duration-150 ${alreadyReactedClasses()} ${isInteractive ? "group cursor-pointer" : "cursor-default"}`}
+			className={`flex items-center font-bold ease-in-out duration-150 ${alreadyReactedClasses()} ${
+				isInteractive ? "group cursor-pointer" : "cursor-default"
+			}`}
 		>
 			<ElemTooltip
 				content={label}
 				className={`${isInteractive ? "cursor-pointer" : "cursor-default"}`}
 			>
 				<div className="flex items-center justify-center h-9 w-9 group-active:scale-75 group-active:rotate-6 mr-1 rounded-full overflow-visible ease-in-out duration-150 group-hover:bg-slate-100">
-					{ type === 'hot' && <EmojiHot className="h-6 w-6" />}
-					{ type === 'like' && <EmojiLike className="h-6 w-6" />}
-					{ type === 'crap' && <EmojiCrap className="h-6 w-6" />}
-					{" "}
+					{type === "hot" && <EmojiHot className="h-6 w-6" />}
+					{type === "like" && <EmojiLike className="h-6 w-6" />}
+					{type === "crap" && <EmojiCrap className="h-6 w-6" />}{" "}
 				</div>
 			</ElemTooltip>
-			{reactionState.count || 0}
+			<div className="proportional-nums">{reactionState.count || 0}</div>
 		</div>
 	);
 };
