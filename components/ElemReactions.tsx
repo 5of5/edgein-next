@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from "react";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { useUser } from "@/context/userContext";
+import hashSum from 'hash-sum';
 
 type Props = {
 	className?: string;
@@ -65,7 +66,7 @@ type ReactionProps = {
 export const ElemReaction: FC<ReactionProps> = ({
 	type,
 	label,
-	count,
+	count = 0,
 	slug,
 	resourceId,
 	resourceType,
@@ -83,12 +84,14 @@ export const ElemReaction: FC<ReactionProps> = ({
 
 	useEffect(() => {
 		setReactionState((prev) => {
+			console.log({listAndFollowsHashed: hashSum(listAndFollows)})
 			const list = find(listAndFollows, (item) => {
 				return getNameFromListName(item) === type;
 			})
 			const alreadyReacted = isOnList(list, resourceId)
 			return { count: prev.count, alreadyReacted }	
 		})
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [listAndFollows, resourceId, type]);
 
 	const alreadyReactedClasses = () => {
@@ -112,10 +115,14 @@ export const ElemReaction: FC<ReactionProps> = ({
 	const handleReactionClick = async (event: React.MouseEvent<HTMLDivElement>) => {
 		event.stopPropagation();
 		event.preventDefault();
-		setReactionState(prev => ({
-			count: prev.count + (prev.alreadyReacted ? -1 : 1),
-			alreadyReacted: !prev.alreadyReacted,
-		}))
+		setReactionState(prev => {
+			let count = prev.count + (prev.alreadyReacted ? -1 : 1)
+			if (count < 0) count = 0
+			return {
+				count,
+				alreadyReacted: !prev.alreadyReacted,
+			}
+		})
 		await toggleFollowOnList({
 			resourceId,
 			resourceType,
