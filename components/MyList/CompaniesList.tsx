@@ -24,15 +24,17 @@ export const CompaniesList: FC<Props> = ({
 	isCustomList,
 	selectedListName,
 }) => {
-	const { refreshProfile } = useUser()
-	
+	const { refreshProfile } = useUser();
+
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
 	const [resourceList, setResourceList] = useState<Follows_Companies[]>();
 
 	const [fundingTotal, setFundingTotal] = useState(0);
 
-	const [tagsCount, setTagsCount] = useState<any>({});
+	//const [tagsCount, setTagsCount] = useState<any>({});
+
+	const [tags, setTags] = useState<any>([]);
 
 	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
 
@@ -42,24 +44,48 @@ export const CompaniesList: FC<Props> = ({
 
 	useEffect(() => {
 		let funding = 0;
+		let allCompaniesTags: any = [];
 		if (companies) setResourceList(companies);
 		if (companies) {
 			companies.forEach(({ company }) => {
-				setTagsCount(() => {
-					let prev: any = {};
-					company?.tags?.forEach((tag: string) => {
-						if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
-						else prev[tag] += 1;
+				// setTagsCount(() => {
+				// 	let prev: any = {};
+				// 	company?.tags?.forEach((tag: string) => {
+				// 		if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
+				// 		else prev[tag] += 1;
+				// 	});
+				// 	return prev;
+				// });
+
+				if (company?.tags && company?.tags.length > 0) {
+					company?.tags.forEach((tag: string) => {
+						allCompaniesTags.push(tag);
 					});
-					return prev;
-				});
+				}
+
 				company?.investment_rounds.forEach((round) => {
 					funding += round.amount;
 				});
 			});
 		}
+		setTags(allCompaniesTags);
 		setFundingTotal(funding);
 	}, [companies]);
+
+	let reducedTagsArray = tags.reduce(
+		(tag: { name: any; count: number }[], curr: any, _: any, arr: any) => {
+			if (tag.length == 0) tag.push({ name: curr, count: 1 });
+			else if (tag.findIndex((f) => f.name === curr) === -1)
+				tag.push({ name: curr, count: 1 });
+			else ++tag[tag.findIndex((f) => f.name === curr)].count;
+			return tag;
+		},
+		[]
+	);
+
+	const sortedTags = reducedTagsArray.sort(
+		(a: { count: number }, b: { count: number }) => b.count - a.count
+	);
 
 	const columns = React.useMemo(
 		() => [
@@ -116,7 +142,11 @@ export const CompaniesList: FC<Props> = ({
 				Cell: (props: any) => (
 					<div>
 						{props.value && (
-							<ElemReactions resource={props.value} resourceType={'companies'} isInteractive={false} />
+							<ElemReactions
+								resource={props.value}
+								resourceType={"companies"}
+								isInteractive={false}
+							/>
 						)}
 					</div>
 				),
@@ -181,7 +211,7 @@ export const CompaniesList: FC<Props> = ({
 					(resource) => !followIds.includes(resource.id as number)
 				);
 			});
-			refreshProfile()
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -242,23 +272,36 @@ export const CompaniesList: FC<Props> = ({
 				)}
 			</div>
 
-			<div className="flex items-start w-full mb-4">
-				{Object.keys(tagsCount).length > 0 && (
-					<>
-						<div className="font-bold text-sm mr-2 py-0.5">Tags</div>
-						<div className="flex gap-2 flex-wrap">
-							{Object.keys(tagsCount).map((tag: string) => (
+			{sortedTags.length > 0 && (
+				<div className="flex items-start w-full mb-4">
+					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
+					<div className="flex gap-2 flex-wrap">
+						{sortedTags.map(
+							(
+								{
+									name,
+									count,
+								}: {
+									name: string;
+									count: number;
+								},
+								index: number
+							) => (
 								<div
-									key={tag}
-									className="shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
+									key={index}
+									className="group inline-flex items-center shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
 								>
-									{tag} ({tagsCount[tag]})
+									<span>{name}</span>
+
+									<span className="pl-1 text-sm proportional-nums lining-nums">
+										({count})
+									</span>
 								</div>
-							))}
-						</div>
-					</>
-				)}
-			</div>
+							)
+						)}
+					</div>
+				</div>
+			)}
 
 			{Object.keys(selectedRowIds).length > 0 && (
 				<div className="flex items-center gap-4">
