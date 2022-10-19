@@ -174,12 +174,10 @@ const Companies: NextPage<Props> = ({
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				{companies && (
-					<ElemRecentCompanies
-						className="bg-white rounded-lg shadow"
-						heading="Recently Discovered"
-					/>
-				)}
+				<ElemRecentCompanies
+					className="bg-white rounded-lg shadow"
+					heading="Recently Discovered"
+				/>
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
