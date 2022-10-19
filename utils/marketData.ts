@@ -171,7 +171,7 @@ const getAmberDexCoin = async(ticker: string) => {
     } else {
       console.log(`${ticker} not available in Amberdata DEX`)
     }
-  } catch(e) { console.log(`Got exception when getAmberCexCoin ${ticker}\n${e}`) }
+  } catch(e) { console.log(`Got exception when getAmberDexCoin ${ticker}\n${e}`) }
 }
 
 const getAmberRanking = async() => {
