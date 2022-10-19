@@ -6,6 +6,7 @@ import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
 import { startCase } from 'lodash';
+import hashSum from 'hash-sum';
 
 type UserValue = {
   user: User | null
@@ -59,11 +60,24 @@ const UserProvider: React.FC<Props> = (props) => {
          // intercom not loaded
       }  
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
 
-  const listAndFollows = listMemberships?.list_members.map(li => li.list) || []
+  const newListAndFollows = listMemberships?.list_members.map(li => li.list) || []
 
-  return (<Provider value={{user, loading, listAndFollows}}>{ props.children}</Provider>)
+  const listAndFollowsHashed = hashSum(newListAndFollows)
+  const lastListAndFollows = React.useRef({
+    obj: newListAndFollows,
+    hash: listAndFollowsHashed
+  });
+  if (lastListAndFollows.current.hash !== listAndFollowsHashed) {
+    lastListAndFollows.current = {
+      obj: newListAndFollows,
+      hash: listAndFollowsHashed
+    }
+  }
+
+  return (<Provider value={{user, loading, listAndFollows: lastListAndFollows.current.obj}}>{ props.children}</Provider>)
 }
 export { UserProvider, useUser };

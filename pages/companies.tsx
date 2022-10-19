@@ -164,6 +164,7 @@ const Companies: NextPage<Props> = ({
 	}
 
 	const companies = initialLoad ? initialCompanies : companiesData?.companies;
+	const companies_aggregate = initialLoad ? companiesCount : companiesData?.companies_aggregate?.aggregate?.count || 0;
 
 	return (
 		<div className="relative overflow-hidden">
@@ -173,12 +174,10 @@ const Companies: NextPage<Props> = ({
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				{companies && (
-					<ElemRecentCompanies
-						className="bg-white rounded-lg shadow"
-						heading="Recently Discovered"
-					/>
-				)}
+				<ElemRecentCompanies
+					className="bg-white rounded-lg shadow"
+					heading="Recently Discovered"
+				/>
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
@@ -285,7 +284,7 @@ const Companies: NextPage<Props> = ({
 					</div>
 					<Pagination
 						shownItems={companies?.length}
-						totalItems={companiesCount}
+						totalItems={companies_aggregate}
 						page={page}
 						itemsPerPage={limit}
 						onClickPrev={() => setPage((prev) => prev - 1)}
@@ -302,6 +301,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetCompaniesDocument,
 		{
 			offset: 0,
+			limit: 50,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 		}
 	);
@@ -311,8 +311,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Companies - EdgeIn.io",
 			metaDescription:
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
-			companiesCount: companies?.companies.length,
-			initialCompanies: companies?.companies.slice(0, 50),
+			companiesCount: companies?.companies_aggregate.aggregate?.count,
+			initialCompanies: companies?.companies,
 			companyFilters: CompaniesFilters,
 			companyLayers: LayersFilters,
 			amountRaised: AmountRaisedFilters,

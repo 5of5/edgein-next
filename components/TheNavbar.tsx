@@ -22,7 +22,7 @@ export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, loading } = useUser();
 
-	const [showLoginPopup, setShowLoginPopup] = useState(router.asPath === '/login/');
+	const [showLoginPopup, setShowLoginPopup] = useState(router.asPath.includes('/login/'));
 	const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
@@ -139,7 +139,7 @@ export const TheNavbar = () => {
 	};
 
 	const onModalClose = () => {
-		setShowLoginPopup(router.asPath === '/login/');
+		setShowLoginPopup(router.asPath.includes('/login/'));
 		setShowForgotPasswordPopup(false);
 		setShowSignUp(false);
 	};
