@@ -239,21 +239,24 @@ const Company: NextPage<Props> = (props: Props) => {
 						<section className="bg-white shadow rounded-lg p-5 md:mt-0">
 							<h2 className="text-xl font-bold">Token Info</h2>
 							<div className="flex flex-col space-y-2 mt-2">
-                                {props.metrics.map((item) => (
-                                    <div className="flex items-center space-x-2" key={item.id}>
-                                        <div className=" text-slate-600">{item.name}</div>
-                                        <div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-										{tokenInfo[item.id as keyof TokenInfo] ?
-											item.id === "highLow24H"
-												? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
-													tokenInfo.low24H
-												)}`
-												: `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
-										: `N/A`
-										}
-                                        </div>
-                                    </div>
-                                ))}
+                                {props.metrics.map((item) => {
+									const metricsClass = tokenInfo[item.id as keyof TokenInfo] ? "bg-green-100 text-green-500" : "bg-slate-200 text-slate-600"
+									return (
+										<div className="flex items-center space-x-2" key={item.id}>
+											<div className="text-slate-600">{item.name}</div>
+											<div className={`${metricsClass} text-sm font-semibold border-none rounded-2xl py-1 px-2`}>
+											{tokenInfo[item.id as keyof TokenInfo] ?
+												item.id === "highLow24H"
+													? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
+														tokenInfo.low24H
+													)}`
+													: `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
+											: `N/A`
+											}
+											</div>
+										</div>
+                                	)}
+								)}
 							</div>
 						</section>
 					)}
