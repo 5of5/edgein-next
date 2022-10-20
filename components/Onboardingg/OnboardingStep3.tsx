@@ -26,7 +26,7 @@ type Props = {
 	} | null;
 };
 
-export default function OnboardingStep3Modal(props: Props) {
+export default function OnboardingStep3(props: Props) {
 	const [list, setList] = useState<any[]>([]);
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);

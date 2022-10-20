@@ -15,7 +15,7 @@ type Props = {
 	} | null;
 };
 
-export default function OnboardingStep1Modal(props: Props) {
+export default function OnboardingStep1(props: Props) {
 	const [selectedOption, setSelectedOption] = useState(props.selectedOption);
 
 	const onNext = () => {

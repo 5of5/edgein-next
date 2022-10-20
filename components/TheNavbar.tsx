@@ -13,9 +13,9 @@ import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import { MobileNav } from "@/components/MobileNav";
 import SearchModal from "@/components/SearchModal";
-import OnboardingStep1Modal from "@/components/Onboarding/OnboardingStep1Modal";
-import OnboardingStep2Modal from "@/components/Onboarding/OnboardingStep2Modal";
-import OnboardingStep3Modal from "@/components/Onboarding/OnboardingStep3Modal";
+import OnboardingStep1 from "@/components/Onboardingg/OnboardingStep1";
+import OnboardingStep2 from "@/components/Onboardingg/OnboardingStep2";
+import OnboardingStep3 from "@/components/Onboardingg/OnboardingStep3";
 import { useUser } from "@/context/userContext";
 
 export const TheNavbar = () => {
@@ -271,7 +271,7 @@ export const TheNavbar = () => {
 						onClose={() => setShowSearchModal(false)}
 					/>
 					{onboardingStep === 1 && (
-						<OnboardingStep1Modal
+						<OnboardingStep1
 							selectedOption={selectedOption}
 							show={onboardingStep === 1 && !loading}
 							onClose={() => setOnboardingStep(0)}
@@ -283,7 +283,7 @@ export const TheNavbar = () => {
 						/>
 					)}
 					{onboardingStep === 2 && (
-						<OnboardingStep2Modal
+						<OnboardingStep2
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
@@ -305,7 +305,7 @@ export const TheNavbar = () => {
 						/>
 					)}
 					{/* {onboardingStep === 3 && (
-						<OnboardingStep3Modal
+						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
