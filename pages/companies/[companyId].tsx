@@ -77,7 +77,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	});
 
 	const getTokenInfo = async (ticker: string) => {
-		const data = await fetch("@/api/get_metrics_amount", {
+		const data = await fetch("/api/get_metrics_amount", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -243,12 +243,14 @@ const Company: NextPage<Props> = (props: Props) => {
                                     <div className="flex items-center space-x-2" key={item.id}>
                                         <div className=" text-slate-600">{item.name}</div>
                                         <div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-                                        {item.id === "highLow24H"
-                                            ? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
-                                                tokenInfo.low24H
-                                            )}`
-                                            : `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
-                                        }
+										{tokenInfo[item.id as keyof TokenInfo] ?
+											item.id === "highLow24H"
+												? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
+													tokenInfo.low24H
+												)}`
+												: `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
+										: `N/A`
+										}
                                         </div>
                                     </div>
                                 ))}
@@ -464,7 +466,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	};
 };
 const convertAmountRaised = (theAmount: number) => {
-	return theAmount ?  convertToInternationalCurrencySystem(theAmount) : 0;
+	return convertToInternationalCurrencySystem(theAmount);
 };
 interface Metric  {
 	id: string;
