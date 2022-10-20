@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
-import { ElemButton } from "../ElemButton";
-import { IconFindCompanies, IconFindInvestors } from "../Icons";
+import { ElemButton } from "@/components/ElemButton";
+import { IconFindCompanies, IconFindInvestors } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 	} | null;
 };
 
-export default function OnBoardingStep1Modal(props: Props) {
+export default function OnboardingStep1(props: Props) {
 	const [selectedOption, setSelectedOption] = useState(props.selectedOption);
 
 	const onNext = () => {

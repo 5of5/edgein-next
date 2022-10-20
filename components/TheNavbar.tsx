@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ElemLogo } from "@/components/ElemLogo";
 import { ElemButton } from "@/components/ElemButton";
-import { NotificationAlerts } from "@/components/NotificationAlerts";
+//import { NotificationAlerts } from "@/components/NotificationAlerts";
 import { UserMenu } from "@/components/UserMenu";
 import LoginModal from "@/components/LoginModal";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
@@ -13,22 +13,24 @@ import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import { MobileNav } from "@/components/MobileNav";
 import SearchModal from "@/components/SearchModal";
-import OnBoardingStep1Modal from "@/components/onBoarding/OnBoardingStep1Modal";
-import OnBoardingStep2Modal from "@/components/onBoarding/OnBoardingStep2Modal";
-import OnBoardingStep3Modal from "@/components/onBoarding/OnBoardingStep3Modal";
+import OnboardingStep1 from "@/components/Onboarding/OnboardingStep1";
+import OnboardingStep2 from "@/components/Onboarding/OnboardingStep2";
+import OnboardingStep3 from "@/components/Onboarding/OnboardingStep3";
 import { useUser } from "@/context/userContext";
 
 export const TheNavbar = () => {
 	const router = useRouter();
 	const { user, loading } = useUser();
 
-	const [showLoginPopup, setShowLoginPopup] = useState(router.asPath.includes('/login/'));
+	const [showLoginPopup, setShowLoginPopup] = useState(
+		router.asPath.includes("/login/")
+	);
 	const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
 	const [showSearchModal, setShowSearchModal] = useState(false);
-	const [onBoardingStep, setOnBoardingStep] = useState(0);
+	const [onboardingStep, setOnboardingStep] = useState(0);
 
 	const [selectedOption, setSelectedOption] = useState("companies");
 	const [locationTags, setLocationTags] = useState<string[]>([]);
@@ -41,17 +43,17 @@ export const TheNavbar = () => {
 		setShowSearchModal(true);
 	});
 
-	const showOnBoarding = async () => {
-		const isAlreadyShown = await localStorage.getItem("onBoardingShown");
+	const showOnboarding = async () => {
+		const isAlreadyShown = await localStorage.getItem("onboardingShown");
 		if (!isAlreadyShown) {
-			setOnBoardingStep(1);
-			localStorage.setItem("onBoardingShown", "true");
+			setOnboardingStep(1);
+			localStorage.setItem("onboardingShown", "true");
 		}
 	};
 
 	useEffect(() => {
 		if (!loading && user && user.isFirstLogin) {
-			showOnBoarding();
+			showOnboarding();
 		}
 	}, [loading, user]);
 
@@ -139,7 +141,7 @@ export const TheNavbar = () => {
 	};
 
 	const onModalClose = () => {
-		setShowLoginPopup(router.asPath.includes('/login/'));
+		setShowLoginPopup(router.asPath.includes("/login/"));
 		setShowForgotPasswordPopup(false);
 		setShowSignUp(false);
 	};
@@ -159,7 +161,7 @@ export const TheNavbar = () => {
 	};
 
 	const onCloseBoarding = () => {
-		setOnBoardingStep(0);
+		setOnboardingStep(0);
 		setSelectedOption("companies");
 		setLocationTags([]);
 		setIndustryTags([]);
@@ -268,53 +270,53 @@ export const TheNavbar = () => {
 						show={showSearchModal}
 						onClose={() => setShowSearchModal(false)}
 					/>
-					{onBoardingStep === 1 && (
-						<OnBoardingStep1Modal
+					{onboardingStep === 1 && (
+						<OnboardingStep1
 							selectedOption={selectedOption}
-							show={onBoardingStep === 1 && !loading}
-							onClose={() => setOnBoardingStep(0)}
+							show={onboardingStep === 1 && !loading}
+							onClose={() => setOnboardingStep(0)}
 							onNext={(selectedOption) => {
 								setSelectedOption(selectedOption);
-								setOnBoardingStep(2);
+								setOnboardingStep(2);
 							}}
 							user={user}
 						/>
 					)}
-					{onBoardingStep === 2 && (
-						<OnBoardingStep2Modal
+					{onboardingStep === 2 && (
+						<OnboardingStep2
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onBoardingStep === 2 && !loading}
+							show={onboardingStep === 2 && !loading}
 							onClose={() => {
-								setOnBoardingStep(0);
+								setOnboardingStep(0);
 							}}
 							onNext={(locationTags, industryTags) => {
-								//setOnBoardingStep(3);
-								setOnBoardingStep(0);
+								//setOnboardingStep(3);
+								setOnboardingStep(0);
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
 							}}
 							onBack={(locationTags, industryTags) => {
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
-								setOnBoardingStep(1);
+								setOnboardingStep(1);
 							}}
 						/>
 					)}
-					{/* {onBoardingStep === 3 && (
-						<OnBoardingStep3Modal
+					{/* {onboardingStep === 3 && (
+						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onBoardingStep === 3 && !loading}
+							show={onboardingStep === 3 && !loading}
 							onClose={() => {
-								setOnBoardingStep(0);
+								setOnboardingStep(0);
 							}}
 							onNext={() => {
-								setOnBoardingStep(0);
+								setOnboardingStep(0);
 							}}
-							onBack={() => setOnBoardingStep(2)}
+							onBack={() => setOnboardingStep(2)}
 							user={user}
 						/>
 					)} */}

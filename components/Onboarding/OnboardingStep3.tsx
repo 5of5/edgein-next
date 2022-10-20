@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { ElemButton } from "../ElemButton";
-import { DeepPartial } from "../Company/ElemCohort";
+import { ElemButton } from "@/components/ElemButton";
+import { DeepPartial } from "@/components/Company/ElemCohort";
 import { Dialog, Transition } from "@headlessui/react";
 import {
 	Companies_Bool_Exp,
@@ -26,7 +26,7 @@ type Props = {
 	} | null;
 };
 
-export default function OnBoardingStep3Modal(props: Props) {
+export default function OnboardingStep3(props: Props) {
 	const [list, setList] = useState<any[]>([]);
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
@@ -83,7 +83,7 @@ export default function OnBoardingStep3Modal(props: Props) {
 		// error,
 		isLoading: loadingCompany,
 	} = useGetRelevantCompaniesQuery({
-		where: filtersCompanies as Companies_Bool_Exp
+		where: filtersCompanies as Companies_Bool_Exp,
 	});
 
 	const {
@@ -91,7 +91,7 @@ export default function OnBoardingStep3Modal(props: Props) {
 		// error,
 		isLoading: loadingVCFirm,
 	} = useGetRelevantVcFirmsQuery({
-		where: filterVCFirms as Vc_Firms_Bool_Exp
+		where: filterVCFirms as Vc_Firms_Bool_Exp,
 	});
 
 	useEffect(() => {
@@ -139,7 +139,7 @@ export default function OnBoardingStep3Modal(props: Props) {
 								</h3>
 								<p className="text-sm text-slate-500">Step 3 of 3</p>
 								<div className="mt-4 text-slate-600">
-									{`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My Edge List".`}
+									{`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My First List".`}
 								</div>
 								<div className="w-full my-5 grid grid-cols-2 gap-5 sm:grid-cols-3">
 									{list.length > 0 &&

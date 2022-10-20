@@ -1,4 +1,5 @@
-import { FigurePerspectiveGrid } from "@/components/Figures";
+import { FigurePerspectiveGrid, FigureDash } from "@/components/Figures";
+
 import { Transition } from "@headlessui/react";
 import { FC } from "react";
 type Props = {
@@ -43,7 +44,9 @@ export const FigureIntroSplash: FC<Props> = ({ className = "" }) => {
 				enterFrom="opacity-0 -translate-y-10"
 				enterTo="opacity-100 translate-y-0"
 			>
-				<div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-white/80 to-white/20 border-2 border-white/60 opacity-80 backdrop-blur-3xl shadow-[10px_14px_25px_rgba(0,0,0,0.10)]"></div>
+				<div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-gray-50/80 to-gray-50/20 border-2 border-white/60 opacity-100 backdrop-blur-3xl shadow-[10px_14px_25px_rgba(0,0,0,0.10)]">
+					<FigureDash className="mx-3 my-1 aspect-video max-w-full" />
+				</div>
 			</Transition>
 		</figure>
 	);
