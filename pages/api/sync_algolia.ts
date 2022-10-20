@@ -9,12 +9,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const lastSyncArray = await queryForlastSync();
   if (!lastSyncArray.length) return res.status(405).end();
 
+  const output: Record<string, string> = {}
+
   // get last sync info for companies
   const companyLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_companies');
+  output['companyLastSync'] = companyLastSync.value
   if (companyLastSync) {
     try {
       // get all the companies details
       const companyList = await queryForCompanyList(companyLastSync.value);
+      output['companyList'] = companyList.map((p:any) => `${p.id} ${p.name}`)
       for (const company of companyList) {
         if (company.logo) {
           company.logo = company.logo.url;
@@ -35,10 +39,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // get last sync info for investors
   const investorLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_vc_firms');
+  output['investorLastSync'] = investorLastSync
   if (investorLastSync) {
     try {
       // get all investors details
       const vcfirmsList = await queryForVcFirmsList(investorLastSync.value);
+      output['vcfirmsList'] = vcfirmsList.map((p:any) => `${p.id} ${p.name}`)
       for (const vc_firm of vcfirmsList) {
         if (vc_firm.logo) {
           vc_firm.logo = vc_firm.logo.url;
@@ -60,10 +66,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // get last sync info for people
     const peopleLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_people');
+    output['peopleLastSync'] = peopleLastSync
     if (peopleLastSync) {
       try {
         // get all people details
         const peopleList = await queryForPeopleList(peopleLastSync.value);
+        output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`)
         for (const people of peopleList) {
           if (people.picture) {
             people.picture = people.picture.url;
