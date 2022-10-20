@@ -11,6 +11,7 @@ async function queryForAllowedEmailCheck(email: string, domain: string) {
       limit: 1) {
       id
       email
+      person_id
     }
   }
   `
@@ -19,7 +20,7 @@ async function queryForAllowedEmailCheck(email: string, domain: string) {
       query: fetchQuery,
       variables: { email, domain }
     })
-    return data.data.allowed_emails[0] as User
+    return data.data.allowed_emails[0] as { id: number, email: string, person_id?: number }
   } catch (ex) {
     throw ex;
   }

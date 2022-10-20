@@ -64,7 +64,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         name: result.name,
         _id: result._id, // get Id from sub
         auth0_user_pass_id: result._id,
-        reference_user_id: referenceUserId
+        reference_user_id: referenceUserId,
+        person_id: isEmailAllowed.person_id
       }
       // upsert user info
       userData = await UserService.upsertUser(objectData);

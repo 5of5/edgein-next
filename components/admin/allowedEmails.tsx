@@ -67,6 +67,7 @@ export const AllowedEmailsList = () => {
 				<EditButton />
 				<TextField source="id" />
 				<TextField source="email" />
+				<TextField source="person_id" />
 				<SelectField source="type" choices={typeChoices} />
 			</Datagrid>
 		</List>
@@ -110,6 +111,10 @@ export const AllowedEmailsEdit = () => {
 					className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="email"
 				/>
+				<TextInput
+					className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="person_id"
+				/>
 				<SelectInput
 					className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="type"
@@ -140,6 +145,10 @@ export const AllowedEmailsCreate = () => {
 				<TextInput
 					className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
 					source="email"
+				/>
+				<TextInput
+					className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+					source="person_id"
 				/>
 				<SelectInput
 					className="w-full mt-5 px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
