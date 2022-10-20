@@ -15,7 +15,7 @@ type Props = {
 	onBack: (locationTags: string[], industryTags: string[]) => void;
 };
 
-export default function OnBoardingStep2Modal(props: Props) {
+export default function OnboardingStep2Modal(props: Props) {
 	const [locationTags, setLocationTags] = useState(props.locationTags);
 	const [industryTags, setIndustryTags] = useState(props.industryTags);
 

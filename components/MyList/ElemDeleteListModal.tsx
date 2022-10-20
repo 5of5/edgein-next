@@ -50,27 +50,20 @@ export const ElemDeleteListModal: FC<Props> = ({
 							<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white px-6 pb-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title
 									as="h3"
-									className="from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r -mx-6 p-3 text-white font-bold px-4"
+									className="from-red-700 via-red-600 to-red-500 bg-gradient-to-r -mx-6 p-3 text-white font-bold px-4"
 								>
 									Delete List
 								</Dialog.Title>
 								<div className="mt-2">
-									<p>
-										Are you sure you want to delete &ldquo;{listName}&rdquo;?
-									</p>
-
-									<p className=" mt-6">
-										Note: Deleting list is a permanent action and cannot be
-										undone.
-									</p>
+									Are you sure you want to delete &ldquo;{listName}&rdquo;?
 								</div>
 
 								<div className="mt-4">
 									<ElemButton
 										onClick={onDeleteBtn}
 										roundedFull
-										btn="primary"
-										className="float-right"
+										btn="danger"
+										className="float-right "
 									>
 										Delete
 									</ElemButton>
