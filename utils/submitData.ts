@@ -1,9 +1,12 @@
-import { mutate, query } from '@/graphql/hasuraAdmin'
-
+import { mutate, query } from "@/graphql/hasuraAdmin";
 
 export const partnerLookUp = async (apiKey: string) => {
-  const { data: { data_partners: [data_partner]} } = await query({
-    query: `
+	const {
+		data: {
+			data_partners: [data_partner],
+		},
+	} = await query({
+		query: `
     query lookup_data_partner($apiKey: String!) {
       data_partners(where: {api_key: {_eq: $apiKey}}) {
         id
@@ -11,41 +14,48 @@ export const partnerLookUp = async (apiKey: string) => {
         api_key
       }
     }`,
-    variables: {apiKey}
-  })
-  return data_partner 
-}
+		variables: { apiKey },
+	});
+	return data_partner;
+};
 
 const TABLE_NAME: Record<string, string> = {
-  'company': 'companies',
-  'vc_firm': 'vc_firms',
-  'person': 'people'
-}
+	company: "companies",
+	vc_firm: "vc_firms",
+	person: "people",
+};
 
-export const resourceIdLookup = async (resourceType: string, resourceIdentifier: string, identifierColumn: string) => {
-  const tableName = TABLE_NAME[resourceType]
-  if (tableName === undefined)
-    return
+export const resourceIdLookup = async (
+	resourceType: string,
+	resourceIdentifier: string,
+	identifierColumn: string
+) => {
+	const tableName = TABLE_NAME[resourceType];
+	if (tableName === undefined) return;
 
-  try {
-    const { data } = await query({
-      query: `
+	try {
+		const { data } = await query({
+			query: `
       query lookup_resource($resourceIdentifier: String!) {
         ${tableName}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
           id
         }
       }`,
-      variables: {resourceIdentifier}
-    })
-    return data[tableName][0].id
-  } catch (e) {
-    return
-  }
-}
+			variables: { resourceIdentifier },
+		});
+		return data[tableName][0].id;
+	} catch (e) {
+		return;
+	}
+};
 
 export const fieldLookup = async (path: string) => {
-  const { data: { data_fields: [data_field] } } = await query({
-    query: `
+	const {
+		data: {
+			data_fields: [data_field],
+		},
+	} = await query({
+		query: `
     query lookup_data_field($path: String!) {
       data_fields(where: {path: {_eq: $path}}) {
         name
@@ -57,14 +67,18 @@ export const fieldLookup = async (path: string) => {
       }
     }
     `,
-    variables: {path}
-  })
-  return data_field
-}
+		variables: { path },
+	});
+	return data_field;
+};
 
 export const insertDataRaw = async (data: Array<Record<string, any>>) => {
-  const { data: {insert_data_raw: {returning}} } = await mutate({
-    mutation: `
+	const {
+		data: {
+			insert_data_raw: { returning },
+		},
+	} = await mutate({
+		mutation: `
     mutation submit_data_raw($input: [data_raw_insert_input!]!) {
       insert_data_raw(objects: $input) {
         returning {
@@ -79,7 +93,7 @@ export const insertDataRaw = async (data: Array<Record<string, any>>) => {
       }
     }
     `,
-    variables: {input: data} 
-  })
-  return returning
-}
+		variables: { input: data },
+	});
+	return returning;
+};
