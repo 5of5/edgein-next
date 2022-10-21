@@ -18,14 +18,20 @@ import OnboardingStep2 from "@/components/Onboarding/OnboardingStep2";
 import OnboardingStep3 from "@/components/Onboarding/OnboardingStep3";
 import { useUser } from "@/context/userContext";
 
-export const TheNavbar = () => {
+import { FC } from "react";
+type Props = {
+	showSignUp: boolean;
+	setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const router = useRouter();
 	const { user, loading } = useUser();
 
 	const [showLoginPopup, setShowLoginPopup] = useState(
 		router.asPath.includes("/login/")
 	);
-	const [showSignUp, setShowSignUp] = useState(false);
+	//const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
