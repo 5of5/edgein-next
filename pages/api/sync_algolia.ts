@@ -90,7 +90,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
-    res.send({ success: true })
+    res.send({ success: true, ...output })
 }
 
 const prepareError = (error: any) => {
