@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // get last sync info for investors
   const investorLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_vc_firms');
-  output['vcfirmsLastSync'] = investorLastSync
+  output['vcfirmsLastSync'] = investorLastSync.value
   if (investorLastSync) {
     try {
       // get all investors details
@@ -68,7 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // get last sync info for people
     const peopleLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_people');
-    output['peopleLastSync'] = peopleLastSync
+    output['peopleLastSync'] = peopleLastSync.value
     if (peopleLastSync) {
       try {
         // get all people details
