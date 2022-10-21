@@ -246,14 +246,14 @@ export const CompaniesList: FC<Props> = ({
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="flex items-start justify-between">
+			<div className="flex items-start justify-between mb-2">
 				<h2 className="font-bold text-lg capitalize mr-2">
 					{listNameTitle}: Companies
 				</h2>
 
 				{fundingTotal > 0 && (
-					<div className="font-bold text-right shrink-0 mr-2">
-						<div className="text-sm">Total Funding</div>
+					<div className="font-bold flex items-center justify-center text-right shrink-0 mr-2">
+						<div className="text-sm mr-1">Total Funding</div>
 						<div className="text-green-700 text-lg">
 							${convertToInternationalCurrencySystem(fundingTotal)}
 						</div>
@@ -273,7 +273,7 @@ export const CompaniesList: FC<Props> = ({
 			</div>
 
 			{sortedTags.length > 0 && (
-				<div className="flex items-start w-full mb-4">
+				<div className="flex items-start w-full mb-3">
 					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
 					<div className="flex gap-2 flex-wrap">
 						{sortedTags.map(
@@ -333,7 +333,7 @@ export const CompaniesList: FC<Props> = ({
 				</div>
 			)}
 
-			<div className="mt-1 overflow-scroll border border-black/10 rounded-lg">
+			<div className="overflow-scroll border border-black/10 rounded-lg">
 				<table
 					{...getTableProps()}
 					className="table-auto min-w-full divide-y divide-black/10"
