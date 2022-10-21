@@ -2,14 +2,14 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import algoliasearch from 'algoliasearch'
 import { query, mutate } from '@/graphql/hasuraAdmin'
 
-const client = algoliasearch(process.env.ALGOLIA_WRITE_APPLICATION_ID!, process.env.ALGOLIA_WRITE_API_KEY!);
+const client = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!, process.env.ALGOLIA_WRITE_API_KEY!);
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // get the last sync datetime from db
   const lastSyncArray = await queryForlastSync();
   if (!lastSyncArray.length) return res.status(405).end();
 
-  const output: Record<string, string> = {}
+  const output: Record<string, any> = {}
 
   // get last sync info for companies
   const companyLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_companies');
@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       // get all the companies details
       const companyList = await queryForCompanyList(companyLastSync.value);
-      output['companyList'] = companyList.map((p:any) => `${p.id} ${p.name}`)
+      output['companyList'] = companyList.map((p:any) => `${p.id} ${p.name}`).length
       for (const company of companyList) {
         if (company.logo) {
           company.logo = company.logo.url;
@@ -33,18 +33,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
        await mutateForlastSync('sync_companies');
     } catch (error) {
       // update the last_error
+      output['companiesError'] = error
       await mutateForError('sync_companies', prepareError(error));
     }
   }
 
   // get last sync info for investors
   const investorLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_vc_firms');
-  output['investorLastSync'] = investorLastSync
+  output['vcfirmsLastSync'] = investorLastSync
   if (investorLastSync) {
     try {
       // get all investors details
       const vcfirmsList = await queryForVcFirmsList(investorLastSync.value);
-      output['vcfirmsList'] = vcfirmsList.map((p:any) => `${p.id} ${p.name}`)
+      output['vcfirmsList'] = vcfirmsList.map((p:any) => `${p.id} ${p.name}`).length
       for (const vc_firm of vcfirmsList) {
         if (vc_firm.logo) {
           vc_firm.logo = vc_firm.logo.url;
@@ -60,6 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
        await mutateForlastSync('sync_vc_firms');
     } catch (error) {
       // update the last_error
+      output['vcfirmsError'] = error
       await mutateForError('sync_vc_firms', prepareError(error));
     }
   }
@@ -71,7 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         // get all people details
         const peopleList = await queryForPeopleList(peopleLastSync.value);
-        output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`)
+        output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length
         for (const people of peopleList) {
           if (people.picture) {
             people.picture = people.picture.url;
@@ -86,6 +88,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await mutateForlastSync('sync_people');
       } catch (error) {
         // update the last_error
+        output['peopleError'] = error
         await mutateForError('sync_people', prepareError(error));
       }
     }
