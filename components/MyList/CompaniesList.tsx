@@ -247,9 +247,11 @@ export const CompaniesList: FC<Props> = ({
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
 			<div className="flex items-start justify-between mb-2">
-				<h2 className="font-bold text-lg capitalize mr-2">
-					{listNameTitle}: Companies
-				</h2>
+				{listNameTitle && (
+					<h2 className="font-bold text-lg capitalize mr-2">
+						{listNameTitle}: Companies
+					</h2>
+				)}
 
 				{fundingTotal > 0 && (
 					<div className="font-bold flex items-center justify-center text-right shrink-0 mr-2">
