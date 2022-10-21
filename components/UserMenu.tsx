@@ -1,6 +1,6 @@
 import { ElemButton } from "./ElemButton";
 import { Menu, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React, { Fragment, FC } from "react";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import {
@@ -15,7 +15,11 @@ import {
 import { useUser } from "@/context/userContext";
 import Link from "next/link";
 
-export const UserMenu = () => {
+type Props = {
+	className?: string;
+};
+
+export const UserMenu: FC<Props> = ({ className = "" }) => {
 	const { listAndFollows, user } = useUser();
 
 	const firstCustomList = first(
@@ -73,7 +77,7 @@ export const UserMenu = () => {
 	});
 
 	return (
-		<Menu as="div" className="relative inline-block text-left">
+		<Menu as="div" className={`relative inline-block text-left ${className}`}>
 			<div>
 				<Menu.Button as="div">
 					<ElemButton btn="slate" className="h-9 w-auto px-1.5 py-0 group">
