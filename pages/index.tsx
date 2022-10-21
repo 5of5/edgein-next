@@ -1,20 +1,23 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
-import Head from "next/head";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
-
 import { FigureBlurredBg } from "@/components/FigureBlurredBg";
 import { ElemButton } from "@/components/ElemButton";
-import { useAuth } from "@/hooks/useAuth";
-
+import { useUser } from "@/context/userContext";
 import { FigureCircleDashes } from "@/components/Figures";
 import { useFormspark } from "@formspark/use-formspark";
 
-const Home: NextPage = () => {
+type Props = {
+	showSignUp: boolean;
+	setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [submit, submitting] = useFormspark({
 		formId: "Kz4dKDvu",
 	});
-	const { user, error, loading } = useAuth();
+	const { user, loading } = useUser();
+
 	const [formSent, setFormSent] = useState(false);
 	const [email, setEmail] = useState("");
 
@@ -117,13 +120,23 @@ const Home: NextPage = () => {
 								Actionable intelligence, strategic analysis and data
 								sovereignty.
 							</p>
-							<ElemButton
-								href="/waitlist"
-								arrow
-								className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
-							>
-								Request Access
-							</ElemButton>
+							{user ? (
+								<ElemButton
+									href="/companies"
+									arrow
+									className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
+								>
+									Explore companies
+								</ElemButton>
+							) : (
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									arrow
+									className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
+								>
+									Sign Up
+								</ElemButton>
+							)}
 						</div>
 						<figure className="absolute -top-64 -left-36 w-96 h-96 bg-[#1BE6FF] rounded-full blur-3xl opacity-70"></figure>
 						<figure className="absolute -bottom-72 right-36 w-96 h-96 bg-[#F8DA4B] rounded-full blur-3xl"></figure>

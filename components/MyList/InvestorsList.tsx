@@ -24,7 +24,7 @@ export const InvestorsList: FC<Props> = ({
 	isCustomList,
 	selectedListName,
 }) => {
-	const { refreshProfile } = useUser()
+	const { refreshProfile } = useUser();
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
@@ -121,7 +121,11 @@ export const InvestorsList: FC<Props> = ({
 				Cell: (props: any) => (
 					<>
 						{props.value && (
-							<ElemReactions resource={props.value} resourceType={'vc_firms'} isInteractive={false} />
+							<ElemReactions
+								resource={props.value}
+								resourceType={"vc_firms"}
+								isInteractive={false}
+							/>
 						)}
 					</>
 				),
@@ -186,7 +190,7 @@ export const InvestorsList: FC<Props> = ({
 					(resource) => !followIds.includes(resource.id as number)
 				);
 			});
-			refreshProfile()
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -223,7 +227,7 @@ export const InvestorsList: FC<Props> = ({
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="flex items-start justify-between mb-4">
+			<div className="flex items-start justify-between mb-3">
 				<h2 className="font-bold text-lg capitalize mr-2">
 					{listNameTitle}: Investors
 				</h2>
@@ -250,7 +254,7 @@ export const InvestorsList: FC<Props> = ({
 			</div>
 
 			{Object.keys(tagsCount).length > 0 && (
-				<div className="flex justify-between w-full my-4">
+				<div className="flex justify-between w-full mb-3">
 					<>
 						<div className="font-bold text-sm">Tags</div>
 						<div className="flex gap-2 flex-wrap">
