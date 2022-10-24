@@ -4,7 +4,7 @@ import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemButton } from "@/components/ElemButton";
 import { IconPaperAirplane } from "@/components/Icons";
-import { FigurePerspectiveGrid } from "@/components/Figures";
+import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/Figures";
 import { useFormspark } from "@formspark/use-formspark";
 
 const Contact: NextPage = () => {
@@ -37,7 +37,8 @@ const Contact: NextPage = () => {
 	};
 
 	return (
-		<div className="lg:py-10 lg:min-h-[40vh] -mb-24 pb-36 bg-[url('/images/bg-shapes1.svg')] bg-cover bg-no-repeat bg-center overflow-hidden">
+		<div className="relative lg:py-10 lg:min-h-[40vh] -mb-24 pb-36 overflow-hidden">
+			<FigureBlurredBg className="-top-10 md:-top-64 lg:-top-32" />
 			<div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
 					Contact

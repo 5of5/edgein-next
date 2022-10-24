@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
-import { FigureBlurredBg } from "@/components/FigureBlurredBg";
 import { ElemButton } from "@/components/ElemButton";
 import { useUser } from "@/context/userContext";
-import { FigureCircleDashes } from "@/components/Figures";
+import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
 import { useFormspark } from "@formspark/use-formspark";
 
 type Props = {
@@ -88,27 +87,59 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 						<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 							For founders
 						</h3>
-						<p className="mb-4  text-slate-600 lg:text-lg">
+						<p className="mb-4 text-slate-600 lg:text-lg">
 							We give you unrestricted access to the most reliable market data
 							at hyper-speeds to help you drive growth, make critical
 							connections, and gain competitor insights to stay one step ahead
-							at all times.
+							at all times.{" "}
+							{user ? (
+								<ElemButton
+									href="/investors"
+									btn="transparent"
+									className="px-0 py-0"
+									arrow
+								>
+									Gain insights
+								</ElemButton>
+							) : (
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									btn="transparent"
+									arrow
+									className="px-0 py-0"
+								>
+									Learn more
+								</ElemButton>
+							)}
 						</p>
-						{/* <ElemButton className="pl-0 pr-0" href="/" arrow>
-							Learn more
-						</ElemButton> */}
 					</div>
 					<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
-						<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
+						<h3 className="text-3xl font-bold mb-4 lg:text-4xl">
 							For investors
 						</h3>
-						<p className="mb-4  text-slate-600 lg:text-lg">
+						<p className="mb-4 text-slate-600 lg:text-lg">
 							One login for all of the portfolio performance metrics you need,
-							web3 investment opportunities and comprehensive due diligence.
+							web3 investment opportunities and comprehensive due diligence.{" "}
+							{user ? (
+								<ElemButton
+									href="/companies"
+									btn="transparent"
+									className="px-0 py-0"
+									arrow
+								>
+									Find opportunities
+								</ElemButton>
+							) : (
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									btn="transparent"
+									arrow
+									className="px-0 py-0"
+								>
+									Learn more
+								</ElemButton>
+							)}
 						</p>
-						{/* <ElemButton className="pl-0 pr-0" href="/" arrow>
-							Learn more
-						</ElemButton> */}
 					</div>
 
 					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
