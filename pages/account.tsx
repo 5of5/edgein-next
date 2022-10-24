@@ -124,10 +124,9 @@ export default function Account() {
 								onClick={onLinkedInClick}
 								size="sm"
 								disabled={user && user.auth0_linkedin_id}
-								className="mt-2 gap-x-2 rounded-md text-[#0077B5] border border-black/10 hover:border-[#0077B5] hover:bg-slate-50"
-								roundedFull={false}
+								className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
 							>
-								<IconLinkedIn className="h-6 w-6" />{" "}
+								<IconLinkedIn className="h-5 w-5" />{" "}
 								<span>Connect LinkedIn</span>
 							</ElemButton>
 						</div>
@@ -217,8 +216,9 @@ export default function Account() {
 								<ElemButton
 									onClick={onBillingClick}
 									size="sm"
-									className="mt-2 gap-x-2 rounded-md text-[#0077B5] border border-black/10 hover:border-[#0077B5] hover:bg-slate-50"
-									roundedFull={false}
+									btn="white"
+									arrow
+									className="mt-2 text-primary-500"
 								>
 									{user && user.billing_org_id ? (
 										<span>Go To Billing</span>

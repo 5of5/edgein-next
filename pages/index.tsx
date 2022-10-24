@@ -112,7 +112,7 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 					</div>
 
 					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
-						<div className="text-center text-white">
+						<div className="text-center text-white relative z-10">
 							<h2 className="max-w-2xl mx-auto mb-6 text-3xl font-bold sm:text-5xl">
 								Ready to start exploring?
 							</h2>

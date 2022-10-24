@@ -18,7 +18,6 @@ export const validateUrl = regex(
 );
 
 export const validateEmail = email();
-export const crunchbaseImg = "/crunchbase-icon.svg";
 
 export const validateNameAndSlugAndEmailAndDomain = async (
 	isEdit: boolean,

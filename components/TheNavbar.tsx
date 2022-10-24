@@ -177,7 +177,7 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 		<header className="overflow-y-visible z-40 shadow bg-white">
 			<div className="mx-auto px-1 py-1 sm:px-6 lg:px-8">
 				<nav
-					className="flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all"
+					className="flex items-center justify-between lg:justify-start w-full max-w-screen-2xl mx-auto transition-all"
 					aria-label="Global"
 				>
 					<div className="flex items-center">
@@ -191,25 +191,24 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 								</a>
 							</Link>
 						</div>
-
-						<button
-							onClick={() => {
-								setShowSearchModal(true);
-							}}
-							className="hidden sm:flex items-center text-left space-x-2 px-2 h-9 bg-white shadow-sm rounded-lg text-slate-400 ring-1 ring-slate-900/10 lg:w-64 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-						>
-							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
-							<span className="flex-auto">Quick Search...</span>
-							<kbd className="hidden lg:block text-sm font-semibold">
-								<abbr title="Command" className="no-underline text-slate-400">
-									⌘
-								</abbr>{" "}
-								K
-							</kbd>
-						</button>
 					</div>
+					<button
+						onClick={() => {
+							setShowSearchModal(true);
+						}}
+						className="hidden sm:flex sm:flex-1 items-center text-left space-x-2 mx-2 px-2 h-9 bg-white shadow-sm rounded-lg text-slate-400 ring-1 ring-slate-900/10 lg:w-64 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 lg:flex-none"
+					>
+						<IconSearch className="flex-none h-5 w-5 text-dark-500" />
+						<span className="flex-auto">Quick Search...</span>
+						<kbd className="hidden lg:block text-sm font-semibold">
+							<abbr title="Command" className="no-underline text-slate-400">
+								⌘
+							</abbr>{" "}
+							K
+						</kbd>
+					</button>
 
-					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-6">
+					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-auto">
 						{siteNav.map((link, index) => (
 							<Link href={link.path} key={index} passHref>
 								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
@@ -228,7 +227,7 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
 								{/* <NotificationAlerts /> */}
-								<UserMenu />
+								<UserMenu className="hidden lg:block" />
 							</>
 						) : (
 							<>
@@ -249,7 +248,7 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 							</>
 						)}
 
-						<MobileNav className="lg:hidden" />
+						<MobileNav className="flex lg:hidden items-center ml-2" />
 					</div>
 
 					<LoginModal
