@@ -11,16 +11,19 @@ import hashSum from 'hash-sum';
 type UserValue = {
   user: User | null
   loading: boolean
+  setCounter: (fn:(prev: number) => number) => void
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
 }
 
-const userContext = React.createContext<UserValue>({user: null, loading: true, listAndFollows: []});
+const userContext = React.createContext<UserValue>({user: null, loading: true, listAndFollows: [], setCounter: () => {}});
 const useUser = () => {
   const queryClient = useQueryClient()
+  const contextValue = React.useContext(userContext)
   const refreshProfile = () => {
+    contextValue.setCounter(prev => prev + 1)
     queryClient.invalidateQueries(['GetFollowsByUser'])
   }
-  return {...React.useContext(userContext), refreshProfile };
+  return {...contextValue, refreshProfile };
 }
 
 type Props = {
@@ -30,6 +33,7 @@ type Props = {
 const UserProvider: React.FC<Props> = (props) => {
   const { user, error: userError, loading } = useAuth();
   const { boot, shutdown } = useIntercom();
+  const [counter, setCounter] = React.useState(0);
   const Provider = userContext.Provider;
 
   const {
@@ -78,6 +82,6 @@ const UserProvider: React.FC<Props> = (props) => {
     }
   }
 
-  return (<Provider value={{user, loading, listAndFollows: lastListAndFollows.current.obj}}>{ props.children}</Provider>)
+  return (<Provider value={{user, loading, listAndFollows: lastListAndFollows.current.obj, setCounter}}>{ props.children}</Provider>)
 }
 export { UserProvider, useUser };
