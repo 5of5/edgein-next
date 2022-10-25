@@ -10,14 +10,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const reference_id = req.body.reference_id;
   // get the domain from the email
   const domain = email.split('@').pop() || '';
-  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
+  // const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
 
   // when email does not exist in the allowed emails
-  if (!isEmailAllowed) {
-    // insert user in waitlist table
-    await UserService.mutateForWaitlistEmail(email)
-    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
-  }
+  // if (!isEmailAllowed) {
+  //   // insert user in waitlist table
+  //   await UserService.mutateForWaitlistEmail(email)
+  //   return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
+  // }
 
   let isUserPassPrimaryAccount = false;
   let isLinkedInPrimaryAccount = true;
@@ -65,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         _id: result._id, // get Id from sub
         auth0_user_pass_id: result._id,
         reference_user_id: referenceUserId,
-        person_id: isEmailAllowed.person_id
+        // person_id: isEmailAllowed.person_id
       }
       // upsert user info
       userData = await UserService.upsertUser(objectData);
