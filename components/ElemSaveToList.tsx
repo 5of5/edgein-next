@@ -1,6 +1,10 @@
 import React, { FC, useEffect, useState, Fragment } from "react";
 import { GetFollowsByUserQuery } from "@/graphql/types";
-import { getNameFromListName, isOnList, toggleFollowOnList } from "@/utils/reaction";
+import {
+	getNameFromListName,
+	isOnList,
+	toggleFollowOnList,
+} from "@/utils/reaction";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconX, IconSaveToList } from "@/components/Icons";
@@ -12,35 +16,41 @@ import { find } from "lodash";
 
 type Props = {
 	resourceId: number;
-	resourceType: 'companies' | 'vc_firms';
-	slug: string
-}
+	resourceType: "companies" | "vc_firms";
+	slug: string;
+};
 
-type List = GetFollowsByUserQuery['list_members'][0]['list']
+type List = GetFollowsByUserQuery["list_members"][0]["list"];
 
-export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) => {
+export const ElemSaveToList: FC<Props> = ({
+	resourceId,
+	resourceType,
+	slug,
+}) => {
 	let [isOpen, setIsOpen] = useState(false);
 	const [showNew, setShowNew] = useState(false);
 	const [newName, setNewName] = useState<string>("");
 	const [listsData, setListsData] = useState([] as List[]);
 
-	const { user, listAndFollows, refreshProfile } = useUser()
+	const { user, listAndFollows, refreshProfile } = useUser();
 
 	useEffect(() => {
 		if (listAndFollows)
 			setListsData(() => {
-				return listAndFollows.filter((item) => {
-					const sentiment = getNameFromListName(item)
-					return !["hot", "like", "crap"].includes(sentiment);
-				}) || []
+				return (
+					listAndFollows.filter((item) => {
+						const sentiment = getNameFromListName(item);
+						return !["hot", "like", "crap"].includes(sentiment);
+					}) || []
+				);
 			});
 	}, [listAndFollows]);
 
-	const toggleToList = async (listName: string, action: 'add' | 'remove') => {
+	const toggleToList = async (listName: string, action: "add" | "remove") => {
 		if (listName && user) {
 			setListsData((prev) => {
-				let newLists = [...prev]
-				let list = find(prev, (list) => list.name === listName)
+				let newLists = [...prev];
+				let list = find(prev, (list) => list.name === listName);
 				if (!list) {
 					list = {
 						__typename: "lists",
@@ -50,27 +60,41 @@ export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) =>
 						follows_companies: [],
 						follows_vcfirms: [],
 						total_no_of_resources: 0,
-					}
-					newLists.push(list)
+					};
+					newLists.push(list);
 				} else {
-					list = {...list}
+					list = { ...list };
 				}
-				if (action === 'add') {
-					if (resourceType === 'companies') {
-						list.follows_companies = [...list.follows_companies, {__typename:'follows_companies', resource_id: resourceId }]
+				if (action === "add") {
+					if (resourceType === "companies") {
+						list.follows_companies = [
+							...list.follows_companies,
+							{ __typename: "follows_companies", resource_id: resourceId },
+						];
 					}
-					if (resourceType === 'vc_firms') {
-						list.follows_vcfirms = [...list.follows_vcfirms, {__typename:'follows_vc_firms', resource_id: resourceId }]
-					}	
+					if (resourceType === "vc_firms") {
+						list.follows_vcfirms = [
+							...list.follows_vcfirms,
+							{ __typename: "follows_vc_firms", resource_id: resourceId },
+						];
+					}
 				} else {
-					if (resourceType === 'companies') {
-						list.follows_companies = [...list.follows_companies.filter(i => i.resource_id !== resourceId)]
+					if (resourceType === "companies") {
+						list.follows_companies = [
+							...list.follows_companies.filter(
+								(i) => i.resource_id !== resourceId
+							),
+						];
 					}
-					if (resourceType === 'vc_firms') {
-						list.follows_vcfirms = [...list.follows_vcfirms.filter(i => i.resource_id !== resourceId)]
-					}	
+					if (resourceType === "vc_firms") {
+						list.follows_vcfirms = [
+							...list.follows_vcfirms.filter(
+								(i) => i.resource_id !== resourceId
+							),
+						];
+					}
 				}
-				return newLists
+				return newLists;
 			});
 			// pass event and reaction name to handleReactionClick function
 			const newSentiment = await toggleFollowOnList({
@@ -78,8 +102,8 @@ export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) =>
 				resourceType,
 				listName,
 				pathname: `/companies/${slug}`,
-			});	
-			refreshProfile()
+			});
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -87,7 +111,8 @@ export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) =>
 							t.visible ? "animate-fade-in-up" : "opacity-0"
 						}`}
 					>
-						{action === 'add' ? 'Added to' : 'Removed from'} &ldquo;{getNameFromListName({name: listName})}&rdquo; list
+						{action === "add" ? "Added to" : "Removed from"} &ldquo;
+						{getNameFromListName({ name: listName })}&rdquo; list
 					</div>
 				),
 				{
@@ -96,20 +121,20 @@ export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) =>
 				}
 			);
 		}
-	}
+	};
 
 	const onCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		if (user) {
-			await toggleToList(`${user.id}-${newName}`, 'add')
+			await toggleToList(`${user.id}-${newName}`, "add");
 			// hide input
 			setShowNew(false);
-			setNewName("");			
+			setNewName("");
 		}
 	};
 
 	const isSelected = (list: List) => {
-		return isOnList(list, resourceId)
+		return isOnList(list, resourceId);
 	};
 
 	const onClickHandler = (
@@ -119,7 +144,7 @@ export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) =>
 	) => {
 		event.preventDefault();
 		event.stopPropagation();
-		toggleToList(list.name, isSelected ? 'remove' : 'add')
+		toggleToList(list.name, isSelected ? "remove" : "add");
 	};
 
 	const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -188,7 +213,7 @@ export const ElemSaveToList: FC<Props> = ({ resourceId, resourceType, slug }) =>
 
 								<ul className="divide-y divide-slate-100 border-b border-b-slate-100">
 									{listsData?.map((list) => {
-										const selected = isSelected(list)
+										const selected = isSelected(list);
 										return (
 											<li key={list.id}>
 												<InputCheckbox

@@ -2,7 +2,7 @@ import React from "react";
 import type { NextPage, GetStaticProps } from "next";
 import Image from "next/image";
 
-import { ElemHeading } from "../components/ElemHeading";
+import { ElemHeading } from "@/components/ElemHeading";
 
 type Props = {
 	team: Record<string, any>[];
