@@ -1,104 +1,128 @@
 import qs from "qs";
-import UserService from '../../utils/users'
-import auth0Library from '../../utils/auth0Library'
-import CookieService from '../../utils/cookie'
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { createHmac } from 'crypto'
+import UserService from "../../utils/users";
+import auth0Library from "../../utils/auth0Library";
+import CookieService from "../../utils/cookie";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { createHmac } from "crypto";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== 'POST') return res.status(405).end()
+	if (req.method !== "POST") return res.status(405).end();
 
-  // check email exist in allowedEmail table or not
-  const email = req.body.email;
-  const password = req.body.password;
-  if (!email || !password) return res.status(404).send({ message: 'Invalid request' });
+	// check email exist in allowedEmail table or not
+	const email = req.body.email;
+	const password = req.body.password;
+	if (!email || !password)
+		return res.status(404).send({ message: "Invalid request" });
 
-  let isFirstLogin = false;
-  // get the domain from the email
-  const domain = email.split('@').pop();
-  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
+	let isFirstLogin = false;
+	// get the domain from the email
+	const domain = email.split("@").pop();
+	const isEmailAllowed = await UserService.queryForAllowedEmailCheck(
+		email,
+		domain
+	);
 
-  // when email does not exist in the allowed emails
-  if (!isEmailAllowed) {
-    // insert user in waitlist table
-    await UserService.mutateForWaitlistEmail(email)
-    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
-  }
+	// when email does not exist in the allowed emails
+	// if (!isEmailAllowed) {
+	//   // insert user in waitlist table
+	//   await UserService.mutateForWaitlistEmail(email)
+	//   return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
+	// }
 
-  // check user has done signup or not
-  const emailExist = await UserService.findOneUserByEmail(email);
-  // if email does not exist, then redirect user for registartion
-  if (!emailExist) return res.status(404).send({ nextStep: 'SIGNUP' });
-  if (!emailExist.auth0_user_pass_id) return res.status(404).send({ message: 'Email already registered with other provider' });
+	// check user has done signup or not
+	const emailExist = await UserService.findOneUserByEmail(email);
+	// if email does not exist, then redirect user for registartion
+	if (!emailExist) return res.status(404).send({ nextStep: "SIGNUP" });
+	if (!emailExist.auth0_user_pass_id)
+		return res
+			.status(404)
+			.send({ message: "Email already registered with other provider" });
 
-  // send data to auth0 to make user login
-  const data = qs.stringify({
-    grant_type: 'password',
-    username: email,
-    scope: 'offline_access',
-    password: password,
-    client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
-    client_secret: process.env.AUTH0_CLIENT_SECRET
-  });
+	// send data to auth0 to make user login
+	const data = qs.stringify({
+		grant_type: "password",
+		username: email,
+		scope: "offline_access",
+		password: password,
+		client_id: process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID,
+		client_secret: process.env.AUTH0_CLIENT_SECRET,
+	});
 
-  const myHeaders = new Headers();
-  myHeaders.append('Content-Type', 'application/x-www-form-urlencoded');
+	const myHeaders = new Headers();
+	myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-  try {
-    const fetchRequest = await fetch(`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`, {
-      method: 'POST',
-      headers: myHeaders,
-      body: data,
-      redirect: 'follow'
-    });
-    if (!fetchRequest.ok) {
-      const errorResponse = JSON.parse(await fetchRequest.text());
-      return res.status(fetchRequest.status).send({ message: errorResponse.error_description });
-    }
-    const tokenResponse = JSON.parse(await fetchRequest.text());
+	try {
+		const fetchRequest = await fetch(
+			`${process.env.NEXT_PUBLIC_AUTH0_ISSUER_BASE_URL}/oauth/token`,
+			{
+				method: "POST",
+				headers: myHeaders,
+				body: data,
+				redirect: "follow",
+			}
+		);
+		if (!fetchRequest.ok) {
+			const errorResponse = JSON.parse(await fetchRequest.text());
+			return res
+				.status(fetchRequest.status)
+				.send({ message: errorResponse.error_description });
+		}
+		const tokenResponse = JSON.parse(await fetchRequest.text());
 
-    // get user info
-    myHeaders.append('Authorization', `Bearer ${tokenResponse.access_token}`);
-    const userInfoFetchRequest = await auth0Library.getUserInfoFromToken(tokenResponse.access_token);
-    if (!userInfoFetchRequest.ok) {
-      const userInfoErrorResponse = JSON.parse(await userInfoFetchRequest.text());
-      return res.status(userInfoFetchRequest.status).send({ message: userInfoErrorResponse.error_description });
-    }
-    const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
+		// get user info
+		myHeaders.append("Authorization", `Bearer ${tokenResponse.access_token}`);
+		const userInfoFetchRequest = await auth0Library.getUserInfoFromToken(
+			tokenResponse.access_token
+		);
+		if (!userInfoFetchRequest.ok) {
+			const userInfoErrorResponse = JSON.parse(
+				await userInfoFetchRequest.text()
+			);
+			return res
+				.status(userInfoFetchRequest.status)
+				.send({ message: userInfoErrorResponse.error_description });
+		}
+		const userInfoInJson = JSON.parse(await userInfoFetchRequest.text());
 
-    if (userInfoInJson && userInfoInJson.email) {
-      if (!emailExist.is_auth0_verified) {
-        // update userInfo
-        isFirstLogin = true;
-        await UserService.updateEmailVerifiedStatus(userInfoInJson.email, userInfoInJson.email_verified);
-      }
+		if (userInfoInJson && userInfoInJson.email) {
+			if (!emailExist.is_auth0_verified) {
+				// update userInfo
+				isFirstLogin = true;
+				await UserService.updateEmailVerifiedStatus(
+					userInfoInJson.email,
+					userInfoInJson.email_verified
+				);
+			}
 
-      const hmac = createHmac('sha256', 'vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF');
-      hmac.update(String(emailExist.id));
-  
-      // Author a couple of cookies to persist a user's session
-      const token = await CookieService.createToken({
-        id: emailExist.id,
-        intercomUserHash: hmac.digest('hex'),
-        email: emailExist.email,
-        role: emailExist.role,
-        publicAddress: emailExist.external_id,
-        isFirstLogin,
-        billing_org_id: emailExist.billing_org_id,
-        display_name: emailExist.display_name,
-        auth0_linkedin_id: emailExist.auth0_linkedin_id,
-        auth0_user_pass_id: emailExist.auth0_user_pass_id,
-        profileName: emailExist.person?.name,
-        profilePicture: emailExist.person?.picture,
-        reference_id: emailExist.reference_id,
-      });
-      CookieService.setTokenCookie(res, token)
-    }
-  } catch (ex: any) {
-    return res.status(404).send({ message: ex.message });
-  }
+			const hmac = createHmac(
+				"sha256",
+				"vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
+			);
+			hmac.update(String(emailExist.id));
 
-  res.send({ success: true });
-}
+			// Author a couple of cookies to persist a user's session
+			const token = await CookieService.createToken({
+				id: emailExist.id,
+				intercomUserHash: hmac.digest("hex"),
+				email: emailExist.email,
+				role: emailExist.role,
+				publicAddress: emailExist.external_id,
+				isFirstLogin,
+				billing_org_id: emailExist.billing_org_id,
+				display_name: emailExist.display_name,
+				auth0_linkedin_id: emailExist.auth0_linkedin_id,
+				auth0_user_pass_id: emailExist.auth0_user_pass_id,
+				profileName: emailExist.person?.name,
+				profilePicture: emailExist.person?.picture,
+				reference_id: emailExist.reference_id,
+			});
+			CookieService.setTokenCookie(res, token);
+		}
+	} catch (ex: any) {
+		return res.status(404).send({ message: ex.message });
+	}
 
-export default handler
+	res.send({ success: true });
+};
+
+export default handler;
