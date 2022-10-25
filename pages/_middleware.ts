@@ -12,7 +12,6 @@ export async function middleware(req: NextRequest) {
 		[
 			`/`,
 			`/login/`,
-			`/waitlist/`,
 			`/contact/`,
 			`/privacy/`,
 			`/terms/`,
