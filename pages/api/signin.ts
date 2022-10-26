@@ -17,10 +17,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	let isFirstLogin = false;
 	// get the domain from the email
 	const domain = email.split("@").pop();
-	const isEmailAllowed = await UserService.queryForAllowedEmailCheck(
-		email,
-		domain
-	);
+	// const isEmailAllowed = await UserService.queryForAllowedEmailCheck(
+	// 	email,
+	// 	domain
+	// );
 
 	// when email does not exist in the allowed emails
 	// if (!isEmailAllowed) {
@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (!emailExist.auth0_user_pass_id)
 		return res
 			.status(404)
-			.send({ message: "Email already registered with other provider" });
+			.send({ message: "Email is already registered with another provider, try LinkedIn or signing up with this email and a password" });
 
 	// send data to auth0 to make user login
 	const data = qs.stringify({

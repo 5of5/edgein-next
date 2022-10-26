@@ -31,12 +31,6 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [showLoginPopup, setShowLoginPopup] = useState(
 		router.asPath.includes("/login/")
 	);
-	useEffect(() => {
-		if (!showForgotPasswordPopup && !showSearchModal && onboardingStep === 0) {
-			setShowLoginPopup(router.asPath.includes("/login/"))
-		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [router.asPath]);
 	//const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
@@ -49,6 +43,13 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [linkedInError, setLinkedInError] = useState("");
 	const [inviteCode, setInviteCode] = useState("");
+
+	useEffect(() => {
+		if (!showForgotPasswordPopup && !showSignUp && !showLoginPopup && !showSearchModal && onboardingStep === 0 && router.asPath.includes("/login/")) {
+			setShowLoginPopup(router.asPath.includes("/login/"))
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [router.asPath]);
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
