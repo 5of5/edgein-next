@@ -248,17 +248,17 @@ const Companies: NextPage<Props> = ({
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
 					{selectedTags.length > 0 ? (
-						<div className="flex items-baseline gap-2">
+						<div className="lg:flex items-baseline gap-2">
 							<h2 className="text-xl font-bold">
 								Companies ({numberWithCommas(companies_aggregate)})
 							</h2>
 							{selectedTags.length > 0 && (
-								<div className="flex items-baseline">
-									{selectedTags?.map((item, index) => {
+								<div className="flex flex-wrap items-baseline">
+									{selectedTags?.map((item, index: number) => {
 										return (
-											<span key={index}>
-												{index >= 1 && ", "}
+											<span key={index} className="pr-1">
 												{item}
+												{index != selectedTags.length - 1 && ","}
 											</span>
 										);
 									})}
