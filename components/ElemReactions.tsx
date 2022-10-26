@@ -8,7 +8,7 @@ import { FC, useEffect, useState } from "react";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { useUser } from "@/context/userContext";
-import hashSum from 'hash-sum';
+import hashSum from "hash-sum";
 
 type Props = {
 	className?: string;
@@ -91,7 +91,7 @@ export const ElemReaction: FC<ReactionProps> = ({
 
 	useEffect(() => {
 		setReactionState((prev) => {
-			console.log({listAndFollowsHashed: hashSum(listAndFollows)})
+			//console.log({listAndFollowsHashed: hashSum(listAndFollows)})
 			const list = find(listAndFollows, (item) => {
 				return getNameFromListName(item) === type;
 			});
@@ -123,14 +123,14 @@ export const ElemReaction: FC<ReactionProps> = ({
 	) => {
 		event.stopPropagation();
 		event.preventDefault();
-		setReactionState(prev => {
-			let count = prev.count + (prev.alreadyReacted ? -1 : 1)
-			if (count < 0) count = 0
+		setReactionState((prev) => {
+			let count = prev.count + (prev.alreadyReacted ? -1 : 1);
+			if (count < 0) count = 0;
 			return {
 				count,
 				alreadyReacted: !prev.alreadyReacted,
-			}
-		})
+			};
+		});
 		await toggleFollowOnList({
 			resourceId,
 			resourceType,

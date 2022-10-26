@@ -12,17 +12,24 @@ import Link from "next/link";
 type Props = {
 	company: Companies;
 	toggleViewMode: boolean;
+	tagOnClick: any;
 };
 
-export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
+export const ElemCompanyCard: FC<Props> = ({
+	company,
+	toggleViewMode,
+	tagOnClick,
+}) => {
 	const [companyData, setCompanyData] = useState(company);
 
 	useEffect(() => {
 		setCompanyData(company);
 	}, [company]);
 
+	const { slug, logo, name, coin, layer, tags, overview } = companyData;
+
 	return (
-		<Link href={`/companies/${companyData.slug}`}>
+		<Link href={`/companies/${slug}`}>
 			<a
 				className={`flex flex-col ${
 					toggleViewMode ? "md:flex-row md:items-center" : ""
@@ -36,26 +43,26 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 					}`}
 				>
 					<ElemPhoto
-						photo={companyData.logo}
+						photo={logo}
 						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 						imgClass="object-fit max-w-full max-h-full"
-						imgAlt={companyData.name}
+						imgAlt={name}
 					/>
 
 					<div className="flex items-center justify-center pl-2 md:overflow-visible">
 						<div>
 							<h3
 								className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 text-dark-500 sm:text-lg md:text-xl xl:text-2xl"
-								title={companyData.name ?? ""}
+								title={name ?? ""}
 							>
-								{companyData.name}
+								{name}
 							</h3>
-							{companyData.coin && (
+							{coin && (
 								<ElemTooltip
 									content={`Token / Value`}
 									className="inline-flex items-center overflow-visible"
 								>
-									<span className="uppercase">{companyData.coin.ticker}</span>
+									<span className="uppercase">{coin.ticker}</span>
 								</ElemTooltip>
 							)}
 						</div>
@@ -63,27 +70,29 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 				</div>
 
 				<div className="grow">
-					{(companyData.layer || companyData.tags) && (
+					{(layer || tags) && (
 						<div
 							className={`mt-4 flex flex-wrap gap-2 ${
 								toggleViewMode && "lg:mt-0"
 							}`}
+							onClick={(e) => e.stopPropagation()}
 						>
-							{companyData.layer && (
+							{layer && (
 								<div
 									className={`${getLayerClass(
-										companyData.layer
-									)} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+										layer
+									)} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-default`}
 								>
-									{companyData.layer}
+									{layer}
 								</div>
 							)}
 
-							{companyData.tags?.map((tag: string, index: number) => {
+							{tags?.map((tag: string, index: number) => {
 								return (
 									<div
 										key={index}
-										className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+										onClick={(e) => tagOnClick(e, tag)}
+										className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
 									>
 										{tag}
 									</div>
@@ -92,15 +101,12 @@ export const ElemCompanyCard: FC<Props> = ({ company, toggleViewMode }) => {
 						</div>
 					)}
 
-					{companyData.overview && (
+					{overview && (
 						<div className={`grow mt-4 ${toggleViewMode && "max-w-sm mr-4"}`}>
-							<div className="text-gray-400 line-clamp-3">
-								{companyData.overview}
-							</div>
+							<div className="text-gray-400 line-clamp-3">{overview}</div>
 						</div>
 					)}
 				</div>
-
 				<div
 					className="flex items-center justify-between mt-4 gap-x-5"
 					onClick={(e) => e.stopPropagation()}
