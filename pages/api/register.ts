@@ -46,8 +46,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     if (!fetchRequest.ok) {
       const errorResponse = JSON.parse(await fetchRequest.text());
-      console.log(errorResponse)
-      return res.status(fetchRequest.status).send({ message: errorResponse.description })
+      if (errorResponse.code === 'invalid_signup') {
+        return res.status(fetchRequest.status).send({ message: `Email ${email} already registered, please try signing in` })
+      } else {
+        return res.status(fetchRequest.status).send({ message: errorResponse.description })
+      }
     }
     result = JSON.parse(await fetchRequest.text());
 
