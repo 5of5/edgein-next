@@ -1,5 +1,15 @@
-import memoryCache, { CacheClass } from 'memory-cache';
+import { query } from '../graphql/hasuraAdmin'
+import AWS from "aws-sdk"
 
+//AWS config set
+AWS.config.update({
+  accessKeyId: process.env.AWS_DYNAMODB_ACCESS_KEY_ID!,
+  secretAccessKey: process.env.AWS_DYNAMODB_SECRET_ACCESS_KEY!,
+  region: process.env.AWS_DYNAMODB_REGION!
+});
+
+var dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
+var coinInfoDynamoDBTable = 'coin_info'
 
 const AmberAPIv2 = 'https://web3api.io/api/v2'
 const AmberAPIHeader = {
@@ -15,37 +25,107 @@ const CoingeckoAPIHeader = {
 
 const EXPIRATION_TIME = 3600000 // 60 mins
 const BIG_EXPIRATION_TIME = 24 * 3600000 // 1 day
-const memCache: CacheClass<string, string> = new memoryCache.Cache();
 
-const ticker2CoinId = async(ticker: string) => {
+
+const coinLookUp = async (edgeinCoinId: number) => {
+  try {
+    const { data: { coins: [coinDetail]} } = await query({
+      query: `
+      query lookup_coin($edgeinCoinId: Int!) {
+        coins(where: {id: {_eq: $edgeinCoinId}}) {
+          name,
+          ticker
+        }
+      }`,
+      variables: {edgeinCoinId}
+    })
+    return coinDetail
+  } catch (error) { console.log(`coinLookUp failed ${error}`) }
+}
+
+const putDynamoDBItem = async(table: string, item: Record<string, any>) => {
+  try {
+    let params = {
+      TableName: table,
+      Item: item
+    };
+    return await dynamodb.putItem(params).promise()
+  } catch (error) {
+    console.log(`Failed to putDynamoDBItem ${table} ${item} ${error}`)
+  }
+}
+
+const getDynamoDBItem = async(table: string, id: string) => {
+  try {
+    let params = {
+      Key: {
+        "id": {"S": id}
+      }, 
+      TableName: table
+    };
+    return (await dynamodb.getItem(params).promise()).Item
+  } catch (error) {
+    console.log(`Failed to getDynamoDBItem ${table} ${id} ${error}`)
+  }
+}
+
+const getCachedItem = async(key: string) => {
+  try {
+    const ret = await getDynamoDBItem(coinInfoDynamoDBTable, key)
+    if (!ret || (ret.expire_at.S !== '0' && (!ret.expire_at.S || Date.now().toString() > ret.expire_at.S)))
+      return
+    return ret.data.S
+  } catch (error) {
+    console.log(`Failed to getCachedItem ${key} ${error}`)
+    return
+  }
+}
+
+const putCachedItem = async (key: string, item: any, expiration: number = 0) => {
+  try {
+    let expireAt = expiration === 0 ? '0' : (Date.now() + expiration).toString()
+    const data = {
+      'id': {'S': key},
+      'data': {'S': item},
+      'expire_at': {'S': expireAt}
+    }
+    await putDynamoDBItem(coinInfoDynamoDBTable, data)
+  } catch (error) {
+    console.log(`Failed to putCachedItem ${key} ${item} ${error}`)
+  }
+}
+
+const ticker2CoinId = async(name: string, ticker: string) => {
   try {
     const res = await fetch(`${CoingeckoAPIv3}/coins/list`, CoingeckoAPIHeader)
     if (!res.ok) {
-      console.log(`Failed to convert ticker2CoinId ${ticker}\n${JSON.stringify(res)}`)
+      console.log(`Failed to convert ticker2CoinId ${ticker}\n${JSON.stringify(await res.text())}`)
       return
     }
     for (let item of JSON.parse(await res.text())) {
-      if (item.symbol === ticker)
+      if (item.symbol.toLowerCase() === ticker || item.name.toLowerCase() === name)
         return item.id
     }
   } catch(e) { console.log(`Got exception when ticker2CoinId for ${ticker}\n${e}`) }
 }
 
-export const getCoinInfo = async(ticker: string) => {
+export const getCoinInfo = async(edgeinCoinId: number) => {
   try {
-    ticker = ticker.toLocaleLowerCase()
-    // Get coin info from memcached
-    var ret = memCache.get(ticker)
+    const coinDetail = await coinLookUp(edgeinCoinId)
+    const ticker = coinDetail.ticker.toLowerCase()
+    const name = coinDetail.name.toLowerCase()
+    // Get coin info from DynamoDB cached
+    var ret = await getCachedItem(edgeinCoinId.toString())
 
     // If not exist, get from coingecko first
     if (!ret) {
       var coinInfo
-      const coinId = await ticker2CoinId(ticker)
+      const coinId = await ticker2CoinId(name, ticker)
       if (coinId) {
         const res = await fetch(`${CoingeckoAPIv3}/coins/${coinId}?localization=false&community_data=false&developer_data=false`, CoingeckoAPIHeader)
         if (!res.ok) {
           console.log(`Failed to get CoingeckoCoin\n${JSON.stringify(res)}`)
-          return
+          return '{}'
         }
         const data = JSON.parse(await res.text())
         coinInfo = {
@@ -61,14 +141,19 @@ export const getCoinInfo = async(ticker: string) => {
         coinInfo = await getAmberCexCoin(ticker)
       }
 
-      ret = JSON.stringify(coinInfo)
-      memCache.put(ticker, ret, EXPIRATION_TIME)
+      if (coinInfo) {
+        ret = JSON.stringify(coinInfo)
+        await putCachedItem(edgeinCoinId.toString(), ret, EXPIRATION_TIME)
+      } else
+        return '{}'
     }
 
     return ret
-  } catch(e) { console.log(`Got exception when getCoingeckoCoin for ${ticker}\n${e}`) }
+  } catch(e) {
+    console.log(`Got exception when getCoingeckoCoin for ${edgeinCoinId}\n${e}`)
+    return '{}'
+  }
 }
-
 
 const getAmberCexCoin = async(ticker: string) => {
   try {
@@ -111,14 +196,14 @@ const getAmberCexCoin = async(ticker: string) => {
 
 const getAmberDexList = async() => {
   try {
-    // Get AmberDexList from memcached
-    var ret = memCache.get('AmberDexList')
+    // Get AmberDexList from DynamoDB cached
+    var ret = await getCachedItem('AmberDexList')
 
     if (!ret) {
       const res = await fetch(`${AmberAPIv2}/market/defi/dex/exchanges?sortBy=numPairs`, AmberAPIHeader)
       const payload = JSON.parse(await res.text()).payload
       ret = JSON.stringify(payload.map((item: Record<string, string>) => item.exchangeId))
-      memCache.put('AmberDexList', ret)
+      await putCachedItem('AmberDexList', ret)
     }
 
     return ret
@@ -127,7 +212,7 @@ const getAmberDexList = async() => {
 
 const getAmberCoinAddress = async(ticker: string) => {
   try {
-    var ret = memCache.get(`${ticker}Addr`)
+    var ret = await getCachedItem(`${ticker}Addr`)
 
     if (!ret) {
       const allDex = await getAmberDexList()
@@ -140,12 +225,11 @@ const getAmberCoinAddress = async(ticker: string) => {
           else if (payload[0].quoteSymbol.toLowerCase() === ticker.toLowerCase())
             ret = payload[0].quoteAddress
           
-          memCache.put(`${ticker}Addr`, ret as string)
+          await putCachedItem(`${ticker}Addr`, ret as string)
           break
         }
       }
     }
-    console.log(ret)
     return ret
   } catch(e) { console.log(`Got exception when getAmberCoinAddress\n${e}`) }
 }
@@ -153,6 +237,11 @@ const getAmberCoinAddress = async(ticker: string) => {
 const getAmberDexCoin = async(ticker: string) => {
   try {
     const coinAddr = await getAmberCoinAddress(ticker)
+    if (!coinAddr) {
+      console.log(`${ticker} not available in Amberdata DEX`)
+      return
+    }
+
     const ret = await fetch(`${AmberAPIv2}/market/defi/prices/asset/${coinAddr}/historical?startDate=${Date.now()-86400000}&timeInterval=days`, AmberAPIHeader)
     if (!ret.ok) {
       console.log(`Failed to getAmberDexCoin ${ticker}\n${JSON.stringify(ret)}`)
@@ -176,10 +265,10 @@ const getAmberDexCoin = async(ticker: string) => {
 
 const getAmberRanking = async() => {
   try {
-    // Get AmberRanking from memcached
-    var ret = memCache.get('AmberRanking')
+    // Get AmberRanking from DynamoDB cached
+    var ret = await getCachedItem('AmberRanking')
     if (!ret) {
-      console.log(`Reload AmberRanking memcached`)
+      console.log(`Reload AmberRanking DynamoDB cached`)
       var ranking: Record<string, any> = {}
       const maxPageAllow = 100
       var pageNo = 0
@@ -203,7 +292,7 @@ const getAmberRanking = async() => {
         }
       } while (pageNo < maxPageAllow)
       ret = JSON.stringify(ranking)
-      memCache.put('AmberRanking', ret, BIG_EXPIRATION_TIME)
+      await putCachedItem('AmberRanking', ret, BIG_EXPIRATION_TIME)
     }
     return ret
   } catch(e) { console.log(`Got exception when getAmberRanking\n${e}`) }
