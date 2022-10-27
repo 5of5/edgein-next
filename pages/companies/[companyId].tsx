@@ -76,21 +76,21 @@ const Company: NextPage<Props> = (props: Props) => {
 		current_user: user?.id ?? 0,
 	});
 
-	const getTokenInfo = async (ticker: string) => {
+	const getTokenInfo = async (coin_id: number) => {
 		const data = await fetch("/api/get_metrics_amount", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ ticker }),
+			body: JSON.stringify({ coin_id }),
 		}).then((res) => res.json());
 		setTokenInfo(data);
 	};
 
 	useEffect(() => {
 		if (company && company.coin) {
-			getTokenInfo(company.coin.ticker);
+			getTokenInfo(company.coin.id);
 			// getTokenInfo('bnb')
 		}
 	}, [company]);
