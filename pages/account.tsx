@@ -4,6 +4,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconLinkedIn } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { ElemShareMenu } from "@/components/ElemShareMenu";
 import { EditSection } from "@/components/Dashboard/EditSection";
 
 const validator = require("validator");
@@ -106,6 +107,19 @@ export default function Account() {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
+				<div className="sm:flex justify-between items-center mb-2">
+					<h2 className="font-bold text-xl">Invite Code</h2>
+
+					{user && user.reference_id && (
+						<div className="mt-2 sm:mt-0">
+							<ElemShareMenu user={user} />
+						</div>
+					)}
+				</div>
+				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+			</div>
+
+			<div className="bg-white shadow rounded-lg mt-5 p-5">
 				<div className="flex justify-between items-center mb-2">
 					<h2 className="font-bold text-xl">Account Settings</h2>
 				</div>
