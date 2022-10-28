@@ -23,13 +23,14 @@ import {
 import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
 //import { IconEditPencil } from "@/components/Icons";
-import { companyLayerChoices } from "@/utils/constants";
+import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { sortBy } from "lodash";
 
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
+    metrics: Metric[];
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -39,7 +40,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const [company, setCompany] = useState<Companies>(props.company);
 
-	const [tokenInfo, setTokenInfo] = useState({ currentPrice: 0, marketCap: 0 });
+	const [tokenInfo, setTokenInfo] = useState<TokenInfo>({ currentPrice: 0, marketCap: 0, marketCapRank: 0, low24H: 0, high24H: 0, vol24H: 0 });
 
 	//Limit Activity
 	const [activityLimit, setActivityLimit] = useState(10);
@@ -59,22 +60,22 @@ const Company: NextPage<Props> = (props: Props) => {
 		slug: companyId as string,
 	});
 
-	const getTokenInfo = async (ticker: string) => {
-		const data = await fetch("@/api/get_metrics_amount", {
+	const getTokenInfo = async (coinId: number) => {
+		const data = await fetch("/api/get_metrics_amount", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ ticker }),
+			body: JSON.stringify({ coinId }),
 		}).then((res) => res.json());
 		setTokenInfo(data);
 	};
 
 	useEffect(() => {
 		if (company && company.coin) {
-			//getTokenInfo(company.coin.ticker);
-			//getTokenInfo("bnb");
+			getTokenInfo(company.coin.id);
+			// getTokenInfo('bnb')
 		}
 	}, [company]);
 
@@ -175,30 +176,28 @@ const Company: NextPage<Props> = (props: Props) => {
 					</div>
 				</div>
 				<div className="col-span-3 mt-7 lg:mt-0">
-					{(tokenInfo.currentPrice > 0 || tokenInfo.marketCap > 0) && (
+					{Object.values(tokenInfo).some(i => i > 0) && (
 						<section className="bg-white shadow rounded-lg p-5 md:mt-0">
 							<h2 className="text-xl font-bold">Token Info</h2>
 							<div className="flex flex-col space-y-2 mt-2">
-								<div className="flex items-center space-x-2">
-									<div className=" text-slate-600">Price (USD)</div>
-									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-										{`$${
-											tokenInfo && tokenInfo.currentPrice
-												? convertAmountRaised(tokenInfo.currentPrice)
-												: 0
-										}`}
-									</div>
-								</div>
-								<div className="flex items-center space-x-2">
-									<div className=" text-slate-600">Market Cap</div>
-									<div className="bg-green-100 text-green-500 text-sm font-semibold border-none rounded-2xl py-1 px-2">
-										{`$${
-											tokenInfo && tokenInfo.marketCap
-												? convertAmountRaised(tokenInfo.marketCap)
-												: 0
-										}`}
-									</div>
-								</div>
+                                {props.metrics.map((item) => {
+									const metricsClass = tokenInfo[item.id as keyof TokenInfo] ? "bg-green-100 text-green-500" : "bg-slate-200 text-slate-600"
+									return (
+										<div className="flex items-center space-x-2" key={item.id}>
+											<div className="text-slate-600">{item.name}</div>
+											<div className={`${metricsClass} text-sm font-semibold border-none rounded-2xl py-1 px-2`}>
+											{tokenInfo[item.id as keyof TokenInfo] ?
+												item.id === "highLow24H"
+													? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
+														tokenInfo.low24H
+													)}`
+													: `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
+											: `N/A`
+											}
+											</div>
+										</div>
+                                	)}
+								)}
 							</div>
 						</section>
 					)}
@@ -400,10 +399,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			metaDescription,
 			company,
 			sortRounds,
+            metrics: tokenInfoMetrics,
 		},
 	};
 };
 const convertAmountRaised = (theAmount: number) => {
 	return convertToInternationalCurrencySystem(theAmount);
 };
+interface Metric  {
+	id: string;
+	name: string;
+}
+
+interface TokenInfo  {
+    currentPrice: number;
+    marketCap: number;
+    marketCapRank: number;
+    low24H: number;
+    high24H: number;
+    vol24H: number;
+};
+
 export default Company;
