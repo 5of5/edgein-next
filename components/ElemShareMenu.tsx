@@ -7,8 +7,8 @@ import {
 	IconEmail,
 	IconChatBubble,
 } from "@/components/Icons";
-
 import { Fragment } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	user: any;
@@ -47,7 +47,7 @@ export const ElemShareMenu = ({ user }: Props) => {
 			`mailto:?subject=${
 				user.display_name
 			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${
+	       	${
 		user.display_name
 	} has invited you to join EdgeIn. Help democratize web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink(
 				user.reference_id
@@ -56,8 +56,24 @@ export const ElemShareMenu = ({ user }: Props) => {
 		);
 	};
 
-	const onCopy = () => {
+	const onCopy = async () => {
 		navigator.clipboard.writeText(getInviteLink(user.reference_id));
+		console.log("what");
+		toast.custom(
+			(t) => (
+				<div
+					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+						t.visible ? "animate-fade-in-up" : "opacity-0"
+					}`}
+				>
+					Copied Invite Link
+				</div>
+			),
+			{
+				duration: 3000,
+				position: "bottom-left",
+			}
+		);
 	};
 
 	const list = [
@@ -107,6 +123,7 @@ export const ElemShareMenu = ({ user }: Props) => {
 					))}
 				</Menu.Items>
 			</Transition>
+			<Toaster />
 		</Menu>
 	);
 };
