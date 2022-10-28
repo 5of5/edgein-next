@@ -203,7 +203,7 @@ export const InvestorsList: FC<Props> = ({
 				),
 				{
 					duration: 3000,
-					position: "bottom-left",
+					position: "top-center",
 				}
 			);
 		}

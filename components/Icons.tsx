@@ -238,6 +238,25 @@ export const IconSearch: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
+export const IconFilter: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			strokeWidth={1.5}
+			strokeLinecap="round"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={`${className}`}
+		>
+			<title>{title ? title : "Filter"}</title>
+			<line x1="9.75" y1="16.25" x2="14.25" y2="16.25" />
+			<line x1="5.75" y1="11.25" x2="18.25" y2="11.25" />
+			<line x1="2.75" y1="6.25" x2="21.25" y2="6.25" />
+		</svg>
+	);
+};
+
 export const IconGrid: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg

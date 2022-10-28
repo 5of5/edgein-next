@@ -71,7 +71,7 @@ export const ElemShareMenu = ({ user }: Props) => {
 			),
 			{
 				duration: 3000,
-				position: "bottom-left",
+				position: "top-center",
 			}
 		);
 	};

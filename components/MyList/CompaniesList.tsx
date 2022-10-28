@@ -224,7 +224,7 @@ export const CompaniesList: FC<Props> = ({
 				),
 				{
 					duration: 3000,
-					position: "bottom-left",
+					position: "top-center",
 				}
 			);
 		}
@@ -246,7 +246,7 @@ export const CompaniesList: FC<Props> = ({
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="flex items-start justify-between mb-2">
+			<div className="sm:flex items-start justify-between mb-2">
 				{listNameTitle && (
 					<h2 className="font-bold text-lg capitalize mr-2">
 						{listNameTitle}: Companies
@@ -254,7 +254,7 @@ export const CompaniesList: FC<Props> = ({
 				)}
 
 				{fundingTotal > 0 && (
-					<div className="font-bold flex items-center justify-center text-right shrink-0 mr-2">
+					<div className="flex items-center sm:justify-center sm:text-right font-bold shrink-0 mr-2">
 						<div className="text-sm mr-1">Total Funding</div>
 						<div className="text-green-700 text-lg">
 							${convertToInternationalCurrencySystem(fundingTotal)}
@@ -275,7 +275,7 @@ export const CompaniesList: FC<Props> = ({
 			</div>
 
 			{sortedTags.length > 0 && (
-				<div className="flex items-start w-full mb-3">
+				<div className="sm:flex items-start w-full mb-3">
 					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
 					<div className="flex gap-2 flex-wrap">
 						{sortedTags.map(
@@ -306,14 +306,13 @@ export const CompaniesList: FC<Props> = ({
 			)}
 
 			{Object.keys(selectedRowIds).length > 0 && (
-				<div className="flex items-center gap-4">
+				<div className="flex flex-wrap items-center gap-4">
 					<ElemButton
 						onClick={onRemove}
-						//onClick={() => setShowDeleteItemsModal(true)}
 						roundedFull
 						btn="transparent"
 						size="sm"
-						className="text-red-500 px-0"
+						className="text-red-500 !px-0 shrink-0"
 					>
 						<IconTrash className="h-5 w-5 mr-1" title="Remove from list" />
 						Remove
@@ -323,12 +322,12 @@ export const CompaniesList: FC<Props> = ({
 						roundedFull
 						btn="transparent"
 						size="sm"
-						className="px-0"
+						className="!px-0 shrink-0"
 					>
 						<IconX className="h-5 w-5 mr-1" title="Clear Selection" />
 						Clear Selection
 					</ElemButton>
-					<div className="text-sm">
+					<div className="text-sm shrink-0">
 						{Object.keys(selectedRowIds).length} Result
 						{Object.keys(selectedRowIds).length > 1 && "s"} Selected
 					</div>

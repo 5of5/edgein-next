@@ -60,7 +60,7 @@ const MyList: NextPage<Props> = ({}) => {
 				),
 				{
 					duration: 3000,
-					position: "bottom-left",
+					position: "top-center",
 				}
 			);
 		}
@@ -94,7 +94,7 @@ const MyList: NextPage<Props> = ({}) => {
 				),
 				{
 					duration: 3000,
-					position: "bottom-left",
+					position: "top-center",
 				}
 			);
 		}
