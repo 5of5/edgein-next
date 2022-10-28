@@ -5,6 +5,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { useUser } from "@/context/userContext";
 import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
 import { useFormspark } from "@formspark/use-formspark";
+import Link from "next/link";
 
 type Props = {
 	showSignUp: boolean;
@@ -37,6 +38,31 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 
 		setFormSent(true);
 	};
+
+	const forFounders = (
+		<div className="bg-white rounded-3xl p-7 mb-12 transition-all hover:scale-102 hover:shadow lg:mb-0">
+			<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
+				For founders
+			</h3>
+			<p className="mb-4 text-slate-600 lg:text-lg">
+				We give you unrestricted access to the most reliable market data at
+				hyper-speeds to help you drive growth, make critical connections, and
+				gain competitor insights to stay one step ahead at all times.
+			</p>
+		</div>
+	);
+
+	const forInvestors = (
+		<div className="bg-white rounded-3xl p-7 mb-12 transition-all hover:scale-102 hover:shadow lg:mb-0">
+			<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
+				For investors
+			</h3>
+			<p className="mb-4 text-slate-600 lg:text-lg">
+				One login for all of the portfolio performance metrics you need, web3
+				investment opportunities and comprehensive due diligence.
+			</p>
+		</div>
+	);
 
 	return (
 		<>
@@ -83,64 +109,21 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 					</div> */}
 
 				<div className="block md:w-full md:grid md:grid-cols-2 gap-8">
-					<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
-						<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
-							For founders
-						</h3>
-						<p className="mb-4 text-slate-600 lg:text-lg">
-							We give you unrestricted access to the most reliable market data
-							at hyper-speeds to help you drive growth, make critical
-							connections, and gain competitor insights to stay one step ahead
-							at all times.{" "}
-							{user ? (
-								<ElemButton
-									href="/investors"
-									btn="transparent"
-									className="px-0 py-0"
-									arrow
-								>
-									Gain insights
-								</ElemButton>
-							) : (
-								<ElemButton
-									onClick={() => setShowSignUp(true)}
-									btn="transparent"
-									arrow
-									className="px-0 py-0"
-								>
-									Learn more
-								</ElemButton>
-							)}
-						</p>
-					</div>
-					<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
-						<h3 className="text-3xl font-bold mb-4 lg:text-4xl">
-							For investors
-						</h3>
-						<p className="mb-4 text-slate-600 lg:text-lg">
-							One login for all of the portfolio performance metrics you need,
-							web3 investment opportunities and comprehensive due diligence.{" "}
-							{user ? (
-								<ElemButton
-									href="/companies"
-									btn="transparent"
-									className="px-0 py-0"
-									arrow
-								>
-									Find opportunities
-								</ElemButton>
-							) : (
-								<ElemButton
-									onClick={() => setShowSignUp(true)}
-									btn="transparent"
-									arrow
-									className="px-0 py-0"
-								>
-									Learn more
-								</ElemButton>
-							)}
-						</p>
-					</div>
+					{user ? (
+						<Link href={"/investors"}>
+							<a>{forFounders}</a>
+						</Link>
+					) : (
+						<div onClick={() => setShowSignUp(true)}>{forFounders}</div>
+					)}
+
+					{user ? (
+						<Link href={"/companies"}>
+							<a>{forInvestors}</a>
+						</Link>
+					) : (
+						<div onClick={() => setShowSignUp(true)}>{forInvestors}</div>
+					)}
 
 					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
 						<div className="text-center text-white relative z-10">
