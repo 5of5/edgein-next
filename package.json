@@ -74,7 +74,6 @@
 		"@types/extract-domain": "^2.3.1",
 		"@types/hash-sum": "^1.0.0",
 		"@types/lodash": "^4.14.182",
-		"@types/memory-cache": "^0.2.2",
 		"@types/node": "17.0.45",
 		"@types/nodemailer": "^6.4.6",
 		"@types/pg": "^8.6.5",

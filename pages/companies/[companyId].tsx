@@ -23,7 +23,7 @@ import {
 import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
 //import { IconEditPencil } from "@/components/Icons";
-import { companyLayerChoices } from "@/utils/constants";
+import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { sortBy } from "lodash";
 
