@@ -6,7 +6,7 @@ type Props = {
 	label?: string;
 	type?: "text" | "email" | "search" | "password" | "number";
 	name: string;
-	value: string;
+	value: any;
 	onChange: React.ChangeEventHandler<HTMLInputElement>;
 	placeholder?: string;
 	required?: boolean;

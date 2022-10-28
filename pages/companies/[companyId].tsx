@@ -1,44 +1,31 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
-import { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
-import { ElemVelocity } from "@/components/Company/ElemVelocity";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
-// import { ElemCohort } from "@/components/Company/ElemCohort";
+import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
 import {
 	Companies,
-	Follows_Companies,
-	Follows_Companies_Aggregate,
-	GetCompaniesPathsQuery,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
-	Lists,
 	useGetCompanyQuery,
 	Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
-import {
-	getNewFollows,
-	reactOnSentiment,
-	getName,
-	isFollowsExists,
-	getNewTempSentiment,
-} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { IconEditPencil } from "@/components/Icons";
-// import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
-import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
+//import { IconEditPencil } from "@/components/Icons";
+import { companyLayerChoices } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
-import { has, remove, sortBy } from "lodash";
+import { sortBy } from "lodash";
 
 type Props = {
 	company: Companies;
@@ -50,8 +37,6 @@ const Company: NextPage<Props> = (props: Props) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
-
-	//const goBack = () => router.back();
 
 	const [company, setCompany] = useState<Companies>(props.company);
 
@@ -73,7 +58,6 @@ const Company: NextPage<Props> = (props: Props) => {
 		isLoading,
 	} = useGetCompanyQuery({
 		slug: companyId as string,
-		current_user: user?.id ?? 0,
 	});
 
 	const getTokenInfo = async (coinId: number) => {
@@ -103,55 +87,10 @@ const Company: NextPage<Props> = (props: Props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	const handleReactionClick =
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			setTemporary(sentiment, alreadyReacted);
-			const newSentiment = await reactOnSentiment({
-				company: company.id,
-				sentiment,
-				pathname: location.pathname,
-			});
-
-			setCompany((prev: Companies) => {
-				const newFollows = getNewFollows(sentiment) as Follows_Companies;
-				if (!alreadyReacted && !isFollowsExists(prev.follows, sentiment))
-					prev.follows.push(newFollows);
-				else
-					remove(prev.follows, (item) => {
-						return getName(item.list!) === sentiment;
-					});
-				return { ...prev, sentiment: newSentiment };
-			});
-		};
-
-	const setTemporary = (sentiment: string, alreadyReacted: boolean) => {
-		setCompany((prev: Companies) => {
-			const newSentiment = getNewTempSentiment(
-				{ ...prev.sentiment },
-				sentiment,
-				alreadyReacted
-			);
-
-			const newFollows = getNewFollows(sentiment) as Follows_Companies;
-
-			if (!alreadyReacted) prev.follows.push(newFollows);
-			else
-				remove(prev.follows, (item) => {
-					return getName(item.list!) === sentiment;
-				});
-			return { ...prev, sentiment: newSentiment };
-		});
-	};
-
 	const sortedInvestmentRounds = props.sortRounds;
 
 	// Company tags
-	const companyTags = [];
+	let companyTags: string[] = [];
 	if (company.layer) {
 		const layer = companyLayerChoices.find(
 			(layer) => layer.id === company.layer
@@ -161,6 +100,9 @@ const Company: NextPage<Props> = (props: Props) => {
 	if (company.tags) {
 		company.tags.map((tag: string, i: number) => [companyTags.push(tag)]);
 	}
+
+	const firstTag = company.tags ? company.tags[0] : "";
+	const secondTag = company.tags ? company.tags[1] : "";
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -216,21 +158,20 @@ const Company: NextPage<Props> = (props: Props) => {
 					{companyTags.length > 0 && (
 						<ElemTags className="mt-4" tags={companyTags} />
 					)}
-
 					{company.overview && (
 						<p className="mt-4 line-clamp-3 text-base text-slate-600">
 							{company.overview}
 						</p>
 					)}
-
 					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions
-							data={company}
-							handleReactionClick={handleReactionClick}
+							resource={company}
+							resourceType={"companies"}
 						/>
 						<ElemSaveToList
-							follows={company?.follows}
-							onCreateNew={handleReactionClick}
+							resourceId={company.id}
+							resourceType={"companies"}
+							slug={company.slug!}
 						/>
 					</div>
 				</div>
@@ -262,9 +203,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					)}
 				</div>
 			</div>
-
 			<ElemTabBar className="mt-7" tabs={tabBarItems} />
-
 			<div
 				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
 				ref={overviewRef}
@@ -302,12 +241,12 @@ const Company: NextPage<Props> = (props: Props) => {
 								githubVerified={company.github}
 								linkedInVerified={company.company_linkedin}
 							/>
-							<ElemVelocity
+							{/* <ElemVelocity
 								className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
 								heading="Velocity"
 								employeeListings={"4"}
 								tokenExchangeValue={"2.3"}
-							/>
+							/> */}
 						</div>
 					)}
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
@@ -404,28 +343,24 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 			)}
-			{/* <ElemCohort className="mt-7" heading="Similar Companies" /> */}
+
+			{company.tags && (
+				<ElemCohort
+					className="mt-7"
+					heading="Similar Companies"
+					currentSlug={company.slug}
+					tag1={firstTag}
+					tag2={secondTag}
+				/>
+			)}
 		</div>
 	);
 };
 
-// export async function getStaticPaths() {
-// 	const { data: companies } = await runGraphQl<GetCompaniesPathsQuery>(
-// 		`{ companies(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { slug }}`
-// 	);
-
-// 	return {
-// 		paths: companies?.companies
-// 			?.filter((comp) => comp.slug)
-// 			.map((comp) => ({ params: { companyId: comp.slug } })),
-// 		fallback: true, // false or 'blocking'
-// 	};
-// }
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId, current_user: 0 }
+		{ slug: context.params?.companyId }
 	);
 
 	if (!companies?.companies[0]) {

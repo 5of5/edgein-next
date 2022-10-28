@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import { ElemHeading } from "../components/ElemHeading";
+import { useRouter } from "next/router";
+import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemFiltersWrap } from "../components/ElemFiltersWrap";
-import { InputSelect } from "../components/InputSelect";
-import { ElemRecentCompanies } from "../components/Companies/ElemRecentCompanies";
+import { ElemFiltersWrap } from "@/components/ElemFiltersWrap";
+import { InputSelect } from "@/components/InputSelect";
+import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { ElemButton } from "@/components/ElemButton";
-import { runGraphQl } from "../utils";
+import { runGraphQl, numberWithCommas } from "@/utils";
 import {
 	IconGrid,
 	IconList,
 	IconSearch,
 	IconAnnotation,
+	IconX,
 } from "@/components/Icons";
 import {
 	Companies,
@@ -19,12 +21,13 @@ import {
 	GetCompaniesDocument,
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
-} from "../graphql/types";
-import { useDebounce } from "../hooks/useDebounce";
-import { Pagination } from "../components/Pagination";
-import { useAuth } from "../hooks/useAuth";
+} from "@/graphql/types";
+import { useDebounce } from "@/hooks/useDebounce";
+import { Pagination } from "@/components/Pagination";
+import { useAuth } from "@/hooks/useAuth";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
-import { companyChoices, companyLayerChoices } from "../utils/constants";
+import { companyChoices, companyLayerChoices } from "@/utils/constants";
+import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	companiesCount: number;
@@ -53,6 +56,7 @@ const Companies: NextPage<Props> = ({
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 	const { user } = useAuth();
+	const router = useRouter();
 
 	// Search Box
 	const [search, setSearch] = useState("");
@@ -62,11 +66,6 @@ const Companies: NextPage<Props> = ({
 		target: { value: React.SetStateAction<string> };
 	}) => {
 		setSearch(e.target.value);
-
-		// Change url on search
-		// router.push(`/companies/?search=${e.target.value}`, undefined, {
-		// 	shallow: true,
-		// });
 	};
 
 	// Company Filter
@@ -94,10 +93,14 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
+	//const [selectedTag, setSelectedTag] = useState("");
+	const [selectedTags, setSelectedTags] = useState<any[]>([]);
+
 	useEffect(() => {
 		setPage(0);
 		if (
 			initialLoad &&
+			selectedTags.length !== 0 &&
 			debouncedSearchTerm !== "" &&
 			selectedLayer.value !== "" &&
 			selectedCompanyFilters.value !== "" &&
@@ -108,6 +111,7 @@ const Companies: NextPage<Props> = ({
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
+		selectedTags,
 		debouncedSearchTerm,
 		selectedAmountRaised,
 		selectedLayer,
@@ -118,6 +122,65 @@ const Companies: NextPage<Props> = ({
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
 	};
+
+	const filterByTag = async (
+		event: React.MouseEvent<HTMLDivElement>,
+		tag: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
+		if (!selectedTags.includes(tag)) {
+			setSelectedTags([...selectedTags, tag]);
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Filtered By &ldquo;
+						{tag}&rdquo;
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "bottom-left",
+				}
+			);
+		}
+	};
+
+	const clearTagFilters = async () => {
+		setSelectedTags([]);
+
+		toast.custom(
+			(t) => (
+				<div
+					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+						t.visible ? "animate-fade-in-up" : "opacity-0"
+					}`}
+				>
+					Tag Filters Removed
+				</div>
+			),
+			{
+				duration: 3000,
+				position: "bottom-left",
+			}
+		);
+	};
+
+	if (selectedTags.length > 0) {
+		let allTags: any = [];
+		selectedTags.map((tag) => {
+			allTags.push({ tags: { _contains: tag } });
+		});
+
+		filters._and?.push({
+			_and: allTags,
+		});
+	}
+
 	if (debouncedSearchTerm !== "") {
 		filters._and?.push({
 			_or: [
@@ -126,7 +189,7 @@ const Companies: NextPage<Props> = ({
 			],
 		});
 	}
-	if (selectedLayer.value) {
+	if (selectedLayer?.value) {
 		filters._and?.push({ layer: { _eq: selectedLayer.value } });
 	}
 	if (selectedCompanyFilters.value) {
@@ -157,8 +220,6 @@ const Companies: NextPage<Props> = ({
 		offset,
 		limit,
 		where: filters as Companies_Bool_Exp,
-		// TODO: pass logged in user's id
-		current_user: user?.id ?? 0,
 	});
 
 	if (!isLoading && initialLoad) {
@@ -166,10 +227,9 @@ const Companies: NextPage<Props> = ({
 	}
 
 	const companies = initialLoad ? initialCompanies : companiesData?.companies;
-
-	const onUpdateOfCompany = (company: Companies) => {
-		// TODO if company is currently displayed update it
-	};
+	const companies_aggregate = initialLoad
+		? companiesCount
+		: companiesData?.companies_aggregate?.aggregate?.count || 0;
 
 	return (
 		<div className="relative overflow-hidden">
@@ -179,18 +239,43 @@ const Companies: NextPage<Props> = ({
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				{companies && (
-					<ElemRecentCompanies
-						onUpdateOfCompany={onUpdateOfCompany}
-						className="bg-white rounded-lg shadow"
-						heading="Recently Discovered"
-					/>
-				)}
+				<ElemRecentCompanies
+					className="bg-white rounded-lg shadow"
+					heading="Recently Discovered"
+				/>
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-					<h2 className="text-xl font-bold">All Companies</h2>
+					{selectedTags.length > 0 ? (
+						<div className="lg:flex items-baseline gap-2">
+							<h2 className="text-xl font-bold">
+								Companies ({numberWithCommas(companies_aggregate)})
+							</h2>
+							{selectedTags.length > 0 && (
+								<div className="flex flex-wrap items-baseline">
+									{selectedTags?.map((item, index: number) => {
+										return (
+											<span key={index} className="pr-1">
+												{item}
+												{index != selectedTags.length - 1 && ","}
+											</span>
+										);
+									})}
+									<div
+										className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
+										onClick={clearTagFilters}
+									>
+										clear tags
+										<IconX className="ml-0.5 h-3" />
+									</div>
+								</div>
+							)}
+						</div>
+					) : (
+						<h2 className="text-xl font-bold">All Companies</h2>
+					)}
+
 					<ElemFiltersWrap className="pt-2 filters-wrap">
 						<InputSelect
 							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
@@ -285,6 +370,7 @@ const Companies: NextPage<Props> = ({
 										key={company.id}
 										company={company as Companies}
 										toggleViewMode={toggleViewMode}
+										tagOnClick={filterByTag}
 									/>
 								);
 							})
@@ -292,7 +378,7 @@ const Companies: NextPage<Props> = ({
 					</div>
 					<Pagination
 						shownItems={companies?.length}
-						totalItems={companiesCount}
+						totalItems={companies_aggregate}
 						page={page}
 						itemsPerPage={limit}
 						onClickPrev={() => setPage((prev) => prev - 1)}
@@ -300,6 +386,7 @@ const Companies: NextPage<Props> = ({
 					/>
 				</div>
 			</div>
+			<Toaster />
 		</div>
 	);
 };
@@ -309,6 +396,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		GetCompaniesDocument,
 		{
 			offset: 0,
+			limit: 50,
 			where: { slug: { _neq: "" }, status: { _eq: "published" } },
 		}
 	);
@@ -318,8 +406,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Companies - EdgeIn.io",
 			metaDescription:
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
-			companiesCount: companies?.companies.length,
-			initialCompanies: companies?.companies.slice(0, 50),
+			companiesCount: companies?.companies_aggregate.aggregate?.count,
+			initialCompanies: companies?.companies,
 			companyFilters: CompaniesFilters,
 			companyLayers: LayersFilters,
 			amountRaised: AmountRaisedFilters,

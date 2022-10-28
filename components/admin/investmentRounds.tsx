@@ -25,6 +25,7 @@ import {
   useRedirect,
   Button,
   useGetList,
+  required,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
 import { roundChoices, currencyChoices, status } from "../../utils/constants";
@@ -213,7 +214,7 @@ export const InvestmentRoundsEdit = () => (
         disabled
         source="id"
       />
-      <ReferenceInput label="Company" source="company_id" reference="companies">
+      <ReferenceInput label="Company" source="company_id" reference="companies" validate={required()}>
         <AutocompleteInput
           style={{padding: 0, border: "none"}}
           className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -226,6 +227,7 @@ export const InvestmentRoundsEdit = () => (
         source="round_date"
       />
       <SelectInput
+        validate={required()}
         className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
         source="round"
         choices={roundChoices}

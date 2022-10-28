@@ -3,25 +3,13 @@ import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { formatDate } from "@/utils";
 import {
 	Vc_Firms_Bool_Exp,
 	useGetVcFirmsRecentInvestmentsQuery,
-	Vc_Firms,
-	Lists,
-	Follows_Vc_Firms,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
-import {
-	getName,
-	getNewFollows,
-	getNewTempSentiment,
-	isFollowsExists,
-	reactOnSentiment,
-} from "@/utils/reaction";
 import { useAuth } from "@/hooks/useAuth";
-import { has, remove } from "lodash";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -56,93 +44,12 @@ export const ElemRecentInvestments: FC<Props> = ({
 		offset,
 		limit,
 		where: filters as Vc_Firms_Bool_Exp,
-		current_user: user?.id ?? 0,
 	});
 
-	const [vcFirms, setVcFirms] = useState(vcFirmsData?.vc_firms);
-
-	useEffect(() => {
-		setVcFirms(vcFirmsData?.vc_firms);
-	}, [vcFirmsData?.vc_firms]);
-
-	const handleReactionClick =
-		(vcFirm: Vc_Firms) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-
-			setTemporary(vcFirm, sentiment, alreadyReacted);
-
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcFirm.id,
-				sentiment,
-				pathname: `/investors/${vcFirm.slug}`,
-			});
-
-			setVcFirms((prev) => {
-				return [...(prev || ([] as Vc_Firms[]))].map((item) => {
-					if (item.id === vcFirm.id) {
-						const newFollows = getNewFollows(
-							sentiment,
-							"vcfirm"
-						) as Follows_Vc_Firms;
-
-						if (
-							!alreadyReacted &&
-							!isFollowsExists(item.follows as Follows_Vc_Firms[], sentiment)
-						)
-							item.follows.push(newFollows);
-						else
-							remove(item.follows, (list) => {
-								return getName(list.list! as Lists) === sentiment;
-							});
-
-						return { ...item, sentiment: newSentiment };
-					}
-					return item;
-				});
-			});
-		};
-
-	const setTemporary = (
-		vcFirm: Vc_Firms,
-		sentiment: string,
-		alreadyReacted: boolean
-	) => {
-		setVcFirms((prev) => {
-			return [...(prev || ([] as Vc_Firms[]))].map((item) => {
-				if (item.id === vcFirm.id) {
-					const newSentiment = getNewTempSentiment(
-						{ ...item.sentiment },
-						sentiment,
-						alreadyReacted
-					);
-
-					const newFollows = getNewFollows(
-						sentiment,
-						"vcfirm"
-					) as Follows_Vc_Firms;
-
-					if (!alreadyReacted) item.follows.push(newFollows);
-					else
-						remove(item.follows, (list) => {
-							return getName(list.list! as Lists) === sentiment;
-						});
-
-					return { ...item, sentiment: newSentiment };
-				}
-				return item;
-			});
-		});
-	};
+	const vcFirms = vcFirmsData?.vc_firms || [];
 
 	return (
-		<div className={`bg-white rounded-lg p-5 ${className}`}>
+		<div className={`bg-white rounded-lg p-5 shadow ${className}`}>
 			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
 			{error ? (
 				<h4>Error loading investors</h4>
@@ -233,14 +140,15 @@ export const ElemRecentInvestments: FC<Props> = ({
 										)}
 										</div> */}
 										<div className="flex items-center justify-between mt-4">
-											<ElemReactions
-												data={investor}
-												handleReactionClick={handleReactionClick(investor)}
-											/>
-											<ElemSaveToList
-												follows={investor?.follows}
-												onCreateNew={handleReactionClick(investor)}
-											/>
+										<ElemReactions
+											resource={investor}
+											resourceType={"vc_firms"}
+										/>
+										<ElemSaveToList
+											resourceId={investor.id}
+											resourceType={"vc_firms"}
+											slug={investor.slug!}
+										/>
 										</div>
 									</a>
 								</ElemCarouselCard>

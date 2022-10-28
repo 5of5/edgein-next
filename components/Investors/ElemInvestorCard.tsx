@@ -1,12 +1,4 @@
-import { Follows_Vc_Firms, Vc_Firms } from "@/graphql/types";
-import {
-	getName,
-	getNewFollows,
-	getNewTempSentiment,
-	isFollowsExists,
-	reactOnSentiment,
-} from "@/utils/reaction";
-import { remove } from "lodash";
+import { Vc_Firms } from "@/graphql/types";
 import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
@@ -26,72 +18,6 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
 	useEffect(() => {
 		setVcFirmData(vcFirm);
 	}, [vcFirm]);
-
-	const handleReactionClick =
-		(vcFirm: Vc_Firms) =>
-		(sentiment: string, alreadyReacted: boolean) =>
-		async (
-			event: React.MouseEvent<
-				HTMLButtonElement | HTMLInputElement | HTMLElement
-			>
-		) => {
-			event.stopPropagation();
-			event.preventDefault();
-
-			setTemporary(sentiment, alreadyReacted);
-
-			const newSentiment = await reactOnSentiment({
-				vcfirm: vcFirm?.id!,
-				sentiment,
-				pathname: `/investors/${vcFirm?.slug!}`,
-			});
-
-			setVcFirmData((prev) => {
-						const newFollows = getNewFollows(sentiment, "vcfirm") as Follows_Vc_Firms;
-
-						if (
-							!alreadyReacted &&
-							!isFollowsExists(prev.follows as Follows_Vc_Firms[], sentiment)
-						) {
-            prev.follows.push(newFollows);
-            } else {
-							remove(prev.follows, (list) => {
-                return getName(list.list!) === sentiment;
-							});
-            }
-						return { ...prev, sentiment: newSentiment };
-  
-				});
-			}
-
-	const setTemporary = (
-		sentiment: string,
-		alreadyReacted: boolean
-	) => {
-		setVcFirmData((prev) => {
-				if (prev.id === vcFirm.id) {
-					const newSentiment = getNewTempSentiment(
-						{ ...prev.sentiment },
-						sentiment,
-						alreadyReacted
-					);
-
-					const newFollows = getNewFollows(
-						sentiment,
-						"vcfirm"
-					) as Follows_Vc_Firms;
-
-					if (!alreadyReacted) prev.follows.push(newFollows);
-					else
-						remove(prev.follows, (list) => {
-							return getName(list.list!) === sentiment;
-						});
-
-					return { ...prev, sentiment: newSentiment };
-				}
-				return prev;
-		});
-	};
 
 	return (
     <Link href={`/investors/${vcFirmData.slug}`} passHref>
@@ -149,12 +75,13 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm }) => {
 
         <div className="flex items-center justify-between mt-4">
           <ElemReactions
-            data={vcFirmData}
-            handleReactionClick={handleReactionClick(vcFirmData)}
+            resource={vcFirmData}
+            resourceType={"vc_firms"}
           />
           <ElemSaveToList
-            follows={vcFirmData?.follows}
-            onCreateNew={handleReactionClick(vcFirmData)}
+            resourceId={vcFirmData.id}
+            resourceType={"vc_firms"}
+            slug={vcFirmData.slug!}
           />
         </div>
       </a>

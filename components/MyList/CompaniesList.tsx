@@ -1,7 +1,6 @@
 import { Follows_Companies } from "@/graphql/types";
 import { compact, has } from "lodash";
 import React, { FC, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconSortUp, IconSortDown, IconX, IconTrash } from "@/components/Icons";
@@ -12,21 +11,20 @@ import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import toast, { Toaster } from "react-hot-toast";
+import { useUser } from "@/context/userContext";
 
 type Props = {
 	companies?: Follows_Companies[];
 	isCustomList?: boolean;
 	selectedListName: string | null;
-	setIsUpdated: Function;
 };
 
 export const CompaniesList: FC<Props> = ({
 	companies,
 	isCustomList,
 	selectedListName,
-	setIsUpdated,
 }) => {
-	const router = useRouter();
+	const { refreshProfile } = useUser();
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
@@ -34,7 +32,9 @@ export const CompaniesList: FC<Props> = ({
 
 	const [fundingTotal, setFundingTotal] = useState(0);
 
-	const [tagsCount, setTagsCount] = useState<any>({});
+	//const [tagsCount, setTagsCount] = useState<any>({});
+
+	const [tags, setTags] = useState<any>([]);
 
 	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
 
@@ -44,24 +44,48 @@ export const CompaniesList: FC<Props> = ({
 
 	useEffect(() => {
 		let funding = 0;
+		let allCompaniesTags: any = [];
 		if (companies) setResourceList(companies);
 		if (companies) {
 			companies.forEach(({ company }) => {
-				setTagsCount(() => {
-					let prev: any = {};
-					company?.tags?.forEach((tag: string) => {
-						if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
-						else prev[tag] += 1;
+				// setTagsCount(() => {
+				// 	let prev: any = {};
+				// 	company?.tags?.forEach((tag: string) => {
+				// 		if (!has(prev, tag)) prev = { ...prev, [tag]: 1 };
+				// 		else prev[tag] += 1;
+				// 	});
+				// 	return prev;
+				// });
+
+				if (company?.tags && company?.tags.length > 0) {
+					company?.tags.forEach((tag: string) => {
+						allCompaniesTags.push(tag);
 					});
-					return prev;
-				});
+				}
+
 				company?.investment_rounds.forEach((round) => {
 					funding += round.amount;
 				});
 			});
 		}
+		setTags(allCompaniesTags);
 		setFundingTotal(funding);
 	}, [companies]);
+
+	let reducedTagsArray = tags.reduce(
+		(tag: { name: any; count: number }[], curr: any, _: any, arr: any) => {
+			if (tag.length == 0) tag.push({ name: curr, count: 1 });
+			else if (tag.findIndex((f) => f.name === curr) === -1)
+				tag.push({ name: curr, count: 1 });
+			else ++tag[tag.findIndex((f) => f.name === curr)].count;
+			return tag;
+		},
+		[]
+	);
+
+	const sortedTags = reducedTagsArray.sort(
+		(a: { count: number }, b: { count: number }) => b.count - a.count
+	);
 
 	const columns = React.useMemo(
 		() => [
@@ -118,7 +142,11 @@ export const CompaniesList: FC<Props> = ({
 				Cell: (props: any) => (
 					<div>
 						{props.value && (
-							<ElemReactions data={props.value} isInteractive={false} />
+							<ElemReactions
+								resource={props.value}
+								resourceType={"companies"}
+								isInteractive={false}
+							/>
 						)}
 					</div>
 				),
@@ -183,7 +211,7 @@ export const CompaniesList: FC<Props> = ({
 					(resource) => !followIds.includes(resource.id as number)
 				);
 			});
-			setIsUpdated(new Date().getTime());
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -218,14 +246,16 @@ export const CompaniesList: FC<Props> = ({
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="flex items-start justify-between">
-				<h2 className="font-bold text-lg capitalize mr-2">
-					{listNameTitle}: Companies
-				</h2>
+			<div className="flex items-start justify-between mb-2">
+				{listNameTitle && (
+					<h2 className="font-bold text-lg capitalize mr-2">
+						{listNameTitle}: Companies
+					</h2>
+				)}
 
 				{fundingTotal > 0 && (
-					<div className="font-bold text-right shrink-0 mr-2">
-						<div className="text-sm">Total Funding</div>
+					<div className="font-bold flex items-center justify-center text-right shrink-0 mr-2">
+						<div className="text-sm mr-1">Total Funding</div>
 						<div className="text-green-700 text-lg">
 							${convertToInternationalCurrencySystem(fundingTotal)}
 						</div>
@@ -244,23 +274,36 @@ export const CompaniesList: FC<Props> = ({
 				)}
 			</div>
 
-			<div className="flex items-start w-full mb-4">
-				{Object.keys(tagsCount).length > 0 && (
-					<>
-						<div className="font-bold text-sm mr-2 py-0.5">Tags</div>
-						<div className="flex gap-2 flex-wrap">
-							{Object.keys(tagsCount).map((tag: string) => (
+			{sortedTags.length > 0 && (
+				<div className="flex items-start w-full mb-3">
+					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
+					<div className="flex gap-2 flex-wrap">
+						{sortedTags.map(
+							(
+								{
+									name,
+									count,
+								}: {
+									name: string;
+									count: number;
+								},
+								index: number
+							) => (
 								<div
-									key={tag}
-									className="shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
+									key={index}
+									className="group inline-flex items-center shrink-0 px-2 py-0.5 bg-slate-200 rounded-md text-sm"
 								>
-									{tag} ({tagsCount[tag]})
+									<span>{name}</span>
+
+									<span className="pl-1 text-sm proportional-nums lining-nums">
+										({count})
+									</span>
 								</div>
-							))}
-						</div>
-					</>
-				)}
-			</div>
+							)
+						)}
+					</div>
+				</div>
+			)}
 
 			{Object.keys(selectedRowIds).length > 0 && (
 				<div className="flex items-center gap-4">
@@ -292,7 +335,7 @@ export const CompaniesList: FC<Props> = ({
 				</div>
 			)}
 
-			<div className="mt-1 overflow-scroll border border-black/10 rounded-lg">
+			<div className="overflow-scroll border border-black/10 rounded-lg">
 				<table
 					{...getTableProps()}
 					className="table-auto min-w-full divide-y divide-black/10"

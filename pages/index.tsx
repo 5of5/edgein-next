@@ -1,20 +1,22 @@
 import type { NextPage } from "next";
 import React, { useState } from "react";
-import Head from "next/head";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
-
-import { FigureBlurredBg } from "@/components/FigureBlurredBg";
 import { ElemButton } from "@/components/ElemButton";
-import { useAuth } from "@/hooks/useAuth";
-
-import { FigureCircleDashes } from "@/components/Figures";
+import { useUser } from "@/context/userContext";
+import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
 import { useFormspark } from "@formspark/use-formspark";
 
-const Home: NextPage = () => {
+type Props = {
+	showSignUp: boolean;
+	setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [submit, submitting] = useFormspark({
 		formId: "Kz4dKDvu",
 	});
-	const { user, error, loading } = useAuth();
+	const { user, loading } = useUser();
+
 	const [formSent, setFormSent] = useState(false);
 	const [email, setEmail] = useState("");
 
@@ -85,31 +87,63 @@ const Home: NextPage = () => {
 						<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 							For founders
 						</h3>
-						<p className="mb-4  text-slate-600 lg:text-lg">
+						<p className="mb-4 text-slate-600 lg:text-lg">
 							We give you unrestricted access to the most reliable market data
 							at hyper-speeds to help you drive growth, make critical
 							connections, and gain competitor insights to stay one step ahead
-							at all times.
+							at all times.{" "}
+							{user ? (
+								<ElemButton
+									href="/investors"
+									btn="transparent"
+									className="px-0 py-0"
+									arrow
+								>
+									Gain insights
+								</ElemButton>
+							) : (
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									btn="transparent"
+									arrow
+									className="px-0 py-0"
+								>
+									Learn more
+								</ElemButton>
+							)}
 						</p>
-						{/* <ElemButton className="pl-0 pr-0" href="/" arrow>
-							Learn more
-						</ElemButton> */}
 					</div>
 					<div className="bg-white rounded-3xl p-7 mb-12 lg:mb-0">
-						<h3 className="text-3xl font-bold  mb-4 lg:text-4xl">
+						<h3 className="text-3xl font-bold mb-4 lg:text-4xl">
 							For investors
 						</h3>
-						<p className="mb-4  text-slate-600 lg:text-lg">
+						<p className="mb-4 text-slate-600 lg:text-lg">
 							One login for all of the portfolio performance metrics you need,
-							web3 investment opportunities and comprehensive due diligence.
+							web3 investment opportunities and comprehensive due diligence.{" "}
+							{user ? (
+								<ElemButton
+									href="/companies"
+									btn="transparent"
+									className="px-0 py-0"
+									arrow
+								>
+									Find opportunities
+								</ElemButton>
+							) : (
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									btn="transparent"
+									arrow
+									className="px-0 py-0"
+								>
+									Learn more
+								</ElemButton>
+							)}
 						</p>
-						{/* <ElemButton className="pl-0 pr-0" href="/" arrow>
-							Learn more
-						</ElemButton> */}
 					</div>
 
 					<div className="col-span-2 relative overflow-hidden p-16 py-12 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 rounded-3xl lg:py-16">
-						<div className="text-center text-white">
+						<div className="text-center text-white relative z-10">
 							<h2 className="max-w-2xl mx-auto mb-6 text-3xl font-bold sm:text-5xl">
 								Ready to start exploring?
 							</h2>
@@ -117,13 +151,23 @@ const Home: NextPage = () => {
 								Actionable intelligence, strategic analysis and data
 								sovereignty.
 							</p>
-							<ElemButton
-								href="/waitlist"
-								arrow
-								className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
-							>
-								Request Access
-							</ElemButton>
+							{user ? (
+								<ElemButton
+									href="/companies"
+									arrow
+									className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
+								>
+									Explore companies
+								</ElemButton>
+							) : (
+								<ElemButton
+									onClick={() => setShowSignUp(true)}
+									arrow
+									className="text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
+								>
+									Sign Up
+								</ElemButton>
+							)}
 						</div>
 						<figure className="absolute -top-64 -left-36 w-96 h-96 bg-[#1BE6FF] rounded-full blur-3xl opacity-70"></figure>
 						<figure className="absolute -bottom-72 right-36 w-96 h-96 bg-[#F8DA4B] rounded-full blur-3xl"></figure>

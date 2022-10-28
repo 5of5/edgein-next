@@ -11,6 +11,7 @@ async function queryForAllowedEmailCheck(email: string, domain: string) {
       limit: 1) {
       id
       email
+      person_id
     }
   }
   `
@@ -19,7 +20,7 @@ async function queryForAllowedEmailCheck(email: string, domain: string) {
       query: fetchQuery,
       variables: { email, domain }
     })
-    return data.data.allowed_emails[0] as User
+    return data.data.allowed_emails[0] as { id: number, email: string, person_id?: number }
   } catch (ex) {
     throw ex;
   }
@@ -59,6 +60,7 @@ async function findOneUserByEmail(email: string) {
       auth0_linkedin_id
       auth0_user_pass_id
       reference_id
+      billing_org_id
       person {
         name
         picture
@@ -77,6 +79,68 @@ async function findOneUserByEmail(email: string) {
     throw ex;
   }
 }
+
+async function findOneUserById(id: number) {
+  const fetchQuery = `
+  query query_users($id: Int) {
+    users(where: {id: {_eq: $id}}, limit: 1) {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      billing_org {
+        customer_id
+      }
+      person {
+        name
+        picture
+      }
+      additional_emails
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { id }
+    })
+    return data.data.users[0] as User & { billing_org?: { customer_id?: string}}
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+async function updateBillingOrg(userId: number, billingOrgId: string) {
+  // prepare gql query
+  const usertQuery = `
+    mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
+      update_users_by_pk(pk_columns: {id: $userId}, _set: {billing_org_id: $billingOrgId }) {
+        id
+      }
+    }  
+  `
+  try {
+    const data = await mutate({
+      mutation: usertQuery,
+      variables: {
+        userId,
+        billingOrgId
+      }
+    })
+
+    return data.data.update_users_by_pk as User
+  } catch (ex) {
+    console.log(ex);
+    throw ex;
+  }
+}
+
 
 async function upsertUser(userData: any) {
   // prepare gql query
@@ -339,4 +403,5 @@ async function findOneUserByAdditionalEmail(email: string) {
   }
 }
 
-export default { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId, updateAllowedEmailArray, findOneUserByAdditionalEmail }
+const UserService = { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, findOneUserById, updateBillingOrg, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId, updateAllowedEmailArray, findOneUserByAdditionalEmail }
+export default UserService

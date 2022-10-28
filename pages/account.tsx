@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconLinkedIn } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { ElemShareMenu } from "@/components/ElemShareMenu";
 import { EditSection } from "@/components/Dashboard/EditSection";
 
 const validator = require("validator");
@@ -53,6 +54,24 @@ export default function Account() {
 		window.location.href = url;
 	};
 
+	const onBillingClick = async () => {
+		try {
+			const response = await fetch("/api/stripe_load/", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+			});
+			const json = await response.json();
+			if (json && json.success && json.redirect) {
+				window.location.href = json.redirect;
+			}
+		} catch (e) {
+			console.log(e);
+		}
+	};
+
 	const callChangePassword = async () => {
 		try {
 			const response = await fetch("/api/set_password/", {
@@ -88,6 +107,19 @@ export default function Account() {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
+				<div className="sm:flex justify-between items-center mb-2">
+					<h2 className="font-bold text-xl">Invite Code</h2>
+
+					{user && user.reference_id && (
+						<div className="mt-2 sm:mt-0">
+							<ElemShareMenu user={user} />
+						</div>
+					)}
+				</div>
+				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+			</div>
+
+			<div className="bg-white shadow rounded-lg mt-5 p-5">
 				<div className="flex justify-between items-center mb-2">
 					<h2 className="font-bold text-xl">Account Settings</h2>
 				</div>
@@ -106,10 +138,9 @@ export default function Account() {
 								onClick={onLinkedInClick}
 								size="sm"
 								disabled={user && user.auth0_linkedin_id}
-								className="mt-2 gap-x-2 rounded-md text-[#0077B5] border border-black/10 hover:border-[#0077B5] hover:bg-slate-50"
-								roundedFull={false}
+								className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
 							>
-								<IconLinkedIn className="h-6 w-6" />{" "}
+								<IconLinkedIn className="h-5 w-5" />{" "}
 								<span>Connect LinkedIn</span>
 							</ElemButton>
 						</div>
@@ -187,6 +218,29 @@ export default function Account() {
 									</div>
 								</div>
 							)}
+						</EditSection>
+					)}
+					{user?.email.includes("@edgein.io") && (
+						<EditSection heading="Billing">
+							<div>
+								<p className="text-slate-600">
+									Manage your EdgeIn billing. (Currently: Only available for
+									edgein team member)
+								</p>
+								<ElemButton
+									onClick={onBillingClick}
+									size="sm"
+									btn="white"
+									arrow
+									className="mt-2 text-primary-500"
+								>
+									{user && user.billing_org_id ? (
+										<span>Go To Billing</span>
+									) : (
+										<span>Checkout</span>
+									)}
+								</ElemButton>
+							</div>
 						</EditSection>
 					)}
 				</dl>

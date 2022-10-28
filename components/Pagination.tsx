@@ -52,13 +52,11 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 				)}
 			</div>
 			<div className="flex-1 flex justify-between sm:justify-end">
-				<div>
-					{page * itemsPerPage > 0 && (
-						<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
-							Prev
-						</ElemButton>
-					)}
-				</div>
+				{page * itemsPerPage > 0 && (
+					<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
+						Prev
+					</ElemButton>
+				)}
 
 				{totalItems > shownItemsEnd && (
 					<ElemButton

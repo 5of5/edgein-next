@@ -31,50 +31,19 @@ export const TheFooter = () => {
 			<div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<div className="xl:grid xl:grid-cols-3 xl:gap-8">
 					<div className="space-y-8 xl:col-span-1">
-						<Link href="/">
+						<Link href="/" passHref>
 							<a>
 								<ElemLogo
 									mode="logo"
-									className="
-                  h-8
-                  w-auto
-                  transition
-                  duration-200
-                  ease-in-out
-                  scale-90
-                  hover:scale-95
-                  scheme-standard
-                "
+									className="h-8 w-auto transition duration-200 ease-in-out scale-90 hover:scale-95 scheme-standard"
 								/>
 							</a>
 						</Link>
 					</div>
-					<div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
-						<div className="md:grid md:grid-cols-2 md:gap-8">
+					<div className="mt-12 grid grid-cols-1 gap-8 xl:mt-0 xl:col-span-2">
+						<div className="md:grid md:grid-cols-4 md:gap-8">
+							<div></div>
 							<div>
-								<h3 className="text-sm font-bold text-dark-500 tracking-wider uppercase">
-									Solutions
-								</h3>
-								<ul role="list" className="mt-4 space-y-4">
-									{navigation.solutions.map((item) => (
-										<li key={item.name}>
-											<span
-												className="
-                    opacity-50
-                    text-base
-                    font-medium
-                    cursor-not-allowed
-                    text-dark-500
-                    hover:text-dark-900
-                  "
-											>
-												{item.name}
-											</span>
-										</li>
-									))}
-								</ul>
-							</div>
-							<div className="mt-12 md:mt-0">
 								<h3 className="text-sm font-bold text-dark-500 tracking-wider uppercase">
 									Company
 								</h3>
@@ -83,12 +52,7 @@ export const TheFooter = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="
-                      text-base
-                      font-medium
-                      text-dark-500
-                      hover:text-dark-900
-                    "
+												className="text-base font-medium text-dark-500 hover:text-dark-900"
 											>
 												{item.name}
 											</a>
@@ -96,9 +60,7 @@ export const TheFooter = () => {
 									))}
 								</ul>
 							</div>
-						</div>
-						<div className="md:grid md:grid-cols-2 md:gap-8">
-							<div>
+							<div className="mt-12 md:mt-0">
 								<h3 className="text-sm font-bold text-dark-500 tracking-wider uppercase">
 									Resources
 								</h3>
@@ -107,12 +69,7 @@ export const TheFooter = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="
-                      text-base
-                      font-medium
-                      text-dark-500
-                      hover:text-dark-900
-                    "
+												className="text-base font-medium text-dark-500 hover:text-dark-900"
 											>
 												{item.name}
 											</a>
@@ -129,12 +86,7 @@ export const TheFooter = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="
-                      text-base
-                      font-medium
-                      text-dark-500
-                      hover:text-dark-900
-                    "
+												className="text-base font-medium text-dark-500 hover:text-dark-900"
 											>
 												{item.name}
 											</a>

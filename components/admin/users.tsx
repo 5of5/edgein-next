@@ -12,6 +12,7 @@ import {
   SelectInput,
   Pagination,
   SelectField,
+  required,
 } from "react-admin";
 
 export const typeChoices = [
@@ -115,9 +116,14 @@ export const UsersEdit = () => {
           className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="person_id"
         />
-        <TextInput
+        <SelectInput 
           className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
           source="role"
+          choices={[
+            { id: 'admin', name: 'Admin' },
+            { id: 'user', name: 'User' },
+          ]}
+          validate={required()}
         />
       </SimpleForm>
     </Edit>

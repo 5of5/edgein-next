@@ -1,5 +1,5 @@
-import "../styles/LoaderPlasma.scss";
-import "../styles/globals.scss";
+import "@/styles/LoaderPlasma.scss";
+import "@/styles/globals.scss";
 import React, { useState } from "react";
 import TagManager from "react-gtm-module";
 import { hotjar } from "react-hotjar";
@@ -7,11 +7,14 @@ import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { LoaderPlasma } from "../components/LoaderPlasma";
-import { TheNavbar } from "../components/TheNavbar";
-import { ElemFeedback } from "../components/ElemFeedback";
-import { TheFooter } from "../components/TheFooter";
+import { LoaderPlasma } from "@/components/LoaderPlasma";
+import { TheNavbar } from "@/components/TheNavbar";
+import { ElemFeedback } from "@/components/ElemFeedback";
+import { TheFooter } from "@/components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { UserProvider } from "@/context/userContext";
+import { IntercomProvider } from "react-use-intercom";
+const INTERCOM_APP_ID = "jm3hf6lp";
 
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
@@ -20,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const queryClient = new QueryClient();
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
+	const [showSignUp, setShowSignUp] = useState(false);
 
 	//google
 	React.useEffect(() => {
@@ -95,28 +99,37 @@ function MyApp({ Component, pageProps }: AppProps) {
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
 					) : (
-						<>
-							<TheNavbar />
-							<main className="grow selection:bg-primary-200">
-								{pageLoading ? (
-									<LoaderPlasma />
-								) : (
-									<Component
-										{...pageProps}
-										setToggleFeedbackForm={setToggleFeedbackForm}
+						<IntercomProvider appId={INTERCOM_APP_ID} autoBoot>
+							<UserProvider>
+								<>
+									<TheNavbar
+										showSignUp={showSignUp}
+										setShowSignUp={setShowSignUp}
 									/>
-								)}
-							</main>
+									<main className="grow selection:bg-primary-200">
+										{pageLoading ? (
+											<LoaderPlasma />
+										) : (
+											<Component
+												{...pageProps}
+												setToggleFeedbackForm={setToggleFeedbackForm}
+												showSignUp={showSignUp}
+												setShowSignUp={setShowSignUp}
+											/>
+										)}
+									</main>
 
-							{(router.asPath.includes("/companies/") ||
-								router.asPath.includes("/investors/")) && (
-								<ElemFeedback
-									toggleFeedbackForm={toggleFeedbackForm}
-									setToggleFeedbackForm={setToggleFeedbackForm}
-								/>
-							)}
-							<TheFooter />
-						</>
+									{(router.asPath.includes("/companies/") ||
+										router.asPath.includes("/investors/")) && (
+										<ElemFeedback
+											toggleFeedbackForm={toggleFeedbackForm}
+											setToggleFeedbackForm={setToggleFeedbackForm}
+										/>
+									)}
+									<TheFooter />
+								</>
+							</UserProvider>
+						</IntercomProvider>
 					)}
 				</QueryClientProvider>
 				{/* <Script

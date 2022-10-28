@@ -1,4 +1,4 @@
-query GetCompany($slug: String!, $current_user: Int = 0) {
+query GetCompany($slug: String!) {
 	companies(where: { slug: { _eq: $slug } }) {
 		id
 		name
@@ -71,18 +71,12 @@ query GetCompany($slug: String!, $current_user: Int = 0) {
 				amount
 			}
 		}
-		follows(where: { created_by_user_id: { _eq: $current_user } }) {
-			list {
-				name
-			}
-		}
 	}
 }
 
 query GetCompanies(
 	$limit: Int
 	$offset: Int
-	$current_user: Int = 0
 	$where: companies_bool_exp!
 ) {
 	companies(
@@ -110,19 +104,18 @@ query GetCompanies(
 		velocity_linkedin
 		velocity_token
 		website
-		follows(where: { created_by_user_id: { _eq: $current_user } }) {
-			list {
-				name
-			}
-		}
 	}
+	companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
 }
 
 query GetCompaniesRecent(
 	$limit: Int
 	$offset: Int
 	$where: companies_bool_exp!
-	$current_user: Int = 0
 ) {
 	companies(
 		where: $where
@@ -141,11 +134,6 @@ query GetCompaniesRecent(
 		investor_amount
 		date_added
 		sentiment
-		follows(where: { created_by_user_id: { _eq: $current_user } }) {
-			list {
-				name
-			}
-		}
 		investment_rounds {
 			id
 			amount
@@ -163,7 +151,6 @@ query GetCompaniesPaths {
 
 query GetRelevantCompanies(
 	$where: companies_bool_exp!
-	$current_user: Int = 0
 ) {
 	companies(where: $where) {
 		id
@@ -171,10 +158,5 @@ query GetRelevantCompanies(
 		name
 		slug
 		sentiment
-		follows(where: { created_by_user_id: { _eq: $current_user } }) {
-			list {
-				name
-			}
-		}
 	}
 }

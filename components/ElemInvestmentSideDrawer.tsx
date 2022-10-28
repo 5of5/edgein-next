@@ -336,7 +336,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
 						</div>
 					</div>
 					<ElemConfirmationMessageModal
-						type="confimation"
+						messageType="confirmation"
 						show={showConfirmation}
 						onCancel={() => {
 							setShowConfirmation(false);

@@ -19,7 +19,7 @@ type Props = {
 		| "ol-primary"
 		| "";
 	roundedFull?: boolean;
-	size?: "xs" | "sm" | "md" | "lg" | "";
+	size?: "sm" | "lg" | "";
 	href?: string;
 	disabled?: boolean;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
@@ -51,7 +51,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 		btnClass = "text-primary-500 bg-transparent hover:text-dark-500";
 	} else if (btn === "white") {
 		btnClass =
-			"text-dark-500 bg-white ring-inset ring-1 ring-slate-200 focus:ring-primary-800 focus:!ring-1 focus:!ring-slate-200 hover:text-primary-500 hover:bg-slate-200";
+			"bg-white ring-inset ring-1 ring-slate-200 focus:ring-primary-800 focus:!ring-1 focus:!ring-slate-200 hover:text-primary-500 hover:bg-slate-200";
 	} else if (btn === "slate") {
 		btnClass =
 			"text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300";
@@ -66,12 +66,8 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	// button sizes
 	let sizeClasses = "";
 
-	if (size === "xs") {
-		sizeClasses = "px-3 py-1 text-xs";
-	} else if (size === "sm") {
+	if (size === "sm") {
 		sizeClasses = "px-3.5 py-1.5 text-sm";
-	} else if (size === "md") {
-		sizeClasses = "px-4 py-1.5 text-base";
 	} else if (size === "lg") {
 		sizeClasses = "px-5 py-2 text-lg";
 	} else {

@@ -582,6 +582,63 @@ export const IconFlag: React.FC<IconProps> = ({
 	);
 };
 
+export const IconLink: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			strokeWidth={1.5}
+			stroke="currentColor"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<title>{title ? title : "Link"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
+			/>
+		</svg>
+	);
+};
+
+export const IconChatBubble: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			strokeWidth={1.5}
+			stroke="currentColor"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<title>{title ? title : "SMS"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M8.625 12a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 01-2.555-.337A5.972 5.972 0 015.41 20.97a5.969 5.969 0 01-.474-.065 4.48 4.48 0 00.978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25z"
+			/>
+		</svg>
+	);
+};
+
+export const IconTelegram: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			strokeWidth={1.5}
+			stroke="currentColor"
+			strokeLinejoin="round"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<title>{title ? title : "Telegram"}</title>
+			<path d="M8 14L3.09674 11.957C2.68806 11.7867 2.68601 11.2084 3.09348 11.0353L21.1443 3.36369C21.511 3.20784 21.9037 3.52258 21.8316 3.91444L18.6584 21.1401C18.5883 21.5204 18.1315 21.6806 17.8392 21.4273L13 17.2333M8 14L19 6.5L11 15.5M8 14L10 20.5M11 15.5L10 20.5M11 15.5L13 17.2333M10 20.5L13 17.2333" />
+		</svg>
+	);
+};
+
 export const IconLinkedIn: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg

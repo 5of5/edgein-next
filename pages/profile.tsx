@@ -582,12 +582,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 					{user && user.reference_id && (
 						<div className="mt-2 sm:mt-0">
-							<ElemShareMenu
-								onCopy={onCopy}
-								onTelegram={onTelegram}
-								onEmail={onEmail}
-								onSMS={onSMS}
-							/>
+							<ElemShareMenu user={user} />
 						</div>
 					)}
 				</div>

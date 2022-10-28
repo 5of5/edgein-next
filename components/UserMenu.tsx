@@ -1,11 +1,8 @@
-import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "./ElemButton";
-import { Magic } from "magic-sdk";
 import { Menu, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
-import { Lists, useGetListsByUserQuery } from "@/graphql/types";
-import { find } from "lodash";
-import { getName } from "@/utils/reaction";
+import React, { Fragment, FC } from "react";
+import { find, kebabCase, first } from "lodash";
+import { getNameFromListName } from "@/utils/reaction";
 import {
 	IconChevronDownMini,
 	IconUserCircle,
@@ -15,30 +12,35 @@ import {
 	IconSettings,
 	//IconOrganization,
 } from "./Icons";
+import { useUser } from "@/context/userContext";
 import Link from "next/link";
 
-export const UserMenu = () => {
-	const { user } = useAuth();
+type Props = {
+	className?: string;
+};
 
-	const [hotId, setHotId] = useState(0);
+export const UserMenu: FC<Props> = ({ className = "" }) => {
+	const { listAndFollows, user } = useUser();
 
-	const { data: lists } = useGetListsByUserQuery({
-		current_user: user?.id ?? 0,
-	});
-
-	useEffect(() => {
-		if (lists) {
-			setHotId(
-				() =>
-					find(lists.lists, (list) => getName(list as Lists) === "hot")?.id ?? 0
-			);
-		}
-	}, [lists]);
+	const firstCustomList = first(
+		listAndFollows?.filter(
+			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
+		)
+	);
+	let myListsUrl = "";
+	if (firstCustomList) {
+		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
+			getNameFromListName(firstCustomList)
+		)}`;
+	} else {
+		const hotId =
+			find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
+			0;
+		myListsUrl = `/lists/${hotId}/hot`;
+	}
 
 	const logout = async () => {
 		localStorage.clear();
-		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
 		}).then((res) => res.json());
@@ -53,7 +55,7 @@ export const UserMenu = () => {
 	};
 
 	const navigation = [
-		{ name: "My Lists", href: `/lists/${hotId}/hot`, icon: IconCustomList },
+		{ name: "My Lists", href: myListsUrl, icon: IconCustomList },
 		// {
 		// 	name: "My Organizations",
 		// 	href: "/organizations",
@@ -62,8 +64,20 @@ export const UserMenu = () => {
 		{ name: "Account Settings", href: "/account", icon: IconSettings },
 	];
 
+	//eslint-disable-next-line react/display-name
+	const NextLink = React.forwardRef((props: any, ref: any) => {
+		const { href, children, ...rest } = props;
+		return (
+			<Link href={href}>
+				<a {...rest} ref={ref}>
+					{children}
+				</a>
+			</Link>
+		);
+	});
+
 	return (
-		<Menu as="div" className="relative inline-block text-left">
+		<Menu as="div" className={`relative inline-block text-left ${className}`}>
 			<div>
 				<Menu.Button as="div">
 					<ElemButton btn="slate" className="h-9 w-auto px-1.5 py-0 group">
@@ -86,14 +100,18 @@ export const UserMenu = () => {
 					className="absolute overflow-hidden right-0 mt-2 w-56 origin-top-right divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 				>
 					{navigation.map((link) => (
-						<Menu.Item
-							key={link.href}
-							as="a"
-							href={link.href}
-							className="flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
-						>
-							<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
-							{link.name}
+						<Menu.Item key={link.name}>
+							{({ active }) => (
+								<NextLink
+									href={link.href}
+									className={`${
+										active ? "bg-gray-50 text-primary-500" : ""
+									} flex w-full items-center px-2 py-2 hover:bg-gray-50 hover:text-primary-500`}
+								>
+									<link.icon className="mr-2 h-6 w-6" aria-hidden="true" />
+									{link.name}
+								</NextLink>
+							)}
 						</Menu.Item>
 					))}
 					<Menu.Item>

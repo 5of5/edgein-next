@@ -1,7 +1,6 @@
 import { Follows_Vc_Firms } from "@/graphql/types";
 import { compact, has } from "lodash";
 import React, { FC, useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import { useTable, useSortBy, usePagination, useRowSelect } from "react-table";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconSortUp, IconSortDown, IconX, IconTrash } from "@/components/Icons";
@@ -12,21 +11,20 @@ import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
 import toast, { Toaster } from "react-hot-toast";
+import { useUser } from "@/context/userContext";
 
 type Props = {
 	vcfirms?: Follows_Vc_Firms[];
 	isCustomList?: boolean;
 	selectedListName: string | null;
-	setIsUpdated: Function;
 };
 
 export const InvestorsList: FC<Props> = ({
 	vcfirms,
 	isCustomList,
 	selectedListName,
-	setIsUpdated,
 }) => {
-	const router = useRouter();
+	const { refreshProfile } = useUser();
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
@@ -123,7 +121,11 @@ export const InvestorsList: FC<Props> = ({
 				Cell: (props: any) => (
 					<>
 						{props.value && (
-							<ElemReactions data={props.value} isInteractive={false} />
+							<ElemReactions
+								resource={props.value}
+								resourceType={"vc_firms"}
+								isInteractive={false}
+							/>
 						)}
 					</>
 				),
@@ -188,7 +190,7 @@ export const InvestorsList: FC<Props> = ({
 					(resource) => !followIds.includes(resource.id as number)
 				);
 			});
-			setIsUpdated(new Date().getTime());
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -225,10 +227,12 @@ export const InvestorsList: FC<Props> = ({
 
 	return (
 		<div className="rounded-lg p-5 bg-white shadow mb-8">
-			<div className="flex items-start justify-between mb-4">
-				<h2 className="font-bold text-lg capitalize mr-2">
-					{listNameTitle}: Investors
-				</h2>
+			<div className="flex items-start justify-between mb-3">
+				{listNameTitle && (
+					<h2 className="font-bold text-lg capitalize mr-2">
+						{listNameTitle}: Investors
+					</h2>
+				)}
 
 				{fundingTotal > 0 && (
 					<div className="font-bold text-right shrink-0 mr-2">
@@ -252,7 +256,7 @@ export const InvestorsList: FC<Props> = ({
 			</div>
 
 			{Object.keys(tagsCount).length > 0 && (
-				<div className="flex justify-between w-full my-4">
+				<div className="flex justify-between w-full mb-3">
 					<>
 						<div className="font-bold text-sm">Tags</div>
 						<div className="flex gap-2 flex-wrap">

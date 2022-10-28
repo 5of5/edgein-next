@@ -1,6 +1,8 @@
 import UserService from '../../utils/users'
 import auth0Library from '../../utils/auth0Library'
+import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { createHmac } from "crypto";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
@@ -10,14 +12,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const reference_id = req.body.reference_id;
   // get the domain from the email
   const domain = email.split('@').pop() || '';
-  const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
+  // const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
 
   // when email does not exist in the allowed emails
-  if (!isEmailAllowed) {
-    // insert user in waitlist table
-    await UserService.mutateForWaitlistEmail(email)
-    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
-  }
+  // if (!isEmailAllowed) {
+  //   // insert user in waitlist table
+  //   await UserService.mutateForWaitlistEmail(email)
+  //   return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
+  // }
 
   let isUserPassPrimaryAccount = false;
   let isLinkedInPrimaryAccount = true;
@@ -44,7 +46,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     });
     if (!fetchRequest.ok) {
       const errorResponse = JSON.parse(await fetchRequest.text());
-      return res.status(fetchRequest.status).send({ message: errorResponse.description })
+      if (errorResponse.code === 'invalid_signup') {
+        return res.status(fetchRequest.status).send({ message: `Email ${email} already registered, please try signing in` })
+      } else {
+        return res.status(fetchRequest.status).send({ message: errorResponse.description })
+      }
     }
     result = JSON.parse(await fetchRequest.text());
 
@@ -64,7 +70,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         name: result.name,
         _id: result._id, // get Id from sub
         auth0_user_pass_id: result._id,
-        reference_user_id: referenceUserId
+        reference_user_id: referenceUserId,
+        // person_id: isEmailAllowed.person_id
       }
       // upsert user info
       userData = await UserService.upsertUser(objectData);
@@ -94,10 +101,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await auth0Library.linkTwoAccount(primaryId, secondayId, secondayProvider);
       }
     }
+    
+    const hmac = createHmac(
+      "sha256",
+      "vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
+    );
+    hmac.update(String(userData.id));
+
+    // Author a couple of cookies to persist a user's session
+    const token = await CookieService.createToken({
+      id: userData.id,
+      intercomUserHash: hmac.digest("hex"),
+      email: userData.email,
+      role: userData.role,
+      publicAddress: userData.external_id,
+      isFirstLogin: true,
+      billing_org_id: userData.billing_org_id,
+      display_name: userData.display_name,
+      auth0_linkedin_id: userData.auth0_linkedin_id,
+      auth0_user_pass_id: userData.auth0_user_pass_id,
+      profileName: userData.person?.name,
+      profilePicture: userData.person?.picture,
+      reference_id: userData.reference_id,
+    });
+    CookieService.setTokenCookie(res, token);
   } catch (ex: any) {
     return res.status(404).send({ message: ex.message })
   }
-
+  
   res.send({ success: true, result });
 }
 

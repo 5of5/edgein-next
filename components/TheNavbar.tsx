@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 
 import Link from "next/link";
-import { useAuth } from "../hooks/useAuth";
-import { Magic } from "magic-sdk";
 import { useRouter } from "next/router";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ElemLogo } from "@/components/ElemLogo";
 import { ElemButton } from "@/components/ElemButton";
-import { NotificationAlerts } from "@/components/NotificationAlerts";
+//import { NotificationAlerts } from "@/components/NotificationAlerts";
 import { UserMenu } from "@/components/UserMenu";
 import LoginModal from "@/components/LoginModal";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
@@ -15,21 +13,30 @@ import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
 import { MobileNav } from "@/components/MobileNav";
 import SearchModal from "@/components/SearchModal";
-import OnBoardingStep1Modal from "@/components/onBoarding/OnBoardingStep1Modal";
-import OnBoardingStep2Modal from "@/components/onBoarding/OnBoardingStep2Modal";
-import OnBoardingStep3Modal from "@/components/onBoarding/OnBoardingStep3Modal";
+import OnboardingStep1 from "@/components/Onboarding/OnboardingStep1";
+import OnboardingStep2 from "@/components/Onboarding/OnboardingStep2";
+import OnboardingStep3 from "@/components/Onboarding/OnboardingStep3";
+import { useUser } from "@/context/userContext";
 
-export const TheNavbar = () => {
+import { FC } from "react";
+type Props = {
+	showSignUp: boolean;
+	setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const router = useRouter();
-	const { user, error, loading } = useAuth();
+	const { user, loading } = useUser();
 
-	const [showLoginPopup, setShowLoginPopup] = useState(false);
-	const [showSignUp, setShowSignUp] = useState(false);
+	const [showLoginPopup, setShowLoginPopup] = useState(
+		router.asPath.includes("/login/")
+	);
+	//const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
 	const [showSearchModal, setShowSearchModal] = useState(false);
-	const [onBoardingStep, setOnBoardingStep] = useState(0);
+	const [onboardingStep, setOnboardingStep] = useState(0);
 
 	const [selectedOption, setSelectedOption] = useState("companies");
 	const [locationTags, setLocationTags] = useState<string[]>([]);
@@ -37,22 +44,29 @@ export const TheNavbar = () => {
 	const [linkedInError, setLinkedInError] = useState("");
 	const [inviteCode, setInviteCode] = useState("");
 
+	useEffect(() => {
+		if (!showForgotPasswordPopup && !showSignUp && !showLoginPopup && !showSearchModal && onboardingStep === 0 && router.asPath.includes("/login/")) {
+			setShowLoginPopup(router.asPath.includes("/login/"))
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [router.asPath]);
+
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
 		setShowSearchModal(true);
 	});
 
-	const showOnBoarding = async () => {
-		const isAlreadyShown = await localStorage.getItem("onBoardingShown");
+	const showOnboarding = async () => {
+		const isAlreadyShown = await localStorage.getItem("onboardingShown");
 		if (!isAlreadyShown) {
-			setOnBoardingStep(1);
-			localStorage.setItem("onBoardingShown", "true");
+			setOnboardingStep(1);
+			localStorage.setItem("onboardingShown", "true");
 		}
 	};
 
 	useEffect(() => {
 		if (!loading && user && user.isFirstLogin) {
-			showOnBoarding();
+			showOnboarding();
 		}
 	}, [loading, user]);
 
@@ -115,8 +129,6 @@ export const TheNavbar = () => {
 	}, [router.query.invite, user]);
 
 	const logout = async () => {
-		const magic = new Magic(process.env.NEXT_PUBLIC_MAGIC_PUB_KEY || "");
-		magic.user.logout();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
 		});
@@ -142,7 +154,7 @@ export const TheNavbar = () => {
 	};
 
 	const onModalClose = () => {
-		setShowLoginPopup(false);
+		setShowLoginPopup(router.asPath.includes("/login/"));
 		setShowForgotPasswordPopup(false);
 		setShowSignUp(false);
 	};
@@ -162,7 +174,7 @@ export const TheNavbar = () => {
 	};
 
 	const onCloseBoarding = () => {
-		setOnBoardingStep(0);
+		setOnboardingStep(0);
 		setSelectedOption("companies");
 		setLocationTags([]);
 		setIndustryTags([]);
@@ -172,7 +184,7 @@ export const TheNavbar = () => {
 		<header className="overflow-y-visible z-40 shadow bg-white">
 			<div className="mx-auto px-1 py-1 sm:px-6 lg:px-8">
 				<nav
-					className="flex items-center justify-between w-full max-w-screen-2xl mx-auto transition-all"
+					className="flex items-center justify-between lg:justify-start w-full max-w-screen-2xl mx-auto transition-all"
 					aria-label="Global"
 				>
 					<div className="flex items-center">
@@ -186,25 +198,24 @@ export const TheNavbar = () => {
 								</a>
 							</Link>
 						</div>
-
-						<button
-							onClick={() => {
-								setShowSearchModal(true);
-							}}
-							className="hidden sm:flex items-center text-left space-x-2 px-2 h-9 bg-white shadow-sm rounded-lg text-slate-400 ring-1 ring-slate-900/10 lg:w-64 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500"
-						>
-							<IconSearch className="flex-none h-5 w-5 text-dark-500" />
-							<span className="flex-auto">Quick Search...</span>
-							<kbd className="hidden lg:block text-sm font-semibold">
-								<abbr title="Command" className="no-underline text-slate-400">
-									⌘
-								</abbr>{" "}
-								K
-							</kbd>
-						</button>
 					</div>
+					<button
+						onClick={() => {
+							setShowSearchModal(true);
+						}}
+						className="hidden sm:flex sm:flex-1 items-center text-left space-x-2 mx-2 px-2 h-9 bg-white shadow-sm rounded-lg text-slate-400 ring-1 ring-slate-900/10 lg:w-64 hover:ring-slate-300 focus:outline-none focus:ring-2 focus:ring-primary-500 lg:flex-none"
+					>
+						<IconSearch className="flex-none h-5 w-5 text-dark-500" />
+						<span className="flex-auto">Quick Search...</span>
+						<kbd className="hidden lg:block text-sm font-semibold">
+							<abbr title="Command" className="no-underline text-slate-400">
+								⌘
+							</abbr>{" "}
+							K
+						</kbd>
+					</button>
 
-					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-6">
+					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-auto">
 						{siteNav.map((link, index) => (
 							<Link href={link.path} key={index} passHref>
 								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
@@ -223,7 +234,7 @@ export const TheNavbar = () => {
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
 								{/* <NotificationAlerts /> */}
-								<UserMenu />
+								<UserMenu className="hidden lg:block" />
 							</>
 						) : (
 							<>
@@ -244,7 +255,7 @@ export const TheNavbar = () => {
 							</>
 						)}
 
-						<MobileNav className="lg:hidden" />
+						<MobileNav className="flex lg:hidden items-center ml-2" />
 					</div>
 
 					<LoginModal
@@ -271,53 +282,53 @@ export const TheNavbar = () => {
 						show={showSearchModal}
 						onClose={() => setShowSearchModal(false)}
 					/>
-					{onBoardingStep === 1 && (
-						<OnBoardingStep1Modal
+					{onboardingStep === 1 && (
+						<OnboardingStep1
 							selectedOption={selectedOption}
-							show={onBoardingStep === 1 && !loading}
-							onClose={() => setOnBoardingStep(0)}
+							show={onboardingStep === 1 && !loading}
+							onClose={() => setOnboardingStep(0)}
 							onNext={(selectedOption) => {
 								setSelectedOption(selectedOption);
-								setOnBoardingStep(2);
+								setOnboardingStep(2);
 							}}
 							user={user}
 						/>
 					)}
-					{onBoardingStep === 2 && (
-						<OnBoardingStep2Modal
+					{onboardingStep === 2 && (
+						<OnboardingStep2
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onBoardingStep === 2 && !loading}
+							show={onboardingStep === 2 && !loading}
 							onClose={() => {
-								setOnBoardingStep(0);
+								setOnboardingStep(0);
 							}}
 							onNext={(locationTags, industryTags) => {
-								//setOnBoardingStep(3);
-								setOnBoardingStep(0);
+								//setOnboardingStep(3);
+								setOnboardingStep(0);
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
 							}}
 							onBack={(locationTags, industryTags) => {
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
-								setOnBoardingStep(1);
+								setOnboardingStep(1);
 							}}
 						/>
 					)}
-					{/* {onBoardingStep === 3 && (
-						<OnBoardingStep3Modal
+					{/* {onboardingStep === 3 && (
+						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onBoardingStep === 3 && !loading}
+							show={onboardingStep === 3 && !loading}
 							onClose={() => {
-								setOnBoardingStep(0);
+								setOnboardingStep(0);
 							}}
 							onNext={() => {
-								setOnBoardingStep(0);
+								setOnboardingStep(0);
 							}}
-							onBack={() => setOnBoardingStep(2)}
+							onBack={() => setOnboardingStep(2)}
 							user={user}
 						/>
 					)} */}

@@ -12,7 +12,6 @@ export async function middleware(req: NextRequest) {
 		[
 			`/`,
 			`/login/`,
-			`/waitlist/`,
 			`/contact/`,
 			`/privacy/`,
 			`/terms/`,
@@ -27,6 +26,8 @@ export async function middleware(req: NextRequest) {
 			`/api/signin/`,
 			`/api/change_password/`,
 			`/api/access_token_from_code/`,
+
+			`/api/stripe_webhook/`,
 
 			`/admin/app/`,
 		].includes(url.pathname) ||
@@ -64,7 +65,7 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (![`/api/`].includes(url.pathname) && user?.id) {
+	if (!url.pathname.includes(`/api/`) && user?.id) {
 		mutate({
 			mutation: `
 				mutation InsertAction($object: actions_insert_input!) {
