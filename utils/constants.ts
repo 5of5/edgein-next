@@ -433,22 +433,22 @@ export const seniorityChoicesTM = [
 export const companyChoices = [
 	{
 		id: "Trending",
-		name: "Trending (Coming soon!)",
+		name: "Trending (Upcoming)",
 		disabled: true,
 	},
 	{
 		id: "Following",
-		name: "Following (Coming soon!)",
+		name: "Following (Upcoming)",
 		disabled: true,
 	},
 	{
 		id: "Acquired",
-		name: "Acquired (Coming soon!)",
+		name: "Acquired (Upcoming)",
 		disabled: true,
 	},
 	{
 		id: "Dead",
-		name: "Dead (Coming soon!)",
+		name: "Dead (Upcoming)",
 		disabled: true,
 	},
 ];
@@ -647,24 +647,24 @@ export const tokenTypes = {
 
 export const tokenInfoMetrics = [
 	{
-		id: 'currentPrice',
-		name: 'Current Price',
+		id: "currentPrice",
+		name: "Current Price",
 	},
 	{
-		id: 'marketCap',
-		name: 'Market Cap',
+		id: "marketCap",
+		name: "Market Cap",
 	},
 	{
-		id: 'marketCapRank',
-		name: 'Market Cap Rank',
+		id: "marketCapRank",
+		name: "Market Cap Rank",
 	},
 	{
-		id: 'highLow24H',
-		name: '24-Hour High/Low',
+		id: "highLow24H",
+		name: "24-Hour High/Low",
 	},
 	{
-		id: 'vol24H',
-		name: '24-Hour Volume',
+		id: "vol24H",
+		name: "24-Hour Volume",
 	},
 ];
 

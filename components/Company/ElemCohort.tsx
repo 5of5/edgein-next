@@ -3,6 +3,8 @@ import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemReactions } from "@/components/ElemReactions";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getLayerClass } from "@/utils/style";
 import {
 	Companies_Bool_Exp,
@@ -140,6 +142,20 @@ export const ElemCohort: FC<Props> = ({
 											<div className="text-gray-400 line-clamp-3">
 												{company.overview}
 											</div>
+										</div>
+										<div
+											className="flex items-center justify-between mt-4 gap-x-5"
+											onClick={(e) => e.stopPropagation()}
+										>
+											<ElemReactions
+												resource={company}
+												resourceType={"companies"}
+											/>
+											<ElemSaveToList
+												resourceId={company.id}
+												resourceType={"companies"}
+												slug={company.slug!}
+											/>
 										</div>
 									</a>
 								</ElemCarouselCard>
