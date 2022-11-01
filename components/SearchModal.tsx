@@ -30,7 +30,7 @@ type HitCompaniesProps = {
 	hit: AlgoliaHit<{
 		name: string;
 		overview: string;
-		coin: { ticker: string };
+		coinTicker: string;
 		logo: string;
 		slug: string;
 		empty: boolean;
@@ -86,13 +86,18 @@ const HitCompanies = (onClose: () => void) =>
 							}}
 						/>
 					</h2>
-
-					{/* Ticker 
-					{hit.coin && (
-						<span className="ml-2 uppercase">{hit.coin.ticker}</span>
+					{hit.coinTicker && (
+						<div className="ml-2 uppercase">
+							<Highlight
+								attribute="coinTicker"
+								hit={hit}
+								classNames={{
+									highlighted:
+										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+								}}
+							/>
+						</div>
 					)}
-					*/}
-
 					<p className="ml-2 text-sm text-slate-600 line-clamp-1">
 						<Highlight
 							attribute="overview"
