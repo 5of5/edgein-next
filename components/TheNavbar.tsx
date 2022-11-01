@@ -42,7 +42,7 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [linkedInError, setLinkedInError] = useState("");
-	const [inviteCode, setInviteCode] = useState(localStorage.inviteCode ?? "");
+	const [inviteCode, setInviteCode] = useState((typeof window !== 'undefined') ? localStorage.inviteCode ?? "" : '');
 
 	useEffect(() => {
 		if (!showForgotPasswordPopup && !showSignUp && !showLoginPopup && !showSearchModal && onboardingStep === 0 && router.asPath.includes("/login/")) {
