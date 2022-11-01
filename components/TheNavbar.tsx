@@ -42,7 +42,7 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [linkedInError, setLinkedInError] = useState("");
-	const [inviteCode, setInviteCode] = useState("");
+	const [inviteCode, setInviteCode] = useState(localStorage.inviteCode ?? "");
 
 	useEffect(() => {
 		if (!showForgotPasswordPopup && !showSignUp && !showLoginPopup && !showSearchModal && onboardingStep === 0 && router.asPath.includes("/login/")) {
@@ -124,8 +124,10 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	useEffect(() => {
 		if (router.query.invite && !user) {
 			setInviteCode(router.query.invite as string);
+			localStorage.inviteCode = router.query.invite as string
 			showSignUpModal("", "");
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.query.invite, user]);
 
 	const logout = async () => {

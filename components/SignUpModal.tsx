@@ -120,6 +120,7 @@ export default function SignUpModal(props: Props) {
 				}),
 			});
 			if (response.status === 200) {
+				localStorage.removeItem('inviteCode')
 				setIsRegistered(true);
 			} else {
 				try {
