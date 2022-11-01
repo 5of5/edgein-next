@@ -23,6 +23,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (company.logo) {
           company.logo = company.logo.url;
         }
+        if (company.coin) {
+          company.coinTicker = company.coin.ticker
+          company.coinName = company.coin.name
+          company.coin = undefined
+        }
         company.objectID = company.id;
         delete company.id;
       }
@@ -144,6 +149,10 @@ const queryForCompanyList = async (date: any) => {
       logo
       slug
       aliases
+      coin {
+        ticker
+        name
+      }
     }
   }
   `
