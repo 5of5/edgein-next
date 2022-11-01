@@ -34,6 +34,16 @@ export const ElemTeamGrid: React.FC<Props> = ({
 					.sort(function (a: any, b: any) {
 						return b.founder - a.founder;
 					});
+
+	// Show inactive members last
+	const peopleInactiveLast = [...peopleFoundersFirst]
+		.slice(0)
+		.sort(
+			(a: any, b: any) =>
+				Date.parse(new Date(a.end_date).toString()) -
+				Date.parse(new Date(b.end_date).toString())
+		);
+
 	return (
 		<section className={className}>
 			{heading && (
@@ -53,7 +63,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 				tags={allTags}
 			/>
 			<div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{peopleFoundersFirst.map((teamMember) => {
+				{peopleInactiveLast.map((teamMember) => {
 					return (
 						<React.Fragment key={teamMember.id}>
 							{teamMember.person && (
@@ -67,6 +77,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 									linkedin={teamMember.person.linkedin}
 									personal_email={teamMember.person.personal_email}
 									work_email={teamMember.person.work_email}
+									end_date={teamMember.end_date}
 								/>
 							)}
 						</React.Fragment>
