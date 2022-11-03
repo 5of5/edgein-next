@@ -1,9 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 
 import {
-  Button,
-  DateField,
-  FunctionField,
   AutocompleteArrayInput,
   AutocompleteInput,
   FileInput,
@@ -17,14 +14,11 @@ import {
   FormDataConsumer,
   useCreate,
   useRedirect,
-  Toolbar,
-  SaveButton,
   useGetList,
   regex,
   required,
 } from "react-admin";
 import { useFormContext } from "react-hook-form";
-import ContentSave from "@mui/icons-material/Save";
 
 import {
   RenderCBIcon,
@@ -41,34 +35,13 @@ import {
   tags,
 } from "../../../utils/constants";
 import { random } from "lodash";
+import ElemToolbar from "../ElemToolbar";
+import ElemSlugInput from "../ElemSlugInput";
 
-const CustomToolbar = () => {
-  const form = useFormContext();
+export const CompanyCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
 
-  const handleSaveDraft = () => {
-    let data = form.getValues();
-    data.status = "draft";
-    create("companies", { data });
-    redirect("/companies");
-  };
-
-  return (
-    <Toolbar>
-      <SaveButton />
-      <Button
-        label="Save As Draft"
-        sx={{ marginLeft: "1rem", padding: "6px 16px", fontSize: "0.9rem" }}
-        variant="outlined"
-        onClick={handleSaveDraft}
-        startIcon={<ContentSave />}
-      />
-    </Toolbar>
-  );
-};
-
-export const CompanyCreate = () => {
   const [logo, setLogo] = React.useState(null);
   const { data: companies } = useGetList("companies", {});
   const [slug, setSlug] = React.useState("");
@@ -132,25 +105,10 @@ export const CompanyCreate = () => {
     }
   };
 
-  const SlugInput = ({ slug }: any) => {
-    const { setValue } = useFormContext();
-
-    React.useEffect(() => {
-      if (slug !== "") setValue("slug", slug);
-    }, [slug, setValue]);
-
-    return (
-      <TextInput
-        className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="slug"
-        validate={required()}
-        sx={{
-          ".MuiFormHelperText-root": {
-            display: "block !important",
-          },
-        }}
-      />
-    );
+  const handleSaveDraft = (data: any) => {
+    data.status = "draft";
+    create("companies", { data });
+    redirect("/companies");
   };
 
   return (
@@ -191,7 +149,7 @@ export const CompanyCreate = () => {
           validate={(value) =>
             validateNameAndSlugAndEmailAndDomain(false, value, companies)
           }
-          toolbar={<CustomToolbar />}
+          toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
         >
           <FormDataConsumer>
             {({ formData, ...rest }) => (
@@ -235,7 +193,7 @@ export const CompanyCreate = () => {
               </>
             </>
           )}
-          <SlugInput slug={slug} />
+          <ElemSlugInput slug={slug} validate={required()} />
 
           <FileInput
             onRemove={onDropRejected}
@@ -259,9 +217,9 @@ export const CompanyCreate = () => {
           <ReferenceInput label="Coin" source="coin_id" reference="coins">
             <AutocompleteInput
               className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-              style={{padding: 0, border: "none"}}
+              style={{ padding: 0, border: "none" }}
               optionText="name"
-              filterToQuery={search => ({ name: search })}
+              filterToQuery={(search) => ({ name: search })}
             />
           </ReferenceInput>
           <NumberInput
@@ -329,7 +287,7 @@ export const CompanyCreate = () => {
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             source="tags"
             choices={tags}
-            style={{padding: 0, border: "none"}}
+            style={{ padding: 0, border: "none" }}
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"

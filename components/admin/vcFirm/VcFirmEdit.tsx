@@ -1,67 +1,64 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
+import {
+  FileInput,
+  ImageField,
+  Edit,
+  SimpleForm,
+  TextInput,
+  SelectInput,
+  FormDataConsumer,
+  useGetList,
+  useGetOne,
+  required,
+} from "react-admin";
+import { uploadFile, deleteFile } from "@/utils/fileFunctions";
+import {
+  status,
+  validateNameAndSlugAndEmailAndDomain,
+} from "@/utils/constants";
+import { random } from "lodash";
 import { useFormContext } from "react-hook-form";
-
+import { useParams } from "react-router-dom";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 import {
   RenderCBIcon,
   RenderGitHubIcon,
   RenderGoogleIcon,
   RenderLinkedinIcon,
 } from "@/utils/other";
-
-import {
-  ImageField,
-  TextField,
-  Edit,
-  EditButton,
-  TextInput,
-  useGetList,
-  Toolbar,
-  Button,
-  FileInput,
-  FormDataConsumer,
-  SelectInput,
-  SimpleForm,
-  useRefresh,
-  required,
-  // useGetOne,
-} from "react-admin";
-
-import { FormHelperText, Select } from "@mui/material";
-import MuiTextField from "@mui/material/TextField";
-
-import { random } from "lodash";
-import { uploadFile, deleteFile } from "../../../utils/fileFunctions";
-import {
-  validateNameAndSlugAndEmailAndDomain,
-  status,
-} from "../../../utils/constants";
-
-import { useParams } from "react-router-dom";
-import { TeamMemberEdit } from "./TeamMemberEdit";
 import ElemTitle from "../ElemTitle";
 import ElemSlugInput from "../ElemSlugInput";
 
-export const PersonEdit = () => {
+export const VcFirmEdit = () => {
   const [logo, setLogo] = useState(null);
   const [oldLogo, setOldLogo] = useState(null);
   const [isImageUpdated, setIsImageUpdated] = useState(false);
-  const [slug, setSlug] = useState("");
-
+  const { data: vcFirm } = useGetList("vc_firms", {});
+  const [slug, setSlug] = React.useState("");
+  const formRef = useRef<any>(null);
+  const { height } = useWindowDimensions();
+  const [formHeight, setFormHeight] = useState(0);
   const [isIcon, setIsIcon] = useState(true);
   const [keyword, setKeyword] = useState("");
 
-  const { data: people } = useGetList("people", {});
+  const { id } = useParams();
+  const { data: currentData } = useGetOne("vc_firms", { id });
 
-  const { id: currentId } = useParams();
-  // const { data: currentData } = useGetOne("companies", { id: currentId });
-  //
-  // useEffect(() => {
-  //   if (currentData) setKeyword(currentData.name)
-  // }, [currentData])
+  useEffect(() => {
+    if (currentData) setKeyword(currentData.name);
+  }, [currentData]);
+
+  useEffect(() => {
+    if (formRef?.current?.clientHeight + 100 >= height)
+      setFormHeight(formRef?.current?.clientHeight + 100);
+  }, [formRef?.current?.clientHeight, height]);
 
   const transform = async (data: any) => {
     var formdata = { ...data };
+    const tagValue = formdata.tags ? formdata.tags : [];
+    const finalValue =
+      typeof tagValue === "string" ? tagValue.split(",") : tagValue;
+
     if (oldLogo) {
       //delete old file from s3
       deleteFile(oldLogo);
@@ -70,12 +67,14 @@ export const PersonEdit = () => {
       const res = await uploadFile(logo);
       formdata = {
         ...data,
-        picture: res.file,
+        logo: res.file,
+        tags: finalValue,
       };
       return formdata;
     } else {
       formdata = {
         ...data,
+        tags: finalValue,
       };
       return formdata;
     }
@@ -100,17 +99,15 @@ export const PersonEdit = () => {
   const handleNameBlur = (value: string, formData: any) => {
     let filterSlug: any[] | undefined;
     let convertedValue = value.replace(/ /g, "-").toLowerCase();
-    filterSlug = people?.filter(
+    filterSlug = vcFirm?.filter(
       (f) => f.slug === convertedValue && f.status !== "draft"
     );
 
-    if (formData.slug === "") {
-      if (filterSlug && filterSlug?.length > 0) {
-        handleNameBlur(filterSlug[0].slug + "-" + random(10), formData);
-      }
-      if (filterSlug?.length === 0) {
-        setSlug(convertedValue);
-      }
+    if (filterSlug && filterSlug?.length > 0) {
+      handleNameBlur(filterSlug[0].slug + "-" + random(10), formData);
+    }
+    if (filterSlug?.length === 0) {
+      setSlug(convertedValue);
     }
   };
 
@@ -119,32 +116,54 @@ export const PersonEdit = () => {
     setKeyword(e.target.value);
   };
 
+  const handleCheckScreenHeight = () => {
+    setFormHeight(formRef?.current?.clientHeight + 100);
+  };
+
   return (
-    <div style={{ paddingBottom: "20px" }}>
-      <Edit
-        title={<ElemTitle category="Person" />}
-        transform={transform}
-        sx={{
-          ".MuiPaper-root": {
-            position: "relative",
+    <Edit
+      title={<ElemTitle category="Vc Firm" />}
+      transform={transform}
+      sx={{
+        ".MuiCardContent-root": {
+          "& > div": {
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+            flexDirection: "row !important",
           },
-          ".MuiCardContent-root": {
-            "& > div": {
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              flexDirection: "row !important",
-            },
+          marginBottom: formHeight >= height ? "60px" : 0,
+        },
+        ".MuiToolbar-root": {
+          position: "fixed",
+          width: "100%",
+          maxWidth: "inherit",
+          bottom: 0,
+          zIndex: 100,
+          background: "#fff",
+          borderRadius: "4px",
+          boxShadow:
+            "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
+        },
+        ".MuiFormHelperText-root": {
+          display: "none",
+        },
+        ".customForm": {
+          "& > form": {
+            maxWidth: formRef?.current?.offsetWidth || "100%",
           },
-          ".MuiFormHelperText-root": {
-            display: "none",
-          },
-        }}
+        },
+      }}
+    >
+      <div
+        className="customForm"
+        ref={formRef}
+        style={{ position: "relative" }}
       >
         <SimpleForm
           validate={(value) =>
-            validateNameAndSlugAndEmailAndDomain(true, value, people)
+            validateNameAndSlugAndEmailAndDomain(false, value, vcFirm)
           }
         >
           <TextInput
@@ -192,24 +211,28 @@ export const PersonEdit = () => {
               />
             </>
           )}
+
           <ElemSlugInput slug={slug} validate={required()} />
+
           <FileInput
             className="w-full"
             onRemove={onDropRejected}
             options={{ onDrop: onSelect }}
-            source="picture"
-            label="picture"
+            source="logo"
+            label="logo"
             accept="image/*"
             placeholder={<p>Drop your file here</p>}
           >
             <ImageField source="src" title="title" />
           </FileInput>
           {!logo && !isImageUpdated && (
-            <ImageField className="w-full" source="picture.url" title="Logo" />
+            <ImageField className="w-full" source="logo.url" title="Logo" />
           )}
           <TextInput
-            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="type"
+            className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="overview"
+            onChange={handleCheckScreenHeight}
+            multiline
           />
           <SelectInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -218,25 +241,20 @@ export const PersonEdit = () => {
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="github"
-            sx={{
-              ".MuiFormHelperText-root": {
-                display: "block !important",
-              },
-            }}
+            source="location"
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="personal_email"
-            sx={{
-              ".MuiFormHelperText-root": {
-                display: "block !important",
-              },
-            }}
+            source="year_founded"
+          />
+          <TextInput
+            placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="tags"
           />
           <TextInput
             className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-            source="work_email"
+            source="website"
             sx={{
               ".MuiFormHelperText-root": {
                 display: "block !important",
@@ -252,9 +270,17 @@ export const PersonEdit = () => {
               },
             }}
           />
+          <TextInput
+            className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+            source="twitter"
+            sx={{
+              ".MuiFormHelperText-root": {
+                display: "block !important",
+              },
+            }}
+          />
         </SimpleForm>
-      </Edit>
-      <TeamMemberEdit />
-    </div>
+      </div>
+    </Edit>
   );
 };
