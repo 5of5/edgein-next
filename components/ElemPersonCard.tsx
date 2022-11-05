@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ElemPhoto } from "../components/ElemPhoto";
 import { IconEmail, IconLinkedIn } from "./Icons";
+import { formatDate } from "@/utils";
 
 type Props = {
 	href?: string;
@@ -11,6 +12,7 @@ type Props = {
 	linkedin?: string | null;
 	personal_email?: string | null;
 	work_email?: string | null;
+	end_date?: string | null;
 };
 
 export const ElemPersonCard: React.FC<Props> = ({
@@ -22,11 +24,16 @@ export const ElemPersonCard: React.FC<Props> = ({
 	linkedin,
 	personal_email,
 	work_email,
+	end_date,
 }) => {
 	return (
 		<div>
 			<Link href={href}>
-				<a className="flex items-center p-1 border border-black/10 rounded-lg transition-all hover:shadow hover:-translate-y-0.5">
+				<a
+					className={`flex items-start p-1 border border-black/10 rounded-lg transition-all hover:shadow hover:-translate-y-0.5 ${
+						end_date && "opacity-50 hover:opacity-100"
+					}`}
+				>
 					<ElemPhoto
 						photo={photo}
 						wrapClass="flex items-center justify-center shrink-0 w-20 h-20 rounded-lg overflow-hidden"
@@ -48,6 +55,17 @@ export const ElemPersonCard: React.FC<Props> = ({
 								{founder && text && `, `}
 								{text && <span title={text}>{text}</span>}
 							</p>
+						)}
+
+						{end_date && (
+							<div className="text-xs">
+								Ended{" "}
+								{formatDate(end_date, {
+									month: "short",
+									day: "2-digit",
+									year: "numeric",
+								})}
+							</div>
 						)}
 						<div className="inline-flex space-x-2 py-1">
 							{linkedin && (

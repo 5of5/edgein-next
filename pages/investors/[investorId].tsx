@@ -129,10 +129,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					)}
 
 					<div className="flex items-center mt-4 gap-x-5">
-						<ElemReactions
-							resource={vcfirm}
-							resourceType={"vc_firms"}
-						/>
+						<ElemReactions resource={vcfirm} resourceType={"vc_firms"} />
 						<ElemSaveToList
 							resourceId={vcfirm.id}
 							resourceType={"vc_firms"}
@@ -192,9 +189,15 @@ const VCFirm: NextPage<Props> = (props) => {
 														</span>
 														<div className="mb-4">
 															<h2 className="font-bold">
-																{`${
-																	activity.company ? activity.company.name : ""
-																}`}
+																{activity.company && (
+																	<Link
+																		href={`/companies/${activity.company["slug"]}`}
+																	>
+																		<a className="hover:text-primary-500">
+																			{activity.company["name"]}
+																		</a>
+																	</Link>
+																)}
 
 																{`
 															raised 

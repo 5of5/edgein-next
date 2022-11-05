@@ -52,7 +52,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 		where: filters as Companies_Bool_Exp,
 	});
 
-	const companies = companiesData?.companies || []
+	const companies = companiesData?.companies || [];
 
 	return (
 		<div className={`bg-white rounded-lg p-5 ${className}`}>

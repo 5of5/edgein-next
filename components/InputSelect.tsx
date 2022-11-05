@@ -11,6 +11,8 @@ import {
 
 type Props = {
 	className?: string;
+	buttonClasses?: string;
+	dropdownClasses?: string;
 	value?: any;
 	placeholder?: any;
 	onChange?: any;
@@ -19,6 +21,8 @@ type Props = {
 
 export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 	className = "",
+	buttonClasses = "",
+	dropdownClasses = "",
 	value, //{title: "", description: ""}
 	placeholder = "",
 	options,
@@ -46,7 +50,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 				{({ open }) => (
 					<>
 						<div className="relative">
-							<Listbox.Button className="relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500">
+							<Listbox.Button
+								className={`relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses}`}
+							>
 								<div className={` ${className} truncate`}>
 									{value?.title ? value.title : placeholder}
 									<span className="text-gray-400 text-sm ml-2">
@@ -65,7 +71,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 								leaveFrom="opacity-100"
 								leaveTo="opacity-0"
 							>
-								<Listbox.Options className="absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none">
+								<Listbox.Options
+									className={`absolute z-10 mt-1 w-full bg-white border border-dark-500/10 divide-y divide-gray-100 shadow-xl max-h-60 rounded-md overflow-auto focus:outline-none ${dropdownClasses}`}
+								>
 									{options.map((option: any, index: number) => (
 										<Listbox.Option
 											key={index}
@@ -75,9 +83,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 													active
 														? "text-primary-500 bg-primary-100"
 														: "text-dark-500"
-												}  select-none relative py-2 pl-3 pr-9 ${
+												}  select-none relative py-2 pl-3 pr-4 ${
 													option.disabled
-														? "cursor-not-allowed"
+														? "cursor-not-allowed opacity-50"
 														: "cursor-default"
 												}`
 											}

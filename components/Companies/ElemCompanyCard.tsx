@@ -11,15 +11,10 @@ import Link from "next/link";
 
 type Props = {
 	company: Companies;
-	toggleViewMode: boolean;
 	tagOnClick: any;
 };
 
-export const ElemCompanyCard: FC<Props> = ({
-	company,
-	toggleViewMode,
-	tagOnClick,
-}) => {
+export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 	const [companyData, setCompanyData] = useState(company);
 
 	useEffect(() => {
@@ -30,18 +25,8 @@ export const ElemCompanyCard: FC<Props> = ({
 
 	return (
 		<Link href={`/companies/${slug}`}>
-			<a
-				className={`flex flex-col ${
-					toggleViewMode ? "md:flex-row md:items-center" : ""
-				} mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow`}
-			>
-				<div
-					className={`flex shrink-0 ${
-						toggleViewMode
-							? "md:items-center md:mb-0 md:mr-4 md:w-64 lg:w-72"
-							: "w-full"
-					}`}
-				>
+			<a className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow">
+				<div className="flex shrink-0 w-full">
 					<ElemPhoto
 						photo={logo}
 						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
@@ -72,9 +57,7 @@ export const ElemCompanyCard: FC<Props> = ({
 				<div className="grow">
 					{(layer || tags) && (
 						<div
-							className={`mt-4 flex flex-wrap gap-2 ${
-								toggleViewMode && "lg:mt-0"
-							}`}
+							className="mt-4 flex flex-wrap gap-2"
 							onClick={(e) => e.stopPropagation()}
 						>
 							{layer && (
@@ -102,7 +85,7 @@ export const ElemCompanyCard: FC<Props> = ({
 					)}
 
 					{overview && (
-						<div className={`grow mt-4 ${toggleViewMode && "max-w-sm mr-4"}`}>
+						<div className="grow mt-4">
 							<div className="text-gray-400 line-clamp-3">{overview}</div>
 						</div>
 					)}

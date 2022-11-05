@@ -1,5 +1,6 @@
 import React, { useEffect, useState, MutableRefObject, useRef } from "react";
 import { NextPage, GetServerSideProps } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
@@ -30,7 +31,7 @@ import { sortBy } from "lodash";
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
-    metrics: Metric[];
+	metrics: Metric[];
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -40,7 +41,14 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const [company, setCompany] = useState<Companies>(props.company);
 
-	const [tokenInfo, setTokenInfo] = useState<TokenInfo>({ currentPrice: 0, marketCap: 0, marketCapRank: 0, low24H: 0, high24H: 0, vol24H: 0 });
+	const [tokenInfo, setTokenInfo] = useState<TokenInfo>({
+		currentPrice: 0,
+		marketCap: 0,
+		marketCapRank: 0,
+		low24H: 0,
+		high24H: 0,
+		vol24H: 0,
+	});
 
 	//Limit Activity
 	const [activityLimit, setActivityLimit] = useState(10);
@@ -116,18 +124,6 @@ const Company: NextPage<Props> = (props: Props) => {
 		});
 	}
 
-	const getInvestorsNames = (investments: Array<Investments>) => {
-		if (investments && investments.length > 0) {
-			const names = `${
-				investments[0].person ? investments[0].person.name + "," : ""
-			} ${
-				investments[0].vc_firm ? investments[0].vc_firm.name : ""
-			} and others`;
-			return names;
-		}
-		return "";
-	};
-
 	return (
 		<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
 			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
@@ -164,10 +160,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						</p>
 					)}
 					<div className="flex items-center mt-4 gap-x-5">
-						<ElemReactions
-							resource={company}
-							resourceType={"companies"}
-						/>
+						<ElemReactions resource={company} resourceType={"companies"} />
 						<ElemSaveToList
 							resourceId={company.id}
 							resourceType={"companies"}
@@ -176,28 +169,63 @@ const Company: NextPage<Props> = (props: Props) => {
 					</div>
 				</div>
 				<div className="col-span-3 mt-7 lg:mt-0">
-					{Object.values(tokenInfo).some(i => i > 0) && (
+					{Object.values(tokenInfo).some((i) => i > 0) && (
 						<section className="bg-white shadow rounded-lg p-5 md:mt-0">
 							<h2 className="text-xl font-bold">Token Info</h2>
 							<div className="flex flex-col space-y-2 mt-2">
-                                {props.metrics.map((item) => {
-									const metricsClass = tokenInfo[item.id as keyof TokenInfo] ? "bg-green-100 text-green-500" : "bg-slate-200 text-slate-600"
+								{props.metrics.map((item) => {
+									let metricsClass = "";
+
+									if (item.id === "currentPrice") {
+										metricsClass = "text-green-700";
+									} else if (item.id === "marketCap") {
+										metricsClass = "text-green-700";
+									} else if (item.id === "marketCapRank") {
+										metricsClass = "text-slate-600";
+									} else if (item.id === "highLow24H") {
+										metricsClass = "text-slate-600";
+									} else if (item.id === "vol24H") {
+										metricsClass = "text-green-700";
+									} else {
+										metricsClass = "";
+									}
+
 									return (
-										<div className="flex items-center space-x-2" key={item.id}>
+										<div
+											className="flex items-center justify-between space-x-2"
+											key={item.id}
+										>
 											<div className="text-slate-600">{item.name}</div>
-											<div className={`${metricsClass} text-sm font-semibold border-none rounded-2xl py-1 px-2`}>
-											{tokenInfo[item.id as keyof TokenInfo] ?
-												item.id === "highLow24H"
-													? `$${convertAmountRaised(tokenInfo.high24H)}/$${convertAmountRaised(
-														tokenInfo.low24H
-													)}`
-													: `${item.id === "marketCapRank" ? "#" : "$"}${convertAmountRaised(tokenInfo[item.id as keyof TokenInfo])}`
-											: `N/A`
-											}
+											<div
+												className={`${metricsClass} text-sm font-semibold border-none rounded-2xl py-1 px-2`}
+											>
+												{tokenInfo[item.id as keyof TokenInfo]
+													? item.id === "highLow24H"
+														? `$${convertAmountRaised(
+																tokenInfo.high24H
+														  )}/$${convertAmountRaised(tokenInfo.low24H)}`
+														: `${
+																item.id === "marketCapRank" ? "#" : "$"
+														  }${convertAmountRaised(
+																tokenInfo[item.id as keyof TokenInfo]
+														  )}`
+													: `N/A`}
 											</div>
 										</div>
-                                	)}
-								)}
+									);
+								})}
+							</div>
+							<div className="mt-3 text-xs text-slate-400">
+								Token data source:{" "}
+								<a
+									href="https://www.amberdata.io/?ref=edgeinio"
+									target="_blank"
+									rel="noreferrer"
+									className="hover:text-slate-600"
+								>
+									AmberData
+								</a>{" "}
+								and Coingecko
 							</div>
 						</section>
 					)}
@@ -275,13 +303,51 @@ const Company: NextPage<Props> = (props: Props) => {
 														</span>
 
 														<div className="mb-4">
-															<h2 className="font-bold">
-																{`Raised $${convertAmountRaised(
-																	activity.amount
-																)} from ${getInvestorsNames(
-																	activity.investments
-																)}`}
-															</h2>
+															<div className="font-bold">
+																<div className="inline">
+																	Raised{" "}
+																	<div className="inline text-green-600">
+																		${`${convertAmountRaised(activity.amount)}`}
+																	</div>{" "}
+																	from:{" "}
+																</div>
+																{activity.investments.map(
+																	(item: any, index) => {
+																		return (
+																			<div key={index} className="inline">
+																				{index !== 0 &&
+																					(index ===
+																					activity.investments.length - 1
+																						? ", and "
+																						: ", ")}
+
+																				{item.vc_firm && (
+																					<Link
+																						href={`/investors/${item.vc_firm["slug"]}`}
+																					>
+																						<a className="hover:text-primary-500">
+																							{item.vc_firm["name"]}
+																						</a>
+																					</Link>
+																				)}
+																				{item.vc_firm && item.person && <>/</>}
+
+																				{item.person && (
+																					<Link
+																						href={`/people/${item.person["slug"]}`}
+																					>
+																						<a className="hover:text-primary-500">
+																							{item.person["name"]}
+																						</a>
+																					</Link>
+																				)}
+																			</div>
+																		);
+																	}
+																)}
+																.
+															</div>
+
 															<p className="text-xs text-slate-600">
 																{formatDate(activity.round_date as string, {
 																	month: "short",
@@ -399,25 +465,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			metaDescription,
 			company,
 			sortRounds,
-            metrics: tokenInfoMetrics,
+			metrics: tokenInfoMetrics,
 		},
 	};
 };
 const convertAmountRaised = (theAmount: number) => {
 	return convertToInternationalCurrencySystem(theAmount);
 };
-interface Metric  {
+interface Metric {
 	id: string;
 	name: string;
 }
 
-interface TokenInfo  {
-    currentPrice: number;
-    marketCap: number;
-    marketCapRank: number;
-    low24H: number;
-    high24H: number;
-    vol24H: number;
-};
+interface TokenInfo {
+	currentPrice: number;
+	marketCap: number;
+	marketCapRank: number;
+	low24H: number;
+	high24H: number;
+	vol24H: number;
+}
 
 export default Company;

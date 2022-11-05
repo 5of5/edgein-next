@@ -40,7 +40,7 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 	};
 
 	const forFounders = (
-		<div className="bg-white rounded-3xl p-7 mb-12 transition-all hover:scale-102 hover:shadow lg:mb-0">
+		<div className="bg-white rounded-3xl p-7 mb-12 h-full transition-all hover:scale-102 hover:shadow md:mb-0">
 			<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 				For founders
 			</h3>
@@ -53,7 +53,7 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 	);
 
 	const forInvestors = (
-		<div className="bg-white rounded-3xl p-7 mb-12 transition-all hover:scale-102 hover:shadow lg:mb-0">
+		<div className="bg-white rounded-3xl p-7 mb-12 h-full transition-all hover:scale-102 hover:shadow md:mb-0">
 			<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
 				For investors
 			</h3>
