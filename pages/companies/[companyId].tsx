@@ -177,15 +177,15 @@ const Company: NextPage<Props> = (props: Props) => {
 									let metricsClass = "";
 
 									if (item.id === "currentPrice") {
-										metricsClass = "text-green-500"; //bg-green-100
+										metricsClass = "text-green-700";
 									} else if (item.id === "marketCap") {
-										metricsClass = "text-green-500";
+										metricsClass = "text-green-700";
 									} else if (item.id === "marketCapRank") {
-										metricsClass = "text-slate-600"; //bg-slate-200
+										metricsClass = "text-slate-600";
 									} else if (item.id === "highLow24H") {
 										metricsClass = "text-slate-600";
 									} else if (item.id === "vol24H") {
-										metricsClass = "text-green-500";
+										metricsClass = "text-green-700";
 									} else {
 										metricsClass = "";
 									}
