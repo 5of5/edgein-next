@@ -168,7 +168,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							</button> */}
 						</div>
 
-						<div className="mt-2 p-4 border border-black/10 rounded-lg">
+						<div className="mt-2 py-4 border-t border-black/10">
 							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
 								<>
 									<ul className="flex flex-col">
@@ -188,33 +188,38 @@ const VCFirm: NextPage<Props> = (props) => {
 															<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
 														</span>
 														<div className="mb-4">
-															<h2 className="font-bold">
+															<div className="font-bold inline">
 																{activity.company && (
 																	<Link
 																		href={`/companies/${activity.company["slug"]}`}
 																	>
-																		<a className="hover:text-primary-500">
+																		<a className="text-primary-500 hover:bg-slate-200">
 																			{activity.company["name"]}
 																		</a>
 																	</Link>
-																)}
-
-																{`
-															raised 
-															${
-																activity.amount
-																	? "$" +
-																	  convertToInternationalCurrencySystem(
+																)}{" "}
+																raised{" "}
+																{activity.amount ? (
+																	<div className="inline text-green-600">
+																		$
+																		{`${convertToInternationalCurrencySystem(
 																			activity.amount
-																	  )
-																	: "capital"
-															} / ${
+																		)}`}
+																	</div>
+																) : (
+																	<div className="inline text-green-600">
+																		undisclosed capital
+																		{/* amount */}
+																	</div>
+																)}
+																:{" "}
+																{`${
 																	activity.round
 																		? activity.round
 																		: "Investment round"
 																} from ${vcfirm.name}`}
-															</h2>
-															<p className="text-xs text-slate-600">
+															</div>
+															<p className="text-sm">
 																{formatDate(activity.round_date as string, {
 																	month: "short",
 																	day: "2-digit",

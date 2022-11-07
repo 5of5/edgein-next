@@ -109,7 +109,8 @@ export const CompaniesTags: FC<Props> = ({ onClick, selectedTags }) => {
 							key={index}
 							onClick={(e) => onClick(e, name)}
 							className={`snap-start shrink-0 p-3 basis-auto group cursor-pointer bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition ease-in-out duration-150 hover:bg-slate-300 ${
-								selectedTags.includes(name) && "text-primary-500"
+								selectedTags.includes(name) &&
+								"text-white bg-dark-500 hover:bg-dark-500"
 							}`}
 						>
 							{name}
