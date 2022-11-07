@@ -10,15 +10,15 @@ import { Investment_Rounds } from "@/graphql/types";
 type Props = {
 	className?: string;
 	heading?: string;
-    investments: Investment_Rounds[];
-    onEdit: (round: any) => void;
+	investments: Investment_Rounds[];
+	onEdit: (round: any) => void;
 };
 
 export const ElemEditInvestments: React.FC<Props> = ({
 	className,
 	heading,
-    investments,
-    onEdit = () => {}
+	investments,
+	onEdit = () => {},
 }) => {
 	const columns = React.useMemo(
 		() => [
@@ -77,17 +77,13 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
 							{vcsWithPartner.map((investment: any, index: number) => {
 								return (
-									<div
-										key={investment.id}
-										className="flex"
-									>
+									<div key={investment.id} className="flex">
 										{investment.vc_firm && (
 											<Link
 												href={`/investors/${investment.vc_firm.slug}`}
 												key={investment.vc_firm.id}
 											>
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-													
 													<span className="line-clamp-2">
 														{`${investment.vc_firm.name}, `}
 													</span>
@@ -101,9 +97,10 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												key={investment.person.id}
 											>
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
-													
 													<span className="line-clamp-2">
-														{`${investment.person.name}${(index < vcsWithPartner.length-1 ? ', ' : '')}`}
+														{`${investment.person.name}${
+															index < vcsWithPartner.length - 1 ? ", " : ""
+														}`}
 													</span>
 												</a>
 											</Link>
@@ -114,19 +111,17 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
 							{vcs.map((investment: any, index: number) => {
 								return (
-									<div
-										key={investment.id}
-										className="flex"
-									>
+									<div key={investment.id} className="flex">
 										{investment.vc_firm && (
 											<Link
 												href={`/investors/${investment.vc_firm.slug}`}
 												key={investment.vc_firm.id}
 											>
 												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
-													
 													<span className="line-clamp-2">
-														{`${investment.vc_firm.name}${(index < vcs.length-1 ? ', ' : '')}`}
+														{`${investment.vc_firm.name}${
+															index < vcs.length - 1 ? ", " : ""
+														}`}
 													</span>
 												</a>
 											</Link>
@@ -135,21 +130,19 @@ export const ElemEditInvestments: React.FC<Props> = ({
 								);
 							})}
 
-							{angels.map((investment: any, index:number) => {
+							{angels.map((investment: any, index: number) => {
 								return (
-									<div
-										key={investment.id}
-										className="flex"
-									>
+									<div key={investment.id} className="flex">
 										{investment.person && (
 											<Link
 												href={`/people/${investment.person.slug}`}
 												key={investment.person.id}
 											>
 												<a className="investor flex items-center space-x-3 hover:opacity-70">
-													
 													<span className="line-clamp-2">
-														{`${investment.person.name}${(index < angels.length-1 ? ', ' : '')}`}
+														{`${investment.person.name}${
+															index < angels.length - 1 ? ", " : ""
+														}`}
 													</span>
 												</a>
 											</Link>
@@ -167,9 +160,14 @@ export const ElemEditInvestments: React.FC<Props> = ({
 				Header: " ",
 				accessor: "" as const,
 				Cell: (props: any) => (
-				<button onClick={() => {onEdit(props.row.original)}} className="px-1 py-2 text-primary-500">
-					Edit
-				</button>
+					<button
+						onClick={() => {
+							onEdit(props.row.original);
+						}}
+						className="px-1 py-2 text-primary-500"
+					>
+						Edit
+					</button>
 				),
 			},
 		],
@@ -210,8 +208,7 @@ export const ElemEditInvestments: React.FC<Props> = ({
 
 	return (
 		<section className={className}>
-			
-			<div className="mt-2 overflow-scroll border border-black/10 rounded-lg">
+			<div className="mt-2 overflow-scroll border border-black/10 rounded-lg overscroll-x-none">
 				<table
 					{...getTableProps()}
 					className="table-auto min-w-full divide-y divide-black/10"
@@ -282,15 +279,13 @@ export const ElemEditInvestments: React.FC<Props> = ({
 												{cell.render("Cell")}
 											</td>
 										);
-                                    })}
-                                    
+									})}
 								</tr>
 							);
 						})}
 					</tbody>
 				</table>
 			</div>
-			
 		</section>
 	);
 };
