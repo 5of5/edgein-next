@@ -1,4 +1,3 @@
-import { getAdminRenderData, sortWithData } from "@/utils";
 import React from "react";
 import {
   TextField,
@@ -6,7 +5,6 @@ import {
   ReferenceField,
   ReferenceInput,
   AutocompleteInput,
-  useGetList,
   NumberField,
 } from "react-admin";
 import ElemList from "../ElemList";
@@ -40,24 +38,6 @@ const filters = [
 ];
 
 export const InvestmentList = () => {
-  const [customSort, setCustomSort] = React.useState({
-    field: "id",
-    order: "ASC",
-  });
-  const headers: string[] = [
-    "id",
-    "person_id",
-    "round_id",
-    "vc_firm_id",
-    "status",
-  ];
-  const { data } = useGetList("investments", {
-    pagination: { page: 1, perPage: 10 },
-  });
-  let renderData = getAdminRenderData(data, headers, "/5");
-
-  renderData = renderData && sortWithData(renderData, customSort);
-
   return (
     <ElemList filters={filters}>
       <EditButton />

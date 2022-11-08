@@ -9,12 +9,9 @@ import {
   DateField,
   NumberField,
   AutocompleteInput,
-  useGetList,
 } from "react-admin";
-import { useFormContext } from "react-hook-form";
 import { roundChoices, currencyChoices } from "@/utils/constants";
 import ElemList from "../ElemList";
-import { getAdminRenderData, sortWithData } from "@/utils";
 
 const filters = [
   <ReferenceInput key="searchCompany" source="company_id" reference="companies">
@@ -40,27 +37,6 @@ const filters = [
 ];
 
 export const InvestmentRoundList = () => {
-  const [customSort, setCustomSort] = React.useState({
-    field: "id",
-    order: "ASC",
-  });
-  const headers: string[] = [
-    "id",
-    "company_id",
-    "round_date",
-    "round",
-    "amount",
-    "currency",
-    "valuation",
-    "status",
-  ];
-  const { data } = useGetList("investment_rounds", {
-    pagination: { page: 1, perPage: 10 },
-  });
-  let renderData = getAdminRenderData(data, headers, "/8");
-
-  renderData = renderData && sortWithData(renderData, customSort);
-
   return (
     <ElemList filters={filters}>
       <EditButton />

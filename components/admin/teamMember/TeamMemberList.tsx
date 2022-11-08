@@ -10,11 +10,9 @@ import {
   SelectField,
   BooleanField,
   AutocompleteInput,
-  useGetList,
 } from "react-admin";
 import { functionChoicesTM, seniorityChoicesTM } from "@/utils/constants";
 import ElemList from "../ElemList";
-import { getAdminRenderData, sortWithData } from "@/utils";
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
@@ -45,28 +43,6 @@ const filters = [
 ];
 
 export const TeamMemberList = () => {
-  const [customSort, setCustomSort] = React.useState({
-    field: "id",
-    order: "ASC",
-  });
-  const headers: string[] = [
-    "id",
-    "company_id",
-    "person_id",
-    "function",
-    "start_date",
-    "end_date",
-    "founder",
-    "seniority",
-    "title",
-  ];
-  const { data } = useGetList("team_members", {
-    pagination: { page: 1, perPage: 10 },
-  });
-  let renderData = getAdminRenderData(data, headers, "/9");
-
-  renderData = renderData && sortWithData(renderData, customSort);
-
   return (
     <ElemList filters={filters}>
       <EditButton />
