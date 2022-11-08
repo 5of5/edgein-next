@@ -5,10 +5,16 @@ import useAdminTransform from "@/hooks/useAdminTransform";
 import ElemTitle from "../ElemTitle";
 import ElemMutationBase from "../ElemMutationBase";
 import CompanyForm from "./CompanyForm";
-import { withImageTransformData, withoutImageTransformData } from "./services";
+import {
+  withImageTransformData,
+  withoutImageTransformData,
+  getRootStyle,
+} from "./services";
 
 export const CompanyEdit = () => {
   const formRef = useRef<any>(null);
+
+  const rootStyle = getRootStyle(formRef);
 
   const { id } = useParams();
   const { data: currentData } = useGetOne("companies", { id });
@@ -24,30 +30,7 @@ export const CompanyEdit = () => {
         action="edit"
         title={<ElemTitle category="Company" />}
         transform={transform}
-        rootStyle={{
-          ".MuiPaper-root": {
-            marginBottom: "20px",
-          },
-          ".MuiCardContent-root": {
-            background: "none",
-            border: 0,
-            "& > div": {
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              flexDirection: "row !important",
-            },
-          },
-          ".MuiFormHelperText-root": {
-            display: "none",
-          },
-          ".customForm": {
-            "& > form": {
-              maxWidth: formRef?.current?.offsetWidth || "100%",
-            },
-          },
-        }}
+        rootStyle={rootStyle}
       >
         <CompanyForm
           action="edit"

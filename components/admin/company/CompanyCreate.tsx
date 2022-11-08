@@ -4,13 +4,19 @@ import useAdminTransform from "@/hooks/useAdminTransform";
 import ElemToolbar from "../ElemToolbar";
 import ElemMutationBase from "../ElemMutationBase";
 import CompanyForm from "./CompanyForm";
-import { withImageTransformData, withoutImageTransformData } from "./services";
+import {
+  getRootStyle,
+  withImageTransformData,
+  withoutImageTransformData,
+} from "./services";
 
 export const CompanyCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
 
   const formRef = useRef<any>(null);
+
+  const rootStyle = getRootStyle(formRef);
 
   const { transform } = useAdminTransform({
     withImageTransformData,
@@ -28,30 +34,7 @@ export const CompanyCreate = () => {
       action="create"
       title="Create a Company"
       transform={transform}
-      rootStyle={{
-        ".MuiPaper-root": {
-          marginBottom: "20px",
-        },
-        ".MuiCardContent-root": {
-          background: "none",
-          border: 0,
-          "& > div": {
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-            flexDirection: "row !important",
-          },
-        },
-        ".MuiFormHelperText-root": {
-          display: "none",
-        },
-        ".customForm": {
-          "& > form": {
-            maxWidth: formRef?.current?.offsetWidth || "100%",
-          },
-        },
-      }}
+      rootStyle={rootStyle}
     >
       <CompanyForm
         action="create"
