@@ -127,24 +127,42 @@ const Companies: NextPage<Props> = ({
 	) => {
 		event.stopPropagation();
 		event.preventDefault();
-		if (!selectedTags.includes(tag)) {
-			setSelectedTags([...selectedTags, tag]);
-			toast.custom(
-				(t) => (
-					<div
-						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-							t.visible ? "animate-fade-in-up" : "opacity-0"
-						}`}
-					>
-						Filtered By &ldquo;{tag}&rdquo;
-					</div>
-				),
-				{
-					duration: 3000,
-					position: "top-center",
-				}
-			);
-		}
+
+		setSelectedTags((tags) =>
+			tags.includes(tag) ? tags.filter((t) => t !== tag) : [tag, ...tags]
+		);
+
+		selectedTags.includes(tag)
+			? toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Removed &ldquo;{tag}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  )
+			: toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Added &ldquo;{tag}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  );
 	};
 
 	const clearTagFilters = async () => {
@@ -260,7 +278,7 @@ const Companies: NextPage<Props> = ({
 										className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
 										onClick={clearTagFilters}
 									>
-										clear tags
+										clear tags filter
 										<IconX className="ml-0.5 h-3" />
 									</div>
 								</div>
