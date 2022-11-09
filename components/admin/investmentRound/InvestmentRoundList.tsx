@@ -10,11 +10,20 @@ import {
   NumberField,
   AutocompleteInput,
 } from "react-admin";
-import { roundChoices, currencyChoices } from "@/utils/constants";
+import {
+  roundChoices,
+  currencyChoices,
+  ADMIN_REFERENCE_INPUT_PER_PAGE,
+} from "@/utils/constants";
 import ElemList from "../ElemList";
 
 const filters = [
-  <ReferenceInput key="searchCompany" source="company_id" reference="companies">
+  <ReferenceInput
+    key="searchCompany"
+    source="company_id"
+    reference="companies"
+    perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
+  >
     <AutocompleteInput
       style={{ padding: 0, border: "none" }}
       className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
