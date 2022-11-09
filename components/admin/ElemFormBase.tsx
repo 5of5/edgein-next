@@ -10,9 +10,6 @@ type Props = {
 };
 
 const defaultSx = {
-  ".MuiFormHelperText-root": {
-    display: "none",
-  },
   ".MuiPaper-root": {
     position: "relative",
   },
@@ -27,7 +24,7 @@ const defaultSx = {
   },
 };
 
-const ElemMutationBase: FC<Props> = ({
+const ElemFormBase: FC<Props> = ({
   title,
   action,
   transform,
@@ -55,4 +52,4 @@ const ElemMutationBase: FC<Props> = ({
   return null;
 };
 
-export default ElemMutationBase;
+export default ElemFormBase;

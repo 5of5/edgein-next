@@ -1,6 +1,6 @@
 import React from "react";
 import { SimpleForm, TextInput, SelectInput, required } from "react-admin";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 
 export const UserEdit = () => {
@@ -8,7 +8,7 @@ export const UserEdit = () => {
     "w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
 
   return (
-    <ElemMutationBase title={<ElemTitle category="Users" />} action="edit">
+    <ElemFormBase title={<ElemTitle category="Users" />} action="edit">
       <SimpleForm>
         <TextInput className={inputClassName} disabled source="id" />
         <TextInput className={inputClassName} disabled source="email" />
@@ -24,6 +24,6 @@ export const UserEdit = () => {
           validate={required()}
         />
       </SimpleForm>
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

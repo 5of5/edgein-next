@@ -1,6 +1,6 @@
 import React from "react";
 import useAdminTransform from "@/hooks/useAdminTransform";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 import PersonForm from "./PersonForm";
 import { withImageTransformData, withoutImageTransformData } from "./services";
@@ -12,12 +12,12 @@ export const PersonEdit = () => {
   });
 
   return (
-    <ElemMutationBase
+    <ElemFormBase
       title={<ElemTitle category="Person" />}
       action="edit"
       transform={transform}
     >
       <PersonForm action="edit" />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

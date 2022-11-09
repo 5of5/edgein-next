@@ -14,8 +14,16 @@ type ElemIconGroupProps = {
   keyword: string;
 };
 
+const editTopPos = {
+  blockchain: "160px",
+  coin: "160px",
+  company: "135px",
+  person: "75px",
+  vcFirm: "160px",
+};
+
 const ElemIconGroup = ({ category, action, keyword }: ElemIconGroupProps) => {
-  const topPos = action === "create" ? "75px" : "135px";
+  const topPos = action === "create" ? "75px" : editTopPos[category];
   return (
     <>
       <RenderGoogleIcon

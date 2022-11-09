@@ -1,12 +1,12 @@
 import React from "react";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 import InvestorForm from "./InvestorForm";
 
 export const InvestorEdit = () => {
   return (
-    <ElemMutationBase title={<ElemTitle category="VC" />} action="edit">
+    <ElemFormBase title={<ElemTitle category="VC" />} action="edit">
       <InvestorForm />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

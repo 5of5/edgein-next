@@ -1,6 +1,6 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemToolbar from "../ElemToolbar";
 import InvestorForm from "./InvestorForm";
 
@@ -15,8 +15,8 @@ export const InvestorCreate = () => {
   };
 
   return (
-    <ElemMutationBase title="Add an investor to a VC firm" action="create">
+    <ElemFormBase title="Add an investor to a VC firm" action="create">
       <InvestorForm toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />} />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };
