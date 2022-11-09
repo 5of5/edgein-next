@@ -321,7 +321,7 @@ export default function SignUpModal(props: Props) {
 													loading={isLoading}
 													className="w-full my-2"
 												>
-													Sign up and explore
+													Sign up {props.inviteCode ? 'with referral' : 'and explore'}
 												</ElemButton>
 												<p className="text-sm text-center text-slate-600">
 													By signing up, you agree to the{" "}

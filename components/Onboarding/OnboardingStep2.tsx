@@ -4,6 +4,7 @@ import { TagInputText } from "@/components/TagInputText";
 import { TagInputSelect } from "@/components/TagInputSelect";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
+import { tags } from "@/utils/constants";
 
 type Props = {
 	selectedOption: string;
@@ -30,34 +31,48 @@ export default function OnboardingStep2(props: Props) {
 		props.onBack(locationTags, industryTags);
 	};
 
-	const interestsSuggestions = [
-		"Analytics",
-		"API",
-		"Asset",
-		"Bitcoin",
-		"Blockchain",
-		"Centralized",
-		"Chain Tools",
-		"Crypto",
-		"DAO",
-		"D-App",
-		"Database",
-		"DeFi",
-		"Dev Tools",
-		"Ethereum",
-		"Exchange",
-		"Gaming",
-		"Marketplace",
-		"Messaging",
-		"Metaverse",
-		"NFT",
-		"Oracle",
-		"Platform",
-		"Storage",
-		"Wallet",
-		"Native Code",
-		"Nodes",
-	];
+	const getTags = tags.filter(
+		(tag) =>
+			tag.name !== "Layer 0" &&
+			tag.name !== "Layer 1" &&
+			tag.name !== "Layer 2" &&
+			tag.name !== "Layer 3" &&
+			tag.name !== "Layer 4" &&
+			tag.name !== "Layer 5" &&
+			tag.name !== "Layer 6"
+	);
+
+	let interestsSuggestions: string[] = [];
+	getTags.forEach((item) => interestsSuggestions.push(item.name));
+
+	// const interestsSuggestionsOLD = [
+	// 	"Analytics",
+	// 	"API",
+	// 	"Asset",
+	// 	"Bitcoin",
+	// 	"Blockchain",
+	// 	"Centralized",
+	// 	"Chain Tools",
+	// 	"Crypto",
+	// 	"DAO",
+	// 	"D-App",
+	// 	"Database",
+	// 	"DeFi",
+	// 	"Dev Tools",
+	// 	"Ethereum",
+	// 	"Exchange",
+	// 	"Gaming",
+	// 	"Marketplace",
+	// 	"Messaging",
+	// 	"Metaverse",
+	// 	"NFT",
+	// 	"Oracle",
+	// 	"Platform",
+	// 	"Storage",
+	// 	"Wallet",
+	// 	"Native Code",
+	// 	"Nodes",
+	// ];
 
 	return (
 		<>

@@ -3,17 +3,16 @@ import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemFiltersWrap } from "@/components/ElemFiltersWrap";
 import { InputSelect } from "@/components/InputSelect";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { ElemButton } from "@/components/ElemButton";
+import { CompaniesTags } from "@/components/Companies/CompaniesTags";
 import { runGraphQl, numberWithCommas } from "@/utils";
 import {
-	IconGrid,
-	IconList,
 	IconSearch,
 	IconAnnotation,
 	IconX,
+	IconFilter,
 } from "@/components/Icons";
 import {
 	Companies,
@@ -86,14 +85,13 @@ const Companies: NextPage<Props> = ({
 		totalEmployees[0]
 	);
 
-	// Layout Grid/List
-	const [toggleViewMode, setToggleViewMode] = useState(false);
+	// Filters
+	const [toggleFilters, setToggleFilters] = useState(false);
 
 	const [page, setPage] = useState<number>(0);
 	const limit = 50;
 	const offset = limit * page;
 
-	//const [selectedTag, setSelectedTag] = useState("");
 	const [selectedTags, setSelectedTags] = useState<any[]>([]);
 
 	useEffect(() => {
@@ -129,25 +127,42 @@ const Companies: NextPage<Props> = ({
 	) => {
 		event.stopPropagation();
 		event.preventDefault();
-		if (!selectedTags.includes(tag)) {
-			setSelectedTags([...selectedTags, tag]);
-			toast.custom(
-				(t) => (
-					<div
-						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-							t.visible ? "animate-fade-in-up" : "opacity-0"
-						}`}
-					>
-						Filtered By &ldquo;
-						{tag}&rdquo;
-					</div>
-				),
-				{
-					duration: 3000,
-					position: "bottom-left",
-				}
-			);
-		}
+
+		setSelectedTags((tags) =>
+			tags.includes(tag) ? tags.filter((t) => t !== tag) : [tag, ...tags]
+		);
+
+		selectedTags.includes(tag)
+			? toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Removed &ldquo;{tag}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  )
+			: toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Added &ldquo;{tag}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  );
 	};
 
 	const clearTagFilters = async () => {
@@ -165,7 +180,7 @@ const Companies: NextPage<Props> = ({
 			),
 			{
 				duration: 3000,
-				position: "bottom-left",
+				position: "top-center",
 			}
 		);
 	};
@@ -239,10 +254,7 @@ const Companies: NextPage<Props> = ({
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<ElemRecentCompanies
-					className="bg-white rounded-lg shadow"
-					heading="Recently Discovered"
-				/>
+				<ElemRecentCompanies className="shadow" heading="Recently Discovered" />
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
@@ -266,7 +278,7 @@ const Companies: NextPage<Props> = ({
 										className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
 										onClick={clearTagFilters}
 									>
-										clear tags
+										clear tags filter
 										<IconX className="ml-0.5 h-3" />
 									</div>
 								</div>
@@ -276,84 +288,83 @@ const Companies: NextPage<Props> = ({
 						<h2 className="text-xl font-bold">All Companies</h2>
 					)}
 
-					<ElemFiltersWrap className="pt-2 filters-wrap">
-						<InputSelect
-							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							value={selectedCompanyFilters}
-							onChange={setSelectedCompanyFilters}
-							options={companyFilters}
-						/>
+					<section className="pt-2 pb-3">
+						<div className="w-full flex flex-wrap justify-between lg:space-x-5 lg:flex-nowrap">
+							<InputSelect
+								className="md:shrink md:basis-0"
+								buttonClasses="w-auto"
+								dropdownClasses="w-60"
+								value={selectedCompanyFilters}
+								onChange={setSelectedCompanyFilters}
+								options={companyFilters}
+							/>
 
-						<InputSelect
-							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							value={selectedLayer}
-							onChange={setSelectedLayer}
-							options={companyLayers}
-						/>
+							<div className="w-full overflow-hidden grow min-w-0 order-last lg:order-none">
+								<CompaniesTags
+									onClick={filterByTag}
+									selectedTags={selectedTags}
+								/>
+							</div>
 
-						<InputSelect
-							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							value={selectedAmountRaised}
-							onChange={setSelectedAmountRaised}
-							options={amountRaised}
-						/>
-
-						<InputSelect
-							className="w-full md:grow md:shrink md:basis-0 md:max-w-[16rem]"
-							value={selectedTotalEmployees}
-							onChange={setSelectedTotalEmployees}
-							options={totalEmployees}
-						/>
-
-						<div className="hidden md:block md:shrink md:basis-0">
-							<ElemButton
-								onClick={() => setToggleViewMode(!toggleViewMode)}
-								btn="white"
-								roundedFull={false}
-								className="rounded-md focus:ring-1 focus:ring-slate-200"
-							>
-								{toggleViewMode ? (
-									<>
-										<IconGrid className="w-5 h-5 mr-1" />
-										Grid
-									</>
-								) : (
-									<>
-										<IconList className="w-5 h-5 mr-1" />
-										List
-									</>
-								)}
-							</ElemButton>
+							<div className="self-end sm:shrink sm:basis-0 sm:self-auto">
+								<ElemButton
+									onClick={() => setToggleFilters(!toggleFilters)}
+									btn="white"
+									roundedFull={false}
+									className="rounded-md font-normal focus:ring-1 focus:ring-slate-200"
+								>
+									<IconFilter className="w-5 h-5 mr-1" />
+									Filters
+								</ElemButton>
+							</div>
 						</div>
-					</ElemFiltersWrap>
+						{toggleFilters && (
+							<div className="mt-3 grid gap-5 grid-cols-1 lg:grid-cols-3">
+								<InputSelect
+									className="w-full"
+									value={selectedLayer}
+									onChange={setSelectedLayer}
+									options={companyLayers}
+								/>
+								<InputSelect
+									className="w-full"
+									value={selectedAmountRaised}
+									onChange={setSelectedAmountRaised}
+									options={amountRaised}
+								/>
+								<InputSelect
+									className="w-full"
+									value={selectedTotalEmployees}
+									onChange={setSelectedTotalEmployees}
+									options={totalEmployees}
+								/>
+							</div>
+						)}
+					</section>
 
 					{companies?.length === 0 && (
-						<>
-							<div className="flex items-center justify-center mx-auto min-h-[40vh]">
-								<div className="w-full max-w-2xl p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-									<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-									<h2 className="mt-5 text-3xl font-bold">No results found</h2>
-									<div className="mt-1 text-lg text-dark-400">
-										Please check spelling, try different filters, or tell us
-										about missing data.
-									</div>
-									<ElemButton
-										onClick={() => setToggleFeedbackForm(true)}
-										btn="white"
-										className="mt-3"
-									>
-										<IconAnnotation className="w-6 h-6 mr-1" />
-										Tell us about missing data
-									</ElemButton>
+						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
+							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+								<h2 className="mt-5 text-3xl font-bold">No results found</h2>
+								<div className="mt-1 text-lg text-dark-400">
+									Please check spelling, try different filters, or tell us about
+									missing data.
 								</div>
+								<ElemButton
+									onClick={() => setToggleFeedbackForm(true)}
+									btn="white"
+									className="mt-3"
+								>
+									<IconAnnotation className="w-6 h-6 mr-1" />
+									Tell us about missing data
+								</ElemButton>
 							</div>
-						</>
+						</div>
 					)}
 
 					<div
-						className={`grid gap-5 grid-cols-1 md:grid-cols-${
-							toggleViewMode ? "1" : "2"
-						} lg:grid-cols-${toggleViewMode ? "1" : "3"}`}
+						className={`grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
 					>
 						{error ? (
 							<h4>Error loading companies</h4>
@@ -369,7 +380,6 @@ const Companies: NextPage<Props> = ({
 									<ElemCompanyCard
 										key={company.id}
 										company={company as Companies}
-										toggleViewMode={toggleViewMode}
 										tagOnClick={filterByTag}
 									/>
 								);

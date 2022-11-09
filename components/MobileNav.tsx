@@ -171,7 +171,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 															setNavOpen(false);
 														}}
 														href={item.href}
-														className="flex py-3 text-lg hover:text-primary-500"
+														className="flex items-center py-3 text-lg hover:text-primary-500"
 													>
 														{item.icon && (
 															<item.icon
@@ -200,7 +200,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 																			onClick={() => {
 																				setNavOpen(false);
 																			}}
-																			className="flex py-3 text-lg hover:text-primary-500"
+																			className="flex items-center py-3 text-lg hover:text-primary-500"
 																		>
 																			{item.icon && (
 																				<item.icon
@@ -214,7 +214,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 																) : (
 																	<a
 																		onClick={item.onClick}
-																		className="flex py-3 text-lg cursor-pointer hover:text-primary-500"
+																		className="flex items-center py-3 text-lg cursor-pointer hover:text-primary-500"
 																	>
 																		{item.icon && (
 																			<item.icon

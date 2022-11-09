@@ -270,7 +270,7 @@ export const ElemInvestments: React.FC<Props> = ({
 			<div className="mt-2 overflow-scroll border border-black/10 rounded-lg">
 				<table
 					{...getTableProps()}
-					className="table-auto min-w-full divide-y divide-black/10"
+					className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
 				>
 					<thead>
 						{headerGroups.map((headerGroup) => {

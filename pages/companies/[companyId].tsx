@@ -177,15 +177,15 @@ const Company: NextPage<Props> = (props: Props) => {
 									let metricsClass = "";
 
 									if (item.id === "currentPrice") {
-										metricsClass = "text-green-500"; //bg-green-100
+										metricsClass = "text-green-700";
 									} else if (item.id === "marketCap") {
-										metricsClass = "text-green-500";
+										metricsClass = "text-green-700";
 									} else if (item.id === "marketCapRank") {
-										metricsClass = "text-slate-600"; //bg-slate-200
+										metricsClass = "";
 									} else if (item.id === "highLow24H") {
-										metricsClass = "text-slate-600";
+										metricsClass = "";
 									} else if (item.id === "vol24H") {
-										metricsClass = "text-green-500";
+										metricsClass = "text-green-700";
 									} else {
 										metricsClass = "";
 									}
@@ -195,7 +195,7 @@ const Company: NextPage<Props> = (props: Props) => {
 											className="flex items-center justify-between space-x-2"
 											key={item.id}
 										>
-											<div className="text-slate-600">{item.name}</div>
+											<div>{item.name}</div>
 											<div
 												className={`${metricsClass} text-sm font-semibold border-none rounded-2xl py-1 px-2`}
 											>
@@ -215,7 +215,7 @@ const Company: NextPage<Props> = (props: Props) => {
 									);
 								})}
 							</div>
-							<div className="mt-3 text-xs text-slate-400">
+							<div className="mt-3 text-xs text-center text-slate-400">
 								Token data source:{" "}
 								<a
 									href="https://www.amberdata.io/?ref=edgeinio"
@@ -285,7 +285,7 @@ const Company: NextPage<Props> = (props: Props) => {
 							</button> */}
 						</div>
 
-						<div className="mt-2 p-4 border border-black/10 rounded-lg">
+						<div className="mt-2 py-4 border-t border-black/10">
 							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
 								<>
 									<ul className="flex flex-col">
@@ -303,14 +303,22 @@ const Company: NextPage<Props> = (props: Props) => {
 														</span>
 
 														<div className="mb-4">
-															<div className="font-bold">
-																<div className="inline">
-																	Raised{" "}
+															<div className="inline font-bold">
+																Raised{" "}
+																{activity.amount ? (
 																	<div className="inline text-green-600">
-																		${`${convertAmountRaised(activity.amount)}`}
-																	</div>{" "}
-																	from:{" "}
-																</div>
+																		$
+																		{`${convertToInternationalCurrencySystem(
+																			activity.amount
+																		)}`}
+																	</div>
+																) : (
+																	<div className="inline text-green-600">
+																		undisclosed capital
+																		{/* amount */}
+																	</div>
+																)}{" "}
+																from:{" "}
 																{activity.investments.map(
 																	(item: any, index) => {
 																		return (
@@ -325,7 +333,7 @@ const Company: NextPage<Props> = (props: Props) => {
 																					<Link
 																						href={`/investors/${item.vc_firm["slug"]}`}
 																					>
-																						<a className="hover:text-primary-500">
+																						<a className="text-primary-500 hover:bg-slate-200">
 																							{item.vc_firm["name"]}
 																						</a>
 																					</Link>
@@ -336,7 +344,7 @@ const Company: NextPage<Props> = (props: Props) => {
 																					<Link
 																						href={`/people/${item.person["slug"]}`}
 																					>
-																						<a className="hover:text-primary-500">
+																						<a className="text-primary-500 hover:bg-slate-200">
 																							{item.person["name"]}
 																						</a>
 																					</Link>

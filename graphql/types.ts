@@ -374,6 +374,7 @@ export type Allowed_Emails = {
   email: Scalars['String'];
   id: Scalars['Int'];
   match_type: Scalars['String'];
+  person_id: Maybe<Scalars['Int']>;
   updated_at: Scalars['date'];
 };
 
@@ -411,6 +412,7 @@ export type Allowed_Emails_Aggregate_FieldsCountArgs = {
 export type Allowed_Emails_Avg_Fields = {
   __typename?: 'allowed_emails_avg_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "allowed_emails". All fields are combined with a logical 'AND'. */
@@ -422,6 +424,7 @@ export type Allowed_Emails_Bool_Exp = {
   email: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   match_type: InputMaybe<String_Comparison_Exp>;
+  person_id: InputMaybe<Int_Comparison_Exp>;
   updated_at: InputMaybe<Date_Comparison_Exp>;
 };
 
@@ -430,12 +433,15 @@ export enum Allowed_Emails_Constraint {
   /** unique or primary key constraint */
   AllowedEmailsEmailKey = 'allowed_emails_email_key',
   /** unique or primary key constraint */
+  AllowedEmailsPersonIdKey = 'allowed_emails_person_id_key',
+  /** unique or primary key constraint */
   AllowedEmailsPkey = 'allowed_emails_pkey'
 }
 
 /** input type for incrementing numeric columns in table "allowed_emails" */
 export type Allowed_Emails_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "allowed_emails" */
@@ -444,6 +450,7 @@ export type Allowed_Emails_Insert_Input = {
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   match_type: InputMaybe<Scalars['String']>;
+  person_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['date']>;
 };
 
@@ -454,6 +461,7 @@ export type Allowed_Emails_Max_Fields = {
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   match_type: Maybe<Scalars['String']>;
+  person_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['date']>;
 };
 
@@ -464,6 +472,7 @@ export type Allowed_Emails_Min_Fields = {
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   match_type: Maybe<Scalars['String']>;
+  person_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['date']>;
 };
 
@@ -489,6 +498,7 @@ export type Allowed_Emails_Order_By = {
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   match_type: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
 };
 
@@ -508,6 +518,8 @@ export enum Allowed_Emails_Select_Column {
   /** column name */
   MatchType = 'match_type',
   /** column name */
+  PersonId = 'person_id',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
@@ -517,6 +529,7 @@ export type Allowed_Emails_Set_Input = {
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   match_type: InputMaybe<Scalars['String']>;
+  person_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['date']>;
 };
 
@@ -524,24 +537,28 @@ export type Allowed_Emails_Set_Input = {
 export type Allowed_Emails_Stddev_Fields = {
   __typename?: 'allowed_emails_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Allowed_Emails_Stddev_Pop_Fields = {
   __typename?: 'allowed_emails_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Allowed_Emails_Stddev_Samp_Fields = {
   __typename?: 'allowed_emails_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Allowed_Emails_Sum_Fields = {
   __typename?: 'allowed_emails_sum_fields';
   id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "allowed_emails" */
@@ -555,6 +572,8 @@ export enum Allowed_Emails_Update_Column {
   /** column name */
   MatchType = 'match_type',
   /** column name */
+  PersonId = 'person_id',
+  /** column name */
   UpdatedAt = 'updated_at'
 }
 
@@ -562,18 +581,21 @@ export enum Allowed_Emails_Update_Column {
 export type Allowed_Emails_Var_Pop_Fields = {
   __typename?: 'allowed_emails_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Allowed_Emails_Var_Samp_Fields = {
   __typename?: 'allowed_emails_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Allowed_Emails_Variance_Fields = {
   __typename?: 'allowed_emails_variance_fields';
   id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "application_meta" */
@@ -810,10 +832,10 @@ export type Bigint_Comparison_Exp = {
 /** columns and relationships of "billing_org" */
 export type Billing_Org = {
   __typename?: 'billing_org';
-  customer_id: Maybe<Scalars['String']>;
+  customer_id: Scalars['String'];
   id: Scalars['Int'];
   plan: Scalars['String'];
-  status: Maybe<Scalars['String']>;
+  status: Scalars['String'];
   user_limit: Scalars['Int'];
 };
 
@@ -1283,9 +1305,7 @@ export enum Coins_Constraint {
   /** unique or primary key constraint */
   CoinsExternalIdKey = 'coins_external_id_key',
   /** unique or primary key constraint */
-  CoinsPkey = 'coins_pkey',
-  /** unique or primary key constraint */
-  CoinsTickerIdx = 'coins_ticker_idx'
+  CoinsPkey = 'coins_pkey'
 }
 
 /** input type for incrementing numeric columns in table "coins" */
@@ -11566,7 +11586,7 @@ export type Vc_Firms = {
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   sentiment: Maybe<Scalars['jsonb']>;
-  slug: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   status: Scalars['String'];
   tags: Maybe<Scalars['jsonb']>;
   twitter: Maybe<Scalars['String']>;
@@ -11731,7 +11751,9 @@ export enum Vc_Firms_Constraint {
   /** unique or primary key constraint */
   VcFirmsPkey = 'vc_firms_pkey',
   /** unique or primary key constraint */
-  VcFirmsSlugIdx = 'vc_firms_slug_idx'
+  VcFirmsSlugIdx = 'vc_firms_slug_idx',
+  /** unique or primary key constraint */
+  VcFirmsSlugKey = 'vc_firms_slug_key'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
@@ -12510,7 +12532,7 @@ export type GetCompanyQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null } | null }> }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -12561,14 +12583,14 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: string | null, sentiment: any | null, logo: any | null, slug: string | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null } | null }> } | null }> };
+export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: string | null, sentiment: any | null, logo: any | null, slug: string, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null } | null }> } | null }> };
 
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -12585,14 +12607,14 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string | null, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null } | null }> }> };
 
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -12601,7 +12623,7 @@ export type GetVcFirmsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, website: string | null }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, website: string | null }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -12610,24 +12632,24 @@ export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null, logo: any | null, latest_investment: string | null, num_of_investments: number | null, sentiment: any | null, overview: string | null }> };
+export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, latest_investment: string | null, num_of_investments: number | null, sentiment: any | null, overview: string | null }> };
 
 export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string | null }> };
+export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string }> };
 
 export type GetRelevantVcFirmsQueryVariables = Exact<{
   where: Vc_Firms_Bool_Exp;
 }>;
 
 
-export type GetRelevantVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, logo: any | null, name: string | null, slug: string | null, sentiment: any | null }> };
+export type GetRelevantVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, logo: any | null, name: string | null, slug: string, sentiment: any | null }> };
 
 export type GetAllVcFirmsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAllVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string | null }> };
+export type GetAllVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
 
 
 export const GetAllCoinsDocument = `
@@ -13310,6 +13332,7 @@ export const GetVcFirmDocument = `
           id
           slug
           name
+          tags
           logo
         }
       }
