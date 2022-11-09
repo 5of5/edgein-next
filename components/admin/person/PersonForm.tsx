@@ -73,7 +73,12 @@ const PersonForm = ({ action, toolbar }: PersonFormProps) => {
           )}
         </FormDataConsumer>
         {isIcon && (
-          <ElemIconGroup category="person" action={action} keyword={keyword} />
+          <ElemIconGroup
+            category="person"
+            action={action}
+            keyword={keyword}
+            topPos="75px"
+          />
         )}
         <ElemSlugInput slug={slug} validate={required()} />
         <FileInput

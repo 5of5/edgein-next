@@ -117,6 +117,7 @@ const CompanyForm = ({
               category="company"
               action={action}
               keyword={keyword}
+              topPos="135px"
             />
           </>
         )}

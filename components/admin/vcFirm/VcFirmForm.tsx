@@ -93,7 +93,12 @@ const VcFirmForm = ({
           )}
         </FormDataConsumer>
         {isIcon && (
-          <ElemIconGroup category="vcFirm" action={action} keyword={keyword} />
+          <ElemIconGroup
+            category="vcFirm"
+            action={action}
+            keyword={keyword}
+            topPos="160px"
+          />
         )}
 
         <ElemSlugInput slug={slug} validate={slugValidate} />
