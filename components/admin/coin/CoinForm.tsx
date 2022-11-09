@@ -45,7 +45,12 @@ const CoinForm = ({ action, toolbar, currentData }: CoinFormProps) => {
         }}
       />
       {isIcon && (
-        <ElemIconGroup category="coin" action={action} keyword={keyword} />
+        <ElemIconGroup
+          category="coin"
+          action={action}
+          keyword={keyword}
+          topPos="160px"
+        />
       )}
       <TextInput className={inputClassName} source="ticker" />
       <ReferenceInput

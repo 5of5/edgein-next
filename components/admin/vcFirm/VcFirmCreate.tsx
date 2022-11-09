@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useCreate, useRedirect } from "react-admin";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import useAdminTransform from "@/hooks/useAdminTransform";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemToolbar from "../ElemToolbar";
 import VcFirmForm from "./VcFirmForm";
 import {
@@ -42,7 +42,7 @@ export const VcFirmCreate = () => {
   };
 
   return (
-    <ElemMutationBase
+    <ElemFormBase
       title="Create a VC Firm"
       action="create"
       transform={transform}
@@ -53,6 +53,6 @@ export const VcFirmCreate = () => {
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
         onCheckScreenHeight={handleCheckScreenHeight}
       />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

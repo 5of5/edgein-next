@@ -1,7 +1,7 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
 import useAdminTransform from "@/hooks/useAdminTransform";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemToolbar from "../ElemToolbar";
 import PersonForm from "./PersonForm";
 import { withImageTransformData, withoutImageTransformData } from "./services";
@@ -22,15 +22,11 @@ export const PersonCreate = () => {
   };
 
   return (
-    <ElemMutationBase
-      title="Create a Person"
-      action="create"
-      transform={transform}
-    >
+    <ElemFormBase title="Create a Person" action="create" transform={transform}>
       <PersonForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
       />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

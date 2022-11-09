@@ -3,8 +3,9 @@ import { useGetOne } from "react-admin";
 import { useParams } from "react-router-dom";
 import useAdminTransform from "@/hooks/useAdminTransform";
 import ElemTitle from "../ElemTitle";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import CompanyForm from "./CompanyForm";
+import { TeamMemberEdit } from "./TeamMemberEdit";
 import {
   withImageTransformData,
   withoutImageTransformData,
@@ -26,7 +27,7 @@ export const CompanyEdit = () => {
 
   return (
     <div style={{ paddingBottom: "20px" }}>
-      <ElemMutationBase
+      <ElemFormBase
         action="edit"
         title={<ElemTitle category="Company" />}
         transform={transform}
@@ -37,7 +38,8 @@ export const CompanyEdit = () => {
           formRef={formRef}
           currentData={currentData}
         />
-      </ElemMutationBase>
+      </ElemFormBase>
+      <TeamMemberEdit />
     </div>
   );
 };

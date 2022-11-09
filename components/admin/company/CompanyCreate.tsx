@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useCreate, useRedirect } from "react-admin";
 import useAdminTransform from "@/hooks/useAdminTransform";
 import ElemToolbar from "../ElemToolbar";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import CompanyForm from "./CompanyForm";
 import {
   getRootStyle,
@@ -30,7 +30,7 @@ export const CompanyCreate = () => {
   };
 
   return (
-    <ElemMutationBase
+    <ElemFormBase
       action="create"
       title="Create a Company"
       transform={transform}
@@ -41,6 +41,6 @@ export const CompanyCreate = () => {
         formRef={formRef}
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
       />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

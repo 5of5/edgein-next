@@ -1,7 +1,7 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
 import ElemToolbar from "../ElemToolbar";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import BlockchainForm from "./BlockchainForm";
 
 export const BlockchainCreate = () => {
@@ -15,11 +15,11 @@ export const BlockchainCreate = () => {
   };
 
   return (
-    <ElemMutationBase title="Create a Blockchain" action="create">
+    <ElemFormBase title="Create a Blockchain" action="create">
       <BlockchainForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
       />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

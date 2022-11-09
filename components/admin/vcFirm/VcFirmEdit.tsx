@@ -3,7 +3,7 @@ import { useGetOne, required } from "react-admin";
 import { useParams } from "react-router-dom";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import useAdminTransform from "@/hooks/useAdminTransform";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 import VcFirmForm from "./VcFirmForm";
 import {
@@ -37,7 +37,7 @@ export const VcFirmEdit = () => {
   };
 
   return (
-    <ElemMutationBase
+    <ElemFormBase
       title={<ElemTitle category="Vc Firm" />}
       action="edit"
       transform={transform}
@@ -49,6 +49,6 @@ export const VcFirmEdit = () => {
         currentData={currentData}
         onCheckScreenHeight={handleCheckScreenHeight}
       />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

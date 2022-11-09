@@ -1,7 +1,7 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
 import ElemToolbar from "../ElemToolbar";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import CoinForm from "./CoinForm";
 
 export const CoinCreate = () => {
@@ -15,11 +15,11 @@ export const CoinCreate = () => {
   };
 
   return (
-    <ElemMutationBase title="Create a Coin" action="create">
+    <ElemFormBase title="Create a Coin" action="create">
       <CoinForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
       />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };

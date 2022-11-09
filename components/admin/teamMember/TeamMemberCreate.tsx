@@ -1,6 +1,6 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
-import ElemMutationBase from "../ElemMutationBase";
+import ElemFormBase from "../ElemFormBase";
 import ElemToolbar from "../ElemToolbar";
 import TeamMemberForm from "./TeamMemberForm";
 
@@ -14,8 +14,8 @@ export const TeamMemberCreate = () => {
     redirect("/team_members");
   };
   return (
-    <ElemMutationBase title="Add a person to a company" action="create">
+    <ElemFormBase title="Add a person to a company" action="create">
       <TeamMemberForm toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />} />
-    </ElemMutationBase>
+    </ElemFormBase>
   );
 };
