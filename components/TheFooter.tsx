@@ -19,7 +19,7 @@ export const TheFooter = () => {
 		],
 		legal: [
 			{ name: "Privacy", href: "/privacy" },
-			{ name: "Terms", href: "/terms" },
+			//{ name: "Terms", href: "/terms" },
 		],
 	};
 
@@ -52,7 +52,7 @@ export const TheFooter = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="text-base font-medium text-dark-500 hover:text-dark-900"
+												className="text-base font-medium text-dark-500 hover:text-primary-500"
 											>
 												{item.name}
 											</a>
@@ -69,7 +69,7 @@ export const TheFooter = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="text-base font-medium text-dark-500 hover:text-dark-900"
+												className="text-base font-medium text-dark-500 hover:text-primary-500"
 											>
 												{item.name}
 											</a>
@@ -86,7 +86,7 @@ export const TheFooter = () => {
 										<li key={item.name}>
 											<a
 												href={item.href}
-												className="text-base font-medium text-dark-500 hover:text-dark-900"
+												className="text-base font-medium text-dark-500 hover:text-primary-500"
 											>
 												{item.name}
 											</a>
@@ -102,7 +102,7 @@ export const TheFooter = () => {
 						&copy; {currentYear}
 						<a
 							href="https://www.edgein.io/"
-							className="px-2 hover:text-dark-900"
+							className="px-2 hover:text-primary-500"
 						>
 							EdgeIn.io
 						</a>
