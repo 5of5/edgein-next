@@ -11,6 +11,7 @@ import {
   withoutImageTransformData,
   getRootStyle,
 } from "./services";
+import InvestmentRoundTable from "./InvestmentRoundTable";
 
 export const CompanyEdit = () => {
   const formRef = useRef<any>(null);
@@ -40,6 +41,7 @@ export const CompanyEdit = () => {
         />
       </ElemFormBase>
       <TeamMemberEdit />
+      <InvestmentRoundTable />
     </div>
   );
 };
