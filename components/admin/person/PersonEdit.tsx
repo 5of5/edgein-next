@@ -4,6 +4,7 @@ import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 import PersonForm from "./PersonForm";
 import { withImageTransformData, withoutImageTransformData } from "./services";
+import { TeamMemberEdit } from "./TeamMemberEdit";
 
 export const PersonEdit = () => {
   const { transform } = useAdminTransform({
@@ -12,12 +13,15 @@ export const PersonEdit = () => {
   });
 
   return (
-    <ElemFormBase
-      title={<ElemTitle category="Person" />}
-      action="edit"
-      transform={transform}
-    >
-      <PersonForm action="edit" />
-    </ElemFormBase>
+    <>
+      <ElemFormBase
+        title={<ElemTitle category="Person" />}
+        action="edit"
+        transform={transform}
+      >
+        <PersonForm action="edit" />
+      </ElemFormBase>
+      <TeamMemberEdit />
+    </>
   );
 };
