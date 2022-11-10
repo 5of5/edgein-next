@@ -27,10 +27,11 @@ export const VcFirmEdit = () => {
 
   const rootStyle = getMutationRootStyle(height, formHeight, formRef);
 
-  const { transform } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+    useAdminTransform({
+      withImageTransformData,
+      withoutImageTransformData,
+    });
 
   const handleCheckScreenHeight = () => {
     setFormHeight(formRef?.current?.clientHeight + 100);
@@ -48,6 +49,10 @@ export const VcFirmEdit = () => {
         slugValidate={required()}
         currentData={currentData}
         onCheckScreenHeight={handleCheckScreenHeight}
+        isImageUpdated={isImageUpdated}
+        logo={logo}
+        onSelect={onSelect}
+        onDropRejected={onDropRejected}
       />
     </ElemFormBase>
   );

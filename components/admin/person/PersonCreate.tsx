@@ -10,10 +10,11 @@ export const PersonCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
 
-  const { transform } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+    useAdminTransform({
+      withImageTransformData,
+      withoutImageTransformData,
+    });
 
   const handleSaveDraft = (data: any) => {
     data.status = "draft";
@@ -26,6 +27,10 @@ export const PersonCreate = () => {
       <PersonForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
+        isImageUpdated={isImageUpdated}
+        logo={logo}
+        onSelect={onSelect}
+        onDropRejected={onDropRejected}
       />
     </ElemFormBase>
   );

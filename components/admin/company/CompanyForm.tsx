@@ -15,7 +15,6 @@ import {
   regex,
   required,
 } from "react-admin";
-import useAdminTransform from "@/hooks/useAdminTransform";
 import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
@@ -23,7 +22,6 @@ import {
   tags,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
-import { withImageTransformData, withoutImageTransformData } from "./services";
 import ElemIconGroup from "../ElemIconGroup";
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
 
@@ -32,6 +30,10 @@ type CompanyFormProps = {
   formRef: any;
   currentData?: any;
   toolbar?: ReactElement | false;
+  isImageUpdated: boolean;
+  logo: any;
+  onSelect: (files: any) => void;
+  onDropRejected: (files: any) => void;
 };
 
 const CompanyForm = ({
@@ -39,6 +41,10 @@ const CompanyForm = ({
   currentData,
   formRef,
   toolbar,
+  isImageUpdated,
+  logo,
+  onSelect,
+  onDropRejected,
 }: CompanyFormProps) => {
   const { data: companies } = useGetList("companies", {});
   const [isIcon, setIsIcon] = useState(action === "edit");
@@ -52,11 +58,6 @@ const CompanyForm = ({
 
   const inputClassName =
     "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
-
-  const { isImageUpdated, logo, onSelect, onDropRejected } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
 
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);

@@ -8,13 +8,11 @@ import {
   FormDataConsumer,
   useGetList,
 } from "react-admin";
-import useAdminTransform from "@/hooks/useAdminTransform";
 import {
   status,
   validateNameAndSlugAndEmailAndDomain,
 } from "@/utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
-import { withImageTransformData, withoutImageTransformData } from "./services";
 import ElemIconGroup from "../ElemIconGroup";
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
 
@@ -24,6 +22,10 @@ type VcFirmFormProps = {
   slugValidate?: any;
   currentData?: any;
   onCheckScreenHeight: () => void;
+  isImageUpdated: boolean;
+  logo: any;
+  onSelect: (files: any) => void;
+  onDropRejected: (files: any) => void;
 };
 
 const VcFirmForm = ({
@@ -32,6 +34,10 @@ const VcFirmForm = ({
   slugValidate,
   currentData,
   onCheckScreenHeight,
+  isImageUpdated,
+  logo,
+  onSelect,
+  onDropRejected,
 }: VcFirmFormProps) => {
   const { data: vcFirm } = useGetList("vc_firms", {});
   const formRef = useRef<any>(null);
@@ -46,11 +52,6 @@ const VcFirmForm = ({
   useEffect(() => {
     if (currentData) setKeyword(currentData.name);
   }, [currentData]);
-
-  const { isImageUpdated, logo, onSelect, onDropRejected } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
 
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);
