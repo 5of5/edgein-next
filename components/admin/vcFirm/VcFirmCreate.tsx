@@ -26,10 +26,11 @@ export const VcFirmCreate = () => {
 
   const rootStyle = getMutationRootStyle(height, formHeight, formRef);
 
-  const { transform } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+    useAdminTransform({
+      withImageTransformData,
+      withoutImageTransformData,
+    });
 
   const handleCheckScreenHeight = () => {
     setFormHeight(formRef?.current?.clientHeight + 100);
@@ -52,6 +53,10 @@ export const VcFirmCreate = () => {
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
         onCheckScreenHeight={handleCheckScreenHeight}
+        isImageUpdated={isImageUpdated}
+        logo={logo}
+        onSelect={onSelect}
+        onDropRejected={onDropRejected}
       />
     </ElemFormBase>
   );
