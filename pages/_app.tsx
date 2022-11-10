@@ -3,6 +3,7 @@ import "@/styles/globals.scss";
 import React, { useState } from "react";
 import TagManager from "react-gtm-module";
 import { hotjar } from "react-hotjar";
+import FullStory from "react-fullstory";
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
@@ -15,6 +16,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
 const INTERCOM_APP_ID = "jm3hf6lp";
+const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
@@ -142,6 +144,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
+				<FullStory org={FULLSTORY_ORG_ID} />
 			</div>
 		</>
 	);
