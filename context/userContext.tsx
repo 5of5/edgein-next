@@ -5,7 +5,8 @@ import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
-import { startCase } from 'lodash';
+import { identify } from 'react-fullstory';
+ import { startCase } from 'lodash';
 import hashSum from 'hash-sum';
 
 type UserValue = {
@@ -46,10 +47,19 @@ const UserProvider: React.FC<Props> = (props) => {
     if (user) {
       try { 
         if (hotjar.identify) {
-          hotjar.identify(user.id, { name: user.display_name, publicAddress: user.publicAddress, email: user.email, role: user.role });
+          hotjar.identify(user.id, { name: startCase(user.display_name), email: user.email, role: user.role });
         }
       } catch(e) {
            // hotjar not loaded
+      }  
+      try { 
+        identify(user.id, { 
+          displayName: startCase(user.display_name), 
+          email: user.email,
+          role: user.role
+        });        
+      } catch(e) {
+           // fullstory not loaded
       }  
       try { 
         shutdown()

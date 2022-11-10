@@ -120,7 +120,7 @@ export default function SignUpModal(props: Props) {
 				}),
 			});
 			if (response.status === 200) {
-				localStorage.removeItem('inviteCode')
+				localStorage.removeItem("inviteCode");
 				setIsRegistered(true);
 			} else {
 				try {
@@ -178,7 +178,7 @@ export default function SignUpModal(props: Props) {
 								{unsuccessMessage ? (
 									<>
 										{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-										<p className="mt-2 text-dark-400 text-center">
+										<p className="mt-2 text-slate-600 text-center">
 											{unsuccessMessage}
 										</p>
 									</>
@@ -321,7 +321,8 @@ export default function SignUpModal(props: Props) {
 													loading={isLoading}
 													className="w-full my-2"
 												>
-													Sign up {props.inviteCode ? 'with referral' : 'and explore'}
+													Sign up{" "}
+													{props.inviteCode ? "with referral" : "and explore"}
 												</ElemButton>
 												<p className="text-sm text-center text-slate-600">
 													By signing up, you agree to the{" "}

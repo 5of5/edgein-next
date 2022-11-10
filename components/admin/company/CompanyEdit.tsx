@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useGetOne } from "react-admin";
 import { useParams } from "react-router-dom";
 import useAdminTransform from "@/hooks/useAdminTransform";
+import { uploadFile, deleteFile } from "@/utils/fileFunctions";
 import ElemTitle from "../ElemTitle";
 import ElemFormBase from "../ElemFormBase";
 import CompanyForm from "./CompanyForm";
@@ -21,10 +22,11 @@ export const CompanyEdit = () => {
   const { id } = useParams();
   const { data: currentData } = useGetOne("companies", { id });
 
-  const { transform } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+    useAdminTransform({
+      withImageTransformData,
+      withoutImageTransformData,
+    });
 
   return (
     <div style={{ paddingBottom: "20px" }}>
@@ -38,6 +40,10 @@ export const CompanyEdit = () => {
           action="edit"
           formRef={formRef}
           currentData={currentData}
+          isImageUpdated={isImageUpdated}
+          logo={logo}
+          onSelect={onSelect}
+          onDropRejected={onDropRejected}
         />
       </ElemFormBase>
       <TeamMemberEdit />

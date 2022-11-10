@@ -145,7 +145,7 @@ export default function LoginModal(props: Props) {
 									{unsuccessMessage ? (
 										<>
 											{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-											<p className="mt-2 text-dark-400 text-center">
+											<p className="mt-2 text-slate-600 text-center">
 												{unsuccessMessage}
 											</p>
 										</>

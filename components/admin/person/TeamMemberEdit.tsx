@@ -51,6 +51,7 @@ import {
 import {
   functionChoicesTM,
   seniorityChoicesTM,
+  ADMIN_REFERENCE_INPUT_PER_PAGE,
 } from "../../../utils/constants";
 
 import Slide from "@mui/material/Slide";
@@ -91,7 +92,6 @@ const CustomEditButton = ({ onEdit }: any) => {
   );
 };
 
-
 const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
@@ -129,7 +129,9 @@ const CustomDeleteButton = () => {
 export const TeamMemberEdit = () => {
   const { record, isLoading } = useEditContext();
   const { id: currentId } = useParams();
-  const { data: member } = useGetList("team_members", { filter: { "person_id": parseInt(currentId!) } });
+  const { data: member } = useGetList("team_members", {
+    filter: { person_id: parseInt(currentId!) },
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [isError, setIsError] = useState(false);
   const [currRecord, setCurrRecord] = useState<any>(null);
@@ -220,168 +222,195 @@ export const TeamMemberEdit = () => {
     }
   };
 
-  return (<><List
-    pagination={false}
-    actions={<ListActions onCreate={() => setIsOpen(true)} />}
-    sx={{
-      ".MuiToolbar-root": {
-        justifyContent: "start !important",
-        paddingTop: 0,
-        marginBottom: "4px",
-      },
-      ".RaBulkActionsToolbar-toolbar": {
-        justifyContent: "start !important",
-      },
-      ".MuiToolbar-root .MuiButtonBase-root": {
-        paddingTop: 0,
-        paddingBottom: 0,
-        margin: "4px",
-      },
-      ".RaBulkActionsToolbar-topToolbar": {
-        paddingTop: 0,
-        paddingBottom: 0,
-        marginBottom: 0,
-      },
-      ".MuiToolbar-root form": {
-        flex: "0 1 auto",
-      },
-      ".MuiToolbar-root form .MuiFormControl-root": {
-        margin: 0,
-      },
-    }}
-  >
-    <Datagrid bulkActionButtons={false}
-      data={member}
-    >
-      <ReferenceField
-        label="Company"
-        source="company_id"
-        reference="companies"
-        sortable={false}
+  return (
+    <>
+      <List
+        pagination={false}
+        actions={<ListActions onCreate={() => setIsOpen(true)} />}
+        sx={{
+          ".MuiToolbar-root": {
+            justifyContent: "start !important",
+            paddingTop: 0,
+            marginBottom: "4px",
+          },
+          ".RaBulkActionsToolbar-toolbar": {
+            justifyContent: "start !important",
+          },
+          ".MuiToolbar-root .MuiButtonBase-root": {
+            paddingTop: 0,
+            paddingBottom: 0,
+            margin: "4px",
+          },
+          ".RaBulkActionsToolbar-topToolbar": {
+            paddingTop: 0,
+            paddingBottom: 0,
+            marginBottom: 0,
+          },
+          ".MuiToolbar-root form": {
+            flex: "0 1 auto",
+          },
+          ".MuiToolbar-root form .MuiFormControl-root": {
+            margin: 0,
+          },
+        }}
       >
-        <TextField source="name"/>
-      </ReferenceField>
-      <SelectField source="function" choices={functionChoicesTM} sortable={false}/>
-      <DateField source="start_date" sortable={false} />
-      <DateField source="end_date" sortable={false} />
-      <SelectField source="seniority" choices={seniorityChoicesTM} sortable={false}/>
-      <TextField source="title" sortable={false} />
-      <BooleanField source="founder" sortable={false} />
-      <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
-      <CustomDeleteButton />
-    </Datagrid>
-  </List>
-  {isOpen && <Dialog
-    open={true}
-    TransitionComponent={Transition}
-    keepMounted
-    fullWidth
-    maxWidth="xs"
-    onClose={handleClose}
-  >
-    <DialogTitle>TeamMember</DialogTitle>
-    <DialogContent>
-      <Form>
-      <FormControl variant="filled" sx={{ width: "100%", ".MuiAutocomplete-root .MuiFormHelperText-root": { display: "none" }}}>
-        <ReferenceInput
-         label="Company" source="company_id" reference="companies">
-          <AutocompleteInput
-            defaultValue={currRecord?.company_id}
-            optionText="name"
-            optionValue="id"
-            filterToQuery={search => ({ name: search })}
-            onChange={(company_id) => { handleChange(0, company_id)} }
-            onCreate={(company_id) => { handleChange(0, company_id)} }
+        <Datagrid bulkActionButtons={false} data={member}>
+          <ReferenceField
+            label="Company"
+            source="company_id"
+            reference="companies"
+            sortable={false}
+          >
+            <TextField source="name" />
+          </ReferenceField>
+          <SelectField
+            source="function"
+            choices={functionChoicesTM}
+            sortable={false}
           />
-       </ReferenceInput>
-       {isError && (
-          <FormHelperText sx={{ color: "red" }}>
-            Company is required
-          </FormHelperText>
-        )}
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <InputLabel>Function</InputLabel>
-       <Select
-         value={teamData?.function}
-         onChange={(e) => handleChange(1, e.target.value)}
-       >
-         {functionChoicesTM?.map((r) => (
-           <MenuItem key={r.id} value={r.id}>
-             {r.name}
-           </MenuItem>
-         ))}
-       </Select>
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <InputLabel>Seniority</InputLabel>
-       <Select
-         value={teamData?.seniority}
-         onChange={(e) => handleChange(2, e.target.value)}
-       >
-         {seniorityChoicesTM?.map((r) => (
-           <MenuItem key={r.id} value={r.id}>
-             {r.name}
-           </MenuItem>
-         ))}
-       </Select>
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <MuiTextField
-         label="Start date"
-         type="date"
-         value={teamData?.start_date}
-         onChange={(e) => handleChange(3, e.target.value)}
-         InputLabelProps={{ shrink: true }}
-       />
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <MuiTextField
-         label="End date"
-         type="date"
-         value={teamData?.end_date}
-         onChange={(e) => handleChange(4, e.target.value)}
-         InputLabelProps={{ shrink: true }}
-       />
-     </FormControl>
-     <FormControl variant="filled" sx={{ width: "100%" }}>
-       <MuiTextField
-         label="Title"
-         value={teamData?.title}
-         onChange={(e) => handleChange(5, e.target.value)}
-         variant="filled"
-       />
-     </FormControl>
+          <DateField source="start_date" sortable={false} />
+          <DateField source="end_date" sortable={false} />
+          <SelectField
+            source="seniority"
+            choices={seniorityChoicesTM}
+            sortable={false}
+          />
+          <TextField source="title" sortable={false} />
+          <BooleanField source="founder" sortable={false} />
+          <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
+          <CustomDeleteButton />
+        </Datagrid>
+      </List>
+      {isOpen && (
+        <Dialog
+          open={true}
+          TransitionComponent={Transition}
+          keepMounted
+          fullWidth
+          maxWidth="xs"
+          onClose={handleClose}
+        >
+          <DialogTitle>TeamMember</DialogTitle>
+          <DialogContent>
+            <Form>
+              <FormControl
+                variant="filled"
+                sx={{
+                  width: "100%",
+                  ".MuiAutocomplete-root .MuiFormHelperText-root": {
+                    display: "none",
+                  },
+                }}
+              >
+                <ReferenceInput
+                  label="Company"
+                  source="company_id"
+                  reference="companies"
+                  perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
+                >
+                  <AutocompleteInput
+                    defaultValue={currRecord?.company_id}
+                    optionText="name"
+                    optionValue="id"
+                    filterToQuery={(search) => ({ name: search })}
+                    onChange={(company_id) => {
+                      handleChange(0, company_id);
+                    }}
+                    onCreate={(company_id) => {
+                      handleChange(0, company_id);
+                    }}
+                  />
+                </ReferenceInput>
+                {isError && (
+                  <FormHelperText sx={{ color: "red" }}>
+                    Company is required
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <InputLabel>Function</InputLabel>
+                <Select
+                  value={teamData?.function}
+                  onChange={(e) => handleChange(1, e.target.value)}
+                >
+                  {functionChoicesTM?.map((r) => (
+                    <MenuItem key={r.id} value={r.id}>
+                      {r.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <InputLabel>Seniority</InputLabel>
+                <Select
+                  value={teamData?.seniority}
+                  onChange={(e) => handleChange(2, e.target.value)}
+                >
+                  {seniorityChoicesTM?.map((r) => (
+                    <MenuItem key={r.id} value={r.id}>
+                      {r.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <MuiTextField
+                  label="Start date"
+                  type="date"
+                  value={teamData?.start_date}
+                  onChange={(e) => handleChange(3, e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <MuiTextField
+                  label="End date"
+                  type="date"
+                  value={teamData?.end_date}
+                  onChange={(e) => handleChange(4, e.target.value)}
+                  InputLabelProps={{ shrink: true }}
+                />
+              </FormControl>
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <MuiTextField
+                  label="Title"
+                  value={teamData?.title}
+                  onChange={(e) => handleChange(5, e.target.value)}
+                  variant="filled"
+                />
+              </FormControl>
 
-     <FormControlLabel
-       control={
-         <Switch
-           checked={teamData?.founder}
-           onChange={(e) => handleChange(6, e.target.checked)}
-         />
-       }
-       label="Founder"
-     />
-     <FormControl
-       variant="filled"
-       sx={{
-         display: "flex",
-         justifyContent: "space-evenly",
-         alignItems: "center",
-         flexDirection: "row",
-         width: "100%",
-       }}
-     >
-       <Button label="Cancel" variant="text" onClick={handleClose} />
-       <Button
-         label="Save"
-         variant="contained"
-         onClick={handleSave}
-         startIcon={<ContentSave />}
-       />
-     </FormControl>
-    </Form>
-    </DialogContent>
-  </Dialog>}
-  </>);
-}
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={teamData?.founder}
+                    onChange={(e) => handleChange(6, e.target.checked)}
+                  />
+                }
+                label="Founder"
+              />
+              <FormControl
+                variant="filled"
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  flexDirection: "row",
+                  width: "100%",
+                }}
+              >
+                <Button label="Cancel" variant="text" onClick={handleClose} />
+                <Button
+                  label="Save"
+                  variant="contained"
+                  onClick={handleSave}
+                  startIcon={<ContentSave />}
+                />
+              </FormControl>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
+  );
+};

@@ -9,22 +9,31 @@ import {
   useGetList,
   required,
 } from "react-admin";
-import useAdminTransform from "@/hooks/useAdminTransform";
 import {
   validateNameAndSlugAndEmailAndDomain,
   status,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
-import { withImageTransformData, withoutImageTransformData } from "./services";
 import ElemIconGroup from "../ElemIconGroup";
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
 
 type PersonFormProps = {
   action: "create" | "edit";
   toolbar?: ReactElement | false;
+  isImageUpdated: boolean;
+  logo: any;
+  onSelect: (files: any) => void;
+  onDropRejected: (files: any) => void;
 };
 
-const PersonForm = ({ action, toolbar }: PersonFormProps) => {
+const PersonForm = ({
+  action,
+  toolbar,
+  isImageUpdated,
+  logo,
+  onSelect,
+  onDropRejected,
+}: PersonFormProps) => {
   const [isIcon, setIsIcon] = useState(action === "edit");
   const [keyword, setKeyword] = useState("");
   const { data: people } = useGetList("people", {});
@@ -33,11 +42,6 @@ const PersonForm = ({ action, toolbar }: PersonFormProps) => {
 
   const inputClassName =
     "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
-
-  const { isImageUpdated, logo, onSelect, onDropRejected } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
 
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);

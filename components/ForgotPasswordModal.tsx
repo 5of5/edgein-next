@@ -1,7 +1,8 @@
 import type { GetStaticProps } from "next";
 import { useState, Fragment } from "react";
-import { ElemButton } from "./ElemButton";
+import { ElemButton } from "@/components/ElemButton";
 import { Dialog, Transition } from "@headlessui/react";
+import { IconCheck } from "@/components/Icons";
 
 type Props = {
 	show: boolean;
@@ -73,56 +74,76 @@ export default function ForgotPasswordModal(props: Props) {
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
 							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
-								<div className="max-w-xs mx-auto w-full">
+								<div className="max-w-md mx-auto w-full">
 									{isMailSent ? (
 										<>
-											<h1 className="text-2xl text-center font-bold lg:text-3xl">
+											<h1 className="text-2xl font-bold lg:text-3xl">
 												Email Sent
 											</h1>
-											<p className="mt-2 text-center text-slate-600">
-												We sent an email to{" "}
-												<span className="font-bold">{email}</span> if this email
-												is connected to an EdgeIn account, you&rsquo;ll be able
-												to reset your password.
+
+											<div className="mt-4 flex bg-slate-100 p-4 rounded-lg">
+												<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full bg-white shadow">
+													<IconCheck className="w-10 aspect-square text-primary-500" />
+												</div>
+												<div className="ml-4">
+													Success! We&rsquo;ve sent an email to{" "}
+													<span className="font-bold">{email}</span> with
+													password reset instructions.
+												</div>
+											</div>
+											<p className="mt-4 text-sm">
+												If the email doesn&rsquo;t show up soon, check your spam
+												folder. We sent it from{" "}
+												<span className="font-bold">support@edgein.io</span>.
 											</p>
-											<div className="text-center sm:col-span-3 mt-10">
+											<div className="sm:col-span-3 mt-4">
 												<ElemButton
-													className="w-full"
 													onClick={onBack}
 													btn="primary"
 													loading={isLoading}
 												>
-													Back to login
+													Return to login
 												</ElemButton>
 											</div>
 										</>
 									) : (
 										<>
-											<h1 className="text-2xl text-center font-bold lg:text-3xl">
-												Reset Password
+											<h1 className="text-2xl font-bold lg:text-3xl">
+												Reset Your Password
 											</h1>
+											<p className="mt-4">
+												We&rsquo;ll email you instructions to reset your
+												password.
+											</p>
 
-											<div className="flex flex-col space-y-2">
-												<label>
-													<input
-														name="email"
-														type="email"
-														value={email}
-														disabled={isLoading}
-														onChange={(event) => setEmail(event?.target.value)}
-														placeholder="example@email.com"
-														className="mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
-													/>
-												</label>
+											<div className="mt-4 flex flex-col space-y-1">
+												<label className="font-bold cursor-text">Email</label>
+												<input
+													name="email"
+													type="email"
+													value={email}
+													disabled={isLoading}
+													onChange={(event) => setEmail(event?.target.value)}
+													placeholder="example@email.com"
+													className="mt-2 appearance-none border-none rounded-md block w-full px-3 h-10 ring-1 ring-slate-200 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500"
+												/>
 
 												<div>
 													<ElemButton
-														className="w-full mt-2"
+														className="mt-4"
 														onClick={handleSubmit}
 														btn="primary"
 														loading={isLoading}
 													>
-														Send a password reset email
+														Reset Password
+													</ElemButton>
+													<ElemButton
+														onClick={onBack}
+														btn="transparent"
+														loading={isLoading}
+														className="px-0 ml-2 sm:ml-4"
+													>
+														Return to login
 													</ElemButton>
 												</div>
 											</div>

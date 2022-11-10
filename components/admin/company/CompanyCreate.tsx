@@ -18,10 +18,11 @@ export const CompanyCreate = () => {
 
   const rootStyle = getRootStyle(formRef);
 
-  const { transform } = useAdminTransform({
-    withImageTransformData,
-    withoutImageTransformData,
-  });
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+    useAdminTransform({
+      withImageTransformData,
+      withoutImageTransformData,
+    });
 
   const handleSaveDraft = (data: any) => {
     data.status = "draft";
@@ -40,6 +41,10 @@ export const CompanyCreate = () => {
         action="create"
         formRef={formRef}
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
+        isImageUpdated={isImageUpdated}
+        logo={logo}
+        onSelect={onSelect}
+        onDropRejected={onDropRejected}
       />
     </ElemFormBase>
   );
