@@ -46,7 +46,7 @@ const ElemConfirmationMessageModal: React.FC<Props> = ({
 							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
 								<div className="max-w-xs mx-auto w-full">
 									<>
-										<p className="mt-2 text-dark-400 text-center">{message}</p>
+										<p className="mt-2 text-slate-600 text-center">{message}</p>
 										{messageType === "confirmation" && (
 											<div className="flex justify-center gap-x-5">
 												<ElemButton

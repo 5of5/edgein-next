@@ -98,7 +98,7 @@ export const TheFooter = () => {
 					</div>
 				</div>
 				<div className="mt-12 border-t border-dark-100 pt-8">
-					<p className="text-sm text-dark-400 xl:text-center">
+					<p className="text-sm text-slate-600 xl:text-center">
 						&copy; {currentYear}
 						<a
 							href="https://www.edgein.io/"

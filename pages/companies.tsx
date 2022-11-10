@@ -347,7 +347,7 @@ const Companies: NextPage<Props> = ({
 							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
 								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
 								<h2 className="mt-5 text-3xl font-bold">No results found</h2>
-								<div className="mt-1 text-lg text-dark-400">
+								<div className="mt-1 text-lg text-slate-600">
 									Please check spelling, try different filters, or tell us about
 									missing data.
 								</div>

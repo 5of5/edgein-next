@@ -58,12 +58,12 @@ const Event: NextPage<Props> = ({ event }) => {
 									<h1 className="text-3xl my-4 font-bold">{event.event}</h1>
 
 									{event.description && (
-										<p className="text-dark-400">
+										<p className="text-slate-600">
 											{truncateWords(event.description)}
 										</p>
 									)}
 								</div>
-								{/* <div className="mt-auto text-lg text-dark-400">$99</div> */}
+								{/* <div className="mt-auto text-lg text-slate-400">$99</div> */}
 							</div>
 						</div>
 					</div>
