@@ -8,7 +8,11 @@ import {
   BooleanInput,
   AutocompleteInput,
 } from "react-admin";
-import { functionChoicesTM, seniorityChoicesTM } from "@/utils/constants";
+import {
+  functionChoicesTM,
+  seniorityChoicesTM,
+  ADMIN_REFERENCE_INPUT_PER_PAGE,
+} from "@/utils/constants";
 
 type TeamMemberFormProps = {
   toolbar?: ReactElement | false;
@@ -20,7 +24,12 @@ const TeamMemberForm = ({ toolbar }: TeamMemberFormProps) => {
 
   return (
     <SimpleForm toolbar={toolbar}>
-      <ReferenceInput label="Company" source="company_id" reference="companies">
+      <ReferenceInput
+        label="Company"
+        source="company_id"
+        reference="companies"
+        perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
+      >
         <AutocompleteInput
           style={{ padding: 0, border: "none" }}
           className={inputClassName}

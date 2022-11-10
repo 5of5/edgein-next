@@ -7,7 +7,12 @@ import {
   NumberInput,
   AutocompleteInput,
 } from "react-admin";
-import { roundChoices, currencyChoices, status } from "@/utils/constants";
+import {
+  roundChoices,
+  currencyChoices,
+  status,
+  ADMIN_REFERENCE_INPUT_PER_PAGE,
+} from "@/utils/constants";
 
 type InvestmentRoundFormProps = {
   toolbar?: ReactElement | false;
@@ -19,7 +24,12 @@ const InvestmentRoundForm = ({ toolbar }: InvestmentRoundFormProps) => {
 
   return (
     <SimpleForm toolbar={toolbar}>
-      <ReferenceInput label="Company" source="company_id" reference="companies">
+      <ReferenceInput
+        label="Company"
+        source="company_id"
+        reference="companies"
+        perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
+      >
         <AutocompleteInput
           style={{ padding: 0, border: "none" }}
           className={inputClassName}

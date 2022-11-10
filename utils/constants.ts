@@ -706,3 +706,5 @@ export const tags = [
 	"DAO",
 	"Centralized",
 ].map((tag) => ({ id: tag, name: tag }));
+
+export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
