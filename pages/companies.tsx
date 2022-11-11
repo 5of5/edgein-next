@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { InputSelect } from "@/components/InputSelect";
@@ -21,12 +20,21 @@ import {
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
-import { useDebounce } from "@/hooks/useDebounce";
 import { Pagination } from "@/components/Pagination";
-import { useAuth } from "@/hooks/useAuth";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
+import { useStateParams } from "@/hooks/useStateParams";
+
+function useStateParamsFilter<T>(filters: T[], name: string) {
+	return useStateParams(
+		filters[0], 
+		name,
+		(companyLayer) => filters.indexOf(companyLayer).toString(),
+		(index) => filters[Number(index)]
+	);
+
+}
 
 type Props = {
 	companiesCount: number;
@@ -54,52 +62,33 @@ const Companies: NextPage<Props> = ({
 	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
-	const { user } = useAuth();
-	const router = useRouter();
-
-	// Search Box
-	const [search, setSearch] = useState("");
-	const debouncedSearchTerm = useDebounce(search, 500);
-
-	const searchCompanies = (e: {
-		target: { value: React.SetStateAction<string> };
-	}) => {
-		setSearch(e.target.value);
-	};
 
 	// Company Filter
-	const [selectedCompanyFilters, setSelectedCompanyFilters] = useState(
-		companyFilters[0]
-	);
+	const [selectedCompanyFilters, setSelectedCompanyFilters] = useStateParamsFilter(companyFilters, 'filter')
 
 	// Company Layers Filter
-	const [selectedLayer, setSelectedLayer] = useState(companyLayers[0]);
+	const [selectedLayer, setSelectedLayer] = useStateParamsFilter(companyLayers, 'layer')
 
 	// Amount Raised Filter
-	const [selectedAmountRaised, setSelectedAmountRaised] = useState(
-		amountRaised[0]
-	);
+	const [selectedAmountRaised, setSelectedAmountRaised] = useStateParamsFilter(amountRaised, 'amount');
 
 	// Total Employees Filter
-	const [selectedTotalEmployees, setSelectedTotalEmployees] = useState(
-		totalEmployees[0]
-	);
+	const [selectedTotalEmployees, setSelectedTotalEmployees] = useStateParamsFilter(totalEmployees, 'totalEmp');
 
 	// Filters
-	const [toggleFilters, setToggleFilters] = useState(false);
+	const [toggleFilters, setToggleFilters] = useState(selectedLayer !== companyLayers[0] || selectedAmountRaised !== amountRaised[0] || selectedTotalEmployees !== totalEmployees[0]);
 
 	const [page, setPage] = useState<number>(0);
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useState<any[]>([]);
+	const [selectedTags, setSelectedTags] = useStateParams<string[]>([], 'tags', (tagArr) => tagArr.join(','), (tag) => tag.split(','));
 
 	useEffect(() => {
 		setPage(0);
 		if (
 			initialLoad &&
 			selectedTags.length !== 0 &&
-			debouncedSearchTerm !== "" &&
 			selectedLayer.value !== "" &&
 			selectedCompanyFilters.value !== "" &&
 			selectedAmountRaised.rangeEnd !== 0 &&
@@ -110,7 +99,6 @@ const Companies: NextPage<Props> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		selectedTags,
-		debouncedSearchTerm,
 		selectedAmountRaised,
 		selectedLayer,
 		selectedTotalEmployees,
@@ -128,9 +116,8 @@ const Companies: NextPage<Props> = ({
 		event.stopPropagation();
 		event.preventDefault();
 
-		setSelectedTags((tags) =>
-			tags.includes(tag) ? tags.filter((t) => t !== tag) : [tag, ...tags]
-		);
+		const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [tag, ...selectedTags]
+		setSelectedTags(newTags);
 
 		selectedTags.includes(tag)
 			? toast.custom(
@@ -196,14 +183,6 @@ const Companies: NextPage<Props> = ({
 		});
 	}
 
-	if (debouncedSearchTerm !== "") {
-		filters._and?.push({
-			_or: [
-				{ name: { _ilike: `%${debouncedSearchTerm}%` } },
-				{ coin: { ticker: { _ilike: `%${debouncedSearchTerm}%` } } },
-			],
-		});
-	}
 	if (selectedLayer?.value) {
 		filters._and?.push({ layer: { _eq: selectedLayer.value } });
 	}

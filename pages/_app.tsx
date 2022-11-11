@@ -18,6 +18,10 @@ import { IntercomProvider } from "react-use-intercom";
 const INTERCOM_APP_ID = "jm3hf6lp";
 const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
 
+declare global {
+	interface Window { disableRouterEvents: boolean; }
+}
+
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
 	const router = useRouter();
@@ -42,10 +46,14 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 	React.useEffect(() => {
 		const handleStart = () => {
-			setPageLoading(true);
+			if (!window.disableRouterEvents) {
+				setPageLoading(true);
+			}
 		};
 		const handleComplete = () => {
-			setPageLoading(false);
+			if (!window.disableRouterEvents) {
+				setPageLoading(false);
+			}
 		};
 
 		router.events.on("routeChangeStart", handleStart);
