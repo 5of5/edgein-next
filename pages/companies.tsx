@@ -28,12 +28,11 @@ import { useStateParams } from "@/hooks/useStateParams";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
-		filters[0], 
+		filters[0],
 		name,
 		(companyLayer) => filters.indexOf(companyLayer).toString(),
 		(index) => filters[Number(index)]
 	);
-
 }
 
 type Props = {
@@ -64,25 +63,42 @@ const Companies: NextPage<Props> = ({
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	// Company Filter
-	const [selectedCompanyFilters, setSelectedCompanyFilters] = useStateParamsFilter(companyFilters, 'filter')
+	const [selectedCompanyFilters, setSelectedCompanyFilters] =
+		useStateParamsFilter(companyFilters, "filter");
 
 	// Company Layers Filter
-	const [selectedLayer, setSelectedLayer] = useStateParamsFilter(companyLayers, 'layer')
+	const [selectedLayer, setSelectedLayer] = useStateParamsFilter(
+		companyLayers,
+		"layer"
+	);
 
 	// Amount Raised Filter
-	const [selectedAmountRaised, setSelectedAmountRaised] = useStateParamsFilter(amountRaised, 'amount');
+	const [selectedAmountRaised, setSelectedAmountRaised] = useStateParamsFilter(
+		amountRaised,
+		"amount"
+	);
 
 	// Total Employees Filter
-	const [selectedTotalEmployees, setSelectedTotalEmployees] = useStateParamsFilter(totalEmployees, 'totalEmp');
+	const [selectedTotalEmployees, setSelectedTotalEmployees] =
+		useStateParamsFilter(totalEmployees, "totalEmp");
 
 	// Filters
-	const [toggleFilters, setToggleFilters] = useState(selectedLayer !== companyLayers[0] || selectedAmountRaised !== amountRaised[0] || selectedTotalEmployees !== totalEmployees[0]);
+	const [toggleFilters, setToggleFilters] = useState(
+		selectedLayer !== companyLayers[0] ||
+			selectedAmountRaised !== amountRaised[0] ||
+			selectedTotalEmployees !== totalEmployees[0]
+	);
 
 	const [page, setPage] = useState<number>(0);
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useStateParams<string[]>([], 'tags', (tagArr) => tagArr.join(','), (tag) => tag.split(','));
+	const [selectedTags, setSelectedTags] = useStateParams<string[]>(
+		[],
+		"tags",
+		(tagArr) => tagArr.join(","),
+		(tag) => tag.split(",")
+	);
 
 	useEffect(() => {
 		setPage(0);
@@ -116,7 +132,9 @@ const Companies: NextPage<Props> = ({
 		event.stopPropagation();
 		event.preventDefault();
 
-		const newTags = selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [tag, ...selectedTags]
+		const newTags = selectedTags.includes(tag)
+			? selectedTags.filter((t) => t !== tag)
+			: [tag, ...selectedTags];
 		setSelectedTags(newTags);
 
 		selectedTags.includes(tag)

@@ -45,6 +45,7 @@ const BrandAssets: NextPage<Props> = () => {
 						alt="Blur"
 						width={620}
 						height={1000}
+						priority
 					/>
 				</figure>
 				<FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
