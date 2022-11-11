@@ -13,11 +13,13 @@
 		"instantsearch",
 		"loggedin",
 		"loggedout",
+		"Logomark",
 		"overscroll",
 		"sindresorhus",
 		"sortees",
 		"vcfirm",
-		"vcfirms"
+		"vcfirms",
+		"wordmark"
 	],
 	"css.lint.unknownAtRules": "ignore"
 }

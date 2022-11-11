@@ -326,7 +326,7 @@ export default function SignUpModal(props: Props) {
 												</ElemButton>
 												<p className="text-sm text-center text-slate-600">
 													By signing up, you agree to the{" "}
-													<Link href="/terms">
+													{/* <Link href="/terms">
 														<a
 															className="text-dark-500 underline hover:text-primary-500"
 															onClick={onClose}
@@ -334,7 +334,7 @@ export default function SignUpModal(props: Props) {
 															Terms
 														</a>
 													</Link>{" "}
-													&amp;{" "}
+													&amp;{" "} */}
 													<Link href="/privacy">
 														<a
 															className="text-dark-500 underline hover:text-primary-500"
