@@ -9,6 +9,7 @@ import {
   DateField,
   NumberField,
   AutocompleteInput,
+  TextInput,
 } from "react-admin";
 import {
   roundChoices,
@@ -18,6 +19,13 @@ import {
 import ElemList from "../ElemList";
 
 const filters = [
+  <TextInput
+    key="search"
+    source="company#name@_ilike"
+    label="Company"
+    resettable
+    alwaysOn
+  />,
   <ReferenceInput
     key="searchCompany"
     source="company_id"
