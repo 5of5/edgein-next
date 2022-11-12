@@ -25,9 +25,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
 
-    const result = await updatePerson(req.body.payload, req.body.id, token)
+    // const result = await updatePerson(req.body.payload, req.body.id, token)
 
-    res.json({ status: 200, result })
+    res.json({ status: 200 })
 
   } catch (e: any) {
     return res.status(400).send({ status: 400, message: e.message })
