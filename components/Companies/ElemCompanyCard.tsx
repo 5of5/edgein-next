@@ -21,7 +21,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 		setCompanyData(company);
 	}, [company]);
 
-	const { slug, logo, name, coin, layer, tags, overview } = companyData;
+	const { id, slug, logo, name, coin, layer, tags, overview } = companyData;
 
 	return (
 		<Link href={`/companies/${slug}`}>
@@ -96,9 +96,9 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 				>
 					<ElemReactions resource={company} resourceType={"companies"} />
 					<ElemSaveToList
-						resourceId={company.id}
+						resourceId={id}
 						resourceType={"companies"}
-						slug={company.slug!}
+						slug={slug!}
 					/>
 				</div>
 			</a>
