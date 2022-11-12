@@ -7,7 +7,7 @@ type Props = {
 	selectedTags: any;
 };
 
-export const CompaniesTags: FC<Props> = ({ onClick, selectedTags }) => {
+export const ElemTagsCarousel: FC<Props> = ({ onClick, selectedTags }) => {
 	const maxScrollWidth = useRef(0);
 	const [currentIndex, setCurrentIndex] = useState<any>(0);
 	const carousel: any = useRef(null);
@@ -73,22 +73,18 @@ export const CompaniesTags: FC<Props> = ({ onClick, selectedTags }) => {
 					disabled={isDisabled("prev")}
 				>
 					<div className="flex items-center justify-center w-9 h-9 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:text-primary-500 sm:-ml-1">
-						{/* Prev */}
 						<IconChevronLeft title="Prev" className="h-6 w-6" />
 					</div>
 					<span className="sr-only">Prev</span>
 				</button>
-
 				<button
 					onClick={moveNext}
 					className="cursor-pointer bg-gradient-to-l from-white via-white to-transparent group z-10 p-0 m-0 transition-all ease-in-out duration-300 disabled:opacity-0"
 					disabled={isDisabled("next")}
 				>
 					<div className="flex items-center justify-center w-9 h-9 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:text-primary-500 sm:-mr-1">
-						{/* Next */}
 						<IconChevronRight title="Next" className="h-6 w-6" />
 					</div>
-
 					<span className="sr-only">Next</span>
 				</button>
 			</div>

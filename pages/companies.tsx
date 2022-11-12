@@ -5,7 +5,7 @@ import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { InputSelect } from "@/components/InputSelect";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
 import { ElemButton } from "@/components/ElemButton";
-import { CompaniesTags } from "@/components/Companies/CompaniesTags";
+import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
 import { runGraphQl, numberWithCommas } from "@/utils";
 import {
 	IconSearch,
@@ -297,7 +297,7 @@ const Companies: NextPage<Props> = ({
 							/>
 
 							<div className="w-full overflow-hidden grow min-w-0 order-last lg:order-none">
-								<CompaniesTags
+								<ElemTagsCarousel
 									onClick={filterByTag}
 									selectedTags={selectedTags}
 								/>
