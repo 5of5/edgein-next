@@ -45,6 +45,7 @@ export default function ForgotPasswordModal(props: Props) {
 
 	const onBack = () => {
 		props.onBack();
+		setIsMailSent(false);
 	};
 
 	return (
