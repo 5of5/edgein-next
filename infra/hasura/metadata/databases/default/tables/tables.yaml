@@ -11,6 +11,7 @@
 - "!include public_data_partners.yaml"
 - "!include public_data_raw.yaml"
 - "!include public_data_runs.yaml"
+- "!include public_disabled_emails.yaml"
 - "!include public_follows.yaml"
 - "!include public_follows_companies.yaml"
 - "!include public_follows_vc_firms.yaml"

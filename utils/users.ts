@@ -26,6 +26,30 @@ async function queryForAllowedEmailCheck(email: string, domain: string) {
   }
 }
 
+async function queryForDisabledEmailCheck(email: string, domain: string) {
+  const fetchQuery = `
+  query query_disabled_emails($email: String, $domain: String) {
+    disabled_emails(where: {_or: [
+      {email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, 
+      {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}
+    ]}, 
+      limit: 1) {
+      id
+      email
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { email, domain }
+    })
+    return data.data.disabled_emails[0] as { id: number, email: string }
+  } catch (ex) {
+    throw ex;
+  }
+}
+
 async function mutateForWaitlistEmail(email: string) {
   const upsertWaitListEmail = `
   mutation upsert_waitlist_email($email: String) {
@@ -403,5 +427,5 @@ async function findOneUserByAdditionalEmail(email: string) {
   }
 }
 
-const UserService = { queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, findOneUserById, updateBillingOrg, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId, updateAllowedEmailArray, findOneUserByAdditionalEmail }
+const UserService = { queryForDisabledEmailCheck, queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, findOneUserById, updateBillingOrg, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId, updateAllowedEmailArray, findOneUserByAdditionalEmail }
 export default UserService

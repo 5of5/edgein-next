@@ -12,14 +12,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const reference_id = req.body.reference_id;
   // get the domain from the email
   const domain = email.split('@').pop() || '';
-  // const isEmailAllowed = await UserService.queryForAllowedEmailCheck(email, domain)
+  const isEmailDisabled = await UserService.queryForDisabledEmailCheck(email, domain)
 
   // when email does not exist in the allowed emails
-  // if (!isEmailAllowed) {
-  //   // insert user in waitlist table
-  //   await UserService.mutateForWaitlistEmail(email)
-  //   return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
-  // }
+  if (isEmailDisabled) {
+    return res.status(404).send({ message: `Your email ${email} has been added to our waitlist.  We'll be in touch soon!` });
+  }
 
   let isUserPassPrimaryAccount = false;
   let isLinkedInPrimaryAccount = true;
