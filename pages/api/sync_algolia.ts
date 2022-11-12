@@ -220,7 +220,7 @@ const mutateForlastSync = async (keyData: String) => {
   const dateInUTC = today.toISOString()
   // prepare gql query
   const updateLatsSyncData = `
-  mutation update_application_meta($value: timestamptz, $key: String) {
+  mutation update_application_meta($value: timestamptz, $key: String!) {
     update_application_meta(
       where: {key: {_eq: $key}},
       _set: { value: $value, error: "" }
@@ -247,7 +247,7 @@ try {
 const mutateForError = async (keyData: String, error: String) => {
   // prepare gql query
   const updateLatsSyncData = `
-  mutation update_application_meta($error: String, $key: String) {
+  mutation update_application_meta($error: String, $key: String!) {
     update_application_meta(
       where: {key: {_eq: $key}},
       _set: { error: $error }

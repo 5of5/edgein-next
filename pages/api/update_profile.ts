@@ -25,9 +25,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
 
-    // const result = await updatePerson(req.body.payload, req.body.id, token)
+    const result = await updatePerson(req.body.payload, req.body.id, token)
 
-    res.json({ status: 200 })
+    res.json({ status: 200, result })
 
   } catch (e: any) {
     return res.status(400).send({ status: 400, message: e.message })
@@ -36,8 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const updatePerson = async (updateBody: any, id: number, token?: string) => {
   const mutation = `
-  mutation update_people($set: people_set_input, $where: people_bool_exp!) {
-    update_people(_set: $set, where: $where) {
+  mutation update_people($set: people_set_input, $id: Int!) {
+    update_people_by_pk(_set: $set, pk_columns: {id: $id}) {
       returning {
         id
         name
@@ -92,7 +92,7 @@ const updatePerson = async (updateBody: any, id: number, token?: string) => {
   const result = await mutate({
     mutation,
     variables: {
-      where: { id: { _eq: id } },
+      id,
       set: updateBody,
     }
   }, token)

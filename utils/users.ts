@@ -189,7 +189,7 @@ async function upsertUser(userData: any) {
 
 async function updateEmailVerifiedStatus(email: string, is_auth0_verified: boolean) {
   const updateEmailVerified = `
-  mutation update_users($email: String, $is_auth0_verified: Boolean) {
+  mutation update_users($email: String!, $is_auth0_verified: Boolean) {
     update_users(
       where: {email: {_eq: $email}},
       _set: { is_auth0_verified: $is_auth0_verified }
@@ -227,7 +227,7 @@ try {
 
 async function updateAuth0LinkedInId(email: string, auth0_linkedin_id: string) {
   const updateAuth0LinkedIn = `
-  mutation update_users($email: String, $auth0_linkedin_id: String) {
+  mutation update_users($email: String!, $auth0_linkedin_id: String) {
     update_users(
       where: {email: {_eq: $email}},
       _set: { auth0_linkedin_id: $auth0_linkedin_id }
@@ -265,7 +265,7 @@ try {
 
 async function updateAuth0UserPassId(email: string, auth0_user_pass_id: string) {
   const updateAuth0UserPass = `
-  mutation update_users($email: String, $auth0_user_pass_id: String) {
+  mutation update_users($email: String!, $auth0_user_pass_id: String) {
     update_users(
       where: {email: {_eq: $email}},
       _set: { auth0_user_pass_id: $auth0_user_pass_id }
@@ -335,7 +335,7 @@ async function findOneUserByReferenceId(reference_id: string) {
 
 async function updateAllowedEmailArray(id: number, additional_emails: string[]) {
   const updateAllowedEmail = `
-  mutation update_users($id: Int, $additional_emails: jsonb) {
+  mutation update_users($id: Int!, $additional_emails: jsonb) {
     update_users(
       where: {id: {_eq: $id}},
       _set: { additional_emails: $additional_emails }
