@@ -58,7 +58,6 @@ export const ElemShareMenu = ({ user }: Props) => {
 
 	const onCopy = async () => {
 		navigator.clipboard.writeText(getInviteLink(user.reference_id));
-		console.log("what");
 		toast.custom(
 			(t) => (
 				<div

@@ -60,6 +60,7 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
 		logo
 		num_of_investments
 		sentiment
+		tags
 		overview
 		website
 	}

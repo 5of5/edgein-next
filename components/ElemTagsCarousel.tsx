@@ -90,7 +90,7 @@ export const ElemTagsCarousel: FC<Props> = ({ onClick, selectedTags }) => {
 			</div>
 			<div
 				ref={carousel}
-				className="relative flex flex-row py-1.5 space-x-3 overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x mt-1.5 border-t border-t-slate-200 lg:mt-0 lg:border-0"
+				className="relative flex flex-row py-4 space-x-3 overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x mt-1.5 border-t border-t-slate-200 sm:py-1.5 lg:mt-0 lg:border-0"
 			>
 				{allTags.map(
 					(

@@ -67,34 +67,6 @@ const VCFirm: NextPage<Props> = (props) => {
 		return <h1>Not Found</h1>;
 	}
 
-	//Tags from companies invested in
-	const tagsFromCompanies: any = [];
-	if (props.getInvestments.length > 0) {
-		props.getInvestments.map((item: Investment_Rounds, index: number) => {
-			item?.company?.tags?.map((tag: string, i: number) => [
-				tagsFromCompanies.push(tag),
-			]);
-		});
-	}
-
-	// Remove duplicates and count tags
-	let reducedTagsArray = tagsFromCompanies.reduce(
-		(tag: { name: any; count: number }[], curr: any, _: any, arr: any) => {
-			if (tag.length == 0) tag.push({ name: curr, count: 1 });
-			else if (tag.findIndex((f) => f.name === curr) === -1)
-				tag.push({ name: curr, count: 1 });
-			else ++tag[tag.findIndex((f) => f.name === curr)].count;
-			return tag;
-		},
-		[]
-	);
-
-	const topTags = reducedTagsArray
-		.sort((a: { count: number }, b: { count: number }) => b.count - a.count)
-		.slice(0, 7);
-
-	const vcfirmTagsUnique = uniq(tagsFromCompanies as String);
-
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
 	//TabBar
@@ -129,38 +101,9 @@ const VCFirm: NextPage<Props> = (props) => {
 
 				<div className="w-full col-span-5 mt-7 lg:mt-0">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
-
-					{/* {vcfirm.tags != "" ? (
+					{vcfirm.tags.length > 0 && (
 						<ElemTags className="mt-4" tags={vcfirm.tags} />
-					) : vcfirmTagsUnique.length > 0 ? (
-						<ElemTags className="mt-4" tags={vcfirmTagsUnique} />
-					) : (
-						<></>
 					)}
-
-					<section className="mt-4">
-						<ul className="flex flex-wrap gap-2 mt-4">
-							{topTags.map(
-								(
-									tag: {
-										name: string;
-										count: number;
-									},
-									index: number
-								) => (
-									<li
-										className={`bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full tag-count-${tag.count}`}
-										key={index}
-									>
-										{tag.name}
-										<span className="pl-1 proportional-nums lining-nums">
-											({tag.count})
-										</span>
-									</li>
-								)
-							)}
-						</ul>
-					</section> */}
 
 					{vcfirm.overview && (
 						<p className="mt-4 line-clamp-3 text-base text-slate-600">
