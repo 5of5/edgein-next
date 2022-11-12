@@ -1,10 +1,20 @@
 import React from "react";
-import { TextField, EditButton } from "react-admin";
+import { TextField, EditButton, TextInput } from "react-admin";
 import ElemList from "../ElemList";
+
+const filters = [
+  <TextInput
+    key="search"
+    source="email,display_name"
+    label="Email, Display name"
+    resettable
+    alwaysOn
+  />,
+];
 
 export const UserList = () => {
   return (
-    <ElemList>
+    <ElemList filters={filters}>
       <EditButton />
       <TextField source="id" />
       <TextField source="email" />
