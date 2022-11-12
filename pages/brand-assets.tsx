@@ -52,7 +52,7 @@ const BrandAssets: NextPage<Props> = () => {
 
 				<section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
 					<div className="max-w-2xl mx-auto lg:max-w-3xl text-center lg:px-12">
-						<h1 className="font-display text-4xl font-bold tracking-tight px-12 sm:text-6xl">
+						<h1 className="font-display text-4xl font-bold tracking-tight sm:px-12 sm:text-6xl">
 							EdgeIn brand assets &amp; guidelines
 						</h1>
 						<p className="mt-6 font-display text-xl leading-relaxed text-slate-600">
@@ -325,7 +325,7 @@ const BrandAssets: NextPage<Props> = () => {
 							<div className="w-full p-1 font-bold bg-white">#475569</div>
 						</div>
 					</div>
-					<div className="mt-8 grid grid-cols-3 gap-8 md:w-full ">
+					<div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 md:w-full ">
 						<div className="flex items-end rounded-lg overflow-hidden shadow text-center h-44 bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400">
 							<div className="w-full p-1 font-bold bg-white">Gradient 1</div>
 						</div>
@@ -376,7 +376,7 @@ const BrandAssets: NextPage<Props> = () => {
 					<div className="mt-8 block md:w-full md:grid md:grid-cols-2 gap-8">
 						<div className="mt-8 bg-white shadow rounded-lg p-7 lg:mt-0">
 							<div className="font-bold text-4xl text-center py-16 rounded-lg bg-gray-50">
-								<div className="py-2">Metropolis Bold</div>
+								<div className="py-2 px-4 sm:px-0">Metropolis Bold</div>
 							</div>
 							<p className="mt-4 text-slate-600">
 								Metropolis Bold is the font used for titles & subtitles.
@@ -384,7 +384,7 @@ const BrandAssets: NextPage<Props> = () => {
 						</div>
 						<div className="mt-8 bg-white shadow rounded-lg p-7 lg:mt-0">
 							<div className="text-4xl text-center py-16 rounded-lg bg-gray-50">
-								<div className="py-2">Metropolis Regular</div>
+								<div className="py-2 px-4 sm:px-0">Metropolis Regular</div>
 							</div>
 							<p className="mt-4 text-slate-600">
 								Metropolis Regular is the font used in paragraph text and small
