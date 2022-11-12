@@ -1,16 +1,16 @@
 import React from "react";
 import ElemFormBase from "../ElemFormBase";
-import AllowedEmailForm from "./AllowedEmailForm";
+import DisabledEmailForm from "./DisabledEmailForm";
 import { transform } from "./services";
 
-export const AllowedEmailCreate = () => {
+export const DisabledEmailCreate = () => {
   return (
     <ElemFormBase
-      title="Create a entry in allow list"
+      title="Create a entry in deny list"
       action="create"
       transform={transform}
     >
-      <AllowedEmailForm action="create" />
+      <DisabledEmailForm action="create" />
     </ElemFormBase>
   );
 };

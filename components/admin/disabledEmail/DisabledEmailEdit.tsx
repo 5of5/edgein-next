@@ -1,17 +1,17 @@
 import React from "react";
 import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
-import AllowedEmailForm from "./AllowedEmailForm";
+import DisabledEmailForm from "./DisabledEmailForm";
 import { transform } from "./services";
 
-export const AllowedEmailEdit = () => {
+export const DisabledEmailEdit = () => {
   return (
     <ElemFormBase
       title={<ElemTitle category="Allow List" />}
       action="edit"
       transform={transform}
     >
-      <AllowedEmailForm action="edit" />
+      <DisabledEmailForm action="edit" />
     </ElemFormBase>
   );
 };

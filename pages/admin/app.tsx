@@ -60,10 +60,10 @@ import {
   BlockchainCreate,
 } from "../../components/admin/blockchain";
 import {
-  AllowedEmailList,
-  AllowedEmailEdit,
-  AllowedEmailCreate,
-} from "../../components/admin/allowedEmail";
+  DisabledEmailList,
+  DisabledEmailEdit,
+  DisabledEmailCreate,
+} from "../../components/admin/disabledEmail";
 import { UserList, UserEdit } from "../../components/admin/user";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -297,10 +297,10 @@ const AdminApp = () => {
         create={InvestorCreate}
       />
       <Resource
-        name="allowed_emails"
-        list={AllowedEmailList}
-        edit={AllowedEmailEdit}
-        create={AllowedEmailCreate}
+        name="disabled_emails"
+        list={DisabledEmailList}
+        edit={DisabledEmailEdit}
+        create={DisabledEmailCreate}
       />
       <Resource name="users" list={UserList} edit={UserEdit} />
 
