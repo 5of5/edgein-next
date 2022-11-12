@@ -39,19 +39,3 @@ select_permissions:
         - seniority
         - title
       filter: {}
-update_permissions:
-  - role: user
-    permission:
-      columns:
-        - founder
-        - end_date
-        - start_date
-        - company_id
-        - id
-        - person_id
-        - external_id
-        - function
-        - seniority
-        - title
-      filter: {}
-      check: {}

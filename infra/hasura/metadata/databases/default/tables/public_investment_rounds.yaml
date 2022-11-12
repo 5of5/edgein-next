@@ -38,16 +38,3 @@ select_permissions:
         - round
         - round_date
       filter: {}
-update_permissions:
-  - role: user
-    permission:
-      columns:
-        - company_id
-        - id
-        - amount
-        - valuation
-        - external_id
-        - round
-        - round_date
-      filter: {}
-      check: {}

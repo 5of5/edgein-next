@@ -58,16 +58,3 @@ select_permissions:
       computed_fields:
         - num_of_investments
       filter: {}
-update_permissions:
-  - role: user
-    permission:
-      columns:
-        - id
-        - logo
-        - external_id
-        - linkedin
-        - name
-        - slug
-        - website
-      filter: {}
-      check: {}

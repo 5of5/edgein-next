@@ -32,14 +32,3 @@ select_permissions:
         - name
         - ticker
       filter: {}
-update_permissions:
-  - role: user
-    permission:
-      columns:
-        - blockchain_id
-        - id
-        - external_id
-        - name
-        - ticker
-      filter: {}
-      check: {}

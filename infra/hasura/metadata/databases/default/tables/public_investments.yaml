@@ -32,14 +32,3 @@ select_permissions:
         - vc_firm_id
         - external_id
       filter: {}
-update_permissions:
-  - role: user
-    permission:
-      columns:
-        - id
-        - person_id
-        - round_id
-        - vc_firm_id
-        - external_id
-      filter: {}
-      check: {}
