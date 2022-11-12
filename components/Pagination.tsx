@@ -1,5 +1,6 @@
 import { PropsWithChildren } from "react";
-import { ElemButton } from "./ElemButton";
+import { ElemButton } from "@/components/ElemButton";
+import { numberWithCommas } from "@/utils";
 
 type Props = {
 	className?: string;
@@ -47,7 +48,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 					<span>
 						Results: {shownItemsStart}
 						{" - "}
-						{shownItemsEnd} of {totalItems}
+						{shownItemsEnd} of {numberWithCommas(totalItems)}
 					</span>
 				)}
 			</div>
