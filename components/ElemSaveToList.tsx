@@ -214,6 +214,9 @@ export const ElemSaveToList: FC<Props> = ({
 								<ul className="divide-y divide-slate-100 border-b border-b-slate-100">
 									{listsData?.map((list) => {
 										const selected = isSelected(list);
+
+										//console.log(list.name + " " + selected);
+
 										return (
 											<li key={list.id}>
 												<InputCheckbox

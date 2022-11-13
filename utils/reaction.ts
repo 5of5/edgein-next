@@ -6,15 +6,15 @@ type ReactionType = SentimentReactionType | ListReactionType;
 
 type SentimentReactionType = {
 	resourceId: number;
-	resourceType: 'companies' | 'vc_firms';
-	sentiment: 'hot' | 'like' | 'crap';
-	listName?: undefined
+	resourceType: "companies" | "vc_firms";
+	sentiment: "hot" | "like" | "crap";
+	listName?: undefined;
 	pathname: string;
 };
 
 type ListReactionType = {
 	resourceId: number;
-	resourceType: 'companies' | 'vc_firms';
+	resourceType: "companies" | "vc_firms";
 	sentiment?: undefined;
 	listName: string;
 	pathname: string;
@@ -47,7 +47,7 @@ export const toggleFollowOnList = async ({
 		},
 		body: JSON.stringify({
 			resourceId,
-			resourceType,		
+			resourceType,
 			listName,
 			sentiment,
 			pathname,
@@ -71,7 +71,21 @@ export const getNameFromListName = (list: DeepPartial<Lists>) => {
 	return fragments?.[fragments.length - 1] || "";
 };
 
-export const isOnList = (list: DeepPartial<Lists> | undefined, resourceId: number) => Boolean(find(list?.follows_companies, follow => follow?.resource_id === resourceId))
+export const isOnList = (
+	list: DeepPartial<Lists> | undefined,
+	resourceId: number
+) => {
+	const companyIsOnList = find(
+		list?.follows_companies,
+		(follow) => follow?.resource_id === resourceId
+	);
+	const investorIsOnList = find(
+		list?.follows_vcfirms,
+		(follow) => follow?.resource_id === resourceId
+	);
+
+	return companyIsOnList || investorIsOnList ? true : false;
+};
 
 export const isFollowsExists = (
 	follows: Follows_Companies[] | Follows_Vc_Firms[],
@@ -117,5 +131,3 @@ export const createListWithMultipleResources = async (
 	});
 	return resp.json();
 };
-
-
