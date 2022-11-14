@@ -15,6 +15,7 @@ export async function middleware(req: NextRequest) {
 			`/contact/`,
 			`/privacy/`,
 			`/terms/`,
+			`/brand-assets/`,
 			`/team/`,
 			`/404/`,
 			`/api/login_attempt/`,
@@ -26,9 +27,7 @@ export async function middleware(req: NextRequest) {
 			`/api/signin/`,
 			`/api/change_password/`,
 			`/api/access_token_from_code/`,
-
 			`/api/stripe_webhook/`,
-
 			`/admin/app/`,
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||

@@ -7,7 +7,7 @@ type Props = {
 	selectedTags: any;
 };
 
-export const CompaniesTags: FC<Props> = ({ onClick, selectedTags }) => {
+export const ElemTagsCarousel: FC<Props> = ({ onClick, selectedTags }) => {
 	const maxScrollWidth = useRef(0);
 	const [currentIndex, setCurrentIndex] = useState<any>(0);
 	const carousel: any = useRef(null);
@@ -73,28 +73,24 @@ export const CompaniesTags: FC<Props> = ({ onClick, selectedTags }) => {
 					disabled={isDisabled("prev")}
 				>
 					<div className="flex items-center justify-center w-9 h-9 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:text-primary-500 sm:-ml-1">
-						{/* Prev */}
 						<IconChevronLeft title="Prev" className="h-6 w-6" />
 					</div>
 					<span className="sr-only">Prev</span>
 				</button>
-
 				<button
 					onClick={moveNext}
 					className="cursor-pointer bg-gradient-to-l from-white via-white to-transparent group z-10 p-0 m-0 transition-all ease-in-out duration-300 disabled:opacity-0"
 					disabled={isDisabled("next")}
 				>
 					<div className="flex items-center justify-center w-9 h-9 opacity-75 transition-all ease-in-out duration-150 group-hover:opacity-100 group-hover:text-primary-500 sm:-mr-1">
-						{/* Next */}
 						<IconChevronRight title="Next" className="h-6 w-6" />
 					</div>
-
 					<span className="sr-only">Next</span>
 				</button>
 			</div>
 			<div
 				ref={carousel}
-				className="relative flex flex-row py-1.5 space-x-3 overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x mt-1.5 border-t border-t-slate-200 lg:mt-0 lg:border-0"
+				className="relative flex flex-row py-4 space-x-3 overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x mt-1.5 border-t border-t-slate-200 sm:py-1.5 lg:mt-0 lg:border-0"
 			>
 				{allTags.map(
 					(
@@ -108,9 +104,10 @@ export const CompaniesTags: FC<Props> = ({ onClick, selectedTags }) => {
 						<div
 							key={index}
 							onClick={(e) => onClick(e, name)}
-							className={`snap-start shrink-0 p-3 basis-auto group cursor-pointer bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition ease-in-out duration-150 hover:bg-slate-300 ${
-								selectedTags.includes(name) &&
-								"text-white bg-dark-500 hover:bg-dark-500"
+							className={`snap-start shrink-0 p-3 basis-auto group cursor-pointer  text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition ease-in-out duration-150 ${
+								selectedTags.includes(name)
+									? "text-white bg-dark-500 hover:bg-dark-500"
+									: "bg-slate-200 hover:bg-slate-300"
 							}`}
 						>
 							{name}

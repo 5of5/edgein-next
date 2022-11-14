@@ -3511,9 +3511,11 @@ export type Data_Raw_Variance_Fields = {
 /** columns and relationships of "data_runs" */
 export type Data_Runs = {
   __typename?: 'data_runs';
+  ambiguity_score: Maybe<Scalars['float8']>;
   classification: Scalars['String'];
   data_raw: Scalars['Int'];
   id: Scalars['bigint'];
+  max_weight: Maybe<Scalars['Int']>;
   run_at: Scalars['timestamptz'];
   weight: Scalars['Int'];
   weight_normalized: Scalars['float8'];
@@ -3552,8 +3554,10 @@ export type Data_Runs_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Data_Runs_Avg_Fields = {
   __typename?: 'data_runs_avg_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3563,9 +3567,11 @@ export type Data_Runs_Bool_Exp = {
   _and: InputMaybe<Array<Data_Runs_Bool_Exp>>;
   _not: InputMaybe<Data_Runs_Bool_Exp>;
   _or: InputMaybe<Array<Data_Runs_Bool_Exp>>;
+  ambiguity_score: InputMaybe<Float8_Comparison_Exp>;
   classification: InputMaybe<String_Comparison_Exp>;
   data_raw: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Bigint_Comparison_Exp>;
+  max_weight: InputMaybe<Int_Comparison_Exp>;
   run_at: InputMaybe<Timestamptz_Comparison_Exp>;
   weight: InputMaybe<Int_Comparison_Exp>;
   weight_normalized: InputMaybe<Float8_Comparison_Exp>;
@@ -3579,17 +3585,21 @@ export enum Data_Runs_Constraint {
 
 /** input type for incrementing numeric columns in table "data_runs" */
 export type Data_Runs_Inc_Input = {
+  ambiguity_score: InputMaybe<Scalars['float8']>;
   data_raw: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['bigint']>;
+  max_weight: InputMaybe<Scalars['Int']>;
   weight: InputMaybe<Scalars['Int']>;
   weight_normalized: InputMaybe<Scalars['float8']>;
 };
 
 /** input type for inserting data into table "data_runs" */
 export type Data_Runs_Insert_Input = {
+  ambiguity_score: InputMaybe<Scalars['float8']>;
   classification: InputMaybe<Scalars['String']>;
   data_raw: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['bigint']>;
+  max_weight: InputMaybe<Scalars['Int']>;
   run_at: InputMaybe<Scalars['timestamptz']>;
   weight: InputMaybe<Scalars['Int']>;
   weight_normalized: InputMaybe<Scalars['float8']>;
@@ -3598,9 +3608,11 @@ export type Data_Runs_Insert_Input = {
 /** aggregate max on columns */
 export type Data_Runs_Max_Fields = {
   __typename?: 'data_runs_max_fields';
+  ambiguity_score: Maybe<Scalars['float8']>;
   classification: Maybe<Scalars['String']>;
   data_raw: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['bigint']>;
+  max_weight: Maybe<Scalars['Int']>;
   run_at: Maybe<Scalars['timestamptz']>;
   weight: Maybe<Scalars['Int']>;
   weight_normalized: Maybe<Scalars['float8']>;
@@ -3609,9 +3621,11 @@ export type Data_Runs_Max_Fields = {
 /** aggregate min on columns */
 export type Data_Runs_Min_Fields = {
   __typename?: 'data_runs_min_fields';
+  ambiguity_score: Maybe<Scalars['float8']>;
   classification: Maybe<Scalars['String']>;
   data_raw: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['bigint']>;
+  max_weight: Maybe<Scalars['Int']>;
   run_at: Maybe<Scalars['timestamptz']>;
   weight: Maybe<Scalars['Int']>;
   weight_normalized: Maybe<Scalars['float8']>;
@@ -3635,9 +3649,11 @@ export type Data_Runs_On_Conflict = {
 
 /** Ordering options when selecting data from "data_runs". */
 export type Data_Runs_Order_By = {
+  ambiguity_score: InputMaybe<Order_By>;
   classification: InputMaybe<Order_By>;
   data_raw: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  max_weight: InputMaybe<Order_By>;
   run_at: InputMaybe<Order_By>;
   weight: InputMaybe<Order_By>;
   weight_normalized: InputMaybe<Order_By>;
@@ -3651,11 +3667,15 @@ export type Data_Runs_Pk_Columns_Input = {
 /** select columns of table "data_runs" */
 export enum Data_Runs_Select_Column {
   /** column name */
+  AmbiguityScore = 'ambiguity_score',
+  /** column name */
   Classification = 'classification',
   /** column name */
   DataRaw = 'data_raw',
   /** column name */
   Id = 'id',
+  /** column name */
+  MaxWeight = 'max_weight',
   /** column name */
   RunAt = 'run_at',
   /** column name */
@@ -3666,9 +3686,11 @@ export enum Data_Runs_Select_Column {
 
 /** input type for updating data in table "data_runs" */
 export type Data_Runs_Set_Input = {
+  ambiguity_score: InputMaybe<Scalars['float8']>;
   classification: InputMaybe<Scalars['String']>;
   data_raw: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['bigint']>;
+  max_weight: InputMaybe<Scalars['Int']>;
   run_at: InputMaybe<Scalars['timestamptz']>;
   weight: InputMaybe<Scalars['Int']>;
   weight_normalized: InputMaybe<Scalars['float8']>;
@@ -3677,8 +3699,10 @@ export type Data_Runs_Set_Input = {
 /** aggregate stddev on columns */
 export type Data_Runs_Stddev_Fields = {
   __typename?: 'data_runs_stddev_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3686,8 +3710,10 @@ export type Data_Runs_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Data_Runs_Stddev_Pop_Fields = {
   __typename?: 'data_runs_stddev_pop_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3695,8 +3721,10 @@ export type Data_Runs_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Data_Runs_Stddev_Samp_Fields = {
   __typename?: 'data_runs_stddev_samp_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3704,8 +3732,10 @@ export type Data_Runs_Stddev_Samp_Fields = {
 /** aggregate sum on columns */
 export type Data_Runs_Sum_Fields = {
   __typename?: 'data_runs_sum_fields';
+  ambiguity_score: Maybe<Scalars['float8']>;
   data_raw: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['bigint']>;
+  max_weight: Maybe<Scalars['Int']>;
   weight: Maybe<Scalars['Int']>;
   weight_normalized: Maybe<Scalars['float8']>;
 };
@@ -3713,11 +3743,15 @@ export type Data_Runs_Sum_Fields = {
 /** update columns of table "data_runs" */
 export enum Data_Runs_Update_Column {
   /** column name */
+  AmbiguityScore = 'ambiguity_score',
+  /** column name */
   Classification = 'classification',
   /** column name */
   DataRaw = 'data_raw',
   /** column name */
   Id = 'id',
+  /** column name */
+  MaxWeight = 'max_weight',
   /** column name */
   RunAt = 'run_at',
   /** column name */
@@ -3729,8 +3763,10 @@ export enum Data_Runs_Update_Column {
 /** aggregate var_pop on columns */
 export type Data_Runs_Var_Pop_Fields = {
   __typename?: 'data_runs_var_pop_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3738,8 +3774,10 @@ export type Data_Runs_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Data_Runs_Var_Samp_Fields = {
   __typename?: 'data_runs_var_samp_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3747,8 +3785,10 @@ export type Data_Runs_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Data_Runs_Variance_Fields = {
   __typename?: 'data_runs_variance_fields';
+  ambiguity_score: Maybe<Scalars['Float']>;
   data_raw: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+  max_weight: Maybe<Scalars['Float']>;
   weight: Maybe<Scalars['Float']>;
   weight_normalized: Maybe<Scalars['Float']>;
 };
@@ -3764,6 +3804,191 @@ export type Date_Comparison_Exp = {
   _lte: InputMaybe<Scalars['date']>;
   _neq: InputMaybe<Scalars['date']>;
   _nin: InputMaybe<Array<Scalars['date']>>;
+};
+
+/** columns and relationships of "disabled_emails" */
+export type Disabled_Emails = {
+  __typename?: 'disabled_emails';
+  email: Scalars['String'];
+  id: Scalars['Int'];
+  match_type: Scalars['String'];
+};
+
+/** aggregated selection of "disabled_emails" */
+export type Disabled_Emails_Aggregate = {
+  __typename?: 'disabled_emails_aggregate';
+  aggregate: Maybe<Disabled_Emails_Aggregate_Fields>;
+  nodes: Array<Disabled_Emails>;
+};
+
+/** aggregate fields of "disabled_emails" */
+export type Disabled_Emails_Aggregate_Fields = {
+  __typename?: 'disabled_emails_aggregate_fields';
+  avg: Maybe<Disabled_Emails_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Disabled_Emails_Max_Fields>;
+  min: Maybe<Disabled_Emails_Min_Fields>;
+  stddev: Maybe<Disabled_Emails_Stddev_Fields>;
+  stddev_pop: Maybe<Disabled_Emails_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Disabled_Emails_Stddev_Samp_Fields>;
+  sum: Maybe<Disabled_Emails_Sum_Fields>;
+  var_pop: Maybe<Disabled_Emails_Var_Pop_Fields>;
+  var_samp: Maybe<Disabled_Emails_Var_Samp_Fields>;
+  variance: Maybe<Disabled_Emails_Variance_Fields>;
+};
+
+
+/** aggregate fields of "disabled_emails" */
+export type Disabled_Emails_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Disabled_Emails_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Disabled_Emails_Avg_Fields = {
+  __typename?: 'disabled_emails_avg_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "disabled_emails". All fields are combined with a logical 'AND'. */
+export type Disabled_Emails_Bool_Exp = {
+  _and: InputMaybe<Array<Disabled_Emails_Bool_Exp>>;
+  _not: InputMaybe<Disabled_Emails_Bool_Exp>;
+  _or: InputMaybe<Array<Disabled_Emails_Bool_Exp>>;
+  email: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  match_type: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "disabled_emails" */
+export enum Disabled_Emails_Constraint {
+  /** unique or primary key constraint */
+  DisabledEmailsPkey = 'disabled_emails_pkey'
+}
+
+/** input type for incrementing numeric columns in table "disabled_emails" */
+export type Disabled_Emails_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "disabled_emails" */
+export type Disabled_Emails_Insert_Input = {
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  match_type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Disabled_Emails_Max_Fields = {
+  __typename?: 'disabled_emails_max_fields';
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  match_type: Maybe<Scalars['String']>;
+};
+
+/** aggregate min on columns */
+export type Disabled_Emails_Min_Fields = {
+  __typename?: 'disabled_emails_min_fields';
+  email: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  match_type: Maybe<Scalars['String']>;
+};
+
+/** response of any mutation on the table "disabled_emails" */
+export type Disabled_Emails_Mutation_Response = {
+  __typename?: 'disabled_emails_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Disabled_Emails>;
+};
+
+/** on_conflict condition type for table "disabled_emails" */
+export type Disabled_Emails_On_Conflict = {
+  constraint: Disabled_Emails_Constraint;
+  update_columns: Array<Disabled_Emails_Update_Column>;
+  where: InputMaybe<Disabled_Emails_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "disabled_emails". */
+export type Disabled_Emails_Order_By = {
+  email: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  match_type: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: disabled_emails */
+export type Disabled_Emails_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "disabled_emails" */
+export enum Disabled_Emails_Select_Column {
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MatchType = 'match_type'
+}
+
+/** input type for updating data in table "disabled_emails" */
+export type Disabled_Emails_Set_Input = {
+  email: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  match_type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Disabled_Emails_Stddev_Fields = {
+  __typename?: 'disabled_emails_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Disabled_Emails_Stddev_Pop_Fields = {
+  __typename?: 'disabled_emails_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Disabled_Emails_Stddev_Samp_Fields = {
+  __typename?: 'disabled_emails_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Disabled_Emails_Sum_Fields = {
+  __typename?: 'disabled_emails_sum_fields';
+  id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "disabled_emails" */
+export enum Disabled_Emails_Update_Column {
+  /** column name */
+  Email = 'email',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MatchType = 'match_type'
+}
+
+/** aggregate var_pop on columns */
+export type Disabled_Emails_Var_Pop_Fields = {
+  __typename?: 'disabled_emails_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Disabled_Emails_Var_Samp_Fields = {
+  __typename?: 'disabled_emails_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Disabled_Emails_Variance_Fields = {
+  __typename?: 'disabled_emails_variance_fields';
+  id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */
@@ -6573,6 +6798,10 @@ export type Mutation_Root = {
   delete_data_runs: Maybe<Data_Runs_Mutation_Response>;
   /** delete single row from the table: "data_runs" */
   delete_data_runs_by_pk: Maybe<Data_Runs>;
+  /** delete data from the table: "disabled_emails" */
+  delete_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
+  /** delete single row from the table: "disabled_emails" */
+  delete_disabled_emails_by_pk: Maybe<Disabled_Emails>;
   /** delete data from the table: "follows" */
   delete_follows: Maybe<Follows_Mutation_Response>;
   /** delete single row from the table: "follows" */
@@ -6683,6 +6912,10 @@ export type Mutation_Root = {
   insert_data_runs: Maybe<Data_Runs_Mutation_Response>;
   /** insert a single row into the table: "data_runs" */
   insert_data_runs_one: Maybe<Data_Runs>;
+  /** insert data into the table: "disabled_emails" */
+  insert_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
+  /** insert a single row into the table: "disabled_emails" */
+  insert_disabled_emails_one: Maybe<Disabled_Emails>;
   /** insert data into the table: "follows" */
   insert_follows: Maybe<Follows_Mutation_Response>;
   /** insert data into the table: "follows_companies" */
@@ -6797,6 +7030,10 @@ export type Mutation_Root = {
   update_data_runs: Maybe<Data_Runs_Mutation_Response>;
   /** update single row of the table: "data_runs" */
   update_data_runs_by_pk: Maybe<Data_Runs>;
+  /** update data of the table: "disabled_emails" */
+  update_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
+  /** update single row of the table: "disabled_emails" */
+  update_disabled_emails_by_pk: Maybe<Disabled_Emails>;
   /** update data of the table: "follows" */
   update_follows: Maybe<Follows_Mutation_Response>;
   /** update single row of the table: "follows" */
@@ -7005,6 +7242,18 @@ export type Mutation_RootDelete_Data_RunsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Data_Runs_By_PkArgs = {
   id: Scalars['bigint'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Disabled_EmailsArgs = {
+  where: Disabled_Emails_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Disabled_Emails_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -7359,6 +7608,20 @@ export type Mutation_RootInsert_Data_RunsArgs = {
 export type Mutation_RootInsert_Data_Runs_OneArgs = {
   object: Data_Runs_Insert_Input;
   on_conflict: InputMaybe<Data_Runs_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Disabled_EmailsArgs = {
+  objects: Array<Disabled_Emails_Insert_Input>;
+  on_conflict: InputMaybe<Disabled_Emails_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Disabled_Emails_OneArgs = {
+  object: Disabled_Emails_Insert_Input;
+  on_conflict: InputMaybe<Disabled_Emails_On_Conflict>;
 };
 
 
@@ -7807,6 +8070,22 @@ export type Mutation_RootUpdate_Data_Runs_By_PkArgs = {
   _inc: InputMaybe<Data_Runs_Inc_Input>;
   _set: InputMaybe<Data_Runs_Set_Input>;
   pk_columns: Data_Runs_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Disabled_EmailsArgs = {
+  _inc: InputMaybe<Disabled_Emails_Inc_Input>;
+  _set: InputMaybe<Disabled_Emails_Set_Input>;
+  where: Disabled_Emails_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Disabled_Emails_By_PkArgs = {
+  _inc: InputMaybe<Disabled_Emails_Inc_Input>;
+  _set: InputMaybe<Disabled_Emails_Set_Input>;
+  pk_columns: Disabled_Emails_Pk_Columns_Input;
 };
 
 
@@ -8688,6 +8967,12 @@ export type Query_Root = {
   data_runs_aggregate: Data_Runs_Aggregate;
   /** fetch data from the table: "data_runs" using primary key columns */
   data_runs_by_pk: Maybe<Data_Runs>;
+  /** fetch data from the table: "disabled_emails" */
+  disabled_emails: Array<Disabled_Emails>;
+  /** fetch aggregated fields from the table: "disabled_emails" */
+  disabled_emails_aggregate: Disabled_Emails_Aggregate;
+  /** fetch data from the table: "disabled_emails" using primary key columns */
+  disabled_emails_by_pk: Maybe<Disabled_Emails>;
   /** fetch data from the table: "follows" */
   follows: Array<Follows>;
   /** fetch aggregated fields from the table: "follows" */
@@ -9072,6 +9357,29 @@ export type Query_RootData_Runs_AggregateArgs = {
 
 export type Query_RootData_Runs_By_PkArgs = {
   id: Scalars['bigint'];
+};
+
+
+export type Query_RootDisabled_EmailsArgs = {
+  distinct_on: InputMaybe<Array<Disabled_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Disabled_Emails_Order_By>>;
+  where: InputMaybe<Disabled_Emails_Bool_Exp>;
+};
+
+
+export type Query_RootDisabled_Emails_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Disabled_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Disabled_Emails_Order_By>>;
+  where: InputMaybe<Disabled_Emails_Bool_Exp>;
+};
+
+
+export type Query_RootDisabled_Emails_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -9731,6 +10039,12 @@ export type Subscription_Root = {
   data_runs_aggregate: Data_Runs_Aggregate;
   /** fetch data from the table: "data_runs" using primary key columns */
   data_runs_by_pk: Maybe<Data_Runs>;
+  /** fetch data from the table: "disabled_emails" */
+  disabled_emails: Array<Disabled_Emails>;
+  /** fetch aggregated fields from the table: "disabled_emails" */
+  disabled_emails_aggregate: Disabled_Emails_Aggregate;
+  /** fetch data from the table: "disabled_emails" using primary key columns */
+  disabled_emails_by_pk: Maybe<Disabled_Emails>;
   /** fetch data from the table: "follows" */
   follows: Array<Follows>;
   /** fetch aggregated fields from the table: "follows" */
@@ -10115,6 +10429,29 @@ export type Subscription_RootData_Runs_AggregateArgs = {
 
 export type Subscription_RootData_Runs_By_PkArgs = {
   id: Scalars['bigint'];
+};
+
+
+export type Subscription_RootDisabled_EmailsArgs = {
+  distinct_on: InputMaybe<Array<Disabled_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Disabled_Emails_Order_By>>;
+  where: InputMaybe<Disabled_Emails_Bool_Exp>;
+};
+
+
+export type Subscription_RootDisabled_Emails_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Disabled_Emails_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Disabled_Emails_Order_By>>;
+  where: InputMaybe<Disabled_Emails_Bool_Exp>;
+};
+
+
+export type Subscription_RootDisabled_Emails_By_PkArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -12623,7 +12960,7 @@ export type GetVcFirmsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, num_of_investments: number | null, sentiment: any | null, overview: string | null, website: string | null }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
+export type GetVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, num_of_investments: number | null, sentiment: any | null, tags: any | null, overview: string | null, website: string | null }>, vc_firms_aggregate: { __typename?: 'vc_firms_aggregate', aggregate: { __typename?: 'vc_firms_aggregate_fields', count: number } | null } };
 
 export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -13373,6 +13710,7 @@ export const GetVcFirmsDocument = `
     logo
     num_of_investments
     sentiment
+    tags
     overview
     website
   }
