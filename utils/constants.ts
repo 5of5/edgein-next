@@ -433,8 +433,7 @@ export const seniorityChoicesTM = [
 export const companyChoices = [
 	{
 		id: "Trending",
-		name: "Trending (Upcoming)",
-		disabled: true,
+		name: "Trending",
 	},
 	{
 		id: "Following",
@@ -443,13 +442,11 @@ export const companyChoices = [
 	},
 	{
 		id: "Acquired",
-		name: "Acquired (Upcoming)",
-		disabled: true,
+		name: "Acquired",
 	},
 	{
 		id: "Dead",
-		name: "Dead (Upcoming)",
-		disabled: true,
+		name: "Dead",
 	},
 ];
 

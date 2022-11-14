@@ -205,7 +205,7 @@ const Companies: NextPage<Props> = ({
 		filters._and?.push({ layer: { _eq: selectedLayer.value } });
 	}
 	if (selectedCompanyFilters.value) {
-		filters._and?.push({ layer: { _eq: selectedCompanyFilters.value } });
+		filters._and?.push({ status_tags: { _contains: selectedCompanyFilters.value } });
 	}
 	if (selectedAmountRaised.rangeEnd !== 0) {
 		filters._and?.push({

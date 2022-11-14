@@ -20,6 +20,7 @@ import {
   validateNameAndSlugAndEmailAndDomain,
   status,
   tags,
+  companyChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
@@ -181,6 +182,12 @@ const CompanyForm = ({
           className={inputClassName}
           source="tags"
           choices={tags}
+          style={{ padding: 0, border: "none" }}
+        />
+        <AutocompleteArrayInput
+          className={inputClassName}
+          source="status_tags"
+          choices={companyChoices}
           style={{ padding: 0, border: "none" }}
         />
         <TextInput
