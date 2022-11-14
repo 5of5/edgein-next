@@ -16,7 +16,7 @@ export const TheFooter = () => {
 		],
 		resources: [
 			{ name: "Contact", href: "/contact" },
-			{ name: "Press", href: "mailto:press@5of5.vc" },
+			{ name: "Press", href: "mailto:press@edgein.io" },
 		],
 		legal: [
 			{ name: "Privacy", href: "/privacy" },
