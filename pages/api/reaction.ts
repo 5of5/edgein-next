@@ -3,6 +3,19 @@ import { deleteFollowIfExists, updateResourceSentimentCount, upsertFollow, upser
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
+interface Action {
+  action: string
+  page: string,
+  properties: {
+    listId: number,
+    sentiment?: string
+  },
+  resource_id: string,
+  resource: string,
+  user: number,
+
+}
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
 
@@ -33,10 +46,24 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // insert follow only if the follows don't exists
   const follow = !existsFollows && await upsertFollow(list, resourceId, resourceType, user, token)
 
-  const { sentiment, revalidatePath } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), Boolean(existsFollows))
-  // if (revalidatePath) {
-  //   await res.unstable_revalidate(revalidatePath)
-  // }
+  let sentimentReturn: any
+  if (sentimentType) {
+    const { sentiment } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), Boolean(existsFollows))
+    sentimentReturn = sentiment
+  }
+  const action: Action = {
+    action: `${existsFollows ? "Remove" : "Add"} ${sentimentType ? "Sentiment" : `${existsFollows ? "From" : "To"} List`}`,
+    page: pathname,
+    properties: {
+      listId: list.id,
+    },
+    resource_id: resourceId,
+    resource: resourceType,
+    user: user.id,
+  }
+  if (sentimentType) {
+    action.properties.sentiment = sentimentType
+  }
 
   // create action
   mutate({
@@ -50,21 +77,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     `,
     variables: {
-      object: {
-        action: "Sentiment",
-        page: pathname,
-        properties: {
-          listId: list.id,
-          sentiment: sentimentType,
-        },
-        resource_id: resourceId,
-        resource: resourceType,
-        user: user.id,
-      },
+      object: action,
     },
   });
 
-  res.send({ ...sentiment })
+  res.send({ ...sentimentReturn })
 }
 
 export default handler
