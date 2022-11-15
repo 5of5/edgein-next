@@ -11907,6 +11907,7 @@ export type Vc_Firms = {
   sentiment: Maybe<Scalars['jsonb']>;
   slug: Maybe<Scalars['String']>;
   status: Scalars['String'];
+  status_tags: Maybe<Scalars['jsonb']>;
   tags: Maybe<Scalars['jsonb']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -11988,6 +11989,12 @@ export type Vc_FirmsSentimentArgs = {
 
 
 /** columns and relationships of "vc_firms" */
+export type Vc_FirmsStatus_TagsArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "vc_firms" */
 export type Vc_FirmsTagsArgs = {
   path: InputMaybe<Scalars['String']>;
 };
@@ -12026,6 +12033,7 @@ export type Vc_Firms_Aggregate_FieldsCountArgs = {
 export type Vc_Firms_Append_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
+  status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -12056,6 +12064,7 @@ export type Vc_Firms_Bool_Exp = {
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
+  status_tags: InputMaybe<Jsonb_Comparison_Exp>;
   tags: InputMaybe<Jsonb_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -12077,6 +12086,7 @@ export enum Vc_Firms_Constraint {
 export type Vc_Firms_Delete_At_Path_Input = {
   logo: InputMaybe<Array<Scalars['String']>>;
   sentiment: InputMaybe<Array<Scalars['String']>>;
+  status_tags: InputMaybe<Array<Scalars['String']>>;
   tags: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -12084,6 +12094,7 @@ export type Vc_Firms_Delete_At_Path_Input = {
 export type Vc_Firms_Delete_Elem_Input = {
   logo: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['Int']>;
+  status_tags: InputMaybe<Scalars['Int']>;
   tags: InputMaybe<Scalars['Int']>;
 };
 
@@ -12091,6 +12102,7 @@ export type Vc_Firms_Delete_Elem_Input = {
 export type Vc_Firms_Delete_Key_Input = {
   logo: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
+  status_tags: InputMaybe<Scalars['String']>;
   tags: InputMaybe<Scalars['String']>;
 };
 
@@ -12397,6 +12409,7 @@ export type Vc_Firms_Insert_Input = {
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
+  status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -12483,6 +12496,7 @@ export type Vc_Firms_Order_By = {
   sentiment: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
+  status_tags: InputMaybe<Order_By>;
   tags: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -12499,6 +12513,7 @@ export type Vc_Firms_Pk_Columns_Input = {
 export type Vc_Firms_Prepend_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
+  status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -12529,6 +12544,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   Status = 'status',
   /** column name */
+  StatusTags = 'status_tags',
+  /** column name */
   Tags = 'tags',
   /** column name */
   Twitter = 'twitter',
@@ -12554,6 +12571,7 @@ export type Vc_Firms_Set_Input = {
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
+  status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -12611,6 +12629,8 @@ export enum Vc_Firms_Update_Column {
   Slug = 'slug',
   /** column name */
   Status = 'status',
+  /** column name */
+  StatusTags = 'status_tags',
   /** column name */
   Tags = 'tags',
   /** column name */

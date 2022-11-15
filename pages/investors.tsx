@@ -24,7 +24,6 @@ import {
 import { DeepPartial, NumericFilter } from "@/pages/companies";
 import { runGraphQl, numberWithCommas } from "@/utils";
 import { investorChoices } from "@/utils/constants";
-import { useDebounce } from "@/hooks/useDebounce";
 import { useAuth } from "@/hooks/useAuth";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
@@ -44,7 +43,6 @@ const Investors: NextPage<Props> = ({
 	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
-	const { user } = useAuth();
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	// Investor Filter
@@ -172,6 +170,10 @@ const Investors: NextPage<Props> = ({
 				{ num_of_investments: { _lte: selectedInvestmentCount.rangeEnd } },
 			],
 		});
+	}
+
+	if (selectedInvestorFilters.value) {
+		filters._and?.push({ status_tags: { _contains: selectedInvestorFilters.value } });
 	}
 
 	const {
