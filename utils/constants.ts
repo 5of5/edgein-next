@@ -569,24 +569,21 @@ export const currencyChoices = [
 export const investorChoices = [
 	{
 		id: "Trending",
-		name: "Trending (Coming soon!)",
-		disabled: true,
+		name: "Trending",
 	},
 	{
 		id: "Following",
 		name: "Following (Coming soon!)",
 		disabled: true,
 	},
-	// {
-	// 	id: "Acquired",
-	// 	name: "Acquired (Coming soon!)",
-	// 	disabled: true,
-	// },
-	// {
-	// 	id: "Dead",
-	// 	name: "Dead (Coming soon!)",
-	// 	disabled: true,
-	// },
+	{
+		id: "Acquired",
+		name: "Acquired",
+	},
+	{
+		id: "Dead",
+		name: "Dead",
+	},
 ];
 
 export const investorFunctionChoices = [

@@ -7,8 +7,10 @@ import {
   SelectInput,
   FormDataConsumer,
   useGetList,
+  AutocompleteArrayInput,
 } from "react-admin";
 import {
+  companyChoices,
   status,
   validateNameAndSlugAndEmailAndDomain,
 } from "@/utils/constants";
@@ -137,10 +139,17 @@ const VcFirmForm = ({
           className={`w-[49%] ${textInputClassName}`}
           source="year_founded"
         />
+        <AutocompleteArrayInput
+          source="status_tags"
+          className={`w-[49%] ${textInputClassName}`}
+          choices={companyChoices}
+          style={{ padding: 0, border: "none" }}
+        />
         <TextInput
           placeholder="Enter comma separated tags. eg. Financial Software, Marketing Software"
           className={`w-[49%] ${textInputClassName}`}
           source="tags"
+          disabled={true}
         />
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
