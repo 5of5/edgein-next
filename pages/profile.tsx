@@ -285,7 +285,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const updateCall = async (payload: any, type = "profile") => {
 		if (type === "profile") {
-			const resp = await fetch("/api/update_profile", {
+			const resp = await fetch("/api/update_profile/", {
 				method: "POST",
 				body: JSON.stringify({
 					id: person?.id,
@@ -300,7 +300,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			return resp.json();
 		}
 
-		const resp = await fetch("/api/team_member", {
+		const resp = await fetch("/api/team_member/", {
 			method: "POST",
 			body: JSON.stringify({
 				teammember: payload,

@@ -15,6 +15,7 @@ import { useUser } from "@/context/userContext";
 import { find } from "lodash";
 
 type Props = {
+	resourceName: string | null;
 	resourceId: number;
 	resourceType: "companies" | "vc_firms";
 	slug: string;
@@ -23,6 +24,7 @@ type Props = {
 type List = GetFollowsByUserQuery["list_members"][0]["list"];
 
 export const ElemSaveToList: FC<Props> = ({
+	resourceName,
 	resourceId,
 	resourceType,
 	slug,
@@ -111,8 +113,10 @@ export const ElemSaveToList: FC<Props> = ({
 							t.visible ? "animate-fade-in-up" : "opacity-0"
 						}`}
 					>
-						{action === "add" ? "Added to" : "Removed from"} &ldquo;
-						{getNameFromListName({ name: listName })}&rdquo; list
+						{action === "add" ? " Added " : " Removed "}
+						{resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
+						{action === "add" ? " to " : " from "} 
+						&ldquo;{getNameFromListName({ name: listName })}&rdquo; list
 					</div>
 				),
 				{

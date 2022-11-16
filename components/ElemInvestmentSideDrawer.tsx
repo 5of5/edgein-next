@@ -161,7 +161,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
 			(item: any) => item.id === deletedInvestments.id
 		);
 		// call delete api
-		await fetch("/api/delete_investments", {
+		await fetch("/api/delete_investments/", {
 			method: "POST",
 			body: JSON.stringify({
 				investmentId: deletedInvestments.id,

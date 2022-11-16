@@ -196,7 +196,7 @@ export const CompaniesList: FC<Props> = ({
 			selectedFlatRows.map((row: any, index: number) => row.original?.id)
 		);
 
-		const deleteCompaniesRes = await fetch(`/api/delete_follows`, {
+		const deleteCompaniesRes = await fetch(`/api/delete_follows/`, {
 			method: "POST",
 			body: JSON.stringify({ followIds }),
 			headers: {

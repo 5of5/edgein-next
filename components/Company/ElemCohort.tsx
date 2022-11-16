@@ -152,6 +152,7 @@ export const ElemCohort: FC<Props> = ({
 												resourceType={"companies"}
 											/>
 											<ElemSaveToList
+												resourceName={company.name}
 												resourceId={company.id}
 												resourceType={"companies"}
 												slug={company.slug!}

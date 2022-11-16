@@ -69,7 +69,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	});
 
 	const getTokenInfo = async (coinId: number) => {
-		const data = await fetch("/api/get_metrics_amount", {
+		const data = await fetch("/api/get_metrics_amount/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -162,6 +162,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions resource={company} resourceType={"companies"} />
 						<ElemSaveToList
+							resourceName={company.name}
 							resourceId={company.id}
 							resourceType={"companies"}
 							slug={company.slug!}

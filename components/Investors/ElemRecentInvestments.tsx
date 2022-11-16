@@ -145,6 +145,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 											resourceType={"vc_firms"}
 										/>
 										<ElemSaveToList
+											resourceName={investor.name}
 											resourceId={investor.id}
 											resourceType={"vc_firms"}
 											slug={investor.slug!}

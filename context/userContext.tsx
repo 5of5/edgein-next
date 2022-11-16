@@ -21,8 +21,8 @@ const useUser = () => {
   const queryClient = useQueryClient()
   const contextValue = React.useContext(userContext)
   const refreshProfile = () => {
-    contextValue.setCounter(prev => prev + 1)
     queryClient.invalidateQueries(['GetFollowsByUser'])
+    contextValue.setCounter(prev => prev + 1)  
   }
   return {...contextValue, refreshProfile };
 }
@@ -81,11 +81,13 @@ const UserProvider: React.FC<Props> = (props) => {
   const newListAndFollows = listMemberships?.list_members.map(li => li.list) || []
 
   const listAndFollowsHashed = hashSum(newListAndFollows)
+  console.log('listAndFollowsHashed', listAndFollowsHashed)
   const lastListAndFollows = React.useRef({
     obj: newListAndFollows,
     hash: listAndFollowsHashed
   });
   if (lastListAndFollows.current.hash !== listAndFollowsHashed) {
+    console.log('new listAndFollowsHashed')
     lastListAndFollows.current = {
       obj: newListAndFollows,
       hash: listAndFollowsHashed

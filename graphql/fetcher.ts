@@ -1,7 +1,7 @@
 
 export function fetcher<TData, TVariables>(query: string, variables?: TVariables, options?: HeadersInit | undefined) {
   return async (): Promise<TData> => {
-    const res = await fetch("/api/graphql", {
+    const res = await fetch("/api/graphql/", {
     method: "POST",
       body: JSON.stringify({ query, variables }),
     });

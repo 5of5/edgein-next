@@ -22,11 +22,12 @@ declare global {
 	interface Window { disableRouterEvents: boolean; }
 }
 
+const queryClient = new QueryClient();
+
 function MyApp({ Component, pageProps }: AppProps) {
 	// App Page Preloader
 	const router = useRouter();
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
-	const queryClient = new QueryClient();
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
 	const [showSignUp, setShowSignUp] = useState(false);
