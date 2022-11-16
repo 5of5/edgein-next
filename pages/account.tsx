@@ -125,7 +125,6 @@ export default function Account() {
 				</div>
 
 				<dl className="w-full divide-y divide-black/10 border-y border-black/10">
-					{/* {user && !user.auth0_linkedin_id && ( */}
 					<EditSection heading="Authentication">
 						<div>
 							<p className="text-slate-600">
@@ -134,18 +133,24 @@ export default function Account() {
 								enable it for contribution (this may take up to one business
 								day).
 							</p>
-							<ElemButton
-								onClick={onLinkedInClick}
-								size="sm"
-								disabled={user && user.auth0_linkedin_id}
-								className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
-							>
-								<IconLinkedIn className="h-5 w-5" />{" "}
-								<span>Connect LinkedIn</span>
-							</ElemButton>
+							{user && user.auth0_linkedin_id ? (
+								<div className="inline-flex mt-2 gap-x-2 items-center font-bold px-3.5 py-1.5 text-sm justify-center text-[#0077B5]">
+									<IconLinkedIn className="h-5 w-5" />
+									<span>Connected</span>
+								</div>
+							) : (
+								<ElemButton
+									onClick={onLinkedInClick}
+									size="sm"
+									//disabled={user && user.auth0_linkedin_id}
+									className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
+								>
+									<IconLinkedIn className="h-5 w-5" />{" "}
+									<span>Connect LinkedIn</span>
+								</ElemButton>
+							)}
 						</div>
 					</EditSection>
-					{/* )} */}
 
 					{user && user.auth0_user_pass_id && (
 						<EditSection
