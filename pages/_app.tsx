@@ -104,7 +104,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 				/>
 				<meta property="og:url" content="https://edgein.io/" key="og-url" />
 				<meta property="og:type" content="website" key="og-type" />
-				<meta property="og:image" content={metaImage} key="og-image" />
+				<meta
+					property="og:image"
+					content={`https://edgein.io${metaImage}`}
+					key="og-image"
+				/>
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"
