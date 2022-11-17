@@ -16,10 +16,12 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
 const INTERCOM_APP_ID = "jm3hf6lp";
-const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
+const FULLSTORY_ORG_ID = "o-1EYK7Q-na1";
 
 declare global {
-	interface Window { disableRouterEvents: boolean; }
+	interface Window {
+		disableRouterEvents: boolean;
+	}
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -98,7 +100,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={metaDescription}
 					key="tw-description"
 				/>
-				<meta name="twitter:image" content={metaImage} key="tw-social" />
+				<meta
+					name="twitter:image:src"
+					content={`https://edgein.io${metaImage}`}
+					key="tw-social"
+				/>
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"
