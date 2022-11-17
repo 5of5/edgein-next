@@ -83,15 +83,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 					name="robots"
 					content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
 				/>
-				<meta property="og:title" content={metaTitle} key="og-title" />
-				<meta
-					property="og:description"
-					content={metaDescription}
-					key="og-description"
-				/>
-				<meta property="og:url" content="https://edgein.io/" key="og-url" />
-				<meta property="og:type" content="website" key="og-type" />
-				<meta property="og:image" content={metaImage} key="og-image" />
 				<meta name="twitter:card" content="summary_large_image" key="tw-card" />
 				<meta name="twitter:site" content="@edgeinio" key="tw-site" />
 				<meta name="twitter:title" content={metaTitle} key="tw-title" />
@@ -101,10 +92,19 @@ function MyApp({ Component, pageProps }: AppProps) {
 					key="tw-description"
 				/>
 				<meta
-					name="twitter:image:src"
+					name="twitter:image"
 					content={`https://edgein.io${metaImage}`}
 					key="tw-social"
 				/>
+				<meta property="og:title" content={metaTitle} key="og-title" />
+				<meta
+					property="og:description"
+					content={metaDescription}
+					key="og-description"
+				/>
+				<meta property="og:url" content="https://edgein.io/" key="og-url" />
+				<meta property="og:type" content="website" key="og-type" />
+				<meta property="og:image" content={metaImage} key="og-image" />
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"
