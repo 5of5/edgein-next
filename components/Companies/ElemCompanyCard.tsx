@@ -96,6 +96,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 				>
 					<ElemReactions resource={company} resourceType={"companies"} />
 					<ElemSaveToList
+						resourceName={name}
 						resourceId={id}
 						resourceType={"companies"}
 						slug={slug!}

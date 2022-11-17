@@ -95,6 +95,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 				>
 					<ElemReactions resource={vcFirmData} resourceType={"vc_firms"} />
 					<ElemSaveToList
+						resourceName={vcFirmData.name}
 						resourceId={id}
 						resourceType={"vc_firms"}
 						slug={slug!}

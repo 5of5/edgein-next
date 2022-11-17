@@ -11,7 +11,6 @@ import {
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
 } from "@/graphql/types";
-import { useAuth } from "@/hooks/useAuth";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -23,7 +22,7 @@ import { useUser } from "@/context/userContext";
 type Props = {};
 
 const MyList: NextPage<Props> = ({}) => {
-	const { user } = useAuth();
+	const { refreshProfile } = useUser();
 	const router = useRouter();
 	const [selectedListName, setSelectedListName] = useState<null | string>(
 		router.query.slug as string
@@ -40,7 +39,7 @@ const MyList: NextPage<Props> = ({}) => {
 	const { listAndFollows: lists } = useUser();
 
 	const onDeleteList = async (id: number) => {
-		const deleteRes = await fetch(`/api/delete_list?listId=${id}`, {
+		const deleteRes = await fetch(`/api/delete_list/?listId=${id}`, {
 			method: "DELETE",
 		});
 
@@ -48,6 +47,7 @@ const MyList: NextPage<Props> = ({}) => {
 			const hotId =
 				find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
 			router.push(`/lists/${hotId}/hot`);
+			refreshProfile()
 			toast.custom(
 				(t) => (
 					<div
@@ -67,7 +67,7 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onSave = async (name: string) => {
-		const updateNameRes = await fetch(`/api/update_list`, {
+		const updateNameRes = await fetch(`/api/update_list/`, {
 			method: "PUT",
 			body: JSON.stringify({
 				id: parseInt(router.query.listId as string),
@@ -82,6 +82,7 @@ const MyList: NextPage<Props> = ({}) => {
 		if (updateNameRes.ok) {
 			setShowEditModal(false);
 			setSelectedListName(name);
+			refreshProfile()
 			toast.custom(
 				(t) => (
 					<div

@@ -7,21 +7,18 @@ import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
 import { identify } from 'react-fullstory';
  import { startCase } from 'lodash';
-import hashSum from 'hash-sum';
 
 type UserValue = {
   user: User | null
   loading: boolean
-  setCounter: (fn:(prev: number) => number) => void
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
 }
 
-const userContext = React.createContext<UserValue>({user: null, loading: true, listAndFollows: [], setCounter: () => {}});
+const userContext = React.createContext<UserValue>({user: null, loading: true, listAndFollows: []});
 const useUser = () => {
   const queryClient = useQueryClient()
   const contextValue = React.useContext(userContext)
   const refreshProfile = () => {
-    contextValue.setCounter(prev => prev + 1)
     queryClient.invalidateQueries(['GetFollowsByUser'])
   }
   return {...contextValue, refreshProfile };
@@ -34,7 +31,6 @@ type Props = {
 const UserProvider: React.FC<Props> = (props) => {
   const { user, error: userError, loading } = useAuth();
   const { boot, shutdown } = useIntercom();
-  const [counter, setCounter] = React.useState(0);
   const Provider = userContext.Provider;
 
   const {
@@ -68,7 +64,7 @@ const UserProvider: React.FC<Props> = (props) => {
           email: user.email, // Email address
           // created_at: user._createdAt // Signup date as a Unix timestamp    
           userId: user.id, // User ID
-          // user_hash: "INSERT_HMAC_VALUE_HERE" // HMAC using SHA-256
+          userHash: user.intercomUserHash // HMAC using SHA-256
         })
       } catch(e) {
          // intercom not loaded
@@ -78,20 +74,14 @@ const UserProvider: React.FC<Props> = (props) => {
   }, [user])
 
 
-  const newListAndFollows = listMemberships?.list_members.map(li => li.list) || []
+  const [listAndFollows, setListAndFollows] = React.useState(
+    listMemberships?.list_members.map(li => li.list) || [],
+  );
+  React.useEffect(() => {
+    setListAndFollows(listMemberships?.list_members.map(li => li.list) || [])
+  }, [listMemberships])
+    
 
-  const listAndFollowsHashed = hashSum(newListAndFollows)
-  const lastListAndFollows = React.useRef({
-    obj: newListAndFollows,
-    hash: listAndFollowsHashed
-  });
-  if (lastListAndFollows.current.hash !== listAndFollowsHashed) {
-    lastListAndFollows.current = {
-      obj: newListAndFollows,
-      hash: listAndFollowsHashed
-    }
-  }
-
-  return (<Provider value={{user, loading, listAndFollows: lastListAndFollows.current.obj, setCounter}}>{ props.children}</Provider>)
+  return (<Provider value={{user, loading, listAndFollows}}>{ props.children}</Provider>)
 }
 export { UserProvider, useUser };

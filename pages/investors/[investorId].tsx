@@ -113,6 +113,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					<div className="flex items-center mt-4 gap-x-5">
 						<ElemReactions resource={vcfirm} resourceType={"vc_firms"} />
 						<ElemSaveToList
+							resourceName={vcfirm.name}
 							resourceId={vcfirm.id}
 							resourceType={"vc_firms"}
 							slug={vcfirm.slug!}
