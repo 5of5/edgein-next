@@ -43,7 +43,7 @@ export const ElemSaveToList: FC<Props> = ({
 					listAndFollows.filter((item) => {
 						const sentiment = getNameFromListName(item);
 						return !["hot", "like", "crap"].includes(sentiment);
-					}) || []
+					}).sort((a, b) => a.name < b.name ? -1 : 1)
 				);
 			});
 	}, [listAndFollows]);
@@ -96,7 +96,7 @@ export const ElemSaveToList: FC<Props> = ({
 						];
 					}
 				}
-				return newLists;
+				return newLists.sort((a, b) => a.name < b.name ? -1 : 1);
 			});
 			// pass event and reaction name to handleReactionClick function
 			const newSentiment = await toggleFollowOnList({
