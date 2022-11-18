@@ -1,5 +1,5 @@
 import React from "react";
-import { SimpleForm, TextInput, SelectInput } from "react-admin";
+import { SimpleForm, TextInput, SelectInput, required } from "react-admin";
 import { typeChoices } from "./services";
 
 type DisabledEmailFormProps = {
@@ -18,10 +18,10 @@ const DisabledEmailForm = ({ action }: DisabledEmailFormProps) => {
       <TextInput className={inputClassName} source="email" label="email or domain" />
       <SelectInput
         className={inputClassName}
-        source="type"
-        key="type"
+        source="match_type"
         label="Type"
         choices={typeChoices}
+        validate={required()}
       />
     </SimpleForm>
   );
