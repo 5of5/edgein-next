@@ -1,6 +1,5 @@
 import useSWR from "swr";
 import { useSWRConfig } from 'swr'
-import { hotjar } from 'react-hotjar';
 
 function fetcher(route: string) {
   /* our token cookie gets sent with this request */

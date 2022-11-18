@@ -1,7 +1,7 @@
 var axios = require('axios');
 
 export const uploadFile = async (files: any) => {
-    const s3url = await fetch(`/api/uploadS3Image?file=${files.name}`, {
+    const s3url = await fetch(`/api/uploadS3Image/?file=${files.name}`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -23,7 +23,7 @@ export const uploadFile = async (files: any) => {
 }
 
 export const deleteFile = async (file: any) => {
-    const response = await fetch(`/api/deleteS3Image?file=${file.filename}`, {
+    const response = await fetch(`/api/deleteS3Image/?file=${file.filename}`, {
         method: "GET"
     }).then(res => res.json());
 }
