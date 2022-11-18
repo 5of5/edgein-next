@@ -1,9 +1,10 @@
+import { FC } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
 import { IconTwitter } from "@/components/Icons";
 
 type Props = {
-	name: string;
+	name: string | null;
 	tags: Array<string>;
 	resourceType: "companies" | "vc_firms";
 };
@@ -11,7 +12,7 @@ type Props = {
 export const ShareTwitter: FC<Props> = ({ name, tags, resourceType }) => {
 	const router = useRouter();
 
-	let theTags = [];
+	let theTags: string[] = [];
 	if (tags) {
 		tags.map((tag: string, i: number) => [
 			theTags.push("#" + tag.replace(/\s+/g, "")),
@@ -20,12 +21,12 @@ export const ShareTwitter: FC<Props> = ({ name, tags, resourceType }) => {
 
 	const hashtagsFromTags = theTags.join(" ");
 
-	const content =
+	const theContent =
 		resourceType === "companies"
 			? "Credibility, Activity, Team & Investors"
 			: "Activity, Team & Investments";
 
-	const theTweet = `${name}: ${content} https://edgein.io${router.asPath} via @edgeinio ${hashtagsFromTags}`;
+	const theTweet = `${name}: ${theContent} https://edgein.io${router.asPath} via @edgeinio ${hashtagsFromTags}`;
 
 	const shareUrl =
 		"https://twitter.com/intent/tweet?text=" +
