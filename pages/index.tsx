@@ -81,17 +81,17 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 								utility of blockchain technologies, to give you an unparalleled
 								edge in Web3.
 							</h2>
-							{/* <div className="mt-8">
-								{user ? (
-									<ElemButton href="/companies" btn="primary" arrow>
-										Start Exploring
-									</ElemButton>
-								) : (
-									<ElemButton href="/login" btn="primary" arrow>
-										Log In
+							<div className="flex justify-center mt-4 sm:justify-start">
+								{!user && (
+									<ElemButton
+										onClick={() => setShowSignUp(true)}
+										arrow
+										btn="primary"
+									>
+										Get Started
 									</ElemButton>
 								)}
-							</div> */}
+							</div>
 						</div>
 
 						<div className="mt-28 mx-0 sm:mx-20 flex flex-col justify-center lg:col-span-5 lg:row-span-2 lg:mt-0 lg:mx-0">
