@@ -169,9 +169,13 @@ const Company: NextPage<Props> = (props: Props) => {
 							slug={company.slug!}
 						/>
 						<ShareTwitter
+							twitterUrl={company.twitter}
 							name={company.name}
 							tags={company.tags}
 							resourceType={"companies"}
+							sentimentHot={company.sentiment?.hot}
+							sentimentLike={company.sentiment?.like}
+							sentimentCrap={company.sentiment?.crap}
 						/>
 					</div>
 				</div>

@@ -120,9 +120,13 @@ const VCFirm: NextPage<Props> = (props) => {
 							slug={vcfirm.slug!}
 						/>
 						<ShareTwitter
+							twitterUrl={vcfirm.twitter}
 							name={vcfirm.name}
 							tags={vcfirm.tags}
 							resourceType={"vc_firms"}
+							sentimentHot={vcfirm.sentiment?.hot}
+							sentimentLike={vcfirm.sentiment?.like}
+							sentimentCrap={vcfirm.sentiment?.crap}
 						/>
 					</div>
 				</div>

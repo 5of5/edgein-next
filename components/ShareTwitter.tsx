@@ -4,12 +4,24 @@ import { ElemButton } from "@/components/ElemButton";
 import { IconTwitter } from "@/components/Icons";
 
 type Props = {
+	twitterUrl: string | null;
 	name: string | null;
 	tags: Array<string>;
 	resourceType: "companies" | "vc_firms";
+	sentimentHot: number | null;
+	sentimentLike: number | null;
+	sentimentCrap: number | null;
 };
 
-export const ShareTwitter: FC<Props> = ({ name, tags, resourceType }) => {
+export const ShareTwitter: FC<Props> = ({
+	twitterUrl,
+	name,
+	tags,
+	resourceType,
+	sentimentHot,
+	sentimentLike,
+	sentimentCrap,
+}) => {
 	const router = useRouter();
 
 	let theTags: string[] = [];
@@ -26,7 +38,29 @@ export const ShareTwitter: FC<Props> = ({ name, tags, resourceType }) => {
 			? "Credibility, Activity, Team & Investors"
 			: "Activity, Team & Investments";
 
-	const theTweet = `${name}: ${theContent} https://edgein.io${router.asPath} via @edgeinio ${hashtagsFromTags}`;
+	let companyName: string | null = "";
+	if (twitterUrl) {
+		companyName =
+			"@" +
+			twitterUrl
+				.replace(/^.*\/\/[^\/]+/, "") //Remove twitter domain
+				.replace("/", ""); //Remove slashes
+	} else {
+		companyName = name;
+	}
+
+	let sentiments: string | null = "";
+	if (sentimentHot || sentimentLike || sentimentCrap) {
+		const hotCount = sentimentHot ? sentimentHot : 0;
+		const likeCount = sentimentLike ? sentimentLike : 0;
+		const crapCount = sentimentCrap ? sentimentCrap : 0;
+
+		sentiments = `Current reactions: 🔥${hotCount} 👍${likeCount} 💩${crapCount}`;
+	} else {
+		sentiments = "";
+	}
+
+	const theTweet = `${companyName}: ${theContent} https://edgein.io${router.asPath} via @edgeinio ${hashtagsFromTags} ${sentiments}`;
 
 	const shareUrl =
 		"https://twitter.com/intent/tweet?text=" +
