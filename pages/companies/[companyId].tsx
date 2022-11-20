@@ -57,6 +57,8 @@ const Company: NextPage<Props> = (props: Props) => {
 		setActivityLimit(activityLimit + 10);
 	};
 
+	const [overviewMore, setOverviewMore] = useState(false);
+
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -156,12 +158,29 @@ const Company: NextPage<Props> = (props: Props) => {
 						<ElemTags className="mt-4" tags={companyTags} />
 					)}
 					{company.overview && (
-						<p className="mt-4 line-clamp-3 text-base text-slate-600">
-							{company.overview}
-						</p>
+						<>
+							<p
+								className={`mt-4 text-base text-slate-600 ${
+									overviewMore ? "" : "line-clamp-3"
+								}`}
+							>
+								{company.overview}
+							</p>
+							<ElemButton
+								onClick={() => setOverviewMore(!overviewMore)}
+								btn="transparent"
+								className="px-0 py-0 inline font-normal"
+							>
+								show {overviewMore ? "less" : "more"}
+							</ElemButton>
+						</>
 					)}
-					<div className="flex items-center mt-4 gap-x-5">
-						<ElemReactions resource={company} resourceType={"companies"} />
+					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+						<ElemReactions
+							resource={company}
+							resourceType={"companies"}
+							className="w-full sm:w-auto"
+						/>
 						<ElemSaveToList
 							resourceName={company.name}
 							resourceId={company.id}
