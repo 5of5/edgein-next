@@ -62,8 +62,10 @@ const Company: NextPage<Props> = (props: Props) => {
 	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
 
 	useEffect(() => {
-		setOverviewDivHeight(overviewDiv.current.scrollHeight);
-	}, []);
+		if (overviewDiv) {
+			setOverviewDivHeight(overviewDiv.current.scrollHeight);
+		}
+	}, [overviewDiv]);
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
