@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const Pagination: React.FC<PropsWithChildren<Props>> = ({
-	className,
+	className = "",
 	page,
 	itemsPerPage,
 	shownItems = 0,
@@ -33,11 +33,11 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 
 	const totalPages = Math.ceil(totalItems / itemsPerPage);
 
-  const handleClickToPage = (selectedPage: number) => {
-    if (onClickToPage) {
-      onClickToPage(selectedPage);
-    }
-  };
+	const handleClickToPage = (selectedPage: number) => {
+		if (onClickToPage) {
+			onClickToPage(selectedPage);
+		}
+	};
 
 	if (hide) {
 		return <></>;
@@ -45,7 +45,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<nav
-			className={`${className} py-3 space-y-3 md:space-y-0 md:flex items-center justify-between`}
+			className={`${className} flex flex-col items-center justify-between py-3 space-y-3 md:flex-row md:space-y-0`}
 			aria-label="Pagination"
 		>
 			<div className="flex-1">
@@ -72,58 +72,64 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 				)}
 
 				{numeric && (
-          <ul className="flex gap-x-4 mx-0 sm:mx-4">
-            {page > 1 && (
-              <>
-                <li
-                  className="font-semibold text-gray-300 cursor-pointer hidden sm:block"
-                  onClick={() => handleClickToPage(0)}
-                >
-                  1
-                </li>
-                <li className="font-semibold text-gray-300 hidden sm:block">
-                  ...
-                </li>
-              </>
-            )}
+					<ul className="flex mx-1 sm:mx-2">
+						{page > 1 && (
+							<>
+								<li
+									className="hidden cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500 sm:block"
+									onClick={() => handleClickToPage(0)}
+								>
+									1
+								</li>
+								<li className="hidden font-bold px-3 py-1.5 text-slate-400 sm:block">
+									...
+								</li>
+							</>
+						)}
 
-            {page > 0 && (
-              <li
-                className="font-semibold text-gray-300 cursor-pointer"
-                onClick={() => handleClickToPage(page - 1)}
-              >
-                {page}
-              </li>
-            )}
+						{page > 0 && (
+							<li
+								className="cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500"
+								//className="font-bold text-gray-300 cursor-pointer"
+								onClick={() => handleClickToPage(page - 1)}
+							>
+								{page}
+							</li>
+						)}
 
-            <li className="font-semibold text-primary-700 cursor-pointer">
-              {page + 1}
-            </li>
+						<li
+							className="cursor-pointer font-bold px-3 py-1.5 text-primary-500"
+							//className="font-bold text-primary-500 cursor-pointer"
+						>
+							{page + 1}
+						</li>
 
-            {totalItems > shownItemsEnd && (
-              <li
-                className="font-semibold text-gray-300 cursor-pointer"
-                onClick={() => handleClickToPage(page + 1)}
-              >
-                {page + 2}
-              </li>
-            )}
+						{totalItems > shownItemsEnd && (
+							<li
+								className="cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500"
+								//className="font-bold text-gray-300 cursor-pointer"
+								onClick={() => handleClickToPage(page + 1)}
+							>
+								{page + 2}
+							</li>
+						)}
 
-            {page < totalPages - 2 && (
-              <>
-                <li className="font-semibold text-gray-300 hidden sm:block">
-                  ...
-                </li>
-                <li
-                  className="font-semibold text-gray-300 cursor-pointer hidden sm:block"
-                  onClick={() => handleClickToPage(totalPages - 1)}
-                >
-                  {totalPages}
-                </li>
-              </>
-            )}
-          </ul>
-        )}
+						{page < totalPages - 2 && (
+							<>
+								<li className="hidden font-bold px-3 py-1.5 text-slate-400 sm:block">
+									...
+								</li>
+								<li
+									className="hidden cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500 sm:block"
+									//className="font-bold text-gray-300 cursor-pointer hidden sm:block"
+									onClick={() => handleClickToPage(totalPages - 1)}
+								>
+									{totalPages}
+								</li>
+							</>
+						)}
+					</ul>
+				)}
 
 				{totalItems > shownItemsEnd && (
 					<ElemButton
