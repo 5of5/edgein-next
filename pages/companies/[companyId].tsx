@@ -58,6 +58,12 @@ const Company: NextPage<Props> = (props: Props) => {
 	};
 
 	const [overviewMore, setOverviewMore] = useState(false);
+	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
+	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+
+	useEffect(() => {
+		setOverviewDivHeight(overviewDiv.current.scrollHeight);
+	}, []);
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -160,19 +166,22 @@ const Company: NextPage<Props> = (props: Props) => {
 					{company.overview && (
 						<>
 							<p
+								ref={overviewDiv}
 								className={`mt-4 text-base text-slate-600 ${
 									overviewMore ? "" : "line-clamp-3"
 								}`}
 							>
 								{company.overview}
 							</p>
-							<ElemButton
-								onClick={() => setOverviewMore(!overviewMore)}
-								btn="transparent"
-								className="px-0 py-0 inline font-normal"
-							>
-								show {overviewMore ? "less" : "more"}
-							</ElemButton>
+							{overviewDivHeight > 72 && (
+								<ElemButton
+									onClick={() => setOverviewMore(!overviewMore)}
+									btn="transparent"
+									className="px-0 py-0 inline font-normal"
+								>
+									show {overviewMore ? "less" : "more"}
+								</ElemButton>
+							)}
 						</>
 					)}
 					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
