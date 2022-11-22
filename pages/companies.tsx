@@ -89,7 +89,13 @@ const Companies: NextPage<Props> = ({
 			selectedTotalEmployees !== totalEmployees[0]
 	);
 
-	const [page, setPage] = useState<number>(0);
+	const [page, setPage] = useStateParams<number>(
+		0,
+		"page",
+		(pageIndex) => pageIndex + 1 + "",
+		(pageIndex) => Number(pageIndex) - 1,
+	);
+
 	const limit = 50;
 	const offset = limit * page;
 
@@ -101,7 +107,9 @@ const Companies: NextPage<Props> = ({
 	);
 
 	useEffect(() => {
-		setPage(0);
+		if (!initialLoad) {
+			setPage(0);
+		}
 		if (
 			initialLoad &&
 			selectedTags.length !== 0 &&
@@ -388,8 +396,10 @@ const Companies: NextPage<Props> = ({
 						totalItems={companies_aggregate}
 						page={page}
 						itemsPerPage={limit}
-						onClickPrev={() => setPage((prev) => prev - 1)}
-						onClickNext={() => setPage((prev) => prev + 1)}
+						numeric
+						onClickPrev={() => setPage(page - 1)}
+						onClickNext={() => setPage(page + 1)}
+						onClickToPage={(selectedPage) => setPage(selectedPage)}
 					/>
 				</div>
 			</div>
