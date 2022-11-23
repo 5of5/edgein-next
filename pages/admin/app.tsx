@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 // Initialize the dataProvider before rendering react-admin resources.
 import React, { useState, useEffect } from "react";
 import buildHasuraProvider, { BuildFields, buildFields } from "ra-data-hasura";
@@ -9,7 +8,6 @@ import {
   Resource,
   AuthProvider,
   Layout,
-  AppBar,
   defaultTheme,
 } from "react-admin";
 
@@ -24,6 +22,7 @@ import {
 import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
 
 import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
+import ElemAppBar from "@/components/admin/ElemAppBar";
 import {
   InvestmentRoundCreate,
   InvestmentRoundEdit,
@@ -115,26 +114,8 @@ const customBuildFields: BuildFields = (type, fetchType) => {
   return defaultFields;
 };
 
-export const MyAppBar = (props: any) => (
-  <AppBar {...props}>
-    <h6 style={{ flex: 1 }} id="react-admin-title" />
-    <a
-      href="/api/sync_algolia/"
-      target={"_blank"}
-      style={{
-        border: "1px white solid",
-        borderRadius: 4,
-        padding: "0 8px",
-        margin: "0 4px",
-      }}
-    >
-      Sync Algolia
-    </a>
-  </AppBar>
-);
-
 export const LayoutApp = (props: any) => (
-  <Layout {...props} appBar={MyAppBar} />
+  <Layout {...props} appBar={ElemAppBar} />
 );
 
 const AdminApp = () => {
