@@ -13,6 +13,7 @@ import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
+import { ShareTwitter } from "@/components/ShareTwitter";
 import {
 	Companies,
 	GetCompanyDocument,
@@ -55,6 +56,16 @@ const Company: NextPage<Props> = (props: Props) => {
 	const showMoreActivity = () => {
 		setActivityLimit(activityLimit + 10);
 	};
+
+	const [overviewMore, setOverviewMore] = useState(false);
+	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
+	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+
+	useEffect(() => {
+		if (overviewDiv) {
+			setOverviewDivHeight(overviewDiv.current.scrollHeight);
+		}
+	}, [overviewDiv]);
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -155,17 +166,46 @@ const Company: NextPage<Props> = (props: Props) => {
 						<ElemTags className="mt-4" tags={companyTags} />
 					)}
 					{company.overview && (
-						<p className="mt-4 line-clamp-3 text-base text-slate-600">
-							{company.overview}
-						</p>
+						<>
+							<p
+								ref={overviewDiv}
+								className={`mt-4 text-base text-slate-600 ${
+									overviewMore ? "" : "line-clamp-3"
+								}`}
+							>
+								{company.overview}
+							</p>
+							{overviewDivHeight > 72 && (
+								<ElemButton
+									onClick={() => setOverviewMore(!overviewMore)}
+									btn="transparent"
+									className="px-0 py-0 inline font-normal"
+								>
+									show {overviewMore ? "less" : "more"}
+								</ElemButton>
+							)}
+						</>
 					)}
-					<div className="flex items-center mt-4 gap-x-5">
-						<ElemReactions resource={company} resourceType={"companies"} />
+					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+						<ElemReactions
+							resource={company}
+							resourceType={"companies"}
+							className="w-full sm:w-auto"
+						/>
 						<ElemSaveToList
 							resourceName={company.name}
 							resourceId={company.id}
 							resourceType={"companies"}
 							slug={company.slug!}
+						/>
+						<ShareTwitter
+							twitterUrl={company.twitter}
+							name={company.name}
+							tags={company.tags}
+							resourceType={"companies"}
+							sentimentHot={company.sentiment?.hot}
+							sentimentLike={company.sentiment?.like}
+							sentimentCrap={company.sentiment?.crap}
 						/>
 					</div>
 				</div>

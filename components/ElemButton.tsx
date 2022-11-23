@@ -21,6 +21,7 @@ type Props = {
 	roundedFull?: boolean;
 	size?: "sm" | "lg" | "";
 	href?: string;
+	target?: string;
 	disabled?: boolean;
 	onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
@@ -35,6 +36,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	roundedFull = true,
 	size = "",
 	href = "",
+	target = "_self",
 	disabled = false,
 	children,
 	onClick,
@@ -103,7 +105,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	if (href.length) {
 		return (
 			<Link href={href} passHref>
-				{component}
+				<a target={target}>{component}</a>
 			</Link>
 		);
 	}
