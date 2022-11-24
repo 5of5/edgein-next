@@ -28,6 +28,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { sortBy } from "lodash";
+import useTrackView from "@/hooks/useTrackView";
 
 type Props = {
 	company: Companies;
@@ -78,6 +79,12 @@ const Company: NextPage<Props> = (props: Props) => {
 	} = useGetCompanyQuery({
 		slug: companyId as string,
 	});
+
+	useTrackView({
+		enabled: !!companyData,
+		resourceId: companyData?.companies[0]?.id,
+		resourceType: "companies",
+	})
 
 	const getTokenInfo = async (coinId: number) => {
 		const data = await fetch("/api/get_metrics_amount/", {

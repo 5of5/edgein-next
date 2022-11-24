@@ -3,7 +3,7 @@ import { mutate } from '@/graphql/hasuraAdmin'
 import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "GET") {
+  if (req.method !== "POST") {
     res.status(405).json({ message: "Method not allowed" });
   }
 
@@ -16,29 +16,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end()
 
-    // create action
-    mutate({
-      mutation: `
-        mutation InsertAction($object: actions_insert_input!) {
-          insert_actions_one(
-            object: $object
-          ) {
-            id
-          }
+  // create action
+  mutate({
+    mutation: `
+      mutation InsertAction($object: actions_insert_input!) {
+        insert_actions_one(
+          object: $object
+        ) {
+          id
         }
-      `,
-      variables: {
-        object: {
-          action: "View",
-          page: pathname,
-          properties: {
-          },
-          resource_id: resourceId,
-          resource: resourceType,
-          user: user.id,
+      }
+    `,
+    variables: {
+      object: {
+        action: "View",
+        page: pathname,
+        properties: {
         },
+        resource_id: resourceId,
+        resource: resourceType,
+        user: user.id,
       },
-    });
+    },
+  });
+
+  res.send({ success: true})
 }
 
 export default handler;
