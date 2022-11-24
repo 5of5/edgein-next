@@ -97,3 +97,18 @@ export const insertDataRaw = async (data: Array<Record<string, any>>) => {
 	});
 	return returning;
 };
+
+export const updateMainTable = async (resourceType: string, id: Number, setValues: Record<string, any>) => {
+	const tableName = TABLE_NAME[resourceType];
+	if (tableName === undefined) return;
+	await mutate({
+		mutation: `
+    mutation update_main_table($id: Int!, $setValues: ${tableName}_set_input!) {
+      update_${tableName}(_set: $setValues, where: {id: {_eq: $id}}) {
+        affected_rows
+      }
+    }
+    `,
+		variables: { id, setValues },
+	});
+};
