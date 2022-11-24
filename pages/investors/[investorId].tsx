@@ -10,7 +10,7 @@ import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
-import { ShareTwitter } from "@/components/ShareTwitter";
+import { ElemSocialShare } from "@/components/ElemSocialShare";
 
 import {
 	convertToInternationalCurrencySystem,
@@ -119,14 +119,14 @@ const VCFirm: NextPage<Props> = (props) => {
 							resourceType={"vc_firms"}
 							slug={vcfirm.slug!}
 						/>
-						<ShareTwitter
-							twitterUrl={vcfirm.twitter}
-							name={vcfirm.name}
-							tags={vcfirm.tags}
-							resourceType={"vc_firms"}
+						<ElemSocialShare
+							resourceName={vcfirm.name}
+							resourceTags={vcfirm.tags}
+							resourceTwitterUrl={vcfirm.twitter}
 							sentimentHot={vcfirm.sentiment?.hot}
 							sentimentLike={vcfirm.sentiment?.like}
 							sentimentCrap={vcfirm.sentiment?.crap}
+							resourceType={"vc_firms"}
 						/>
 					</div>
 				</div>

@@ -87,7 +87,7 @@ export const TagInputText: React.FC<PropsWithChildren<Props>> = ({
 									}}
 									className="text-primary-500 hover:opacity-70 focus:outline-none"
 								>
-									<IconX className="w-4 h-4" strokeWidth={3} />
+									<IconX className="w-4 h-4" strokeWidth={3} title="close" />
 								</button>
 							</div>
 						);

@@ -13,7 +13,7 @@ import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
-import { ShareTwitter } from "@/components/ShareTwitter";
+import { ElemSocialShare } from "@/components/ElemSocialShare";
 import {
 	Companies,
 	GetCompanyDocument,
@@ -198,14 +198,14 @@ const Company: NextPage<Props> = (props: Props) => {
 							resourceType={"companies"}
 							slug={company.slug!}
 						/>
-						<ShareTwitter
-							twitterUrl={company.twitter}
-							name={company.name}
-							tags={company.tags}
-							resourceType={"companies"}
+						<ElemSocialShare
+							resourceName={company.name}
+							resourceTags={company.tags}
+							resourceTwitterUrl={company.twitter}
 							sentimentHot={company.sentiment?.hot}
 							sentimentLike={company.sentiment?.like}
 							sentimentCrap={company.sentiment?.crap}
+							resourceType={"companies"}
 						/>
 					</div>
 				</div>

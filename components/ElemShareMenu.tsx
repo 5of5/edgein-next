@@ -3,7 +3,7 @@ import { ElemButton } from "@/components/ElemButton";
 import {
 	IconShare,
 	IconLink,
-	IconTelegram,
+	IconTelegramAlt,
 	IconEmail,
 	IconChatBubble,
 } from "@/components/Icons";
@@ -77,7 +77,7 @@ export const ElemShareMenu = ({ user }: Props) => {
 
 	const list = [
 		{ icon: IconLink, text: "Copy Invite Link", onClick: onCopy },
-		{ icon: IconTelegram, text: "Invite via Telegram", onClick: onTelegram },
+		{ icon: IconTelegramAlt, text: "Invite via Telegram", onClick: onTelegram },
 		{ icon: IconEmail, text: "Invite via Email", onClick: onEmail },
 		{ icon: IconChatBubble, text: "Invite via SMS", onClick: onSMS },
 	];
