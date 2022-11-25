@@ -156,7 +156,11 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 												className="rounded-lg !p-0 hover:border-primary-500 mr-4 lg:hidden"
 											>
 												<span className="sr-only">Close Sidebar</span>
-												<IconX className="h-8 w-8" aria-hidden="true" />
+												<IconX
+													className="h-8 w-8"
+													aria-hidden="true"
+													title="close"
+												/>
 											</ElemButton>
 										</div>
 									</Transition.Child>
