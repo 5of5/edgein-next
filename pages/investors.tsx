@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
 import { InputSelect } from "@/components/InputSelect";
@@ -27,6 +28,7 @@ import { investorChoices } from "@/utils/constants";
 import { useAuth } from "@/hooks/useAuth";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
+import { onTrackView } from "@/hooks/useTrackView";
 
 type Props = {
 	vcFirmCount: number;
@@ -44,6 +46,8 @@ const Investors: NextPage<Props> = ({
 	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
+
+	const router = useRouter();
 
 	// Investor Filter
 	const [selectedInvestorFilters, setSelectedInvestorFilters] = useState(
@@ -76,6 +80,10 @@ const Investors: NextPage<Props> = ({
 		(tag) => tag.split(",")
 	);
 
+	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
+	};
+
 	useEffect(() => {
 		if (!initialLoad) {
 			setPage(0);
@@ -90,9 +98,19 @@ const Investors: NextPage<Props> = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedTags, selectedInvestmentCount]);
 
-	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
-	};
+	useEffect(() => {
+		onTrackView({
+			properties: filters,
+			pathname: router.pathname,
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		selectedTags,
+		selectedInvestmentCount,
+		selectedInvestorFilters,
+	]);
+
+
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,

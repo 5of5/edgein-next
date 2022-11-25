@@ -15,6 +15,7 @@ import {
 } from "../../graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
+import useTrackView from "@/hooks/useTrackView";
 
 type Props = {
 	person: People;
@@ -29,6 +30,12 @@ const Person: NextPage<Props> = (props) => {
 	const goBack = () => router.back();
 
 	const person = props.person;
+
+	useTrackView({
+		enabled: !!person,
+		resourceId: person?.id,
+		resourceType: "people",
+	})
 
 	if (!person) {
 		return <h1>Not Found</h1>;

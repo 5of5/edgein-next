@@ -1,6 +1,6 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import { mutate } from '@/graphql/hasuraAdmin'
-import CookieService from '../../utils/cookie'
+import { mutate } from "@/graphql/hasuraAdmin";
+import CookieService from "../../utils/cookie";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -8,13 +8,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // params:
-  const resourceId: string = req.body.resourceId
-  const resourceType: string = req.body.resourceType
-  const pathname: string = req.body.pathname
-  
-  const token = CookieService.getAuthToken(req.cookies)
+  const resourceId: string = req.body.resourceId;
+  const resourceType: string = req.body.resourceType;
+  const pathname: string = req.body.pathname;
+  const properties: any = req.body.properties || {};
+
+  const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
-  if (!user) return res.status(403).end()
+  if (!user) return res.status(403).end();
 
   // create action
   mutate({
@@ -31,8 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       object: {
         action: "View",
         page: pathname,
-        properties: {
-        },
+        properties,
         resource_id: resourceId,
         resource: resourceType,
         user: user.id,
@@ -40,7 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  res.send({ success: true})
-}
+  res.send({ success: true });
+};
 
 export default handler;
