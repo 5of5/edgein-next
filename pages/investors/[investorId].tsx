@@ -28,6 +28,8 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
+import { onTrackView } from "@/utils/track";
+
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
@@ -59,6 +61,17 @@ const VCFirm: NextPage<Props> = (props) => {
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
 	});
+
+	useEffect(() => {
+    if (vcFirmData) {
+      onTrackView({
+        resourceId: vcFirmData?.vc_firms[0]?.id,
+        resourceType: "vc_firms",
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vcFirmData]);
 
 	useEffect(() => {
 		if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
@@ -102,7 +115,7 @@ const VCFirm: NextPage<Props> = (props) => {
 
 				<div className="w-full col-span-5 mt-7 lg:mt-0">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
-					{vcfirm.tags.length > 0 && (
+					{vcfirm.tags?.length > 0 && (
 						<ElemTags className="mt-4" tags={vcfirm.tags} />
 					)}
 

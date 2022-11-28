@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
+import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { InputSelect } from "@/components/InputSelect";
@@ -25,6 +26,7 @@ import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/useStateParams";
+import { onTrackView } from "@/utils/track";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -61,6 +63,8 @@ const Companies: NextPage<Props> = ({
 	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
+
+	const router = useRouter();
 
 	// Company Filter
 	const [selectedCompanyFilters, setSelectedCompanyFilters] =
@@ -106,6 +110,10 @@ const Companies: NextPage<Props> = ({
 		(tag) => tag.split(",")
 	);
 
+	const filters: DeepPartial<Companies_Bool_Exp> = {
+		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
+	};
+
 	useEffect(() => {
 		if (!initialLoad) {
 			setPage(0);
@@ -120,6 +128,11 @@ const Companies: NextPage<Props> = ({
 		) {
 			setInitialLoad(false);
 		}
+		
+		onTrackView({
+			properties: filters,
+			pathname: router.pathname,
+		})
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		selectedTags,
@@ -128,10 +141,6 @@ const Companies: NextPage<Props> = ({
 		selectedTotalEmployees,
 		selectedCompanyFilters,
 	]);
-
-	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
-	};
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,

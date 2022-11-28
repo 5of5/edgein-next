@@ -1,5 +1,6 @@
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { isEqual } from "lodash";
 
 export function useStateParams<T>(
   initialState: T,
@@ -20,7 +21,7 @@ export function useStateParams<T>(
 
   useEffect(() => {
     // Updates state when user navigates backwards or forwards in browser history
-    if (existingValue && deserialize(existingValue) !== state) {
+    if (existingValue && !isEqual(deserialize(existingValue), state)) {
       setState(deserialize(existingValue));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
