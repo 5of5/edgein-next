@@ -5,8 +5,9 @@ import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
-import { identify } from 'react-fullstory';
- import { startCase } from 'lodash';
+import FullStory, { identify } from 'react-fullstory';
+import { startCase } from 'lodash';
+const FULLSTORY_ORG_ID = "o-1EYK7Q-na1";
 
 type UserValue = {
   user: User | null
@@ -82,6 +83,6 @@ const UserProvider: React.FC<Props> = (props) => {
   }, [listMemberships])
     
 
-  return (<Provider value={{user, loading, listAndFollows}}>{ props.children}</Provider>)
+  return (<Provider value={{user, loading, listAndFollows}}>{ user ? <FullStory org={FULLSTORY_ORG_ID} /> : null}{ props.children}</Provider>)
 }
 export { UserProvider, useUser };
