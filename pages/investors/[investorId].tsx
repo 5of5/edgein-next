@@ -28,7 +28,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
-import useTrackView from "@/hooks/useTrackView";
+import { onTrackView } from "@/utils/track";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -62,11 +62,16 @@ const VCFirm: NextPage<Props> = (props) => {
 		slug: investorId as string,
 	});
 
-	useTrackView({
-		enabled: !!vcFirmData,
-		resourceId: vcFirmData?.vc_firms[0]?.id,
-		resourceType: "vc_firms",
-	})
+	useEffect(() => {
+    if (vcFirmData) {
+      onTrackView({
+        resourceId: vcFirmData?.vc_firms[0]?.id,
+        resourceType: "vc_firms",
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vcFirmData]);
 
 	useEffect(() => {
 		if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);

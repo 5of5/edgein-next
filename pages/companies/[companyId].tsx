@@ -28,7 +28,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { sortBy } from "lodash";
-import useTrackView from "@/hooks/useTrackView";
+import { onTrackView } from "@/utils/track";
 
 type Props = {
 	company: Companies;
@@ -80,11 +80,16 @@ const Company: NextPage<Props> = (props: Props) => {
 		slug: companyId as string,
 	});
 
-	useTrackView({
-		enabled: !!companyData,
-		resourceId: companyData?.companies[0]?.id,
-		resourceType: "companies",
-	})
+	useEffect(() => {
+    if (companyData) {
+      onTrackView({
+        resourceId: companyData?.companies[0]?.id,
+        resourceType: "companies",
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [companyData]);
 
 	const getTokenInfo = async (coinId: number) => {
 		const data = await fetch("/api/get_metrics_amount/", {

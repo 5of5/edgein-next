@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef } from "react";
+import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -15,7 +15,7 @@ import {
 } from "../../graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
-import useTrackView from "@/hooks/useTrackView";
+import { onTrackView } from "@/utils/track";
 
 type Props = {
 	person: People;
@@ -31,11 +31,16 @@ const Person: NextPage<Props> = (props) => {
 
 	const person = props.person;
 
-	useTrackView({
-		enabled: !!person,
-		resourceId: person?.id,
-		resourceType: "people",
-	})
+	useEffect(() => {
+    if (person) {
+      onTrackView({
+        resourceId: person?.id,
+        resourceType: "people",
+        pathname: router.asPath,
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [person]);
 
 	if (!person) {
 		return <h1>Not Found</h1>;

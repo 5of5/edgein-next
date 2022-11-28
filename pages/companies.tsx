@@ -26,7 +26,7 @@ import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/useStateParams";
-import { onTrackView } from "@/hooks/useTrackView";
+import { onTrackView } from "@/utils/track";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(

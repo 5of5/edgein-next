@@ -28,7 +28,7 @@ import { investorChoices } from "@/utils/constants";
 import { useAuth } from "@/hooks/useAuth";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
-import { onTrackView } from "@/hooks/useTrackView";
+import { onTrackView } from "@/utils/track";
 
 type Props = {
 	vcFirmCount: number;
