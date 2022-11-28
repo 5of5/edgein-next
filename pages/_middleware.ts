@@ -64,30 +64,5 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	if (!url.pathname.includes(`/api/`) && user?.id) {
-		mutate({
-			mutation: `
-				mutation InsertAction($object: actions_insert_input!) {
-					insert_actions_one(
-						object: $object
-					) {
-						id
-					}
-				}
-			`,
-			variables: {
-				object: {
-					action: "View",
-					page: url.pathname,
-					// TODO add from url split
-					// resourceType:,
-					// resourceId: ,
-					properties: {},
-					user: user.id,
-				},
-			},
-		});
-	}
-
 	return NextResponse.next();
 }
