@@ -83,6 +83,6 @@ const UserProvider: React.FC<Props> = (props) => {
   }, [listMemberships])
     
 
-  return (<Provider value={{user, loading, listAndFollows}}>{ user ? <FullStory org={FULLSTORY_ORG_ID} /> : null}{ props.children}</Provider>)
+  return (<Provider value={{user, loading, listAndFollows}}>{ user && !user.email.endsWith('@edgein.io') ? <FullStory org={FULLSTORY_ORG_ID} /> : null}{ props.children}</Provider>)
 }
 export { UserProvider, useUser };
