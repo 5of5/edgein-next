@@ -57,12 +57,17 @@ type HitPeopleProps = {
 	}>;
 };
 
-const HitCompanies = (onClose: () => void) =>
+const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitCompanies({ hit }: HitCompaniesProps) {
 		return (
-			<Link href={`/companies/${hit.slug}`} passHref>
+			<Link href={isAdmin ? `/admin/app/#/companies/${hit.objectID}` : `/companies/${hit.slug}`} passHref>
 				<a
-					onClick={onClose}
+					onClick={() => {
+						onClose();
+						if (isAdmin && redirect) {
+							redirect(`/companies/${hit.objectID}`);
+						}
+					}}
 					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
@@ -113,13 +118,18 @@ const HitCompanies = (onClose: () => void) =>
 		);
 	};
 
-const HitInvestors = (onClose: () => void) =>
+const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitInvestors({ hit }: HitInvestorsProps) {
 		return (
-			<Link href={`/investors/${hit.slug}`} passHref>
+			<Link href={isAdmin ? `/admin/app/#/vc_firms/${hit.objectID}` : `/investors/${hit.slug}`} passHref>
 				<a
 					className="flex items-center px-6 py-1 group hover:bg-slate-100"
-					onClick={onClose}
+					onClick={() => {
+						onClose();
+						if (isAdmin && redirect) {
+							redirect(`/vc_firms/${hit.objectID}`);
+						}
+					}}
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 						{hit.logo ? (
@@ -148,13 +158,18 @@ const HitInvestors = (onClose: () => void) =>
 		);
 	};
 
-const HitPeople = (onClose: () => void) =>
+const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitPeople({ hit }: HitPeopleProps) {
 		return (
-			<Link href={`/people/${hit.slug}`} passHref>
+			<Link href={isAdmin ? `/admin/app/#/people/${hit.objectID}` : `/people/${hit.slug}`} passHref>
 				<a
 					className="flex items-center px-6 py-1 group hover:bg-slate-100"
-					onClick={onClose}
+					onClick={() => {
+						onClose();
+						if (isAdmin && redirect) {
+							redirect(`/people/${hit.objectID}`);
+						}
+					}}
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
 						{hit.picture ? (
@@ -319,7 +334,7 @@ export default function SearchModal(props: any) {
 												<h3 className="font-bold mt-5 mx-6">Companies</h3>
 												<EmptyQueryBoundary>
 													<InfiniteHits
-														hitComponent={HitCompanies(onClose)}
+														hitComponent={HitCompanies(onClose, props.isAdmin, props.redirect)}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
@@ -336,7 +351,7 @@ export default function SearchModal(props: any) {
 												<h3 className="font-bold mt-5 mx-6">Investors</h3>
 												<EmptyQueryBoundary>
 													<InfiniteHits
-														hitComponent={HitInvestors(onClose)}
+														hitComponent={HitInvestors(onClose, props.isAdmin, props.redirect)}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
@@ -353,7 +368,7 @@ export default function SearchModal(props: any) {
 												<h3 className="font-bold mt-5 mx-6">People</h3>
 												<EmptyQueryBoundary>
 													<InfiniteHits
-														hitComponent={HitPeople(onClose)}
+														hitComponent={HitPeople(onClose, props.isAdmin, props.redirect)}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",

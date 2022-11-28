@@ -4,6 +4,7 @@ import {
 	resourceIdLookup,
 	insertDataRaw,
 	fieldLookup,
+	updateMainTable,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -41,6 +42,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const currentTime = new Date();
 	let validData: Array<Record<string, any>> = [];
 	let invalidData: Array<Record<string, any>> = [];
+	let setMainTableValues: Record<string, any> = {};
 
 	for (let field in resourceObj) {
 		let value = resourceObj[field];
@@ -52,6 +54,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				message: "Invalid Field",
 			});
 		else {
+			setMainTableValues[field] = value;
 			validData.push({
 				created_at: currentTime,
 				partner: partnerId,
@@ -65,6 +68,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	const insertResult = await insertDataRaw(validData);
+	await updateMainTable(resourceType, resourceId, setMainTableValues);
 	res.send(invalidData.concat(insertResult));
 };
 
