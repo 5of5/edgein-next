@@ -8,6 +8,12 @@ import {
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+const NODE_NAME: Record<string, string> = {
+	companies: "company",
+	vc_firms: "vc_firm",
+	people: "people",
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== "POST")
 		return res.status(405).send({ message: "Only POST requests allowed" });
@@ -46,7 +52,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	for (let field in resourceObj) {
 		let value = resourceObj[field];
-		let dataField: Data_Fields = await fieldLookup(`${resourceType}.${field}`);
+		let dataField: Data_Fields = await fieldLookup(`${NODE_NAME[resourceType]}.${field}`);
 		if (dataField === undefined)
 			invalidData.push({
 				resource: resourceType,

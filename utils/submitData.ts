@@ -19,31 +19,22 @@ export const partnerLookUp = async (apiKey: string) => {
 	return data_partner;
 };
 
-const TABLE_NAME: Record<string, string> = {
-	company: "companies",
-	vc_firm: "vc_firms",
-	person: "people",
-};
-
 export const resourceIdLookup = async (
 	resourceType: string,
 	resourceIdentifier: string,
 	identifierColumn: string
 ) => {
-	const tableName = TABLE_NAME[resourceType];
-	if (tableName === undefined) return;
-
 	try {
 		const { data } = await query({
 			query: `
-      query lookup_resource($resourceIdentifier: String!) {
-        ${tableName}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
-          id
+      query lookup_resource($resourceIdentifier: Int!) {
+				${resourceType}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
+					id
         }
       }`,
 			variables: { resourceIdentifier },
 		});
-		return data[tableName][0].id;
+		return data[resourceType][0].id;
 	} catch (e) {
 		return;
 	}
@@ -99,16 +90,37 @@ export const insertDataRaw = async (data: Array<Record<string, any>>) => {
 };
 
 export const updateMainTable = async (resourceType: string, id: Number, setValues: Record<string, any>) => {
-	const tableName = TABLE_NAME[resourceType];
-	if (tableName === undefined) return;
 	await mutate({
 		mutation: `
-    mutation update_main_table($id: Int!, $setValues: ${tableName}_set_input!) {
-      update_${tableName}(_set: $setValues, where: {id: {_eq: $id}}) {
+    mutation update_main_table($id: Int!, $setValues: ${resourceType}_set_input!) {
+      update_${resourceType}(_set: $setValues, where: {id: {_eq: $id}}) {
         affected_rows
       }
     }
     `,
 		variables: { id, setValues },
 	});
+};
+
+export const onSubmitData = (
+  type: string,
+  transformInput: any,
+  resource: any
+) => {
+  return fetch("/api/submit_data/", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
+      resource_type: type,
+      resource_identifier: transformInput.data.id,
+      identifier_column: "id",
+      resource,
+    }),
+  }).then(() => {
+    return { data: transformInput.data };
+  });
 };

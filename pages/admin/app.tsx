@@ -65,6 +65,8 @@ import {
 } from "../../components/admin/disabledEmail";
 import { UserList, UserEdit } from "../../components/admin/user";
 import { useAuth } from "../../hooks/useAuth";
+import { getUpdatedDiff } from "@/utils/helpers";
+import { onSubmitData } from "@/utils/submitData";
 
 const MyLogin = () => {
   useEffect(() => {
@@ -173,8 +175,17 @@ const AdminApp = () => {
         ...dataProvider,
         create: (type, obj) =>
           dataProvider.create(type, nullInputTransform(type, obj)),
-        update: (type, obj) =>
-          dataProvider.update(type, nullInputTransform(type, obj)),
+        update: (type, obj) => {
+          const transformInput = nullInputTransform(type, obj);
+          if (["companies", "vc_firms", "people"].includes(type)) {
+            const updatedResource = getUpdatedDiff(
+              transformInput.previousData,
+              transformInput.data
+            );
+            return onSubmitData(type, transformInput, updatedResource);
+          }
+          return dataProvider.update(type, transformInput);
+        },
       });
     };
     buildDataProvider();
