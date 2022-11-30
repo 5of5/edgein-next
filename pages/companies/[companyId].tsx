@@ -62,12 +62,6 @@ const Company: NextPage<Props> = (props: Props) => {
 	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
 	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
 
-	useEffect(() => {
-		if (overviewDiv) {
-			setOverviewDivHeight(overviewDiv.current.scrollHeight);
-		}
-	}, [overviewDiv]);
-
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -81,15 +75,15 @@ const Company: NextPage<Props> = (props: Props) => {
 	});
 
 	useEffect(() => {
-    if (companyData) {
-      onTrackView({
-        resourceId: companyData?.companies[0]?.id,
-        resourceType: "companies",
-        pathname: router.asPath,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [companyData]);
+		if (companyData) {
+			onTrackView({
+				resourceId: companyData?.companies[0]?.id,
+				resourceType: "companies",
+				pathname: router.asPath,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [companyData]);
 
 	const getTokenInfo = async (coinId: number) => {
 		const data = await fetch("/api/get_metrics_amount/", {
@@ -102,6 +96,12 @@ const Company: NextPage<Props> = (props: Props) => {
 		}).then((res) => res.json());
 		setTokenInfo(data);
 	};
+
+	useEffect(() => {
+		if (company.overview) {
+			setOverviewDivHeight(overviewDiv.current.scrollHeight);
+		}
+	}, [company]);
 
 	useEffect(() => {
 		if (company && company.coin) {
