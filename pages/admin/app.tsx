@@ -176,15 +176,10 @@ const AdminApp = () => {
         create: (type, obj) =>
           dataProvider.create(type, nullInputTransform(type, obj)),
         update: (type, obj) => {
-          const transformInput = nullInputTransform(type, obj);
           if (["companies", "vc_firms", "people"].includes(type)) {
-            const updatedResource = getUpdatedDiff(
-              transformInput.previousData,
-              transformInput.data
-            );
-            return onSubmitData(type, transformInput, updatedResource);
+            return onSubmitData(type, nullInputTransform(type, obj));
           }
-          return dataProvider.update(type, transformInput);
+          return dataProvider.update(type, nullInputTransform(type, obj));
         },
       });
     };

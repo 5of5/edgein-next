@@ -1,4 +1,5 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
+import { getUpdatedDiff } from "./helpers";
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {
@@ -102,11 +103,11 @@ export const updateMainTable = async (resourceType: string, id: Number, setValue
 	});
 };
 
-export const onSubmitData = (
-  type: string,
-  transformInput: any,
-  resource: any
-) => {
+export const onSubmitData = (type: string, transformInput: any) => {
+  const resource = getUpdatedDiff(
+    transformInput.previousData,
+    transformInput.data
+  );
   return fetch("/api/submit_data/", {
     method: "POST",
     headers: {
