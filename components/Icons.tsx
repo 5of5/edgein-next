@@ -54,6 +54,30 @@ export const IconArrowUp: React.FC<IconProps> = ({
 	);
 };
 
+export const IconWindowSidebar: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Sidebar"}</title>
+			<path
+				d="M9.5 3.75H5.25C4.65326 3.75 4.08097 3.98705 3.65901 4.40901C3.23705 4.83097 3 5.40326 3 6V18C3 18.5967 3.23705 19.169 3.65901 19.591C4.08097 20.0129 4.65326 20.25 5.25 20.25H9.5M9.5 3.75H18.75C19.3467 3.75 19.919 3.98705 20.341 4.40901C20.7629 4.83097 21 5.40326 21 6V18C21 18.5967 20.7629 19.169 20.341 19.591C19.919 20.0129 19.3467 20.25 18.75 20.25H9.5M9.5 3.75V20.25M4.75 6H7.5M4.75 8.5H7.5M4.75 11H7.5"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+};
+
 export const IconArrowDown: React.FC<IconProps> = ({
 	className,
 	strokeWidth,

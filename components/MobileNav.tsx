@@ -130,14 +130,17 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 						</Transition.Child>
 
 						<div className="fixed inset-0 z-40 flex">
+							<div className="flex-shrink-0 w-14">
+								{/* Dummy element to force sidebar to shrink to fit close icon */}
+							</div>
 							<Transition.Child
 								as={Fragment}
 								enter="transition ease-in-out duration-300 transform"
-								enterFrom="-translate-x-full"
+								enterFrom="translate-x-full"
 								enterTo="translate-x-0"
 								leave="transition ease-in-out duration-300 transform"
 								leaveFrom="translate-x-0"
-								leaveTo="-translate-x-full"
+								leaveTo="translate-x-full"
 							>
 								<Dialog.Panel className="relative max-w-md w-full bg-white flex-1 flex flex-col">
 									<Transition.Child
@@ -153,7 +156,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 											<ElemButton
 												roundedFull={false}
 												onClick={() => setNavOpen(false)}
-												className="rounded-lg !p-0 hover:border-primary-500 mr-4 lg:hidden"
+												className="rounded-lg !p-0 hover:border-primary-500 mr-0 lg:hidden"
 											>
 												<span className="sr-only">Close Sidebar</span>
 												<IconX
@@ -256,9 +259,6 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>
-							<div className="flex-shrink-0 w-14">
-								{/* Dummy element to force sidebar to shrink to fit close icon */}
-							</div>
 						</div>
 					</Dialog>
 				</Transition.Root>

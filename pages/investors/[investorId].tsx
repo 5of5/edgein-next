@@ -63,15 +63,15 @@ const VCFirm: NextPage<Props> = (props) => {
 	});
 
 	useEffect(() => {
-    if (vcFirmData) {
-      onTrackView({
-        resourceId: vcFirmData?.vc_firms[0]?.id,
-        resourceType: "vc_firms",
-        pathname: router.asPath,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vcFirmData]);
+		if (vcFirmData) {
+			onTrackView({
+				resourceId: vcFirmData?.vc_firms[0]?.id,
+				resourceType: "vc_firms",
+				pathname: router.asPath,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [vcFirmData]);
 
 	useEffect(() => {
 		if (vcFirmData) setVcfirm(vcFirmData?.vc_firms[0] as Vc_Firms);
@@ -124,8 +124,12 @@ const VCFirm: NextPage<Props> = (props) => {
 							{vcfirm.overview}
 						</p>
 					)}
-					<div className="flex items-center mt-4 gap-x-5">
-						<ElemReactions resource={vcfirm} resourceType={"vc_firms"} />
+					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+						<ElemReactions
+							resource={vcfirm}
+							resourceType={"vc_firms"}
+							className="w-full sm:w-auto"
+						/>
 						<ElemSaveToList
 							resourceName={vcfirm.name}
 							resourceId={vcfirm.id}
