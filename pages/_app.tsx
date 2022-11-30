@@ -3,7 +3,6 @@ import "@/styles/globals.scss";
 import React, { useState } from "react";
 import TagManager from "react-gtm-module";
 import { hotjar } from "react-hotjar";
-import { clarity } from 'react-microsoft-clarity';
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
@@ -16,7 +15,6 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
 const INTERCOM_APP_ID = "jm3hf6lp";
-const CLARITY_ID = "epusnauses";
 
 declare global {
 	interface Window {
@@ -45,7 +43,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 		) {
 			hotjar.initialize(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID), 7);
 		}
-		clarity.init(CLARITY_ID);
 	}, []);
 
 	React.useEffect(() => {

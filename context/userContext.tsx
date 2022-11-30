@@ -5,9 +5,11 @@ import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
 import { hotjar } from 'react-hotjar';
+import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
 const FULLSTORY_ORG_ID = "o-1EYK7Q-na1";
+const CLARITY_ID = "epusnauses";
 
 type UserValue = {
   user: User | null
@@ -39,6 +41,10 @@ const UserProvider: React.FC<Props> = (props) => {
 		error: listAndFollowsError,
 		isLoading,
 	} = useGetFollowsByUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
+
+  React.useEffect(() => {
+		clarity.init(CLARITY_ID);
+	}, []);
 
   React.useEffect(() => {
     if (user) {
@@ -83,6 +89,11 @@ const UserProvider: React.FC<Props> = (props) => {
   }, [listMemberships])
     
 
-  return (<Provider value={{user, loading, listAndFollows}}>{ user && !user.email.endsWith('@edgein.io') ? <FullStory org={FULLSTORY_ORG_ID} /> : null}{ props.children}</Provider>)
+  return (
+    <Provider value={{user, loading, listAndFollows}}>
+      { user && !user.email.endsWith('@edgein.io') ? <FullStory org={FULLSTORY_ORG_ID} /> : null}
+      { props.children}
+    </Provider>
+  )
 }
 export { UserProvider, useUser };
