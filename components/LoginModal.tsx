@@ -59,7 +59,7 @@ export default function LoginModal(props: Props) {
 		validateEmail(email);
 		validatePassword(password);
 
-		if (emailError || !email || !password) {
+		if (emailError || passwordError || !email || !password) {
 			return;
 		}
 
@@ -75,18 +75,19 @@ export default function LoginModal(props: Props) {
 
 			if (response.status === 200) {
 				window.location.href = "/";
-			} else {
-				try {
-					const res = await response.clone().json();
-					if (res.nextStep && res.nextStep === "SIGNUP") {
-						onSignUp(email, password);
-					} else {
-						setUnsuccessMessage(res.message);
-					}
-				} catch (err) {
-					setIsLoading(false);
-				}
 			}
+			// else {
+			// 	try {
+			// 		const res = await response.clone().json();
+			// 		if (res.nextStep && res.nextStep === "SIGNUP") {
+			// 			onSignUp(email, password);
+			// 		} else {
+			// 			setUnsuccessMessage(res.message);
+			// 		}
+			// 	} catch (err) {
+			// 		setIsLoading(false);
+			// 	}
+			// }
 		} catch (e) {
 			console.log(e);
 			setIsLoading(false);
