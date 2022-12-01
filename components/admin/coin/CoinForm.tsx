@@ -4,6 +4,7 @@ import {
   TextInput,
   ReferenceInput,
   SelectInput,
+  AutocompleteInput,
 } from "react-admin";
 import ElemIconGroup from "../ElemIconGroup";
 
@@ -59,6 +60,13 @@ const CoinForm = ({ action, toolbar, currentData }: CoinFormProps) => {
         reference="blockchains"
       >
         <SelectInput className={inputClassName} optionText="name" />
+      </ReferenceInput>
+      <ReferenceInput label="Company" source="company_id" reference="companies">
+        <AutocompleteInput
+          className="w-full"
+          optionText="name"
+          filterToQuery={(search) => ({ name: search })}
+        />
       </ReferenceInput>
     </SimpleForm>
   );

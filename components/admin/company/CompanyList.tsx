@@ -8,7 +8,6 @@ import {
   EditButton,
   TextInput,
   SelectField,
-  ReferenceField,
   NumberField,
   ReferenceInput,
   SelectInput,
@@ -61,9 +60,6 @@ export const CompanyList = () => {
       <ImageField className="logoFile" source="logo.url" label="Logo" />
       <SelectField source="layer" choices={companyLayerChoices} />
       <TextField source="layer_detail" />
-      <ReferenceField label="Coin" source="coin_id" reference="coins">
-        <TextField source="name" />
-      </ReferenceField>
       <NumberField source="total_employees" />
       <TextField source="github" />
       {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}

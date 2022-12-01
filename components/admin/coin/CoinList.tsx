@@ -40,6 +40,13 @@ export const CoinList = () => {
       >
         <TextField source="name" />
       </ReferenceField>
+      <ReferenceField
+        label="Company"
+        source="company_id"
+        reference="companies"
+      >
+        <TextField source="name" />
+      </ReferenceField>
       {/* <TextField source="counter" /> */}
     </ElemList>
   );
