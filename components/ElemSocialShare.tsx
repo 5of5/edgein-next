@@ -82,18 +82,16 @@ export const ElemSocialShare: FC<Props> = ({
 		sentiments = `Current reactions: 🔥${hotCount} 👍${likeCount} 💩${crapCount}`;
 	}
 
-	const twitterContent = `${
+	const twitterContent = `Check out ${
 		resourceTwitterUrl ? getTwitterHandle(resourceTwitterUrl) : resourceName
-	}: ${
-		resourceType === "companies"
-			? "Credibility, Activity, Team & Investors"
-			: "Activity, Team & Investments "
-	} ${pageUrl} via @EdgeInio ${hashtagsFromTags} ${sentiments}`;
+	} on @edgeinio right now: ${pageUrl}`;
 
-	const content =
-		resourceType === "companies"
-			? `${resourceName}: Credibility, Activity, Team & Investors`
-			: `${resourceName}: Activity, Team & Investments`;
+	//${sentiments} ${hashtagsFromTags}
+
+	const content = `Check out ${resourceName} on @edgeinio right now`;
+	// resourceType === "companies"
+	// 	? `${resourceName}: Credibility, Activity, Team & Investors`
+	// 	: `${resourceName}: Activity, Team & Investments`;
 
 	const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
 		twitterContent.trim()
