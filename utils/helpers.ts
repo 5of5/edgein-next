@@ -8,7 +8,7 @@ const makeObjectWithoutPrototype = () => Object.create(null);
 export const getUpdatedDiff = (original: any, target: any) => {
   if (original === target) return {};
 
-  if (!original && (!target || !target?.length)) return {};
+  if (!original && !target) return {};
 
   if (!isObject(original) || !isObject(target)) return target;
 

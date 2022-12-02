@@ -103,6 +103,35 @@ export const updateMainTable = async (resourceType: string, id: Number, setValue
 	});
 };
 
+export const insertActionDataChange = async (
+  resourceId: Number,
+  resourceType: string,
+  userId: Number,
+  properties: Record<string, any>
+) => {
+  await mutate({
+    mutation: `
+      mutation InsertAction($object: actions_insert_input!) {
+        insert_actions_one(
+          object: $object
+        ) {
+          id
+        }
+      }
+    `,
+    variables: {
+      object: {
+        action: "Change_Data",
+        page: `/admin/app/#/${resourceType}/${resourceId}`,
+        properties,
+        resource_id: resourceId,
+        resource: resourceType,
+        user: userId,
+      },
+    },
+  });
+};
+
 export const onSubmitData = (type: string, transformInput: any) => {
   const resource = getUpdatedDiff(
     transformInput.previousData,

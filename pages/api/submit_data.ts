@@ -5,8 +5,10 @@ import {
 	insertDataRaw,
 	fieldLookup,
 	updateMainTable,
+	insertActionDataChange,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
+import CookieService from "../../utils/cookie";
 
 const NODE_NAME: Record<string, string> = {
 	companies: "company",
@@ -17,6 +19,10 @@ const NODE_NAME: Record<string, string> = {
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== "POST")
 		return res.status(405).send({ message: "Only POST requests allowed" });
+
+	const token = CookieService.getAuthToken(req.cookies);
+  const user = await CookieService.getUser(token);
+  if (!user) return res.status(403).end();
 
 	const apiKey: string = req.body.partner_api_key;
 	const resourceType: string = req.body.resource_type;
@@ -70,6 +76,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				value,
 				accuracy_weight: 1,
 			});
+
+			await insertActionDataChange(
+        resourceId,
+        resourceType,
+        user.id,
+        { [field]: value }
+      );
 		}
 	}
 
