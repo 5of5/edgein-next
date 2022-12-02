@@ -8,12 +8,12 @@ type Props = {
 
 export const FigureIntroSplash: FC<Props> = ({ className = "" }) => {
 	return (
-		<figure className={`relative mt-4 ${className}`}>
+		<figure className={`relative ${className}`}>
 			{/* Grid */}
 			<FigurePerspectiveGrid className="absolute scale-[1.5] -bottom-12 left-0 right-0 mx-auto opacity-80 text-dark-500" />
 
 			{/* Spheres */}
-			<div className="absolute w-28 h-28 sm:w-36 sm:h-36 left-0 right-0 mx-auto -top-16 bg-gradient-to-br from-[#ADD3FF] to-blue-800 rounded-full animate-blob"></div>
+			<div className="absolute w-28 h-28 sm:w-36 sm:h-36 bottom-16 -left-12 bg-gradient-to-br from-[#ADD3FF] to-blue-800 rounded-full animate-blob"></div>
 			<div className="absolute w-28 h-28 sm:w-36 sm:h-36 top-4 -right-12 bg-gradient-to-br from-[#CDAAFF] to-[#954DFF] rounded-full animate-blob animation-delay-3000"></div>
 			<div className="absolute w-20 h-20 sm:w-28 sm:h-28 bottom-4 -right-16 bg-gradient-to-br from-[#FFC1F1] to-[#D018A7] rounded-full animate-blob animation-delay-5000"></div>
 			<div className="absolute w-20 h-20 sm:w-28 sm:h-28 top-28 -left-10 bg-gradient-to-br from-[#FFFBEB] to-[#F8DA4B] rounded-full animate-blob animation-delay-2000"></div>
