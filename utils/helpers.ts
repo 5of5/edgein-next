@@ -28,7 +28,10 @@ export const getUpdatedDiff = (original: any, target: any) => {
       return acc;
     }
 
-    acc = target;
+    if (target[key as keyof {}]) {
+      acc[key] = target[key as keyof {}];
+    }
+
     return acc;
   }, makeObjectWithoutPrototype());
 };
