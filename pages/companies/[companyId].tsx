@@ -357,21 +357,26 @@ const Company: NextPage<Props> = (props: Props) => {
 
 														<div className="mb-4">
 															<div className="inline font-bold">
-																Raised{" "}
-																{activity.amount ? (
-																	<div className="inline text-green-600">
-																		$
-																		{`${convertToInternationalCurrencySystem(
-																			activity.amount
-																		)}`}
-																	</div>
+																{activity.round === "Acquisition" ? (
+																	<>Acquired by </>
 																) : (
-																	<div className="inline text-green-600">
-																		undisclosed capital
-																		{/* amount */}
-																	</div>
-																)}{" "}
-																from:{" "}
+																	<>
+																		Raised{" "}
+																		{activity.amount ? (
+																			<div className="inline text-green-600">
+																				$
+																				{`${convertToInternationalCurrencySystem(
+																					activity.amount
+																				)}`}
+																			</div>
+																		) : (
+																			<div className="inline text-green-600">
+																				undisclosed capital
+																			</div>
+																		)}{" "}
+																		from:{" "}
+																	</>
+																)}
 																{activity.investments.map(
 																	(item: any, index) => {
 																		return (
