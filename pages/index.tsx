@@ -1,10 +1,9 @@
 import type { NextPage } from "next";
-import React, { useState } from "react";
+import React from "react";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
 import { ElemButton } from "@/components/ElemButton";
 import { useUser } from "@/context/userContext";
 import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
-import { useFormspark } from "@formspark/use-formspark";
 
 type Props = {
 	showSignUp: boolean;
@@ -12,56 +11,7 @@ type Props = {
 };
 
 const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
-	const [submit, submitting] = useFormspark({
-		formId: "Kz4dKDvu",
-	});
 	const { user, loading } = useUser();
-
-	const [formSent, setFormSent] = useState(false);
-	const [email, setEmail] = useState("");
-
-	const onSubmit = async (e: { preventDefault: () => void }) => {
-		if (e) e.preventDefault();
-		await submit({
-			//name: name,
-			email: email,
-			_email: {
-				from: name,
-				subject: "Waitlist - EdgeIn",
-				template: {
-					title: false,
-					footer: false,
-				},
-			},
-		});
-
-		setFormSent(true);
-	};
-
-	const forFounders = (
-		<div className="bg-white rounded-3xl p-7 mb-12 h-full transition-all hover:scale-102 hover:shadow md:mb-0">
-			<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
-				For founders
-			</h3>
-			<p className="mb-4 text-slate-600 lg:text-lg">
-				We give you unrestricted access to the most reliable market data at
-				hyper-speeds to help you drive growth, make critical connections, and
-				gain competitor insights to stay one step ahead at all times.
-			</p>
-		</div>
-	);
-
-	const forInvestors = (
-		<div className="bg-white rounded-3xl p-7 mb-12 h-full transition-all hover:scale-102 hover:shadow md:mb-0">
-			<h3 className="text-3xl font-bold text-dark-500 mb-4 lg:text-4xl">
-				For investors
-			</h3>
-			<p className="mb-4 text-slate-600 lg:text-lg">
-				One login for all of the portfolio performance metrics you need, web3
-				investment opportunities and comprehensive due diligence.
-			</p>
-		</div>
-	);
 
 	return (
 		<>
