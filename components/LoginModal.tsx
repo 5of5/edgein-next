@@ -5,6 +5,7 @@ import { InputText } from "@/components/InputText";
 import { ElemLogo } from "./ElemLogo";
 import { IconLinkedIn } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
+import { useRouter } from "next/router";
 const validator = require("validator");
 
 type Props = {
@@ -13,9 +14,12 @@ type Props = {
 	onForgotPassword: () => void;
 	onClose: () => void;
 	linkedInError: string;
+	usage: boolean;
 };
 
 export default function LoginModal(props: Props) {
+	const router = useRouter();
+
 	useEffect(() => {
 		setEmail("");
 		setPassword("");
@@ -74,20 +78,23 @@ export default function LoginModal(props: Props) {
 			});
 
 			if (response.status === 200) {
-				window.location.href = "/";
+				if (router.query.redirect) {
+					window.location.href = router.query.redirect as string;
+				} else {
+					window.location.href = "/";
+				}
+			} else {
+				try {
+					const res = await response.clone().json();
+					if (res.nextStep && res.nextStep === "SIGNUP") {
+						onSignUp(email, password);
+					} else {
+						setUnsuccessMessage(res.message);
+					}
+				} catch (err) {
+					setIsLoading(false);
+				}
 			}
-			// else {
-			// 	try {
-			// 		const res = await response.clone().json();
-			// 		if (res.nextStep && res.nextStep === "SIGNUP") {
-			// 			onSignUp(email, password);
-			// 		} else {
-			// 			setUnsuccessMessage(res.message);
-			// 		}
-			// 	} catch (err) {
-			// 		setIsLoading(false);
-			// 	}
-			// }
 		} catch (e) {
 			console.log(e);
 			setIsLoading(false);

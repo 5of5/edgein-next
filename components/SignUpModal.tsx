@@ -20,7 +20,6 @@ type Props = {
 export default function SignUpModal(props: Props) {
 	const router = useRouter();
 
-	const [isBrowser, setIsBrowser] = useState(false);
 	const [errorMessage, setErrorMessage] = useState("");
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState(
@@ -78,7 +77,6 @@ export default function SignUpModal(props: Props) {
 	};
 
 	useEffect(() => {
-		setIsBrowser(true);
 		setName("");
 		setEmail(props.emailFromLogin ? props.emailFromLogin : "");
 		setPassword(props.passwordFromLogin ? props.passwordFromLogin : "");
