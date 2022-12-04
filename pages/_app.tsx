@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.query.usage ? 'usage' : 'login' : false);
+	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
 
 	//google
 	React.useEffect(() => {

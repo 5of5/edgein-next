@@ -48,7 +48,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			onboardingStep === 0 &&
 			router.asPath.includes("/login/")
 		) {
-			setShowPopup(router.asPath.includes("/login/") ? router.query.usage ? 'usage' : 'login' : false);
+			setShowPopup(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.asPath]);
