@@ -2,7 +2,7 @@ import React from "react";
 import { ElemTooltip } from "../ElemTooltip";
 import {
 	IconProps,
-	IconBadgeCheck,
+	IconBadgeCheckSolid,
 	IconGithub,
 	IconLinkedIn,
 	IconChartUp,
@@ -58,7 +58,7 @@ export const ElemCredibility: React.FC<Props> = ({
 								mini ? "w-8 h-8" : "w-12 h-12"
 							} relative flex items-center justify-center bg-white rounded-lg border border-black/10`}
 						>
-							<IconBadgeCheck
+							<IconBadgeCheckSolid
 								title="Verified"
 								className={`${
 									mini ? "-top-2 -right-2 h-5 w-5" : "-top-3 -right-3 h-7 w-7"

@@ -7,6 +7,7 @@ import { ElemButton } from "@/components/ElemButton";
 //import { NotificationAlerts } from "@/components/NotificationAlerts";
 import { UserMenu } from "@/components/UserMenu";
 import LoginModal from "@/components/LoginModal";
+import AccessModal from "@/components/AccessModal";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
@@ -30,6 +31,8 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 	const [showLoginPopup, setShowLoginPopup] = useState(
 		router.asPath.includes("/login/")
 	);
+
+	const [showAccessPopup, setShowAccessPopup] = useState(true);
 	//const [showSignUp, setShowSignUp] = useState(false);
 	const [showForgotPasswordPopup, setShowForgotPasswordPopup] = useState(false);
 	const [emailFromLogin, setEmailFromLogin] = useState("");
@@ -257,6 +260,12 @@ export const TheNavbar: FC<Props> = ({ showSignUp, setShowSignUp }) => {
 
 						<MobileNav className="flex lg:hidden items-center ml-2" />
 					</div>
+
+					{/* <AccessModal
+						onSignUp={showSignUpModal}
+						show={showAccessPopup}
+						onClose={onModalClose}
+					/> */}
 
 					<LoginModal
 						linkedInError={linkedInError}
