@@ -106,8 +106,8 @@ export const updateMainTable = async (resourceType: string, id: Number, setValue
 export const insertActionDataChange = async (
   resourceId: Number,
   resourceType: string,
-  userId: Number,
-  properties: Record<string, any>
+  properties: Record<string, any>,
+  userId?: Number,
 ) => {
   await mutate({
     mutation: `
@@ -121,7 +121,7 @@ export const insertActionDataChange = async (
     `,
     variables: {
       object: {
-        action: "Change_Data",
+        action: "Change Data",
         page: `/admin/app/#/${resourceType}/${resourceId}`,
         properties,
         resource_id: resourceId,

@@ -161,7 +161,7 @@ const AdminApp = () => {
   useEffect(() => {
     const buildDataProvider = async () => {
       const myClientWithAuth = new ApolloClient({
-        uri: "/api/graphql",
+        uri: "/api/graphql/",
         cache: new InMemoryCache(),
       });
       const dataProvider = await buildHasuraProvider(

@@ -28,7 +28,6 @@ export async function middleware(req: NextRequest) {
 			`/api/change_password/`,
 			`/api/access_token_from_code/`,
 			`/api/stripe_webhook/`,
-			`/api/submit_data/`,
 			`/admin/app/`,
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||

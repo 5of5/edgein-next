@@ -22,7 +22,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
-  if (!user) return res.status(403).end();
 
 	const apiKey: string = req.body.partner_api_key;
 	const resourceType: string = req.body.resource_type;
@@ -39,8 +38,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(400).send({ message: "Bad Request" });
 
 	const partner: Data_Partners = await partnerLookUp(apiKey);
-	if (partner?.id === undefined)
-		return res.status(401).send({ message: "Unauthorized" });
+	if (partner?.id === undefined) {
+		if (!(user?.role === 'admin')) {
+			return res.status(401).send({ message: "Unauthorized Partner" });
+		}
+	}
 
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
@@ -50,7 +52,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (resourceId === undefined)
 		return res.status(404).send({ message: "Resource Not Found" });
 
-	const partnerId: number = partner.id;
+	const partnerId: number = partner ? partner.id : 0
+	const userId: number = user ? user.id : 0
 	const currentTime = new Date();
 	let validData: Array<Record<string, any>> = [];
 	let invalidData: Array<Record<string, any>> = [];
@@ -70,6 +73,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			validData.push({
 				created_at: currentTime,
 				partner: partnerId,
+				user_id: userId,
 				resource: resourceType,
 				resource_id: resourceId,
 				field,
@@ -80,8 +84,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			await insertActionDataChange(
         resourceId,
         resourceType,
-        user.id,
-        { [field]: value }
+        { [field]: value },
+        user?.id,
       );
 		}
 	}
