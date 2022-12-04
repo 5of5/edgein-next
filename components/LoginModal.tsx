@@ -14,7 +14,6 @@ type Props = {
 	onForgotPassword: () => void;
 	onClose: () => void;
 	linkedInError: string;
-	usage: boolean;
 };
 
 export default function LoginModal(props: Props) {

@@ -154,7 +154,10 @@ export const IconChartUp: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconBadgeCheck: React.FC<IconProps> = ({ className, title }) => {
+export const IconBadgeCheckSolid: React.FC<IconProps> = ({
+	className,
+	title,
+}) => {
 	return (
 		<svg
 			className={className}
@@ -167,6 +170,29 @@ export const IconBadgeCheck: React.FC<IconProps> = ({ className, title }) => {
 				fillRule="evenodd"
 				d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
 				clipRule="evenodd"
+			/>
+		</svg>
+	);
+};
+
+export const IconBadgeCheck: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			className={className}
+			fill="none"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Badge Check"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z"
 			/>
 		</svg>
 	);
@@ -1316,26 +1342,6 @@ export const IconSaveToList: React.FC<IconProps> = ({
 	);
 };
 
-// export const IconSaveToListOld: React.FC<IconProps> = ({
-// 	className,
-// 	title,
-// }) => {
-// 	return (
-// 		<svg
-// 			xmlns="http://www.w3.org/2000/svg"
-// 			className={className}
-// 			viewBox="0 0 24 24"
-// 			fill="currentColor"
-// 		>
-// 			<title>{title ? title : "Save To List"}</title>
-// 			<path
-// 				d="M22 13H18V17H16V13H12V11H16V7H18V11H22V13ZM14 7H2V8H14V7ZM2 12H10V11H2V12ZM2 16H10V15H2V16Z"
-// 				fill="currentColor"
-// 			/>
-// 		</svg>
-// 	);
-// };
-
 export const IconShare: React.FC<IconProps> = ({
 	className,
 	strokeWidth,
@@ -1475,6 +1481,30 @@ export const IconTrending: React.FC<IconProps> = ({ className, title }) => {
 				strokeWidth="1.5"
 				strokeLinecap="round"
 				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+};
+
+export const IconSparkles: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+			className={className}
+		>
+			<title>{title ? title : "Sparkles"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z"
 			/>
 		</svg>
 	);
