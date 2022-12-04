@@ -47,7 +47,6 @@ function setTokenCookie(res: NextApiResponse, token: string) {
 function setUsageCookie(res: { cookie: (name: string, value: {
   [key: string]: any;
 } | string, opts?: CookieSerializeOptions) => void }, token: string) {
-  console.log(getCookieOpts(USAGE_AGE, {}))
   return res.cookie(USAGE_NAME, token, getCookieOpts(USAGE_AGE, {}))
 }
 
