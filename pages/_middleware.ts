@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
 
 
-	const purpose = req.headers.get('purpose');
+	const purpose = req.headers.entries()
 	console.log({ purpose })
 
 	// Prevent security issues – users should not be able to canonically access
