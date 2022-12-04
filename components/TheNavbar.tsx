@@ -7,7 +7,7 @@ import { ElemButton } from "@/components/ElemButton";
 //import { NotificationAlerts } from "@/components/NotificationAlerts";
 import { UserMenu } from "@/components/UserMenu";
 import LoginModal from "@/components/LoginModal";
-import AccessModal from "@/components/AccessModal";
+import UsageModal from "@/components/UsageModal";
 import ForgotPasswordModal from "@/components/ForgotPasswordModal";
 import SignUpModal from "@/components/SignUpModal";
 import { IconSearch } from "@/components/Icons";
@@ -220,7 +220,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						<MobileNav className="flex lg:hidden items-center ml-2" />
 					</div>
 
-					<AccessModal
+					<UsageModal
 						onSignUp={showSignUpModal}
 						show={showPopup === 'usage'}
 						onClose={onModalClose}

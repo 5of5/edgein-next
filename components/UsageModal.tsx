@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, Fragment } from "react";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemLogo } from "@/components/ElemLogo";
 import { IconSparkles, IconBadgeCheck } from "@/components/Icons";
@@ -10,9 +10,7 @@ type Props = {
 	onClose: () => void;
 };
 
-const AccessModal: React.FC<Props> = (props: Props) => {
-	const [isLoading, setIsLoading] = useState(false);
-
+const UsageModal: React.FC<Props> = (props: Props) => {
 	useEffect(() => {}, [props.show]);
 
 	const onSignUp = (email: string, password: string) => {
@@ -100,7 +98,7 @@ const AccessModal: React.FC<Props> = (props: Props) => {
 												className=" my-2"
 												onClick={() => onSignUp("", "")}
 												btn="primary"
-												loading={isLoading}
+												loading={false}
 											>
 												<IconSparkles
 													className="w-5 h-5 mr-1"
@@ -120,4 +118,4 @@ const AccessModal: React.FC<Props> = (props: Props) => {
 	);
 };
 
-export default AccessModal;
+export default UsageModal;

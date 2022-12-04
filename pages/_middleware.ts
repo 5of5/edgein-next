@@ -6,6 +6,10 @@ const USAGE_LIMIT = 5
 export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
 
+
+	const purpose = req.headers.get('purpose');
+	console.log({ purpose })
+
 	// Prevent security issues – users should not be able to canonically access
 	// the pages/sites folder and its respective contents. This can also be done
 	// via rewrites to a custom 404 page
@@ -33,8 +37,8 @@ export async function middleware(req: NextRequest) {
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
-		url.pathname.endsWith(".ico") ||
-		process.env.DEV_MODE
+		url.pathname.endsWith(".ico") //||
+		// process.env.DEV_MODE
 	) {
 		return NextResponse.next();
 	}
@@ -50,9 +54,9 @@ export async function middleware(req: NextRequest) {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
 			const usage = await CookieService.getUsage(CookieService.getUsageToken(req.cookies))
-			// console.log(usage, url.pathname);
+			console.log(usage, url.pathname);
 			if (!usage || usage.pages < USAGE_LIMIT || (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)) {
-				return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1)}))
+				return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/track') ? 1 : 0)}))
 			} else {
 				return NextResponse.redirect(
 					new URL(`/login/?usage=true&redirect=${encodeURIComponent(url.pathname)}`, req.url)
