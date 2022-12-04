@@ -22,6 +22,30 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 		props.onClose();
 	};
 
+	const features = [
+		{
+			text: "Access unlimited companies",
+		},
+		{
+			text: "Access unlimited investors",
+		},
+		{
+			text: "Access unlimited people",
+		},
+		{
+			text: "Monitor reaction lists",
+		},
+		{
+			text: "Create custom lists",
+		},
+		{
+			text: "Express your sentiments towards organizations",
+		},
+		{
+			text: "Explore reactions of the web3 community",
+		},
+	];
+
 	return (
 		<>
 			<Transition.Root show={props.show} as={Fragment}>
@@ -54,42 +78,23 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 								</div>
 								<div className="max-w-xl mx-auto w-full">
 									<div className="p-6 lg:p-12">
-										<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
+										<div className="hidden items-center h-12 w-12 p-2 mx-auto rounded-full shadow lg:flex">
 											<ElemLogo mode="icon" className="w-10 aspect-square" />
 										</div>
-										<h1 className="mt-4 mx-8 text-3xl font-bold text-center lg:text-4xl">
+										<h1 className="mt-0 text-2xl font-bold text-center lg:mt-4 lg:mx-8 lg:text-4xl">
 											Access more than 17,000 web3 profiles
 										</h1>
 										<div className="flex items-center justify-center">
-											<ul className="my-8 text-lg space-y-2">
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Access unlimited companies
-												</li>
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Access unlimited investors
-												</li>
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Access unlimited people
-												</li>
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Monitor reaction lists
-												</li>
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Create custom lists
-												</li>
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Express your sentiments towards organizations
-												</li>
-												<li className="flex items-center">
-													<IconBadgeCheck className="w-5 h-5 mr-1 text-primary-500" />
-													Explore reactions of the web3 community
-												</li>
+											<ul className="my-8 space-y-2 lg:text-lg">
+												{features.map((feature, index) => (
+													<li
+														className="flex items-start lg:items-center"
+														key={index}
+													>
+														<IconBadgeCheck className="shrink-0 w-5 h-5 mr-1 text-primary-500" />
+														{feature.text}
+													</li>
+												))}
 											</ul>
 										</div>
 
