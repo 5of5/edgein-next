@@ -4,13 +4,13 @@ import { FigureIntroSplash } from "@/components/FigureIntroSplash";
 import { ElemButton } from "@/components/ElemButton";
 import { useUser } from "@/context/userContext";
 import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
-	showSignUp: boolean;
-	setShowSignUp: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
+const Home: NextPage<Props> = ({ setShowPopup }) => {
 	const { user, loading } = useUser();
 
 	return (
@@ -33,11 +33,11 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 						<div className="flex justify-center mt-4">
 							{!user && (
 								<ElemButton
-									onClick={() => setShowSignUp(true)}
 									arrow
+									href="/companies/"
 									btn="primary"
 								>
-									Get Started
+									Start Exploring For Free
 								</ElemButton>
 							)}
 						</div>
@@ -68,7 +68,7 @@ const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 							</ElemButton>
 						) : (
 							<ElemButton
-								onClick={() => setShowSignUp(true)}
+								onClick={() => setShowPopup('signup')}
 								arrow
 								className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
 							>
