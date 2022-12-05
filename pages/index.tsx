@@ -32,12 +32,8 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 						</h2>
 						<div className="flex justify-center mt-4">
 							{!user && (
-								<ElemButton
-									arrow
-									href="/companies/"
-									btn="primary"
-								>
-									Start Exploring For Free
+								<ElemButton arrow href="/companies/" btn="primary">
+									Start Exploring Free
 								</ElemButton>
 							)}
 						</div>
@@ -68,7 +64,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 							</ElemButton>
 						) : (
 							<ElemButton
-								onClick={() => setShowPopup('signup')}
+								onClick={() => setShowPopup("signup")}
 								arrow
 								className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
 							>
