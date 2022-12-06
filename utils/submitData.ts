@@ -25,10 +25,14 @@ export const resourceIdLookup = async (
 	resourceIdentifier: string,
 	identifierColumn: string
 ) => {
+	if (!resourceIdentifier) {
+		return undefined;
+	}
+
 	try {
 		const { data } = await query({
 			query: `
-      query lookup_resource($resourceIdentifier: Int!) {
+      query lookup_resource($resourceIdentifier: ${identifierColumn === "id" ? "Int!" : "String!"}) {
 				${resourceType}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
 					id
         }
@@ -56,6 +60,7 @@ export const fieldLookup = async (path: string) => {
         regex_transform
         description
         regex_test
+				is_valid_identifier
       }
     }
     `,
@@ -150,7 +155,28 @@ export const onSubmitData = (type: string, transformInput: any) => {
       identifier_column: "id",
       resource,
     }),
-  }).then(() => {
-    return { data: transformInput.data };
+  })
+    .then((res) => res.json())
+    .then(({ id }) => {
+      return { data: { ...transformInput.data, id } };
+    });
+};
+
+export const insertResourceData = async (
+  resourceType: string,
+  properties: Record<string, any>
+) => {
+  const { data } = await mutate({
+    mutation: `
+			mutation insert_${resourceType}($object: ${resourceType}_insert_input!) {
+				insert_${resourceType}_one(object: $object) {
+						id
+				}
+			}
+    `,
+    variables: {
+      object: properties,
+    },
   });
+  return data?.[`insert_${resourceType}_one`];
 };

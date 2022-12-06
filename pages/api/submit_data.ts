@@ -6,6 +6,7 @@ import {
 	fieldLookup,
 	updateMainTable,
 	insertActionDataChange,
+	insertResourceData,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -30,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const resourceObj: Record<string, any> = req.body.resource;
 	if (
 		apiKey === undefined ||
-		resourceIdentifier === undefined ||
+		// resourceIdentifier === undefined ||
 		identifierColumn === undefined ||
 		resourceObj === undefined ||
 		resourceType === undefined
@@ -44,55 +45,72 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	}
 
+	if (identifierColumn !== "id") {
+    const lookupField = await fieldLookup(
+      `${NODE_NAME[resourceType]}.${identifierColumn}`
+    );
+
+    if (!lookupField?.is_valid_identifier) {
+      return res.status(400).send({
+        identifier: identifierColumn,
+        message: "Invalid identifier",
+      });
+    }
+  }
+
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
 		resourceIdentifier,
 		identifierColumn
 	);
-	if (resourceId === undefined)
-		return res.status(404).send({ message: "Resource Not Found" });
-
-	const partnerId: number = partner ? partner.id : 0
-	const userId: number = user ? user.id : 0
-	const currentTime = new Date();
-	let validData: Array<Record<string, any>> = [];
-	let invalidData: Array<Record<string, any>> = [];
-	let setMainTableValues: Record<string, any> = {};
-
-	for (let field in resourceObj) {
-		let value = resourceObj[field];
-		let dataField: Data_Fields = await fieldLookup(`${NODE_NAME[resourceType]}.${field}`);
-		if (dataField === undefined)
-			invalidData.push({
-				resource: resourceType,
-				field,
-				message: "Invalid Field",
-			});
-		else {
-			setMainTableValues[field] = value;
-			validData.push({
-				created_at: currentTime,
-				partner: partnerId,
-				user_id: userId,
-				resource: resourceType,
-				resource_id: resourceId,
-				field,
-				value,
-				accuracy_weight: 1,
-			});
-
-			await insertActionDataChange(
-        resourceId,
-        resourceType,
-        { [field]: value },
-        user?.id,
-      );
+	if (resourceId === undefined) {
+		// create a new one
+		const response = await insertResourceData(resourceType, resourceObj);
+		res.send(response);
+	} else {
+		// update existed record
+		const partnerId: number = partner ? partner.id : 0
+		const userId: number = user ? user.id : 0
+		const currentTime = new Date();
+		let validData: Array<Record<string, any>> = [];
+		let invalidData: Array<Record<string, any>> = [];
+		let setMainTableValues: Record<string, any> = {};
+	
+		for (let field in resourceObj) {
+			let value = resourceObj[field];
+			let dataField: Data_Fields = await fieldLookup(`${NODE_NAME[resourceType]}.${field}`);
+			if (dataField === undefined)
+				invalidData.push({
+					resource: resourceType,
+					field,
+					message: "Invalid Field",
+				});
+			else {
+				setMainTableValues[field] = value;
+				validData.push({
+					created_at: currentTime,
+					partner: partnerId,
+					user_id: userId,
+					resource: resourceType,
+					resource_id: resourceId,
+					field,
+					value,
+					accuracy_weight: 1,
+				});
+	
+				await insertActionDataChange(
+					resourceId,
+					resourceType,
+					{ [field]: value },
+					user?.id,
+				);
+			}
 		}
+	
+		const insertResult = await insertDataRaw(validData);
+		await updateMainTable(resourceType, resourceId, setMainTableValues);
+		res.send({ id: resourceId, resources: invalidData.concat(insertResult) });
 	}
-
-	const insertResult = await insertDataRaw(validData);
-	await updateMainTable(resourceType, resourceId, setMainTableValues);
-	res.send(invalidData.concat(insertResult));
 };
 
 export default handler;
