@@ -28,6 +28,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
 import { sortBy } from "lodash";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 
 type Props = {
@@ -179,14 +181,14 @@ const Company: NextPage<Props> = (props: Props) => {
 					)}
 					{company.overview && (
 						<>
-							<p
+							<div
 								ref={overviewDiv}
-								className={`mt-4 text-base text-slate-600 ${
+								className={`mt-4 text-base text-slate-600 prose ${
 									overviewMore ? "" : "line-clamp-3"
 								}`}
 							>
-								{company.overview}
-							</p>
+								{parse(newLineToP(company.overview))}
+							</div>
 							{overviewDivHeight > 72 && (
 								<ElemButton
 									onClick={() => setOverviewMore(!overviewMore)}

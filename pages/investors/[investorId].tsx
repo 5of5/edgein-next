@@ -11,6 +11,8 @@ import { ElemReactions } from "@/components/ElemReactions";
 import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 
 import {
 	convertToInternationalCurrencySystem,
@@ -50,6 +52,10 @@ const VCFirm: NextPage<Props> = (props) => {
 		setActivityLimit(activityLimit + 10);
 	};
 
+	const [overviewMore, setOverviewMore] = useState(false);
+	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
+	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -61,6 +67,12 @@ const VCFirm: NextPage<Props> = (props) => {
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
 	});
+
+	useEffect(() => {
+		if (vcfirm.overview) {
+			setOverviewDivHeight(overviewDiv.current.scrollHeight);
+		}
+	}, [vcfirm]);
 
 	useEffect(() => {
 		if (vcFirmData) {
@@ -120,9 +132,25 @@ const VCFirm: NextPage<Props> = (props) => {
 					)}
 
 					{vcfirm.overview && (
-						<p className="mt-4 line-clamp-3 text-base text-slate-600">
-							{vcfirm.overview}
-						</p>
+						<>
+							<div
+								ref={overviewDiv}
+								className={`mt-4 text-base text-slate-600 prose ${
+									overviewMore ? "" : "line-clamp-3"
+								}`}
+							>
+								{parse(newLineToP(vcfirm.overview))}
+							</div>
+							{overviewDivHeight > 72 && (
+								<ElemButton
+									onClick={() => setOverviewMore(!overviewMore)}
+									btn="transparent"
+									className="px-0 py-0 inline font-normal"
+								>
+									show {overviewMore ? "less" : "more"}
+								</ElemButton>
+							)}
+						</>
 					)}
 					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
 						<ElemReactions
