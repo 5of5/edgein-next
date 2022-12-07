@@ -173,18 +173,10 @@ const AdminApp = () => {
       // Fix nullable inputs for graphql
       setDataProvider({
         ...dataProvider,
-        create: (type, obj) => {
-          if (["companies", "vc_firms", "people"].includes(type)) {
-            return onSubmitData(type, nullInputTransform(type, obj));
-          }
-          return dataProvider.create(type, nullInputTransform(type, obj))
-        },
-        update: (type, obj) => {
-          if (["companies", "vc_firms", "people"].includes(type)) {
-            return onSubmitData(type, nullInputTransform(type, obj));
-          }
-          return dataProvider.update(type, nullInputTransform(type, obj));
-        },
+        create: (type, obj) =>
+          onSubmitData(type, nullInputTransform(type, obj)),
+        update: (type, obj) =>
+          onSubmitData(type, nullInputTransform(type, obj)),
       });
     };
     buildDataProvider();

@@ -12,9 +12,15 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
 const NODE_NAME: Record<string, string> = {
-	companies: "company",
-	vc_firms: "vc_firm",
-	people: "people",
+  companies: "company",
+  vc_firms: "vc_firm",
+  people: "people",
+  blockchains: "blockchain",
+  coins: "coin",
+  investmentRounds: "investmentRound",
+  investments: "investment",
+  teamMembers: "teamMember",
+  investors: "investor",
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
