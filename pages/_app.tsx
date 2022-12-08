@@ -3,20 +3,18 @@ import "@/styles/globals.scss";
 import React, { useState } from "react";
 import TagManager from "react-gtm-module";
 import { hotjar } from "react-hotjar";
-import { clarity } from 'react-microsoft-clarity';
 import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { LoaderPlasma } from "@/components/LoaderPlasma";
-import { TheNavbar } from "@/components/TheNavbar";
+import { Popups, TheNavbar } from "@/components/TheNavbar";
 import { ElemFeedback } from "@/components/ElemFeedback";
 import { TheFooter } from "@/components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
 const INTERCOM_APP_ID = "jm3hf6lp";
-const CLARITY_ID = "epusnauses";
 
 declare global {
 	interface Window {
@@ -32,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-	const [showSignUp, setShowSignUp] = useState(false);
+	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
 
 	//google
 	React.useEffect(() => {
@@ -45,7 +43,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 		) {
 			hotjar.initialize(parseInt(process.env.NEXT_PUBLIC_HOTJAR_ID), 7);
 		}
-		clarity.init(CLARITY_ID);
 	}, []);
 
 	React.useEffect(() => {
@@ -125,8 +122,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 							<UserProvider>
 								<>
 									<TheNavbar
-										showSignUp={showSignUp}
-										setShowSignUp={setShowSignUp}
+										showPopup={showPopup}
+										setShowPopup={setShowPopup}
 									/>
 									<main className="grow selection:bg-primary-200">
 										{pageLoading ? (
@@ -135,8 +132,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 											<Component
 												{...pageProps}
 												setToggleFeedbackForm={setToggleFeedbackForm}
-												showSignUp={showSignUp}
-												setShowSignUp={setShowSignUp}
+												showPopup={showPopup}
+												setShowPopup={setShowPopup}
 											/>
 										)}
 									</main>

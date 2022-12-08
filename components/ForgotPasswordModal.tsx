@@ -78,18 +78,14 @@ export default function ForgotPasswordModal(props: Props) {
 								<div className="max-w-md mx-auto w-full">
 									{isMailSent ? (
 										<>
-											<h1 className="text-2xl font-bold lg:text-3xl">
-												Email Sent
-											</h1>
-
 											<div className="mt-4 flex bg-slate-100 p-4 rounded-lg">
 												<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full bg-white shadow">
 													<IconCheck className="w-10 aspect-square text-primary-500" />
 												</div>
 												<div className="ml-4">
-													Success! We&rsquo;ve sent an email to{" "}
-													<span className="font-bold">{email}</span> with
-													password reset instructions.
+													If there is an account with{" "}
+													<span className="font-bold">{email}</span> then a
+													reset email will be sent.
 												</div>
 											</div>
 											<p className="mt-4 text-sm">

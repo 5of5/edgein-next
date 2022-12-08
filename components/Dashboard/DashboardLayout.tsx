@@ -2,7 +2,7 @@ import { Fragment, useState, FC, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/ElemButton";
-import { IconX } from "@/components/Icons";
+import { IconX, IconWindowSidebar } from "@/components/Icons";
 import { useAuth } from "@/hooks/useAuth";
 import { DashboardSidebar } from "./DashboardSidebar";
 
@@ -57,13 +57,16 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 										>
 											<div className="absolute top-0 right-0 pt-2">
 												<ElemButton
-													btn="white"
 													roundedFull={false}
 													onClick={() => setSidebarOpen(false)}
-													className="rounded-lg hover:border-primary-500 lg:hidden"
+													className="rounded-lg !p-0 hover:border-primary-500 mr-1 lg:hidden"
 												>
 													<span className="sr-only">Close Sidebar</span>
-													<IconX className="h-6 w-6" aria-hidden="true" />
+													<IconX
+														className="h-8 w-8"
+														aria-hidden="true"
+														title="close"
+													/>
 												</ElemButton>
 											</div>
 										</Transition.Child>
@@ -84,26 +87,14 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 
 					<div className="lg:col-span-7">
 						<ElemButton
-							btn="white"
+							btn="slate"
 							roundedFull={false}
 							onClick={() => setSidebarOpen(true)}
-							className="mb-2 rounded-lg hover:border-primary-500 md:hidden"
+							className="-ml-4 mb-4 rounded-tr-lg rounded-br-lg pl-6 hover:border-primary-500 md:hidden"
 						>
-							<span className="sr-only">Open Dashboard Menu</span>
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								strokeWidth={1.5}
-								stroke="currentColor"
-								className="w-6 h-6"
-							>
-								<path
-									strokeLinecap="round"
-									strokeLinejoin="round"
-									d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-								/>
-							</svg>
+							<span className="sr-only">Dashboard List</span>
+							<IconWindowSidebar className="w-6 h-6 mr-2" />
+							Sidebar
 						</ElemButton>
 						{children}
 					</div>

@@ -5,6 +5,7 @@ import { InputText } from "@/components/InputText";
 import { ElemLogo } from "./ElemLogo";
 import { IconLinkedIn } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
+import { useRouter } from "next/router";
 const validator = require("validator");
 
 type Props = {
@@ -16,11 +17,13 @@ type Props = {
 };
 
 export default function LoginModal(props: Props) {
+	const router = useRouter();
+
 	useEffect(() => {
 		setEmail("");
 		setPassword("");
 		setEmailError("");
-		setErrorMessage("");
+		setPasswordError("");
 		setUnsuccessMessage(props.linkedInError ? props.linkedInError : "");
 	}, [props.show, props.linkedInError]);
 
@@ -28,20 +31,18 @@ export default function LoginModal(props: Props) {
 	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 	const [emailError, setEmailError] = useState("");
-	const [errorMessage, setErrorMessage] = useState("");
+	const [passwordError, setPasswordError] = useState("");
 	const [unsuccessMessage, setUnsuccessMessage] = useState("");
 
 	const validateEmail = (value: string) => {
-		setEmail(value);
 		if (validator.isEmail(value)) {
 			setEmailError("");
 		} else {
-			setEmailError("Enter valid Email!");
+			setEmailError("Enter valid email");
 		}
 	};
 
-	const validate = (value: string) => {
-		setPassword(value);
+	const validatePassword = (value: string) => {
 		if (
 			validator.isStrongPassword(value, {
 				minLength: 8,
@@ -51,21 +52,20 @@ export default function LoginModal(props: Props) {
 				minSymbols: 1,
 			})
 		) {
-			setErrorMessage("");
+			setPasswordError("");
 		} else {
-			setErrorMessage(
-				"Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, a special character"
-			);
+			setPasswordError("Invalid password");
 		}
 	};
 
 	const onLogin = async () => {
-		validate(password);
 		validateEmail(email);
+		validatePassword(password);
 
-		if (emailError || !email || !password) {
+		if (emailError || passwordError || !email || !password) {
 			return;
 		}
+
 		try {
 			const response = await fetch("/api/signin/", {
 				method: "POST",
@@ -77,7 +77,11 @@ export default function LoginModal(props: Props) {
 			});
 
 			if (response.status === 200) {
-				window.location.href = "/";
+				if (router.query.redirect) {
+					window.location.href = router.query.redirect as string;
+				} else {
+					window.location.href = "/";
+				}
 			} else {
 				try {
 					const res = await response.clone().json();
@@ -183,9 +187,7 @@ export default function LoginModal(props: Props) {
 														type="email"
 														value={email}
 														disabled={isLoading}
-														onChange={(event) =>
-															validateEmail(event?.target.value)
-														}
+														onChange={(event) => setEmail(event?.target.value)}
 														placeholder="Email"
 														className={`${
 															emailError === ""
@@ -205,17 +207,19 @@ export default function LoginModal(props: Props) {
 														type="password"
 														value={password}
 														disabled={isLoading}
-														onChange={(event) => validate(event?.target.value)}
+														onChange={(event) =>
+															setPassword(event?.target.value)
+														}
 														placeholder="Password"
 														className={`${
-															errorMessage === ""
+															passwordError === ""
 																? "ring-1 ring-slate-200"
 																: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
 														}`}
 													/>
-													{errorMessage === "" ? null : (
+													{passwordError === "" ? null : (
 														<div className="mt-2 font-bold text-sm text-rose-400">
-															{errorMessage}
+															{passwordError}
 														</div>
 													)}
 												</label>
