@@ -114,7 +114,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					Back
 				</ElemButton>
 			</div> */}
-			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7">
 				<div className="col-span-3">
 					<ElemPhoto
 						photo={vcfirm.logo}
@@ -125,7 +125,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 
-				<div className="w-full col-span-5 mt-7 lg:mt-0">
+				<div className="w-full col-span-5 mt-7 lg:mt-4">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
 					{vcfirm.tags?.length > 0 && (
 						<ElemTags className="mt-4" tags={vcfirm.tags} />
