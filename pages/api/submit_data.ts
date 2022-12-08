@@ -17,9 +17,9 @@ const NODE_NAME: Record<string, string> = {
   people: "people",
   blockchains: "blockchain",
   coins: "coin",
-  investmentRounds: "investmentRound",
+  investment_rounds: "investment_round",
   investments: "investment",
-  teamMembers: "teamMember",
+  team_members: "team_member",
   investors: "investor",
 };
 
