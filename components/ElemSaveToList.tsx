@@ -215,11 +215,9 @@ export const ElemSaveToList: FC<Props> = ({
 									</button>
 								</div>
 
-								<ul className="max-h-96 overflow-y-scroll divide-y divide-slate-100 border-b border-b-slate-100">
+								<ul className="max-h-96 overflow-y-scroll no-scrollbar divide-y divide-slate-100">
 									{listsData?.map((list) => {
 										const selected = isSelected(list);
-
-										//console.log(list.name + " " + selected);
 
 										return (
 											<li key={list.id}>
@@ -238,7 +236,7 @@ export const ElemSaveToList: FC<Props> = ({
 								</ul>
 
 								{!showNew && (
-									<div>
+									<div className="bg-gray-50 border-t border-slate-300">
 										<ElemButton
 											btn="transparent"
 											onClick={() => setShowNew(true)}
@@ -251,7 +249,7 @@ export const ElemSaveToList: FC<Props> = ({
 								)}
 
 								{showNew && (
-									<div className="p-3 ease-in-out duration-300">
+									<div className="p-3 bg-gray-50 border-t border-slate-300 ease-in-out duration-300">
 										<InputText
 											label="Name"
 											type="text"
