@@ -11,6 +11,8 @@ import { ElemReactions } from "@/components/ElemReactions";
 import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 
 import {
 	convertToInternationalCurrencySystem,
@@ -50,6 +52,10 @@ const VCFirm: NextPage<Props> = (props) => {
 		setActivityLimit(activityLimit + 10);
 	};
 
+	const [overviewMore, setOverviewMore] = useState(false);
+	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
+	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -61,6 +67,12 @@ const VCFirm: NextPage<Props> = (props) => {
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
 	});
+
+	useEffect(() => {
+		if (vcfirm.overview) {
+			setOverviewDivHeight(overviewDiv.current.scrollHeight);
+		}
+	}, [vcfirm]);
 
 	useEffect(() => {
 		if (vcFirmData) {
@@ -102,7 +114,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					Back
 				</ElemButton>
 			</div> */}
-			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7">
 				<div className="col-span-3">
 					<ElemPhoto
 						photo={vcfirm.logo}
@@ -113,16 +125,32 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 
-				<div className="w-full col-span-5 mt-7 lg:mt-0">
+				<div className="w-full col-span-5 mt-7 lg:mt-4">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
 					{vcfirm.tags?.length > 0 && (
 						<ElemTags className="mt-4" tags={vcfirm.tags} />
 					)}
 
 					{vcfirm.overview && (
-						<p className="mt-4 line-clamp-3 text-base text-slate-600">
-							{vcfirm.overview}
-						</p>
+						<>
+							<div
+								ref={overviewDiv}
+								className={`mt-4 text-base text-slate-600 prose ${
+									overviewMore ? "" : "line-clamp-3"
+								}`}
+							>
+								{parse(newLineToP(vcfirm.overview))}
+							</div>
+							{overviewDivHeight > 72 && (
+								<ElemButton
+									onClick={() => setOverviewMore(!overviewMore)}
+									btn="transparent"
+									className="px-0 py-0 inline font-normal"
+								>
+									show {overviewMore ? "less" : "more"}
+								</ElemButton>
+							)}
+						</>
 					)}
 					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
 						<ElemReactions

@@ -113,3 +113,18 @@ export const validateCompanyEmail = (domains: string[], email: string) => {
 
 	return true;
 };
+
+export const newLineToP = (text?: any): string => {
+	// replace the case when there are two line breaks.
+	const replaceTwoLineBreaks = text.replace(/\n{2}/g, "&nbsp;</p><p>");
+
+	// replace the case when there are only one line breaks left.
+	const replaceCase = replaceTwoLineBreaks.replace(/\n/g, "&nbsp;<br />");
+
+	//wrap the whole content in a <p> tag
+	const wrapWithPTags = "<p>" + replaceCase + "</p>";
+
+	const out = wrapWithPTags;
+
+	return out;
+};

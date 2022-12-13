@@ -1,5 +1,5 @@
 import { useAuth } from "@/hooks/useAuth";
-//import { truncate } from "lodash";
+import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
@@ -7,11 +7,13 @@ import { FC, useEffect, useState } from "react";
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
+	IconPolygonDown,
 	IconCash,
 	IconCompanies,
 	IconSettings,
 	IconOrganization,
 } from "@/components/Icons";
+import { Disclosure } from "@headlessui/react";
 
 type Props = {
 	className?: string;
@@ -58,104 +60,97 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 
 	return (
 		<aside className={className}>
-			<div>
-				<h3 className="text-xl font-bold">My EdgeIn</h3>
-				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
-					{/* <li className={`${getActiveClass("/profile/")}`} role="button">
-						<Link href={`/profile`}>
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-								<ElemPhoto
-									photo={user?.profilePicture}
-									wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg rounded-full"
-									imgClass="object-fit max-w-full max-h-full rounded-full"
-									imgAlt={"profile"}
-									placeholder="user"
-									placeholderClass="text-slate-300"
+			<Disclosure defaultOpen={true} as="div">
+				{({ open }) => (
+					<>
+						<div className="w-full flex items-center justify-between">
+							<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+								<IconPolygonDown
+									className={`${
+										open ? "rotate-0" : "-rotate-90 "
+									} h-6 w-6 transform transition-all`}
 								/>
-								{user?.profileName ? (
-									<span className="first-letter:uppercase">
-										{truncate(user?.profileName, { length: 15 })}
-									</span>
-								) : (
-									<span>Profile Settings</span>
-								)}
-							</a>
-						</Link>
-					</li> */}
+								<span className="text-xl font-bold">My EdgeIn</span>
+							</Disclosure.Button>
+						</div>
 
-					<li>
-						<Link href="/account/" passHref>
-							<a
-								className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-									"/account/"
-								)}`}
-							>
-								<IconSettings className="h-6 w-6" />
-								<span>Account Settings</span>
-							</a>
-						</Link>
-					</li>
-				</ul>
-			</div>
-
-			<ElemMyListsMenu user={user} className="mt-6" />
-
-			{/* <div className="mt-6">
-				<h3 className="text-xl font-bold">My Organizations</h3>
-				<ul className="flex flex-col mt-1 space-y-2 text-slate-600">
-					{organizations?.map((teamMember) => {
-						const type = teamMember.company ? "companies" : "investors";
-						const data = teamMember.company || teamMember.vc_firm;
-						return (
-							<li key={teamMember.id} role="button" className="">
-								<Link href={`/organizations/${type}/${data?.slug}`}>
+						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
+							{/* <li className={`${getActiveClass("/profile/")}`} role="button">
+								<Link href={`/profile`}>
 									<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 										<ElemPhoto
-											photo={data?.logo}
-											imgAlt="company logo"
-											wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg shadow-md mr-2 rounded-full"
-											imgClass="object-fit max-w-full max-h-full rounded-full"
-										/>
-										<span>{data?.name}</span>
+												photo={user?.profilePicture}
+												wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg rounded-full"
+												imgClass="object-fit max-w-full max-h-full rounded-full"
+												imgAlt={"profile"}
+												placeholder="user"
+												placeholderClass="text-slate-300"
+											/>
+										{user?.profileName ? (
+											<span className="first-letter:uppercase">
+												{truncate(user?.profileName, { length: 15 })}
+											</span>
+										) : (
+											<span>Profile Settings</span>
+										)}
+									</a>
+								</Link>
+							</li> */}
+
+							<li>
+								<Link href="/account/" passHref>
+									<a
+										className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+											"/account/"
+										)}`}
+									>
+										<IconSettings className="h-6 w-6" />
+										<span>Account Settings</span>
 									</a>
 								</Link>
 							</li>
-						);
-					})}
-					<li className={``} role="button">
-						<Link href="/organizations">
-							<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-								<IconOrganization className="w-6 h-6" />
-								<span>Manage Organization</span>
-							</a>
-						</Link>
-					</li>
+						</Disclosure.Panel>
+					</>
+				)}
+			</Disclosure>
 
-					{renderMyCustomList()}
-				</ul>
-			</div> */}
+			<ElemMyListsMenu className="mt-6" />
 
-			<div className="mt-6">
-				<h3 className="text-xl font-bold">Explore</h3>
-				<ul className="flex flex-col mt-1 space-y-1 text-slate-600">
-					<li role="button">
-						<Link href={`/companies`}>
-							<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-								<IconCompanies className="w-6 h-6" />
-								<span>Companies</span>
-							</a>
-						</Link>
-					</li>
-					<li role="button">
-						<Link href={`/investors`}>
-							<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-								<IconCash className="w-6 h-6" />
-								<span>Investors</span>
-							</a>
-						</Link>
-					</li>
-				</ul>
-			</div>
+			<Disclosure defaultOpen={true} as="div" className="mt-6">
+				{({ open }) => (
+					<>
+						<div className="w-full flex items-center justify-between">
+							<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+								<IconPolygonDown
+									className={`${
+										open ? "rotate-0" : "-rotate-90 "
+									} h-6 w-6 transform transition-all`}
+								/>
+								<span className="text-xl font-bold">Explore</span>
+							</Disclosure.Button>
+						</div>
+
+						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
+							<li role="button">
+								<Link href={`/companies`}>
+									<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+										<IconCompanies className="w-6 h-6" />
+										<span>Companies</span>
+									</a>
+								</Link>
+							</li>
+							<li role="button">
+								<Link href={`/investors`}>
+									<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+										<IconCash className="w-6 h-6" />
+										<span>Investors</span>
+									</a>
+								</Link>
+							</li>
+						</Disclosure.Panel>
+					</>
+				)}
+			</Disclosure>
 		</aside>
 	);
 };

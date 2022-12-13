@@ -107,7 +107,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     hmac.update(String(userData.id));
 
     // Author a couple of cookies to persist a user's session
-    const token = await CookieService.createToken({
+    const token = await CookieService.createUserToken({
       id: userData.id,
       intercomUserHash: hmac.digest("hex"),
       email: userData.email,
