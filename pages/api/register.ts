@@ -59,8 +59,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let referenceUserId = null;
       // check user exist or not for the current reference
       if (reference_id) {
+        // look up user by reference_id
         const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
-        if (referenceUser) referenceUserId = referenceUser.id
+        if (referenceUser) {
+          referenceUserId = referenceUser.id
+        } else {
+          // look up people by person slug
+          const person = await UserService.findOnePeopleBySlug(reference_id)
+          if (person) {
+            // look up user by person_id
+            const userByPersonId = await UserService.findOneUserByPersonId(person.id)
+            if (userByPersonId) {
+              referenceUserId = userByPersonId.id
+            }
+          }
+        }
       }
 
       const objectData = {

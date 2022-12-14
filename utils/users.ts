@@ -427,5 +427,59 @@ async function findOneUserByAdditionalEmail(email: string) {
   }
 }
 
-const UserService = { queryForDisabledEmailCheck, queryForAllowedEmailCheck, mutateForWaitlistEmail, findOneUserByEmail, findOneUserById, updateBillingOrg, upsertUser, updateEmailVerifiedStatus, updateAuth0LinkedInId, updateAuth0UserPassId, findOneUserByReferenceId, updateAllowedEmailArray, findOneUserByAdditionalEmail }
-export default UserService
+async function findOnePeopleBySlug(slug: string) {
+  const fetchQuery = `
+  query query_slug_people($slug: String!) {
+    people(where: {slug: {_eq: $slug}}, limit: 1) {
+      id
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { slug },
+    });
+    return data.data.people[0];
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+async function findOneUserByPersonId(personId: number) {
+  const fetchQuery = `
+  query query_users($personId: Int!) {
+    users(where: {person_id: {_eq: $personId}}, limit: 1) {
+      id
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { personId },
+    });
+    return data.data.users[0];
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+const UserService = {
+  queryForDisabledEmailCheck,
+  queryForAllowedEmailCheck,
+  mutateForWaitlistEmail,
+  findOneUserByEmail,
+  findOneUserById,
+  updateBillingOrg,
+  upsertUser,
+  updateEmailVerifiedStatus,
+  updateAuth0LinkedInId,
+  updateAuth0UserPassId,
+  findOneUserByReferenceId,
+  updateAllowedEmailArray,
+  findOneUserByAdditionalEmail,
+  findOnePeopleBySlug,
+  findOneUserByPersonId,
+};
+export default UserService;
