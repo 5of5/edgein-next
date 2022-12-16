@@ -181,7 +181,11 @@ const Company: NextPage<Props> = (props: Props) => {
 						)}
 					</div>
 					{companyTags.length > 0 && (
-						<ElemTags className="mt-4" tags={companyTags} />
+						<ElemTags
+							className="mt-4"
+							resourceType={"companies"}
+							tags={companyTags}
+						/>
 					)}
 					{company.overview && (
 						<>
