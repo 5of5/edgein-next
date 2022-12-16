@@ -7074,6 +7074,8 @@ export type Mutation_Root = {
   update_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** update single row of the table: "waitlist_emails" */
   update_waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
+  /** insert a single row into the table: "user_groups" */
+  insert_user_groups_one: Maybe<User_Groups>;
 };
 
 
@@ -13865,3 +13867,94 @@ useGetAllVcFirmsQuery.getKey = (variables?: GetAllVcFirmsQueryVariables) => vari
 ;
 
 useGetAllVcFirmsQuery.fetcher = (variables?: GetAllVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables, options);
+
+/** columns and relationships of "user_groups" */
+export type User_Groups = {
+  __typename?: 'user_groups';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  notes: Maybe<Notes>;
+  user_group_members: Maybe<User_Group_Members>;
+};
+
+/** columns and relationships of "user_group_members" */
+export type User_Group_Members = {
+  __typename?: 'user_group_members';
+  id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+  user_group: Maybe<User_Groups>;
+  user_id: Scalars['Int'];
+  user: Maybe<Users>;
+};
+
+/** columns and relationships of "user_group_invites" */
+export type User_Group_Invites = {
+  __typename?: 'user_group_invites';
+  id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+  user_group: Maybe<User_Groups>;
+  email: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+};
+
+/** columns and relationships of "notes" */
+export type Notes = {
+  __typename?: 'notes';
+  id: Scalars['Int'];
+  notes: Scalars['String'];
+  user_group_id: Scalars['Int'];
+  user_group: Maybe<User_Groups>;
+  created_by: Maybe<Scalars['Int']>;
+  created_at: Scalars['timestamptz'];
+};
+
+/** input type for inserting data into table "user_groups" */
+export type User_Groups_Insert_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  notes: InputMaybe<Notes_Arr_Rel_Insert_Input>;
+  user_group_members: InputMaybe<User_Group_Members_Arr_Rel_Insert_Input>;
+};
+
+/** input type for inserting data into table "user_group_members" */
+export type User_Group_Members_Insert_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+  user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
+  user_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+};
+
+/** input type for inserting data into table "user_group_invites" */
+export type User_Group_Invites_Insert_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+  user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
+  email: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** input type for inserting data into table "notes" */
+export type Notes_Insert_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  notes: InputMaybe<Scalars['String']>;
+  user_group_id: InputMaybe<Scalars['Int']>;
+  user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
+  created_by: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** input type for inserting array relation for remote table "notes" */
+export type Notes_Arr_Rel_Insert_Input = {
+  data: Array<Notes_Insert_Input>;
+};
+
+/** input type for inserting array relation for remote table "user_group_members" */
+export type User_Group_Members_Arr_Rel_Insert_Input = {
+  data: Array<User_Group_Members_Insert_Input>;
+};
+
+/** input type for inserting object relation for remote table "user_groups" */
+export type User_Groups_Obj_Rel_Insert_Input = {
+  data: User_Groups_Insert_Input;
+};
