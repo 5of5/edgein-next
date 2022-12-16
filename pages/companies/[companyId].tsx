@@ -26,7 +26,11 @@ import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
 //import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
-import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
+import {
+	convertToInternationalCurrencySystem,
+	formatDate,
+	convertToIntNum,
+} from "@/utils";
 import { sortBy } from "lodash";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
@@ -366,16 +370,22 @@ const Company: NextPage<Props> = (props: Props) => {
 																		Raised{" "}
 																		{activity.amount ? (
 																			<div className="inline text-green-600">
-																				$
-																				{`${convertToInternationalCurrencySystem(
-																					activity.amount
-																				)}`}
+																				${convertToIntNum(activity.amount)}
 																			</div>
 																		) : (
 																			<div className="inline text-green-600">
 																				undisclosed capital
 																			</div>
 																		)}{" "}
+																		{activity.valuation && (
+																			<div className="inline">
+																				at{" "}
+																				<div className="inline text-green-600">
+																					${convertToIntNum(activity.valuation)}{" "}
+																				</div>
+																				valuation{" "}
+																			</div>
+																		)}
 																		from:{" "}
 																	</>
 																)}
