@@ -6842,6 +6842,8 @@ export type Mutation_Root = {
   delete_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** delete single row from the table: "waitlist_emails" */
   delete_waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
+  /** delete single row from the table: "user_groups" */
+  delete_user_groups: Maybe<User_Groups>;
   /** insert data into the table: "actions" */
   insert_actions: Maybe<Actions_Mutation_Response>;
   /** insert a single row into the table: "actions" */
@@ -6962,6 +6964,8 @@ export type Mutation_Root = {
   insert_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** insert a single row into the table: "waitlist_emails" */
   insert_waitlist_emails_one: Maybe<Waitlist_Emails>;
+  /** insert a single row into the table: "user_groups" */
+  insert_user_groups_one: Maybe<User_Groups>;
   /** update data of the table: "actions" */
   update_actions: Maybe<Actions_Mutation_Response>;
   /** update single row of the table: "actions" */
@@ -7074,8 +7078,9 @@ export type Mutation_Root = {
   update_waitlist_emails: Maybe<Waitlist_Emails_Mutation_Response>;
   /** update single row of the table: "waitlist_emails" */
   update_waitlist_emails_by_pk: Maybe<Waitlist_Emails>;
-  /** insert a single row into the table: "user_groups" */
-  insert_user_groups_one: Maybe<User_Groups>;
+  /** update data of the table: "user_groups" */
+  update_user_groups: Maybe<User_Groups>;
+ 
 };
 
 
