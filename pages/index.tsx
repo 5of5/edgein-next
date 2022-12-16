@@ -13,22 +13,8 @@ type Props = {
 const Home: NextPage<Props> = ({ showSignUp, setShowSignUp }) => {
 	const { user, loading } = useUser();
 
-	const onTest = async() => {
-		await fetch("/api/delete_group_member/", {
-			method: "DELETE",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				id: 1,
-			}),
-		});
-	}
-
 	return (
 		<>
-		<button type="button" onClick={onTest}>Click me</button>
 			<section className="relative overflow-hidden">
 				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
 				<div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:pt-20 lg:pb-32">
