@@ -187,6 +187,16 @@ const Company: NextPage<Props> = (props: Props) => {
 							tags={companyTags}
 						/>
 					)}
+					{ company.to_links.map(link => {
+						if (link.link_type === 'child') {
+							if (link.from_company) {
+								return <div>{link.from_company.name} link to company</div>
+							}
+							if (link.from_vc_firm) {
+								return <div>{link.from_vc_firm.name} link to vc firm</div>
+							}
+						}
+					})}
 					{company.overview && (
 						<>
 							<div
@@ -491,6 +501,17 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 			)}
+
+			{company.from_links.map(link => {
+				if (link.link_type === 'child') {
+					if (link.to_company) {
+						return <div>{link.to_company.name} Link to company</div>
+					}
+					if (link.to_vc_firm) {
+						return <div>{link.to_vc_firm.name} Link to vc firm</div>
+					}
+				}
+			})}
 
 			{company.tags && (
 				<ElemCohort
