@@ -1,0 +1,1 @@
+CREATE TABLE "public"."resource_links" ("from_company_id" integer, "from_vc_firm_id" integer, "to_company_id" integer, "to_vc_firm_id" integer, "link_type" text NOT NULL, "id" serial NOT NULL, PRIMARY KEY ("id") );
