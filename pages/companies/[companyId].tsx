@@ -187,7 +187,26 @@ const Company: NextPage<Props> = (props: Props) => {
 							tags={companyTags}
 						/>
 					)}
-					{ company.to_links.map(link => {
+
+					<div className="mt-4">
+						<div className="font-bold text-sm">Sub-organization of:</div>
+						<Link href="#">
+							<a className="flex items-center gap-4 mt-1 group transition-all hover:-translate-y-0.5">
+								<ElemPhoto
+									photo={company.logo}
+									wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
+									imgClass="object-contain w-full h-full"
+									imgAlt={company.name}
+									placeholderClass="text-slate-300"
+								/>
+								<h2 className="group-hover:text-primary-500">
+									Parent Company Name
+								</h2>
+							</a>
+						</Link>
+					</div>
+
+					{/* { company.to_links.map(link => {
 						if (link.link_type === 'child') {
 							if (link.from_company) {
 								return <div>{link.from_company.name} link to company</div>
@@ -196,7 +215,7 @@ const Company: NextPage<Props> = (props: Props) => {
 								return <div>{link.from_vc_firm.name} link to vc firm</div>
 							}
 						}
-					})}
+					})} */}
 					{company.overview && (
 						<>
 							<div
@@ -502,16 +521,16 @@ const Company: NextPage<Props> = (props: Props) => {
 				</div>
 			)}
 
-			{company.from_links.map(link => {
-				if (link.link_type === 'child') {
+			{/* {company.from_links.map((link) => {
+				if (link.link_type === "child") {
 					if (link.to_company) {
-						return <div>{link.to_company.name} Link to company</div>
+						return <div>{link.to_company.name} Link to company</div>;
 					}
 					if (link.to_vc_firm) {
-						return <div>{link.to_vc_firm.name} Link to vc firm</div>
+						return <div>{link.to_vc_firm.name} Link to vc firm</div>;
 					}
 				}
-			})}
+			})} */}
 
 			{company.tags && (
 				<ElemCohort
