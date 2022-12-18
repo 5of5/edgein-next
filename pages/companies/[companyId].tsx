@@ -9,6 +9,7 @@ import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
+import { ElemSubOrganizations } from "@/components/Company/ElemSubOrganizations";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
@@ -191,7 +192,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					<div className="mt-4">
 						<div className="font-bold text-sm">Sub-organization of:</div>
 						<Link href="#">
-							<a className="flex items-center gap-4 mt-1 group transition-all hover:-translate-y-0.5">
+							<a className="flex items-center gap-2 mt-1 group transition-all hover:-translate-y-0.5">
 								<ElemPhoto
 									photo={company.logo}
 									wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
@@ -531,6 +532,12 @@ const Company: NextPage<Props> = (props: Props) => {
 					}
 				}
 			})} */}
+
+			<ElemSubOrganizations
+				className="mt-7"
+				heading={`${company.name} Sub-Organizations (2)`}
+				//subOrganizations={}
+			/>
 
 			{company.tags && (
 				<ElemCohort
