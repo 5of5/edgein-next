@@ -14,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // params:
   const user_id: string = req.body.userId;
-  const user_group_id: string = req.body.userGroupId;
+  const user_group_id: string = req.body.groupId;
 
   // create action
   const {

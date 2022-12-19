@@ -1,5 +1,5 @@
-import { mutate } from "@/graphql/hasuraAdmin";
 import type { NextApiRequest, NextApiResponse } from "next";
+import GroupService from "@/utils/groups";
 import CookieService from "../../utils/cookie";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -16,27 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const name: string = req.body.name;
 
   // create action
-  const {
-    data: { insert_user_groups_one },
-  } = await mutate({
-    mutation: `
-      mutation InsertUserGroup($object: user_groups_insert_input!) {
-        insert_user_groups_one(
-          object: $object
-        ) {
-          id,
-          name
-        }
-      }
-    `,
-    variables: {
-      object: {
-        name,
-      },
-    },
-  });
-
-  res.send(insert_user_groups_one);
+  const data = await GroupService.onInsertGroup(name);
+  res.send(data);
 };
 
 export default handler;

@@ -1,5 +1,5 @@
-import { mutate } from "@/graphql/hasuraAdmin";
 import type { NextApiRequest, NextApiResponse } from "next";
+import GroupService from "../../../utils/groups";
 import CookieService from "../../../utils/cookie";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -7,60 +7,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const id = req.query.id;
+  const id = req.query.id as string;
 
   switch (req.method) {
     case "PUT":
       // Update a group
       const name: string = req.body.name;
-      const updateGroupQuery = `
-      mutation UpdateUserGroup($id: Int!, $name: String!) {
-        update_user_groups(
-          where: {id: {_eq: $id}},
-          _set: { name: $name }
-        ) {
-          affected_rows 
-          returning {
-            id
-            name
-          }
-        }
-      }
-      `;
-      const {
-        data: { update_user_groups },
-      } = await mutate({
-        mutation: updateGroupQuery,
-        variables: {
-          id,
-          name,
-        },
-      });
-      return res.send(update_user_groups.returning[0]);
+      const updatedGroup = await GroupService.onUpdateGroup(id, name);
+      return res.send(updatedGroup);
 
     case "DELETE":
+      // Delete invites of group
+      await GroupService.onDeleteGroupInvites(id);
+
+      // Delete members of group
+      await GroupService.onDeleteGroupMembers(id);
+
+      // Delete notes of group
+      await GroupService.onDeleteNotesByGroupId(id);
+
       // Delete a group
-      const deleteGroupQuery = `
-      mutation DeleteUserGroups($id: Int!) {
-        delete_user_groups(where: {id: {_eq: $id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `;
+      const deletedGroup = await GroupService.onDeleteGroup(id);
 
-      const {
-        data: { delete_user_groups },
-      } = await mutate({
-        mutation: deleteGroupQuery,
-        variables: {
-          id,
-        },
-      });
-
-      return res.send(delete_user_groups.returning[0]);
+      return res.send(deletedGroup);
 
     default:
       return res.status(405).json({ message: "Method not allowed" });

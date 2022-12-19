@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  // Add a member to group
+  // Create a user group
   if (req.method !== "POST") {
     res.status(405).json({ message: "Method not allowed" });
   }
@@ -13,33 +13,43 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   // params:
-  const email: string = req.body.email;
+  const notes: string = req.body.notes;
   const user_group_id: string = req.body.groupId;
+  const created_by = user.id;
 
   // create action
-  const {
-    data: { insert_user_group_invites_one },
-  } = await mutate({
-    mutation: `
-      mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
-        insert_user_group_invites_one(
-          object: $object
-        ) {
+  const insertNoteQuery = `
+    mutation InsertNote($object: notes_insert_input!) {
+      insert_notes_one(
+        object: $object
+      ) {
+        id
+        notes
+        created_by
+        created_at
+        user_group_id
+        user_group {
           id
-          email
-          user_group_id
+          name
         }
       }
-    `,
+    }
+        `;
+
+  const {
+    data: { insert_notes_one },
+  } = await mutate({
+    mutation: insertNoteQuery,
     variables: {
       object: {
-        email,
+        notes,
         user_group_id,
+        created_by,
       },
     },
   });
 
-  res.send(insert_user_group_invites_one);
+  res.send(insert_notes_one);
 };
 
 export default handler;
