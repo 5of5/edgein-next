@@ -71,6 +71,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             const userByPersonId = await UserService.findOneUserByPersonId(person.id)
             if (userByPersonId) {
               referenceUserId = userByPersonId.id
+            } else {
+              referenceUserId = `person-${person.id}`
             }
           }
         }
