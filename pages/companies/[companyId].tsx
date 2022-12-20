@@ -200,7 +200,7 @@ const Company: NextPage<Props> = (props: Props) => {
 							>
 								{parse(newLineToP(company.overview))}
 							</div>
-							{overviewDivHeight > 72 && (
+							{overviewDivHeight > 84 && (
 								<ElemButton
 									onClick={() => setOverviewMore(!overviewMore)}
 									btn="transparent"

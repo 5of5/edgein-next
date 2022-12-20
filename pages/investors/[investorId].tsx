@@ -148,7 +148,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							>
 								{parse(newLineToP(vcfirm.overview))}
 							</div>
-							{overviewDivHeight > 72 && (
+							{overviewDivHeight > 84 && (
 								<ElemButton
 									onClick={() => setOverviewMore(!overviewMore)}
 									btn="transparent"
