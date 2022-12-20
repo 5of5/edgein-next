@@ -5,12 +5,15 @@ import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { PlaceholderActivity } from "@/components/Placeholders";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 
 import {
 	convertToInternationalCurrencySystem,
@@ -29,11 +32,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
 import { onTrackView } from "@/utils/track";
+import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
 	getInvestments: Array<Investment_Rounds>;
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
@@ -50,6 +55,10 @@ const VCFirm: NextPage<Props> = (props) => {
 		setActivityLimit(activityLimit + 10);
 	};
 
+	const [overviewMore, setOverviewMore] = useState(false);
+	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
+	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
+
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -61,6 +70,12 @@ const VCFirm: NextPage<Props> = (props) => {
 	} = useGetVcFirmQuery({
 		slug: investorId as string,
 	});
+
+	useEffect(() => {
+		if (vcfirm.overview) {
+			setOverviewDivHeight(overviewDiv.current.scrollHeight);
+		}
+	}, [vcfirm]);
 
 	useEffect(() => {
 		if (vcFirmData) {
@@ -102,7 +117,7 @@ const VCFirm: NextPage<Props> = (props) => {
 					Back
 				</ElemButton>
 			</div> */}
-			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7">
 				<div className="col-span-3">
 					<ElemPhoto
 						photo={vcfirm.logo}
@@ -113,16 +128,36 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 
-				<div className="w-full col-span-5 mt-7 lg:mt-0">
+				<div className="w-full col-span-5 mt-7 lg:mt-4">
 					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
 					{vcfirm.tags?.length > 0 && (
-						<ElemTags className="mt-4" tags={vcfirm.tags} />
+						<ElemTags
+							className="mt-4"
+							resourceType={"investors"}
+							tags={vcfirm.tags}
+						/>
 					)}
 
 					{vcfirm.overview && (
-						<p className="mt-4 line-clamp-3 text-base text-slate-600">
-							{vcfirm.overview}
-						</p>
+						<>
+							<div
+								ref={overviewDiv}
+								className={`mt-4 text-base text-slate-600 prose ${
+									overviewMore ? "" : "line-clamp-3"
+								}`}
+							>
+								{parse(newLineToP(vcfirm.overview))}
+							</div>
+							{overviewDivHeight > 84 && (
+								<ElemButton
+									onClick={() => setOverviewMore(!overviewMore)}
+									btn="transparent"
+									className="px-0 py-0 inline font-normal"
+								>
+									show {overviewMore ? "less" : "more"}
+								</ElemButton>
+							)}
+						</>
 					)}
 					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
 						<ElemReactions
@@ -179,86 +214,109 @@ const VCFirm: NextPage<Props> = (props) => {
 						</div>
 
 						<div className="mt-2 py-4 border-t border-black/10">
-							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
+							{error ? (
+								<h4>Error loading activity</h4>
+							) : isLoading ? (
 								<>
-									<ul className="flex flex-col">
-										{sortedInvestmentRounds
-											.slice(0, activityLimit)
-											.map((activity: Investment_Rounds, index: number) => {
-												if (!activity) {
-													return;
-												}
-												return (
-													<li
-														key={index}
-														className="relative pl-6 overflow-hidden group last:-mb-4"
-													>
-														<span className="absolute h-full top-0 bottom-0 left-0">
-															<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-															<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-														</span>
-														<div className="mb-4">
-															<div className="font-bold inline">
-																{activity.company && (
-																	<Link
-																		href={`/companies/${activity.company["slug"]}`}
-																	>
-																		<a className="text-primary-500 hover:bg-slate-200">
-																			{activity.company["name"]}
-																		</a>
-																	</Link>
-																)}{" "}
-																raised{" "}
-																{activity.amount ? (
-																	<div className="inline text-green-600">
-																		$
-																		{`${convertToInternationalCurrencySystem(
-																			activity.amount
-																		)}`}
-																	</div>
-																) : (
-																	<div className="inline text-green-600">
-																		undisclosed capital
-																		{/* amount */}
-																	</div>
-																)}
-																:{" "}
-																{`${
-																	activity.round
-																		? activity.round
-																		: "Investment round"
-																} from ${vcfirm.name}`}
-															</div>
-															<p className="text-sm">
-																{formatDate(activity.round_date as string, {
-																	month: "short",
-																	day: "2-digit",
-																	year: "numeric",
-																})}
-															</p>
-														</div>
-													</li>
-												);
-											})}
-									</ul>
-									{activityLimit < sortedInvestmentRounds.length && (
-										<div className="mt-6">
-											<ElemButton
-												btn="ol-primary"
-												onClick={showMoreActivity}
-												className="w-full"
-											>
-												Show More Activity
-											</ElemButton>
-										</div>
-									)}
+									{Array.from({ length: 3 }, (_, i) => (
+										<PlaceholderActivity key={i} />
+									))}
 								</>
-							) : (
-								<div className="flex items-center justify-center lg:p-5">
-									<div className="text-slate-600 lg:text-xl">
-										There is no recent activity for this organization.
+							) : sortedInvestmentRounds?.length === 0 ? (
+								<div className="flex items-center justify-center mx-auto">
+									<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
+										<h2 className="mt-5 text-3xl font-bold">
+											No activity found
+										</h2>
+										<div className="mt-1 text-lg text-slate-600">
+											There is no activity for this organization.
+										</div>
+										<ElemButton
+											onClick={() => props.setToggleFeedbackForm(true)}
+											btn="white"
+											className="mt-3"
+										>
+											<IconAnnotation className="w-6 h-6 mr-1" />
+											Tell us about missing data
+										</ElemButton>
 									</div>
 								</div>
+							) : (
+								sortedInvestmentRounds && (
+									<>
+										<ul className="flex flex-col">
+											{sortedInvestmentRounds
+												.slice(0, activityLimit)
+												.map((activity: Investment_Rounds, index: number) => {
+													if (!activity) {
+														return;
+													}
+													return (
+														<li
+															key={index}
+															className="relative pl-6 overflow-hidden group last:-mb-4"
+														>
+															<span className="absolute h-full top-0 bottom-0 left-0">
+																<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+																<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+															</span>
+															<div className="mb-4">
+																<div className="font-bold inline">
+																	{activity.company && (
+																		<Link
+																			href={`/companies/${activity.company["slug"]}`}
+																		>
+																			<a className="text-primary-500 hover:bg-slate-200">
+																				{activity.company["name"]}
+																			</a>
+																		</Link>
+																	)}{" "}
+																	raised{" "}
+																	{activity.amount ? (
+																		<div className="inline text-green-600">
+																			$
+																			{`${convertToInternationalCurrencySystem(
+																				activity.amount
+																			)}`}
+																		</div>
+																	) : (
+																		<div className="inline text-green-600">
+																			undisclosed capital
+																			{/* amount */}
+																		</div>
+																	)}
+																	:{" "}
+																	{`${
+																		activity.round
+																			? activity.round
+																			: "Investment round"
+																	} from ${vcfirm.name}`}
+																</div>
+																<p className="text-sm">
+																	{formatDate(activity.round_date as string, {
+																		month: "short",
+																		day: "2-digit",
+																		year: "numeric",
+																	})}
+																</p>
+															</div>
+														</li>
+													);
+												})}
+										</ul>
+										{activityLimit < sortedInvestmentRounds.length && (
+											<div className="mt-6">
+												<ElemButton
+													btn="ol-primary"
+													onClick={showMoreActivity}
+													className="w-full"
+												>
+													Show More Activity
+												</ElemButton>
+											</div>
+										)}
+									</>
+								)
 							)}
 						</div>
 					</div>

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { PlaceholderRecentCompanyCard } from "@/components/Placeholders";
+import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -67,7 +67,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 								key={i}
 								className="p-3 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3"
 							>
-								<PlaceholderRecentCompanyCard />
+								<PlaceholderCompanyCard />
 							</div>
 						))}
 					</div>

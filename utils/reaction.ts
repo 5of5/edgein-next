@@ -71,6 +71,12 @@ export const getNameFromListName = (list: DeepPartial<Lists>) => {
 	return fragments?.[fragments.length - 1] || "";
 };
 
+export const getUserIdFromListCreator = (list: DeepPartial<Lists>) => {
+	if (!list) return "";
+	const listCreatorId = list?.created_by_id;
+	return listCreatorId;
+};
+
 export const isOnList = (
 	list: DeepPartial<Lists> | undefined,
 	resourceId: number

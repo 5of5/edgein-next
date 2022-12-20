@@ -963,6 +963,29 @@ export const IconCompanies: React.FC<IconProps> = ({
 	);
 };
 
+export const IconPlus: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+		>
+			<title>{title ? title : "Plus"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M12 4.5v15m7.5-7.5h-15"
+			/>
+		</svg>
+	);
+};
+
 export const IconPaperAirplane: React.FC<IconProps> = ({
 	className,
 	title,
@@ -1056,6 +1079,20 @@ export const IconChevronDownMini: React.FC<IconProps> = ({
 				d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
 				clipRule="evenodd"
 			/>
+		</svg>
+	);
+};
+
+export const IconPolygonDown: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			fill="currentColor"
+		>
+			<title>{title ? title : "Down"}</title>
+			<path d="M11.4816 16.0643C11.7594 16.3705 12.2406 16.3705 12.5184 16.0643L17.0004 11.1243C17.4085 10.6745 17.0893 9.95392 16.4819 9.95392H7.51807C6.9107 9.95392 6.59153 10.6745 6.99964 11.1243L11.4816 16.0643Z" />
 		</svg>
 	);
 };

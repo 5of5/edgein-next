@@ -11,6 +11,7 @@ import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { PlaceholderActivity } from "@/components/Placeholders";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
@@ -20,20 +21,28 @@ import {
 	GetCompanyQuery,
 	Investment_Rounds,
 	useGetCompanyQuery,
-	Investments,
+	//Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
-//import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
-import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
+import {
+	convertToInternationalCurrencySystem,
+	formatDate,
+	convertToIntNum,
+} from "@/utils";
 import { sortBy } from "lodash";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
+
+import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
 	metrics: Metric[];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -149,7 +158,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	return (
 		<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
-			<div className="lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+			<div className="lg:grid lg:grid-cols-11 lg:gap-7">
 				<div className="col-span-3">
 					<ElemPhoto
 						photo={company.logo}
@@ -159,7 +168,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						placeholderClass="text-slate-300"
 					/>
 				</div>
-				<div className="w-full col-span-5 mt-7 lg:mt-0">
+				<div className="w-full col-span-5 mt-7 lg:mt-4">
 					<div className="flex shrink-0">
 						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 							{company.name}
@@ -175,19 +184,23 @@ const Company: NextPage<Props> = (props: Props) => {
 						)}
 					</div>
 					{companyTags.length > 0 && (
-						<ElemTags className="mt-4" tags={companyTags} />
+						<ElemTags
+							className="mt-4"
+							resourceType={"companies"}
+							tags={companyTags}
+						/>
 					)}
 					{company.overview && (
 						<>
-							<p
+							<div
 								ref={overviewDiv}
-								className={`mt-4 text-base text-slate-600 ${
+								className={`mt-4 text-base text-slate-600 prose ${
 									overviewMore ? "" : "line-clamp-3"
 								}`}
 							>
-								{company.overview}
-							</p>
-							{overviewDivHeight > 72 && (
+								{parse(newLineToP(company.overview))}
+							</div>
+							{overviewDivHeight > 84 && (
 								<ElemButton
 									onClick={() => setOverviewMore(!overviewMore)}
 									btn="transparent"
@@ -339,111 +352,145 @@ const Company: NextPage<Props> = (props: Props) => {
 						</div>
 
 						<div className="mt-2 py-4 border-t border-black/10">
-							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
+							{error ? (
+								<h4>Error loading activity</h4>
+							) : isLoading ? (
 								<>
-									<ul className="flex flex-col">
-										{sortedInvestmentRounds
-											.slice(0, activityLimit)
-											.map((activity, index) => {
-												return (
-													<li
-														key={index}
-														className="relative pl-6 overflow-hidden group last:-mb-4"
-													>
-														<span className="absolute h-full top-0 bottom-0 left-0">
-															<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-															<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-														</span>
-
-														<div className="mb-4">
-															<div className="inline font-bold">
-																{activity.round === "Acquisition" ? (
-																	<>Acquired by </>
-																) : (
-																	<>
-																		Raised{" "}
-																		{activity.amount ? (
-																			<div className="inline text-green-600">
-																				$
-																				{`${convertToInternationalCurrencySystem(
-																					activity.amount
-																				)}`}
-																			</div>
-																		) : (
-																			<div className="inline text-green-600">
-																				undisclosed capital
-																			</div>
-																		)}{" "}
-																		from:{" "}
-																	</>
-																)}
-																{activity.investments.map(
-																	(item: any, index) => {
-																		return (
-																			<div key={index} className="inline">
-																				{index !== 0 &&
-																					(index ===
-																					activity.investments.length - 1
-																						? ", and "
-																						: ", ")}
-
-																				{item.vc_firm && (
-																					<Link
-																						href={`/investors/${item.vc_firm["slug"]}`}
-																					>
-																						<a className="text-primary-500 hover:bg-slate-200">
-																							{item.vc_firm["name"]}
-																						</a>
-																					</Link>
-																				)}
-																				{item.vc_firm && item.person && <>/</>}
-
-																				{item.person && (
-																					<Link
-																						href={`/people/${item.person["slug"]}`}
-																					>
-																						<a className="text-primary-500 hover:bg-slate-200">
-																							{item.person["name"]}
-																						</a>
-																					</Link>
-																				)}
-																			</div>
-																		);
-																	}
-																)}
-																.
-															</div>
-
-															<p className="text-xs text-slate-600">
-																{formatDate(activity.round_date as string, {
-																	month: "short",
-																	day: "2-digit",
-																	year: "numeric",
-																})}
-															</p>
-														</div>
-													</li>
-												);
-											})}
-									</ul>
-									{activityLimit < sortedInvestmentRounds.length && (
-										<div className="mt-6">
-											<ElemButton
-												btn="ol-primary"
-												onClick={showMoreActivity}
-												className="w-full"
-											>
-												Show More Activity
-											</ElemButton>
-										</div>
-									)}
+									{Array.from({ length: 3 }, (_, i) => (
+										<PlaceholderActivity key={i} />
+									))}
 								</>
-							) : (
-								<div className="flex items-center justify-center lg:p-5">
-									<div className="text-slate-600 lg:text-xl">
-										There is no recent activity for this organization.
+							) : sortedInvestmentRounds?.length === 0 ? (
+								<div className="flex items-center justify-center mx-auto">
+									<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
+										<h2 className="mt-5 text-3xl font-bold">
+											No activity found
+										</h2>
+										<div className="mt-1 text-lg text-slate-600">
+											There is no activity for this organization.
+										</div>
+										<ElemButton
+											onClick={() => props.setToggleFeedbackForm(true)}
+											btn="white"
+											className="mt-3"
+										>
+											<IconAnnotation className="w-6 h-6 mr-1" />
+											Tell us about missing data
+										</ElemButton>
 									</div>
 								</div>
+							) : (
+								sortedInvestmentRounds && (
+									<>
+										<ul className="flex flex-col">
+											{sortedInvestmentRounds
+												.slice(0, activityLimit)
+												.map((activity, index) => {
+													return (
+														<li
+															key={index}
+															className="relative pl-6 overflow-hidden group last:-mb-4"
+														>
+															<span className="absolute h-full top-0 bottom-0 left-0">
+																<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+																<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+															</span>
+
+															<div className="mb-4">
+																<div className="inline font-bold">
+																	{activity.round === "Acquisition" ? (
+																		<>Acquired by </>
+																	) : (
+																		<>
+																			Raised{" "}
+																			{activity.amount ? (
+																				<div className="inline text-green-600">
+																					${convertToIntNum(activity.amount)}
+																				</div>
+																			) : (
+																				<div className="inline text-green-600">
+																					undisclosed capital
+																				</div>
+																			)}{" "}
+																			{activity.valuation && (
+																				<div className="inline">
+																					at{" "}
+																					<div className="inline text-green-600">
+																						$
+																						{convertToIntNum(
+																							activity.valuation
+																						)}{" "}
+																					</div>
+																					valuation{" "}
+																				</div>
+																			)}
+																			from:{" "}
+																		</>
+																	)}
+																	{activity.investments.map(
+																		(item: any, index) => {
+																			return (
+																				<div key={index} className="inline">
+																					{index !== 0 &&
+																						(index ===
+																						activity.investments.length - 1
+																							? ", and "
+																							: ", ")}
+
+																					{item.vc_firm && (
+																						<Link
+																							href={`/investors/${item.vc_firm["slug"]}`}
+																						>
+																							<a className="text-primary-500 hover:bg-slate-200">
+																								{item.vc_firm["name"]}
+																							</a>
+																						</Link>
+																					)}
+																					{item.vc_firm && item.person && (
+																						<>/</>
+																					)}
+
+																					{item.person && (
+																						<Link
+																							href={`/people/${item.person["slug"]}`}
+																						>
+																							<a className="text-primary-500 hover:bg-slate-200">
+																								{item.person["name"]}
+																							</a>
+																						</Link>
+																					)}
+																				</div>
+																			);
+																		}
+																	)}
+																	.
+																</div>
+
+																<p className="text-xs text-slate-600">
+																	{formatDate(activity.round_date as string, {
+																		month: "short",
+																		day: "2-digit",
+																		year: "numeric",
+																	})}
+																</p>
+															</div>
+														</li>
+													);
+												})}
+										</ul>
+										{activityLimit < sortedInvestmentRounds.length && (
+											<div className="mt-6">
+												<ElemButton
+													btn="ol-primary"
+													onClick={showMoreActivity}
+													className="w-full"
+												>
+													Show More Activity
+												</ElemButton>
+											</div>
+										)}
+									</>
+								)
 							)}
 						</div>
 					</div>

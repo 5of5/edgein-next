@@ -3,12 +3,18 @@ import React from "react";
 type Props = {
 	className?: string;
 	heading?: string;
+	resourceType: "companies" | "investors";
 	tags?: (string | null)[];
 };
 
-export const ElemTags: React.FC<Props> = ({ className, heading, tags }) => {
+export const ElemTags: React.FC<Props> = ({
+	className,
+	heading,
+	resourceType,
+	tags,
+}) => {
 	if (!tags) {
-		return <span></span>
+		return <span></span>;
 	}
 	return (
 		<section className={className}>
@@ -18,9 +24,9 @@ export const ElemTags: React.FC<Props> = ({ className, heading, tags }) => {
 					return (
 						<li
 							key={index}
-							className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full"
+							className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all cursor-pointer hover:bg-slate-300"
 						>
-							{tag}
+							<a href={`/${resourceType}/?tags=${tag}`}>{tag}</a>
 						</li>
 					);
 				})}

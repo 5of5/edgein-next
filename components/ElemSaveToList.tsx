@@ -39,12 +39,12 @@ export const ElemSaveToList: FC<Props> = ({
 	useEffect(() => {
 		if (listAndFollows)
 			setListsData(() => {
-				return (
-					listAndFollows.filter((item) => {
+				return listAndFollows
+					.filter((item) => {
 						const sentiment = getNameFromListName(item);
 						return !["hot", "like", "crap"].includes(sentiment);
-					}).sort((a, b) => a.name < b.name ? -1 : 1)
-				);
+					})
+					.sort((a, b) => (a.name < b.name ? -1 : 1));
 			});
 	}, [listAndFollows]);
 
@@ -96,7 +96,7 @@ export const ElemSaveToList: FC<Props> = ({
 						];
 					}
 				}
-				return newLists.sort((a, b) => a.name < b.name ? -1 : 1);
+				return newLists.sort((a, b) => (a.name < b.name ? -1 : 1));
 			});
 			// pass event and reaction name to handleReactionClick function
 			const newSentiment = await toggleFollowOnList({
@@ -114,8 +114,8 @@ export const ElemSaveToList: FC<Props> = ({
 						}`}
 					>
 						{action === "add" ? " Added " : " Removed "}
-						{resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ''}
-						{action === "add" ? " to " : " from "} 
+						{resourceName ? <>&nbsp;&ldquo;{resourceName}&rdquo;&nbsp;</> : ""}
+						{action === "add" ? " to " : " from "}
 						&ldquo;{getNameFromListName({ name: listName })}&rdquo; list
 					</div>
 				),
@@ -215,11 +215,9 @@ export const ElemSaveToList: FC<Props> = ({
 									</button>
 								</div>
 
-								<ul className="divide-y divide-slate-100 border-b border-b-slate-100">
+								<ul className="max-h-96 overflow-y-scroll no-scrollbar divide-y divide-slate-100">
 									{listsData?.map((list) => {
 										const selected = isSelected(list);
-
-										//console.log(list.name + " " + selected);
 
 										return (
 											<li key={list.id}>
@@ -238,7 +236,7 @@ export const ElemSaveToList: FC<Props> = ({
 								</ul>
 
 								{!showNew && (
-									<div>
+									<div className="bg-gray-50 border-t border-slate-300">
 										<ElemButton
 											btn="transparent"
 											onClick={() => setShowNew(true)}
@@ -251,7 +249,7 @@ export const ElemSaveToList: FC<Props> = ({
 								)}
 
 								{showNew && (
-									<div className="p-3 ease-in-out duration-300">
+									<div className="p-3 bg-gray-50 border-t border-slate-300 ease-in-out duration-300">
 										<InputText
 											label="Name"
 											type="text"

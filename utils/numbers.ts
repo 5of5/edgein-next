@@ -92,6 +92,17 @@ export const convertToInternationalCurrencySystem = (amount: number) => {
 		: Math.abs(Number(amount)).toFixed(2);
 };
 
+export const convertToIntNum = (amount: number) => {
+	if (!amount) {
+		return "";
+	}
+
+	return Intl.NumberFormat("en", {
+		notation: "compact",
+		minimumFractionDigits: 2,
+	}).format(amount);
+};
+
 export const numberWithCommas = (num: number) => {
 	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };

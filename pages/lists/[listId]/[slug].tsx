@@ -1,10 +1,9 @@
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { CompaniesList } from "@/components/MyList/CompaniesList";
 import { InvestorsList } from "@/components/MyList/InvestorsList";
-import { ElemDeleteListModal } from "@/components/MyList/ElemDeleteListModal";
-import { ElemListEditModal } from "@/components/MyList/ElemListEditModal";
-import { ElemListOptionMenu } from "@/components/MyList/ElemListOptionMenu";
+import { ModalListDetails } from "@/components/MyList/ModalListDetails";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
+
 import {
 	Follows_Companies,
 	Follows_Vc_Firms,
@@ -15,58 +14,31 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { find } from "lodash";
-import { getNameFromListName } from "@/utils/reaction";
+import {
+	getNameFromListName,
+	getUserIdFromListCreator,
+} from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/userContext";
 
 type Props = {};
 
 const MyList: NextPage<Props> = ({}) => {
-	const { refreshProfile } = useUser();
+	const { listAndFollows: lists, refreshProfile } = useUser();
 	const router = useRouter();
+
 	const [selectedListName, setSelectedListName] = useState<null | string>(
 		router.query.slug as string
 	);
 
 	const [isCustomList, setIsCustomList] = useState(false);
 
-	const [showEditModal, setShowEditModal] = useState(false);
-	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	// const [listNameModal, setListNameModal] = useState(false);
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
-	const { listAndFollows: lists } = useUser();
-
-	const onDeleteList = async (id: number) => {
-		const deleteRes = await fetch(`/api/delete_list/?listId=${id}`, {
-			method: "DELETE",
-		});
-
-		if (deleteRes.ok) {
-			const hotId =
-				find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
-			router.push(`/lists/${hotId}/hot`);
-			refreshProfile()
-			toast.custom(
-				(t) => (
-					<div
-						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-							t.visible ? "animate-fade-in-up" : "opacity-0"
-						}`}
-					>
-						List Deleted
-					</div>
-				),
-				{
-					duration: 3000,
-					position: "top-center",
-				}
-			);
-		}
-	};
-
-	const onSave = async (name: string) => {
+	const onSaveListName = async (name: string) => {
 		const updateNameRes = await fetch(`/api/update_list/`, {
 			method: "PUT",
 			body: JSON.stringify({
@@ -80,9 +52,9 @@ const MyList: NextPage<Props> = ({}) => {
 		});
 
 		if (updateNameRes.ok) {
-			setShowEditModal(false);
+			//setListNameModal(false);
 			setSelectedListName(name);
-			refreshProfile()
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -101,7 +73,37 @@ const MyList: NextPage<Props> = ({}) => {
 		}
 	};
 
+	const onDeleteList = async (id: number) => {
+		const deleteRes = await fetch(`/api/delete_list/?listId=${id}`, {
+			method: "DELETE",
+		});
+
+		if (deleteRes.ok) {
+			const hotId =
+				find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
+			router.push(`/lists/${hotId}/hot`);
+			refreshProfile();
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						List Deleted
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "top-center",
+				}
+			);
+		}
+	};
+
 	const [theListId, setTheListId] = useState(0);
+
+	const [theListCreatorId, setTheListCreatorId] = useState<any>();
 
 	useEffect(() => {
 		if (lists) {
@@ -114,6 +116,11 @@ const MyList: NextPage<Props> = ({}) => {
 					return list ? getNameFromListName(list) : "";
 				});
 
+			if (setTheListCreatorId)
+				setTheListCreatorId(() => {
+					return list ? getUserIdFromListCreator(list) : "";
+				});
+
 			if (setIsCustomList)
 				setIsCustomList(() => {
 					return list
@@ -121,7 +128,19 @@ const MyList: NextPage<Props> = ({}) => {
 						: false;
 				});
 		}
-	}, [lists, router.query.listId, setSelectedListName, setIsCustomList]);
+	}, [
+		lists,
+		router.query.listId,
+		setSelectedListName,
+		setTheListCreatorId,
+		setIsCustomList,
+	]);
+
+	// const { data: users } = useGetUserProfileQuery({
+	// 	id: theListCreatorId | 0,
+	// });
+
+	// console.log(users?.users_by_pk?.person);
 
 	useEffect(() => {
 		if (router.isReady) {
@@ -147,37 +166,27 @@ const MyList: NextPage<Props> = ({}) => {
 
 	return (
 		<DashboardLayout>
-			<div className="w-full mb-4">
+			<div className="w-full mb-2">
 				<div className="flex items-center">
 					{listNameTitle === "hot" && <EmojiHot className="w-6 h-6 mr-2" />}
 					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
 					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
-					<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-						{listNameTitle}
-					</h1>
 
-					{isCustomList && (
+					{isCustomList ? (
 						<>
-							<ElemListOptionMenu
-								onUpdateBtn={() => setShowEditModal(true)}
-								onDeleteBtn={() => setShowDeleteModal(true)}
-							/>
-
-							<ElemListEditModal
-								onCloseModal={() => setShowEditModal(false)}
-								isOpen={showEditModal}
-								currentName={selectedListName ? selectedListName : ""}
-								onSave={onSave}
-							/>
-
-							<ElemDeleteListModal
-								onCloseModal={() => setShowDeleteModal(false)}
-								onDelete={onDeleteList}
-								isOpen={showDeleteModal}
-								listName={selectedListName}
-								deleteId={parseInt(router.query.listId as string)}
+							<ModalListDetails
+								theListName={selectedListName ? selectedListName : ""}
+								// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
+								// theListCreator={"Raymond Aleman"}
+								theListId={parseInt(router.query.listId as string)}
+								onSaveListName={onSaveListName}
+								onDeleteList={onDeleteList}
 							/>
 						</>
+					) : (
+						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+							{listNameTitle}
+						</h1>
 					)}
 				</div>
 				{(listNameTitle === "hot" ||
