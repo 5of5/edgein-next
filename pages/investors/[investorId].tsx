@@ -15,11 +15,7 @@ import { ElemSocialShare } from "@/components/ElemSocialShare";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 
-import {
-	convertToInternationalCurrencySystem,
-	formatDate,
-	runGraphQl,
-} from "@/utils";
+import { convertToIntNum, formatDate, runGraphQl } from "@/utils";
 import {
 	GetVcFirmDocument,
 	GetVcFirmQuery,
@@ -271,26 +267,40 @@ const VCFirm: NextPage<Props> = (props) => {
 																			</a>
 																		</Link>
 																	)}{" "}
-																	raised{" "}
-																	{activity.amount ? (
-																		<div className="inline text-green-600">
-																			$
-																			{`${convertToInternationalCurrencySystem(
-																				activity.amount
-																			)}`}
-																		</div>
+																	{activity.round === "Acquisition" ? (
+																		<>Acquired by </>
 																	) : (
-																		<div className="inline text-green-600">
-																			undisclosed capital
-																			{/* amount */}
-																		</div>
+																		<>
+																			Raised{" "}
+																			{activity.amount ? (
+																				<div className="inline text-green-600">
+																					${convertToIntNum(activity.amount)}
+																				</div>
+																			) : (
+																				<div className="inline text-green-600">
+																					undisclosed capital
+																				</div>
+																			)}
+																			:{" "}
+																			{activity.valuation && (
+																				<div className="inline">
+																					at{" "}
+																					<div className="inline text-green-600">
+																						$
+																						{convertToIntNum(
+																							activity.valuation
+																						)}{" "}
+																					</div>
+																					valuation{" "}
+																				</div>
+																			)}
+																			{activity.round
+																				? activity.round
+																				: "Investment round"}{" "}
+																			from{" "}
+																		</>
 																	)}
-																	:{" "}
-																	{`${
-																		activity.round
-																			? activity.round
-																			: "Investment round"
-																	} from ${vcfirm.name}`}
+																	{vcfirm.name}
 																</div>
 																<p className="text-sm">
 																	{formatDate(activity.round_date as string, {
