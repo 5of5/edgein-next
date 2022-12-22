@@ -6,82 +6,102 @@ import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
 import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
+import ElemSettingDialog from "@/components/Group/ElemSettingDialog";
 
 type Props = {};
 
 const Group: NextPage<Props> = (props: Props) => {
-	const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
+  const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
 
-	const tabBarItems = useMemo(() => {
-		return [
-			{ name: "Home", ref: homeRef },
-			{ name: "Lists", ref: listsRef },
-			{ name: "Notes", ref: notesRef },
-			{ name: "Chat", ref: chatRef },
-			{ name: "Settings", ref: settingsRef },
-		];
-	}, []);
+  const [isOpenSettingDialog, setIsOpenSettingDialog] = useState(false);
 
-	const onOpenInviteDialog = () => {
-		setIsOpenInviteDialog(true);
-	};
+  const tabBarItems = useMemo(() => {
+    return [
+      { name: "Home", ref: homeRef },
+      { name: "Lists", ref: listsRef },
+      { name: "Notes", ref: notesRef },
+      { name: "Chat", ref: chatRef },
+      { name: "Settings", ref: settingsRef },
+    ];
+  }, []);
 
-	const onCloseInviteDialog = () => {
-		setIsOpenInviteDialog(false);
-	};
+  const onOpenInviteDialog = () => {
+    setIsOpenInviteDialog(true);
+  };
 
-	return (
-		<DashboardLayout>
-			<div ref={homeRef} />
+  const onCloseInviteDialog = () => {
+    setIsOpenInviteDialog(false);
+  };
 
-			{/** TO-DO: Group's name | Members | Social links */}
-			<ElemGroupInformation onInvite={onOpenInviteDialog} />
+  const onOpenSettingDialog = () => {
+    setIsOpenSettingDialog(true);
+  };
 
-			{/** TO-DO: Home | Lists | Notes | Chat | Settings */}
-			<ElemTabBar className="mt-12 border-t-0" tabs={tabBarItems} />
-			<div ref={listsRef}>
-				<ElemLists
-					lists={[
-						{
-							id: "1",
-							name: "Near Protocol Wizards",
-							createdBy: "Ashley Brown",
-							createdAt: "2022-10-05T14:48:00.000Z",
-							following: false,
-						},
-						{
-							id: "2",
-							name: "Near Protocol technology",
-							createdBy: "Ed Parsons",
-							createdAt: "2022-12-05T14:48:00.000Z",
-							following: true,
-						},
-					]}
-				/>
-			</div>
+  const onCloseSettingDialog = () => {
+    setIsOpenSettingDialog(false);
+  };
 
-			<div ref={notesRef}>
-				<ElemNotes />
-			</div>
+  return (
+    <DashboardLayout>
+      <div ref={homeRef} />
 
-			<div ref={chatRef} />
-			<div ref={settingsRef} />
+      {/** TO-DO: Group's name | Members | Social links */}
+      <ElemGroupInformation
+        onInvite={onOpenInviteDialog}
+        onOpenSettingDialog={onOpenSettingDialog}
+      />
 
-			{/** TO-DO:Notes */}
+      {/** TO-DO: Home | Lists | Notes | Chat | Settings */}
+      <ElemTabBar className="mt-12 border-t-0" tabs={tabBarItems} />
+      <div ref={listsRef}>
+        <ElemLists
+          lists={[
+            {
+              id: "1",
+              name: "Near Protocol Wizards",
+              createdBy: "Ashley Brown",
+              createdAt: "2022-10-05T14:48:00.000Z",
+              following: false,
+            },
+            {
+              id: "2",
+              name: "Near Protocol technology",
+              createdBy: "Ed Parsons",
+              createdAt: "2022-12-05T14:48:00.000Z",
+              following: true,
+            },
+          ]}
+        />
+      </div>
 
-			<ElemInviteDialog
-				isOpen={isOpenInviteDialog}
-				groupName="Neat Protocol Wizards"
-				onClose={onCloseInviteDialog}
-			/>
-		</DashboardLayout>
-	);
+      <div ref={notesRef}>
+        <ElemNotes />
+      </div>
+
+      <div ref={chatRef} />
+      <div ref={settingsRef} />
+
+      {/** TO-DO:Notes */}
+
+      <ElemInviteDialog
+        isOpen={isOpenInviteDialog}
+        groupName="Neat Protocol Wizards"
+        onClose={onCloseInviteDialog}
+      />
+
+      <ElemSettingDialog
+        isOpen={isOpenSettingDialog}
+        groupName="Neat Protocol Wizards"
+        onClose={onCloseSettingDialog}
+      />
+    </DashboardLayout>
+  );
 };
 
 export default Group;
