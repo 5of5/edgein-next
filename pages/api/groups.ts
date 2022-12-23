@@ -8,21 +8,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   const id = req.body.id;
-  const name: string = req.body.name;
+  const payload = req.body.payload;
 
   switch (req.method) {
     case "POST": {
-      const data = await GroupService.onInsertGroup(name);
-      res.send(data);
+      const data = await GroupService.onInsertGroup({
+        ...payload,
+        created_by: user.id,
+      });
+      await GroupService.onAddGroupMember(user.id, data.id);
+      return res.send(data);
     }
 
     case "PUT": {
+      const group = await GroupService.onFindGroupById(id);
+      if (group.created_by !== user.id) {
+        return res
+          .status(403)
+          .json({ message: "You don't have permission to edit this group" });
+      }
+
       // Update a group
-      const updatedGroup = await GroupService.onUpdateGroup(id, name);
+      const updatedGroup = await GroupService.onUpdateGroup(id, payload);
       return res.send(updatedGroup);
     }
 
     case "DELETE": {
+      const group = await GroupService.onFindGroupById(id);
+      if (group.created_by !== user.id) {
+        return res
+          .status(403)
+          .json({ message: "You don't have permission to delete this group" });
+      }
       // Delete invites of group
       await GroupService.onDeleteGroupInvites(id);
 

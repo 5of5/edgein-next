@@ -1,4 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
+import GroupService from "@/utils/groups";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
@@ -13,6 +14,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   const id = req.body.id;
+
+  const userGroupMember = await GroupService.onFindUserGroupMemberById(id);
+  const group = await GroupService.onFindGroupById(userGroupMember?.user_group_id);
+  if (group.created_by !== user.id) {
+    return res
+      .status(403)
+      .json({ message: "You don't have permission to delete group member" });
+  }
 
   const deleteGroupMemberQuery = `
   mutation DeleteUserGroupMembers($id: Int!) {

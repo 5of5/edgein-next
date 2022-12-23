@@ -1,4 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
+import GroupService from "@/utils/groups";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
@@ -15,7 +16,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // params:
   const notes: string = req.body.notes;
   const user_group_id: string = req.body.groupId;
+  const resource = req.body.resource;
+  const resource_id = req.body.resourceId;
   const created_by = user.id;
+
+  const members = await GroupService.onFindUserGroupMembers(user_group_id);
+  if (!members.some((mem: any) => mem.user_id === user.id)) {
+    return res
+      .status(403)
+      .json({ message: "You don't have permission to add notes" });
+  }
 
   // create action
   const insertNoteQuery = `
@@ -27,6 +37,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         notes
         created_by
         created_at
+        resource
+        resource_id
         user_group_id
         user_group {
           id
@@ -44,6 +56,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       object: {
         notes,
         user_group_id,
+        resource,
+        resource_id,
         created_by,
       },
     },

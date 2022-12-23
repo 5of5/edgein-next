@@ -1,16 +1,29 @@
-import { mutate } from "@/graphql/hasuraAdmin";
+import { mutate, query } from "@/graphql/hasuraAdmin";
 
-const onInsertGroup = async (name: string) => {
+type UserGroupInputTypes = {
+  name: string;
+  description?: string;
+  twitter?: string;
+  telegram?: string;
+  discord?: string;
+  created_by: number;
+};
+
+const onInsertGroup = async (payload: UserGroupInputTypes) => {
   const insertGroupQuery = `
   mutation InsertUserGroup($object: user_groups_insert_input!) {
     insert_user_groups_one(
       object: $object
     ) {
-      id,
+      id
       name
+      description
+      twitter
+      telegram
+      discord
     }
   }
-      `;
+  `;
 
   try {
     const {
@@ -18,9 +31,7 @@ const onInsertGroup = async (name: string) => {
     } = await mutate({
       mutation: insertGroupQuery,
       variables: {
-        object: {
-          name,
-        },
+        object: payload,
       },
     });
     return insert_user_groups_one;
@@ -29,17 +40,25 @@ const onInsertGroup = async (name: string) => {
   }
 };
 
-const onUpdateGroup = async (id: string, name: string) => {
+const onUpdateGroup = async (id: number, changes: UserGroupInputTypes) => {
   const updateGroupQuery = `
-      mutation UpdateUserGroup($id: Int!, $name: String!) {
+      mutation UpdateUserGroup($id: Int!, $changes: user_groups_set_input!) {
         update_user_groups(
           where: {id: {_eq: $id}},
-          _set: { name: $name }
+          _set: $changes
         ) {
           affected_rows 
           returning {
             id
             name
+            description
+            twitter
+            telegram
+            discord
+            notes {
+              id
+              notes
+            }
           }
         }
       }
@@ -52,7 +71,7 @@ const onUpdateGroup = async (id: string, name: string) => {
       mutation: updateGroupQuery,
       variables: {
         id,
-        name,
+        changes,
       },
     });
     return update_user_groups.returning[0];
@@ -61,7 +80,7 @@ const onUpdateGroup = async (id: string, name: string) => {
   }
 };
 
-const onDeleteGroup = async (id: string) => {
+const onDeleteGroup = async (id: number) => {
   const deleteGroupQuery = `
   mutation DeleteUserGroups($id: Int!) {
     delete_user_groups(where: {id: {_eq: $id}}) {
@@ -88,7 +107,7 @@ const onDeleteGroup = async (id: string) => {
   }
 };
 
-const onDeleteGroupInvites = async (groupId: string) => {
+const onDeleteGroupInvites = async (groupId: number) => {
   const deleteGroupInvitesQuery = `
   mutation DeleteUserGroupInvites($groupId: Int!) {
     delete_user_group_invites(where: {user_group_id: {_eq: $groupId}}) {
@@ -115,7 +134,7 @@ const onDeleteGroupInvites = async (groupId: string) => {
   }
 };
 
-const onDeleteGroupMembers = async (groupId: string) => {
+const onDeleteGroupMembers = async (groupId: number) => {
   const deleteGroupMembersQuery = `
   mutation DeleteUserGroupMembers($groupId: Int!) {
     delete_user_group_members(where: {user_group_id: {_eq: $groupId}}) {
@@ -142,7 +161,7 @@ const onDeleteGroupMembers = async (groupId: string) => {
   }
 };
 
-const onDeleteNotesByGroupId = async (groupId: string) => {
+const onDeleteNotesByGroupId = async (groupId: number) => {
   const deleteGroupNotesQuery = `
   mutation DeleteNotes($groupId: Int!) {
     delete_notes(where: {user_group_id: {_eq: $groupId}}) {
@@ -169,6 +188,137 @@ const onDeleteNotesByGroupId = async (groupId: string) => {
   }
 };
 
+const onFindGroupById = async (groupId: number) => {
+  const findGroupQuery = `
+  query findGroupOne($id: Int!) {
+    user_groups(where: {id: {_eq: $id}}, limit: 1) {
+      id
+      name
+      created_by
+      created_at
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: findGroupQuery,
+      variables: { id: groupId },
+    });
+    return data.data.user_groups[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const onFindUserGroupMembers = async (groupId: number) => {
+  const findGroupMembersQuery = `
+  query findGroupMembers($user_group_id: Int!) {
+    user_group_members(where: {user_group_id: {_eq: $user_group_id}}) {
+      id
+      user_group_id
+      user_group {
+        id
+        name
+        description
+      }
+      user_id
+      user {
+        id
+        display_name
+        email
+      }
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: findGroupMembersQuery,
+      variables: { user_group_id: groupId },
+    });
+    return data.data.user_group_members;
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const onFindUserGroupInviteById = async (id: number) => {
+  const findGroupInviteQuery = `
+  query findGroupMembers($id: Int!) {
+    user_group_invites(where: {id: {_eq: $id}}, limit: 1) {
+      id
+      email
+      user_group_id
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: findGroupInviteQuery,
+      variables: { id },
+    });
+    return data.data.user_group_invites[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const onFindUserGroupMemberById = async (id: number) => {
+  const findGroupMemberQuery = `
+  query findGroupMembers($id: Int!) {
+    user_group_members(where: {id: {_eq: $id}}, limit: 1) {
+      id
+      user_id
+      user_group_id
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: findGroupMemberQuery,
+      variables: { id },
+    });
+    return data.data.user_group_members[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const onAddGroupMember = async (user_id: number, user_group_id: number) => {
+  const {
+    data: { insert_user_group_members_one },
+  } = await mutate({
+    mutation: `
+    mutation InsertUserGroupMembers($object: user_group_members_insert_input!) {
+      insert_user_group_members_one(
+        object: $object
+      ) {
+        id
+        user_id
+        user {
+          id
+          email
+          display_name
+          role
+        }
+        user_group_id
+        user_group {
+          id
+          name
+        }
+      }
+    }
+  `,
+    variables: {
+      object: {
+        user_id,
+        user_group_id,
+      },
+    },
+  });
+
+  return insert_user_group_members_one;
+};
+
 const GroupService = {
   onInsertGroup,
   onUpdateGroup,
@@ -176,5 +326,10 @@ const GroupService = {
   onDeleteGroupInvites,
   onDeleteGroupMembers,
   onDeleteNotesByGroupId,
+  onFindGroupById,
+  onFindUserGroupMembers,
+  onFindUserGroupInviteById,
+  onFindUserGroupMemberById,
+  onAddGroupMember,
 };
 export default GroupService;
