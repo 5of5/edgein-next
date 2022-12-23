@@ -86,6 +86,10 @@ type NullableInputs = {
 const nullableInputs: NullableInputs = {
   investments: ["person_id", "vc_firm_id", "round_id"],
   users: ["person_id"],
+  coins: ["blockchain_id"],
+  investment_rounds: ["company_id"],
+  team_members: ["company_id", "person_id"],
+  investors: ["vc_firm_id", "person_id"],
 };
 
 const extractFieldsFromQuery = (queryAst: any) => {
