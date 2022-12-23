@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // params:
   const notes: string = req.body.notes;
-  const user_group_id: string = req.body.groupId;
+  const user_group_id: number = req.body.groupId;
   const resource = req.body.resource;
   const resource_id = req.body.resourceId;
   const created_by = user.id;
