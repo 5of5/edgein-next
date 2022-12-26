@@ -17,7 +17,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user_id: number = req.body.userId;
   const user_group_id: number = req.body.groupId;
 
-  // create action
   const data = await GroupService.onAddGroupMember(user_id, user_group_id);
 
   res.send(data);

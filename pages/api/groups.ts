@@ -21,8 +21,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     case "PUT": {
-      const group = await GroupService.onFindGroupById(id);
-      if (group.created_by !== user.id) {
+      const isCreator = await GroupService.isUserCreatorOfGroup(id, user.id);
+      if (!isCreator) {
         return res
           .status(403)
           .json({ message: "You don't have permission to edit this group" });
@@ -34,8 +34,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     case "DELETE": {
-      const group = await GroupService.onFindGroupById(id);
-      if (group.created_by !== user.id) {
+      const isCreator = await GroupService.isUserCreatorOfGroup(id, user.id);
+      if (!isCreator) {
         return res
           .status(403)
           .json({ message: "You don't have permission to delete this group" });

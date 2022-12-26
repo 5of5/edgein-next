@@ -1,15 +1,11 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
+import {
+  User_Groups,
+  User_Groups_Insert_Input,
+  User_Group_Members,
+} from "@/graphql/types";
 
-type UserGroupInputTypes = {
-  name: string;
-  description?: string;
-  twitter?: string;
-  telegram?: string;
-  discord?: string;
-  created_by: number;
-};
-
-const onInsertGroup = async (payload: UserGroupInputTypes) => {
+const onInsertGroup = async (payload: User_Groups_Insert_Input) => {
   const insertGroupQuery = `
   mutation InsertUserGroup($object: user_groups_insert_input!) {
     insert_user_groups_one(
@@ -21,6 +17,9 @@ const onInsertGroup = async (payload: UserGroupInputTypes) => {
       twitter
       telegram
       discord
+      created_at
+      updated_at
+      created_by
     }
   }
   `;
@@ -40,7 +39,7 @@ const onInsertGroup = async (payload: UserGroupInputTypes) => {
   }
 };
 
-const onUpdateGroup = async (id: number, changes: UserGroupInputTypes) => {
+const onUpdateGroup = async (id: number, changes: User_Groups_Insert_Input) => {
   const updateGroupQuery = `
       mutation UpdateUserGroup($id: Int!, $changes: user_groups_set_input!) {
         update_user_groups(
@@ -59,6 +58,9 @@ const onUpdateGroup = async (id: number, changes: UserGroupInputTypes) => {
               id
               notes
             }
+            created_at
+            updated_at
+            created_by
           }
         }
       }
@@ -319,7 +321,48 @@ const onAddGroupMember = async (user_id: number, user_group_id: number) => {
   return insert_user_group_members_one;
 };
 
+const onFindNoteById = async (id: number) => {
+  const findNoteQuery = `
+  query findNoteOne($id: Int!) {
+    notes(where: {id: {_eq: $id}}, limit: 1) {
+      id
+      notes
+      created_by
+      created_at
+      resource
+      resource_id
+      user_group_id
+      user_group {
+        id
+        name
+      }
+    }
+  }
+  `;
+  try {
+    const data = await query({
+      query: findNoteQuery,
+      variables: { id },
+    });
+    return data.data.notes[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const isUserMemberOfGroup = async (groupId: number, userId: number) => {
+  const members = await GroupService.onFindUserGroupMembers(groupId);
+  return members.some((mem: User_Group_Members) => mem.user_id === userId);
+};
+
+const isUserCreatorOfGroup = async (groupId: number, userId: number) => {
+  const group: User_Groups = await GroupService.onFindGroupById(groupId);
+  return group.created_by === userId;
+};
+
 const GroupService = {
+  isUserMemberOfGroup,
+  isUserCreatorOfGroup,
   onInsertGroup,
   onUpdateGroup,
   onDeleteGroup,
@@ -331,5 +374,6 @@ const GroupService = {
   onFindUserGroupInviteById,
   onFindUserGroupMemberById,
   onAddGroupMember,
+  onFindNoteById,
 };
 export default GroupService;

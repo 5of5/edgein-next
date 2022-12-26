@@ -9523,8 +9523,8 @@ export type Notes = {
   created_by: Scalars['Int'];
   id: Scalars['Int'];
   notes: Scalars['String'];
-  resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
   user: Users;
@@ -9611,8 +9611,8 @@ export type Notes_Bool_Exp = {
   created_by: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
-  resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user: InputMaybe<Users_Bool_Exp>;
   user_group: InputMaybe<User_Groups_Bool_Exp>;
@@ -9639,8 +9639,8 @@ export type Notes_Insert_Input = {
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   notes: InputMaybe<Scalars['String']>;
-  resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   user: InputMaybe<Users_Obj_Rel_Insert_Input>;
   user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
@@ -9654,8 +9654,8 @@ export type Notes_Max_Fields = {
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   notes: Maybe<Scalars['String']>;
-  resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   user_group_id: Maybe<Scalars['Int']>;
 };
@@ -9666,8 +9666,8 @@ export type Notes_Max_Order_By = {
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
-  resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -9679,8 +9679,8 @@ export type Notes_Min_Fields = {
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   notes: Maybe<Scalars['String']>;
-  resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   user_group_id: Maybe<Scalars['Int']>;
 };
@@ -9691,8 +9691,8 @@ export type Notes_Min_Order_By = {
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
-  resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -9719,8 +9719,8 @@ export type Notes_Order_By = {
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
-  resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   user: InputMaybe<Users_Order_By>;
   user_group: InputMaybe<User_Groups_Order_By>;
@@ -9743,9 +9743,9 @@ export enum Notes_Select_Column {
   /** column name */
   Notes = 'notes',
   /** column name */
-  Resource = 'resource',
-  /** column name */
   ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -9758,8 +9758,8 @@ export type Notes_Set_Input = {
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   notes: InputMaybe<Scalars['String']>;
-  resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   user_group_id: InputMaybe<Scalars['Int']>;
 };
@@ -9843,9 +9843,9 @@ export enum Notes_Update_Column {
   /** column name */
   Notes = 'notes',
   /** column name */
-  Resource = 'resource',
-  /** column name */
   ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -14125,6 +14125,7 @@ export type User_Groups = {
   notes_aggregate: Notes_Aggregate;
   telegram: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   user_group_invites: Array<User_Group_Invites>;
   /** An aggregate relationship */
@@ -14246,6 +14247,7 @@ export type User_Groups_Bool_Exp = {
   notes: InputMaybe<Notes_Bool_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_group_invites: InputMaybe<User_Group_Invites_Bool_Exp>;
   user_group_members: InputMaybe<User_Group_Members_Bool_Exp>;
 };
@@ -14273,6 +14275,7 @@ export type User_Groups_Insert_Input = {
   notes: InputMaybe<Notes_Arr_Rel_Insert_Input>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
   user_group_invites: InputMaybe<User_Group_Invites_Arr_Rel_Insert_Input>;
   user_group_members: InputMaybe<User_Group_Members_Arr_Rel_Insert_Input>;
 };
@@ -14288,6 +14291,7 @@ export type User_Groups_Max_Fields = {
   name: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
@@ -14301,6 +14305,7 @@ export type User_Groups_Min_Fields = {
   name: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "user_groups" */
@@ -14337,6 +14342,7 @@ export type User_Groups_Order_By = {
   notes_aggregate: InputMaybe<Notes_Aggregate_Order_By>;
   telegram: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
   user_group_invites_aggregate: InputMaybe<User_Group_Invites_Aggregate_Order_By>;
   user_group_members_aggregate: InputMaybe<User_Group_Members_Aggregate_Order_By>;
 };
@@ -14363,7 +14369,9 @@ export enum User_Groups_Select_Column {
   /** column name */
   Telegram = 'telegram',
   /** column name */
-  Twitter = 'twitter'
+  Twitter = 'twitter',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "user_groups" */
@@ -14376,6 +14384,7 @@ export type User_Groups_Set_Input = {
   name: InputMaybe<Scalars['String']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate stddev on columns */
@@ -14423,7 +14432,9 @@ export enum User_Groups_Update_Column {
   /** column name */
   Telegram = 'telegram',
   /** column name */
-  Twitter = 'twitter'
+  Twitter = 'twitter',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */

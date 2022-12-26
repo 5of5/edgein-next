@@ -16,8 +16,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.body.id;
 
   const userGroupMember = await GroupService.onFindUserGroupMemberById(id);
-  const group = await GroupService.onFindGroupById(userGroupMember?.user_group_id);
-  if (group.created_by !== user.id) {
+  const isCreator = await GroupService.isUserCreatorOfGroup(userGroupMember?.user_group_id, user.id);
+  if (!isCreator) {
     return res
       .status(403)
       .json({ message: "You don't have permission to delete group member" });

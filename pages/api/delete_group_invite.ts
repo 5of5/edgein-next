@@ -15,8 +15,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.body.id;
   const userGroupInvite = await GroupService.onFindUserGroupInviteById(id);
-  const members = await GroupService.onFindUserGroupMembers(userGroupInvite.user_group_id);
-  if (!members.some((mem: any) => mem.user_id === user.id)) {
+  const isMember = await GroupService.isUserMemberOfGroup(userGroupInvite.user_group_id, user.id);
+  if (!isMember) {
     return res
       .status(403)
       .json({ message: "You don't have permission to delete this invitation" });
