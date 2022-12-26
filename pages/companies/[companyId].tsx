@@ -9,7 +9,7 @@ import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
-import { ElemSubOrganizations } from "@/components/Company/ElemSubOrganizations";
+import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
@@ -154,11 +154,12 @@ const Company: NextPage<Props> = (props: Props) => {
 		});
 	}
 
-	const parentOrganization = company.to_links.find(
-    (item) => item.link_type === "child" && item.from_company
+  const parentLinks = company?.to_links?.find(
+    (item) => item.link_type === "child"
   );
-  const subOrganizations = company.from_links.filter(
-    (item) => item.link_type === "child" && item.to_company
+	const parentOrganization = parentLinks?.from_company || parentLinks?.from_vc_firm;
+  const subOrganizations = company?.from_links?.filter(
+    (item) => item.link_type === "child"
   );
 
 	return (
@@ -202,18 +203,18 @@ const Company: NextPage<Props> = (props: Props) => {
               <Link href="#">
                 <a className="flex items-center gap-2 mt-1 group transition-all hover:-translate-y-0.5">
                   <ElemPhoto
-                    photo={parentOrganization?.from_company?.logo}
+                    photo={parentOrganization?.logo}
                     wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
                     imgClass="object-contain w-full h-full"
-                    imgAlt={parentOrganization?.from_company?.name}
+                    imgAlt={parentOrganization?.name}
                     placeholderClass="text-slate-300"
                   />
                   <Link
-                    href={`/companies/${parentOrganization?.from_company?.slug}`}
+                    href={`/${parentLinks?.from_company ? "companies" : "investors"}/${parentOrganization?.slug}`}
                     passHref
                   >
                     <h2 className="group-hover:text-primary-500">
-                      {parentOrganization?.from_company?.name}
+                      {parentOrganization?.name}
                     </h2>
                   </Link>
                 </a>
@@ -526,11 +527,11 @@ const Company: NextPage<Props> = (props: Props) => {
         </div>
       )}
 
-      {subOrganizations.length > 0 && (
+      {subOrganizations?.length > 0 && (
         <ElemSubOrganizations
           className="mt-7"
           heading={`${company.name} Sub-Organizations (${subOrganizations.length})`}
-          subOrganizations={subOrganizations.map((item) => item.to_company)}
+          subOrganizations={subOrganizations}
         />
       )}
 

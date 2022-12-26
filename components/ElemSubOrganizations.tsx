@@ -5,11 +5,12 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getLayerClass } from "@/utils/style";
+import { Resource_Links } from "@/graphql/types";
 
 type Props = {
   className?: string;
   heading?: string;
-  subOrganizations?: Array<any>;
+  subOrganizations?: Array<Resource_Links>;
 };
 
 export const ElemSubOrganizations: FC<Props> = ({
@@ -22,9 +23,16 @@ export const ElemSubOrganizations: FC<Props> = ({
       {heading && <h2 className="text-xl font-bold">{heading}</h2>}
 
       <ElemCarouselWrap>
-        {subOrganizations?.map((company: any, index: number) => {
+        {subOrganizations?.map((item: Resource_Links, index: number) => {
+          const resourceType = item.to_company ? "companies" : "vc_firms";
+          const subOrganization = item.to_company || item.to_vc_firm;
+
+          if (!subOrganization) {
+            return null;
+          }
+
           // Add 'amount' from investment_rounds array
-          const fundingTotal = company.investment_rounds?.reduce(
+          const fundingTotal = item.to_company?.investment_rounds?.reduce(
             (total: number, currentValue: any) =>
               (total = total + currentValue.amount),
             0
@@ -36,38 +44,38 @@ export const ElemSubOrganizations: FC<Props> = ({
               className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
             >
               <a
-                href={`/companies/${company.slug}`}
+                href={`/${item.to_company ? "companies" : "investors"}/${subOrganization.slug}`}
                 className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
               >
                 <div className="flex items-center">
                   <ElemPhoto
-                    photo={company.logo}
+                    photo={subOrganization.logo}
                     wrapClass="flex items-center justify-center aspect-square w-16 h-16 p-2 bg-white rounded-lg shadow"
                     imgClass="object-contain w-full h-full"
-                    imgAlt={company.name}
+                    imgAlt={subOrganization.name}
                     placeholderClass="text-slate-300"
                   />
 
                   <div className="pl-2 md:overflow-hidden">
                     <h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
-                      {company.name}
+                      {subOrganization.name}
                     </h3>
                   </div>
                 </div>
 
-                {(company.layer || company.tags) && (
+                {(item.to_company?.layer || subOrganization.tags) && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {company.layer && (
+                    {item.to_company?.layer && (
                       <div
                         className={`${getLayerClass(
-                          company.layer
+                          item.to_company?.layer
                         )} shrink-0 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
                       >
-                        {company.layer}
+                        {item.to_company?.layer}
                       </div>
                     )}
 
-                    {company.tags?.map((tag: string, index: number) => {
+                    {subOrganization.tags?.map((tag: string, index: number) => {
                       return (
                         <div
                           key={index}
@@ -81,7 +89,7 @@ export const ElemSubOrganizations: FC<Props> = ({
                 )}
                 <div className="mt-4 grow">
                   <div className="text-gray-400 line-clamp-3">
-                    {company.overview}
+                    {subOrganization.overview}
                   </div>
                 </div>
                 <div
@@ -89,14 +97,14 @@ export const ElemSubOrganizations: FC<Props> = ({
                   onClick={(e) => e.stopPropagation()}
                 >
                   <ElemReactions
-                    resource={company}
-                    resourceType={"companies"}
+                    resource={subOrganization}
+                    resourceType={resourceType}
                   />
                   <ElemSaveToList
-                    resourceName={company.name}
-                    resourceId={company.id}
-                    resourceType={"companies"}
-                    slug={company.slug!}
+                    resourceName={subOrganization.name}
+                    resourceId={subOrganization.id}
+                    resourceType={resourceType}
+                    slug={subOrganization.slug!}
                   />
                 </div>
               </a>
