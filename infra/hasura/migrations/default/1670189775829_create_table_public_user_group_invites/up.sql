@@ -1,1 +1,0 @@
-CREATE TABLE "public"."user_group_invites" ("id" serial NOT NULL, "user_group_id" integer NOT NULL, "email" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") , FOREIGN KEY ("user_group_id") REFERENCES "public"."user_groups"("id") ON UPDATE restrict ON DELETE cascade);

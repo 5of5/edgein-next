@@ -1,1 +1,0 @@
-CREATE TABLE "public"."user_group_members" ("id" serial NOT NULL, "user_group_id" integer NOT NULL, "user_id" integer NOT NULL, PRIMARY KEY ("id") , FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON UPDATE restrict ON DELETE cascade, FOREIGN KEY ("user_group_id") REFERENCES "public"."user_groups"("id") ON UPDATE restrict ON DELETE cascade);
