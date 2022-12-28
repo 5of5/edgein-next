@@ -1,0 +1,35 @@
+table:
+  schema: public
+  name: user_groups
+object_relationships:
+  - name: created_by
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: users
+        insertion_order: null
+        column_mapping:
+          created_by_user_id: id
+array_relationships:
+  - name: notes
+    using:
+      foreign_key_constraint_on:
+        column: user_group_id
+        table:
+          schema: public
+          name: notes
+  - name: user_group_invites
+    using:
+      foreign_key_constraint_on:
+        column: user_group_id
+        table:
+          schema: public
+          name: user_group_invites
+  - name: user_group_members
+    using:
+      foreign_key_constraint_on:
+        column: user_group_id
+        table:
+          schema: public
+          name: user_group_members
