@@ -1,0 +1,25 @@
+table:
+  schema: public
+  name: user_groups
+array_relationships:
+  - name: notes
+    using:
+      foreign_key_constraint_on:
+        column: user_group_id
+        table:
+          schema: public
+          name: notes
+  - name: user_group_invites
+    using:
+      foreign_key_constraint_on:
+        column: user_group_id
+        table:
+          schema: public
+          name: user_group_invites
+  - name: user_group_members
+    using:
+      foreign_key_constraint_on:
+        column: user_group_id
+        table:
+          schema: public
+          name: user_group_members
