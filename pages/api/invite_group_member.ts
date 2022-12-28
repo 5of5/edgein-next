@@ -1,4 +1,6 @@
 import { mutate } from "@/graphql/hasuraAdmin";
+import GroupService from "@/utils/groups";
+import UserService from "@/utils/users";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
@@ -16,7 +18,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email: string = req.body.email;
   const user_group_id: number = req.body.groupId;
 
-  // create action
+  const userData = await UserService.findOneUserByEmail(email);
+
+  if (userData) {
+    await GroupService.onAddGroupMember(userData.id, user_group_id);
+  }
+
   const {
     data: { insert_user_group_invites_one },
   } = await mutate({
