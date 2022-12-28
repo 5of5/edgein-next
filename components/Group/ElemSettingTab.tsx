@@ -1,6 +1,9 @@
 import { IconSignOut, IconTrash } from "@/components/Icons";
+import { useUser } from "@/context/userContext";
 import { User_Groups } from "@/graphql/types";
 import moment from "moment-timezone";
+import { useRouter } from "next/router";
+import { useMutation } from "react-query";
 import { ElemButton } from "../ElemButton";
 
 type Props = {
@@ -8,6 +11,32 @@ type Props = {
 };
 
 const ElemSettingTab: React.FC<Props> = ({ group }) => {
+  const router = useRouter();
+
+  const { refetchMyGroups } = useUser();
+
+  const { mutate } = useMutation(
+    () =>
+      fetch("/api/groups/", {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: group.id }),
+      }),
+    {
+      onSuccess: () => {
+        refetchMyGroups();
+        router.push("/account");
+      },
+    }
+  );
+
+  const handleDelete = () => {
+    mutate();
+  };
+
   return (
     <>
       <ul className="bg-white shadow rounded-lg">
@@ -49,9 +78,9 @@ const ElemSettingTab: React.FC<Props> = ({ group }) => {
         <li className="flex items-center justify-between px-4 py-3 border-b border-gray-50">
           <div>
             <p className="font-bold">Created by</p>
-            <p className="text-slate-500">{`Redg Snog on ${moment(
-              group.created_at
-            ).format("LL")}`}</p>
+            <p className="text-slate-500">{`${
+              group.created_by?.display_name
+            } on ${moment(group.created_at).format("LL")}`}</p>
           </div>
           <ElemButton btn="transparent">Edit</ElemButton>
         </li>
@@ -70,6 +99,7 @@ const ElemSettingTab: React.FC<Props> = ({ group }) => {
         <ElemButton
           btn="transparent"
           className="flex items-center gap-x-2 w-full py-4 !justify-start"
+          onClick={handleDelete}
         >
           <IconTrash className="w-6 h-6 text-red-500" />
           <p className="font-bold text-red-500">Delete This Group</p>

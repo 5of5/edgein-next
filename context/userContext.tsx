@@ -21,6 +21,7 @@ type UserValue = {
   loading: boolean
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][]
+  refetchMyGroups: any
 }
 
 const userContext = React.createContext<UserValue>({
@@ -28,6 +29,7 @@ const userContext = React.createContext<UserValue>({
   loading: true,
   listAndFollows: [],
   myGroups: [],
+  refetchMyGroups: () => {},
 });
 const useUser = () => {
   const queryClient = useQueryClient()
@@ -56,6 +58,7 @@ const UserProvider: React.FC<Props> = (props) => {
   const {
 		data: groups,
 		error: groupsError,
+    refetch: refetchMyGroups,
 	} = useGetGroupsOfUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
 
   React.useEffect(() => {
@@ -113,10 +116,14 @@ const UserProvider: React.FC<Props> = (props) => {
     
 
   return (
-    <Provider value={{user, loading, listAndFollows, myGroups}}>
-      { user && !user.email.endsWith('@edgein.io') ? <FullStory org={FULLSTORY_ORG_ID} /> : null}
-      { props.children}
+    <Provider
+      value={{ user, loading, listAndFollows, myGroups, refetchMyGroups }}
+    >
+      {user && !user.email.endsWith("@edgein.io") ? (
+        <FullStory org={FULLSTORY_ORG_ID} />
+      ) : null}
+      {props.children}
     </Provider>
-  )
+  );
 }
 export { UserProvider, useUser };

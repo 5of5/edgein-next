@@ -13,7 +13,7 @@ export const ElemMemberAvatarList: React.FC<Props> = ({ members, onClick }) => {
       {members.slice(0, 3).map((mem, index) => (
         <li key={mem.id}>
           <ElemPhoto
-            photo={mem.user.person?.picture?.url}
+            photo={mem.user.person?.picture}
             wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8 z-${
               (3 - index) * 10
             } relative`}

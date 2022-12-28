@@ -1,7 +1,10 @@
 import { Fragment, ChangeEvent, useState } from "react";
+import { useRouter } from "next/router";
+import { useMutation } from "react-query";
 import { Dialog, Transition } from "@headlessui/react";
 import { IconX } from "@/components/Icons";
 import { InputText } from "@/components/InputText";
+import { useUser } from "@/context/userContext";
 import { ElemButton } from "../ElemButton";
 
 type Props = {
@@ -10,7 +13,29 @@ type Props = {
 };
 
 const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
+  const router = useRouter();
+
+  const { refetchMyGroups } = useUser();
+
   const [values, setValues] = useState({ name: "", description: "" });
+
+  const { mutate, isLoading } = useMutation(
+    () =>
+      fetch("/api/groups/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ payload: values }),
+      }).then((res) => res.json()),
+    {
+      onSuccess: (data) => {
+        refetchMyGroups();
+        router.push(`/groups/${data.id}`);
+      },
+    }
+  );
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setValues((prev) => ({
@@ -19,7 +44,9 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
     }));
   };
 
-  const handleCreate = () => {};
+  const handleCreate = () => {
+    mutate();
+  };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -92,6 +119,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
                   <ElemButton
                     btn="primary"
                     disabled={!values.name}
+                    loading={isLoading}
                     onClick={handleCreate}
                   >
                     Create

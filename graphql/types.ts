@@ -17257,7 +17257,11 @@ export const GetGroupsOfUserDocument = `
       telegram
       twitter
       discord
-      created_by
+      created_by {
+        id
+        display_name
+        email
+      }
       created_at
       updated_at
     }
@@ -17294,7 +17298,11 @@ export const GetGroupDocument = `
     telegram
     twitter
     discord
-    created_by
+    created_by {
+      id
+      display_name
+      email
+    }
     created_at
     updated_at
     user_group_members {

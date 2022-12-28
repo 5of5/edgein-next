@@ -24,6 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       limit: 100) {
       id
       name
+      slug
       picture
       work_email
     }

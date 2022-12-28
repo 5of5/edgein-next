@@ -63,7 +63,7 @@ const Group: NextPage<Props> = (props: Props) => {
       />
 
       {/** TO-DO: Home | Lists | Notes | Chat | Settings */}
-      <ElemTabBar className="mt-12 border-t-0" tabs={tabBarItems} />
+      <ElemTabBar className="mt-6 border-t-0" tabs={tabBarItems} />
       <div ref={listsRef}>
         <ElemLists
           lists={[
@@ -96,7 +96,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
       <ElemInviteDialog
         isOpen={isOpenInviteDialog}
-        groupName="Neat Protocol Wizards"
+        group={props.group}
         onClose={onCloseInviteDialog}
       />
 
