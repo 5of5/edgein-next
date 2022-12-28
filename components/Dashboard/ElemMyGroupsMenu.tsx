@@ -9,6 +9,7 @@ import {
 	IconEllipsisHorizontal,
 } from "@/components/Icons";
 import { Disclosure, Popover, Transition } from "@headlessui/react";
+import { useUser } from "@/context/userContext";
 import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
 
 type Props = {
@@ -17,23 +18,9 @@ type Props = {
 
 const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
+	const { myGroups } = useUser();
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
-
-	const groups = [
-		{
-			id: 1,
-			name: "Group 1",
-		},
-		{
-			id: 2,
-			name: "Group 2",
-		},
-		{
-			id: 3,
-			name: "Group 3",
-		},
-	];
 
 	const getActiveClass = (id: number) => {
 		return `/groups/${id}/` === router.asPath
@@ -106,7 +93,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 						</div>
 
 						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
-							{groups?.map((group) => (
+							{myGroups?.map((group) => (
 								<li key={group.id} role="button">
 									<Link href={`/groups/${group.id}/`}>
 										<a

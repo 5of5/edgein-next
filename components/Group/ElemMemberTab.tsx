@@ -1,30 +1,12 @@
 import { IconPlus, IconEllipsisHorizontal } from "@/components/Icons";
+import { User_Group_Members } from "@/graphql/types";
 import { ElemButton } from "../ElemButton";
 
-type Props = {};
+type Props = {
+  members: Array<User_Group_Members>;
+};
 
-const ElemMemberTab: React.FC<Props> = () => {
-  const members = [
-    {
-      id: "1",
-      photoUrl:
-        "https://edgein-image-upload-rmdev-new.s3.us-west-2.amazonaws.com/1666764807679.jfif",
-      name: "Ashley Brown",
-    },
-    {
-      id: "2",
-      photoUrl:
-        "https://edgein-image-upload-rmdev-new.s3.us-west-2.amazonaws.com/1666762562452.jfif",
-      name: "Ed Parsons",
-    },
-    {
-      id: "3",
-      photoUrl:
-        "https://edgein-image-upload-rmdev-new.s3.us-west-2.amazonaws.com/1666764675946.jfif",
-      name: "Dahn Tamir",
-    },
-  ];
-
+const ElemMemberTab: React.FC<Props> = ({ members }) => {
   return (
     <ul className="bg-white shadow rounded-lg">
       <li>
@@ -46,12 +28,12 @@ const ElemMemberTab: React.FC<Props> = () => {
           <div className="flex items-center gap-x-2">
             <div className="w-12 h-12 aspect-square shrink-0 bg-white overflow-hidden rounded-lg">
               <img
-                src={item.photoUrl}
-                alt={item.name}
+                src={item.user.person?.picture?.url}
+                alt={item.user.display_name || ""}
                 className="object-contain w-full h-full border border-gray-50"
               />
             </div>
-            <p className="font-bold ">{item.name}</p>
+            <p className="font-bold ">{item.user.display_name}</p>
           </div>
           <IconEllipsisHorizontal className="w-6 h-6 bg-gray-50 rounded-full cursor-pointer hover:bg-gray-250" />
         </li>

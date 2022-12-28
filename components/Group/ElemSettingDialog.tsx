@@ -1,16 +1,17 @@
 import { Fragment } from "react";
 import { Dialog, Transition, Tab } from "@headlessui/react";
 import { IconGroup, IconX } from "@/components/Icons";
+import { User_Groups } from "@/graphql/types";
 import ElemSettingTab from "./ElemSettingTab";
 import ElemMemberTab from "./ElemMemberTab";
 
 type Props = {
   isOpen: boolean;
-  groupName: string;
+  group: User_Groups;
   onClose: () => void;
 };
 
-const ElemSettingDialog: React.FC<Props> = ({ isOpen, groupName, onClose }) => {
+const ElemSettingDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -41,7 +42,7 @@ const ElemSettingDialog: React.FC<Props> = ({ isOpen, groupName, onClose }) => {
                 <Dialog.Title className="text-xl font-bold flex items-center justify-between p-6">
                   <div className="flex items-center justify-between gap-x-1">
                     <IconGroup className="w-6 h-6" />
-                    <span>{groupName}</span>
+                    <span>{group.name}</span>
                   </div>
                   <button type="button" onClick={onClose}>
                     <IconX className="w-5 h-5" />
@@ -72,11 +73,10 @@ const ElemSettingDialog: React.FC<Props> = ({ isOpen, groupName, onClose }) => {
                   <Tab.Panels>
                     <div className="bg-gray-50 p-6">
                       <Tab.Panel>
-                        <ElemSettingTab />
+                        <ElemSettingTab group={group} />
                       </Tab.Panel>
                       <Tab.Panel>
-                        {" "}
-                        <ElemMemberTab />
+                        <ElemMemberTab members={group.user_group_members} />
                       </Tab.Panel>
                     </div>
                   </Tab.Panels>

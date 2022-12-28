@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef, MutableRefObject } from "react";
-import { NextPage } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
@@ -7,8 +7,12 @@ import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
 import ElemSettingDialog from "@/components/Group/ElemSettingDialog";
+import { runGraphQl } from "@/utils";
+import { GetGroupDocument, GetGroupQuery, User_Groups } from "@/graphql/types";
 
-type Props = {};
+type Props = {
+	group: User_Groups;
+};
 
 const Group: NextPage<Props> = (props: Props) => {
   const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -53,6 +57,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
       {/** TO-DO: Group's name | Members | Social links */}
       <ElemGroupInformation
+        group={props.group}
         onInvite={onOpenInviteDialog}
         onOpenSettingDialog={onOpenSettingDialog}
       />
@@ -97,11 +102,43 @@ const Group: NextPage<Props> = (props: Props) => {
 
       <ElemSettingDialog
         isOpen={isOpenSettingDialog}
-        groupName="Neat Protocol Wizards"
+        group={props.group}
         onClose={onCloseSettingDialog}
       />
     </DashboardLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+	const { data } = await runGraphQl<GetGroupQuery>(
+		GetGroupDocument,
+		{ id: context.params?.groupId }
+	);
+
+	if (!data?.user_groups[0]) {
+		return {
+			notFound: true,
+		};
+	}
+
+  const group = data.user_groups[0];
+
+	let metaTitle = null;
+	if (group.name) {
+		metaTitle = group.name;
+	}
+	let metaDescription = null;
+	if (group.description) {
+		metaDescription = group.description;
+	}
+
+	return {
+		props: {
+			metaTitle,
+			metaDescription,
+			group,
+		},
+	};
 };
 
 export default Group;

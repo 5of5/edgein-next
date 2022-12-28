@@ -1,6 +1,11 @@
 import { useAuth } from '@/hooks/useAuth';
 import { User } from '@/models/User';
-import { useGetFollowsByUserQuery, GetFollowsByUserQuery } from "@/graphql/types"
+import {
+  useGetFollowsByUserQuery,
+  GetFollowsByUserQuery,
+  useGetGroupsOfUserQuery,
+  GetGroupsOfUserQuery,
+} from "@/graphql/types";
 import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
@@ -15,9 +20,15 @@ type UserValue = {
   user: User | null
   loading: boolean
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
+  myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][]
 }
 
-const userContext = React.createContext<UserValue>({user: null, loading: true, listAndFollows: []});
+const userContext = React.createContext<UserValue>({
+  user: null,
+  loading: true,
+  listAndFollows: [],
+  myGroups: [],
+});
 const useUser = () => {
   const queryClient = useQueryClient()
   const contextValue = React.useContext(userContext)
@@ -41,6 +52,11 @@ const UserProvider: React.FC<Props> = (props) => {
 		error: listAndFollowsError,
 		isLoading,
 	} = useGetFollowsByUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
+
+  const {
+		data: groups,
+		error: groupsError,
+	} = useGetGroupsOfUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
 
   React.useEffect(() => {
 		clarity.init(CLARITY_ID);
@@ -87,10 +103,17 @@ const UserProvider: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setListAndFollows(listMemberships?.list_members.map(li => li.list) || [])
   }, [listMemberships])
+
+  const [myGroups, setMyGroups] = React.useState(
+    groups?.user_group_members?.map(group => group.user_group) || []
+  );
+  React.useEffect(() => {
+    setMyGroups(groups?.user_group_members?.map(group => group.user_group) || []);
+  }, [groups]);
     
 
   return (
-    <Provider value={{user, loading, listAndFollows}}>
+    <Provider value={{user, loading, listAndFollows, myGroups}}>
       { user && !user.email.endsWith('@edgein.io') ? <FullStory org={FULLSTORY_ORG_ID} /> : null}
       { props.children}
     </Provider>
