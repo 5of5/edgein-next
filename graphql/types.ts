@@ -14114,7 +14114,9 @@ export type User_Group_Members_Variance_Order_By = {
 export type User_Groups = {
   __typename?: 'user_groups';
   created_at: Scalars['timestamptz'];
-  created_by: Scalars['Int'];
+  /** An object relationship */
+  created_by: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
   description: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   id: Scalars['Int'];
@@ -14229,7 +14231,7 @@ export type User_Groups_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type User_Groups_Avg_Fields = {
   __typename?: 'user_groups_avg_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
@@ -14239,7 +14241,8 @@ export type User_Groups_Bool_Exp = {
   _not: InputMaybe<User_Groups_Bool_Exp>;
   _or: InputMaybe<Array<User_Groups_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  created_by: InputMaybe<Int_Comparison_Exp>;
+  created_by: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   description: InputMaybe<String_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
@@ -14260,14 +14263,15 @@ export enum User_Groups_Constraint {
 
 /** input type for incrementing numeric columns in table "user_groups" */
 export type User_Groups_Inc_Input = {
-  created_by: InputMaybe<Scalars['Int']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "user_groups" */
 export type User_Groups_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by: InputMaybe<Scalars['Int']>;
+  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   description: InputMaybe<Scalars['String']>;
   discord: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
@@ -14284,7 +14288,7 @@ export type User_Groups_Insert_Input = {
 export type User_Groups_Max_Fields = {
   __typename?: 'user_groups_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
-  created_by: Maybe<Scalars['Int']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   description: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
@@ -14298,7 +14302,7 @@ export type User_Groups_Max_Fields = {
 export type User_Groups_Min_Fields = {
   __typename?: 'user_groups_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
-  created_by: Maybe<Scalars['Int']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   description: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
@@ -14334,7 +14338,8 @@ export type User_Groups_On_Conflict = {
 /** Ordering options when selecting data from "user_groups". */
 export type User_Groups_Order_By = {
   created_at: InputMaybe<Order_By>;
-  created_by: InputMaybe<Order_By>;
+  created_by: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   description: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -14357,7 +14362,7 @@ export enum User_Groups_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  CreatedBy = 'created_by',
+  CreatedByUserId = 'created_by_user_id',
   /** column name */
   Description = 'description',
   /** column name */
@@ -14377,7 +14382,7 @@ export enum User_Groups_Select_Column {
 /** input type for updating data in table "user_groups" */
 export type User_Groups_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  created_by: InputMaybe<Scalars['Int']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   description: InputMaybe<Scalars['String']>;
   discord: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
@@ -14390,28 +14395,28 @@ export type User_Groups_Set_Input = {
 /** aggregate stddev on columns */
 export type User_Groups_Stddev_Fields = {
   __typename?: 'user_groups_stddev_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type User_Groups_Stddev_Pop_Fields = {
   __typename?: 'user_groups_stddev_pop_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type User_Groups_Stddev_Samp_Fields = {
   __typename?: 'user_groups_stddev_samp_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type User_Groups_Sum_Fields = {
   __typename?: 'user_groups_sum_fields';
-  created_by: Maybe<Scalars['Int']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
 };
 
@@ -14420,7 +14425,7 @@ export enum User_Groups_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
-  CreatedBy = 'created_by',
+  CreatedByUserId = 'created_by_user_id',
   /** column name */
   Description = 'description',
   /** column name */
@@ -14440,21 +14445,21 @@ export enum User_Groups_Update_Column {
 /** aggregate var_pop on columns */
 export type User_Groups_Var_Pop_Fields = {
   __typename?: 'user_groups_var_pop_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type User_Groups_Var_Samp_Fields = {
   __typename?: 'user_groups_var_samp_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type User_Groups_Variance_Fields = {
   __typename?: 'user_groups_variance_fields';
-  created_by: Maybe<Scalars['Float']>;
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
 };
 
