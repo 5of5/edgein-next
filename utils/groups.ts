@@ -19,7 +19,7 @@ const onInsertGroup = async (payload: User_Groups_Insert_Input) => {
       discord
       created_at
       updated_at
-      created_by
+      created_by_user_id
     }
   }
   `;
@@ -60,7 +60,7 @@ const onUpdateGroup = async (id: number, changes: User_Groups_Insert_Input) => {
             }
             created_at
             updated_at
-            created_by
+            created_by_user_id
           }
         }
       }
@@ -196,7 +196,7 @@ const onFindGroupById = async (groupId: number) => {
     user_groups(where: {id: {_eq: $id}}, limit: 1) {
       id
       name
-      created_by
+      created_by_user_id
       created_at
     }
   }
@@ -357,7 +357,7 @@ const isUserMemberOfGroup = async (groupId: number, userId: number) => {
 
 const isUserCreatorOfGroup = async (groupId: number, userId: number) => {
   const group: User_Groups = await GroupService.onFindGroupById(groupId);
-  return group.created_by === userId;
+  return group.created_by_user_id === userId;
 };
 
 const GroupService = {

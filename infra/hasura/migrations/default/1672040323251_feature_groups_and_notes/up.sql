@@ -47,3 +47,5 @@ FOR EACH ROW
 EXECUTE PROCEDURE "public"."set_current_timestamp_updated_at"();
 COMMENT ON TRIGGER "set_public_notes_updated_at" ON "public"."notes" 
 IS 'trigger to set value of column "updated_at" to current timestamp on row update';
+
+alter table "public"."user_groups" rename column "created_by" to "created_by_user_id";
