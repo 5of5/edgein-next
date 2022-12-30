@@ -21,7 +21,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 		setCompanyData(company);
 	}, [company]);
 
-	const { id, slug, logo, name, coin, layer, tags, overview } = companyData;
+	const { id, slug, logo, name, coins, layer, tags, overview } = companyData;
 
 	return (
 		<Link href={`/companies/${slug}`}>
@@ -43,12 +43,12 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 							>
 								{name}
 							</h3>
-							{coin && (
+							{coins && coins.length > 0 && (
 								<ElemTooltip
 									content={`Token / Value`}
 									className="inline-flex items-center overflow-visible"
 								>
-									<span className="uppercase">{coin.ticker}</span>
+									<span className="uppercase">{coins.map(item => item.ticker).join(" - ")}</span>
 								</ElemTooltip>
 							)}
 						</div>
