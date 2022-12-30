@@ -24,7 +24,8 @@ query GetCompaniesByListId($list_id: Int = 0) {
 			logo
 			sentiment
 			location
-			coin {
+			coins {
+				id
 				ticker
 				name
 			}

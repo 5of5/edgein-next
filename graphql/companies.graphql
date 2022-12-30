@@ -2,8 +2,9 @@ query GetCompany($slug: String!) {
 	companies(where: { slug: { _eq: $slug } }) {
 		id
 		name
-		coin {
+		coins {
 			id
+			name
 			ticker
 		}
 		slug
@@ -90,7 +91,9 @@ query GetCompanies(
 		slug
 		layer
 		tags
-		coin {
+		coins {
+			id
+			name
 			ticker
 		}
 		sentiment

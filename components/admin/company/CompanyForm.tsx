@@ -1,12 +1,11 @@
 import React, { ReactElement, useState, useEffect } from "react";
 import {
   AutocompleteArrayInput,
-  AutocompleteInput,
   FileInput,
   ImageField,
   SimpleForm,
   TextInput,
-  ReferenceInput,
+  ReferenceArrayInput,
   SelectInput,
   NumberInput,
   Button,
@@ -144,14 +143,14 @@ const CompanyForm = ({
           choices={companyLayerChoices}
         />
         <TextInput className={inputClassName} source="layer_detail" />
-        <ReferenceInput label="Coin" source="coin_id" reference="coins">
-          <AutocompleteInput
+        <ReferenceArrayInput label="Coin" source="coin_ids" reference="coins">
+          <AutocompleteArrayInput
             className={inputClassName}
             style={{ padding: 0, border: "none" }}
             optionText="name"
             filterToQuery={(search) => ({ name: search })}
           />
-        </ReferenceInput>
+        </ReferenceArrayInput>
         <NumberInput className={inputClassName} source="total_employees" />
 
         <TextInput className={inputClassName} source="notes" multiline />

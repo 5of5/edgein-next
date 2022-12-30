@@ -1,4 +1,4 @@
-import React, { useEffect, useState, MutableRefObject, useRef } from "react";
+import React, { useEffect, useState, MutableRefObject, useRef, useCallback } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -27,7 +27,6 @@ import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import {
-	convertToInternationalCurrencySystem,
 	formatDate,
 	convertToIntNum,
 } from "@/utils";
@@ -37,11 +36,12 @@ import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
+import ElemTokenInfo, { Metrics, TokenInfo } from "@/components/Company/ElemTokenInfo";
 
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
-	metrics: Metric[];
+	metrics: Metrics[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -52,14 +52,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const [company, setCompany] = useState<Companies>(props.company);
 
-	const [tokenInfo, setTokenInfo] = useState<TokenInfo>({
-		currentPrice: 0,
-		marketCap: 0,
-		marketCapRank: 0,
-		low24H: 0,
-		high24H: 0,
-		vol24H: 0,
-	});
+	const [tokenInfo, setTokenInfo] = useState<Array<TokenInfo>>([]);
 
 	//Limit Activity
 	const [activityLimit, setActivityLimit] = useState(10);
@@ -94,7 +87,7 @@ const Company: NextPage<Props> = (props: Props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [companyData]);
 
-	const getTokenInfo = async (coinId: number) => {
+	const getTokenInfo = async (coinId: number, coinTicker: string) => {
 		const data = await fetch("/api/get_metrics_amount/", {
 			method: "POST",
 			headers: {
@@ -103,8 +96,15 @@ const Company: NextPage<Props> = (props: Props) => {
 			},
 			body: JSON.stringify({ coinId }),
 		}).then((res) => res.json());
-		setTokenInfo(data);
+		return {...data, ticker: coinTicker};
 	};
+
+	const getAllTokenInfo = useCallback(async (coins: any) => {
+    const coinsInfo = await Promise.all(
+      coins.map((coin: any) => getTokenInfo(coin.id, coin.ticker))
+    );
+    setTokenInfo(coinsInfo);
+  }, []);
 
 	useEffect(() => {
 		if (company.overview) {
@@ -113,11 +113,10 @@ const Company: NextPage<Props> = (props: Props) => {
 	}, [company]);
 
 	useEffect(() => {
-		if (company && company.coin) {
-			getTokenInfo(company.coin.id);
-			// getTokenInfo('bnb')
-		}
-	}, [company]);
+    if (company?.coins && company.coins.length > 0) {
+      getAllTokenInfo(company.coins);
+    }
+  }, [company, getAllTokenInfo]);
 
 	useEffect(() => {
 		if (companyData) setCompany(companyData?.companies[0] as any);
@@ -173,15 +172,6 @@ const Company: NextPage<Props> = (props: Props) => {
 						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 							{company.name}
 						</h1>
-						{company.coin && (
-							<div
-								key={company.coin.id}
-								className="ml-2 pb-0.5 inline-block self-end whitespace-nowrap text-lg leading-sm uppercase"
-								title={`Token: ${company.coin.ticker}`}
-							>
-								{company.coin.ticker}
-							</div>
-						)}
 					</div>
 					{companyTags.length > 0 && (
 						<ElemTags
@@ -235,65 +225,8 @@ const Company: NextPage<Props> = (props: Props) => {
 					</div>
 				</div>
 				<div className="col-span-3 mt-7 lg:mt-0">
-					{Object.values(tokenInfo).some((i) => i > 0) && (
-						<section className="bg-white shadow rounded-lg p-5 md:mt-0">
-							<h2 className="text-xl font-bold">Token Info</h2>
-							<div className="flex flex-col space-y-2 mt-2">
-								{props.metrics.map((item) => {
-									let metricsClass = "";
-
-									if (item.id === "currentPrice") {
-										metricsClass = "text-green-700";
-									} else if (item.id === "marketCap") {
-										metricsClass = "text-green-700";
-									} else if (item.id === "marketCapRank") {
-										metricsClass = "";
-									} else if (item.id === "highLow24H") {
-										metricsClass = "";
-									} else if (item.id === "vol24H") {
-										metricsClass = "text-green-700";
-									} else {
-										metricsClass = "";
-									}
-
-									return (
-										<div
-											className="flex items-center justify-between space-x-2"
-											key={item.id}
-										>
-											<div>{item.name}</div>
-											<div
-												className={`${metricsClass} text-sm font-semibold border-none rounded-2xl py-1 px-2`}
-											>
-												{tokenInfo[item.id as keyof TokenInfo]
-													? item.id === "highLow24H"
-														? `$${convertAmountRaised(
-																tokenInfo.high24H
-														  )}/$${convertAmountRaised(tokenInfo.low24H)}`
-														: `${
-																item.id === "marketCapRank" ? "#" : "$"
-														  }${convertAmountRaised(
-																tokenInfo[item.id as keyof TokenInfo]
-														  )}`
-													: `N/A`}
-											</div>
-										</div>
-									);
-								})}
-							</div>
-							<div className="mt-3 text-xs text-center text-slate-400">
-								Token data source:{" "}
-								<a
-									href="https://www.amberdata.io/?ref=edgeinio"
-									target="_blank"
-									rel="noreferrer"
-									className="hover:text-slate-600"
-								>
-									AmberData
-								</a>{" "}
-								and Coingecko
-							</div>
-						</section>
+					{tokenInfo.length > 0 && (
+						<ElemTokenInfo metrics={props.metrics} tokens={tokenInfo} />
 					)}
 				</div>
 			</div>
@@ -582,21 +515,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		},
 	};
 };
-const convertAmountRaised = (theAmount: number) => {
-	return convertToInternationalCurrencySystem(theAmount);
-};
-interface Metric {
-	id: string;
-	name: string;
-}
-
-interface TokenInfo {
-	currentPrice: number;
-	marketCap: number;
-	marketCapRank: number;
-	low24H: number;
-	high24H: number;
-	vol24H: number;
-}
 
 export default Company;

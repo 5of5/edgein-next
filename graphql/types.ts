@@ -1438,13 +1438,6 @@ export type Coins_Mutation_Response = {
   returning: Array<Coins>;
 };
 
-/** input type for inserting object relation for remote table "coins" */
-export type Coins_Obj_Rel_Insert_Input = {
-  data: Coins_Insert_Input;
-  /** upsert condition */
-  on_conflict: InputMaybe<Coins_On_Conflict>;
-};
-
 /** on_conflict condition type for table "coins" */
 export type Coins_On_Conflict = {
   constraint: Coins_Constraint;
@@ -1629,9 +1622,9 @@ export type Companies = {
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
-  /** An object relationship */
-  coin: Maybe<Coins>;
-  coin_id: Maybe<Scalars['Int']>;
+  coin_ids: Maybe<Scalars['jsonb']>;
+  /** A computed field, executes function "link_coins" */
+  coins: Maybe<Array<Coins>>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   date_added: Maybe<Scalars['date']>;
@@ -1695,6 +1688,22 @@ export type Companies = {
 
 
 /** columns and relationships of "companies" */
+export type CompaniesCoin_IdsArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "companies" */
+export type CompaniesCoinsArgs = {
+  distinct_on: InputMaybe<Array<Coins_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Coins_Order_By>>;
+  where: InputMaybe<Coins_Bool_Exp>;
+};
+
+
+/** columns and relationships of "companies" */
 export type CompaniesFollowsArgs = {
   distinct_on: InputMaybe<Array<Follows_Companies_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -1711,26 +1720,6 @@ export type CompaniesFollows_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
-};
-
-
-/** columns and relationships of "companies" */
-export type CompaniesFrom_LinksArgs = {
-  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
-  where: InputMaybe<Resource_Links_Bool_Exp>;
-};
-
-
-/** columns and relationships of "companies" */
-export type CompaniesFrom_Links_AggregateArgs = {
-  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
-  limit: InputMaybe<Scalars['Int']>;
-  offset: InputMaybe<Scalars['Int']>;
-  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
-  where: InputMaybe<Resource_Links_Bool_Exp>;
 };
 
 
@@ -1849,6 +1838,7 @@ export type Companies_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Companies_Append_Input = {
+  coin_ids: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
@@ -1858,7 +1848,6 @@ export type Companies_Append_Input = {
 /** aggregate avg on columns */
 export type Companies_Avg_Fields = {
   __typename?: 'companies_avg_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -1874,8 +1863,8 @@ export type Companies_Bool_Exp = {
   bitcointalk: InputMaybe<String_Comparison_Exp>;
   blockchain_explorer: InputMaybe<String_Comparison_Exp>;
   careers_page: InputMaybe<String_Comparison_Exp>;
-  coin: InputMaybe<Coins_Bool_Exp>;
-  coin_id: InputMaybe<Int_Comparison_Exp>;
+  coin_ids: InputMaybe<Jsonb_Comparison_Exp>;
+  coins: InputMaybe<Coins_Bool_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   date_added: InputMaybe<Date_Comparison_Exp>;
@@ -1936,6 +1925,7 @@ export enum Companies_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Companies_Delete_At_Path_Input = {
+  coin_ids: InputMaybe<Array<Scalars['String']>>;
   logo: InputMaybe<Array<Scalars['String']>>;
   sentiment: InputMaybe<Array<Scalars['String']>>;
   status_tags: InputMaybe<Array<Scalars['String']>>;
@@ -1944,6 +1934,7 @@ export type Companies_Delete_At_Path_Input = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Companies_Delete_Elem_Input = {
+  coin_ids: InputMaybe<Scalars['Int']>;
   logo: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['Int']>;
   status_tags: InputMaybe<Scalars['Int']>;
@@ -1952,6 +1943,7 @@ export type Companies_Delete_Elem_Input = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Companies_Delete_Key_Input = {
+  coin_ids: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['String']>;
@@ -2241,7 +2233,6 @@ export type Companies_Edit_Access_Variance_Order_By = {
 
 /** input type for incrementing numeric columns in table "companies" */
 export type Companies_Inc_Input = {
-  coin_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
   total_employees: InputMaybe<Scalars['numeric']>;
@@ -2254,8 +2245,7 @@ export type Companies_Insert_Input = {
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
-  coin: InputMaybe<Coins_Obj_Rel_Insert_Input>;
-  coin_id: InputMaybe<Scalars['Int']>;
+  coin_ids: InputMaybe<Scalars['jsonb']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   date_added: InputMaybe<Scalars['date']>;
@@ -2310,7 +2300,6 @@ export type Companies_Max_Fields = {
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
-  coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   date_added: Maybe<Scalars['date']>;
@@ -2356,7 +2345,6 @@ export type Companies_Min_Fields = {
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
-  coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   date_added: Maybe<Scalars['date']>;
@@ -2424,8 +2412,8 @@ export type Companies_Order_By = {
   bitcointalk: InputMaybe<Order_By>;
   blockchain_explorer: InputMaybe<Order_By>;
   careers_page: InputMaybe<Order_By>;
-  coin: InputMaybe<Coins_Order_By>;
-  coin_id: InputMaybe<Order_By>;
+  coin_ids: InputMaybe<Order_By>;
+  coins_aggregate: InputMaybe<Coins_Aggregate_Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   date_added: InputMaybe<Order_By>;
@@ -2479,6 +2467,7 @@ export type Companies_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Companies_Prepend_Input = {
+  coin_ids: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
@@ -2498,7 +2487,7 @@ export enum Companies_Select_Column {
   /** column name */
   CareersPage = 'careers_page',
   /** column name */
-  CoinId = 'coin_id',
+  CoinIds = 'coin_ids',
   /** column name */
   CompanyLinkedin = 'company_linkedin',
   /** column name */
@@ -2586,7 +2575,7 @@ export type Companies_Set_Input = {
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
-  coin_id: InputMaybe<Scalars['Int']>;
+  coin_ids: InputMaybe<Scalars['jsonb']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   date_added: InputMaybe<Scalars['date']>;
@@ -2631,7 +2620,6 @@ export type Companies_Set_Input = {
 /** aggregate stddev on columns */
 export type Companies_Stddev_Fields = {
   __typename?: 'companies_stddev_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2640,7 +2628,6 @@ export type Companies_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Companies_Stddev_Pop_Fields = {
   __typename?: 'companies_stddev_pop_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2649,7 +2636,6 @@ export type Companies_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Companies_Stddev_Samp_Fields = {
   __typename?: 'companies_stddev_samp_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2658,7 +2644,6 @@ export type Companies_Stddev_Samp_Fields = {
 /** aggregate sum on columns */
 export type Companies_Sum_Fields = {
   __typename?: 'companies_sum_fields';
-  coin_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
   total_employees: Maybe<Scalars['numeric']>;
@@ -2677,7 +2662,7 @@ export enum Companies_Update_Column {
   /** column name */
   CareersPage = 'careers_page',
   /** column name */
-  CoinId = 'coin_id',
+  CoinIds = 'coin_ids',
   /** column name */
   CompanyLinkedin = 'company_linkedin',
   /** column name */
@@ -2761,7 +2746,6 @@ export enum Companies_Update_Column {
 /** aggregate var_pop on columns */
 export type Companies_Var_Pop_Fields = {
   __typename?: 'companies_var_pop_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2770,7 +2754,6 @@ export type Companies_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Companies_Var_Samp_Fields = {
   __typename?: 'companies_var_samp_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2779,7 +2762,6 @@ export type Companies_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Companies_Variance_Fields = {
   __typename?: 'companies_variance_fields';
-  coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
@@ -2793,7 +2775,6 @@ export type Company_Errors = {
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
-  coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   data_source: Maybe<Scalars['String']>;
@@ -2892,7 +2873,6 @@ export type Company_Errors_Append_Input = {
 /** aggregate avg on columns */
 export type Company_Errors_Avg_Fields = {
   __typename?: 'company_errors_avg_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -2909,7 +2889,6 @@ export type Company_Errors_Bool_Exp = {
   bitcointalk: InputMaybe<String_Comparison_Exp>;
   blockchain_explorer: InputMaybe<String_Comparison_Exp>;
   careers_page: InputMaybe<String_Comparison_Exp>;
-  coin_id: InputMaybe<Int_Comparison_Exp>;
   company_linkedin: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   data_source: InputMaybe<String_Comparison_Exp>;
@@ -2973,7 +2952,6 @@ export type Company_Errors_Delete_Key_Input = {
 
 /** input type for incrementing numeric columns in table "company_errors" */
 export type Company_Errors_Inc_Input = {
-  coin_id: InputMaybe<Scalars['Int']>;
   duplicated_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
@@ -2987,7 +2965,6 @@ export type Company_Errors_Insert_Input = {
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
-  coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_source: InputMaybe<Scalars['String']>;
@@ -3036,7 +3013,6 @@ export type Company_Errors_Max_Fields = {
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
-  coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_source: Maybe<Scalars['String']>;
@@ -3082,7 +3058,6 @@ export type Company_Errors_Min_Fields = {
   bitcointalk: Maybe<Scalars['String']>;
   blockchain_explorer: Maybe<Scalars['String']>;
   careers_page: Maybe<Scalars['String']>;
-  coin_id: Maybe<Scalars['Int']>;
   company_linkedin: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   data_source: Maybe<Scalars['String']>;
@@ -3136,7 +3111,6 @@ export type Company_Errors_Order_By = {
   bitcointalk: InputMaybe<Order_By>;
   blockchain_explorer: InputMaybe<Order_By>;
   careers_page: InputMaybe<Order_By>;
-  coin_id: InputMaybe<Order_By>;
   company_linkedin: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   data_source: InputMaybe<Order_By>;
@@ -3196,8 +3170,6 @@ export enum Company_Errors_Select_Column {
   BlockchainExplorer = 'blockchain_explorer',
   /** column name */
   CareersPage = 'careers_page',
-  /** column name */
-  CoinId = 'coin_id',
   /** column name */
   CompanyLinkedin = 'company_linkedin',
   /** column name */
@@ -3283,7 +3255,6 @@ export type Company_Errors_Set_Input = {
   bitcointalk: InputMaybe<Scalars['String']>;
   blockchain_explorer: InputMaybe<Scalars['String']>;
   careers_page: InputMaybe<Scalars['String']>;
-  coin_id: InputMaybe<Scalars['Int']>;
   company_linkedin: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   data_source: InputMaybe<Scalars['String']>;
@@ -3327,7 +3298,6 @@ export type Company_Errors_Set_Input = {
 /** aggregate stddev on columns */
 export type Company_Errors_Stddev_Fields = {
   __typename?: 'company_errors_stddev_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3337,7 +3307,6 @@ export type Company_Errors_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Company_Errors_Stddev_Pop_Fields = {
   __typename?: 'company_errors_stddev_pop_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3347,7 +3316,6 @@ export type Company_Errors_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Company_Errors_Stddev_Samp_Fields = {
   __typename?: 'company_errors_stddev_samp_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3357,7 +3325,6 @@ export type Company_Errors_Stddev_Samp_Fields = {
 /** aggregate sum on columns */
 export type Company_Errors_Sum_Fields = {
   __typename?: 'company_errors_sum_fields';
-  coin_id: Maybe<Scalars['Int']>;
   duplicated_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
@@ -3367,7 +3334,6 @@ export type Company_Errors_Sum_Fields = {
 /** aggregate var_pop on columns */
 export type Company_Errors_Var_Pop_Fields = {
   __typename?: 'company_errors_var_pop_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3377,7 +3343,6 @@ export type Company_Errors_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Company_Errors_Var_Samp_Fields = {
   __typename?: 'company_errors_var_samp_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -3387,7 +3352,6 @@ export type Company_Errors_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Company_Errors_Variance_Fields = {
   __typename?: 'company_errors_variance_fields';
-  coin_id: Maybe<Scalars['Float']>;
   duplicated_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
@@ -10479,9 +10443,9 @@ export type Query_Root = {
   blockchains_aggregate: Blockchains_Aggregate;
   /** fetch data from the table: "blockchains" using primary key columns */
   blockchains_by_pk: Maybe<Blockchains>;
-  /** An array relationship */
+  /** fetch data from the table: "coins" */
   coins: Array<Coins>;
-  /** An aggregate relationship */
+  /** fetch aggregated fields from the table: "coins" */
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
@@ -11686,6 +11650,7 @@ export type Resource_Edit_Access_Variance_Fields = {
   user_id: Maybe<Scalars['Float']>;
 };
 
+
 /** columns and relationships of "resource_links" */
 export type Resource_Links = {
   __typename?: 'resource_links';
@@ -12106,9 +12071,9 @@ export type Subscription_Root = {
   blockchains_aggregate: Blockchains_Aggregate;
   /** fetch data from the table: "blockchains" using primary key columns */
   blockchains_by_pk: Maybe<Blockchains>;
-  /** An array relationship */
+  /** fetch data from the table: "coins" */
   coins: Array<Coins>;
-  /** An aggregate relationship */
+  /** fetch aggregated fields from the table: "coins" */
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
@@ -16231,7 +16196,7 @@ export type GetCompanyQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coins: Array<{ __typename?: 'coins', id: number, name: string, ticker: string }> | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -16240,7 +16205,7 @@ export type GetCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, layer: string | null, tags: any | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, coin: { __typename?: 'coins', ticker: string } | null }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, layer: string | null, tags: any | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, coins: Array<{ __typename?: 'coins', id: number, name: string, ticker: string }> | null }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -16275,7 +16240,7 @@ export type GetCompaniesByListIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string, coin: { __typename?: 'coins', ticker: string, name: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
+export type GetCompaniesByListIdQuery = { __typename?: 'query_root', follows_companies: Array<{ __typename?: 'follows_companies', id: number | null, company: { __typename?: 'companies', id: number, name: string | null, logo: any | null, sentiment: any | null, location: string | null, tags: any | null, slug: string, coins: Array<{ __typename?: 'coins', id: number, ticker: string, name: string }> | null, teamMembers: Array<{ __typename?: 'team_members', id: number }>, investment_rounds: Array<{ __typename?: 'investment_rounds', amount: any | null }> } | null }> };
 
 export type GetVcFirmsByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -16384,8 +16349,9 @@ export const GetCompanyDocument = `
   companies(where: {slug: {_eq: $slug}}) {
     id
     name
-    coin {
+    coins {
       id
+      name
       ticker
     }
     slug
@@ -16483,7 +16449,9 @@ export const GetCompaniesDocument = `
     slug
     layer
     tags
-    coin {
+    coins {
+      id
+      name
       ticker
     }
     sentiment
@@ -16674,7 +16642,8 @@ export const GetCompaniesByListIdDocument = `
       logo
       sentiment
       location
-      coin {
+      coins {
+        id
         ticker
         name
       }

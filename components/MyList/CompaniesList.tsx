@@ -113,10 +113,21 @@ export const CompaniesList: FC<Props> = ({
 			},
 			{
 				Header: "Token/Value",
-				accessor: "company.coin" as const,
-				Cell: (props: any) => (
-					<div>{props.value?.ticker ? props.value.ticker : <>&mdash;</>}</div>
-				),
+				accessor: "company.coins" as const,
+				Cell: (props: any) => {
+          if (!props.value || !props.value.length) {
+            return <>&mdash;</>;
+          }
+          if (props.value.length === 1) {
+            return <div>{props.value[0]?.ticker}</div>;
+          }
+
+          return (
+            <div>
+              {props.value.map((item: any) => item?.ticker).join(" - ")}
+            </div>
+          );
+        },
 				disableSortBy: true,
 				width: 50,
 			},

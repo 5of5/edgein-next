@@ -1,0 +1,9 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE FUNCTION link_coins(company_row companies)
+-- RETURNS SETOF coins AS $$
+--   SELECT *
+--   FROM coins
+--   WHERE
+--     id = 1
+-- $$ LANGUAGE sql STABLE;

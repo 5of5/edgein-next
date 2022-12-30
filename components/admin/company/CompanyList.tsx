@@ -8,10 +8,12 @@ import {
   EditButton,
   TextInput,
   SelectField,
-  ReferenceField,
+  ReferenceArrayField,
   NumberField,
   ReferenceInput,
   SelectInput,
+  ChipField,
+  SingleFieldList,
 } from "react-admin";
 import { companyLayerChoices } from "../../../utils/constants";
 import ElemList from "../ElemList";
@@ -25,10 +27,16 @@ const filters = [
     resettable
     alwaysOn
   />,
-  <ReferenceInput key="searchCoins" source="coin_id" reference="coins">
+  <ReferenceInput
+    key="searchCoins"
+    source="coin_ids@_contains"
+    reference="coins"
+    label="Coin"
+  >
     <AutocompleteInput
       style={{ padding: 0, border: "none" }}
       optionText="name"
+      label="Coin"
       filterToQuery={(search) => ({ name: search })}
     />
   </ReferenceInput>,
@@ -61,9 +69,11 @@ export const CompanyList = () => {
       <ImageField className="logoFile" source="logo.url" label="Logo" />
       <SelectField source="layer" choices={companyLayerChoices} />
       <TextField source="layer_detail" />
-      <ReferenceField label="Coin" source="coin_id" reference="coins">
-        <TextField source="name" />
-      </ReferenceField>
+      <ReferenceArrayField label="Coins" source="coin_ids" reference="coins">
+        <SingleFieldList>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
       <NumberField source="total_employees" />
       <TextField source="github" />
       {/* <TextField cellClassName=" truncate h-5%" source="notes" /> */}
