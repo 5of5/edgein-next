@@ -169,7 +169,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 				<div className="w-full col-span-5 mt-7 lg:mt-4">
-					<div className="flex shrink-0">
+					<div className="shrink-0">
 						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 							{company.name}
 						</h1>
