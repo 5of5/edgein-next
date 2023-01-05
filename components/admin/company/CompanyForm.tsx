@@ -177,7 +177,10 @@ const CompanyForm = ({
           source="status"
           choices={status}
         />
-        <TextInput className={inputClassName} source="location" />
+        <TextInput className={inputClassName} source="location_json.address" label="Address" />
+        <TextInput className={inputClassName} source="location_json.city" label="City" />
+        <TextInput className={inputClassName} source="location_json.state" label="State" />
+        <TextInput className={inputClassName} source="location_json.country" label="Country" />
         <AutocompleteArrayInput
           className={inputClassName}
           source="tags"
