@@ -12,6 +12,7 @@ import { runGraphQl } from "@/utils";
 import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { PlaceholderActivity } from "@/components/Placeholders";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
@@ -21,11 +22,10 @@ import {
 	GetCompanyQuery,
 	Investment_Rounds,
 	useGetCompanyQuery,
-	Investments,
+	//Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
-//import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import {
 	convertToInternationalCurrencySystem,
@@ -37,10 +37,13 @@ import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 
+import { IconEditPencil, IconAnnotation } from "@/components/Icons";
+
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
 	metrics: Metric[];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {

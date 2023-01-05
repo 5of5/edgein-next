@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { PlaceholderActivity } from "@/components/Placeholders";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemReactions } from "@/components/ElemReactions";
@@ -14,11 +15,7 @@ import { ElemSocialShare } from "@/components/ElemSocialShare";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 
-import {
-	convertToInternationalCurrencySystem,
-	formatDate,
-	runGraphQl,
-} from "@/utils";
+import { convertToIntNum, formatDate, runGraphQl } from "@/utils";
 import {
 	GetVcFirmDocument,
 	GetVcFirmQuery,
@@ -32,11 +29,13 @@ import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
 import { onTrackView } from "@/utils/track";
 import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
+import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
 	getInvestments: Array<Investment_Rounds>;
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
@@ -171,52 +170,52 @@ const VCFirm: NextPage<Props> = (props) => {
             </div>
           )}
 
-          {vcfirm.overview && (
-            <>
-              <div
-                ref={overviewDiv}
-                className={`mt-4 text-base text-slate-600 prose ${
-                  overviewMore ? "" : "line-clamp-3"
-                }`}
-              >
-                {parse(newLineToP(vcfirm.overview))}
-              </div>
-              {overviewDivHeight > 72 && (
-                <ElemButton
-                  onClick={() => setOverviewMore(!overviewMore)}
-                  btn="transparent"
-                  className="px-0 py-0 inline font-normal"
-                >
-                  show {overviewMore ? "less" : "more"}
-                </ElemButton>
-              )}
-            </>
-          )}
-          <div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
-            <ElemReactions
-              resource={vcfirm}
-              resourceType={"vc_firms"}
-              className="w-full sm:w-auto"
-            />
-            <ElemSaveToList
-              resourceName={vcfirm.name}
-              resourceId={vcfirm.id}
-              resourceType={"vc_firms"}
-              slug={vcfirm.slug!}
-            />
-            <ElemSocialShare
-              resourceName={vcfirm.name}
-              resourceTags={vcfirm.tags}
-              resourceTwitterUrl={vcfirm.twitter}
-              sentimentHot={vcfirm.sentiment?.hot}
-              sentimentLike={vcfirm.sentiment?.like}
-              sentimentCrap={vcfirm.sentiment?.crap}
-              resourceType={"vc_firms"}
-            />
-          </div>
-        </div>
-        {/* <div className="col-span-3 mt-7 lg:mt-0">Placeholder</div> */}
-      </div>
+					{vcfirm.overview && (
+						<>
+							<div
+								ref={overviewDiv}
+								className={`mt-4 text-base text-slate-600 prose ${
+									overviewMore ? "" : "line-clamp-3"
+								}`}
+							>
+								{parse(newLineToP(vcfirm.overview))}
+							</div>
+							{overviewDivHeight > 72 && (
+								<ElemButton
+									onClick={() => setOverviewMore(!overviewMore)}
+									btn="transparent"
+									className="px-0 py-0 inline font-normal"
+								>
+									show {overviewMore ? "less" : "more"}
+								</ElemButton>
+							)}
+						</>
+					)}
+					<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+						<ElemReactions
+							resource={vcfirm}
+							resourceType={"vc_firms"}
+							className="w-full sm:w-auto"
+						/>
+						<ElemSaveToList
+							resourceName={vcfirm.name}
+							resourceId={vcfirm.id}
+							resourceType={"vc_firms"}
+							slug={vcfirm.slug!}
+						/>
+						<ElemSocialShare
+							resourceName={vcfirm.name}
+							resourceTags={vcfirm.tags}
+							resourceTwitterUrl={vcfirm.twitter}
+							sentimentHot={vcfirm.sentiment?.hot}
+							sentimentLike={vcfirm.sentiment?.like}
+							sentimentCrap={vcfirm.sentiment?.crap}
+							resourceType={"vc_firms"}
+						/>
+					</div>
+				</div>
+				{/* <div className="col-span-3 mt-7 lg:mt-0">Placeholder</div> */}
+			</div>
 
       <ElemTabBar className="mt-7" tabs={tabBarItems} />
 
@@ -246,106 +245,147 @@ const VCFirm: NextPage<Props> = (props) => {
 							</button> */}
             </div>
 
-            <div className="mt-2 py-4 border-t border-black/10">
-              {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
-                <>
-                  <ul className="flex flex-col">
-                    {sortedInvestmentRounds
-                      .slice(0, activityLimit)
-                      .map((activity: Investment_Rounds, index: number) => {
-                        if (!activity) {
-                          return;
-                        }
-                        return (
-                          <li
-                            key={index}
-                            className="relative pl-6 overflow-hidden group last:-mb-4"
-                          >
-                            <span className="absolute h-full top-0 bottom-0 left-0">
-                              <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-                              <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-                            </span>
-                            <div className="mb-4">
-                              <div className="font-bold inline">
-                                {activity.company && (
-                                  <Link
-                                    href={`/companies/${activity.company["slug"]}`}
-                                  >
-                                    <a className="text-primary-500 hover:bg-slate-200">
-                                      {activity.company["name"]}
-                                    </a>
-                                  </Link>
-                                )}{" "}
-                                raised{" "}
-                                {activity.amount ? (
-                                  <div className="inline text-green-600">
-                                    $
-                                    {`${convertToInternationalCurrencySystem(
-                                      activity.amount
-                                    )}`}
-                                  </div>
-                                ) : (
-                                  <div className="inline text-green-600">
-                                    undisclosed capital
-                                    {/* amount */}
-                                  </div>
-                                )}
-                                :{" "}
-                                {`${
-                                  activity.round
-                                    ? activity.round
-                                    : "Investment round"
-                                } from ${vcfirm.name}`}
-                              </div>
-                              <p className="text-sm">
-                                {formatDate(activity.round_date as string, {
-                                  month: "short",
-                                  day: "2-digit",
-                                  year: "numeric",
-                                })}
-                              </p>
-                            </div>
-                          </li>
-                        );
-                      })}
-                  </ul>
-                  {activityLimit < sortedInvestmentRounds.length && (
-                    <div className="mt-6">
-                      <ElemButton
-                        btn="ol-primary"
-                        onClick={showMoreActivity}
-                        className="w-full"
-                      >
-                        Show More Activity
-                      </ElemButton>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <div className="flex items-center justify-center lg:p-5">
-                  <div className="text-slate-600 lg:text-xl">
-                    There is no recent activity for this organization.
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-      {vcfirm.investors.length > 0 && (
-        <div
-          ref={teamRef}
-          className="mt-7 p-5 rounded-lg bg-white shadow"
-          id="team"
-        >
-          <ElemInvestorGrid
-            // tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
-            showEdit={false}
-            heading="Team"
-            people={vcfirm.investors}
-          />
-        </div>
-      )}
+						<div className="mt-2 py-4 border-t border-black/10">
+							{error ? (
+								<h4>Error loading activity</h4>
+							) : isLoading ? (
+								<>
+									{Array.from({ length: 3 }, (_, i) => (
+										<PlaceholderActivity key={i} />
+									))}
+								</>
+							) : sortedInvestmentRounds?.length === 0 ? (
+								<div className="flex items-center justify-center mx-auto">
+									<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
+										<h2 className="mt-5 text-3xl font-bold">
+											No activity found
+										</h2>
+										<div className="mt-1 text-lg text-slate-600">
+											There is no activity for this organization.
+										</div>
+										<ElemButton
+											onClick={() => props.setToggleFeedbackForm(true)}
+											btn="white"
+											className="mt-3"
+										>
+											<IconAnnotation className="w-6 h-6 mr-1" />
+											Tell us about missing data
+										</ElemButton>
+									</div>
+								</div>
+							) : (
+								sortedInvestmentRounds && (
+									<>
+										<ul className="flex flex-col">
+											{sortedInvestmentRounds
+												.slice(0, activityLimit)
+												.map((activity: Investment_Rounds, index: number) => {
+													if (!activity) {
+														return;
+													}
+													return (
+														<li
+															key={index}
+															className="relative pl-6 overflow-hidden group last:-mb-4"
+														>
+															<span className="absolute h-full top-0 bottom-0 left-0">
+																<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+																<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+															</span>
+															<div className="mb-4">
+																<div className="inline leading-7 text-slate-600">
+																	{activity.company && (
+																		<Link
+																			href={`/companies/${activity.company["slug"]}`}
+																		>
+																			<a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
+																				{activity.company["name"]}
+																			</a>
+																		</Link>
+																	)}{" "}
+																	{activity.round === "Acquisition" ? (
+																		<div className="inline font-bold">
+																			Acquired by{" "}
+																		</div>
+																	) : (
+																		<>
+																			<div className="inline font-bold">
+																				Raised{" "}
+																				{activity.amount ? (
+																					<div className="inline text-green-600">
+																						${convertToIntNum(activity.amount)}
+																					</div>
+																				) : (
+																					<div className="inline text-green-600">
+																						undisclosed capital
+																					</div>
+																				)}
+																				:{" "}
+																				{activity.valuation && (
+																					<div className="inline">
+																						at{" "}
+																						<div className="inline text-green-600">
+																							$
+																							{convertToIntNum(
+																								activity.valuation
+																							)}{" "}
+																						</div>
+																						valuation{" "}
+																					</div>
+																				)}
+																			</div>
+																			{activity.round
+																				? activity.round
+																				: "Investment round"}{" "}
+																			from{" "}
+																		</>
+																	)}
+																	{vcfirm.name}
+																</div>
+																<p className="text-sm">
+																	{formatDate(activity.round_date as string, {
+																		month: "short",
+																		day: "2-digit",
+																		year: "numeric",
+																	})}
+																</p>
+															</div>
+														</li>
+													);
+												})}
+										</ul>
+										{activityLimit < sortedInvestmentRounds.length && (
+											<div className="mt-6">
+												<ElemButton
+													btn="ol-primary"
+													onClick={showMoreActivity}
+													className="w-full"
+												>
+													Show More Activity
+												</ElemButton>
+											</div>
+										)}
+									</>
+								)
+							)}
+						</div>
+					</div>
+				</div>
+			</div>
+			{vcfirm.investors.length > 0 && (
+				<div
+					ref={teamRef}
+					className="mt-7 p-5 rounded-lg bg-white shadow"
+					id="team"
+				>
+					<ElemInvestorGrid
+						// tags={vcfirm.investors.map((investor : Team_Members) => investor.function)}
+						showEdit={false}
+						heading="Team"
+						people={vcfirm.investors}
+					/>
+				</div>
+			)}
 
       {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
         <section
