@@ -49,7 +49,10 @@ export const CompaniesList: FC<Props> = ({
 	useEffect(() => {
 		let funding = 0;
 		let allCompaniesTags: any = [];
-		if (companies) setResourceList(companies);
+		if (companies) {
+			setResourceList(companies);
+			setLoading(false);
+		}
 		if (companies) {
 			companies.forEach(({ company }) => {
 				// setTagsCount(() => {
@@ -74,7 +77,6 @@ export const CompaniesList: FC<Props> = ({
 		}
 		setTags(allCompaniesTags);
 		setFundingTotal(funding);
-		setLoading(false);
 	}, [companies]);
 
 	let reducedTagsArray = tags.reduce(

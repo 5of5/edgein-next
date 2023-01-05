@@ -44,7 +44,10 @@ export const InvestorsList: FC<Props> = ({
 
 	useEffect(() => {
 		let funding = 0;
-		if (vcfirms) setResourceList(vcfirms);
+		if (vcfirms) {
+			setResourceList(vcfirms);
+			setLoading(false);
+		}
 		if (vcfirms) {
 			vcfirms.forEach(({ vc_firm }) => {
 				setTagsCount(() => {
@@ -65,7 +68,6 @@ export const InvestorsList: FC<Props> = ({
 			});
 		}
 		setFundingTotal(funding);
-		setLoading(false);
 	}, [vcfirms]);
 
 	const columns = React.useMemo(
