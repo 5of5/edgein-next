@@ -7,6 +7,7 @@ import {
   SimpleForm,
   TextInput,
   ReferenceInput,
+  ReferenceArrayInput,
   SelectInput,
   NumberInput,
   Button,
@@ -138,6 +139,56 @@ const CompanyForm = ({
         {action === "edit" && !logo && !isImageUpdated && (
           <ImageField className="w-full" source="logo.url" title="Logo" />
         )}
+        <ReferenceArrayInput
+          label="Child companies"
+          source="child_companies"
+          reference="companies"
+        >
+          <AutocompleteArrayInput
+            className={inputClassName}
+            style={{ padding: 0, border: "none" }}
+            optionText="name"
+            filterToQuery={(search) => ({ name: search })}
+            disabled
+          />
+        </ReferenceArrayInput>
+        <ReferenceArrayInput
+          label="Child VC firms"
+          source="child_vc_firms"
+          reference="vc_firms"
+        >
+          <AutocompleteArrayInput
+            className={inputClassName}
+            style={{ padding: 0, border: "none" }}
+            optionText="name"
+            filterToQuery={(search) => ({ name: search })}
+            disabled
+          />
+        </ReferenceArrayInput>
+        <ReferenceInput
+          label="Parent company"
+          source="parent_company"
+          reference="companies"
+        >
+          <AutocompleteInput
+            className={inputClassName}
+            style={{ padding: 0, border: "none" }}
+            optionText="name"
+            filterToQuery={(search) => ({ name: search })}
+          />
+        </ReferenceInput>
+        <ReferenceInput
+          label="Parent VC firm"
+          source="parent_vc_firm"
+          reference="vc_firms"
+        >
+          <AutocompleteInput
+            className={inputClassName}
+            style={{ padding: 0, border: "none" }}
+            optionText="name"
+            filterToQuery={(search) => ({ name: search })}
+          />
+        </ReferenceInput>
         <SelectInput
           className={inputClassName}
           source="layer"
