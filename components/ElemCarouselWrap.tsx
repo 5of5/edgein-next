@@ -102,7 +102,7 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 				</div>
 				<div
 					ref={carousel}
-					className="relative flex flex-row overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x"
+					className="relative flex flex-row overflow-x-scroll overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
 				>
 					{children}
 				</div>
