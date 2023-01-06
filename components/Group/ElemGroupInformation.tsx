@@ -9,7 +9,8 @@ import {
 } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { User_Groups } from "@/graphql/types";
-import { ElemMemberAvatarList } from "./ElemMemberAvatarList";
+import { ElemMemberAvatarList } from "@/components/Group/ElemMemberAvatarList";
+
 type Props = {
 	group: User_Groups;
 	onInvite: () => void;
@@ -27,12 +28,12 @@ export const ElemGroupInformation: React.FC<Props> = ({
 				<div>
 					<button
 						type="button"
-						className="flex items-center gap-x-1"
+						className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
 						onClick={onOpenSettingDialog}
 					>
-						<IconGroup className="w-6 h-6" />
-						<span className="text-2xl font-bold">{group.name}</span>
-						<IconChevronDownMini className="w-6 h-6" />
+						<IconGroup className="w-6 h-6 mr-1" />
+						<span className="font-bold text-xl capitalize">{group.name}</span>
+						<IconChevronDownMini className="h-5 w-5" />
 					</button>
 					<p className="text-slate-600">{group?.description}</p>
 				</div>
@@ -41,10 +42,10 @@ export const ElemGroupInformation: React.FC<Props> = ({
 						members={group.user_group_members}
 						onClick={onOpenSettingDialog}
 					/>
-					<span className="font-medium">{group.user_group_members.length}</span>
+					<span className="font-bold">{group.user_group_members.length}</span>
 					<ElemButton btn="primary" className="gap-x-1" onClick={onInvite}>
 						<IconPlus className="w-5 h-5" />
-						<span>Invite</span>
+						<span>Add People</span>
 					</ElemButton>
 				</div>
 			</div>

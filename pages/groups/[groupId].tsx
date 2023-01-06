@@ -9,17 +9,17 @@ import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
 import ElemSettingDialog from "@/components/Group/ElemSettingDialog";
 import { runGraphQl } from "@/utils";
 import {
-  GetGroupDocument,
-  GetGroupQuery,
-  GetNotesDocument,
-  GetNotesQuery,
-  Notes,
-  User_Groups,
+	GetGroupDocument,
+	GetGroupQuery,
+	GetNotesDocument,
+	GetNotesQuery,
+	Notes,
+	User_Groups,
 } from "@/graphql/types";
 
 type Props = {
 	group: User_Groups;
-  notes: Array<Notes>;
+	notes: Array<Notes>;
 };
 
 const Group: NextPage<Props> = (props: Props) => {
@@ -38,8 +38,8 @@ const Group: NextPage<Props> = (props: Props) => {
 			{ name: "Home", ref: homeRef },
 			{ name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
-			{ name: "Chat", ref: chatRef },
-			{ name: "Settings", ref: settingsRef },
+			// { name: "Chat", ref: chatRef },
+			// { name: "Settings", ref: settingsRef },
 		];
 	}, []);
 
@@ -93,9 +93,9 @@ const Group: NextPage<Props> = (props: Props) => {
 				/>
 			</div>
 
-      <div ref={notesRef}>
-        <ElemNotes notes={props.notes} />
-      </div>
+			<div ref={notesRef}>
+				<ElemNotes notes={props.notes} />
+			</div>
 
 			<div ref={chatRef} />
 			<div ref={settingsRef} />
@@ -130,12 +130,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const group = data.user_groups[0];
 
-  const { data: noteList } = await runGraphQl<GetNotesQuery>(
-		GetNotesDocument,
-    { where: { user_group_id: { _eq: group.id } }},
-	);
+	const { data: noteList } = await runGraphQl<GetNotesQuery>(GetNotesDocument, {
+		where: { user_group_id: { _eq: group.id } },
+	});
 
-  const notes = noteList?.notes || [];
+	const notes = noteList?.notes || [];
 
 	let metaTitle = null;
 	if (group.name) {
@@ -146,12 +145,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		metaDescription = group.description;
 	}
 
-  return {
+	return {
 		props: {
 			metaTitle,
 			metaDescription,
 			group,
-      notes,
+			notes,
 		},
 	};
 };

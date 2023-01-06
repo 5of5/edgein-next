@@ -97,7 +97,9 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Name</h3>
 													<p className="capitalize">{theListName}</p>
 												</div>
-												<div className="text-primary-500">Edit</div>
+												<div className="text-primary-500 text-sm font-bold">
+													Edit
+												</div>
 											</button>
 
 											{theListDescription && (
