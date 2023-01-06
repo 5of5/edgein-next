@@ -23,105 +23,104 @@ type Props = {
 };
 
 const Group: NextPage<Props> = (props: Props) => {
-  const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
-  const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
-  const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
-  const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
-  const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-  const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
+	const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
 
-  const [isOpenSettingDialog, setIsOpenSettingDialog] = useState(false);
+	const [isOpenSettingDialog, setIsOpenSettingDialog] = useState(false);
 
-  const tabBarItems = useMemo(() => {
-    return [
-      { name: "Home", ref: homeRef },
-      { name: "Lists", ref: listsRef },
-      { name: "Notes", ref: notesRef },
-      { name: "Chat", ref: chatRef },
-      { name: "Settings", ref: settingsRef },
-    ];
-  }, []);
+	const tabBarItems = useMemo(() => {
+		return [
+			{ name: "Home", ref: homeRef },
+			{ name: "Lists", ref: listsRef },
+			{ name: "Notes", ref: notesRef },
+			{ name: "Chat", ref: chatRef },
+			{ name: "Settings", ref: settingsRef },
+		];
+	}, []);
 
-  const onOpenInviteDialog = () => {
-    setIsOpenInviteDialog(true);
-  };
+	const onOpenInviteDialog = () => {
+		setIsOpenInviteDialog(true);
+	};
 
-  const onCloseInviteDialog = () => {
-    setIsOpenInviteDialog(false);
-  };
+	const onCloseInviteDialog = () => {
+		setIsOpenInviteDialog(false);
+	};
 
-  const onOpenSettingDialog = () => {
-    setIsOpenSettingDialog(true);
-  };
+	const onOpenSettingDialog = () => {
+		setIsOpenSettingDialog(true);
+	};
 
-  const onCloseSettingDialog = () => {
-    setIsOpenSettingDialog(false);
-  };
+	const onCloseSettingDialog = () => {
+		setIsOpenSettingDialog(false);
+	};
 
-  return (
-    <DashboardLayout>
-      <div ref={homeRef} />
+	return (
+		<DashboardLayout>
+			<div ref={homeRef} />
 
-      {/** TO-DO: Group's name | Members | Social links */}
-      <ElemGroupInformation
-        group={props.group}
-        onInvite={onOpenInviteDialog}
-        onOpenSettingDialog={onOpenSettingDialog}
-      />
+			{/** TO-DO: Group's name | Members | Social links */}
+			<ElemGroupInformation
+				group={props.group}
+				onInvite={onOpenInviteDialog}
+				onOpenSettingDialog={onOpenSettingDialog}
+			/>
 
-      {/** TO-DO: Home | Lists | Notes | Chat | Settings */}
-      <ElemTabBar className="mt-6 border-t-0" tabs={tabBarItems} />
-      <div ref={listsRef}>
-        <ElemLists
-          lists={[
-            {
-              id: "1",
-              name: "Near Protocol Wizards",
-              createdBy: "Ashley Brown",
-              createdAt: "2022-10-05T14:48:00.000Z",
-              following: false,
-            },
-            {
-              id: "2",
-              name: "Near Protocol technology",
-              createdBy: "Ed Parsons",
-              createdAt: "2022-12-05T14:48:00.000Z",
-              following: true,
-            },
-          ]}
-        />
-      </div>
+			{/** TO-DO: Home | Lists | Notes | Chat | Settings */}
+			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
+			<div ref={listsRef}>
+				<ElemLists
+					lists={[
+						{
+							id: "1",
+							name: "Near Protocol Wizards",
+							createdBy: "Ashley Brown",
+							createdAt: "2022-10-05T14:48:00.000Z",
+							following: false,
+						},
+						{
+							id: "2",
+							name: "Near Protocol technology",
+							createdBy: "Ed Parsons",
+							createdAt: "2022-12-05T14:48:00.000Z",
+							following: true,
+						},
+					]}
+				/>
+			</div>
 
       <div ref={notesRef}>
         <ElemNotes notes={props.notes} />
       </div>
 
-      <div ref={chatRef} />
-      <div ref={settingsRef} />
+			<div ref={chatRef} />
+			<div ref={settingsRef} />
 
-      {/** TO-DO:Notes */}
+			{/** TO-DO:Notes */}
 
-      <ElemInviteDialog
-        isOpen={isOpenInviteDialog}
-        group={props.group}
-        onClose={onCloseInviteDialog}
-      />
+			<ElemInviteDialog
+				isOpen={isOpenInviteDialog}
+				group={props.group}
+				onClose={onCloseInviteDialog}
+			/>
 
-      <ElemSettingDialog
-        isOpen={isOpenSettingDialog}
-        group={props.group}
-        onClose={onCloseSettingDialog}
-      />
-    </DashboardLayout>
-  );
+			<ElemSettingDialog
+				isOpen={isOpenSettingDialog}
+				group={props.group}
+				onClose={onCloseSettingDialog}
+			/>
+		</DashboardLayout>
+	);
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { data } = await runGraphQl<GetGroupQuery>(
-		GetGroupDocument,
-		{ id: context.params?.groupId }
-	);
+	const { data } = await runGraphQl<GetGroupQuery>(GetGroupDocument, {
+		id: context.params?.groupId,
+	});
 
 	if (!data?.user_groups[0]) {
 		return {
@@ -129,7 +128,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
-  const group = data.user_groups[0];
+	const group = data.user_groups[0];
 
   const { data: noteList } = await runGraphQl<GetNotesQuery>(
 		GetNotesDocument,
