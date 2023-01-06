@@ -329,7 +329,7 @@ const onFindNoteById = async (id: number) => {
       notes
       created_by
       created_at
-      resource
+      resource_type
       resource_id
       user_group_id
       user_group {
@@ -360,6 +360,26 @@ const isUserCreatorOfGroup = async (groupId: number, userId: number) => {
   return group.created_by_user_id === userId;
 };
 
+const onLookupResource = async (resourceType: string, resourceId: number) => {
+  const lookupResourceQuery = `
+  query lookupResource($resourceId: Int!) {
+    ${resourceType}(where: {id: {_eq: $resourceId}}, limit: 1) {
+      id
+      name
+    }
+  }
+  `;
+  try {
+    const { data } = await query({
+      query: lookupResourceQuery,
+      variables: { resourceId },
+    });
+    return data[resourceType][0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
 const GroupService = {
   isUserMemberOfGroup,
   isUserCreatorOfGroup,
@@ -375,5 +395,6 @@ const GroupService = {
   onFindUserGroupMemberById,
   onAddGroupMember,
   onFindNoteById,
+  onLookupResource,
 };
 export default GroupService;

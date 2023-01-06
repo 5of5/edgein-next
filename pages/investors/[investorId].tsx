@@ -29,6 +29,7 @@ import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
 import { onTrackView } from "@/utils/track";
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
+import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -201,6 +202,9 @@ const VCFirm: NextPage<Props> = (props) => {
 					/>
 				</div>
 				<div className="col-span-8">
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0 mb-6">
+						<ElemOrganizationNotes resourceId={vcfirm.id} resourceType="vc_firms" />
+					</div>
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>

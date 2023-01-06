@@ -35,11 +35,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id
           email
           user_group_id
-          user_group {
-            id
-            name
-            description
-          }
         }
       }
     `,

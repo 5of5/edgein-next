@@ -16360,7 +16360,13 @@ export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
+export type GetNotesQueryVariables = Exact<{
+  where: Notes_Bool_Exp;
+}>;
+
 export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<User_Groups>; };
+
+export type GetNotesQuery = { __typename?: 'query_root', notes: Array<Notes>; };
 
 export const GetAllCoinsDocument = `
     query GetAllCoins {
@@ -17340,3 +17346,42 @@ useGetGroupQuery.getKey = (variables: GetGroupQueryVariables) => ['GetGroup', va
 ;
 
 useGetGroupQuery.fetcher = (variables: GetGroupQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupQuery, GetGroupQueryVariables>(GetGroupDocument, variables, options);
+
+export const GetNotesDocument = `
+query GetNotes($where: notes_bool_exp!) {
+  notes(where: $where, order_by: {created_at: asc}) {
+    id
+    notes
+    created_by
+    created_at
+    updated_at
+    user_group_id
+    resource_type
+    resource_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+`;
+
+export const useGetNotesQuery = <
+      TData = GetNotesQuery,
+      TError = Error
+    >(
+      variables: GetNotesQueryVariables,
+      options?: UseQueryOptions<GetNotesQuery, TError, TData>
+    ) =>
+    useQuery<GetNotesQuery, TError, TData>(
+      ['GetNotes', variables],
+      fetcher<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, variables),
+      options
+    );
+useGetNotesQuery.document = GetNotesDocument;
+
+
+useGetNotesQuery.getKey = (variables: GetNotesQueryVariables) => ['GetNotes', variables];
+;
+
+useGetNotesQuery.fetcher = (variables: GetNotesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, variables, options);

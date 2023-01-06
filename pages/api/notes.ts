@@ -94,7 +94,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
       `;
-console.log('@params', id, notes)
       const {
         data: { update_notes },
       } = await mutate({
