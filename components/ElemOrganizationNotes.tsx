@@ -1,7 +1,7 @@
 import React, { useState, FC } from "react";
 import moment from "moment-timezone";
 import { Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
-import { IconGroup, IconPlus } from "@/components/Icons";
+import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
 import { PlaceholderCompanyCard } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
@@ -48,7 +48,15 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 	return (
 		<>
 			<div className="flex items-center justify-between">
-				<h2 className="text-xl font-bold">{`Notes (${notes.length || 0})`}</h2>
+				<div>
+					<h2 className="text-xl font-bold">
+						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}
+					</h2>
+					<div className="flex gap-1">
+						<IconLockClosed className="h-4 w-4" title="Private" />
+						<p className="text-sm">Private</p>
+					</div>
+				</div>
 				<ElemButton btn="slate" onClick={onOpenNoteForm}>
 					<IconPlus className="w-6 h-6 mr-1" />
 					<span>Start a note</span>
@@ -63,38 +71,38 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 						<PlaceholderCompanyCard key={i} />
 					))}
 				</div>
-			) : notes.length === 0 ? (
-				<div className="flex items-center justify-center mx-auto">
-					<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
-						<h2 className="mt-5 text-3xl font-bold">No notes found</h2>
-						<div className="mt-1 text-lg text-slate-600">
-							There are no notes for this organization.
-						</div>
-					</div>
-				</div>
 			) : (
-				<div className="grid grid-cols-3 gap-4 mt-4">
-					{notes.map((item) => (
-						<div
-							key={item.id}
-							className="flex flex-col mx-auto w-full p-5 cursor-pointer rounded-lg border border-dark-500/10 transition-all hover:scale-102 hover:shadow md:h-full"
-							onClick={() => onSelectNote(item)}
-						>
-							<p className="text-slate-500 break-words line-clamp-6">
-								{item.notes}
-							</p>
-							<div className="border-t border-dark-500/10 mt-3 pt-3">
-								<div className="flex gap-1">
-									<IconGroup className="w-6 h-6" />
-									<p className="text-lg font-bold">{item.user_group.name}</p>
+				<>
+					{notes.length > 0 && (
+						<div className="grid grid-cols-3 gap-4 mt-3">
+							{notes.map((item) => (
+								<div
+									key={item.id}
+									className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
+									onClick={() => onSelectNote(item)}
+								>
+									<p className="grow break-words line-clamp-7 p-4 text-slate-600">
+										{item.notes}
+									</p>
+									<div className="p-4">
+										<div
+											className="flex gap-1"
+											title={`Group: ${item.user_group.name}`}
+										>
+											<IconGroup className="w-6 h-6" />
+											<p className="text-lg font-bold">
+												{item.user_group.name}
+											</p>
+										</div>
+										<p className="text-sm text-slate-600">
+											{moment(item.created_at).format("LL")}
+										</p>
+									</div>
 								</div>
-								<p className="text-sm text-slate-500 mt-1">
-									{moment(item.created_at).format("LL")}
-								</p>
-							</div>
+							))}
 						</div>
-					))}
-				</div>
+					)}
+				</>
 			)}
 
 			<ElemNoteForm
