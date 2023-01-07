@@ -23,7 +23,7 @@ type Props = {
 };
 
 const Group: NextPage<Props> = (props: Props) => {
-	const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
+	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -35,11 +35,11 @@ const Group: NextPage<Props> = (props: Props) => {
 
 	const tabBarItems = useMemo(() => {
 		return [
-			{ name: "Home", ref: homeRef },
+			//{ name: "Home", ref: homeRef },
 			{ name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
 			// { name: "Chat", ref: chatRef },
-			// { name: "Settings", ref: settingsRef },
+			{ name: "Settings", ref: settingsRef },
 		];
 	}, []);
 
@@ -61,7 +61,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
 	return (
 		<DashboardLayout>
-			<div ref={homeRef} />
+			{/* <div ref={homeRef} /> */}
 
 			{/** TO-DO: Group's name | Members | Social links */}
 			<ElemGroupInformation
