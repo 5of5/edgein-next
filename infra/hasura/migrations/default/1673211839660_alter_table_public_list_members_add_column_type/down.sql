@@ -1,4 +1,4 @@
 -- Could not auto-generate a down migration.
 -- Please write an appropriate down migration for the SQL below:
-alter table "public"."list_members" drop column "user_group_id" integer
-  null;
+-- alter table "public"."list_members" add column "type" text
+--  not null default 'follow';
