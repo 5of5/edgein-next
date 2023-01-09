@@ -75,6 +75,15 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 						<PlaceholderCompanyCard key={i} />
 					))}
 				</div>
+			) : notes.length === 0 ? (
+				<div className="flex items-center justify-center mx-auto">
+					<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
+						<h2 className="mt-5 text-3xl font-bold">No notes found</h2>
+						<div className="mt-1 text-lg text-slate-600">
+							There are no notes for this organization.
+						</div>
+					</div>
+				</div>
 			) : (
 				<>
 					{notes.length > 0 && (
