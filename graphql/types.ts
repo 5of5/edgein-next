@@ -17304,6 +17304,7 @@ export const GetGroupDocument = `
     telegram
     twitter
     discord
+    created_by_user_id
     created_by {
       id
       display_name
@@ -17319,6 +17320,7 @@ export const GetGroupDocument = `
         email
         person {
           id
+          slug
           picture
         }
       }

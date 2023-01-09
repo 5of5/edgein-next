@@ -8,6 +8,7 @@ import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
 import ElemSettingDialog from "@/components/Group/ElemSettingDialog";
 import { runGraphQl } from "@/utils";
+import CookieService from "@/utils/cookie";
 import {
 	GetGroupDocument,
 	GetGroupQuery,
@@ -125,6 +126,9 @@ const Group: NextPage<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+	const token = CookieService.getAuthToken(context.req.cookies)
+  const user = await CookieService.getUser(token);
+
 	const { data } = await runGraphQl<GetGroupQuery>(GetGroupDocument, {
 		id: context.params?.groupId,
 	});
@@ -136,6 +140,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 
 	const group = data.user_groups[0];
+
+	const isUserBelongToGroup = group.user_group_members.find(mem => mem.user.id === user?.id);
+	if (!isUserBelongToGroup) {
+		return {
+			notFound: true,
+		};
+	}
 
 	const { data: noteList } = await runGraphQl<GetNotesQuery>(GetNotesDocument, {
 		where: { user_group_id: { _eq: group.id } },

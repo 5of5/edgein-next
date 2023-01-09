@@ -44,7 +44,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="flex items-center justify-between px-6 py-2 bg-white">
 									<div className="flex items-center justify-between gap-x-1">
 										<IconGroup className="w-6 h-6" />
@@ -92,7 +92,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 												<ElemSettingTab group={group} onUpdateGroupData={onUpdateGroupData} />
 											</Tab.Panel>
 											<Tab.Panel>
-												<ElemMemberTab members={group.user_group_members} />
+												<ElemMemberTab group={group} onUpdateGroupData={onUpdateGroupData} />
 											</Tab.Panel>
 										</div>
 									</Tab.Panels>

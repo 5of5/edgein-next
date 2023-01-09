@@ -36,7 +36,7 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 		],
 		fetcher
 	);
-console.log(resource)
+
   const handleClick = () => {
     router.push(
       `/${

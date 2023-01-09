@@ -61,6 +61,11 @@ const onUpdateGroup = async (id: number, changes: User_Groups_Insert_Input) => {
             created_at
             updated_at
             created_by_user_id
+            created_by {
+              id
+              display_name
+              email
+            }
           }
         }
       }
