@@ -43,7 +43,7 @@ const Group: NextPage<Props> = (props: Props) => {
 	const tabBarItems = useMemo(() => {
 		return [
 			//{ name: "Home", ref: homeRef },
-			{ name: "Lists", ref: listsRef },
+			// { name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
 			// { name: "Chat", ref: chatRef },
 			// { name: "Settings", ref: settingsRef },
@@ -79,7 +79,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
 			{/** TO-DO: Home | Lists | Notes | Chat | Settings */}
 			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
-			<div ref={listsRef}>
+			{/* <div ref={listsRef}>
 				<ElemLists
 					lists={[
 						{
@@ -98,7 +98,7 @@ const Group: NextPage<Props> = (props: Props) => {
 						},
 					]}
 				/>
-			</div>
+			</div> */}
 
 			<div ref={notesRef}>
 				<ElemNotes notes={props.notes} />
