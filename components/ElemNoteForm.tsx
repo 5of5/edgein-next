@@ -152,12 +152,17 @@ const ElemNoteForm: React.FC<Props> = ({
 										<p className="font-bold capitalize mb-1">
 											{user?.display_name}
 										</p>
-										<InputSelect
-											options={groupOptions}
-											value={selectedGroup}
-											onChange={setSelectedGroup}
-											className="w-80 text-slate-600 text-base"
-										/>
+                    <div>
+                      {!selectedNote && <label className="text-slate-500">Select the group to add for</label>}
+                      <InputSelect
+                        options={groupOptions}
+                        value={selectedGroup}
+                        onChange={setSelectedGroup}
+                        className="w-80 text-slate-600 text-base"
+                        disabled={!!selectedNote}
+                      />
+                    </div>
+										
 									</div>
 								</div>
 

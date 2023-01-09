@@ -39,7 +39,7 @@ const Group: NextPage<Props> = (props: Props) => {
 			{ name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
 			// { name: "Chat", ref: chatRef },
-			{ name: "Settings", ref: settingsRef },
+			// { name: "Settings", ref: settingsRef },
 		];
 	}, []);
 

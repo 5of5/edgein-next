@@ -366,6 +366,8 @@ const onLookupResource = async (resourceType: string, resourceId: number) => {
     ${resourceType}(where: {id: {_eq: $resourceId}}, limit: 1) {
       id
       name
+      slug
+      logo
     }
   }
   `;

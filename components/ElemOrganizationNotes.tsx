@@ -5,6 +5,7 @@ import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
 import { PlaceholderCompanyCard } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
+import { useUser } from "@/context/userContext";
 
 type Props = {
 	resourceId: number;
@@ -12,7 +13,9 @@ type Props = {
 };
 
 const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
-	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
+  const { myGroups } = useUser();
+
+  const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
 	const [selectedNote, setSelectedNote] = useState<Notes>();
 
@@ -40,6 +43,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		where: {
 			resource_id: { _eq: resourceId },
 			resource_type: { _eq: resourceType },
+      user_group_id: { _in: myGroups.map(item => item.id)},
 		} as Notes_Bool_Exp,
 	});
 

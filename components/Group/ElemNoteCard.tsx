@@ -1,4 +1,5 @@
 import React from "react";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 import moment from "moment-timezone";
 import { Notes } from "@/graphql/types";
@@ -23,6 +24,8 @@ const fetcher = async (url: string, args: any) => {
 };
 
 const ElemNoteCard: React.FC<Props> = ({ data }) => {
+  const router = useRouter();
+
 	const { data: resource } = useSWR(
 		[
 			"/api/get_note_resource/",
@@ -33,16 +36,27 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 		],
 		fetcher
 	);
+console.log(resource)
+  const handleClick = () => {
+    router.push(
+      `/${
+        data.resource_type === "vc_firms" ? "investors" : data.resource_type
+      }/${resource?.slug}`
+    );
+  };
 
 	return (
-		<div className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full">
+		<div
+      className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
+      onClick={handleClick}
+    >
 			<p className="grow break-words line-clamp-7 p-4 text-slate-600">
 				{data.notes}
 			</p>
 			<div className="p-4">
 				<div className="flex items-center gap-2">
 					<ElemPhoto
-						photo={{}}
+						photo={resource?.logo}
 						wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-2 bg-white rounded-lg shadow"
 						imgClass="object-fit max-w-full max-h-full"
 						imgAlt={resource?.name}
