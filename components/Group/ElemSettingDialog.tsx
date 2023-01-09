@@ -9,9 +9,15 @@ type Props = {
 	isOpen: boolean;
 	group: User_Groups;
 	onClose: () => void;
+	onUpdateGroupData: (data: any) => void;
 };
 
-const ElemSettingDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
+const ElemSettingDialog: React.FC<Props> = ({
+	isOpen,
+	group,
+	onClose,
+	onUpdateGroupData,
+}) => {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -83,7 +89,7 @@ const ElemSettingDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 									<Tab.Panels>
 										<div className="p-6">
 											<Tab.Panel>
-												<ElemSettingTab group={group} />
+												<ElemSettingTab group={group} onUpdateGroupData={onUpdateGroupData} />
 											</Tab.Panel>
 											<Tab.Panel>
 												<ElemMemberTab members={group.user_group_members} />

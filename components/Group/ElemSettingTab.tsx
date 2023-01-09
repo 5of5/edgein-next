@@ -5,15 +5,40 @@ import moment from "moment-timezone";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { ElemButton } from "../ElemButton";
+import ElemSettingEditableField from "./ElemSettingEditableField";
 
 type Props = {
 	group: User_Groups;
+	onUpdateGroupData: (data: any) => void;
 };
 
-const ElemSettingTab: React.FC<Props> = ({ group }) => {
+const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 	const router = useRouter();
 
 	const { refetchMyGroups } = useUser();
+
+	const fields = [
+		{
+			label: "Group Name",
+			field: "name",
+		},
+		{
+			label: "Description",
+			field: "description",
+		},
+		{
+			label: "Twitter",
+			field: "twitter",
+		},
+		{
+			label: "Telegram",
+			field: "telegram",
+		},
+		{
+			label: "Discord",
+			field: "discord",
+		},
+	]
 
 	const { mutate } = useMutation(
 		() =>
@@ -39,70 +64,17 @@ const ElemSettingTab: React.FC<Props> = ({ group }) => {
 
 	return (
 		<>
+		
 			<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
-				<div
-					className="flex items-start justify-between px-4 py-3 cursor-pointer hover:bg-slate-100"
-					onClick={() => {}}
-				>
-					<div>
-						<p className="font-bold">Group Name</p>
-						<p className="text-slate-500">{group.name}</p>
-					</div>
-					<div className="font-bold text-sm text-primary-500">Edit</div>
-				</div>
-
-				<div
-					className="flex items-start justify-between px-4 py-3 cursor-pointer hover:bg-slate-100"
-					onClick={() => {}}
-				>
-					<div>
-						<p className="font-bold">Description</p>
-						<p className="text-slate-500">{group.description}</p>
-					</div>
-					<div className="font-bold text-sm text-primary-500">Edit</div>
-				</div>
-
-				<div
-					className="flex items-start justify-between px-4 py-3 cursor-pointer hover:bg-slate-100"
-					onClick={() => {}}
-				>
-					<div>
-						<p className="font-bold">Twitter</p>
-						<p className="text-slate-500">{group.twitter}</p>
-					</div>
-					<div className="font-bold text-sm text-primary-500">Edit</div>
-				</div>
-
-				<div
-					className="flex items-start justify-between px-4 py-3 cursor-pointer hover:bg-slate-100"
-					onClick={() => {}}
-				>
-					<div>
-						<p className="font-bold">Telegram</p>
-						<p className="text-slate-500">{group.telegram}</p>
-					</div>
-					<div className="font-bold text-sm text-primary-500">Edit</div>
-				</div>
-
-				<div
-					className="flex items-start justify-between px-4 py-3 cursor-pointer hover:bg-slate-100"
-					onClick={() => {}}
-				>
-					<div>
-						<p className="font-bold">Discord</p>
-						<p className="text-slate-500">{group.discord}</p>
-					</div>
-					<div className="font-bold text-sm text-primary-500">Edit</div>
-				</div>
-
-				<div className="flex items-start px-4 py-3" onClick={() => {}}>
-					<div>
-						<p className="font-bold">Created by</p>
-						<p className="text-slate-500">{`${
-							group.created_by?.display_name
-						} on ${moment(group.created_at).format("LL")}`}</p>
-					</div>
-				</div>
+				{fields.map(item => (
+					<ElemSettingEditableField
+						key={item.field}
+						label={item.label}
+						field={item.field as keyof User_Groups}
+						group={group}
+						onUpdateGroupData={onUpdateGroupData}
+					/>
+				))}
 
 				<div
 					className="flex items-start px-4 py-3 cursor-pointer space-x-1 hover:bg-slate-100"

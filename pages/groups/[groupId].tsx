@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, MutableRefObject } from "react";
+import React, { useState, useMemo, useRef, MutableRefObject, useEffect } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemTabBar } from "@/components/ElemTabBar";
@@ -23,6 +23,12 @@ type Props = {
 };
 
 const Group: NextPage<Props> = (props: Props) => {
+  const [groupData, setGroupData] = useState<User_Groups>(props.group);
+
+  useEffect(() => {
+    setGroupData(props.group);
+  }, [props.group])
+
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -65,7 +71,7 @@ const Group: NextPage<Props> = (props: Props) => {
 
 			{/** TO-DO: Group's name | Members | Social links */}
 			<ElemGroupInformation
-				group={props.group}
+				group={groupData}
 				onInvite={onOpenInviteDialog}
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
@@ -104,14 +110,15 @@ const Group: NextPage<Props> = (props: Props) => {
 
 			<ElemInviteDialog
 				isOpen={isOpenInviteDialog}
-				group={props.group}
+				group={groupData}
 				onClose={onCloseInviteDialog}
 			/>
 
 			<ElemSettingDialog
 				isOpen={isOpenSettingDialog}
-				group={props.group}
+				group={groupData}
 				onClose={onCloseSettingDialog}
+        onUpdateGroupData={setGroupData}
 			/>
 		</DashboardLayout>
 	);
