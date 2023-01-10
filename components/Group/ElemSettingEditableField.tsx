@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { useMutation } from "react-query";
+import { useUser } from "@/context/userContext";
 import { User_Groups } from "@/graphql/types";
 import { InputText } from "../InputText";
 
@@ -16,11 +17,15 @@ const ElemSettingEditableField: React.FC<Props> = ({
   group,
   onUpdateGroupData,
 }) => {
+  const { user } = useUser();
+
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const [value, setValue] = useState<string>(group[field]);
 
   const [error, setError] = useState<string | null>(null);
+
+  const isGroupManager = user?.id === group.created_by_user_id;
 
   const { mutate } = useMutation(
     () =>
@@ -95,28 +100,32 @@ const ElemSettingEditableField: React.FC<Props> = ({
           <p className="text-slate-500">{group[field]}</p>
         )}
       </div>
-      {editMode ? (
-        <div className="flex items-center gap-3">
-          <div
-            className="font-bold text-sm text-primary-500 cursor-pointer"
-            onClick={handleSave}
-          >
-            Save
-          </div>
-          <div
-            className="font-bold text-sm text-primary-500 cursor-pointer"
-            onClick={handleCancel}
-          >
-            Cancel
-          </div>
-        </div>
-      ) : (
-        <div
-          className="font-bold text-sm text-primary-500 cursor-pointer"
-          onClick={handleOpenEditMode}
-        >
-          Edit
-        </div>
+      {isGroupManager && (
+        <>
+          {editMode ? (
+            <div className="flex items-center gap-3">
+              <div
+                className="font-bold text-sm text-primary-500 cursor-pointer"
+                onClick={handleSave}
+              >
+                Save
+              </div>
+              <div
+                className="font-bold text-sm text-primary-500 cursor-pointer"
+                onClick={handleCancel}
+              >
+                Cancel
+              </div>
+            </div>
+          ) : (
+            <div
+              className="font-bold text-sm text-primary-500 cursor-pointer"
+              onClick={handleOpenEditMode}
+            >
+              Edit
+            </div>
+          )}
+        </>
       )}
     </div>
   );

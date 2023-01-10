@@ -1,23 +1,35 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition, Tab } from "@headlessui/react";
 import { IconGroup, IconX } from "@/components/Icons";
 import { User_Groups } from "@/graphql/types";
 import ElemSettingTab from "./ElemSettingTab";
 import ElemMemberTab from "./ElemMemberTab";
 
+export type SettingTabProps = "settings" | "members";
+
 type Props = {
 	isOpen: boolean;
+	selectedTab?: SettingTabProps;
 	group: User_Groups;
 	onClose: () => void;
 	onUpdateGroupData: (data: any) => void;
+	onInvite: () => void;
 };
 
 const ElemSettingDialog: React.FC<Props> = ({
 	isOpen,
+	selectedTab,
 	group,
 	onClose,
 	onUpdateGroupData,
+	onInvite,
 }) => {
+	const [selectedIndex, setSelectedIndex] = useState<number>(0);
+
+	useEffect(() => {
+		setSelectedIndex(selectedTab === "members" ? 1 : 0);
+	}, [selectedTab])
+
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -56,7 +68,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 										<IconX className="h-6 w-6" />
 									</button>
 								</Dialog.Title>
-								<Tab.Group>
+								<Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
 									<Tab.List className="whitespace-nowrap flex gap-x-4 px-6 font-semibold bg-white border-b border-black/10 transition-all">
 										<Tab
 											className={({ selected }) =>
@@ -89,6 +101,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 												<ElemMemberTab
 													group={group}
 													onUpdateGroupData={onUpdateGroupData}
+													onInvite={onInvite}
 												/>
 											</Tab.Panel>
 										</div>

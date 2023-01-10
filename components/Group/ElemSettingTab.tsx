@@ -18,6 +18,8 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
 	const [leaveError, setLeaveError] = useState<boolean>(false);
 
+	const isGroupManager = user?.id === group.created_by_user_id;
+
 	const fields = [
 		{
 			label: "Group Name",
@@ -128,15 +130,17 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 				</div>
 			</div>
 
-			<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden mt-6">
-				<div
-					className="flex items-center px-4 py-3 cursor-pointer space-x-1 hover:bg-slate-100"
-					onClick={handleDelete}
-				>
-					<IconTrash className="w-6 h-6 text-red-500" />
-					<p className="font-bold text-red-500">Delete Group</p>
+			{isGroupManager && (
+				<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden mt-6">
+					<div
+						className="flex items-center px-4 py-3 cursor-pointer space-x-1 hover:bg-slate-100"
+						onClick={handleDelete}
+					>
+						<IconTrash className="w-6 h-6 text-red-500" />
+						<p className="font-bold text-red-500">Delete Group</p>
+					</div>
 				</div>
-			</div>
+			)}
 		</>
 	);
 };

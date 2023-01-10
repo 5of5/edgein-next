@@ -6,7 +6,7 @@ import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
 import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
-import ElemSettingDialog from "@/components/Group/ElemSettingDialog";
+import ElemSettingDialog, { SettingTabProps } from "@/components/Group/ElemSettingDialog";
 import { runGraphQl } from "@/utils";
 import CookieService from "@/utils/cookie";
 import {
@@ -25,6 +25,8 @@ type Props = {
 
 const Group: NextPage<Props> = (props: Props) => {
   const [groupData, setGroupData] = useState<User_Groups>(props.group);
+
+	const [selectedSettingTab, setSelectedSettingTab] = useState<SettingTabProps>("settings");
 
   useEffect(() => {
     setGroupData(props.group);
@@ -58,7 +60,9 @@ const Group: NextPage<Props> = (props: Props) => {
 		setIsOpenInviteDialog(false);
 	};
 
-	const onOpenSettingDialog = () => {
+	const onOpenSettingDialog = (selectedTab?: SettingTabProps) => {
+		setSelectedSettingTab(selectedTab || "settings");
+
 		setIsOpenSettingDialog(true);
 	};
 
@@ -117,9 +121,11 @@ const Group: NextPage<Props> = (props: Props) => {
 
 			<ElemSettingDialog
 				isOpen={isOpenSettingDialog}
+				selectedTab={selectedSettingTab}
 				group={groupData}
 				onClose={onCloseSettingDialog}
         onUpdateGroupData={setGroupData}
+				onInvite={onOpenInviteDialog}
 			/>
 		</DashboardLayout>
 	);

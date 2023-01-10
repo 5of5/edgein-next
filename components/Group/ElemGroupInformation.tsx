@@ -10,11 +10,12 @@ import {
 import { ElemButton } from "@/components/ElemButton";
 import { User_Groups } from "@/graphql/types";
 import { ElemMemberAvatarList } from "@/components/Group/ElemMemberAvatarList";
+import { SettingTabProps } from "./ElemSettingDialog";
 
 type Props = {
 	group: User_Groups;
 	onInvite: () => void;
-	onOpenSettingDialog: () => void;
+	onOpenSettingDialog: (tab?: SettingTabProps) => void;
 };
 
 export const ElemGroupInformation: React.FC<Props> = ({
@@ -29,7 +30,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 					<button
 						type="button"
 						className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
-						onClick={onOpenSettingDialog}
+						onClick={() => onOpenSettingDialog("settings")}
 					>
 						<IconGroup className="w-6 h-6 mr-1" />
 						<span className="font-bold text-xl capitalize">{group.name}</span>
@@ -40,7 +41,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 				<div className="flex items-center gap-x-2 shrink-0">
 					<ElemMemberAvatarList
 						members={group.user_group_members}
-						onClick={onOpenSettingDialog}
+						onClick={() => onOpenSettingDialog("members")}
 					/>
 					<span className="font-bold">{group.user_group_members.length}</span>
 					<ElemButton

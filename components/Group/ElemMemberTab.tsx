@@ -11,9 +11,10 @@ import { useUser } from "@/context/userContext";
 type Props = {
 	group: User_Groups;
 	onUpdateGroupData: (data: any) => void;
+	onInvite: () => void;
 };
 
-const ElemMemberTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
+const ElemMemberTab: React.FC<Props> = ({ group, onUpdateGroupData, onInvite }) => {
 	const router = useRouter();
 	const { user } = useUser();
 	const isGroupManager = user?.id === group.created_by_user_id;
@@ -91,6 +92,7 @@ const ElemMemberTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 				<ElemButton
 					btn="transparent"
 					className="flex items-center gap-x-2 w-full px-4 py-3 !justify-start"
+					onClick={onInvite}
 				>
 					<div className="p-2 bg-primary-100 rounded-md">
 						<IconPlus className="w-6 h-6 text-primary-500" />
@@ -121,6 +123,9 @@ const ElemMemberTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 						)}
 
 						<p className="font-bold">{member.user.display_name}</p>
+						{member.user.id === group.created_by_user_id && (
+							<span>(Manager)</span>
+						)}
 					</div>
 					{isGroupManager && member.user.id !== group.created_by_user_id && (
 						<Menu as="div" className="relative inline-block text-left">
