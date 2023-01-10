@@ -28,7 +28,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 
 	useEffect(() => {
 		setSelectedIndex(selectedTab === "members" ? 1 : 0);
-	}, [selectedTab])
+	}, [selectedTab]);
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -56,8 +56,8 @@ const ElemSettingDialog: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all overflow-hidden">
-								<Dialog.Title className="flex items-center justify-between px-6 py-2 bg-white">
+							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all">
+								<Dialog.Title className="flex items-center justify-between px-6 py-2 rounded-t-2xl bg-white">
 									<div className="flex items-center justify-between gap-x-1">
 										<IconGroup className="w-6 h-6" />
 										<div className="text-xl font-bold capitalize">
@@ -68,7 +68,10 @@ const ElemSettingDialog: React.FC<Props> = ({
 										<IconX className="h-6 w-6" />
 									</button>
 								</Dialog.Title>
-								<Tab.Group selectedIndex={selectedIndex} onChange={setSelectedIndex}>
+								<Tab.Group
+									selectedIndex={selectedIndex}
+									onChange={setSelectedIndex}
+								>
 									<Tab.List className="whitespace-nowrap flex gap-x-4 px-6 font-semibold bg-white border-b border-black/10 transition-all">
 										<Tab
 											className={({ selected }) =>
