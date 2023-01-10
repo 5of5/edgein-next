@@ -3,10 +3,12 @@ import { useMutation } from "react-query";
 import { Dialog, Transition } from "@headlessui/react";
 import { IconX } from "@/components/Icons";
 import { InputTextarea } from "@/components/InputTextarea";
+import { ElemTooltip } from "@/components/ElemTooltip";
 import { useUser } from "@/context/userContext";
 import { ElemButton } from "./ElemButton";
 import { ElemPhoto } from "./ElemPhoto";
 import { InputSelect } from "./InputSelect";
+import moment from "moment-timezone";
 import { Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
 
 type Props = {
@@ -132,44 +134,61 @@ const ElemNoteForm: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									<span>{type === "edit" ? "Edit Note" : "Create Note"}</span>
-									<button type="button" onClick={onClose}>
+									<button
+										type="button"
+										onClick={onClose}
+										className="focus-visible:outline-none"
+									>
 										<IconX className="w-5 h-5" />
 									</button>
 								</Dialog.Title>
 								<div className="flex items-start gap-2 mt-3 mb-2">
-									<ElemPhoto
-										photo={user?.profilePicture}
-										wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
-										imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-										imgAlt={user?.display_name}
-										placeholder="user"
-										placeholderClass="text-slate-300"
-									/>
+									{/* TODO: Get selectedNote.last_update_by  */}
+									<ElemTooltip
+										content={`Last edited by ${user?.display_name} on ${moment(
+											selectedNote?.updated_at
+										).format("LL h:mma")}`}
+										className="cursor-pointer"
+									>
+										<ElemPhoto
+											photo={user?.profilePicture}
+											wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+											imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+											imgAlt={user?.display_name}
+											placeholder="user"
+											placeholderClass="text-slate-300"
+										/>
+									</ElemTooltip>
+
 									<div>
 										<p className="font-bold capitalize mb-1">
+											{/* TODO: Get selectedNote.last_update_by  */}
 											{user?.display_name}
 										</p>
-                    <div>
-                      {!selectedNote && <label className="text-slate-500">Select the group to add for</label>}
-                      <InputSelect
-                        options={groupOptions}
-                        value={selectedGroup}
-                        onChange={setSelectedGroup}
-                        className="w-80 text-slate-600 text-base"
-                        disabled={!!selectedNote}
-                      />
-                    </div>
-										
+										<div>
+											{!selectedNote && (
+												<label className="text-slate-500">
+													Select the group to add for
+												</label>
+											)}
+											<InputSelect
+												options={groupOptions}
+												value={selectedGroup}
+												onChange={setSelectedGroup}
+												className="w-80 text-slate-600 text-base"
+												disabled={!!selectedNote}
+											/>
+										</div>
 									</div>
 								</div>
 
 								<label>
 									<InputTextarea
 										name="notes"
-										rows={6}
+										rows={8}
 										value={notes}
 										onChange={handleChangeNote}
 										placeholder="What's important about this organization?"

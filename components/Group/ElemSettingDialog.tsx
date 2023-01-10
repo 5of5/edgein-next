@@ -44,7 +44,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all overflow-hidden">
 								<Dialog.Title className="flex items-center justify-between px-6 py-2 bg-white">
 									<div className="flex items-center justify-between gap-x-1">
 										<IconGroup className="w-6 h-6" />
@@ -56,15 +56,6 @@ const ElemSettingDialog: React.FC<Props> = ({
 										<IconX className="h-6 w-6" />
 									</button>
 								</Dialog.Title>
-								{/* <Dialog.Title className="text-xl font-bold flex items-center justify-between p-6">
-									<div className="flex items-center justify-between gap-x-1">
-										<IconGroup className="w-6 h-6" />
-										<span>{group.name}</span>
-									</div>
-									<button type="button" onClick={onClose}>
-										<IconX className="w-5 h-5" />
-									</button>
-								</Dialog.Title> */}
 								<Tab.Group>
 									<Tab.List className="whitespace-nowrap flex gap-x-4 px-6 font-semibold bg-white border-b border-black/10 transition-all">
 										<Tab
@@ -89,10 +80,16 @@ const ElemSettingDialog: React.FC<Props> = ({
 									<Tab.Panels>
 										<div className="p-6">
 											<Tab.Panel>
-												<ElemSettingTab group={group} onUpdateGroupData={onUpdateGroupData} />
+												<ElemSettingTab
+													group={group}
+													onUpdateGroupData={onUpdateGroupData}
+												/>
 											</Tab.Panel>
 											<Tab.Panel>
-												<ElemMemberTab group={group} onUpdateGroupData={onUpdateGroupData} />
+												<ElemMemberTab
+													group={group}
+													onUpdateGroupData={onUpdateGroupData}
+												/>
 											</Tab.Panel>
 										</div>
 									</Tab.Panels>

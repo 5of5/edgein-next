@@ -1,4 +1,4 @@
-import React, { useState, FC } from "react";
+import React, { useState, FC, useEffect } from "react";
 import moment from "moment-timezone";
 import { Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
 import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
@@ -13,9 +13,9 @@ type Props = {
 };
 
 const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
-  const { myGroups } = useUser();
+	const { myGroups } = useUser();
 
-  const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
+	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
 	const [selectedNote, setSelectedNote] = useState<Notes>();
 
@@ -43,7 +43,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		where: {
 			resource_id: { _eq: resourceId },
 			resource_type: { _eq: resourceType },
-      user_group_id: { _in: myGroups.map(item => item.id)},
+			user_group_id: { _in: myGroups.map((item) => item.id) },
 		} as Notes_Bool_Exp,
 	});
 
@@ -94,9 +94,11 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 									className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
 									onClick={() => onSelectNote(item)}
 								>
-									<p className="grow break-words line-clamp-7 p-4 text-slate-600">
-										{item.notes}
-									</p>
+									<div className="grow p-4">
+										<p className="break-words line-clamp-7 text-slate-600">
+											{item.notes}
+										</p>
+									</div>
 									<div className="p-4">
 										<div
 											className="flex gap-1"
@@ -107,8 +109,13 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 												{item.user_group.name}
 											</p>
 										</div>
+
+										{/* <p className="text-sm text-slate-600">
+											Last edit {moment(item.updated_at).format("LL h:mma")}
+										</p> */}
+
 										<p className="text-sm text-slate-600">
-											{moment(item.created_at).format("LL")}
+											Created {moment(item.created_at).format("LL")}
 										</p>
 									</div>
 								</div>

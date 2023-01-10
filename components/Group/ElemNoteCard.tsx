@@ -24,7 +24,7 @@ const fetcher = async (url: string, args: any) => {
 };
 
 const ElemNoteCard: React.FC<Props> = ({ data }) => {
-  const router = useRouter();
+	const router = useRouter();
 
 	const { data: resource } = useSWR(
 		[
@@ -37,22 +37,22 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 		fetcher
 	);
 
-  const handleClick = () => {
-    router.push(
-      `/${
-        data.resource_type === "vc_firms" ? "investors" : data.resource_type
-      }/${resource?.slug}`
-    );
-  };
+	const handleClick = () => {
+		router.push(
+			`/${
+				data.resource_type === "vc_firms" ? "investors" : data.resource_type
+			}/${resource?.slug}`
+		);
+	};
 
 	return (
 		<div
-      className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
-      onClick={handleClick}
-    >
-			<p className="grow break-words line-clamp-7 p-4 text-slate-600">
-				{data.notes}
-			</p>
+			className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
+			onClick={handleClick}
+		>
+			<div className="grow p-4">
+				<p className="break-words line-clamp-7 text-slate-600">{data.notes}</p>
+			</div>
 			<div className="p-4">
 				<div className="flex items-center gap-2">
 					<ElemPhoto
@@ -68,8 +68,11 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 						{resource?.name}
 					</h2>
 				</div>
+				{/* <p className="pt-2 text-sm text-slate-600">
+					Last edit {moment(data?.updated_at).format("LL h:mma")}
+				</p> */}
 				<p className="pt-2 text-sm text-slate-600">
-					Created {moment(data.created_at).format("LL")}
+					Created {moment(data?.created_at).format("LL")}
 				</p>
 			</div>
 		</div>

@@ -35,9 +35,9 @@ export const ElemGroupInformation: React.FC<Props> = ({
 						<span className="font-bold text-xl capitalize">{group.name}</span>
 						<IconChevronDownMini className="h-5 w-5" />
 					</button>
-					<p className="text-slate-600">{group?.description}</p>
+					<p className="max-w-lg text-slate-600">{group?.description}</p>
 				</div>
-				<div className="flex items-center gap-x-2">
+				<div className="flex items-center gap-x-2 shrink-0">
 					<ElemMemberAvatarList
 						members={group.user_group_members}
 						onClick={onOpenSettingDialog}

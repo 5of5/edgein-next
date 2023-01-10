@@ -77,7 +77,11 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 							<Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									<span>Create Group</span>
-									<button type="button" onClick={onClose}>
+									<button
+										type="button"
+										onClick={onClose}
+										className="focus-visible:outline-none"
+									>
 										<IconX className="w-5 h-5" />
 									</button>
 								</Dialog.Title>
