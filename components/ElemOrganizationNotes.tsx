@@ -39,6 +39,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		data: noteList,
 		error,
 		isLoading,
+    refetch,
 	} = useGetNotesQuery({
 		where: {
 			resource_id: { _eq: resourceId },
@@ -132,6 +133,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 				resourceId={resourceId}
 				resourceType={resourceType}
 				onClose={onCloseNoteForm}
+        onRefetchNotes={refetch}
 			/>
 		</>
 	);

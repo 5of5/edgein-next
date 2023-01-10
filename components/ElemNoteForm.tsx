@@ -9,7 +9,7 @@ import { ElemButton } from "./ElemButton";
 import { ElemPhoto } from "./ElemPhoto";
 import { InputSelect } from "./InputSelect";
 import moment from "moment-timezone";
-import { Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
+import { Notes } from "@/graphql/types";
 
 type Props = {
 	isOpen: boolean;
@@ -18,6 +18,7 @@ type Props = {
 	resourceId: number;
 	resourceType: string;
 	onClose: () => void;
+	onRefetchNotes: () => void;
 };
 
 const ElemNoteForm: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const ElemNoteForm: React.FC<Props> = ({
 	resourceId,
 	resourceType,
 	onClose,
+	onRefetchNotes,
 }) => {
 	const { user, myGroups } = useUser();
 
@@ -52,16 +54,6 @@ const ElemNoteForm: React.FC<Props> = ({
 				groupOptions[0]
 		);
 	}, [selectedNote, groupOptions]);
-
-	const { refetch } = useGetNotesQuery(
-		{
-			where: {
-				resource_id: { _eq: resourceId },
-				resource_type: { _eq: resourceType },
-			} as Notes_Bool_Exp,
-		},
-		{ enabled: false }
-	);
 
 	const { mutate, isLoading } = useMutation(
 		() => {
@@ -95,7 +87,7 @@ const ElemNoteForm: React.FC<Props> = ({
 		{
 			onSuccess: () => {
 				onClose();
-				refetch();
+				onRefetchNotes();
 			},
 		}
 	);
