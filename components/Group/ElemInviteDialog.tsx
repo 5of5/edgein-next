@@ -5,6 +5,7 @@ import { useMutation } from "react-query";
 import { IconX } from "@/components/Icons";
 import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/useDebounce";
+import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemButton } from "../ElemButton";
 
 type Props = {
@@ -129,29 +130,40 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 													/>
 												</div>
 
-												<Combobox.Options className="absolute shadow-md z-50 bg-white border border-slate-200 w-full max-h-60 overflow-scroll">
-													{isLoading && <p>Searching...</p>}
-													{searchedPeople?.length > 0 ? (
+												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white border border-slate-200 w-full max-h-60 overflow-scroll">
+													{isLoading ? (
+														<div className="px-6 py-4 text-center text-lg font-bold">
+															Searching...
+														</div>
+													) : searchedPeople?.length > 0 ? (
 														searchedPeople.map((person: any) => (
 															<Combobox.Option
 																key={person.id}
 																value={person}
-																className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50"
+																className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
 															>
-																<div className="w-8 h-8 aspect-square shrink-0 bg-white overflow-hidden rounded-full ">
-																	<img
-																		src={person.picture?.url}
-																		alt={person.name}
-																		className="object-contain w-full h-full rounded-full border border-gray-50"
+																{person?.picture ? (
+																	<ElemPhoto
+																		wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-full"
+																		imgClass="object-contain w-full h-full border border-slate-100 "
+																		photo={person?.picture}
+																		placeholder="user2"
+																		placeholderClass="text-slate-300"
+																		imgAlt={person.name}
 																	/>
-																</div>
+																) : (
+																	<div className="flex items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
+																		{person.name?.charAt(0)}
+																	</div>
+																)}
+
 																<span>{person.name}</span>
 															</Combobox.Option>
 														))
 													) : (
-														<p className="text-sm text-center italic py-2">
-															Not found
-														</p>
+														<div className="px-6 py-4 text-center text-lg font-bold">
+															Not Found
+														</div>
 													)}
 												</Combobox.Options>
 											</div>
