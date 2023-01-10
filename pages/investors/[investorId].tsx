@@ -261,43 +261,48 @@ const VCFirm: NextPage<Props> = (props) => {
 																<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
 															</span>
 															<div className="mb-4">
-																<div className="font-bold inline">
+																<div className="inline leading-7 text-slate-600">
 																	{activity.company && (
 																		<Link
 																			href={`/companies/${activity.company["slug"]}`}
 																		>
-																			<a className="text-primary-500 hover:bg-slate-200">
+																			<a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
 																				{activity.company["name"]}
 																			</a>
 																		</Link>
 																	)}{" "}
 																	{activity.round === "Acquisition" ? (
-																		<>Acquired by </>
+																		<div className="inline font-bold">
+																			Acquired by{" "}
+																		</div>
 																	) : (
 																		<>
-																			Raised{" "}
-																			{activity.amount ? (
-																				<div className="inline text-green-600">
-																					${convertToIntNum(activity.amount)}
-																				</div>
-																			) : (
-																				<div className="inline text-green-600">
-																					undisclosed capital
-																				</div>
-																			)}
-																			:{" "}
-																			{activity.valuation && (
-																				<div className="inline">
-																					at{" "}
+																			<div className="inline font-bold">
+																				Raised{" "}
+																				{activity.amount ? (
 																					<div className="inline text-green-600">
-																						$
-																						{convertToIntNum(
-																							activity.valuation
-																						)}{" "}
+																						${convertToIntNum(activity.amount)}
 																					</div>
-																					valuation{" "}
-																				</div>
-																			)}
+																				) : (
+																					<div className="inline text-green-600">
+																						undisclosed capital
+																					</div>
+																				)}
+																				:{" "}
+																				{activity.valuation && (
+																					<div className="inline">
+																						at{" "}
+																						<div className="inline text-green-600">
+																							$
+																							{convertToIntNum(
+																								activity.valuation
+																							)}{" "}
+																						</div>
+																						valuation{" "}
+																					</div>
+																				)}
+																			</div>
+
 																			{activity.round
 																				? activity.round
 																				: "Investment round"}{" "}

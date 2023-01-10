@@ -13,6 +13,8 @@ import { ElemReactions } from "@/components/ElemReactions";
 import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/userContext";
 
+import { PlaceholderTable } from "@/components/Placeholders";
+
 type Props = {
 	companies?: Follows_Companies[];
 	isCustomList?: boolean;
@@ -25,6 +27,8 @@ export const CompaniesList: FC<Props> = ({
 	selectedListName,
 }) => {
 	const { refreshProfile } = useUser();
+
+	const [loading, setLoading] = React.useState(true);
 
 	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
@@ -45,7 +49,10 @@ export const CompaniesList: FC<Props> = ({
 	useEffect(() => {
 		let funding = 0;
 		let allCompaniesTags: any = [];
-		if (companies) setResourceList(companies);
+		if (companies) {
+			setResourceList(companies);
+			setLoading(false);
+		}
 		if (companies) {
 			companies.forEach(({ company }) => {
 				// setTagsCount(() => {
@@ -273,7 +280,6 @@ export const CompaniesList: FC<Props> = ({
 					</>
 				)}
 			</div>
-
 			{sortedTags.length > 0 && (
 				<div className="sm:flex items-start w-full mb-3">
 					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
@@ -335,105 +341,108 @@ export const CompaniesList: FC<Props> = ({
 			)}
 
 			<div className="overflow-scroll border border-black/10 rounded-lg">
-				<table
-					{...getTableProps()}
-					className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
-				>
-					<thead>
-						{headerGroups.map((headerGroup) => {
-							const { key, ...restHeaderGroupProps } =
-								headerGroup.getHeaderGroupProps();
-							return (
-								<tr key={key} {...restHeaderGroupProps} className="table-row">
-									{headerGroup.headers.map((column: any) => {
-										const { key, ...restColumnProps }: any = ({} = {
-											...column.getHeaderProps(column.getSortByToggleProps(), {
-												style: {
-													width: column.width,
-													minWidth: column.width,
-													maxWidth: column.width,
-												},
-											}),
-										});
-										return (
-											<th
-												key={key}
-												{...restColumnProps}
-												className={`px-2 py-2 whitespace-nowrap text-sm bg-white font-bold text-left ${
-													column.canSort ? "group hover:text-primary-500" : ""
-												}`}
-												title={column.canSort ? `Sort By ${column.Header}` : ""}
-											>
-												{column.render("Header")}
-												{generateSortingIndicator(column)}
-											</th>
-										);
-									})}
-								</tr>
-							);
-						})}
-					</thead>
-					<tbody
-						{...getTableBodyProps()}
-						className="bg-white divide-y divide-black/10"
+				{page.length > 0 && !loading ? (
+					<table
+						{...getTableProps()}
+						className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
 					>
-						{page.length === 0 && (
-							<tr>
-								<td colSpan={6}>
-									<div className="flex flex-col items-center justify-center  p-5 text-slate-600">
-										<div className="max-w-sm text-center">
-											There are no companies in this list.
-										</div>
-										<ElemButton
-											href="/companies"
-											btn="transparent"
-											arrow
-											className="px-0"
-										>
-											Explore Companies
-										</ElemButton>
-									</div>
-								</td>
-							</tr>
-						)}
+						<thead>
+							{headerGroups.map((headerGroup) => {
+								const { key, ...restHeaderGroupProps } =
+									headerGroup.getHeaderGroupProps();
+								return (
+									<tr key={key} {...restHeaderGroupProps} className="table-row">
+										{headerGroup.headers.map((column: any) => {
+											const { key, ...restColumnProps }: any = ({} = {
+												...column.getHeaderProps(
+													column.getSortByToggleProps(),
+													{
+														style: {
+															width: column.width,
+															minWidth: column.width,
+															maxWidth: column.width,
+														},
+													}
+												),
+											});
+											return (
+												<th
+													key={key}
+													{...restColumnProps}
+													className={`px-2 py-2 whitespace-nowrap text-sm bg-white font-bold text-left ${
+														column.canSort ? "group hover:text-primary-500" : ""
+													}`}
+													title={
+														column.canSort ? `Sort By ${column.Header}` : ""
+													}
+												>
+													{column.render("Header")}
+													{generateSortingIndicator(column)}
+												</th>
+											);
+										})}
+									</tr>
+								);
+							})}
+						</thead>
+						<tbody
+							{...getTableBodyProps()}
+							className="bg-white divide-y divide-black/10"
+						>
+							{page.map((row) => {
+								prepareRow(row);
+								const { key, ...restRowProps } = row.getRowProps();
 
-						{page.map((row) => {
-							prepareRow(row);
-							const { key, ...restRowProps } = row.getRowProps();
+								return (
+									<tr
+										key={key}
+										{...restRowProps}
+										className="table-row bg-white even:bg-slate-50"
+										// onClick={() =>
+										// 	handleRowClick(`/companies/${row?.original.company?.slug}`)
+										// }
+									>
+										{row.cells.map((cell) => {
+											const { key, ...restCellProps } = cell.getCellProps({
+												style: {
+													width: cell.column.width,
+													minWidth: cell.column.width,
+													maxWidth: cell.column.width,
+												},
+											});
 
-							return (
-								<tr
-									key={key}
-									{...restRowProps}
-									className="table-row bg-white even:bg-slate-50"
-									// onClick={() =>
-									// 	handleRowClick(`/companies/${row?.original.company?.slug}`)
-									// }
-								>
-									{row.cells.map((cell) => {
-										const { key, ...restCellProps } = cell.getCellProps({
-											style: {
-												width: cell.column.width,
-												minWidth: cell.column.width,
-												maxWidth: cell.column.width,
-											},
-										});
-
-										return (
-											<td
-												key={key}
-												{...restCellProps}
-												className="align-top text-sm px-2 py-2"
-											>
-												{cell.render("Cell")}
-											</td>
-										);
-									})}
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+											return (
+												<td
+													key={key}
+													{...restCellProps}
+													className="align-top text-sm px-2 py-2"
+												>
+													{cell.render("Cell")}
+												</td>
+											);
+										})}
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				) : page.length === 0 && !loading ? (
+					<div className="flex flex-col w-full items-center justify-center  p-5 text-slate-600">
+						<div className="max-w-sm text-center">
+							There are no companies in this list.
+						</div>
+						<ElemButton
+							href="/companies"
+							btn="transparent"
+							arrow
+							className="px-0"
+						>
+							Explore Companies
+						</ElemButton>
+					</div>
+				) : (
+					<PlaceholderTable />
+				)}
 			</div>
 			<Pagination
 				shownItems={page?.length}

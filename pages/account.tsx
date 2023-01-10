@@ -6,17 +6,25 @@ import { IconLinkedIn } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemShareMenu } from "@/components/ElemShareMenu";
 import { EditSection } from "@/components/Dashboard/EditSection";
+import { useGetUserProfileQuery } from "@/graphql/types";
 
 const validator = require("validator");
 
 export default function Account() {
 	const { user, error, loading } = useAuth();
+
+	const { data: userProfile } = useGetUserProfileQuery({
+		id: user?.id || 0,
+	});
+
 	const [isEditPassword, setEditPassword] = useState(false);
 
 	const [newPassword, setNewPassword] = useState("");
 	const [reEnterPassword, setReEnterPassword] = useState("");
 	const [errorMessage, setErrorMessage] = useState("");
 	const [reEnterErrorMessage, setReEnterErrorMessage] = useState("");
+
+	const personSlug = userProfile?.users_by_pk?.person?.slug;
 
 	const validate = (value: string) => {
 		setNewPassword(value);
@@ -112,7 +120,7 @@ export default function Account() {
 
 					{user && user.reference_id && (
 						<div className="mt-2 sm:mt-0">
-							<ElemShareMenu user={user} />
+							<ElemShareMenu user={user} personSlug={personSlug} />
 						</div>
 					)}
 				</div>

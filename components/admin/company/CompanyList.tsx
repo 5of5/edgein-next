@@ -101,6 +101,7 @@ export const CompanyList = () => {
       <TextField source="aliases" />
       <TextField source="twitter" />
       <TextField source="location" />
+      <TextField source="location_json" />
       <TextField source="discord" />
       <TextField source="glassdoor" />
       <FunctionField

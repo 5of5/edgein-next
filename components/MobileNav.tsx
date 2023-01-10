@@ -129,7 +129,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 							<div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
 						</Transition.Child>
 
-						<div className="fixed inset-0 z-40 flex">
+						<div className="fixed inset-0 z-40 flex justify-end">
 							<div className="flex-shrink-0 w-14">
 								{/* Dummy element to force sidebar to shrink to fit close icon */}
 							</div>
