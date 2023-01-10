@@ -19,7 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   query query_people($text: String) {
     people(where: {_or: [
       {name: {_ilike: $text}}, 
-      {work_email: {_ilike: $text}}
+      {work_email: {_ilike: $text}},
+      {personal_email: {_ilike: $text}},
     ]}, 
       limit: 100) {
       id
@@ -27,6 +28,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       slug
       picture
       work_email
+      personal_email
     }
   }
   `;

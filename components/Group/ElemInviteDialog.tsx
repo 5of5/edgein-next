@@ -32,6 +32,29 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 
 	const isLoading = !error && !searchedPeople;
 
+	const onSendInvitationMail = async (
+		email: string,
+		recipientName: string,
+		groupName: string,
+		groupId: number,
+	) => {
+		await fetch("/api/send_invite_group_member_mail/", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Accept: "application/json",
+			},
+			body: JSON.stringify({
+				resource: {
+					recipientName,
+					groupName,
+					groupId,
+				},
+				email: "nha@techlist.com",
+			}),
+		});
+	};
+
 	const {
 		mutate,
 		isLoading: isSubmitting,
@@ -48,7 +71,14 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 				email: selectedPerson.work_email || selectedPerson.slug,
 				groupId: group.id,
 			}),
-		})
+		}), {
+			onSuccess: () => {
+				const emailAddress = selectedPerson.work_email || selectedPerson.personal_email;
+				if (emailAddress) {
+					onSendInvitationMail(emailAddress, selectedPerson.name, group.name, group.id)
+				}
+			}
+		}
 	);
 
 	useEffect(() => {
