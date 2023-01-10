@@ -171,7 +171,7 @@ const ElemNoteForm: React.FC<Props> = ({
 										<div>
 											{!selectedNote && (
 												<label className="text-slate-500">
-													Select the group to add for
+													What group can see your note?
 												</label>
 											)}
 											<InputSelect

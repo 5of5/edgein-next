@@ -86,7 +86,7 @@ const ElemMemberTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 	};
 
 	return (
-		<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
+		<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
 			<div className="hover:bg-slate-100">
 				<ElemButton
 					btn="transparent"

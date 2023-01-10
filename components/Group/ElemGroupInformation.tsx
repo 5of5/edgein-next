@@ -5,7 +5,7 @@ import {
 	IconTwitter,
 	IconTelegram,
 	IconDiscord,
-	IconPlus,
+	IconUserPlus,
 } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { User_Groups } from "@/graphql/types";
@@ -43,9 +43,13 @@ export const ElemGroupInformation: React.FC<Props> = ({
 						onClick={onOpenSettingDialog}
 					/>
 					<span className="font-bold">{group.user_group_members.length}</span>
-					<ElemButton btn="primary" className="gap-x-1" onClick={onInvite}>
-						<IconPlus className="w-5 h-5" />
-						<span>Add People</span>
+					<ElemButton
+						btn="primary"
+						className="gap-x-1 px-1.5 sm:px-4"
+						onClick={onInvite}
+					>
+						<IconUserPlus className="w-5 h-5" />
+						<span className="hidden sm:inline">Add People</span>
 					</ElemButton>
 				</div>
 			</div>
