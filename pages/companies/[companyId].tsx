@@ -15,6 +15,7 @@ import { PlaceholderActivity } from "@/components/Placeholders";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
+import { ElemVelocity } from "@/components/Company/ElemVelocity";
 import {
 	Companies,
 	GetCompanyDocument,
@@ -335,12 +336,14 @@ const Company: NextPage<Props> = (props: Props) => {
 								githubVerified={company.github}
 								linkedInVerified={company.company_linkedin}
 							/>
-							{/* <ElemVelocity
-								className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-								heading="Velocity"
-								employeeListings={"4"}
-								tokenExchangeValue={"2.3"}
-							/> */}
+							{(company.velocity_linkedin || company.velocity_token) && (
+								<ElemVelocity
+									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+									heading="Velocity"
+									employeeListings={company.velocity_linkedin}
+									tokenExchangeValue={company.velocity_token}
+								/>
+							)}
 						</div>
 					)}
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">

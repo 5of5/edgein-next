@@ -1,6 +1,6 @@
 import React from "react";
-import { ElemTooltip } from "../ElemTooltip";
-import { numberWithCommas } from "../../utils";
+import { ElemTooltip } from "@/components/ElemTooltip";
+import { numberWithCommas } from "@/utils";
 import {
 	IconProps,
 	IconUsers,
@@ -8,7 +8,7 @@ import {
 	IconQuestion,
 	IconArrowUp,
 	IconArrowDown,
-} from "../Icons";
+} from "@/components/Icons";
 
 type Props = {
 	className?: string;
