@@ -93,7 +93,7 @@ const ElemMemberTab: React.FC<Props> = ({
 
 	return (
 		<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10">
-			<div className="hover:bg-slate-100">
+			<div className="rounded-t-lg hover:bg-slate-100">
 				<ElemButton
 					btn="transparent"
 					className="flex items-center gap-x-2 w-full px-4 py-3 !justify-start"
@@ -106,7 +106,7 @@ const ElemMemberTab: React.FC<Props> = ({
 				</ElemButton>
 			</div>
 
-			{group.user_group_members.map((member: User_Group_Members) => {
+			{group.user_group_members.map((member: User_Group_Members, index) => {
 				const theMember = (
 					<div
 						className="flex items-center justify-between px-4 py-3 group"
