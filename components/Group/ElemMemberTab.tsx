@@ -160,8 +160,8 @@ const ElemMemberTab: React.FC<Props> = ({
 														{({ active }) => (
 															<button
 																className={`${
-																	active && "bg-primary-500 text-white"
-																} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+																	active && "bg-slate-200 text-primary-500"
+																} group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
 																onClick={() =>
 																	handleViewProfile(member.user.person?.slug)
 																}
@@ -175,8 +175,8 @@ const ElemMemberTab: React.FC<Props> = ({
 													{({ active }) => (
 														<button
 															className={`${
-																active && "bg-primary-500 text-white"
-															} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+																active && "bg-slate-200 text-primary-500"
+															} group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
 															onClick={() =>
 																handleMakeGroupManager(member.user.id)
 															}
@@ -192,7 +192,7 @@ const ElemMemberTab: React.FC<Props> = ({
 																active
 																	? "bg-red-500 text-white"
 																	: "text-red-500"
-															} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+															} group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
 															onClick={() => handleRemoveFromGroup(member.id)}
 														>
 															Remove from Group

@@ -36,7 +36,7 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 		email: string,
 		recipientName: string,
 		groupName: string,
-		groupId: number,
+		groupId: number
 	) => {
 		await fetch("/api/send_invite_group_member_mail/", {
 			method: "POST",
@@ -60,24 +60,32 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 		isLoading: isSubmitting,
 		isSuccess,
 		reset,
-	} = useMutation(() =>
-		fetch("/api/invite_group_member/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				email: selectedPerson.work_email || selectedPerson.slug,
-				groupId: group.id,
+	} = useMutation(
+		() =>
+			fetch("/api/invite_group_member/", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					email: selectedPerson.work_email || selectedPerson.slug,
+					groupId: group.id,
+				}),
 			}),
-		}), {
+		{
 			onSuccess: () => {
-				const emailAddress = selectedPerson.work_email || selectedPerson.personal_email;
+				const emailAddress =
+					selectedPerson.work_email || selectedPerson.personal_email;
 				if (emailAddress) {
-					onSendInvitationMail(emailAddress, selectedPerson.name, group.name, group.id)
+					onSendInvitationMail(
+						emailAddress,
+						selectedPerson.name,
+						group.name,
+						group.id
+					);
 				}
-			}
+			},
 		}
 	);
 
@@ -120,7 +128,7 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-lg transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									{isSuccess ? (
 										<p className="text-2xl font-bold">Success</p>
@@ -174,8 +182,8 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 															>
 																{person?.picture ? (
 																	<ElemPhoto
-																		wrapClass="w-10 h-10 aspect-square shrink-0 bg-white overflow-hidden bg-slate-100 rounded-full"
-																		imgClass="object-contain w-full h-full border border-slate-100 "
+																		wrapClass="w-10 h-10 aspect-square shrink-0"
+																		imgClass="object-cover rounded-full border border-slate-100"
 																		photo={person?.picture}
 																		placeholder="user2"
 																		placeholderClass="text-slate-300"
