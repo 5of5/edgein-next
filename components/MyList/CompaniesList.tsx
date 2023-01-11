@@ -6,7 +6,6 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { IconSortUp, IconSortDown, IconX, IconTrash } from "@/components/Icons";
 import { Pagination } from "@/components/Pagination";
 import { ElemButton } from "@/components/ElemButton";
-import { ElemDeleteListsModal } from "./ElemDeleteListsModal";
 import { useCheckboxes } from "./IndeterminateCheckbox";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { ElemReactions } from "@/components/ElemReactions";
@@ -29,8 +28,6 @@ export const CompaniesList: FC<Props> = ({
 	const { refreshProfile } = useUser();
 
 	const [loading, setLoading] = React.useState(true);
-
-	const [showDeleteItemsModal, setShowDeleteItemsModal] = useState(false);
 
 	const [resourceList, setResourceList] = useState<Follows_Companies[]>();
 
@@ -267,17 +264,6 @@ export const CompaniesList: FC<Props> = ({
 							${convertToInternationalCurrencySystem(fundingTotal)}
 						</div>
 					</div>
-				)}
-
-				{isCustomList && Object.keys(selectedRowIds).length > 0 && (
-					<>
-						<ElemDeleteListsModal
-							isOpen={showDeleteItemsModal}
-							onCloseModal={() => setShowDeleteItemsModal(false)}
-							listName={selectedListName}
-							onDelete={onRemove}
-						/>
-					</>
 				)}
 			</div>
 			{sortedTags.length > 0 && (
