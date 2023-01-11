@@ -50,7 +50,7 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 					groupName,
 					groupId,
 				},
-				email: "nha@techlist.com",
+				email,
 			}),
 		});
 	};
