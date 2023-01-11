@@ -68,6 +68,7 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 				</p> */}
 					<p className="pt-2 text-sm text-slate-600">
 						Created {moment(data?.created_at).format("LL")}
+						{/* by author */}
 					</p>
 				</div>
 			</div>

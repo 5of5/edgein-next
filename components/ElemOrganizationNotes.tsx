@@ -2,7 +2,7 @@ import React, { useState, FC, useEffect } from "react";
 import moment from "moment-timezone";
 import { Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
 import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
-import { PlaceholderCompanyCard } from "./Placeholders";
+import { PlaceholderNote } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
 import { useUser } from "@/context/userContext";
@@ -39,7 +39,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		data: noteList,
 		error,
 		isLoading,
-    refetch,
+		refetch,
 	} = useGetNotesQuery({
 		where: {
 			resource_id: { _eq: resourceId },
@@ -71,9 +71,9 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 			{error ? (
 				<h4>Error loading notes</h4>
 			) : isLoading ? (
-				<div className="grid grid-cols-3 gap-4 mt-4">
+				<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
 					{Array.from({ length: 3 }, (_, i) => (
-						<PlaceholderCompanyCard key={i} />
+						<PlaceholderNote key={i} />
 					))}
 				</div>
 			) : notes.length === 0 ? (
@@ -88,7 +88,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 			) : (
 				<>
 					{notes.length > 0 && (
-						<div className="grid grid-cols-3 gap-4 mt-3">
+						<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
 							{notes.map((item) => (
 								<div
 									key={item.id}
@@ -133,7 +133,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 				resourceId={resourceId}
 				resourceType={resourceType}
 				onClose={onCloseNoteForm}
-        onRefetchNotes={refetch}
+				onRefetchNotes={refetch}
 			/>
 		</>
 	);

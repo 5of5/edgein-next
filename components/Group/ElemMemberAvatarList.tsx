@@ -26,7 +26,7 @@ export const ElemMemberAvatarList: React.FC<Props> = ({ members, onClick }) => {
 						/>
 					) : (
 						<div
-							className={`flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 text-lg capitalize relative z-${
+							className={`flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize relative  z-${
 								(3 - index) * 10
 							}`}
 						>

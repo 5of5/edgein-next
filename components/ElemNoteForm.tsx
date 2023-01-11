@@ -61,11 +61,11 @@ const ElemNoteForm: React.FC<Props> = ({
 
 	const handleOpenDeleteModal = () => {
 		setIsOpenDeleteModal(true);
-	}
+	};
 
 	const handleCloseDeleteModal = () => {
 		setIsOpenDeleteModal(false);
-	}
+	};
 
 	const { mutate, isLoading } = useMutation(
 		() => {
@@ -129,7 +129,7 @@ const ElemNoteForm: React.FC<Props> = ({
 			onSuccess: async (response) => {
 				handleCloseDeleteModal();
 				if (response.status !== 200) {
-          const err = await response.json();
+					const err = await response.json();
 					toast.custom(
 						(t) => (
 							<div
@@ -145,10 +145,10 @@ const ElemNoteForm: React.FC<Props> = ({
 							position: "top-center",
 						}
 					);
-        } else {
+				} else {
 					onClose();
 					onRefetchNotes();
-        }
+				}
 			},
 		}
 	);
@@ -253,8 +253,9 @@ const ElemNoteForm: React.FC<Props> = ({
 
 									{type === "edit" && selectedNote?.created_by === user?.id && (
 										<ElemButton
-											btn="danger"
+											btn="transparent"
 											onClick={handleOpenDeleteModal}
+											className="text-red-500 !px-0 shrink-0"
 										>
 											<div className="flex items-center gap-1">
 												<IconTrash className="w-6 h-6" />
@@ -267,14 +268,13 @@ const ElemNoteForm: React.FC<Props> = ({
 						</Transition.Child>
 					</div>
 				</div>
-				
+
 				<ElemDeleteConfirmModal
 					isOpen={isOpenDeleteModal}
 					title="Delete this note?"
 					content={
 						<div>
-							When you delete a note, it will be removed
-							immediately.
+							When you delete a note, it will be removed immediately.
 							<span className="font-bold inline">
 								This can&lsquo;t be undone.
 							</span>

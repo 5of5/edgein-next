@@ -1,4 +1,10 @@
-import React, { useState, useMemo, useRef, MutableRefObject, useEffect } from "react";
+import React, {
+	useState,
+	useMemo,
+	useRef,
+	MutableRefObject,
+	useEffect,
+} from "react";
 import { NextPage, GetServerSideProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemTabBar } from "@/components/ElemTabBar";
@@ -6,7 +12,9 @@ import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
 import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
-import ElemSettingDialog, { SettingTabProps } from "@/components/Group/ElemSettingDialog";
+import ElemSettingDialog, {
+	SettingTabProps,
+} from "@/components/Group/ElemSettingDialog";
 import { runGraphQl } from "@/utils";
 import CookieService from "@/utils/cookie";
 import {
@@ -24,16 +32,17 @@ type Props = {
 };
 
 const Group: NextPage<Props> = (props: Props) => {
-  const [groupData, setGroupData] = useState<User_Groups>(props.group);
+	const [groupData, setGroupData] = useState<User_Groups>(props.group);
 
-	const [selectedSettingTab, setSelectedSettingTab] = useState<SettingTabProps>("settings");
+	const [selectedSettingTab, setSelectedSettingTab] =
+		useState<SettingTabProps>("settings");
 
-  useEffect(() => {
-    setGroupData(props.group);
-  }, [props.group])
+	useEffect(() => {
+		setGroupData(props.group);
+	}, [props.group]);
 
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
+	//const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -48,7 +57,6 @@ const Group: NextPage<Props> = (props: Props) => {
 			// { name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
 			// { name: "Chat", ref: chatRef },
-			// { name: "Settings", ref: settingsRef },
 		];
 	}, []);
 
@@ -74,14 +82,13 @@ const Group: NextPage<Props> = (props: Props) => {
 		<DashboardLayout>
 			{/* <div ref={homeRef} /> */}
 
-			{/** TO-DO: Group's name | Members | Social links */}
 			<ElemGroupInformation
 				group={groupData}
 				onInvite={onOpenInviteDialog}
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
 
-			{/** TO-DO: Home | Lists | Notes | Chat | Settings */}
+			{/** TO-DO: Home | Lists | Chat */}
 			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
 			{/* <div ref={listsRef}>
 				<ElemLists
@@ -109,9 +116,6 @@ const Group: NextPage<Props> = (props: Props) => {
 			</div>
 
 			<div ref={chatRef} />
-			<div ref={settingsRef} />
-
-			{/** TO-DO:Notes */}
 
 			<ElemInviteDialog
 				isOpen={isOpenInviteDialog}
@@ -124,7 +128,7 @@ const Group: NextPage<Props> = (props: Props) => {
 				selectedTab={selectedSettingTab}
 				group={groupData}
 				onClose={onCloseSettingDialog}
-        onUpdateGroupData={setGroupData}
+				onUpdateGroupData={setGroupData}
 				onInvite={onOpenInviteDialog}
 			/>
 		</DashboardLayout>
@@ -132,8 +136,8 @@ const Group: NextPage<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const token = CookieService.getAuthToken(context.req.cookies)
-  const user = await CookieService.getUser(token);
+	const token = CookieService.getAuthToken(context.req.cookies);
+	const user = await CookieService.getUser(token);
 
 	const { data } = await runGraphQl<GetGroupQuery>(GetGroupDocument, {
 		id: context.params?.groupId,
@@ -147,7 +151,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const group = data.user_groups[0];
 
-	const isUserBelongToGroup = group.user_group_members.find(mem => mem.user.id === user?.id);
+	const isUserBelongToGroup = group.user_group_members.find(
+		(mem) => mem.user.id === user?.id
+	);
 	if (!isUserBelongToGroup) {
 		return {
 			notFound: true,

@@ -24,6 +24,24 @@ export const PlaceholderCompanyCard: React.FC = () => {
 	);
 };
 
+export const PlaceholderNote: React.FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
+			<div className="flex-1 space-y-4 py-1">
+				<div className="h-2 bg-slate-200 rounded"></div>
+				<div className="h-2 bg-slate-200 rounded"></div>
+				<div className="h-2 bg-slate-200 rounded"></div>
+				<div className="h-2 bg-slate-200 rounded w-2/3"></div>
+			</div>
+			<div className="mt-8 flex items-center shrink-0 mb-4 w-full">
+				<div className="aspect-square rounded-lg bg-slate-200 w-7 h-7"></div>
+				<div className="ml-2 h-4 w-1/3 bg-slate-200 rounded"></div>
+			</div>
+			<div className="h-2 bg-slate-200 rounded w-2/3"></div>
+		</div>
+	);
+};
+
 export const PlaceholderActivity: React.FC = () => {
 	return (
 		<div className="flex flex-col animate-pulse-fast p-1 mb-6 bg-white rounded-lg md:h-full">
