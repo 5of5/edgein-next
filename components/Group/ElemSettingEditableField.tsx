@@ -1,8 +1,9 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "react-query";
+import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/userContext";
 import { User_Groups } from "@/graphql/types";
-import { InputText } from "../InputText";
+import ElemEditDialog from "./ElemEditDialog";
 
 type Props = {
   label: string;
@@ -21,14 +22,12 @@ const ElemSettingEditableField: React.FC<Props> = ({
 
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  const [value, setValue] = useState<string>(group[field]);
-
   const [error, setError] = useState<string | null>(null);
 
   const isGroupManager = user?.id === group.created_by_user_id;
 
-  const { mutate } = useMutation(
-    () =>
+  const { mutate, isLoading } = useMutation(
+    (value: string) =>
       fetch("/api/groups/", {
         method: "PUT",
         headers: {
@@ -43,11 +42,26 @@ const ElemSettingEditableField: React.FC<Props> = ({
         }),
       }),
     {
-      onSuccess: async (response) => {
+      onSuccess: async (response, value) => {
         if (response.status !== 200) {
           const err = await response.json();
           setError(err.message);
         } else {
+          toast.custom(
+            (t) => (
+              <div
+                className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                  t.visible ? "animate-fade-in-up" : "opacity-0"
+                }`}
+              >
+                {`${label} updated`}
+              </div>
+            ),
+            {
+              duration: 3000,
+              position: "top-center",
+            }
+          );
           onUpdateGroupData((prev: User_Groups) => ({
             ...prev,
             [field]: value,
@@ -66,67 +80,36 @@ const ElemSettingEditableField: React.FC<Props> = ({
     setEditMode(false);
   };
 
-  const handleChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
-
-  const handleCancel = () => {
-    setEditMode(false);
-    setValue(group[field]);
-    setError(null);
-  };
-
-  const handleSave = () => {
-    setError(null);
-    mutate();
+  const handleSave = (value: string) => {
+    mutate(value);
   };
 
   return (
     <div className="flex items-start justify-between px-4 py-3 hover:bg-slate-100">
       <div className=" flex-auto pr-4">
         <p className="font-bold">{label}</p>
-        {editMode ? (
-          <div>
-            <InputText
-              name={field}
-              value={value}
-              onChange={handleChangeValue}
-              placeholder={`Enter the groups's ${field}`}
-              className="ring-1 ring-slate-200"
-            />
-            {error && <p className=" text-red-600 text-sm mt-2">{error}</p>}
-          </div>
-        ) : (
-          <p className="text-slate-500">{group[field]}</p>
-        )}
+        <p className="text-slate-500">{group[field]}</p>
       </div>
       {isGroupManager && (
-        <>
-          {editMode ? (
-            <div className="flex items-center gap-3">
-              <div
-                className="font-bold text-sm text-primary-500 cursor-pointer"
-                onClick={handleSave}
-              >
-                Save
-              </div>
-              <div
-                className="font-bold text-sm text-primary-500 cursor-pointer"
-                onClick={handleCancel}
-              >
-                Cancel
-              </div>
-            </div>
-          ) : (
-            <div
-              className="font-bold text-sm text-primary-500 cursor-pointer"
-              onClick={handleOpenEditMode}
-            >
-              Edit
-            </div>
-          )}
-        </>
+        <div
+          className="font-bold text-sm text-primary-500 cursor-pointer"
+          onClick={handleOpenEditMode}
+        >
+          Edit
+        </div>
       )}
+
+      <ElemEditDialog
+        isOpen={editMode}
+        loading={isLoading}
+        fieldName={label}
+        fieldValue={group[field]}
+        required={field === "name"}
+        onClose={handleCloseEditMode}
+        onSave={handleSave}
+      />
+
+      <Toaster />
     </div>
   );
 };
