@@ -1,7 +1,8 @@
 import { Fragment, ChangeEvent, useState, useEffect, useMemo } from "react";
 import { useMutation } from "react-query";
+import toast, { Toaster } from "react-hot-toast";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX } from "@/components/Icons";
+import { IconTrash, IconX } from "@/components/Icons";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { useUser } from "@/context/userContext";
@@ -10,6 +11,7 @@ import { ElemPhoto } from "./ElemPhoto";
 import { InputSelect } from "./InputSelect";
 import moment from "moment-timezone";
 import { Notes } from "@/graphql/types";
+import { ElemDeleteConfirmModal } from "./ElemDeleteConfirmModal";
 
 type Props = {
 	isOpen: boolean;
@@ -34,6 +36,8 @@ const ElemNoteForm: React.FC<Props> = ({
 
 	const [notes, setNotes] = useState(selectedNote?.notes);
 
+	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
+
 	const groupOptions = useMemo(() => {
 		return myGroups.map((item) => ({
 			id: item.id,
@@ -54,6 +58,14 @@ const ElemNoteForm: React.FC<Props> = ({
 				groupOptions[0]
 		);
 	}, [selectedNote, groupOptions]);
+
+	const handleOpenDeleteModal = () => {
+		setIsOpenDeleteModal(true);
+	}
+
+	const handleCloseDeleteModal = () => {
+		setIsOpenDeleteModal(false);
+	}
 
 	const { mutate, isLoading } = useMutation(
 		() => {
@@ -99,6 +111,47 @@ const ElemNoteForm: React.FC<Props> = ({
 	const handleSubmit = () => {
 		mutate();
 	};
+
+	const { mutate: deleteNote, isLoading: isDeletingNote } = useMutation(
+		() => {
+			return fetch("/api/notes/", {
+				method: "DELETE",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id: selectedNote?.id,
+				}),
+			});
+		},
+		{
+			onSuccess: async (response) => {
+				handleCloseDeleteModal();
+				if (response.status !== 200) {
+          const err = await response.json();
+					toast.custom(
+						(t) => (
+							<div
+								className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+									t.visible ? "animate-fade-in-up" : "opacity-0"
+								}`}
+							>
+								{err?.message}
+							</div>
+						),
+						{
+							duration: 3000,
+							position: "top-center",
+						}
+					);
+        } else {
+					onClose();
+					onRefetchNotes();
+        }
+			},
+		}
+	);
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -188,7 +241,7 @@ const ElemNoteForm: React.FC<Props> = ({
 									/>
 								</label>
 
-								<div className="mt-6">
+								<div className="mt-6 flex items-center justify-between">
 									<ElemButton
 										btn="primary"
 										disabled={!notes || !selectedGroup}
@@ -197,11 +250,42 @@ const ElemNoteForm: React.FC<Props> = ({
 									>
 										{type === "edit" ? "Update Note" : "Save Note"}
 									</ElemButton>
+
+									{type === "edit" && selectedNote?.created_by === user?.id && (
+										<ElemButton
+											btn="danger"
+											onClick={handleOpenDeleteModal}
+										>
+											<div className="flex items-center gap-1">
+												<IconTrash className="w-6 h-6" />
+												<span>Delete Note</span>
+											</div>
+										</ElemButton>
+									)}
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
 				</div>
+				
+				<ElemDeleteConfirmModal
+					isOpen={isOpenDeleteModal}
+					title="Delete this note?"
+					content={
+						<div>
+							When you delete a note, it will be removed
+							immediately.
+							<span className="font-bold inline">
+								This can&lsquo;t be undone.
+							</span>
+						</div>
+					}
+					loading={isDeletingNote}
+					onClose={handleCloseDeleteModal}
+					onDelete={deleteNote}
+				/>
+
+				<Toaster />
 			</Dialog>
 		</Transition>
 	);
