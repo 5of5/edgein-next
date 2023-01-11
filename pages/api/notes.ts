@@ -135,7 +135,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id,
         },
       });
-      res.send(delete_notes.returning[0]);
+      return res.send(delete_notes.returning[0]);
     }
 
     default:

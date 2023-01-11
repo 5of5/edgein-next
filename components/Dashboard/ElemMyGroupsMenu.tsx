@@ -51,7 +51,8 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<span className="text-xl font-bold">Groups</span>
 							</Disclosure.Button>
 							<div className="flex gap-x-1 transition-all opacity-0 group-hover:opacity-100">
-								{myGroups.length > 0 && (
+								{/*** TO DO: sort group */}
+								{/* {myGroups.length > 0 && (
 									<Popover className="relative">
 										<Popover.Button className="rounded-md h-full px-1 m-0 hover:bg-slate-200">
 											<IconEllipsisHorizontal
@@ -84,7 +85,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 											</Popover.Panel>
 										</Transition>
 									</Popover>
-								)}
+								)} */}
 								<button
 									onClick={onOpenCreateGroupDialog}
 									className="cursor-pointer rounded-md group px-1 m-0 transition-all hover:text-primary-500 hover:bg-slate-200"
