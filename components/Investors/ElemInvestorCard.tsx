@@ -4,8 +4,6 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import Link from "next/link";
-// import { ElemCredibility } from "@/components/Company/ElemCredibility";
-// import { ElemVelocity } from "@/components/Company/ElemVelocity";
 
 type Props = {
 	vcFirm: Vc_Firms;
