@@ -8,6 +8,7 @@ import {
 	IconCustomList,
 	IconChevronDownMini,
 } from "@/components/Icons";
+import { ModalListGroups } from "./ModalListGroups";
 
 type Props = {
 	theListName?: string;
@@ -29,6 +30,7 @@ export const ModalListDetails: FC<Props> = ({
 	const [listDetailsModal, setListDetailsModal] = useState(false);
 	const [listNameModal, setListNameModal] = useState(false);
 	const [listDeleteModal, setListDeleteModal] = useState(false);
+	const [listGroupsModal, setListGroupsModal] = useState(false);
 
 	const isOpen = () => {
 		setListDetailsModal(true);
@@ -100,6 +102,20 @@ export const ModalListDetails: FC<Props> = ({
 												<div className="text-primary-500">Edit</div>
 											</button>
 
+											<button
+												className="flex justify-between w-full p-3 hover:bg-slate-100"
+												onClick={() => setListGroupsModal(true)}
+											>
+												<div className="text-left">
+													<h3 className="font-bold">Groups</h3>
+													<div className="flex flex-col gap-1 mt-2">
+														<p className="capitalize">Nha test group 1</p>
+														<p className="capitalize">Nha test group 2</p>
+													</div>
+												</div>
+												<div className="text-primary-500">Edit</div>
+											</button>
+
 											{theListDescription && (
 												<button
 													className="flex justify-between w-full p-3 hover:bg-slate-100"
@@ -159,6 +175,13 @@ export const ModalListDetails: FC<Props> = ({
 				isOpen={listDeleteModal}
 				onCloseModal={() => setListDeleteModal(false)}
 				onDelete={() => onDeleteList(theListId)}
+			/>
+
+			<ModalListGroups
+				isOpen={listGroupsModal}
+				onCloseModal={() => setListGroupsModal(false)}
+				listGroups={[]}
+				onSave={() => {}}
 			/>
 		</>
 	);
