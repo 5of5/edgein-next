@@ -243,7 +243,7 @@ export const InvestorsList: FC<Props> = ({
 				{fundingTotal > 0 && (
 					<div className="font-bold text-right shrink-0 mr-2">
 						<div className="text-sm">Total Invested</div>
-						<div className="text-green-700 text-lg">
+						<div className="text-green-600 text-lg">
 							${convertToInternationalCurrencySystem(fundingTotal)}
 						</div>
 					</div>
