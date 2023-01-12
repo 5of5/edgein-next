@@ -57,3 +57,31 @@ query GetGroup($id: Int!) {
     }
   }
 }
+
+    query GetGroups($user_id: Int!) {
+  user_group_members(where: {user_id: {_eq: $user_id}}) {
+    id
+    user_id
+    user {
+      id
+      email
+      display_name
+    }
+    user_group_id
+    user_group {
+      id
+      name
+      description
+      telegram
+      twitter
+      discord
+      created_by {
+        id
+        display_name
+        email
+      }
+      created_at
+      updated_at
+    }
+  }
+}
