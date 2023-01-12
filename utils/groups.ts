@@ -387,6 +387,27 @@ const onLookupResource = async (resourceType: string, resourceId: number) => {
   }
 };
 
+
+const onFindUserGroupInvitesByEmail = async (email: string) => {
+  const findUserGroupInvitesQuery = `
+  query findUserGroupInvitesByEmail($email: String!) {
+    user_group_invites(where: {email: {_eq: $email}}) {
+      id
+      user_group_id
+    }
+  }
+  `;
+  try {
+    const { data } = await query({
+      query: findUserGroupInvitesQuery,
+      variables: { email },
+    });
+    return data.user_group_invites;
+  } catch (ex) {
+    throw ex;
+  }
+};
+
 const GroupService = {
   isUserMemberOfGroup,
   isUserCreatorOfGroup,
@@ -403,5 +424,6 @@ const GroupService = {
   onAddGroupMember,
   onFindNoteById,
   onLookupResource,
+  onFindUserGroupInvitesByEmail,
 };
 export default GroupService;
