@@ -30,6 +30,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { onTrackView } from "@/utils/track";
 import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
+import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -217,30 +218,33 @@ const VCFirm: NextPage<Props> = (props) => {
 				{/* <div className="col-span-3 mt-7 lg:mt-0">Placeholder</div> */}
 			</div>
 
-      <ElemTabBar className="mt-7" tabs={tabBarItems} />
+			<ElemTabBar className="mt-7" tabs={tabBarItems} />
 
-      <div
-        className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
-        ref={overviewRef}
-        id="overview"
-      >
-        <div className="col-span-3">
-          <ElemKeyInfo
-            className="sticky top-4"
-            heading="Key Info"
-            website={vcfirm.website}
-            investmentsLength={sortedInvestmentRounds.length}
-            yearFounded={vcfirm.year_founded}
-            linkedIn={vcfirm.linkedin}
-            location={vcfirm.location}
-            twitter={vcfirm.twitter}
-          />
-        </div>
-        <div className="col-span-8">
-          <div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">Activity Timeline</h2>
-              {/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
+			<div
+				className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+				ref={overviewRef}
+				id="overview"
+			>
+				<div className="col-span-3">
+					<ElemKeyInfo
+						className="sticky top-4"
+						heading="Key Info"
+						website={vcfirm.website}
+						investmentsLength={sortedInvestmentRounds.length}
+						yearFounded={vcfirm.year_founded}
+						linkedIn={vcfirm.linkedin}
+						location={vcfirm.location}
+						twitter={vcfirm.twitter}
+					/>
+				</div>
+				<div className="col-span-8">
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0 mb-6">
+						<ElemOrganizationNotes resourceId={vcfirm.id} resourceType="vc_firms" />
+					</div>
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
+						<div className="flex items-center justify-between">
+							<h2 className="text-xl font-bold">Activity Timeline</h2>
+							{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
 								<IconEditPencil title="Edit" />
 							</button> */}
             </div>
@@ -334,6 +338,7 @@ const VCFirm: NextPage<Props> = (props) => {
 																					</div>
 																				)}
 																			</div>
+
 																			{activity.round
 																				? activity.round
 																				: "Investment round"}{" "}

@@ -1,9 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import { query, mutate } from '@/graphql/hasuraAdmin'
+import { query } from '@/graphql/hasuraAdmin'
 import CookieService from '../../utils/cookie'
 import { deleteFollowIfExists, updateResourceSentimentCount } from '@/utils/lists'
-import { User } from '@/models/User';
-import { Lists } from '@/graphql/types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -79,50 +77,6 @@ const queryForFollows = async (id: string) => {
   } catch (ex) {
     throw ex;
   }
-}
-
-export const deleteListMemberIfExist = async (user: User, token: string, list: Lists) => {
-  const { data: { delete_list_members: { returning } } } = await mutate({
-    mutation: `
-    mutation delete_list_members($where: list_members_bool_exp!) {
-      delete_list_members(where: $where) {
-        returning {
-          id
-        }
-      }
-    }
-    `,
-    variables: {
-      where: {
-        list_id: { _eq: list.id },
-        user_id: { _eq: user.id },
-      }
-    }
-  }, token)
-
-  return returning.length
-}
-
-export const deleteListIfExist = async (user: User, token: string, list: Lists) => {
-  const { data: { delete_lists: { returning } } } = await mutate({
-    mutation: `
-    mutation delete_lists($where: lists_bool_exp!) {
-      delete_lists(where: $where) {
-        returning {
-          id
-        }
-      }
-    }
-    `,
-    variables: {
-      where: {
-        created_by_id: { _eq: user.id },
-        id: { _eq: list.id }
-      }
-    }
-  }, token)
-
-  return returning.length
 }
 
 export default handler;
