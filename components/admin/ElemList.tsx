@@ -1,9 +1,16 @@
 import React, { FC, PropsWithChildren, ReactElement } from "react";
-import { List, Datagrid, Pagination } from "react-admin";
+import { List, Datagrid, Pagination, BulkDeleteButton, BulkExportButton } from "react-admin";
 
 type Props = {
   filters?: ReactElement | ReactElement[];
 };
+
+const ListBulkActions = () => (
+  <>
+    <BulkDeleteButton />
+    <BulkExportButton />
+  </>
+);
 
 const ElemList: FC<PropsWithChildren<Props>> = ({ filters, children }) => {
   return (
@@ -37,7 +44,7 @@ const ElemList: FC<PropsWithChildren<Props>> = ({ filters, children }) => {
         },
       }}
     >
-      <Datagrid>{children}</Datagrid>
+      <Datagrid bulkActionButtons={<ListBulkActions />}>{children}</Datagrid>
     </List>
   );
 };
