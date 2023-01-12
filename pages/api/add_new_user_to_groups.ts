@@ -13,19 +13,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   // params:
-  const email: string = req.body.email;
+  const userGroupInvites: Array<User_Group_Invites> = req.body.groupInvites;
 
-  const userGroupInvites: Array<User_Group_Invites> =
-    await GroupService.onFindUserGroupInvitesByEmail(email);
+  const response = await Promise.all(
+    userGroupInvites.map((invites: User_Group_Invites) =>
+      addMember(user?.id, invites.user_group_id)
+    )
+  );
 
-  if (userGroupInvites && userGroupInvites.length > 0) {
-    await GroupService.onAddGroupMember(
-      user?.id,
-      userGroupInvites[0].user_group_id
-    );
-  }
+  res.send(response);
+};
 
-  res.send({ success: true });
+const addMember = async (userId: number, groupId: number) => {
+  const response = await GroupService.onAddGroupMember(userId, groupId);
+  return response;
 };
 
 export default handler;

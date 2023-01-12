@@ -6,6 +6,7 @@ import { InputText } from "@/components/InputText";
 import { ElemLogo } from "./ElemLogo";
 import { IconLinkedIn, IconCheck } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
+import { User_Group_Invites } from "@/graphql/types";
 const validator = require("validator");
 
 type Props = {
@@ -95,6 +96,23 @@ export default function SignUpModal(props: Props) {
 		props.onLogin();
 	};
 
+	const onAddUserToGroups = async (groupInvites: Array<User_Group_Invites>) => {
+		try {
+			await fetch("/api/add_new_user_to_groups/", {
+				method: "POST",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					groupInvites,
+				}),
+			});
+		} catch (err) {
+			console.error(err);
+		}
+	}
+
 	const onSignUp = async () => {
 		validateEmail(email);
 		validateName(name);
@@ -117,12 +135,15 @@ export default function SignUpModal(props: Props) {
 					reference_id: props.inviteCode,
 				}),
 			});
+			const res = await response.clone().json();
 			if (response.status === 200) {
 				localStorage.removeItem("inviteCode");
 				setIsRegistered(true);
+				if (res.result.groupInvites && res.result.groupInvites.length > 0) {
+					onAddUserToGroups(res.result.groupInvites);
+				}
 			} else {
 				try {
-					const res = await response.clone().json();
 					if (res.message && res.message.indexOf("waitlist") > 0) {
 						setIsWaitlisted(true);
 					} else {

@@ -3,6 +3,8 @@ import auth0Library from '../../utils/auth0Library'
 import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createHmac } from "crypto";
+import { User_Group_Invites } from '@/graphql/types';
+import GroupService from '@/utils/groups';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
@@ -141,6 +143,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (ex: any) {
     return res.status(404).send({ message: ex.message })
   }
+
+  const userGroupInvites: Array<User_Group_Invites> =
+    await GroupService.onFindUserGroupInvitesByEmail(email);
+
+  result.groupInvites = userGroupInvites;
   
   res.send({ success: true, result });
 }

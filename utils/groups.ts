@@ -303,9 +303,13 @@ const onAddGroupMember = async (user_id: number, user_group_id: number) => {
         user_id
         user {
           id
-          email
           display_name
-          role
+          email
+          person {
+            id
+            slug
+            picture
+          }
         }
         user_group_id
         user_group {
