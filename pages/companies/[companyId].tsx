@@ -38,6 +38,7 @@ import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
+import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 
 type Props = {
 	company: Companies;
@@ -346,6 +347,9 @@ const Company: NextPage<Props> = (props: Props) => {
 							)}
 						</div>
 					)}
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+						<ElemOrganizationNotes resourceId={company.id} resourceType="companies" />
+					</div>
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>

@@ -1,4 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
+import { Notes } from "@/graphql/types";
 import GroupService from "@/utils/groups";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -17,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.body.id;
 
-  if (id && req.method === "PUT") {
+  if (id && req.method !== "POST") {
     const note = await GroupService.onFindNoteById(id);
     user_group_id = note.user_group_id;
   }
@@ -94,7 +95,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
       `;
-console.log('@params', id, notes)
       const {
         data: { update_notes },
       } = await mutate({
@@ -105,6 +105,37 @@ console.log('@params', id, notes)
         },
       });
       return res.send(update_notes.returning[0]);
+    }
+
+    case "DELETE": {
+      const note: Notes = await GroupService.onFindNoteById(id);
+      const isNoteCreator = user.id === note?.created_by;
+      if (!isNoteCreator) {
+        return res
+          .status(403)
+          .json({ message: "You don't have permission to delete this note" });
+      }
+
+      const deleteGroupNotesQuery = `
+      mutation DeleteNotes($id: Int!) {
+        delete_notes(where: {id: {_eq: $id}}) {
+          affected_rows
+          returning {
+            id
+          }
+        }
+      }
+      `;
+
+      const {
+        data: { delete_notes },
+      } = await mutate({
+        mutation: deleteGroupNotesQuery,
+        variables: {
+          id,
+        },
+      });
+      return res.send(delete_notes.returning[0]);
     }
 
     default:

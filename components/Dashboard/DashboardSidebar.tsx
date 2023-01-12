@@ -14,6 +14,7 @@ import {
 	IconOrganization,
 } from "@/components/Icons";
 import { Disclosure } from "@headlessui/react";
+import ElemMyGroupsMenu from "./ElemMyGroupsMenu";
 
 type Props = {
 	className?: string;
@@ -115,6 +116,8 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 			</Disclosure>
 
 			<ElemMyListsMenu className="mt-6" />
+
+			<ElemMyGroupsMenu className="mt-6" />
 
 			<Disclosure defaultOpen={true} as="div" className="mt-6">
 				{({ open }) => (

@@ -36,18 +36,18 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 
 	if (direction === "top") {
 		directionClasses = "-top-2 -translate-y-full left-1/2 -translate-x-1/2";
-		triangleClasses = "top-full border-t-dark-500";
+		triangleClasses = "top-full border-t-gray-900";
 	} else if (direction === "right") {
 		directionClasses = "left-full translate-x-2 top-1/2 -translate-y-1/2";
 		triangleClasses =
-			"top-1/2 -left-1.5 translate-x-0 -translate-y-1/2 border-r-dark-500";
+			"top-1/2 -left-1.5 translate-x-0 -translate-y-1/2 border-r-gray-900";
 	} else if (direction === "bottom") {
 		directionClasses = "-bottom-2 left-1/2 -translate-x-1/2 translate-y-full";
-		triangleClasses = "bottom-full border-b-dark-500";
+		triangleClasses = "bottom-full border-b-gray-900";
 	} else if (direction === "left") {
 		directionClasses = "-left-2 -translate-x-full top-1/2 -translate-y-1/2";
 		triangleClasses =
-			"left-auto top-1/2 -right-3 translate-x-0 -translate-y-1/2 border-l-dark-500";
+			"left-auto top-1/2 -right-3 translate-x-0 -translate-y-1/2 border-l-gray-900";
 	}
 
 	// Sizes

@@ -150,6 +150,12 @@ module.exports = {
       transitionProperty: {
         'transform': 'transform',
       },
+      lineClamp: {
+        7: '7',
+        8: '8',
+        9: '9',
+        10: '10',
+      }
     },
     fontFamily: {
       'sans': ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
