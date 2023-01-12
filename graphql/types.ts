@@ -15128,12 +15128,12 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 
 export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: string | null, sentiment: any | null, logo: any | null, slug: string, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null } | null }> } | null }> };
 
-export type GetGroupsQueryVariables = Exact<{
+export type GetGroupsOfUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
 
 
-export type GetGroupsQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
+export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -15615,8 +15615,8 @@ useGetVcFirmsByListIdQuery.getKey = (variables?: GetVcFirmsByListIdQueryVariable
 ;
 
 useGetVcFirmsByListIdQuery.fetcher = (variables?: GetVcFirmsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables, options);
-export const GetGroupsDocument = `
-    query GetGroups($user_id: Int!) {
+export const GetGroupsOfUserDocument = `
+    query GetGroupsOfUser($user_id: Int!) {
   user_group_members(where: {user_id: {_eq: $user_id}}) {
     id
     user_id
@@ -15644,25 +15644,25 @@ export const GetGroupsDocument = `
   }
 }
     `;
-export const useGetGroupsQuery = <
-      TData = GetGroupsQuery,
+export const useGetGroupsOfUserQuery = <
+      TData = GetGroupsOfUserQuery,
       TError = Error
     >(
-      variables: GetGroupsQueryVariables,
-      options?: UseQueryOptions<GetGroupsQuery, TError, TData>
+      variables: GetGroupsOfUserQueryVariables,
+      options?: UseQueryOptions<GetGroupsOfUserQuery, TError, TData>
     ) =>
-    useQuery<GetGroupsQuery, TError, TData>(
-      ['GetGroups', variables],
-      fetcher<GetGroupsQuery, GetGroupsQueryVariables>(GetGroupsDocument, variables),
+    useQuery<GetGroupsOfUserQuery, TError, TData>(
+      ['GetGroupsOfUser', variables],
+      fetcher<GetGroupsOfUserQuery, GetGroupsOfUserQueryVariables>(GetGroupsOfUserDocument, variables),
       options
     );
-useGetGroupsQuery.document = GetGroupsDocument;
+useGetGroupsOfUserQuery.document = GetGroupsOfUserDocument;
 
 
-useGetGroupsQuery.getKey = (variables: GetGroupsQueryVariables) => ['GetGroups', variables];
+useGetGroupsOfUserQuery.getKey = (variables: GetGroupsOfUserQueryVariables) => ['GetGroupsOfUser', variables];
 ;
 
-useGetGroupsQuery.fetcher = (variables: GetGroupsQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupsQuery, GetGroupsQueryVariables>(GetGroupsDocument, variables, options);
+useGetGroupsOfUserQuery.fetcher = (variables: GetGroupsOfUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupsOfUserQuery, GetGroupsOfUserQueryVariables>(GetGroupsOfUserDocument, variables, options);
 export const GetGroupDocument = `
     query GetGroup($id: Int!) {
   user_groups(where: {id: {_eq: $id}}) {
