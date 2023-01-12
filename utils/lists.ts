@@ -129,8 +129,8 @@ export const upsertList = async (listname: string, user: User, token: string) =>
   // check list membership exists
   await mutate({
     mutation: `
-    mutation upsert_follows($userId: Int!, $listId: Int!) {
-      insert_list_members_one(object: {user_id: $userId, list_id: $listId}, on_conflict: {update_columns: user_id, constraint: list_members_list_id_user_id_key }) {
+    mutation upsert_membership($userId: Int!, $listId: Int!) {
+      insert_list_members_one(object: {user_id: $userId, list_id: $listId, member_type: "owner"}, on_conflict: {update_columns: user_id, constraint: list_members_list_id_user_id_key }) {
         id
       }
     }
