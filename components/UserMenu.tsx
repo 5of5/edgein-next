@@ -9,6 +9,7 @@ import {
 	IconSignOut,
 	//IconDashboard,
 	IconCustomList,
+	IconGroup,
 	IconSettings,
 	//IconOrganization,
 } from "./Icons";
@@ -20,7 +21,7 @@ type Props = {
 };
 
 export const UserMenu: FC<Props> = ({ className = "" }) => {
-	const { listAndFollows, user } = useUser();
+	const { listAndFollows, user, myGroups } = useUser();
 
 	const firstCustomList = first(
 		listAndFollows?.filter(
@@ -39,6 +40,13 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 		myListsUrl = `/lists/${hotId}/hot`;
 	}
 
+	const firstCustomGroup = first(myGroups ? myGroups : null);
+
+	let myGroupsUrl = "";
+	if (firstCustomGroup) {
+		myGroupsUrl = `/groups/${firstCustomGroup.id}/`;
+	}
+
 	const logout = async () => {
 		localStorage.clear();
 		const authRequest = await fetch("/api/logout/", {
@@ -54,15 +62,22 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 		}
 	};
 
-	const navigation = [
+	let navigation = [
 		{ name: "My Lists", href: myListsUrl, icon: IconCustomList },
-		// {
-		// 	name: "My Organizations",
-		// 	href: "/organizations",
-		// 	icon: IconOrganization,
-		// },
-		{ name: "Account Settings", href: "/account", icon: IconSettings },
 	];
+
+	if (myGroups.length > 0) {
+		navigation.push({
+			name: "My Groups",
+			href: myGroupsUrl,
+			icon: IconGroup,
+		});
+	}
+	navigation.push({
+		name: "Account Settings",
+		href: "/account",
+		icon: IconSettings,
+	});
 
 	//eslint-disable-next-line react/display-name
 	const NextLink = React.forwardRef((props: any, ref: any) => {

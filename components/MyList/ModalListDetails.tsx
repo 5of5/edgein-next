@@ -1,7 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useState, useEffect, MouseEvent } from "react";
 import { ModalListName } from "@/components/MyList/ModalListName";
-import { ModalListDelete } from "@/components/MyList/ModalListDelete";
 import {
 	IconX,
 	IconTrash,
@@ -9,6 +8,7 @@ import {
 	IconChevronDownMini,
 } from "@/components/Icons";
 import { ModalListGroups } from "./ModalListGroups";
+import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
 
 type Props = {
 	theListName?: string;
@@ -99,7 +99,9 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Name</h3>
 													<p className="capitalize">{theListName}</p>
 												</div>
-												<div className="text-primary-500">Edit</div>
+												<div className="text-primary-500 text-sm font-bold">
+													Edit
+												</div>
 											</button>
 
 											<button
@@ -171,9 +173,19 @@ export const ModalListDetails: FC<Props> = ({
 				onSave={onSaveListName}
 			/>
 
-			<ModalListDelete
-				isOpen={listDeleteModal}
-				onCloseModal={() => setListDeleteModal(false)}
+			<ElemDeleteConfirmModal
+        isOpen={listDeleteModal}
+        title="Delete this list?"
+        content={
+          <div>
+						When you delete a list, everything in it will be removed
+						immediately.
+						<span className="font-bold inline">
+							This can&lsquo;t be undone.
+						</span>
+					</div>
+        }
+        onClose={() => setListDeleteModal(false)}
 				onDelete={() => onDeleteList(theListId)}
 			/>
 

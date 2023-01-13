@@ -198,6 +198,29 @@ export const IconBadgeCheck: React.FC<IconProps> = ({
 	);
 };
 
+export const IconLockClosed: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			className={className}
+			fill="none"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Lock Closed"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+			/>
+		</svg>
+	);
+};
+
 export const IconMinus: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
@@ -334,6 +357,54 @@ export const IconList: React.FC<IconProps> = ({ className, title }) => {
 				fillRule="evenodd"
 				d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
 				clipRule="evenodd"
+			/>
+		</svg>
+	);
+};
+
+export const IconGroup: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={`${className}`}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Group"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"
+			/>
+		</svg>
+	);
+};
+
+export const IconGroupPlus: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={`${className}`}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Add Group"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 002.25-2.25V6a2.25 2.25 0 00-2.25-2.25H6A2.25 2.25 0 003.75 6v2.25A2.25 2.25 0 006 10.5zm0 9.75h2.25A2.25 2.25 0 0010.5 18v-2.25a2.25 2.25 0 00-2.25-2.25H6a2.25 2.25 0 00-2.25 2.25V18A2.25 2.25 0 006 20.25zm9.75-9.75H18a2.25 2.25 0 002.25-2.25V6A2.25 2.25 0 0018 3.75h-2.25A2.25 2.25 0 0013.5 6v2.25a2.25 2.25 0 002.25 2.25z"
 			/>
 		</svg>
 	);
@@ -516,6 +587,30 @@ export const IconUser: React.FC<IconProps> = ({ className, title }) => {
 				fillRule="evenodd"
 				d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
 				clipRule="evenodd"
+			/>
+		</svg>
+	);
+};
+
+export const IconUserPlus: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+		>
+			<title>{title ? title : "Add User"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z"
 			/>
 		</svg>
 	);

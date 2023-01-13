@@ -260,7 +260,7 @@ export const CompaniesList: FC<Props> = ({
 				{fundingTotal > 0 && (
 					<div className="flex items-center sm:justify-center sm:text-right font-bold shrink-0 mr-2">
 						<div className="text-sm mr-1">Total Funding</div>
-						<div className="text-green-700 text-lg">
+						<div className="text-green-600 text-lg">
 							${convertToInternationalCurrencySystem(fundingTotal)}
 						</div>
 					</div>
