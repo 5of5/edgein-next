@@ -7,11 +7,11 @@ const Privacy: NextPage<Props> = (props) => {
 	return (
 		<main className="min-h-[80vh]">
 			<div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-				<div className="mx-auto prose prose-xl">
-					<h1 className="relative mx-auto text-4xl lg:text-6xl font-bold ">
+				<div className="mx-auto prose">
+					<h1 className="relative mx-auto text-4xl lg:text-5xl font-bold">
 						Privacy Policy
 					</h1>
-					<h2 className="">Overview</h2>
+					<h2>Overview</h2>
 					<p>
 						EdgeIn.io Inc. (EdgeIn, “we”, “us” or “our”) is committed to
 						protecting the privacy of personal information (i.e., any
@@ -23,7 +23,7 @@ const Privacy: NextPage<Props> = (props) => {
 						acceptance of such amendment.
 					</p>
 
-					<h2 className="">Your consent</h2>
+					<h2>Your consent</h2>
 					<p>
 						You might fill out a contact form on the Site and provide your name,
 						email address, as well as any additional information you may provide
@@ -41,7 +41,7 @@ const Privacy: NextPage<Props> = (props) => {
 						circumstances.
 					</p>
 
-					<h2 className="">Information we collect about you</h2>
+					<h2>Information we collect about you</h2>
 					<p>We collect several types of information:</p>
 					<p>
 						Personal Data. We collect information by which you may be personally
@@ -66,7 +66,7 @@ const Privacy: NextPage<Props> = (props) => {
 						(e.g., recording the popularity of certain website content and
 						verifying system and server integrity).
 					</p>
-					<h2 className="">Use of personal information</h2>
+					<h2>Use of personal information</h2>
 					<p>
 						We may use or disclose your personal information for the following
 						purposes:
@@ -126,7 +126,7 @@ const Privacy: NextPage<Props> = (props) => {
 						</li>
 					</ul>
 
-					<h2 className="">Aggregated data</h2>
+					<h2>Aggregated data</h2>
 					<p>
 						We may also use your personal information to generate Aggregated
 						Data for internal use and for sharing with others on a selective
@@ -137,7 +137,7 @@ const Privacy: NextPage<Props> = (props) => {
 						anonymous in Aggregated Data.
 					</p>
 
-					<h2 className="">Storage of personal information</h2>
+					<h2>Storage of personal information</h2>
 					<p>
 						Your personal information may be stored and processed in any country
 						where we have facilities or in which we engage third party service
@@ -165,7 +165,7 @@ const Privacy: NextPage<Props> = (props) => {
 						this information to you.
 					</p>
 
-					<h2 className="">Age of consent</h2>
+					<h2>Age of consent</h2>
 					<p>
 						We do not knowingly provide the Site to and will not knowingly
 						collect the personal information from anyone under the age of
@@ -192,7 +192,7 @@ const Privacy: NextPage<Props> = (props) => {
 						section below.
 					</p>
 
-					<h2 className="">Opting out of communications</h2>
+					<h2>Opting out of communications</h2>
 					<p>
 						If you no longer want to receive marketing-related emails from us,
 						you may opt-out of receiving marketing-related emails by clicking
@@ -209,7 +209,7 @@ const Privacy: NextPage<Props> = (props) => {
 						matters.
 					</p>
 
-					<h2 className="">Rights to your information</h2>
+					<h2>Rights to your information</h2>
 					<p>
 						On written request and subject to proof of identity, you may access
 						the personal information that we hold, used or communicated and ask
@@ -241,7 +241,7 @@ const Privacy: NextPage<Props> = (props) => {
 						authorities.
 					</p>
 
-					<h2 className="">Links</h2>
+					<h2>Links</h2>
 					<p>
 						The Site may contain links to other sites and we are not responsible
 						for the privacy practices or the content of such sites. We encourage
@@ -249,7 +249,7 @@ const Privacy: NextPage<Props> = (props) => {
 						policies and practices differ from our policies and practices.
 					</p>
 
-					<h2 className="">Third parties’ ads &amp; interest-based ads</h2>
+					<h2>Third parties’ ads &amp; interest-based ads</h2>
 					<p>
 						We do not control third parties’ collection or use of your
 						information to serve interest-based advertising. However, these
@@ -259,7 +259,7 @@ const Privacy: NextPage<Props> = (props) => {
 						Initiative (“NAI”) on the NAI’s website.
 					</p>
 
-					<h2 className="">Security</h2>
+					<h2>Security</h2>
 					<p>
 						We will strive to prevent unauthorized access to your personal
 						information, however, no data transmission over the Internet, by
@@ -285,7 +285,7 @@ const Privacy: NextPage<Props> = (props) => {
 						information of others.
 					</p>
 
-					<h2 className="">Retention of personal information</h2>
+					<h2>Retention of personal information</h2>
 					<p>
 						We will maintain your personal information for as long as it is
 						needed, to fulfill the purposes for which that personal information
@@ -296,7 +296,7 @@ const Privacy: NextPage<Props> = (props) => {
 						“Contact Us” section below.
 					</p>
 
-					<h2 className="">Changes to this policy</h2>
+					<h2>Changes to this policy</h2>
 					<p>
 						We may update this Privacy Policy from time to time. If we do so, we
 						will send an email to users subscribed to our mailing list. We will
@@ -307,7 +307,7 @@ const Privacy: NextPage<Props> = (props) => {
 						ensuring that we have an up-to-date email for this purpose.)
 					</p>
 
-					<h2 className="">Contact us</h2>
+					<h2>Contact us</h2>
 					<p>
 						If you have any questions or comments about this Privacy Policy or
 						your personal information, to make an access or correction request,
