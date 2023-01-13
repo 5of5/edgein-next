@@ -1,6 +1,6 @@
 import React, { useState, FC, useEffect } from "react";
 import moment from "moment-timezone";
-import { Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
+import { GetNotesQuery, Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
 import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
 import { PlaceholderNote } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
@@ -17,7 +17,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 
 	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
-	const [selectedNote, setSelectedNote] = useState<Notes>();
+	const [selectedNote, setSelectedNote] = useState<GetNotesQuery['notes'][0]>();
 
 	const onOpenNoteForm = () => {
 		setIsOpenNoteForm(true);
@@ -30,7 +30,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		}, 400);
 	};
 
-	const onSelectNote = (note: Notes) => {
+	const onSelectNote = (note: GetNotesQuery['notes'][0]) => {
 		setSelectedNote(note);
 		onOpenNoteForm();
 	};
