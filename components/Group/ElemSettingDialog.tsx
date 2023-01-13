@@ -4,8 +4,9 @@ import { IconGroup, IconX } from "@/components/Icons";
 import { User_Groups } from "@/graphql/types";
 import ElemSettingTab from "./ElemSettingTab";
 import ElemMemberTab from "./ElemMemberTab";
+import ElemPendingInvitesTab from "./ElemPendingInvitesTab";
 
-export type SettingTabProps = "settings" | "members";
+export type SettingTabProps = "settings" | "members" | "pending_invites";
 
 type Props = {
 	isOpen: boolean;
@@ -91,9 +92,18 @@ const ElemSettingDialog: React.FC<Props> = ({
 										>
 											Members
 										</Tab>
+										<Tab
+											className={({ selected }) =>
+												selected
+													? "text-primary-500 border-b-2 border-primary-500 outline-none"
+													: ""
+											}
+										>
+											Pending Invites
+										</Tab>
 									</Tab.List>
 									<Tab.Panels>
-										<div className="p-6">
+										<div className="p-6 max-h-[75vh] overflow-y-scroll">
 											<Tab.Panel>
 												<ElemSettingTab
 													group={group}
@@ -105,6 +115,12 @@ const ElemSettingDialog: React.FC<Props> = ({
 													group={group}
 													onUpdateGroupData={onUpdateGroupData}
 													onInvite={onInvite}
+												/>
+											</Tab.Panel>
+											<Tab.Panel>
+												<ElemPendingInvitesTab
+													group={group}
+													onUpdateGroupData={onUpdateGroupData}
 												/>
 											</Tab.Panel>
 										</div>

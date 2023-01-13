@@ -140,16 +140,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       reference_id: userData.reference_id,
     });
     CookieService.setTokenCookie(res, token);
+
+    const userGroupInvites: Array<User_Group_Invites> = await GroupService.onFindUserGroupInvitesByEmail(email);
+    result.groupInvites = userGroupInvites;
+    if (userGroupInvites && userGroupInvites.length > 0) {
+      await Promise.all(
+        userGroupInvites.map((invites: User_Group_Invites) =>
+          addMember(userData.id, invites.user_group_id)
+        )
+      );
+    }
   } catch (ex: any) {
     return res.status(404).send({ message: ex.message })
   }
-
-  const userGroupInvites: Array<User_Group_Invites> =
-    await GroupService.onFindUserGroupInvitesByEmail(email);
-
-  result.groupInvites = userGroupInvites;
   
   res.send({ success: true, result });
 }
+
+const addMember = async (userId: number, groupId: number) => {
+  const response = await GroupService.onAddGroupMember(userId, groupId);
+  return response;
+};
 
 export default handler

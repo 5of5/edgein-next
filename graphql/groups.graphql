@@ -55,5 +55,10 @@ query GetGroup($id: Int!) {
         }
       }
     }
+    user_group_invites {
+      id
+      email
+      created_at
+    }
   }
 }

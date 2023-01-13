@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { useMutation } from "react-query";
@@ -7,8 +8,6 @@ import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemButton } from "../ElemButton";
-
-const validator = require("validator");
 
 type Props = {
 	isOpen: boolean;
@@ -53,12 +52,13 @@ const ElemInviteDialog: React.FC<Props> = ({
 				Accept: "application/json",
 			},
 			body: JSON.stringify({
+				isExistedUser: !!selectedPerson?.id,
+				email,
 				resource: {
 					recipientName,
 					groupName,
 					groupId,
 				},
-				email,
 			}),
 		});
 	};
@@ -84,13 +84,21 @@ const ElemInviteDialog: React.FC<Props> = ({
 		{
 			onSuccess: async (response) => {
 				if (response.status === 200) {
-					const { member } = await response.json();
+					const { member, invite } = await response.json();
 					if (member) {
 						onUpdateGroupData((prev: User_Groups) => ({
 							...prev,
 							user_group_members: [
 								...prev.user_group_members,
 								member,
+							],
+						}));
+					} else {
+						onUpdateGroupData((prev: User_Groups) => ({
+							...prev,
+							user_group_invites: [
+								...prev.user_group_invites,
+								invite,
 							],
 						}));
 					}
