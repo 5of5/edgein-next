@@ -20,10 +20,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const userData = await UserService.findOneUserByEmail(email);
 
-  if (userData) {
-    await GroupService.onAddGroupMember(userData.id, user_group_id);
-  }
-
   const {
     data: { insert_user_group_invites_one },
   } = await mutate({
@@ -46,7 +42,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  res.send(insert_user_group_invites_one);
+  if (userData) {
+    const member = await GroupService.onAddGroupMember(userData.id, user_group_id);
+    return res.send({ member, invite: insert_user_group_invites_one });
+  }
+
+  return res.send({ member: null, invite: insert_user_group_invites_one });
 };
 
 export default handler;

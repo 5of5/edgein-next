@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { useMutation } from "react-query";
@@ -11,6 +12,7 @@ import { ElemButton } from "../ElemButton";
 type Props = {
 	isOpen: boolean;
 	group: User_Groups;
+	onUpdateGroupData: (data: any) => void;
 	onClose: () => void;
 };
 
@@ -19,7 +21,12 @@ async function peopleFetcher(url: string, query: string) {
 	return data.json();
 }
 
-const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
+const ElemInviteDialog: React.FC<Props> = ({
+	isOpen,
+	group,
+	onUpdateGroupData,
+	onClose,
+}) => {
 	const [query, setQuery] = useState("");
 	const [selectedPerson, setSelectedPerson] = useState<any>(null);
 
@@ -45,12 +52,13 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 				Accept: "application/json",
 			},
 			body: JSON.stringify({
+				isExistedUser: !!selectedPerson?.id,
+				email,
 				resource: {
 					recipientName,
 					groupName,
 					groupId,
 				},
-				email,
 			}),
 		});
 	};
@@ -74,16 +82,36 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 				}),
 			}),
 		{
-			onSuccess: () => {
-				const emailAddress =
+			onSuccess: async (response) => {
+				if (response.status === 200) {
+					const { member, invite } = await response.json();
+					if (member) {
+						onUpdateGroupData((prev: User_Groups) => ({
+							...prev,
+							user_group_members: [
+								...prev.user_group_members,
+								member,
+							],
+						}));
+					} else {
+						onUpdateGroupData((prev: User_Groups) => ({
+							...prev,
+							user_group_invites: [
+								...prev.user_group_invites,
+								invite,
+							],
+						}));
+					}
+					const emailAddress =
 					selectedPerson.work_email || selectedPerson.personal_email;
-				if (emailAddress) {
-					onSendInvitationMail(
-						emailAddress,
-						selectedPerson.name,
-						group.name,
-						group.id
-					);
+					if (emailAddress) {
+						onSendInvitationMail(
+							emailAddress,
+							selectedPerson.name,
+							group.name,
+							group.id
+						);
+					}
 				}
 			},
 		}
@@ -199,9 +227,19 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 															</Combobox.Option>
 														))
 													) : (
-														<div className="px-6 py-4 text-center text-lg font-bold">
-															Not Found
-														</div>
+														<div className="text-center ">
+															<div className="px-6 py-4 text-lg font-bold">
+																Not Found
+															</div>
+															{validator.isEmail(query) && (
+																<Combobox.Option
+																	value={{ id: null, name: query, work_email: query }}
+																	className="py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
+																>
+																	Send an invitation to email address <span className="font-bold">{query}</span>
+																</Combobox.Option>
+															)}
+													</div>
 													)}
 												</Combobox.Options>
 											</div>

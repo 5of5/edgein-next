@@ -303,9 +303,13 @@ const onAddGroupMember = async (user_id: number, user_group_id: number) => {
         user_id
         user {
           id
-          email
           display_name
-          role
+          email
+          person {
+            id
+            slug
+            picture
+          }
         }
         user_group_id
         user_group {
@@ -387,6 +391,27 @@ const onLookupResource = async (resourceType: string, resourceId: number) => {
   }
 };
 
+
+const onFindUserGroupInvitesByEmail = async (email: string) => {
+  const findUserGroupInvitesQuery = `
+  query findUserGroupInvitesByEmail($email: String!) {
+    user_group_invites(where: {email: {_eq: $email}}) {
+      id
+      user_group_id
+    }
+  }
+  `;
+  try {
+    const { data } = await query({
+      query: findUserGroupInvitesQuery,
+      variables: { email },
+    });
+    return data.user_group_invites;
+  } catch (ex) {
+    throw ex;
+  }
+};
+
 const GroupService = {
   isUserMemberOfGroup,
   isUserCreatorOfGroup,
@@ -403,5 +428,6 @@ const GroupService = {
   onAddGroupMember,
   onFindNoteById,
   onLookupResource,
+  onFindUserGroupInvitesByEmail,
 };
 export default GroupService;
