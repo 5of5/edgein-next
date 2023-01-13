@@ -10,13 +10,13 @@ import { ElemButton } from "./ElemButton";
 import { ElemPhoto } from "./ElemPhoto";
 import { InputSelect } from "./InputSelect";
 import moment from "moment-timezone";
-import { Notes } from "@/graphql/types";
+import { GetNotesQuery } from "@/graphql/types";
 import { ElemDeleteConfirmModal } from "./ElemDeleteConfirmModal";
 
 type Props = {
 	isOpen: boolean;
 	type: "create" | "edit";
-	selectedNote?: Notes;
+	selectedNote?: GetNotesQuery['notes'][0];
 	resourceId: number;
 	resourceType: string;
 	onClose: () => void;

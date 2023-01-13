@@ -280,15 +280,15 @@ const Company: NextPage<Props> = (props: Props) => {
 									let metricsClass = "";
 
 									if (item.id === "currentPrice") {
-										metricsClass = "text-green-700";
+										metricsClass = "text-green-600";
 									} else if (item.id === "marketCap") {
-										metricsClass = "text-green-700";
+										metricsClass = "text-green-600";
 									} else if (item.id === "marketCapRank") {
 										metricsClass = "";
 									} else if (item.id === "highLow24H") {
 										metricsClass = "";
 									} else if (item.id === "vol24H") {
-										metricsClass = "text-green-700";
+										metricsClass = "text-green-600";
 									} else {
 										metricsClass = "";
 									}
@@ -383,7 +383,10 @@ const Company: NextPage<Props> = (props: Props) => {
 						</div>
 					)}
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-						<ElemOrganizationNotes resourceId={company.id} resourceType="companies" />
+						<ElemOrganizationNotes
+							resourceId={company.id}
+							resourceType="companies"
+						/>
 					</div>
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 						<div className="flex items-center justify-between">
