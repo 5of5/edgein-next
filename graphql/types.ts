@@ -15142,6 +15142,13 @@ export type GetGroupQueryVariables = Exact<{
 
 export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }> }> };
 
+export type GetListUserGroupsQueryVariables = Exact<{
+  where: List_User_Groups_Bool_Exp;
+}>;
+
+
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
 }>;
@@ -15715,6 +15722,42 @@ useGetGroupQuery.getKey = (variables: GetGroupQueryVariables) => ['GetGroup', va
 ;
 
 useGetGroupQuery.fetcher = (variables: GetGroupQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupQuery, GetGroupQueryVariables>(GetGroupDocument, variables, options);
+export const GetListUserGroupsDocument = `
+    query GetListUserGroups($where: list_user_groups_bool_exp!) {
+  list_user_groups(where: $where) {
+    id
+    list_id
+    list {
+      id
+      name
+    }
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useGetListUserGroupsQuery = <
+      TData = GetListUserGroupsQuery,
+      TError = Error
+    >(
+      variables: GetListUserGroupsQueryVariables,
+      options?: UseQueryOptions<GetListUserGroupsQuery, TError, TData>
+    ) =>
+    useQuery<GetListUserGroupsQuery, TError, TData>(
+      ['GetListUserGroups', variables],
+      fetcher<GetListUserGroupsQuery, GetListUserGroupsQueryVariables>(GetListUserGroupsDocument, variables),
+      options
+    );
+useGetListUserGroupsQuery.document = GetListUserGroupsDocument;
+
+
+useGetListUserGroupsQuery.getKey = (variables: GetListUserGroupsQueryVariables) => ['GetListUserGroups', variables];
+;
+
+useGetListUserGroupsQuery.fetcher = (variables: GetListUserGroupsQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsQuery, GetListUserGroupsQueryVariables>(GetListUserGroupsDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {

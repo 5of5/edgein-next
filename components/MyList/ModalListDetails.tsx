@@ -15,8 +15,10 @@ type Props = {
 	theListDescription?: string;
 	theListCreator?: string;
 	theListId: number;
+	groups: Array<any>;
 	onSaveListName: (name: string) => void;
 	onDeleteList: (id: number) => void;
+	onAddGroups: (ids: Array<number>) => void;
 };
 
 export const ModalListDetails: FC<Props> = ({
@@ -24,8 +26,10 @@ export const ModalListDetails: FC<Props> = ({
 	theListDescription,
 	theListCreator,
 	theListId,
+	groups,
 	onSaveListName,
 	onDeleteList,
+	onAddGroups,
 }) => {
 	const [listDetailsModal, setListDetailsModal] = useState(false);
 	const [listNameModal, setListNameModal] = useState(false);
@@ -110,9 +114,15 @@ export const ModalListDetails: FC<Props> = ({
 											>
 												<div className="text-left">
 													<h3 className="font-bold">Groups</h3>
-													<div className="flex flex-col gap-1 mt-2">
-														<p className="capitalize">Nha test group 1</p>
-														<p className="capitalize">Nha test group 2</p>
+													<div className="flex flex-wrap gap-2 mt-2">
+														{groups.map((item: any) => (
+															<p
+																key={item.id}
+																className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+															>
+																{item.name}
+															</p>
+														))}
 													</div>
 												</div>
 												<div className="text-primary-500">Edit</div>
@@ -192,8 +202,8 @@ export const ModalListDetails: FC<Props> = ({
 			<ModalListGroups
 				isOpen={listGroupsModal}
 				onCloseModal={() => setListGroupsModal(false)}
-				listGroups={[]}
-				onSave={() => {}}
+				listGroups={groups}
+				onSave={onAddGroups}
 			/>
 		</>
 	);

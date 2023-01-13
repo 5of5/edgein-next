@@ -1,0 +1,15 @@
+query GetListUserGroups($where: list_user_groups_bool_exp!) {
+  list_user_groups(where: $where) {
+    id
+    list_id
+    list {
+      id
+      name
+    }
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}

@@ -1,14 +1,15 @@
-import { FC, Fragment, useState, useEffect } from "react";
+import { FC, Fragment, useState, useEffect, useMemo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ElemButton } from "@/components/ElemButton";
 import { IconX } from "@/components/Icons";
 import { InputSelect } from "../InputSelect";
+import { useUser } from "@/context/userContext";
 
 type Props = {
   isOpen: boolean;
-  listGroups?: [];
+  listGroups?: Array<any>;
   onCloseModal: () => void;
-  onSave: (groups: []) => void;
+  onSave: (groupIds: Array<number>) => void;
 };
 
 export const ModalListGroups: FC<Props> = ({
@@ -17,11 +18,23 @@ export const ModalListGroups: FC<Props> = ({
   onCloseModal,
   onSave,
 }) => {
-  const [selectedGroups, setSelectedGroups] = useState<[]>([]);
+  const { myGroups } = useUser();
+
+  const [selectedGroups, setSelectedGroups] = useState<Array<any>>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const groupOptions = useMemo(() => {
+    return myGroups.map((item) => ({
+      id: item.id,
+      title: item.name,
+    }));
+  }, [myGroups]);
+
   useEffect(() => {
-    setSelectedGroups(listGroups);
+    setSelectedGroups(listGroups.map((item) => ({
+      id: item.id,
+      title: item.name,
+    })));
     setError("");
   }, [listGroups]);
 
@@ -30,7 +43,8 @@ export const ModalListGroups: FC<Props> = ({
       return;
     }
 
-    onSave(selectedGroups);
+    const groupIds = selectedGroups.map((item: any) => item.id);
+    onSave(groupIds);
     onCloseModal();
   };
 
@@ -60,7 +74,7 @@ export const ModalListGroups: FC<Props> = ({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-slate-100 shadow-xl transition-all overflow-hidden">
+              <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-slate-100 shadow-xl transition-all">
                 <div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
                   <h2 className="text-xl font-bold capitalize">
                     Edit List Groups
@@ -79,9 +93,11 @@ export const ModalListGroups: FC<Props> = ({
                       className="w-full"
                       buttonClasses="w-full"
                       dropdownClasses="w-full"
+                      multiple
+                      by="id"
                       value={selectedGroups}
                       onChange={setSelectedGroups}
-                      options={[]}
+                      options={groupOptions}
                     />
                     {error === "" ? null : (
                       <div className="mt-2 font-bold text-sm text-rose-400">

@@ -18,6 +18,8 @@ type Props = {
 	onChange?: any;
 	options: Record<string, any>[];
 	disabled?: boolean;
+	multiple?: boolean;
+	by?: string;
 };
 
 export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
@@ -28,6 +30,8 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 	placeholder = "",
 	options,
 	disabled = false,
+	multiple = false,
+	by,
 	onChange,
 }) => {
 	const displayIcon = (val: string | number, className: string) => {
@@ -48,7 +52,13 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<div className={className}>
-			<Listbox value={value} onChange={onChange} disabled={disabled}>
+			<Listbox
+				value={value}
+				onChange={onChange}
+				disabled={disabled}
+				multiple={multiple}
+				by={by}
+			>
 				{({ open, disabled }) => (
 					<>
 						<div className="relative">
@@ -57,12 +67,26 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
                   disabled ? "bg-slate-200 cursor-not-allowed" : ""
                 }`}
 							>
-								<div className={` ${className} truncate`}>
-									{value?.title ? value.title : placeholder}
-									<span className="text-gray-400 text-sm ml-2">
-										{value?.description && value.description}
-									</span>
-								</div>
+								{multiple ? (
+									<div className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}>
+										{value.map((item: any) => (
+											<span
+												key={item.id}
+												className="bg-slate-100 rounded-md px-2 py-1"
+											>
+												{item.title}
+											</span>
+										))}
+									</div>
+								) : (
+									<div className={` ${className} truncate`}>
+										{value?.title ? value.title : placeholder}
+										<span className="text-gray-400 text-sm ml-2">
+											{value?.description && value.description}
+										</span>
+									</div>
+								)}
+								
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 									<IconSelector className="h-5 w-5 text-gray-400" />
 								</div>

@@ -4,7 +4,7 @@ import { ElemButton } from "@/components/ElemButton";
 import moment from "moment-timezone";
 
 type Props = {
-	lists: Array<Record<string, any>>;
+	lists: Array<any>;
 };
 
 export const ElemLists: React.FC<Props> = ({ lists }) => {
