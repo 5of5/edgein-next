@@ -5,11 +5,41 @@ query GetListUserGroups($where: list_user_groups_bool_exp!) {
     list {
       id
       name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
     }
     user_group_id
     user_group {
       id
       name
+    }
+  }
+}
+
+query GetListMembers($where: list_members_bool_exp!) {
+  list_members(where: $where) {
+    id
+    member_type
+    list_id
+    list {
+      id
+      name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
     }
   }
 }
