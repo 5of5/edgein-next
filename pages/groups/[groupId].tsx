@@ -26,6 +26,7 @@ import {
 	useGetListUserGroupsQuery,
 	User_Groups,
 	List_User_Groups_Bool_Exp,
+	Lists,
 } from "@/graphql/types";
 
 type Props = {
@@ -108,7 +109,7 @@ const Group: NextPage<Props> = (props: Props) => {
 			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
 			<div ref={listsRef}>
 				<ElemLists
-					lists={lists?.list_user_groups?.map(item => item.list) || []}
+					lists={lists?.list_user_groups?.map(item => item.list) as Array<Lists> || []}
 				/>
 			</div>
 
