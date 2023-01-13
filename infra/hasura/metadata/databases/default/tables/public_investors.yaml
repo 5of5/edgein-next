@@ -37,3 +37,19 @@ select_permissions:
         - seniority
         - title
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - person_id
+        - vc_firm_id
+        - end_date
+        - start_date
+        - external_id
+        - function
+        - seniority
+        - title
+        - created_at
+        - updated_at
+      filter: {}
+      allow_aggregations: true

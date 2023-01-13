@@ -96,3 +96,54 @@ select_permissions:
         - year_founded
       filter: {}
       limit: 50
+  - role: viewer
+    permission:
+      columns:
+        - investor_amount
+        - date_added
+        - ico_end
+        - ico_start
+        - coin_id
+        - id
+        - location_json
+        - logo
+        - sentiment
+        - status_tags
+        - tags
+        - total_employees
+        - aliases
+        - audit_file
+        - bitcointalk
+        - blockchain_explorer
+        - careers_page
+        - company_linkedin
+        - discord
+        - external_id
+        - facebook
+        - github
+        - glassdoor
+        - instagram
+        - layer
+        - layer_detail
+        - location
+        - market_verified
+        - medium
+        - name
+        - notes
+        - overview
+        - reddit
+        - slug
+        - status
+        - telegram
+        - total_valuation
+        - twitter
+        - velocity_linkedin
+        - velocity_token
+        - website
+        - white_paper
+        - year_founded
+        - youtube
+        - created_at
+        - updated_at
+      filter: {}
+      allow_aggregations: true

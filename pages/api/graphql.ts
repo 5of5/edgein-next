@@ -3,17 +3,27 @@ import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-  let headers: {Authorization: string} | {'x-hasura-admin-secret': string}
+  let headers: {Authorization: string, Role: string} |
+    {'x-hasura-admin-secret': string, 'x-hasura-role': string}
   if (process.env.DEV_MODE) {
-    headers  = {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
+    headers  = {
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+      'x-hasura-role': process.env.HASURA_VIEWER ?? ""
+    }
   } else {
     if (!user) {
       return res.status(401).end()
     }
     headers  = user.email.endsWith('@5of5.vc') || process.env.DEV_MODE ?
-    {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
+    {
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+      'x-hasura-role': process.env.HASURA_VIEWER ?? ""
+    }
       : 
-    { Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}` }
+    {
+      Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
+      Role: ''
+    }
   }
   const opts = {
     method: "POST",
@@ -23,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);
 
   const json = await proxyRes.json();
-
+  
   res.send(json)
 }
 

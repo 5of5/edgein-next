@@ -27,3 +27,14 @@ computed_fields:
         schema: public
         name: lists_total_no_of_companies
     comment: Computed field to get total no. of companies in a list
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - created_by_id
+        - id
+        - name
+      computed_fields:
+        - total_no_of_resources
+      filter: {}
+      allow_aggregations: true

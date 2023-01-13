@@ -38,3 +38,17 @@ select_permissions:
         - round
         - round_date
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - company_id
+        - id
+        - amount
+        - valuation
+        - currency
+        - external_id
+        - round
+        - round_date
+        - status
+      filter: {}
+      allow_aggregations: true

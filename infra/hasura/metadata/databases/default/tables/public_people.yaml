@@ -74,3 +74,28 @@ select_permissions:
         - website_url
         - work_email
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - picture
+        - about
+        - city
+        - country
+        - external_id
+        - facebook_url
+        - github
+        - linkedin
+        - name
+        - personal_email
+        - slug
+        - status
+        - twitter_url
+        - type
+        - website_url
+        - work_email
+        - created_at
+        - updated_at
+        - email
+      filter: {}
+      allow_aggregations: true

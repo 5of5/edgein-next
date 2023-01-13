@@ -1,3 +1,14 @@
 table:
   schema: public
   name: billing_org
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - user_limit
+        - customer_id
+        - plan
+        - status
+      filter: {}
+      allow_aggregations: true

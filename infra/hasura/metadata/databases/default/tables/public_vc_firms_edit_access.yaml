@@ -11,3 +11,13 @@ object_relationships:
         insertion_order: null
         column_mapping:
           resource_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - resource_id
+        - user_id
+        - resource_type
+      filter: {}
+      allow_aggregations: true

@@ -8,3 +8,10 @@ select_permissions:
         - id
         - name
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}
+      allow_aggregations: true

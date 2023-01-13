@@ -32,3 +32,15 @@ select_permissions:
         - vc_firm_id
         - external_id
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - person_id
+        - round_id
+        - vc_firm_id
+        - amount
+        - external_id
+        - status
+      filter: {}
+      allow_aggregations: true

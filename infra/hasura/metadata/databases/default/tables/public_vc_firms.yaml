@@ -58,3 +58,28 @@ select_permissions:
       computed_fields:
         - num_of_investments
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - logo
+        - sentiment
+        - status_tags
+        - tags
+        - external_id
+        - latest_investment
+        - linkedin
+        - location
+        - name
+        - overview
+        - slug
+        - status
+        - twitter
+        - website
+        - year_founded
+        - created_at
+        - updated_at
+      computed_fields:
+        - num_of_investments
+      filter: {}
+      allow_aggregations: true

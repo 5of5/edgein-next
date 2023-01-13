@@ -32,3 +32,15 @@ select_permissions:
         - name
         - ticker
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - blockchain_id
+        - company_id
+        - id
+        - external_id
+        - name
+        - ticker
+        - type
+      filter: {}
+      allow_aggregations: true
