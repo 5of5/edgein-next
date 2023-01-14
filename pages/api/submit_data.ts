@@ -100,7 +100,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					resource: resourceType,
 					resource_id: resourceId,
 					field,
-					value,
+					value: value === null ? "" : value,
 					accuracy_weight: 1,
 				});
 	
