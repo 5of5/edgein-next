@@ -981,10 +981,9 @@ const Privacy: NextPage<Props> = (props) => {
 									our GDPR Privacy Policy and Data Use Addendum, as EdgeIn.io
 									adheres to the Standard Contractual Clauses (as such term is
 									defined in our Data Use Addendum) in accordance with
-									applicable laws. The foregoing changes went into effect on
-									November 3rd, 2022.
+									applicable laws.
 								</p>
-								<p>Effective Date: January 13, 2023</p>
+								<p>Effective Date: November 3rd, 2022</p>
 								<h2>European Residents</h2>
 								<p>
 									If you are a resident of the European Union
