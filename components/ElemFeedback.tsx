@@ -126,14 +126,14 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 				</div>
 			)}
 
-			<ElemButton
+			{/* <ElemButton
 				className="absolute shadow-lg"
 				btn="white"
 				onClick={() => setToggleFeedbackForm(!toggleFeedbackForm)}
 			>
 				<IconAnnotation className="h-6 w-6 mr-1" />
 				Request Data
-			</ElemButton>
+			</ElemButton> */}
 		</div>
 	);
 };

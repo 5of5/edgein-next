@@ -64,6 +64,11 @@ import {
   DisabledEmailCreate,
 } from "../../components/admin/disabledEmail";
 import { UserList, UserEdit } from "../../components/admin/user";
+import {
+  DataPartnerList,
+  DataPartnerCreate,
+  DataPartnerEdit,
+} from "../../components/admin/dataPartner";
 import { useAuth } from "../../hooks/useAuth";
 import { getUpdatedDiff } from "@/utils/helpers";
 import { onSubmitData } from "@/utils/submitData";
@@ -294,6 +299,12 @@ const AdminApp = () => {
         create={DisabledEmailCreate}
       />
       <Resource name="users" list={UserList} edit={UserEdit} />
+      <Resource
+        name="data_partners"
+        list={DataPartnerList}
+        edit={DataPartnerEdit}
+        create={DataPartnerCreate}
+      />
 
       {/* <Resource
         name="actions"

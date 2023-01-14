@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import { IconUser, IconUserCircleSolid } from "@/components/Icons";
 
 type Props = {
-	photo: Record<string, any>;
+	photo?: Record<string, any>;
 	wrapClass?: string;
 	imgClass?: string;
 	imgAlt?: string | null;

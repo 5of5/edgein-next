@@ -3,6 +3,8 @@ import auth0Library from '../../utils/auth0Library'
 import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { createHmac } from "crypto";
+import { User_Group_Invites } from '@/graphql/types';
+import GroupService from '@/utils/groups';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
@@ -59,8 +61,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let referenceUserId = null;
       // check user exist or not for the current reference
       if (reference_id) {
+        // look up user by reference_id
         const referenceUser = await UserService.findOneUserByReferenceId(reference_id)
-        if (referenceUser) referenceUserId = referenceUser.id
+        if (referenceUser) {
+          referenceUserId = referenceUser.id
+        } else {
+          // look up people by person slug
+          const person = await UserService.findOnePeopleBySlug(reference_id)
+          if (person) {
+            // look up user by person_id
+            const userByPersonId = await UserService.findOneUserByPersonId(person.id)
+            if (userByPersonId) {
+              referenceUserId = userByPersonId.id
+            } else {
+              referenceUserId = `person-${person.id}`
+            }
+          }
+        }
       }
 
       const objectData = {
@@ -123,11 +140,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       reference_id: userData.reference_id,
     });
     CookieService.setTokenCookie(res, token);
+
+    const userGroupInvites: Array<User_Group_Invites> = await GroupService.onFindUserGroupInvitesByEmail(email);
+    result.groupInvites = userGroupInvites;
+    if (userGroupInvites && userGroupInvites.length > 0) {
+      await Promise.all(
+        userGroupInvites.map((invites: User_Group_Invites) =>
+          addMember(userData.id, invites.user_group_id)
+        )
+      );
+    }
   } catch (ex: any) {
     return res.status(404).send({ message: ex.message })
   }
   
   res.send({ success: true, result });
 }
+
+const addMember = async (userId: number, groupId: number) => {
+  const response = await GroupService.onAddGroupMember(userId, groupId);
+  return response;
+};
 
 export default handler

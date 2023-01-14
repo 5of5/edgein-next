@@ -6,8 +6,6 @@ import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import Link from "next/link";
-// import { ElemCredibility } from "@/components/Company/ElemCredibility";
-// import { ElemVelocity } from "@/components/Company/ElemVelocity";
 
 type Props = {
 	company: Companies;
@@ -32,6 +30,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
 						imgClass="object-fit max-w-full max-h-full"
 						imgAlt={name}
+						placeholderClass="text-slate-300"
 					/>
 
 					<div className="flex items-center justify-center pl-2 md:overflow-visible">

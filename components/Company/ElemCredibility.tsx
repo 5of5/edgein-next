@@ -62,7 +62,7 @@ export const ElemCredibility: React.FC<Props> = ({
 								title="Verified"
 								className={`${
 									mini ? "-top-2 -right-2 h-5 w-5" : "-top-3 -right-3 h-7 w-7"
-								} absolute text-green-500`}
+								} absolute text-green-600`}
 							/>
 							<item.icon
 								className={`${mini ? "w-6 h-6" : "h-8 w-8"}  text-slate-600`}

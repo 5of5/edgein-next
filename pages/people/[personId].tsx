@@ -32,15 +32,15 @@ const Person: NextPage<Props> = (props) => {
 	const person = props.person;
 
 	useEffect(() => {
-    if (person) {
-      onTrackView({
-        resourceId: person?.id,
-        resourceType: "people",
-        pathname: router.asPath,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [person]);
+		if (person) {
+			onTrackView({
+				resourceId: person?.id,
+				resourceType: "people",
+				pathname: router.asPath,
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [person]);
 
 	if (!person) {
 		return <h1>Not Found</h1>;
@@ -81,7 +81,7 @@ const Person: NextPage<Props> = (props) => {
 						<ElemPhoto
 							photo={person.picture}
 							wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-full"
-							imgClass="object-contain w-full h-full rounded-full overflow-hidden"
+							imgClass="object-cover w-full h-full rounded-full overflow-hidden"
 							imgAlt={person.name}
 							placeholder="user"
 							placeholderClass="text-slate-300"

@@ -1,0 +1,16 @@
+query GetNotes($where: notes_bool_exp!) {
+  notes(where: $where, order_by: {created_at: asc}) {
+    id
+    notes
+    created_by
+    created_at
+    updated_at
+    user_group_id
+    resource_type
+    resource_id
+    user_group {
+      id
+      name
+    }
+  }
+}

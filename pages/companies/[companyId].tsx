@@ -11,31 +11,40 @@ import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { PlaceholderActivity } from "@/components/Placeholders";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
+import { ElemVelocity } from "@/components/Company/ElemVelocity";
 import {
 	Companies,
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
 	useGetCompanyQuery,
-	Investments,
+	//Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/ElemReactions";
 import { useAuth } from "@/hooks/useAuth";
-//import { IconEditPencil } from "@/components/Icons";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
-import { convertToInternationalCurrencySystem, formatDate } from "@/utils";
+import {
+	convertToInternationalCurrencySystem,
+	formatDate,
+	convertToIntNum,
+} from "@/utils";
 import { sortBy } from "lodash";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 
+import { IconEditPencil, IconAnnotation } from "@/components/Icons";
+import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
 	metrics: Metric[];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -162,7 +171,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					/>
 				</div>
 				<div className="w-full col-span-5 mt-7 lg:mt-4">
-					<div className="flex shrink-0">
+					<div className="shrink-0">
 						<h1 className="self-end inline-block text-4xl font-bold md:text-5xl">
 							{company.name}
 						</h1>
@@ -177,7 +186,11 @@ const Company: NextPage<Props> = (props: Props) => {
 						)}
 					</div>
 					{companyTags.length > 0 && (
-						<ElemTags className="mt-4" tags={companyTags} />
+						<ElemTags
+							className="mt-4"
+							resourceType={"companies"}
+							tags={companyTags}
+						/>
 					)}
 					{company.overview && (
 						<>
@@ -189,7 +202,7 @@ const Company: NextPage<Props> = (props: Props) => {
 							>
 								{parse(newLineToP(company.overview))}
 							</div>
-							{overviewDivHeight > 72 && (
+							{overviewDivHeight > 84 && (
 								<ElemButton
 									onClick={() => setOverviewMore(!overviewMore)}
 									btn="transparent"
@@ -232,15 +245,15 @@ const Company: NextPage<Props> = (props: Props) => {
 									let metricsClass = "";
 
 									if (item.id === "currentPrice") {
-										metricsClass = "text-green-700";
+										metricsClass = "text-green-600";
 									} else if (item.id === "marketCap") {
-										metricsClass = "text-green-700";
+										metricsClass = "text-green-600";
 									} else if (item.id === "marketCapRank") {
 										metricsClass = "";
 									} else if (item.id === "highLow24H") {
 										metricsClass = "";
 									} else if (item.id === "vol24H") {
-										metricsClass = "text-green-700";
+										metricsClass = "text-green-600";
 									} else {
 										metricsClass = "";
 									}
@@ -324,14 +337,22 @@ const Company: NextPage<Props> = (props: Props) => {
 								githubVerified={company.github}
 								linkedInVerified={company.company_linkedin}
 							/>
-							{/* <ElemVelocity
-								className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-								heading="Velocity"
-								employeeListings={"4"}
-								tokenExchangeValue={"2.3"}
-							/> */}
+							{(company.velocity_linkedin || company.velocity_token) && (
+								<ElemVelocity
+									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+									heading="Velocity"
+									employeeListings={company.velocity_linkedin}
+									tokenExchangeValue={company.velocity_token}
+								/>
+							)}
 						</div>
 					)}
+					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+						<ElemOrganizationNotes
+							resourceId={company.id}
+							resourceType="companies"
+						/>
+					</div>
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>
@@ -341,111 +362,149 @@ const Company: NextPage<Props> = (props: Props) => {
 						</div>
 
 						<div className="mt-2 py-4 border-t border-black/10">
-							{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
+							{error ? (
+								<h4>Error loading activity</h4>
+							) : isLoading ? (
 								<>
-									<ul className="flex flex-col">
-										{sortedInvestmentRounds
-											.slice(0, activityLimit)
-											.map((activity, index) => {
-												return (
-													<li
-														key={index}
-														className="relative pl-6 overflow-hidden group last:-mb-4"
-													>
-														<span className="absolute h-full top-0 bottom-0 left-0">
-															<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-															<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-														</span>
-
-														<div className="mb-4">
-															<div className="inline font-bold">
-																{activity.round === "Acquisition" ? (
-																	<>Acquired by </>
-																) : (
-																	<>
-																		Raised{" "}
-																		{activity.amount ? (
-																			<div className="inline text-green-600">
-																				$
-																				{`${convertToInternationalCurrencySystem(
-																					activity.amount
-																				)}`}
-																			</div>
-																		) : (
-																			<div className="inline text-green-600">
-																				undisclosed capital
-																			</div>
-																		)}{" "}
-																		from:{" "}
-																	</>
-																)}
-																{activity.investments.map(
-																	(item: any, index) => {
-																		return (
-																			<div key={index} className="inline">
-																				{index !== 0 &&
-																					(index ===
-																					activity.investments.length - 1
-																						? ", and "
-																						: ", ")}
-
-																				{item.vc_firm && (
-																					<Link
-																						href={`/investors/${item.vc_firm["slug"]}`}
-																					>
-																						<a className="text-primary-500 hover:bg-slate-200">
-																							{item.vc_firm["name"]}
-																						</a>
-																					</Link>
-																				)}
-																				{item.vc_firm && item.person && <>/</>}
-
-																				{item.person && (
-																					<Link
-																						href={`/people/${item.person["slug"]}`}
-																					>
-																						<a className="text-primary-500 hover:bg-slate-200">
-																							{item.person["name"]}
-																						</a>
-																					</Link>
-																				)}
-																			</div>
-																		);
-																	}
-																)}
-																.
-															</div>
-
-															<p className="text-xs text-slate-600">
-																{formatDate(activity.round_date as string, {
-																	month: "short",
-																	day: "2-digit",
-																	year: "numeric",
-																})}
-															</p>
-														</div>
-													</li>
-												);
-											})}
-									</ul>
-									{activityLimit < sortedInvestmentRounds.length && (
-										<div className="mt-6">
-											<ElemButton
-												btn="ol-primary"
-												onClick={showMoreActivity}
-												className="w-full"
-											>
-												Show More Activity
-											</ElemButton>
-										</div>
-									)}
+									{Array.from({ length: 3 }, (_, i) => (
+										<PlaceholderActivity key={i} />
+									))}
 								</>
-							) : (
-								<div className="flex items-center justify-center lg:p-5">
-									<div className="text-slate-600 lg:text-xl">
-										There is no recent activity for this organization.
+							) : sortedInvestmentRounds?.length === 0 ? (
+								<div className="flex items-center justify-center mx-auto">
+									<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
+										<h2 className="mt-5 text-3xl font-bold">
+											No activity found
+										</h2>
+										<div className="mt-1 text-lg text-slate-600">
+											There is no activity for this organization.
+										</div>
+										<ElemButton
+											onClick={() => props.setToggleFeedbackForm(true)}
+											btn="white"
+											className="mt-3"
+										>
+											<IconAnnotation className="w-6 h-6 mr-1" />
+											Tell us about missing data
+										</ElemButton>
 									</div>
 								</div>
+							) : (
+								sortedInvestmentRounds && (
+									<>
+										<ul className="flex flex-col">
+											{sortedInvestmentRounds
+												.slice(0, activityLimit)
+												.map((activity, index) => {
+													return (
+														<li
+															key={index}
+															className="relative pl-6 overflow-hidden group last:-mb-4"
+														>
+															<span className="absolute h-full top-0 bottom-0 left-0">
+																<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+																<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+															</span>
+
+															<div className="mb-4">
+																<div className="inline leading-7 text-slate-600">
+																	{activity.round === "Acquisition" ? (
+																		<div className="inline font-bold">
+																			Acquired by{" "}
+																		</div>
+																	) : (
+																		<>
+																			<div className="inline font-bold">
+																				Raised{" "}
+																				{activity.amount ? (
+																					<div className="inline text-green-600">
+																						${convertToIntNum(activity.amount)}
+																					</div>
+																				) : (
+																					<div className="inline text-green-600">
+																						undisclosed capital
+																					</div>
+																				)}{" "}
+																				{activity.valuation && (
+																					<div className="inline">
+																						at{" "}
+																						<div className="inline text-green-600">
+																							$
+																							{convertToIntNum(
+																								activity.valuation
+																							)}{" "}
+																						</div>
+																						valuation{" "}
+																					</div>
+																				)}
+																			</div>
+																			from:{" "}
+																		</>
+																	)}
+																	{activity.investments.map(
+																		(item: any, index) => {
+																			return (
+																				<div key={index} className="inline">
+																					{index !== 0 &&
+																						(index ===
+																						activity.investments.length - 1
+																							? ", and "
+																							: ", ")}
+
+																					{item.vc_firm && (
+																						<Link
+																							href={`/investors/${item.vc_firm["slug"]}`}
+																						>
+																							<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+																								{item.vc_firm["name"]}
+																							</a>
+																						</Link>
+																					)}
+																					{item.vc_firm && item.person && (
+																						<>/</>
+																					)}
+
+																					{item.person && (
+																						<Link
+																							href={`/people/${item.person["slug"]}`}
+																						>
+																							<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+																								{item.person["name"]}
+																							</a>
+																						</Link>
+																					)}
+																				</div>
+																			);
+																		}
+																	)}
+																	.
+																</div>
+
+																<p className="text-xs text-slate-600">
+																	{formatDate(activity.round_date as string, {
+																		month: "short",
+																		day: "2-digit",
+																		year: "numeric",
+																	})}
+																</p>
+															</div>
+														</li>
+													);
+												})}
+										</ul>
+										{activityLimit < sortedInvestmentRounds.length && (
+											<div className="mt-6">
+												<ElemButton
+													btn="ol-primary"
+													onClick={showMoreActivity}
+													className="w-full"
+												>
+													Show More Activity
+												</ElemButton>
+											</div>
+										)}
+									</>
+								)
 							)}
 						</div>
 					</div>

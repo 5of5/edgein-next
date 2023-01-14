@@ -4,7 +4,7 @@ import { useTable, useSortBy, usePagination } from "react-table";
 import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons";
 import { Pagination } from "@/components/Pagination";
 import Link from "next/link";
-import { numberWithCommas, formatDate } from "@/utils";
+import { numberWithCommas, formatDate, convertToIntNum } from "@/utils";
 import { Investment_Rounds } from "@/graphql/types";
 
 type Props = {
@@ -34,9 +34,20 @@ export const ElemInvestments: React.FC<Props> = ({
 				accessor: "amount" as const,
 				Cell: (props: any) => (
 					<div>
-						{props.value ? <>${numberWithCommas(props.value)}</> : <>&mdash;</>}
+						{props.value ? (
+							<>Raised ${numberWithCommas(props.value)}</>
+						) : (
+							<>&mdash;</>
+						)}
+						{props.row.original.valuation && (
+							<div>
+								{" "}
+								at ${numberWithCommas(props.row.original.valuation)} valuation
+							</div>
+						)}
 					</div>
 				),
+				width: 200,
 			},
 			{
 				Header: "Date",

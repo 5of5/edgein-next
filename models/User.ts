@@ -16,4 +16,5 @@ export type User = {
   reference_id: string
   reference_user_id: number
   additional_emails : string[]
+  profilePicture: any
 }
