@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Button,
   FunctionField,
@@ -13,8 +13,19 @@ import {
   ReferenceInput,
   SelectInput,
 } from "react-admin";
+import { Chip } from '@mui/material';
 import { companyLayerChoices } from "../../../utils/constants";
 import ElemList from "../ElemList";
+
+type QuickFilterProps = {
+  label: string;
+  source: string;
+  defaultValue: any;
+}
+
+const QuickFilter: FC<QuickFilterProps> = ({ label }) => {
+  return <Chip label={label} />;
+};
 
 const filters = [
   <TextInput
@@ -37,6 +48,12 @@ const filters = [
     source="layer"
     label="Layer"
     choices={companyLayerChoices}
+  />,
+  <QuickFilter
+    key="status_tags"
+    source="status_tags@_contains"
+    label="Trending"
+    defaultValue="Trending"
   />,
 ];
 
