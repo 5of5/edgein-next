@@ -71,6 +71,13 @@ export const handleChangeParentOrganization = async (
     });
   }
 
+  if (!current.parent_vc_firm && previous.parent_vc_firm) {
+    await onDeleteResourceLink({
+      fromVcFirmId: previous.parent_vc_firm,
+      [toId]: recordId,
+    });
+  }
+
   if (current.parent_company) {
     if (!previous.parent_company) {
       await onAddResourceLink({

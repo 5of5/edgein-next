@@ -13,17 +13,6 @@ export const getMutationRootStyle = (
     },
     marginBottom: formHeight >= height ? "60px" : 0,
   },
-  ".MuiToolbar-root": {
-    position: "fixed",
-    width: "100%",
-    maxWidth: "inherit",
-    bottom: 0,
-    zIndex: 100,
-    background: "#fff",
-    borderRadius: "4px",
-    boxShadow:
-      "0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%)",
-  },
   ".customForm": {
     "& > form": {
       maxWidth: formRef?.current?.offsetWidth || "100%",

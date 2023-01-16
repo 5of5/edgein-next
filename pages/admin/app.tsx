@@ -23,7 +23,7 @@ import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
 
 import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
 import ElemAppBar from "@/components/admin/ElemAppBar";
-import { getParentSubOrganizations, handleChangeParentOrganization } from "@/utils/resourceLink";
+import { getParentSubOrganizations } from "@/utils/resourceLink";
 import {
   InvestmentRoundCreate,
   InvestmentRoundEdit,
@@ -236,20 +236,6 @@ const AdminApp = () => {
       // Fix nullable inputs for graphql
       setDataProvider({
         ...dataProvider,
-        getOne: async (type, obj) => {
-          let { data, ...metadata } = await dataProvider.getOne(type, obj);
-          if (isTypeReferenceToResourceLink(type)) {
-            const parentSubOrganizations = getParentSubOrganizations(data);
-            data = {
-              ...data,
-              ...parentSubOrganizations,
-            };
-          }
-          return {
-            data,
-            ...metadata,
-          };
-        },
         getList: async (type, obj) => {
           let { data, ...metadata } = await dataProvider.getList(type, obj);
           if (isTypeReferenceToResourceLink(type)) {
@@ -263,52 +249,10 @@ const AdminApp = () => {
             ...metadata,
           };
         },
-        getMany: async (type, obj) => {
-          let { data, ...metadata } = await dataProvider.getMany(type, obj);
-
-          if (isTypeReferenceToResourceLink(type)) {
-            data = data.map((val) => ({
-              ...val,
-              ...getParentSubOrganizations(val),
-            }));
-          }
-          return {
-            data,
-            ...metadata,
-          };
-        },
-        create: async (type, obj) => {
-          const response = (
-            await dataProvider.create(type, nullInputTransform(type, obj))
-          ).data;
-          if (isTypeReferenceToResourceLink(type)) {
-            await handleChangeParentOrganization(
-              response.id,
-              {},
-              obj.data,
-              type
-            );
-          }
-          return { data: response };
-        },
-        update: async (type, obj) => {
-          if (isTypeReferenceToResourceLink(type)) {
-            await handleChangeParentOrganization(
-              obj.data.id,
-              obj.previousData,
-              obj.data,
-              type
-            );
-          }
-          if (
-            Object.keys(getUpdatedDiff(obj.previousData, obj.data)).find(
-              (key) => !["parent_company", "parent_vc_firm"].includes(key)
-            )
-          ) {
-            return dataProvider.update(type, nullInputTransform(type, obj));
-          }
-          return { data: obj.data as any };
-        },
+        create: (type, obj) =>
+          dataProvider.create(type, nullInputTransform(type, obj)),
+        update: (type, obj) =>
+          dataProvider.update(type, nullInputTransform(type, obj)),
       });
     };
     buildDataProvider();

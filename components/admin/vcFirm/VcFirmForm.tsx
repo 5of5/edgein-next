@@ -8,9 +8,6 @@ import {
   FormDataConsumer,
   useGetList,
   AutocompleteArrayInput,
-  ReferenceInput,
-  ReferenceArrayInput,
-  AutocompleteInput,
 } from "react-admin";
 import {
   companyChoices,
@@ -134,56 +131,6 @@ const VcFirmForm = ({
           source="status"
           choices={status}
         />
-        <ReferenceArrayInput
-          label="Child companies"
-          source="child_companies"
-          reference="companies"
-        >
-          <AutocompleteArrayInput
-            className={textInputClassName}
-            style={{ padding: 0, border: "none" }}
-            optionText="name"
-            filterToQuery={(search) => ({ name: search })}
-            disabled
-          />
-        </ReferenceArrayInput>
-        <ReferenceArrayInput
-          label="Child VC firms"
-          source="child_vc_firms"
-          reference="vc_firms"
-        >
-          <AutocompleteArrayInput
-            className={textInputClassName}
-            style={{ padding: 0, border: "none" }}
-            optionText="name"
-            filterToQuery={(search) => ({ name: search })}
-            disabled
-          />
-        </ReferenceArrayInput>
-        <ReferenceInput
-          label="Parent company"
-          source="parent_company"
-          reference="companies"
-        >
-          <AutocompleteInput
-            className={textInputClassName}
-            style={{ padding: 0, border: "none" }}
-            optionText="name"
-            filterToQuery={(search) => ({ name: search })}
-          />
-        </ReferenceInput>
-        <ReferenceInput
-          label="Parent VC firm"
-          source="parent_vc_firm"
-          reference="vc_firms"
-        >
-          <AutocompleteInput
-            className={textInputClassName}
-            style={{ padding: 0, border: "none" }}
-            optionText="name"
-            filterToQuery={(search) => ({ name: search })}
-          />
-        </ReferenceInput>
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
           source="location"
