@@ -103,7 +103,7 @@ const ElemSettingDialog: React.FC<Props> = ({
 										</Tab>
 									</Tab.List>
 									<Tab.Panels>
-										<div className="p-6 max-h-[75vh] overflow-y-scroll">
+										<div className="p-6">
 											<Tab.Panel>
 												<ElemSettingTab
 													group={group}

@@ -18,6 +18,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email: string = req.body.email;
   const user_group_id: number = req.body.groupId;
 
+  const existedInvites = await GroupService.onCheckGroupInviteExists(email, user_group_id);
+
+  if (existedInvites) {
+    return res.status(400).json({ message: `An invitation with email ${email} already exists` });
+  }
+
   const userData = await UserService.findOneUserByEmail(email);
 
   const {
@@ -31,6 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id
           email
           user_group_id
+          created_by_user_id
         }
       }
     `,
@@ -38,6 +45,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       object: {
         email,
         user_group_id,
+        created_by_user_id: user?.id,
       },
     },
   });

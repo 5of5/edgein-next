@@ -13024,8 +13024,13 @@ export type Timestamptz_Comparison_Exp = {
 export type User_Group_Invites = {
   __typename?: 'user_group_invites';
   created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by: Maybe<Users>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   email: Scalars['String'];
   id: Scalars['Int'];
+  /** An object relationship */
+  user_group: User_Groups;
   user_group_id: Scalars['Int'];
 };
 
@@ -13084,12 +13089,14 @@ export type User_Group_Invites_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type User_Group_Invites_Avg_Fields = {
   __typename?: 'user_group_invites_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "user_group_invites" */
 export type User_Group_Invites_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13100,8 +13107,11 @@ export type User_Group_Invites_Bool_Exp = {
   _not: InputMaybe<User_Group_Invites_Bool_Exp>;
   _or: InputMaybe<Array<User_Group_Invites_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   email: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  user_group: InputMaybe<User_Groups_Bool_Exp>;
   user_group_id: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -13113,6 +13123,7 @@ export enum User_Group_Invites_Constraint {
 
 /** input type for incrementing numeric columns in table "user_group_invites" */
 export type User_Group_Invites_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   user_group_id: InputMaybe<Scalars['Int']>;
 };
@@ -13120,8 +13131,11 @@ export type User_Group_Invites_Inc_Input = {
 /** input type for inserting data into table "user_group_invites" */
 export type User_Group_Invites_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
   user_group_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -13129,6 +13143,7 @@ export type User_Group_Invites_Insert_Input = {
 export type User_Group_Invites_Max_Fields = {
   __typename?: 'user_group_invites_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   user_group_id: Maybe<Scalars['Int']>;
@@ -13137,6 +13152,7 @@ export type User_Group_Invites_Max_Fields = {
 /** order by max() on columns of table "user_group_invites" */
 export type User_Group_Invites_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
@@ -13146,6 +13162,7 @@ export type User_Group_Invites_Max_Order_By = {
 export type User_Group_Invites_Min_Fields = {
   __typename?: 'user_group_invites_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   user_group_id: Maybe<Scalars['Int']>;
@@ -13154,6 +13171,7 @@ export type User_Group_Invites_Min_Fields = {
 /** order by min() on columns of table "user_group_invites" */
 export type User_Group_Invites_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
@@ -13178,8 +13196,11 @@ export type User_Group_Invites_On_Conflict = {
 /** Ordering options when selecting data from "user_group_invites". */
 export type User_Group_Invites_Order_By = {
   created_at: InputMaybe<Order_By>;
+  created_by: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  user_group: InputMaybe<User_Groups_Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
 
@@ -13193,6 +13214,8 @@ export enum User_Group_Invites_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
   Email = 'email',
   /** column name */
   Id = 'id',
@@ -13203,6 +13226,7 @@ export enum User_Group_Invites_Select_Column {
 /** input type for updating data in table "user_group_invites" */
 export type User_Group_Invites_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   user_group_id: InputMaybe<Scalars['Int']>;
@@ -13211,12 +13235,14 @@ export type User_Group_Invites_Set_Input = {
 /** aggregate stddev on columns */
 export type User_Group_Invites_Stddev_Fields = {
   __typename?: 'user_group_invites_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "user_group_invites" */
 export type User_Group_Invites_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13224,12 +13250,14 @@ export type User_Group_Invites_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type User_Group_Invites_Stddev_Pop_Fields = {
   __typename?: 'user_group_invites_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "user_group_invites" */
 export type User_Group_Invites_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13237,12 +13265,14 @@ export type User_Group_Invites_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type User_Group_Invites_Stddev_Samp_Fields = {
   __typename?: 'user_group_invites_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "user_group_invites" */
 export type User_Group_Invites_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13250,12 +13280,14 @@ export type User_Group_Invites_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type User_Group_Invites_Sum_Fields = {
   __typename?: 'user_group_invites_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   user_group_id: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "user_group_invites" */
 export type User_Group_Invites_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13264,6 +13296,8 @@ export type User_Group_Invites_Sum_Order_By = {
 export enum User_Group_Invites_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
   /** column name */
   Email = 'email',
   /** column name */
@@ -13275,12 +13309,14 @@ export enum User_Group_Invites_Update_Column {
 /** aggregate var_pop on columns */
 export type User_Group_Invites_Var_Pop_Fields = {
   __typename?: 'user_group_invites_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "user_group_invites" */
 export type User_Group_Invites_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13288,12 +13324,14 @@ export type User_Group_Invites_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type User_Group_Invites_Var_Samp_Fields = {
   __typename?: 'user_group_invites_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "user_group_invites" */
 export type User_Group_Invites_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -13301,12 +13339,14 @@ export type User_Group_Invites_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type User_Group_Invites_Variance_Fields = {
   __typename?: 'user_group_invites_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "user_group_invites" */
 export type User_Group_Invites_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -15748,7 +15788,7 @@ export type GetGroupQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any }> }> };
+export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -16347,6 +16387,7 @@ export const GetGroupDocument = `
       id
       email
       created_at
+      created_by_user_id
     }
   }
 }

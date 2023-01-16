@@ -67,10 +67,11 @@ const ElemInviteDialog: React.FC<Props> = ({
 		mutate,
 		isLoading: isSubmitting,
 		isSuccess,
+		error: inviteError,
 		reset,
 	} = useMutation(
-		() =>
-			fetch("/api/invite_group_member/", {
+		async () => {
+			const res = await fetch("/api/invite_group_member/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
@@ -80,38 +81,43 @@ const ElemInviteDialog: React.FC<Props> = ({
 					email: selectedPerson.work_email || selectedPerson.slug,
 					groupId: group.id,
 				}),
-			}),
+			})
+			const apiResponse = await res.json();
+			if (!res.ok) {
+				throw apiResponse;
+			} else {
+				return apiResponse;
+			}
+		},
 		{
 			onSuccess: async (response) => {
-				if (response.status === 200) {
-					const { member, invite } = await response.json();
-					if (member) {
-						onUpdateGroupData((prev: User_Groups) => ({
-							...prev,
-							user_group_members: [
-								...prev.user_group_members,
-								member,
-							],
-						}));
-					} else {
-						onUpdateGroupData((prev: User_Groups) => ({
-							...prev,
-							user_group_invites: [
-								...prev.user_group_invites,
-								invite,
-							],
-						}));
-					}
-					const emailAddress =
-					selectedPerson.work_email || selectedPerson.personal_email;
-					if (emailAddress) {
-						onSendInvitationMail(
-							emailAddress,
-							selectedPerson.name,
-							group.name,
-							group.id
-						);
-					}
+				const { member, invite } = response;
+				if (member) {
+					onUpdateGroupData((prev: User_Groups) => ({
+						...prev,
+						user_group_members: [
+							...prev.user_group_members,
+							member,
+						],
+					}));
+				} else {
+					onUpdateGroupData((prev: User_Groups) => ({
+						...prev,
+						user_group_invites: [
+							...prev.user_group_invites,
+							invite,
+						],
+					}));
+				}
+				const emailAddress =
+				selectedPerson.work_email || selectedPerson.personal_email;
+				if (emailAddress) {
+					onSendInvitationMail(
+						emailAddress,
+						selectedPerson.name,
+						group.name,
+						group.id
+					);
 				}
 			},
 		}
@@ -175,6 +181,10 @@ const ElemInviteDialog: React.FC<Props> = ({
 								{isSuccess ? (
 									<p className="text-slate-500 mt-4">
 										An invitation has been sent to {selectedPerson?.name}
+									</p>
+								) : inviteError ? (
+									<p className="text-red-500 mt-4">
+										{(inviteError as any)?.message}
 									</p>
 								) : (
 									<>
