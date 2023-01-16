@@ -59,6 +59,7 @@ query GetGroup($id: Int!) {
       id
       email
       created_at
+      created_by_user_id
     }
   }
 }
