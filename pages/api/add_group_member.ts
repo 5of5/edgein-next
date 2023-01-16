@@ -1,4 +1,3 @@
-import { mutate } from "@/graphql/hasuraAdmin";
 import GroupService from "@/utils/groups";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -16,6 +15,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // params:
   const user_id: number = req.body.userId;
   const user_group_id: number = req.body.groupId;
+
+  const memberExists = await GroupService.onCheckGroupMemberExists(user_id, user_group_id);
+
+  if (memberExists) {
+    return res.status(400).json({ message: `This member already exists` });
+  }
 
   const data = await GroupService.onAddGroupMember(user_id, user_group_id);
 

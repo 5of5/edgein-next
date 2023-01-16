@@ -59,6 +59,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
         <p className="px-4 py-3">No pending invites.</p>
       ) : (
         pendingInvites.map((invite: User_Group_Invites) => {
+          const isInviteSender = user?.id === invite.created_by_user_id;
           const theInvite = (
             <div
               className="flex items-center justify-between px-4 py-3 group"
@@ -75,7 +76,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
 
                 <p className="font-bold">{invite.email}</p>
               </div>
-              {isGroupManager && (
+              {(isGroupManager || isInviteSender) && (
                 <Menu as="div" className="relative flex text-left">
                   {({ open }) => (
                     <>
