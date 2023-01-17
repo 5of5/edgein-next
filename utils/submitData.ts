@@ -1,5 +1,9 @@
+
 import { mutate, query } from "@/graphql/hasuraAdmin";
+import { Data_Fields } from "@/graphql/types";
 import { getUpdatedDiff } from "./helpers";
+
+export type ActionType = "Insert Data" | "Change Data";
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {
@@ -109,6 +113,7 @@ export const updateMainTable = async (resourceType: string, id: Number, setValue
 };
 
 export const insertActionDataChange = async (
+  actionType: ActionType,
   resourceId: Number,
   resourceType: string,
   properties: Record<string, any>,
@@ -126,7 +131,7 @@ export const insertActionDataChange = async (
     `,
     variables: {
       object: {
-        action: "Change Data",
+        action: actionType,
         page: `/admin/app/#/${resourceType}/${resourceId}`,
         properties,
         resource_id: resourceId,
@@ -179,4 +184,60 @@ export const insertResourceData = async (
     },
   });
   return data?.[`insert_${resourceType}_one`];
+};
+
+export const mutateActionAndDataRaw = async (
+  partnerId: number,
+  userId: number,
+  fieldPathLookup: string,
+  resourceId: number,
+  resourceObj: Record<string, any>,
+  resourceType: string,
+  actionType: ActionType
+) => {
+  const currentTime = new Date();
+  let validData: Array<Record<string, any>> = [];
+  let invalidData: Array<Record<string, any>> = [];
+  let setMainTableValues: Record<string, any> = {};
+
+  for (let field in resourceObj) {
+    let value = resourceObj[field];
+    let dataField: Data_Fields = await fieldLookup(
+      `${fieldPathLookup}.${field}`
+    );
+    if (dataField === undefined)
+      invalidData.push({
+        resource: resourceType,
+        field,
+        message: "Invalid Field",
+      });
+    else {
+      setMainTableValues[field] = value;
+      validData.push({
+        created_at: currentTime,
+        partner: partnerId,
+        user_id: userId,
+        resource: resourceType,
+        resource_id: resourceId,
+        field,
+        value: value === null ? "" : value,
+        accuracy_weight: 1,
+      });
+
+      await insertActionDataChange(
+        actionType,
+        resourceId,
+        resourceType,
+        { [field]: value },
+        userId
+      );
+    }
+  }
+
+  const insertResult = await insertDataRaw(validData);
+  if (actionType === "Change Data") {
+    await updateMainTable(resourceType, resourceId, setMainTableValues);
+  }
+
+  return { id: resourceId, resources: invalidData.concat(insertResult) };
 };

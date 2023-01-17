@@ -1,12 +1,11 @@
-import { Data_Fields, Data_Partners } from "@/graphql/types";
+import { Data_Partners } from "@/graphql/types";
 import {
 	partnerLookUp,
 	resourceIdLookup,
-	insertDataRaw,
 	fieldLookup,
-	updateMainTable,
-	insertActionDataChange,
 	insertResourceData,
+	mutateActionAndDataRaw,
+	ActionType,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -69,54 +68,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		resourceIdentifier,
 		identifierColumn
 	);
+
+	const partnerId: number = partner ? partner.id : 0
+	const userId: number = user ? user.id : 0
+	let dataId = resourceId;
+	let actionType: ActionType = "Change Data";
+
 	if (resourceId === undefined) {
 		// create a new one
 		const response = await insertResourceData(resourceType, resourceObj);
-		res.send(response);
-	} else {
-		// update existed record
-		const partnerId: number = partner ? partner.id : 0
-		const userId: number = user ? user.id : 0
-		const currentTime = new Date();
-		let validData: Array<Record<string, any>> = [];
-		let invalidData: Array<Record<string, any>> = [];
-		let setMainTableValues: Record<string, any> = {};
-	
-		for (let field in resourceObj) {
-			let value = resourceObj[field];
-			let dataField: Data_Fields = await fieldLookup(`${NODE_NAME[resourceType]}.${field}`);
-			if (dataField === undefined)
-				invalidData.push({
-					resource: resourceType,
-					field,
-					message: "Invalid Field",
-				});
-			else {
-				setMainTableValues[field] = value;
-				validData.push({
-					created_at: currentTime,
-					partner: partnerId,
-					user_id: userId,
-					resource: resourceType,
-					resource_id: resourceId,
-					field,
-					value: value === null ? "" : value,
-					accuracy_weight: 1,
-				});
-	
-				await insertActionDataChange(
-					resourceId,
-					resourceType,
-					{ [field]: value },
-					user?.id,
-				);
-			}
-		}
-	
-		const insertResult = await insertDataRaw(validData);
-		await updateMainTable(resourceType, resourceId, setMainTableValues);
-		res.send({ id: resourceId, resources: invalidData.concat(insertResult) });
+		dataId = response?.id;
+		actionType = "Insert Data";
 	}
+	const insertResult = await mutateActionAndDataRaw(
+		partnerId,
+		userId,
+		NODE_NAME[resourceType],
+		dataId,
+		resourceObj,
+		resourceType,
+		actionType,
+	);
+
+	res.send(insertResult);
 };
 
 export default handler;
