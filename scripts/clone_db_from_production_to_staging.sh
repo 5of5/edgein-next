@@ -13,7 +13,7 @@ pg_dump -U postgres -h edgein-1.cb64akwzxn73.us-east-2.rds.amazonaws.com  postgr
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 cd  $SCRIPT_DIR/../infra/hasura
 # Apply new migrations of target branch (all migrations of production is applied already when we clone db)
-hasura --endpoint https://test.edgein.dev  --admin-secret $ADMIN_SECRET migrate apply --database-name default
+npx hasura migrate apply --endpoint https://test.edgein.dev  --admin-secret $HASURA_ADMIN_SECRET --database-name default
 # Clear and apply metadata of target branch
-hasura --endpoint https://test.edgein.dev  --admin-secret $ADMIN_SECRET metadata clear
-hasura --endpoint https://test.edgein.dev  --admin-secret $ADMIN_SECRET metadata apply
+npx hasura metadata clear --endpoint https://test.edgein.dev  --admin-secret $HASURA_ADMIN_SECRET
+npx hasura metadata apply --endpoint https://test.edgein.dev  --admin-secret $HASURA_ADMIN_SECRET

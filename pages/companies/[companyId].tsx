@@ -9,6 +9,7 @@ import { ElemTags } from "@/components/ElemTags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
+import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
 import { ElemCohort } from "@/components/Company/ElemCohort";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { PlaceholderActivity } from "@/components/Placeholders";
@@ -158,6 +159,14 @@ const Company: NextPage<Props> = (props: Props) => {
 		});
 	}
 
+  const parentLinks = company?.to_links?.find(
+    (item) => item.link_type === "child"
+  );
+	const parentOrganization = parentLinks?.from_company || parentLinks?.from_vc_firm;
+  const subOrganizations = company?.from_links?.filter(
+    (item) => item.link_type === "child"
+  );
+
 	return (
 		<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
 			<div className="lg:grid lg:grid-cols-11 lg:gap-7">
@@ -192,6 +201,32 @@ const Company: NextPage<Props> = (props: Props) => {
 							tags={companyTags}
 						/>
 					)}
+          {parentOrganization && (
+            <div className="mt-4">
+              <div className="font-bold text-sm">Sub-organization of:</div>
+              <Link href="#">
+                <a className="flex items-center gap-2 mt-1 group transition-all hover:-translate-y-0.5">
+                  <ElemPhoto
+                    photo={parentOrganization?.logo}
+                    wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
+                    imgClass="object-contain w-full h-full"
+                    imgAlt={parentOrganization?.name}
+                    placeholderClass="text-slate-300"
+                  />
+                  <Link
+                    href={`/${
+                      parentLinks?.from_company ? "companies" : "investors"
+                    }/${parentOrganization?.slug}`}
+                    passHref
+                  >
+                    <h2 className="group-hover:text-primary-500">
+                      {parentOrganization?.name}
+                    </h2>
+                  </Link>
+                </a>
+              </Link>
+            </div>
+          )}
 					{company.overview && (
 						<>
 							<div
@@ -359,195 +394,171 @@ const Company: NextPage<Props> = (props: Props) => {
 							{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
 								<IconEditPencil title="Edit" />
 							</button> */}
-						</div>
+            </div>
 
-						<div className="mt-2 py-4 border-t border-black/10">
-							{error ? (
-								<h4>Error loading activity</h4>
-							) : isLoading ? (
-								<>
-									{Array.from({ length: 3 }, (_, i) => (
-										<PlaceholderActivity key={i} />
-									))}
-								</>
-							) : sortedInvestmentRounds?.length === 0 ? (
-								<div className="flex items-center justify-center mx-auto">
-									<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
-										<h2 className="mt-5 text-3xl font-bold">
-											No activity found
-										</h2>
-										<div className="mt-1 text-lg text-slate-600">
-											There is no activity for this organization.
-										</div>
-										<ElemButton
-											onClick={() => props.setToggleFeedbackForm(true)}
-											btn="white"
-											className="mt-3"
-										>
-											<IconAnnotation className="w-6 h-6 mr-1" />
-											Tell us about missing data
-										</ElemButton>
-									</div>
-								</div>
-							) : (
-								sortedInvestmentRounds && (
-									<>
-										<ul className="flex flex-col">
-											{sortedInvestmentRounds
-												.slice(0, activityLimit)
-												.map((activity, index) => {
-													return (
-														<li
-															key={index}
-															className="relative pl-6 overflow-hidden group last:-mb-4"
-														>
-															<span className="absolute h-full top-0 bottom-0 left-0">
-																<span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-																<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-															</span>
+            <div className="mt-2 py-4 border-t border-black/10">
+              {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 ? (
+                <>
+                  <ul className="flex flex-col">
+                    {sortedInvestmentRounds
+                      .slice(0, activityLimit)
+                      .map((activity, index) => {
+                        return (
+                          <li
+                            key={index}
+                            className="relative pl-6 overflow-hidden group last:-mb-4"
+                          >
+                            <span className="absolute h-full top-0 bottom-0 left-0">
+                              <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
+                              <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
+                            </span>
 
-															<div className="mb-4">
-																<div className="inline leading-7 text-slate-600">
-																	{activity.round === "Acquisition" ? (
-																		<div className="inline font-bold">
-																			Acquired by{" "}
-																		</div>
-																	) : (
-																		<>
-																			<div className="inline font-bold">
-																				Raised{" "}
-																				{activity.amount ? (
-																					<div className="inline text-green-600">
-																						${convertToIntNum(activity.amount)}
-																					</div>
-																				) : (
-																					<div className="inline text-green-600">
-																						undisclosed capital
-																					</div>
-																				)}{" "}
-																				{activity.valuation && (
-																					<div className="inline">
-																						at{" "}
-																						<div className="inline text-green-600">
-																							$
-																							{convertToIntNum(
-																								activity.valuation
-																							)}{" "}
-																						</div>
-																						valuation{" "}
-																					</div>
-																				)}
-																			</div>
-																			from:{" "}
-																		</>
-																	)}
-																	{activity.investments.map(
-																		(item: any, index) => {
-																			return (
-																				<div key={index} className="inline">
-																					{index !== 0 &&
-																						(index ===
-																						activity.investments.length - 1
-																							? ", and "
-																							: ", ")}
+                            <div className="mb-4">
+                              <div className="inline font-bold">
+                                {activity.round === "Acquisition" ? (
+                                  <>Acquired by </>
+                                ) : (
+                                  <>
+                                    Raised{" "}
+                                    {activity.amount ? (
+                                      <div className="inline text-green-600">
+                                        ${convertToIntNum(activity.amount)}
+                                      </div>
+                                    ) : (
+                                      <div className="inline text-green-600">
+                                        undisclosed capital
+                                      </div>
+                                    )}{" "}
+                                    {activity.valuation && (
+                                      <div className="inline">
+                                        at{" "}
+                                        <div className="inline text-green-600">
+                                          ${convertToIntNum(activity.valuation)}{" "}
+                                        </div>
+                                        valuation{" "}
+                                      </div>
+                                    )}
+                                    from:{" "}
+                                  </>
+                                )}
+                                {activity.investments.map(
+                                  (item: any, index) => {
+                                    return (
+                                      <div key={index} className="inline">
+                                        {index !== 0 &&
+                                          (index ===
+                                          activity.investments.length - 1
+                                            ? ", and "
+                                            : ", ")}
 
-																					{item.vc_firm && (
-																						<Link
-																							href={`/investors/${item.vc_firm["slug"]}`}
-																						>
-																							<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-																								{item.vc_firm["name"]}
-																							</a>
-																						</Link>
-																					)}
-																					{item.vc_firm && item.person && (
-																						<>/</>
-																					)}
+                                        {item.vc_firm && (
+                                          <Link
+                                            href={`/investors/${item.vc_firm["slug"]}`}
+                                          >
+                                            <a className="text-primary-500 hover:bg-slate-200">
+                                              {item.vc_firm["name"]}
+                                            </a>
+                                          </Link>
+                                        )}
+                                        {item.vc_firm && item.person && <>/</>}
 
-																					{item.person && (
-																						<Link
-																							href={`/people/${item.person["slug"]}`}
-																						>
-																							<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-																								{item.person["name"]}
-																							</a>
-																						</Link>
-																					)}
-																				</div>
-																			);
-																		}
-																	)}
-																	.
-																</div>
+                                        {item.person && (
+                                          <Link
+                                            href={`/people/${item.person["slug"]}`}
+                                          >
+                                            <a className="text-primary-500 hover:bg-slate-200">
+                                              {item.person["name"]}
+                                            </a>
+                                          </Link>
+                                        )}
+                                      </div>
+                                    );
+                                  }
+                                )}
+                                .
+                              </div>
 
-																<p className="text-xs text-slate-600">
-																	{formatDate(activity.round_date as string, {
-																		month: "short",
-																		day: "2-digit",
-																		year: "numeric",
-																	})}
-																</p>
-															</div>
-														</li>
-													);
-												})}
-										</ul>
-										{activityLimit < sortedInvestmentRounds.length && (
-											<div className="mt-6">
-												<ElemButton
-													btn="ol-primary"
-													onClick={showMoreActivity}
-													className="w-full"
-												>
-													Show More Activity
-												</ElemButton>
-											</div>
-										)}
-									</>
-								)
-							)}
-						</div>
-					</div>
-				</div>
-			</div>
-			{company.teamMembers.length > 0 && (
-				<div
-					ref={teamRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="team"
-				>
-					<ElemTeamGrid
-						showEdit={false}
-						heading="Team"
-						people={company.teamMembers}
-					/>
-				</div>
-			)}
-			{sortedInvestmentRounds.length > 0 && (
-				<div
-					ref={investmentRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="investments"
-				>
-					<ElemInvestments
-						showEdit={false}
-						heading="Investments"
-						investments={sortedInvestmentRounds}
-					/>
-				</div>
-			)}
+                              <p className="text-xs text-slate-600">
+                                {formatDate(activity.round_date as string, {
+                                  month: "short",
+                                  day: "2-digit",
+                                  year: "numeric",
+                                })}
+                              </p>
+                            </div>
+                          </li>
+                        );
+                      })}
+                  </ul>
+                  {activityLimit < sortedInvestmentRounds.length && (
+                    <div className="mt-6">
+                      <ElemButton
+                        btn="ol-primary"
+                        onClick={showMoreActivity}
+                        className="w-full"
+                      >
+                        Show More Activity
+                      </ElemButton>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="flex items-center justify-center lg:p-5">
+                  <div className="text-slate-600 lg:text-xl">
+                    There is no recent activity for this organization.
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      {company.teamMembers.length > 0 && (
+        <div
+          ref={teamRef}
+          className="mt-7 p-5 rounded-lg bg-white shadow"
+          id="team"
+        >
+          <ElemTeamGrid
+            showEdit={false}
+            heading="Team"
+            people={company.teamMembers}
+          />
+        </div>
+      )}
+      {sortedInvestmentRounds.length > 0 && (
+        <div
+          ref={investmentRef}
+          className="mt-7 p-5 rounded-lg bg-white shadow"
+          id="investments"
+        >
+          <ElemInvestments
+            showEdit={false}
+            heading="Investments"
+            investments={sortedInvestmentRounds}
+          />
+        </div>
+      )}
 
-			{company.tags && (
-				<ElemCohort
-					className="mt-7"
-					heading="Similar Companies"
-					currentSlug={company.slug}
-					tag1={firstTag}
-					tag2={secondTag}
-				/>
-			)}
-		</div>
-	);
+      {subOrganizations?.length > 0 && (
+        <ElemSubOrganizations
+          className="mt-7"
+          heading={`${company.name} Sub-Organizations (${subOrganizations.length})`}
+          subOrganizations={subOrganizations}
+        />
+      )}
+
+      {company.tags && (
+        <ElemCohort
+          className="mt-7"
+          heading="Similar Companies"
+          currentSlug={company.slug}
+          tag1={firstTag}
+          tag2={secondTag}
+        />
+      )}
+    </div>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
