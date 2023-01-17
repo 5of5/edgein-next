@@ -122,6 +122,7 @@ const Group: NextPage<Props> = (props: Props) => {
 			<ElemInviteDialog
 				isOpen={isOpenInviteDialog}
 				group={groupData}
+				onUpdateGroupData={setGroupData}
 				onClose={onCloseInviteDialog}
 			/>
 

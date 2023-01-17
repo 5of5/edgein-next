@@ -1515,6 +1515,10 @@ export type Companies = {
   follows: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_aggregate: Follows_Companies_Aggregate;
+  /** An array relationship */
+  from_links: Array<Resource_Links>;
+  /** An aggregate relationship */
+  from_links_aggregate: Resource_Links_Aggregate;
   github: Maybe<Scalars['String']>;
   glassdoor: Maybe<Scalars['String']>;
   ico_end: Maybe<Scalars['date']>;
@@ -1547,6 +1551,10 @@ export type Companies = {
   /** An aggregate relationship */
   teamMembers_aggregate: Team_Members_Aggregate;
   telegram: Maybe<Scalars['String']>;
+  /** An array relationship */
+  to_links: Array<Resource_Links>;
+  /** An aggregate relationship */
+  to_links_aggregate: Resource_Links_Aggregate;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
@@ -1577,6 +1585,26 @@ export type CompaniesFollows_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "companies" */
+export type CompaniesFrom_LinksArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+/** columns and relationships of "companies" */
+export type CompaniesFrom_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
 };
 
 
@@ -1649,6 +1677,26 @@ export type CompaniesTeamMembers_AggregateArgs = {
   where: InputMaybe<Team_Members_Bool_Exp>;
 };
 
+
+/** columns and relationships of "companies" */
+export type CompaniesTo_LinksArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+/** columns and relationships of "companies" */
+export type CompaniesTo_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
 /** aggregated selection of "companies" */
 export type Companies_Aggregate = {
   __typename?: 'companies_aggregate';
@@ -1716,6 +1764,7 @@ export type Companies_Bool_Exp = {
   external_id: InputMaybe<String_Comparison_Exp>;
   facebook: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Companies_Bool_Exp>;
+  from_links: InputMaybe<Resource_Links_Bool_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   glassdoor: InputMaybe<String_Comparison_Exp>;
   ico_end: InputMaybe<Date_Comparison_Exp>;
@@ -1742,6 +1791,7 @@ export type Companies_Bool_Exp = {
   tags: InputMaybe<Jsonb_Comparison_Exp>;
   teamMembers: InputMaybe<Team_Members_Bool_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
+  to_links: InputMaybe<Resource_Links_Bool_Exp>;
   total_employees: InputMaybe<Numeric_Comparison_Exp>;
   total_valuation: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
@@ -2098,6 +2148,7 @@ export type Companies_Insert_Input = {
   external_id: InputMaybe<Scalars['String']>;
   facebook: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
+  from_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   github: InputMaybe<Scalars['String']>;
   glassdoor: InputMaybe<Scalars['String']>;
   ico_end: InputMaybe<Scalars['date']>;
@@ -2124,6 +2175,7 @@ export type Companies_Insert_Input = {
   tags: InputMaybe<Scalars['jsonb']>;
   teamMembers: InputMaybe<Team_Members_Arr_Rel_Insert_Input>;
   telegram: InputMaybe<Scalars['String']>;
+  to_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
@@ -2267,6 +2319,7 @@ export type Companies_Order_By = {
   external_id: InputMaybe<Order_By>;
   facebook: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
+  from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   github: InputMaybe<Order_By>;
   glassdoor: InputMaybe<Order_By>;
   ico_end: InputMaybe<Order_By>;
@@ -2293,6 +2346,7 @@ export type Companies_Order_By = {
   tags: InputMaybe<Order_By>;
   teamMembers_aggregate: InputMaybe<Team_Members_Aggregate_Order_By>;
   telegram: InputMaybe<Order_By>;
+  to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   total_employees: InputMaybe<Order_By>;
   total_valuation: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
@@ -7157,6 +7211,10 @@ export type Mutation_Root = {
   delete_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** delete single row from the table: "resource_edit_access" */
   delete_resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
+  /** delete data from the table: "resource_links" */
+  delete_resource_links: Maybe<Resource_Links_Mutation_Response>;
+  /** delete single row from the table: "resource_links" */
+  delete_resource_links_by_pk: Maybe<Resource_Links>;
   /** delete data from the table: "team_members" */
   delete_team_members: Maybe<Team_Members_Mutation_Response>;
   /** delete single row from the table: "team_members" */
@@ -7295,6 +7353,10 @@ export type Mutation_Root = {
   insert_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** insert a single row into the table: "resource_edit_access" */
   insert_resource_edit_access_one: Maybe<Resource_Edit_Access>;
+  /** insert data into the table: "resource_links" */
+  insert_resource_links: Maybe<Resource_Links_Mutation_Response>;
+  /** insert a single row into the table: "resource_links" */
+  insert_resource_links_one: Maybe<Resource_Links>;
   /** insert data into the table: "team_members" */
   insert_team_members: Maybe<Team_Members_Mutation_Response>;
   /** insert a single row into the table: "team_members" */
@@ -7429,6 +7491,10 @@ export type Mutation_Root = {
   update_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** update single row of the table: "resource_edit_access" */
   update_resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
+  /** update data of the table: "resource_links" */
+  update_resource_links: Maybe<Resource_Links_Mutation_Response>;
+  /** update single row of the table: "resource_links" */
+  update_resource_links_by_pk: Maybe<Resource_Links>;
   /** update data of the table: "team_members" */
   update_team_members: Maybe<Team_Members_Mutation_Response>;
   /** update single row of the table: "team_members" */
@@ -7756,6 +7822,18 @@ export type Mutation_RootDelete_Resource_Edit_AccessArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Resource_Edit_Access_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Resource_LinksArgs = {
+  where: Resource_Links_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Resource_Links_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -8217,6 +8295,20 @@ export type Mutation_RootInsert_Resource_Edit_AccessArgs = {
 export type Mutation_RootInsert_Resource_Edit_Access_OneArgs = {
   object: Resource_Edit_Access_Insert_Input;
   on_conflict: InputMaybe<Resource_Edit_Access_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Resource_LinksArgs = {
+  objects: Array<Resource_Links_Insert_Input>;
+  on_conflict: InputMaybe<Resource_Links_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Resource_Links_OneArgs = {
+  object: Resource_Links_Insert_Input;
+  on_conflict: InputMaybe<Resource_Links_On_Conflict>;
 };
 
 
@@ -8773,6 +8865,22 @@ export type Mutation_RootUpdate_Resource_Edit_Access_By_PkArgs = {
   _inc: InputMaybe<Resource_Edit_Access_Inc_Input>;
   _set: InputMaybe<Resource_Edit_Access_Set_Input>;
   pk_columns: Resource_Edit_Access_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Resource_LinksArgs = {
+  _inc: InputMaybe<Resource_Links_Inc_Input>;
+  _set: InputMaybe<Resource_Links_Set_Input>;
+  where: Resource_Links_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Resource_Links_By_PkArgs = {
+  _inc: InputMaybe<Resource_Links_Inc_Input>;
+  _set: InputMaybe<Resource_Links_Set_Input>;
+  pk_columns: Resource_Links_Pk_Columns_Input;
 };
 
 
@@ -10004,6 +10112,12 @@ export type Query_Root = {
   resource_edit_access_aggregate: Resource_Edit_Access_Aggregate;
   /** fetch data from the table: "resource_edit_access" using primary key columns */
   resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
+  /** fetch data from the table: "resource_links" */
+  resource_links: Array<Resource_Links>;
+  /** fetch aggregated fields from the table: "resource_links" */
+  resource_links_aggregate: Resource_Links_Aggregate;
+  /** fetch data from the table: "resource_links" using primary key columns */
+  resource_links_by_pk: Maybe<Resource_Links>;
   /** An array relationship */
   team_members: Array<Team_Members>;
   /** An aggregate relationship */
@@ -10642,6 +10756,29 @@ export type Query_RootResource_Edit_Access_By_PkArgs = {
 };
 
 
+export type Query_RootResource_LinksArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+export type Query_RootResource_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+export type Query_RootResource_Links_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootTeam_MembersArgs = {
   distinct_on: InputMaybe<Array<Team_Members_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -11069,6 +11206,394 @@ export type Resource_Edit_Access_Variance_Fields = {
   user_id: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "resource_links" */
+export type Resource_Links = {
+  __typename?: 'resource_links';
+  /** An object relationship */
+  from_company: Maybe<Companies>;
+  from_company_id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  from_vc_firm: Maybe<Vc_Firms>;
+  from_vc_firm_id: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  link_type: Scalars['String'];
+  /** An object relationship */
+  to_company: Maybe<Companies>;
+  to_company_id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  to_vc_firm: Maybe<Vc_Firms>;
+  to_vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregated selection of "resource_links" */
+export type Resource_Links_Aggregate = {
+  __typename?: 'resource_links_aggregate';
+  aggregate: Maybe<Resource_Links_Aggregate_Fields>;
+  nodes: Array<Resource_Links>;
+};
+
+/** aggregate fields of "resource_links" */
+export type Resource_Links_Aggregate_Fields = {
+  __typename?: 'resource_links_aggregate_fields';
+  avg: Maybe<Resource_Links_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Resource_Links_Max_Fields>;
+  min: Maybe<Resource_Links_Min_Fields>;
+  stddev: Maybe<Resource_Links_Stddev_Fields>;
+  stddev_pop: Maybe<Resource_Links_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Resource_Links_Stddev_Samp_Fields>;
+  sum: Maybe<Resource_Links_Sum_Fields>;
+  var_pop: Maybe<Resource_Links_Var_Pop_Fields>;
+  var_samp: Maybe<Resource_Links_Var_Samp_Fields>;
+  variance: Maybe<Resource_Links_Variance_Fields>;
+};
+
+
+/** aggregate fields of "resource_links" */
+export type Resource_Links_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Resource_Links_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "resource_links" */
+export type Resource_Links_Aggregate_Order_By = {
+  avg: InputMaybe<Resource_Links_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Resource_Links_Max_Order_By>;
+  min: InputMaybe<Resource_Links_Min_Order_By>;
+  stddev: InputMaybe<Resource_Links_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Resource_Links_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Resource_Links_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Resource_Links_Sum_Order_By>;
+  var_pop: InputMaybe<Resource_Links_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Resource_Links_Var_Samp_Order_By>;
+  variance: InputMaybe<Resource_Links_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "resource_links" */
+export type Resource_Links_Arr_Rel_Insert_Input = {
+  data: Array<Resource_Links_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Resource_Links_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Resource_Links_Avg_Fields = {
+  __typename?: 'resource_links_avg_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "resource_links" */
+export type Resource_Links_Avg_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "resource_links". All fields are combined with a logical 'AND'. */
+export type Resource_Links_Bool_Exp = {
+  _and: InputMaybe<Array<Resource_Links_Bool_Exp>>;
+  _not: InputMaybe<Resource_Links_Bool_Exp>;
+  _or: InputMaybe<Array<Resource_Links_Bool_Exp>>;
+  from_company: InputMaybe<Companies_Bool_Exp>;
+  from_company_id: InputMaybe<Int_Comparison_Exp>;
+  from_vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+  from_vc_firm_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  link_type: InputMaybe<String_Comparison_Exp>;
+  to_company: InputMaybe<Companies_Bool_Exp>;
+  to_company_id: InputMaybe<Int_Comparison_Exp>;
+  to_vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+  to_vc_firm_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "resource_links" */
+export enum Resource_Links_Constraint {
+  /** unique or primary key constraint */
+  ResourceLinksPkey = 'resource_links_pkey'
+}
+
+/** input type for incrementing numeric columns in table "resource_links" */
+export type Resource_Links_Inc_Input = {
+  from_company_id: InputMaybe<Scalars['Int']>;
+  from_vc_firm_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  to_company_id: InputMaybe<Scalars['Int']>;
+  to_vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "resource_links" */
+export type Resource_Links_Insert_Input = {
+  from_company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  from_company_id: InputMaybe<Scalars['Int']>;
+  from_vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+  from_vc_firm_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  link_type: InputMaybe<Scalars['String']>;
+  to_company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  to_company_id: InputMaybe<Scalars['Int']>;
+  to_vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+  to_vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Resource_Links_Max_Fields = {
+  __typename?: 'resource_links_max_fields';
+  from_company_id: Maybe<Scalars['Int']>;
+  from_vc_firm_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  link_type: Maybe<Scalars['String']>;
+  to_company_id: Maybe<Scalars['Int']>;
+  to_vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "resource_links" */
+export type Resource_Links_Max_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  link_type: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Resource_Links_Min_Fields = {
+  __typename?: 'resource_links_min_fields';
+  from_company_id: Maybe<Scalars['Int']>;
+  from_vc_firm_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  link_type: Maybe<Scalars['String']>;
+  to_company_id: Maybe<Scalars['Int']>;
+  to_vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "resource_links" */
+export type Resource_Links_Min_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  link_type: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "resource_links" */
+export type Resource_Links_Mutation_Response = {
+  __typename?: 'resource_links_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Resource_Links>;
+};
+
+/** on_conflict condition type for table "resource_links" */
+export type Resource_Links_On_Conflict = {
+  constraint: Resource_Links_Constraint;
+  update_columns: Array<Resource_Links_Update_Column>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "resource_links". */
+export type Resource_Links_Order_By = {
+  from_company: InputMaybe<Companies_Order_By>;
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm: InputMaybe<Vc_Firms_Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  link_type: InputMaybe<Order_By>;
+  to_company: InputMaybe<Companies_Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm: InputMaybe<Vc_Firms_Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: resource_links */
+export type Resource_Links_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "resource_links" */
+export enum Resource_Links_Select_Column {
+  /** column name */
+  FromCompanyId = 'from_company_id',
+  /** column name */
+  FromVcFirmId = 'from_vc_firm_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LinkType = 'link_type',
+  /** column name */
+  ToCompanyId = 'to_company_id',
+  /** column name */
+  ToVcFirmId = 'to_vc_firm_id'
+}
+
+/** input type for updating data in table "resource_links" */
+export type Resource_Links_Set_Input = {
+  from_company_id: InputMaybe<Scalars['Int']>;
+  from_vc_firm_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  link_type: InputMaybe<Scalars['String']>;
+  to_company_id: InputMaybe<Scalars['Int']>;
+  to_vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Resource_Links_Stddev_Fields = {
+  __typename?: 'resource_links_stddev_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "resource_links" */
+export type Resource_Links_Stddev_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Resource_Links_Stddev_Pop_Fields = {
+  __typename?: 'resource_links_stddev_pop_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "resource_links" */
+export type Resource_Links_Stddev_Pop_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Resource_Links_Stddev_Samp_Fields = {
+  __typename?: 'resource_links_stddev_samp_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "resource_links" */
+export type Resource_Links_Stddev_Samp_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Resource_Links_Sum_Fields = {
+  __typename?: 'resource_links_sum_fields';
+  from_company_id: Maybe<Scalars['Int']>;
+  from_vc_firm_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  to_company_id: Maybe<Scalars['Int']>;
+  to_vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "resource_links" */
+export type Resource_Links_Sum_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "resource_links" */
+export enum Resource_Links_Update_Column {
+  /** column name */
+  FromCompanyId = 'from_company_id',
+  /** column name */
+  FromVcFirmId = 'from_vc_firm_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LinkType = 'link_type',
+  /** column name */
+  ToCompanyId = 'to_company_id',
+  /** column name */
+  ToVcFirmId = 'to_vc_firm_id'
+}
+
+/** aggregate var_pop on columns */
+export type Resource_Links_Var_Pop_Fields = {
+  __typename?: 'resource_links_var_pop_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "resource_links" */
+export type Resource_Links_Var_Pop_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Resource_Links_Var_Samp_Fields = {
+  __typename?: 'resource_links_var_samp_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "resource_links" */
+export type Resource_Links_Var_Samp_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Resource_Links_Variance_Fields = {
+  __typename?: 'resource_links_variance_fields';
+  from_company_id: Maybe<Scalars['Float']>;
+  from_vc_firm_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  to_company_id: Maybe<Scalars['Float']>;
+  to_vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "resource_links" */
+export type Resource_Links_Variance_Order_By = {
+  from_company_id: InputMaybe<Order_By>;
+  from_vc_firm_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  to_company_id: InputMaybe<Order_By>;
+  to_vc_firm_id: InputMaybe<Order_By>;
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "actions" */
@@ -11221,6 +11746,12 @@ export type Subscription_Root = {
   resource_edit_access_aggregate: Resource_Edit_Access_Aggregate;
   /** fetch data from the table: "resource_edit_access" using primary key columns */
   resource_edit_access_by_pk: Maybe<Resource_Edit_Access>;
+  /** fetch data from the table: "resource_links" */
+  resource_links: Array<Resource_Links>;
+  /** fetch aggregated fields from the table: "resource_links" */
+  resource_links_aggregate: Resource_Links_Aggregate;
+  /** fetch data from the table: "resource_links" using primary key columns */
+  resource_links_by_pk: Maybe<Resource_Links>;
   /** An array relationship */
   team_members: Array<Team_Members>;
   /** An aggregate relationship */
@@ -11859,6 +12390,29 @@ export type Subscription_RootResource_Edit_Access_By_PkArgs = {
 };
 
 
+export type Subscription_RootResource_LinksArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+export type Subscription_RootResource_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+export type Subscription_RootResource_Links_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Subscription_RootTeam_MembersArgs = {
   distinct_on: InputMaybe<Array<Team_Members_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -12486,8 +13040,13 @@ export type Timestamptz_Comparison_Exp = {
 export type User_Group_Invites = {
   __typename?: 'user_group_invites';
   created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by: Maybe<Users>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   email: Scalars['String'];
   id: Scalars['Int'];
+  /** An object relationship */
+  user_group: User_Groups;
   user_group_id: Scalars['Int'];
 };
 
@@ -12546,12 +13105,14 @@ export type User_Group_Invites_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type User_Group_Invites_Avg_Fields = {
   __typename?: 'user_group_invites_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "user_group_invites" */
 export type User_Group_Invites_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12562,8 +13123,11 @@ export type User_Group_Invites_Bool_Exp = {
   _not: InputMaybe<User_Group_Invites_Bool_Exp>;
   _or: InputMaybe<Array<User_Group_Invites_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
   email: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  user_group: InputMaybe<User_Groups_Bool_Exp>;
   user_group_id: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -12575,6 +13139,7 @@ export enum User_Group_Invites_Constraint {
 
 /** input type for incrementing numeric columns in table "user_group_invites" */
 export type User_Group_Invites_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   user_group_id: InputMaybe<Scalars['Int']>;
 };
@@ -12582,8 +13147,11 @@ export type User_Group_Invites_Inc_Input = {
 /** input type for inserting data into table "user_group_invites" */
 export type User_Group_Invites_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  user_group: InputMaybe<User_Groups_Obj_Rel_Insert_Input>;
   user_group_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -12591,6 +13159,7 @@ export type User_Group_Invites_Insert_Input = {
 export type User_Group_Invites_Max_Fields = {
   __typename?: 'user_group_invites_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   user_group_id: Maybe<Scalars['Int']>;
@@ -12599,6 +13168,7 @@ export type User_Group_Invites_Max_Fields = {
 /** order by max() on columns of table "user_group_invites" */
 export type User_Group_Invites_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
@@ -12608,6 +13178,7 @@ export type User_Group_Invites_Max_Order_By = {
 export type User_Group_Invites_Min_Fields = {
   __typename?: 'user_group_invites_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
   email: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   user_group_id: Maybe<Scalars['Int']>;
@@ -12616,6 +13187,7 @@ export type User_Group_Invites_Min_Fields = {
 /** order by min() on columns of table "user_group_invites" */
 export type User_Group_Invites_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
@@ -12640,8 +13212,11 @@ export type User_Group_Invites_On_Conflict = {
 /** Ordering options when selecting data from "user_group_invites". */
 export type User_Group_Invites_Order_By = {
   created_at: InputMaybe<Order_By>;
+  created_by: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
   email: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  user_group: InputMaybe<User_Groups_Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
 
@@ -12655,6 +13230,8 @@ export enum User_Group_Invites_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
   Email = 'email',
   /** column name */
   Id = 'id',
@@ -12665,6 +13242,7 @@ export enum User_Group_Invites_Select_Column {
 /** input type for updating data in table "user_group_invites" */
 export type User_Group_Invites_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
   email: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   user_group_id: InputMaybe<Scalars['Int']>;
@@ -12673,12 +13251,14 @@ export type User_Group_Invites_Set_Input = {
 /** aggregate stddev on columns */
 export type User_Group_Invites_Stddev_Fields = {
   __typename?: 'user_group_invites_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "user_group_invites" */
 export type User_Group_Invites_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12686,12 +13266,14 @@ export type User_Group_Invites_Stddev_Order_By = {
 /** aggregate stddev_pop on columns */
 export type User_Group_Invites_Stddev_Pop_Fields = {
   __typename?: 'user_group_invites_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "user_group_invites" */
 export type User_Group_Invites_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12699,12 +13281,14 @@ export type User_Group_Invites_Stddev_Pop_Order_By = {
 /** aggregate stddev_samp on columns */
 export type User_Group_Invites_Stddev_Samp_Fields = {
   __typename?: 'user_group_invites_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "user_group_invites" */
 export type User_Group_Invites_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12712,12 +13296,14 @@ export type User_Group_Invites_Stddev_Samp_Order_By = {
 /** aggregate sum on columns */
 export type User_Group_Invites_Sum_Fields = {
   __typename?: 'user_group_invites_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   user_group_id: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "user_group_invites" */
 export type User_Group_Invites_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12726,6 +13312,8 @@ export type User_Group_Invites_Sum_Order_By = {
 export enum User_Group_Invites_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
   /** column name */
   Email = 'email',
   /** column name */
@@ -12737,12 +13325,14 @@ export enum User_Group_Invites_Update_Column {
 /** aggregate var_pop on columns */
 export type User_Group_Invites_Var_Pop_Fields = {
   __typename?: 'user_group_invites_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "user_group_invites" */
 export type User_Group_Invites_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12750,12 +13340,14 @@ export type User_Group_Invites_Var_Pop_Order_By = {
 /** aggregate var_samp on columns */
 export type User_Group_Invites_Var_Samp_Fields = {
   __typename?: 'user_group_invites_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "user_group_invites" */
 export type User_Group_Invites_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -12763,12 +13355,14 @@ export type User_Group_Invites_Var_Samp_Order_By = {
 /** aggregate variance on columns */
 export type User_Group_Invites_Variance_Fields = {
   __typename?: 'user_group_invites_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   user_group_id: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "user_group_invites" */
 export type User_Group_Invites_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
 };
@@ -14107,6 +14701,10 @@ export type Vc_Firms = {
   follows: Array<Follows_Vc_Firms>;
   /** An aggregate relationship */
   follows_aggregate: Follows_Vc_Firms_Aggregate;
+  /** An array relationship */
+  from_links: Array<Resource_Links>;
+  /** An aggregate relationship */
+  from_links_aggregate: Resource_Links_Aggregate;
   id: Scalars['Int'];
   /** An array relationship */
   investments: Array<Investments>;
@@ -14129,6 +14727,10 @@ export type Vc_Firms = {
   status: Scalars['String'];
   status_tags: Maybe<Scalars['jsonb']>;
   tags: Maybe<Scalars['jsonb']>;
+  /** An array relationship */
+  to_links: Array<Resource_Links>;
+  /** An aggregate relationship */
+  to_links_aggregate: Resource_Links_Aggregate;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   website: Maybe<Scalars['String']>;
@@ -14153,6 +14755,26 @@ export type Vc_FirmsFollows_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Vc_Firms_Order_By>>;
   where: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+};
+
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsFrom_LinksArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsFrom_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
 };
 
 
@@ -14219,6 +14841,26 @@ export type Vc_FirmsTagsArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsTo_LinksArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsTo_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Resource_Links_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Resource_Links_Order_By>>;
+  where: InputMaybe<Resource_Links_Bool_Exp>;
+};
+
 /** aggregated selection of "vc_firms" */
 export type Vc_Firms_Aggregate = {
   __typename?: 'vc_firms_aggregate';
@@ -14271,6 +14913,7 @@ export type Vc_Firms_Bool_Exp = {
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
+  from_links: InputMaybe<Resource_Links_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
@@ -14286,6 +14929,7 @@ export type Vc_Firms_Bool_Exp = {
   status: InputMaybe<String_Comparison_Exp>;
   status_tags: InputMaybe<Jsonb_Comparison_Exp>;
   tags: InputMaybe<Jsonb_Comparison_Exp>;
+  to_links: InputMaybe<Resource_Links_Bool_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   website: InputMaybe<String_Comparison_Exp>;
@@ -14619,6 +15263,7 @@ export type Vc_Firms_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   external_id: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Vc_Firms_Arr_Rel_Insert_Input>;
+  from_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
@@ -14633,6 +15278,7 @@ export type Vc_Firms_Insert_Input = {
   status: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
+  to_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   website: InputMaybe<Scalars['String']>;
@@ -14705,6 +15351,7 @@ export type Vc_Firms_Order_By = {
   created_at: InputMaybe<Order_By>;
   external_id: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Order_By>;
+  from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
@@ -14720,6 +15367,7 @@ export type Vc_Firms_Order_By = {
   status: InputMaybe<Order_By>;
   status_tags: InputMaybe<Order_By>;
   tags: InputMaybe<Order_By>;
+  to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   website: InputMaybe<Order_By>;
@@ -15091,7 +15739,7 @@ export type GetCompanyQueryVariables = Exact<{
 }>;
 
 
-export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }> }> };
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }> }> };
 
 export type GetCompaniesQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -15156,7 +15804,7 @@ export type GetGroupQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }> }> };
+export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
@@ -15208,7 +15856,7 @@ export type GetVcFirmQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null } | null }> }> };
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }> }> };
 
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -15346,6 +15994,48 @@ export const GetCompanyDocument = `
           logo
         }
         amount
+      }
+    }
+    to_links {
+      link_type
+      from_company {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+      from_vc_firm {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+    }
+    from_links {
+      link_type
+      to_company {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+      to_vc_firm {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
       }
     }
   }
@@ -15722,6 +16412,12 @@ export const GetGroupDocument = `
           picture
         }
       }
+    }
+    user_group_invites {
+      id
+      email
+      created_at
+      created_by_user_id
     }
   }
 }
@@ -16152,6 +16848,48 @@ export const GetVcFirmDocument = `
           tags
           logo
         }
+      }
+    }
+    to_links {
+      link_type
+      from_company {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+      from_vc_firm {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+    }
+    from_links {
+      link_type
+      to_company {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
+      }
+      to_vc_firm {
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
       }
     }
   }

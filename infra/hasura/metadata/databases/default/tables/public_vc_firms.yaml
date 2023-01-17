@@ -11,6 +11,15 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: resource_id
+  - name: from_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
+        column_mapping:
+          id: from_vc_firm_id
   - name: investments
     using:
       foreign_key_constraint_on:
@@ -25,6 +34,15 @@ array_relationships:
         table:
           schema: public
           name: investors
+  - name: to_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
+        column_mapping:
+          id: to_vc_firm_id
 computed_fields:
   - name: num_of_investments
     definition:

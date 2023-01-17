@@ -23,6 +23,7 @@ import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
 
 import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
 import ElemAppBar from "@/components/admin/ElemAppBar";
+import { getParentSubOrganizations } from "@/utils/resourceLink";
 import {
   InvestmentRoundCreate,
   InvestmentRoundEdit,
@@ -70,6 +71,7 @@ import {
   DataPartnerEdit,
 } from "../../components/admin/dataPartner";
 import { useAuth } from "../../hooks/useAuth";
+import { getUpdatedDiff } from "@/utils/helpers";
 
 const MyLogin = () => {
   useEffect(() => {
@@ -88,6 +90,10 @@ const nullableInputs: NullableInputs = {
   users: ["person_id"],
 };
 
+const isTypeReferenceToResourceLink = (type: string) => {
+  return ["companies", "vc_firms"].includes(type);
+};
+
 const extractFieldsFromQuery = (queryAst: any) => {
   return queryAst.definitions[0].selectionSet.selections;
 };
@@ -101,6 +107,53 @@ const EXTENDED_GET_LIST_INVESTMENT_ROUNDS = gql`
   }
 `;
 
+const EXTENDED_GET_RESOURCE_LINKS = gql`
+  {
+    to_links {
+			link_type
+      from_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+      from_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+    }
+    from_links {
+			link_type
+      to_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+      to_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+    }	
+  }
+`;
+
 const customBuildFields: BuildFields = (type, fetchType) => {
   const resourceName = type.name;
 
@@ -110,6 +163,13 @@ const customBuildFields: BuildFields = (type, fetchType) => {
   if (resourceName === "investment_rounds") {
     const relatedEntities = extractFieldsFromQuery(
       EXTENDED_GET_LIST_INVESTMENT_ROUNDS
+    );
+    defaultFields.push(...relatedEntities);
+  }
+
+  if (isTypeReferenceToResourceLink(resourceName)) {
+    const relatedEntities = extractFieldsFromQuery(
+      EXTENDED_GET_RESOURCE_LINKS
     );
     defaultFields.push(...relatedEntities);
   }
@@ -176,6 +236,19 @@ const AdminApp = () => {
       // Fix nullable inputs for graphql
       setDataProvider({
         ...dataProvider,
+        getList: async (type, obj) => {
+          let { data, ...metadata } = await dataProvider.getList(type, obj);
+          if (isTypeReferenceToResourceLink(type)) {
+            data = data.map((val) => ({
+              ...val,
+              ...getParentSubOrganizations(val),
+            }));
+          }
+          return {
+            data,
+            ...metadata,
+          };
+        },
         create: (type, obj) =>
           dataProvider.create(type, nullInputTransform(type, obj)),
         update: (type, obj) =>

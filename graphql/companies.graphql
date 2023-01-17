@@ -71,6 +71,48 @@ query GetCompany($slug: String!) {
 				amount
 			}
 		}
+    to_links {
+			link_type
+      from_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+      from_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+    }
+    from_links {
+			link_type
+      to_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+      to_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+    }		
 	}
 }
 
