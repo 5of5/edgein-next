@@ -37,7 +37,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
   const json = await proxyRes.json();
-  console.log(JSON.stringify(json))
   res.send(json)
 }
 
