@@ -23,7 +23,10 @@ import {
 	GetNotesDocument,
 	GetNotesQuery,
 	Notes,
+	useGetListUserGroupsQuery,
 	User_Groups,
+	List_User_Groups_Bool_Exp,
+	Lists,
 } from "@/graphql/types";
 
 type Props = {
@@ -41,8 +44,22 @@ const Group: NextPage<Props> = (props: Props) => {
 		setGroupData(props.group);
 	}, [props.group]);
 
+	const {
+		data: lists,
+    refetch: refetchLists,
+	} = useGetListUserGroupsQuery(
+		{
+			where: {
+				user_group_id: { _eq: groupData.id }
+			} as List_User_Groups_Bool_Exp,
+		},
+		{
+			enabled: Boolean(groupData.id)
+		}
+	)
+
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
-	//const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -54,7 +71,7 @@ const Group: NextPage<Props> = (props: Props) => {
 	const tabBarItems = useMemo(() => {
 		return [
 			//{ name: "Home", ref: homeRef },
-			// { name: "Lists", ref: listsRef },
+			{ name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
 			// { name: "Chat", ref: chatRef },
 		];
@@ -90,26 +107,11 @@ const Group: NextPage<Props> = (props: Props) => {
 
 			{/** TO-DO: Home | Lists | Chat */}
 			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
-			{/* <div ref={listsRef}>
+			<div ref={listsRef}>
 				<ElemLists
-					lists={[
-						{
-							id: "1",
-							name: "Near Protocol Wizards",
-							createdBy: "Ashley Brown",
-							createdAt: "2022-10-05T14:48:00.000Z",
-							following: false,
-						},
-						{
-							id: "2",
-							name: "Near Protocol technology",
-							createdBy: "Ed Parsons",
-							createdAt: "2022-12-05T14:48:00.000Z",
-							following: true,
-						},
-					]}
+					lists={lists?.list_user_groups?.map(item => item.list) as Array<Lists> || []}
 				/>
-			</div> */}
+			</div>
 
 			<div ref={notesRef}>
 				<ElemNotes notes={props.notes} />

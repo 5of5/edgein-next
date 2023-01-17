@@ -9,6 +9,8 @@ import {
 	Follows_Vc_Firms,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
+	useGetListUserGroupsQuery,
+	List_User_Groups_Bool_Exp,
 } from "@/graphql/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -37,6 +39,20 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
+
+	const {
+		data: groups,
+    refetch: refetchGroups,
+	} = useGetListUserGroupsQuery(
+		{
+			where: {
+				list_id: { _eq: parseInt(router.query.listId as string) }
+			} as List_User_Groups_Bool_Exp,
+		},
+		{
+			enabled: Boolean(router.query.listId)
+		}
+	)
 
 	const onSaveListName = async (name: string) => {
 		const updateNameRes = await fetch(`/api/update_list/`, {
@@ -91,6 +107,39 @@ const MyList: NextPage<Props> = ({}) => {
 						}`}
 					>
 						List Deleted
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "top-center",
+				}
+			);
+		}
+	};
+
+	const onAddGroups = async (groupIds: Array<number>) => {
+		const res = await fetch('/api/add_list_to_groups/', {
+			method: "POST",
+			body: JSON.stringify({
+				listId: parseInt(router.query.listId as string),
+				groupIds,
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		});
+
+		if (res.ok) {
+			refetchGroups();
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Groups Changed
 					</div>
 				),
 				{
@@ -179,8 +228,10 @@ const MyList: NextPage<Props> = ({}) => {
 								// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
 								// theListCreator={"Raymond Aleman"}
 								theListId={parseInt(router.query.listId as string)}
+								groups={groups?.list_user_groups?.map(group => group.user_group) || []}
 								onSaveListName={onSaveListName}
 								onDeleteList={onDeleteList}
+								onAddGroups={onAddGroups}
 							/>
 						</>
 					) : (
