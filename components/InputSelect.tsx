@@ -64,11 +64,13 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 						<div className="relative">
 							<Listbox.Button
 								className={`relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
-                  disabled ? "bg-slate-200 cursor-not-allowed" : ""
-                }`}
+									disabled ? "bg-slate-200 cursor-not-allowed" : ""
+								}`}
 							>
 								{multiple ? (
-									<div className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}>
+									<div
+										className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}
+									>
 										{value.map((item: any) => (
 											<span
 												key={item.id}
@@ -86,7 +88,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 										</span>
 									</div>
 								)}
-								
+
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 									<IconSelector className="h-5 w-5 text-gray-400" />
 								</div>
@@ -114,7 +116,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 												}  select-none relative py-2 pl-3 pr-4 ${
 													option.disabled
 														? "cursor-not-allowed opacity-50"
-														: "cursor-default"
+														: "cursor-pointer"
 												}`
 											}
 											disabled={option.disabled ? option.disabled : false}

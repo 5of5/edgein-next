@@ -16,7 +16,7 @@ import { ElemDeleteConfirmModal } from "./ElemDeleteConfirmModal";
 type Props = {
 	isOpen: boolean;
 	type: "create" | "edit";
-	selectedNote?: GetNotesQuery['notes'][0];
+	selectedNote?: GetNotesQuery["notes"][0];
 	resourceId: number;
 	resourceType: string;
 	onClose: () => void;
@@ -192,12 +192,25 @@ const ElemNoteForm: React.FC<Props> = ({
 								</Dialog.Title>
 								<div className="flex items-start gap-2 mt-3 mb-2">
 									{/* TODO: Get selectedNote.last_update_by  */}
-									<ElemTooltip
-										content={`Last edited by ${user?.display_name} on ${moment(
-											selectedNote?.updated_at
-										).format("LL h:mma")}`}
-										className="cursor-pointer"
-									>
+									{type === "edit" ? (
+										<ElemTooltip
+											content={`Last edited by ${
+												user?.display_name
+											} on ${moment(selectedNote?.updated_at).format(
+												"LL h:mma"
+											)}`}
+											className="cursor-pointer"
+										>
+											<ElemPhoto
+												photo={user?.profilePicture}
+												wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+												imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+												imgAlt={user?.display_name}
+												placeholder="user"
+												placeholderClass="text-slate-300"
+											/>
+										</ElemTooltip>
+									) : (
 										<ElemPhoto
 											photo={user?.profilePicture}
 											wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
@@ -206,9 +219,9 @@ const ElemNoteForm: React.FC<Props> = ({
 											placeholder="user"
 											placeholderClass="text-slate-300"
 										/>
-									</ElemTooltip>
+									)}
 
-									<div>
+									<div className="grow">
 										<p className="font-bold capitalize mb-1">
 											{/* TODO: Get selectedNote.last_update_by  */}
 											{user?.display_name}
@@ -223,7 +236,8 @@ const ElemNoteForm: React.FC<Props> = ({
 												options={groupOptions}
 												value={selectedGroup}
 												onChange={setSelectedGroup}
-												className="w-80 text-slate-600 text-base"
+												className="mt-0.5 text-slate-600 text-base w-full"
+												buttonClasses="w-full sm:w-80"
 												disabled={!!selectedNote}
 											/>
 										</div>
