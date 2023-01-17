@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import React from "react";
 import { ElemButton } from "@/components/ElemButton";
 import { FigureBlurredCircle } from "@/components/Figures";
-import { IconCheck } from "@/components/Icons";
+import { IconCheck, IconSparkles } from "@/components/Icons";
 import Image from "next/image";
 
 type Props = {};
@@ -11,7 +11,7 @@ const Pricing: NextPage<Props> = () => {
 	const pricing = {
 		tiers: [
 			{
-				title: "Free Account",
+				title: "Community",
 				price: 0,
 				frequency: "/month",
 				predescription: "No Cost - No Risk",
@@ -51,7 +51,7 @@ const Pricing: NextPage<Props> = () => {
 					"Referral Link Activation",
 					"*Daily Carousel V2 + late 2023",
 				],
-				cta: "Buy now",
+				cta: "Free Trial",
 				mostPopular: true,
 			},
 		],
@@ -108,14 +108,21 @@ const Pricing: NextPage<Props> = () => {
 					<h2 id="pricing-heading" className="sr-only">
 						Pricing
 					</h2>
-					<div className="max-w-6xl mx-auto">
-						<h1 className="text-4xl font-bold text-center sm:text-5xl">
-							Accessible competitive data, for Builders.
-						</h1>
-						<div className="mt-16 block md:w-full md:grid md:grid-cols-2 gap-8">
+					<div className="max-w-4xl mx-auto">
+						<div className=" max-w-2xl mx-auto text-center">
+							<h1 className="text-4xl font-bold sm:text-5xl">
+								Choose the data plan that&rsquo;s right for you
+							</h1>
+							<p className="pt-4 text-xl">
+								Accessible competitive data for Builders.
+							</p>
+						</div>
+						<div className="mt-16 block md:w-full md:grid md:grid-cols-2">
 							{pricing.tiers.map((tier) => (
 								<div
-									className="relative flex flex-col mt-8 bg-white shadow rounded-lg p-7 lg:mt-0"
+									className={`relative flex flex-col mt-8 bg-white shadow rounded-lg p-7 ${
+										tier.mostPopular ? "lg:mt-0" : "my-20"
+									}`}
 									key={tier.title}
 								>
 									<div className="flex-1">
@@ -130,16 +137,18 @@ const Pricing: NextPage<Props> = () => {
 										</h3>
 										{tier.mostPopular ? (
 											<p className="absolute top-0 -translate-y-1/2 transform rounded-full bg-primary-500 py-1.5 px-4 text-sm font-semibold text-white">
-												Popular
+												Best Value
 											</p>
 										) : null}
 										<p className="mt-4 flex items-baseline">
 											<span className="text-5xl font-bold tracking-tight">
-												${tier.price}
+												{tier.price === 0 ? "Free" : "$" + tier.price}
 											</span>
-											<span className="ml-1 text-xl font-semibold">
-												{tier.frequency}
-											</span>
+											{tier.price > 0 && (
+												<span className="ml-1 text-xl font-semibold">
+													{tier.frequency}
+												</span>
+											)}
 										</p>
 										<div className="text-slate-600 text-lg">
 											<p className="mt-6 font-bold text-dark-500">
@@ -159,7 +168,7 @@ const Pricing: NextPage<Props> = () => {
 											</ul>
 										</div>
 									</div>
-									<div className="py-8">
+									<div className="pt-8">
 										<ElemButton
 											href={"#"}
 											className={`${
@@ -170,6 +179,9 @@ const Pricing: NextPage<Props> = () => {
 											btn={`${tier.mostPopular ? "primary" : ""}`}
 											size="lg"
 										>
+											{tier.mostPopular && (
+												<IconSparkles className="w-5 h-5 mr-1" />
+											)}
 											{tier.cta}
 										</ElemButton>
 									</div>
@@ -181,23 +193,20 @@ const Pricing: NextPage<Props> = () => {
 
 				<section
 					aria-labelledby="faq-heading"
-					className="mx-auto max-w-2xl divide-y divide-black/10 py-24 px-6 lg:max-w-7xl lg:py-32 lg:px-8"
+					className="mx-auto max-w-2xl py-24 lg:max-w-4xl lg:py-32"
 				>
-					<h2 id="faq-heading" className="text-3xl font-bold">
+					<h2 id="faq-heading" className="text-4xl font-bold">
 						Frequently asked questions
 					</h2>
 					<div className="mt-8">
-						<dl className="divide-y divide-black/10">
+						<dl className="space-y-12">
 							{faqs.map((faq) => (
-								<div
-									key={faq.id}
-									className="pt-6 pb-8 md:grid md:grid-cols-12 md:gap-8"
-								>
-									<dt className="text-base font-bold md:col-span-5">
+								<div key={faq.id} className="">
+									<dt className="text-xl font-bold leading-6">
 										{faq.question}
 									</dt>
-									<dd className="mt-2 md:col-span-7 md:mt-0">
-										<p className="text-base text-slate-600">{faq.answer}</p>
+									<dd className="mt-2 text-lg">
+										<p className="text-slate-600">{faq.answer}</p>
 									</dd>
 								</div>
 							))}
