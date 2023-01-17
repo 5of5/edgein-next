@@ -114,18 +114,24 @@ export const ModalListDetails: FC<Props> = ({
 											>
 												<div className="text-left">
 													<h3 className="font-bold">Groups</h3>
-													<div className="flex flex-wrap gap-2 mt-2">
-														{groups.map((item: any) => (
-															<p
-																key={item.id}
-																className="capitalize bg-slate-200 px-2 py-1 rounded-md"
-															>
-																{item.name}
-															</p>
-														))}
-													</div>
+													{groups.length > 0 ? (
+														<div className="flex flex-wrap gap-2 mt-2">
+															{groups.map((item: any) => (
+																<p
+																	key={item.id}
+																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+																>
+																	{item.name}
+																</p>
+															))}
+														</div>
+													) : (
+														<p className="text-slate-500">Add list to group</p>
+													)}
 												</div>
-												<div className="text-primary-500">Edit</div>
+												<div className="text-primary-500 text-sm font-bold">
+													Edit
+												</div>
 											</button>
 
 											{theListDescription && (
@@ -184,18 +190,18 @@ export const ModalListDetails: FC<Props> = ({
 			/>
 
 			<ElemDeleteConfirmModal
-        isOpen={listDeleteModal}
-        title="Delete this list?"
-        content={
-          <div>
+				isOpen={listDeleteModal}
+				title="Delete this list?"
+				content={
+					<div>
 						When you delete a list, everything in it will be removed
 						immediately.
 						<span className="font-bold inline">
 							This can&lsquo;t be undone.
 						</span>
 					</div>
-        }
-        onClose={() => setListDeleteModal(false)}
+				}
+				onClose={() => setListDeleteModal(false)}
 				onDelete={() => onDeleteList(theListId)}
 			/>
 
