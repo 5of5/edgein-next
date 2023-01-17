@@ -9,6 +9,9 @@ import {
   TextInput,
   SelectField,
   ReferenceField,
+  ReferenceArrayField,
+  SingleFieldList,
+  ChipField,
   NumberField,
   ReferenceInput,
   SelectInput,
@@ -76,6 +79,38 @@ export const CompanyList = () => {
       <TextField source="name" />
       <TextField source="slug" />
       <ImageField className="logoFile" source="logo.url" label="Logo" />
+      <ReferenceArrayField
+        label="Child companies"
+        source="child_companies"
+        reference="companies"
+      >
+        <SingleFieldList>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
+      <ReferenceArrayField
+        label="Child vc firms"
+        source="child_vc_firms"
+        reference="vc_firms"
+      >
+        <SingleFieldList>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
+      <ReferenceField
+        label="Parent company"
+        source="parent_company"
+        reference="companies"
+      >
+        <TextField source="name" />
+      </ReferenceField>
+      <ReferenceField
+        label="Parent vc firm"
+        source="parent_vc_firm"
+        reference="vc_firms"
+      >
+        <TextField source="name" />
+      </ReferenceField>
       <SelectField source="layer" choices={companyLayerChoices} />
       <TextField source="layer_detail" />
       <ReferenceField label="Coin" source="coin_id" reference="coins">
