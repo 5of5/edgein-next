@@ -63,5 +63,7 @@ select_permissions:
         - external_id
         - reference_id
         - role
-      filter: {}
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
       allow_aggregations: true

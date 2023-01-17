@@ -35,12 +35,13 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - amount
+        - external_id
         - id
         - person_id
         - round_id
         - vc_firm_id
-        - amount
-        - external_id
-        - status
-      filter: {}
+      filter:
+        status:
+          _eq: published
       allow_aggregations: true

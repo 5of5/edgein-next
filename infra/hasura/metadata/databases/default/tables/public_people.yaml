@@ -67,13 +67,14 @@ select_permissions:
         - personal_email
         - picture
         - slug
-        - status
         - twitter_url
         - type
         - updated_at
         - website_url
         - work_email
-      filter: {}
+      filter:
+        status:
+          _eq: published
   - role: viewer
     permission:
       columns:

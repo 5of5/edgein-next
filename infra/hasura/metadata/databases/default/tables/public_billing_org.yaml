@@ -5,10 +5,12 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - id
-        - user_limit
         - customer_id
+        - id
         - plan
         - status
-      filter: {}
+        - user_limit
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
       allow_aggregations: true

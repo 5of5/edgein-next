@@ -29,5 +29,7 @@ select_permissions:
         - list_id
         - resource_id
         - resource_type
-      filter: {}
+      filter:
+        created_by_user_id:
+          _eq: X-Hasura-User-Id
       allow_aggregations: true

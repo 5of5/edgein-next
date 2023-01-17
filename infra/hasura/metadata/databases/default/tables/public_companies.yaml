@@ -99,51 +99,52 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - investor_amount
-        - date_added
-        - ico_end
-        - ico_start
-        - coin_id
-        - id
-        - location_json
-        - logo
-        - sentiment
-        - status_tags
-        - tags
-        - total_employees
         - aliases
         - audit_file
         - bitcointalk
         - blockchain_explorer
         - careers_page
+        - coin_id
         - company_linkedin
+        - created_at
+        - date_added
         - discord
         - external_id
         - facebook
         - github
         - glassdoor
+        - ico_end
+        - ico_start
+        - id
         - instagram
+        - investor_amount
         - layer
         - layer_detail
         - location
+        - location_json
+        - logo
         - market_verified
         - medium
         - name
         - notes
         - overview
         - reddit
+        - sentiment
         - slug
-        - status
+        - status_tags
+        - tags
         - telegram
+        - total_employees
         - total_valuation
         - twitter
+        - updated_at
         - velocity_linkedin
         - velocity_token
         - website
         - white_paper
         - year_founded
         - youtube
-        - created_at
-        - updated_at
-      filter: {}
+      filter:
+        status:
+          _eq: published
       allow_aggregations: true

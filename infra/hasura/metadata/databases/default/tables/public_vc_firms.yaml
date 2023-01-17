@@ -61,25 +61,26 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - id
-        - logo
-        - sentiment
-        - status_tags
-        - tags
+        - created_at
         - external_id
+        - id
         - latest_investment
         - linkedin
         - location
+        - logo
         - name
         - overview
+        - sentiment
         - slug
-        - status
+        - status_tags
+        - tags
         - twitter
+        - updated_at
         - website
         - year_founded
-        - created_at
-        - updated_at
       computed_fields:
         - num_of_investments
-      filter: {}
+      filter:
+        status:
+          _eq: published
       allow_aggregations: true
