@@ -19,7 +19,13 @@ import OnboardingStep3 from "@/components/Onboarding/OnboardingStep3";
 import { useUser } from "@/context/userContext";
 import ElemSearchBox from "./ElemSearchBox";
 
-export type Popups = 'login' | 'forgotPassword' | 'search' | 'signup' | 'usage' | false
+export type Popups =
+	| "login"
+	| "forgotPassword"
+	| "search"
+	| "signup"
+	| "usage"
+	| false;
 
 type Props = {
 	showPopup: Popups;
@@ -48,14 +54,20 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			onboardingStep === 0 &&
 			router.asPath.includes("/login/")
 		) {
-			setShowPopup(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
+			setShowPopup(
+				router.asPath.includes("/login/")
+					? router.asPath.includes("?usage=true")
+						? "usage"
+						: "login"
+					: false
+			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.asPath]);
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
-		setShowPopup('search');
+		setShowPopup("search");
 	});
 
 	const showOnboarding = async () => {
@@ -104,7 +116,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 				const responseText = await response.clone().json();
 				if (responseText.message) {
 					setLinkedInError(responseText.message);
-					setShowPopup('login');
+					setShowPopup("login");
 				}
 			} else {
 				window.location.href = "/";
@@ -121,7 +133,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 				const res = await getAccessTokenFromCode(router.query.code as string);
 			})();
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.query.code]);
 
 	useEffect(() => {
@@ -134,22 +146,21 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	}, [router.query.invite, user]);
 
 	const onBackFromForgotPassword = () => {
-		setShowPopup('login')
+		setShowPopup("login");
 	};
 
 	const onModalClose = () => {
-		setShowPopup(router.asPath.includes("/login/") ? 'login' : false)
-
+		setShowPopup(router.asPath.includes("/login/") ? "login" : false);
 	};
 
 	const showLoginModal = () => {
-		setShowPopup('login')
+		setShowPopup("login");
 	};
 
 	const showSignUpModal = (email: string, password: string) => {
 		setEmailFromLogin(email ? email : "");
 		setPasswordFromLogin(password ? password : "");
-		setShowPopup('signup')
+		setShowPopup("signup");
 	};
 
 	return (
@@ -161,7 +172,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 				>
 					<div className="flex items-center">
 						<div className="flex-none lg:mr-4">
-							<Link href="/" passHref>
+							<Link href={user ? "/companies" : "/"} passHref>
 								<a>
 									<ElemLogo
 										mode="logo"
@@ -173,7 +184,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					</div>
 					<ElemSearchBox
 						onClick={() => {
-							setShowPopup('search')
+							setShowPopup("search");
 						}}
 					/>
 
@@ -189,7 +200,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						{user ? (
 							<>
 								<ElemButton
-									onClick={() => setShowPopup('search')}
+									onClick={() => setShowPopup("search")}
 									btn="slate"
 									className="h-9 w-9 !px-0 !py-0 sm:hidden"
 								>
@@ -201,14 +212,14 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						) : (
 							<>
 								<ElemButton
-									onClick={() => setShowPopup('login')}
+									onClick={() => setShowPopup("login")}
 									btn="ol-primary"
 									className="px-2.5 sm:px-3"
 								>
 									Log In
 								</ElemButton>
 								<ElemButton
-									onClick={() => setShowPopup('signup')}
+									onClick={() => setShowPopup("signup")}
 									btn="primary"
 									className="px-2.5 sm:px-3"
 								>
@@ -222,15 +233,15 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 					<UsageModal
 						onSignUp={showSignUpModal}
-						show={showPopup === 'usage'}
+						show={showPopup === "usage"}
 						onClose={onModalClose}
 					/>
 
 					<LoginModal
 						linkedInError={linkedInError}
 						onSignUp={showSignUpModal}
-						onForgotPassword={() => setShowPopup('forgotPassword')}
-						show={showPopup === 'login'}
+						onForgotPassword={() => setShowPopup("forgotPassword")}
+						show={showPopup === "login"}
 						onClose={onModalClose}
 					/>
 					<SignUpModal
@@ -238,16 +249,16 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						passwordFromLogin={passwordFromLogin}
 						emailFromLogin={emailFromLogin}
 						onLogin={showLoginModal}
-						show={showPopup === 'signup'}
+						show={showPopup === "signup"}
 						onClose={onModalClose}
 					/>
 					<ForgotPasswordModal
-						show={showPopup === 'forgotPassword'}
+						show={showPopup === "forgotPassword"}
 						onClose={onModalClose}
 						onBack={onBackFromForgotPassword}
 					/>
 					<SearchModal
-						show={showPopup === 'search'}
+						show={showPopup === "search"}
 						onClose={() => setShowPopup(false)}
 					/>
 					{onboardingStep === 1 && (
