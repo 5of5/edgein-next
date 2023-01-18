@@ -18,11 +18,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 			<div className="max-w-screen-2xl mx-auto">
 				<div className="mt-10 lg:grid lg:grid-cols-9 lg:gap-x-5">
 					<Transition.Root show={sidebarOpen} as={Fragment}>
-						<Dialog
-							as="div"
-							className="relative z-40 md:hidden"
-							onClose={setSidebarOpen}
-						>
+						<Dialog as="div" className="relative z-40" onClose={setSidebarOpen}>
 							<Transition.Child
 								as={Fragment}
 								enter="transition-opacity ease-linear duration-300"
@@ -90,7 +86,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 							btn="slate"
 							roundedFull={false}
 							onClick={() => setSidebarOpen(true)}
-							className="-ml-4 mb-4 rounded-tr-lg rounded-br-lg pl-6 hover:border-primary-500 md:hidden"
+							className="-ml-4 mb-4 rounded-tr-lg rounded-br-lg pl-6 hover:border-primary-500 lg:hidden"
 						>
 							<span className="sr-only">Dashboard List</span>
 							<IconWindowSidebar className="w-6 h-6 mr-2" />

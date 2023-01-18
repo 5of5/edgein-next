@@ -57,8 +57,8 @@ const ElemSettingDialog: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform rounded-2xl bg-slate-100 text-left align-middle shadow-xl transition-all">
-								<Dialog.Title className="flex items-center justify-between px-6 py-2 rounded-t-2xl bg-white">
+							<Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 text-left align-middle shadow-xl transition-all">
+								<Dialog.Title className="flex items-center justify-between px-6 pt-6 pb-2 rounded-t-2xl bg-white">
 									<div className="flex items-center justify-between gap-x-1">
 										<IconGroup className="w-6 h-6" />
 										<div className="text-xl font-bold capitalize">
