@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import Stripe from 'stripe';
 import UserService from '../../utils/users'
 import BillingService from '../../utils/billingOrg'
+import { buffer } from "micro";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
@@ -21,9 +22,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (endpointSecret && endpointSecret !== "LEAVE-EMPTY-FOR-DEV") {
       // Get the signature sent by Stripe
       const signature = req.headers["stripe-signature"];
+      const reqBuffer = await buffer(req);
+
       try {
         event = stripe.webhooks.constructEvent(
-          req.body,
+          reqBuffer,
           signature,
           endpointSecret,
         );
