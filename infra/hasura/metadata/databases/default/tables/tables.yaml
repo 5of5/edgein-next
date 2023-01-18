@@ -22,6 +22,7 @@
 - "!include public_list_user_groups.yaml"
 - "!include public_lists.yaml"
 - "!include public_notes.yaml"
+- "!include public_notifications.yaml"
 - "!include public_people.yaml"
 - "!include public_resource_edit_access.yaml"
 - "!include public_resource_links.yaml"
