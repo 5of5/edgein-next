@@ -20,7 +20,7 @@ export const TheFooter = () => {
 		],
 		legal: [
 			{ name: "Privacy", href: "/privacy" },
-			//{ name: "Terms", href: "/terms" },
+			{ name: "Terms", href: "/terms" },
 		],
 	};
 

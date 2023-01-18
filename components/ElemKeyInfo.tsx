@@ -190,7 +190,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 									className="h-6 w-6 shrink-0 text-dark-500"
 								/>
 							)}
-							<span>{item.text}</span>
+							<span className="break-all">{item.text}</span>
 						</>
 					);
 
