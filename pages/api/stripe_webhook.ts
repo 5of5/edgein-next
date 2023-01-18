@@ -25,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Get the signature sent by Stripe
       const signature = req.headers["stripe-signature"];
       const reqBuffer = await buffer(req);
-      console.log({signature, endpointSecret})
+
       try {
         event = stripe.webhooks.constructEvent(
           reqBuffer,
