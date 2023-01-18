@@ -1,21 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment-timezone";
+import toast, { Toaster } from "react-hot-toast";
 import { IconCustomList, IconSaveToList } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { getNameFromListName } from "@/utils/reaction";
 import {
 	Lists,
 	List_Members_Bool_Exp,
+	User_Groups,
 	useGetListMembersQuery,
 } from "@/graphql/types";
 import { useUser } from "@/context/userContext";
+import ElemAddListDialog from "./ElemAddListDialog";
+import differenceBy from "lodash/differenceBy";
 
 type Props = {
+	group: User_Groups;
 	lists: Array<Lists>;
+	refetchLists: () => void;
 };
 
-export const ElemLists: React.FC<Props> = ({ lists }) => {
-	const { user } = useUser();
+export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
+	const { user, listAndFollows } = useUser();
+
+	const [isOpenAddList, setIsOpenAddList] = useState<boolean>(false);
+
 	const { data, refetch } = useGetListMembersQuery(
 		{
 			where: {
@@ -27,6 +36,18 @@ export const ElemLists: React.FC<Props> = ({ lists }) => {
 		}
 	);
 	const listMembers = data?.list_members || [];
+
+	const customLists = listAndFollows
+		?.filter(
+			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
+		)
+		.sort((a, b) => (a.name < b.name ? -1 : 1));
+
+	const listOptions =	differenceBy(customLists, lists, "id")
+	.map((item) => ({
+		id: item.id,
+		title: getNameFromListName(item),
+	}))
 
 	const handleToggleFollow = async (listId: number) => {
 		const response = await fetch("/api/toggle_follow_list/", {
@@ -46,17 +67,49 @@ export const ElemLists: React.FC<Props> = ({ lists }) => {
 		}
 	};
 
+	const handleAddList = async (listIds: Array<number>) => {
+		const response = await fetch("/api/add_list_to_group/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				groupId: group?.id,
+				listIds,
+			}),
+		});
+
+		if (response.status === 200) {
+			refetchLists();
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						Lists Added
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "top-center",
+				}
+			);
+		}
+	};
+
 	return (
 		<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 			<div className="flex items-center justify-between">
 				<div>
 					<h2 className="text-xl font-bold">{`Lists (${lists.length})`}</h2>
 				</div>
-				{/* To do: add user list button */}
-				{/* <ElemButton btn="slate" onClick={() => {}}>
+				<ElemButton btn="slate" onClick={() => setIsOpenAddList(true)}>
 					<IconSaveToList className="w-6 h-6 mr-1" />
 					<span>Add List</span>
-				</ElemButton> */}
+				</ElemButton>
 			</div>
 
 			{lists.length > 0 ? (
@@ -108,6 +161,15 @@ export const ElemLists: React.FC<Props> = ({ lists }) => {
 			) : (
 				<p className="text-slate-500 mt-2">No lists found.</p>
 			)}
+
+			<ElemAddListDialog
+				isOpen={isOpenAddList}
+				listOptions={listOptions}
+				onCloseModal={() => setIsOpenAddList(false)}
+				onSave={handleAddList}
+			/>
+
+			<Toaster />
 		</div>
 	);
 };
