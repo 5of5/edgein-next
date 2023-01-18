@@ -88,15 +88,19 @@ const ElemSettingEditableField: React.FC<Props> = ({
 
 	return (
 		<div
-			className={`flex items-start justify-between px-4 py-3 hover:bg-slate-100 ${
-				isGroupManager && "cursor-pointer"
+			className={`flex items-start justify-between px-4 py-3 ${
+				isGroupManager && "cursor-pointer hover:bg-slate-100 "
 			}`}
 			onClick={isGroupManager ? handleOpenEditMode : () => null}
 		>
-			<div className=" flex-auto pr-4">
+			<div className="flex-auto pr-4">
 				<p className="font-bold">{label}</p>
 				<p className="text-slate-500">
-					{group[field] ? group[field] : placeholder}
+					{group[field]
+						? group[field]
+						: isGroupManager
+						? placeholder
+						: `No ${label} info`}
 				</p>
 			</div>
 
