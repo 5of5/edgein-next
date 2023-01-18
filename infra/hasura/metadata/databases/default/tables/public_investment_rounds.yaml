@@ -27,6 +27,21 @@ insert_permissions:
         - round_date
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - amount
+        - company_id
+        - currency
+        - external_id
+        - id
+        - round
+        - round_date
+        - valuation
+      filter:
+        status:
+          _eq: published
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -41,14 +56,15 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - company_id
-        - id
         - amount
-        - valuation
+        - company_id
         - currency
         - external_id
+        - id
         - round
         - round_date
-        - status
-      filter: {}
+        - valuation
+      filter:
+        status:
+          _eq: published
       allow_aggregations: true

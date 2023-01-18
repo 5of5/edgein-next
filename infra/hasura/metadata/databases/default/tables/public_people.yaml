@@ -50,6 +50,32 @@ insert_permissions:
         - email
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - about
+        - city
+        - country
+        - created_at
+        - email
+        - external_id
+        - facebook_url
+        - github
+        - id
+        - linkedin
+        - name
+        - personal_email
+        - picture
+        - slug
+        - twitter_url
+        - type
+        - updated_at
+        - website_url
+        - work_email
+      filter:
+        status:
+          _eq: published
+      allow_aggregations: true
   - role: user
     permission:
       columns:

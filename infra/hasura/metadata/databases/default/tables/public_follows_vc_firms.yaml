@@ -2,6 +2,15 @@ table:
   schema: public
   name: follows_vc_firms
 object_relationships:
+  - name: follow_member
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: list_members
+        insertion_order: null
+        column_mapping:
+          list_id: list_id
   - name: list
     using:
       manual_configuration:
@@ -30,6 +39,7 @@ select_permissions:
         - resource_id
         - resource_type
       filter:
-        created_by_user_id:
-          _eq: X-Hasura-User-Id
+        follow_member:
+          user_id:
+            _eq: X-Hasura-User-Id
       allow_aggregations: true
