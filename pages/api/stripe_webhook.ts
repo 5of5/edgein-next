@@ -6,6 +6,7 @@ import { buffer } from "micro";
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
+export const config = { api: { bodyParser: false } };
 export const getCustomerId = (
   customer: string | Stripe.Customer | Stripe.DeletedCustomer,
 ) => {
