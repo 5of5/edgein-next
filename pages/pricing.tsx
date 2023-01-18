@@ -13,20 +13,18 @@ const Pricing: NextPage<Props> = () => {
 			{
 				title: "Community",
 				price: 0,
-				frequency: "/month",
-				predescription: "No Cost - No Risk",
+				//frequency: "/month",
+				//predescription: "No Cost - No Risk",
 				description:
-					"Engage and enjoy the the best damn dataset in the world! We are giving an Edge back to builders!",
+					"Signup today and get instant access to the largest community dataset in web3, exclusively on the EdgeIn platform.",
 				features: [
 					"Unlimited Search",
 					"Daily Carousel",
-					"View Profile Pages ",
-					"React to Projects",
+					"View Profile Pages",
+					"React to Projects / Deals",
 					"Request Data",
-					"Create Unlimited Lists",
-					"View Profiles",
-					"Create/Manage Groups to 3 members",
-					"Share Projects from EdgeIn",
+					"Create / Share up to 10 Lists",
+					"Create / Manage Groups with up to 3 members",
 				],
 				cta: "Sign up",
 				mostPopular: false,
@@ -35,21 +33,20 @@ const Pricing: NextPage<Props> = () => {
 				title: "Contributor",
 				price: 15,
 				frequency: "/month",
-				predescription: "Serious Business Player",
+				//predescription: "Serious Business Player",
 				description:
-					"We deliver updates to you - so you never miss a thing on the companies you track!  Oh and this supports the free community use! Keep our Data Free!",
+					"As a contributor, you help support our free community data model. Get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in web3.",
 				features: [
 					"Unlimited Search",
 					"Daily Carousel",
 					"View Profile Pages",
-					"React to Projects",
-					"Request Data *earn credits for requests or data provided to EdgeIn",
-					"Create Unlimited Lists",
-					"Create/Manage Groups to 5-1,000 members",
-					"Real-Time Notifications on list projects/investors",
-					"Community Badge",
+					"React to Projects / Deals",
+					"Request / Correct Data *earn credits for data contributions made to EdgeIn",
+					"Create / Share Unlimited Lists",
+					"Create / Manage Groups with up to 5,000 members",
+					"Real-Time Notifications on Saved Companies, Projects and Investors in Lists",
 					"Referral Link Activation",
-					"*Daily Carousel V2 + late 2023",
+					"Personalized Daily Carousel **launching late 2023",
 				],
 				cta: "Free Trial",
 				mostPopular: true,
@@ -59,32 +56,16 @@ const Pricing: NextPage<Props> = () => {
 
 	const faqs = [
 		{
-			id: 1,
-			question: "Can I try EdgeIn before I purchase a plan?",
+			question: "Can I try EdgeIn before I purchase a paid plan?",
 			answer:
-				"Yes. We offer a free version to help you learn the ropes before you decide if you want to purchase a plan.",
+				"Yes, of course! We offer a 2-week FREE trial so you can decide which features work best for your workflow.",
 		},
 		{
-			id: 2,
-			question: "Will my monthly/annual subscription be renewed automatically?",
+			question: "Will my monthly subscription be renewed automatically?",
 			answer:
-				"Yes, your subscription will automatically be renewed until you let us know that you'd like to change your plan or cancel your account.",
-		},
-		{
-			id: 3,
-			question: "Do you offer a money-back guarantee?",
-			answer:
-				"Yes, for annual subscription plans purchased on EdgeIn.io we offer a refund within 30 days of purchase. For monthly subscription plans, you can cancel your account at any time and you will not be charged for the next month.*",
-		},
-		{
-			id: 4,
-			question: "Lorem ipsum dolor sit amet?",
-			answer:
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna  commodo consequat.",
+				"Yes, your subscription will automatically renew each month. You can cancel anytime in your Account Settings or by contacting our team through Intercom on the site.",
 		},
 	];
-
-	//*The 30-day refund option may only be used once per customer. When you sign up for a DocuSign subscription plan, you must agree to the Terms and Conditions and Privacy Policy for Use of DocuSign Service Plans. This agreement contains important information regarding fees and payment terms, return of balances, and account terms and terminations. We only process cancellations and refunds according to the terms specified in the Term and Conditions.
 
 	return (
 		<>
@@ -101,7 +82,6 @@ const Pricing: NextPage<Props> = () => {
 				<FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
 
 				<section
-					//bg-gradient-to-b from-white/50 to-transparent
 					className="py-16 px-4 sm:px-6 lg:px-8"
 					aria-labelledby="pricing-heading"
 				>
@@ -111,17 +91,17 @@ const Pricing: NextPage<Props> = () => {
 					<div className="max-w-4xl mx-auto">
 						<div className=" max-w-2xl mx-auto text-center">
 							<h1 className="text-4xl font-bold sm:text-5xl">
-								Choose the data plan that&rsquo;s right for you
+								Choose the best plan for your data needs.
 							</h1>
 							<p className="pt-4 text-xl">
-								Accessible competitive data for Builders.
+								Accessible, reliable data for the community, by the community.
 							</p>
 						</div>
 						<div className="mt-16 block md:w-full md:grid md:grid-cols-2">
 							{pricing.tiers.map((tier) => (
 								<div
-									className={`relative flex flex-col mt-8 bg-white shadow rounded-lg p-7 ${
-										tier.mostPopular ? "lg:mt-0" : "my-20"
+									className={`relative flex flex-col bg-white shadow rounded-lg p-7 ${
+										tier.mostPopular ? "mt-8 lg:mt-0" : "my-14"
 									}`}
 									key={tier.title}
 								>
@@ -151,15 +131,32 @@ const Pricing: NextPage<Props> = () => {
 											)}
 										</p>
 										<div className="text-slate-600 text-lg">
-											<p className="mt-6 font-bold text-dark-500">
+											{/* <p className="mt-6 font-bold text-dark-500">
 												{tier.predescription}
-											</p>
-											<p>{tier.description}</p>
+											</p> */}
+											<p className="mt-6">{tier.description}</p>
+											<div className="my-6">
+												<ElemButton
+													href={"#"}
+													className={`${
+														tier.mostPopular
+															? ""
+															: "bg-primary-50 hover:bg-primary-100 text-primary-500"
+													} w-full`}
+													btn={`${tier.mostPopular ? "primary" : ""}`}
+													size="lg"
+												>
+													{tier.mostPopular && (
+														<IconSparkles className="w-5 h-5 mr-1" />
+													)}
+													{tier.cta}
+												</ElemButton>
+											</div>
 											<ul role="list" className="mt-6 space-y-6">
 												{tier.features.map((feature) => (
 													<li key={feature} className="flex">
 														<IconCheck
-															className="h-6 w-6 flex-shrink-0 text-primary-500"
+															className="h-6 w-6 flex-shrink-0 text-green-600"
 															aria-hidden="true"
 														/>
 														<span className="ml-3">{feature}</span>
@@ -168,7 +165,7 @@ const Pricing: NextPage<Props> = () => {
 											</ul>
 										</div>
 									</div>
-									<div className="pt-8">
+									{/* <div className="pt-8">
 										<ElemButton
 											href={"#"}
 											className={`${
@@ -184,7 +181,7 @@ const Pricing: NextPage<Props> = () => {
 											)}
 											{tier.cta}
 										</ElemButton>
-									</div>
+									</div> */}
 								</div>
 							))}
 						</div>
@@ -193,24 +190,26 @@ const Pricing: NextPage<Props> = () => {
 
 				<section
 					aria-labelledby="faq-heading"
-					className="mx-auto max-w-2xl py-24 lg:max-w-4xl lg:py-32"
+					className="py-16 px-4 sm:px-6 lg:px-8 lg:py-24"
 				>
-					<h2 id="faq-heading" className="text-4xl font-bold">
-						Frequently asked questions
-					</h2>
-					<div className="mt-8">
-						<dl className="space-y-12">
-							{faqs.map((faq) => (
-								<div key={faq.id} className="">
-									<dt className="text-xl font-bold leading-6">
-										{faq.question}
-									</dt>
-									<dd className="mt-2 text-lg">
-										<p className="text-slate-600">{faq.answer}</p>
-									</dd>
-								</div>
-							))}
-						</dl>
+					<div className="mx-auto max-w-2xl lg:max-w-4xl">
+						<h2 id="faq-heading" className="text-4xl font-bold">
+							Frequently asked questions
+						</h2>
+						<div className="mt-8">
+							<dl className="space-y-12">
+								{faqs.map((faq, index) => (
+									<div key={index}>
+										<dt className="text-xl font-bold leading-6">
+											{faq.question}
+										</dt>
+										<dd className="mt-2 text-lg">
+											<p className="text-slate-600">{faq.answer}</p>
+										</dd>
+									</div>
+								))}
+							</dl>
+						</div>
 					</div>
 				</section>
 			</div>
