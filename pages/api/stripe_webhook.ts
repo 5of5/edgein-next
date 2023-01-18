@@ -7,6 +7,7 @@ import { buffer } from "micro";
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export const config = { api: { bodyParser: false } };
+
 export const getCustomerId = (
   customer: string | Stripe.Customer | Stripe.DeletedCustomer,
 ) => {
@@ -24,7 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Get the signature sent by Stripe
       const signature = req.headers["stripe-signature"];
       const reqBuffer = await buffer(req);
-
+      console.log({signature, endpointSecret})
       try {
         event = stripe.webhooks.constructEvent(
           reqBuffer,
