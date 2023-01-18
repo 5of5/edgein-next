@@ -15,12 +15,12 @@ import {
 	IconTwitter,
 	IconDiscord,
 	IconGlassdoor,
-} from "./Icons";
-
+	IconEye,
+} from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
-} from "../utils";
+} from "@/utils";
 
 type Props = {
 	className?: string;
@@ -40,6 +40,7 @@ type Props = {
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
+	onOpenUpgradeDialog?: () => void;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -53,6 +54,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	roles,
 	investmentsLength = 0,
 	emails = [],
+	onOpenUpgradeDialog,
 	linkedIn,
 	github,
 	careerPage,
@@ -213,19 +215,44 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						</li>
 					);
 				})}
-				{emails && emails.length > 0 && (
-					<li>
+
+				{/* Old */}
+				{emails?.length > 0 && (
+					<>
 						{emails.map((_email, i: number) => [
-							i > 0 && ", ",
-							<a
+							<li
 								key={i}
-								className={`${baseClasses} flex-1 transition-all cursor-not-allowed hover:blur-sm hover:bg-slate-200`}
+								className={`${baseClasses} flex-1 items-center justify-between transition-all`}
 							>
-								&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-							</a>,
+								<div className="flex items-center">
+									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
+									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+								</div>
+							</li>,
 						])}
-					</li>
+					</>
 				)}
+				{/* Emails with upgrade modal */}
+				{/* {emails?.length > 0 && (
+					<>
+						{emails.map((_email, i: number) => [
+							<li
+								key={i}
+								onClick={onOpenUpgradeDialog}
+								className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+							>
+								<div className="flex items-center">
+									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
+									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+								</div>
+								<div className="flex items-center text-primary-500">
+									<IconEye className="h-5 w-5 shrink-0 mr-1" />
+									show
+								</div>
+							</li>,
+						])}
+					</>
+				)} */}
 			</ul>
 		</section>
 	);
