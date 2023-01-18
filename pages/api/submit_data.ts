@@ -1,4 +1,6 @@
 import { Data_Partners } from "@/graphql/types";
+import { getListsByFollowResource, getUserByListId } from "@/utils/lists";
+import { insertNotification } from "@/utils/notifications";
 import {
 	partnerLookUp,
 	resourceIdLookup,
@@ -89,6 +91,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		resourceType,
 		actionType,
 	);
+
+	if (resourceType === "companies" || resourceType === "vc_firms") {
+		/** Insert notification */
+		const lists = await getListsByFollowResource(dataId, resourceType);
+		const targetUsers = await Promise.all(
+			lists.map(async (listItem: any) => getUserByListId(listItem?.list_id))
+		);
+		const notifications = await Promise.all(
+			targetUsers.map(async (targetUser: any) => insertNotification(
+				targetUser?.user_id,
+				actionType,
+				dataId,
+				resourceType,
+			))
+		);
+	}
 
 	res.send(insertResult);
 };

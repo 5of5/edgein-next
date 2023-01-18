@@ -185,3 +185,42 @@ export const deleteFollowIfExists = async (list: Lists, resourceId: string, reso
 
   return returning.length
 }
+
+export const getListsByFollowResource = async (resourceId: number, resourceType: string) => {
+  const {
+    data: { follows }
+  } = await query({
+    query: `
+      query findLists($resourceId: Int!, $resourceType: String!) {
+        follows(where: {
+          _and: [
+            {resource_id: {_eq: $resourceId}},
+            {resource_type: {_eq: $resourceType}}
+          ]
+        }) {
+          id
+          list_id
+        }
+      }
+    `,
+    variables: { resourceId, resourceType },
+  });
+  return follows;
+}
+
+export const getUserByListId = async (listId: number) => {
+  const {
+    data: { list_members }
+  } = await query({
+    query: `
+      query findUserByListId($listId: Int!) {
+        list_members(where: {list_id: {_eq: $listId}}) {
+          id
+          user_id
+        }
+      }
+    `,
+    variables: { listId },
+  });
+  return list_members[0];
+}
