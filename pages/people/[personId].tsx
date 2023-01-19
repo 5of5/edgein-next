@@ -5,6 +5,7 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { ElemButton } from "@/components/ElemButton";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
 import {
 	GetCompaniesQuery,
@@ -69,12 +70,14 @@ const Person: NextPage<Props> = (props) => {
 		setIsOpenUpgradeDialog(false);
 	};
 
+	const profileIsClaimed = true;
+
 	return (
 		<div className="relative">
-			<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div>
+			{/* <div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div> */}
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+				<div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
 					<div className="col-span-2 flex justify-center">
 						<ElemPhoto
 							photo={person.picture}
@@ -85,19 +88,27 @@ const Person: NextPage<Props> = (props) => {
 							placeholderClass="text-slate-300"
 						/>
 					</div>
-					<div className="w-full col-span-9 mt-7">
-						<div className="flex justify-center text-center lg:justify-start lg:text-left lg:shrink-0">
+					<div className="w-full col-span-9">
+						<div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
 							<div>
-								<h1 className="text-3xl font-bold lg:text-4xl">
-									{person.name}
-								</h1>
 								{person.type && (
-									<div className="pb-0.5 whitespace-nowrap text-lg text-slate-600">
+									<div className="whitespace-nowrap text-lg text-slate-600">
 										{removeSpecialCharacterFromString(person.type as string)}
 									</div>
 								)}
+								<h1 className="text-3xl font-bold lg:text-4xl">
+									{person.name}
+								</h1>
+							</div>
+							<div className="mt-6 lg:mt-0">
+								{!profileIsClaimed && (
+									<ElemButton className="" btn="primary" onClick={() => {}}>
+										Claim this profile
+									</ElemButton>
+								)}
 							</div>
 						</div>
+
 						{person.about && (
 							<p className="mt-4 line-clamp-3 text-base text-slate-600">
 								{person.about}
@@ -129,6 +140,17 @@ const Person: NextPage<Props> = (props) => {
 						/>
 					</div>
 					<div className="col-span-8">
+						{person.about && (
+							<div className="w-full p-4 bg-white shadow rounded-lg mb-7">
+								<div className="flex items-center justify-between">
+									<h2 className="text-xl font-bold">About</h2>
+								</div>
+								<p className="line-clamp-3 text-base text-slate-600">
+									{person.about}
+								</p>
+							</div>
+						)}
+
 						{person.team_members.length > 0 && (
 							<ElemJobsList
 								heading="Experience"

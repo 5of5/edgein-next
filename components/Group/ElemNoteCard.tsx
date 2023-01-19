@@ -3,6 +3,7 @@ import useSWR from "swr";
 import moment from "moment-timezone";
 import { Notes } from "@/graphql/types";
 import { ElemPhoto } from "../ElemPhoto";
+import { ElemTooltip } from "@/components/ElemTooltip";
 import Link from "next/link";
 
 type Props = {
@@ -63,13 +64,23 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 							{resource?.name}
 						</h2>
 					</div>
-					{/* <p className="pt-2 text-sm text-slate-600">
-					Last edit {moment(data?.updated_at).format("LL h:mma")}
-				</p> */}
-					<p className="pt-2 text-sm text-slate-600">
-						Created {moment(data?.created_at).format("LL")}
-						{/* by author */}
-					</p>
+
+					<div className="pt-2 text-sm text-slate-600">
+						{/* {data?.created_by && data?.updated_by ? (
+							<ElemTooltip
+								content={`Edited by Redg Snodgrass ${moment(
+									data?.updated_at
+								).format("LL")}. Created by Ed Parsons December 10, 2022`}
+								className="cursor-pointer"
+								size="md"
+							>
+								Edited {moment(data?.updated_at).format("LL")}
+							</ElemTooltip>
+						) : (
+							<>Edited {moment(data?.updated_at).format("LL")}</>
+						)} */}
+						Edited {moment(data?.updated_at).format("LL")}
+					</div>
 				</div>
 			</div>
 		</Link>

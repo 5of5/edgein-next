@@ -1367,7 +1367,7 @@ export const IconX: React.FC<IconProps> = ({
 			stroke="currentColor"
 			strokeWidth={strokeWidth ? strokeWidth : 2}
 		>
-			<title>{title ? title : "Sign out"}</title>
+			<title>{title ? title : "Close"}</title>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
