@@ -11,7 +11,7 @@ const TermsOfService: NextPage<Props> = (props) => {
 			<div className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
 				<div className="mx-auto prose">
 					<h1 className="relative mx-auto text-4xl lg:text-5xl font-bold">
-						Data Access Terms
+						Terms of Service
 					</h1>
 					<ol className="list-inside pl-0 space-y-8">
 						<li>

@@ -14,6 +14,7 @@ const Contact: NextPage = () => {
 
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
+	const [company, setCompany] = useState("");
 	const [message, setMessage] = useState("");
 	const [formSent, setFormSent] = useState(false);
 
@@ -22,6 +23,7 @@ const Contact: NextPage = () => {
 		await submit({
 			name: name,
 			email: email,
+			company: company,
 			message: message,
 			_email: {
 				from: name,
@@ -79,13 +81,23 @@ const Contact: NextPage = () => {
 									</div>
 									<div className="group mb-2 sm:col-span-2">
 										<InputText
-											label="Work Email"
+											label="Business Email"
 											type="email"
 											name="email"
 											value={email}
 											onChange={(e) => setEmail(e.target.value)}
 											placeholder="example@email.com"
 											required
+										/>
+									</div>
+									<div className="group mb-2 sm:col-span-2">
+										<InputText
+											label="Company (Optional)"
+											type="text"
+											name="company"
+											value={company}
+											onChange={(e) => setCompany(e.target.value)}
+											placeholder=""
 										/>
 									</div>
 									<div className="group mb-2 sm:col-span-2">
@@ -108,6 +120,13 @@ const Contact: NextPage = () => {
 						)}
 					</div>
 				</div>
+			</div>
+
+			<div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
+				<h2 className="max-w-3xl font-bold text-center text-2xl lg:text-3xl">
+					Contact our PR team at{" "}
+					<a href="mailto:press@edgein.io">press@edgein.io</a>
+				</h2>
 			</div>
 		</div>
 	);
