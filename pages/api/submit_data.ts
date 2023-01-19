@@ -1,6 +1,5 @@
 import { Data_Partners } from "@/graphql/types";
-import { getListsByFollowResource, getUserByListId } from "@/utils/lists";
-import { insertNotification } from "@/utils/notifications";
+import { processNotification } from "@/utils/notifications";
 import {
 	partnerLookUp,
 	resourceIdLookup,
@@ -8,6 +7,7 @@ import {
 	insertResourceData,
 	mutateActionAndDataRaw,
 	ActionType,
+	getCompanyByRoundId,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -81,6 +81,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		const response = await insertResourceData(resourceType, resourceObj);
 		dataId = response?.id;
 		actionType = "Insert Data";
+
+		if (resourceType === "investment_rounds" || resourceType === "team_members") {
+			await processNotification(resourceObj?.company_id, "companies", actionType);
+		}
+
+		if (resourceType === "investors") {
+			await processNotification(resourceObj?.vc_firm_id, "vc_firms", actionType);
+		}
+
+		if (resourceType === "investments") {
+			if (resourceObj?.round_id) {
+				const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
+				await processNotification(investmentRound?.company_id, "companies", actionType);
+			}
+
+			await processNotification(resourceObj?.vc_firm_id, "vc_firms", actionType);
+		}
+	} else {
+		// updated exists one
+		if (resourceType === "companies" || resourceType === "vc_firms") {
+			/** Insert notification */
+			await processNotification(resourceId, resourceType, actionType);
+		}
 	}
 	const insertResult = await mutateActionAndDataRaw(
 		partnerId,
@@ -91,22 +114,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		resourceType,
 		actionType,
 	);
-
-	if (resourceType === "companies" || resourceType === "vc_firms") {
-		/** Insert notification */
-		const lists = await getListsByFollowResource(dataId, resourceType);
-		const targetUsers = await Promise.all(
-			lists.map(async (listItem: any) => getUserByListId(listItem?.list_id))
-		);
-		const notifications = await Promise.all(
-			targetUsers.map(async (targetUser: any) => insertNotification(
-				targetUser?.user_id,
-				actionType,
-				dataId,
-				resourceType,
-			))
-		);
-	}
 
 	res.send(insertResult);
 };

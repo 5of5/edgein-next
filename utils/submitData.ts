@@ -254,3 +254,22 @@ export const mutateActionAndDataRaw = async (
 
   return { id: resourceId, resources: invalidData.concat(insertResult) };
 };
+
+
+export const getCompanyByRoundId = async (round_id: number) => {
+  const {
+    data: { investment_rounds }
+  } = await query({
+    query: `
+      query findCompanyByRoundId($round_id: Int!) {
+        investment_rounds(where: {id: {_eq: $round_id}}) {
+          id
+          company_id
+        }
+      }
+    `,
+    variables: { round_id },
+  });
+  return investment_rounds[0];
+}
+

@@ -222,8 +222,9 @@ export const getUserByListId = async (listId: number) => {
     `,
     variables: { listId },
   });
-  return list_members[0];
+  return list_members;
 }
+
 export const findListMemberOne = async (list_id: number, user_id: number) => {
   const {
     data: { list_members },
