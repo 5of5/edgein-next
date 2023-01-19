@@ -176,6 +176,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 	const baseClasses = "flex space-x-2 py-1 px-2 rounded-md";
 
+	const upgrade = false;
+
 	return (
 		<section className={className}>
 			{heading && <h2 className="text-xl font-bold mb-2">{heading}</h2>}
@@ -232,8 +234,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						])}
 					</>
 				)}
-				{/* Emails with upgrade modal */}
-				{/* {emails?.length > 0 && (
+
+				{/* New */}
+				{upgrade && (
 					<>
 						{emails.map((_email, i: number) => [
 							<li
@@ -252,7 +255,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							</li>,
 						])}
 					</>
-				)} */}
+				)}
 			</ul>
 		</section>
 	);

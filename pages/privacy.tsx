@@ -43,13 +43,13 @@ const Privacy: NextPage<Props> = (props) => {
 						<Tab.Panels>
 							<Tab.Panel>
 								<p>
-									We’ve updated our governing terms to remove references to
+									We’ve updated our governing terms to remove references to{" "}
 									{theName}’s Privacy Shield Certification contained in our GDPR
 									Privacy Policy and Data Use Addendum, as {theName} adheres to
 									the Standard Contractual Clauses (as such term is defined in
 									our Data Use Addendum) in accordance with applicable laws.{" "}
 								</p>
-								<p>Effective Date: January 13, 2023</p>
+								<p>Effective Date: January 1, 2023</p>
 								<p>
 									At {theName}, we know you care about how your personal
 									information is used and shared, and we take your privacy
@@ -983,7 +983,7 @@ const Privacy: NextPage<Props> = (props) => {
 									defined in our Data Use Addendum) in accordance with
 									applicable laws.
 								</p>
-								<p>Effective Date: November 3rd, 2022</p>
+								<p>Effective Date: January 1, 2023</p>
 								<h2>European Residents</h2>
 								<p>
 									If you are a resident of the European Union

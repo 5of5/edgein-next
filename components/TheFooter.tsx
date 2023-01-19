@@ -16,6 +16,7 @@ export const TheFooter = () => {
 		],
 		resources: [
 			{ name: "Contact", href: "/contact" },
+			{ name: "Support", href: "/support" },
 			{ name: "Press", href: "mailto:press@edgein.io" },
 		],
 		legal: [

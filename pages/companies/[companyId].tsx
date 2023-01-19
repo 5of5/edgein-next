@@ -415,31 +415,38 @@ const Company: NextPage<Props> = (props: Props) => {
 														</span>
 
 														<div className="mb-4">
-															<div className="inline font-bold">
+															<div className="inline leading-7 text-slate-600">
 																{activity.round === "Acquisition" ? (
-																	<>Acquired by </>
+																	<div className="inline font-bold">
+																		Acquired by{" "}
+																	</div>
 																) : (
 																	<>
-																		Raised{" "}
-																		{activity.amount ? (
-																			<div className="inline text-green-600">
-																				${convertToIntNum(activity.amount)}
-																			</div>
-																		) : (
-																			<div className="inline text-green-600">
-																				undisclosed capital
-																			</div>
-																		)}{" "}
-																		{activity.valuation && (
-																			<div className="inline">
-																				at{" "}
+																		<div className="inline font-bold">
+																			Raised{" "}
+																			{activity.amount ? (
 																				<div className="inline text-green-600">
-																					${convertToIntNum(activity.valuation)}{" "}
+																					${convertToIntNum(activity.amount)}
 																				</div>
-																				valuation{" "}
-																			</div>
-																		)}
-																		from:{" "}
+																			) : (
+																				<div className="inline text-green-600">
+																					undisclosed capital
+																				</div>
+																			)}{" "}
+																			{activity.valuation && (
+																				<div className="inline">
+																					at{" "}
+																					<div className="inline text-green-600">
+																						$
+																						{convertToIntNum(
+																							activity.valuation
+																						)}{" "}
+																					</div>
+																					valuation{" "}
+																				</div>
+																			)}
+																		</div>
+																		from{" "}
 																	</>
 																)}
 																{activity.investments.map(
@@ -456,7 +463,8 @@ const Company: NextPage<Props> = (props: Props) => {
 																					<Link
 																						href={`/investors/${item.vc_firm["slug"]}`}
 																					>
-																						<a className="text-primary-500 hover:bg-slate-200">
+																						<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+																							{/* <a className="text-primary-500 hover:bg-slate-200"> */}
 																							{item.vc_firm["name"]}
 																						</a>
 																					</Link>
@@ -467,7 +475,7 @@ const Company: NextPage<Props> = (props: Props) => {
 																					<Link
 																						href={`/people/${item.person["slug"]}`}
 																					>
-																						<a className="text-primary-500 hover:bg-slate-200">
+																						<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
 																							{item.person["name"]}
 																						</a>
 																					</Link>
