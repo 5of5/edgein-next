@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import moment from "moment-timezone";
 import toast, { Toaster } from "react-hot-toast";
+import { kebabCase } from "lodash";
 import { IconCustomList, IconSaveToList } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { getNameFromListName } from "@/utils/reaction";
+import Link from "next/link";
 import {
 	Lists,
 	List_Members_Bool_Exp,
@@ -43,11 +45,10 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 		)
 		.sort((a, b) => (a.name < b.name ? -1 : 1));
 
-	const listOptions =	differenceBy(customLists, lists, "id")
-	.map((item) => ({
+	const listOptions = differenceBy(customLists, lists, "id").map((item) => ({
 		id: item.id,
 		title: getNameFromListName(item),
-	}))
+	}));
 
 	const handleToggleFollow = async (listId: number) => {
 		const response = await fetch("/api/toggle_follow_list/", {
@@ -106,7 +107,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 				<div>
 					<h2 className="text-xl font-bold">{`Lists (${lists.length})`}</h2>
 				</div>
-				<ElemButton btn="slate" onClick={() => setIsOpenAddList(true)}>
+				<ElemButton btn="primary" onClick={() => setIsOpenAddList(true)}>
 					<IconSaveToList className="w-6 h-6 mr-1" />
 					<span>Add List</span>
 				</ElemButton>
@@ -119,18 +120,30 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 							(mem) => mem.list_id === item.id
 						);
 						const listItem = (
-							<li key={item.id} className="flex items-center justify-between">
-								<div className="flex items-center gap-x-4">
-									<IconCustomList className="w-6 h-6" />
-									<div>
-										<p className="font-bold">{getNameFromListName(item)}</p>
-										<p className="text-slate-500 text-sm">
-											{`Created by ${item.created_by?.display_name} ${moment(
-												item.created_at
-											).fromNow()}`}
-										</p>
-									</div>
-								</div>
+							<li
+								key={item.id}
+								className="flex items-center justify-between space-x-6"
+							>
+								<Link
+									href={`/lists/${item.id}/${kebabCase(
+										getNameFromListName(item)
+									)}`}
+								>
+									<a className="flex items-center grow space-x-4 group">
+										<IconCustomList className="w-6 h-6 group-hover:text-primary-500" />
+										<div>
+											<h3 className="font-bold group-hover:text-primary-500">
+												{getNameFromListName(item)}
+											</h3>
+
+											<p className="text-slate-500 text-sm">
+												{`Created by ${item.created_by?.display_name} ${moment(
+													item.created_at
+												).fromNow()}`}
+											</p>
+										</div>
+									</a>
+								</Link>
 								<ElemButton
 									btn={isFollowing ? "white" : "slate"}
 									className={`${
