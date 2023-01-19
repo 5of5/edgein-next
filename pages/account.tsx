@@ -247,7 +247,7 @@ export default function Account() {
 									arrow
 									className="mt-2 text-primary-500"
 								>
-									{user && user.billing_org_id ? (
+									{userProfile && userProfile.users_by_pk?.billing_org_id ? (
 										<span>Go To Billing</span>
 									) : (
 										<span>Checkout</span>
