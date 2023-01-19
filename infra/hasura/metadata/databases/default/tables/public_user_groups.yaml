@@ -46,5 +46,9 @@ select_permissions:
         - twitter
         - created_at
         - updated_at
-      filter: {}
+      filter:
+        user_group_members:
+          user_id:
+            _eq: X-Hasura-User-Id
+      limit: 50
       allow_aggregations: true

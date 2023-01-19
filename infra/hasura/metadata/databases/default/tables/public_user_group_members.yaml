@@ -15,5 +15,8 @@ select_permissions:
         - id
         - user_group_id
         - user_id
-      filter: {}
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      limit: 50
       allow_aggregations: true

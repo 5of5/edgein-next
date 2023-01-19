@@ -23,4 +23,5 @@ select_permissions:
         - user_id
         - member_type
       filter: {}
+      limit: 50
       allow_aggregations: true

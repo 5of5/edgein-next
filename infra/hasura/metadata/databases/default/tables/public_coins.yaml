@@ -29,12 +29,11 @@ select_permissions:
         - blockchain_id
         - company_id
         - id
-        - external_id
         - name
         - ticker
         - type
       filter: {}
-      allow_aggregations: true
+      limit: 50
   - role: user
     permission:
       columns:
@@ -50,9 +49,9 @@ select_permissions:
         - blockchain_id
         - company_id
         - id
-        - external_id
         - name
         - ticker
         - type
       filter: {}
+      limit: 50
       allow_aggregations: true

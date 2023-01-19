@@ -28,4 +28,5 @@ select_permissions:
         - list_id
         - user_group_id
       filter: {}
+      limit: 50
       allow_aggregations: true

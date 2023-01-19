@@ -58,7 +58,6 @@ select_permissions:
         - country
         - created_at
         - email
-        - external_id
         - facebook_url
         - github
         - id
@@ -75,7 +74,7 @@ select_permissions:
       filter:
         status:
           _eq: published
-      allow_aggregations: true
+      limit: 50
   - role: user
     permission:
       columns:
@@ -104,25 +103,27 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - id
-        - picture
         - about
         - city
         - country
-        - external_id
+        - created_at
+        - email
         - facebook_url
         - github
+        - id
         - linkedin
         - name
         - personal_email
+        - picture
         - slug
         - status
         - twitter_url
         - type
+        - updated_at
         - website_url
         - work_email
-        - created_at
-        - updated_at
-        - email
-      filter: {}
+      filter:
+        status:
+          _eq: published
+      limit: 50
       allow_aggregations: true

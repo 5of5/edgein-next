@@ -2,7 +2,7 @@ table:
   schema: public
   name: billing_org
 object_relationships:
-  - name: billing_org_id
+  - name: users
     using:
       manual_configuration:
         remote_table:
@@ -21,7 +21,7 @@ select_permissions:
         - status
         - user_limit
       filter:
-        billing_org_id:
+        users:
           id:
             _eq: X-Hasura-User-Id
       allow_aggregations: true

@@ -77,7 +77,6 @@ select_permissions:
         - created_at
         - date_added
         - discord
-        - external_id
         - facebook
         - geopoint
         - github
@@ -116,7 +115,7 @@ select_permissions:
       filter:
         status:
           _eq: published
-      allow_aggregations: true
+      limit: 50
   - role: user
     permission:
       columns:
@@ -162,7 +161,6 @@ select_permissions:
         - created_at
         - date_added
         - discord
-        - external_id
         - facebook
         - github
         - glassdoor
@@ -200,4 +198,4 @@ select_permissions:
       filter:
         status:
           _eq: published
-      allow_aggregations: true
+      limit: 50

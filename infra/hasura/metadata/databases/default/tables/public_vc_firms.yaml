@@ -45,24 +45,10 @@ insert_permissions:
         - website
       backend_only: false
 select_permissions:
-  - role: user
-    permission:
-      columns:
-        - id
-        - logo
-        - external_id
-        - linkedin
-        - name
-        - slug
-        - website
-      computed_fields:
-        - num_of_investments
-      filter: {}
-  - role: viewer
+  - role: api_viewer
     permission:
       columns:
         - created_at
-        - external_id
         - id
         - latest_investment
         - linkedin
@@ -83,4 +69,43 @@ select_permissions:
       filter:
         status:
           _eq: published
+      limit: 50
+  - role: user
+    permission:
+      columns:
+        - id
+        - logo
+        - external_id
+        - linkedin
+        - name
+        - slug
+        - website
+      computed_fields:
+        - num_of_investments
+      filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - created_at
+        - id
+        - latest_investment
+        - linkedin
+        - location
+        - logo
+        - name
+        - overview
+        - sentiment
+        - slug
+        - status_tags
+        - tags
+        - twitter
+        - updated_at
+        - website
+        - year_founded
+      computed_fields:
+        - num_of_investments
+      filter:
+        status:
+          _eq: published
+      limit: 50
       allow_aggregations: true

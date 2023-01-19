@@ -27,7 +27,6 @@ select_permissions:
     permission:
       columns:
         - amount
-        - external_id
         - id
         - person_id
         - round_id
@@ -35,6 +34,7 @@ select_permissions:
       filter:
         status:
           _eq: published
+      limit: 50
       allow_aggregations: true
   - role: user
     permission:
@@ -49,7 +49,6 @@ select_permissions:
     permission:
       columns:
         - amount
-        - external_id
         - id
         - person_id
         - round_id
@@ -57,4 +56,5 @@ select_permissions:
       filter:
         status:
           _eq: published
+      limit: 50
       allow_aggregations: true
