@@ -46,7 +46,7 @@ const InvestmentForm = ({ toolbar }: InvestmentFormProps) => {
         <AutocompleteInput
           className={inputClassName}
           style={{ padding: 0, border: "none" }}
-          optionText={(rec) => `${rec.company.name} ${rec.round}`}
+          optionText={(rec) => `${rec?.company?.name} ${rec?.round}`}
           filterToQuery={(search) => ({ "company#name@_ilike": search })}
           emptyValue={null}
         />
