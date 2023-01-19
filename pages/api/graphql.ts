@@ -10,7 +10,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!user) {
       return res.status(401).end()
     }
-    headers  = user.email.endsWith('@5of5.vc') || process.env.DEV_MODE ?
+    headers  = user.email.endsWith('@5of5.vc') || user.role === "admin" || process.env.DEV_MODE ?
     {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
       : 
     { Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}` }
