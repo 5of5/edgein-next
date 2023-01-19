@@ -7,6 +7,7 @@ import {
 	IconCustomList,
 	IconChevronDownMini,
 } from "@/components/Icons";
+import { ModalListGroups } from "./ModalListGroups";
 import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
 
 type Props = {
@@ -14,8 +15,10 @@ type Props = {
 	theListDescription?: string;
 	theListCreator?: string;
 	theListId: number;
+	groups: Array<any>;
 	onSaveListName: (name: string) => void;
 	onDeleteList: (id: number) => void;
+	onAddGroups: (ids: Array<number>) => void;
 };
 
 export const ModalListDetails: FC<Props> = ({
@@ -23,12 +26,15 @@ export const ModalListDetails: FC<Props> = ({
 	theListDescription,
 	theListCreator,
 	theListId,
+	groups,
 	onSaveListName,
 	onDeleteList,
+	onAddGroups,
 }) => {
 	const [listDetailsModal, setListDetailsModal] = useState(false);
 	const [listNameModal, setListNameModal] = useState(false);
 	const [listDeleteModal, setListDeleteModal] = useState(false);
+	const [listGroupsModal, setListGroupsModal] = useState(false);
 
 	const isOpen = () => {
 		setListDetailsModal(true);
@@ -73,7 +79,7 @@ export const ModalListDetails: FC<Props> = ({
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-lg transform rounded-2xl bg-slate-100 shadow-xl transition-all overflow-hidden">
+								<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
 									<div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
 										<h2 className="text-xl font-bold capitalize">
 											{theListName}
@@ -96,6 +102,32 @@ export const ModalListDetails: FC<Props> = ({
 												<div className="text-left">
 													<h3 className="font-bold">Name</h3>
 													<p className="capitalize">{theListName}</p>
+												</div>
+												<div className="text-primary-500 text-sm font-bold">
+													Edit
+												</div>
+											</button>
+
+											<button
+												className="flex justify-between w-full p-3 hover:bg-slate-100"
+												onClick={() => setListGroupsModal(true)}
+											>
+												<div className="text-left">
+													<h3 className="font-bold">Groups</h3>
+													{groups.length > 0 ? (
+														<div className="flex flex-wrap gap-2 mt-2">
+															{groups.map((item: any) => (
+																<p
+																	key={item.id}
+																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+																>
+																	{item.name}
+																</p>
+															))}
+														</div>
+													) : (
+														<p className="text-slate-500">Add list to group</p>
+													)}
 												</div>
 												<div className="text-primary-500 text-sm font-bold">
 													Edit
@@ -158,19 +190,26 @@ export const ModalListDetails: FC<Props> = ({
 			/>
 
 			<ElemDeleteConfirmModal
-        isOpen={listDeleteModal}
-        title="Delete this list?"
-        content={
-          <div>
+				isOpen={listDeleteModal}
+				title="Delete this list?"
+				content={
+					<div>
 						When you delete a list, everything in it will be removed
 						immediately.
 						<span className="font-bold inline">
 							This can&lsquo;t be undone.
 						</span>
 					</div>
-        }
-        onClose={() => setListDeleteModal(false)}
+				}
+				onClose={() => setListDeleteModal(false)}
 				onDelete={() => onDeleteList(theListId)}
+			/>
+
+			<ModalListGroups
+				isOpen={listGroupsModal}
+				onCloseModal={() => setListGroupsModal(false)}
+				listGroups={groups}
+				onSave={onAddGroups}
 			/>
 		</>
 	);

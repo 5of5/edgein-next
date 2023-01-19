@@ -74,7 +74,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									<span>Create Group</span>
 									<button
@@ -86,7 +86,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 									</button>
 								</Dialog.Title>
 								<div className="mt-2">
-									<p className="text-sm text-slate-500">
+									<p className="text-slate-500">
 										Groups are where your team or business partners communicate.
 										They&apos;re best when organized around a topic.
 									</p>
@@ -111,11 +111,9 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 											label="Description (Optional)"
 											value={values.description}
 											onChange={handleChange}
+											placeholder="What is the group about?"
 											className="ring-1 ring-slate-200"
 										/>
-										<div className="mt-2 text-sm text-slate-500">
-											What is the group about?
-										</div>
 									</label>
 								</div>
 

@@ -81,7 +81,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 					email: selectedPerson.work_email || selectedPerson.slug,
 					groupId: group.id,
 				}),
-			})
+			});
 			const apiResponse = await res.json();
 			if (!res.ok) {
 				throw apiResponse;
@@ -95,22 +95,16 @@ const ElemInviteDialog: React.FC<Props> = ({
 				if (member) {
 					onUpdateGroupData((prev: User_Groups) => ({
 						...prev,
-						user_group_members: [
-							...prev.user_group_members,
-							member,
-						],
+						user_group_members: [...prev.user_group_members, member],
 					}));
 				} else {
 					onUpdateGroupData((prev: User_Groups) => ({
 						...prev,
-						user_group_invites: [
-							...prev.user_group_invites,
-							invite,
-						],
+						user_group_invites: [...prev.user_group_invites, invite],
 					}));
 				}
 				const emailAddress =
-				selectedPerson.work_email || selectedPerson.personal_email;
+					selectedPerson.work_email || selectedPerson.personal_email;
 				if (emailAddress) {
 					onSendInvitationMail(
 						emailAddress,
@@ -162,7 +156,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-lg transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									{isSuccess ? (
 										<p className="text-2xl font-bold">Success</p>
@@ -243,13 +237,18 @@ const ElemInviteDialog: React.FC<Props> = ({
 															</div>
 															{validator.isEmail(query) && (
 																<Combobox.Option
-																	value={{ id: null, name: query, work_email: query }}
+																	value={{
+																		id: null,
+																		name: query,
+																		work_email: query,
+																	}}
 																	className="py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
 																>
-																	Send an invitation to email address <span className="font-bold">{query}</span>
+																	Send an invitation to email address{" "}
+																	<span className="font-bold">{query}</span>
 																</Combobox.Option>
 															)}
-													</div>
+														</div>
 													)}
 												</Combobox.Options>
 											</div>

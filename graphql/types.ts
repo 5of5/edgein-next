@@ -5829,7 +5829,7 @@ export type Investments_Variance_Order_By = {
 export type Investors = {
   __typename?: 'investors';
   created_at: Scalars['timestamptz'];
-  end_date: Maybe<Scalars['numeric']>;
+  end_date: Maybe<Scalars['date']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Scalars['Int'];
@@ -5837,7 +5837,7 @@ export type Investors = {
   person: Maybe<People>;
   person_id: Maybe<Scalars['Int']>;
   seniority: Maybe<Scalars['String']>;
-  start_date: Maybe<Scalars['numeric']>;
+  start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -5900,19 +5900,15 @@ export type Investors_Arr_Rel_Insert_Input = {
 /** aggregate avg on columns */
 export type Investors_Avg_Fields = {
   __typename?: 'investors_avg_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "investors" */
 export type Investors_Avg_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -5922,14 +5918,14 @@ export type Investors_Bool_Exp = {
   _not: InputMaybe<Investors_Bool_Exp>;
   _or: InputMaybe<Array<Investors_Bool_Exp>>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  end_date: InputMaybe<Numeric_Comparison_Exp>;
+  end_date: InputMaybe<Date_Comparison_Exp>;
   external_id: InputMaybe<String_Comparison_Exp>;
   function: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   person: InputMaybe<People_Bool_Exp>;
   person_id: InputMaybe<Int_Comparison_Exp>;
   seniority: InputMaybe<String_Comparison_Exp>;
-  start_date: InputMaybe<Numeric_Comparison_Exp>;
+  start_date: InputMaybe<Date_Comparison_Exp>;
   title: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
@@ -5948,24 +5944,22 @@ export enum Investors_Constraint {
 
 /** input type for incrementing numeric columns in table "investors" */
 export type Investors_Inc_Input = {
-  end_date: InputMaybe<Scalars['numeric']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
-  start_date: InputMaybe<Scalars['numeric']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "investors" */
 export type Investors_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  end_date: InputMaybe<Scalars['numeric']>;
+  end_date: InputMaybe<Scalars['date']>;
   external_id: InputMaybe<Scalars['String']>;
   function: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   person: InputMaybe<People_Obj_Rel_Insert_Input>;
   person_id: InputMaybe<Scalars['Int']>;
   seniority: InputMaybe<Scalars['String']>;
-  start_date: InputMaybe<Scalars['numeric']>;
+  start_date: InputMaybe<Scalars['date']>;
   title: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
@@ -5976,13 +5970,13 @@ export type Investors_Insert_Input = {
 export type Investors_Max_Fields = {
   __typename?: 'investors_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
-  end_date: Maybe<Scalars['numeric']>;
+  end_date: Maybe<Scalars['date']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
   seniority: Maybe<Scalars['String']>;
-  start_date: Maybe<Scalars['numeric']>;
+  start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -6007,13 +6001,13 @@ export type Investors_Max_Order_By = {
 export type Investors_Min_Fields = {
   __typename?: 'investors_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
-  end_date: Maybe<Scalars['numeric']>;
+  end_date: Maybe<Scalars['date']>;
   external_id: Maybe<Scalars['String']>;
   function: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
   seniority: Maybe<Scalars['String']>;
-  start_date: Maybe<Scalars['numeric']>;
+  start_date: Maybe<Scalars['date']>;
   title: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -6101,13 +6095,13 @@ export enum Investors_Select_Column {
 /** input type for updating data in table "investors" */
 export type Investors_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
-  end_date: InputMaybe<Scalars['numeric']>;
+  end_date: InputMaybe<Scalars['date']>;
   external_id: InputMaybe<Scalars['String']>;
   function: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   person_id: InputMaybe<Scalars['Int']>;
   seniority: InputMaybe<Scalars['String']>;
-  start_date: InputMaybe<Scalars['numeric']>;
+  start_date: InputMaybe<Scalars['date']>;
   title: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
@@ -6116,76 +6110,60 @@ export type Investors_Set_Input = {
 /** aggregate stddev on columns */
 export type Investors_Stddev_Fields = {
   __typename?: 'investors_stddev_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "investors" */
 export type Investors_Stddev_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Investors_Stddev_Pop_Fields = {
   __typename?: 'investors_stddev_pop_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "investors" */
 export type Investors_Stddev_Pop_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Investors_Stddev_Samp_Fields = {
   __typename?: 'investors_stddev_samp_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "investors" */
 export type Investors_Stddev_Samp_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate sum on columns */
 export type Investors_Sum_Fields = {
   __typename?: 'investors_sum_fields';
-  end_date: Maybe<Scalars['numeric']>;
   id: Maybe<Scalars['Int']>;
   person_id: Maybe<Scalars['Int']>;
-  start_date: Maybe<Scalars['numeric']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "investors" */
 export type Investors_Sum_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -6218,57 +6196,45 @@ export enum Investors_Update_Column {
 /** aggregate var_pop on columns */
 export type Investors_Var_Pop_Fields = {
   __typename?: 'investors_var_pop_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "investors" */
 export type Investors_Var_Pop_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate var_samp on columns */
 export type Investors_Var_Samp_Fields = {
   __typename?: 'investors_var_samp_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "investors" */
 export type Investors_Var_Samp_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** aggregate variance on columns */
 export type Investors_Variance_Fields = {
   __typename?: 'investors_variance_fields';
-  end_date: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   person_id: Maybe<Scalars['Float']>;
-  start_date: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "investors" */
 export type Investors_Variance_Order_By = {
-  end_date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
-  start_date: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -6836,6 +6802,9 @@ export type List_User_Groups_Variance_Fields = {
 /** columns and relationships of "lists" */
 export type Lists = {
   __typename?: 'lists';
+  created_at: Maybe<Scalars['timestamptz']>;
+  /** An object relationship */
+  created_by: Maybe<Users>;
   created_by_id: Scalars['Int'];
   /** An array relationship */
   follows_companies: Array<Follows_Companies>;
@@ -6933,6 +6902,8 @@ export type Lists_Bool_Exp = {
   _and: InputMaybe<Array<Lists_Bool_Exp>>;
   _not: InputMaybe<Lists_Bool_Exp>;
   _or: InputMaybe<Array<Lists_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by: InputMaybe<Users_Bool_Exp>;
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
@@ -6957,6 +6928,8 @@ export type Lists_Inc_Input = {
 
 /** input type for inserting data into table "lists" */
 export type Lists_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Arr_Rel_Insert_Input>;
@@ -6967,6 +6940,7 @@ export type Lists_Insert_Input = {
 /** aggregate max on columns */
 export type Lists_Max_Fields = {
   __typename?: 'lists_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
@@ -6975,6 +6949,7 @@ export type Lists_Max_Fields = {
 /** aggregate min on columns */
 export type Lists_Min_Fields = {
   __typename?: 'lists_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
@@ -7005,6 +6980,8 @@ export type Lists_On_Conflict = {
 
 /** Ordering options when selecting data from "lists". */
 export type Lists_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by: InputMaybe<Users_Order_By>;
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   follows_vcfirms_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Order_By>;
@@ -7021,6 +6998,8 @@ export type Lists_Pk_Columns_Input = {
 /** select columns of table "lists" */
 export enum Lists_Select_Column {
   /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
   CreatedById = 'created_by_id',
   /** column name */
   Id = 'id',
@@ -7030,6 +7009,7 @@ export enum Lists_Select_Column {
 
 /** input type for updating data in table "lists" */
 export type Lists_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
   created_by_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
@@ -7065,6 +7045,8 @@ export type Lists_Sum_Fields = {
 
 /** update columns of table "lists" */
 export enum Lists_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
   /** column name */
   CreatedById = 'created_by_id',
   /** column name */
@@ -16180,6 +16162,20 @@ export type GetGroupQueryVariables = Exact<{
 
 export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
+export type GetListUserGroupsQueryVariables = Exact<{
+  where: List_User_Groups_Bool_Exp;
+}>;
+
+
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+
+export type GetListMembersQueryVariables = Exact<{
+  where: List_Members_Bool_Exp;
+}>;
+
+
+export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
+
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
 }>;
@@ -16801,6 +16797,92 @@ useGetGroupQuery.getKey = (variables: GetGroupQueryVariables) => ['GetGroup', va
 ;
 
 useGetGroupQuery.fetcher = (variables: GetGroupQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupQuery, GetGroupQueryVariables>(GetGroupDocument, variables, options);
+export const GetListUserGroupsDocument = `
+    query GetListUserGroups($where: list_user_groups_bool_exp!) {
+  list_user_groups(where: $where) {
+    id
+    list_id
+    list {
+      id
+      name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useGetListUserGroupsQuery = <
+      TData = GetListUserGroupsQuery,
+      TError = Error
+    >(
+      variables: GetListUserGroupsQueryVariables,
+      options?: UseQueryOptions<GetListUserGroupsQuery, TError, TData>
+    ) =>
+    useQuery<GetListUserGroupsQuery, TError, TData>(
+      ['GetListUserGroups', variables],
+      fetcher<GetListUserGroupsQuery, GetListUserGroupsQueryVariables>(GetListUserGroupsDocument, variables),
+      options
+    );
+useGetListUserGroupsQuery.document = GetListUserGroupsDocument;
+
+
+useGetListUserGroupsQuery.getKey = (variables: GetListUserGroupsQueryVariables) => ['GetListUserGroups', variables];
+;
+
+useGetListUserGroupsQuery.fetcher = (variables: GetListUserGroupsQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsQuery, GetListUserGroupsQueryVariables>(GetListUserGroupsDocument, variables, options);
+export const GetListMembersDocument = `
+    query GetListMembers($where: list_members_bool_exp!) {
+  list_members(where: $where) {
+    id
+    member_type
+    list_id
+    list {
+      id
+      name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
+    }
+  }
+}
+    `;
+export const useGetListMembersQuery = <
+      TData = GetListMembersQuery,
+      TError = Error
+    >(
+      variables: GetListMembersQueryVariables,
+      options?: UseQueryOptions<GetListMembersQuery, TError, TData>
+    ) =>
+    useQuery<GetListMembersQuery, TError, TData>(
+      ['GetListMembers', variables],
+      fetcher<GetListMembersQuery, GetListMembersQueryVariables>(GetListMembersDocument, variables),
+      options
+    );
+useGetListMembersQuery.document = GetListMembersDocument;
+
+
+useGetListMembersQuery.getKey = (variables: GetListMembersQueryVariables) => ['GetListMembers', variables];
+;
+
+useGetListMembersQuery.fetcher = (variables: GetListMembersQueryVariables, options?: RequestInit['headers']) => fetcher<GetListMembersQuery, GetListMembersQueryVariables>(GetListMembersDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {

@@ -1,5 +1,5 @@
-import React, { MutableRefObject, useRef, useEffect } from "react";
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import React, { MutableRefObject, useRef, useEffect, useState } from "react";
+import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
@@ -16,6 +16,7 @@ import {
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
+import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 
 type Props = {
 	person: People;
@@ -27,9 +28,8 @@ const Person: NextPage<Props> = (props) => {
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	const goBack = () => router.back();
-
 	const person = props.person;
+	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
 	useEffect(() => {
 		if (person) {
@@ -42,37 +42,35 @@ const Person: NextPage<Props> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
 
-	if (!person) {
-		return <h1>Not Found</h1>;
-	}
+	const personEmails = [
+		...(person.work_email ? [person.work_email] : []),
+		...(person.personal_email ? [person.personal_email] : []),
+	];
 
-	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+	const tabBarItems = [
+		{ name: "Overview", ref: overviewRef },
+		...(sortedInvestmentRounds.length > 0
+			? [
+					{
+						name: "Investments",
+						ref: investmentRef,
+					},
+			  ]
+			: []),
+	];
 
-	let personEmails: string[] = [];
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
-	if (person.work_email) {
-		personEmails.push(person.work_email);
-	}
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	};
 
-	if (person.personal_email) {
-		personEmails.push(person.personal_email);
-	}
-
-	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
-	if (sortedInvestmentRounds.length > 0) {
-		tabBarItems.push({
-			name: "Investments",
-			ref: investmentRef,
-		});
-	}
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
 
 	return (
 		<div className="relative">
-			{/* <div onClick={goBack}>
-				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
-				Back
-				</ElemButton>
-				</div> */}
 			<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
@@ -123,6 +121,7 @@ const Person: NextPage<Props> = (props) => {
 							linkedIn={person.linkedin}
 							investmentsLength={person.investments?.length}
 							emails={personEmails}
+							onOpenUpgradeDialog={onOpenUpgradeDialog}
 							github={person.github}
 							twitter={person.twitter_url}
 							location={person.city}
@@ -168,30 +167,14 @@ const Person: NextPage<Props> = (props) => {
 					</div>
 				)}
 			</div>
+
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 		</div>
 	);
 };
-
-// export async function getStaticPaths() {
-// 	const { data: people } = await runGraphQl<GetPersonQuery>(`{
-//     people(
-// 			where: {slug: {_neq: ""}}, order_by: {slug: asc}
-//     ){
-//         id,
-//         name,
-//         slug,
-//       }
-//     }`);
-
-// 	return {
-// 		paths: people?.people
-// 			?.filter((person) => person.slug)
-// 			.map((person) => ({
-// 				params: { personId: person.slug },
-// 			})),
-// 		fallback: true, // false or 'blocking'
-// 	};
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {

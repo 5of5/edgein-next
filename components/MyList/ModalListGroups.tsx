@@ -1,56 +1,58 @@
-import { FC, Fragment, useState, useEffect } from "react";
+import { FC, Fragment, useState, useEffect, useMemo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { InputText } from "@/components/InputText";
+import { ElemButton } from "@/components/ElemButton";
 import { IconX } from "@/components/Icons";
-import { ElemButton } from "../ElemButton";
+import { InputSelect } from "../InputSelect";
+import { useUser } from "@/context/userContext";
 
 type Props = {
 	isOpen: boolean;
-	loading?: boolean;
-	fieldName: string;
-	fieldValue?: string;
-	required?: boolean;
-	onClose: () => void;
-	onSave: (value: string) => void;
+	listGroups?: Array<any>;
+	onCloseModal: () => void;
+	onSave: (groupIds: Array<number>) => void;
 };
 
-const ElemEditDialog: FC<Props> = ({
+export const ModalListGroups: FC<Props> = ({
 	isOpen,
-	loading = false,
-	fieldName,
-	fieldValue,
-	required,
-	onClose,
+	listGroups = [],
+	onCloseModal,
 	onSave,
 }) => {
-	useEffect(() => {
-		setValue(fieldValue);
-		setError("");
-	}, [fieldValue]);
+	const { myGroups } = useUser();
 
-	const [value, setValue] = useState<string>();
+	const [selectedGroups, setSelectedGroups] = useState<Array<any>>([]);
 	const [error, setError] = useState<string | null>(null);
 
-	const onValidate = (value: string) => {
-		setValue(value);
-		if (required && !value) {
-			setError(`${fieldName} is required.`);
-		} else {
-			setError("");
-		}
-	};
+	const groupOptions = useMemo(() => {
+		return myGroups.map((item) => ({
+			id: item.id,
+			title: item.name,
+		}));
+	}, [myGroups]);
+
+	useEffect(() => {
+		setSelectedGroups(
+			listGroups.map((item) => ({
+				id: item.id,
+				title: item.name,
+			}))
+		);
+		setError("");
+	}, [listGroups]);
 
 	const onSaveBtn = () => {
 		if (error) {
 			return;
 		}
 
-		onSave(value || "");
+		const groupIds = selectedGroups.map((item: any) => item.id);
+		onSave(groupIds);
+		onCloseModal();
 	};
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
-			<Dialog as="div" className="relative z-40" onClose={onClose}>
+			<Dialog as="div" className="relative z-10" onClose={onCloseModal}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
@@ -74,13 +76,13 @@ const ElemEditDialog: FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-md transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
-								<div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
+							<Dialog.Panel className="w-full max-w-md transform rounded-lg bg-slate-100 shadow-xl transition-all">
+								<div className="flex items-center justify-between px-6 py-2 bg-white rounded-t-2xl border-b border-black/10">
 									<h2 className="text-xl font-bold capitalize">
-										{`Edit ${fieldName}`}
+										Edit List Groups
 									</h2>
 									<button
-										onClick={onClose}
+										onClick={onCloseModal}
 										type="button"
 										className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
 									>
@@ -89,16 +91,16 @@ const ElemEditDialog: FC<Props> = ({
 								</div>
 								<div className="p-6 flex flex-col gap-y-6">
 									<div>
-										<InputText
-											onChange={(event) => onValidate(event?.target.value)}
-											name="name"
-											type="text"
-											value={value}
-											className={`${
-												error === ""
-													? "ring-1 ring-slate-200"
-													: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
-											}`}
+										<InputSelect
+											className="w-full"
+											buttonClasses="w-full"
+											dropdownClasses="w-full"
+											multiple
+											by="id"
+											value={selectedGroups}
+											onChange={setSelectedGroups}
+											options={groupOptions}
+											placeholder="Add list to group"
 										/>
 										{error === "" ? null : (
 											<div className="mt-2 font-bold text-sm text-rose-400">
@@ -106,17 +108,11 @@ const ElemEditDialog: FC<Props> = ({
 											</div>
 										)}
 									</div>
-									<div className="flex justify-end gap-x-4">
-										<ElemButton onClick={onClose} roundedFull btn="slate">
+									<div className="flex justify-end gap-x-6">
+										<ElemButton onClick={onCloseModal} roundedFull btn="slate">
 											Cancel
 										</ElemButton>
-										<ElemButton
-											onClick={onSaveBtn}
-											roundedFull
-											btn="primary"
-											loading={loading}
-											disabled={!!error}
-										>
+										<ElemButton onClick={onSaveBtn} roundedFull btn="primary">
 											Save
 										</ElemButton>
 									</div>
@@ -129,5 +125,3 @@ const ElemEditDialog: FC<Props> = ({
 		</Transition>
 	);
 };
-
-export default ElemEditDialog;
