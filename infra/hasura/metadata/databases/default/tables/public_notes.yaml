@@ -17,6 +17,10 @@ select_permissions:
         - resource_type
         - created_at
         - updated_at
-      filter: {}
+      filter:
+        user_group:
+          user_group_members:
+            user_id:
+              _eq: X-Hasura-User-Id
       limit: 50
       allow_aggregations: true
