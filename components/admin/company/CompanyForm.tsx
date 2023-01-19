@@ -159,7 +159,6 @@ const CompanyForm = ({
 
         <TextInput
           className={inputClassName}
-          defaultValue={null}
           source="date_added"
           placeholder="YYYY-MM-DD"
           label="Date Added YYYY-MM-DD"
