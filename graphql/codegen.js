@@ -17,7 +17,7 @@ const reactQueryConfig = {
 module.exports = {
     schema: [
         {
-            [process.env.GRAPHQL_ENDPOINT_ADMIN]: {
+            'http://localhost:8080/v1/graphql': {
                 headers: {
                     'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET,
                 },

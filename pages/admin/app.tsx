@@ -72,7 +72,6 @@ import {
 } from "../../components/admin/dataPartner";
 import { useAuth } from "../../hooks/useAuth";
 import { getUpdatedDiff } from "@/utils/helpers";
-import { onSubmitData } from "@/utils/submitData";
 
 const MyLogin = () => {
   useEffect(() => {
@@ -225,7 +224,7 @@ const AdminApp = () => {
   useEffect(() => {
     const buildDataProvider = async () => {
       const myClientWithAuth = new ApolloClient({
-        uri: "/api/graphql/",
+        uri: "/api/graphql",
         cache: new InMemoryCache(),
       });
       const dataProvider = await buildHasuraProvider(
@@ -250,18 +249,10 @@ const AdminApp = () => {
             ...metadata,
           };
         },
-        create: (type, obj) => {
-          if (["disabled_emails", "users"].includes(type)) {
-            return dataProvider.create(type, nullInputTransform(type, obj));
-          }
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
-        update: (type, obj) => {
-          if (["disabled_emails", "users"].includes(type)) {
-            return dataProvider.create(type, nullInputTransform(type, obj));
-          }
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
+        create: (type, obj) =>
+          dataProvider.create(type, nullInputTransform(type, obj)),
+        update: (type, obj) =>
+          dataProvider.update(type, nullInputTransform(type, obj)),
       });
     };
     buildDataProvider();
