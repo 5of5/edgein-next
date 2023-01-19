@@ -186,6 +186,14 @@ export const insertResourceData = async (
   return data?.[`insert_${resourceType}_one`];
 };
 
+const notInsertValueType = (value: any) =>
+  value === "" ||
+  value === null ||
+  (value &&
+    Object.keys(value).length === 0 &&
+    Object.getPrototypeOf(value) === Object.prototype) ||
+  (value && Array.isArray(value) && value.length === 0);
+
 export const mutateActionAndDataRaw = async (
   partnerId: number,
   userId: number,
@@ -202,35 +210,40 @@ export const mutateActionAndDataRaw = async (
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
-    let dataField: Data_Fields = await fieldLookup(
-      `${fieldPathLookup}.${field}`
-    );
-    if (dataField === undefined)
-      invalidData.push({
-        resource: resourceType,
-        field,
-        message: "Invalid Field",
-      });
-    else {
-      setMainTableValues[field] = value;
-      validData.push({
-        created_at: currentTime,
-        partner: partnerId,
-        user_id: userId,
-        resource: resourceType,
-        resource_id: resourceId,
-        field,
-        value: value === null ? "" : value,
-        accuracy_weight: 1,
-      });
-
-      await insertActionDataChange(
-        actionType,
-        resourceId,
-        resourceType,
-        { [field]: value },
-        userId
+    if (
+      (actionType === "Insert Data" && !notInsertValueType(value)) ||
+      actionType === "Change Data"
+    ) {
+      let dataField: Data_Fields = await fieldLookup(
+        `${fieldPathLookup}.${field}`
       );
+      if (dataField === undefined)
+        invalidData.push({
+          resource: resourceType,
+          field,
+          message: "Invalid Field",
+        });
+      else {
+        setMainTableValues[field] = value;
+        validData.push({
+          created_at: currentTime,
+          partner: partnerId,
+          user_id: userId,
+          resource: resourceType,
+          resource_id: resourceId,
+          field,
+          value: value === null ? "" : value,
+          accuracy_weight: 1,
+        });
+
+        await insertActionDataChange(
+          actionType,
+          resourceId,
+          resourceType,
+          { [field]: value },
+          userId
+        );
+      }
     }
   }
 
