@@ -82,7 +82,7 @@ export const ElemShareMenu = ({ user, personSlug }: Props) => {
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
 				<Menu.Button as="div">
-					<ElemButton btn="white">
+					<ElemButton btn="primary-light">
 						<IconShare className="h-5 w-5 mr-1.5" aria-hidden="true" />
 						Share
 					</ElemButton>
