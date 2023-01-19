@@ -36,6 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ],
         metadata,
         mode: 'subscription',
+        subscription_data: {
+          trial_period_days: 14
+        },
         success_url: `${req.headers.origin}/account/?success=true`,
         cancel_url: `${req.headers.origin}/account/?canceled=true`,
       });
