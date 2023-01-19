@@ -27,7 +27,7 @@ export default function Account() {
 
 	const personSlug = userProfile?.users_by_pk?.person?.slug;
 
-	const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(true);
+	const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
 
 	const onOpenSubscribedDialog = () => {
 		setIsOpenSubscribedDialog(false);
@@ -306,12 +306,11 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
-
-					<ElemSubscribedDialog
-						isOpen={isOpenSubscribedDialog}
-						onClose={onCloseSubscribedDialog}
-					/>
 				</dl>
+				<ElemSubscribedDialog
+					isOpen={isOpenSubscribedDialog}
+					onClose={onCloseSubscribedDialog}
+				/>
 			</div>
 		</DashboardLayout>
 	);
