@@ -59,7 +59,7 @@ const UserProvider: React.FC<Props> = (props) => {
 		data: groups,
 		error: groupsError,
     refetch: refetchMyGroups,
-	} = useGetGroupsOfUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
+	} = useGetGroupsOfUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
 
   React.useEffect(() => {
 		clarity.init(CLARITY_ID);
@@ -69,14 +69,14 @@ const UserProvider: React.FC<Props> = (props) => {
     if (user) {
       try { 
         if (hotjar.identify) {
-          hotjar.identify(user.id, { name: startCase(user.display_name), email: user.email, role: user.role });
+          hotjar.identify(String(user.id), { name: startCase(user.display_name || ""), email: user.email, role: user.role });
         }
       } catch(e) {
            // hotjar not loaded
       }  
       try { 
-        identify(user.id, { 
-          displayName: startCase(user.display_name), 
+        identify(String(user.id), { 
+          displayName: startCase(user.display_name || ""), 
           email: user.email,
           role: user.role
         });        
@@ -86,10 +86,10 @@ const UserProvider: React.FC<Props> = (props) => {
       try { 
         shutdown()
         boot({
-          name: startCase(user.display_name), // Full name
+          name: startCase(user.display_name || ""), // Full name
           email: user.email, // Email address
           // created_at: user._createdAt // Signup date as a Unix timestamp    
-          userId: user.id, // User ID
+          userId: String(user.id), // User ID
           userHash: user.intercomUserHash // HMAC using SHA-256
         })
       } catch(e) {
@@ -117,7 +117,7 @@ const UserProvider: React.FC<Props> = (props) => {
 
   return (
     <Provider
-      value={{ user, loading, listAndFollows, myGroups, refetchMyGroups }}
+      value={{ user: user || null, loading, listAndFollows, myGroups, refetchMyGroups }}
     >
       {user && !user.email.endsWith("@edgein.io") ? (
         <FullStory org={FULLSTORY_ORG_ID} />
