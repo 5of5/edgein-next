@@ -2,7 +2,6 @@ import UserService from '../../utils/users'
 import auth0Library from '../../utils/auth0Library'
 import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { createHmac } from "crypto";
 import { User_Group_Invites } from '@/graphql/types';
 import GroupService from '@/utils/groups';
 
@@ -117,28 +116,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
     
-    const hmac = createHmac(
-      "sha256",
-      "vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
-    );
-    hmac.update(String(userData.id));
+    const userToken = UserService.createToken(userData, true)
 
     // Author a couple of cookies to persist a user's session
-    const token = await CookieService.createUserToken({
-      id: userData.id,
-      intercomUserHash: hmac.digest("hex"),
-      email: userData.email,
-      role: userData.role,
-      publicAddress: userData.external_id,
-      isFirstLogin: true,
-      billing_org_id: userData.billing_org_id,
-      display_name: userData.display_name,
-      auth0_linkedin_id: userData.auth0_linkedin_id,
-      auth0_user_pass_id: userData.auth0_user_pass_id,
-      profileName: userData.person?.name,
-      profilePicture: userData.person?.picture,
-      reference_id: userData.reference_id,
-    });
+    const token = await CookieService.createUserToken(userToken);
     CookieService.setTokenCookie(res, token);
 
     const userGroupInvites: Array<User_Group_Invites> = await GroupService.onFindUserGroupInvitesByEmail(email);

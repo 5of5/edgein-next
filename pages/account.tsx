@@ -12,7 +12,7 @@ import { ElemSubscribedDialog } from "@/components/ElemSubscribedDialog";
 const validator = require("validator");
 
 export default function Account() {
-	const { user, error, loading } = useAuth();
+	const { user, loadStripe, error, loading } = useAuth();
 
 	const { data: userProfile } = useGetUserProfileQuery({
 		id: user?.id || 0,
@@ -74,21 +74,7 @@ export default function Account() {
 	};
 
 	const onBillingClick = async () => {
-		try {
-			const response = await fetch("/api/stripe_load/", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			});
-			const json = await response.json();
-			if (json && json.success && json.redirect) {
-				window.location.href = json.redirect;
-			}
-		} catch (e) {
-			console.log(e);
-		}
+		loadStripe()
 	};
 
 	const callChangePassword = async () => {
@@ -280,10 +266,21 @@ export default function Account() {
 					{user?.email.includes("@edgein.io") && (
 						<EditSection heading="Subscription">
 							{userProfile && userProfile.users_by_pk?.billing_org_id ? (
-								<div className="flex items-center space-x-1">
-									<IconSparkles className="h-6 w-6 text-primary-500" />
-									<p className="text-slate-600">EdgeIn Contributor</p>
-								</div>
+								<div>
+									<div className="flex items-center space-x-1">
+										<IconSparkles className="h-6 w-6 text-primary-500" />
+										<p className="text-slate-600">EdgeIn Contributor</p>
+									</div>
+									<div className="flex items-center space-x-1">
+									<ElemButton
+									onClick={onBillingClick}
+									btn="primary-light"
+									className="mt-2 text-primary-500"
+								>
+										<span>Manage</span>
+
+								</ElemButton>
+</div></div>
 							) : (
 								<div>
 									<h2 className="text-xl font-bold">

@@ -90,28 +90,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				);
 			}
 
-			const hmac = createHmac(
-				"sha256",
-				"vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
-			);
-			hmac.update(String(emailExist.id));
+			const userToken = UserService.createToken(emailExist, isFirstLogin)
 
 			// Author a couple of cookies to persist a user's session
-			const token = await CookieService.createUserToken({
-				id: emailExist.id,
-				intercomUserHash: hmac.digest("hex"),
-				email: emailExist.email,
-				role: emailExist.role,
-				publicAddress: emailExist.external_id,
-				isFirstLogin,
-				billing_org_id: emailExist.billing_org_id,
-				display_name: emailExist.display_name,
-				auth0_linkedin_id: emailExist.auth0_linkedin_id,
-				auth0_user_pass_id: emailExist.auth0_user_pass_id,
-				profileName: emailExist.person?.name,
-				profilePicture: emailExist.person?.picture,
-				reference_id: emailExist.reference_id,
-			});
+			const token = await CookieService.createUserToken(userToken)
 			CookieService.setTokenCookie(res, token);
 		}
 	} catch (ex: any) {

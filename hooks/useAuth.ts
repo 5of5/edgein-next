@@ -1,3 +1,4 @@
+import { User } from "@/models/User";
 import useSWR from "swr";
 import { useSWRConfig } from 'swr'
 
@@ -14,13 +15,33 @@ export function useClearAuth() {
   cache.delete('/api/user/')
 }
 
+const loadStripe = async () => {
+  try {
+    const response = await fetch("/api/stripe_load/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    if (json && json.success && json.redirect) {
+      window.location.href = json.redirect;
+    }
+  } catch (e) {
+    console.log(e);
+  }  
+}
+
+
 export function useAuth() {
-  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher, {revalidateOnFocus: false});
+  const { data: user, error, isValidating } = useSWR<User>("/api/user/", fetcher, {revalidateOnFocus: false});
   const loading = isValidating;
 
   return {
     user,
     loading,
     error,
+    loadStripe,
   };
 }

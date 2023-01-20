@@ -34,13 +34,14 @@ type Props = {
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
+	showEmails?: boolean; 
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
-	onOpenUpgradeDialog?: () => void;
+	onEmailClick?: () => void;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -54,7 +55,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	roles,
 	investmentsLength = 0,
 	emails = [],
-	onOpenUpgradeDialog,
+	showEmails,
+	onEmailClick,
 	linkedIn,
 	github,
 	careerPage,
@@ -238,15 +240,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				{/* New */}
 				{upgrade && (
 					<>
-						{emails.map((_email, i: number) => [
+						{emails.map((email, i: number) => [
 							<li
 								key={i}
-								onClick={onOpenUpgradeDialog}
+								onClick={onEmailClick}
 								className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
 							>
 								<div className="flex items-center">
 									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
-									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+									{showEmails ? email : <>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;</> }
 								</div>
 								<div className="flex items-center text-primary-500">
 									<IconEye className="h-5 w-5 shrink-0 mr-1" />

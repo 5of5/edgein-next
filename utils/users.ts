@@ -1,5 +1,6 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
 import { User } from '@/models/User';
+import { createHmac } from "crypto";
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const fetchQuery = `
@@ -465,6 +466,35 @@ async function findOneUserByPersonId(personId: number) {
   }
 }
 
+const createToken = (userData: any, isFirstLogin: boolean): User => {
+  const hmac = createHmac(
+    "sha256",
+    "vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
+  );
+  hmac.update(String(userData.id));
+
+  return {
+    id: userData.id,
+    intercomUserHash: hmac.digest("hex"),
+    email: userData.email,
+    role: userData.role,
+    isFirstLogin,
+    billing_org_id: userData.billing_org_id,
+    display_name: userData.display_name,
+    auth0_linkedin_id: userData.auth0_linkedin_id,
+    auth0_user_pass_id: userData.auth0_user_pass_id,
+    is_auth0_verified: userData.is_auth0_verified,
+    profileName: userData.person?.name,
+    profilePicture: userData.person?.picture,
+    reference_id: userData.reference_id,
+    reference_user_id: userData.reference_user_id,
+    additional_emails: userData.additional_emails,
+    entitlements: {
+      view_emails: true
+    }
+  };
+};
+
 const UserService = {
   queryForDisabledEmailCheck,
   queryForAllowedEmailCheck,
@@ -481,5 +511,6 @@ const UserService = {
   findOneUserByAdditionalEmail,
   findOnePeopleBySlug,
   findOneUserByPersonId,
+  createToken,
 };
 export default UserService;

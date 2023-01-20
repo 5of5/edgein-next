@@ -115,7 +115,7 @@ async function getUsage(token: string) {
   return usage
 }
 
-async function createUserToken(userData: {}) {
+async function createUserToken(userData: User) {
   return new SignJWT({ user: JSON.stringify(userData), ...hasuraClaims })
       .setProtectedHeader({ alg: 'HS256' })
       .setJti(nanoid())

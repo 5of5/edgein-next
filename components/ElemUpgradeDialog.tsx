@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { IconX } from "@/components/Icons";
 import { ElemLogo } from "@/components/ElemLogo";
 import { ElemButton } from "@/components/ElemButton";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	isOpen: boolean;
@@ -10,6 +11,8 @@ type Props = {
 };
 
 export const ElemUpgradeDialog: React.FC<Props> = ({ isOpen, onClose }) => {
+	const { loadStripe } = useAuth();
+	
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -62,7 +65,7 @@ export const ElemUpgradeDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 								</div>
 
 								<ElemButton
-									onClick={() => ({})}
+									onClick={() => (loadStripe())}
 									btn="primary"
 									className="mx-auto mt-6"
 								>
