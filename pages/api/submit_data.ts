@@ -82,7 +82,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 	const insertResult = await mutateActionAndDataRaw(
 		partnerId,
-		userId,
+		user,
 		NODE_NAME[resourceType],
 		dataId,
 		resourceObj,
