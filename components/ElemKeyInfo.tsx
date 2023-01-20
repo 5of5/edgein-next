@@ -178,7 +178,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 	const baseClasses = "flex space-x-2 py-1 px-2 rounded-md";
 
-	const upgrade = false;
+	const upgrade = true;
 
 	return (
 		<section className={className}>
@@ -221,7 +221,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				})}
 
 				{/* Old */}
-				{emails?.length > 0 && (
+				{!upgrade && emails?.length > 0 && (
 					<>
 						{emails.map((_email, i: number) => [
 							<li

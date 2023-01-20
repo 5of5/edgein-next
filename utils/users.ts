@@ -1,5 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { User } from '@/models/User';
+import { User, UserToken } from '@/models/User';
 import { createHmac } from "crypto";
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
@@ -135,7 +135,7 @@ async function findOneUserById(id: number) {
       query: fetchQuery,
       variables: { id }
     })
-    return data.data.users[0] as User & { billing_org?: { customer_id?: string}}
+    return data.data.users[0] as User
   } catch (ex) {
     throw ex;
   }
@@ -466,7 +466,7 @@ async function findOneUserByPersonId(personId: number) {
   }
 }
 
-const createToken = (userData: any, isFirstLogin: boolean): User => {
+const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac(
     "sha256",
     "vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
@@ -480,6 +480,7 @@ const createToken = (userData: any, isFirstLogin: boolean): User => {
     role: userData.role,
     isFirstLogin,
     billing_org_id: userData.billing_org_id,
+    billing_org: userData.billing_org,
     display_name: userData.display_name,
     auth0_linkedin_id: userData.auth0_linkedin_id,
     auth0_user_pass_id: userData.auth0_user_pass_id,
@@ -490,7 +491,7 @@ const createToken = (userData: any, isFirstLogin: boolean): User => {
     reference_user_id: userData.reference_user_id,
     additional_emails: userData.additional_emails,
     entitlements: {
-      view_emails: true
+      view_emails: Boolean(userData.billing_org_id),
     }
   };
 };

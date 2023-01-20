@@ -9,6 +9,9 @@ export type User = {
   auth0_linkedin_id?: string | null
   auth0_user_pass_id?: string | null
   billing_org_id?: string
+  billing_org?: { 
+    customer_id?: string
+  }
   person?: {
     name: string
     picture: any
@@ -21,4 +24,9 @@ export type User = {
   entitlements: {
     view_emails: boolean
   }
+}
+
+export type UserToken = User & {
+  isFirstLogin: boolean
+  intercomUserHash: string
 }

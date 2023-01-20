@@ -3,7 +3,6 @@ import UserService from "../../utils/users";
 import auth0Library from "../../utils/auth0Library";
 import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createHmac } from "crypto";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== "POST") return res.status(405).end();
