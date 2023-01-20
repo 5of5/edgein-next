@@ -53,7 +53,7 @@ const UserProvider: React.FC<Props> = (props) => {
 		data: listMemberships,
 		error: listAndFollowsError,
 		isLoading,
-	} = useGetFollowsByUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
+	} = useGetFollowsByUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
 
   const {
 		data: groups,
