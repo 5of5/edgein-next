@@ -151,8 +151,8 @@ export const TeamMemberEdit = () => {
     founder: false,
     function: "",
     seniority: "",
-    start_date: "",
-    end_date: "",
+    start_date: null,
+    end_date: null,
     title: "",
   });
 
@@ -180,8 +180,8 @@ export const TeamMemberEdit = () => {
       founder: false,
       function: "",
       seniority: "",
-      start_date: "",
-      end_date: "",
+      start_date: null,
+      end_date: null,
       title: "",
     });
   };
@@ -214,7 +214,10 @@ export const TeamMemberEdit = () => {
       } else {
         update("team_members", {
           id: currRecord.id,
-          data,
+          data: {
+            ...data,
+            id: currRecord?.id,
+          },
           previousData: currRecord,
         });
       }
