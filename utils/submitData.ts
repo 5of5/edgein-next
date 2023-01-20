@@ -158,7 +158,7 @@ export const onSubmitData = (type: string, transformInput: any) => {
     body: JSON.stringify({
       partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
       resource_type: type,
-      resource_identifier: transformInput.data.id,
+      resource_identifier: transformInput.id,
       identifier_column: "id",
       resource,
     }),

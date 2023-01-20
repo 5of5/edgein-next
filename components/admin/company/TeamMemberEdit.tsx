@@ -214,10 +214,7 @@ export const TeamMemberEdit = () => {
       } else {
         update("team_members", {
           id: currRecord.id,
-          data: {
-            ...data,
-            id: currRecord?.id,
-          },
+          data,
           previousData: currRecord,
         });
       }
