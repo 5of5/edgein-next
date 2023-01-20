@@ -2902,6 +2902,7 @@ export type Data_Fields = {
   regex_test: Maybe<Scalars['String']>;
   regex_transform: Maybe<Scalars['String']>;
   resource: Scalars['String'];
+  restricted_admin: Scalars['Boolean'];
   weight: Scalars['Int'];
 };
 
@@ -2953,6 +2954,7 @@ export type Data_Fields_Bool_Exp = {
   regex_test: InputMaybe<String_Comparison_Exp>;
   regex_transform: InputMaybe<String_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
+  restricted_admin: InputMaybe<Boolean_Comparison_Exp>;
   weight: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -2976,6 +2978,7 @@ export type Data_Fields_Insert_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3028,6 +3031,7 @@ export type Data_Fields_Order_By = {
   regex_test: InputMaybe<Order_By>;
   regex_transform: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
+  restricted_admin: InputMaybe<Order_By>;
   weight: InputMaybe<Order_By>;
 };
 
@@ -3053,6 +3057,8 @@ export enum Data_Fields_Select_Column {
   /** column name */
   Resource = 'resource',
   /** column name */
+  RestrictedAdmin = 'restricted_admin',
+  /** column name */
   Weight = 'weight'
 }
 
@@ -3065,6 +3071,7 @@ export type Data_Fields_Set_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3108,6 +3115,8 @@ export enum Data_Fields_Update_Column {
   RegexTransform = 'regex_transform',
   /** column name */
   Resource = 'resource',
+  /** column name */
+  RestrictedAdmin = 'restricted_admin',
   /** column name */
   Weight = 'weight'
 }
