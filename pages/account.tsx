@@ -252,7 +252,7 @@ export default function Account() {
 									btn="primary-light"
 									className="mt-2 text-primary-500"
 								>
-									{userProfile && userProfile.users_by_pk?.billing_org_id ? (
+									{userProfile?.users_by_pk?.billing_org_id ? (
 										<span>Go To Billing</span>
 									) : (
 										<span>Checkout</span>

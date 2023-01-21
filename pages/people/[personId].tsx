@@ -65,7 +65,7 @@ const Person: NextPage<Props> = (props) => {
 	const [showEmails, setShowEmails] = useState(false);
 
 	const onEmailClick = () => {
-		if (user?.entitlements?.view_emails) {
+		if (user?.entitlements?.viewEmails) {
 			setShowEmails(!showEmails);
 			// TODO add action
 		} else {
