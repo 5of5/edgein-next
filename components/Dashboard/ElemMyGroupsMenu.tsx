@@ -124,7 +124,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 							{ (myGroups.length > displayedGroups.length) && <li role="button">
 								<button
 									onClick={onOpenUpgradeDialog}
-									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 								>
 									<IconGroupPlus className="h-6 w-6" title="Create Group" />
 									<span>Unlock All Your Groups</span>

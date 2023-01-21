@@ -18,6 +18,14 @@ export function useAuth() {
     mutate("/api/user/")
   }
 
+  if (user && !user?.entitlements) {
+    user.entitlements = {
+      viewEmails: false,
+      listsCount: 10,
+      groupsCount: 3,
+    }
+  }
+
   return {
     user,
     loading,
