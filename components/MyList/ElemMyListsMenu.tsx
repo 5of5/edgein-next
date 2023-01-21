@@ -2,12 +2,11 @@ import { getNameFromListName } from "@/utils/reaction";
 import { find, kebabCase } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
 	IconCustomList,
 	IconPolygonDown,
-	IconEllipsisHorizontal,
-	IconPlus,
+	IconGroupPlus,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
@@ -19,7 +18,7 @@ type Props = {
 
 export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
-	const { listAndFollows: lists } = useUser();
+	const { listAndFollows: lists, user } = useUser();
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
@@ -48,8 +47,19 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		?.filter(
 			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
 		)
-		.sort((a, b) => (a.name < b.name ? -1 : 1));
+		.sort((a, b) => (a.name < b.name ? -1 : 1))
+	const displayedCustomLists = getCustomLists
+		.slice(0, user?.entitlements.listsCount ? user?.entitlements.listsCount : getCustomLists.length);
 
+		const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+		const onOpenUpgradeDialog = () => {
+			setIsOpenUpgradeDialog(true);
+		}
+		const onCloseUpgradeDialog = () => {
+			setIsOpenUpgradeDialog(false);
+		};
+	
 	return (
 		<div className={className}>
 			<Disclosure defaultOpen={true}>
@@ -124,7 +134,7 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</Link>
 							</li>
 
-							{getCustomLists?.map((list) => (
+							{displayedCustomLists?.map((list) => (
 								<li key={list.id} role="button">
 									<Link
 										href={`/lists/${list.id}/${kebabCase(
@@ -146,6 +156,15 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
+							{ (getCustomLists.length > displayedCustomLists.length) && <li role="button">
+								<button
+									onClick={onOpenUpgradeDialog}
+									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+								>
+									<IconGroupPlus className="h-6 w-6" title="Create Group" />
+									<span>Unlock All Your Lists</span>
+								</button>
+							</li> }
 						</Disclosure.Panel>
 					</>
 				)}

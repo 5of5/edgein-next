@@ -1,3 +1,10 @@
+export type Entitlements = {
+  viewEmails: boolean
+  listsCount?: number
+  groupsCount?: number
+}
+
+
 export type User = {
   id: number
   email: string
@@ -21,9 +28,7 @@ export type User = {
   additional_emails : string[]
   profilePicture: any
   profileName?: string
-  entitlements: {
-    view_emails: boolean
-  }
+  entitlements: Entitlements
 }
 
 export type UserToken = User & {

@@ -1,5 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { User, UserToken } from '@/models/User';
+import { Entitlements, User, UserToken } from '@/models/User';
 import { createHmac } from "crypto";
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {
@@ -473,6 +473,15 @@ const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
   );
   hmac.update(String(userData.id));
 
+  const entitlements: Entitlements = Boolean(userData.billing_org_id) ? {
+    viewEmails: true,
+    groupsCount: 5000,
+  } : {
+    viewEmails: false,
+    listsCount: 10,
+    groupsCount: 3,
+  }
+
   return {
     id: userData.id,
     intercomUserHash: hmac.digest("hex"),
@@ -490,9 +499,7 @@ const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
     reference_id: userData.reference_id,
     reference_user_id: userData.reference_user_id,
     additional_emails: userData.additional_emails,
-    entitlements: {
-      view_emails: Boolean(userData.billing_org_id),
-    }
+    entitlements
   };
 };
 
