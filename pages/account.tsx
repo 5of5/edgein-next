@@ -240,7 +240,7 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
-					{user?.email.includes("@edgein.io") && (
+					{false && user?.email.includes("@edgein.io") && (
 						<EditSection heading="Billing">
 							<div>
 								<p className="text-slate-600">
