@@ -240,30 +240,8 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
-					{false && user?.email.includes("@edgein.io") && (
-						<EditSection heading="Billing">
-							<div>
-								<p className="text-slate-600">
-									Manage your EdgeIn billing. (Currently: Only available for
-									edgein team member)
-								</p>
-								<ElemButton
-									onClick={onBillingClick}
-									btn="primary-light"
-									className="mt-2 text-primary-500"
-								>
-									{userProfile?.users_by_pk?.billing_org_id ? (
-										<span>Go To Billing</span>
-									) : (
-										<span>Checkout</span>
-									)}
-								</ElemButton>
-							</div>
-						</EditSection>
-					)}
 
-					{user?.email.includes("@edgein.io") && (
-						<EditSection heading="Subscription">
+					<EditSection heading="Subscription">
 							{userProfile && userProfile.users_by_pk?.billing_org_id ? (
 								<div>
 									<div className="flex items-center space-x-1">
@@ -301,7 +279,6 @@ export default function Account() {
 								</div>
 							)}
 						</EditSection>
-					)}
 				</dl>
 				<ElemSubscribedDialog
 					isOpen={isOpenSubscribedDialog}
