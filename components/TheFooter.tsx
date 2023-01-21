@@ -12,6 +12,7 @@ export const TheFooter = () => {
 		company: [
 			// { name: "About", href: "https://www.5of5.vc/about" },
 			{ name: "Team", href: "/team" },
+			{ name: "Pricing", href: "/pricing" },
 			{ name: "Brand Assets", href: "/brand-assets" },
 		],
 		resources: [
