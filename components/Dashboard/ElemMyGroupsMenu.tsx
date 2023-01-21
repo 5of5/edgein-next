@@ -7,10 +7,12 @@ import {
 	IconPlus,
 	IconPolygonDown,
 	IconEllipsisHorizontal,
+	IconInformationCircle,
 } from "@/components/Icons";
 import { Disclosure, Popover, Transition } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
+import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
 	className?: string;
@@ -42,14 +44,22 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between group">
-							<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
-								<IconPolygonDown
-									className={`${
-										open ? "rotate-0" : "-rotate-90 "
-									} h-6 w-6 transform transition-all`}
-								/>
-								<span className="text-xl font-bold">Groups</span>
-							</Disclosure.Button>
+							<div className="flex items-center">
+								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+									<IconPolygonDown
+										className={`${
+											open ? "rotate-0" : "-rotate-90 "
+										} h-6 w-6 transform transition-all`}
+									/>
+									<span className="text-xl font-bold">Groups</span>
+								</Disclosure.Button>
+								<ElemTooltip
+									content="Share your lists and notes with others."
+									className="ml-1"
+								>
+									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+								</ElemTooltip>
+							</div>
 							<div className="flex gap-x-1 transition-all opacity-0 group-hover:opacity-100">
 								{/*** TO DO: sort group */}
 								{/* {myGroups.length > 0 && (

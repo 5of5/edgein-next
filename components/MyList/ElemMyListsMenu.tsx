@@ -8,10 +8,12 @@ import {
 	IconPolygonDown,
 	IconEllipsisHorizontal,
 	IconPlus,
+	IconInformationCircle,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
 import { Disclosure } from "@headlessui/react";
+import { ElemTooltip } from "@/components/ElemTooltip";
 
 type Props = {
 	className?: string;
@@ -56,14 +58,22 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between">
-							<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
-								<IconPolygonDown
-									className={`${
-										open ? "rotate-0" : "-rotate-90 "
-									} h-6 w-6 transform transition-all`}
-								/>
-								<span className="text-xl font-bold">My Lists</span>
-							</Disclosure.Button>
+							<div className="flex items-center">
+								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+									<IconPolygonDown
+										className={`${
+											open ? "rotate-0" : "-rotate-90 "
+										} h-6 w-6 transform transition-all`}
+									/>
+									<span className="text-xl font-bold">My Lists</span>
+								</Disclosure.Button>
+								<ElemTooltip
+									content="Monitor organizations of your interest."
+									className="ml-1"
+								>
+									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+								</ElemTooltip>
+							</div>
 							<div className="flex gap-x-1">
 								{/* <button
 									onClick={() => {}}
