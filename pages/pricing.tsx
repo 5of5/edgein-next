@@ -4,10 +4,17 @@ import { ElemButton } from "@/components/ElemButton";
 import { FigureBlurredCircle } from "@/components/Figures";
 import { IconCheck, IconSparkles } from "@/components/Icons";
 import Image from "next/image";
+import { loadStripe } from "@/utils/stripe";
+import { useUser } from "@/context/userContext";
+import { Popups } from "@/components/TheNavbar";
 
-type Props = {};
+type Props = {
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
+};
 
-const Pricing: NextPage<Props> = () => {
+const Pricing: NextPage<Props> = ({ setShowPopup }) => {
+	const { user } = useUser();
+
 	const pricing = {
 		tiers: [
 			{
@@ -15,6 +22,11 @@ const Pricing: NextPage<Props> = () => {
 				price: 0,
 				//frequency: "/month",
 				//predescription: "No Cost - No Risk",
+				click: () => {
+					if (!user) {
+						setShowPopup("signup");
+					}
+				},
 				description:
 					"Signup today and get instant access to the largest community dataset in web3, exclusively on the EdgeIn platform.",
 				features: [
@@ -26,7 +38,7 @@ const Pricing: NextPage<Props> = () => {
 					"Create / Share up to 10 Lists",
 					"Create / Manage Groups with up to 3 members",
 				],
-				cta: "Sign up",
+				cta: user ? user.billing_org ? "" : "Current Plan" : "Sign up",
 				mostPopular: false,
 			},
 			{
@@ -34,6 +46,13 @@ const Pricing: NextPage<Props> = () => {
 				price: 15,
 				frequency: "/month",
 				//predescription: "Serious Business Player",
+				click: () => {
+					if (!user) {
+						setShowPopup("signup");
+					} else {
+						loadStripe()
+					}
+				},
 				description:
 					"As a contributor, you help support our free community data model. Get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in web3.",
 				features: [
@@ -48,7 +67,7 @@ const Pricing: NextPage<Props> = () => {
 					"Referral Link Activation",
 					"Personalized Daily Carousel **launching late 2023",
 				],
-				cta: "Free Trial",
+				cta: user ? user.billing_org ? "Current Plan" : "Free Trial" : "Free Trial",
 				mostPopular: true,
 			},
 		],
@@ -137,7 +156,7 @@ const Pricing: NextPage<Props> = () => {
 											<p className="mt-6">{tier.description}</p>
 											<div className="my-6">
 												<ElemButton
-													href={"#"}
+													onClick={tier.click}
 													className={`${
 														tier.mostPopular
 															? ""

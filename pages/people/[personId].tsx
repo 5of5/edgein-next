@@ -8,7 +8,6 @@ import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
 import {
-	GetCompaniesQuery,
 	GetPersonDocument,
 	GetPersonQuery,
 	Investment_Rounds,
@@ -18,6 +17,7 @@ import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
 import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	person: People;
@@ -28,6 +28,7 @@ const Person: NextPage<Props> = (props) => {
 	const router = useRouter();
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const { user } = useAuth();
 
 	const person = props.person;
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
@@ -61,11 +62,16 @@ const Person: NextPage<Props> = (props) => {
 	];
 
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+	const [showEmails, setShowEmails] = useState(false);
 
-	const onOpenUpgradeDialog = () => {
-		setIsOpenUpgradeDialog(true);
-	};
-
+	const onEmailClick = () => {
+		if (user?.entitlements?.viewEmails) {
+			setShowEmails(!showEmails);
+			// TODO add action
+		} else {
+			setIsOpenUpgradeDialog(true);
+		}
+	}
 	const onCloseUpgradeDialog = () => {
 		setIsOpenUpgradeDialog(false);
 	};
@@ -132,7 +138,8 @@ const Person: NextPage<Props> = (props) => {
 							linkedIn={person.linkedin}
 							investmentsLength={person.investments?.length}
 							emails={personEmails}
-							onOpenUpgradeDialog={onOpenUpgradeDialog}
+							onEmailClick={onEmailClick}
+							showEmails={showEmails}
 							github={person.github}
 							twitter={person.twitter_url}
 							location={person.city}

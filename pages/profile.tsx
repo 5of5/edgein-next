@@ -534,12 +534,15 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		return inviteLink;
 	};
 
+	const reference_id = user?.reference_id || ''
+	const display_name = user?.display_name
+
 	const onTelegram = () => {
 		window.open(
 			`https://telegram.me/share/url?url=${getInviteLink(
-				user.reference_id
+				reference_id
 			)}&text=${
-				user.display_name
+				display_name
 			} has invited you to join Edge In! Use the invite link to get started`,
 			"_blank"
 		);
@@ -548,9 +551,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const onSMS = () => {
 		window.open(
 			`sms:?&body=${
-				user.display_name
+				display_name
 			} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
-				user.reference_id
+				reference_id
 			)}`,
 			""
 		);
@@ -559,19 +562,19 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	const onEmail = () => {
 		window.open(
 			`mailto:?subject=${
-				user.display_name
+				display_name
 			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
 	        ${
-		user.display_name
+		display_name
 	} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
-				user.reference_id
+			reference_id
 			)}`,
 			""
 		);
 	};
 
 	const onCopy = () => {
-		navigator.clipboard.writeText(getInviteLink(user.reference_id));
+		navigator.clipboard.writeText(getInviteLink(reference_id));
 	};
 
 	return (

@@ -39,7 +39,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         subscription_data: {
           trial_period_days: 7
         },
-        success_url: `${req.headers.origin}/account/?success=true`,
+        success_url: `${req.headers.origin}/api/refresh_user/?redirect=/account/?success=true`,
         cancel_url: `${req.headers.origin}/account/?canceled=true`,
       });
       res.send({ success: true, redirect: session.url })

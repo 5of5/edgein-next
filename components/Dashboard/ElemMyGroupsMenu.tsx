@@ -1,4 +1,4 @@
-import { FC, Fragment, useState } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -6,12 +6,12 @@ import {
 	IconGroupPlus,
 	IconPlus,
 	IconPolygonDown,
-	IconEllipsisHorizontal,
 	IconInformationCircle,
 } from "@/components/Icons";
-import { Disclosure, Popover, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
+import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
@@ -20,7 +20,8 @@ type Props = {
 
 const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
-	const { myGroups } = useUser();
+	const { myGroups, user } = useUser();
+	const displayedGroups = myGroups.slice(0, user?.entitlements.groupsCount ? user?.entitlements.groupsCount : myGroups.length)
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
@@ -36,6 +37,15 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 
 	const onCloseCreateGroupDialog = () => {
 		setIsOpenCreateGroupDialog(false);
+	};
+
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	}
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
 	};
 
 	return (
@@ -106,7 +116,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 						</div>
 
 						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
-							{myGroups?.map((group) => (
+							{displayedGroups?.map((group) => (
 								<li key={group.id} role="button">
 									<Link href={`/groups/${group.id}/`}>
 										<a
@@ -120,6 +130,15 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
+							{ (myGroups.length > displayedGroups.length) && <li role="button">
+								<button
+									onClick={onOpenUpgradeDialog}
+									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+								>
+									<IconGroupPlus className="h-6 w-6" title="Create Group" />
+									<span>Unlock All Your Groups</span>
+								</button>
+							</li> }
 							<li role="button">
 								<button
 									onClick={onOpenCreateGroupDialog}
@@ -133,6 +152,11 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 					</>
 				)}
 			</Disclosure>
+
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 
 			<ElemCreateGroupDialog
 				isOpen={isOpenCreateGroupDialog}

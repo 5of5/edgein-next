@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useParams } from "react-router-dom";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { IconLinkedIn, IconSparkles } from "@/components/Icons";
@@ -8,11 +9,13 @@ import { ElemShareMenu } from "@/components/ElemShareMenu";
 import { EditSection } from "@/components/Dashboard/EditSection";
 import { useGetUserProfileQuery } from "@/graphql/types";
 import { ElemSubscribedDialog } from "@/components/ElemSubscribedDialog";
+import { loadStripe } from "@/utils/stripe";
 
 const validator = require("validator");
 
 export default function Account() {
-	const { user, error, loading } = useAuth();
+	const { user } = useAuth();
+	const { success } = useParams();
 
 	const { data: userProfile } = useGetUserProfileQuery({
 		id: user?.id || 0,
@@ -28,10 +31,6 @@ export default function Account() {
 	const personSlug = userProfile?.users_by_pk?.person?.slug;
 
 	const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
-
-	const onOpenSubscribedDialog = () => {
-		setIsOpenSubscribedDialog(false);
-	};
 
 	const onCloseSubscribedDialog = () => {
 		setIsOpenSubscribedDialog(false);
@@ -74,21 +73,7 @@ export default function Account() {
 	};
 
 	const onBillingClick = async () => {
-		try {
-			const response = await fetch("/api/stripe_load/", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			});
-			const json = await response.json();
-			if (json && json.success && json.redirect) {
-				window.location.href = json.redirect;
-			}
-		} catch (e) {
-			console.log(e);
-		}
+		loadStripe()
 	};
 
 	const callChangePassword = async () => {
@@ -255,35 +240,24 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
-					{user?.email.includes("@edgein.io") && (
-						<EditSection heading="Billing">
-							<div>
-								<p className="text-slate-600">
-									Manage your EdgeIn billing. (Currently: Only available for
-									edgein team member)
-								</p>
-								<ElemButton
+
+					<EditSection heading="Subscription">
+							{userProfile && userProfile.users_by_pk?.billing_org_id ? (
+								<div>
+									<div className="flex items-center space-x-1">
+										<IconSparkles className="h-6 w-6 text-primary-500" />
+										<p className="text-slate-600">EdgeIn Contributor</p>
+									</div>
+									<div className="flex items-center space-x-1">
+									<ElemButton
 									onClick={onBillingClick}
 									btn="primary-light"
 									className="mt-2 text-primary-500"
 								>
-									{userProfile && userProfile.users_by_pk?.billing_org_id ? (
-										<span>Go To Billing</span>
-									) : (
-										<span>Checkout</span>
-									)}
-								</ElemButton>
-							</div>
-						</EditSection>
-					)}
+										<span>Manage</span>
 
-					{user?.email.includes("@edgein.io") && (
-						<EditSection heading="Subscription">
-							{userProfile && userProfile.users_by_pk?.billing_org_id ? (
-								<div className="flex items-center space-x-1">
-									<IconSparkles className="h-6 w-6 text-primary-500" />
-									<p className="text-slate-600">EdgeIn Contributor</p>
-								</div>
+								</ElemButton>
+</div></div>
 							) : (
 								<div>
 									<h2 className="text-xl font-bold">
@@ -305,7 +279,6 @@ export default function Account() {
 								</div>
 							)}
 						</EditSection>
-					)}
 				</dl>
 				<ElemSubscribedDialog
 					isOpen={isOpenSubscribedDialog}
