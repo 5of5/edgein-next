@@ -84,7 +84,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 		{
 			question: "Can I try EdgeIn before I purchase a paid plan?",
 			answer:
-				"Yes, of course! We offer a 2-week FREE trial so you can decide which features work best for your workflow.",
+				"Yes, of course! We offer a FREE trial so you can decide which features work best for your workflow.",
 		},
 		{
 			question: "Will my monthly subscription be renewed automatically?",
