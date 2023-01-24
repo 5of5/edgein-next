@@ -20,6 +20,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 			{
 				title: "Community",
 				price: 0,
+				priceCents: null,
 				//frequency: "/month",
 				//predescription: "No Cost - No Risk",
 				click: () => {
@@ -38,19 +39,20 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 					"Create / Share up to 10 Lists",
 					"Create / Manage Groups with up to 3 members",
 				],
-				cta: user ? user.billing_org ? "" : "Current Plan" : "Sign up",
+				cta: user ? (user.billing_org ? "" : "Current Plan") : "Sign up",
 				mostPopular: false,
 			},
 			{
 				title: "Contributor",
-				price: 15,
+				price: 14,
+				priceCents: 99,
 				frequency: "/month",
 				//predescription: "Serious Business Player",
 				click: () => {
 					if (!user) {
 						setShowPopup("signup");
 					} else {
-						loadStripe()
+						loadStripe();
 					}
 				},
 				description:
@@ -65,9 +67,14 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 					"Create / Manage Groups with up to 5,000 members",
 					"Real-Time Notifications on Saved Companies, Projects and Investors in Lists",
 					"Referral Link Activation",
+					"View Emails on User Profiles",
 					"Personalized Daily Carousel **launching late 2023",
 				],
-				cta: user ? user.billing_org ? "Current Plan" : "Free Trial" : "Free Trial",
+				cta: user
+					? user.billing_org
+						? "Current Plan"
+						: "Free Trial"
+					: "Free Trial",
 				mostPopular: true,
 			},
 		],
@@ -145,6 +152,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 											</span>
 											{tier.price > 0 && (
 												<span className="ml-1 text-xl font-semibold">
+													{tier.priceCents ? "." + tier.priceCents : ""}
 													{tier.frequency}
 												</span>
 											)}
