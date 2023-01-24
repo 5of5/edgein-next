@@ -39,6 +39,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         subscription_data: {
           trial_period_days: 7
         },
+        allow_promotion_codes: true,
+        consent_collection: {
+          terms_of_service: "required",
+        },
         success_url: `${req.headers.origin}/api/refresh_user/?redirect=/account/?success=true`,
         cancel_url: `${req.headers.origin}/account/?canceled=true`,
       });
