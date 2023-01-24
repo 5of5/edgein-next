@@ -1,6 +1,7 @@
 import React from "react";
 import { Notes } from "@/graphql/types";
 import ElemNoteCard from "./ElemNoteCard";
+import Link from "next/link";
 
 type Props = {
 	notes: Array<Notes>;
@@ -12,7 +13,21 @@ export const ElemNotes: React.FC<Props> = ({ notes }) => {
 			<h2 className="text-xl font-bold">{`Notes (${notes.length})`}</h2>
 
 			{notes.length === 0 ? (
-				<p className="text-slate-500 mt-2">No notes found.</p>
+				<p className="text-slate-500 mt-2">
+					Add a note to a{" "}
+					<Link href="/companies" passHref>
+						<a className="font-bold hover:border-b hover:text-primary-500">
+							company
+						</a>
+					</Link>{" "}
+					or{" "}
+					<Link href="/investors" passHref>
+						<a className="font-bold hover:border-b hover:text-primary-500">
+							investor
+						</a>
+					</Link>{" "}
+					profile and share with the group.
+				</p>
 			) : (
 				<div className="grid grid-cols-1 gap-4 mt-2 sm:grid-cols-2 lg:grid-cols-3">
 					{notes.map((item) => (

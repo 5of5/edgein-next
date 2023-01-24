@@ -106,7 +106,9 @@ export const ElemLists: React.FC<Props> = ({ lists }) => {
 					})}
 				</ul>
 			) : (
-				<p className="text-slate-500 mt-2">No lists found.</p>
+				<p className="text-slate-500 mt-2">
+					Share any of your lists with the group.
+				</p>
 			)}
 		</div>
 	);
