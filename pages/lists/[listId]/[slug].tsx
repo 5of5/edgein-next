@@ -15,7 +15,7 @@ import {
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { find } from "lodash";
+import { find, startCase } from "lodash";
 import {
 	getNameFromListName,
 	getUserIdFromListCreator,
@@ -34,6 +34,7 @@ const MyList: NextPage<Props> = ({}) => {
 	);
 
 	const [isCustomList, setIsCustomList] = useState(false);
+	const [isFollowing, setIsFollowing] = useState(true);
 
 	// const [listNameModal, setListNameModal] = useState(false);
 
@@ -160,26 +161,30 @@ const MyList: NextPage<Props> = ({}) => {
 				id: parseInt((router.query.listId as string) || "0"),
 			});
 
-			if (setSelectedListName)
+			if (list) {
 				setSelectedListName(() => {
 					return list ? getNameFromListName(list) : "";
 				});
 
-			if (setTheListCreatorId)
 				setTheListCreatorId(() => {
 					return list ? getUserIdFromListCreator(list) : "";
 				});
 
-			if (setIsCustomList)
 				setIsCustomList(() => {
 					return list
 						? !["hot", "like", "crap"].includes(getNameFromListName(list))
 						: false;
 				});
+			} else {
+				setSelectedListName(startCase(router.query.slug as string))
+				setIsCustomList(true)
+				setIsFollowing(false)
+			}
 		}
 	}, [
 		lists,
 		router.query.listId,
+		router.query.slug,
 		setSelectedListName,
 		setTheListCreatorId,
 		setIsCustomList,
@@ -221,7 +226,8 @@ const MyList: NextPage<Props> = ({}) => {
 					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
 					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
 
-					{isCustomList ? (
+					{isCustomList ? 
+						isFollowing ? (
 						<>
 							<ModalListDetails
 								theListName={selectedListName ? selectedListName : ""}
@@ -233,8 +239,12 @@ const MyList: NextPage<Props> = ({}) => {
 								onDeleteList={onDeleteList}
 								onAddGroups={onAddGroups}
 							/>
-						</>
-					) : (
+						</>) : (
+							<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+								Previewing: {listNameTitle}
+							</h1>
+						)
+					: (
 						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
 							{listNameTitle}
 						</h1>
