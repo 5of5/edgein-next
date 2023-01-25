@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IconX } from "@/components/Icons";
 import { ElemLogo } from "@/components/ElemLogo";
@@ -8,9 +8,15 @@ import { loadStripe } from "@/utils/stripe";
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
+	title?: string;
 };
 
-export const ElemUpgradeDialog: React.FC<Props> = ({ isOpen, onClose }) => {
+export const ElemUpgradeDialog: React.FC<PropsWithChildren<Props>> = ({
+	isOpen,
+	onClose,
+	title,
+	children,
+}) => {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -52,18 +58,25 @@ export const ElemUpgradeDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 								</div>
 
 								<Dialog.Title className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-									Gain access to unlimited profile data with an EdgeIn trial
+									{title
+										? title
+										: "Gain access to unlimited data, lists, and groups with an EdgeIn trial"}
 								</Dialog.Title>
 
-								<div className="mt-4">
-									<p className="text-slate-600">
-										EdgeIn customers close deals faster thanks to real-time
-										updates on relevant companies, investors, people, and deals.
-									</p>
+								<div className="mt-4 text-slate-600">
+									{children ? (
+										children
+									) : (
+										<p className="text-slate-600">
+											EdgeIn customers close deals faster thanks to real-time
+											updates on relevant companies, investors, people, and
+											deals.
+										</p>
+									)}
 								</div>
 
 								<ElemButton
-									onClick={() => (loadStripe())}
+									onClick={() => loadStripe()}
 									btn="primary"
 									className="mx-auto mt-6"
 								>

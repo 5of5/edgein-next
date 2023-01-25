@@ -21,7 +21,12 @@ type Props = {
 const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { myGroups, user } = useUser();
-	const displayedGroups = myGroups.slice(0, user?.entitlements.groupsCount ? user?.entitlements.groupsCount : myGroups.length)
+	const displayedGroups = myGroups.slice(
+		0,
+		user?.entitlements.groupsCount
+			? user?.entitlements.groupsCount
+			: myGroups.length
+	);
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
@@ -43,7 +48,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 
 	const onOpenUpgradeDialog = () => {
 		setIsOpenUpgradeDialog(true);
-	}
+	};
 	const onCloseUpgradeDialog = () => {
 		setIsOpenUpgradeDialog(false);
 	};
@@ -106,12 +111,25 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 										</Transition>
 									</Popover>
 								)} */}
-								<button
-									onClick={onOpenCreateGroupDialog}
-									className="cursor-pointer rounded-md group px-1 m-0 transition-all hover:text-primary-500 hover:bg-slate-200"
-								>
-									<IconPlus className="h-5 w-5" title="Create Group" />
-								</button>
+
+								{myGroups.length > displayedGroups.length ? (
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="cursor-pointer rounded-md group px-1 m-0 transition-all hover:text-primary-500 hover:bg-slate-200"
+									>
+										<IconPlus
+											className="h-5 w-5"
+											title="Unlock All Your Groups"
+										/>
+									</button>
+								) : (
+									<button
+										onClick={onOpenCreateGroupDialog}
+										className="cursor-pointer rounded-md group px-1 m-0 transition-all hover:text-primary-500 hover:bg-slate-200"
+									>
+										<IconPlus className="h-5 w-5" title="Create Group" />
+									</button>
+								)}
 							</div>
 						</div>
 
@@ -130,24 +148,27 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
-							{ (myGroups.length > displayedGroups.length) && <li role="button">
-								<button
-									onClick={onOpenUpgradeDialog}
-									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-								>
-									<IconGroupPlus className="h-6 w-6" title="Create Group" />
-									<span>Unlock All Your Groups</span>
-								</button>
-							</li> }
-							<li role="button">
-								<button
-									onClick={onOpenCreateGroupDialog}
-									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-								>
-									<IconGroupPlus className="h-6 w-6" title="Create Group" />
-									<span>Create Group</span>
-								</button>
-							</li>
+							{myGroups.length > displayedGroups.length ? (
+								<li role="button">
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500"
+									>
+										<IconGroupPlus className="h-6 w-6" title="Create Group" />
+										<span>Unlock All Your Groups</span>
+									</button>
+								</li>
+							) : (
+								<li role="button">
+									<button
+										onClick={onOpenCreateGroupDialog}
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+									>
+										<IconGroupPlus className="h-6 w-6" title="Create Group" />
+										<span>Create Group</span>
+									</button>
+								</li>
+							)}
 						</Disclosure.Panel>
 					</>
 				)}

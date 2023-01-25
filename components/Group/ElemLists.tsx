@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import toast, { Toaster } from "react-hot-toast";
 import { kebabCase } from "lodash";
-import { IconCustomList, IconSaveToList } from "@/components/Icons";
+import { IconCustomList, IconListPlus } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { getNameFromListName } from "@/utils/reaction";
 import Link from "next/link";
@@ -108,7 +108,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 					<h2 className="text-xl font-bold">{`Lists (${lists.length})`}</h2>
 				</div>
 				<ElemButton btn="primary" onClick={() => setIsOpenAddList(true)}>
-					<IconSaveToList className="w-6 h-6 mr-1" />
+					<IconListPlus className="w-6 h-6 mr-1" />
 					<span>Add List</span>
 				</ElemButton>
 			</div>
