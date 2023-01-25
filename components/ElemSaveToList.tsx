@@ -199,7 +199,7 @@ export const ElemSaveToList: FC<Props> = ({
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none no-scrollbar">
+							<Dialog.Panel className="max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none no-scrollbar">
 								<div className="flex items-center justify-between px-3 py-1 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
 									<h2 className="text-lg font-bold text-white">Save to List</h2>
 
@@ -215,7 +215,7 @@ export const ElemSaveToList: FC<Props> = ({
 									</button>
 								</div>
 
-								<ul className="max-h-96 overflow-y-scroll no-scrollbar divide-y divide-slate-100">
+								<ul className="max-h-96 overflow-y-auto no-scrollbar divide-y divide-slate-100">
 									{listsData?.map((list) => {
 										const selected = isSelected(list);
 

@@ -74,7 +74,7 @@ export default function ForgotPasswordModal(props: Props) {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
+							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
 								<div className="max-w-md mx-auto w-full">
 									{isMailSent ? (
 										<>

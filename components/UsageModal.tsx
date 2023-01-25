@@ -72,7 +72,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-2xl w-full mx-auto rounded-lg bg-white shadow-2xl overflow-x-hidden overflow-y-scroll overscroll-y-none">
+							<Dialog.Panel className="max-w-2xl w-full mx-auto rounded-lg bg-white shadow-2xl overflow-x-hidden overflow-y-auto overscroll-y-none">
 								<div className="p-3 bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400 text-xl font-bold text-white text-center">
 									{`You ran run out of page views :(`}
 								</div>
