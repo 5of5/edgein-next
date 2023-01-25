@@ -73,7 +73,7 @@ export default function Account() {
 	};
 
 	const onBillingClick = async () => {
-		loadStripe()
+		loadStripe();
 	};
 
 	const callChangePassword = async () => {
@@ -242,43 +242,43 @@ export default function Account() {
 					)}
 
 					<EditSection heading="Subscription">
-							{userProfile && userProfile.users_by_pk?.billing_org_id ? (
-								<div>
-									<div className="flex items-center space-x-1">
-										<IconSparkles className="h-6 w-6 text-primary-500" />
-										<p className="text-slate-600">EdgeIn Contributor</p>
-									</div>
-									<div className="flex items-center space-x-1">
-									<ElemButton
-									onClick={onBillingClick}
-									btn="primary-light"
-									className="mt-2 text-primary-500"
-								>
-										<span>Manage</span>
-
-								</ElemButton>
-</div></div>
-							) : (
-								<div>
-									<h2 className="text-xl font-bold">
-										Try EdgeIn Contributor Free for 7 days
-									</h2>
-									<p className="text-slate-600">
-										Get real-time updates on the companies, people, deals and
-										events you’re most interested in, giving you an
-										unprecedented edge in web3.
-									</p>
+						{userProfile && userProfile.users_by_pk?.billing_org_id ? (
+							<div>
+								<div className="flex items-center space-x-1">
+									<IconSparkles className="h-6 w-6 text-primary-500" />
+									<p className="text-slate-600">EdgeIn Contributor</p>
+								</div>
+								<div className="flex items-center space-x-1">
 									<ElemButton
 										onClick={onBillingClick}
-										btn="primary"
-										arrow
-										className="mt-4 text-primary-500"
+										btn="primary-light"
+										className="mt-2 text-primary-500"
 									>
-										Start your free trial
+										<span>Manage</span>
 									</ElemButton>
 								</div>
-							)}
-						</EditSection>
+							</div>
+						) : (
+							<div>
+								<h2 className="text-xl font-bold">
+									Try EdgeIn Contributor free for 7 days
+								</h2>
+								<p className="text-slate-600">
+									Get real-time updates on the companies, people, deals and
+									events you’re most interested in, giving you an unprecedented
+									edge in Web3.
+								</p>
+								<ElemButton
+									onClick={onBillingClick}
+									btn="primary"
+									arrow
+									className="mt-4 text-primary-500"
+								>
+									Start your free trial
+								</ElemButton>
+							</div>
+						)}
+					</EditSection>
 				</dl>
 				<ElemSubscribedDialog
 					isOpen={isOpenSubscribedDialog}
