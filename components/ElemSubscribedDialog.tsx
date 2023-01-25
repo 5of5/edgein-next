@@ -1,16 +1,14 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX } from "@/components/Icons";
-import { ElemLogo } from "@/components/ElemLogo";
+import { IconX, IconCheck } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
-import { loadStripe } from "@/utils/stripe";
 
 type Props = {
 	isOpen: boolean;
 	onClose: () => void;
 };
 
-export const ElemUpgradeDialog: React.FC<Props> = ({ isOpen, onClose }) => {
+export const ElemSubscribedDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -37,38 +35,35 @@ export const ElemUpgradeDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-slate-100 p-6 shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-white p-6 shadow-xl transition-all">
 								<div className="flex justify-end items-center">
 									<button
 										type="button"
 										onClick={onClose}
 										className="focus-visible:outline-none"
 									>
-										<IconX className="h-6 w-6" />
+										<IconX className="h-6 w-6" title="close" />
 									</button>
 								</div>
-								<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-									<ElemLogo mode="icon" className="w-10 aspect-square" />
+
+								<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full bg-white shadow">
+									<IconCheck className="w-10 aspect-square text-primary-500" />
 								</div>
 
 								<Dialog.Title className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-									Gain access to unlimited profile data with an EdgeIn trial
+									Purchase Complete.
+									<br />
+									Welcome to EdgeIn Contributor!
 								</Dialog.Title>
 
-								<div className="mt-4">
+								<div className="mt-4 mb-8">
 									<p className="text-slate-600">
-										EdgeIn customers close deals faster thanks to real-time
-										updates on relevant companies, investors, people, and deals.
+										As a contributor, you help support our free community data
+										model. Get real-time updates on the companies, people, deals
+										and events you’re most interested in, giving you an
+										unprecedented edge in web3.
 									</p>
 								</div>
-
-								<ElemButton
-									onClick={() => (loadStripe())}
-									btn="primary"
-									className="mx-auto mt-6"
-								>
-									Start free trial
-								</ElemButton>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>

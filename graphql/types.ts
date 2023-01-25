@@ -2902,6 +2902,7 @@ export type Data_Fields = {
   regex_test: Maybe<Scalars['String']>;
   regex_transform: Maybe<Scalars['String']>;
   resource: Scalars['String'];
+  restricted_admin: Scalars['Boolean'];
   weight: Scalars['Int'];
 };
 
@@ -2953,6 +2954,7 @@ export type Data_Fields_Bool_Exp = {
   regex_test: InputMaybe<String_Comparison_Exp>;
   regex_transform: InputMaybe<String_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
+  restricted_admin: InputMaybe<Boolean_Comparison_Exp>;
   weight: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -2976,6 +2978,7 @@ export type Data_Fields_Insert_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3028,6 +3031,7 @@ export type Data_Fields_Order_By = {
   regex_test: InputMaybe<Order_By>;
   regex_transform: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
+  restricted_admin: InputMaybe<Order_By>;
   weight: InputMaybe<Order_By>;
 };
 
@@ -3053,6 +3057,8 @@ export enum Data_Fields_Select_Column {
   /** column name */
   Resource = 'resource',
   /** column name */
+  RestrictedAdmin = 'restricted_admin',
+  /** column name */
   Weight = 'weight'
 }
 
@@ -3065,6 +3071,7 @@ export type Data_Fields_Set_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3108,6 +3115,8 @@ export enum Data_Fields_Update_Column {
   RegexTransform = 'regex_transform',
   /** column name */
   Resource = 'resource',
+  /** column name */
+  RestrictedAdmin = 'restricted_admin',
   /** column name */
   Weight = 'weight'
 }
@@ -16205,7 +16214,7 @@ export type GetUserProfileQueryVariables = Exact<{
 }>;
 
 
-export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -17066,6 +17075,7 @@ export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
     id
+    billing_org_id
     organization_companies {
       id
       company {

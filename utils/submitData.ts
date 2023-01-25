@@ -1,6 +1,7 @@
 
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import { Data_Fields } from "@/graphql/types";
+import { User } from "@/models/User";
 import { getUpdatedDiff } from "./helpers";
 
 export type ActionType = "Insert Data" | "Change Data";
@@ -65,6 +66,7 @@ export const fieldLookup = async (path: string) => {
         description
         regex_test
 				is_valid_identifier
+        restricted_admin
       }
     }
     `,
@@ -156,7 +158,7 @@ export const onSubmitData = (type: string, transformInput: any) => {
     body: JSON.stringify({
       partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
       resource_type: type,
-      resource_identifier: transformInput.data.id,
+      resource_identifier: transformInput.id,
       identifier_column: "id",
       resource,
     }),
@@ -196,7 +198,7 @@ const notInsertValueType = (value: any) =>
 
 export const mutateActionAndDataRaw = async (
   partnerId: number,
-  userId: number,
+  user: User | null,
   fieldPathLookup: string,
   resourceId: number,
   resourceObj: Record<string, any>,
@@ -217,7 +219,7 @@ export const mutateActionAndDataRaw = async (
       let dataField: Data_Fields = await fieldLookup(
         `${fieldPathLookup}.${field}`
       );
-      if (dataField === undefined)
+      if (dataField === undefined || (dataField?.restricted_admin && user?.role !== "admin"))
         invalidData.push({
           resource: resourceType,
           field,
@@ -228,7 +230,7 @@ export const mutateActionAndDataRaw = async (
         validData.push({
           created_at: currentTime,
           partner: partnerId,
-          user_id: userId,
+          user_id: user?.id,
           resource: resourceType,
           resource_id: resourceId,
           field,
@@ -241,7 +243,7 @@ export const mutateActionAndDataRaw = async (
           resourceId,
           resourceType,
           { [field]: value },
-          userId
+          user?.id
         );
       }
     }

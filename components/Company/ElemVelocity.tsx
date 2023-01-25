@@ -5,9 +5,9 @@ import {
 	IconProps,
 	IconUsers,
 	IconCurrencyDollar,
-	IconQuestion,
 	IconArrowUp,
 	IconArrowDown,
+	IconInformationCircle,
 } from "@/components/Icons";
 
 type Props = {
@@ -52,14 +52,16 @@ export const ElemVelocity: React.FC<Props> = ({
 	return (
 		<section className={`${className} flex flex-col`}>
 			{heading && (
-				<div className="flex items-center space-x-2">
+				<div className="flex items-center space-x-1">
 					<h2 className="text-xl font-bold">{heading}</h2>
 					<ElemTooltip
-						className="bg-slate-200 rounded-full h-4 w-4 p-0.5"
 						size="md"
 						content="Velocity trends based on the last 3 months of LinkedIn employment data, as well as token exchange values from Binance and Coinbase."
 					>
-						<IconQuestion className="" title="What is Velocity?" />
+						<IconInformationCircle
+							className="h-5 w-5 text-primary-500"
+							title="What is Velocity?"
+						/>
 					</ElemTooltip>
 				</div>
 			)}

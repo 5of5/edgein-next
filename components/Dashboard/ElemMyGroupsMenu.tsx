@@ -1,4 +1,4 @@
-import { FC, Fragment, useState } from "react";
+import { FC, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import {
@@ -6,11 +6,13 @@ import {
 	IconGroupPlus,
 	IconPlus,
 	IconPolygonDown,
-	IconEllipsisHorizontal,
+	IconInformationCircle,
 } from "@/components/Icons";
-import { Disclosure, Popover, Transition } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
+import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
+import { ElemTooltip } from "../ElemTooltip";
 
 type Props = {
 	className?: string;
@@ -18,7 +20,8 @@ type Props = {
 
 const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
-	const { myGroups } = useUser();
+	const { myGroups, user } = useUser();
+	const displayedGroups = myGroups.slice(0, user?.entitlements.groupsCount ? user?.entitlements.groupsCount : myGroups.length)
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
@@ -36,20 +39,37 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 		setIsOpenCreateGroupDialog(false);
 	};
 
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	}
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
+
 	return (
 		<div className={className}>
 			<Disclosure defaultOpen={true}>
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between group">
-							<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
-								<IconPolygonDown
-									className={`${
-										open ? "rotate-0" : "-rotate-90 "
-									} h-6 w-6 transform transition-all`}
-								/>
-								<span className="text-xl font-bold">Groups</span>
-							</Disclosure.Button>
+							<div className="flex items-center">
+								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+									<IconPolygonDown
+										className={`${
+											open ? "rotate-0" : "-rotate-90 "
+										} h-6 w-6 transform transition-all`}
+									/>
+									<span className="text-xl font-bold">Groups</span>
+								</Disclosure.Button>
+								<ElemTooltip
+									content="Share your lists and notes with others."
+									className="ml-1"
+								>
+									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+								</ElemTooltip>
+							</div>
 							<div className="flex gap-x-1 transition-all opacity-0 group-hover:opacity-100">
 								{/*** TO DO: sort group */}
 								{/* {myGroups.length > 0 && (
@@ -96,7 +116,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 						</div>
 
 						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
-							{myGroups?.map((group) => (
+							{displayedGroups?.map((group) => (
 								<li key={group.id} role="button">
 									<Link href={`/groups/${group.id}/`}>
 										<a
@@ -110,6 +130,15 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
+							{ (myGroups.length > displayedGroups.length) && <li role="button">
+								<button
+									onClick={onOpenUpgradeDialog}
+									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+								>
+									<IconGroupPlus className="h-6 w-6" title="Create Group" />
+									<span>Unlock All Your Groups</span>
+								</button>
+							</li> }
 							<li role="button">
 								<button
 									onClick={onOpenCreateGroupDialog}
@@ -123,6 +152,11 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 					</>
 				)}
 			</Disclosure>
+
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 
 			<ElemCreateGroupDialog
 				isOpen={isOpenCreateGroupDialog}
