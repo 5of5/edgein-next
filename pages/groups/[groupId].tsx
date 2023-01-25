@@ -109,7 +109,9 @@ const Group: NextPage<Props> = (props: Props) => {
 			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
 			<div ref={listsRef}>
 				<ElemLists
+					group={groupData}
 					lists={lists?.list_user_groups?.map(item => item.list) as Array<Lists> || []}
+					refetchLists={refetchLists}
 				/>
 			</div>
 

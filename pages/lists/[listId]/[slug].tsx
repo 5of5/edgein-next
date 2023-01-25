@@ -119,7 +119,7 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onAddGroups = async (groupIds: Array<number>) => {
-		const res = await fetch('/api/add_list_to_groups/', {
+		const res = await fetch('/api/add_group_to_list/', {
 			method: "POST",
 			body: JSON.stringify({
 				listId: parseInt(router.query.listId as string),

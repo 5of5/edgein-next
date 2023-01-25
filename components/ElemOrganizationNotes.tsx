@@ -1,10 +1,16 @@
 import React, { useState, FC, useEffect } from "react";
 import moment from "moment-timezone";
-import { GetNotesQuery, Notes, Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
+import {
+	GetNotesQuery,
+	Notes,
+	Notes_Bool_Exp,
+	useGetNotesQuery,
+} from "@/graphql/types";
 import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
 import { PlaceholderNote } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
+import { ElemPhoto } from "./ElemPhoto";
 import { useUser } from "@/context/userContext";
 
 type Props = {
@@ -13,11 +19,11 @@ type Props = {
 };
 
 const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
-	const { myGroups } = useUser();
+	const { user, myGroups } = useUser();
 
 	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
-	const [selectedNote, setSelectedNote] = useState<GetNotesQuery['notes'][0]>();
+	const [selectedNote, setSelectedNote] = useState<GetNotesQuery["notes"][0]>();
 
 	const onOpenNoteForm = () => {
 		setIsOpenNoteForm(true);
@@ -30,7 +36,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		}, 400);
 	};
 
-	const onSelectNote = (note: GetNotesQuery['notes'][0]) => {
+	const onSelectNote = (note: GetNotesQuery["notes"][0]) => {
 		setSelectedNote(note);
 		onOpenNoteForm();
 	};
@@ -77,12 +83,20 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 					))}
 				</div>
 			) : notes.length === 0 ? (
-				<div className="flex items-center justify-center mx-auto">
-					<div className="w-full max-w-2xl p-8 text-center bg-white lg:my-8">
-						<h2 className="mt-5 text-3xl font-bold">No notes found</h2>
-						<div className="mt-1 text-lg text-slate-600">
-							There are no notes for this organization.
-						</div>
+				<div className="mt-4 flex items-start gap-2">
+					<ElemPhoto
+						photo={user?.profilePicture}
+						wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+						imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+						imgAlt={user?.display_name}
+						placeholder="user"
+						placeholderClass="text-slate-300"
+					/>
+					<div
+						className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
+						onClick={onOpenNoteForm}
+					>
+						Add a note about this profile and choose who can view.
 					</div>
 				</div>
 			) : (

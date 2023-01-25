@@ -71,6 +71,12 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 									<div
 										className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}
 									>
+										{value?.length === 0 && (
+											<Listbox.Label className="text-gray-400">
+												{placeholder}
+											</Listbox.Label>
+										)}
+
 										{value.map((item: any) => (
 											<span
 												key={item.id}
