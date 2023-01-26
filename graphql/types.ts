@@ -2913,6 +2913,7 @@ export type Data_Fields = {
   regex_test: Maybe<Scalars['String']>;
   regex_transform: Maybe<Scalars['String']>;
   resource: Scalars['String'];
+  restricted_admin: Scalars['Boolean'];
   weight: Scalars['Int'];
 };
 
@@ -2964,6 +2965,7 @@ export type Data_Fields_Bool_Exp = {
   regex_test: InputMaybe<String_Comparison_Exp>;
   regex_transform: InputMaybe<String_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
+  restricted_admin: InputMaybe<Boolean_Comparison_Exp>;
   weight: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -2987,6 +2989,7 @@ export type Data_Fields_Insert_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3039,6 +3042,7 @@ export type Data_Fields_Order_By = {
   regex_test: InputMaybe<Order_By>;
   regex_transform: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
+  restricted_admin: InputMaybe<Order_By>;
   weight: InputMaybe<Order_By>;
 };
 
@@ -3064,6 +3068,8 @@ export enum Data_Fields_Select_Column {
   /** column name */
   Resource = 'resource',
   /** column name */
+  RestrictedAdmin = 'restricted_admin',
+  /** column name */
   Weight = 'weight'
 }
 
@@ -3076,6 +3082,7 @@ export type Data_Fields_Set_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
+  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3119,6 +3126,8 @@ export enum Data_Fields_Update_Column {
   RegexTransform = 'regex_transform',
   /** column name */
   Resource = 'resource',
+  /** column name */
+  RestrictedAdmin = 'restricted_admin',
   /** column name */
   Weight = 'weight'
 }
@@ -7240,6 +7249,10 @@ export type Mutation_Root = {
   delete_notes: Maybe<Notes_Mutation_Response>;
   /** delete single row from the table: "notes" */
   delete_notes_by_pk: Maybe<Notes>;
+  /** delete data from the table: "notifications" */
+  delete_notifications: Maybe<Notifications_Mutation_Response>;
+  /** delete single row from the table: "notifications" */
+  delete_notifications_by_pk: Maybe<Notifications>;
   /** delete data from the table: "people" */
   delete_people: Maybe<People_Mutation_Response>;
   /** delete single row from the table: "people" */
@@ -7382,6 +7395,10 @@ export type Mutation_Root = {
   insert_notes: Maybe<Notes_Mutation_Response>;
   /** insert a single row into the table: "notes" */
   insert_notes_one: Maybe<Notes>;
+  /** insert data into the table: "notifications" */
+  insert_notifications: Maybe<Notifications_Mutation_Response>;
+  /** insert a single row into the table: "notifications" */
+  insert_notifications_one: Maybe<Notifications>;
   /** insert data into the table: "people" */
   insert_people: Maybe<People_Mutation_Response>;
   /** insert a single row into the table: "people" */
@@ -7520,6 +7537,10 @@ export type Mutation_Root = {
   update_notes: Maybe<Notes_Mutation_Response>;
   /** update single row of the table: "notes" */
   update_notes_by_pk: Maybe<Notes>;
+  /** update data of the table: "notifications" */
+  update_notifications: Maybe<Notifications_Mutation_Response>;
+  /** update single row of the table: "notifications" */
+  update_notifications_by_pk: Maybe<Notifications>;
   /** update data of the table: "people" */
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
@@ -7835,6 +7856,18 @@ export type Mutation_RootDelete_NotesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Notes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_NotificationsArgs = {
+  where: Notifications_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Notifications_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -8304,6 +8337,20 @@ export type Mutation_RootInsert_NotesArgs = {
 export type Mutation_RootInsert_Notes_OneArgs = {
   object: Notes_Insert_Input;
   on_conflict: InputMaybe<Notes_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_NotificationsArgs = {
+  objects: Array<Notifications_Insert_Input>;
+  on_conflict: InputMaybe<Notifications_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Notifications_OneArgs = {
+  object: Notifications_Insert_Input;
+  on_conflict: InputMaybe<Notifications_On_Conflict>;
 };
 
 
@@ -8860,6 +8907,22 @@ export type Mutation_RootUpdate_Notes_By_PkArgs = {
   _inc: InputMaybe<Notes_Inc_Input>;
   _set: InputMaybe<Notes_Set_Input>;
   pk_columns: Notes_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_NotificationsArgs = {
+  _inc: InputMaybe<Notifications_Inc_Input>;
+  _set: InputMaybe<Notifications_Set_Input>;
+  where: Notifications_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Notifications_By_PkArgs = {
+  _inc: InputMaybe<Notifications_Inc_Input>;
+  _set: InputMaybe<Notifications_Set_Input>;
+  pk_columns: Notifications_Pk_Columns_Input;
 };
 
 
@@ -9456,6 +9519,284 @@ export type Notes_Variance_Order_By = {
   id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   user_group_id: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "notifications" */
+export type Notifications = {
+  __typename?: 'notifications';
+  created_at: Scalars['timestamptz'];
+  event_type: Scalars['String'];
+  id: Scalars['Int'];
+  message: Maybe<Scalars['String']>;
+  read: Scalars['Boolean'];
+  read_at: Maybe<Scalars['timestamptz']>;
+  resource_id: Scalars['Int'];
+  resource_type: Scalars['String'];
+  target_user_id: Scalars['Int'];
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "notifications" */
+export type Notifications_Aggregate = {
+  __typename?: 'notifications_aggregate';
+  aggregate: Maybe<Notifications_Aggregate_Fields>;
+  nodes: Array<Notifications>;
+};
+
+/** aggregate fields of "notifications" */
+export type Notifications_Aggregate_Fields = {
+  __typename?: 'notifications_aggregate_fields';
+  avg: Maybe<Notifications_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Notifications_Max_Fields>;
+  min: Maybe<Notifications_Min_Fields>;
+  stddev: Maybe<Notifications_Stddev_Fields>;
+  stddev_pop: Maybe<Notifications_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Notifications_Stddev_Samp_Fields>;
+  sum: Maybe<Notifications_Sum_Fields>;
+  var_pop: Maybe<Notifications_Var_Pop_Fields>;
+  var_samp: Maybe<Notifications_Var_Samp_Fields>;
+  variance: Maybe<Notifications_Variance_Fields>;
+};
+
+
+/** aggregate fields of "notifications" */
+export type Notifications_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Notifications_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Notifications_Avg_Fields = {
+  __typename?: 'notifications_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "notifications". All fields are combined with a logical 'AND'. */
+export type Notifications_Bool_Exp = {
+  _and: InputMaybe<Array<Notifications_Bool_Exp>>;
+  _not: InputMaybe<Notifications_Bool_Exp>;
+  _or: InputMaybe<Array<Notifications_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  event_type: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  message: InputMaybe<String_Comparison_Exp>;
+  read: InputMaybe<Boolean_Comparison_Exp>;
+  read_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+  target_user_id: InputMaybe<Int_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "notifications" */
+export enum Notifications_Constraint {
+  /** unique or primary key constraint */
+  NotificationsPkey = 'notifications_pkey'
+}
+
+/** input type for incrementing numeric columns in table "notifications" */
+export type Notifications_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "notifications" */
+export type Notifications_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_type: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  message: InputMaybe<Scalars['String']>;
+  read: InputMaybe<Scalars['Boolean']>;
+  read_at: InputMaybe<Scalars['timestamptz']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Notifications_Max_Fields = {
+  __typename?: 'notifications_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_type: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  message: Maybe<Scalars['String']>;
+  read_at: Maybe<Scalars['timestamptz']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  target_user_id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Notifications_Min_Fields = {
+  __typename?: 'notifications_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_type: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  message: Maybe<Scalars['String']>;
+  read_at: Maybe<Scalars['timestamptz']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+  target_user_id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "notifications" */
+export type Notifications_Mutation_Response = {
+  __typename?: 'notifications_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Notifications>;
+};
+
+/** on_conflict condition type for table "notifications" */
+export type Notifications_On_Conflict = {
+  constraint: Notifications_Constraint;
+  update_columns: Array<Notifications_Update_Column>;
+  where: InputMaybe<Notifications_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "notifications". */
+export type Notifications_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  event_type: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  message: InputMaybe<Order_By>;
+  read: InputMaybe<Order_By>;
+  read_at: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+  target_user_id: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: notifications */
+export type Notifications_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "notifications" */
+export enum Notifications_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventType = 'event_type',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  Read = 'read',
+  /** column name */
+  ReadAt = 'read_at',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  TargetUserId = 'target_user_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "notifications" */
+export type Notifications_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_type: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  message: InputMaybe<Scalars['String']>;
+  read: InputMaybe<Scalars['Boolean']>;
+  read_at: InputMaybe<Scalars['timestamptz']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Notifications_Stddev_Fields = {
+  __typename?: 'notifications_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Notifications_Stddev_Pop_Fields = {
+  __typename?: 'notifications_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Notifications_Stddev_Samp_Fields = {
+  __typename?: 'notifications_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Notifications_Sum_Fields = {
+  __typename?: 'notifications_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  target_user_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "notifications" */
+export enum Notifications_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventType = 'event_type',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  Read = 'read',
+  /** column name */
+  ReadAt = 'read_at',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
+  TargetUserId = 'target_user_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Notifications_Var_Pop_Fields = {
+  __typename?: 'notifications_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Notifications_Var_Samp_Fields = {
+  __typename?: 'notifications_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Notifications_Variance_Fields = {
+  __typename?: 'notifications_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -10137,6 +10478,12 @@ export type Query_Root = {
   notes_aggregate: Notes_Aggregate;
   /** fetch data from the table: "notes" using primary key columns */
   notes_by_pk: Maybe<Notes>;
+  /** fetch data from the table: "notifications" */
+  notifications: Array<Notifications>;
+  /** fetch aggregated fields from the table: "notifications" */
+  notifications_aggregate: Notifications_Aggregate;
+  /** fetch data from the table: "notifications" using primary key columns */
+  notifications_by_pk: Maybe<Notifications>;
   /** fetch data from the table: "people" */
   people: Array<People>;
   /** fetch aggregated fields from the table: "people" */
@@ -10743,6 +11090,29 @@ export type Query_RootNotes_AggregateArgs = {
 
 
 export type Query_RootNotes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootNotificationsArgs = {
+  distinct_on: InputMaybe<Array<Notifications_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notifications_Order_By>>;
+  where: InputMaybe<Notifications_Bool_Exp>;
+};
+
+
+export type Query_RootNotifications_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Notifications_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notifications_Order_By>>;
+  where: InputMaybe<Notifications_Bool_Exp>;
+};
+
+
+export type Query_RootNotifications_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -11782,6 +12152,12 @@ export type Subscription_Root = {
   notes_aggregate: Notes_Aggregate;
   /** fetch data from the table: "notes" using primary key columns */
   notes_by_pk: Maybe<Notes>;
+  /** fetch data from the table: "notifications" */
+  notifications: Array<Notifications>;
+  /** fetch aggregated fields from the table: "notifications" */
+  notifications_aggregate: Notifications_Aggregate;
+  /** fetch data from the table: "notifications" using primary key columns */
+  notifications_by_pk: Maybe<Notifications>;
   /** fetch data from the table: "people" */
   people: Array<People>;
   /** fetch aggregated fields from the table: "people" */
@@ -12388,6 +12764,29 @@ export type Subscription_RootNotes_AggregateArgs = {
 
 
 export type Subscription_RootNotes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNotificationsArgs = {
+  distinct_on: InputMaybe<Array<Notifications_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notifications_Order_By>>;
+  where: InputMaybe<Notifications_Bool_Exp>;
+};
+
+
+export type Subscription_RootNotifications_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Notifications_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notifications_Order_By>>;
+  where: InputMaybe<Notifications_Bool_Exp>;
+};
+
+
+export type Subscription_RootNotifications_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -15796,7 +16195,7 @@ export type GetCompaniesQueryVariables = Exact<{
 }>;
 
 
-export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, layer: string | null, tags: any | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, coin: { __typename?: 'coins', ticker: string } | null }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
+export type GetCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, layer: string | null, location: string | null, tags: any | null, sentiment: any | null, investor_amount: any | null, total_employees: any | null, logo: any | null, overview: string | null, github: string | null, year_founded: string | null, company_linkedin: string | null, market_verified: string | null, velocity_linkedin: string | null, velocity_token: string | null, website: string | null, coin: { __typename?: 'coins', ticker: string } | null, investment_rounds: Array<{ __typename?: 'investment_rounds', round: string | null, round_date: string | null, amount: any | null }> }>, companies_aggregate: { __typename?: 'companies_aggregate', aggregate: { __typename?: 'companies_aggregate_fields', count: number } | null } };
 
 export type GetCompaniesRecentQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -16115,9 +16514,15 @@ export const GetCompaniesDocument = `
     name
     slug
     layer
+    location
     tags
     coin {
       ticker
+    }
+    investment_rounds {
+      round
+      round_date
+      amount
     }
     sentiment
     investor_amount
@@ -16125,6 +16530,7 @@ export const GetCompaniesDocument = `
     logo
     overview
     github
+    year_founded
     company_linkedin
     market_verified
     velocity_linkedin
