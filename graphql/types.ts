@@ -9489,6 +9489,7 @@ export type Notifications = {
   message: Maybe<Scalars['String']>;
   read: Scalars['Boolean'];
   read_at: Maybe<Scalars['timestamptz']>;
+  resource_type: Scalars['String'];
   target_user_id: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -9548,6 +9549,7 @@ export type Notifications_Bool_Exp = {
   message: InputMaybe<String_Comparison_Exp>;
   read: InputMaybe<Boolean_Comparison_Exp>;
   read_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
   target_user_id: InputMaybe<Int_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
@@ -9578,6 +9580,7 @@ export type Notifications_Insert_Input = {
   message: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
+  resource_type: InputMaybe<Scalars['String']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
@@ -9593,6 +9596,7 @@ export type Notifications_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
+  resource_type: Maybe<Scalars['String']>;
   target_user_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -9607,6 +9611,7 @@ export type Notifications_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
+  resource_type: Maybe<Scalars['String']>;
   target_user_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -9638,6 +9643,7 @@ export type Notifications_Order_By = {
   message: InputMaybe<Order_By>;
   read: InputMaybe<Order_By>;
   read_at: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
   target_user_id: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   vc_firm: InputMaybe<Vc_Firms_Order_By>;
@@ -9666,6 +9672,8 @@ export enum Notifications_Select_Column {
   /** column name */
   ReadAt = 'read_at',
   /** column name */
+  ResourceType = 'resource_type',
+  /** column name */
   TargetUserId = 'target_user_id',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -9682,6 +9690,7 @@ export type Notifications_Set_Input = {
   message: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
+  resource_type: InputMaybe<Scalars['String']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
@@ -9739,6 +9748,8 @@ export enum Notifications_Update_Column {
   Read = 'read',
   /** column name */
   ReadAt = 'read_at',
+  /** column name */
+  ResourceType = 'resource_type',
   /** column name */
   TargetUserId = 'target_user_id',
   /** column name */

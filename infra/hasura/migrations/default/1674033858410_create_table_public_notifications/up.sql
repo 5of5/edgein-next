@@ -1,4 +1,4 @@
-CREATE TABLE "public"."notifications" ("id" serial NOT NULL, "target_user_id" integer NOT NULL, "event_type" text NOT NULL, "company_id" integer NULL, "vc_firm_id" integer NULL, "message" text, "read" boolean  NOT NULL default 'false', "read_at" timestamptz NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );
+CREATE TABLE "public"."notifications" ("id" serial NOT NULL, "target_user_id" integer NOT NULL, "event_type" text NOT NULL, "resource_type" text NOT NULL, "company_id" integer NULL, "vc_firm_id" integer NULL, "message" text, "read" boolean  NOT NULL default 'false', "read_at" timestamptz NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );
 CREATE OR REPLACE FUNCTION "public"."set_current_timestamp_updated_at"()
 RETURNS TRIGGER AS $$
 DECLARE
