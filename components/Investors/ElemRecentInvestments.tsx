@@ -122,6 +122,21 @@ export const ElemRecentInvestments: FC<Props> = ({
 											</div>
 										)}
 
+										{investor.tags?.length > 0 && (
+											<div className="mt-4 flex flex-wrap gap-2">
+												{investor.tags?.map((tag: string, index: number) => {
+													return (
+														<div
+															key={index}
+															className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+														>
+															{tag}
+														</div>
+													);
+												})}
+											</div>
+										)}
+
 										{investor.overview && (
 											<p className="mt-4 line-clamp-3 text-slate-600">
 												{investor.overview}
@@ -140,16 +155,16 @@ export const ElemRecentInvestments: FC<Props> = ({
 										)}
 										</div> */}
 										<div className="flex items-center justify-between mt-4">
-										<ElemReactions
-											resource={investor}
-											resourceType={"vc_firms"}
-										/>
-										<ElemSaveToList
-											resourceName={investor.name}
-											resourceId={investor.id}
-											resourceType={"vc_firms"}
-											slug={investor.slug!}
-										/>
+											<ElemReactions
+												resource={investor}
+												resourceType={"vc_firms"}
+											/>
+											<ElemSaveToList
+												resourceName={investor.name}
+												resourceId={investor.id}
+												resourceType={"vc_firms"}
+												slug={investor.slug!}
+											/>
 										</div>
 									</a>
 								</ElemCarouselCard>

@@ -205,7 +205,7 @@ export const ElemInvestmentSideDrawer: React.FC<Props> = ({
 								leaveTo="opacity-0 scale-95"
 							>
 								<Dialog.Panel className="p-4 bg-white min-h-screen max-h-screen text-left">
-									<div className="overflow-y-scroll max-h-screen">
+									<div className="overflow-y-auto max-h-screen">
 										<div className="mt-4">
 											<label className="font-Metropolis text-sm font-bold text-slate-600">
 												Announced Date

@@ -74,24 +74,17 @@ export default function ForgotPasswordModal(props: Props) {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
+							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
 								<div className="max-w-md mx-auto w-full">
 									{isMailSent ? (
 										<>
-											<div className="mt-4 flex bg-slate-100 p-4 rounded-lg">
-												<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full bg-white shadow">
-													<IconCheck className="w-10 aspect-square text-primary-500" />
-												</div>
-												<div className="ml-4">
-													If there is an account with{" "}
-													<span className="font-bold">{email}</span> then a
-													reset email will be sent.
-												</div>
-											</div>
-											<p className="mt-4 text-sm">
-												If the email doesn&rsquo;t show up soon, check your spam
-												folder. We sent it from{" "}
+											<h1 className="text-2xl font-bold lg:text-3xl">
+												Password reset email sent
+											</h1>
+											<p className="mt-2">
+												Look for an email from{" "}
 												<span className="font-bold">support@edgein.io</span>.
+												Check your Spam or Bulk Mail folders.
 											</p>
 											<div className="sm:col-span-3 mt-4">
 												<ElemButton
@@ -106,11 +99,10 @@ export default function ForgotPasswordModal(props: Props) {
 									) : (
 										<>
 											<h1 className="text-2xl font-bold lg:text-3xl">
-												Reset Your Password
+												Forgot Password?
 											</h1>
-											<p className="mt-4">
-												We&rsquo;ll email you instructions to reset your
-												password.
+											<p>
+												No worries, we&rsquo;ll send you reset instructions.
 											</p>
 
 											<div className="mt-4 flex flex-col space-y-1">
@@ -140,7 +132,7 @@ export default function ForgotPasswordModal(props: Props) {
 														loading={isLoading}
 														className="px-0 ml-2 sm:ml-4"
 													>
-														Return to login
+														Cancel
 													</ElemButton>
 												</div>
 											</div>

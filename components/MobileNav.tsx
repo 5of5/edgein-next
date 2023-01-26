@@ -177,7 +177,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 										</button>
 									</Dialog.Title>
 
-									<div className="flex flex-col h-full overflow-y-scroll divide-y divide-black/10 px-8">
+									<div className="flex flex-col h-full overflow-y-auto divide-y divide-black/10 px-8">
 										{navigation.map((section, index) => (
 											<div key={index} className="pt-6 pb-3 first:pt-0">
 												<h3 className="text-xl font-bold">{section.heading}</h3>

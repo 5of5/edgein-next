@@ -298,7 +298,7 @@ export const InvestorsList: FC<Props> = ({
 				</div>
 			)}
 
-			<div className="mt-1 overflow-scroll border border-black/10 rounded-lg">
+			<div className="mt-1 overflow-auto border border-black/10 rounded-lg">
 				{page.length > 0 && !loading ? (
 					<table
 						{...getTableProps()}
