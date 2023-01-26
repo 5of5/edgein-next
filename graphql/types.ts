@@ -15,6 +15,8 @@ export type Scalars = {
   bigint: any;
   date: any;
   float8: any;
+  geography: any;
+  geometry: any;
   jsonb: any;
   numeric: any;
   timestamp: any;
@@ -1519,6 +1521,7 @@ export type Companies = {
   from_links: Array<Resource_Links>;
   /** An aggregate relationship */
   from_links_aggregate: Resource_Links_Aggregate;
+  geopoint: Maybe<Scalars['geography']>;
   github: Maybe<Scalars['String']>;
   glassdoor: Maybe<Scalars['String']>;
   ico_end: Maybe<Scalars['date']>;
@@ -1765,6 +1768,7 @@ export type Companies_Bool_Exp = {
   facebook: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Companies_Bool_Exp>;
   from_links: InputMaybe<Resource_Links_Bool_Exp>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
   github: InputMaybe<String_Comparison_Exp>;
   glassdoor: InputMaybe<String_Comparison_Exp>;
   ico_end: InputMaybe<Date_Comparison_Exp>;
@@ -2149,6 +2153,7 @@ export type Companies_Insert_Input = {
   facebook: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
   from_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   glassdoor: InputMaybe<Scalars['String']>;
   ico_end: InputMaybe<Scalars['date']>;
@@ -2320,6 +2325,7 @@ export type Companies_Order_By = {
   facebook: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
   from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
+  geopoint: InputMaybe<Order_By>;
   github: InputMaybe<Order_By>;
   glassdoor: InputMaybe<Order_By>;
   ico_end: InputMaybe<Order_By>;
@@ -2399,6 +2405,8 @@ export enum Companies_Select_Column {
   ExternalId = 'external_id',
   /** column name */
   Facebook = 'facebook',
+  /** column name */
+  Geopoint = 'geopoint',
   /** column name */
   Github = 'github',
   /** column name */
@@ -2483,6 +2491,7 @@ export type Companies_Set_Input = {
   discord: InputMaybe<Scalars['String']>;
   external_id: InputMaybe<Scalars['String']>;
   facebook: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   github: InputMaybe<Scalars['String']>;
   glassdoor: InputMaybe<Scalars['String']>;
   ico_end: InputMaybe<Scalars['date']>;
@@ -2581,6 +2590,8 @@ export enum Companies_Update_Column {
   ExternalId = 'external_id',
   /** column name */
   Facebook = 'facebook',
+  /** column name */
+  Geopoint = 'geopoint',
   /** column name */
   Github = 'github',
   /** column name */
@@ -2902,7 +2913,6 @@ export type Data_Fields = {
   regex_test: Maybe<Scalars['String']>;
   regex_transform: Maybe<Scalars['String']>;
   resource: Scalars['String'];
-  restricted_admin: Scalars['Boolean'];
   weight: Scalars['Int'];
 };
 
@@ -2954,7 +2964,6 @@ export type Data_Fields_Bool_Exp = {
   regex_test: InputMaybe<String_Comparison_Exp>;
   regex_transform: InputMaybe<String_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
-  restricted_admin: InputMaybe<Boolean_Comparison_Exp>;
   weight: InputMaybe<Int_Comparison_Exp>;
 };
 
@@ -2978,7 +2987,6 @@ export type Data_Fields_Insert_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
-  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3031,7 +3039,6 @@ export type Data_Fields_Order_By = {
   regex_test: InputMaybe<Order_By>;
   regex_transform: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
-  restricted_admin: InputMaybe<Order_By>;
   weight: InputMaybe<Order_By>;
 };
 
@@ -3057,8 +3064,6 @@ export enum Data_Fields_Select_Column {
   /** column name */
   Resource = 'resource',
   /** column name */
-  RestrictedAdmin = 'restricted_admin',
-  /** column name */
   Weight = 'weight'
 }
 
@@ -3071,7 +3076,6 @@ export type Data_Fields_Set_Input = {
   regex_test: InputMaybe<Scalars['String']>;
   regex_transform: InputMaybe<Scalars['String']>;
   resource: InputMaybe<Scalars['String']>;
-  restricted_admin: InputMaybe<Scalars['Boolean']>;
   weight: InputMaybe<Scalars['Int']>;
 };
 
@@ -3115,8 +3119,6 @@ export enum Data_Fields_Update_Column {
   RegexTransform = 'regex_transform',
   /** column name */
   Resource = 'resource',
-  /** column name */
-  RestrictedAdmin = 'restricted_admin',
   /** column name */
   Weight = 'weight'
 }
@@ -5003,6 +5005,66 @@ export type Follows_Vc_Firms_Variance_Order_By = {
   id: InputMaybe<Order_By>;
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
+};
+
+export type Geography_Cast_Exp = {
+  geometry: InputMaybe<Geometry_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "geography". All fields are combined with logical 'AND'. */
+export type Geography_Comparison_Exp = {
+  _cast: InputMaybe<Geography_Cast_Exp>;
+  _eq: InputMaybe<Scalars['geography']>;
+  _gt: InputMaybe<Scalars['geography']>;
+  _gte: InputMaybe<Scalars['geography']>;
+  _in: InputMaybe<Array<Scalars['geography']>>;
+  _is_null: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['geography']>;
+  _lte: InputMaybe<Scalars['geography']>;
+  _neq: InputMaybe<Scalars['geography']>;
+  _nin: InputMaybe<Array<Scalars['geography']>>;
+  /** is the column within a given distance from the given geography value */
+  _st_d_within: InputMaybe<St_D_Within_Geography_Input>;
+  /** does the column spatially intersect the given geography value */
+  _st_intersects: InputMaybe<Scalars['geography']>;
+};
+
+export type Geometry_Cast_Exp = {
+  geography: InputMaybe<Geography_Comparison_Exp>;
+};
+
+/** Boolean expression to compare columns of type "geometry". All fields are combined with logical 'AND'. */
+export type Geometry_Comparison_Exp = {
+  _cast: InputMaybe<Geometry_Cast_Exp>;
+  _eq: InputMaybe<Scalars['geometry']>;
+  _gt: InputMaybe<Scalars['geometry']>;
+  _gte: InputMaybe<Scalars['geometry']>;
+  _in: InputMaybe<Array<Scalars['geometry']>>;
+  _is_null: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['geometry']>;
+  _lte: InputMaybe<Scalars['geometry']>;
+  _neq: InputMaybe<Scalars['geometry']>;
+  _nin: InputMaybe<Array<Scalars['geometry']>>;
+  /** is the column within a given 3D distance from the given geometry value */
+  _st_3d_d_within: InputMaybe<St_D_Within_Input>;
+  /** does the column spatially intersect the given geometry value in 3D */
+  _st_3d_intersects: InputMaybe<Scalars['geometry']>;
+  /** does the column contain the given geometry value */
+  _st_contains: InputMaybe<Scalars['geometry']>;
+  /** does the column cross the given geometry value */
+  _st_crosses: InputMaybe<Scalars['geometry']>;
+  /** is the column within a given distance from the given geometry value */
+  _st_d_within: InputMaybe<St_D_Within_Input>;
+  /** is the column equal to given geometry value (directionality is ignored) */
+  _st_equals: InputMaybe<Scalars['geometry']>;
+  /** does the column spatially intersect the given geometry value */
+  _st_intersects: InputMaybe<Scalars['geometry']>;
+  /** does the column 'spatially overlap' (intersect but not completely contain) the given geometry value */
+  _st_overlaps: InputMaybe<Scalars['geometry']>;
+  /** does the column have atleast one point in common with the given geometry value */
+  _st_touches: InputMaybe<Scalars['geometry']>;
+  /** is the column contained in the given geometry value */
+  _st_within: InputMaybe<Scalars['geometry']>;
 };
 
 /** columns and relationships of "investment_rounds" */
@@ -11569,6 +11631,17 @@ export type Resource_Links_Variance_Order_By = {
   to_vc_firm_id: InputMaybe<Order_By>;
 };
 
+export type St_D_Within_Geography_Input = {
+  distance: Scalars['Float'];
+  from: Scalars['geography'];
+  use_spheroid: InputMaybe<Scalars['Boolean']>;
+};
+
+export type St_D_Within_Input = {
+  distance: Scalars['Float'];
+  from: Scalars['geometry'];
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "actions" */
@@ -15849,7 +15922,7 @@ export type GetVcFirmsRecentInvestmentsQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, latest_investment: string | null, num_of_investments: number | null, sentiment: any | null, overview: string | null }> };
+export type GetVcFirmsRecentInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, tags: any | null, latest_investment: string | null, num_of_investments: number | null, sentiment: any | null, overview: string | null }> };
 
 export type GetVcFirmsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -16946,6 +17019,7 @@ export const GetVcFirmsRecentInvestmentsDocument = `
     name
     slug
     logo
+    tags
     latest_investment
     num_of_investments
     sentiment
