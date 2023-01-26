@@ -82,7 +82,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 
 					{overview && (
 						<div className={`grow mt-4`}>
-							<div className="text-gray-400 line-clamp-3">{overview}</div>
+							<div className="text-gray-400 line-clamp-5">{overview}</div>
 						</div>
 					)}
 				</div>
