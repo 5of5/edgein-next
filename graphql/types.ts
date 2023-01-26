@@ -9480,16 +9480,20 @@ export type Notes_Variance_Order_By = {
 /** columns and relationships of "notifications" */
 export type Notifications = {
   __typename?: 'notifications';
+  /** An object relationship */
+  company: Maybe<Companies>;
+  company_id: Maybe<Scalars['Int']>;
   created_at: Scalars['timestamptz'];
   event_type: Scalars['String'];
   id: Scalars['Int'];
   message: Maybe<Scalars['String']>;
   read: Scalars['Boolean'];
   read_at: Maybe<Scalars['timestamptz']>;
-  resource_id: Scalars['Int'];
-  resource_type: Scalars['String'];
   target_user_id: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  vc_firm: Maybe<Vc_Firms>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "notifications" */
@@ -9525,9 +9529,10 @@ export type Notifications_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Notifications_Avg_Fields = {
   __typename?: 'notifications_avg_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "notifications". All fields are combined with a logical 'AND'. */
@@ -9535,16 +9540,18 @@ export type Notifications_Bool_Exp = {
   _and: InputMaybe<Array<Notifications_Bool_Exp>>;
   _not: InputMaybe<Notifications_Bool_Exp>;
   _or: InputMaybe<Array<Notifications_Bool_Exp>>;
+  company: InputMaybe<Companies_Bool_Exp>;
+  company_id: InputMaybe<Int_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   event_type: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   message: InputMaybe<String_Comparison_Exp>;
   read: InputMaybe<Boolean_Comparison_Exp>;
   read_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  resource_id: InputMaybe<Int_Comparison_Exp>;
-  resource_type: InputMaybe<String_Comparison_Exp>;
   target_user_id: InputMaybe<Int_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+  vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "notifications" */
@@ -9555,51 +9562,54 @@ export enum Notifications_Constraint {
 
 /** input type for incrementing numeric columns in table "notifications" */
 export type Notifications_Inc_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
-  resource_id: InputMaybe<Scalars['Int']>;
   target_user_id: InputMaybe<Scalars['Int']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "notifications" */
 export type Notifications_Insert_Input = {
+  company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  company_id: InputMaybe<Scalars['Int']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   event_type: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
-  resource_id: InputMaybe<Scalars['Int']>;
-  resource_type: InputMaybe<Scalars['String']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type Notifications_Max_Fields = {
   __typename?: 'notifications_max_fields';
+  company_id: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamptz']>;
   event_type: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
-  resource_id: Maybe<Scalars['Int']>;
-  resource_type: Maybe<Scalars['String']>;
   target_user_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['timestamptz']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
 export type Notifications_Min_Fields = {
   __typename?: 'notifications_min_fields';
+  company_id: Maybe<Scalars['Int']>;
   created_at: Maybe<Scalars['timestamptz']>;
   event_type: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
-  resource_id: Maybe<Scalars['Int']>;
-  resource_type: Maybe<Scalars['String']>;
   target_user_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['timestamptz']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** response of any mutation on the table "notifications" */
@@ -9620,16 +9630,18 @@ export type Notifications_On_Conflict = {
 
 /** Ordering options when selecting data from "notifications". */
 export type Notifications_Order_By = {
+  company: InputMaybe<Companies_Order_By>;
+  company_id: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   event_type: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   message: InputMaybe<Order_By>;
   read: InputMaybe<Order_By>;
   read_at: InputMaybe<Order_By>;
-  resource_id: InputMaybe<Order_By>;
-  resource_type: InputMaybe<Order_By>;
   target_user_id: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
+  vc_firm: InputMaybe<Vc_Firms_Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: notifications */
@@ -9640,6 +9652,8 @@ export type Notifications_Pk_Columns_Input = {
 /** select columns of table "notifications" */
 export enum Notifications_Select_Column {
   /** column name */
+  CompanyId = 'company_id',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   EventType = 'event_type',
@@ -9652,63 +9666,67 @@ export enum Notifications_Select_Column {
   /** column name */
   ReadAt = 'read_at',
   /** column name */
-  ResourceId = 'resource_id',
-  /** column name */
-  ResourceType = 'resource_type',
-  /** column name */
   TargetUserId = 'target_user_id',
   /** column name */
-  UpdatedAt = 'updated_at'
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VcFirmId = 'vc_firm_id'
 }
 
 /** input type for updating data in table "notifications" */
 export type Notifications_Set_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   event_type: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
-  resource_id: InputMaybe<Scalars['Int']>;
-  resource_type: InputMaybe<Scalars['String']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
 export type Notifications_Stddev_Fields = {
   __typename?: 'notifications_stddev_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Notifications_Stddev_Pop_Fields = {
   __typename?: 'notifications_stddev_pop_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Notifications_Stddev_Samp_Fields = {
   __typename?: 'notifications_stddev_samp_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Notifications_Sum_Fields = {
   __typename?: 'notifications_sum_fields';
+  company_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
-  resource_id: Maybe<Scalars['Int']>;
   target_user_id: Maybe<Scalars['Int']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "notifications" */
 export enum Notifications_Update_Column {
+  /** column name */
+  CompanyId = 'company_id',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -9722,37 +9740,38 @@ export enum Notifications_Update_Column {
   /** column name */
   ReadAt = 'read_at',
   /** column name */
-  ResourceId = 'resource_id',
-  /** column name */
-  ResourceType = 'resource_type',
-  /** column name */
   TargetUserId = 'target_user_id',
   /** column name */
-  UpdatedAt = 'updated_at'
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VcFirmId = 'vc_firm_id'
 }
 
 /** aggregate var_pop on columns */
 export type Notifications_Var_Pop_Fields = {
   __typename?: 'notifications_var_pop_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Notifications_Var_Samp_Fields = {
   __typename?: 'notifications_var_samp_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Notifications_Variance_Fields = {
   __typename?: 'notifications_variance_fields';
+  company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */

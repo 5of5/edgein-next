@@ -4,13 +4,21 @@ import { flatten, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
 import { ActionType } from "./submitData";
 
-export const insertNotification = async (
+type NotificationParamType = {
   target_user_id: number,
-  event_type: string,
-  resource_id: number,
-  resource_type: string,
+  event_type: ActionType,
   message: string,
-) => {
+  company_id?: number | null,
+  vc_firm_id?: number | null,
+}
+
+export const insertNotification = async ({
+  target_user_id,
+  event_type,
+  message,
+  company_id,
+  vc_firm_id,
+}: NotificationParamType) => {
   const insertNotificationQuery = `
     mutation InsertNotifications($object: notifications_insert_input!) {
       insert_notifications_one(
@@ -19,8 +27,8 @@ export const insertNotification = async (
         id
         target_user_id
         event_type
-        resource_id
-        resource_type
+        company_id
+        vc_firm_id
         message
         read_at
         created_at
@@ -38,8 +46,8 @@ export const insertNotification = async (
       object: {
         target_user_id,
         event_type,
-        resource_id,
-        resource_type,
+        company_id,
+        vc_firm_id,
         message,
       },
     },
@@ -58,14 +66,14 @@ export const processNotification = async (
     targetUsers = unionBy(flatten(targetUsers), "user_id");
     await Promise.all(
       targetUsers.map(async (targetUser: any) =>
-        insertNotification(
-          targetUser?.user_id,
-          actionType,
-          resourceId,
-          resourceType,
-          /** TO DO: content of message */
-          `${resourceType} ${resourceId} changed`
-        )
+        insertNotification({
+          target_user_id: targetUser?.user_id,
+          event_type: actionType,
+           /** TO DO: content of message */
+          message: `${resourceType} ${resourceId} changed`,
+          company_id: resourceType === "companies" ? resourceId : null,
+          vc_firm_id: resourceType === "vc_firms" ? resourceId : null,
+        })
       )
     );
   };
