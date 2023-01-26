@@ -1,6 +1,7 @@
 import { mutate } from "@/graphql/hasuraAdmin";
+import { Follows } from "@/graphql/types";
 import { flatten, unionBy } from "lodash";
-import { getListsByFollowResource, getUserByListId } from "./lists";
+import { getFollowsByResource } from "./lists";
 import { ActionType } from "./submitData";
 
 export const insertNotification = async (
@@ -52,10 +53,8 @@ export const processNotification = async (
   actionType: ActionType
 ) => {
   if (resourceId && resourceType && actionType) {
-    const lists = await getListsByFollowResource(resourceId, resourceType);
-    let targetUsers = await Promise.all(
-      lists.map(async (listItem: any) => getUserByListId(listItem?.list_id))
-    );
+    const follows: Array<Follows>  = await getFollowsByResource(resourceId, resourceType);
+    let targetUsers: any = follows.map((item: Follows) => item.list?.list_members);
     targetUsers = unionBy(flatten(targetUsers), "user_id");
     await Promise.all(
       targetUsers.map(async (targetUser: any) =>

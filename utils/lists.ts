@@ -186,7 +186,7 @@ export const deleteFollowIfExists = async (list: Lists, resourceId: string, reso
   return returning.length
 }
 
-export const getListsByFollowResource = async (resourceId: number, resourceType: string) => {
+export const getFollowsByResource = async (resourceId: number, resourceType: string) => {
   const {
     data: { follows }
   } = await query({
@@ -200,29 +200,18 @@ export const getListsByFollowResource = async (resourceId: number, resourceType:
         }) {
           id
           list_id
+          list {
+            list_members {
+              id
+              user_id
+            }
+          }
         }
       }
     `,
     variables: { resourceId, resourceType },
   });
   return follows;
-}
-
-export const getUserByListId = async (listId: number) => {
-  const {
-    data: { list_members }
-  } = await query({
-    query: `
-      query findUserByListId($listId: Int!) {
-        list_members(where: {list_id: {_eq: $listId}}) {
-          id
-          user_id
-        }
-      }
-    `,
-    variables: { listId },
-  });
-  return list_members;
 }
 
 export const findListMemberOne = async (list_id: number, user_id: number) => {
