@@ -93,7 +93,7 @@ export const ElemFeedback: FC<PropsWithChildren<Props>> = ({
 					) : (
 						<>
 							<form
-								className="relative grid grid-cols-1 gap-y-4 m-4 overflow-y-scroll sm:grid-cols-2 sm:gap-x-8"
+								className="relative grid grid-cols-1 gap-y-4 m-4 overflow-y-auto sm:grid-cols-2 sm:gap-x-8"
 								onSubmit={onSubmit}
 							>
 								{/* <div className="group mb-2 sm:col-span-2">
