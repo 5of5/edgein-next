@@ -326,7 +326,7 @@ export const CompaniesList: FC<Props> = ({
 				</div>
 			)}
 
-			<div className="overflow-scroll border border-black/10 rounded-lg">
+			<div className="overflow-auto border border-black/10 rounded-lg">
 				{page.length > 0 && !loading ? (
 					<table
 						{...getTableProps()}
