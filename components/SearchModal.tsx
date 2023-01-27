@@ -60,7 +60,14 @@ type HitPeopleProps = {
 const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitCompanies({ hit }: HitCompaniesProps) {
 		return (
-			<Link href={isAdmin ? `/admin/app/#/companies/${hit.objectID}` : `/companies/${hit.slug}`} passHref>
+			<Link
+				href={
+					isAdmin
+						? `/admin/app/#/companies/${hit.objectID}`
+						: `/companies/${hit.slug}`
+				}
+				passHref
+			>
 				<a
 					onClick={() => {
 						onClose();
@@ -121,7 +128,14 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitInvestors({ hit }: HitInvestorsProps) {
 		return (
-			<Link href={isAdmin ? `/admin/app/#/vc_firms/${hit.objectID}` : `/investors/${hit.slug}`} passHref>
+			<Link
+				href={
+					isAdmin
+						? `/admin/app/#/vc_firms/${hit.objectID}`
+						: `/investors/${hit.slug}`
+				}
+				passHref
+			>
 				<a
 					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 					onClick={() => {
@@ -161,7 +175,14 @@ const HitInvestors = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitPeople({ hit }: HitPeopleProps) {
 		return (
-			<Link href={isAdmin ? `/admin/app/#/people/${hit.objectID}` : `/people/${hit.slug}`} passHref>
+			<Link
+				href={
+					isAdmin
+						? `/admin/app/#/people/${hit.objectID}`
+						: `/people/${hit.slug}`
+				}
+				passHref
+			>
 				<a
 					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 					onClick={() => {
@@ -294,7 +315,7 @@ export default function SearchModal(props: any) {
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-3xl pb-5 transform rounded-lg shadow-2xl bg-white overflow-y-scroll overflow-x-hidden text-left align-middle transition-all">
+								<Dialog.Panel className="w-full max-w-3xl pb-5 transform rounded-lg shadow-2xl bg-white overflow-y-auto overflow-x-hidden text-left align-middle transition-all">
 									<InstantSearch
 										searchClient={searchClient}
 										indexName="companies"
@@ -334,7 +355,11 @@ export default function SearchModal(props: any) {
 												<h3 className="font-bold mt-5 mx-6">Companies</h3>
 												<EmptyQueryBoundary>
 													<InfiniteHits
-														hitComponent={HitCompanies(onClose, props.isAdmin, props.redirect)}
+														hitComponent={HitCompanies(
+															onClose,
+															props.isAdmin,
+															props.redirect
+														)}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
@@ -351,7 +376,11 @@ export default function SearchModal(props: any) {
 												<h3 className="font-bold mt-5 mx-6">Investors</h3>
 												<EmptyQueryBoundary>
 													<InfiniteHits
-														hitComponent={HitInvestors(onClose, props.isAdmin, props.redirect)}
+														hitComponent={HitInvestors(
+															onClose,
+															props.isAdmin,
+															props.redirect
+														)}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
@@ -368,7 +397,11 @@ export default function SearchModal(props: any) {
 												<h3 className="font-bold mt-5 mx-6">People</h3>
 												<EmptyQueryBoundary>
 													<InfiniteHits
-														hitComponent={HitPeople(onClose, props.isAdmin, props.redirect)}
+														hitComponent={HitPeople(
+															onClose,
+															props.isAdmin,
+															props.redirect
+														)}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",

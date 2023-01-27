@@ -46,7 +46,7 @@ query GetVCFirm($slug: String!) {
 		}
 		to_links {
 			link_type
-      from_company {
+			from_company {
 				id
 				name
 				slug
@@ -54,8 +54,8 @@ query GetVCFirm($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-      from_vc_firm {
+			}
+			from_vc_firm {
 				id
 				name
 				slug
@@ -63,11 +63,11 @@ query GetVCFirm($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-    }
-    from_links {
+			}
+		}
+		from_links {
 			link_type
-      to_company {
+			to_company {
 				id
 				name
 				slug
@@ -75,8 +75,8 @@ query GetVCFirm($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-      to_vc_firm {
+			}
+			to_vc_firm {
 				id
 				name
 				slug
@@ -84,8 +84,8 @@ query GetVCFirm($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-    }		
+			}
+		}
 	}
 }
 
@@ -128,6 +128,7 @@ query GetVCFirmsRecentInvestments(
 		name
 		slug
 		logo
+		tags
 		latest_investment
 		num_of_investments
 		sentiment

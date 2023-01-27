@@ -6,7 +6,7 @@ import { FC, useState } from "react";
 import {
 	IconCustomList,
 	IconPolygonDown,
-	IconGroupPlus,
+	IconListPlus,
 	IconInformationCircle,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
@@ -46,23 +46,29 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		find(lists, (list) => "like" === getNameFromListName(list))?.id || 0;
 	const crapId =
 		find(lists, (list) => "crap" === getNameFromListName(list))?.id || 0;
+
 	const getCustomLists = lists
 		?.filter(
 			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
 		)
-		.sort((a, b) => (a.name < b.name ? -1 : 1))
-	const displayedCustomLists = getCustomLists
-		.slice(0, user?.entitlements.listsCount ? user?.entitlements.listsCount : getCustomLists.length);
+		.sort((a, b) => (a.name < b.name ? -1 : 1));
 
-		const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+	const displayedCustomLists = getCustomLists.slice(
+		0,
+		user?.entitlements.listsCount
+			? user?.entitlements.listsCount
+			: getCustomLists.length
+	);
 
-		const onOpenUpgradeDialog = () => {
-			setIsOpenUpgradeDialog(true);
-		}
-		const onCloseUpgradeDialog = () => {
-			setIsOpenUpgradeDialog(false);
-		};
-	
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	};
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
+
 	return (
 		<div className={className}>
 			<Disclosure defaultOpen={true}>
@@ -167,15 +173,18 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
-							{ (getCustomLists.length > displayedCustomLists.length) && <li role="button">
-								<button
-									onClick={onOpenUpgradeDialog}
-									className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500"
-								>
-									<IconGroupPlus className="h-6 w-6" title="Create Group" />
-									<span>Unlock All Your Lists</span>
-								</button>
-							</li> }
+
+							{getCustomLists.length > displayedCustomLists.length && (
+								<li role="button">
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500"
+									>
+										<IconListPlus className="h-6 w-6" title="Create Group" />
+										<span>Unlock All Your Lists</span>
+									</button>
+								</li>
+							)}
 						</Disclosure.Panel>
 					</>
 				)}
@@ -185,7 +194,6 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 				isOpen={isOpenUpgradeDialog}
 				onClose={onCloseUpgradeDialog}
 			/>
-			
 		</div>
 	);
 };

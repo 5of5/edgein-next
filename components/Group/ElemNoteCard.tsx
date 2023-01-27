@@ -3,8 +3,10 @@ import useSWR from "swr";
 import moment from "moment-timezone";
 import { Notes } from "@/graphql/types";
 import { ElemPhoto } from "../ElemPhoto";
-import { ElemTooltip } from "@/components/ElemTooltip";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+
+import { People, useGetUserProfileQuery } from "@/graphql/types";
 
 type Props = {
 	data: Notes;
@@ -36,6 +38,17 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 		fetcher
 	);
 
+	const [noteAuthor, setNoteAuthor] = useState<People>();
+
+	const { data: users } = useGetUserProfileQuery({
+		id: data?.created_by,
+	});
+
+	// set note author
+	useEffect(() => {
+		if (users) setNoteAuthor(users.users_by_pk?.person as People);
+	}, [users]);
+
 	return (
 		<Link
 			href={`/${
@@ -66,20 +79,11 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 					</div>
 
 					<div className="pt-2 text-sm text-slate-600">
-						{/* {data?.created_by && data?.updated_by ? (
-							<ElemTooltip
-								content={`Edited by Redg Snodgrass ${moment(
-									data?.updated_at
-								).format("LL")}. Created by Ed Parsons December 10, 2022`}
-								className="cursor-pointer"
-								size="md"
-							>
-								Edited {moment(data?.updated_at).format("LL")}
-							</ElemTooltip>
-						) : (
-							<>Edited {moment(data?.updated_at).format("LL")}</>
-						)} */}
-						Edited {moment(data?.updated_at).format("LL")}
+						<p>
+							Created {moment(data?.created_at).format("LL")} by{" "}
+							{noteAuthor?.name}
+						</p>
+						<p>Last edit {moment(data?.updated_at).format("LL")}</p>
 					</div>
 				</div>
 			</div>

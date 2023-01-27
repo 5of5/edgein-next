@@ -1509,7 +1509,7 @@ export const IconSave: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconSaveToList: React.FC<IconProps> = ({
+export const IconListPlus: React.FC<IconProps> = ({
 	className,
 	strokeWidth,
 	title,

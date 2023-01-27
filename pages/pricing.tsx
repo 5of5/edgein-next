@@ -29,14 +29,14 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 					}
 				},
 				description:
-					"Signup today and get instant access to the largest community dataset in web3, exclusively on the EdgeIn platform.",
+					"Signup today and get instant access to the largest community dataset in Web3, exclusively on the EdgeIn platform.",
 				features: [
 					"Unlimited Search",
 					"Daily Carousel",
 					"View Profile Pages",
 					"React to Projects / Deals",
 					"Request Data",
-					"Create / Share up to 10 Lists",
+					"Create / Share up to 5 Lists",
 					"Create / Manage Groups with up to 3 members",
 				],
 				cta: user ? (user.billing_org ? "" : "Current Plan") : "Sign up",
@@ -56,7 +56,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 					}
 				},
 				description:
-					"As a contributor, you help support our free community data model. Get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in web3.",
+					"As a Contributor, you help support our free community data model. Get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in Web3.",
 				features: [
 					"Unlimited Search",
 					"Daily Carousel",
@@ -126,8 +126,10 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 						<div className="mt-16 block md:w-full md:grid md:grid-cols-2">
 							{pricing.tiers.map((tier) => (
 								<div
-									className={`relative flex flex-col bg-white shadow rounded-lg p-7 ${
-										tier.mostPopular ? "mt-8 lg:mt-0" : "my-14"
+									className={`relative flex flex-col bg-white shadow p-7 ${
+										tier.mostPopular
+											? "mt-8 rounded-lg lg:mt-0 border-2 border-primary-500"
+											: "rounded-bl-lg rounded-tl-lg my-14"
 									}`}
 									key={tier.title}
 								>

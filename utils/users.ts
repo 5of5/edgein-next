@@ -478,7 +478,7 @@ const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
     groupsCount: 5000,
   } : {
     viewEmails: false,
-    listsCount: 10,
+    listsCount: 5,
     groupsCount: 3,
   }
 
