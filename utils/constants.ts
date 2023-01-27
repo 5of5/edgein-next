@@ -672,7 +672,7 @@ export const tags = [
 	"Layer 6",
 	"API/Platforms",
 	"API",
-	"Platforms",
+	"Platform",
 	"Dev Tools",
 	"Chain Tools",
 	"Analytics",
