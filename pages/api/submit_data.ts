@@ -72,7 +72,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	);
 
 	const partnerId: number = partner ? partner.id : 0
-	const userId: number = user ? user.id : 0
 	let dataId = resourceId;
 	let actionType: ActionType = "Change Data";
 
