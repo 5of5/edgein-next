@@ -29,6 +29,7 @@ query GetCompany($slug: String!) {
 		sentiment
 		twitter
 		location
+		location_json
 		discord
 		glassdoor
 		teamMembers {
