@@ -355,6 +355,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						github={company.github}
 						twitter={company.twitter}
 						location={company.location}
+						locationJson={company.location_json}
 						discord={company.discord}
 						glassdoor={company.glassdoor}
 					/>

@@ -1,4 +1,5 @@
 import React from "react";
+import { values, isEmpty } from "lodash";
 import {
 	IconProps,
 	IconGlobe,
@@ -21,6 +22,7 @@ import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
 } from "@/utils";
+import { getFullAddress } from "@/utils/helpers";
 
 type Props = {
 	className?: string;
@@ -31,6 +33,7 @@ type Props = {
 	totalEmployees?: number;
 	yearFounded?: string | null;
 	location?: string | null;
+	locationJson?: any;
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
@@ -61,10 +64,19 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	github,
 	careerPage,
 	location,
+	locationJson,
 	twitter,
 	discord,
 	glassdoor,
 }) => {
+	const isEmptyLocationJson = values(locationJson).every(isEmpty);
+	let locationText = '';
+	if (!isEmptyLocationJson) {
+		locationText = getFullAddress(locationJson);
+	} else if (location) {
+		locationText = location;
+	}
+
 	let infoItems: {
 		icon?: React.FC<IconProps>;
 		link?: string;
@@ -97,10 +109,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				" Total Funding Raised",
 		});
 	}
-	if (location) {
+	if (locationText) {
 		infoItems.push({
 			icon: IconLocation,
-			text: location,
+			text: locationText,
 		});
 	}
 	if (totalEmployees) {

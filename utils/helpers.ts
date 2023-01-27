@@ -35,3 +35,13 @@ export const getUpdatedDiff = (original: any, target: any) => {
     return acc;
   }, makeObjectWithoutPrototype());
 };
+
+export const getFullAddress = (locationJson: any) => {
+  const address = locationJson?.address || '';
+  const city = locationJson?.city || '';
+  const state = locationJson?.state || '';
+  const country = locationJson?.country || '';
+  return [address, city, state, country]
+    .filter((item) => !isEmpty(item))
+    .join(", ");
+}
