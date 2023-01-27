@@ -8,11 +8,12 @@ import {
 	mutateActionAndDataRaw,
 	ActionType,
 	getCompanyByRoundId,
+	ResourceTypes,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
-const NODE_NAME: Record<string, string> = {
+const NODE_NAME: Record<ResourceTypes, string> = {
   companies: "company",
   vc_firms: "vc_firm",
   people: "people",
@@ -32,7 +33,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
 
 	const apiKey: string = req.body.partner_api_key;
-	const resourceType: string = req.body.resource_type;
+	const resourceType: ResourceTypes = req.body.resource_type;
 	const resourceIdentifier: string = req.body.resource_identifier;
 	const identifierColumn: string = req.body.identifier_column;
 	const resourceObj: Record<string, any> = req.body.resource;
@@ -79,31 +80,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		// create a new one
 		const response = await insertResourceData(resourceType, resourceObj);
 		dataId = response?.id;
-		actionType = "Insert Data";
-
-		if (resourceType === "investment_rounds" || resourceType === "team_members") {
-			await processNotification(resourceObj?.company_id, "companies", actionType);
-		}
-
-		if (resourceType === "investors") {
-			await processNotification(resourceObj?.vc_firm_id, "vc_firms", actionType);
-		}
-
-		if (resourceType === "investments") {
-			if (resourceObj?.round_id) {
-				const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
-				await processNotification(investmentRound?.company_id, "companies", actionType);
-			}
-
-			await processNotification(resourceObj?.vc_firm_id, "vc_firms", actionType);
-		}
-	} else {
-		// updated exists one
-		if (resourceType === "companies" || resourceType === "vc_firms") {
-			/** Insert notification */
-			await processNotification(resourceId, resourceType, actionType);
-		}
 	}
+
 	const insertResult = await mutateActionAndDataRaw(
 		partnerId,
 		user,
@@ -113,6 +91,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		resourceType,
 		actionType,
 	);
+
+	if (resourceId === undefined) {
+		actionType = "Insert Data";
+
+		if (resourceType === "investment_rounds" || resourceType === "team_members") {
+			await processNotification(resourceObj?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+		}
+
+		if (resourceType === "investors") {
+			await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+		}
+
+		if (resourceType === "investments") {
+			if (resourceObj?.round_id) {
+				const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
+				await processNotification(investmentRound?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+			}
+
+			await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+		}
+	} else {
+		// updated exists one
+		if (resourceType === "companies" || resourceType === "vc_firms") {
+			/** Insert notification */
+			await processNotification(resourceId, resourceType, resourceType, actionType, [insertResult?.action?.id]);
+		}
+	}
 
 	res.send(insertResult);
 };
