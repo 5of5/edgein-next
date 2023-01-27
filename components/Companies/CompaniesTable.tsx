@@ -44,7 +44,7 @@ export const CompaniesTable: FC<Props> = ({
 }) => {
 	const defaultColumn = React.useMemo(
 		() => ({
-			minWidth: 200,
+			minWidth: 100,
 			width: 200,
 			//maxWidth: 300,
 		}),
@@ -79,6 +79,7 @@ export const CompaniesTable: FC<Props> = ({
 					</a>
 				),
 				width: 170,
+				minWidth: 200,
 			},
 			{
 				Header: "Token",
@@ -123,6 +124,7 @@ export const CompaniesTable: FC<Props> = ({
 					return <div>{props.value ? props.value : emptyCell}</div>;
 				},
 				disableSortBy: true,
+				minWidth: 180,
 			},
 			{
 				Header: "Description",
@@ -138,6 +140,7 @@ export const CompaniesTable: FC<Props> = ({
 				),
 				disableSortBy: true,
 				width: 400,
+				minWidth: 300,
 			},
 			{
 				Header: "Founded",
@@ -145,6 +148,7 @@ export const CompaniesTable: FC<Props> = ({
 				Cell: (props: any) => {
 					return <>{props.value ? <p>{props.value}</p> : emptyCell}</>;
 				},
+				width: 120,
 			},
 			{
 				Header: "Employees",
@@ -183,6 +187,7 @@ export const CompaniesTable: FC<Props> = ({
 						</div>
 					);
 				},
+				width: 140,
 			},
 			{
 				Header: "Last Funding Date",
@@ -206,6 +211,7 @@ export const CompaniesTable: FC<Props> = ({
 						</div>
 					);
 				},
+				width: 120,
 			},
 			{
 				Header: "Last Funding Total",
@@ -236,6 +242,7 @@ export const CompaniesTable: FC<Props> = ({
 						</div>
 					);
 				},
+				width: 140,
 			},
 			{
 				Header: "# Funding Rounds",
@@ -244,6 +251,7 @@ export const CompaniesTable: FC<Props> = ({
 					const numberOfRounds = props.value;
 					return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
 				},
+				width: 100,
 			},
 			{
 				Header: "Last Funding Type",
@@ -364,8 +372,8 @@ export const CompaniesTable: FC<Props> = ({
 											...column.getHeaderProps({
 												style: {
 													width: column.width,
-													minWidth: column.width,
-													maxWidth: column.width,
+													minWidth: column.minWidth,
+													maxWidth: column.maxWidth,
 												},
 											}),
 										});
@@ -374,87 +382,93 @@ export const CompaniesTable: FC<Props> = ({
 											<th
 												key={key}
 												{...restColumnProps}
-												className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left`}
+												className={`relative px-2 py-2 whitespace-nowrap font-bold text-sm text-left min-w-content`}
 											>
-												{column.render("Header")}
-												<Menu
-													as="div"
-													className="relative inline-block text-left ml-1"
-												>
-													<Menu.Button className="inline align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
-														<IconChevronDown className="h-5 w-5" />
-													</Menu.Button>
+												<div className="flex items-center min-w-content">
+													{column.render("Header")}
+													<Menu
+														as="div"
+														className="relative inline-block text-left ml-1"
+													>
+														<Menu.Button className="block align-middle text-slate-400 rounded-full hover:text-primary-500 hover:bg-slate-100">
+															<IconChevronDown className="h-5 w-5" />
+														</Menu.Button>
 
-													<Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
-														{column.canSort && (
-															<Menu.Item
-																as="button"
-																className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
-																	column.isSorted &&
-																	column.isSortedDesc === false
-																		? "text-primary-500"
-																		: ""
-																}`}
-																onClick={(e: any) => {
-																	column.getHeaderProps(
-																		setSortBy([{ id: column.id, desc: false }])
-																	);
-																}}
-															>
-																<IconSortUp className="mr-1 h-5 w-5 inline-block" />
-																Sort Ascending
-															</Menu.Item>
-														)}
+														<Menu.Items className="absolute z-50 left-0 origin-top-left flex flex-col mt-2 w-56 divide-y divide-gray-100 rounded-lg bg-white shadow ring-1 ring-black ring-opacity-5 overflow-hidden focus:outline-none">
+															{column.canSort && (
+																<Menu.Item
+																	as="button"
+																	className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+																		column.isSorted &&
+																		column.isSortedDesc === false
+																			? "text-primary-500"
+																			: ""
+																	}`}
+																	onClick={(e: any) => {
+																		column.getHeaderProps(
+																			setSortBy([
+																				{ id: column.id, desc: false },
+																			])
+																		);
+																	}}
+																>
+																	<IconSortUp className="mr-1 h-5 w-5 inline-block" />
+																	Sort Ascending
+																</Menu.Item>
+															)}
 
-														{column.canSort && (
-															<Menu.Item
-																as="button"
-																className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
-																	column.isSorted &&
-																	column.isSortedDesc === true
-																		? "text-primary-500"
-																		: ""
-																}`}
-																onClick={(e: any) => {
-																	column.getHeaderProps(
-																		setSortBy([{ id: column.id, desc: true }])
-																	);
-																}}
-															>
-																<IconSortDown className="mr-1 h-5 w-5 inline-block" />
-																Sort Descending
-															</Menu.Item>
-														)}
+															{column.canSort && (
+																<Menu.Item
+																	as="button"
+																	className={`flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100 ${
+																		column.isSorted &&
+																		column.isSortedDesc === true
+																			? "text-primary-500"
+																			: ""
+																	}`}
+																	onClick={(e: any) => {
+																		column.getHeaderProps(
+																			setSortBy([{ id: column.id, desc: true }])
+																		);
+																	}}
+																>
+																	<IconSortDown className="mr-1 h-5 w-5 inline-block" />
+																	Sort Descending
+																</Menu.Item>
+															)}
 
-														{column.render("Header") != "Name" && (
-															<Menu.Item
-																as="button"
-																className="flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
-																onClick={(e: any) => {
-																	column.getHeaderProps(column.toggleHidden());
-																}}
-															>
-																<IconX className="mr-1 h-5 w-5 inline-block" />
-																Hide Column
-															</Menu.Item>
-														)}
-													</Menu.Items>
-												</Menu>
+															{column.render("Header") != "Name" && (
+																<Menu.Item
+																	as="button"
+																	className="flex items-center w-full px-2 py-2 text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
+																	onClick={(e: any) => {
+																		column.getHeaderProps(
+																			column.toggleHidden()
+																		);
+																	}}
+																>
+																	<IconX className="mr-1 h-5 w-5 inline-block" />
+																	Hide Column
+																</Menu.Item>
+															)}
+														</Menu.Items>
+													</Menu>
 
-												<div
-													{...column.getResizerProps()}
-													className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
-														column.isResizing ? "isResizing select-none" : ""
-													}`}
-													onClick={(event) => event.stopPropagation()}
-												>
 													<div
-														className={`w-px h-full translate-x-0.5 ${
-															column.isResizing
-																? "bg-primary-500"
-																: "bg-black/10 group-hover:bg-primary-500"
+														{...column.getResizerProps()}
+														className={`group absolute top-0 right-0 inline-block resizer w-1 h-full touch-none ${
+															column.isResizing ? "isResizing select-none" : ""
 														}`}
-													></div>
+														onClick={(event) => event.stopPropagation()}
+													>
+														<div
+															className={`w-px h-full translate-x-0.5 ${
+																column.isResizing
+																	? "bg-primary-500"
+																	: "bg-black/10 group-hover:bg-primary-500"
+															}`}
+														></div>
+													</div>
 												</div>
 											</th>
 										);
