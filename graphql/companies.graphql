@@ -72,9 +72,9 @@ query GetCompany($slug: String!) {
 				amount
 			}
 		}
-    to_links {
+		to_links {
 			link_type
-      from_company {
+			from_company {
 				id
 				name
 				slug
@@ -82,8 +82,8 @@ query GetCompany($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-      from_vc_firm {
+			}
+			from_vc_firm {
 				id
 				name
 				slug
@@ -91,11 +91,11 @@ query GetCompany($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-    }
-    from_links {
+			}
+		}
+		from_links {
 			link_type
-      to_company {
+			to_company {
 				id
 				name
 				slug
@@ -103,8 +103,8 @@ query GetCompany($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-      to_vc_firm {
+			}
+			to_vc_firm {
 				id
 				name
 				slug
@@ -112,16 +112,12 @@ query GetCompany($slug: String!) {
 				sentiment
 				overview
 				logo
-      }
-    }		
+			}
+		}
 	}
 }
 
-query GetCompanies(
-	$limit: Int
-	$offset: Int
-	$where: companies_bool_exp!
-) {
+query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 	companies(
 		where: $where
 		order_by: { slug: asc }
@@ -132,12 +128,30 @@ query GetCompanies(
 		name
 		slug
 		layer
+		location
 		tags
 		coin {
 			ticker
 		}
 		sentiment
 		investor_amount
+		investment_rounds {
+			round
+			round_date
+			amount
+			investments {
+				person {
+					slug
+					name
+				}
+				vc_firm {
+					slug
+					name
+				}
+				amount
+			}
+		}
+		year_founded
 		total_employees
 		logo
 		overview
@@ -149,10 +163,10 @@ query GetCompanies(
 		website
 	}
 	companies_aggregate(where: $where) {
-    aggregate {
-      count
-    }
-  }
+		aggregate {
+			count
+		}
+	}
 }
 
 query GetCompaniesRecent(
@@ -192,9 +206,7 @@ query GetCompaniesPaths {
 	}
 }
 
-query GetRelevantCompanies(
-	$where: companies_bool_exp!
-) {
+query GetRelevantCompanies($where: companies_bool_exp!) {
 	companies(where: $where) {
 		id
 		logo

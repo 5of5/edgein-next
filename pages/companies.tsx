@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
-import { PlaceholderCompanyCard } from "@/components/Placeholders";
+import {
+	PlaceholderCompanyCard,
+	PlaceholderTable,
+} from "@/components/Placeholders";
 import { InputSelect } from "@/components/InputSelect";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
+import { CompaniesTable } from "@/components/Companies/CompaniesTable";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
 import { runGraphQl, numberWithCommas } from "@/utils";
@@ -13,6 +17,8 @@ import {
 	IconAnnotation,
 	IconX,
 	IconFilter,
+	IconGrid,
+	IconTable,
 } from "@/components/Icons";
 import {
 	Companies,
@@ -93,11 +99,13 @@ const Companies: NextPage<Props> = ({
 			selectedTotalEmployees !== totalEmployees[0]
 	);
 
+	const [tableLayout, setTableLayout] = useState(true);
+
 	const [page, setPage] = useStateParams<number>(
 		0,
 		"page",
 		(pageIndex) => pageIndex + 1 + "",
-		(pageIndex) => Number(pageIndex) - 1,
+		(pageIndex) => Number(pageIndex) - 1
 	);
 
 	const limit = 50;
@@ -128,11 +136,11 @@ const Companies: NextPage<Props> = ({
 		) {
 			setInitialLoad(false);
 		}
-		
+
 		onTrackView({
 			properties: filters,
 			pathname: router.pathname,
-		})
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		selectedTags,
@@ -221,8 +229,10 @@ const Companies: NextPage<Props> = ({
 	if (selectedLayer?.value) {
 		filters._and?.push({ layer: { _eq: selectedLayer.value } });
 	}
-	if (selectedCompanyFilters.value) {
-		filters._and?.push({ status_tags: { _contains: selectedCompanyFilters.value } });
+	if (selectedCompanyFilters?.value) {
+		filters._and?.push({
+			status_tags: { _contains: selectedCompanyFilters.value },
+		});
 	}
 	if (selectedAmountRaised.rangeEnd !== 0) {
 		filters._and?.push({
@@ -273,36 +283,33 @@ const Companies: NextPage<Props> = ({
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-					{selectedTags.length > 0 ? (
-						<div className="lg:flex items-baseline gap-2">
-							<h2 className="text-xl font-bold">
-								Companies ({numberWithCommas(companies_aggregate)})
-							</h2>
-							{selectedTags.length > 0 && (
-								<div className="flex flex-wrap items-baseline">
-									{selectedTags?.map((item, index: number) => {
-										return (
-											<span key={index} className="pr-1">
-												{item}
-												{index != selectedTags.length - 1 && ","}
-											</span>
-										);
-									})}
-									<div
-										className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
-										onClick={clearTagFilters}
-									>
-										clear tags filter
-										<IconX className="ml-0.5 h-3" />
-									</div>
+					<div className="lg:flex items-baseline gap-2">
+						<h2 className="text-xl font-bold">
+							Filter Companies ({numberWithCommas(companies_aggregate)})
+						</h2>
+						{selectedTags.length > 0 && (
+							<div className="flex flex-wrap items-baseline">
+								{selectedTags?.map((item, index: number) => {
+									return (
+										<span key={index} className="pr-1">
+											{item}
+											{index != selectedTags.length - 1 && ","}
+										</span>
+									);
+								})}
+								<div
+									className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
+									onClick={clearTagFilters}
+								>
+									clear tags filter
+									<IconX className="ml-0.5 h-3" />
 								</div>
-							)}
-						</div>
-					) : (
-						<h2 className="text-xl font-bold">All Companies</h2>
-					)}
+							</div>
+						)}
+					</div>
 
-					<section className="pt-2 pb-3">
+					{/* Filters */}
+					<section className="pt-2 pb-3 border-b border-slate-200 mb-6">
 						<div className="w-full flex flex-wrap justify-between lg:space-x-5 lg:flex-nowrap">
 							<InputSelect
 								className="md:shrink md:basis-0"
@@ -356,6 +363,27 @@ const Companies: NextPage<Props> = ({
 						)}
 					</section>
 
+					<ElemButton
+						onClick={() => setTableLayout(false)}
+						btn="white"
+						roundedFull={false}
+						className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
+							!tableLayout && "bg-slate-200"
+						}`}
+					>
+						<IconGrid className="w-5 h-5" />
+					</ElemButton>
+					<ElemButton
+						onClick={() => setTableLayout(true)}
+						btn="white"
+						roundedFull={false}
+						className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
+							tableLayout && "bg-slate-200"
+						}`}
+					>
+						<IconTable className="w-5 h-5" />
+					</ElemButton>
+
 					{companies?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
 							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -377,8 +405,46 @@ const Companies: NextPage<Props> = ({
 						</div>
 					)}
 
-					<div
-						className={`grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
+					{error ? (
+						<h4>Error loading companies</h4>
+					) : isLoading && !initialLoad ? (
+						<>
+							{tableLayout ? (
+								<PlaceholderTable />
+							) : (
+								<>
+									{Array.from({ length: 9 }, (_, i) => (
+										<PlaceholderCompanyCard key={i} />
+									))}
+								</>
+							)}
+						</>
+					) : (
+						<>
+							{tableLayout ? (
+								<CompaniesTable
+									filterByTag={filterByTag}
+									companies={companies}
+									itemsPerPage={limit}
+								/>
+							) : (
+								<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+									{companies?.map((company) => {
+										return (
+											<ElemCompanyCard
+												key={company.id}
+												company={company as Companies}
+												tagOnClick={filterByTag}
+											/>
+										);
+									})}
+								</div>
+							)}
+						</>
+					)}
+
+					{/* <div
+						className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
 					>
 						{error ? (
 							<h4>Error loading companies</h4>
@@ -399,7 +465,7 @@ const Companies: NextPage<Props> = ({
 								);
 							})
 						)}
-					</div>
+					</div> */}
 					<Pagination
 						shownItems={companies?.length}
 						totalItems={companies_aggregate}
