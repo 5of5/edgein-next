@@ -5,6 +5,7 @@ import { User } from "@/models/User";
 import { getUpdatedDiff } from "./helpers";
 
 export type ActionType = "Insert Data" | "Change Data";
+export type ResourceTypes = "companies" | "vc_firms" | "people" | "blockchains" | "coins" | "investment_rounds" | "investments" | "team_members" | "investors"
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {
@@ -121,7 +122,7 @@ export const insertActionDataChange = async (
   properties: Record<string, any>,
   userId?: Number,
 ) => {
-  await mutate({
+  const { data } = await mutate({
     mutation: `
       mutation InsertAction($object: actions_insert_input!) {
         insert_actions_one(
@@ -142,6 +143,7 @@ export const insertActionDataChange = async (
       },
     },
   });
+  return data?.[`insert_actions_one`];
 };
 
 export const onSubmitData = (type: string, transformInput: any) => {
@@ -209,6 +211,7 @@ export const mutateActionAndDataRaw = async (
   let validData: Array<Record<string, any>> = [];
   let invalidData: Array<Record<string, any>> = [];
   let setMainTableValues: Record<string, any> = {};
+  let action;
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
@@ -238,7 +241,7 @@ export const mutateActionAndDataRaw = async (
           accuracy_weight: 1,
         });
 
-        await insertActionDataChange(
+        action = await insertActionDataChange(
           actionType,
           resourceId,
           resourceType,
@@ -254,7 +257,7 @@ export const mutateActionAndDataRaw = async (
     await updateMainTable(resourceType, resourceId, setMainTableValues);
   }
 
-  return { id: resourceId, resources: invalidData.concat(insertResult) };
+  return { id: resourceId, action, resources: invalidData.concat(insertResult) };
 };
 
 
