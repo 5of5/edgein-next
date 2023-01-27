@@ -33,7 +33,8 @@ export const insertNotification = async ({
         id
         target_user_id
         event_type
-        resource_type
+        follow_resource_type
+        notification_resource_type
         company_id
         vc_firm_id
         message
