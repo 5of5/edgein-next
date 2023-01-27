@@ -95,7 +95,7 @@ export const processNotification = async (
   followResourceId: number,
   followedResourceType: 'companies' | 'vc_firms',
   notificationResourceType: ResourceTypes,
-  actionType: ActionType
+  actionType: ActionType,
   actionIds: number[]
 ) => {
   if (followResourceId && followedResourceType && actionType) {
