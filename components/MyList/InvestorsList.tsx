@@ -251,7 +251,42 @@ export const InvestorsList: FC<Props> = ({
 			},
 			{
 				Header: "Last Investment Date",
-				accessor: "vc_firm.latest_investment" as const,
+				accessor: (data: {
+					vc_firm: {
+						investments: {
+							[x: string]: any;
+							investment_round: Object;
+						};
+					};
+				}) => {
+					const investmentRounds = data.vc_firm?.investments?.flatMap(
+						(item: any) => item.investment_round
+					);
+
+					if (!investmentRounds) {
+						return 0;
+					} else {
+						const latestInvestment = investmentRounds
+							.sort(
+								(
+									a: { round_date: string | number | Date },
+									b: { round_date: string | number | Date }
+								) => {
+									const distantPast = new Date("April 2, 1900 00:00:00");
+									let dateA = a?.round_date
+										? new Date(a.round_date)
+										: distantPast;
+									let dateB = b?.round_date
+										? new Date(b.round_date)
+										: distantPast;
+									return dateA.getTime() - dateB.getTime();
+								}
+							)
+							.reverse();
+
+						return latestInvestment[0].round_date;
+					}
+				},
 				Cell: (props: any) => {
 					return (
 						<div>
