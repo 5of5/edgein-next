@@ -13,52 +13,19 @@ import {
 
 import CssBaseline from "@mui/material/CssBaseline";
 
-import {
-  CompanyCreate,
-  CompanyEdit,
-  CompanyList,
-} from "../../components/admin/company";
-
-import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
-
-import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 import ElemAppBar from "@/components/admin/ElemAppBar";
-import { getParentSubOrganizations } from "@/utils/resourceLink";
 import {
-  InvestmentRoundCreate,
-  InvestmentRoundEdit,
-  InvestmentRoundList,
-} from "../../components/admin/investmentRound";
+  DisabledEmailList,
+  DisabledEmailEdit,
+  DisabledEmailCreate,
+} from "../../components/admin/disabledEmail";
+import { UserList, UserEdit } from "../../components/admin/user";
 import {
-  InvestmentList,
-  InvestmentEdit,
-  InvestmentCreate,
-} from "../../components/admin/investment";
-import {
-  InvestorList,
-  InvestorEdit,
-  InvestorCreate,
-} from "../../components/admin/investor";
-import {
-  PersonList,
-  PersonEdit,
-  PersonCreate,
-} from "../../components/admin/person";
-import {
-  TeamMemberList,
-  TeamMemberEdit,
-  TeamMemberCreate,
-} from "../../components/admin/teamMember";
-import {
-  VcFirmCreate,
-  VcFirmEdit,
-  VcFirmList,
-} from "../../components/admin/vcFirm";
-import {
-  BlockchainList,
-  BlockchainEdit,
-  BlockchainCreate,
-} from "../../components/admin/blockchain";
+  DataPartnerList,
+  DataPartnerCreate,
+  DataPartnerEdit,
+} from "../../components/admin/dataPartner";
 import { useAuth } from "../../hooks/useAuth";
 import { onSubmitData } from "@/utils/submitData";
 
@@ -75,96 +42,14 @@ type NullableInputs = {
 };
 
 const nullableInputs: NullableInputs = {
-  investments: ["person_id", "vc_firm_id", "round_id"],
   users: ["person_id"],
 };
 
-const isTypeReferenceToResourceLink = (type: string) => {
-  return ["companies", "vc_firms"].includes(type);
-};
-
-const extractFieldsFromQuery = (queryAst: any) => {
-  return queryAst.definitions[0].selectionSet.selections;
-};
-
-// Define the additional fields that we want.
-const EXTENDED_GET_LIST_INVESTMENT_ROUNDS = gql`
-  {
-    company {
-      name
-    }
-  }
-`;
-
-const EXTENDED_GET_RESOURCE_LINKS = gql`
-  {
-    to_links {
-			link_type
-      from_company {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-      }
-      from_vc_firm {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-      }
-    }
-    from_links {
-			link_type
-      to_company {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-      }
-      to_vc_firm {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
-      }
-    }	
-  }
-`;
-
 const customBuildFields: BuildFields = (type, fetchType) => {
-  const resourceName = type.name;
-
   // First take the default fields (all, but no related or nested).
   const defaultFields = buildFields(type, fetchType);
 
-  if (resourceName === "investment_rounds") {
-    const relatedEntities = extractFieldsFromQuery(
-      EXTENDED_GET_LIST_INVESTMENT_ROUNDS
-    );
-    defaultFields.push(...relatedEntities);
-  }
-
-  if (isTypeReferenceToResourceLink(resourceName)) {
-    const relatedEntities = extractFieldsFromQuery(
-      EXTENDED_GET_RESOURCE_LINKS
-    );
-    defaultFields.push(...relatedEntities);
-  }
-
   // Extend other queries for other resources/fetchTypes here...
-
   return defaultFields;
 };
 
@@ -227,12 +112,6 @@ const AdminApp = () => {
         ...dataProvider,
         getList: async (type, obj) => {
           let { data, ...metadata } = await dataProvider.getList(type, obj);
-          if (isTypeReferenceToResourceLink(type)) {
-            data = data.map((val) => ({
-              ...val,
-              ...getParentSubOrganizations(val),
-            }));
-          }
           return {
             data,
             ...metadata,
@@ -293,58 +172,17 @@ const AdminApp = () => {
     >
       <CssBaseline />
       <Resource
-        name="blockchains"
-        list={BlockchainList}
-        edit={BlockchainEdit}
-        create={BlockchainCreate}
+        name="disabled_emails"
+        list={DisabledEmailList}
+        edit={DisabledEmailEdit}
+        create={DisabledEmailCreate}
       />
+      <Resource name="users" list={UserList} edit={UserEdit} />
       <Resource
-        name="coins"
-        list={CoinList}
-        edit={CoinEdit}
-        create={CoinCreate}
-      />
-      <Resource
-        name="companies"
-        list={CompanyList}
-        edit={CompanyEdit}
-        create={CompanyCreate}
-      />
-      <Resource
-        name="people"
-        list={PersonList}
-        edit={PersonEdit}
-        create={PersonCreate}
-      />
-      <Resource
-        name="vc_firms"
-        list={VcFirmList}
-        edit={VcFirmEdit}
-        create={VcFirmCreate}
-      />
-      <Resource
-        name="investment_rounds"
-        list={InvestmentRoundList}
-        edit={InvestmentRoundEdit}
-        create={InvestmentRoundCreate}
-      />
-      <Resource
-        name="investments"
-        list={InvestmentList}
-        edit={InvestmentEdit}
-        create={InvestmentCreate}
-      />
-      <Resource
-        name="team_members"
-        list={TeamMemberList}
-        edit={TeamMemberEdit}
-        create={TeamMemberCreate}
-      />
-      <Resource
-        name="investors"
-        list={InvestorList}
-        edit={InvestorEdit}
-        create={InvestorCreate}
+        name="data_partners"
+        list={DataPartnerList}
+        edit={DataPartnerEdit}
+        create={DataPartnerCreate}
       />
     </Admin>
   );
