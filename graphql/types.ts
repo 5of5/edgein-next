@@ -16392,6 +16392,13 @@ export type GetNotesQueryVariables = Exact<{
 
 export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
 
+export type GetNotificationsForUserQueryVariables = Exact<{
+  user: Scalars['Int'];
+}>;
+
+
+export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> };
+
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -17141,6 +17148,54 @@ useGetNotesQuery.getKey = (variables: GetNotesQueryVariables) => ['GetNotes', va
 ;
 
 useGetNotesQuery.fetcher = (variables: GetNotesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, variables, options);
+export const GetNotificationsForUserDocument = `
+    query GetNotificationsForUser($user: Int!) {
+  notifications(
+    where: {target_user_id: {_eq: $user}}
+    order_by: {created_at: desc}
+    limit: 10
+  ) {
+    read
+    created_at
+    event_type
+    message
+    read_at
+    follow_resource_type
+    notification_resource_type
+    company {
+      id
+      name
+      slug
+      logo
+    }
+    vc_firm {
+      id
+      name
+      slug
+      logo
+    }
+  }
+}
+    `;
+export const useGetNotificationsForUserQuery = <
+      TData = GetNotificationsForUserQuery,
+      TError = Error
+    >(
+      variables: GetNotificationsForUserQueryVariables,
+      options?: UseQueryOptions<GetNotificationsForUserQuery, TError, TData>
+    ) =>
+    useQuery<GetNotificationsForUserQuery, TError, TData>(
+      ['GetNotificationsForUser', variables],
+      fetcher<GetNotificationsForUserQuery, GetNotificationsForUserQueryVariables>(GetNotificationsForUserDocument, variables),
+      options
+    );
+useGetNotificationsForUserQuery.document = GetNotificationsForUserDocument;
+
+
+useGetNotificationsForUserQuery.getKey = (variables: GetNotificationsForUserQueryVariables) => ['GetNotificationsForUser', variables];
+;
+
+useGetNotificationsForUserQuery.fetcher = (variables: GetNotificationsForUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotificationsForUserQuery, GetNotificationsForUserQueryVariables>(GetNotificationsForUserDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {

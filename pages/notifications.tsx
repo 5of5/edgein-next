@@ -5,9 +5,15 @@ import { ElemButton } from "@/components/ElemButton";
 import { IconCheck } from "@/components/Icons";
 import { formatDate } from "@/utils";
 import { ElemPhoto } from "@/components/ElemPhoto";
+import { GetNotificationsForUserQuery, useGetNotificationsForUserQuery } from "@/graphql/types";
+
+const getLink = (notification: GetNotificationsForUserQuery['notifications'][0] ) => notification.company ? `/${notification.follow_resource_type}/${notification.company?.slug}` : `/${notification.follow_resource_type}/${notification.vc_firm?.slug}`
 
 const Notifications: NextPage = () => {
 	const { user } = useAuth();
+
+	const { data } = useGetNotificationsForUserQuery({ user: user?.id || 0})
+	const notifications = data?.notifications;
 
 	const fakeNotifications = [
 		{
@@ -81,11 +87,12 @@ const Notifications: NextPage = () => {
 					</button>
 				</div>
 				<ul className="-mx-5 my-2 border-y border-slate-100 divide-y divide-slate-100">
-					{fakeNotifications?.map((notification) => {
+					{notifications?.map((notification) => {
+						const organization = notification.company ? notification.company : notification.vc_firm
 						return (
 							<a
-								href={`/${notification.organizationType}/${notification.organization.slug}`}
-								key={notification.organization.id}
+								href={getLink(notification)}
+								key={notification.company?.id || notification?.vc_firm?.id}
 								className="flex items-center justify-between px-5 py-1 shrink-0 w-full hover:bg-slate-100"
 							>
 								<div className="flex items-center">
@@ -95,21 +102,21 @@ const Notifications: NextPage = () => {
 										}`}
 									></div>
 									<ElemPhoto
-										photo={notification.organization.logo}
+										photo={organization?.logo}
 										wrapClass="flex items-center justify-center shrink-0 w-12 h-12 ml-2 p-1 bg-white rounded border border-slate-200"
 										imgClass="object-fit max-w-full max-h-full"
 										imgAlt="Company Name"
 									/>
 									<div className="ml-2">
 										<strong className="pr-1">
-											{notification.organization.name}
+											{organization?.name}
 										</strong>
-										{notification.update}
+										{notification.message}
 									</div>
 								</div>
 
 								<div className="shrink-0 text-xs font-bold text-primary-500 sm:justify-end">
-									{formatDate(notification.timestamp, {
+									{formatDate(notification.created_at, {
 										month: "short",
 										day: "2-digit",
 										// year: "numeric",
