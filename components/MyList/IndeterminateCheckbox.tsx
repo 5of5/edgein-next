@@ -15,11 +15,13 @@ export const useCheckboxes = (hooks: Hooks) => {
 	hooks.visibleColumns.push((columns: Column[]) => [
 		{
 			id: "selection",
-			disableResizing: true,
 			minWidth: 36,
 			width: 36,
 			maxWidth: 36,
+			disableResizing: true,
 			disableSortBy: true,
+			disableDropdown: true,
+			disableHiding: true,
 			className: "checkbox",
 			/* eslint-disable react/display-name */
 			Header: ({ getToggleAllRowsSelectedProps }: HeaderProps<{}>) => (
@@ -66,7 +68,7 @@ export const IndeterminateCheckbox = forwardRef<HTMLInputElement, Props>(
 					ref={resolvedRef}
 					{...rest}
 					onChange={onChange}
-					onClick={(e) => e.stopPropagation()}
+					//onClick={(e) => e.stopPropagation()}
 					data-indeterminate={
 						isIndeterminate ? "indeterminate" : "not-indeterminate"
 					}
