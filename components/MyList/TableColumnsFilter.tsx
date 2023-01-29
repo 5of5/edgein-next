@@ -24,7 +24,7 @@ export const TableColumnsFilter: FC<Props> = ({
 					<div className="font-bold px-3 py-2 text-sm border-b border-slate-100">
 						Edit columns
 					</div>
-					<ul className="overflow-y-auto no-scrollbar divide-y divide-slate-100">
+					<ul className="overflow-y-auto scrollbar-hide divide-y divide-slate-100">
 						{columns?.map((column: any) => {
 							return column.disableHiding ? (
 								""
