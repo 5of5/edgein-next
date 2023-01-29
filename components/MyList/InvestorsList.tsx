@@ -1,5 +1,5 @@
 import { Follows_Vc_Firms } from "@/graphql/types";
-import { compact, last } from "lodash";
+import { compact, first, last } from "lodash";
 import moment from "moment-timezone";
 import React, { FC, useEffect, useState } from "react";
 import { Menu } from "@headlessui/react";
@@ -91,6 +91,28 @@ export const InvestorsList: FC<Props> = ({
 	const sortedTags = reducedTagsArray.sort(
 		(a: { count: number }, b: { count: number }) => b.count - a.count
 	);
+
+	const getLatestRound = (theRounds: any) => {
+		const latestRound: any = first(
+			theRounds
+				.sort(
+					(
+						a: { round_date: string | number | Date },
+						b: { round_date: string | number | Date }
+					) => {
+						const distantPast = new Date("April 2, 1900 00:00:00");
+						let dateA = a?.round_date ? new Date(a.round_date) : distantPast;
+						let dateB = b?.round_date ? new Date(b.round_date) : distantPast;
+						return dateA.getTime() - dateB.getTime();
+					}
+				)
+				.reverse()
+		);
+
+		//const out = latestRound?.round_date ? latestRound?.round_date : 0;
+
+		return latestRound;
+	};
 
 	const defaultColumn = React.useMemo(
 		() => ({
@@ -266,25 +288,11 @@ export const InvestorsList: FC<Props> = ({
 					if (!investmentRounds) {
 						return 0;
 					} else {
-						const latestInvestment = investmentRounds
-							.sort(
-								(
-									a: { round_date: string | number | Date },
-									b: { round_date: string | number | Date }
-								) => {
-									const distantPast = new Date("April 2, 1900 00:00:00");
-									let dateA = a?.round_date
-										? new Date(a.round_date)
-										: distantPast;
-									let dateB = b?.round_date
-										? new Date(b.round_date)
-										: distantPast;
-									return dateA.getTime() - dateB.getTime();
-								}
-							)
-							.reverse();
+						const latestRound = getLatestRound(investmentRounds);
 
-						return latestInvestment[0].round_date;
+						const out = latestRound?.round_date ? latestRound?.round_date : 0;
+
+						return out;
 					}
 				},
 				Cell: (props: any) => {
@@ -313,31 +321,45 @@ export const InvestorsList: FC<Props> = ({
 					if (!investmentRounds) {
 						return 0;
 					} else {
-						const latestInvestment = investmentRounds
-							.sort(
-								(
-									a: { round_date: string | number | Date },
-									b: { round_date: string | number | Date }
-								) => {
-									const distantPast = new Date("April 2, 1900 00:00:00");
-									let dateA = a?.round_date
-										? new Date(a.round_date)
-										: distantPast;
-									let dateB = b?.round_date
-										? new Date(b.round_date)
-										: distantPast;
-									return dateA.getTime() - dateB.getTime();
-								}
-							)
-							.reverse();
+						const latestRound = getLatestRound(investmentRounds);
 
-						return latestInvestment[0].round;
+						const out = latestRound?.round ? latestRound?.round : 0;
+
+						return out;
 					}
 				},
 				Cell: (props: any) => {
 					return <div>{props.value ? props.value : emptyCell}</div>;
 				},
 			},
+			// {
+			// 	Header: "Last Investment Amount",
+			// 	accessor: (data: {
+			// 		vc_firm: {
+			// 			investments: {
+			// 				[x: string]: any;
+			// 				investment_round: Object;
+			// 			};
+			// 		};
+			// 	}) => {
+			// 		const investmentRounds = data.vc_firm?.investments?.flatMap(
+			// 			(item: any) => item.investment_round
+			// 		);
+
+			// 		if (!investmentRounds) {
+			// 			return 0;
+			// 		} else {
+			// 			const latestRound = getLatestRound(investmentRounds);
+
+			// 			const out = latestRound?.amount ? latestRound?.amount : 0;
+
+			// 			return out;
+			// 		}
+			// 	},
+			// 	Cell: (props: any) => {
+			// 		return <div>{props.value ? props.value : emptyCell}</div>;
+			// 	},
+			// },
 			{
 				Header: "Reactions",
 				accessor: "vc_firm" as const,
