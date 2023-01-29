@@ -47,11 +47,10 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const crapId =
 		find(lists, (list) => "crap" === getNameFromListName(list))?.id || 0;
 
-	const getCustomLists = lists
-		?.filter(
-			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
-		)
-		.sort((a, b) => (a.name < b.name ? -1 : 1));
+	const getCustomLists = lists?.filter(
+		(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
+	);
+	//.sort((a, b) => (a.name < b.name ? -1 : 1));
 
 	const displayedCustomLists = getCustomLists.slice(
 		0,
