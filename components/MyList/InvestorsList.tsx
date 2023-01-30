@@ -478,7 +478,7 @@ export const InvestorsList: FC<Props> = ({
 				)}
 			</div>
 
-			{sortedTags.length > 0 && (
+			{/* {sortedTags.length > 0 && (
 				<div className="sm:flex items-start w-full mb-3">
 					<div className="font-bold text-sm mr-2 py-0.5">Tags:</div>
 					<div className="flex gap-2 flex-wrap">
@@ -507,7 +507,7 @@ export const InvestorsList: FC<Props> = ({
 						)}
 					</div>
 				</div>
-			)}
+			)} */}
 
 			{page.length > 0 && (
 				<div className="flex items-center space-x-2 mb-2">
