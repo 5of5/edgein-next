@@ -137,7 +137,7 @@ export const markDataRawAsInactive = async (resourceType: string, resourceId: Nu
   await mutate({
     mutation: `
       mutation mark_data_raw_as_inactive($resourceType: String!, $resourceId: Int!) {
-        update_${resourceType}(
+        update_data_raw(
           _set: { is_active: false },
           where: {
             _and: [
@@ -195,7 +195,7 @@ export const onSubmitData = (
 ) => {
   const resource =
     method === "DELETE"
-      ? {}
+      ? transformInput.previousData
       : getUpdatedDiff(transformInput.previousData, transformInput.data);
   return fetch("/api/submit_data/", {
     method,
@@ -261,6 +261,7 @@ export const mutateActionAndDataRaw = async (
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
+    console.log('@value', value, notInsertValueType(value))
     if (
       (actionType === "Insert Data" && !notInsertValueType(value)) ||
       actionType === "Change Data"
@@ -323,4 +324,3 @@ export const getCompanyByRoundId = async (round_id: number) => {
   });
   return investment_rounds[0];
 }
-

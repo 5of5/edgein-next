@@ -1,5 +1,5 @@
 import { Data_Partners } from "@/graphql/types";
-import { processNotification } from "@/utils/notifications";
+import { processNotification, processNotificationOnDelete } from "@/utils/notifications";
 import {
 	partnerLookUp,
 	resourceIdLookup,
@@ -76,69 +76,70 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		identifierColumn
 	);
 
-	if (req.method !== "DELETE") {
-		const partnerId: number = partner ? partner.id : 0
-		let dataId = resourceId;
-		let actionType: ActionType = "Change Data";
-
-		if (resourceId === undefined) {
-			// create a new one
-			const response = await insertResourceData(resourceType, resourceObj);
-			dataId = response?.id;
-		}
-
-		const insertResult = await mutateActionAndDataRaw(
-			partnerId,
-			user,
-			NODE_NAME[resourceType],
-			dataId,
-			resourceObj,
-			resourceType,
-			actionType,
-		);
-
-		if (resourceId === undefined) {
-			actionType = "Insert Data";
-
-			if (resourceType === "investment_rounds" || resourceType === "team_members") {
-				await processNotification(resourceObj?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
-			}
-
-			if (resourceType === "investors") {
-				await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
-			}
-
-			if (resourceType === "investments") {
-				if (resourceObj?.round_id) {
-					const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
-					await processNotification(investmentRound?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
-				}
-
-				await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
-			}
-		} else {
-			// updated exists one
-			if (resourceType === "companies" || resourceType === "vc_firms") {
-				/** Insert notification */
-				await processNotification(resourceId, resourceType, resourceType, actionType, [insertResult?.action?.id]);
-			}
-		}
-
-		res.send(insertResult);
-	}
-
-	if (req.method === "DELETE" && resourceId) {
+	if (req.method === "DELETE") {
     await deleteMainTableRecord(resourceType, resourceId);
     const action = await insertActionDataChange(
       "Delete Data",
       resourceId,
       resourceType,
-      resourceObj,
+      {},
       user?.id
     );
 		await markDataRawAsInactive(resourceType, resourceId);
-		return res.send(action);
+		await processNotificationOnDelete(resourceType, resourceId, action?.id, resourceObj);
+		return res.send(resourceObj);
   }
+
+	const partnerId: number = partner ? partner.id : 0
+	let dataId = resourceId;
+	let actionType: ActionType = "Change Data";
+
+	if (resourceId === undefined) {
+		// create a new one
+		actionType = "Insert Data";
+
+		const response = await insertResourceData(resourceType, resourceObj);
+		dataId = response?.id;
+	}
+
+	const insertResult = await mutateActionAndDataRaw(
+		partnerId,
+		user,
+		NODE_NAME[resourceType],
+		dataId,
+		resourceObj,
+		resourceType,
+		actionType,
+	);
+
+	if (resourceId === undefined) {
+		if (resourceType === "investment_rounds" || resourceType === "team_members") {
+			await processNotification(resourceObj?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+		}
+
+		if (resourceType === "investors") {
+			await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+		}
+
+		if (resourceType === "investments") {
+			if (resourceObj?.round_id) {
+				const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
+				await processNotification(investmentRound?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+			}
+
+			await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+		}
+	} else {
+		// updated exists one
+		if (resourceType === "companies" || resourceType === "vc_firms") {
+			/** Insert notification */
+			await processNotification(resourceId, resourceType, resourceType, actionType, [insertResult?.action?.id]);
+		}
+	}
+
+	return res.send(insertResult);
+
+	
 };
 
 export default handler;
