@@ -254,13 +254,20 @@ const AdminApp = () => {
           if (["disabled_emails", "users"].includes(type)) {
             return dataProvider.create(type, nullInputTransform(type, obj));
           }
-          return onSubmitData(type, nullInputTransform(type, obj));
+          return onSubmitData(type, nullInputTransform(type, obj), "POST");
         },
         update: (type, obj) => {
           if (["disabled_emails", "users"].includes(type)) {
             return dataProvider.create(type, nullInputTransform(type, obj));
           }
-          return onSubmitData(type, nullInputTransform(type, obj));
+          return onSubmitData(type, nullInputTransform(type, obj), "PUT");
+        },
+        delete: (type, obj) => {
+          console.log('@transformInput', obj)
+          if (["disabled_emails", "users"].includes(type)) {
+            return dataProvider.delete(type, nullInputTransform(type, obj));
+          }
+          return onSubmitData(type, nullInputTransform(type, obj), "DELETE");
         },
       });
     };

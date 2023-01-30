@@ -9,6 +9,9 @@ import {
 	ActionType,
 	getCompanyByRoundId,
 	ResourceTypes,
+	deleteMainTableRecord,
+	insertActionDataChange,
+	markDataRawAsInactive,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -26,8 +29,8 @@ const NODE_NAME: Record<ResourceTypes, string> = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	if (req.method !== "POST")
-		return res.status(405).send({ message: "Only POST requests allowed" });
+	if (!["POST", "PUT", "DELETE"].includes(req.method as string))
+		return res.status(405).send({ message: "Method is not allowed" });
 
 	const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -66,60 +69,76 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
+
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
 		resourceIdentifier,
 		identifierColumn
 	);
 
-	const partnerId: number = partner ? partner.id : 0
-	let dataId = resourceId;
-	let actionType: ActionType = "Change Data";
+	if (req.method !== "DELETE") {
+		const partnerId: number = partner ? partner.id : 0
+		let dataId = resourceId;
+		let actionType: ActionType = "Change Data";
 
-	if (resourceId === undefined) {
-		// create a new one
-		const response = await insertResourceData(resourceType, resourceObj);
-		dataId = response?.id;
-	}
-
-	const insertResult = await mutateActionAndDataRaw(
-		partnerId,
-		user,
-		NODE_NAME[resourceType],
-		dataId,
-		resourceObj,
-		resourceType,
-		actionType,
-	);
-
-	if (resourceId === undefined) {
-		actionType = "Insert Data";
-
-		if (resourceType === "investment_rounds" || resourceType === "team_members") {
-			await processNotification(resourceObj?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+		if (resourceId === undefined) {
+			// create a new one
+			const response = await insertResourceData(resourceType, resourceObj);
+			dataId = response?.id;
 		}
 
-		if (resourceType === "investors") {
-			await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
-		}
+		const insertResult = await mutateActionAndDataRaw(
+			partnerId,
+			user,
+			NODE_NAME[resourceType],
+			dataId,
+			resourceObj,
+			resourceType,
+			actionType,
+		);
 
-		if (resourceType === "investments") {
-			if (resourceObj?.round_id) {
-				const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
-				await processNotification(investmentRound?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+		if (resourceId === undefined) {
+			actionType = "Insert Data";
+
+			if (resourceType === "investment_rounds" || resourceType === "team_members") {
+				await processNotification(resourceObj?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
 			}
 
-			await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+			if (resourceType === "investors") {
+				await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+			}
+
+			if (resourceType === "investments") {
+				if (resourceObj?.round_id) {
+					const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
+					await processNotification(investmentRound?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
+				}
+
+				await processNotification(resourceObj?.vc_firm_id, "vc_firms", resourceType, actionType, [insertResult?.action?.id]);
+			}
+		} else {
+			// updated exists one
+			if (resourceType === "companies" || resourceType === "vc_firms") {
+				/** Insert notification */
+				await processNotification(resourceId, resourceType, resourceType, actionType, [insertResult?.action?.id]);
+			}
 		}
-	} else {
-		// updated exists one
-		if (resourceType === "companies" || resourceType === "vc_firms") {
-			/** Insert notification */
-			await processNotification(resourceId, resourceType, resourceType, actionType, [insertResult?.action?.id]);
-		}
+
+		res.send(insertResult);
 	}
 
-	res.send(insertResult);
+	if (req.method === "DELETE" && resourceId) {
+    await deleteMainTableRecord(resourceType, resourceId);
+    const action = await insertActionDataChange(
+      "Delete Data",
+      resourceId,
+      resourceType,
+      resourceObj,
+      user?.id
+    );
+		await markDataRawAsInactive(resourceType, resourceId);
+		return res.send(action);
+  }
 };
 
 export default handler;

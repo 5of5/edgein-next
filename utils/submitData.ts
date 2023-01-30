@@ -4,7 +4,7 @@ import { Data_Fields } from "@/graphql/types";
 import { User } from "@/models/User";
 import { getUpdatedDiff } from "./helpers";
 
-export type ActionType = "Insert Data" | "Change Data";
+export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
 export type ResourceTypes = "companies" | "vc_firms" | "people" | "blockchains" | "coins" | "investment_rounds" | "investments" | "team_members" | "investors"
 
 export const partnerLookUp = async (apiKey: string) => {
@@ -115,6 +115,48 @@ export const updateMainTable = async (resourceType: string, id: Number, setValue
 	});
 };
 
+export const deleteMainTableRecord = async (resourceType: string, id: Number) => {
+  await mutate({
+    mutation: `
+      mutation delete_main_table_record($id: Int!) {
+        delete_${resourceType}(where: {id: {_eq: $id}}) {
+          affected_rows
+          returning {
+            id
+          }
+        }
+      }
+    `,
+    variables: {
+      id,
+    },
+  });
+};
+
+export const markDataRawAsInactive = async (resourceType: string, resourceId: Number) => {
+  await mutate({
+    mutation: `
+      mutation mark_data_raw_as_inactive($resourceType: String!, $resourceId: Int!) {
+        update_${resourceType}(
+          _set: { is_active: false },
+          where: {
+            _and: [
+              {resource: {_eq: $resourceType}},
+              {resource_id: {_eq: $resourceId}}
+            ]
+          }
+        ) {
+          affected_rows
+        }
+      }
+    `,
+    variables: {
+      resourceType,
+      resourceId,
+    },
+  });
+};
+
 export const insertActionDataChange = async (
   actionType: ActionType,
   resourceId: Number,
@@ -146,13 +188,17 @@ export const insertActionDataChange = async (
   return data?.[`insert_actions_one`];
 };
 
-export const onSubmitData = (type: string, transformInput: any) => {
-  const resource = getUpdatedDiff(
-    transformInput.previousData,
-    transformInput.data
-  );
+export const onSubmitData = (
+  type: string,
+  transformInput: any,
+  method: "POST" | "PUT" | "DELETE",
+) => {
+  const resource =
+    method === "DELETE"
+      ? {}
+      : getUpdatedDiff(transformInput.previousData, transformInput.data);
   return fetch("/api/submit_data/", {
-    method: "POST",
+    method,
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
