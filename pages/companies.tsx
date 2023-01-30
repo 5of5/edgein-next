@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
+import { Popover, RadioGroup } from "@headlessui/react";
 import {
 	PlaceholderCompanyCard,
 	PlaceholderTable,
@@ -270,6 +271,34 @@ const Companies: NextPage<Props> = ({
 		? companiesCount
 		: companiesData?.companies_aggregate?.aggregate?.count || 0;
 
+	// New Filters UI data
+
+	const tagsMethods = [
+		{ id: "api", title: "API" },
+		{ id: "platform", title: "Platform" },
+		{ id: "dev-tools", title: "Dev Tools" },
+		{ id: "tag1", title: "Tag 1" },
+		{ id: "tag2", title: "Tag 2" },
+	];
+
+	const foundedDates = [
+		{ id: "any", name: "Any", founded_date: "" },
+		{ id: "past-30-days", name: "Past 30 Days", founded_date: "" },
+		{ id: "past-60-days", name: "Past 60 Days", founded_date: "" },
+		{ id: "past-90-days", name: "Past 90 Days", founded_date: "" },
+		{ id: "custom-range", name: "Custom Range", founded_date: "" },
+	];
+
+	const [selected, setSelected] = useState(foundedDates[0]);
+
+	const employeeCount = [
+		{ id: "any", name: "Any", founded_date: "" },
+		{ id: "past-30-days", name: "Past 30 Days", founded_date: "" },
+		{ id: "past-60-days", name: "Past 60 Days", founded_date: "" },
+		{ id: "past-90-days", name: "Past 90 Days", founded_date: "" },
+		{ id: "custom-range", name: "Custom Range", founded_date: "" },
+	];
+
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
@@ -363,26 +392,178 @@ const Companies: NextPage<Props> = ({
 						)}
 					</section>
 
-					<ElemButton
-						onClick={() => setTableLayout(false)}
-						btn="white"
-						roundedFull={false}
-						className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
-							!tableLayout && "bg-slate-200"
-						}`}
-					>
-						<IconGrid className="w-5 h-5" />
-					</ElemButton>
-					<ElemButton
-						onClick={() => setTableLayout(true)}
-						btn="white"
-						roundedFull={false}
-						className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
-							tableLayout && "bg-slate-200"
-						}`}
-					>
-						<IconTable className="w-5 h-5" />
-					</ElemButton>
+					{/* New Filters UI */}
+					<section className="w-full flex items-center justify-between mb-6 pb-3 border-b border-slate-200">
+						<div className="flex items-center space-x-3">
+							<div className="font-bold">Filters:</div>
+							<Popover>
+								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+									<div>Industry</div>
+								</Popover.Button>
+								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
+									<div className="font-bold text-sm px-3 py-2">
+										Filter by Industry
+									</div>
+									<ul className="grid grid-cols-2 overflow-y-auto no-scrollbar divide-y divide-slate-100">
+										{tagsMethods.map((tagMethod) => (
+											<li
+												key={tagMethod.id}
+												className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
+											>
+												<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
+													<input
+														id={tagMethod.id}
+														type="checkbox"
+														className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+													/>
+													<div>{tagMethod.title}</div>
+												</label>
+											</li>
+										))}
+									</ul>
+									<div className="px-3 py-2 border-t border-black/5">
+										<button className="text-primary-500">Clear</button>
+									</div>
+								</Popover.Panel>
+							</Popover>
+							<Popover>
+								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+									<div>Status</div>
+								</Popover.Button>
+								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
+									<div className="font-bold text-sm px-3 py-2">
+										Organization status
+									</div>
+									<ul className="overflow-y-auto no-scrollbar divide-y divide-slate-100">
+										<li className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100">
+											<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
+												<input
+													type="checkbox"
+													className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+												/>
+												<div>Trending</div>
+											</label>
+										</li>
+										<li className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100">
+											<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
+												<input
+													type="checkbox"
+													className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+												/>
+												<div>Acquired</div>
+											</label>
+										</li>
+										<li className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100">
+											<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
+												<input
+													type="checkbox"
+													className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+												/>
+												<div>Dead</div>
+											</label>
+										</li>
+									</ul>
+									<div className="px-3 py-2 border-t border-black/5">
+										<button className="text-primary-500">Clear</button>
+									</div>
+								</Popover.Panel>
+							</Popover>
+
+							<Popover>
+								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+									<div>Founded</div>
+								</Popover.Button>
+								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
+									<div className="font-bold text-sm px-3 py-2">
+										Founded date
+									</div>
+									<fieldset>
+										<div className="overflow-y-auto no-scrollbar divide-y divide-slate-100">
+											{foundedDates.map((foundedDate) => (
+												<label
+													key={foundedDate.id}
+													className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100"
+												>
+													<div className="flex h-5 items-center">
+														<input
+															id={foundedDate.id}
+															name="founded-date"
+															type="radio"
+															defaultChecked={foundedDate.id === "any"}
+															className="h-4 w-4 border-slate-200 text-primary-500 focus:ring-primary-500"
+														/>
+													</div>
+													<div className="text-sm font-medium">
+														{foundedDate.name}
+													</div>
+												</label>
+											))}
+										</div>
+									</fieldset>
+									<div className="px-3 py-2 border-t border-black/5">
+										<button className="text-primary-500">Clear</button>
+									</div>
+								</Popover.Panel>
+							</Popover>
+
+							<Popover>
+								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+									<div>Funding</div>
+								</Popover.Button>
+								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
+									<div className="font-bold text-sm px-3 py-2">
+										Funding Amount
+									</div>
+									<div className="font-medium px-3 py-2">
+										Min-Max Range Slider will go here
+									</div>
+									<div className="px-3 py-2 border-t border-black/5">
+										<button className="text-primary-500">Clear</button>
+									</div>
+								</Popover.Panel>
+							</Popover>
+
+							<Popover>
+								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+									<div>Employees</div>
+								</Popover.Button>
+								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
+									<div className="font-bold text-sm px-3 py-2">
+										Employee Count
+									</div>
+									<div className="font-medium px-3 py-2">
+										Min-Max Range Slider will go here
+									</div>
+									<div className="px-3 py-2 border-t border-black/5">
+										<button className="text-primary-500">Clear</button>
+									</div>
+								</Popover.Panel>
+							</Popover>
+						</div>
+
+						<div>
+							<ElemButton
+								onClick={() => setTableLayout(false)}
+								btn="white"
+								roundedFull={false}
+								className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
+									!tableLayout && "bg-slate-200"
+								}`}
+							>
+								<IconGrid className="w-5 h-5" />
+							</ElemButton>
+							<ElemButton
+								onClick={() => setTableLayout(true)}
+								btn="white"
+								roundedFull={false}
+								className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
+									tableLayout && "bg-slate-200"
+								}`}
+							>
+								<IconTable className="w-5 h-5" />
+							</ElemButton>
+						</div>
+					</section>
 
 					{companies?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">

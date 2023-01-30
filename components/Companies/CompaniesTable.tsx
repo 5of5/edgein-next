@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import moment from "moment-timezone";
-import { orderBy } from "lodash";
+import { orderBy, first } from "lodash";
 import {
 	IconSortUp,
 	IconSortDown,
@@ -42,6 +42,26 @@ export const CompaniesTable: FC<Props> = ({
 	filterByTag,
 	companies,
 }) => {
+	const getLatestRound = (theRounds: any) => {
+		const latestRound: any = first(
+			theRounds
+				.sort(
+					(
+						a: { round_date: string | number | Date },
+						b: { round_date: string | number | Date }
+					) => {
+						const distantPast = new Date("April 2, 1900 00:00:00");
+						let dateA = a?.round_date ? new Date(a.round_date) : distantPast;
+						let dateB = b?.round_date ? new Date(b.round_date) : distantPast;
+						return dateA.getTime() - dateB.getTime();
+					}
+				)
+				.reverse()
+		);
+
+		return latestRound;
+	};
+
 	const defaultColumn = React.useMemo(
 		() => ({
 			minWidth: 100,
@@ -190,18 +210,25 @@ export const CompaniesTable: FC<Props> = ({
 				width: 140,
 			},
 			{
+				Header: "# Funding Rounds",
+				accessor: "investment_rounds.length" as const,
+				Cell: (props: any) => {
+					const numberOfRounds = props.value;
+					return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
+				},
+				width: 100,
+			},
+			{
 				Header: "Last Funding Date",
 				accessor: (data: { investment_rounds: Array<any> }) => {
-					if (data.investment_rounds.length > 0) {
-						const roundsByLatestDate = orderBy(
-							data.investment_rounds,
-							(a) => new Date(a.round_date),
-							["desc"]
-						);
-
-						return roundsByLatestDate[0].round_date;
-					} else {
+					if (!data.investment_rounds) {
 						return 0;
+					} else {
+						const latestRound = getLatestRound(data.investment_rounds);
+
+						const out = latestRound?.round_date ? latestRound?.round_date : 0;
+
+						return out;
 					}
 				},
 				Cell: (props: any) => {
@@ -216,16 +243,14 @@ export const CompaniesTable: FC<Props> = ({
 			{
 				Header: "Last Funding Total",
 				accessor: (data: { investment_rounds: Array<any> }) => {
-					if (data.investment_rounds.length > 0) {
-						const roundsByLatestDate = orderBy(
-							data.investment_rounds,
-							(a) => new Date(a.round_date),
-							["desc"]
-						);
-
-						return roundsByLatestDate[0].amount;
-					} else {
+					if (!data.investment_rounds) {
 						return 0;
+					} else {
+						const latestRound = getLatestRound(data.investment_rounds);
+
+						const out = latestRound?.amount ? latestRound?.amount : 0;
+
+						return out;
 					}
 				},
 				Cell: (props: any) => {
@@ -245,27 +270,16 @@ export const CompaniesTable: FC<Props> = ({
 				width: 140,
 			},
 			{
-				Header: "# Funding Rounds",
-				accessor: "investment_rounds.length" as const,
-				Cell: (props: any) => {
-					const numberOfRounds = props.value;
-					return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
-				},
-				width: 100,
-			},
-			{
 				Header: "Last Funding Type",
 				accessor: (data: { investment_rounds: Array<any> }) => {
-					if (data.investment_rounds.length > 0) {
-						const roundsByLatestDate = orderBy(
-							data.investment_rounds,
-							(a) => new Date(a.round_date),
-							["desc"]
-						);
-
-						return roundsByLatestDate[0].round;
+					if (!data.investment_rounds) {
+						return 0;
 					} else {
-						return [];
+						const latestRound = getLatestRound(data.investment_rounds);
+
+						const out = latestRound?.round ? latestRound?.round : 0;
+
+						return out;
 					}
 				},
 				Cell: (props: any) => {
@@ -312,8 +326,10 @@ export const CompaniesTable: FC<Props> = ({
 		//toggleAllRowsSelected,
 	} = useTable(
 		{
-			columns,
+			columns: columns,
 			data: getCompanies,
+			disableSortRemove: true,
+			autoResetSortBy: false,
 			initialState: {
 				pageSize: itemsPerPage,
 			},
