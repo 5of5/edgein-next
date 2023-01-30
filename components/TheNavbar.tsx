@@ -18,6 +18,8 @@ import OnboardingStep2 from "@/components/Onboarding/OnboardingStep2";
 import OnboardingStep3 from "@/components/Onboarding/OnboardingStep3";
 import { useUser } from "@/context/userContext";
 import ElemSearchBox from "./ElemSearchBox";
+import { find, kebabCase, first } from "lodash";
+import { getNameFromListName } from "@/utils/reaction";
 
 export type Popups =
 	| "login"
@@ -34,7 +36,16 @@ type Props = {
 
 export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const router = useRouter();
-	const { user, loading } = useUser();
+	const { user, loading, listAndFollows, myGroups } = useUser();
+
+	const hotListId =
+		find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
+		0;
+	const myListsUrl = `/lists/${hotListId}/hot`;
+
+	const getFirstGroup = first(myGroups ? myGroups : null);
+
+	const myGroupsUrl = getFirstGroup ? `/groups/${getFirstGroup.id}/` : "";
 
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
@@ -84,7 +95,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		}
 	}, [loading, user]);
 
-	const siteNav = [
+	let siteNav = [
 		{
 			path: "/companies",
 			name: "Companies",
@@ -98,6 +109,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		// 	name: "Events",
 		// },
 	];
+
+	if (user) {
+		siteNav.push({ path: myListsUrl, name: "My Lists" });
+	}
 
 	const getAccessTokenFromCode = async (code: string) => {
 		try {
@@ -228,7 +243,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							</>
 						)}
 
-						<MobileNav className="flex lg:hidden items-center ml-2" />
+						<MobileNav
+							className="flex lg:hidden items-center ml-2"
+							myListsUrl={myListsUrl}
+							myGroupsUrl={myGroupsUrl}
+						/>
 					</div>
 
 					<UsageModal

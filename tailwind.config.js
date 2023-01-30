@@ -135,11 +135,6 @@ module.exports = {
     fontFamily: {
       'sans': ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     },
-    animationDelay: {
-      2000: '2000ms',
-      3000: '3000ms',
-      5000: '5000ms',
-    },
   },
   plugins: [
     require('@tailwindcss/typography'),

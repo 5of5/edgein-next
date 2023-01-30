@@ -1,8 +1,10 @@
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { CompaniesList } from "@/components/MyList/CompaniesList";
 import { InvestorsList } from "@/components/MyList/InvestorsList";
+
 import { ModalListDetails } from "@/components/MyList/ModalListDetails";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
+import { PlaceholderTable } from "@/components/Placeholders";
 
 import {
 	Follows_Companies,
@@ -41,19 +43,16 @@ const MyList: NextPage<Props> = ({}) => {
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
 
-	const {
-		data: groups,
-    refetch: refetchGroups,
-	} = useGetListUserGroupsQuery(
+	const { data: groups, refetch: refetchGroups } = useGetListUserGroupsQuery(
 		{
 			where: {
-				list_id: { _eq: parseInt(router.query.listId as string) }
+				list_id: { _eq: parseInt(router.query.listId as string) },
 			} as List_User_Groups_Bool_Exp,
 		},
 		{
-			enabled: Boolean(router.query.listId)
+			enabled: Boolean(router.query.listId),
 		}
-	)
+	);
 
 	const onSaveListName = async (name: string) => {
 		const updateNameRes = await fetch(`/api/update_list/`, {
@@ -119,7 +118,7 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onAddGroups = async (groupIds: Array<number>) => {
-		const res = await fetch('/api/add_group_to_list/', {
+		const res = await fetch("/api/add_group_to_list/", {
 			method: "POST",
 			body: JSON.stringify({
 				listId: parseInt(router.query.listId as string),
@@ -176,9 +175,9 @@ const MyList: NextPage<Props> = ({}) => {
 						: false;
 				});
 			} else {
-				setSelectedListName(startCase(router.query.slug as string))
-				setIsCustomList(true)
-				setIsFollowing(false)
+				setSelectedListName(startCase(router.query.slug as string));
+				setIsCustomList(true);
+				setIsFollowing(false);
 			}
 		}
 	}, [
@@ -202,11 +201,19 @@ const MyList: NextPage<Props> = ({}) => {
 		}
 	}, [router]);
 
-	const { data: companiesData } = useGetCompaniesByListIdQuery({
+	const {
+		data: companiesData,
+		error: companiesError,
+		isLoading: companiesLoading,
+	} = useGetCompaniesByListIdQuery({
 		list_id: theListId,
 	});
 
-	const { data: vcFirms } = useGetVcFirmsByListIdQuery({
+	const {
+		data: vcFirms,
+		error: vcFirmsError,
+		isLoading: vcFirmsLoading,
+	} = useGetVcFirmsByListIdQuery({
 		list_id: theListId,
 	});
 
@@ -226,25 +233,30 @@ const MyList: NextPage<Props> = ({}) => {
 					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
 					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
 
-					{isCustomList ? 
+					{isCustomList ? (
 						isFollowing ? (
-						<>
-							<ModalListDetails
-								theListName={selectedListName ? selectedListName : ""}
-								// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-								// theListCreator={"Raymond Aleman"}
-								theListId={parseInt(router.query.listId as string)}
-								groups={groups?.list_user_groups?.map(group => group.user_group) || []}
-								onSaveListName={onSaveListName}
-								onDeleteList={onDeleteList}
-								onAddGroups={onAddGroups}
-							/>
-						</>) : (
+							<>
+								<ModalListDetails
+									theListName={selectedListName ? selectedListName : ""}
+									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
+									// theListCreator={"Raymond Aleman"}
+									theListId={parseInt(router.query.listId as string)}
+									groups={
+										groups?.list_user_groups?.map(
+											(group) => group.user_group
+										) || []
+									}
+									onSaveListName={onSaveListName}
+									onDeleteList={onDeleteList}
+									onAddGroups={onAddGroups}
+								/>
+							</>
+						) : (
 							<h1 className="h-6 mr-2 font-bold text-xl capitalize">
 								Previewing: {listNameTitle}
 							</h1>
 						)
-					: (
+					) : (
 						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
 							{listNameTitle}
 						</h1>
@@ -260,17 +272,33 @@ const MyList: NextPage<Props> = ({}) => {
 				)}
 			</div>
 
-			<CompaniesList
-				companies={companies}
-				selectedListName={selectedListName}
-				isCustomList={isCustomList}
-			/>
+			{companiesError ? (
+				<h4>Error loading companies</h4>
+			) : companiesLoading ? (
+				<div className="rounded-lg p-5 bg-white shadow mb-8">
+					<PlaceholderTable />
+				</div>
+			) : (
+				<CompaniesList
+					companies={companies}
+					selectedListName={selectedListName}
+					isCustomList={isCustomList}
+				/>
+			)}
 
-			<InvestorsList
-				vcfirms={vcfirms}
-				selectedListName={selectedListName}
-				isCustomList={isCustomList}
-			/>
+			{vcFirmsError ? (
+				<h4>Error loading Investors</h4>
+			) : vcFirmsLoading ? (
+				<div className="rounded-lg p-5 bg-white shadow mb-8">
+					<PlaceholderTable />
+				</div>
+			) : (
+				<InvestorsList
+					vcfirms={vcfirms}
+					selectedListName={selectedListName}
+					isCustomList={isCustomList}
+				/>
+			)}
 
 			<Toaster />
 		</DashboardLayout>

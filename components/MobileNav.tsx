@@ -20,10 +20,16 @@ import { useUser } from "@/context/userContext";
 
 type Props = {
 	className?: string;
+	myListsUrl?: string;
+	myGroupsUrl?: string;
 };
 
-export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
-	const { listAndFollows, user, loading, myGroups } = useUser();
+export const MobileNav: FC<PropsWithChildren<Props>> = ({
+	className = "",
+	myListsUrl,
+	myGroupsUrl,
+}) => {
+	const { user } = useUser();
 
 	const [navOpen, setNavOpen] = useState(false);
 
@@ -34,23 +40,6 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 	const onClose = () => {
 		setNavOpen(false);
 	};
-
-	const firstCustomList = first(
-		listAndFollows?.filter(
-			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
-		)
-	);
-	let myListsUrl = "";
-	if (firstCustomList) {
-		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
-			getNameFromListName(firstCustomList)
-		)}`;
-	} else {
-		const hotId =
-			find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
-			0;
-		myListsUrl = `/lists/${hotId}/hot`;
-	}
 
 	const logout = async () => {
 		localStorage.clear();
@@ -67,57 +56,78 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 		}
 	};
 
-	const firstCustomGroup = first(myGroups ? myGroups : null);
-
 	const navigation = [
 		{
 			heading: "Explore",
 			links: [
-				{ icon: IconCompanies, name: "Companies", href: "/companies" },
-				{ icon: IconCash, name: "Investors", href: "/investors" },
-				{ icon: IconUsers, name: "Team", href: "/team" },
-				{ icon: IconEmail, name: "Contact", href: "/contact" },
-			],
-		},
-		{
-			heading: "My EdgeIn",
-			links: [
 				{
-					icon: IconSettings,
-					name: "Account Settings",
-					href: "/account",
+					icon: IconCompanies,
+					name: "Companies",
+					href: "/companies",
+					onClick: null,
 				},
-				{ icon: IconCustomList, name: "My Lists", href: myListsUrl },
-				...(firstCustomGroup
+				{
+					icon: IconCash,
+					name: "Investors",
+					href: "/investors",
+					onClick: null,
+				},
+				...(user
+					? [
+							{
+								icon: IconCustomList,
+								name: "My Lists",
+								href: myListsUrl,
+								onClick: null,
+							},
+					  ]
+					: []),
+				...(myGroupsUrl
 					? [
 							{
 								icon: IconGroup,
 								name: "My Groups",
-								href: `/groups/${firstCustomGroup.id}/`,
+								href: myGroupsUrl,
+								onClick: null,
 							},
 					  ]
 					: []),
-				{
-					icon: IconSignOut,
-					onClick: () => {
-						logout(), setNavOpen(false);
-					},
-					name: "Sign out",
-				},
+				...(user
+					? [
+							{
+								icon: IconSettings,
+								name: "Account Settings",
+								href: "/account",
+								onClick: null,
+							},
+							{
+								icon: IconSignOut,
+								name: "Sign out",
+								onClick: () => {
+									logout(), setNavOpen(false);
+								},
+							},
+					  ]
+					: []),
+				,
 			],
 		},
 		{
-			heading: "Follow Us",
+			//heading: "Follow Us",
 			links: [
+				{ icon: IconUsers, name: "Team", href: "/team", onClick: null },
+				{ icon: IconEmail, name: "Contact", href: "/contact", onClick: null },
 				{
+					icon: IconLinkedIn,
 					name: "LinkedIn",
 					href: "https://www.linkedin.com/company/edgein/",
-					icon: IconLinkedIn,
+					onClick: null,
 				},
 				{
+					icon: IconTwitter,
 					name: "Twitter",
 					href: "https://twitter.com/EdgeInio",
-					icon: IconTwitter,
+					onClick: null,
 				},
 			],
 		},
@@ -181,23 +191,24 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 										{navigation.map((section, index) => (
 											<div key={index} className="pt-6 pb-3 first:pt-0">
 												<h3 className="text-xl font-bold">{section.heading}</h3>
+
 												<ul>
 													{section.links.map((item, index) => (
 														<li key={index}>
-															<Link href={item.href ? item.href : ""}>
+															<Link href={item?.href ? item.href : ""}>
 																<a
 																	onClick={
-																		item.onClick ? item.onClick : onClose
+																		item?.onClick ? item?.onClick : onClose
 																	}
 																	className="flex items-center py-3 text-lg hover:text-primary-500"
 																>
-																	{item.icon && (
+																	{item?.icon && (
 																		<item.icon
 																			title={item.name}
 																			className="h-6 w-6 mr-4 shrink-0"
 																		/>
 																	)}
-																	{item.name}
+																	{item?.name}
 																</a>
 															</Link>
 														</li>

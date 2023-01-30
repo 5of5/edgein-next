@@ -1,8 +1,7 @@
 import { ElemButton } from "./ElemButton";
 import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, FC } from "react";
-import { find, kebabCase, first } from "lodash";
-import { getNameFromListName } from "@/utils/reaction";
+import { first } from "lodash";
 import {
 	IconChevronDownMini,
 	IconUserCircle,
@@ -22,23 +21,6 @@ type Props = {
 
 export const UserMenu: FC<Props> = ({ className = "" }) => {
 	const { listAndFollows, user, myGroups } = useUser();
-
-	const firstCustomList = first(
-		listAndFollows?.filter(
-			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
-		)
-	);
-	let myListsUrl = "";
-	if (firstCustomList) {
-		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
-			getNameFromListName(firstCustomList)
-		)}`;
-	} else {
-		const hotId =
-			find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
-			0;
-		myListsUrl = `/lists/${hotId}/hot`;
-	}
 
 	const firstCustomGroup = first(myGroups ? myGroups : null);
 
@@ -62,9 +44,7 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 		}
 	};
 
-	let navigation = [
-		{ name: "My Lists", href: myListsUrl, icon: IconCustomList },
-	];
+	let navigation = [];
 
 	if (myGroups.length > 0) {
 		navigation.push({
