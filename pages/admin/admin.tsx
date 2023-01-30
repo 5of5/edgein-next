@@ -110,19 +110,10 @@ const AdminApp = () => {
       // Fix nullable inputs for graphql
       setDataProvider({
         ...dataProvider,
-        getList: async (type, obj) => {
-          let { data, ...metadata } = await dataProvider.getList(type, obj);
-          return {
-            data,
-            ...metadata,
-          };
-        },
-        create: (type, obj) => {
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
-        update: (type, obj) => {
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
+        create: (type, obj) =>
+          dataProvider.create(type, nullInputTransform(type, obj)),
+        update: (type, obj) =>
+          dataProvider.update(type, nullInputTransform(type, obj)),
       });
     };
     buildDataProvider();
