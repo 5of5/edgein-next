@@ -15,9 +15,10 @@ import {
   NumberField,
   ReferenceInput,
   SelectInput,
+  SelectArrayInput,
 } from "react-admin";
 import { Chip } from '@mui/material';
-import { companyLayerChoices } from "../../../utils/constants";
+import { companyLayerChoices, tags } from "../../../utils/constants";
 import ElemList from "../ElemList";
 
 type QuickFilterProps = {
@@ -51,6 +52,12 @@ const filters = [
     source="layer"
     label="Layer"
     choices={companyLayerChoices}
+  />,
+  <SelectArrayInput
+    key="tags"
+    source="tags@_contains"
+    label="Tags"
+    choices={tags}
   />,
   <QuickFilter
     key="status_tags"
