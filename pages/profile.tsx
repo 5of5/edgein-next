@@ -2,6 +2,10 @@ import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { InputText } from "@/components/InputText";
 import { InputTextarea } from "@/components/InputTextarea";
+import { ProfileEdit } from "@/components/Profile/ProfileEdit";
+import { ProfileMissing } from "@/components/Profile/ProfileMissing";
+import { ProfileEditEmail } from "@/components/Profile/ProfileEditEmail";
+import { ProfileEditName } from "@/components/Profile/ProfileEditName";
 import { ChangeEvent, FC, useEffect, useRef, useState, Fragment } from "react";
 import {
 	GetCompaniesDocument,
@@ -45,20 +49,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
-	const [person, setPerson] = useState<People>();
-	const [editName, setEditName] = useState(false);
-	const [editEmail, setEditEmail] = useState(false);
-	const [editLocation, setEditLocation] = useState(false);
-	const [editWebsite, setEditWebsite] = useState(false);
-	const [editLinkedIn, setEditLinkedIn] = useState(false);
-	const [editFacebook, setEditFacebook] = useState(false);
-	const [editTwitter, setEditTwitter] = useState(false);
-	const [editAbout, setEditAbout] = useState(false);
-	const [editWorkspace, setEditWorkspace] = useState(false);
-
 	// fields
-	const [firstName, setFirstName] = useState("");
-	const [lasttName, setLastName] = useState("");
 	const [email, setEmail] = useState<any[]>([]);
 	const [newEmail, setNewEmail] = useState("");
 	const [city, setCity] = useState("");
@@ -78,14 +69,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		};
 	});
 
-	const { data: users, refetch } = useGetUserProfileQuery({
+	const { data: users, refetch, isLoading } = useGetUserProfileQuery({
 		id: user?.id ?? 0,
 	});
-
-	// set person
-	useEffect(() => {
-		if (users) setPerson(users.users_by_pk?.person as People);
-	}, [users]);
 
 	// set workspace data in edit mode
 	// useEffect(() => {
@@ -264,56 +250,50 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	// };
 
 	// set profile data
-	useEffect(() => {
-		if (person) {
-			const nameFragments = person?.name?.split(" ");
-			const firstName = nameFragments?.shift() || "";
-			const lastName = nameFragments?.join(" ") || "";
+	// useEffect(() => {
+	// 	if (person) {
 
-			setFirstName(firstName);
-			setLastName(lastName);
-			setEmail(person?.email || []);
-			setCity(person?.city || "");
-			setCountry(person?.country || "");
-			setWebsite(person?.website_url || "");
-			setLinkedIn(person?.linkedin || "");
-			setFacebook(person?.facebook_url || "");
-			setTwitter(person?.twitter_url || "");
-			setAbout(person?.about || "");
-		}
-	}, [person]);
+	// 		setCity(person?.city || "");
+	// 		setCountry(person?.country || "");
+	// 		setWebsite(person?.website_url || "");
+	// 		setLinkedIn(person?.linkedin || "");
+	// 		setFacebook(person?.facebook_url || "");
+	// 		setTwitter(person?.twitter_url || "");
+	// 		setAbout(person?.about || "");
+	// 	}
+	// }, [person]);
 
-	const updateCall = async (payload: any, type = "profile") => {
-		if (type === "profile") {
-			const resp = await fetch("/api/update_profile/", {
-				method: "POST",
-				body: JSON.stringify({
-					id: person?.id,
-					payload,
-				}),
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			});
+	// const updateCall = async (payload: any, type = "profile") => {
+	// 	if (type === "profile") {
+	// 		const resp = await fetch("/api/update_profile/", {
+	// 			method: "POST",
+	// 			body: JSON.stringify({
+	// 				id: person?.id,
+	// 				payload,
+	// 			}),
+	// 			headers: {
+	// 				Accept: "application/json",
+	// 				"Content-Type": "application/json",
+	// 			},
+	// 		});
 
-			return resp.json();
-		}
+	// 		return resp.json();
+	// 	}
 
-		const resp = await fetch("/api/team_member/", {
-			method: "POST",
-			body: JSON.stringify({
-				teammember: payload,
-				personId: person?.id,
-			}),
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-		});
+	// 	const resp = await fetch("/api/team_member/", {
+	// 		method: "POST",
+	// 		body: JSON.stringify({
+	// 			teammember: payload,
+	// 			personId: person?.id,
+	// 		}),
+	// 		headers: {
+	// 			Accept: "application/json",
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 	});
 
-		return resp.json();
-	};
+	// 	return resp.json();
+	// };
 
 	const setTMField =
 		(field: string) => (event: ChangeEvent<HTMLInputElement> | any) => {
@@ -392,182 +372,142 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			}
 		};
 
-	const onSave = (entity: string) => async () => {
-		if (entity === "name") {
-			const resp = await updateCall({
-				name: `${firstName} ${lasttName}`,
-			});
-			setPerson(resp.result);
-		}
+	// const onSave = (entity: string) => async () => {
+	// 	if (entity === "name") {
+	// 		// const resp = await updateCall({
+	// 		// 	name: `${firstName} ${lasttName}`,
+	// 		// });
+	// 		// setPerson(resp.result);
+	// 	}
 
-		if (entity === "email") {
-			const exists = find(email, { email: newEmail });
-			setEmail((prev: any) => {
-				if (newEmail === "" || !validator.isEmail(newEmail)) return prev;
-				const temp = [...prev];
+	// 	if (entity === "email") {
+	// 		const exists = find(email, { email: newEmail });
+	// 		setEmail((prev: any) => {
+	// 			if (newEmail === "" || !validator.isEmail(newEmail)) return prev;
+	// 			const temp = [...prev];
 
-				if (!email) temp.push({ email: newEmail, isPrimary: false });
-				setNewEmail("");
-				return temp;
-			});
+	// 			if (!email) temp.push({ email: newEmail, isPrimary: false });
+	// 			setNewEmail("");
+	// 			return temp;
+	// 		});
 
-			const resp = await updateCall({
-				email: exists
-					? email
-					: [...email, { email: newEmail, isPrimary: false }],
-			});
+	// 		const resp = await updateCall({
+	// 			email: exists
+	// 				? email
+	// 				: [...email, { email: newEmail, isPrimary: false }],
+	// 		});
 
-			setPerson(resp.result);
-		}
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "website") {
-			const resp = await updateCall({
-				website_url: website,
-			});
-			setPerson(resp.result);
-		}
+	// 	if (entity === "website") {
+	// 		const resp = await updateCall({
+	// 			website_url: website,
+	// 		});
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "facebook") {
-			const resp = await updateCall({
-				facebook_url: facebook,
-			});
-			setPerson(resp.result);
-		}
+	// 	if (entity === "facebook") {
+	// 		const resp = await updateCall({
+	// 			facebook_url: facebook,
+	// 		});
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "twitter") {
-			const resp = await updateCall({
-				twitter_url: twitter,
-			});
-			setPerson(resp.result);
-		}
+	// 	if (entity === "twitter") {
+	// 		const resp = await updateCall({
+	// 			twitter_url: twitter,
+	// 		});
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "about") {
-			const resp = await updateCall({
-				about: about,
-			});
-			setPerson(resp.result);
-		}
+	// 	if (entity === "about") {
+	// 		const resp = await updateCall({
+	// 			about: about,
+	// 		});
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "linkedin") {
-			const resp = await updateCall({
-				linkedin: linkedIn,
-			});
-			setPerson(resp.result);
-		}
+	// 	if (entity === "linkedin") {
+	// 		const resp = await updateCall({
+	// 			linkedin: linkedIn,
+	// 		});
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "location") {
-			const resp = await updateCall({
-				city,
-				country,
-			});
-			setPerson(resp.result);
-		}
+	// 	if (entity === "location") {
+	// 		const resp = await updateCall({
+	// 			city,
+	// 			country,
+	// 		});
+	// 		setPerson(resp.result);
+	// 	}
 
-		if (entity === "teamMember") {
-			const temp = { ...tmData };
+	// 	if (entity === "teamMember") {
+	// 		const temp = { ...tmData };
 
-			temp.company_id = temp.company_id.value;
-			temp.function = temp.function.value;
-			temp.person_id = person?.id;
-			delete temp.currentlyWorking;
+	// 		temp.company_id = temp.company_id.value;
+	// 		temp.function = temp.function.value;
+	// 		temp.person_id = person?.id;
+	// 		delete temp.currentlyWorking;
 
-			await updateCall(temp, "teammember");
+	// 		await updateCall(temp, "teammember");
 
-			setActiveWorkspace(0);
-			setEditWorkspace(false);
-			setTmData(emptyTeamMember);
-			refetch();
-		}
-	};
+	// 		setActiveWorkspace(0);
+	// 		// setEditWorkspace(false);
+	// 		setTmData(emptyTeamMember);
+	// 		refetch();
+	// 	}
+	// };
 
-	const handleProfileEditClick = () => {
-		// 👇️ open file input box on click of other element
-		fileInputRef?.current?.click();
-	};
+	// const handleProfileEditClick = () => {
+	// 	// 👇️ open file input box on click of other element
+	// 	fileInputRef?.current?.click();
+	// };
 
-	const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
-		const file = event.target.files ? event.target.files[0] : null;
-		if (!file) return;
+	// const onFileUpload = () => async (event: ChangeEvent<HTMLInputElement>) => {
+	// 	const file = event.target.files ? event.target.files[0] : null;
+	// 	if (!file) return;
 
-		const res = await uploadFile(file);
+	// 	const res = await uploadFile(file);
 
-		deleteFile(person?.picture);
+	// 	deleteFile(person?.picture);
 
-		const resp = await updateCall({ picture: res.file });
+	// 	const resp = await updateCall({ picture: res.file });
 
-		setPerson(resp.result);
-	};
+	// 	setPerson(resp.result);
+	// };
 
-	const makePrimary = (email: string) => async () => {
-		const tempEmail = [...person?.email];
+	// const makePrimary = (email: string) => async () => {
+	// 	const tempEmail = [...person?.email];
 
-		const tempEmailIndex = findIndex(tempEmail, { email });
+	// 	const tempEmailIndex = findIndex(tempEmail, { email });
 
-		tempEmail.splice(tempEmailIndex, 1);
+	// 	tempEmail.splice(tempEmailIndex, 1);
 
-		tempEmail.push({ email: person?.work_email });
+	// 	tempEmail.push({ email: person?.work_email });
 
-		const resp = await updateCall({
-			email: tempEmail,
-			work_email: email,
-		});
+	// 	const resp = await updateCall({
+	// 		email: tempEmail,
+	// 		work_email: email,
+	// 	});
 
-		setPerson(resp.result);
-	};
+	// 	setPerson(resp.result);
+	// };
 
-	const removeEmail = (email: string) => async () => {
-		const tempEmail = [...person?.email];
+	// const removeEmail = (email: string) => async () => {
+	// 	const tempEmail = [...person?.email];
 
-		const tempEmailIndex = findIndex(tempEmail, { email });
+	// 	const tempEmailIndex = findIndex(tempEmail, { email });
 
-		tempEmail.splice(tempEmailIndex, 1);
+	// 	tempEmail.splice(tempEmailIndex, 1);
 
-		const resp = await updateCall({
-			email: tempEmail,
-		});
+	// 	const resp = await updateCall({
+	// 		email: tempEmail,
+	// 	});
 
-		setPerson(resp.result);
-	};
-
-	const getInviteLink = (invitecode: string) => {
-		const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${invitecode}`;
-		return inviteLink;
-	};
-
-	const reference_id = user?.reference_id || "";
-	const display_name = user?.display_name;
-
-	const onTelegram = () => {
-		window.open(
-			`https://telegram.me/share/url?url=${getInviteLink(
-				reference_id
-			)}&text=${display_name} has invited you to join Edge In! Use the invite link to get started`,
-			"_blank"
-		);
-	};
-
-	const onSMS = () => {
-		window.open(
-			`sms:?&body=${display_name} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
-				reference_id
-			)}`,
-			""
-		);
-	};
-
-	const onEmail = () => {
-		window.open(
-			`mailto:?subject=${display_name} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${display_name} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
-				reference_id
-			)}`,
-			""
-		);
-	};
-
-	const onCopy = () => {
-		navigator.clipboard.writeText(getInviteLink(reference_id));
-	};
+	// 	setPerson(resp.result);
+	// };
 
 	return (
 		<DashboardLayout>
@@ -593,9 +533,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 			<div className="bg-white shadow rounded-lg p-5 mt-5">
 				<div className="sm:flex justify-between items-center mb-2">
 					<h2 className="font-bold text-xl">Personal Profile</h2>
-					{/* <ElemButton btn="white" arrow className="mt-2 sm:mt-0">
+					{  users?.users_by_pk?.person && <ElemButton  href={`/people/${ users?.users_by_pk?.person?.slug}/`} btn="white" arrow className="mt-2 sm:mt-0">
 						View Profile
-					</ElemButton> */}
+					</ElemButton> }
 				</div>
 
 				<div className="w-full divide-y divide-black/10 border-y border-black/10">
@@ -637,480 +577,18 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						</div>
 					</EditSection> */}
 
-					<EditSection
-						heading="Full Name"
-						right={
-							!editName ? (
-								<button
-									onClick={() => setEditName(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editName ? (
-							<p className="text-slate-600">{person?.name}</p>
-						) : (
-							<div className="max-w-sm">
-								<div>
-									<InputText
-										label="First Name"
-										onChange={(e) => setFirstName(e.target.value)}
-										value={firstName}
-										name="first_name"
-										placeholder="First Name"
-									/>
-								</div>
-								<div className="mt-4">
-									<InputText
-										label="Last Name"
-										onChange={(e) => setLastName(e.target.value)}
-										value={lasttName}
-										name="last_name"
-										placeholder="Last Name"
-									/>
-								</div>
-								<div className="mt-2 text-sm text-slate-600">
-									<span className="font-bold">Note:</span> If you change your
-									name on EdgeIn, you won’t be able to change it again for 60
-									days.
-								</div>
+					{ isLoading ? <div>Loading...</div> : <>
 
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("name")}
-									>
-										Change
-									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditName(false)}>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection>
+					<ProfileEditName />
+					<ProfileEditEmail />
 
-					<EditSection
-						heading="Email"
-						right={
-							!editEmail ? (
-								<button
-									onClick={() => setEditEmail(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editEmail ? (
-							<div>
-								<p className="text-slate-600">
-									{person?.work_email}
-									{person?.work_email != null && (
-										<span className="font-bold text-sm text-primary-500">
-											{" "}
-											- Primary
-										</span>
-									)}
-								</p>
-								{person?.email &&
-									person?.email.map((email: any) => (
-										<p key={email.email} className="text-slate-600 mb-2">
-											{email.email}
-										</p>
-									))}
-							</div>
-						) : (
-							<div className="max-w-sm">
-								<h2 className=" font-bold text-slate-600">Current Emails</h2>
-								<div className="mb-2">
-									<span className="block mt-1 text-sm font-semibold text-slate-600">
-										{person?.work_email}
-									</span>
-									<span className="mt-1 text-slate-500 text-sm">Primary</span>
-								</div>
-								{email?.map((mail: any) => (
-									<div key={mail.email} className="mb-2">
-										<span className="block mt-1 text-sm text-slate-600">
-											{mail.email}
-										</span>
-										<span
-											className="mt-1 text-sm text-primary-500 cursor-pointer"
-											onClick={makePrimary(mail.email)}
-										>
-											Make Primary
-										</span>
-										<span
-											className="mt-1 text-sm ml-2 text-primary-500 cursor-pointer"
-											onClick={removeEmail(mail.email)}
-										>
-											Remove
-										</span>
-									</div>
-								))}
+					{ users?.users_by_pk?.person ?  <ProfileEdit user={users?.users_by_pk} /> : <ProfileMissing /> }
+					</> }
 
-								<InputText
-									label="New Email"
-									onChange={(e) => {
-										setNewEmail(e.target.value);
-									}}
-									value={newEmail}
-									name="new-email"
-									placeholder="name@email.com"
-								/>
-
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("email")}
-									>
-										Add
-									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditEmail(false)}>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection>
-
-					{/* <EditSection
-						heading="Location"
-						right={
-							!editLocation ? (
-								<button
-									onClick={() => setEditLocation(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit Location
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editLocation ? (
-							<p className="text-slate-600">
-								{person?.city}
-								{person?.city && person?.country && <>,</>}
-								{person?.country}
-							</p>
-						) : (
-							<div className="max-w-sm">
-								<InputText
-									label="City"
-									onChange={(e) => setCity(e.target.value)}
-									value={city}
-									name="city"
-									placeholder="San Francisco"
-									className="mb-3"
-								/>
-								<InputText
-									label="Country"
-									onChange={(e) => setCountry(e.target.value)}
-									value={country}
-									name="country"
-									placeholder="United States"
-									className="mb-3"
-								/>
-
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("location")}
-									>
-										Save
-									</ElemButton>
-									<ElemButton
-										btn="white"
-										onClick={() => setEditLocation(false)}
-									>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection> */}
-
-					{/* <EditSection
-						heading="Website URL"
-						right={
-							!editWebsite ? (
-								<button
-									onClick={() => setEditWebsite(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit Website
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editWebsite ? (
-							<p className="text-slate-600">{person?.website_url}</p>
-						) : (
-							<div className="max-w-sm">
-								<InputText
-									onChange={(e) => setWebsite(e.target.value)}
-									value={website}
-									name="website"
-									placeholder="https://example.io"
-								/>
-
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("website")}
-									>
-										Save
-									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditWebsite(false)}>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection> */}
-
-					{/* <EditSection
-						heading="LinkedIn URL"
-						right={
-							!editLinkedIn ? (
-								<button
-									onClick={() => setEditLinkedIn(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit LinkedIn
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editLinkedIn ? (
-							<p className="text-slate-600">{person?.linkedin}</p>
-						) : (
-							<div className="max-w-sm">
-								<InputText
-									onChange={(e) => setLinkedIn(e.target.value)}
-									value={linkedIn}
-									name="linkedIn"
-									placeholder="https://linkedin.com"
-								/>
-
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("linkedin")}
-									>
-										Save
-									</ElemButton>
-									<ElemButton
-										btn="white"
-										onClick={() => setEditLinkedIn(false)}
-									>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection> */}
-
-					{/* <EditSection
-						heading="Facebook URL"
-						right={
-							!editFacebook ? (
-								<button
-									onClick={() => setEditFacebook(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit Facebook
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editFacebook ? (
-							<p className="text-slate-600">{person?.facebook_url}</p>
-						) : (
-							<div className="max-w-sm">
-								<InputText
-									onChange={(e) => setFacebook(e.target.value)}
-									value={facebook}
-									name="facebook"
-									placeholder="https://facebook.com"
-								/>
-
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("facebook")}
-									>
-										Save
-									</ElemButton>
-									<ElemButton
-										btn="white"
-										onClick={() => setEditFacebook(false)}
-									>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection> */}
-
-					{/* <EditSection
-						heading="Twitter URL"
-						right={
-							!editTwitter ? (
-								<button
-									onClick={() => setEditTwitter(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit Twitter
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editTwitter ? (
-							<p className="text-slate-600">{person?.twitter_url}</p>
-						) : (
-							<div className="max-w-sm">
-								<InputText
-									onChange={(e) => setTwitter(e.target.value)}
-									value={twitter}
-									name="twitter"
-									placeholder="https://twitter.com"
-								/>
-
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("twitter")}
-									>
-										Save
-									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditTwitter(false)}>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection> */}
-
-					{/* <EditSection
-						heading="About You"
-						right={
-							!editAbout ? (
-								<button
-									onClick={() => setEditAbout(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Edit About
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editAbout ? (
-							<p className="text-slate-600">{person?.about}</p>
-						) : (
-							<div className="max-w-lg">
-								<InputTextarea
-									rows={5}
-									value={about}
-									onChange={(e) => setAbout(e.target.value)}
-								/>
-								<div className="flex mt-4">
-									<ElemButton
-										btn="primary"
-										className="mr-2"
-										onClick={onSave("about")}
-									>
-										Save
-									</ElemButton>
-									<ElemButton btn="white" onClick={() => setEditAbout(false)}>
-										Cancel
-									</ElemButton>
-								</div>
-							</div>
-						)}
-					</EditSection> */}
-
-					{/* <EditSection
-						heading="Work"
-						right={
-							!editWorkspace ? (
-								<button
-									onClick={() => setEditWorkspace(true)}
-									className="text-primary-500 hover:text-dark-500"
-								>
-									Add Workplace
-								</button>
-							) : (
-								<></>
-							)
-						}
-					>
-						{ {editWorkspace && renderWorkspaceForm()} }
-
-						{!editWorkspace ? (
-							<></>
-						) : (
-							<div className="max-w-sm">{renderWorkspaceForm()}</div>
-						)}
-
-						<div className="max-w-sm">
-							{person?.team_members.map((teamMember) =>
-								renderWorkspaceEditForm(teamMember)
-							)}
-						</div>
-					</EditSection> */}
 				</div>
 			</div>
 		</DashboardLayout>
 	);
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-	const { data: companiesData } = await runGraphQl<GetCompaniesQuery>(
-		GetCompaniesDocument,
-		{
-			limit: 50,
-			offset: 0,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
-		}
-	);
-
-	return {
-		props: {
-			companiesDropdown:
-				companiesData?.companies.map((company) => ({
-					title: company.name,
-					value: company.id,
-				})) || [],
-		},
-	};
 };
 
 export default Profile;
