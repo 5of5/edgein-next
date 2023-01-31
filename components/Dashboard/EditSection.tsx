@@ -19,10 +19,13 @@ export const EditSection: FC<PropsWithChildren<Props>> = ({
 			>
 				{heading && <dt className="font-bold">{heading}</dt>}
 				<dd className="mt-1 lg:flex lg:col-span-4 lg:mt-0">
-					<div className="flex-grow">{children}</div>
-					{right && (
-						<div className="mt-4 flex-shrink-0 lg:mt-0 lg:ml-4">{right}</div>
-					)}
+					<div className="flex-grow">
+						<div className="max-w-xl">{children}</div>
+					</div>
+
+					<div className="mt-4 flex-shrink-0 flex lg:justify-end lg:items-start lg:mt-0 lg:ml-4 lg:min-w-[100px]">
+						{right ? right : ""}
+					</div>
 				</dd>
 			</section>
 		</>

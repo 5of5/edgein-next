@@ -88,180 +88,180 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	}, [users]);
 
 	// set workspace data in edit mode
-	useEffect(() => {
-		if (activeWorkspace)
-			setTmData((prev: any) => {
-				const findTM = find(person?.team_members, { id: activeWorkspace });
-				if (!findTM) return prev;
+	// useEffect(() => {
+	// 	if (activeWorkspace)
+	// 		setTmData((prev: any) => {
+	// 			const findTM = find(person?.team_members, { id: activeWorkspace });
+	// 			if (!findTM) return prev;
 
-				const selectedCompany = find(companiesDropdown, {
-					value: findTM?.company?.id,
-				});
-				const selectedPositionType = findTM?.function
-					? {
-							title: `${findTM?.function
-								?.charAt(0)
-								.toUpperCase()}${findTM?.function?.slice(1)}`,
-							value: findTM?.function,
-					  }
-					: null;
-				const currentlyWorking = findTM.end_date ? false : true;
+	// 			const selectedCompany = find(companiesDropdown, {
+	// 				value: findTM?.company?.id,
+	// 			});
+	// 			const selectedPositionType = findTM?.function
+	// 				? {
+	// 						title: `${findTM?.function
+	// 							?.charAt(0)
+	// 							.toUpperCase()}${findTM?.function?.slice(1)}`,
+	// 						value: findTM?.function,
+	// 				  }
+	// 				: null;
+	// 			const currentlyWorking = findTM.end_date ? false : true;
 
-				const temp = {
-					...prev,
-					company_id: selectedCompany,
-					person_id: findTM?.person_id,
-					title: findTM?.title,
-					function: selectedPositionType,
-					start_date: findTM.start_date,
-					end_date: findTM.end_date,
-					currentlyWorking,
-					founder: findTM?.founder,
-				};
-				return temp;
-			});
-	}, [activeWorkspace, companiesDropdown, person?.team_members]);
+	// 			const temp = {
+	// 				...prev,
+	// 				company_id: selectedCompany,
+	// 				person_id: findTM?.person_id,
+	// 				title: findTM?.title,
+	// 				function: selectedPositionType,
+	// 				start_date: findTM.start_date,
+	// 				end_date: findTM.end_date,
+	// 				currentlyWorking,
+	// 				founder: findTM?.founder,
+	// 			};
+	// 			return temp;
+	// 		});
+	// }, [activeWorkspace, companiesDropdown, person?.team_members]);
 
-	const renderWorkspaceForm = (teamMember?: Team_Members) => {
-		return (
-			<div className="">
-				{teamMember?.id ? (
-					<InputText
-						disabled={true}
-						name="Company"
-						label="Company"
-						onChange={() => {}}
-						value={teamMember?.company?.name!}
-						className="mb-3"
-					/>
-				) : (
-					<ElemCompaniesSearchInput
-						label="Company"
-						onChange={setTMField("company")}
-						name="company"
-						inputClassname="mb-3"
-					/>
-				)}
-				<div className="mb-3">
-					<label className="text-slate-600 font-bold block">Position</label>
-					<InputSelect
-						options={titles || []}
-						placeholder="Position"
-						value={tmData.function}
-						onChange={setTMField("function")}
-					/>
-				</div>
-				<div className="flex items-center gap-2 mb-3">
-					<input
-						type="checkbox"
-						onChange={setTMField("founder")}
-						checked={tmData.founder}
-					/>
-					<span className="text-slate-500">Founder</span>
-				</div>
-				<InputText
-					label="Title"
-					onChange={setTMField("title")}
-					value={tmData.title}
-					name="title"
-					placeholder="Founder and CEO"
-					className="mb-3"
-				/>
-				<label className="text-slate-600 font-bold block">Time Period</label>
-				<div className="flex items-center gap-2">
-					<input
-						type="checkbox"
-						onChange={setTMField("currentlyWorking")}
-						checked={tmData.currentlyWorking}
-					/>
-					<span className="text-slate-600"> I currently work here</span>
-				</div>
-				<div className="sm:flex items-center">
-					<InputDate
-						name="start_date"
-						value={tmData.start_date}
-						onChange={setTMField("start_date")}
-						className="rounded-full"
-					/>
-					<div className="my-1 text-center font-bold sm:my-0 sm:mx-2">to</div>
-					<InputDate
-						className="rounded-full"
-						value={tmData.end_date}
-						name="end_date"
-						onChange={setTMField("end_date")}
-						disabled={tmData.currentlyWorking}
-					/>
-				</div>
-				<div className="flex mt-4">
-					<ElemButton
-						btn="primary"
-						className="mr-2"
-						onClick={onSave("teamMember")}
-					>
-						Save
-					</ElemButton>
-					<ElemButton
-						btn="white"
-						onClick={() => {
-							if (teamMember?.id) setActiveWorkspace(0);
-							else setEditWorkspace(false);
+	// const renderWorkspaceForm = (teamMember?: Team_Members) => {
+	// 	return (
+	// 		<div className="">
+	// 			{teamMember?.id ? (
+	// 				<InputText
+	// 					disabled={true}
+	// 					name="Company"
+	// 					label="Company"
+	// 					onChange={() => {}}
+	// 					value={teamMember?.company?.name!}
+	// 					className="mb-3"
+	// 				/>
+	// 			) : (
+	// 				<ElemCompaniesSearchInput
+	// 					label="Company"
+	// 					onChange={setTMField("company")}
+	// 					name="company"
+	// 					inputClassname="mb-3"
+	// 				/>
+	// 			)}
+	// 			<div className="mb-3">
+	// 				<label className="text-slate-600 font-bold block">Position</label>
+	// 				<InputSelect
+	// 					options={titles || []}
+	// 					placeholder="Position"
+	// 					value={tmData.function}
+	// 					onChange={setTMField("function")}
+	// 				/>
+	// 			</div>
+	// 			<div className="flex items-center gap-2 mb-3">
+	// 				<input
+	// 					type="checkbox"
+	// 					onChange={setTMField("founder")}
+	// 					checked={tmData.founder}
+	// 				/>
+	// 				<span className="text-slate-500">Founder</span>
+	// 			</div>
+	// 			<InputText
+	// 				label="Title"
+	// 				onChange={setTMField("title")}
+	// 				value={tmData.title}
+	// 				name="title"
+	// 				placeholder="Founder and CEO"
+	// 				className="mb-3"
+	// 			/>
+	// 			<label className="text-slate-600 font-bold block">Time Period</label>
+	// 			<div className="flex items-center gap-2">
+	// 				<input
+	// 					type="checkbox"
+	// 					onChange={setTMField("currentlyWorking")}
+	// 					checked={tmData.currentlyWorking}
+	// 				/>
+	// 				<span className="text-slate-600"> I currently work here</span>
+	// 			</div>
+	// 			<div className="sm:flex items-center">
+	// 				<InputDate
+	// 					name="start_date"
+	// 					value={tmData.start_date}
+	// 					onChange={setTMField("start_date")}
+	// 					className="rounded-full"
+	// 				/>
+	// 				<div className="my-1 text-center font-bold sm:my-0 sm:mx-2">to</div>
+	// 				<InputDate
+	// 					className="rounded-full"
+	// 					value={tmData.end_date}
+	// 					name="end_date"
+	// 					onChange={setTMField("end_date")}
+	// 					disabled={tmData.currentlyWorking}
+	// 				/>
+	// 			</div>
+	// 			<div className="flex mt-4">
+	// 				<ElemButton
+	// 					btn="primary"
+	// 					className="mr-2"
+	// 					onClick={onSave("teamMember")}
+	// 				>
+	// 					Save
+	// 				</ElemButton>
+	// 				<ElemButton
+	// 					btn="white"
+	// 					onClick={() => {
+	// 						if (teamMember?.id) setActiveWorkspace(0);
+	// 						else setEditWorkspace(false);
 
-							setTmData(emptyTeamMember);
-						}}
-					>
-						Cancel
-					</ElemButton>
-				</div>
-			</div>
-		);
-	};
+	// 						setTmData(emptyTeamMember);
+	// 					}}
+	// 				>
+	// 					Cancel
+	// 				</ElemButton>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
-	const renderWorkspaceEditForm = (teamMember: Team_Members) => {
-		return (
-			<div key={teamMember.id}>
-				{activeWorkspace === teamMember.id || (
-					<div className="grid grid-cols-12 gap-2">
-						<div className="flex mt-3 mb-2 pb-3 col-start-4 col-span-8">
-							<span className="text-dark-500 font-bold  col-span-3"></span>
-							<div className="flex">
-								<ElemPhoto
-									wrapClass="w-12 h-12 border p-1 rounded-md"
-									photo={teamMember.company?.logo}
-									imgAlt="company logo"
-								/>
+	// const renderWorkspaceEditForm = (teamMember: Team_Members) => {
+	// 	return (
+	// 		<div key={teamMember.id}>
+	// 			{activeWorkspace === teamMember.id || (
+	// 				<div className="grid grid-cols-12 gap-2">
+	// 					<div className="flex mt-3 mb-2 pb-3 col-start-4 col-span-8">
+	// 						<span className="text-dark-500 font-bold  col-span-3"></span>
+	// 						<div className="flex">
+	// 							<ElemPhoto
+	// 								wrapClass="w-12 h-12 border p-1 rounded-md"
+	// 								photo={teamMember.company?.logo}
+	// 								imgAlt="company logo"
+	// 							/>
 
-								<div className="ml-5">
-									<h2 className="font-bold font-Metropolis  text-slate-600">
-										{teamMember.title}
-									</h2>
-									<span className="font-thin text-slate-500 ">
-										{teamMember.company?.name}
-									</span>
-									<p className="font-thin text-slate-500">
-										{" "}
-										{getWorkDurationFromAndTo(
-											teamMember.start_date,
-											teamMember.end_date
-										)}{" "}
-										.{" "}
-										{getTimeOfWork(teamMember.start_date, teamMember.end_date)}{" "}
-										<br /> {teamMember.company?.location}
-									</p>
-								</div>
-							</div>
-						</div>
-						<button
-							className="text-primary-500 col-span-1"
-							onClick={() => setActiveWorkspace(teamMember.id)}
-						>
-							Edit
-						</button>
-					</div>
-				)}
-				{activeWorkspace === teamMember.id && renderWorkspaceForm(teamMember)}
-			</div>
-		);
-	};
+	// 							<div className="ml-5">
+	// 								<h2 className="font-bold font-Metropolis  text-slate-600">
+	// 									{teamMember.title}
+	// 								</h2>
+	// 								<span className="font-thin text-slate-500 ">
+	// 									{teamMember.company?.name}
+	// 								</span>
+	// 								<p className="font-thin text-slate-500">
+	// 									{" "}
+	// 									{getWorkDurationFromAndTo(
+	// 										teamMember.start_date,
+	// 										teamMember.end_date
+	// 									)}{" "}
+	// 									.{" "}
+	// 									{getTimeOfWork(teamMember.start_date, teamMember.end_date)}{" "}
+	// 									<br /> {teamMember.company?.location}
+	// 								</p>
+	// 							</div>
+	// 						</div>
+	// 					</div>
+	// 					<button
+	// 						className="text-primary-500 col-span-1"
+	// 						onClick={() => setActiveWorkspace(teamMember.id)}
+	// 					>
+	// 						Edit
+	// 					</button>
+	// 				</div>
+	// 			)}
+	// 			{activeWorkspace === teamMember.id && renderWorkspaceForm(teamMember)}
+	// 		</div>
+	// 	);
+	// };
 
 	// set profile data
 	useEffect(() => {
@@ -534,25 +534,21 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 		return inviteLink;
 	};
 
-	const reference_id = user?.reference_id || ''
-	const display_name = user?.display_name
+	const reference_id = user?.reference_id || "";
+	const display_name = user?.display_name;
 
 	const onTelegram = () => {
 		window.open(
 			`https://telegram.me/share/url?url=${getInviteLink(
 				reference_id
-			)}&text=${
-				display_name
-			} has invited you to join Edge In! Use the invite link to get started`,
+			)}&text=${display_name} has invited you to join Edge In! Use the invite link to get started`,
 			"_blank"
 		);
 	};
 
 	const onSMS = () => {
 		window.open(
-			`sms:?&body=${
-				display_name
-			} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
+			`sms:?&body=${display_name} has invited you to join Edge In! Use the invite link to get started : ${getInviteLink(
 				reference_id
 			)}`,
 			""
@@ -561,13 +557,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	const onEmail = () => {
 		window.open(
-			`mailto:?subject=${
-				display_name
-			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
-	        ${
-		display_name
-	} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
-			reference_id
+			`mailto:?subject=${display_name} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
+	        ${display_name} has invited you to join Edge In! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use the invite link to get started: ${getInviteLink(
+				reference_id
 			)}`,
 			""
 		);
@@ -589,18 +581,25 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						</div>
 					)}
 				</div>
-				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+				<div className="max-w-4xl">
+					<p className="text-slate-600 ">
+						Get rewarded for sharing EdgeIn with others. Share your code with
+						friends and colleagues and you will be considered a partial data
+						contributor with every future data contribution your invited network
+						makes to EdgeIn!
+					</p>
+				</div>
 			</div>
 			<div className="bg-white shadow rounded-lg p-5 mt-5">
 				<div className="sm:flex justify-between items-center mb-2">
 					<h2 className="font-bold text-xl">Personal Profile</h2>
-					<ElemButton btn="white" arrow className="mt-2 sm:mt-0">
+					{/* <ElemButton btn="white" arrow className="mt-2 sm:mt-0">
 						View Profile
-					</ElemButton>
+					</ElemButton> */}
 				</div>
 
-				<dl className="w-full divide-y divide-black/10 border-y border-black/10">
-					<EditSection heading="Profile Image">
+				<div className="w-full divide-y divide-black/10 border-y border-black/10">
+					{/* <EditSection heading="Profile Image">
 						<div className="sm:flex items-center">
 							<div className="relative w-32 h-32 mx-auto sm:mx-0">
 								<ElemPhoto
@@ -636,17 +635,17 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								<li>Accepted image types JPG SVG AND PNG</li>
 							</ul>
 						</div>
-					</EditSection>
+					</EditSection> */}
 
 					<EditSection
-						heading="Name"
+						heading="Full Name"
 						right={
 							!editName ? (
 								<button
 									onClick={() => setEditName(true)}
 									className="text-primary-500 hover:text-dark-500"
 								>
-									Edit Name
+									Edit
 								</button>
 							) : (
 								<></>
@@ -705,7 +704,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 									onClick={() => setEditEmail(true)}
 									className="text-primary-500 hover:text-dark-500"
 								>
-									Edit Email
+									Edit
 								</button>
 							) : (
 								<></>
@@ -785,7 +784,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						)}
 					</EditSection>
 
-					<EditSection
+					{/* <EditSection
 						heading="Location"
 						right={
 							!editLocation ? (
@@ -842,9 +841,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 							</div>
 						)}
-					</EditSection>
+					</EditSection> */}
 
-					<EditSection
+					{/* <EditSection
 						heading="Website URL"
 						right={
 							!editWebsite ? (
@@ -884,9 +883,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 							</div>
 						)}
-					</EditSection>
+					</EditSection> */}
 
-					<EditSection
+					{/* <EditSection
 						heading="LinkedIn URL"
 						right={
 							!editLinkedIn ? (
@@ -929,9 +928,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 							</div>
 						)}
-					</EditSection>
+					</EditSection> */}
 
-					<EditSection
+					{/* <EditSection
 						heading="Facebook URL"
 						right={
 							!editFacebook ? (
@@ -974,9 +973,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 							</div>
 						)}
-					</EditSection>
+					</EditSection> */}
 
-					<EditSection
+					{/* <EditSection
 						heading="Twitter URL"
 						right={
 							!editTwitter ? (
@@ -1016,9 +1015,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 							</div>
 						)}
-					</EditSection>
+					</EditSection> */}
 
-					<EditSection
+					{/* <EditSection
 						heading="About You"
 						right={
 							!editAbout ? (
@@ -1056,9 +1055,9 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								</div>
 							</div>
 						)}
-					</EditSection>
+					</EditSection> */}
 
-					<EditSection
+					{/* <EditSection
 						heading="Work"
 						right={
 							!editWorkspace ? (
@@ -1073,7 +1072,7 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 							)
 						}
 					>
-						{/* {editWorkspace && renderWorkspaceForm()} */}
+						{ {editWorkspace && renderWorkspaceForm()} }
 
 						{!editWorkspace ? (
 							<></>
@@ -1086,8 +1085,8 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 								renderWorkspaceEditForm(teamMember)
 							)}
 						</div>
-					</EditSection>
-				</dl>
+					</EditSection> */}
+				</div>
 			</div>
 		</DashboardLayout>
 	);

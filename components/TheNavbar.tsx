@@ -180,9 +180,9 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 	return (
 		<header className="overflow-y-visible z-40 shadow bg-white">
-			<div className="mx-auto px-1 py-1 sm:px-6 lg:px-8">
+			<div className="mx-auto px-1 py-1 sm:px-3">
 				<nav
-					className="flex items-center justify-between lg:justify-start w-full max-w-screen-2xl mx-auto transition-all"
+					className="flex items-center justify-between lg:justify-start w-full mx-auto transition-all"
 					aria-label="Global"
 				>
 					<div className="flex items-center">

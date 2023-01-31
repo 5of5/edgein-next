@@ -41,7 +41,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 									leaveFrom="translate-x-0"
 									leaveTo="-translate-x-full"
 								>
-									<Dialog.Panel className="relative max-w-xs w-full bg-white pt-5 pb-4 flex-1 flex flex-col">
+									<Dialog.Panel className="relative max-w-xs w-full bg-white py-3 flex-1 flex flex-col">
 										<Transition.Child
 											as={Fragment}
 											enter="ease-in-out duration-300"
@@ -51,23 +51,22 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 											leaveFrom="opacity-100"
 											leaveTo="opacity-0"
 										>
-											<div className="absolute top-0 right-0 pt-2">
-												<ElemButton
-													roundedFull={false}
+											<div className="absolute top-2 right-2">
+												<button
 													onClick={() => setSidebarOpen(false)}
-													className="rounded-lg !p-0 hover:border-primary-500 mr-1 lg:hidden"
+													className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
 												>
 													<span className="sr-only">Close Sidebar</span>
 													<IconX
-														className="h-8 w-8"
+														className="h-6 w-6"
 														aria-hidden="true"
 														title="close"
 													/>
-												</ElemButton>
+												</button>
 											</div>
 										</Transition.Child>
 
-										<div className="px-4 flex-1 h-0 overflow-y-auto">
+										<div className="px-4 flex-1 h-0 overflow-y-auto scrollbar-hide">
 											<DashboardSidebar />
 										</div>
 									</Dialog.Panel>

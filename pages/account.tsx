@@ -111,7 +111,7 @@ export default function Account() {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
-				<div className="sm:flex justify-between items-center mb-2">
+				<div className="flex justify-between items-center pb-2">
 					<h2 className="font-bold text-xl">Invite Code</h2>
 
 					{user && user.reference_id && (
@@ -120,7 +120,14 @@ export default function Account() {
 						</div>
 					)}
 				</div>
-				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+				<div className="max-w-4xl">
+					<p className="text-slate-600 ">
+						Get rewarded for sharing EdgeIn with others. Share your code with
+						friends and colleagues and you will be considered a partial data
+						contributor with every future data contribution your invited network
+						makes to EdgeIn!
+					</p>
+				</div>
 			</div>
 
 			<div className="bg-white shadow rounded-lg mt-5 p-5">
@@ -129,22 +136,17 @@ export default function Account() {
 				</div>
 
 				<dl className="w-full divide-y divide-black/10 border-y border-black/10">
-					<EditSection heading="Social authentication">
-						<div>
-							<p className="text-slate-600">
-								Connect your LinkedIn account to validate your profile and
-								contribute to EdgeIn. Our team will then review your account and
-								enable it for contribution (this may take up to one business
-								day).
-							</p>
-							{user && user.auth0_linkedin_id ? (
-								<div className="inline-flex mt-2 gap-x-2 items-center font-bold px-3.5 py-1.5 text-sm justify-center text-[#0077B5]">
+					<EditSection
+						heading="Social authentication"
+						right={
+							user && !user.auth0_linkedin_id ? (
+								<div className="inline-flex gap-x-2 items-center font-bold px-3.5 py-1.5 text-sm justify-center text-[#0077B5]">
 									<IconLinkedIn className="h-5 w-5" />
 									<span>Connected</span>
 								</div>
 							) : (
 								<>
-									<ElemButton
+									{/* <ElemButton
 										roundedFull={false}
 										onClick={onLinkedInClick}
 										btn="transparent"
@@ -155,17 +157,28 @@ export default function Account() {
 											className="h-6 w-6 text-[#0077B5]"
 										/>
 										Login with LinkedIn
-									</ElemButton>
+									</ElemButton> */}
 									<ElemButton
 										onClick={onLinkedInClick}
+										btn="white"
+										//size="sm"
+										className="space-x-1 text-[#0077B5] hover:!text-[#0077B5]"
 										//disabled={user && user.auth0_linkedin_id}
-										className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
+										//className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
 									>
-										<IconLinkedIn className="h-5 w-5" />{" "}
-										<span>Connect LinkedIn</span>
+										<IconLinkedIn className="h-5 w-5" /> <span>LinkedIn</span>
 									</ElemButton>
 								</>
-							)}
+							)
+						}
+					>
+						<div>
+							<p className="text-slate-600">
+								Connect your LinkedIn account to validate your profile and
+								contribute to EdgeIn. Our team will then review your account and
+								enable it for contribution (this may take up to one business
+								day).
+							</p>
 						</div>
 					</EditSection>
 
