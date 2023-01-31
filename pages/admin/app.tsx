@@ -21,7 +21,7 @@ import {
 
 import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
 
-import { ApolloClient, DocumentNode, gql, InMemoryCache } from "@apollo/client";
+import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import ElemAppBar from "@/components/admin/ElemAppBar";
 import { getParentSubOrganizations } from "@/utils/resourceLink";
 import {
@@ -59,19 +59,7 @@ import {
   BlockchainEdit,
   BlockchainCreate,
 } from "../../components/admin/blockchain";
-import {
-  DisabledEmailList,
-  DisabledEmailEdit,
-  DisabledEmailCreate,
-} from "../../components/admin/disabledEmail";
-import { UserList, UserEdit } from "../../components/admin/user";
-import {
-  DataPartnerList,
-  DataPartnerCreate,
-  DataPartnerEdit,
-} from "../../components/admin/dataPartner";
 import { useAuth } from "../../hooks/useAuth";
-import { getUpdatedDiff } from "@/utils/helpers";
 import { onSubmitData } from "@/utils/submitData";
 
 const MyLogin = () => {
@@ -251,15 +239,9 @@ const AdminApp = () => {
           };
         },
         create: (type, obj) => {
-          if (["disabled_emails", "users"].includes(type)) {
-            return dataProvider.create(type, nullInputTransform(type, obj));
-          }
           return onSubmitData(type, nullInputTransform(type, obj));
         },
         update: (type, obj) => {
-          if (["disabled_emails", "users"].includes(type)) {
-            return dataProvider.create(type, nullInputTransform(type, obj));
-          }
           return onSubmitData(type, nullInputTransform(type, obj));
         },
       });
@@ -364,24 +346,6 @@ const AdminApp = () => {
         edit={InvestorEdit}
         create={InvestorCreate}
       />
-      <Resource
-        name="disabled_emails"
-        list={DisabledEmailList}
-        edit={DisabledEmailEdit}
-        create={DisabledEmailCreate}
-      />
-      <Resource name="users" list={UserList} edit={UserEdit} />
-      <Resource
-        name="data_partners"
-        list={DataPartnerList}
-        edit={DataPartnerEdit}
-        create={DataPartnerCreate}
-      />
-
-      {/* <Resource
-        name="actions"
-        list={ActionsList}
-      /> */}
     </Admin>
   );
 };
