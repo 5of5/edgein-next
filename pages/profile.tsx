@@ -581,12 +581,12 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						</div>
 					)}
 				</div>
-				<div className="max-w-4xl">
-					<p className="text-slate-600 ">
-						Get rewarded for sharing EdgeIn with others. Share your code with
-						friends and colleagues and you will be considered a partial data
-						contributor with every future data contribution your invited network
-						makes to EdgeIn!
+				<div className="max-w-3xl">
+					<p className="text-slate-600">
+						Get rewarded for sharing EdgeIn. Share your code with friends and
+						colleagues and you will be considered a partial data contributor
+						with every future data contribution your invited network makes to
+						EdgeIn!
 					</p>
 				</div>
 			</div>

@@ -120,12 +120,12 @@ export default function Account() {
 						</div>
 					)}
 				</div>
-				<div className="max-w-4xl">
-					<p className="text-slate-600 ">
-						Get rewarded for sharing EdgeIn with others. Share your code with
-						friends and colleagues and you will be considered a partial data
-						contributor with every future data contribution your invited network
-						makes to EdgeIn!
+				<div className="max-w-3xl">
+					<p className="text-slate-600">
+						Get rewarded for sharing EdgeIn. Share your code with friends and
+						colleagues and you will be considered a partial data contributor
+						with every future data contribution your invited network makes to
+						EdgeIn!
 					</p>
 				</div>
 			</div>
@@ -139,11 +139,15 @@ export default function Account() {
 					<EditSection
 						heading="Social authentication"
 						right={
-							user && !user.auth0_linkedin_id ? (
-								<div className="inline-flex gap-x-2 items-center font-bold px-3.5 py-1.5 text-sm justify-center text-[#0077B5]">
+							user && user.auth0_linkedin_id ? (
+								<ElemButton
+									onClick={() => {}}
+									btn="white"
+									className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
+								>
 									<IconLinkedIn className="h-5 w-5" />
 									<span>Connected</span>
-								</div>
+								</ElemButton>
 							) : (
 								<>
 									{/* <ElemButton
@@ -161,10 +165,7 @@ export default function Account() {
 									<ElemButton
 										onClick={onLinkedInClick}
 										btn="white"
-										//size="sm"
 										className="space-x-1 text-[#0077B5] hover:!text-[#0077B5]"
-										//disabled={user && user.auth0_linkedin_id}
-										//className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
 									>
 										<IconLinkedIn className="h-5 w-5" /> <span>LinkedIn</span>
 									</ElemButton>
