@@ -20,7 +20,7 @@ import {
 } from "../../components/admin/company";
 
 import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
-
+import { EventList, EventCreate, EventEdit } from "../../components/admin/event";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
 import ElemAppBar from "@/components/admin/ElemAppBar";
 import { getParentSubOrganizations } from "@/utils/resourceLink";
@@ -303,6 +303,12 @@ const AdminApp = () => {
         list={CoinList}
         edit={CoinEdit}
         create={CoinCreate}
+      />
+      <Resource
+        name="events"
+        list={EventList}
+        edit={EventEdit}
+        create={EventCreate}
       />
       <Resource
         name="companies"
