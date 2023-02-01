@@ -3,7 +3,7 @@ import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-//import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
@@ -12,6 +12,7 @@ import {
 	IconCompanies,
 	IconSettings,
 	IconOrganization,
+	IconUserCircle,
 } from "@/components/Icons";
 import { Disclosure } from "@headlessui/react";
 import ElemMyGroupsMenu from "./ElemMyGroupsMenu";
@@ -79,21 +80,21 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 							{/* <li className={`${getActiveClass("/profile/")}`} role="button">
 								<Link href={`/profile`}>
 									<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-										<ElemPhoto
+										{!user?.profilePicture ? (
+											<ElemPhoto
 												photo={user?.profilePicture}
-												wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-lg rounded-full"
+												wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-full"
 												imgClass="object-fit max-w-full max-h-full rounded-full"
 												imgAlt={"profile"}
 												placeholder="user"
-												placeholderClass="text-slate-300"
+												placeholderClass="text-slate-400 hover:text-slate-400"
 											/>
-										{user?.profileName ? (
-											<span className="first-letter:uppercase">
-												{truncate(user?.profileName, { length: 15 })}
-											</span>
 										) : (
-											<span>Profile Settings</span>
+											<div className="flex items-center justify-center shrink-0 w-6 h-6 ">
+												<IconUserCircle className="h-6 w-6 " />
+											</div>
 										)}
+										<span>Profile Settings</span>
 									</a>
 								</Link>
 							</li> */}

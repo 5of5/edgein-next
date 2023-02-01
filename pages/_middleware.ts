@@ -30,6 +30,7 @@ export async function middleware(req: NextRequest) {
 			`/api/access_token_from_code/`,
 			`/api/stripe_webhook/`,
 			`/admin/app/`,
+			`/admin/admin/`
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
