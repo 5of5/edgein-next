@@ -261,7 +261,6 @@ export const mutateActionAndDataRaw = async (
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
-    console.log('@value', value, notInsertValueType(value))
     if (
       (actionType === "Insert Data" && !notInsertValueType(value)) ||
       actionType === "Change Data"
