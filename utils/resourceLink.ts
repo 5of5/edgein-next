@@ -23,100 +23,120 @@ export const getParentSubOrganizations = (data: any) => {
   };
 };
 
-export const onAddResourceLink = async (payload: any) => {
-  await fetch("/api/add_resource_link/", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-};
-
-export const onUpdateResourceLink = async (payload: any) => {
-  await fetch("/api/update_resource_link/", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-};
-
-export const onDeleteResourceLink = async (payload: any) => {
-  await fetch("/api/delete_resource_link/", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
-  });
-};
-
-export const handleChangeParentOrganization = async (
+export const handleChangeParentOrganization = (
   recordId: number,
+  linkId: number,
   previous: any,
   current: any,
   type: string,
+  create: any,
+  update: any,
+  deleteOne: any,
+  onCallbackSuccess: any
 ) => {
-  const toId = type === "companies" ? "toCompanyId" : "toVcFirmId";
+  const toId = type === "companies" ? "to_company_id" : "to_vc_firm_id";
 
   if (!current.parent_company && previous.parent_company) {
-    await onDeleteResourceLink({
-      fromCompanyId: previous.parent_company,
-      [toId]: recordId,
-    });
+    deleteOne(
+      "resource_links",
+      {
+        id: linkId,
+        previousData: {
+          from_company_id: previous.parent_company,
+          [toId]: recordId,
+        },
+      },
+      {
+        onSuccess: onCallbackSuccess,
+      }
+    );
   }
 
   if (!current.parent_vc_firm && previous.parent_vc_firm) {
-    await onDeleteResourceLink({
-      fromVcFirmId: previous.parent_vc_firm,
-      [toId]: recordId,
-    });
+    deleteOne(
+      "resource_links",
+      {
+        id: linkId,
+        previousData: {
+          from_vc_firm_id: previous.parent_vc_firm,
+          [toId]: recordId,
+        },
+      },
+      {
+        onSuccess: onCallbackSuccess,
+      }
+    );
   }
 
   if (current.parent_company) {
     if (!previous.parent_company) {
-      await onAddResourceLink({
-        linkType: "child",
-        fromCompanyId: current.parent_company,
-        [toId]: recordId,
-      });
+      create(
+        "resource_links",
+        {
+          data: {
+            link_type: "child",
+            from_company_id: current.parent_company,
+            [toId]: recordId,
+          },
+        },
+        {
+          onSuccess: onCallbackSuccess,
+        }
+      );
     } else {
-      await onUpdateResourceLink({
-        oldValue: {
-          fromCompanyId: previous.parent_company,
-          [toId]: recordId,
+      update(
+        "resource_links",
+        {
+          id: linkId,
+          data: {
+            from_company_id: current.parent_company,
+            [toId]: recordId,
+          },
+          previousData: {
+            from_company_id: previous.parent_company,
+            [toId]: recordId,
+          },
         },
-        newValue: {
-          fromCompanyId: current.parent_company,
-          [toId]: recordId,
-        },
-      });
+        {
+          onSuccess: onCallbackSuccess,
+        }
+      );
     }
   }
 
   if (current.parent_vc_firm) {
     if (!previous.parent_vc_firm) {
-      await onAddResourceLink({
-        linkType: "child",
-        fromVcFirmId: current.parent_vc_firm,
-        [toId]: recordId,
-      });
+      create(
+        "resource_links",
+        {
+          data: {
+            link_type: "child",
+            from_vc_firm_id: current.parent_vc_firm,
+            [toId]: recordId,
+          },
+        },
+        {
+          onSuccess: onCallbackSuccess,
+        }
+      );
     } else {
-      await onUpdateResourceLink({
-        oldValue: {
-          fromVcFirmId: previous.parent_vc_firm,
-          [toId]: recordId,
+      update(
+        "resource_links",
+        {
+          id: linkId,
+          data: {
+            from_vc_firm_id: current.parent_vc_firm,
+            [toId]: recordId,
+          },
+          previousData: {
+            from_vc_firm_id: previous.parent_vc_firm,
+            [toId]: recordId,
+          },
         },
-        newValue: {
-          fromVcFirmId: current.parent_vc_firm,
-          [toId]: recordId,
-        },
-      });
+        {
+          onSuccess: onCallbackSuccess,
+        }
+      );
     }
   }
 };

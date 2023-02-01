@@ -5,7 +5,18 @@ import { User } from "@/models/User";
 import { getUpdatedDiff } from "./helpers";
 
 export type ActionType = "Insert Data" | "Change Data";
-export type ResourceTypes = "companies" | "vc_firms" | "people" | "blockchains" | "coins" | "investment_rounds" | "investments" | "team_members" | "investors"
+export type ResourceTypes =
+  | "companies"
+  | "vc_firms"
+  | "people"
+  | "blockchains"
+  | "coins"
+  | "investment_rounds"
+  | "investments"
+  | "team_members"
+  | "investors"
+  | "resource_links"
+;
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {
