@@ -23,9 +23,8 @@ select_permissions:
         - email
         - created_at
       filter:
-        users:
+        user_group:
           user_group_members:
             user_id:
               _eq: X-Hasura-User-Id
       limit: 50
-      allow_aggregations: true

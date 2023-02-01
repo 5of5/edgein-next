@@ -1098,7 +1098,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		{
 			limit: 50,
 			offset: 0,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+			where: { slug: { _neq: "" } },
 		}
 	);
 

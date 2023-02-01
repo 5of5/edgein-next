@@ -37,6 +37,15 @@ array_relationships:
         table:
           schema: public
           name: list_members
+  - name: user_groups
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: list_user_groups
+        insertion_order: null
+        column_mapping:
+          id: list_id
 computed_fields:
   - name: total_no_of_resources
     definition:
@@ -51,11 +60,14 @@ select_permissions:
         - created_by_id
         - id
         - name
+        - created_at
       computed_fields:
         - total_no_of_resources
       filter:
-        users:
-          user_id:
-            _eq: X-Hasura-User-Id
+        _or:
+          - user_groups:
+            user_group:
+              user_group_members:
+                user_id:
+                  _eq: X-Hasura-User-Id
       limit: 50
-      allow_aggregations: true

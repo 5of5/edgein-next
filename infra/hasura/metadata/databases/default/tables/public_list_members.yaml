@@ -24,4 +24,3 @@ select_permissions:
         - member_type
       filter: {}
       limit: 50
-      allow_aggregations: true

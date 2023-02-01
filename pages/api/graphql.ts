@@ -3,23 +3,22 @@ import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-  let headers: {Authorization: string, Role: string, Id: string} |
-    {'x-hasura-admin-secret': string, 'x-hasura-role': string, 'X-Hasura-User-Id': string}
+  let headers: {'x-hasura-role': string, 'X-hasura-user-id': string} & { Authorization: string } |
+    {'x-hasura-admin-secret': string }
   if (process.env.DEV_MODE) {
     headers  = {
       'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
       'x-hasura-role': process.env.HASURA_VIEWER ?? "",
-      'X-Hasura-User-Id': user?.id.toString() ?? ''
+      'X-hasura-user-id': user?.id.toString() ?? ''
     }
   } else {
     if (!user) {
       return res.status(401).end()
     }
-    headers  = 
-    {
+    headers  = {
       Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
-      Role: '',
-      Id: user.id.toString() ?? ''
+      'x-hasura-role': process.env.HASURA_VIEWER ?? "",
+      'X-hasura-user-id': user?.id.toString() ?? ''
     }
   }
   const opts = {
