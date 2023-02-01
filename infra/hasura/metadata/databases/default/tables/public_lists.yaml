@@ -65,9 +65,12 @@ select_permissions:
         - total_no_of_resources
       filter:
         _or:
+          - list_members:
+              user_id:
+                _eq: X-Hasura-User-Id
           - user_groups:
-            user_group:
-              user_group_members:
-                user_id:
-                  _eq: X-Hasura-User-Id
+              user_group:
+                user_group_members:
+                  user_id:
+                    _eq: X-Hasura-User-Id
       limit: 50
