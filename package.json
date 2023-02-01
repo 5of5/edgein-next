@@ -41,6 +41,7 @@
 		"micro": "^10.0.1",
 		"moment-timezone": "^0.5.37",
 		"next": "12.1.5",
+		"nextjs-cors": "^2.1.2",
 		"nodemailer": "^6.7.8",
 		"path": "^0.12.7",
 		"pg": "^8.7.3",
