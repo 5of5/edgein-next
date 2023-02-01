@@ -28,6 +28,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { uniq } from "lodash";
 import { ElemButton } from "@/components/ElemButton";
 import { onTrackView } from "@/utils/track";
+import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 
@@ -107,33 +108,68 @@ const VCFirm: NextPage<Props> = (props) => {
 		});
 	}
 
+	const parentLinks = vcfirm?.to_links?.find(
+    (item) => item.link_type === "child"
+  );
+	const parentOrganization = parentLinks?.from_company || parentLinks?.from_vc_firm;
+  const subOrganizations = vcfirm?.from_links?.filter(
+    (item) => item.link_type === "child"
+  );
+
 	return (
-		<div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
-			{/* <div onClick={goBack}>
+    <div className="max-w-7xl px-4 mx-auto mt-7 relative z-10 sm:px-6 lg:px-8">
+      {/* <div onClick={goBack}>
 				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
 					Back
 				</ElemButton>
 			</div> */}
-			<div className="lg:grid lg:grid-cols-11 lg:gap-7">
-				<div className="col-span-3">
-					<ElemPhoto
-						photo={vcfirm.logo}
-						wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
-						imgClass="object-contain w-full h-full"
-						imgAlt={vcfirm.name}
-						placeholderClass="text-slate-300"
-					/>
-				</div>
+      <div className="lg:grid lg:grid-cols-11 lg:gap-7">
+        <div className="col-span-3">
+          <ElemPhoto
+            photo={vcfirm.logo}
+            wrapClass="flex items-center justify-center aspect-square shrink-0 p-5 bg-white rounded-lg shadow"
+            imgClass="object-contain w-full h-full"
+            imgAlt={vcfirm.name}
+            placeholderClass="text-slate-300"
+          />
+        </div>
 
-				<div className="w-full col-span-5 mt-7 lg:mt-4">
-					<h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
-					{vcfirm.tags?.length > 0 && (
-						<ElemTags
-							className="mt-4"
-							resourceType={"investors"}
-							tags={vcfirm.tags}
-						/>
-					)}
+        <div className="w-full col-span-5 mt-7 lg:mt-4">
+          <h1 className="text-4xl font-bold md:text-5xl">{vcfirm.name}</h1>
+          {vcfirm.tags?.length > 0 && (
+            <ElemTags
+              className="mt-4"
+              resourceType={"investors"}
+              tags={vcfirm.tags}
+            />
+          )}
+
+          {parentOrganization && (
+            <div className="mt-4">
+              <div className="font-bold text-sm">Sub-organization of:</div>
+              <Link href="#">
+                <a className="flex items-center gap-2 mt-1 group transition-all hover:-translate-y-0.5">
+                  <ElemPhoto
+                    photo={parentOrganization?.logo}
+                    wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
+                    imgClass="object-contain w-full h-full"
+                    imgAlt={parentOrganization?.name}
+                    placeholderClass="text-slate-300"
+                  />
+                  <Link
+                    href={`/${
+                      parentLinks?.from_company ? "companies" : "investors"
+                    }/${parentOrganization?.slug}`}
+                    passHref
+                  >
+                    <h2 className="group-hover:text-primary-500">
+                      {parentOrganization?.name}
+                    </h2>
+                  </Link>
+                </a>
+              </Link>
+            </div>
+          )}
 
 					{vcfirm.overview && (
 						<>
@@ -145,7 +181,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							>
 								{parse(newLineToP(vcfirm.overview))}
 							</div>
-							{overviewDivHeight > 84 && (
+							{overviewDivHeight > 72 && (
 								<ElemButton
 									onClick={() => setOverviewMore(!overviewMore)}
 									btn="transparent"
@@ -211,7 +247,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
 								<IconEditPencil title="Edit" />
 							</button> */}
-						</div>
+            </div>
 
 						<div className="mt-2 py-4 border-t border-black/10">
 							{error ? (
@@ -356,27 +392,35 @@ const VCFirm: NextPage<Props> = (props) => {
 				</div>
 			)}
 
-			{sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
-				<section
-					ref={investmentRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="investments"
-				>
-					<ElemInvestments
-						showEdit={false}
-						heading="Investments"
-						investments={sortedInvestmentRounds.filter((n) => n)}
-					/>
-				</section>
-			)}
+      {sortedInvestmentRounds && sortedInvestmentRounds.length > 0 && (
+        <section
+          ref={investmentRef}
+          className="mt-7 p-5 rounded-lg bg-white shadow"
+          id="investments"
+        >
+          <ElemInvestments
+            showEdit={false}
+            heading="Investments"
+            investments={sortedInvestmentRounds.filter((n) => n)}
+          />
+        </section>
+      )}
 
-			{/* <div className="mt-7 rounded-lg bg-white shadow">
+      {subOrganizations?.length > 0 && (
+        <ElemSubOrganizations
+          className="mt-7"
+          heading={`${vcfirm?.name} Sub-Organizations (${subOrganizations.length})`}
+          subOrganizations={subOrganizations}
+        />
+      )}
+
+      {/* <div className="mt-7 rounded-lg bg-white shadow">
 				{vcfirm && (
 					<ElemRecentInvestments heading="Similar Investors" />
 				)}
 			</div> */}
-		</div>
-	);
+    </div>
+  );
 };
 
 // export async function getStaticPaths() {

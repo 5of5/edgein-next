@@ -178,8 +178,8 @@ export const ElemSocialShare: FC<Props> = ({
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left align-middle shadow-xl transition-all">
-								<div className="flex items-center justify-between px-5 py-3">
+							<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+								<div className="flex items-center justify-between px-3 py-1">
 									<h2 className="text-lg font-bold">Share</h2>
 
 									<button

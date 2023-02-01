@@ -121,7 +121,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 												{fundingTotal > 0 && (
 													<div className="flex items-center space-x-1">
 														<div className="">Raised</div>
-														<div className="flex items-center text-green-700">
+														<div className="flex items-center text-green-600">
 															$
 															{convertToInternationalCurrencySystem(
 																fundingTotal

@@ -12,37 +12,34 @@ import {
 	IconEmail,
 	IconSettings,
 	IconCustomList,
+	IconGroup,
 	IconSignOut,
 } from "@/components/Icons";
-import { ElemButton } from "@/components/ElemButton";
 import { Transition, Dialog } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 
 type Props = {
 	className?: string;
+	myListsUrl?: string;
+	myGroupsUrl?: string;
 };
 
-export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
-	const { listAndFollows, user, loading } = useUser();
+export const MobileNav: FC<PropsWithChildren<Props>> = ({
+	className = "",
+	myListsUrl,
+	myGroupsUrl,
+}) => {
+	const { user } = useUser();
 
 	const [navOpen, setNavOpen] = useState(false);
 
-	const firstCustomList = first(
-		listAndFollows?.filter(
-			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
-		)
-	);
-	let myListsUrl = "";
-	if (firstCustomList) {
-		myListsUrl = `/lists/${firstCustomList.id}/${kebabCase(
-			getNameFromListName(firstCustomList)
-		)}`;
-	} else {
-		const hotId =
-			find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
-			0;
-		myListsUrl = `/lists/${hotId}/hot`;
-	}
+	const onOpen = () => {
+		setNavOpen(true);
+	};
+
+	const onClose = () => {
+		setNavOpen(false);
+	};
 
 	const logout = async () => {
 		localStorage.clear();
@@ -59,39 +56,80 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 		}
 	};
 
-	const menuItems = [
-		{ icon: IconCompanies, name: "Companies", href: "/companies" },
-		{ icon: IconCash, name: "Investors", href: "/investors" },
-		{ icon: IconUsers, name: "Team", href: "/team" },
-		{ icon: IconEmail, name: "Contact", href: "/contact" },
-	];
-
-	const userLinks = [
-		{ icon: IconCustomList, name: "My Lists", href: myListsUrl },
+	const navigation = [
 		{
-			icon: IconSettings,
-			name: "Account Settings",
-			href: "/account",
+			heading: "Explore",
+			links: [
+				{
+					icon: IconCompanies,
+					name: "Companies",
+					href: "/companies",
+					onClick: null,
+				},
+				{
+					icon: IconCash,
+					name: "Investors",
+					href: "/investors",
+					onClick: null,
+				},
+				...(user
+					? [
+							{
+								icon: IconCustomList,
+								name: "My Lists",
+								href: myListsUrl,
+								onClick: null,
+							},
+					  ]
+					: []),
+				...(myGroupsUrl
+					? [
+							{
+								icon: IconGroup,
+								name: "My Groups",
+								href: myGroupsUrl,
+								onClick: null,
+							},
+					  ]
+					: []),
+				...(user
+					? [
+							{
+								icon: IconSettings,
+								name: "Account Settings",
+								href: "/account",
+								onClick: null,
+							},
+							{
+								icon: IconSignOut,
+								name: "Sign out",
+								onClick: () => {
+									logout(), setNavOpen(false);
+								},
+							},
+					  ]
+					: []),
+				,
+			],
 		},
 		{
-			icon: IconSignOut,
-			onClick: () => {
-				logout(), setNavOpen(false);
-			},
-			name: "Sign out",
-		},
-	];
-
-	const socialLinks = [
-		{
-			name: "LinkedIn",
-			href: "https://www.linkedin.com/company/edgein/",
-			icon: IconLinkedIn,
-		},
-		{
-			name: "Twitter",
-			href: "https://twitter.com/EdgeInio",
-			icon: IconTwitter,
+			//heading: "Follow Us",
+			links: [
+				{ icon: IconUsers, name: "Team", href: "/team", onClick: null },
+				{ icon: IconEmail, name: "Contact", href: "/contact", onClick: null },
+				{
+					icon: IconLinkedIn,
+					name: "LinkedIn",
+					href: "https://www.linkedin.com/company/edgein/",
+					onClick: null,
+				},
+				{
+					icon: IconTwitter,
+					name: "Twitter",
+					href: "https://twitter.com/EdgeInio",
+					onClick: null,
+				},
+			],
 		},
 	];
 
@@ -99,7 +137,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 		<>
 			<div className={className}>
 				<button
-					onClick={() => setNavOpen(true)}
+					onClick={onOpen}
 					className="hamburger relative w-8 h-[36px] px-[3px] py-4"
 				>
 					<span
@@ -115,7 +153,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 					<Dialog
 						as="div"
 						className="relative z-40 lg:hidden"
-						onClose={setNavOpen}
+						onClose={onClose}
 					>
 						<Transition.Child
 							as={Fragment}
@@ -142,120 +180,42 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({ className = "" }) => {
 								leaveFrom="translate-x-0"
 								leaveTo="translate-x-full"
 							>
-								<Dialog.Panel className="relative max-w-md w-full bg-white flex-1 flex flex-col">
-									<Transition.Child
-										as={Fragment}
-										enter="ease-in-out duration-300"
-										enterFrom="opacity-0"
-										enterTo="opacity-100"
-										leave="ease-in-out duration-300"
-										leaveFrom="opacity-100"
-										leaveTo="opacity-0"
-									>
-										<div className="absolute top-0 right-0 pt-2">
-											<ElemButton
-												roundedFull={false}
-												onClick={() => setNavOpen(false)}
-												className="rounded-lg !p-0 hover:border-primary-500 mr-0 lg:hidden"
-											>
-												<span className="sr-only">Close Sidebar</span>
-												<IconX
-													className="h-8 w-8"
-													aria-hidden="true"
-													title="close"
-												/>
-											</ElemButton>
-										</div>
-									</Transition.Child>
+								<Dialog.Panel className="max-w-md w-full bg-white flex-1 flex flex-col">
+									<Dialog.Title className="flex items-center justify-end px-1 py-2">
+										<button type="button" onClick={onClose}>
+											<IconX className="h-8 w-8" title="close" />
+										</button>
+									</Dialog.Title>
 
-									<div className="flex flex-col h-full overflow-y-scroll py-6 px-8">
-										<h3 className="text-xl font-bold">Explore</h3>
-										<ul className="space-y-1">
-											{menuItems.map((item, index) => (
-												<li key={index}>
-													<a
-														onClick={() => {
-															setNavOpen(false);
-														}}
-														href={item.href}
-														className="flex items-center py-3 text-lg hover:text-primary-500"
-													>
-														{item.icon && (
-															<item.icon
-																title={item.name}
-																className="h-6 w-6 mr-4 shrink-0"
-															/>
-														)}
+									<div className="flex flex-col h-full overflow-y-auto divide-y divide-black/10 px-8">
+										{navigation.map((section, index) => (
+											<div key={index} className="pt-6 pb-3 first:pt-0">
+												<h3 className="text-xl font-bold">{section.heading}</h3>
 
-														{item.name}
-													</a>
-												</li>
-											))}
-										</ul>
-
-										{user && (
-											<>
-												<div className="mt-3 bg-slate-200 h-px" />
-												<h3 className="mt-6 text-xl font-bold">My EdgeIn</h3>
-												<ul className="space-y-1">
-													{userLinks.map((item, index) => {
-														return (
-															<li key={index}>
-																{item.href ? (
-																	<Link href={item.href}>
-																		<a
-																			onClick={() => {
-																				setNavOpen(false);
-																			}}
-																			className="flex items-center py-3 text-lg hover:text-primary-500"
-																		>
-																			{item.icon && (
-																				<item.icon
-																					title={item.name}
-																					className="h-6 w-6 mr-4 shrink-0"
-																				/>
-																			)}
-																			{item.name}
-																		</a>
-																	</Link>
-																) : (
-																	<a
-																		onClick={item.onClick}
-																		className="flex items-center py-3 text-lg cursor-pointer hover:text-primary-500"
-																	>
-																		{item.icon && (
-																			<item.icon
-																				title={item.name}
-																				className="h-6 w-6 mr-4 shrink-0"
-																			/>
-																		)}
-																		{item.name}
-																	</a>
-																)}
-															</li>
-														);
-													})}
+												<ul>
+													{section.links.map((item, index) => (
+														<li key={index}>
+															<Link href={item?.href ? item.href : ""}>
+																<a
+																	onClick={
+																		item?.onClick ? item?.onClick : onClose
+																	}
+																	className="flex items-center py-3 text-lg hover:text-primary-500"
+																>
+																	{item?.icon && (
+																		<item.icon
+																			title={item.name}
+																			className="h-6 w-6 mr-4 shrink-0"
+																		/>
+																	)}
+																	{item?.name}
+																</a>
+															</Link>
+														</li>
+													))}
 												</ul>
-											</>
-										)}
-
-										<div className="mt-3 bg-slate-200 h-px" />
-										<div className="mt-6 font-bold text-lg">Follow Us</div>
-										<div className="flex mt-4 space-x-6">
-											{socialLinks.map((item, index) => (
-												<div key={index}>
-													<a
-														href={item.href}
-														onClick={() => setNavOpen(false)}
-														target="_blank"
-														rel="noreferrer"
-														className="text-slate-600 hover:text-primary-500"
-													>
-														{<item.icon className="h-8 w-8 " />}
-													</a>
-												</div>
-											))}
-										</div>
+											</div>
+										))}
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>

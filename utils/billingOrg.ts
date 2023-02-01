@@ -12,7 +12,7 @@ async function insertBillingOrg(customer_id: string, status: string, plan: strin
 try {
   const data = await mutate({
     mutation: insertBillingOrg,
-    variables: { customer_id, plan }
+    variables: { customer_id, plan, status }
   });
   return data.data.insert_billing_org_one
   } catch (e) {

@@ -1,13 +1,13 @@
-import React, { MutableRefObject, useRef, useEffect } from "react";
-import type { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import React, { MutableRefObject, useRef, useEffect, useState } from "react";
+import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
 import { ElemTabBar } from "@/components/ElemTabBar";
+import { ElemButton } from "@/components/ElemButton";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
 import {
-	GetCompaniesQuery,
 	GetPersonDocument,
 	GetPersonQuery,
 	Investment_Rounds,
@@ -16,6 +16,8 @@ import {
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
+import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	person: People;
@@ -26,10 +28,10 @@ const Person: NextPage<Props> = (props) => {
 	const router = useRouter();
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
-
-	const goBack = () => router.back();
+	const { user } = useAuth();
 
 	const person = props.person;
+	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
 	useEffect(() => {
 		if (person) {
@@ -42,41 +44,46 @@ const Person: NextPage<Props> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
 
-	if (!person) {
-		return <h1>Not Found</h1>;
+	const personEmails = [
+		...(person.work_email ? [person.work_email] : []),
+		...(person.personal_email ? [person.personal_email] : []),
+	];
+
+	const tabBarItems = [
+		{ name: "Overview", ref: overviewRef },
+		...(sortedInvestmentRounds.length > 0
+			? [
+					{
+						name: "Investments",
+						ref: investmentRef,
+					},
+			  ]
+			: []),
+	];
+
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+	const [showEmails, setShowEmails] = useState(false);
+
+	const onEmailClick = () => {
+		if (user?.entitlements?.viewEmails) {
+			setShowEmails(!showEmails);
+			// TODO add action
+		} else {
+			setIsOpenUpgradeDialog(true);
+		}
 	}
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
 
-	const sortedInvestmentRounds = props.sortByDateAscInvestments;
-
-	let personEmails: string[] = [];
-
-	if (person.work_email) {
-		personEmails.push(person.work_email);
-	}
-
-	if (person.personal_email) {
-		personEmails.push(person.personal_email);
-	}
-
-	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
-	if (sortedInvestmentRounds.length > 0) {
-		tabBarItems.push({
-			name: "Investments",
-			ref: investmentRef,
-		});
-	}
+	const profileIsClaimed = true;
 
 	return (
 		<div className="relative">
-			{/* <div onClick={goBack}>
-				<ElemButton className="pl-0 pr-0" btn="transparent" arrowLeft>
-				Back
-				</ElemButton>
-				</div> */}
-			<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div>
+			{/* <div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div> */}
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+				<div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
 					<div className="col-span-2 flex justify-center">
 						<ElemPhoto
 							photo={person.picture}
@@ -87,19 +94,27 @@ const Person: NextPage<Props> = (props) => {
 							placeholderClass="text-slate-300"
 						/>
 					</div>
-					<div className="w-full col-span-9 mt-7">
-						<div className="flex justify-center text-center lg:justify-start lg:text-left lg:shrink-0">
+					<div className="w-full col-span-9">
+						<div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
 							<div>
-								<h1 className="text-3xl font-bold lg:text-4xl">
-									{person.name}
-								</h1>
 								{person.type && (
-									<div className="pb-0.5 whitespace-nowrap text-lg text-slate-600">
+									<div className="whitespace-nowrap text-lg text-slate-600">
 										{removeSpecialCharacterFromString(person.type as string)}
 									</div>
 								)}
+								<h1 className="text-3xl font-bold lg:text-4xl">
+									{person.name}
+								</h1>
+							</div>
+							<div className="mt-6 lg:mt-0">
+								{!profileIsClaimed && (
+									<ElemButton className="" btn="primary" onClick={() => {}}>
+										Claim this profile
+									</ElemButton>
+								)}
 							</div>
 						</div>
+
 						{person.about && (
 							<p className="mt-4 line-clamp-3 text-base text-slate-600">
 								{person.about}
@@ -123,6 +138,8 @@ const Person: NextPage<Props> = (props) => {
 							linkedIn={person.linkedin}
 							investmentsLength={person.investments?.length}
 							emails={personEmails}
+							onEmailClick={onEmailClick}
+							showEmails={showEmails}
 							github={person.github}
 							twitter={person.twitter_url}
 							location={person.city}
@@ -130,6 +147,17 @@ const Person: NextPage<Props> = (props) => {
 						/>
 					</div>
 					<div className="col-span-8">
+						{person.about && (
+							<div className="w-full p-4 bg-white shadow rounded-lg mb-7">
+								<div className="flex items-center justify-between">
+									<h2 className="text-xl font-bold">About</h2>
+								</div>
+								<p className="line-clamp-3 text-base text-slate-600">
+									{person.about}
+								</p>
+							</div>
+						)}
+
 						{person.team_members.length > 0 && (
 							<ElemJobsList
 								heading="Experience"
@@ -168,30 +196,14 @@ const Person: NextPage<Props> = (props) => {
 					</div>
 				)}
 			</div>
+
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 		</div>
 	);
 };
-
-// export async function getStaticPaths() {
-// 	const { data: people } = await runGraphQl<GetPersonQuery>(`{
-//     people(
-// 			where: {slug: {_neq: ""}}, order_by: {slug: asc}
-//     ){
-//         id,
-//         name,
-//         slug,
-//       }
-//     }`);
-
-// 	return {
-// 		paths: people?.people
-// 			?.filter((person) => person.slug)
-// 			.map((person) => ({
-// 				params: { personId: person.slug },
-// 			})),
-// 		fallback: true, // false or 'blocking'
-// 	};
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {

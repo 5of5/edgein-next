@@ -44,6 +44,48 @@ query GetVCFirm($slug: String!) {
 				}
 			}
 		}
+		to_links {
+			link_type
+			from_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+			}
+			from_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+			}
+		}
+		from_links {
+			link_type
+			to_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+			}
+			to_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+			}
+		}
 	}
 }
 
@@ -86,6 +128,7 @@ query GetVCFirmsRecentInvestments(
 		name
 		slug
 		logo
+		tags
 		latest_investment
 		num_of_investments
 		sentiment

@@ -672,7 +672,7 @@ export const tags = [
 	"Layer 6",
 	"API/Platforms",
 	"API",
-	"Platforms",
+	"Platform",
 	"Dev Tools",
 	"Chain Tools",
 	"Analytics",
@@ -701,6 +701,7 @@ export const tags = [
 	"Centralized",
 	"AI",
 	"SaaS",
+	"Brand",
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;

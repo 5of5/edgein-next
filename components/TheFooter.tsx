@@ -12,15 +12,17 @@ export const TheFooter = () => {
 		company: [
 			// { name: "About", href: "https://www.5of5.vc/about" },
 			{ name: "Team", href: "/team" },
+			{ name: "Pricing", href: "/pricing" },
 			{ name: "Brand Assets", href: "/brand-assets" },
 		],
 		resources: [
 			{ name: "Contact", href: "/contact" },
+			{ name: "Support", href: "/support" },
 			{ name: "Press", href: "mailto:press@edgein.io" },
 		],
 		legal: [
 			{ name: "Privacy", href: "/privacy" },
-			//{ name: "Terms", href: "/terms" },
+			{ name: "Terms", href: "/terms" },
 		],
 	};
 

@@ -171,7 +171,7 @@ export default function SignUpModal(props: Props) {
 						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
-						<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none lg:p-12">
+						<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
 							<div className="max-w-xs mx-auto w-full">
 								{unsuccessMessage ? (
 									<>
@@ -324,7 +324,7 @@ export default function SignUpModal(props: Props) {
 												</ElemButton>
 												<p className="text-sm text-center text-slate-600">
 													By signing up, you agree to the{" "}
-													{/* <Link href="/terms">
+													<Link href="/terms">
 														<a
 															className="text-dark-500 underline hover:text-primary-500"
 															onClick={onClose}
@@ -332,7 +332,7 @@ export default function SignUpModal(props: Props) {
 															Terms
 														</a>
 													</Link>{" "}
-													&amp;{" "} */}
+													&amp;{" "}
 													<Link href="/privacy">
 														<a
 															className="text-dark-500 underline hover:text-primary-500"

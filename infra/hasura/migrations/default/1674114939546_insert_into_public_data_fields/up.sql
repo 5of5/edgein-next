@@ -1,0 +1,1 @@
+INSERT INTO "public"."data_fields"("name", "path", "resource", "weight", "regex_transform", "description", "regex_test", "is_valid_identifier") VALUES (E'location_json', E'company.location_json', E'company', 1, null, null, null, false);

@@ -68,7 +68,7 @@ const Investors: NextPage<Props> = ({
 		0,
 		"page",
 		(pageIndex) => pageIndex + 1 + "",
-		(pageIndex) => Number(pageIndex) - 1,
+		(pageIndex) => Number(pageIndex) - 1
 	);
 	const limit = 50;
 	const offset = limit * page;
@@ -102,15 +102,9 @@ const Investors: NextPage<Props> = ({
 		onTrackView({
 			properties: filters,
 			pathname: router.pathname,
-		})
+		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		selectedTags,
-		selectedInvestmentCount,
-		selectedInvestorFilters,
-	]);
-
-
+	}, [selectedTags, selectedInvestmentCount, selectedInvestorFilters]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -198,7 +192,9 @@ const Investors: NextPage<Props> = ({
 	}
 
 	if (selectedInvestorFilters.value) {
-		filters._and?.push({ status_tags: { _contains: selectedInvestorFilters.value } });
+		filters._and?.push({
+			status_tags: { _contains: selectedInvestorFilters.value },
+		});
 	}
 
 	const {
@@ -324,7 +320,7 @@ const Investors: NextPage<Props> = ({
 						</div>
 					)}
 
-					<div className="flex flex-col w-full gap-5 sm:grid sm:grid-cols-2 md:grid-cols-3">
+					<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 						{error ? (
 							<h4>Error loading investors</h4>
 						) : isLoading && !initialLoad ? (

@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { useMutation } from "react-query";
@@ -11,6 +12,7 @@ import { ElemButton } from "../ElemButton";
 type Props = {
 	isOpen: boolean;
 	group: User_Groups;
+	onUpdateGroupData: (data: any) => void;
 	onClose: () => void;
 };
 
@@ -19,7 +21,12 @@ async function peopleFetcher(url: string, query: string) {
 	return data.json();
 }
 
-const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
+const ElemInviteDialog: React.FC<Props> = ({
+	isOpen,
+	group,
+	onUpdateGroupData,
+	onClose,
+}) => {
 	const [query, setQuery] = useState("");
 	const [selectedPerson, setSelectedPerson] = useState<any>(null);
 
@@ -45,12 +52,13 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 				Accept: "application/json",
 			},
 			body: JSON.stringify({
+				isExistedUser: !!selectedPerson?.id,
+				email,
 				resource: {
 					recipientName,
 					groupName,
 					groupId,
 				},
-				email,
 			}),
 		});
 	};
@@ -59,10 +67,11 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 		mutate,
 		isLoading: isSubmitting,
 		isSuccess,
+		error: inviteError,
 		reset,
 	} = useMutation(
-		() =>
-			fetch("/api/invite_group_member/", {
+		async () => {
+			const res = await fetch("/api/invite_group_member/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
@@ -72,9 +81,28 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 					email: selectedPerson.work_email || selectedPerson.slug,
 					groupId: group.id,
 				}),
-			}),
+			});
+			const apiResponse = await res.json();
+			if (!res.ok) {
+				throw apiResponse;
+			} else {
+				return apiResponse;
+			}
+		},
 		{
-			onSuccess: () => {
+			onSuccess: async (response) => {
+				const { member, invite } = response;
+				if (member) {
+					onUpdateGroupData((prev: User_Groups) => ({
+						...prev,
+						user_group_members: [...prev.user_group_members, member],
+					}));
+				} else {
+					onUpdateGroupData((prev: User_Groups) => ({
+						...prev,
+						user_group_invites: [...prev.user_group_invites, invite],
+					}));
+				}
 				const emailAddress =
 					selectedPerson.work_email || selectedPerson.personal_email;
 				if (emailAddress) {
@@ -128,7 +156,7 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-lg transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									{isSuccess ? (
 										<p className="text-2xl font-bold">Success</p>
@@ -147,6 +175,10 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 								{isSuccess ? (
 									<p className="text-slate-500 mt-4">
 										An invitation has been sent to {selectedPerson?.name}
+									</p>
+								) : inviteError ? (
+									<p className="text-red-500 mt-4">
+										{(inviteError as any)?.message}
 									</p>
 								) : (
 									<>
@@ -199,8 +231,23 @@ const ElemInviteDialog: React.FC<Props> = ({ isOpen, group, onClose }) => {
 															</Combobox.Option>
 														))
 													) : (
-														<div className="px-6 py-4 text-center text-lg font-bold">
-															Not Found
+														<div className="text-center ">
+															<div className="px-6 py-4 text-lg font-bold">
+																Not Found
+															</div>
+															{validator.isEmail(query) && (
+																<Combobox.Option
+																	value={{
+																		id: null,
+																		name: query,
+																		work_email: query,
+																	}}
+																	className="py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
+																>
+																	Send an invitation to email address{" "}
+																	<span className="font-bold">{query}</span>
+																</Combobox.Option>
+															)}
 														</div>
 													)}
 												</Combobox.Options>

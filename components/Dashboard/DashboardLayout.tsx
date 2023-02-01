@@ -18,11 +18,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 			<div className="max-w-screen-2xl mx-auto">
 				<div className="mt-10 lg:grid lg:grid-cols-9 lg:gap-x-5">
 					<Transition.Root show={sidebarOpen} as={Fragment}>
-						<Dialog
-							as="div"
-							className="relative z-40 md:hidden"
-							onClose={setSidebarOpen}
-						>
+						<Dialog as="div" className="relative z-40" onClose={setSidebarOpen}>
 							<Transition.Child
 								as={Fragment}
 								enter="transition-opacity ease-linear duration-300"
@@ -45,7 +41,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 									leaveFrom="translate-x-0"
 									leaveTo="-translate-x-full"
 								>
-									<Dialog.Panel className="relative max-w-xs w-full bg-white pt-5 pb-4 flex-1 flex flex-col">
+									<Dialog.Panel className="relative max-w-xs w-full bg-white py-3 flex-1 flex flex-col">
 										<Transition.Child
 											as={Fragment}
 											enter="ease-in-out duration-300"
@@ -55,23 +51,22 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 											leaveFrom="opacity-100"
 											leaveTo="opacity-0"
 										>
-											<div className="absolute top-0 right-0 pt-2">
-												<ElemButton
-													roundedFull={false}
+											<div className="absolute top-2 right-2">
+												<button
 													onClick={() => setSidebarOpen(false)}
-													className="rounded-lg !p-0 hover:border-primary-500 mr-1 lg:hidden"
+													className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
 												>
 													<span className="sr-only">Close Sidebar</span>
 													<IconX
-														className="h-8 w-8"
+														className="h-6 w-6"
 														aria-hidden="true"
 														title="close"
 													/>
-												</ElemButton>
+												</button>
 											</div>
 										</Transition.Child>
 
-										<div className="px-4 flex-1 h-0 overflow-y-auto">
+										<div className="px-4 flex-1 h-0 overflow-y-auto scrollbar-hide">
 											<DashboardSidebar />
 										</div>
 									</Dialog.Panel>
@@ -90,7 +85,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 							btn="slate"
 							roundedFull={false}
 							onClick={() => setSidebarOpen(true)}
-							className="-ml-4 mb-4 rounded-tr-lg rounded-br-lg pl-6 hover:border-primary-500 md:hidden"
+							className="-ml-4 mb-4 rounded-tr-lg rounded-br-lg pl-6 hover:border-primary-500 lg:hidden"
 						>
 							<span className="sr-only">Dashboard List</span>
 							<IconWindowSidebar className="w-6 h-6 mr-2" />

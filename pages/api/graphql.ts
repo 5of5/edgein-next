@@ -15,13 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!user) {
       return res.status(401).end()
     }
-    headers  = user.email.endsWith('@5of5.vc') || process.env.DEV_MODE ?
-    {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-      'x-hasura-role': process.env.HASURA_VIEWER ?? "",
-      'X-Hasura-User-Id': user.id.toString() ?? ''
-    }
-      : 
+    headers  = 
     {
       Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
       Role: '',

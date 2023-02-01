@@ -21,6 +21,15 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: resource_id
+  - name: from_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
+        column_mapping:
+          id: from_company_id
   - name: investment_rounds
     using:
       foreign_key_constraint_on:
@@ -35,6 +44,15 @@ array_relationships:
         table:
           schema: public
           name: team_members
+  - name: to_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: resource_links
+        insertion_order: null
+        column_mapping:
+          id: to_company_id
 insert_permissions:
   - role: user
     permission:

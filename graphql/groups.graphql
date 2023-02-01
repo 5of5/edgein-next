@@ -1,0 +1,65 @@
+query GetGroupsOfUser($user_id: Int!) {
+  user_group_members(where: {user_id: {_eq: $user_id}}) {
+    id
+    user_id
+    user {
+      id
+      email
+      display_name
+    }
+    user_group_id
+    user_group {
+      id
+      name
+      description
+      telegram
+      twitter
+      discord
+      created_by {
+        id
+        display_name
+        email
+      }
+      created_at
+      updated_at
+    }
+  }
+}
+
+query GetGroup($id: Int!) {
+  user_groups(where: {id: {_eq: $id}}) {
+    id
+    name
+    description
+    telegram
+    twitter
+    discord
+    created_by_user_id
+    created_by {
+      id
+      display_name
+      email
+    }
+    created_at
+    updated_at
+    user_group_members {
+      id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          picture
+        }
+      }
+    }
+    user_group_invites {
+      id
+      email
+      created_at
+      created_by_user_id
+    }
+  }
+}

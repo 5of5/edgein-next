@@ -1,17 +1,21 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
+import { useParams } from "react-router-dom";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
-import { IconLinkedIn } from "@/components/Icons";
+import { IconLinkedIn, IconSparkles } from "@/components/Icons";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemShareMenu } from "@/components/ElemShareMenu";
 import { EditSection } from "@/components/Dashboard/EditSection";
 import { useGetUserProfileQuery } from "@/graphql/types";
+import { ElemSubscribedDialog } from "@/components/ElemSubscribedDialog";
+import { loadStripe } from "@/utils/stripe";
 
 const validator = require("validator");
 
 export default function Account() {
-	const { user, error, loading } = useAuth();
+	const { user } = useAuth();
+	const { success } = useParams();
 
 	const { data: userProfile } = useGetUserProfileQuery({
 		id: user?.id || 0,
@@ -25,6 +29,12 @@ export default function Account() {
 	const [reEnterErrorMessage, setReEnterErrorMessage] = useState("");
 
 	const personSlug = userProfile?.users_by_pk?.person?.slug;
+
+	const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
+
+	const onCloseSubscribedDialog = () => {
+		setIsOpenSubscribedDialog(false);
+	};
 
 	const validate = (value: string) => {
 		setNewPassword(value);
@@ -45,7 +55,7 @@ export default function Account() {
 		}
 	};
 
-	const validateReEnterPasssword = (value: string) => {
+	const validateReEnterPassword = (value: string) => {
 		setReEnterPassword(value);
 		if (newPassword !== value) {
 			setReEnterErrorMessage("Password do not match!");
@@ -63,21 +73,7 @@ export default function Account() {
 	};
 
 	const onBillingClick = async () => {
-		try {
-			const response = await fetch("/api/stripe_load/", {
-				method: "POST",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-			});
-			const json = await response.json();
-			if (json && json.success && json.redirect) {
-				window.location.href = json.redirect;
-			}
-		} catch (e) {
-			console.log(e);
-		}
+		loadStripe();
 	};
 
 	const callChangePassword = async () => {
@@ -115,7 +111,7 @@ export default function Account() {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
-				<div className="sm:flex justify-between items-center mb-2">
+				<div className="flex justify-between items-center pb-2">
 					<h2 className="font-bold text-xl">Invite Code</h2>
 
 					{user && user.reference_id && (
@@ -124,7 +120,14 @@ export default function Account() {
 						</div>
 					)}
 				</div>
-				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
+				<div className="max-w-3xl">
+					<p className="text-slate-600">
+						Get rewarded for sharing EdgeIn. Share your code with friends and
+						colleagues and you will be considered a partial data contributor
+						with every future data contribution your invited network makes to
+						EdgeIn!
+					</p>
+				</div>
 			</div>
 
 			<div className="bg-white shadow rounded-lg mt-5 p-5">
@@ -133,7 +136,43 @@ export default function Account() {
 				</div>
 
 				<dl className="w-full divide-y divide-black/10 border-y border-black/10">
-					<EditSection heading="Authentication">
+					<EditSection
+						heading="Social authentication"
+						right={
+							user && user.auth0_linkedin_id ? (
+								<ElemButton
+									onClick={() => {}}
+									btn="white"
+									className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
+								>
+									<IconLinkedIn className="h-5 w-5" />
+									<span>Connected</span>
+								</ElemButton>
+							) : (
+								<>
+									{/* <ElemButton
+										roundedFull={false}
+										onClick={onLinkedInClick}
+										btn="transparent"
+										className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] ring-1 ring-inset ring-black/10 hover:ring-2 hover:ring-[#0077B5] hover:text-[#0077B5] hover:bg-slate-50"
+									>
+										<IconLinkedIn
+											title="LinkedIn"
+											className="h-6 w-6 text-[#0077B5]"
+										/>
+										Login with LinkedIn
+									</ElemButton> */}
+									<ElemButton
+										onClick={onLinkedInClick}
+										btn="white"
+										className="space-x-1 text-[#0077B5] hover:!text-[#0077B5]"
+									>
+										<IconLinkedIn className="h-5 w-5" /> <span>LinkedIn</span>
+									</ElemButton>
+								</>
+							)
+						}
+					>
 						<div>
 							<p className="text-slate-600">
 								Connect your LinkedIn account to validate your profile and
@@ -141,28 +180,12 @@ export default function Account() {
 								enable it for contribution (this may take up to one business
 								day).
 							</p>
-							{user && user.auth0_linkedin_id ? (
-								<div className="inline-flex mt-2 gap-x-2 items-center font-bold px-3.5 py-1.5 text-sm justify-center text-[#0077B5]">
-									<IconLinkedIn className="h-5 w-5" />
-									<span>Connected</span>
-								</div>
-							) : (
-								<ElemButton
-									onClick={onLinkedInClick}
-									size="sm"
-									//disabled={user && user.auth0_linkedin_id}
-									className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
-								>
-									<IconLinkedIn className="h-5 w-5" />{" "}
-									<span>Connect LinkedIn</span>
-								</ElemButton>
-							)}
 						</div>
 					</EditSection>
 
 					{user && user.auth0_user_pass_id && (
 						<EditSection
-							heading="Change Password"
+							heading="Password"
 							right={
 								!isEditPassword ? (
 									<button
@@ -185,7 +208,7 @@ export default function Account() {
 									<div>
 										<InputText
 											type="password"
-											label="New"
+											label="New password"
 											onChange={(event) => {
 												validate(event.target.value);
 											}}
@@ -200,9 +223,9 @@ export default function Account() {
 									<div className="mt-4">
 										<InputText
 											type="password"
-											label="Re-type New"
+											label="Re-type new password"
 											onChange={(event) => {
-												validateReEnterPasssword(event.target.value);
+												validateReEnterPassword(event.target.value);
 											}}
 											value={reEnterPassword}
 											name=""
@@ -212,19 +235,17 @@ export default function Account() {
 										)}
 									</div>
 
-									<div className="flex mt-3 mb-2">
+									<div className="flex mt-4 mb-2 text-base">
 										<ElemButton
 											btn="primary"
-											size="sm"
 											className="mr-2"
 											onClick={onChangePassword}
 										>
 											Save Changes
 										</ElemButton>
 										<ElemButton
-											size="sm"
 											onClick={() => setEditPassword(false)}
-											className="border-none font-bold text-slate-600 bg-transparent rounded-lg p-2"
+											btn="transparent"
 										>
 											Cancel
 										</ElemButton>
@@ -233,30 +254,50 @@ export default function Account() {
 							)}
 						</EditSection>
 					)}
-					{user?.email.includes("@edgein.io") && (
-						<EditSection heading="Billing">
+
+					<EditSection heading="Subscription">
+						{userProfile && userProfile.users_by_pk?.billing_org_id ? (
 							<div>
+								<div className="flex items-center space-x-1">
+									<IconSparkles className="h-6 w-6 text-primary-500" />
+									<p className="text-slate-600">EdgeIn Contributor</p>
+								</div>
+								<div className="flex items-center space-x-1">
+									<ElemButton
+										onClick={onBillingClick}
+										btn="primary-light"
+										className="mt-2 text-primary-500"
+									>
+										<span>Manage</span>
+									</ElemButton>
+								</div>
+							</div>
+						) : (
+							<div>
+								<h2 className="text-xl font-bold">
+									Try EdgeIn Contributor free for 7 days
+								</h2>
 								<p className="text-slate-600">
-									Manage your EdgeIn billing. (Currently: Only available for
-									edgein team member)
+									Get real-time updates on the companies, people, deals and
+									events you’re most interested in, giving you an unprecedented
+									edge in Web3.
 								</p>
 								<ElemButton
 									onClick={onBillingClick}
-									size="sm"
-									btn="white"
+									btn="primary"
 									arrow
-									className="mt-2 text-primary-500"
+									className="mt-4 text-primary-500"
 								>
-									{user && user.billing_org_id ? (
-										<span>Go To Billing</span>
-									) : (
-										<span>Checkout</span>
-									)}
+									Start your free trial
 								</ElemButton>
 							</div>
-						</EditSection>
-					)}
+						)}
+					</EditSection>
 				</dl>
+				<ElemSubscribedDialog
+					isOpen={isOpenSubscribedDialog}
+					onClose={onCloseSubscribedDialog}
+				/>
 			</div>
 		</DashboardLayout>
 	);

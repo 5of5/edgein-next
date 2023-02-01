@@ -2,16 +2,18 @@ import { getNameFromListName } from "@/utils/reaction";
 import { find, kebabCase } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { FC, useState } from "react";
 import {
 	IconCustomList,
 	IconPolygonDown,
-	IconEllipsisHorizontal,
-	IconPlus,
+	IconListPlus,
+	IconInformationCircle,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
 import { Disclosure } from "@headlessui/react";
+import { ElemTooltip } from "@/components/ElemTooltip";
+import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 
 type Props = {
 	className?: string;
@@ -19,7 +21,7 @@ type Props = {
 
 export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
-	const { listAndFollows: lists } = useUser();
+	const { listAndFollows: lists, user } = useUser();
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
@@ -44,11 +46,27 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		find(lists, (list) => "like" === getNameFromListName(list))?.id || 0;
 	const crapId =
 		find(lists, (list) => "crap" === getNameFromListName(list))?.id || 0;
-	const getCustomLists = lists
-		?.filter(
-			(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
-		)
-		.sort((a, b) => (a.name < b.name ? -1 : 1));
+
+	const getCustomLists = lists?.filter(
+		(list) => !["hot", "crap", "like"].includes(getNameFromListName(list))
+	);
+	//.sort((a, b) => (a.name < b.name ? -1 : 1));
+
+	const displayedCustomLists = getCustomLists.slice(
+		0,
+		user?.entitlements.listsCount
+			? user?.entitlements.listsCount
+			: getCustomLists.length
+	);
+
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	};
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
 
 	return (
 		<div className={className}>
@@ -56,14 +74,22 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between">
-							<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
-								<IconPolygonDown
-									className={`${
-										open ? "rotate-0" : "-rotate-90 "
-									} h-6 w-6 transform transition-all`}
-								/>
-								<span className="text-xl font-bold">My Lists</span>
-							</Disclosure.Button>
+							<div className="flex items-center">
+								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+									<IconPolygonDown
+										className={`${
+											open ? "rotate-0" : "-rotate-90 "
+										} h-6 w-6 transform transition-all`}
+									/>
+									<span className="text-xl font-bold">My Lists</span>
+								</Disclosure.Button>
+								<ElemTooltip
+									content="Monitor organizations of your interest."
+									className="ml-1"
+								>
+									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+								</ElemTooltip>
+							</div>
 							<div className="flex gap-x-1">
 								{/* <button
 									onClick={() => {}}
@@ -124,7 +150,7 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</Link>
 							</li>
 
-							{getCustomLists?.map((list) => (
+							{displayedCustomLists?.map((list) => (
 								<li key={list.id} role="button">
 									<Link
 										href={`/lists/${list.id}/${kebabCase(
@@ -146,10 +172,27 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
+
+							{getCustomLists.length > displayedCustomLists.length && (
+								<li role="button">
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500"
+									>
+										<IconListPlus className="h-6 w-6" title="Create Group" />
+										<span>Unlock All Your Lists</span>
+									</button>
+								</li>
+							)}
 						</Disclosure.Panel>
 					</>
 				)}
 			</Disclosure>
+
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 		</div>
 	);
 };
