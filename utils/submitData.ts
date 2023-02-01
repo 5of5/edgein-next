@@ -15,7 +15,9 @@ export type ResourceTypes =
   | "investments"
   | "team_members"
   | "investors"
-  | "events";
+  | "events"
+  | "event_person"
+  | "event_organization";
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {

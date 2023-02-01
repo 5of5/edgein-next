@@ -7,8 +7,6 @@ import {
   SelectInput,
   ReferenceInput,
   AutocompleteInput,
-  ReferenceArrayInput,
-  AutocompleteArrayInput,
 } from "react-admin";
 
 type EventFormProps = {
@@ -23,7 +21,11 @@ const EventForm = ({ action, toolbar }: EventFormProps) => {
   return (
     <SimpleForm toolbar={toolbar}>
       {action === "edit" && (
-        <TextInput className={inputClassName} disabled source="id" />
+        <TextInput
+          className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
+          disabled
+          source="id"
+        />
       )}
       <TextInput
         className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
@@ -53,54 +55,6 @@ const EventForm = ({ action, toolbar }: EventFormProps) => {
       />
       <TextInput className={inputClassName} source="link" />
       <TextInput className={inputClassName} source="notes" />
-      <ReferenceArrayInput
-        label="Companies"
-        source="company_ids"
-        reference="companies"
-      >
-        <AutocompleteArrayInput
-          className={inputClassName}
-          style={{ padding: 0, border: "none" }}
-          optionText="name"
-          filterToQuery={(search) => ({ name: search })}
-        />
-      </ReferenceArrayInput>
-      <ReferenceArrayInput
-        label="VC firms"
-        source="vc_firm_ids"
-        reference="vc_firms"
-      >
-        <AutocompleteArrayInput
-          className={inputClassName}
-          style={{ padding: 0, border: "none" }}
-          optionText="name"
-          filterToQuery={(search) => ({ name: search })}
-        />
-      </ReferenceArrayInput>
-      <ReferenceArrayInput
-        label="Speaker"
-        source="speaker_ids"
-        reference="people"
-      >
-        <AutocompleteArrayInput
-          className={inputClassName}
-          style={{ padding: 0, border: "none" }}
-          optionText="name"
-          filterToQuery={(search) => ({ name: search })}
-        />
-      </ReferenceArrayInput>
-      <ReferenceArrayInput
-        label="Organizer"
-        source="organizer_ids"
-        reference="people"
-      >
-        <AutocompleteArrayInput
-          className={inputClassName}
-          style={{ padding: 0, border: "none" }}
-          optionText="name"
-          filterToQuery={(search) => ({ name: search })}
-        />
-      </ReferenceArrayInput>
       <SelectInput
         className={inputClassName}
         source="size"

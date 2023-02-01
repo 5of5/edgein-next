@@ -1,8 +1,17 @@
 table:
   schema: public
-  name: events
+  name: event_organization
 object_relationships:
-  - name: parent_event
+  - name: company
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: companies
+        insertion_order: null
+        column_mapping:
+          company_id: id
+  - name: event
     using:
       manual_configuration:
         remote_table:
@@ -10,23 +19,13 @@ object_relationships:
           name: events
         insertion_order: null
         column_mapping:
-          parent_event_id: id
-array_relationships:
-  - name: event_organization
+          event_id: id
+  - name: vc_firm
     using:
       manual_configuration:
         remote_table:
           schema: public
-          name: event_organization
+          name: vc_firms
         insertion_order: null
         column_mapping:
-          id: event_id
-  - name: event_person
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: event_person
-        insertion_order: null
-        column_mapping:
-          id: event_id
+          vc_firm_id: id

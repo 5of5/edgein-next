@@ -1,4 +1,4 @@
-CREATE TABLE "public"."events" ("name" text NOT NULL, "start_date" date, "end_date" date, "location" jsonb, "link" text, "notes" text, "company_ids" jsonb NULL, "vc_firm_ids" jsonb NULL, "speaker_ids" jsonb NULL, "organizer_ids" jsonb NULL, "size" text, "status" text NOT NULL DEFAULT 'draft', "parent_event_id" integer NULL, "id" serial NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );
+CREATE TABLE "public"."events" ("name" text NOT NULL, "start_date" date, "end_date" date, "location" jsonb, "link" text, "notes" text, "size" text, "status" text NOT NULL DEFAULT 'draft', "parent_event_id" integer NULL, "id" serial NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "updated_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );
 CREATE OR REPLACE FUNCTION "public"."set_current_timestamp_updated_at"()
 RETURNS TRIGGER AS $$
 DECLARE

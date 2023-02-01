@@ -716,3 +716,18 @@ export const eventSizeChoices = [
   "501-1000 people",
   "1000+ people",
 ].map((size) => ({ id: size, name: size }));
+
+export const eventPersonTypeChoices = [
+  {
+    id: "speaker",
+    name: "Speaker",
+  },
+  {
+    id: "attendee",
+    name: "Attendee",
+  },
+  {
+    id: "organizer",
+    name: "Organizer",
+  },
+];

@@ -8,9 +8,6 @@ import {
   FunctionField,
   ReferenceField,
   SelectField,
-  ReferenceArrayField,
-  SingleFieldList,
-  ChipField,
 } from "react-admin";
 import ElemList from "../ElemList";
 
@@ -39,42 +36,6 @@ export const EventList = () => {
       />
       <TextField source="link" />
       <TextField source="notes" />
-      <ReferenceArrayField
-        label="Companies"
-        source="company_ids"
-        reference="companies"
-      >
-        <SingleFieldList>
-          <ChipField source="name" />
-        </SingleFieldList>
-      </ReferenceArrayField>
-      <ReferenceArrayField
-        label="VC firms"
-        source="vc_firm_ids"
-        reference="vc_firms"
-      >
-        <SingleFieldList>
-          <ChipField source="name" />
-        </SingleFieldList>
-      </ReferenceArrayField>
-      <ReferenceArrayField
-        label="Speaker"
-        source="speaker_ids"
-        reference="people"
-      >
-        <SingleFieldList>
-          <ChipField source="name" />
-        </SingleFieldList>
-      </ReferenceArrayField>
-      <ReferenceArrayField
-        label="Organizer"
-        source="organizer_ids"
-        reference="people"
-      >
-        <SingleFieldList>
-          <ChipField source="name" />
-        </SingleFieldList>
-      </ReferenceArrayField>
       <SelectField source="size" choices={eventSizeChoices} />
       <ReferenceField
         label="Parent event"

@@ -24,6 +24,8 @@ const NODE_NAME: Record<ResourceTypes, string> = {
   team_members: "team_member",
   investors: "investor",
 	events: "event",
+	event_person: "event_person",
+	event_organization: "event_organization",
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
