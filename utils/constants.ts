@@ -48,8 +48,7 @@ export const validateNameAndSlugAndEmailAndDomain = async (
 		/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 	if (data && data?.length > 0) {
-		let filterName,
-			filterSlug,
+		let filterSlug,
 			filterGithub,
 			filterLinkedin,
 			filterWebsite,
@@ -58,9 +57,6 @@ export const validateNameAndSlugAndEmailAndDomain = async (
 			filterCompanyLinkedin,
 			filterTwitter: any[] | undefined;
 
-		filterName =
-			values?.name &&
-			data?.filter((f: any) => f?.name === values?.name && f.id !== values?.id);
 		filterSlug =
 			values?.slug &&
 			data?.filter((f: any) => f?.slug === values?.slug && f.id !== values?.id);
@@ -102,9 +98,6 @@ export const validateNameAndSlugAndEmailAndDomain = async (
 				(f: any) => f?.twitter === values?.twitter && f.id !== values?.id
 			);
 
-		if (filterName && filterName?.length > 0) {
-			errors.name = "Name already used";
-		}
 		if (filterSlug && filterSlug?.length > 0) {
 			errors.slug = "Slug already used";
 		}
