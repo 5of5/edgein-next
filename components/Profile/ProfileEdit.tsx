@@ -1,47 +1,45 @@
 import { useState } from "react";
-import {
-	GetUserProfileQuery,
-} from "@/graphql/types";
+import { GetUserProfileQuery } from "@/graphql/types";
 import { EditSection } from "@/components/Dashboard/EditSection";
 
 type Props = {
-  user: GetUserProfileQuery['users_by_pk']
+	user: GetUserProfileQuery["users_by_pk"];
 };
 
-export const ProfileEdit: React.FC<Props> = ({user}) => {
-  const [editLocation, setEditLocation] = useState(false);
+export const ProfileEdit: React.FC<Props> = ({ user }) => {
+	const [editLocation, setEditLocation] = useState(false);
 	const [editWebsite, setEditWebsite] = useState(false);
 	const [editLinkedIn, setEditLinkedIn] = useState(false);
 	const [editFacebook, setEditFacebook] = useState(false);
 	const [editTwitter, setEditTwitter] = useState(false);
 	const [editAbout, setEditAbout] = useState(false);
 
-	return <>
-    <EditSection
-						heading="Location"
-						right={
-							!editLocation ? (
-								// <button
-								// 	onClick={() => setEditLocation(true)}
-								// 	className="text-primary-500 hover:text-dark-500"
-								// >
-								// 	Edit Location
-								// </button>
-                <></>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editLocation ? (
-							<p className="text-slate-600">
-								{user?.person?.city}
-								{user?.person?.city && user?.person?.country && <>,</>}
-								{user?.person?.country}
-							</p>
-						) : (
-							<div className="max-w-sm">
-								{/* <InputText
+	return (
+		<>
+			{/* <EditSection
+				heading="Location"
+				right={
+					!editLocation ? (
+						<button
+							onClick={() => setEditLocation(true)}
+							className="text-primary-500 hover:text-dark-500"
+						>
+							Edit Location
+						</button>
+					) : (
+						<></>
+					)
+				}
+			>
+				{!editLocation ? (
+					<p className="text-slate-600">
+						{user?.person?.city}
+						{user?.person?.city && user?.person?.country && <>,</>}
+						{user?.person?.country}
+					</p>
+				) : (
+					<div className="max-w-sm">
+						<InputText
 									label="City"
 									onChange={(e) => setCity(e.target.value)}
 									value={city}
@@ -72,32 +70,31 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 									>
 										Cancel
 									</ElemButton>
-								</div> */}
-							</div>
-						)}
-					</EditSection>
+								</div>
+					</div>
+				)}
+			</EditSection> */}
 
-					<EditSection
-						heading="Website URL"
-						right={
-							!editWebsite ? (
-								// <button
-								// 	onClick={() => setEditWebsite(true)}
-								// 	className="text-primary-500 hover:text-dark-500"
-								// >
-								// 	Edit Website
-								// </button>
-                <></>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editWebsite ? (
-							<p className="text-slate-600">{user?.person?.website_url}</p>
-						) : (
-							<div className="max-w-sm">
-								{/* <InputText
+			{/* <EditSection
+				heading="Website URL"
+				right={
+					!editWebsite ? (
+						<button
+							onClick={() => setEditWebsite(true)}
+							className="text-primary-500 hover:text-dark-500"
+						>
+							Edit Website
+						</button>
+					) : (
+						<></>
+					)
+				}
+			>
+				{!editWebsite ? (
+					<p className="text-slate-600">{user?.person?.website_url}</p>
+				) : (
+					<div className="max-w-sm">
+						<InputText
 									onChange={(e) => setWebsite(e.target.value)}
 									value={website}
 									name="website"
@@ -115,32 +112,31 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 									<ElemButton btn="white" onClick={() => setEditWebsite(false)}>
 										Cancel
 									</ElemButton>
-								</div> */}
-							</div>
-						)}
-					</EditSection>
+								</div>
+					</div>
+				)}
+			</EditSection> */}
 
-					<EditSection
-						heading="LinkedIn URL"
-						right={
-							!editLinkedIn ? (
-								// <button
-								// 	onClick={() => setEditLinkedIn(true)}
-								// 	className="text-primary-500 hover:text-dark-500"
-								// >
-								// 	Edit LinkedIn
-								// </button>
-                <></>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editLinkedIn ? (
-							<p className="text-slate-600">{user?.person?.linkedin}</p>
-						) : (
-							<div className="max-w-sm">
-								{/* <InputText
+			{/* <EditSection
+				heading="LinkedIn URL"
+				right={
+					!editLinkedIn ? (
+						<button
+							onClick={() => setEditLinkedIn(true)}
+							className="text-primary-500 hover:text-dark-500"
+						>
+							Edit LinkedIn
+						</button>
+					) : (
+						<></>
+					)
+				}
+			>
+				{!editLinkedIn ? (
+					<p className="text-slate-600">{user?.person?.linkedin}</p>
+				) : (
+					<div className="max-w-sm">
+						<InputText
 									onChange={(e) => setLinkedIn(e.target.value)}
 									value={linkedIn}
 									name="linkedIn"
@@ -161,32 +157,31 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 									>
 										Cancel
 									</ElemButton>
-								</div> */}
-							</div>
-						)}
-					</EditSection>
+								</div>
+					</div>
+				)}
+			</EditSection> */}
 
-					<EditSection
-						heading="Facebook URL"
-						right={
-							!editFacebook ? (
-								// <button
-								// 	onClick={() => setEditFacebook(true)}
-								// 	className="text-primary-500 hover:text-dark-500"
-								// >
-								// 	Edit Facebook
-								// </button>
-                <></>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editFacebook ? (
-							<p className="text-slate-600">{user?.person?.facebook_url}</p>
-						) : (
-							<div className="max-w-sm">
-								{/* <InputText
+			{/* <EditSection
+				heading="Facebook URL"
+				right={
+					!editFacebook ? (
+						<button
+							onClick={() => setEditFacebook(true)}
+							className="text-primary-500 hover:text-dark-500"
+						>
+							Edit Facebook
+						</button>
+					) : (
+						<></>
+					)
+				}
+			>
+				{!editFacebook ? (
+					<p className="text-slate-600">{user?.person?.facebook_url}</p>
+				) : (
+					<div className="max-w-sm">
+						<InputText
 									onChange={(e) => setFacebook(e.target.value)}
 									value={facebook}
 									name="facebook"
@@ -207,32 +202,31 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 									>
 										Cancel
 									</ElemButton>
-								</div> */}
-							</div>
-						)}
-					</EditSection>
+								</div>
+					</div>
+				)}
+			</EditSection> */}
 
-					<EditSection
-						heading="Twitter URL"
-						right={
-							!editTwitter ? (
-								// <button
-								// 	onClick={() => setEditTwitter(true)}
-								// 	className="text-primary-500 hover:text-dark-500"
-								// >
-								// 	Edit Twitter
-								// </button>
-                <></>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editTwitter ? (
-							<p className="text-slate-600">{user?.person?.twitter_url}</p>
-						) : (
-							<div className="max-w-sm">
-								{/* <InputText
+			{/* <EditSection
+				heading="Twitter URL"
+				right={
+					!editTwitter ? (
+						<button
+							onClick={() => setEditTwitter(true)}
+							className="text-primary-500 hover:text-dark-500"
+						>
+							Edit Twitter
+						</button>
+					) : (
+						<></>
+					)
+				}
+			>
+				{!editTwitter ? (
+					<p className="text-slate-600">{user?.person?.twitter_url}</p>
+				) : (
+					<div className="max-w-sm">
+						<InputText
 									onChange={(e) => setTwitter(e.target.value)}
 									value={twitter}
 									name="twitter"
@@ -250,32 +244,31 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 									<ElemButton btn="white" onClick={() => setEditTwitter(false)}>
 										Cancel
 									</ElemButton>
-								</div> */}
-							</div>
-						)}
-					</EditSection>
+								</div>
+					</div>
+				)}
+			</EditSection> */}
 
-					<EditSection
-						heading="About You"
-						right={
-							!editAbout ? (
-								// <button
-								// 	onClick={() => setEditAbout(true)}
-								// 	className="text-primary-500 hover:text-dark-500"
-								// >
-								// 	Edit About
-								// </button>
-                <></>
-							) : (
-								<></>
-							)
-						}
-					>
-						{!editAbout ? (
-							<p className="text-slate-600">{user?.person?.about}</p>
-						) : (
-							<div className="max-w-lg">
-								{/* <InputTextarea
+			{/* <EditSection
+				heading="About You"
+				right={
+					!editAbout ? (
+						<button
+							onClick={() => setEditAbout(true)}
+							className="text-primary-500 hover:text-dark-500"
+						>
+							Edit About
+						</button>
+					) : (
+						<></>
+					)
+				}
+			>
+				{!editAbout ? (
+					<p className="text-slate-600">{user?.person?.about}</p>
+				) : (
+					<div className="max-w-lg">
+						<InputTextarea
 									rows={5}
 									value={about}
 									onChange={(e) => setAbout(e.target.value)}
@@ -291,12 +284,12 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 									<ElemButton btn="white" onClick={() => setEditAbout(false)}>
 										Cancel
 									</ElemButton>
-								</div> */}
-							</div>
-						)}
-					</EditSection>
+								</div>
+					</div>
+				)}
+			</EditSection> */}
 
-					{/* <EditSection
+			{/* <EditSection
 						heading="Work"
 						right={
 							!editWorkspace ? (
@@ -325,5 +318,6 @@ export const ProfileEdit: React.FC<Props> = ({user}) => {
 							)}
 						</div>
 					</EditSection> */}
-        </>
-}
+		</>
+	);
+};

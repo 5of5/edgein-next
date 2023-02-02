@@ -12,7 +12,8 @@ import {
 	GetPersonQuery,
 	Investment_Rounds,
 	People,
-} from "../../graphql/types";
+	useGetUserProfileQuery,
+} from "@/graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
@@ -71,19 +72,37 @@ const Person: NextPage<Props> = (props) => {
 		} else {
 			setIsOpenUpgradeDialog(true);
 		}
-	}
+	};
 	const onCloseUpgradeDialog = () => {
 		setIsOpenUpgradeDialog(false);
 	};
 
+	const [claimedProfile, setClaimedProfile] = useState(false);
+
 	const profileIsClaimed = true;
+
+	const {
+		data: users,
+		refetch,
+		isLoading,
+	} = useGetUserProfileQuery({
+		id: user?.id ?? 0,
+	});
+
+	useEffect(() => {
+		if (users?.users_by_pk?.person) {
+			setClaimedProfile(true);
+		}
+	}, [users]);
 
 	return (
 		<div className="relative">
-			{/* <div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes,pattern')] bg-cover bg-no-repeat bg-center shadow"></div> */}
+			<div className="bg-slate-600 border-b border-black/10">
+				<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes')] bg-cover bg-no-repeat bg-center"></div>
+			</div>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<div className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-center">
+				<div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-start">
 					<div className="col-span-2 flex justify-center">
 						<ElemPhoto
 							photo={person.picture}
@@ -95,7 +114,7 @@ const Person: NextPage<Props> = (props) => {
 						/>
 					</div>
 					<div className="w-full col-span-9">
-						<div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:shrink-0">
+						<div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:pt-14 lg:shrink-0">
 							<div>
 								{person.type && (
 									<div className="whitespace-nowrap text-lg text-slate-600">
@@ -105,14 +124,13 @@ const Person: NextPage<Props> = (props) => {
 								<h1 className="text-3xl font-bold lg:text-4xl">
 									{person.name}
 								</h1>
-							</div>
-							<div className="mt-6 lg:mt-0">
-								{!profileIsClaimed && (
-									<ElemButton className="" btn="primary" onClick={() => {}}>
-										Claim this profile
+								{!claimedProfile && (
+									<ElemButton className="mt-2" btn="primary" onClick={() => {}}>
+										Claim profile
 									</ElemButton>
 								)}
 							</div>
+							<div className="mt-6 lg:mt-0"></div>
 						</div>
 
 						{person.about && (

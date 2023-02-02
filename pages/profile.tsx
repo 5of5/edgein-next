@@ -1,35 +1,37 @@
-import { ElemButton } from "@/components/ElemButton";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { InputText } from "@/components/InputText";
-import { InputTextarea } from "@/components/InputTextarea";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+
+import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ProfileEdit } from "@/components/Profile/ProfileEdit";
 import { ProfileMissing } from "@/components/Profile/ProfileMissing";
 import { ProfileEditEmail } from "@/components/Profile/ProfileEditEmail";
 import { ProfileEditName } from "@/components/Profile/ProfileEditName";
-import { ChangeEvent, FC, useEffect, useRef, useState, Fragment } from "react";
+import { ElemButton } from "@/components/ElemButton";
+import { IconSearch } from "@/components/Icons";
+// import { ElemPhoto } from "@/components/ElemPhoto";
+// import { InputText } from "@/components/InputText";
+// import { InputTextarea } from "@/components/InputTextarea";
+import { Popups } from "@/components/TheNavbar";
+
 import {
-	GetCompaniesDocument,
-	GetCompaniesQuery,
-	People,
-	Team_Members,
-	useGetPersonQuery,
+	// GetCompaniesDocument,
+	// GetCompaniesQuery,
+	// People,
+	// Team_Members,
+	// useGetPersonQuery,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
-import { divide, find, findIndex } from "lodash";
-import validator from "validator";
-import { InputSelect } from "@/components/InputSelect";
-import { getTimeOfWork, getWorkDurationFromAndTo, runGraphQl } from "@/utils";
-import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
-import { uploadFile, deleteFile } from "@/utils/fileFunctions";
-import { InputDate } from "@/components/InputDate";
-import { GetStaticProps } from "next";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { EditSection } from "@/components/Dashboard/EditSection";
-import { ElemShareMenu } from "@/components/ElemShareMenu";
-import { functionChoicesTM } from "@/utils/constants";
-import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
+// import { divide, find, findIndex } from "lodash";
+// import validator from "validator";
+// import { InputSelect } from "@/components/InputSelect";
+// import { getTimeOfWork, getWorkDurationFromAndTo, runGraphQl } from "@/utils";
+// import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
+// import { uploadFile, deleteFile } from "@/utils/fileFunctions";
+// import { InputDate } from "@/components/InputDate";
+// import { GetStaticProps } from "next";
+// import { EditSection } from "@/components/Dashboard/EditSection";
+// import { functionChoicesTM } from "@/utils/constants";
+// import { ElemCompaniesSearchInput } from "@/components/Companies/ElemCompaniesSearchInput";
 
 const emptyTeamMember = {
 	start_date: null,
@@ -42,34 +44,39 @@ const emptyTeamMember = {
 
 type Props = {
 	companiesDropdown: any;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const Profile: FC<Props> = ({ companiesDropdown }) => {
+const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 	const { user } = useAuth();
 
-	const fileInputRef = useRef<HTMLInputElement>(null);
+	//const fileInputRef = useRef<HTMLInputElement>(null);
 
 	// fields
-	const [email, setEmail] = useState<any[]>([]);
-	const [newEmail, setNewEmail] = useState("");
-	const [city, setCity] = useState("");
-	const [country, setCountry] = useState("");
-	const [website, setWebsite] = useState("");
-	const [linkedIn, setLinkedIn] = useState("");
-	const [facebook, setFacebook] = useState("");
-	const [twitter, setTwitter] = useState("");
-	const [about, setAbout] = useState("");
-	const [activeWorkspace, setActiveWorkspace] = useState(0);
-	const [tmData, setTmData] = useState<any>(emptyTeamMember);
+	// const [email, setEmail] = useState<any[]>([]);
+	// const [newEmail, setNewEmail] = useState("");
+	// const [city, setCity] = useState("");
+	// const [country, setCountry] = useState("");
+	// const [website, setWebsite] = useState("");
+	// const [linkedIn, setLinkedIn] = useState("");
+	// const [facebook, setFacebook] = useState("");
+	// const [twitter, setTwitter] = useState("");
+	// const [about, setAbout] = useState("");
+	// const [activeWorkspace, setActiveWorkspace] = useState(0);
+	// const [tmData, setTmData] = useState<any>(emptyTeamMember);
 
-	const titles = functionChoicesTM.map((option) => {
-		return {
-			title: option.name,
-			value: option.id,
-		};
-	});
+	// const titles = functionChoicesTM.map((option) => {
+	// 	return {
+	// 		title: option.name,
+	// 		value: option.id,
+	// 	};
+	// });
 
-	const { data: users, refetch, isLoading } = useGetUserProfileQuery({
+	const {
+		data: users,
+		refetch,
+		isLoading,
+	} = useGetUserProfileQuery({
 		id: user?.id ?? 0,
 	});
 
@@ -295,82 +302,82 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 	// 	return resp.json();
 	// };
 
-	const setTMField =
-		(field: string) => (event: ChangeEvent<HTMLInputElement> | any) => {
-			if (field === "company") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
+	// const setTMField =
+	// 	(field: string) => (event: ChangeEvent<HTMLInputElement> | any) => {
+	// 		if (field === "company") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
 
-					temp["company_id"] = event;
+	// 				temp["company_id"] = event;
 
-					return temp;
-				});
-			}
+	// 				return temp;
+	// 			});
+	// 		}
 
-			if (field === "function") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
-					temp["function"] = event;
+	// 		if (field === "function") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
+	// 				temp["function"] = event;
 
-					return temp;
-				});
-			}
+	// 				return temp;
+	// 			});
+	// 		}
 
-			if (field === "founder") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
+	// 		if (field === "founder") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
 
-					if (event.target.checked) temp["founder"] = true;
-					else temp["founder"] = false;
+	// 				if (event.target.checked) temp["founder"] = true;
+	// 				else temp["founder"] = false;
 
-					return temp;
-				});
-			}
+	// 				return temp;
+	// 			});
+	// 		}
 
-			if (field === "title") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
+	// 		if (field === "title") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
 
-					temp["title"] = event.target.value;
+	// 				temp["title"] = event.target.value;
 
-					return temp;
-				});
-			}
+	// 				return temp;
+	// 			});
+	// 		}
 
-			if (field === "currentlyWorking") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
-					if (event.target.checked) {
-						temp["currentlyWorking"] = true;
-						temp["end_date"] = null;
-					} else {
-						temp["currentlyWorking"] = false;
-					}
+	// 		if (field === "currentlyWorking") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
+	// 				if (event.target.checked) {
+	// 					temp["currentlyWorking"] = true;
+	// 					temp["end_date"] = null;
+	// 				} else {
+	// 					temp["currentlyWorking"] = false;
+	// 				}
 
-					return temp;
-				});
-			}
+	// 				return temp;
+	// 			});
+	// 		}
 
-			if (field === "start_date") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
+	// 		if (field === "start_date") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
 
-					temp["start_date"] = event.target.value;
+	// 				temp["start_date"] = event.target.value;
 
-					return temp;
-				});
-			}
+	// 				return temp;
+	// 			});
+	// 		}
 
-			if (field === "end_date") {
-				setTmData((prev: any) => {
-					const temp = { ...prev };
+	// 		if (field === "end_date") {
+	// 			setTmData((prev: any) => {
+	// 				const temp = { ...prev };
 
-					temp["end_date"] = event.target.value;
+	// 				temp["end_date"] = event.target.value;
 
-					return temp;
-				});
-			}
-		};
+	// 				return temp;
+	// 			});
+	// 		}
+	// 	};
 
 	// const onSave = (entity: string) => async () => {
 	// 	if (entity === "name") {
@@ -511,31 +518,49 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 
 	return (
 		<DashboardLayout>
+			{!users?.users_by_pk?.person && (
+				<div className="bg-white shadow rounded-lg p-5 mb-5">
+					<div className="sm:flex justify-between items-center mb-2">
+						<h2 className="font-bold text-xl">Claim your Profile</h2>
+
+						<div className="mt-2 sm:mt-0">
+							<ElemButton
+								btn="primary-light"
+								onClick={() => setShowPopup("search")}
+							>
+								<IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
+								Search
+							</ElemButton>
+						</div>
+					</div>
+					<div className="max-w-3xl">
+						<p className="text-slate-600">
+							You have not linked your account to a profile on EdgeIn.{" "}
+							<button
+								onClick={() => setShowPopup("search")}
+								className="inline border-b border-transparent hover:border-primary-500 hover:text-primary-500"
+							>
+								Search your name
+							</button>{" "}
+							on the site and claim profile.
+						</p>
+					</div>
+				</div>
+			)}
+
 			<div className="bg-white shadow rounded-lg p-5">
 				<div className="sm:flex justify-between items-center mb-2">
-					<h2 className="font-bold text-xl">Invite Code</h2>
-
-					{user && user.reference_id && (
-						<div className="mt-2 sm:mt-0">
-							<ElemShareMenu user={user} />
-						</div>
+					<h2 className="font-bold text-xl">Profile Settings</h2>
+					{users?.users_by_pk?.person && (
+						<ElemButton
+							href={`/people/${users?.users_by_pk?.person?.slug}/`}
+							btn="white"
+							arrow
+							className="mt-2 sm:mt-0"
+						>
+							View Profile
+						</ElemButton>
 					)}
-				</div>
-				<div className="max-w-3xl">
-					<p className="text-slate-600">
-						Get rewarded for sharing EdgeIn. Share your code with friends and
-						colleagues and you will be considered a partial data contributor
-						with every future data contribution your invited network makes to
-						EdgeIn!
-					</p>
-				</div>
-			</div>
-			<div className="bg-white shadow rounded-lg p-5 mt-5">
-				<div className="sm:flex justify-between items-center mb-2">
-					<h2 className="font-bold text-xl">Personal Profile</h2>
-					{  users?.users_by_pk?.person && <ElemButton  href={`/people/${ users?.users_by_pk?.person?.slug}/`} btn="white" arrow className="mt-2 sm:mt-0">
-						View Profile
-					</ElemButton> }
 				</div>
 
 				<div className="w-full divide-y divide-black/10 border-y border-black/10">
@@ -577,14 +602,18 @@ const Profile: FC<Props> = ({ companiesDropdown }) => {
 						</div>
 					</EditSection> */}
 
-					{ isLoading ? <div>Loading...</div> : <>
+					{isLoading ? (
+						<div>Loading...</div>
+					) : (
+						<>
+							<ProfileEditName />
+							<ProfileEditEmail />
 
-					<ProfileEditName />
-					<ProfileEditEmail />
-
-					{ users?.users_by_pk?.person ?  <ProfileEdit user={users?.users_by_pk} /> : <ProfileMissing /> }
-					</> }
-
+							{users?.users_by_pk?.person && (
+								<ProfileEdit user={users?.users_by_pk} />
+							)}
+						</>
+					)}
 				</div>
 			</div>
 		</DashboardLayout>
