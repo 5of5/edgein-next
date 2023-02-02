@@ -393,9 +393,6 @@ const Company: NextPage<Props> = (props: Props) => {
 					<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 						<div className="flex items-center justify-between">
 							<h2 className="text-xl font-bold">Activity Timeline</h2>
-							{/* <button className="border border-black/10 h-8 w-8 p-1.5 rounded-full transition-all hover:bg-slate-200">
-								<IconEditPencil title="Edit" />
-							</button> */}
 						</div>
 
 						<div className="mt-2 py-4 border-t border-black/10">
@@ -523,6 +520,7 @@ const Company: NextPage<Props> = (props: Props) => {
 					</div>
 				</div>
 			</div>
+
 			{company.teamMembers.length > 0 && (
 				<div
 					ref={teamRef}
