@@ -17,6 +17,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
   });
   const token = String(req.headers["x-edgein-token"]);
+  if (!token) {
+    return res.status(401).send({ message: "Unauthorized Partner" });
+  }
   const partner = partnerLookUp(token);
   if (!partner) {
     return res.status(401).send({ message: "Unauthorized Partner" });
