@@ -7,7 +7,7 @@ const useAdminHandleSlug = (items: any) => {
   const onGenerateSlug = (value: string, formData: any) => {
     let filterSlug: any[] | undefined;
 
-    const convertedValue = value.replace(/ /g, "-").toLowerCase();
+    const convertedValue = value.trim().replace(/ /g, "-").toLowerCase();
 
     filterSlug = items?.filter(
       (f: any) => f.slug === convertedValue && f.status !== "draft"

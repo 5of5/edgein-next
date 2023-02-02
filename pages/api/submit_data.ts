@@ -1,5 +1,5 @@
 import { Data_Partners } from "@/graphql/types";
-import { processNotification } from "@/utils/notifications";
+import { processNotification, processNotificationOnDelete } from "@/utils/notifications";
 import {
 	partnerLookUp,
 	resourceIdLookup,
@@ -9,6 +9,9 @@ import {
 	ActionType,
 	getCompanyByRoundId,
 	ResourceTypes,
+	deleteMainTableRecord,
+	insertActionDataChange,
+	markDataRawAsInactive,
 } from "@/utils/submitData";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -27,8 +30,8 @@ const NODE_NAME: Record<ResourceTypes, string> = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	if (req.method !== "POST")
-		return res.status(405).send({ message: "Only POST requests allowed" });
+	if (!["POST", "PUT", "DELETE"].includes(req.method as string))
+		return res.status(405).send({ message: "Method is not allowed" });
 
 	const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -67,11 +70,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
   }
 
+
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
 		resourceIdentifier,
 		identifierColumn
 	);
+
+	if (req.method === "DELETE") {
+    await deleteMainTableRecord(resourceType, resourceId);
+    const action = await insertActionDataChange(
+      "Delete Data",
+      resourceId,
+      resourceType,
+      {},
+      user?.id
+    );
+		await markDataRawAsInactive(resourceType, resourceId);
+		await processNotificationOnDelete(resourceType, resourceId, action?.id, resourceObj);
+		return res.send(resourceObj);
+  }
 
 	const partnerId: number = partner ? partner.id : 0
 	let dataId = resourceId;
@@ -79,6 +97,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	if (resourceId === undefined) {
 		// create a new one
+		actionType = "Insert Data";
+
 		const response = await insertResourceData(resourceType, resourceObj);
 		dataId = response?.id;
 	}
@@ -94,8 +114,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	);
 
 	if (resourceId === undefined) {
-		actionType = "Insert Data";
-
 		if (resourceType === "investment_rounds" || resourceType === "team_members") {
 			await processNotification(resourceObj?.company_id, "companies", resourceType, actionType, [insertResult?.action?.id]);
 		}
@@ -120,7 +138,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	}
 
-	res.send(insertResult);
+	return res.send(insertResult);
+
+	
 };
 
 export default handler;

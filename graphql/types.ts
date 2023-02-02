@@ -3342,6 +3342,7 @@ export type Data_Raw = {
   created_at: Scalars['timestamp'];
   field: Scalars['String'];
   id: Scalars['bigint'];
+  is_active: Scalars['Boolean'];
   partner: Scalars['Int'];
   resource: Scalars['String'];
   resource_id: Scalars['Int'];
@@ -3409,6 +3410,7 @@ export type Data_Raw_Bool_Exp = {
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
   field: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Bigint_Comparison_Exp>;
+  is_active: InputMaybe<Boolean_Comparison_Exp>;
   partner: InputMaybe<Int_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
@@ -3452,6 +3454,7 @@ export type Data_Raw_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamp']>;
   field: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
+  is_active: InputMaybe<Scalars['Boolean']>;
   partner: InputMaybe<Scalars['Int']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -3507,6 +3510,7 @@ export type Data_Raw_Order_By = {
   created_at: InputMaybe<Order_By>;
   field: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  is_active: InputMaybe<Order_By>;
   partner: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
@@ -3535,6 +3539,8 @@ export enum Data_Raw_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  IsActive = 'is_active',
+  /** column name */
   Partner = 'partner',
   /** column name */
   Resource = 'resource',
@@ -3552,6 +3558,7 @@ export type Data_Raw_Set_Input = {
   created_at: InputMaybe<Scalars['timestamp']>;
   field: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['bigint']>;
+  is_active: InputMaybe<Scalars['Boolean']>;
   partner: InputMaybe<Scalars['Int']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -3609,6 +3616,8 @@ export enum Data_Raw_Update_Column {
   Field = 'field',
   /** column name */
   Id = 'id',
+  /** column name */
+  IsActive = 'is_active',
   /** column name */
   Partner = 'partner',
   /** column name */
