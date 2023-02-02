@@ -3156,6 +3156,7 @@ export type Data_Partners = {
   api_key: Scalars['String'];
   id: Scalars['Int'];
   name: Scalars['String'];
+  user_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "data_partners" */
@@ -3192,6 +3193,7 @@ export type Data_Partners_Aggregate_FieldsCountArgs = {
 export type Data_Partners_Avg_Fields = {
   __typename?: 'data_partners_avg_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "data_partners". All fields are combined with a logical 'AND'. */
@@ -3202,6 +3204,7 @@ export type Data_Partners_Bool_Exp = {
   api_key: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "data_partners" */
@@ -3213,6 +3216,7 @@ export enum Data_Partners_Constraint {
 /** input type for incrementing numeric columns in table "data_partners" */
 export type Data_Partners_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "data_partners" */
@@ -3220,6 +3224,7 @@ export type Data_Partners_Insert_Input = {
   api_key: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
@@ -3228,6 +3233,7 @@ export type Data_Partners_Max_Fields = {
   api_key: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
@@ -3236,6 +3242,7 @@ export type Data_Partners_Min_Fields = {
   api_key: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  user_id: Maybe<Scalars['Int']>;
 };
 
 /** response of any mutation on the table "data_partners" */
@@ -3259,6 +3266,7 @@ export type Data_Partners_Order_By = {
   api_key: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
+  user_id: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: data_partners */
@@ -3273,7 +3281,9 @@ export enum Data_Partners_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  UserId = 'user_id'
 }
 
 /** input type for updating data in table "data_partners" */
@@ -3281,30 +3291,35 @@ export type Data_Partners_Set_Input = {
   api_key: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  user_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
 export type Data_Partners_Stddev_Fields = {
   __typename?: 'data_partners_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Data_Partners_Stddev_Pop_Fields = {
   __typename?: 'data_partners_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Data_Partners_Stddev_Samp_Fields = {
   __typename?: 'data_partners_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Data_Partners_Sum_Fields = {
   __typename?: 'data_partners_sum_fields';
   id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "data_partners" */
@@ -3314,25 +3329,30 @@ export enum Data_Partners_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  UserId = 'user_id'
 }
 
 /** aggregate var_pop on columns */
 export type Data_Partners_Var_Pop_Fields = {
   __typename?: 'data_partners_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Data_Partners_Var_Samp_Fields = {
   __typename?: 'data_partners_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Data_Partners_Variance_Fields = {
   __typename?: 'data_partners_variance_fields';
   id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "data_raw" */

@@ -1,4 +1,5 @@
 import { Data_Partners } from "@/graphql/types";
+import { UserToken } from "@/models/User";
 import { processNotification, processNotificationOnDelete } from "@/utils/notifications";
 import {
 	partnerLookUp,
@@ -33,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(405).send({ message: "Method is not allowed" });
 
 	const token = CookieService.getAuthToken(req.cookies);
-  const user = await CookieService.getUser(token);
+  var user = await CookieService.getUser(token);
 
 	const apiKey: string = req.body.partner_api_key;
 	const resourceType: ResourceTypes = req.body.resource_type;
@@ -56,6 +57,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	}
 
+	if (user == null && partner?.user_id !== undefined)
+		user = {id: partner.user_id} as UserToken
+
+	console.log(partner.user_id, user, user?.id)
+
 	if (identifierColumn !== "id") {
     const lookupField = await fieldLookup(
       `${NODE_NAME[resourceType]}.${identifierColumn}`
@@ -68,7 +74,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
     }
   }
-
 
 	const resourceId: number = await resourceIdLookup(
 		resourceType,

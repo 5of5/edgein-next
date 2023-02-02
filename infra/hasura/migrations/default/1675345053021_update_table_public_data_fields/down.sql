@@ -1,0 +1,11 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- UPDATE public.data_fields SET is_valid_identifier=true WHERE "path"='company.website';
+-- UPDATE public.data_fields SET is_valid_identifier=true WHERE "path"='vc_firm.website';
+-- INSERT INTO "public"."data_fields"("name", "path", "resource", "weight", "regex_transform", "description", "regex_test", "is_valid_identifier", "restricted_admin") VALUES
+-- (E'geopoint', E'company.geopoint', E'company', 1, null, null, null, false, false),
+-- (E'ticker', E'coin.ticker', E'coin', 1, null, null, null, false, false),
+-- (E'name', E'coin.name', E'coin', 1, null, null, null, false, false),
+-- (E'blockchain_id', E'coin.blockchain_id', E'coin', 1, null, null, null, false, false),
+-- (E'company_id', E'coin.company_id', E'coin', 1, null, null, null, false, false),
+-- (E'type', E'coin.type', E'coin', 1, null, null, null, false, false);

@@ -19,6 +19,7 @@ export const partnerLookUp = async (apiKey: string) => {
         id
         name
         api_key
+        user_id
       }
     }`,
 		variables: { apiKey },
