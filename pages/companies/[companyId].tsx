@@ -109,6 +109,10 @@ const Company: NextPage<Props> = (props: Props) => {
 		setTokenInfo(data);
 	};
 
+	const velocityToken = tokenInfo?.vol24H
+    ? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
+    : null;
+
 	useEffect(() => {
 		if (company.overview) {
 			setOverviewDivHeight(overviewDiv.current.scrollHeight);
@@ -365,7 +369,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						company.github ||
 						company.company_linkedin ||
 						company.velocity_linkedin ||
-						company.velocity_token) && (
+						velocityToken) && (
 						<div className="lg:grid lg:grid-cols-8 lg:gap-7">
 							<ElemCredibility
 								className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
@@ -374,12 +378,12 @@ const Company: NextPage<Props> = (props: Props) => {
 								githubVerified={company.github}
 								linkedInVerified={company.company_linkedin}
 							/>
-							{(company.velocity_linkedin || company.velocity_token) && (
+							{(company.velocity_linkedin || velocityToken) && (
 								<ElemVelocity
 									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
 									heading="Velocity"
 									employeeListings={company.velocity_linkedin}
-									tokenExchangeValue={company.velocity_token}
+									tokenExchangeValue={velocityToken}
 								/>
 							)}
 						</div>
