@@ -36,7 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);  
   const json = await proxyRes.json();
 
-  mutate({
+  await mutate({
     mutation: `
       mutation InsertAction($object: actions_insert_input!) {
         insert_actions_one(
