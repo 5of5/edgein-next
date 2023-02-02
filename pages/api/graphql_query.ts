@@ -50,6 +50,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       object: {
         action: "API Query",
         properties: typeof req.body === 'object' ? req.body : JSON.stringify(req.body),
+        api_key: token,
       },
     },
   });
