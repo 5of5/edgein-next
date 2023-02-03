@@ -20,7 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!token) {
     return res.status(401).send({ message: "Unauthorized Partner" });
   }
-  const partner = partnerLookUp(token);
+  const partner = await partnerLookUp(token);
   if (!partner) {
     return res.status(401).send({ message: "Unauthorized Partner" });
   }
@@ -49,8 +49,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     variables: {
       object: {
         action: "API Query",
+        page: "external",
         properties: typeof req.body === 'object' ? req.body : JSON.stringify(req.body),
-        api_key: token,
+        partner: partner.id,
       },
     },
   });
