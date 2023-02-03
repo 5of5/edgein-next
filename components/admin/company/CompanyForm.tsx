@@ -25,6 +25,7 @@ import {
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
+import ElemAddressInput from "../ElemAddressInput";
 
 type CompanyFormProps = {
   action: "create" | "edit";
@@ -178,10 +179,30 @@ const CompanyForm = ({
           source="status"
           choices={status}
         />
-        <TextInput className={inputClassName} source="location_json.address" label="Address" />
-        <TextInput className={inputClassName} source="location_json.city" label="City" />
-        <TextInput className={inputClassName} source="location_json.state" label="State" />
-        <TextInput className={inputClassName} source="location_json.country" label="Country" />
+        <ElemAddressInput
+          defaultLocation={currentData?.location_json}
+          defaultGeoPoint={currentData?.geopoint}
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.address"
+          label="Address"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.city"
+          label="City"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.state"
+          label="State"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.country"
+          label="Country"
+        />
         <AutocompleteArrayInput
           className={inputClassName}
           source="tags"
