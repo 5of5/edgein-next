@@ -238,12 +238,12 @@ const AdminApp = () => {
             ...metadata,
           };
         },
-        create: (type, obj) => {
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
-        update: (type, obj) => {
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
+        create: (type, obj) =>
+          onSubmitData(type, nullInputTransform(type, obj), "POST"),
+        update: (type, obj) => 
+          onSubmitData(type, nullInputTransform(type, obj), "PUT"),
+        delete: (type, obj) =>
+          onSubmitData(type, nullInputTransform(type, obj), "DELETE"),
       });
     };
     buildDataProvider();
