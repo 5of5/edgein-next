@@ -1,2 +1,2 @@
-alter table "public"."actions" add column "api_key" text
+alter table "public"."actions" add column "partner" integer
  null;

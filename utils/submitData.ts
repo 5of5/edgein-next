@@ -163,6 +163,7 @@ export const insertActionDataChange = async (
   resourceType: string,
   properties: Record<string, any>,
   userId?: Number,
+  partnerId?: Number,
 ) => {
   const { data } = await mutate({
     mutation: `
@@ -182,6 +183,7 @@ export const insertActionDataChange = async (
         resource_id: resourceId,
         resource: resourceType,
         user: userId,
+        partner: partnerId,
       },
     },
   });
@@ -292,7 +294,8 @@ export const mutateActionAndDataRaw = async (
           resourceId,
           resourceType,
           { [field]: value },
-          user?.id
+          user?.id,
+          partnerId
         );
       }
     }
