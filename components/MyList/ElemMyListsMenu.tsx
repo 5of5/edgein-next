@@ -14,6 +14,7 @@ import { useUser } from "@/context/userContext";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
+import { CreateListDialog } from "./CreateListDialog";
 
 type Props = {
 	className?: string;
@@ -59,7 +60,15 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
+	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenCreateListDialog = () => {
+		setIsOpenCreateGroupDialog(true);
+	};
+	const onCloseCreateListDialog = () => {
+		setIsOpenCreateGroupDialog(false);
+	};
 
 	const onOpenUpgradeDialog = () => {
 		setIsOpenUpgradeDialog(true);
@@ -173,14 +182,24 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</li>
 							))}
 
-							{getCustomLists.length > displayedCustomLists.length && (
+							{getCustomLists.length > displayedCustomLists.length ? (
 								<li role="button">
 									<button
 										onClick={onOpenUpgradeDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
-										<IconListPlus className="h-6 w-6" title="Create Group" />
+										<IconListPlus className="h-6 w-6" title="Create List" />
 										<span>Unlock All Your Lists</span>
+									</button>
+								</li>
+							) : (
+								<li role="button">
+									<button
+										onClick={onOpenCreateListDialog}
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+									>
+										<IconListPlus className="h-6 w-6" title="Create List" />
+										<span>Create List</span>
 									</button>
 								</li>
 							)}
@@ -188,6 +207,11 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 					</>
 				)}
 			</Disclosure>
+
+			<CreateListDialog
+				isOpen={isOpenCreateListDialog}
+				onClose={onCloseCreateListDialog}
+			/>
 
 			<ElemUpgradeDialog
 				isOpen={isOpenUpgradeDialog}
