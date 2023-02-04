@@ -3,22 +3,28 @@ import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-  let headers: {'x-hasura-role': string, 'X-hasura-user-id': string} & { Authorization: string } |
+  let headers: {'x-hasura-role'?: string, 'X-hasura-user-id': string} & { Authorization: string } |
     {'x-hasura-admin-secret': string }
   if (process.env.DEV_MODE) {
     headers  = {
       'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-      'x-hasura-role': process.env.HASURA_VIEWER ?? "",
       'X-hasura-user-id': user?.id.toString() ?? ''
     }
   } else {
     if (!user) {
       return res.status(401).end()
     }
-    headers  = {
-      Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
-      'x-hasura-role': process.env.HASURA_VIEWER ?? "",
-      'X-hasura-user-id': user?.id.toString() ?? ''
+    if (user.role === "user") {
+      headers  = {
+        Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
+        'x-hasura-role': process.env.HASURA_VIEWER ?? "",
+        'X-hasura-user-id': user?.id.toString() ?? ''
+      }  
+    } else {
+      headers  = {
+        'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+        'X-hasura-user-id': user?.id.toString() ?? ''
+      }  
     }
   }
   const opts = {
