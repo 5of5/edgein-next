@@ -20,6 +20,7 @@ import {
 import { Chip } from '@mui/material';
 import { companyLayerChoices, tags } from "../../../utils/constants";
 import ElemList from "../ElemList";
+import { useAuth } from "@/hooks/useAuth";
 
 type QuickFilterProps = {
   label: string;
@@ -68,9 +69,11 @@ const filters = [
 ];
 
 export const CompanyList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <FunctionField
         render={(record: any) => (
           <a

@@ -17,6 +17,7 @@ import {
   ADMIN_REFERENCE_INPUT_PER_PAGE,
 } from "@/utils/constants";
 import ElemList from "../ElemList";
+import { useAuth } from "@/hooks/useAuth";
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,
@@ -52,9 +53,11 @@ const filters = [
 ];
 
 export const TeamMemberList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <TextField source="id" />
       <ReferenceField label="Company" source="company_id" reference="companies">
         <TextField source="name" />

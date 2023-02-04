@@ -69,10 +69,10 @@ const AdminApp = () => {
     checkError: () => Promise.resolve(),
     checkAuth: () => {
       if (user) {
-        if (user.role === "user") {
-          return Promise.reject(new Error("User is not an admin"));
-        } else {
+        if (user.role === "admin") {
           return Promise.resolve();
+        } else {
+          return Promise.reject(new Error("User is not an admin"));
         }
       }
       return Promise.reject();
