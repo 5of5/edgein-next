@@ -20,6 +20,8 @@ export const UserEdit = () => {
           choices={[
             { id: "admin", name: "Admin" },
             { id: "user", name: "User" },
+            { id: "cms", name: "CMS" },
+            { id: "cms-readonly", name: "CMS Readonly" },
           ]}
           validate={required()}
         />
