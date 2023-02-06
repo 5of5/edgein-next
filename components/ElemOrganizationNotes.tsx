@@ -19,7 +19,7 @@ type Props = {
 };
 
 const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
-	const { user } = useUser();
+	const { user, myGroups } = useUser();
 
 	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
@@ -50,6 +50,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		where: {
 			resource_id: { _eq: resourceId },
 			resource_type: { _eq: resourceType },
+			user_group_id: { _in: myGroups.map((item) => item.id) },
 		} as Notes_Bool_Exp,
 	});
 
