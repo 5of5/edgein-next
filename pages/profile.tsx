@@ -25,7 +25,7 @@ import { useAuth } from "@/hooks/useAuth";
 // import { InputSelect } from "@/components/InputSelect";
 // import { getTimeOfWork, getWorkDurationFromAndTo, runGraphQl } from "@/utils";
 // import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
-// import { uploadFile, deleteFile } from "@/utils/fileFunctions";
+// import { uploadFile, deleteFile } from "@/utils/file-functions";
 // import { InputDate } from "@/components/InputDate";
 // import { GetStaticProps } from "next";
 // import { EditSection } from "@/components/Dashboard/EditSection";
