@@ -29,17 +29,20 @@ export const partnerLookUp = async (apiKey: string) => {
 export const resourceIdLookup = async (
 	resourceType: string,
 	resourceIdentifier: string,
-	identifierColumn: string
+	identifierColumn: string,
+  identifierMethod: string|undefined,
 ) => {
 	if (!resourceIdentifier) {
 		return undefined;
 	}
 
 	try {
+    if (!identifierMethod)
+		  identifierMethod = '_eq'
 		const { data } = await query({
 			query: `
       query lookup_resource($resourceIdentifier: ${identifierColumn === "id" ? "Int!" : "String!"}) {
-				${resourceType}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
+				${resourceType}(where: {${identifierColumn}: {${identifierMethod}: $resourceIdentifier}}) {
 					id
         }
       }`,
