@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { FC, Fragment, useState, useEffect, MouseEvent } from "react";
+import { FC, Fragment, useState } from "react";
 import { ModalListName } from "@/components/MyList/ModalListName";
 import {
 	IconX,
@@ -13,7 +13,8 @@ import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
 type Props = {
 	theListName?: string;
 	theListDescription?: string;
-	theListCreator?: string;
+	theListCreator?: string | null;
+	theListDate?: string;
 	theListId: number;
 	groups: Array<any>;
 	onSaveListName: (name: string) => void;
@@ -25,6 +26,7 @@ export const ModalListDetails: FC<Props> = ({
 	theListName,
 	theListDescription,
 	theListCreator,
+	theListDate,
 	theListId,
 	groups,
 	onSaveListName,
@@ -126,7 +128,7 @@ export const ModalListDetails: FC<Props> = ({
 															))}
 														</div>
 													) : (
-														<p className="text-slate-500">Add list to group</p>
+														<p className="text-slate-500">Share with group</p>
 													)}
 												</div>
 												<div className="text-primary-500 text-sm font-bold">
@@ -153,7 +155,12 @@ export const ModalListDetails: FC<Props> = ({
 												<div className="flex justify-between w-full p-3">
 													<div className="text-left">
 														<h3 className="font-bold">Created by</h3>
-														<p className="capitalize">{theListCreator}</p>
+														<p>
+															<span className="capitalize">
+																{theListCreator}
+															</span>{" "}
+															on {theListDate}
+														</p>
 													</div>
 												</div>
 											)}

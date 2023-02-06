@@ -59,6 +59,7 @@ export const ElemSaveToList: FC<Props> = ({
 						name: listName,
 						id: -1,
 						created_by_id: user.id,
+						created_at: "",
 						follows_companies: [],
 						follows_vcfirms: [],
 						total_no_of_resources: 0,
