@@ -112,7 +112,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 										loading={isLoading}
 										onClick={handleCreate}
 									>
-										Create new
+										Create
 									</ElemButton>
 								</div>
 							</Dialog.Panel>
