@@ -19,6 +19,7 @@ import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
 import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { useIntercom } from "react-use-intercom";
 
 type Props = {
 	person: People;
@@ -30,6 +31,7 @@ const Person: NextPage<Props> = (props) => {
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const { user } = useAuth();
+	const { showNewMessages } = useIntercom();
 
 	const person = props.person;
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
@@ -79,7 +81,7 @@ const Person: NextPage<Props> = (props) => {
 
 	const [claimedProfile, setClaimedProfile] = useState(false);
 
-	const profileIsClaimed = true;
+	const profileUrl = `https://edgein.io${router.asPath}`;
 
 	const {
 		data: users,
@@ -125,7 +127,15 @@ const Person: NextPage<Props> = (props) => {
 									{person.name}
 								</h1>
 								{!claimedProfile && (
-									<ElemButton className="mt-2" btn="primary" onClick={() => {}}>
+									<ElemButton
+										className="mt-2"
+										btn="primary"
+										onClick={() =>
+											showNewMessages(
+												`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
+											)
+										}
+									>
 										Claim profile
 									</ElemButton>
 								)}

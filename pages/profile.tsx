@@ -2,7 +2,6 @@ import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ProfileEdit } from "@/components/Profile/ProfileEdit";
-import { ProfileMissing } from "@/components/Profile/ProfileMissing";
 import { ProfileEditEmail } from "@/components/Profile/ProfileEditEmail";
 import { ProfileEditName } from "@/components/Profile/ProfileEditName";
 import { ElemButton } from "@/components/ElemButton";
