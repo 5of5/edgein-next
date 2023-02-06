@@ -15,10 +15,12 @@ import {
   NumberField,
   ReferenceInput,
   SelectInput,
+  SelectArrayInput,
 } from "react-admin";
 import { Chip } from '@mui/material';
-import { companyLayerChoices } from "../../../utils/constants";
+import { companyLayerChoices, tags } from "../../../utils/constants";
 import ElemList from "../ElemList";
+import { useAuth } from "@/hooks/useAuth";
 
 type QuickFilterProps = {
   label: string;
@@ -52,6 +54,12 @@ const filters = [
     label="Layer"
     choices={companyLayerChoices}
   />,
+  <SelectArrayInput
+    key="tags"
+    source="tags@_contains"
+    label="Tags"
+    choices={tags}
+  />,
   <QuickFilter
     key="status_tags"
     source="status_tags@_contains"
@@ -61,9 +69,11 @@ const filters = [
 ];
 
 export const CompanyList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <FunctionField
         render={(record: any) => (
           <a

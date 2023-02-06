@@ -44,19 +44,16 @@ const Group: NextPage<Props> = (props: Props) => {
 		setGroupData(props.group);
 	}, [props.group]);
 
-	const {
-		data: lists,
-    refetch: refetchLists,
-	} = useGetListUserGroupsQuery(
+	const { data: lists, refetch: refetchLists } = useGetListUserGroupsQuery(
 		{
 			where: {
-				user_group_id: { _eq: groupData.id }
+				user_group_id: { _eq: groupData.id },
 			} as List_User_Groups_Bool_Exp,
 		},
 		{
-			enabled: Boolean(groupData.id)
+			enabled: Boolean(groupData.id),
 		}
-	)
+	);
 
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -105,12 +102,19 @@ const Group: NextPage<Props> = (props: Props) => {
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
 
-			{/** TO-DO: Home | Lists | Chat */}
-			<ElemTabBar className="mt-2 border-t-0" tabs={tabBarItems} />
+			<ElemTabBar
+				className="mt-2 border-t-0"
+				tabs={tabBarItems}
+				showDropdown={false}
+			/>
 			<div ref={listsRef}>
 				<ElemLists
 					group={groupData}
-					lists={lists?.list_user_groups?.map(item => item.list) as Array<Lists> || []}
+					lists={
+						(lists?.list_user_groups?.map(
+							(item) => item.list
+						) as Array<Lists>) || []
+					}
 					refetchLists={refetchLists}
 				/>
 			</div>

@@ -184,10 +184,10 @@ const AdminApp = () => {
     checkError: () => Promise.resolve(),
     checkAuth: () => {
       if (user) {
-        if (user.role === "user") {
-          return Promise.reject(new Error("User is not an admin"));
-        } else {
+        if (user.role === "admin" || user.role === "cms" || user.role === "cms-readonly") {
           return Promise.resolve();
+        } else {
+          return Promise.reject(new Error("User is not an admin"));
         }
       }
       return Promise.reject();
@@ -238,12 +238,12 @@ const AdminApp = () => {
             ...metadata,
           };
         },
-        create: (type, obj) => {
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
-        update: (type, obj) => {
-          return onSubmitData(type, nullInputTransform(type, obj));
-        },
+        create: (type, obj) =>
+          onSubmitData(type, nullInputTransform(type, obj), "POST"),
+        update: (type, obj) => 
+          onSubmitData(type, nullInputTransform(type, obj), "PUT"),
+        delete: (type, obj) =>
+          onSubmitData(type, nullInputTransform(type, obj), "DELETE"),
       });
     };
     buildDataProvider();
@@ -295,56 +295,74 @@ const AdminApp = () => {
       <Resource
         name="blockchains"
         list={BlockchainList}
-        edit={BlockchainEdit}
-        create={BlockchainCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: BlockchainEdit,
+          create: BlockchainCreate
+        } : {})} 
       />
       <Resource
         name="coins"
         list={CoinList}
-        edit={CoinEdit}
-        create={CoinCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: CoinEdit,
+          create: CoinCreate
+        } : {})} 
       />
       <Resource
         name="companies"
         list={CompanyList}
-        edit={CompanyEdit}
-        create={CompanyCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: CompanyEdit,
+          create: CompanyCreate
+        } : {})} 
       />
       <Resource
         name="people"
         list={PersonList}
-        edit={PersonEdit}
-        create={PersonCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: PersonEdit,
+          create: PersonCreate
+        } : {})} 
       />
       <Resource
         name="vc_firms"
         list={VcFirmList}
-        edit={VcFirmEdit}
-        create={VcFirmCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: VcFirmEdit,
+          create: VcFirmCreate
+        } : {})} 
       />
       <Resource
         name="investment_rounds"
         list={InvestmentRoundList}
-        edit={InvestmentRoundEdit}
-        create={InvestmentRoundCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: InvestmentRoundEdit,
+          create: InvestmentRoundCreate
+        } : {})} 
       />
       <Resource
         name="investments"
         list={InvestmentList}
-        edit={InvestmentEdit}
-        create={InvestmentCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: InvestmentEdit,
+          create: InvestmentCreate
+        } : {})} 
       />
       <Resource
         name="team_members"
         list={TeamMemberList}
-        edit={TeamMemberEdit}
-        create={TeamMemberCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: TeamMemberEdit,
+          create: TeamMemberCreate
+        } : {})} 
       />
       <Resource
         name="investors"
         list={InvestorList}
-        edit={InvestorEdit}
-        create={InvestorCreate}
+        {...(user.role !== "cms-readonly" ? {
+          edit: InvestorEdit,
+          create: InvestorCreate
+        } : {})} 
       />
     </Admin>
   );

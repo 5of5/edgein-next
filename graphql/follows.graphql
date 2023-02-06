@@ -4,6 +4,7 @@ query GetFollowsByUser($user_id: Int!) {
 			name
 			id
 			created_by_id
+			created_at
 			total_no_of_resources
 			follows_companies {
 				resource_id

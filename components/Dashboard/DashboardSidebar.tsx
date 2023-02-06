@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
+import { ElemMyListsMenu } from "@/components/Dashboard/ElemMyListsMenu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
 	IconPolygonDown,
@@ -15,7 +15,7 @@ import {
 	IconUserCircle,
 } from "@/components/Icons";
 import { Disclosure } from "@headlessui/react";
-import ElemMyGroupsMenu from "./ElemMyGroupsMenu";
+import { ElemMyGroupsMenu } from "./ElemMyGroupsMenu";
 
 type Props = {
 	className?: string;
