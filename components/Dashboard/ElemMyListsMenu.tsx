@@ -97,20 +97,10 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									content="Monitor organizations of your interest."
 									className="ml-1"
 								>
-									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+									<IconInformationCircle className="h-5 w-5 text-slate-600" />
 								</ElemTooltip>
 							</div>
 							<div className="flex gap-x-1">
-								{/* <button
-									onClick={() => {}}
-									className="cursor-pointer rounded-md group p-0 m-0 transition-all hover:bg-slate-200"
-								>
-									<IconEllipsisHorizontal
-										className="h-6 w-6 group-hover:text-primary-500"
-										title="Options"
-									/>
-								</button> */}
-
 								{getCustomLists.length > displayedCustomLists.length ? (
 									<button
 										onClick={onOpenUpgradeDialog}
@@ -129,12 +119,6 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										<IconPlus className="h-5 w-5" title="Create List" />
 									</button>
 								)}
-								{/* <button
-									onClick={() => {}}
-									className="cursor-pointer rounded-md group p-0 m-0 transition-all hover:bg-slate-200"
-								>
-									<IconPlus className="h-6 w-6" title="Create List" />
-								</button> */}
 							</div>
 						</div>
 

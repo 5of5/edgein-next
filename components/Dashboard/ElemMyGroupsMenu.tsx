@@ -72,7 +72,7 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									content="Share your lists and notes with others."
 									className="ml-1"
 								>
-									<IconInformationCircle className="h-5 w-5 " />
+									<IconInformationCircle className="h-5 w-5 text-slate-600" />
 								</ElemTooltip>
 							</div>
 							<div className="flex gap-x-1">
