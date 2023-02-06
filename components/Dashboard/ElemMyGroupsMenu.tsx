@@ -18,7 +18,7 @@ type Props = {
 	className?: string;
 };
 
-const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
+export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { myGroups, user } = useUser();
 	const displayedGroups = myGroups.slice(
@@ -72,10 +72,10 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									content="Share your lists and notes with others."
 									className="ml-1"
 								>
-									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+									<IconInformationCircle className="h-5 w-5 " />
 								</ElemTooltip>
 							</div>
-							<div className="flex gap-x-1 transition-all opacity-0 group-hover:opacity-100">
+							<div className="flex gap-x-1">
 								{/*** TO DO: sort group */}
 								{/* {myGroups.length > 0 && (
 									<Popover className="relative">
@@ -115,7 +115,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								{myGroups.length > displayedGroups.length ? (
 									<button
 										onClick={onOpenUpgradeDialog}
-										className="cursor-pointer rounded-md group px-1 m-0 transition-all hover:text-primary-500 hover:bg-slate-200"
+										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
 									>
 										<IconPlus
 											className="h-5 w-5"
@@ -125,7 +125,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								) : (
 									<button
 										onClick={onOpenCreateGroupDialog}
-										className="cursor-pointer rounded-md group px-1 m-0 transition-all hover:text-primary-500 hover:bg-slate-200"
+										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
 									>
 										<IconPlus className="h-5 w-5" title="Create Group" />
 									</button>
@@ -186,5 +186,3 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 		</div>
 	);
 };
-
-export default ElemMyGroupsMenu;

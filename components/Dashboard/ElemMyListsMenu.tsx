@@ -8,13 +8,14 @@ import {
 	IconPolygonDown,
 	IconListPlus,
 	IconInformationCircle,
+	IconPlus,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
-import { CreateListDialog } from "./CreateListDialog";
+import { CreateListDialog } from "../MyList/CreateListDialog";
 
 type Props = {
 	className?: string;
@@ -108,12 +109,31 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										className="h-6 w-6 group-hover:text-primary-500"
 										title="Options"
 									/>
-								</button>
-								<button
+								</button> */}
+
+								{getCustomLists.length > displayedCustomLists.length ? (
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+									>
+										<IconPlus
+											className="h-5 w-5"
+											title="Unlock All Your Lists"
+										/>
+									</button>
+								) : (
+									<button
+										onClick={onOpenCreateListDialog}
+										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+									>
+										<IconPlus className="h-5 w-5" title="Create List" />
+									</button>
+								)}
+								{/* <button
 									onClick={() => {}}
 									className="cursor-pointer rounded-md group p-0 m-0 transition-all hover:bg-slate-200"
 								>
-									<IconPlus className="h-6 w-6" title="Create Group" />
+									<IconPlus className="h-6 w-6" title="Create List" />
 								</button> */}
 							</div>
 						</div>

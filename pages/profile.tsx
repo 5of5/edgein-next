@@ -11,7 +11,7 @@ import {
 	useGetPersonQuery,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { ElemMyListsMenu } from "@/components/MyList/ElemMyListsMenu";
+import { ElemMyListsMenu } from "@/components/Dashboard/ElemMyListsMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { divide, find, findIndex } from "lodash";
 import validator from "validator";
