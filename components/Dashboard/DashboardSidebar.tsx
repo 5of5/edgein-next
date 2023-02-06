@@ -77,12 +77,16 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 						</div>
 
 						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
-							{/* <li className={`${getActiveClass("/profile/")}`} role="button">
-								<Link href={`/profile`}>
-									<a className="flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
-										{!user?.profilePicture ? (
+							<li>
+								<Link href={`/profile`} passHref>
+									<a
+										className={`flex space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+											"/profile/"
+										)}`}
+									>
+										{user?.person?.picture ? (
 											<ElemPhoto
-												photo={user?.profilePicture}
+												photo={user?.person?.picture}
 												wrapClass="flex items-center justify-center shrink-0 w-6 h-6 bg-white rounded-full"
 												imgClass="object-fit max-w-full max-h-full rounded-full"
 												imgAlt={"profile"}
@@ -97,7 +101,7 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 										<span>Profile Settings</span>
 									</a>
 								</Link>
-							</li> */}
+							</li>
 
 							<li>
 								<Link href="/account/" passHref>

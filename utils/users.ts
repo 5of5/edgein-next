@@ -2,6 +2,26 @@ import { mutate, query } from '@/graphql/hasuraAdmin'
 import { Entitlements, User, UserToken } from '@/models/User';
 import { createHmac } from "crypto";
 
+const USER_FIELDS = `
+id
+email
+role
+external_id
+is_auth0_verified
+display_name
+auth0_linkedin_id
+auth0_user_pass_id
+reference_id
+billing_org_id
+person {
+  name
+  picture
+  slug
+  id
+}
+additional_emails
+`
+
 async function queryForAllowedEmailCheck(email: string, domain: string) {
   const fetchQuery = `
   query query_allowed_emails($email: String, $domain: String) {
@@ -76,21 +96,7 @@ async function findOneUserByEmail(email: string) {
   const fetchQuery = `
   query query_users($email: String) {
     users(where: {email: {_eq: $email}}, limit: 1) {
-      id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
-      auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      billing_org_id
-      person {
-        name
-        picture
-      }
-      additional_emails
+      ${USER_FIELDS}
     }
   }
   `
@@ -109,24 +115,7 @@ async function findOneUserById(id: number) {
   const fetchQuery = `
   query query_users($id: Int) {
     users(where: {id: {_eq: $id}}, limit: 1) {
-      id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
-      auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      billing_org_id
-      billing_org {
-        customer_id
-      }
-      person {
-        name
-        picture
-      }
-      additional_emails
+      ${USER_FIELDS}
     }
   }
   `
@@ -173,20 +162,7 @@ async function upsertUser(userData: any) {
     mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String, $reference_user_id: Int) {
       insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id, reference_user_id: $reference_user_id}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
         returning {
-          id
-          email
-          role
-          external_id
-          is_auth0_verified
-          display_name
-          auth0_linkedin_id
-          auth0_user_pass_id
-          reference_id
-          person {
-            name
-            picture
-          }
-          additional_emails
+          ${USER_FIELDS}
         }
       }
     }
@@ -221,20 +197,7 @@ async function updateEmailVerifiedStatus(email: string, is_auth0_verified: boole
     ) {
       affected_rows
       returning {
-        id
-        email
-        role
-        external_id
-        is_auth0_verified
-        display_name
-        auth0_linkedin_id
-        auth0_user_pass_id
-        reference_id
-        person {
-          name
-          picture
-        }
-        additional_emails
+        ${USER_FIELDS}
       }
     }
   }
@@ -259,20 +222,7 @@ async function updateAuth0LinkedInId(email: string, auth0_linkedin_id: string) {
     ) {
       affected_rows
       returning {
-        id
-        email
-        role
-        external_id
-        is_auth0_verified
-        display_name
-        auth0_linkedin_id
-        auth0_user_pass_id
-        reference_id
-        person {
-          name
-          picture
-        }
-        additional_emails
+        ${USER_FIELDS}
       }
     }
   }
@@ -297,20 +247,7 @@ async function updateAuth0UserPassId(email: string, auth0_user_pass_id: string) 
     ) {
       affected_rows
       returning {
-        id
-        email
-        role
-        external_id
-        is_auth0_verified
-        display_name
-        auth0_linkedin_id
-        auth0_user_pass_id
-        reference_id
-        person {
-          name
-          picture
-        }
-        additional_emails
+        ${USER_FIELDS}
       }
     }
   }
@@ -330,20 +267,7 @@ async function findOneUserByReferenceId(reference_id: string) {
   const fetchQuery = `
   query query_reference_id($reference_id: String) {
     users(where: {reference_id: {_eq: $reference_id}}, limit: 1) {
-      id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
-      auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      person {
-        name
-        picture
-      }
-      additional_emails
+      ${USER_FIELDS}
     }
   }
   `
@@ -367,20 +291,7 @@ async function updateAllowedEmailArray(id: number, additional_emails: string[]) 
     ) {
       affected_rows
       returning {
-        id
-        email
-        role
-        external_id
-        is_auth0_verified
-        display_name
-        auth0_linkedin_id
-        auth0_user_pass_id
-        reference_id
-        person {
-          name
-          picture
-        }
-        additional_emails
+        ${USER_FIELDS}
       }
     }
   }
@@ -400,20 +311,7 @@ async function findOneUserByAdditionalEmail(email: string) {
   const fetchQuery = `
   query query_additional_email_users($email: jsonb) {
     users(where: {additional_emails: {_contains: $email}}, limit: 1) {
-      id
-      email
-      role
-      external_id
-      is_auth0_verified
-      display_name
-      auth0_linkedin_id
-      auth0_user_pass_id
-      reference_id
-      person {
-        name
-        picture
-      }
-      additional_emails
+      ${USER_FIELDS}
     }
   }
   `
@@ -494,6 +392,7 @@ const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
     auth0_linkedin_id: userData.auth0_linkedin_id,
     auth0_user_pass_id: userData.auth0_user_pass_id,
     is_auth0_verified: userData.is_auth0_verified,
+    person: userData.person,
     profileName: userData.person?.name,
     profilePicture: userData.person?.picture,
     reference_id: userData.reference_id,
