@@ -22,24 +22,20 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 
 	const { mutate, isLoading } = useMutation(
 		() =>
-			fetch("/api/reaction/", {
+			fetch("/api/add_list/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					resourceId: 77726,
-					resourceType: "companies",
 					listName: listName,
-					pathname: `/companies/edgein`,
 				}),
 			}).then((res) => res.json()),
 		{
 			onSuccess: (data) => {
 				refreshProfile();
-				//console.log(data);
-				//router.push(`/lists/${data.id}/${kebabCase(listName)}`);
+				router.push(`/lists/${data.list.id}/${kebabCase(listName)}`);
 				onClose();
 				setListName("");
 			},
