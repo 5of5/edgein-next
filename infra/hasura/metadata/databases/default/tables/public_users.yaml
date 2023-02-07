@@ -46,3 +46,23 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: user_id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - is_auth0_verified
+        - billing_org_id
+        - id
+        - person_id
+        - reference_user_id
+        - additional_emails
+        - auth0_linkedin_id
+        - auth0_user_pass_id
+        - display_name
+        - email
+        - external_id
+        - reference_id
+        - role
+      filter:
+        id:
+          _eq: X-Hasura-User-Id

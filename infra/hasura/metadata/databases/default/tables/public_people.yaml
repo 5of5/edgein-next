@@ -50,6 +50,31 @@ insert_permissions:
         - email
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - about
+        - city
+        - country
+        - created_at
+        - email
+        - facebook_url
+        - github
+        - id
+        - linkedin
+        - name
+        - personal_email
+        - picture
+        - slug
+        - twitter_url
+        - type
+        - updated_at
+        - website_url
+        - work_email
+      filter:
+        status:
+          _eq: published
+      limit: 50
   - role: user
     permission:
       columns:
@@ -67,10 +92,37 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - twitter_url
+        - type
+        - updated_at
+        - website_url
+        - work_email
+      filter:
+        status:
+          _eq: published
+  - role: viewer
+    permission:
+      columns:
+        - about
+        - city
+        - country
+        - created_at
+        - email
+        - facebook_url
+        - github
+        - id
+        - linkedin
+        - name
+        - personal_email
+        - picture
+        - slug
         - status
         - twitter_url
         - type
         - updated_at
         - website_url
         - work_email
-      filter: {}
+      filter:
+        status:
+          _eq: published
+      limit: 50

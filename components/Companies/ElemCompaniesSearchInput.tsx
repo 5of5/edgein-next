@@ -23,7 +23,6 @@ export const ElemCompaniesSearchInput: FC<Props> = ({
 		offset: null,
 		where: {
 			slug: { _neq: "" },
-			status: { _eq: "published" },
 			name: { _ilike: `%${search}%` },
 		} as Companies_Bool_Exp,
 	});

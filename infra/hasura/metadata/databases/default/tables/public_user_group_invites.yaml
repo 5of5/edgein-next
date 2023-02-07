@@ -14,3 +14,17 @@ object_relationships:
   - name: user_group
     using:
       foreign_key_constraint_on: user_group_id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - user_group_id
+        - email
+        - created_at
+      filter:
+        user_group:
+          user_group_members:
+            user_id:
+              _eq: X-Hasura-User-Id
+      limit: 50

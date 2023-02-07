@@ -37,7 +37,6 @@ export const ElemRecentCompanies: FC<Props> = ({
 			{
 				slug: { _neq: "" },
 				date_added: { _neq: new Date(0) },
-				status: { _eq: "published" },
 			},
 		],
 	};

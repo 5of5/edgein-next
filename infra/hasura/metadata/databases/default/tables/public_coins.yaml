@@ -23,6 +23,17 @@ insert_permissions:
         - ticker
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - blockchain_id
+        - company_id
+        - id
+        - name
+        - ticker
+        - type
+      filter: {}
+      limit: 50
   - role: user
     permission:
       columns:
@@ -32,3 +43,15 @@ select_permissions:
         - name
         - ticker
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - blockchain_id
+        - company_id
+        - id
+        - name
+        - ticker
+        - type
+      filter: {}
+      limit: 50
+      allow_aggregations: true

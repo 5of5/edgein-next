@@ -33,3 +33,21 @@ array_relationships:
         table:
           schema: public
           name: user_group_members
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - created_by_user_id
+        - id
+        - description
+        - discord
+        - name
+        - telegram
+        - twitter
+        - created_at
+        - updated_at
+      filter:
+        user_group_members:
+          user_id:
+            _eq: X-Hasura-User-Id
+      limit: 50

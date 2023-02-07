@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import { TextField, EditButton, TextInput, useGetList } from "react-admin";
 import ElemList from "../ElemList";
@@ -13,9 +14,11 @@ const filters = [
 ];
 
 export const BlockchainList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <TextField source="id" />
       <TextField source="name" />
       {/* <TextField source="counter" /> */}

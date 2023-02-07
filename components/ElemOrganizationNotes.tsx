@@ -85,7 +85,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 			) : notes.length === 0 ? (
 				<div className="mt-4 flex items-start gap-2">
 					<ElemPhoto
-						photo={user?.profilePicture}
+						photo={user?.profilePicture || user?.person?.picture}
 						wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
 						imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
 						imgAlt={user?.display_name}

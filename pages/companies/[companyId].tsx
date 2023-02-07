@@ -325,7 +325,11 @@ const Company: NextPage<Props> = (props: Props) => {
 							)}
 						</div>
 					</div>
-					<ElemTabBar className="mt-7 border-b-0" tabs={tabBarItems} />
+					<ElemTabBar
+						className="mt-7 border-b-0"
+						tabs={tabBarItems}
+						resourceName={company.name}
+					/>
 				</div>
 			</div>
 
