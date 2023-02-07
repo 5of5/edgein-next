@@ -100,7 +100,7 @@ export const ModalListGroups: FC<Props> = ({
 											value={selectedGroups}
 											onChange={setSelectedGroups}
 											options={groupOptions}
-											placeholder="Add list to group"
+											placeholder="Select group"
 										/>
 										{error === "" ? null : (
 											<div className="mt-2 font-bold text-sm text-rose-400">

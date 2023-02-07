@@ -31,7 +31,7 @@ import {
 	formatDate,
 } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
-import { uploadFile, deleteFile } from "@/utils/fileFunctions";
+import { uploadFile, deleteFile } from "@/utils/file-functions";
 import {
 	companyLayerChoices,
 	validateFieldsForEdit,

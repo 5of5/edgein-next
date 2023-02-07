@@ -111,7 +111,7 @@ const Companies: NextPage<Props> = ({
 	);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
+		_and: [{ slug: { _neq: "" } }],
 	};
 
 	useEffect(() => {
@@ -423,7 +423,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+			where: { slug: { _neq: "" } },
 		}
 	);
 

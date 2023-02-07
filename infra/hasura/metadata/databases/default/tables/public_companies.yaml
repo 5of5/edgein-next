@@ -82,6 +82,58 @@ insert_permissions:
         - year_founded
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - aliases
+        - audit_file
+        - bitcointalk
+        - blockchain_explorer
+        - careers_page
+        - coin_id
+        - company_linkedin
+        - created_at
+        - date_added
+        - discord
+        - facebook
+        - geopoint
+        - github
+        - glassdoor
+        - ico_end
+        - ico_start
+        - id
+        - instagram
+        - investor_amount
+        - layer
+        - layer_detail
+        - location
+        - location_json
+        - logo
+        - market_verified
+        - medium
+        - name
+        - notes
+        - overview
+        - reddit
+        - sentiment
+        - slug
+        - status_tags
+        - tags
+        - telegram
+        - total_employees
+        - total_valuation
+        - twitter
+        - updated_at
+        - velocity_linkedin
+        - velocity_token
+        - website
+        - white_paper
+        - year_founded
+        - youtube
+      filter:
+        status:
+          _eq: published
+      limit: 50
   - role: user
     permission:
       columns:
@@ -114,3 +166,56 @@ select_permissions:
         - year_founded
       filter: {}
       limit: 50
+      allow_aggregations: true
+  - role: viewer
+    permission:
+      columns:
+        - aliases
+        - audit_file
+        - bitcointalk
+        - blockchain_explorer
+        - careers_page
+        - coin_id
+        - company_linkedin
+        - created_at
+        - date_added
+        - discord
+        - facebook
+        - github
+        - glassdoor
+        - ico_end
+        - ico_start
+        - id
+        - instagram
+        - investor_amount
+        - layer
+        - layer_detail
+        - location
+        - location_json
+        - logo
+        - market_verified
+        - medium
+        - name
+        - notes
+        - overview
+        - reddit
+        - sentiment
+        - slug
+        - status_tags
+        - tags
+        - telegram
+        - total_employees
+        - total_valuation
+        - twitter
+        - updated_at
+        - velocity_linkedin
+        - velocity_token
+        - website
+        - white_paper
+        - year_founded
+        - youtube
+      filter:
+        status:
+          _eq: published
+      limit: 50
+      allow_aggregations: true
