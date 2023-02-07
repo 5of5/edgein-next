@@ -7,6 +7,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const token = CookieService.getAuthToken(req.cookies)
     user = await CookieService.getUser(token)
 
+    // TODO if cookie is more than 1 day old refresh token
+
     // now we have access to the data inside of user
     // and we could make database calls or just send back what we have
     // in the token.

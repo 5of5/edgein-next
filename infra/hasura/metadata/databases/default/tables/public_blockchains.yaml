@@ -2,9 +2,24 @@ table:
   schema: public
   name: blockchains
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}
+      limit: 50
   - role: user
     permission:
       columns:
         - id
         - name
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - name
+      filter: {}
+      limit: 50
+      allow_aggregations: true

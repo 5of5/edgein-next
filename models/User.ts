@@ -22,10 +22,13 @@ export type User = {
   person?: {
     name: string
     picture: any
+    slug: string
+    id: number
   } | null
   reference_id: string
   reference_user_id: number
   additional_emails : string[]
+  // To deprecate
   profilePicture: any
   profileName?: string
   entitlements: Entitlements

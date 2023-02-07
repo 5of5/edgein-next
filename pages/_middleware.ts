@@ -20,6 +20,7 @@ export async function middleware(req: NextRequest) {
 			`/team/`,
 			`/404/`,
 			`/api/login_attempt/`,
+			`/api/graphql_query/`,
 			`/api/get_access_token/`,
 			`/api/refresh_token/`,
 			`/api/login/`,

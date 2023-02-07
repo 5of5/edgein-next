@@ -30,17 +30,20 @@ export const partnerLookUp = async (apiKey: string) => {
 export const resourceIdLookup = async (
 	resourceType: string,
 	resourceIdentifier: string,
-	identifierColumn: string
+	identifierColumn: string,
+  identifierMethod: string|undefined,
 ) => {
 	if (!resourceIdentifier) {
 		return undefined;
 	}
 
 	try {
+    if (!identifierMethod)
+		  identifierMethod = '_eq'
 		const { data } = await query({
 			query: `
       query lookup_resource($resourceIdentifier: ${identifierColumn === "id" ? "Int!" : "String!"}) {
-				${resourceType}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
+				${resourceType}(where: {${identifierColumn}: {${identifierMethod}: $resourceIdentifier}}) {
 					id
         }
       }`,
@@ -164,6 +167,7 @@ export const insertActionDataChange = async (
   resourceType: string,
   properties: Record<string, any>,
   userId?: Number,
+  partnerId?: Number,
 ) => {
   const { data } = await mutate({
     mutation: `
@@ -183,6 +187,7 @@ export const insertActionDataChange = async (
         resource_id: resourceId,
         resource: resourceType,
         user: userId,
+        partner: partnerId,
       },
     },
   });
@@ -303,7 +308,8 @@ export const mutateActionAndDataRaw = async (
           resourceId,
           resourceType,
           { [field]: value },
-          user?.id
+          user?.id,
+          partnerId
         );
       }
     }

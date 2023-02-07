@@ -202,7 +202,7 @@ const ElemNoteForm: React.FC<Props> = ({
 											className="cursor-pointer"
 										>
 											<ElemPhoto
-												photo={user?.profilePicture}
+												photo={user?.profilePicture || user?.person?.picture}
 												wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
 												imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
 												imgAlt={user?.display_name}
@@ -212,7 +212,7 @@ const ElemNoteForm: React.FC<Props> = ({
 										</ElemTooltip>
 									) : (
 										<ElemPhoto
-											photo={user?.profilePicture}
+											photo={user?.person?.picture}
 											wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
 											imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
 											imgAlt={user?.display_name}
