@@ -1,6 +1,6 @@
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
+import { ElemButton } from "../../components/elem-button";
 import { runGraphQl, formatDate, truncateWords } from "../../utils";
 
 type Props = {

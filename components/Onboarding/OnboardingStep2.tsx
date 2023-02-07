@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
-import { ElemButton } from "@/components/ElemButton";
-import { TagInputText } from "@/components/TagInputText";
-import { TagInputSelect } from "@/components/TagInputSelect";
+import { ElemButton } from "@/components/elem-button";
+import { TagInputText } from "@/components/tag-input-text";
+import { TagInputSelect } from "@/components/tag-input-select";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { tags } from "@/utils/constants";

@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { useMutation } from "react-query";
 import { Menu, Transition } from "@headlessui/react";
-import { IconEllipsisHorizontal } from "@/components/Icons";
+import { IconEllipsisHorizontal } from "@/components/icons";
 import { User_Groups, User_Group_Invites } from "@/graphql/types";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import { useUser } from "@/context/userContext";
 
 type Props = {

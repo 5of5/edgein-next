@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ElemHeading } from "@/components/ElemHeading";
-import { PlaceholderInvestorCard } from "@/components/Placeholders";
-import { InputSelect } from "@/components/InputSelect";
+import { ElemHeading } from "@/components/elem-heading";
+import { PlaceholderInvestorCard } from "@/components/placeholders";
+import { InputSelect } from "@/components/input-select";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
-import { Pagination } from "@/components/Pagination";
+import { ElemButton } from "@/components/elem-button";
+import { ElemTagsCarousel } from "@/components/elem-tags-carousel";
+import { Pagination } from "@/components/pagination";
 import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
 import {
 	IconSearch,
 	IconAnnotation,
 	IconX,
 	IconFilter,
-} from "@/components/Icons";
+} from "@/components/icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,

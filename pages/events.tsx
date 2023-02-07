@@ -3,9 +3,9 @@ import type { NextPage, GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import { ElemHeading } from "../components/ElemHeading";
-import { ElemButton } from "../components/ElemButton";
-import { InputSearch } from "../components/InputSearch";
+import { ElemHeading } from "../components/elem-heading";
+import { ElemButton } from "../components/elem-button";
+import { InputSearch } from "../components/input-search";
 import { runGraphQl, formatDate } from "../utils";
 
 type Props = {

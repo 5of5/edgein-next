@@ -1,16 +1,16 @@
 import React, { FC, useEffect, useState } from "react";
-import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
-import { ElemCarouselCard } from "@/components/ElemCarouselCard";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { PlaceholderCompanyCard } from "@/components/placeholders";
+import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
+import { ElemCarouselCard } from "@/components/elem-carousel-card";
+import { ElemPhoto } from "@/components/elem-photo";
 import { formatDate, convertToInternationalCurrencySystem } from "@/utils";
 import { getLayerClass } from "@/utils/style";
 import {
 	Companies_Bool_Exp,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
-import { ElemReactions } from "@/components/ElemReactions";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemReactions } from "@/components/elem-reactions";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
 
 export type DeepPartial<T> = T extends object
 	? {

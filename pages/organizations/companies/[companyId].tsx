@@ -1,18 +1,18 @@
 import { useAuth } from "../../../hooks/useAuth";
 import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Link from "next/link";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { IconChevronLeft, IconChevronRight } from "@/components/Icons";
+import { ElemButton } from "@/components/elem-button";
+import { ElemPhoto } from "@/components/elem-photo";
+import { IconChevronLeft, IconChevronRight } from "@/components/icons";
 import Image from "next/image";
-import { InputText } from "@/components/InputText";
-import { InputTextarea } from "@/components/InputTextarea";
-import { InputSelect } from "@/components/InputSelect";
-import { InputSearch } from "@/components/InputSearch";
+import { InputText } from "@/components/input-text";
+import { InputTextarea } from "@/components/input-textarea";
+import { InputSelect } from "@/components/input-select";
+import { InputSearch } from "@/components/input-search";
 import { useState, useEffect, useRef, ChangeEvent } from "react";
-import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
-import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer";
-import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer";
+import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
+import { ElemTeamSideDrawer } from "@/components/elem-team-side-drawer";
+import { ElemInvestmentSideDrawer } from "@/components/elem-investment-side-drawer";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import {
 	Investment_Rounds,
@@ -38,10 +38,10 @@ import {
 	validateTeamMember,
 	validateInvestmentRounds,
 } from "@/utils/constants";
-import { TagInputText } from "@/components/TagInputText";
+import { TagInputText } from "@/components/tag-input-text";
 import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
 import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
-import { InputDate } from "@/components/InputDate";
+import { InputDate } from "@/components/input-date";
 
 type GridProps = {
 	children: any;

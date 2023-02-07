@@ -1,15 +1,16 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
+
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ProfileEdit } from "@/components/Profile/ProfileEdit";
 import { ProfileEditEmail } from "@/components/Profile/ProfileEditEmail";
 import { ProfileEditName } from "@/components/Profile/ProfileEditName";
-import { ElemButton } from "@/components/ElemButton";
-import { IconSearch } from "@/components/Icons";
+import { ElemButton } from "@/components/elem-button";
+import { IconSearch } from "@/components/icons";
 // import { ElemPhoto } from "@/components/ElemPhoto";
 // import { InputText } from "@/components/InputText";
 // import { InputTextarea } from "@/components/InputTextarea";
-import { Popups } from "@/components/TheNavbar";
+import { Popups } from "@/components/the-navbar";
 
 import {
 	// GetCompaniesDocument,

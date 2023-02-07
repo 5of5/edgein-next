@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemButton } from "@/components/elem-button";
 import { numberWithCommas } from "@/utils";
 
 type Props = {

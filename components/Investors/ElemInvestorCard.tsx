@@ -1,8 +1,8 @@
 import { Vc_Firms } from "@/graphql/types";
 import { FC, useEffect, useState } from "react";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemReactions } from "@/components/ElemReactions";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemReactions } from "@/components/elem-reactions";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
 import Link from "next/link";
 
 type Props = {

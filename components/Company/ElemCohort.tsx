@@ -1,10 +1,10 @@
 import React, { FC } from "react";
-import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
-import { ElemCarouselCard } from "@/components/ElemCarouselCard";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemReactions } from "@/components/ElemReactions";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { PlaceholderCompanyCard } from "@/components/placeholders";
+import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
+import { ElemCarouselCard } from "@/components/elem-carousel-card";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemReactions } from "@/components/elem-reactions";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { getLayerClass } from "@/utils/style";
 import {
 	Companies_Bool_Exp,

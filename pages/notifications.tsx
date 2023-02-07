@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useAuth } from "@/hooks/useAuth";
-import { ElemButton } from "@/components/ElemButton";
-import { IconCheck } from "@/components/Icons";
+import { ElemButton } from "@/components/elem-button";
+import { IconCheck } from "@/components/icons";
 import { formatDate } from "@/utils";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
 import {
 	GetNotificationsForUserQuery,
 	useGetNotificationsForUserQuery,

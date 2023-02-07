@@ -1,12 +1,12 @@
 import React from "react";
-import { ElemTooltip } from "../ElemTooltip";
+import { ElemTooltip } from "../elem-tooltip";
 import {
 	IconProps,
 	IconBadgeCheckSolid,
 	IconGithub,
 	IconLinkedIn,
 	IconChartUp,
-} from "../Icons";
+} from "../icons";
 
 type Props = {
 	className?: string;

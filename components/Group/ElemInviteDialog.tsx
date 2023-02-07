@@ -3,11 +3,11 @@ import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { useMutation } from "react-query";
-import { IconX } from "@/components/Icons";
+import { IconX } from "@/components/icons";
 import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/useDebounce";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemButton } from "../ElemButton";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemButton } from "../elem-button";
 
 type Props = {
 	isOpen: boolean;

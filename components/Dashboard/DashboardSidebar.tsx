@@ -3,7 +3,7 @@ import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import { ElemMyListsMenu } from "@/components/Dashboard/ElemMyListsMenu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
@@ -13,7 +13,7 @@ import {
 	IconSettings,
 	IconOrganization,
 	IconUserCircle,
-} from "@/components/Icons";
+} from "@/components/icons";
 import { Disclosure } from "@headlessui/react";
 import { ElemMyGroupsMenu } from "./ElemMyGroupsMenu";
 

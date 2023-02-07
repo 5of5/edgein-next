@@ -11,22 +11,22 @@ import {
 	useRowSelect,
 } from "react-table";
 import { TableColumnsFilter } from "./TableColumnsFilter";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import {
 	IconSortUp,
 	IconSortDown,
 	IconX,
 	IconTrash,
 	IconChevronDown,
-} from "@/components/Icons";
-import { Pagination } from "@/components/Pagination";
-import { ElemButton } from "@/components/ElemButton";
+} from "@/components/icons";
+import { Pagination } from "@/components/pagination";
+import { ElemButton } from "@/components/elem-button";
 import { useCheckboxes } from "./IndeterminateCheckbox";
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
 } from "@/utils";
-import { ElemReactions } from "@/components/ElemReactions";
+import { ElemReactions } from "@/components/elem-reactions";
 import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/userContext";
 

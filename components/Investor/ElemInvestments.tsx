@@ -1,12 +1,12 @@
 import React from "react";
 import Link from "next/link";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import { Investment_Rounds } from "@/graphql/types";
 import { useTable, useSortBy, usePagination } from "react-table";
 
 import { numberWithCommas, formatDate } from "@/utils";
-import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons";
-import { Pagination } from "@/components/Pagination";
+import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/icons";
+import { Pagination } from "@/components/pagination";
 
 type Props = {
 	className?: string;

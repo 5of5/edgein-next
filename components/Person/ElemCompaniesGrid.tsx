@@ -1,4 +1,4 @@
-import { ElemOrganizationCard } from "../ElemOrganizationCard";
+import { ElemOrganizationCard } from "../elem-organization-card";
 
 type Props = {
 	className?: string;

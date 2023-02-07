@@ -7,8 +7,8 @@ import {
 	IconTelegram,
 	IconDiscord,
 	IconUserPlus,
-} from "@/components/Icons";
-import { ElemButton } from "@/components/ElemButton";
+} from "@/components/icons";
+import { ElemButton } from "@/components/elem-button";
 import { User_Groups } from "@/graphql/types";
 import { ElemMemberAvatarList } from "@/components/Group/ElemMemberAvatarList";
 import { SettingTabProps } from "./ElemSettingDialog";

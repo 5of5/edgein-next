@@ -2,21 +2,21 @@ import React, { useEffect, useState, MutableRefObject, useRef } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import { ElemCredibility } from "@/components/Company/ElemCredibility";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemTags } from "@/components/ElemTags";
+import { ElemKeyInfo } from "@/components/elem-key-info";
+import { ElemTags } from "@/components/elem-tags";
 import { ElemInvestments } from "@/components/Company/ElemInvestments";
 import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
 import { runGraphQl } from "@/utils";
-import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
+import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
 import { ElemCohort } from "@/components/Company/ElemCohort";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemSocialShare } from "@/components/ElemSocialShare";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
+import { ElemButton } from "@/components/elem-button";
+import { ElemSocialShare } from "@/components/elem-social-share";
 import { ElemVelocity } from "@/components/Company/ElemVelocity";
-import { ElemOrganizationActivity } from "@/components/ElemOrganizationActivity";
+import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
 import {
 	Companies,
 	GetCompanyDocument,
@@ -25,7 +25,7 @@ import {
 	useGetCompanyQuery,
 	//Investments,
 } from "@/graphql/types";
-import { ElemReactions } from "@/components/ElemReactions";
+import { ElemReactions } from "@/components/elem-reactions";
 import { useAuth } from "@/hooks/useAuth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
@@ -33,7 +33,7 @@ import { sortBy } from "lodash";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
-import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+import ElemOrganizationNotes from "@/components/elem-organization-notes";
 
 type Props = {
 	company: Companies;

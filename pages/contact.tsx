@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
-import { InputText } from "@/components/InputText";
-import { InputTextarea } from "@/components/InputTextarea";
-import { ElemButton } from "@/components/ElemButton";
-import { IconPaperAirplane } from "@/components/Icons";
-import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/Figures";
+import { InputText } from "@/components/input-text";
+import { InputTextarea } from "@/components/input-textarea";
+import { ElemButton } from "@/components/elem-button";
+import { IconPaperAirplane } from "@/components/icons";
+import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/figures";
 import { useFormspark } from "@formspark/use-formspark";
 
 const Contact: NextPage = () => {

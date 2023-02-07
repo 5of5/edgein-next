@@ -1,5 +1,5 @@
 import React from "react";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import { User_Group_Members } from "@/graphql/types";
 
 type Props = {

@@ -1,10 +1,10 @@
 import { Companies } from "@/graphql/types";
 import { getLayerClass } from "@/utils/style";
 import { FC, useEffect, useState } from "react";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemReactions } from "@/components/ElemReactions";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { ElemTooltip } from "@/components/ElemTooltip";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemReactions } from "@/components/elem-reactions";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
+import { ElemTooltip } from "@/components/elem-tooltip";
 import Link from "next/link";
 
 type Props = {

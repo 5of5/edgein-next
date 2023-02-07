@@ -9,12 +9,12 @@ import {
 	IconListPlus,
 	IconInformationCircle,
 	IconPlus,
-} from "@/components/Icons";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
+} from "@/components/icons";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
 import { useUser } from "@/context/userContext";
 import { Disclosure } from "@headlessui/react";
-import { ElemTooltip } from "@/components/ElemTooltip";
-import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
+import { ElemTooltip } from "@/components/elem-tooltip";
+import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
 import { CreateListDialog } from "../MyList/CreateListDialog";
 
 type Props = {

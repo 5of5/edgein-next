@@ -1,8 +1,8 @@
 import { FC, Fragment, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ElemButton } from "@/components/ElemButton";
-import { IconX } from "@/components/Icons";
-import { InputSelect } from "../InputSelect";
+import { ElemButton } from "@/components/elem-button";
+import { IconX } from "@/components/icons";
+import { InputSelect } from "../input-select";
 
 type Props = {
 	isOpen: boolean;

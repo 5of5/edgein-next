@@ -6,9 +6,9 @@ import {
 	IconTrash,
 	IconCustomList,
 	IconChevronDownMini,
-} from "@/components/Icons";
+} from "@/components/icons";
 import { ModalListGroups } from "./ModalListGroups";
-import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
+import { ElemDeleteConfirmModal } from "../elem-delete-confirm-modal";
 
 type Props = {
 	theListName?: string;

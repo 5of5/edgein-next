@@ -1,8 +1,8 @@
 import { Fragment, useState, FC, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
-import { ElemButton } from "@/components/ElemButton";
-import { IconX, IconWindowSidebar } from "@/components/Icons";
+import { ElemButton } from "@/components/elem-button";
+import { IconX, IconWindowSidebar } from "@/components/icons";
 import { useAuth } from "@/hooks/useAuth";
 import { DashboardSidebar } from "./DashboardSidebar";
 

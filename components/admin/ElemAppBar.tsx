@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { AppBar, useRedirect } from "react-admin";
 import { useHotkeys } from "react-hotkeys-hook";
-import ElemSearchBox from "../ElemSearchBox";
-import SearchModal from "../SearchModal";
+import ElemSearchBox from "../elem-search-box";
+import SearchModal from "../search-modal";
 
 const ElemAppBar = (props: any) => {
   const [showSearchModal, setShowSearchModal] = useState(false);

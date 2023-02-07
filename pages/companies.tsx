@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ElemHeading } from "@/components/ElemHeading";
-import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { InputSelect } from "@/components/InputSelect";
+import { ElemHeading } from "@/components/elem-heading";
+import { PlaceholderCompanyCard } from "@/components/placeholders";
+import { InputSelect } from "@/components/input-select";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
+import { ElemButton } from "@/components/elem-button";
+import { ElemTagsCarousel } from "@/components/elem-tags-carousel";
 import { runGraphQl, numberWithCommas } from "@/utils";
 import {
 	IconSearch,
 	IconAnnotation,
 	IconX,
 	IconFilter,
-} from "@/components/Icons";
+} from "@/components/icons";
 import {
 	Companies,
 	Companies_Bool_Exp,
@@ -21,7 +21,7 @@ import {
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
-import { Pagination } from "@/components/Pagination";
+import { Pagination } from "@/components/pagination";
 import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";

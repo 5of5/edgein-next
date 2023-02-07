@@ -2,7 +2,7 @@ import React from "react";
 import useSWR from "swr";
 import moment from "moment-timezone";
 import { Notes } from "@/graphql/types";
-import { ElemPhoto } from "../ElemPhoto";
+import { ElemPhoto } from "../elem-photo";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 

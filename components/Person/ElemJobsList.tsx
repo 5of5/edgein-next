@@ -1,5 +1,5 @@
 import { Team_Members } from "@/graphql/types";
-import { IconEditPencil } from "@/components/Icons";
+import { IconEditPencil } from "@/components/icons";
 import { getTimeOfWork, getWorkDurationFromAndTo } from "@/utils";
 import Link from "next/link";
 type Props = {

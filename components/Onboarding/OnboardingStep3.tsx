@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemButton } from "@/components/elem-button";
 import { DeepPartial } from "@/components/Company/ElemCohort";
 import { Dialog, Transition } from "@headlessui/react";
 import {

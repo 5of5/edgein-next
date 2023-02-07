@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ElemTabBar } from "@/components/ElemTabBar";
+import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
 import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";

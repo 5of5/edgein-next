@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
-import { PlaceholderInvestorCard } from "@/components/Placeholders";
-import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
-import { ElemCarouselCard } from "@/components/ElemCarouselCard";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { PlaceholderInvestorCard } from "@/components/placeholders";
+import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
+import { ElemCarouselCard } from "@/components/elem-carousel-card";
+import { ElemPhoto } from "@/components/elem-photo";
 import {
 	Vc_Firms_Bool_Exp,
 	useGetVcFirmsRecentInvestmentsQuery,
 } from "@/graphql/types";
-import { ElemReactions } from "@/components/ElemReactions";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemReactions } from "@/components/elem-reactions";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { useAuth } from "@/hooks/useAuth";
 
 export type DeepPartial<T> = T extends object

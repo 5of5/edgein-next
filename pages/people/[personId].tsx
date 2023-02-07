@@ -1,11 +1,11 @@
 import React, { MutableRefObject, useRef, useEffect, useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemKeyInfo } from "@/components/elem-key-info";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemButton } from "@/components/elem-button";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
 import {
 	GetPersonDocument,
@@ -17,7 +17,7 @@ import {
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
-import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
+import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useIntercom } from "react-use-intercom";
 

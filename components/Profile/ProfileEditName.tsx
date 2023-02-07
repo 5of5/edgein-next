@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { EditSection } from "../Dashboard/EditSection";
-import { ElemButton } from "../ElemButton";
-import { InputText } from "../InputText";
+import { ElemButton } from "../elem-button";
+import { InputText } from "../input-text";
 import {
 	People,
 } from "@/graphql/types";

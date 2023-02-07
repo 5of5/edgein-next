@@ -1,5 +1,5 @@
 import { Team_Members } from "../../graphql/types";
-import { ElemPersonCard } from "../ElemPersonCard";
+import { ElemPersonCard } from "../elem-person-card";
 
 type Props = {
 	className?: string;

@@ -1,5 +1,5 @@
 import React from "react";
-import { ElemTooltip } from "@/components/ElemTooltip";
+import { ElemTooltip } from "@/components/elem-tooltip";
 import { numberWithCommas } from "@/utils";
 import {
 	IconProps,
@@ -8,7 +8,7 @@ import {
 	IconArrowUp,
 	IconArrowDown,
 	IconInformationCircle,
-} from "@/components/Icons";
+} from "@/components/icons";
 
 type Props = {
 	className?: string;

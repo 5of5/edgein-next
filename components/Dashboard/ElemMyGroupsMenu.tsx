@@ -7,12 +7,12 @@ import {
 	IconPlus,
 	IconPolygonDown,
 	IconInformationCircle,
-} from "@/components/Icons";
+} from "@/components/icons";
 import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
-import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
-import { ElemTooltip } from "../ElemTooltip";
+import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
+import { ElemTooltip } from "../elem-tooltip";
 
 type Props = {
 	className?: string;
