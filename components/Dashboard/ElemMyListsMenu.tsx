@@ -8,12 +8,14 @@ import {
 	IconPolygonDown,
 	IconListPlus,
 	IconInformationCircle,
+	IconPlus,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
+import { CreateListDialog } from "../MyList/CreateListDialog";
 
 type Props = {
 	className?: string;
@@ -59,7 +61,15 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
+	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenCreateListDialog = () => {
+		setIsOpenCreateGroupDialog(true);
+	};
+	const onCloseCreateListDialog = () => {
+		setIsOpenCreateGroupDialog(false);
+	};
 
 	const onOpenUpgradeDialog = () => {
 		setIsOpenUpgradeDialog(true);
@@ -87,25 +97,28 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									content="Monitor organizations of your interest."
 									className="ml-1"
 								>
-									<IconInformationCircle className="h-5 w-5 text-primary-500" />
+									<IconInformationCircle className="h-5 w-5 text-slate-600" />
 								</ElemTooltip>
 							</div>
 							<div className="flex gap-x-1">
-								{/* <button
-									onClick={() => {}}
-									className="cursor-pointer rounded-md group p-0 m-0 transition-all hover:bg-slate-200"
-								>
-									<IconEllipsisHorizontal
-										className="h-6 w-6 group-hover:text-primary-500"
-										title="Options"
-									/>
-								</button>
-								<button
-									onClick={() => {}}
-									className="cursor-pointer rounded-md group p-0 m-0 transition-all hover:bg-slate-200"
-								>
-									<IconPlus className="h-6 w-6" title="Create Group" />
-								</button> */}
+								{getCustomLists.length > displayedCustomLists.length ? (
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+									>
+										<IconPlus
+											className="h-5 w-5"
+											title="Unlock All Your Lists"
+										/>
+									</button>
+								) : (
+									<button
+										onClick={onOpenCreateListDialog}
+										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+									>
+										<IconPlus className="h-5 w-5" title="Create List" />
+									</button>
+								)}
 							</div>
 						</div>
 
@@ -173,14 +186,24 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</li>
 							))}
 
-							{getCustomLists.length > displayedCustomLists.length && (
+							{getCustomLists.length > displayedCustomLists.length ? (
 								<li role="button">
 									<button
 										onClick={onOpenUpgradeDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
-										<IconListPlus className="h-6 w-6" title="Create Group" />
+										<IconListPlus className="h-6 w-6" title="Create List" />
 										<span>Unlock All Your Lists</span>
+									</button>
+								</li>
+							) : (
+								<li role="button">
+									<button
+										onClick={onOpenCreateListDialog}
+										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+									>
+										<IconListPlus className="h-6 w-6" title="Create List" />
+										<span>Create List</span>
 									</button>
 								</li>
 							)}
@@ -188,6 +211,11 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 					</>
 				)}
 			</Disclosure>
+
+			<CreateListDialog
+				isOpen={isOpenCreateListDialog}
+				onClose={onCloseCreateListDialog}
+			/>
 
 			<ElemUpgradeDialog
 				isOpen={isOpenUpgradeDialog}

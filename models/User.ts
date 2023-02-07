@@ -9,7 +9,7 @@ export type User = {
   id: number
   email: string
   display_name?: string | null
-  role: "user" | "admin"
+  role: "user" | "admin" | "cms" | "cms-readonly"
   is_auth0_verified: boolean
   isFirstLogin?: boolean
   intercomUserHash?: string
@@ -22,10 +22,13 @@ export type User = {
   person?: {
     name: string
     picture: any
+    slug: string
+    id: number
   } | null
   reference_id: string
   reference_user_id: number
   additional_emails : string[]
+  // To deprecate
   profilePicture: any
   profileName?: string
   entitlements: Entitlements
