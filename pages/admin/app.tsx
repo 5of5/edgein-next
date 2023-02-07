@@ -22,7 +22,7 @@ import {
 import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
 
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import ElemAppBar from "@/components/admin/ElemAppBar";
+import ElemAppBar from "@/components/admin/elem-app-bar";
 import { getParentSubOrganizations } from "@/utils/resource-link";
 import {
 	InvestmentRoundCreate,

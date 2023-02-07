@@ -1,3 +1,3 @@
-export * from "./PersonCreate";
-export * from "./PersonEdit";
-export * from "./PersonList";
+export * from "./person-create";
+export * from "./person-edit";
+export * from "./person-list";

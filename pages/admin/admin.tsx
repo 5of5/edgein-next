@@ -14,7 +14,7 @@ import {
 import CssBaseline from "@mui/material/CssBaseline";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import ElemAppBar from "@/components/admin/ElemAppBar";
+import ElemAppBar from "@/components/admin/elem-app-bar";
 import {
 	DisabledEmailList,
 	DisabledEmailEdit,
