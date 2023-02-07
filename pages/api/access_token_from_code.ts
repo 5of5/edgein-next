@@ -1,7 +1,7 @@
 import qs from "qs";
 import UserService from "../../utils/users";
 import CookieService from "../../utils/cookie";
-import auth0Library from "../../utils/auth0Library";
+import auth0Library from "../../utils/auth0-library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createHmac } from "crypto";
 
@@ -174,7 +174,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				}
 			}
 
-			const newUserToken = UserService.createToken(userData, isFirstLogin)
+			const newUserToken = UserService.createToken(userData, isFirstLogin);
 
 			// Author a couple of cookies to persist a user's session
 			const token = await CookieService.createUserToken(newUserToken);

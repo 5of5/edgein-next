@@ -37,7 +37,7 @@ type Props = {
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
-	showEmails?: boolean; 
+	showEmails?: boolean;
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
@@ -70,7 +70,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	glassdoor,
 }) => {
 	const isEmptyLocationJson = values(locationJson).every(isEmpty);
-	let locationText = '';
+	let locationText = "";
 	if (!isEmptyLocationJson) {
 		locationText = getFullAddress(locationJson);
 	} else if (location) {
@@ -206,7 +206,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 									className="h-6 w-6 shrink-0 text-dark-500"
 								/>
 							)}
-							<span className="break-all">{item.text}</span>
+							<span className="break-words min-w-0">{item.text}</span>
 						</>
 					);
 
@@ -260,7 +260,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
 							>
 								<div className="flex items-center">
 									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
-									{showEmails ? email : <>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;</> }
+									{showEmails ? (
+										email
+									) : (
+										<>
+											&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+										</>
+									)}
 								</div>
 								<div className="flex items-center text-primary-500">
 									<IconEye className="h-5 w-5 shrink-0 mr-1" />

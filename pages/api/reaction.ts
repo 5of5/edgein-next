@@ -40,6 +40,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // upsertList
   const list = await upsertList(listName, user, token)
 
+  // This is to toggle
   // check if user already follows
   const existsFollows = await deleteFollowIfExists(list, resourceId, resourceType, user, token)
 

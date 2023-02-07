@@ -222,7 +222,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
 								{/* <NotificationAlerts /> */}
-								<UserMenu className="hidden lg:block" />
+								<UserMenu className="" />
 							</>
 						) : (
 							<>
