@@ -42,6 +42,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const resourceType: ResourceTypes = req.body.resource_type;
 	const resourceIdentifier: string = req.body.resource_identifier;
 	const identifierColumn: string = req.body.identifier_column;
+	// identifier_method: graphql lookup method (_eq, _gt, _regex, ...)
+	// if not set, default value is _eq
+	const identifierMethod: string|undefined = req.body.identifier_method;
 	const resourceObj: Record<string, any> = req.body.resource;
 	if (
 		apiKey === undefined ||
@@ -60,23 +63,30 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	if (identifierColumn !== "id") {
-		const lookupField = await fieldLookup(
-			`${NODE_NAME[resourceType]}.${identifierColumn}`
-		);
+    const lookupField = await fieldLookup(
+      `${NODE_NAME[resourceType]}.${identifierColumn}`
+    );
 
-		if (!lookupField?.is_valid_identifier) {
-			return res.status(400).send({
-				identifier: identifierColumn,
-				message: "Invalid identifier",
-			});
-		}
-	}
+    if (!lookupField?.is_valid_identifier) {
+      return res.status(400).send({
+        identifier: identifierColumn,
+        message: "Invalid identifier",
+      });
+    }
+  }
 
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
 		resourceIdentifier,
-		identifierColumn
+		identifierColumn,
+		identifierMethod,
 	);
+
+	if (resourceId === undefined && identifierColumn != 'id')
+		return res.status(404).send({
+			identifier: identifierColumn,
+			message: `Not found ${resourceIdentifier}`,
+		});
 
 	if (req.method === "DELETE") {
 		await deleteMainTableRecord(resourceType, resourceId);
