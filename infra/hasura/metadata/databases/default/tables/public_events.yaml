@@ -30,3 +30,23 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: event_id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - end_date
+        - start_date
+        - id
+        - parent_event_id
+        - location
+        - link
+        - name
+        - notes
+        - size
+        - status
+        - created_at
+        - updated_at
+      filter:
+        status:
+          _eq: published
+      limit: 50
