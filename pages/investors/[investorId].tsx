@@ -209,7 +209,11 @@ const VCFirm: NextPage<Props> = (props) => {
 						{/* <div className="col-span-3 mt-7 lg:mt-0">Placeholder</div> */}
 					</div>
 
-					<ElemTabBar className="mt-7 border-b-0" tabs={tabBarItems} />
+					<ElemTabBar
+						className="mt-7 border-b-0"
+						tabs={tabBarItems}
+						resourceName={vcfirm.name}
+					/>
 				</div>
 			</div>
 

@@ -16,12 +16,14 @@ type Props = {
 	className?: string;
 	tabs?: Array<Tabs>;
 	showDropdown?: boolean;
+	resourceName?: string | null;
 };
 
 export const ElemTabBar: React.FC<Props> = ({
 	className,
 	tabs,
 	showDropdown = true,
+	resourceName = "",
 }) => {
 	const [isActive, setActive] = useState(0);
 
@@ -30,7 +32,7 @@ export const ElemTabBar: React.FC<Props> = ({
 		window.scrollTo(0, ref.current.offsetTop - 30);
 	};
 
-	const { show } = useIntercom();
+	const { showNewMessages } = useIntercom();
 
 	return (
 		<div
@@ -64,14 +66,22 @@ export const ElemTabBar: React.FC<Props> = ({
 
 					<Popover.Panel className="absolute right-0 overflow-hidden w-48 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5">
 						<button
-							onClick={show}
+							onClick={() =>
+								showNewMessages(
+									`Hi EdgeIn, I'd like to request some more data on ${resourceName}`
+								)
+							}
 							className="flex items-center space-x-2 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
 						>
 							<IconPencilSquare className="h-6 w-6 group-hover:text-primary-500" />
-							<span>Suggest edits</span>
+							<span>Request more data</span>
 						</button>
 						<button
-							onClick={show}
+							onClick={() =>
+								showNewMessages(
+									`Hi EdgeIn, I'd like to report an error on ${resourceName}`
+								)
+							}
 							className="flex items-center space-x-2 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
 						>
 							<IconExclamationTriangle className="h-6 w-6 group-hover:text-primary-500" />

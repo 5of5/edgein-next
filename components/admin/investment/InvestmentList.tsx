@@ -9,6 +9,7 @@ import {
   TextInput,
 } from "react-admin";
 import ElemList from "../ElemList";
+import { useAuth } from "@/hooks/useAuth";
 
 const filters = [
   <TextInput
@@ -47,9 +48,11 @@ const filters = [
 ];
 
 export const InvestmentList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <TextField source="id" />
       <ReferenceField label="Partner" source="person_id" reference="people">
         <TextField source="name" />

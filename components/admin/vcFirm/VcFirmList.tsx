@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuth";
 import React from "react";
 import {
   FunctionField,
@@ -24,9 +25,11 @@ const filters = [
 ];
 
 export const VcFirmList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="slug" />

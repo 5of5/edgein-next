@@ -9,7 +9,7 @@ export type User = {
   id: number
   email: string
   display_name?: string | null
-  role: "user" | "admin"
+  role: "user" | "admin" | "cms" | "cms-readonly"
   is_auth0_verified: boolean
   isFirstLogin?: boolean
   intercomUserHash?: string
