@@ -285,6 +285,18 @@ const AdminApp = () => {
 		},
 	};
 
+	const getResourceProps = (name: string, list: any, edit: any, create: any) => (user.role !== "cms-readonly"
+	? {
+		name,
+		list,
+			edit,
+			create,
+		}
+	: {		name,
+		list,
+})
+
+
 	return (
 		<Admin
 			loginPage={MyLogin}
@@ -295,94 +307,34 @@ const AdminApp = () => {
 		>
 			<CssBaseline />
 			<Resource
-				name="blockchains"
-				list={BlockchainList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: BlockchainEdit,
-							create: BlockchainCreate,
-					  }
-					: {})}
+				{...getResourceProps("blockchains", BlockchainList, BlockchainEdit, BlockchainCreate)}
 			/>
 			<Resource
-				name="coins"
-				list={CoinList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: CoinEdit,
-							create: CoinCreate,
-					  }
-					: {})}
+				{...getResourceProps("coins", CoinList, CoinEdit, CoinCreate)}
 			/>
 			<Resource
-				name="companies"
-				list={CompanyList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: CompanyEdit,
-							create: CompanyCreate,
-					  }
-					: {})}
+				{...getResourceProps("events", EventList, EventEdit, EventCreate)}
+      />
+			<Resource
+				{...getResourceProps("companies", CompanyList, CompanyEdit, CompanyCreate)}
 			/>
 			<Resource
-				name="people"
-				list={PersonList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: PersonEdit,
-							create: PersonCreate,
-					  }
-					: {})}
+				{...getResourceProps("people", PersonList, PersonEdit, PersonCreate)}
 			/>
 			<Resource
-				name="vc_firms"
-				list={VcFirmList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: VcFirmEdit,
-							create: VcFirmCreate,
-					  }
-					: {})}
+				{...getResourceProps("vc_firms", VcFirmList, VcFirmEdit, VcFirmCreate)}
 			/>
 			<Resource
-				name="investment_rounds"
-				list={InvestmentRoundList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: InvestmentRoundEdit,
-							create: InvestmentRoundCreate,
-					  }
-					: {})}
+				{...getResourceProps("investment_rounds", InvestmentRoundList, InvestmentRoundEdit, InvestmentRoundCreate)}
 			/>
 			<Resource
-				name="investments"
-				list={InvestmentList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: InvestmentEdit,
-							create: InvestmentCreate,
-					  }
-					: {})}
+				{...getResourceProps("investments", InvestmentList, InvestmentEdit, InvestmentCreate)}
 			/>
 			<Resource
-				name="team_members"
-				list={TeamMemberList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: TeamMemberEdit,
-							create: TeamMemberCreate,
-					  }
-					: {})}
+				{...getResourceProps("team_members", TeamMemberList, TeamMemberEdit, TeamMemberCreate)}
 			/>
 			<Resource
-				name="investors"
-				list={InvestorList}
-				{...(user.role !== "cms-readonly"
-					? {
-							edit: InvestorEdit,
-							create: InvestorCreate,
-					  }
-					: {})}
+				{...getResourceProps("investors", InvestorList, InvestorEdit, InvestorCreate)}
 			/>
 		</Admin>
 	);
