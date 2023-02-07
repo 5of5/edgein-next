@@ -11,6 +11,15 @@ object_relationships:
         insertion_order: null
         column_mapping:
           resource_id: id
+  - name: follow_member
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: list_members
+        insertion_order: null
+        column_mapping:
+          list_id: list_id
   - name: list
     using:
       manual_configuration:
@@ -20,3 +29,17 @@ object_relationships:
         insertion_order: null
         column_mapping:
           list_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - created_by_user_id
+        - id
+        - list_id
+        - resource_id
+        - resource_type
+      filter:
+        follow_member:
+          user_id:
+            _eq: X-Hasura-User-Id
+      limit: 50

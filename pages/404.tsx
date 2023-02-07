@@ -10,7 +10,7 @@ type Props = {};
 const Custom404: NextPage<Props> = () => {
 	return (
 		<>
-			<div className="relative -mb-24">
+			<div className="relative -mb-24 overflow-hidden">
 				<figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
 					<Image
 						src="/images/bg-blur-shapes.png"

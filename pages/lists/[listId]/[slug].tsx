@@ -1,10 +1,10 @@
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { CompaniesList } from "@/components/MyList/CompaniesList";
 import { InvestorsList } from "@/components/MyList/InvestorsList";
-
 import { ModalListDetails } from "@/components/MyList/ModalListDetails";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { PlaceholderTable } from "@/components/Placeholders";
+import moment from "moment-timezone";
 
 import {
 	Follows_Companies,
@@ -28,7 +28,7 @@ import { useUser } from "@/context/userContext";
 type Props = {};
 
 const MyList: NextPage<Props> = ({}) => {
-	const { listAndFollows: lists, refreshProfile } = useUser();
+	const { listAndFollows: lists, refreshProfile, user } = useUser();
 	const router = useRouter();
 
 	const [selectedListName, setSelectedListName] = useState<null | string>(
@@ -37,8 +37,6 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [isCustomList, setIsCustomList] = useState(false);
 	const [isFollowing, setIsFollowing] = useState(true);
-
-	// const [listNameModal, setListNameModal] = useState(false);
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
@@ -68,7 +66,6 @@ const MyList: NextPage<Props> = ({}) => {
 		});
 
 		if (updateNameRes.ok) {
-			//setListNameModal(false);
 			setSelectedListName(name);
 			refreshProfile();
 			toast.custom(
@@ -154,6 +151,8 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [theListCreatorId, setTheListCreatorId] = useState<any>();
 
+	const [theListCreatedDate, setTheListCreatedDate] = useState<string>();
+
 	useEffect(() => {
 		if (lists) {
 			const list = find(lists, {
@@ -161,6 +160,10 @@ const MyList: NextPage<Props> = ({}) => {
 			});
 
 			if (list) {
+				setTheListCreatedDate(() => {
+					return list ? moment(list.created_at).format("LL") : "";
+				});
+
 				setSelectedListName(() => {
 					return list ? getNameFromListName(list) : "";
 				});
@@ -188,12 +191,6 @@ const MyList: NextPage<Props> = ({}) => {
 		setTheListCreatorId,
 		setIsCustomList,
 	]);
-
-	// const { data: users } = useGetUserProfileQuery({
-	// 	id: theListCreatorId | 0,
-	// });
-
-	// console.log(users?.users_by_pk?.person);
 
 	useEffect(() => {
 		if (router.isReady) {
@@ -233,13 +230,16 @@ const MyList: NextPage<Props> = ({}) => {
 					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
 					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
 
+					{}
+
 					{isCustomList ? (
-						isFollowing ? (
+						isFollowing || theListCreatorId === user?.id ? (
 							<>
 								<ModalListDetails
 									theListName={selectedListName ? selectedListName : ""}
 									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-									// theListCreator={"Raymond Aleman"}
+									theListCreator={user?.display_name}
+									theListDate={theListCreatedDate}
 									theListId={parseInt(router.query.listId as string)}
 									groups={
 										groups?.list_user_groups?.map(

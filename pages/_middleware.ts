@@ -20,6 +20,7 @@ export async function middleware(req: NextRequest) {
 			`/team/`,
 			`/404/`,
 			`/api/login_attempt/`,
+			`/api/graphql_query/`,
 			`/api/get_access_token/`,
 			`/api/refresh_token/`,
 			`/api/login/`,
@@ -30,6 +31,7 @@ export async function middleware(req: NextRequest) {
 			`/api/access_token_from_code/`,
 			`/api/stripe_webhook/`,
 			`/admin/app/`,
+			`/admin/admin/`
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
