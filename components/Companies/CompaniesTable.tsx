@@ -42,6 +42,7 @@ export const CompaniesTable: FC<Props> = ({
 	filterByTag,
 	companies,
 }) => {
+	console.log(companies[8].location_json);
 	const getLatestRound = (theRounds: any) => {
 		const latestRound: any = first(
 			theRounds
@@ -137,15 +138,15 @@ export const CompaniesTable: FC<Props> = ({
 				),
 				disableSortBy: true,
 			},
-			{
-				Header: "Location",
-				accessor: "location" as const,
-				Cell: (props: any) => {
-					return <div>{props.value ? props.value : emptyCell}</div>;
-				},
-				disableSortBy: true,
-				minWidth: 180,
-			},
+			// {
+			// 	Header: "Location",
+			// 	accessor: "location" as const,
+			// 	Cell: (props: any) => {
+			// 		return <div>{props.value ? props.value : emptyCell}</div>;
+			// 	},
+			// 	disableSortBy: true,
+			// 	minWidth: 180,
+			// },
 			{
 				Header: "Description",
 				accessor: "overview" as const,
@@ -161,6 +162,33 @@ export const CompaniesTable: FC<Props> = ({
 				disableSortBy: true,
 				width: 400,
 				minWidth: 300,
+			},
+			{
+				Header: "City",
+				accessor: "location_json.city" as const,
+				Cell: (props: any) => {
+					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+				//disableSortBy: true,
+				minWidth: 180,
+			},
+			{
+				Header: "State",
+				accessor: "location_json.state" as const,
+				Cell: (props: any) => {
+					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+				//disableSortBy: true,
+				minWidth: 180,
+			},
+			{
+				Header: "Country",
+				accessor: "location_json.country" as const,
+				Cell: (props: any) => {
+					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+				//disableSortBy: true,
+				minWidth: 180,
 			},
 			{
 				Header: "Founded",

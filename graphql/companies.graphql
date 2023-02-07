@@ -129,6 +129,7 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 		slug
 		layer
 		location
+		location_json
 		tags
 		coin {
 			ticker
