@@ -1,6 +1,7 @@
 import React from "react";
 import { ImageField, TextField, EditButton, TextInput } from "react-admin";
 import ElemList from "../ElemList";
+import { useAuth } from "@/hooks/useAuth";
 
 const filters = [
   <TextInput
@@ -14,9 +15,11 @@ const filters = [
 ];
 
 export const PersonList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="slug" />
