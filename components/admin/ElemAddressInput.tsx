@@ -73,7 +73,8 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
         );
         setFormValue(
           "geopoint",
-          newValue ? newValue?.geometry : defaultGeoPoint
+          newValue ? newValue?.geometry : defaultGeoPoint,
+          { shouldTouch: true }
         );
       }}
       onInputChange={(event, newInputValue) => {

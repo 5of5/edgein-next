@@ -203,6 +203,17 @@ const CompanyForm = ({
           source="location_json.country"
           label="Country"
         />
+        <TextInput
+          className={inputClassName}
+          source="geopoint"
+          format={(value) =>
+            value?.coordinates
+              ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
+              : ""
+          }
+          label="Geopoint"
+          disabled
+        />
         <AutocompleteArrayInput
           className={inputClassName}
           source="tags"
