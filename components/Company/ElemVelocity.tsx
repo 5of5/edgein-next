@@ -14,7 +14,7 @@ type Props = {
 	className?: string;
 	heading?: string;
 	employeeListings?: string | null;
-	tokenExchangeValue?: string | null;
+	tokenExchangeValue?: number | null;
 };
 
 export const ElemVelocity: React.FC<Props> = ({

@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import ElemTitle from "../ElemTitle";
 import ElemFormBase from "../ElemFormBase";
 import CoinForm from "./CoinForm";
-2;
+
 export const CoinEdit = () => {
   const { id } = useParams();
   const { data: currentData } = useGetOne("coins", { id });

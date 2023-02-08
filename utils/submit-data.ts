@@ -2,10 +2,25 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import { Data_Fields } from "@/graphql/types";
 import { User } from "@/models/User";
+import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 
 export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
-export type ResourceTypes = "companies" | "vc_firms" | "people" | "blockchains" | "coins" | "investment_rounds" | "investments" | "team_members" | "investors"
+export type ResourceTypes =
+  | "companies"
+  | "vc_firms"
+  | "people"
+  | "blockchains"
+  | "coins"
+  | "investment_rounds"
+  | "investments"
+  | "team_members"
+  | "investors"
+  | "events"
+  | "event_person"
+  | "event_organization"
+  | "resource_links"
+;
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {
@@ -216,9 +231,19 @@ export const onSubmitData = (
       resource,
     }),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res);
+      }
+      return res.json();
+    })
     .then(({ id }) => {
       return { data: { ...transformInput.data, id } };
+    })
+    .catch((err) => {
+      return err.json().then((body: any) => {
+        return Promise.reject(new HttpError(body.message, err.status, body));
+      });
     });
 };
 

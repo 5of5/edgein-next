@@ -73,6 +73,7 @@ query GetCompany($slug: String!) {
 			}
 		}
     to_links {
+			id
 			link_type
       from_company {
 				id
@@ -94,6 +95,7 @@ query GetCompany($slug: String!) {
       }
     }
     from_links {
+			id
 			link_type
       to_company {
 				id
