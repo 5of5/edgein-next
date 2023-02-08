@@ -16,6 +16,9 @@ export type ResourceTypes =
   | "investments"
   | "team_members"
   | "investors"
+  | "events"
+  | "event_person"
+  | "event_organization"
   | "resource_links"
 ;
 

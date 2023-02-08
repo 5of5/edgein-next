@@ -4159,6 +4159,1078 @@ export type Disabled_Emails_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "event_organization" */
+export type Event_Organization = {
+  __typename?: 'event_organization';
+  /** An object relationship */
+  company: Maybe<Companies>;
+  company_id: Maybe<Scalars['Int']>;
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  event: Maybe<Events>;
+  event_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  vc_firm: Maybe<Vc_Firms>;
+  vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregated selection of "event_organization" */
+export type Event_Organization_Aggregate = {
+  __typename?: 'event_organization_aggregate';
+  aggregate: Maybe<Event_Organization_Aggregate_Fields>;
+  nodes: Array<Event_Organization>;
+};
+
+/** aggregate fields of "event_organization" */
+export type Event_Organization_Aggregate_Fields = {
+  __typename?: 'event_organization_aggregate_fields';
+  avg: Maybe<Event_Organization_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Event_Organization_Max_Fields>;
+  min: Maybe<Event_Organization_Min_Fields>;
+  stddev: Maybe<Event_Organization_Stddev_Fields>;
+  stddev_pop: Maybe<Event_Organization_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Event_Organization_Stddev_Samp_Fields>;
+  sum: Maybe<Event_Organization_Sum_Fields>;
+  var_pop: Maybe<Event_Organization_Var_Pop_Fields>;
+  var_samp: Maybe<Event_Organization_Var_Samp_Fields>;
+  variance: Maybe<Event_Organization_Variance_Fields>;
+};
+
+
+/** aggregate fields of "event_organization" */
+export type Event_Organization_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Event_Organization_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "event_organization" */
+export type Event_Organization_Aggregate_Order_By = {
+  avg: InputMaybe<Event_Organization_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Event_Organization_Max_Order_By>;
+  min: InputMaybe<Event_Organization_Min_Order_By>;
+  stddev: InputMaybe<Event_Organization_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Event_Organization_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Event_Organization_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Event_Organization_Sum_Order_By>;
+  var_pop: InputMaybe<Event_Organization_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Event_Organization_Var_Samp_Order_By>;
+  variance: InputMaybe<Event_Organization_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "event_organization" */
+export type Event_Organization_Arr_Rel_Insert_Input = {
+  data: Array<Event_Organization_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Event_Organization_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Event_Organization_Avg_Fields = {
+  __typename?: 'event_organization_avg_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "event_organization" */
+export type Event_Organization_Avg_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "event_organization". All fields are combined with a logical 'AND'. */
+export type Event_Organization_Bool_Exp = {
+  _and: InputMaybe<Array<Event_Organization_Bool_Exp>>;
+  _not: InputMaybe<Event_Organization_Bool_Exp>;
+  _or: InputMaybe<Array<Event_Organization_Bool_Exp>>;
+  company: InputMaybe<Companies_Bool_Exp>;
+  company_id: InputMaybe<Int_Comparison_Exp>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  event: InputMaybe<Events_Bool_Exp>;
+  event_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+  vc_firm_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "event_organization" */
+export enum Event_Organization_Constraint {
+  /** unique or primary key constraint */
+  EventOrganizationPkey = 'event_organization_pkey'
+}
+
+/** input type for incrementing numeric columns in table "event_organization" */
+export type Event_Organization_Inc_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "event_organization" */
+export type Event_Organization_Insert_Input = {
+  company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event: InputMaybe<Events_Obj_Rel_Insert_Input>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Event_Organization_Max_Fields = {
+  __typename?: 'event_organization_max_fields';
+  company_id: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "event_organization" */
+export type Event_Organization_Max_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Event_Organization_Min_Fields = {
+  __typename?: 'event_organization_min_fields';
+  company_id: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "event_organization" */
+export type Event_Organization_Min_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "event_organization" */
+export type Event_Organization_Mutation_Response = {
+  __typename?: 'event_organization_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Event_Organization>;
+};
+
+/** on_conflict condition type for table "event_organization" */
+export type Event_Organization_On_Conflict = {
+  constraint: Event_Organization_Constraint;
+  update_columns: Array<Event_Organization_Update_Column>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "event_organization". */
+export type Event_Organization_Order_By = {
+  company: InputMaybe<Companies_Order_By>;
+  company_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  event: InputMaybe<Events_Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm: InputMaybe<Vc_Firms_Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: event_organization */
+export type Event_Organization_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "event_organization" */
+export enum Event_Organization_Select_Column {
+  /** column name */
+  CompanyId = 'company_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  VcFirmId = 'vc_firm_id'
+}
+
+/** input type for updating data in table "event_organization" */
+export type Event_Organization_Set_Input = {
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Event_Organization_Stddev_Fields = {
+  __typename?: 'event_organization_stddev_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "event_organization" */
+export type Event_Organization_Stddev_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Event_Organization_Stddev_Pop_Fields = {
+  __typename?: 'event_organization_stddev_pop_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "event_organization" */
+export type Event_Organization_Stddev_Pop_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Event_Organization_Stddev_Samp_Fields = {
+  __typename?: 'event_organization_stddev_samp_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "event_organization" */
+export type Event_Organization_Stddev_Samp_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Event_Organization_Sum_Fields = {
+  __typename?: 'event_organization_sum_fields';
+  company_id: Maybe<Scalars['Int']>;
+  event_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "event_organization" */
+export type Event_Organization_Sum_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "event_organization" */
+export enum Event_Organization_Update_Column {
+  /** column name */
+  CompanyId = 'company_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  VcFirmId = 'vc_firm_id'
+}
+
+/** aggregate var_pop on columns */
+export type Event_Organization_Var_Pop_Fields = {
+  __typename?: 'event_organization_var_pop_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "event_organization" */
+export type Event_Organization_Var_Pop_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Event_Organization_Var_Samp_Fields = {
+  __typename?: 'event_organization_var_samp_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "event_organization" */
+export type Event_Organization_Var_Samp_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Event_Organization_Variance_Fields = {
+  __typename?: 'event_organization_variance_fields';
+  company_id: Maybe<Scalars['Float']>;
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "event_organization" */
+export type Event_Organization_Variance_Order_By = {
+  company_id: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "event_person" */
+export type Event_Person = {
+  __typename?: 'event_person';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  event: Maybe<Events>;
+  event_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  person: Maybe<People>;
+  person_id: Scalars['Int'];
+  type: Scalars['String'];
+};
+
+/** aggregated selection of "event_person" */
+export type Event_Person_Aggregate = {
+  __typename?: 'event_person_aggregate';
+  aggregate: Maybe<Event_Person_Aggregate_Fields>;
+  nodes: Array<Event_Person>;
+};
+
+/** aggregate fields of "event_person" */
+export type Event_Person_Aggregate_Fields = {
+  __typename?: 'event_person_aggregate_fields';
+  avg: Maybe<Event_Person_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Event_Person_Max_Fields>;
+  min: Maybe<Event_Person_Min_Fields>;
+  stddev: Maybe<Event_Person_Stddev_Fields>;
+  stddev_pop: Maybe<Event_Person_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Event_Person_Stddev_Samp_Fields>;
+  sum: Maybe<Event_Person_Sum_Fields>;
+  var_pop: Maybe<Event_Person_Var_Pop_Fields>;
+  var_samp: Maybe<Event_Person_Var_Samp_Fields>;
+  variance: Maybe<Event_Person_Variance_Fields>;
+};
+
+
+/** aggregate fields of "event_person" */
+export type Event_Person_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Event_Person_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "event_person" */
+export type Event_Person_Aggregate_Order_By = {
+  avg: InputMaybe<Event_Person_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Event_Person_Max_Order_By>;
+  min: InputMaybe<Event_Person_Min_Order_By>;
+  stddev: InputMaybe<Event_Person_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Event_Person_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Event_Person_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Event_Person_Sum_Order_By>;
+  var_pop: InputMaybe<Event_Person_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Event_Person_Var_Samp_Order_By>;
+  variance: InputMaybe<Event_Person_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "event_person" */
+export type Event_Person_Arr_Rel_Insert_Input = {
+  data: Array<Event_Person_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Event_Person_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Event_Person_Avg_Fields = {
+  __typename?: 'event_person_avg_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "event_person" */
+export type Event_Person_Avg_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "event_person". All fields are combined with a logical 'AND'. */
+export type Event_Person_Bool_Exp = {
+  _and: InputMaybe<Array<Event_Person_Bool_Exp>>;
+  _not: InputMaybe<Event_Person_Bool_Exp>;
+  _or: InputMaybe<Array<Event_Person_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  event: InputMaybe<Events_Bool_Exp>;
+  event_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  person: InputMaybe<People_Bool_Exp>;
+  person_id: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "event_person" */
+export enum Event_Person_Constraint {
+  /** unique or primary key constraint */
+  EventPersonPkey = 'event_person_pkey'
+}
+
+/** input type for incrementing numeric columns in table "event_person" */
+export type Event_Person_Inc_Input = {
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "event_person" */
+export type Event_Person_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event: InputMaybe<Events_Obj_Rel_Insert_Input>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  person: InputMaybe<People_Obj_Rel_Insert_Input>;
+  person_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Event_Person_Max_Fields = {
+  __typename?: 'event_person_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "event_person" */
+export type Event_Person_Max_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Event_Person_Min_Fields = {
+  __typename?: 'event_person_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "event_person" */
+export type Event_Person_Min_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "event_person" */
+export type Event_Person_Mutation_Response = {
+  __typename?: 'event_person_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Event_Person>;
+};
+
+/** on_conflict condition type for table "event_person" */
+export type Event_Person_On_Conflict = {
+  constraint: Event_Person_Constraint;
+  update_columns: Array<Event_Person_Update_Column>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "event_person". */
+export type Event_Person_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  event: InputMaybe<Events_Order_By>;
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person: InputMaybe<People_Order_By>;
+  person_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: event_person */
+export type Event_Person_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "event_person" */
+export enum Event_Person_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PersonId = 'person_id',
+  /** column name */
+  Type = 'type'
+}
+
+/** input type for updating data in table "event_person" */
+export type Event_Person_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Event_Person_Stddev_Fields = {
+  __typename?: 'event_person_stddev_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "event_person" */
+export type Event_Person_Stddev_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Event_Person_Stddev_Pop_Fields = {
+  __typename?: 'event_person_stddev_pop_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "event_person" */
+export type Event_Person_Stddev_Pop_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Event_Person_Stddev_Samp_Fields = {
+  __typename?: 'event_person_stddev_samp_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "event_person" */
+export type Event_Person_Stddev_Samp_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Event_Person_Sum_Fields = {
+  __typename?: 'event_person_sum_fields';
+  event_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "event_person" */
+export type Event_Person_Sum_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "event_person" */
+export enum Event_Person_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventId = 'event_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  PersonId = 'person_id',
+  /** column name */
+  Type = 'type'
+}
+
+/** aggregate var_pop on columns */
+export type Event_Person_Var_Pop_Fields = {
+  __typename?: 'event_person_var_pop_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "event_person" */
+export type Event_Person_Var_Pop_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Event_Person_Var_Samp_Fields = {
+  __typename?: 'event_person_var_samp_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "event_person" */
+export type Event_Person_Var_Samp_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Event_Person_Variance_Fields = {
+  __typename?: 'event_person_variance_fields';
+  event_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "event_person" */
+export type Event_Person_Variance_Order_By = {
+  event_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "events" */
+export type Events = {
+  __typename?: 'events';
+  created_at: Scalars['timestamptz'];
+  end_date: Maybe<Scalars['date']>;
+  /** An array relationship */
+  event_organization: Array<Event_Organization>;
+  /** An aggregate relationship */
+  event_organization_aggregate: Event_Organization_Aggregate;
+  /** An array relationship */
+  event_person: Array<Event_Person>;
+  /** An aggregate relationship */
+  event_person_aggregate: Event_Person_Aggregate;
+  id: Scalars['Int'];
+  link: Maybe<Scalars['String']>;
+  location: Maybe<Scalars['jsonb']>;
+  name: Scalars['String'];
+  notes: Maybe<Scalars['String']>;
+  /** An object relationship */
+  parent_event: Maybe<Events>;
+  parent_event_id: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['String']>;
+  start_date: Maybe<Scalars['date']>;
+  status: Scalars['String'];
+  updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "events" */
+export type EventsEvent_OrganizationArgs = {
+  distinct_on: InputMaybe<Array<Event_Organization_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Organization_Order_By>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsEvent_Organization_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Event_Organization_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Organization_Order_By>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsEvent_PersonArgs = {
+  distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Person_Order_By>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsEvent_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Person_Order_By>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsLocationArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "events" */
+export type Events_Aggregate = {
+  __typename?: 'events_aggregate';
+  aggregate: Maybe<Events_Aggregate_Fields>;
+  nodes: Array<Events>;
+};
+
+/** aggregate fields of "events" */
+export type Events_Aggregate_Fields = {
+  __typename?: 'events_aggregate_fields';
+  avg: Maybe<Events_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Events_Max_Fields>;
+  min: Maybe<Events_Min_Fields>;
+  stddev: Maybe<Events_Stddev_Fields>;
+  stddev_pop: Maybe<Events_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Events_Stddev_Samp_Fields>;
+  sum: Maybe<Events_Sum_Fields>;
+  var_pop: Maybe<Events_Var_Pop_Fields>;
+  var_samp: Maybe<Events_Var_Samp_Fields>;
+  variance: Maybe<Events_Variance_Fields>;
+};
+
+
+/** aggregate fields of "events" */
+export type Events_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Events_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Events_Append_Input = {
+  location: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Events_Avg_Fields = {
+  __typename?: 'events_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "events". All fields are combined with a logical 'AND'. */
+export type Events_Bool_Exp = {
+  _and: InputMaybe<Array<Events_Bool_Exp>>;
+  _not: InputMaybe<Events_Bool_Exp>;
+  _or: InputMaybe<Array<Events_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  end_date: InputMaybe<Date_Comparison_Exp>;
+  event_organization: InputMaybe<Event_Organization_Bool_Exp>;
+  event_person: InputMaybe<Event_Person_Bool_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  link: InputMaybe<String_Comparison_Exp>;
+  location: InputMaybe<Jsonb_Comparison_Exp>;
+  name: InputMaybe<String_Comparison_Exp>;
+  notes: InputMaybe<String_Comparison_Exp>;
+  parent_event: InputMaybe<Events_Bool_Exp>;
+  parent_event_id: InputMaybe<Int_Comparison_Exp>;
+  size: InputMaybe<String_Comparison_Exp>;
+  start_date: InputMaybe<Date_Comparison_Exp>;
+  status: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "events" */
+export enum Events_Constraint {
+  /** unique or primary key constraint */
+  EventsPkey = 'events_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Events_Delete_At_Path_Input = {
+  location: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Events_Delete_Elem_Input = {
+  location: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Events_Delete_Key_Input = {
+  location: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "events" */
+export type Events_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  parent_event_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "events" */
+export type Events_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  end_date: InputMaybe<Scalars['date']>;
+  event_organization: InputMaybe<Event_Organization_Arr_Rel_Insert_Input>;
+  event_person: InputMaybe<Event_Person_Arr_Rel_Insert_Input>;
+  id: InputMaybe<Scalars['Int']>;
+  link: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  notes: InputMaybe<Scalars['String']>;
+  parent_event: InputMaybe<Events_Obj_Rel_Insert_Input>;
+  parent_event_id: InputMaybe<Scalars['Int']>;
+  size: InputMaybe<Scalars['String']>;
+  start_date: InputMaybe<Scalars['date']>;
+  status: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type Events_Max_Fields = {
+  __typename?: 'events_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  end_date: Maybe<Scalars['date']>;
+  id: Maybe<Scalars['Int']>;
+  link: Maybe<Scalars['String']>;
+  name: Maybe<Scalars['String']>;
+  notes: Maybe<Scalars['String']>;
+  parent_event_id: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['String']>;
+  start_date: Maybe<Scalars['date']>;
+  status: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type Events_Min_Fields = {
+  __typename?: 'events_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  end_date: Maybe<Scalars['date']>;
+  id: Maybe<Scalars['Int']>;
+  link: Maybe<Scalars['String']>;
+  name: Maybe<Scalars['String']>;
+  notes: Maybe<Scalars['String']>;
+  parent_event_id: Maybe<Scalars['Int']>;
+  size: Maybe<Scalars['String']>;
+  start_date: Maybe<Scalars['date']>;
+  status: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "events" */
+export type Events_Mutation_Response = {
+  __typename?: 'events_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Events>;
+};
+
+/** input type for inserting object relation for remote table "events" */
+export type Events_Obj_Rel_Insert_Input = {
+  data: Events_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<Events_On_Conflict>;
+};
+
+/** on_conflict condition type for table "events" */
+export type Events_On_Conflict = {
+  constraint: Events_Constraint;
+  update_columns: Array<Events_Update_Column>;
+  where: InputMaybe<Events_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "events". */
+export type Events_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  end_date: InputMaybe<Order_By>;
+  event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Order_By>;
+  event_person_aggregate: InputMaybe<Event_Person_Aggregate_Order_By>;
+  id: InputMaybe<Order_By>;
+  link: InputMaybe<Order_By>;
+  location: InputMaybe<Order_By>;
+  name: InputMaybe<Order_By>;
+  notes: InputMaybe<Order_By>;
+  parent_event: InputMaybe<Events_Order_By>;
+  parent_event_id: InputMaybe<Order_By>;
+  size: InputMaybe<Order_By>;
+  start_date: InputMaybe<Order_By>;
+  status: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: events */
+export type Events_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Events_Prepend_Input = {
+  location: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "events" */
+export enum Events_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EndDate = 'end_date',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Link = 'link',
+  /** column name */
+  Location = 'location',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Notes = 'notes',
+  /** column name */
+  ParentEventId = 'parent_event_id',
+  /** column name */
+  Size = 'size',
+  /** column name */
+  StartDate = 'start_date',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "events" */
+export type Events_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  end_date: InputMaybe<Scalars['date']>;
+  id: InputMaybe<Scalars['Int']>;
+  link: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['jsonb']>;
+  name: InputMaybe<Scalars['String']>;
+  notes: InputMaybe<Scalars['String']>;
+  parent_event_id: InputMaybe<Scalars['Int']>;
+  size: InputMaybe<Scalars['String']>;
+  start_date: InputMaybe<Scalars['date']>;
+  status: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type Events_Stddev_Fields = {
+  __typename?: 'events_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Events_Stddev_Pop_Fields = {
+  __typename?: 'events_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Events_Stddev_Samp_Fields = {
+  __typename?: 'events_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Events_Sum_Fields = {
+  __typename?: 'events_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  parent_event_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "events" */
+export enum Events_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EndDate = 'end_date',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Link = 'link',
+  /** column name */
+  Location = 'location',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Notes = 'notes',
+  /** column name */
+  ParentEventId = 'parent_event_id',
+  /** column name */
+  Size = 'size',
+  /** column name */
+  StartDate = 'start_date',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type Events_Var_Pop_Fields = {
+  __typename?: 'events_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Events_Var_Samp_Fields = {
+  __typename?: 'events_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Events_Variance_Fields = {
+  __typename?: 'events_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  parent_event_id: Maybe<Scalars['Float']>;
+};
+
 /** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */
 export type Float8_Comparison_Exp = {
   _eq: InputMaybe<Scalars['float8']>;
@@ -7406,6 +8478,18 @@ export type Mutation_Root = {
   delete_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
   /** delete single row from the table: "disabled_emails" */
   delete_disabled_emails_by_pk: Maybe<Disabled_Emails>;
+  /** delete data from the table: "event_organization" */
+  delete_event_organization: Maybe<Event_Organization_Mutation_Response>;
+  /** delete single row from the table: "event_organization" */
+  delete_event_organization_by_pk: Maybe<Event_Organization>;
+  /** delete data from the table: "event_person" */
+  delete_event_person: Maybe<Event_Person_Mutation_Response>;
+  /** delete single row from the table: "event_person" */
+  delete_event_person_by_pk: Maybe<Event_Person>;
+  /** delete data from the table: "events" */
+  delete_events: Maybe<Events_Mutation_Response>;
+  /** delete single row from the table: "events" */
+  delete_events_by_pk: Maybe<Events>;
   /** delete data from the table: "follows" */
   delete_follows: Maybe<Follows_Mutation_Response>;
   /** delete single row from the table: "follows" */
@@ -7548,6 +8632,18 @@ export type Mutation_Root = {
   insert_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
   /** insert a single row into the table: "disabled_emails" */
   insert_disabled_emails_one: Maybe<Disabled_Emails>;
+  /** insert data into the table: "event_organization" */
+  insert_event_organization: Maybe<Event_Organization_Mutation_Response>;
+  /** insert a single row into the table: "event_organization" */
+  insert_event_organization_one: Maybe<Event_Organization>;
+  /** insert data into the table: "event_person" */
+  insert_event_person: Maybe<Event_Person_Mutation_Response>;
+  /** insert a single row into the table: "event_person" */
+  insert_event_person_one: Maybe<Event_Person>;
+  /** insert data into the table: "events" */
+  insert_events: Maybe<Events_Mutation_Response>;
+  /** insert a single row into the table: "events" */
+  insert_events_one: Maybe<Events>;
   /** insert data into the table: "follows" */
   insert_follows: Maybe<Follows_Mutation_Response>;
   /** insert data into the table: "follows_companies" */
@@ -7694,6 +8790,18 @@ export type Mutation_Root = {
   update_disabled_emails: Maybe<Disabled_Emails_Mutation_Response>;
   /** update single row of the table: "disabled_emails" */
   update_disabled_emails_by_pk: Maybe<Disabled_Emails>;
+  /** update data of the table: "event_organization" */
+  update_event_organization: Maybe<Event_Organization_Mutation_Response>;
+  /** update single row of the table: "event_organization" */
+  update_event_organization_by_pk: Maybe<Event_Organization>;
+  /** update data of the table: "event_person" */
+  update_event_person: Maybe<Event_Person_Mutation_Response>;
+  /** update single row of the table: "event_person" */
+  update_event_person_by_pk: Maybe<Event_Person>;
+  /** update data of the table: "events" */
+  update_events: Maybe<Events_Mutation_Response>;
+  /** update single row of the table: "events" */
+  update_events_by_pk: Maybe<Events>;
   /** update data of the table: "follows" */
   update_follows: Maybe<Follows_Mutation_Response>;
   /** update single row of the table: "follows" */
@@ -7941,6 +9049,42 @@ export type Mutation_RootDelete_Disabled_EmailsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Disabled_Emails_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Event_OrganizationArgs = {
+  where: Event_Organization_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Event_Organization_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Event_PersonArgs = {
+  where: Event_Person_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Event_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_EventsArgs = {
+  where: Events_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Events_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -8394,6 +9538,48 @@ export type Mutation_RootInsert_Disabled_EmailsArgs = {
 export type Mutation_RootInsert_Disabled_Emails_OneArgs = {
   object: Disabled_Emails_Insert_Input;
   on_conflict: InputMaybe<Disabled_Emails_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Event_OrganizationArgs = {
+  objects: Array<Event_Organization_Insert_Input>;
+  on_conflict: InputMaybe<Event_Organization_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Event_Organization_OneArgs = {
+  object: Event_Organization_Insert_Input;
+  on_conflict: InputMaybe<Event_Organization_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Event_PersonArgs = {
+  objects: Array<Event_Person_Insert_Input>;
+  on_conflict: InputMaybe<Event_Person_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Event_Person_OneArgs = {
+  object: Event_Person_Insert_Input;
+  on_conflict: InputMaybe<Event_Person_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_EventsArgs = {
+  objects: Array<Events_Insert_Input>;
+  on_conflict: InputMaybe<Events_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Events_OneArgs = {
+  object: Events_Insert_Input;
+  on_conflict: InputMaybe<Events_On_Conflict>;
 };
 
 
@@ -8956,6 +10142,64 @@ export type Mutation_RootUpdate_Disabled_Emails_By_PkArgs = {
   _inc: InputMaybe<Disabled_Emails_Inc_Input>;
   _set: InputMaybe<Disabled_Emails_Set_Input>;
   pk_columns: Disabled_Emails_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Event_OrganizationArgs = {
+  _inc: InputMaybe<Event_Organization_Inc_Input>;
+  _set: InputMaybe<Event_Organization_Set_Input>;
+  where: Event_Organization_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Event_Organization_By_PkArgs = {
+  _inc: InputMaybe<Event_Organization_Inc_Input>;
+  _set: InputMaybe<Event_Organization_Set_Input>;
+  pk_columns: Event_Organization_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Event_PersonArgs = {
+  _inc: InputMaybe<Event_Person_Inc_Input>;
+  _set: InputMaybe<Event_Person_Set_Input>;
+  where: Event_Person_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Event_Person_By_PkArgs = {
+  _inc: InputMaybe<Event_Person_Inc_Input>;
+  _set: InputMaybe<Event_Person_Set_Input>;
+  pk_columns: Event_Person_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_EventsArgs = {
+  _append: InputMaybe<Events_Append_Input>;
+  _delete_at_path: InputMaybe<Events_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Events_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Events_Delete_Key_Input>;
+  _inc: InputMaybe<Events_Inc_Input>;
+  _prepend: InputMaybe<Events_Prepend_Input>;
+  _set: InputMaybe<Events_Set_Input>;
+  where: Events_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Events_By_PkArgs = {
+  _append: InputMaybe<Events_Append_Input>;
+  _delete_at_path: InputMaybe<Events_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Events_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Events_Delete_Key_Input>;
+  _inc: InputMaybe<Events_Inc_Input>;
+  _prepend: InputMaybe<Events_Prepend_Input>;
+  _set: InputMaybe<Events_Set_Input>;
+  pk_columns: Events_Pk_Columns_Input;
 };
 
 
@@ -10706,6 +11950,24 @@ export type Query_Root = {
   disabled_emails_aggregate: Disabled_Emails_Aggregate;
   /** fetch data from the table: "disabled_emails" using primary key columns */
   disabled_emails_by_pk: Maybe<Disabled_Emails>;
+  /** An array relationship */
+  event_organization: Array<Event_Organization>;
+  /** An aggregate relationship */
+  event_organization_aggregate: Event_Organization_Aggregate;
+  /** fetch data from the table: "event_organization" using primary key columns */
+  event_organization_by_pk: Maybe<Event_Organization>;
+  /** An array relationship */
+  event_person: Array<Event_Person>;
+  /** An aggregate relationship */
+  event_person_aggregate: Event_Person_Aggregate;
+  /** fetch data from the table: "event_person" using primary key columns */
+  event_person_by_pk: Maybe<Event_Person>;
+  /** fetch data from the table: "events" */
+  events: Array<Events>;
+  /** fetch aggregated fields from the table: "events" */
+  events_aggregate: Events_Aggregate;
+  /** fetch data from the table: "events" using primary key columns */
+  events_by_pk: Maybe<Events>;
   /** fetch data from the table: "follows" */
   follows: Array<Follows>;
   /** fetch aggregated fields from the table: "follows" */
@@ -11154,6 +12416,75 @@ export type Query_RootDisabled_Emails_AggregateArgs = {
 
 
 export type Query_RootDisabled_Emails_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootEvent_OrganizationArgs = {
+  distinct_on: InputMaybe<Array<Event_Organization_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Organization_Order_By>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
+export type Query_RootEvent_Organization_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Event_Organization_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Organization_Order_By>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
+export type Query_RootEvent_Organization_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootEvent_PersonArgs = {
+  distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Person_Order_By>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
+export type Query_RootEvent_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Person_Order_By>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
+export type Query_RootEvent_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootEventsArgs = {
+  distinct_on: InputMaybe<Array<Events_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Events_Order_By>>;
+  where: InputMaybe<Events_Bool_Exp>;
+};
+
+
+export type Query_RootEvents_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Events_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Events_Order_By>>;
+  where: InputMaybe<Events_Bool_Exp>;
+};
+
+
+export type Query_RootEvents_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -12380,6 +13711,24 @@ export type Subscription_Root = {
   disabled_emails_aggregate: Disabled_Emails_Aggregate;
   /** fetch data from the table: "disabled_emails" using primary key columns */
   disabled_emails_by_pk: Maybe<Disabled_Emails>;
+  /** An array relationship */
+  event_organization: Array<Event_Organization>;
+  /** An aggregate relationship */
+  event_organization_aggregate: Event_Organization_Aggregate;
+  /** fetch data from the table: "event_organization" using primary key columns */
+  event_organization_by_pk: Maybe<Event_Organization>;
+  /** An array relationship */
+  event_person: Array<Event_Person>;
+  /** An aggregate relationship */
+  event_person_aggregate: Event_Person_Aggregate;
+  /** fetch data from the table: "event_person" using primary key columns */
+  event_person_by_pk: Maybe<Event_Person>;
+  /** fetch data from the table: "events" */
+  events: Array<Events>;
+  /** fetch aggregated fields from the table: "events" */
+  events_aggregate: Events_Aggregate;
+  /** fetch data from the table: "events" using primary key columns */
+  events_by_pk: Maybe<Events>;
   /** fetch data from the table: "follows" */
   follows: Array<Follows>;
   /** fetch aggregated fields from the table: "follows" */
@@ -12828,6 +14177,75 @@ export type Subscription_RootDisabled_Emails_AggregateArgs = {
 
 
 export type Subscription_RootDisabled_Emails_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootEvent_OrganizationArgs = {
+  distinct_on: InputMaybe<Array<Event_Organization_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Organization_Order_By>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
+export type Subscription_RootEvent_Organization_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Event_Organization_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Organization_Order_By>>;
+  where: InputMaybe<Event_Organization_Bool_Exp>;
+};
+
+
+export type Subscription_RootEvent_Organization_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootEvent_PersonArgs = {
+  distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Person_Order_By>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootEvent_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Event_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Event_Person_Order_By>>;
+  where: InputMaybe<Event_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootEvent_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootEventsArgs = {
+  distinct_on: InputMaybe<Array<Events_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Events_Order_By>>;
+  where: InputMaybe<Events_Bool_Exp>;
+};
+
+
+export type Subscription_RootEvents_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Events_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Events_Order_By>>;
+  where: InputMaybe<Events_Bool_Exp>;
+};
+
+
+export type Subscription_RootEvents_By_PkArgs = {
   id: Scalars['Int'];
 };
 

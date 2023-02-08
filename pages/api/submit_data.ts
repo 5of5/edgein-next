@@ -29,6 +29,9 @@ const NODE_NAME: Record<ResourceTypes, string> = {
   investments: "investment",
   team_members: "team_member",
   investors: "investor",
+	events: "event",
+	event_person: "event_person",
+	event_organization: "event_organization",
 	resource_links: "resource_link",
 };
 
@@ -162,6 +165,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				actionType,
 				[insertResult?.action?.id]
 			);
+		}
+
+		if (resourceType === "event_organization") {
+			if (resourceObj?.company_id) {
+				await processNotification(
+					resourceObj.company_id,
+					"companies",
+					resourceType,
+					actionType,
+					[insertResult?.action?.id]
+				);
+			}
+			if (resourceObj?.vc_firm_id) {
+				await processNotification(
+					resourceObj.vc_firm_id,
+					"vc_firms",
+					resourceType,
+					actionType,
+					[insertResult?.action?.id]
+				);
+			}
 		}
 	} else {
 		// updated exists one
