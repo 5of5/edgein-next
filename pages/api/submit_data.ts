@@ -33,8 +33,8 @@ const NODE_NAME: Record<ResourceTypes, string> = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	if (!["POST", "PUT", "DELETE"].includes(req.method as string))
-		return res.status(405).send({ message: "Method is not allowed" });
+  if (!["POST", "PUT", "DELETE"].includes(req.method as string))
+    return res.status(405).send({ message: "Method is not allowed" });
 
 	const token = CookieService.getAuthToken(req.cookies);
 	const user = await CookieService.getUser(token);
@@ -47,6 +47,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	// if not set, default value is _eq
 	const identifierMethod: string|undefined = req.body.identifier_method;
 	const resourceObj: Record<string, any> = req.body.resource;
+
+	try {
 	if (
 		apiKey === undefined ||
 		// resourceIdentifier === undefined ||
@@ -62,19 +64,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			return res.status(401).send({ message: "Unauthorized Partner" });
 		}
 	}
-
-	if (identifierColumn !== "id") {
-    const lookupField = await fieldLookup(
-      `${NODE_NAME[resourceType]}.${identifierColumn}`
-    );
-
-    if (!lookupField?.is_valid_identifier) {
-      return res.status(400).send({
-        identifier: identifierColumn,
-        message: "Invalid identifier",
-      });
-    }
-  }
 
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
@@ -189,6 +178,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	return res.send(insertResult);
+	} catch (error: any) {
+		return res.status(500).send(error[0] || error);
+	}
 };
 
 export default handler;
