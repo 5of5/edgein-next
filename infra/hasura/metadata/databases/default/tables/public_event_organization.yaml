@@ -29,3 +29,13 @@ object_relationships:
         insertion_order: null
         column_mapping:
           vc_firm_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - company_id
+        - event_id
+        - id
+        - vc_firm_id
+        - created_at
+      filter: {}

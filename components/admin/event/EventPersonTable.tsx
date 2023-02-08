@@ -257,9 +257,6 @@ export const EventPersonTable = () => {
                     onChange={(person_id) => {
                       handleChange(0, person_id);
                     }}
-                    onCreate={(person_id) => {
-                      handleChange(0, person_id);
-                    }}
                   />
                 </ReferenceInput>
               </FormControl>

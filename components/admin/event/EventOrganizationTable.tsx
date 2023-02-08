@@ -276,9 +276,6 @@ export const EventOrganizationTable = () => {
                       onChange={(company_id) => {
                         handleChange(0, company_id);
                       }}
-                      onCreate={(company_id) => {
-                        handleChange(0, company_id);
-                      }}
                     />
                   </ReferenceInput>
                 </FormControl>
@@ -305,9 +302,6 @@ export const EventOrganizationTable = () => {
                       optionValue="id"
                       filterToQuery={(search) => ({ name: search })}
                       onChange={(vc_firm_id) => {
-                        handleChange(1, vc_firm_id);
-                      }}
-                      onCreate={(vc_firm_id) => {
                         handleChange(1, vc_firm_id);
                       }}
                     />
