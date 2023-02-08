@@ -29,7 +29,7 @@ const fetcher = async (url: string, args: any) => {
 const ElemNoteCard: React.FC<Props> = ({ data }) => {
 	const { data: resource } = useSWR(
 		[
-			"/api/get_note_resource/",
+			"/api/get-note-resource/",
 			{
 				resourceId: data.resource_id,
 				resourceType: data.resource_type,

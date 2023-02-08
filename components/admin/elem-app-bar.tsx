@@ -33,7 +33,7 @@ const ElemAppBar = (props: any) => {
         onClose={() => setShowSearchModal(false)}
       />
       <a
-        href="/api/sync_algolia/"
+        href="/api/sync-algolia/"
         target={"_blank"}
         style={{
           border: "1px white solid",

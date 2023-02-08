@@ -1,4 +1,4 @@
-import { getClient } from "@/scripts/postgres_helpers";
+import { getClient } from "@/scripts/postgres-helpers";
 import { NextApiResponse, NextApiRequest } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {

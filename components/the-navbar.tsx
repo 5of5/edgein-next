@@ -116,7 +116,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 	const getAccessTokenFromCode = async (code: string) => {
 		try {
-			const response = await fetch("/api/access_token_from_code/", {
+			const response = await fetch("/api/access-token-from-code/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",

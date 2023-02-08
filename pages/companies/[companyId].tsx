@@ -86,7 +86,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	}, [companyData]);
 
 	const getTokenInfo = async (coinId: number) => {
-		const data = await fetch("/api/get_metrics_amount/", {
+		const data = await fetch("/api/get-metrics-amount/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",

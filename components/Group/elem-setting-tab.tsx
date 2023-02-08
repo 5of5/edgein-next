@@ -78,7 +78,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
 	const { mutate: leaveGroup } = useMutation(
 		(memberId: number | undefined) =>
-			fetch("/api/delete_group_member/", {
+			fetch("/api/delete-group-member/", {
 				method: "DELETE",
 				headers: {
 					Accept: "application/json",

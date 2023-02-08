@@ -33,7 +33,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 	const debouncedQuery = useDebounce(query, 700);
 
 	const { data: searchedPeople, error } = useSWR(
-		() => (debouncedQuery ? ["/api/search_people", query] : null),
+		() => (debouncedQuery ? ["/api/search-people", query] : null),
 		peopleFetcher
 	);
 
@@ -45,7 +45,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 		groupName: string,
 		groupId: number
 	) => {
-		await fetch("/api/send_invite_group_member_mail/", {
+		await fetch("/api/send-invite-group-member-mail/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -71,7 +71,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 		reset,
 	} = useMutation(
 		async () => {
-			const res = await fetch("/api/invite_group_member/", {
+			const res = await fetch("/api/invite-group-member/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",

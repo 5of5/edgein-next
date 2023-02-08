@@ -1,5 +1,5 @@
 import { keyBy } from 'lodash'
-import { getClient, upsert } from './postgres_helpers'
+import { getClient, upsert } from './postgres-helpers'
 
 const run = (async () => {
   const client = await getClient()

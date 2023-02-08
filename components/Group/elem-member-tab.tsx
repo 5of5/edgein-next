@@ -55,7 +55,7 @@ const ElemMemberTab: React.FC<Props> = ({
 
 	const { mutate: deleteMember } = useMutation(
 		(memberId: number) =>
-			fetch("/api/delete_group_member/", {
+			fetch("/api/delete-group-member/", {
 				method: "DELETE",
 				headers: {
 					Accept: "application/json",

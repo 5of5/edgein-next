@@ -287,7 +287,7 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 	// 		return resp.json();
 	// 	}
 
-	// 	const resp = await fetch("/api/team_member/", {
+	// 	const resp = await fetch("/api/team-member/", {
 	// 		method: "POST",
 	// 		body: JSON.stringify({
 	// 			teammember: payload,

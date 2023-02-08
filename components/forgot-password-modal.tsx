@@ -21,7 +21,7 @@ export default function ForgotPasswordModal(props: Props) {
 			return;
 		}
 		try {
-			const response = await fetch("/api/change_password/", {
+			const response = await fetch("/api/change-password/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",

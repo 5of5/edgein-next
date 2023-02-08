@@ -78,7 +78,7 @@ export default function Account() {
 
 	const callChangePassword = async () => {
 		try {
-			const response = await fetch("/api/set_password/", {
+			const response = await fetch("/api/set-password/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",

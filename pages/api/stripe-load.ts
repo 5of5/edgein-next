@@ -43,7 +43,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         consent_collection: {
           terms_of_service: "required",
         },
-        success_url: `${req.headers.origin}/api/refresh_user/?redirect=/account/?success=true`,
+        success_url: `${req.headers.origin}/api/refresh-user/?redirect=/account/?success=true`,
         cancel_url: `${req.headers.origin}/account/?canceled=true`,
       });
       res.send({ success: true, redirect: session.url })

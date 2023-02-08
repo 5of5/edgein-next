@@ -13,7 +13,7 @@ const VerifyWorkplace: FC<Props> = ({}) => {
 		const token = router.query.vtoken as string;
 
 		if (token) {
-			const resp = await fetch(`/api/verify_workplace/?vtoken=${token}`, {
+			const resp = await fetch(`/api/verify-workplace/?vtoken=${token}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

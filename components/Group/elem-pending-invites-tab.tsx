@@ -27,7 +27,7 @@ const ElemPendingInvitesTab: React.FC<Props> = ({
 
   const { mutate: deleteInvite } = useMutation(
     (inviteId: number) =>
-      fetch("/api/delete_group_invite/", {
+      fetch("/api/delete-group-invite/", {
         method: "DELETE",
         headers: {
           Accept: "application/json",

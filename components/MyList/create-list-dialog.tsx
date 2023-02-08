@@ -22,7 +22,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 
 	const { mutate, isLoading } = useMutation(
 		() =>
-			fetch("/api/add_list/", {
+			fetch("/api/add-list/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",

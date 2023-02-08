@@ -144,7 +144,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 	};
 
 	const updateCall = async (companyData: Companies) => {
-		const resp = await fetch("/api/update_company/", {
+		const resp = await fetch("/api/update-company/", {
 			method: "POST",
 			body: JSON.stringify({
 				companyId: companyData?.id,
@@ -178,7 +178,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		setErrorsTeamMembers(error);
 		if (Object.keys(error).length == 0) {
 			setTeamDrawer(false);
-			await fetch("/api/team_member/", {
+			await fetch("/api/team-member/", {
 				method: "POST",
 				body: JSON.stringify({
 					teammember: updatedEmployee,
@@ -214,7 +214,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		setErrorsRounds(error);
 		if (Object.keys(error).length == 0) {
 			setInvestmentDrawer(false);
-			await fetch("/api/upsert_investment_round/", {
+			await fetch("/api/upsert-investment-round/", {
 				method: "POST",
 				body: JSON.stringify({
 					investmentRound: tempRound,

@@ -53,7 +53,7 @@ const MyList: NextPage<Props> = ({}) => {
 	);
 
 	const onSaveListName = async (name: string) => {
-		const updateNameRes = await fetch(`/api/update_list/`, {
+		const updateNameRes = await fetch(`/api/update-list/`, {
 			method: "PUT",
 			body: JSON.stringify({
 				id: parseInt(router.query.listId as string),
@@ -87,7 +87,7 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onDeleteList = async (id: number) => {
-		const deleteRes = await fetch(`/api/delete_list/?listId=${id}`, {
+		const deleteRes = await fetch(`/api/delete-list/?listId=${id}`, {
 			method: "DELETE",
 		});
 
@@ -115,7 +115,7 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onAddGroups = async (groupIds: Array<number>) => {
-		const res = await fetch("/api/add_group_to_list/", {
+		const res = await fetch("/api/add-group-to-list/", {
 			method: "POST",
 			body: JSON.stringify({
 				listId: parseInt(router.query.listId as string),

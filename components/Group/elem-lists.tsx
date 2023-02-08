@@ -51,7 +51,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 	}));
 
 	const handleToggleFollow = async (listId: number) => {
-		const response = await fetch("/api/toggle_follow_list/", {
+		const response = await fetch("/api/toggle-follow-list/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -69,7 +69,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 	};
 
 	const handleAddList = async (listIds: Array<number>) => {
-		const response = await fetch("/api/add_list_to_group/", {
+		const response = await fetch("/api/add-list-to-group/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",

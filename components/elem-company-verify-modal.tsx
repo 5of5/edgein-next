@@ -80,7 +80,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 	};
 
 	const sendVerificationMail = async () => {
-		await fetch("/api/send_resource_verification_mail/", {
+		await fetch("/api/send-resource-verification-mail/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
