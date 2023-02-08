@@ -21,6 +21,12 @@ export const getUpdatedDiff = (original: any, target: any) => {
         original[key as keyof {}],
         target[key as keyof {}]
       );
+
+      if (key === "geopoint" && !isEmpty(difference)) {
+        acc[key] = target[key as keyof {}];
+        return acc;
+      }
+     
       if (!isArray(difference) && isObject(difference) && isEmpty(difference))
         return acc;
 
