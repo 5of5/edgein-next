@@ -2,7 +2,7 @@ import React, { FC, ReactElement, PropsWithChildren, useState } from "react";
 import { TopToolbar, List, Datagrid, useGetList, Button } from "react-admin";
 import { useParams } from "react-router-dom";
 import ContentCreate from "@mui/icons-material/Add";
-import useDialog from "@/hooks/useDialog";
+import useDialog from "@/hooks/use-dialog";
 import ElemEditButton from "./elem-edit-button";
 import ElemDeleteButton from "./elem-delete-button";
 

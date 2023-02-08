@@ -1,4 +1,4 @@
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../hooks/use-auth";
 import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Link from "next/link";
 import { ElemButton } from "@/components/elem-button";

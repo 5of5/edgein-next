@@ -20,7 +20,7 @@ import {
 	// useGetPersonQuery,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 // import { divide, find, findIndex } from "lodash";
 // import validator from "validator";
 // import { InputSelect } from "@/components/InputSelect";

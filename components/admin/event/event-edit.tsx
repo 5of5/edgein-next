@@ -1,10 +1,10 @@
 import React from "react";
-import ElemTitle from "../ElemTitle";
-import ElemFormBase from "../ElemFormBase";
-import EventForm from "./EventForm";
+import ElemTitle from "../elem-title";
+import ElemFormBase from "../elem-form-base";
+import EventForm from "./event-form";
 import { transform } from "./services";
-import { EventPersonTable } from "./EventPersonTable";
-import { EventOrganizationTable } from "./EventOrganizationTable";
+import { EventPersonTable } from "./event-person-table";
+import { EventOrganizationTable } from "./event-organization-table";
 
 export const EventEdit = () => {
   return (

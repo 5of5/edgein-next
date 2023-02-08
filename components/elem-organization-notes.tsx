@@ -11,7 +11,7 @@ import { PlaceholderNote } from "./placeholders";
 import { ElemButton } from "./elem-button";
 import ElemNoteForm from "./elem-note-form";
 import { ElemPhoto } from "./elem-photo";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	resourceId: number;

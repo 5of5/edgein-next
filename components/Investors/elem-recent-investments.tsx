@@ -9,7 +9,7 @@ import {
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/elem-reactions";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 
 export type DeepPartial<T> = T extends object
 	? {

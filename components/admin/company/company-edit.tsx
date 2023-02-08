@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import { useGetOne } from "react-admin";
 import { useParams } from "react-router-dom";
-import useAdminTransform from "@/hooks/useAdminTransform";
+import useAdminTransform from "@/hooks/use-admin-transform";
 import ElemTitle from "../elem-title";
 import ElemFormBase from "../elem-form-base";
 import CompanyForm from "./company-form";

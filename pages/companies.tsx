@@ -25,7 +25,7 @@ import { Pagination } from "@/components/pagination";
 import { ElemCompanyCard } from "@/components/Companies/elem-company-card";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
-import { useStateParams } from "@/hooks/useStateParams";
+import { useStateParams } from "@/hooks/use-state-params";
 import { onTrackView } from "@/utils/track";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {

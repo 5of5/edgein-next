@@ -11,7 +11,7 @@ import {
 	IconPlus,
 } from "@/components/icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";

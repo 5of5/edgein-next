@@ -1,8 +1,8 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
-import ElemToolbar from "../ElemToolbar";
-import ElemFormBase from "../ElemFormBase";
-import EventForm from "./EventForm";
+import ElemToolbar from "../elem-toolbar";
+import ElemFormBase from "../elem-form-base";
+import EventForm from "./event-form";
 import { transform } from "./services";
 
 export const EventCreate = () => {

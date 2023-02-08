@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/elem-button";
 import { IconX, IconWindowSidebar } from "@/components/icons";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { DashboardSidebar } from "./dashboard-sidebar";
 
 type Props = {};

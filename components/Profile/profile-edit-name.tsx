@@ -5,7 +5,7 @@ import { InputText } from "../input-text";
 import {
 	People,
 } from "@/graphql/types";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 };

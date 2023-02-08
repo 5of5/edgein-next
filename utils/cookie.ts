@@ -1,6 +1,6 @@
 import { CookieSerializeOptions, serialize } from "cookie"
 import { nanoid } from 'nanoid'
-import { UserToken } from "@/models/User"
+import { UserToken } from "@/models/user"
 import { jwtVerify, SignJWT } from 'jose'
 import type { NextApiResponse } from 'next'
 

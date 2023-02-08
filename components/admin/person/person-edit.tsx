@@ -1,5 +1,5 @@
 import React from "react";
-import useAdminTransform from "@/hooks/useAdminTransform";
+import useAdminTransform from "@/hooks/use-admin-transform";
 import ElemFormBase from "../elem-form-base";
 import ElemTitle from "../elem-title";
 import PersonForm from "./person-form";

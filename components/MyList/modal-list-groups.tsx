@@ -3,7 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ElemButton } from "@/components/elem-button";
 import { IconX } from "@/components/icons";
 import { InputSelect } from "../input-select";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	isOpen: boolean;

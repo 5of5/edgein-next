@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useCreate, useRedirect } from "react-admin";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
-import useAdminTransform from "@/hooks/useAdminTransform";
+import useWindowDimensions from "@/hooks/use-window-dimensions";
+import useAdminTransform from "@/hooks/use-admin-transform";
 import ElemFormBase from "../elem-form-base";
 import ElemToolbar from "../elem-toolbar";
 import VcFirmForm from "./vc-firm-form";

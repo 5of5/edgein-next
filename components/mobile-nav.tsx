@@ -16,7 +16,7 @@ import {
 	IconSignOut,
 } from "@/components/icons";
 import { Transition, Dialog } from "@headlessui/react";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	className?: string;

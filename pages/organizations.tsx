@@ -1,4 +1,4 @@
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/use-auth";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
 import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";

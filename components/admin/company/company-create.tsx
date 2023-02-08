@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { useCreate, useRedirect } from "react-admin";
-import useAdminTransform from "@/hooks/useAdminTransform";
+import useAdminTransform from "@/hooks/use-admin-transform";
 import ElemToolbar from "../elem-toolbar";
 import ElemFormBase from "../elem-form-base";
 import CompanyForm from "./company-form";

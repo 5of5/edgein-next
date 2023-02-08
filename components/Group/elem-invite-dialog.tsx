@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { useMutation } from "react-query";
 import { IconX } from "@/components/icons";
 import { User_Groups } from "@/graphql/types";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useDebounce } from "@/hooks/use-debounce";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemButton } from "../elem-button";
 

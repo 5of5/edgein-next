@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import React from "react";
 import { TextField, EditButton, TextInput, useGetList } from "react-admin";
 import ElemList from "../elem-list";

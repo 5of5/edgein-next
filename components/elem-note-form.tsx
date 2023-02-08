@@ -5,7 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { IconTrash, IconX } from "@/components/icons";
 import { InputTextarea } from "@/components/input-textarea";
 import { ElemTooltip } from "@/components/elem-tooltip";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { ElemButton } from "./elem-button";
 import { ElemPhoto } from "./elem-photo";
 import { InputSelect } from "./input-select";

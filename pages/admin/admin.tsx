@@ -26,7 +26,7 @@ import {
 	DataPartnerCreate,
 	DataPartnerEdit,
 } from "../../components/admin/dataPartner";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/use-auth";
 import { onSubmitData } from "@/utils/submit-data";
 
 const MyLogin = () => {

@@ -24,7 +24,7 @@ import {
 } from "../../../utils/constants";
 import ElemSlugInput from "../elem-slug-input";
 import ElemIconGroup from "../elem-icon-group";
-import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
+import useAdminHandleSlug from "@/hooks/use-admin-handle-slug";
 
 type CompanyFormProps = {
   action: "create" | "edit";

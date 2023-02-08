@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { User_Groups } from "@/graphql/types";
 import ElemEditDialog from "./elem-edit-dialog";
 

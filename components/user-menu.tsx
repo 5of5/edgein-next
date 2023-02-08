@@ -13,7 +13,7 @@ import {
 	IconSettings,
 	//IconOrganization,
 } from "./icons";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import Link from "next/link";
 
 type Props = {

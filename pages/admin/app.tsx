@@ -59,7 +59,7 @@ import {
 	BlockchainEdit,
 	BlockchainCreate,
 } from "../../components/admin/blockchain";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/use-auth";
 import { onSubmitData } from "@/utils/submit-data";
 
 const MyLogin = () => {

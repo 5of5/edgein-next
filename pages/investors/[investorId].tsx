@@ -24,7 +24,7 @@ import {
 	Vc_Firms,
 } from "@/graphql/types";
 
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { uniq } from "lodash";
 import { ElemButton } from "@/components/elem-button";
 import { onTrackView } from "@/utils/track";

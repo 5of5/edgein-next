@@ -5,7 +5,7 @@ import { FigureBlurredCircle } from "@/components/figures";
 import { IconCheck, IconSparkles } from "@/components/icons";
 import Image from "next/image";
 import { loadStripe } from "@/utils/stripe";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { Popups } from "@/components/the-navbar";
 
 type Props = {

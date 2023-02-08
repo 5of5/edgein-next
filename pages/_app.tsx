@@ -12,7 +12,7 @@ import { Popups, TheNavbar } from "@/components/the-navbar";
 import { ElemFeedback } from "@/components/elem-feedback";
 import { TheFooter } from "@/components/the-footer";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { UserProvider } from "@/context/userContext";
+import { UserProvider } from "@/context/user-context";
 import { IntercomProvider } from "react-use-intercom";
 const INTERCOM_APP_ID = "jm3hf6lp";
 

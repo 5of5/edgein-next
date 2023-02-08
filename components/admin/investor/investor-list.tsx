@@ -16,7 +16,7 @@ import {
   investorSeniorityChoices,
 } from "@/utils/constants";
 import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 
 const filters = [
   <TextInput key="search" source="title" label="Title" resettable alwaysOn />,

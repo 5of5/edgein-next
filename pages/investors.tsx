@@ -25,8 +25,8 @@ import {
 import { DeepPartial, NumericFilter } from "@/pages/companies";
 import { runGraphQl, numberWithCommas } from "@/utils";
 import { investorChoices } from "@/utils/constants";
-import { useAuth } from "@/hooks/useAuth";
-import { useStateParams } from "@/hooks/useStateParams";
+import { useAuth } from "@/hooks/use-auth";
+import { useStateParams } from "@/hooks/use-state-params";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
 

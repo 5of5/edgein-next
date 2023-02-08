@@ -8,7 +8,7 @@ import {
   ReferenceField,
 } from "react-admin";
 import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 
 const filters = [
   <TextInput

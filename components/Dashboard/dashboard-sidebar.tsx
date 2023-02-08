@@ -1,4 +1,4 @@
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { truncate } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";

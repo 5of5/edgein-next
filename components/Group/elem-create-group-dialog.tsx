@@ -4,7 +4,7 @@ import { useMutation } from "react-query";
 import { Dialog, Transition } from "@headlessui/react";
 import { IconX } from "@/components/icons";
 import { InputText } from "@/components/input-text";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { ElemButton } from "../elem-button";
 
 type Props = {

@@ -9,7 +9,7 @@ import {
   ReferenceField,
   SelectField,
 } from "react-admin";
-import ElemList from "../ElemList";
+import ElemList from "../elem-list";
 
 const filters = [
   <TextInput

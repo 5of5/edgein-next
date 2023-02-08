@@ -18,7 +18,7 @@ import { ElemJobsList } from "@/components/Person/elem-jobs-list";
 import { ElemInvestorsList } from "@/components/Person/elem-investors-list";
 import { onTrackView } from "@/utils/track";
 import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { useIntercom } from "react-use-intercom";
 
 type Props = {

@@ -28,7 +28,7 @@ import {
 } from "@/utils";
 import { ElemReactions } from "@/components/elem-reactions";
 import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	companies?: Follows_Companies[];

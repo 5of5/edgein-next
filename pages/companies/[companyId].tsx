@@ -26,7 +26,7 @@ import {
 	//Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/elem-reactions";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { sortBy } from "lodash";

@@ -9,7 +9,7 @@ import {
 	IconInformationCircle,
 } from "@/components/icons";
 import { Disclosure } from "@headlessui/react";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import ElemCreateGroupDialog from "../Group/elem-create-group-dialog";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
 import { ElemTooltip } from "../elem-tooltip";

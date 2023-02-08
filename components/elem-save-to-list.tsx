@@ -11,7 +11,7 @@ import { IconX, IconListPlus, IconCustomList } from "@/components/icons";
 import { Dialog, Transition } from "@headlessui/react";
 import { InputCheckbox } from "@/components/input-checkbox";
 import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { find } from "lodash";
 
 type Props = {

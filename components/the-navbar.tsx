@@ -16,7 +16,7 @@ import SearchModal from "@/components/search-modal";
 import OnboardingStep1 from "@/components/Onboarding/onboarding-step-1";
 import OnboardingStep2 from "@/components/Onboarding/onboarding-step-2";
 import OnboardingStep3 from "@/components/Onboarding/onboarding-step-3";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";

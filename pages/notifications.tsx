@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { ElemButton } from "@/components/elem-button";
 import { IconCheck } from "@/components/icons";
 import { formatDate } from "@/utils";

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { User_Groups } from "@/graphql/types";
 import { IconSignOut, IconTrash, IconX } from "@/components/icons";
 import ElemSettingEditableField from "./elem-setting-editable-field";

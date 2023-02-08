@@ -12,7 +12,7 @@ import {
 	User_Groups,
 	useGetListMembersQuery,
 } from "@/graphql/types";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import ElemAddListDialog from "./elem-add-list-dialog";
 import differenceBy from "lodash/differenceBy";
 

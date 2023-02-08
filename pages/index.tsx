@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import React from "react";
 import { FigureIntroSplash } from "@/components/figure-intro-splash";
 import { ElemButton } from "@/components/elem-button";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { FigureBlurredBg, FigureCircleDashes } from "@/components/figures";
 import { Popups } from "@/components/the-navbar";
 
