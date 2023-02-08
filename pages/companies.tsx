@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
 import { PlaceholderCompanyCard } from "@/components/placeholders";
 import { InputSelect } from "@/components/input-select";
-import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
+import { ElemRecentCompanies } from "@/components/Companies/elem-recent-companies";
 import { ElemButton } from "@/components/elem-button";
 import { ElemTagsCarousel } from "@/components/elem-tags-carousel";
 import { runGraphQl, numberWithCommas } from "@/utils";
@@ -22,7 +22,7 @@ import {
 	useGetCompaniesQuery,
 } from "@/graphql/types";
 import { Pagination } from "@/components/pagination";
-import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
+import { ElemCompanyCard } from "@/components/Companies/elem-company-card";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/useStateParams";
@@ -111,7 +111,7 @@ const Companies: NextPage<Props> = ({
 	);
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
+		_and: [{ slug: { _neq: "" } }],
 	};
 
 	useEffect(() => {
@@ -423,7 +423,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+			where: { slug: { _neq: "" } },
 		}
 	);
 

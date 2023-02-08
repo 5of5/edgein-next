@@ -13,7 +13,7 @@ import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
 import { ElemTeamSideDrawer } from "@/components/elem-team-side-drawer";
 import { ElemInvestmentSideDrawer } from "@/components/elem-investment-side-drawer";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";
 import {
 	Investment_Rounds,
 	Companies,
@@ -30,7 +30,7 @@ import {
 	convertToInternationalCurrencySystem,
 	formatDate,
 } from "@/utils";
-import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
+import { IconProfilePictureUpload } from "@/components/Profile/icon-file-upload";
 import { uploadFile, deleteFile } from "@/utils/file-functions";
 import {
 	companyLayerChoices,
@@ -39,8 +39,8 @@ import {
 	validateInvestmentRounds,
 } from "@/utils/constants";
 import { TagInputText } from "@/components/tag-input-text";
-import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
-import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
+import { ElemEditInvestments } from "@/components/Company/elem-edit-investments";
+import { ElemEditTeam } from "@/components/Company/elem-edit-team";
 import { InputDate } from "@/components/input-date";
 
 type GridProps = {

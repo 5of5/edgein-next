@@ -37,6 +37,15 @@ array_relationships:
         table:
           schema: public
           name: list_members
+  - name: user_groups
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: list_user_groups
+        insertion_order: null
+        column_mapping:
+          id: list_id
 computed_fields:
   - name: total_no_of_resources
     definition:
@@ -44,3 +53,24 @@ computed_fields:
         schema: public
         name: lists_total_no_of_companies
     comment: Computed field to get total no. of companies in a list
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - created_by_id
+        - id
+        - name
+        - created_at
+      computed_fields:
+        - total_no_of_resources
+      filter:
+        _or:
+          - list_members:
+              user_id:
+                _eq: X-Hasura-User-Id
+          - user_groups:
+              user_group:
+                user_group_members:
+                  user_id:
+                    _eq: X-Hasura-User-Id
+      limit: 50

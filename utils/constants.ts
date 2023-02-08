@@ -691,3 +691,29 @@ export const tags = [
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
+
+export const eventSizeChoices = [
+  "Less than 10 people",
+  "10-15 people",
+  "16-30 people",
+  "31-100 people",
+  "101-200 people",
+  "201-500 people",
+  "501-1000 people",
+  "1000+ people",
+].map((size) => ({ id: size, name: size }));
+
+export const eventPersonTypeChoices = [
+  {
+    id: "speaker",
+    name: "Speaker",
+  },
+  {
+    id: "attendee",
+    name: "Attendee",
+  },
+  {
+    id: "organizer",
+    name: "Organizer",
+  },
+];

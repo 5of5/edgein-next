@@ -1,0 +1,1 @@
+CREATE TABLE "public"."event_person" ("id" serial NOT NULL, "event_id" integer NOT NULL, "person_id" integer NOT NULL, "type" text NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );

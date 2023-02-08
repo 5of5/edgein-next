@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
 import { PlaceholderInvestorCard } from "@/components/placeholders";
 import { InputSelect } from "@/components/input-select";
-import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
+import { ElemRecentInvestments } from "@/components/Investors/elem-recent-investments";
 import { ElemButton } from "@/components/elem-button";
 import { ElemTagsCarousel } from "@/components/elem-tags-carousel";
 import { Pagination } from "@/components/pagination";
-import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
+import { ElemInvestorCard } from "@/components/Investors/elem-investor-card";
 import {
 	IconSearch,
 	IconAnnotation,
@@ -81,7 +81,7 @@ const Investors: NextPage<Props> = ({
 	);
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
+		_and: [{ slug: { _neq: "" } }],
 	};
 
 	useEffect(() => {
@@ -362,7 +362,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+			where: { slug: { _neq: "" } },
 		}
 	);
 

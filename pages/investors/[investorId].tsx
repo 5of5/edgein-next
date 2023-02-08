@@ -8,8 +8,8 @@ import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemTags } from "@/components/elem-tags";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { ElemReactions } from "@/components/elem-reactions";
-import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
-import { ElemInvestments } from "@/components/Investor/ElemInvestments";
+import { ElemInvestorGrid } from "@/components/Investor/elem-investor-grid";
+import { ElemInvestments } from "@/components/Investor/elem-investments";
 import { ElemSocialShare } from "@/components/elem-social-share";
 import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
 import parse from "html-react-parser";
@@ -297,21 +297,6 @@ const VCFirm: NextPage<Props> = (props) => {
 		</>
 	);
 };
-
-// export async function getStaticPaths() {
-// 	const { data: vcFirms } = await runGraphQl<GetVcFirmQuery>(
-// 		`{vc_firms(where: {slug: {_neq: ""}, status: { _eq: "published" }}) { name, slug, logo}}`
-// 	);
-
-// 	return {
-// 		paths: vcFirms?.vc_firms
-// 			?.filter((vcfirm) => vcfirm.slug)
-// 			.map((vcfirm) => ({
-// 				params: { investorId: vcfirm.slug },
-// 			})),
-// 		fallback: true, // false or 'blocking'
-// 	};
-// }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(

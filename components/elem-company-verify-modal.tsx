@@ -103,7 +103,6 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 		offset: null,
 		where: {
 			slug: { _neq: "" },
-			status: { _eq: "published" },
 			name: { _ilike: `%${search}%` },
 		} as Companies_Bool_Exp,
 	});
@@ -113,7 +112,6 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 		offset: null,
 		where: {
 			slug: { _neq: "" },
-			status: { _eq: "published" },
 			name: { _ilike: `%${search}%` },
 		} as Vc_Firms_Bool_Exp,
 	});

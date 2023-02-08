@@ -3,7 +3,7 @@ import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemKeyInfo } from "@/components/elem-key-info";
-import { ElemInvestments } from "@/components/Investor/ElemInvestments";
+import { ElemInvestments } from "@/components/Investor/elem-investments";
 import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemButton } from "@/components/elem-button";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
@@ -14,8 +14,8 @@ import {
 	People,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { ElemJobsList } from "@/components/Person/ElemJobsList";
-import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
+import { ElemJobsList } from "@/components/Person/elem-jobs-list";
+import { ElemInvestorsList } from "@/components/Person/elem-investors-list";
 import { onTrackView } from "@/utils/track";
 import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
 import { useAuth } from "@/hooks/useAuth";

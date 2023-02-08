@@ -4,12 +4,15 @@ import {
 	handleChangeParentOrganization,
 } from "@/utils/resource-link";
 import {
-	SimpleForm,
-	ReferenceInput,
-	AutocompleteInput,
-	ReferenceArrayInput,
-	AutocompleteArrayInput,
-	useRedirect,
+  SimpleForm,
+  ReferenceInput,
+  AutocompleteInput,
+  ReferenceArrayInput,
+  AutocompleteArrayInput,
+  useCreate,
+  useUpdate,
+  useDelete,
+  useRedirect,
 } from "react-admin";
 
 type Props = {
@@ -25,7 +28,10 @@ const ElemParentOrganizationEdit: FC<Props> = ({
 	currentData,
 	refetch,
 }) => {
-	const redirect = useRedirect();
+  const redirect = useRedirect();
+  const [create] = useCreate();
+  const [update] = useUpdate();
+  const [deleteOne] = useDelete();
 
 	const inputClassName =
 		" px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
@@ -38,16 +44,24 @@ const ElemParentOrganizationEdit: FC<Props> = ({
 		...getParentSubOrganizations(currentData),
 	};
 
-	const handleSubmit = async (values: any) => {
-		await handleChangeParentOrganization(
-			currentData.id,
-			defaultValues,
-			values,
-			type
-		);
-		refetch();
-		redirect(`/${type}`);
-	};
+  const onCallbackSuccess = () => {
+    refetch();
+    redirect(`/${type}`);
+  }
+
+  const handleSubmit = (values: any) => {
+    handleChangeParentOrganization(
+      currentData.id,
+      currentData?.to_links?.[0]?.id,
+      defaultValues,
+      values,
+      type,
+      create,
+      update,
+      deleteOne,
+      onCallbackSuccess,
+    );
+  };
 
 	return (
 		<div className="mt-6 bg-white shadow-md rounded-md">

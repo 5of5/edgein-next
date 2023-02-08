@@ -3,19 +3,19 @@ import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/elem-photo";
-import { ElemCredibility } from "@/components/Company/ElemCredibility";
+import { ElemCredibility } from "@/components/Company/elem-credibility";
 import { ElemKeyInfo } from "@/components/elem-key-info";
 import { ElemTags } from "@/components/elem-tags";
-import { ElemInvestments } from "@/components/Company/ElemInvestments";
-import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
+import { ElemInvestments } from "@/components/Company/elem-investments";
+import { ElemTeamGrid } from "@/components/Company/elem-team-grid";
 import { runGraphQl } from "@/utils";
 import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
-import { ElemCohort } from "@/components/Company/ElemCohort";
+import { ElemCohort } from "@/components/Company/elem-cohort";
 import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { ElemButton } from "@/components/elem-button";
 import { ElemSocialShare } from "@/components/elem-social-share";
-import { ElemVelocity } from "@/components/Company/ElemVelocity";
+import { ElemVelocity } from "@/components/Company/elem-velocity";
 import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
 import {
 	Companies,
@@ -96,6 +96,10 @@ const Company: NextPage<Props> = (props: Props) => {
 		}).then((res) => res.json());
 		setTokenInfo(data);
 	};
+
+	const velocityToken = tokenInfo?.vol24H
+    ? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
+    : null;
 
 	useEffect(() => {
 		if (company.overview) {
@@ -372,14 +376,14 @@ const Company: NextPage<Props> = (props: Props) => {
 									githubVerified={company.github}
 									linkedInVerified={company.company_linkedin}
 								/>
-								{(company.velocity_linkedin || company.velocity_token) && (
-									<ElemVelocity
-										className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-										heading="Velocity"
-										employeeListings={company.velocity_linkedin}
-										tokenExchangeValue={company.velocity_token}
-									/>
-								)}
+								{(company.velocity_linkedin || velocityToken) && (
+								<ElemVelocity
+									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+									heading="Velocity"
+									employeeListings={company.velocity_linkedin}
+									tokenExchangeValue={velocityToken}
+								/>
+							)}
 							</div>
 						)}
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">

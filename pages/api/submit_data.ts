@@ -20,20 +20,24 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
 const NODE_NAME: Record<ResourceTypes, string> = {
-	companies: "company",
-	vc_firms: "vc_firm",
-	people: "people",
-	blockchains: "blockchain",
-	coins: "coin",
-	investment_rounds: "investment_round",
-	investments: "investment",
-	team_members: "team_member",
-	investors: "investor",
+  companies: "company",
+  vc_firms: "vc_firm",
+  people: "people",
+  blockchains: "blockchain",
+  coins: "coin",
+  investment_rounds: "investment_round",
+  investments: "investment",
+  team_members: "team_member",
+  investors: "investor",
+	events: "event",
+	event_person: "event_person",
+	event_organization: "event_organization",
+	resource_links: "resource_link",
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-	if (!["POST", "PUT", "DELETE"].includes(req.method as string))
-		return res.status(405).send({ message: "Method is not allowed" });
+  if (!["POST", "PUT", "DELETE"].includes(req.method as string))
+    return res.status(405).send({ message: "Method is not allowed" });
 
 	const token = CookieService.getAuthToken(req.cookies);
 	const user = await CookieService.getUser(token);
@@ -42,7 +46,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const resourceType: ResourceTypes = req.body.resource_type;
 	const resourceIdentifier: string = req.body.resource_identifier;
 	const identifierColumn: string = req.body.identifier_column;
+	// identifier_method: graphql lookup method (_eq, _gt, _regex, ...)
+	// if not set, default value is _eq
+	const identifierMethod: string|undefined = req.body.identifier_method;
 	const resourceObj: Record<string, any> = req.body.resource;
+
+	try {
 	if (
 		apiKey === undefined ||
 		// resourceIdentifier === undefined ||
@@ -59,24 +68,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	}
 
-	if (identifierColumn !== "id") {
-		const lookupField = await fieldLookup(
-			`${NODE_NAME[resourceType]}.${identifierColumn}`
-		);
-
-		if (!lookupField?.is_valid_identifier) {
-			return res.status(400).send({
-				identifier: identifierColumn,
-				message: "Invalid identifier",
-			});
-		}
-	}
-
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
 		resourceIdentifier,
-		identifierColumn
+		identifierColumn,
+		identifierMethod,
 	);
+
+	if (resourceId === undefined && identifierColumn != 'id')
+		return res.status(404).send({
+			identifier: identifierColumn,
+			message: `Not found ${resourceIdentifier}`,
+		});
 
 	if (req.method === "DELETE") {
 		await deleteMainTableRecord(resourceType, resourceId);
@@ -163,6 +166,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				[insertResult?.action?.id]
 			);
 		}
+
+		if (resourceType === "event_organization") {
+			if (resourceObj?.company_id) {
+				await processNotification(
+					resourceObj.company_id,
+					"companies",
+					resourceType,
+					actionType,
+					[insertResult?.action?.id]
+				);
+			}
+			if (resourceObj?.vc_firm_id) {
+				await processNotification(
+					resourceObj.vc_firm_id,
+					"vc_firms",
+					resourceType,
+					actionType,
+					[insertResult?.action?.id]
+				);
+			}
+		}
 	} else {
 		// updated exists one
 		if (resourceType === "companies" || resourceType === "vc_firms") {
@@ -178,6 +202,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	}
 
 	return res.send(insertResult);
+	} catch (error: any) {
+		return res.status(500).send(error[0] || error);
+	}
 };
 
 export default handler;

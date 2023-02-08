@@ -1,7 +1,7 @@
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { CompaniesList } from "@/components/MyList/CompaniesList";
-import { InvestorsList } from "@/components/MyList/InvestorsList";
-import { ModalListDetails } from "@/components/MyList/ModalListDetails";
+import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";
+import { CompaniesList } from "@/components/MyList/companies-list";
+import { InvestorsList } from "@/components/MyList/investors-list";
+import { ModalListDetails } from "@/components/MyList/modal-list-details";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
 import { PlaceholderTable } from "@/components/placeholders";
 import moment from "moment-timezone";

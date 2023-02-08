@@ -2,10 +2,25 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import { Data_Fields } from "@/graphql/types";
 import { User } from "@/models/User";
+import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 
 export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
-export type ResourceTypes = "companies" | "vc_firms" | "people" | "blockchains" | "coins" | "investment_rounds" | "investments" | "team_members" | "investors"
+export type ResourceTypes =
+  | "companies"
+  | "vc_firms"
+  | "people"
+  | "blockchains"
+  | "coins"
+  | "investment_rounds"
+  | "investments"
+  | "team_members"
+  | "investors"
+  | "events"
+  | "event_person"
+  | "event_organization"
+  | "resource_links"
+;
 
 export const partnerLookUp = async (apiKey: string) => {
 	const {
@@ -29,17 +44,20 @@ export const partnerLookUp = async (apiKey: string) => {
 export const resourceIdLookup = async (
 	resourceType: string,
 	resourceIdentifier: string,
-	identifierColumn: string
+	identifierColumn: string,
+  identifierMethod: string|undefined,
 ) => {
 	if (!resourceIdentifier) {
 		return undefined;
 	}
 
 	try {
+    if (!identifierMethod)
+		  identifierMethod = '_eq'
 		const { data } = await query({
 			query: `
       query lookup_resource($resourceIdentifier: ${identifierColumn === "id" ? "Int!" : "String!"}) {
-				${resourceType}(where: {${identifierColumn}: {_eq: $resourceIdentifier}}) {
+				${resourceType}(where: {${identifierColumn}: {${identifierMethod}: $resourceIdentifier}}) {
 					id
         }
       }`,
@@ -163,6 +181,7 @@ export const insertActionDataChange = async (
   resourceType: string,
   properties: Record<string, any>,
   userId?: Number,
+  partnerId?: Number,
 ) => {
   const { data } = await mutate({
     mutation: `
@@ -182,6 +201,7 @@ export const insertActionDataChange = async (
         resource_id: resourceId,
         resource: resourceType,
         user: userId,
+        partner: partnerId,
       },
     },
   });
@@ -211,9 +231,19 @@ export const onSubmitData = (
       resource,
     }),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        return Promise.reject(res);
+      }
+      return res.json();
+    })
     .then(({ id }) => {
       return { data: { ...transformInput.data, id } };
+    })
+    .catch((err) => {
+      return err.json().then((body: any) => {
+        return Promise.reject(new HttpError(body.message, err.status, body));
+      });
     });
 };
 
@@ -292,7 +322,8 @@ export const mutateActionAndDataRaw = async (
           resourceId,
           resourceType,
           { [field]: value },
-          user?.id
+          user?.id,
+          partnerId
         );
       }
     }

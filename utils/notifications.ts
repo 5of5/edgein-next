@@ -79,6 +79,8 @@ const getMessageContents = (
 			return "changed a new investment round";
 		} else if (notificationResourceType === "investors") {
 			return "changed new team information";
+		} else if (notificationResourceType === "event_organization") {
+			return "changed a new event information";
 		}
 		return "changed new key info";
 	} else if (actionType === "Insert Data") {
@@ -90,6 +92,8 @@ const getMessageContents = (
 			return "added a new investment round";
 		} else if (notificationResourceType === "investors") {
 			return "added new team information";
+		} else if (notificationResourceType === "event_organization") {
+			return "added a new event";
 		}
 		return "added new key info";
 	} else {
@@ -105,6 +109,8 @@ const getMessageContents = (
 			return "deleted a company";
 		} else if (notificationResourceType === "vc_firms") {
 			return "deleted an investor";
+		} else if (notificationResourceType === "event_organization") {
+			return "deleted an event";
 		}
 		return "deleted a key info";
 	}

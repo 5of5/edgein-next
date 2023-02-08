@@ -1,7 +1,7 @@
 import { useAuth } from "../hooks/useAuth";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";
 import {
 	GetCompaniesDocument,
 	GetCompaniesQuery,
@@ -144,7 +144,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	// 	GetCompaniesDocument,
 	// 	{
 	// 		limit: 20,
-	// 		where: { slug: { _neq: "" }, status: { _eq: "published" } },
+	// 		where: { slug: { _neq: "" } },
 	// 	}
 	// );
 
@@ -152,7 +152,7 @@ export const getStaticProps: GetStaticProps = async () => {
 	// 	GetVcFirmsDocument,
 	// 	{
 	// 		limit: 20,
-	// 		where: { slug: { _neq: "" }, status: { _eq: "published" } },
+	// 		where: { slug: { _neq: "" } },
 	// 	}
 	// );
 
