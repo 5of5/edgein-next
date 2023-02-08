@@ -97,8 +97,9 @@ const EXTENDED_GET_LIST_INVESTMENT_ROUNDS = gql`
 `;
 
 const EXTENDED_GET_RESOURCE_LINKS = gql`
-	{
-		to_links {
+  {
+    to_links {
+      id
 			link_type
 			from_company {
 				id
@@ -117,9 +118,10 @@ const EXTENDED_GET_RESOURCE_LINKS = gql`
 				sentiment
 				overview
 				logo
-			}
-		}
-		from_links {
+      }
+    }
+    from_links {
+      id
 			link_type
 			to_company {
 				id

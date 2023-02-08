@@ -20,15 +20,16 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
 const NODE_NAME: Record<ResourceTypes, string> = {
-	companies: "company",
-	vc_firms: "vc_firm",
-	people: "people",
-	blockchains: "blockchain",
-	coins: "coin",
-	investment_rounds: "investment_round",
-	investments: "investment",
-	team_members: "team_member",
-	investors: "investor",
+  companies: "company",
+  vc_firms: "vc_firm",
+  people: "people",
+  blockchains: "blockchain",
+  coins: "coin",
+  investment_rounds: "investment_round",
+  investments: "investment",
+  team_members: "team_member",
+  investors: "investor",
+	resource_links: "resource_link",
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
