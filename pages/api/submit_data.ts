@@ -68,6 +68,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		}
 	}
 
+	if (identifierColumn !== "id") {
+    const lookupField = await fieldLookup(
+      `${NODE_NAME[resourceType]}.${identifierColumn}`
+    );
+
+    if (!lookupField?.is_valid_identifier) {
+      return res.status(400).send({
+        identifier: identifierColumn,
+        message: "Invalid identifier",
+      });
+    }
+  }
+
 	const resourceId: number = await resourceIdLookup(
 		resourceType,
 		resourceIdentifier,
