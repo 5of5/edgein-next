@@ -2,7 +2,7 @@ import { Fragment, ChangeEvent, useState, useEffect, useMemo } from "react";
 import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconTrash, IconX } from "@/components/Icons";
+import { IconTrash, IconX } from "@/components/Icons2";
 import { InputTextarea } from "@/components/input-textarea";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { useUser } from "@/context/user-context";

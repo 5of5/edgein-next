@@ -1,5 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { Entitlements, User, UserToken } from '@/models/User';
+import { Entitlements, User, UserToken } from '@/models/User2';
 import { createHmac } from "crypto";
 
 const USER_FIELDS = `

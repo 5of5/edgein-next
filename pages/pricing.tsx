@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import React from "react";
 import { ElemButton } from "@/components/elem-button";
-import { FigureBlurredCircle } from "@/components/Figures";
-import { IconCheck, IconSparkles } from "@/components/Icons";
+import { FigureBlurredCircle } from "@/components/Figures2";
+import { IconCheck, IconSparkles } from "@/components/Icons2";
 import Image from "next/image";
 import { loadStripe } from "@/utils/stripe";
 import { useUser } from "@/context/user-context";

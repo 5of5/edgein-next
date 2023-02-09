@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/elem-button";
-import { IconTwitter } from "@/components/Icons";
+import { IconTwitter } from "@/components/Icons2";
 
 type Props = {
 	twitterUrl: string | null;

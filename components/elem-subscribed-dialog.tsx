@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX, IconCheck } from "@/components/Icons";
+import { IconX, IconCheck } from "@/components/Icons2";
 import { ElemButton } from "@/components/elem-button";
 
 type Props = {

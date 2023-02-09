@@ -3,7 +3,7 @@ import { NextPage, GetStaticProps, GetServerSideProps } from "next";
 import Link from "next/link";
 import { ElemButton } from "@/components/elem-button";
 import { ElemPhoto } from "@/components/elem-photo";
-import { IconChevronLeft, IconChevronRight } from "@/components/Icons";
+import { IconChevronLeft, IconChevronRight } from "@/components/Icons2";
 import Image from "next/image";
 import { InputText } from "@/components/input-text";
 import { InputTextarea } from "@/components/input-textarea";

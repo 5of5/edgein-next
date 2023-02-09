@@ -3,7 +3,7 @@ import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { useMutation } from "react-query";
-import { IconX } from "@/components/Icons";
+import { IconX } from "@/components/Icons2";
 import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/use-debounce";
 import { ElemPhoto } from "@/components/elem-photo";

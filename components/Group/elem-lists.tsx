@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import toast, { Toaster } from "react-hot-toast";
 import { kebabCase } from "lodash";
-import { IconCustomList, IconListPlus } from "@/components/Icons";
+import { IconCustomList, IconListPlus } from "@/components/Icons2";
 import { ElemButton } from "@/components/elem-button";
 import { getNameFromListName } from "@/utils/reaction";
 import Link from "next/link";

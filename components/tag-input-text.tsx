@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, useState } from "react";
-import { IconSearch, IconX } from "./Icons";
+import { IconSearch, IconX } from "./Icons2";
 
 type Props = {
 	className?: string;

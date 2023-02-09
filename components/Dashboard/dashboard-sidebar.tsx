@@ -13,7 +13,7 @@ import {
 	IconSettings,
 	IconOrganization,
 	IconUserCircle,
-} from "@/components/Icons";
+} from "@/components/Icons2";
 import { Disclosure } from "@headlessui/react";
 import { ElemMyGroupsMenu } from "./elem-my-groups-menu";
 

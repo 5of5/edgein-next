@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { Dialog, Transition, Tab } from "@headlessui/react";
-import { IconGroup, IconX } from "@/components/Icons";
+import { IconGroup, IconX } from "@/components/Icons2";
 import { User_Groups } from "@/graphql/types";
 import ElemSettingTab from "./elem-setting-tab";
 import ElemMemberTab from "./elem-member-tab";

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { PlaceholderCompanyCard } from "@/components/Placeholders";
+import { PlaceholderCompanyCard } from "@/components/Placeholders2";
 import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
 import { ElemCarouselCard } from "@/components/elem-carousel-card";
 import { ElemPhoto } from "@/components/elem-photo";

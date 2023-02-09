@@ -2,7 +2,7 @@ import { Fragment, useState, FC, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { ElemButton } from "@/components/elem-button";
-import { IconX, IconWindowSidebar } from "@/components/Icons";
+import { IconX, IconWindowSidebar } from "@/components/Icons2";
 import { useAuth } from "@/hooks/use-auth";
 import { DashboardSidebar } from "./dashboard-sidebar";
 

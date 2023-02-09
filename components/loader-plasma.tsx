@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { IconSpinner } from "./Icons";
+import { IconSpinner } from "./Icons2";
 
 const LoaderPlasmaBubble: FC = () => {
 	return (

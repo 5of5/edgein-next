@@ -5,8 +5,8 @@ import { Investment_Rounds } from "@/graphql/types";
 import { useTable, useSortBy, usePagination } from "react-table";
 
 import { numberWithCommas, formatDate } from "@/utils";
-import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons";
-import { Pagination } from "@/components/Pagination";
+import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons2";
+import { Pagination } from "@/components/Pagination2";
 
 type Props = {
 	className?: string;

@@ -9,8 +9,8 @@ import {
 	IconListPlus,
 	IconInformationCircle,
 	IconPlus,
-} from "@/components/Icons";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
+} from "@/components/Icons2";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis2";
 import { useUser } from "@/context/user-context";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/elem-tooltip";

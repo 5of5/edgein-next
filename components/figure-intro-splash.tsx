@@ -1,4 +1,4 @@
-import { FigurePerspectiveGrid, FigureDash } from "@/components/Figures";
+import { FigurePerspectiveGrid, FigureDash } from "@/components/Figures2";
 
 import { Transition } from "@headlessui/react";
 import { FC } from "react";

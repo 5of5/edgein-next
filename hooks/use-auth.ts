@@ -1,4 +1,4 @@
-import { User } from "@/models/User";
+import { User } from "@/models/User2";
 import useSWR from "swr";
 import { useSWRConfig } from 'swr'
 

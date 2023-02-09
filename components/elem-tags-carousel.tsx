@@ -1,5 +1,5 @@
 import { FC, useEffect, useState, useRef } from "react";
-import { IconChevronLeft, IconChevronRight } from "@/components/Icons";
+import { IconChevronLeft, IconChevronRight } from "@/components/Icons2";
 import { tags } from "@/utils/constants";
 
 type Props = {

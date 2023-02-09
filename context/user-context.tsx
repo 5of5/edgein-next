@@ -1,5 +1,5 @@
 import { useAuth } from '@/hooks/use-auth';
-import { User } from '@/models/User';
+import { User } from '@/models/User2';
 import {
   useGetFollowsByUserQuery,
   GetFollowsByUserQuery,

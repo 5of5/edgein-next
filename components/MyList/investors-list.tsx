@@ -18,8 +18,8 @@ import {
 	IconX,
 	IconTrash,
 	IconChevronDown,
-} from "@/components/Icons";
-import { Pagination } from "@/components/Pagination";
+} from "@/components/Icons2";
+import { Pagination } from "@/components/Pagination2";
 import { ElemButton } from "@/components/elem-button";
 import { useCheckboxes } from "./indeterminate-checkbox";
 import {

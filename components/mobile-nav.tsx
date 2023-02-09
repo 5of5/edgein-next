@@ -14,7 +14,7 @@ import {
 	IconCustomList,
 	IconGroup,
 	IconSignOut,
-} from "@/components/Icons";
+} from "@/components/Icons2";
 import { Transition, Dialog } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
 
