@@ -1,3 +1,4 @@
+// eslint-disable-next-line @next/next/no-server-import-in-page
 import { NextRequest, NextResponse } from "next/server";
 
 const DATADOME_TIMEOUT = 500;
@@ -174,7 +175,7 @@ function toHeaders(
 
 // taken from DataDome-Cloudflare-1.7.0
 function getHeadersList(req: NextRequest) {
-  return [...req.headers.keys()].join(",");
+  return [...req.headers.keys() as any].join(",");
 }
 
 // taken from DataDome-Cloudflare-1.7.0
