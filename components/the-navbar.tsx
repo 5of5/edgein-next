@@ -10,7 +10,7 @@ import LoginModal from "@/components/login-modal";
 import UsageModal from "@/components/usage-modal";
 import ForgotPasswordModal from "@/components/forgot-password-modal";
 import SignUpModal from "@/components/sign-up-modal";
-import { IconSearch } from "@/components/Icons2";
+import { IconSearch } from "@/components/icons";
 import { MobileNav } from "@/components/mobile-nav";
 import SearchModal from "@/components/search-modal";
 import OnboardingStep1 from "@/components/Onboarding/onboarding-step-1";

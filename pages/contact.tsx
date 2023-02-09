@@ -3,8 +3,8 @@ import type { NextPage, GetStaticProps } from "next";
 import { InputText } from "@/components/input-text";
 import { InputTextarea } from "@/components/input-textarea";
 import { ElemButton } from "@/components/elem-button";
-import { IconPaperAirplane } from "@/components/Icons2";
-import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/Figures2";
+import { IconPaperAirplane } from "@/components/icons";
+import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/figures";
 import { useFormspark } from "@formspark/use-formspark";
 
 const Contact: NextPage = () => {

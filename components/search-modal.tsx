@@ -12,13 +12,13 @@ import {
 	Index,
 	Configure,
 } from "react-instantsearch-hooks-web";
-import { FigureSearch } from "@/components/Figures2";
+import { FigureSearch } from "@/components/figures";
 import {
 	IconSearch,
 	IconChevronRight,
 	IconUser,
 	IconImage,
-} from "@/components/Icons2";
+} from "@/components/icons";
 import Link from "next/link";
 
 const searchClient = algoliasearch(

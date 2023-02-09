@@ -1,8 +1,8 @@
 import React from "react";
 import { ElemPhoto } from "@/components/elem-photo";
 import { useTable, useSortBy, usePagination } from "react-table";
-import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons2";
-import { Pagination } from "@/components/Pagination2";
+import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/icons";
+import { Pagination } from "@/components/pagination";
 import Link from "next/link";
 import { numberWithCommas, formatDate, convertToIntNum } from "@/utils";
 import { Investment_Rounds } from "@/graphql/types";

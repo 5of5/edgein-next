@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import React from "react";
 import { ElemButton } from "@/components/elem-button";
 import { ElemLogo } from "@/components/elem-logo";
-import { FigureBlurredCircle } from "@/components/Figures2";
-import { IconCheck } from "@/components/Icons2";
+import { FigureBlurredCircle } from "@/components/figures";
+import { IconCheck } from "@/components/icons";
 import Image from "next/image";
 
 type Props = {};

@@ -1,5 +1,5 @@
 import { ElemButton } from "./elem-button";
-import { IconAlert, IconAlertSolid } from "@/components/Icons2";
+import { IconAlert, IconAlertSolid } from "@/components/icons";
 
 export const NotificationAlerts = () => {
 	const notifications = [];

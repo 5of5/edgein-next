@@ -17,7 +17,7 @@ import {
 	IconDiscord,
 	IconGlassdoor,
 	IconEye,
-} from "@/components/Icons2";
+} from "@/components/icons";
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,

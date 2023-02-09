@@ -5,7 +5,7 @@ import {
 } from "@/utils/reaction";
 import { find } from "lodash";
 import { FC, useEffect, useState } from "react";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis2";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { useUser } from "@/context/user-context";
 import hashSum from "hash-sum";

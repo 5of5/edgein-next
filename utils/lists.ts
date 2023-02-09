@@ -1,6 +1,6 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
 import { Lists } from '@/graphql/types';
-import { User } from '@/models/User2';
+import { User } from '@/models/user';
 
 export const updateResourceSentimentCount = async (resourceType: 'companies' | 'vc_firms', resourceId: string, token: string, sentimentType: string, shouldInc: boolean, shouldDec: boolean) => {
   if (resourceType === 'companies') {

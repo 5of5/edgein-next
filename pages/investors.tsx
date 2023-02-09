@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
-import { PlaceholderInvestorCard } from "@/components/Placeholders2";
+import { PlaceholderInvestorCard } from "@/components/placeholders";
 import { InputSelect } from "@/components/input-select";
 import { ElemRecentInvestments } from "@/components/Investors/elem-recent-investments";
 import { ElemButton } from "@/components/elem-button";
 import { ElemTagsCarousel } from "@/components/elem-tags-carousel";
-import { Pagination } from "@/components/Pagination2";
+import { Pagination } from "@/components/pagination";
 import { ElemInvestorCard } from "@/components/Investors/elem-investor-card";
 import {
 	IconSearch,
 	IconAnnotation,
 	IconX,
 	IconFilter,
-} from "@/components/Icons2";
+} from "@/components/icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,

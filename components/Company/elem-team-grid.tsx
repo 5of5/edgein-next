@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Team_Members } from "@/graphql/types";
 import { ElemPersonCard } from "@/components/elem-person-card";
-import { IconEditPencil } from "@/components/Icons2";
+import { IconEditPencil } from "@/components/icons";
 import { ElemFilterTags } from "@/components/elem-filter-tags";
 import { uniq, compact, sortBy } from "lodash";
 

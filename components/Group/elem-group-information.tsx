@@ -7,7 +7,7 @@ import {
 	IconTelegram,
 	IconDiscord,
 	IconUserPlus,
-} from "@/components/Icons2";
+} from "@/components/icons";
 import { ElemButton } from "@/components/elem-button";
 import { User_Groups } from "@/graphql/types";
 import { ElemMemberAvatarList } from "@/components/Group/elem-member-avatar-list";

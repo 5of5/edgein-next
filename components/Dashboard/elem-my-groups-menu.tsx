@@ -7,7 +7,7 @@ import {
 	IconPlus,
 	IconPolygonDown,
 	IconInformationCircle,
-} from "@/components/Icons2";
+} from "@/components/icons";
 import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
 import ElemCreateGroupDialog from "../Group/elem-create-group-dialog";

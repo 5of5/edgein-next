@@ -1,7 +1,7 @@
 
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import { Data_Fields } from "@/graphql/types";
-import { User } from "@/models/User2";
+import { User } from "@/models/user";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 

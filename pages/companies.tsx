@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
-import { PlaceholderCompanyCard } from "@/components/Placeholders2";
+import { PlaceholderCompanyCard } from "@/components/placeholders";
 import { InputSelect } from "@/components/input-select";
 import { ElemRecentCompanies } from "@/components/Companies/elem-recent-companies";
 import { ElemButton } from "@/components/elem-button";
@@ -13,7 +13,7 @@ import {
 	IconAnnotation,
 	IconX,
 	IconFilter,
-} from "@/components/Icons2";
+} from "@/components/icons";
 import {
 	Companies,
 	Companies_Bool_Exp,
@@ -21,7 +21,7 @@ import {
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
-import { Pagination } from "@/components/Pagination2";
+import { Pagination } from "@/components/pagination";
 import { ElemCompanyCard } from "@/components/Companies/elem-company-card";
 import { companyChoices, companyLayerChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";

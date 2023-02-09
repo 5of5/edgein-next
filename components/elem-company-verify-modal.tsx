@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useCallback, useState } from "react";
 import { ElemButton } from "./elem-button";
 import { ElemPhoto } from "./elem-photo";
-import { IconX } from "./Icons2";
+import { IconX } from "./icons";
 import { InputText } from "./input-text";
 import AsyncSelect from "react-select/async";
 import { createFilter } from "react-select";

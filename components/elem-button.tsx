@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC, PropsWithChildren } from "react";
-import { IconSpinner } from "@/components/Icons2";
+import { IconSpinner } from "@/components/icons";
 
 type Props = {
 	className?: string;

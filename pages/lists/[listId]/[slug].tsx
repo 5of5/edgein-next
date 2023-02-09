@@ -2,8 +2,8 @@ import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";
 import { CompaniesList } from "@/components/MyList/companies-list";
 import { InvestorsList } from "@/components/MyList/investors-list";
 import { ModalListDetails } from "@/components/MyList/modal-list-details";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis2";
-import { PlaceholderTable } from "@/components/Placeholders2";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
+import { PlaceholderTable } from "@/components/placeholders";
 import moment from "moment-timezone";
 
 import {

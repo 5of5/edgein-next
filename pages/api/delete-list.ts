@@ -2,7 +2,7 @@ import { NextApiResponse, NextApiRequest } from "next";
 import { query, mutate } from '@/graphql/hasuraAdmin'
 import CookieService from '../../utils/cookie'
 import { deleteFollowIfExists, updateResourceSentimentCount } from '@/utils/lists'
-import { User } from '@/models/User2';
+import { User } from '@/models/user';
 import { Lists } from '@/graphql/types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
