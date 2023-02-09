@@ -6,15 +6,15 @@ import React, {
 	useEffect,
 } from "react";
 import { NextPage, GetServerSideProps } from "next";
-import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";
+import { DashboardLayout } from "@/components/Dashboard2/dashboard-layout";
 import { ElemTabBar } from "@/components/elem-tab-bar";
-import { ElemGroupInformation } from "@/components/Group/elem-group-information";
-import { ElemLists } from "@/components/Group/elem-lists";
-import { ElemNotes } from "@/components/Group/elem-notes";
-import ElemInviteDialog from "@/components/Group/elem-invite-dialog";
+import { ElemGroupInformation } from "@/components/Group2/elem-group-information";
+import { ElemLists } from "@/components/Group2/elem-lists";
+import { ElemNotes } from "@/components/Group2/elem-notes";
+import ElemInviteDialog from "@/components/Group2/elem-invite-dialog";
 import ElemSettingDialog, {
 	SettingTabProps,
-} from "@/components/Group/elem-setting-dialog";
+} from "@/components/Group2/elem-setting-dialog";
 import { runGraphQl } from "@/utils";
 import CookieService from "@/utils/cookie";
 import {

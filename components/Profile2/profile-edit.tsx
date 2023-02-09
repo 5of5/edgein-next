@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { GetUserProfileQuery } from "@/graphql/types";
-import { EditSection } from "@/components/Dashboard/edit-section";
+import { EditSection } from "@/components/Dashboard2/edit-section";
 
 type Props = {
 	user: GetUserProfileQuery["users_by_pk"];

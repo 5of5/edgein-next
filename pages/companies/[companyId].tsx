@@ -3,19 +3,19 @@ import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/elem-photo";
-import { ElemCredibility } from "@/components/Company/elem-credibility";
+import { ElemCredibility } from "@/components/Company2/elem-credibility";
 import { ElemKeyInfo } from "@/components/elem-key-info";
 import { ElemTags } from "@/components/elem-tags";
-import { ElemInvestments } from "@/components/Company/elem-investments";
-import { ElemTeamGrid } from "@/components/Company/elem-team-grid";
+import { ElemInvestments } from "@/components/Company2/elem-investments";
+import { ElemTeamGrid } from "@/components/Company2/elem-team-grid";
 import { runGraphQl } from "@/utils";
 import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
-import { ElemCohort } from "@/components/Company/elem-cohort";
+import { ElemCohort } from "@/components/Company2/elem-cohort";
 import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { ElemButton } from "@/components/elem-button";
 import { ElemSocialShare } from "@/components/elem-social-share";
-import { ElemVelocity } from "@/components/Company/elem-velocity";
+import { ElemVelocity } from "@/components/Company2/elem-velocity";
 import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
 import {
 	Companies,

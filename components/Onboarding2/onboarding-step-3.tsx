@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
-import { DeepPartial } from "@/components/Company/elem-cohort";
+import { DeepPartial } from "@/components/Company2/elem-cohort";
 import { Dialog, Transition } from "@headlessui/react";
 import {
 	Companies_Bool_Exp,

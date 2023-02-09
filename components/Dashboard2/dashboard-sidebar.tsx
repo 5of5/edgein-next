@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { ElemPhoto } from "@/components/elem-photo";
-import { ElemMyListsMenu } from "@/components/Dashboard/elem-my-lists-menu";
+import { ElemMyListsMenu } from "@/components/Dashboard2/elem-my-lists-menu";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import {
 	IconPolygonDown,

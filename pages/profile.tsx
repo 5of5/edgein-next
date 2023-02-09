@@ -1,10 +1,10 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
 
-import { DashboardLayout } from "@/components/Dashboard/dashboard-layout";
-import { ProfileEdit } from "@/components/Profile/profile-edit";
-import { ProfileEditEmail } from "@/components/Profile/profile-edit-email";
-import { ProfileEditName } from "@/components/Profile/profile-edit-name";
+import { DashboardLayout } from "@/components/Dashboard2/dashboard-layout";
+import { ProfileEdit } from "@/components/Profile2/profile-edit";
+import { ProfileEditEmail } from "@/components/Profile2/profile-edit-email";
+import { ProfileEditName } from "@/components/Profile2/profile-edit-name";
 import { ElemButton } from "@/components/elem-button";
 import { IconSearch } from "@/components/icons";
 // import { ElemPhoto } from "@/components/ElemPhoto";

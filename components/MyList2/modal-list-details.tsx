@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, useState } from "react";
-import { ModalListName } from "@/components/MyList/modal-list-name";
+import { ModalListName } from "@/components/MyList2/modal-list-name";
 import {
 	IconX,
 	IconTrash,

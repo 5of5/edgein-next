@@ -10,7 +10,7 @@ import {
 } from "@/components/icons";
 import { ElemButton } from "@/components/elem-button";
 import { User_Groups } from "@/graphql/types";
-import { ElemMemberAvatarList } from "@/components/Group/elem-member-avatar-list";
+import { ElemMemberAvatarList } from "@/components/Group2/elem-member-avatar-list";
 import { SettingTabProps } from "./elem-setting-dialog";
 
 type Props = {
