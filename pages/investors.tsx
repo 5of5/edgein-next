@@ -4,11 +4,11 @@ import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
 import { PlaceholderInvestorCard } from "@/components/placeholders";
 import { InputSelect } from "@/components/input-select";
-import { ElemRecentInvestments } from "@/components/Investors2/elem-recent-investments";
+import { ElemRecentInvestments } from "@/components/investors/elem-recent-investments";
 import { ElemButton } from "@/components/elem-button";
 import { ElemTagsCarousel } from "@/components/elem-tags-carousel";
 import { Pagination } from "@/components/pagination";
-import { ElemInvestorCard } from "@/components/Investors2/elem-investor-card";
+import { ElemInvestorCard } from "@/components/investors/elem-investor-card";
 import {
 	IconSearch,
 	IconAnnotation,

@@ -14,8 +14,8 @@ import {
 	People,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { ElemJobsList } from "@/components/Person2/elem-jobs-list";
-import { ElemInvestorsList } from "@/components/Person2/elem-investors-list";
+import { ElemJobsList } from "@/components/person/elem-jobs-list";
+import { ElemInvestorsList } from "@/components/person/elem-investors-list";
 import { onTrackView } from "@/utils/track";
 import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
 import { useAuth } from "@/hooks/use-auth";
