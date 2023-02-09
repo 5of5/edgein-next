@@ -3,7 +3,7 @@ import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemKeyInfo } from "@/components/elem-key-info";
-import { ElemInvestments } from "@/components/Investor2/elem-investments";
+import { ElemInvestments } from "@/components/investor/elem-investments";
 import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemButton } from "@/components/elem-button";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { EditSection } from "../Dashboard2/edit-section";
+import { EditSection } from "../dashboard/edit-section";
 import { ElemButton } from "../elem-button";
 import { InputText } from "../input-text";
 import {

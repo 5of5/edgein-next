@@ -15,7 +15,7 @@ import { useUser } from "@/context/user-context";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
-import { CreateListDialog } from "../MyList2/create-list-dialog";
+import { CreateListDialog } from "../my-list/create-list-dialog";
 
 type Props = {
 	className?: string;
