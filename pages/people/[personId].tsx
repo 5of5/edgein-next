@@ -99,60 +99,67 @@ const Person: NextPage<Props> = (props) => {
 
 	return (
 		<div className="relative">
-			<div className="bg-slate-600 border-b border-black/10">
-				<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes')] bg-cover bg-no-repeat bg-center"></div>
+			<div className="w-full bg-gradient-to-b from-transparent to-white shadow">
+				<div className="bg-slate-600 border-b border-black/10">
+					<div className="h-64 w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes')] bg-cover bg-no-repeat bg-center"></div>
+				</div>
+				<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+					<div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-start">
+						<div className="col-span-2 flex justify-center">
+							<ElemPhoto
+								photo={person.picture}
+								wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-full"
+								imgClass="object-cover w-full h-full rounded-full overflow-hidden"
+								imgAlt={person.name}
+								placeholder="user"
+								placeholderClass="text-slate-300"
+							/>
+						</div>
+						<div className="w-full col-span-9">
+							<div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:pt-14 lg:shrink-0">
+								<div>
+									{person.type && (
+										<div className="whitespace-nowrap text-lg text-slate-600">
+											{removeSpecialCharacterFromString(person.type as string)}
+										</div>
+									)}
+									<h1 className="text-3xl font-bold lg:text-4xl">
+										{person.name}
+									</h1>
+									{!claimedProfile && (
+										<ElemButton
+											className="mt-2"
+											btn="primary"
+											onClick={() =>
+												showNewMessages(
+													`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
+												)
+											}
+										>
+											Claim profile
+										</ElemButton>
+									)}
+								</div>
+								<div className="mt-6 lg:mt-0"></div>
+							</div>
+
+							{person.about && (
+								<p className="mt-4 line-clamp-3 text-base text-slate-600">
+									{person.about}
+								</p>
+							)}
+						</div>
+					</div>
+
+					<ElemTabBar
+						className="mt-7"
+						tabs={tabBarItems}
+						resourceName={person.name}
+					/>
+				</div>
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<div className="-mt-12 lg:grid lg:grid-cols-11 lg:gap-7 lg:items-start">
-					<div className="col-span-2 flex justify-center">
-						<ElemPhoto
-							photo={person.picture}
-							wrapClass="flex items-center justify-center aspect-square shrink-0 p-1 bg-white overflow-hidden rounded-full shadow w-40 lg:w-full"
-							imgClass="object-cover w-full h-full rounded-full overflow-hidden"
-							imgAlt={person.name}
-							placeholder="user"
-							placeholderClass="text-slate-300"
-						/>
-					</div>
-					<div className="w-full col-span-9">
-						<div className="text-center lg:flex lg:items-center lg:justify-between lg:text-left lg:pt-14 lg:shrink-0">
-							<div>
-								{person.type && (
-									<div className="whitespace-nowrap text-lg text-slate-600">
-										{removeSpecialCharacterFromString(person.type as string)}
-									</div>
-								)}
-								<h1 className="text-3xl font-bold lg:text-4xl">
-									{person.name}
-								</h1>
-								{!claimedProfile && (
-									<ElemButton
-										className="mt-2"
-										btn="primary"
-										onClick={() =>
-											showNewMessages(
-												`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
-											)
-										}
-									>
-										Claim profile
-									</ElemButton>
-								)}
-							</div>
-							<div className="mt-6 lg:mt-0"></div>
-						</div>
-
-						{person.about && (
-							<p className="mt-4 line-clamp-3 text-base text-slate-600">
-								{person.about}
-							</p>
-						)}
-					</div>
-				</div>
-
-				<ElemTabBar className="mt-7" tabs={tabBarItems} />
-
 				<div
 					className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
 					ref={overviewRef}
