@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { useUser } from "@/context/user-context";
 import { User_Groups } from "@/graphql/types";
-import { IconSignOut, IconTrash, IconX } from "@/components/icons";
+import { IconSignOut, IconTrash, IconX } from "@/components/Icons";
 import ElemSettingEditableField from "./elem-setting-editable-field";
 import { ElemDeleteConfirmModal } from "../elem-delete-confirm-modal";
 

@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { Menu, Transition } from "@headlessui/react";
-import { IconPlus, IconEllipsisHorizontal } from "@/components/icons";
+import { IconPlus, IconEllipsisHorizontal } from "@/components/Icons";
 import { User_Groups, User_Group_Members } from "@/graphql/types";
 import { ElemButton } from "@/components/elem-button";
 import { ElemPhoto } from "@/components/elem-photo";

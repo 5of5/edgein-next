@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import React from "react";
 import { ElemButton } from "@/components/elem-button";
-import { FigureBlurredCircle } from "@/components/figures";
+import { FigureBlurredCircle } from "@/components/Figures";
 import Image from "next/image";
 import Link from "next/link";
 

@@ -3,7 +3,7 @@ import {
 	IconEllipsisHorizontal,
 	IconExclamationTriangle,
 	IconPencilSquare,
-} from "@/components/icons";
+} from "@/components/Icons";
 import { Popover } from "@headlessui/react";
 import { useIntercom } from "react-use-intercom";
 

@@ -1,6 +1,6 @@
 import { Fragment, PropsWithChildren } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX } from "@/components/icons";
+import { IconX } from "@/components/Icons";
 import { ElemLogo } from "@/components/elem-logo";
 import { ElemButton } from "@/components/elem-button";
 import { loadStripe } from "@/utils/stripe";

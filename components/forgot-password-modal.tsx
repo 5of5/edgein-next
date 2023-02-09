@@ -2,7 +2,7 @@ import type { GetStaticProps } from "next";
 import { useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconCheck } from "@/components/icons";
+import { IconCheck } from "@/components/Icons";
 
 type Props = {
 	show: boolean;

@@ -6,7 +6,7 @@ import {
 	IconGithub,
 	IconLinkedIn,
 	IconChartUp,
-} from "../icons";
+} from "../Icons";
 
 type Props = {
 	className?: string;

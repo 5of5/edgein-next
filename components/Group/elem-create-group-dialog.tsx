@@ -2,7 +2,7 @@ import { Fragment, ChangeEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX } from "@/components/icons";
+import { IconX } from "@/components/Icons";
 import { InputText } from "@/components/input-text";
 import { useUser } from "@/context/user-context";
 import { ElemButton } from "../elem-button";

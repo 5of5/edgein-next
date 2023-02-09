@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
-import { IconFindCompanies, IconFindInvestors } from "@/components/icons";
+import { IconFindCompanies, IconFindInvestors } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
 
 type Props = {

@@ -6,8 +6,8 @@ import {
 	Notes_Bool_Exp,
 	useGetNotesQuery,
 } from "@/graphql/types";
-import { IconGroup, IconPlus, IconLockClosed } from "@/components/icons";
-import { PlaceholderNote } from "./placeholders";
+import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
+import { PlaceholderNote } from "./Placeholders";
 import { ElemButton } from "./elem-button";
 import ElemNoteForm from "./elem-note-form";
 import { ElemPhoto } from "./elem-photo";

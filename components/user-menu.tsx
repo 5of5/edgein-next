@@ -12,7 +12,7 @@ import {
 	IconGroup,
 	IconSettings,
 	//IconOrganization,
-} from "./icons";
+} from "./Icons";
 import { useUser } from "@/context/user-context";
 import Link from "next/link";
 

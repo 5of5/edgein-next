@@ -3,7 +3,7 @@ import React from "react";
 import { FigureIntroSplash } from "@/components/figure-intro-splash";
 import { ElemButton } from "@/components/elem-button";
 import { useUser } from "@/context/user-context";
-import { FigureBlurredBg, FigureCircleDashes } from "@/components/figures";
+import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
 import { Popups } from "@/components/the-navbar";
 
 type Props = {

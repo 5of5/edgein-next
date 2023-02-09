@@ -1,5 +1,5 @@
 import React from "react";
-import { IconSearch } from "./icons";
+import { IconSearch } from "./Icons";
 
 type Props = {
   onClick: () => void;

@@ -29,7 +29,7 @@ import { uniq } from "lodash";
 import { ElemButton } from "@/components/elem-button";
 import { onTrackView } from "@/utils/track";
 import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
-import { IconEditPencil, IconAnnotation } from "@/components/icons";
+import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 import ElemOrganizationNotes from "@/components/elem-organization-notes";
 
 type Props = {

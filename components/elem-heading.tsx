@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { FigureBlurredBg } from "@/components/figures";
+import { FigureBlurredBg } from "@/components/Figures";
 
 type Props = {
 	className?: string;

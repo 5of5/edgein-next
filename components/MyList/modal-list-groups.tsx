@@ -1,7 +1,7 @@
 import { FC, Fragment, useState, useEffect, useMemo } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ElemButton } from "@/components/elem-button";
-import { IconX } from "@/components/icons";
+import { IconX } from "@/components/Icons";
 import { InputSelect } from "../input-select";
 import { useUser } from "@/context/user-context";
 

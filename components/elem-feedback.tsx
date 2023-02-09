@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, useState, useEffect } from "react";
 import { InputTextarea } from "./input-textarea";
 import { InputText } from "./input-text";
 import { ElemButton } from "./elem-button";
-import { IconMinus, IconAnnotation } from "./icons";
+import { IconMinus, IconAnnotation } from "./Icons";
 import { useFormspark } from "@formspark/use-formspark";
 
 type Props = {

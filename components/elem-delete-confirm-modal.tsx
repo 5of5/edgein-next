@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { FC, Fragment, ReactElement } from "react";
 import { ElemButton } from "@/components/elem-button";
-import { IconX } from "@/components/icons";
+import { IconX } from "@/components/Icons";
 
 type Props = {
 	isOpen: boolean;

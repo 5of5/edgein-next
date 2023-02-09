@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, Fragment } from "react";
-import { IconSearch, IconX, IconChevronDown } from "@/components/icons";
+import { IconSearch, IconX, IconChevronDown } from "@/components/Icons";
 
 type Props = {
 	className?: string;

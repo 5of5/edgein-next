@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useAuth } from "@/hooks/use-auth";
 import { ElemButton } from "@/components/elem-button";
-import { IconCheck } from "@/components/icons";
+import { IconCheck } from "@/components/Icons";
 import { formatDate } from "@/utils";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
