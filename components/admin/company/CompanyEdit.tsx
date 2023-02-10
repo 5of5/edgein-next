@@ -26,6 +26,7 @@ export const CompanyEdit = () => {
     useAdminTransform({
       withImageTransformData,
       withoutImageTransformData,
+      hasGeopoint: true,
     });
 
   return (

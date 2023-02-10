@@ -15,11 +15,13 @@ type Props = {
 	) => {
 		[key: string]: unknown;
 	};
+	hasGeopoint?: boolean 
 };
 
 const useAdminTransform = ({
 	withImageTransformData,
 	withoutImageTransformData,
+	hasGeopoint
 }: Props) => {
 	const [logo, setLogo] = useState<any>(null);
 	const [oldLogo, setOldLogo] = useState<any>(null);
@@ -36,7 +38,7 @@ const useAdminTransform = ({
       !formData?.location_json?.city &&
       !formData?.location_json?.state &&
       !formData?.location_json?.country &&
-      formData?.geopoint) || !formData?.geopoint
+      formData?.geopoint) || (!formData?.geopoint && hasGeopoint)
     ) {
       formData.geopoint = null;
     }
