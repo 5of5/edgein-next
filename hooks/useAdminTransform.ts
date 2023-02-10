@@ -32,11 +32,11 @@ const useAdminTransform = ({
 			typeof tagValue === "string" ? tagValue.split(",") : tagValue;
 
 		if (
-      !formData?.location_json?.address &&
+      (!formData?.location_json?.address &&
       !formData?.location_json?.city &&
       !formData?.location_json?.state &&
       !formData?.location_json?.country &&
-      formData?.geopoint
+      formData?.geopoint) || !formData?.geopoint
     ) {
       formData.geopoint = null;
     }
