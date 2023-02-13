@@ -86,10 +86,10 @@ export type String_Comparison_Exp = {
 export type Actions = {
   __typename?: 'actions';
   action: Scalars['String'];
-  api_key: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   id: Scalars['Int'];
   page: Scalars['String'];
+  partner: Maybe<Scalars['Int']>;
   properties: Scalars['jsonb'];
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
@@ -141,6 +141,7 @@ export type Actions_Append_Input = {
 export type Actions_Avg_Fields = {
   __typename?: 'actions_avg_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -151,10 +152,10 @@ export type Actions_Bool_Exp = {
   _not: InputMaybe<Actions_Bool_Exp>;
   _or: InputMaybe<Array<Actions_Bool_Exp>>;
   action: InputMaybe<String_Comparison_Exp>;
-  api_key: InputMaybe<String_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   page: InputMaybe<String_Comparison_Exp>;
+  partner: InputMaybe<Int_Comparison_Exp>;
   properties: InputMaybe<Jsonb_Comparison_Exp>;
   resource: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
@@ -185,6 +186,7 @@ export type Actions_Delete_Key_Input = {
 /** input type for incrementing numeric columns in table "actions" */
 export type Actions_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  partner: InputMaybe<Scalars['Int']>;
   resource_id: InputMaybe<Scalars['Int']>;
   user: InputMaybe<Scalars['Int']>;
 };
@@ -192,10 +194,10 @@ export type Actions_Inc_Input = {
 /** input type for inserting data into table "actions" */
 export type Actions_Insert_Input = {
   action: InputMaybe<Scalars['String']>;
-  api_key: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   page: InputMaybe<Scalars['String']>;
+  partner: InputMaybe<Scalars['Int']>;
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -206,10 +208,10 @@ export type Actions_Insert_Input = {
 export type Actions_Max_Fields = {
   __typename?: 'actions_max_fields';
   action: Maybe<Scalars['String']>;
-  api_key: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['String']>;
+  partner: Maybe<Scalars['Int']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
   user: Maybe<Scalars['Int']>;
@@ -219,10 +221,10 @@ export type Actions_Max_Fields = {
 export type Actions_Min_Fields = {
   __typename?: 'actions_min_fields';
   action: Maybe<Scalars['String']>;
-  api_key: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   page: Maybe<Scalars['String']>;
+  partner: Maybe<Scalars['Int']>;
   resource: Maybe<Scalars['String']>;
   resource_id: Maybe<Scalars['Int']>;
   user: Maybe<Scalars['Int']>;
@@ -247,10 +249,10 @@ export type Actions_On_Conflict = {
 /** Ordering options when selecting data from "actions". */
 export type Actions_Order_By = {
   action: InputMaybe<Order_By>;
-  api_key: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   page: InputMaybe<Order_By>;
+  partner: InputMaybe<Order_By>;
   properties: InputMaybe<Order_By>;
   resource: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
@@ -272,13 +274,13 @@ export enum Actions_Select_Column {
   /** column name */
   Action = 'action',
   /** column name */
-  ApiKey = 'api_key',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
   /** column name */
   Page = 'page',
+  /** column name */
+  Partner = 'partner',
   /** column name */
   Properties = 'properties',
   /** column name */
@@ -292,10 +294,10 @@ export enum Actions_Select_Column {
 /** input type for updating data in table "actions" */
 export type Actions_Set_Input = {
   action: InputMaybe<Scalars['String']>;
-  api_key: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   page: InputMaybe<Scalars['String']>;
+  partner: InputMaybe<Scalars['Int']>;
   properties: InputMaybe<Scalars['jsonb']>;
   resource: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
@@ -306,6 +308,7 @@ export type Actions_Set_Input = {
 export type Actions_Stddev_Fields = {
   __typename?: 'actions_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -314,6 +317,7 @@ export type Actions_Stddev_Fields = {
 export type Actions_Stddev_Pop_Fields = {
   __typename?: 'actions_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -322,6 +326,7 @@ export type Actions_Stddev_Pop_Fields = {
 export type Actions_Stddev_Samp_Fields = {
   __typename?: 'actions_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -330,6 +335,7 @@ export type Actions_Stddev_Samp_Fields = {
 export type Actions_Sum_Fields = {
   __typename?: 'actions_sum_fields';
   id: Maybe<Scalars['Int']>;
+  partner: Maybe<Scalars['Int']>;
   resource_id: Maybe<Scalars['Int']>;
   user: Maybe<Scalars['Int']>;
 };
@@ -339,13 +345,13 @@ export enum Actions_Update_Column {
   /** column name */
   Action = 'action',
   /** column name */
-  ApiKey = 'api_key',
-  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   Id = 'id',
   /** column name */
   Page = 'page',
+  /** column name */
+  Partner = 'partner',
   /** column name */
   Properties = 'properties',
   /** column name */
@@ -360,6 +366,7 @@ export enum Actions_Update_Column {
 export type Actions_Var_Pop_Fields = {
   __typename?: 'actions_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -368,6 +375,7 @@ export type Actions_Var_Pop_Fields = {
 export type Actions_Var_Samp_Fields = {
   __typename?: 'actions_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -376,6 +384,7 @@ export type Actions_Var_Samp_Fields = {
 export type Actions_Variance_Fields = {
   __typename?: 'actions_variance_fields';
   id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
   resource_id: Maybe<Scalars['Float']>;
   user: Maybe<Scalars['Float']>;
 };
@@ -2922,6 +2931,7 @@ export type Data_Actions_Variance_Fields = {
 /** columns and relationships of "data_fields" */
 export type Data_Fields = {
   __typename?: 'data_fields';
+  data_type: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   is_valid_identifier: Scalars['Boolean'];
   name: Scalars['String'];
@@ -2974,6 +2984,7 @@ export type Data_Fields_Bool_Exp = {
   _and: InputMaybe<Array<Data_Fields_Bool_Exp>>;
   _not: InputMaybe<Data_Fields_Bool_Exp>;
   _or: InputMaybe<Array<Data_Fields_Bool_Exp>>;
+  data_type: InputMaybe<String_Comparison_Exp>;
   description: InputMaybe<String_Comparison_Exp>;
   is_valid_identifier: InputMaybe<Boolean_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
@@ -2998,6 +3009,7 @@ export type Data_Fields_Inc_Input = {
 
 /** input type for inserting data into table "data_fields" */
 export type Data_Fields_Insert_Input = {
+  data_type: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   is_valid_identifier: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
@@ -3012,6 +3024,7 @@ export type Data_Fields_Insert_Input = {
 /** aggregate max on columns */
 export type Data_Fields_Max_Fields = {
   __typename?: 'data_fields_max_fields';
+  data_type: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   path: Maybe<Scalars['String']>;
@@ -3024,6 +3037,7 @@ export type Data_Fields_Max_Fields = {
 /** aggregate min on columns */
 export type Data_Fields_Min_Fields = {
   __typename?: 'data_fields_min_fields';
+  data_type: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   path: Maybe<Scalars['String']>;
@@ -3051,6 +3065,7 @@ export type Data_Fields_On_Conflict = {
 
 /** Ordering options when selecting data from "data_fields". */
 export type Data_Fields_Order_By = {
+  data_type: InputMaybe<Order_By>;
   description: InputMaybe<Order_By>;
   is_valid_identifier: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
@@ -3069,6 +3084,8 @@ export type Data_Fields_Pk_Columns_Input = {
 
 /** select columns of table "data_fields" */
 export enum Data_Fields_Select_Column {
+  /** column name */
+  DataType = 'data_type',
   /** column name */
   Description = 'description',
   /** column name */
@@ -3091,6 +3108,7 @@ export enum Data_Fields_Select_Column {
 
 /** input type for updating data in table "data_fields" */
 export type Data_Fields_Set_Input = {
+  data_type: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   is_valid_identifier: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
@@ -3128,6 +3146,8 @@ export type Data_Fields_Sum_Fields = {
 
 /** update columns of table "data_fields" */
 export enum Data_Fields_Update_Column {
+  /** column name */
+  DataType = 'data_type',
   /** column name */
   Description = 'description',
   /** column name */

@@ -4,6 +4,7 @@ import { Data_Fields } from "@/graphql/types";
 import { User } from "@/models/User";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
+import * as util from 'util';
 
 export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
 export type ResourceTypes =
@@ -43,26 +44,42 @@ export const partnerLookUp = async (apiKey: string) => {
 
 export const resourceIdLookup = async (
 	resourceType: string,
-	resourceIdentifier: string,
-	identifierColumn: string,
-  identifierMethod: string|undefined,
+	resourceIdentifier: Array<Record<string, any>>,
 ) => {
 	if (!resourceIdentifier) {
 		return undefined;
 	}
 
 	try {
-    if (!identifierMethod)
-		  identifierMethod = '_eq'
+    let argumentList: Array<string> = [];
+    let filterClauses: Array<string> = [];
+    let variables: Record<string, any> = {};
+    for (const item of resourceIdentifier) {
+      if (!item.field || ! item.value)
+        continue;
+
+      let identifierMethod = item.method;
+      if (!identifierMethod)
+		    identifierMethod = '_eq';
+
+      argumentList.push(`$${item.field}: ${typeof item.value === 'number' ? 'Int!' : 'String!'}`);
+      filterClauses.push(`{${item.field}:{${identifierMethod}:$${item.field}}}`);
+      variables[item.field] = item.value;
+    }
+
+    if (argumentList.length == 0)
+      return;
+
 		const { data } = await query({
 			query: `
-      query lookup_resource($resourceIdentifier: ${identifierColumn === "id" ? "Int!" : "String!"}) {
-				${resourceType}(where: {${identifierColumn}: {${identifierMethod}: $resourceIdentifier}}) {
+      query lookup_resource(${argumentList.join(', ')}) {
+				${resourceType}(where: {_and: [${filterClauses.join(', ')}]}) {
 					id
         }
       }`,
-			variables: { resourceIdentifier },
+			variables,
 		});
+
 		return data[resourceType][0].id;
 	} catch (e) {
 		return;
@@ -86,6 +103,7 @@ export const fieldLookup = async (path: string) => {
         regex_test
 				is_valid_identifier
         restricted_admin
+        data_type
       }
     }
     `,
@@ -226,8 +244,7 @@ export const onSubmitData = (
     body: JSON.stringify({
       partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
       resource_type: type,
-      resource_identifier: transformInput.id,
-      identifier_column: "id",
+      resource_identifier: { field: "id", value: transformInput.id },
       resource,
     }),
   })
@@ -274,6 +291,39 @@ const notInsertValueType = (value: any) =>
     Object.getPrototypeOf(value) === Object.prototype) ||
   (value && Array.isArray(value) && value.length === 0);
 
+const mainTableLookup = async (resourceType: string, id: any, returnFields: Array<string>) => {
+  const { data } = await query({
+    query: `
+    query lookup_${resourceType}($id: Int) {
+      ${resourceType}(where: {id: {_eq: $id}}) {
+        ${returnFields.join(' ')}
+      }
+    }
+    `,
+    variables: { id },
+  });
+  return data[resourceType][0];
+};
+
+const formatValue = (data: any, dataType: string) => {
+  let retValue: any = data;
+  switch (dataType) {
+    case 'json':
+      retValue = JSON.parse(data);
+      break;
+    case 'number':
+      retValue = parseInt(data);
+      break;
+    case 'float':
+      retValue = parseFloat(data);
+      break;
+    case 'string':
+      retValue = JSON.stringify(data);
+      break;
+  }
+  return retValue;
+};
+
 export const mutateActionAndDataRaw = async (
   partnerId: number,
   user: User | null,
@@ -281,13 +331,18 @@ export const mutateActionAndDataRaw = async (
   resourceId: number,
   resourceObj: Record<string, any>,
   resourceType: string,
-  actionType: ActionType
+  actionType: ActionType,
 ) => {
   const currentTime = new Date();
   let validData: Array<Record<string, any>> = [];
   let invalidData: Array<Record<string, any>> = [];
   let setMainTableValues: Record<string, any> = {};
   let action;
+
+  let existedData;
+  if (actionType == 'Change Data') {
+    existedData = await mainTableLookup(resourceType, resourceId, Object.keys(resourceObj));
+  }
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
@@ -304,8 +359,20 @@ export const mutateActionAndDataRaw = async (
           field,
           message: "Invalid Field",
         });
+      else if (existedData && existedData[field])
+        invalidData.push({
+          resource: resourceType,
+          field,
+          message: "Existed Value Field",
+        });
       else {
-        setMainTableValues[field] = value;
+        let transformedValue = value
+        if (dataField.regex_transform)
+          transformedValue = util.format(dataField.regex_transform, transformedValue);
+        if (dataField.data_type)
+          transformedValue = formatValue(transformedValue, dataField.data_type);
+
+        setMainTableValues[field] = transformedValue;
         validData.push({
           created_at: currentTime,
           partner: partnerId,
@@ -313,7 +380,7 @@ export const mutateActionAndDataRaw = async (
           resource: resourceType,
           resource_id: resourceId,
           field,
-          value: value === null ? "" : value,
+          value: transformedValue === null ? "" : transformedValue,
           accuracy_weight: 1,
         });
 
@@ -329,10 +396,13 @@ export const mutateActionAndDataRaw = async (
     }
   }
 
-  const insertResult = await insertDataRaw(validData);
-  if (actionType === "Change Data") {
+  if (actionType === "Change Data")
     await updateMainTable(resourceType, resourceId, setMainTableValues);
+  else if (actionType === "Insert Data") {
+			const response = await insertResourceData(resourceType, setMainTableValues);
+      validData.forEach(data => data.resource_id = response?.id);
   }
+  const insertResult = await insertDataRaw(validData);
 
   return { id: resourceId, action, resources: invalidData.concat(insertResult) };
 };
