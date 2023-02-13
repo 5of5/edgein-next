@@ -1,3 +1,4 @@
+import { User } from "@/models/User";
 import useSWR from "swr";
 import { useSWRConfig } from 'swr'
 
@@ -8,19 +9,27 @@ function fetcher(route: string) {
     .then((user) => user || null);
 }
 
-export function useClearAuth() {
-  const { cache } = useSWRConfig()
-  cache.get('/api/user/')
-  cache.delete('/api/user/')
-}
-
 export function useAuth() {
-  const { data: user, error, isValidating } = useSWR("/api/user/", fetcher, {revalidateOnFocus: false});
+  const { data: user, error, isValidating } = useSWR<User>("/api/user/", fetcher, {revalidateOnFocus: false});
+  const { mutate } = useSWRConfig()
   const loading = isValidating;
+
+  const refreshUser = () => {
+    mutate("/api/user/")
+  }
+
+  if (user && !user?.entitlements) {
+    user.entitlements = {
+      viewEmails: false,
+      listsCount: 10,
+      groupsCount: 3,
+    }
+  }
 
   return {
     user,
     loading,
     error,
+    refreshUser,
   };
 }

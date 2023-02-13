@@ -1,6 +1,11 @@
 import { useAuth } from '@/hooks/useAuth';
 import { User } from '@/models/User';
-import { useGetFollowsByUserQuery, GetFollowsByUserQuery } from "@/graphql/types"
+import {
+  useGetFollowsByUserQuery,
+  GetFollowsByUserQuery,
+  useGetGroupsOfUserQuery,
+  GetGroupsOfUserQuery,
+} from "@/graphql/types";
 import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
@@ -15,9 +20,17 @@ type UserValue = {
   user: User | null
   loading: boolean
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
+  myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][]
+  refetchMyGroups: any
 }
 
-const userContext = React.createContext<UserValue>({user: null, loading: true, listAndFollows: []});
+const userContext = React.createContext<UserValue>({
+  user: null,
+  loading: true,
+  listAndFollows: [],
+  myGroups: [],
+  refetchMyGroups: () => {},
+});
 const useUser = () => {
   const queryClient = useQueryClient()
   const contextValue = React.useContext(userContext)
@@ -40,7 +53,13 @@ const UserProvider: React.FC<Props> = (props) => {
 		data: listMemberships,
 		error: listAndFollowsError,
 		isLoading,
-	} = useGetFollowsByUserQuery({ user_id: user?.id }, { enabled: Boolean(user) })
+	} = useGetFollowsByUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
+
+  const {
+		data: groups,
+		error: groupsError,
+    refetch: refetchMyGroups,
+	} = useGetGroupsOfUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
 
   React.useEffect(() => {
 		clarity.init(CLARITY_ID);
@@ -50,14 +69,14 @@ const UserProvider: React.FC<Props> = (props) => {
     if (user) {
       try { 
         if (hotjar.identify) {
-          hotjar.identify(user.id, { name: startCase(user.display_name), email: user.email, role: user.role });
+          hotjar.identify(String(user.id), { name: startCase(user.display_name || ""), email: user.email, role: user.role });
         }
       } catch(e) {
            // hotjar not loaded
       }  
       try { 
-        identify(user.id, { 
-          displayName: startCase(user.display_name), 
+        identify(String(user.id), { 
+          displayName: startCase(user.display_name || ""), 
           email: user.email,
           role: user.role
         });        
@@ -67,10 +86,10 @@ const UserProvider: React.FC<Props> = (props) => {
       try { 
         shutdown()
         boot({
-          name: startCase(user.display_name), // Full name
+          name: startCase(user.display_name || ""), // Full name
           email: user.email, // Email address
           // created_at: user._createdAt // Signup date as a Unix timestamp    
-          userId: user.id, // User ID
+          userId: String(user.id), // User ID
           userHash: user.intercomUserHash // HMAC using SHA-256
         })
       } catch(e) {
@@ -87,13 +106,24 @@ const UserProvider: React.FC<Props> = (props) => {
   React.useEffect(() => {
     setListAndFollows(listMemberships?.list_members.map(li => li.list) || [])
   }, [listMemberships])
+
+  const [myGroups, setMyGroups] = React.useState(
+    groups?.user_group_members?.map(group => group.user_group) || []
+  );
+  React.useEffect(() => {
+    setMyGroups(groups?.user_group_members?.map(group => group.user_group) || []);
+  }, [groups]);
     
 
   return (
-    <Provider value={{user, loading, listAndFollows}}>
-      { user && !user.email.endsWith('@edgein.io') ? <FullStory org={FULLSTORY_ORG_ID} /> : null}
-      { props.children}
+    <Provider
+      value={{ user: user || null, loading, listAndFollows, myGroups, refetchMyGroups }}
+    >
+      {user && !user.email.endsWith("@edgein.io") ? (
+        <FullStory org={FULLSTORY_ORG_ID} />
+      ) : null}
+      {props.children}
     </Provider>
-  )
+  );
 }
 export { UserProvider, useUser };

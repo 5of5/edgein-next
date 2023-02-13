@@ -15,14 +15,17 @@ export const EditSection: FC<PropsWithChildren<Props>> = ({
 	return (
 		<>
 			<section
-				className={`py-4 sm:grid sm:grid-cols-5 sm:gap-6 sm:py-5 ${className}`}
+				className={`py-4 lg:grid lg:grid-cols-5 lg:gap-6 lg:py-5 ${className}`}
 			>
 				{heading && <dt className="font-bold">{heading}</dt>}
-				<dd className="mt-1 sm:flex sm:col-span-4 sm:mt-0">
-					<div className="flex-grow">{children}</div>
-					{right && (
-						<div className="mt-4 flex-shrink-0 sm:mt-0 sm:ml-4">{right}</div>
-					)}
+				<dd className="mt-1 lg:flex lg:col-span-4 lg:mt-0">
+					<div className="flex-grow">
+						<div className="max-w-xl">{children}</div>
+					</div>
+
+					<div className="mt-4 flex-shrink-0 flex lg:justify-end lg:items-start lg:mt-0 lg:ml-4 lg:min-w-[100px]">
+						{right ? right : ""}
+					</div>
 				</dd>
 			</section>
 		</>

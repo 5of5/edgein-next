@@ -18,8 +18,16 @@ import OnboardingStep2 from "@/components/Onboarding/OnboardingStep2";
 import OnboardingStep3 from "@/components/Onboarding/OnboardingStep3";
 import { useUser } from "@/context/userContext";
 import ElemSearchBox from "./ElemSearchBox";
+import { find, kebabCase, first } from "lodash";
+import { getNameFromListName } from "@/utils/reaction";
 
-export type Popups = 'login' | 'forgotPassword' | 'search' | 'signup' | 'usage' | false
+export type Popups =
+	| "login"
+	| "forgotPassword"
+	| "search"
+	| "signup"
+	| "usage"
+	| false;
 
 type Props = {
 	showPopup: Popups;
@@ -28,7 +36,16 @@ type Props = {
 
 export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const router = useRouter();
-	const { user, loading } = useUser();
+	const { user, loading, listAndFollows, myGroups } = useUser();
+
+	const hotListId =
+		find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
+		0;
+	const myListsUrl = `/lists/${hotListId}/hot`;
+
+	const getFirstGroup = first(myGroups ? myGroups : null);
+
+	const myGroupsUrl = getFirstGroup ? `/groups/${getFirstGroup.id}/` : "";
 
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
@@ -48,14 +65,20 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			onboardingStep === 0 &&
 			router.asPath.includes("/login/")
 		) {
-			setShowPopup(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
+			setShowPopup(
+				router.asPath.includes("/login/")
+					? router.asPath.includes("?usage=true")
+						? "usage"
+						: "login"
+					: false
+			);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.asPath]);
 
 	useHotkeys("ctrl+k, command+k", function (event) {
 		event.preventDefault();
-		setShowPopup('search');
+		setShowPopup("search");
 	});
 
 	const showOnboarding = async () => {
@@ -72,7 +95,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		}
 	}, [loading, user]);
 
-	const siteNav = [
+	let siteNav = [
 		{
 			path: "/companies",
 			name: "Companies",
@@ -86,6 +109,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		// 	name: "Events",
 		// },
 	];
+
+	if (user) {
+		siteNav.push({ path: myListsUrl, name: "My Lists" });
+	}
 
 	const getAccessTokenFromCode = async (code: string) => {
 		try {
@@ -104,7 +131,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 				const responseText = await response.clone().json();
 				if (responseText.message) {
 					setLinkedInError(responseText.message);
-					setShowPopup('login');
+					setShowPopup("login");
 				}
 			} else {
 				window.location.href = "/";
@@ -121,7 +148,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 				const res = await getAccessTokenFromCode(router.query.code as string);
 			})();
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.query.code]);
 
 	useEffect(() => {
@@ -134,34 +161,33 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	}, [router.query.invite, user]);
 
 	const onBackFromForgotPassword = () => {
-		setShowPopup('login')
+		setShowPopup("login");
 	};
 
 	const onModalClose = () => {
-		setShowPopup(router.asPath.includes("/login/") ? 'login' : false)
-
+		setShowPopup(router.asPath.includes("/login/") ? "login" : false);
 	};
 
 	const showLoginModal = () => {
-		setShowPopup('login')
+		setShowPopup("login");
 	};
 
 	const showSignUpModal = (email: string, password: string) => {
 		setEmailFromLogin(email ? email : "");
 		setPasswordFromLogin(password ? password : "");
-		setShowPopup('signup')
+		setShowPopup("signup");
 	};
 
 	return (
 		<header className="overflow-y-visible z-40 shadow bg-white">
-			<div className="mx-auto px-1 py-1 sm:px-6 lg:px-8">
+			<div className="mx-auto px-1 py-1 sm:px-3">
 				<nav
-					className="flex items-center justify-between lg:justify-start w-full max-w-screen-2xl mx-auto transition-all"
+					className="flex items-center justify-between lg:justify-start w-full mx-auto transition-all"
 					aria-label="Global"
 				>
 					<div className="flex items-center">
 						<div className="flex-none lg:mr-4">
-							<Link href="/" passHref>
+							<Link href={user ? "/companies" : "/"} passHref>
 								<a>
 									<ElemLogo
 										mode="logo"
@@ -173,7 +199,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					</div>
 					<ElemSearchBox
 						onClick={() => {
-							setShowPopup('search')
+							setShowPopup("search");
 						}}
 					/>
 
@@ -189,26 +215,26 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						{user ? (
 							<>
 								<ElemButton
-									onClick={() => setShowPopup('search')}
+									onClick={() => setShowPopup("search")}
 									btn="slate"
 									className="h-9 w-9 !px-0 !py-0 sm:hidden"
 								>
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
 								{/* <NotificationAlerts /> */}
-								<UserMenu className="hidden lg:block" />
+								<UserMenu className="" />
 							</>
 						) : (
 							<>
 								<ElemButton
-									onClick={() => setShowPopup('login')}
+									onClick={() => setShowPopup("login")}
 									btn="ol-primary"
 									className="px-2.5 sm:px-3"
 								>
 									Log In
 								</ElemButton>
 								<ElemButton
-									onClick={() => setShowPopup('signup')}
+									onClick={() => setShowPopup("signup")}
 									btn="primary"
 									className="px-2.5 sm:px-3"
 								>
@@ -217,20 +243,24 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							</>
 						)}
 
-						<MobileNav className="flex lg:hidden items-center ml-2" />
+						<MobileNav
+							className="flex lg:hidden items-center ml-2"
+							myListsUrl={myListsUrl}
+							myGroupsUrl={myGroupsUrl}
+						/>
 					</div>
 
 					<UsageModal
 						onSignUp={showSignUpModal}
-						show={showPopup === 'usage'}
+						show={showPopup === "usage"}
 						onClose={onModalClose}
 					/>
 
 					<LoginModal
 						linkedInError={linkedInError}
 						onSignUp={showSignUpModal}
-						onForgotPassword={() => setShowPopup('forgotPassword')}
-						show={showPopup === 'login'}
+						onForgotPassword={() => setShowPopup("forgotPassword")}
+						show={showPopup === "login"}
 						onClose={onModalClose}
 					/>
 					<SignUpModal
@@ -238,16 +268,16 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						passwordFromLogin={passwordFromLogin}
 						emailFromLogin={emailFromLogin}
 						onLogin={showLoginModal}
-						show={showPopup === 'signup'}
+						show={showPopup === "signup"}
 						onClose={onModalClose}
 					/>
 					<ForgotPasswordModal
-						show={showPopup === 'forgotPassword'}
+						show={showPopup === "forgotPassword"}
 						onClose={onModalClose}
 						onBack={onBackFromForgotPassword}
 					/>
 					<SearchModal
-						show={showPopup === 'search'}
+						show={showPopup === "search"}
 						onClose={() => setShowPopup(false)}
 					/>
 					{onboardingStep === 1 && (

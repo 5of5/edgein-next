@@ -1,5 +1,6 @@
 import CookieService from "../utils/cookie";
 import { NextResponse, NextRequest } from "next/server";
+import datadome from '@/lib/datadome';
 
 const USAGE_LIMIT = 5
 
@@ -20,6 +21,7 @@ export async function middleware(req: NextRequest) {
 			`/team/`,
 			`/404/`,
 			`/api/login_attempt/`,
+			`/api/graphql_query/`,
 			`/api/get_access_token/`,
 			`/api/refresh_token/`,
 			`/api/login/`,
@@ -30,6 +32,7 @@ export async function middleware(req: NextRequest) {
 			`/api/access_token_from_code/`,
 			`/api/stripe_webhook/`,
 			`/admin/app/`,
+			`/admin/admin/`
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
@@ -37,14 +40,14 @@ export async function middleware(req: NextRequest) {
 		// process.env.DEV_MODE
 		|| req.method === 'HEAD'
 	) {
-		return NextResponse.next();
+		return datadome(req);
 	}
 
 	if (
 		url.searchParams.get("revalidation_auth") ===
 		process.env.REVALIDATION_AUTH_TOKEN
 	) {
-		return NextResponse.next();
+		return datadome(req);
 	}
 	let user;
 	try {
@@ -72,5 +75,5 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	return NextResponse.next();
+	return datadome(req);
 }

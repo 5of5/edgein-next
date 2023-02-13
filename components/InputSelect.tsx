@@ -17,6 +17,9 @@ type Props = {
 	placeholder?: any;
 	onChange?: any;
 	options: Record<string, any>[];
+	disabled?: boolean;
+	multiple?: boolean;
+	by?: string;
 };
 
 export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
@@ -26,6 +29,9 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 	value, //{title: "", description: ""}
 	placeholder = "",
 	options,
+	disabled = false,
+	multiple = false,
+	by,
 	onChange,
 }) => {
 	const displayIcon = (val: string | number, className: string) => {
@@ -46,19 +52,49 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<div className={className}>
-			<Listbox value={value} onChange={onChange}>
-				{({ open }) => (
+			<Listbox
+				value={value}
+				onChange={onChange}
+				disabled={disabled}
+				multiple={multiple}
+				by={by}
+			>
+				{({ open, disabled }) => (
 					<>
 						<div className="relative">
 							<Listbox.Button
-								className={`relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses}`}
+								className={`relative w-full appearance-none border-none text-dark-500 bg-white rounded-md pl-3 pr-10 py-1.5 text-left cursor-pointer ring-1 ring-slate-300 hover:ring-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500 ${buttonClasses} ${
+									disabled ? "bg-slate-200 cursor-not-allowed" : ""
+								}`}
 							>
-								<div className={` ${className} truncate`}>
-									{value?.title ? value.title : placeholder}
-									<span className="text-gray-400 text-sm ml-2">
-										{value?.description && value.description}
-									</span>
-								</div>
+								{multiple ? (
+									<div
+										className={`${className} min-h-[24px] flex items-center flex-wrap gap-2`}
+									>
+										{value?.length === 0 && (
+											<Listbox.Label className="text-gray-400">
+												{placeholder}
+											</Listbox.Label>
+										)}
+
+										{value.map((item: any) => (
+											<span
+												key={item.id}
+												className="bg-slate-100 rounded-md px-2 py-1"
+											>
+												{item.title}
+											</span>
+										))}
+									</div>
+								) : (
+									<div className={` ${className} truncate`}>
+										{value?.title ? value.title : placeholder}
+										<span className="text-gray-400 text-sm ml-2">
+											{value?.description && value.description}
+										</span>
+									</div>
+								)}
+
 								<div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
 									<IconSelector className="h-5 w-5 text-gray-400" />
 								</div>
@@ -86,7 +122,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 												}  select-none relative py-2 pl-3 pr-4 ${
 													option.disabled
 														? "cursor-not-allowed opacity-50"
-														: "cursor-default"
+														: "cursor-pointer"
 												}`
 											}
 											disabled={option.disabled ? option.disabled : false}

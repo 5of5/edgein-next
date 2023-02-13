@@ -12,19 +12,19 @@ import toast, { Toaster } from "react-hot-toast";
 
 type Props = {
 	user: any;
+	personSlug?: string | null | undefined;
 };
 
-export const ElemShareMenu = ({ user }: Props) => {
-	const getInviteLink = (invitecode: string) => {
-		const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${invitecode}`;
+export const ElemShareMenu = ({ user, personSlug }: Props) => {
+	const getInviteLink = () => {
+		const inviteCode = personSlug || user.reference_id;
+		const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
 		return inviteLink;
 	};
 
 	const onTelegram = () => {
 		window.open(
-			`https://telegram.me/share/url?url=${getInviteLink(
-				user.reference_id
-			)}&text=${
+			`https://telegram.me/share/url?url=${getInviteLink()}&text=${
 				user.display_name
 			} has invited you to join EdgeIn. Help democratize web3 data! Use this link for access`,
 			"_blank"
@@ -35,9 +35,7 @@ export const ElemShareMenu = ({ user }: Props) => {
 		window.open(
 			`sms:?&body=${
 				user.display_name
-			} has invited you to join EdgeIn. Help democratize web3 data! Use this link for access: ${getInviteLink(
-				user.reference_id
-			)}`,
+			} has invited you to join EdgeIn. Help democratize web3 data! Use this link for access: ${getInviteLink()}`,
 			""
 		);
 	};
@@ -49,15 +47,13 @@ export const ElemShareMenu = ({ user }: Props) => {
 			} has invited you to join Edge In!&body=Hey there! %0D%0A %0D%0A
 	       	${
 		user.display_name
-	} has invited you to join EdgeIn. Help democratize web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink(
-				user.reference_id
-			)}`,
+	} has invited you to join EdgeIn. Help democratize web3 data! EdgeIn combines highly refined automated processes, the personalization of human intelligence, and the meaningful utility of blockchain technologies, to give you an unparalleled edge in Web3. Use this link for access: ${getInviteLink()}`,
 			""
 		);
 	};
 
 	const onCopy = async () => {
-		navigator.clipboard.writeText(getInviteLink(user.reference_id));
+		navigator.clipboard.writeText(getInviteLink());
 		toast.custom(
 			(t) => (
 				<div
@@ -86,7 +82,7 @@ export const ElemShareMenu = ({ user }: Props) => {
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
 				<Menu.Button as="div">
-					<ElemButton btn="white">
+					<ElemButton btn="primary-light">
 						<IconShare className="h-5 w-5 mr-1.5" aria-hidden="true" />
 						Share
 					</ElemButton>

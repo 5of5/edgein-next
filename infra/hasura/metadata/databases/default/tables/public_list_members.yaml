@@ -14,3 +14,13 @@ object_relationships:
         insertion_order: null
         column_mapping:
           user_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - list_id
+        - user_id
+        - member_type
+      filter: {}
+      limit: 50

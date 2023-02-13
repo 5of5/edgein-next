@@ -7,7 +7,7 @@ import {
 } from "@/utils/reaction";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
-import { IconX, IconSaveToList } from "@/components/Icons";
+import { IconX, IconListPlus, IconCustomList } from "@/components/Icons";
 import { Dialog, Transition } from "@headlessui/react";
 import { InputCheckbox } from "@/components/InputCheckbox";
 import toast, { Toaster } from "react-hot-toast";
@@ -59,6 +59,7 @@ export const ElemSaveToList: FC<Props> = ({
 						name: listName,
 						id: -1,
 						created_by_id: user.id,
+						created_at: "",
 						follows_companies: [],
 						follows_vcfirms: [],
 						total_no_of_resources: 0,
@@ -165,7 +166,7 @@ export const ElemSaveToList: FC<Props> = ({
 				roundedFull={true}
 				className="px-2.5"
 			>
-				<IconSaveToList className="w-5 h-5 mr-1" />
+				<IconListPlus className="w-5 h-5 mr-1" />
 				Save
 			</ElemButton>
 
@@ -199,10 +200,8 @@ export const ElemSaveToList: FC<Props> = ({
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-scroll overscroll-y-none no-scrollbar">
-								<div className="flex items-center justify-between px-3 py-1 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
-									<h2 className="text-lg font-bold text-white">Save to List</h2>
-
+							<Dialog.Panel className="relative max-w-sm w-full mx-auto rounded-lg shadow-2xl my-7 bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide">
+								<div className="absolute top-1 right-1">
 									<button
 										onClick={() => {
 											setIsOpen(false), setShowNew(false);
@@ -214,8 +213,28 @@ export const ElemSaveToList: FC<Props> = ({
 										<IconX className="h-6 w-6 text-white" />
 									</button>
 								</div>
+								<div className="flex items-center justify-between px-3 py-1.5 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
+									<Dialog.Title>
+										<h2 className="text-lg font-bold text-white">
+											Save to List
+										</h2>
+									</Dialog.Title>
+								</div>
 
-								<ul className="max-h-96 overflow-y-scroll no-scrollbar divide-y divide-slate-100">
+								{/* {listsData.length === 0 && (
+									<div className="p-3">
+										<div className="flex items-center justify-center w-10 aspect-square rounded-full bg-primary-100">
+											<IconCustomList className="w-6 aspect-square text-primary-500" />
+										</div>
+										<h2 className="text-lg font-bold">No lists yet</h2>
+										<p className="text-slate-500">
+											EdgeIn allows you to efficiently create lists of companies
+											and investors that matter to you.
+										</p>
+									</div>
+								)} */}
+
+								<ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-slate-100">
 									{listsData?.map((list) => {
 										const selected = isSelected(list);
 
@@ -235,21 +254,21 @@ export const ElemSaveToList: FC<Props> = ({
 									})}
 								</ul>
 
-								{!showNew && (
-									<div className="bg-gray-50 border-t border-slate-300">
+								{!showNew && listsData.length > 0 && (
+									<div className="border-t border-slate-300">
 										<ElemButton
 											btn="transparent"
 											onClick={() => setShowNew(true)}
 											className="py-3 w-full !justify-start"
 										>
-											<IconSaveToList className="w-6 h-6 mr-1" />
+											<IconListPlus className="w-6 h-6 mr-1" />
 											Create new list
 										</ElemButton>
 									</div>
 								)}
 
-								{showNew && (
-									<div className="p-3 bg-gray-50 border-t border-slate-300 ease-in-out duration-300">
+								{(showNew || listsData.length === 0) && (
+									<div className="p-3 border-t border-slate-300 ease-in-out duration-300">
 										<InputText
 											label="Name"
 											type="text"

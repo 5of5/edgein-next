@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import {
   Button,
   FunctionField,
@@ -8,15 +8,29 @@ import {
   EditButton,
   TextInput,
   SelectField,
+  ReferenceField,
   ReferenceArrayField,
+  SingleFieldList,
+  ChipField,
   NumberField,
   ReferenceInput,
   SelectInput,
-  ChipField,
-  SingleFieldList,
+  SelectArrayInput,
 } from "react-admin";
-import { companyLayerChoices } from "../../../utils/constants";
+import { Chip } from '@mui/material';
+import { companyLayerChoices, tags } from "../../../utils/constants";
 import ElemList from "../ElemList";
+import { useAuth } from "@/hooks/useAuth";
+
+type QuickFilterProps = {
+  label: string;
+  source: string;
+  defaultValue: any;
+}
+
+const QuickFilter: FC<QuickFilterProps> = ({ label }) => {
+  return <Chip label={label} />;
+};
 
 const filters = [
   <TextInput
@@ -46,12 +60,26 @@ const filters = [
     label="Layer"
     choices={companyLayerChoices}
   />,
+  <SelectArrayInput
+    key="tags"
+    source="tags@_contains"
+    label="Tags"
+    choices={tags}
+  />,
+  <QuickFilter
+    key="status_tags"
+    source="status_tags@_contains"
+    label="Trending"
+    defaultValue="Trending"
+  />,
 ];
 
 export const CompanyList = () => {
+  const { user } = useAuth();
+
   return (
     <ElemList filters={filters}>
-      <EditButton />
+      { user?.role !== "cms-readonly" && <EditButton /> }
       <FunctionField
         render={(record: any) => (
           <a
@@ -67,6 +95,38 @@ export const CompanyList = () => {
       <TextField source="name" />
       <TextField source="slug" />
       <ImageField className="logoFile" source="logo.url" label="Logo" />
+      <ReferenceArrayField
+        label="Child companies"
+        source="child_companies"
+        reference="companies"
+      >
+        <SingleFieldList>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
+      <ReferenceArrayField
+        label="Child vc firms"
+        source="child_vc_firms"
+        reference="vc_firms"
+      >
+        <SingleFieldList>
+          <ChipField source="name" />
+        </SingleFieldList>
+      </ReferenceArrayField>
+      <ReferenceField
+        label="Parent company"
+        source="parent_company"
+        reference="companies"
+      >
+        <TextField source="name" />
+      </ReferenceField>
+      <ReferenceField
+        label="Parent vc firm"
+        source="parent_vc_firm"
+        reference="vc_firms"
+      >
+        <TextField source="name" />
+      </ReferenceField>
       <SelectField source="layer" choices={companyLayerChoices} />
       <TextField source="layer_detail" />
       <ReferenceArrayField label="Coins" source="coin_ids" reference="coins">
@@ -111,6 +171,7 @@ export const CompanyList = () => {
       <TextField source="aliases" />
       <TextField source="twitter" />
       <TextField source="location" />
+      <TextField source="location_json" />
       <TextField source="discord" />
       <TextField source="glassdoor" />
       <FunctionField

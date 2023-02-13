@@ -1,0 +1,23 @@
+query GetNotificationsForUser($user: Int!) {
+  notifications(where: {target_user_id: {_eq: $user}}, order_by: {created_at: desc}, limit: 10) {
+    read
+    created_at
+    event_type
+    message
+    read_at
+    follow_resource_type
+    notification_resource_type
+    company {
+      id
+      name
+      slug
+      logo
+    }
+    vc_firm {
+      id
+      name
+      slug
+      logo
+    }
+  }
+}

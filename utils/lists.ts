@@ -129,8 +129,8 @@ export const upsertList = async (listname: string, user: User, token: string) =>
   // check list membership exists
   await mutate({
     mutation: `
-    mutation upsert_follows($userId: Int!, $listId: Int!) {
-      insert_list_members_one(object: {user_id: $userId, list_id: $listId}, on_conflict: {update_columns: user_id, constraint: list_members_list_id_user_id_key }) {
+    mutation upsert_membership($userId: Int!, $listId: Int!) {
+      insert_list_members_one(object: {user_id: $userId, list_id: $listId, member_type: "owner"}, on_conflict: {update_columns: user_id, constraint: list_members_list_id_user_id_key }) {
         id
       }
     }
@@ -185,3 +185,123 @@ export const deleteFollowIfExists = async (list: Lists, resourceId: string, reso
 
   return returning.length
 }
+
+export const getFollowsByResource = async (resourceId: number, resourceType: string) => {
+  const {
+    data: { follows }
+  } = await query({
+    query: `
+      query findLists($resourceId: Int!, $resourceType: String!) {
+        follows(where: {
+          _and: [
+            {resource_id: {_eq: $resourceId}},
+            {resource_type: {_eq: $resourceType}}
+          ]
+        }) {
+          id
+          list_id
+          list {
+            list_members {
+              id
+              user_id
+            }
+          }
+        }
+      }
+    `,
+    variables: { resourceId, resourceType },
+  });
+  return follows;
+}
+
+export const findListMemberOne = async (list_id: number, user_id: number) => {
+  const {
+    data: { list_members },
+  } = await query({
+    query: `
+      query FindListMemberOne($list_id: Int!, $user_id: Int!) {
+        list_members(where: {
+          _and: [
+            {list_id: {_eq: $list_id}},
+            {user_id: {_eq: $user_id}}
+          ]
+        }, limit: 1) {
+          id
+          list_id
+          user_id
+          member_type
+        }
+      }
+      `,
+    variables: { list_id, user_id },
+  });
+
+  return list_members[0];
+};
+
+export const deleteListMember = async (id: number) => {
+  const {
+    data: { delete_list_members },
+  } = await mutate({
+    mutation: `
+        mutation DeleteListMember($id: Int!) {
+          delete_list_members(where: {id: {_eq: $id}}) {
+            affected_rows
+            returning {
+              id
+            }
+          }
+        }
+        `,
+    variables: {
+      id,
+    },
+  });
+  return delete_list_members.returning[0];
+};
+
+export const insertListMembers = async (
+  list_id: number,
+  user_id: number,
+  member_type: string
+) => {
+  const {
+    data: { insert_list_members_one },
+  } = await mutate({
+    mutation: `
+        mutation InsertListMembers($object: list_members_insert_input!) {
+          insert_list_members_one(
+            object: $object
+          ) {
+            id
+            member_type
+            list_id
+            list {
+              id
+              name
+              created_at
+              created_by {
+                id
+                display_name
+                email
+              }
+            }
+            user_id
+            user {
+              id
+              display_name
+              email
+            }
+          }
+        }
+        `,
+    variables: {
+      object: {
+        list_id,
+        user_id,
+        member_type,
+      },
+    },
+  });
+  return insert_list_members_one;
+};

@@ -1,6 +1,6 @@
 import { CookieSerializeOptions, serialize } from "cookie"
 import { nanoid } from 'nanoid'
-import { User } from "@/models/User"
+import { UserToken } from "@/models/User"
 import { jwtVerify, SignJWT } from 'jose'
 import type { NextApiResponse } from 'next'
 
@@ -79,7 +79,7 @@ async function getUser(token: string) {
     return null
   }
   let userStr = payload.user as string
-  let user: User | null = null
+  let user: UserToken | null = null
   if (userStr.startsWith('{')) {
     try {
       user = JSON.parse(userStr)
@@ -115,7 +115,7 @@ async function getUsage(token: string) {
   return usage
 }
 
-async function createUserToken(userData: {}) {
+async function createUserToken(userData: UserToken) {
   return new SignJWT({ user: JSON.stringify(userData), ...hasuraClaims })
       .setProtectedHeader({ alg: 'HS256' })
       .setJti(nanoid())

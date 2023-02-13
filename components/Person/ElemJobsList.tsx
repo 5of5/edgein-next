@@ -39,7 +39,7 @@ export const ElemJobsList: React.FC<Props> = ({
 											<a className="flex items-center justify-center h-10 w-10 p-1 aspect-square shrink-0 bg-white rounded-lg border border-black/10">
 												<img
 													className="object-contain w-full h-full"
-													src={team.company?.logo.url}
+													src={team.company?.logo?.url}
 													alt={team.company?.name || "Logo"}
 												/>
 											</a>

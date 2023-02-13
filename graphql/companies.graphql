@@ -30,6 +30,7 @@ query GetCompany($slug: String!) {
 		sentiment
 		twitter
 		location
+		location_json
 		discord
 		glassdoor
 		teamMembers {
@@ -72,6 +73,50 @@ query GetCompany($slug: String!) {
 				amount
 			}
 		}
+    to_links {
+			id
+			link_type
+      from_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+      from_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+    }
+    from_links {
+			id
+			link_type
+      to_company {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+      to_vc_firm {
+				id
+				name
+				slug
+				tags
+				sentiment
+				overview
+				logo
+      }
+    }		
 	}
 }
 

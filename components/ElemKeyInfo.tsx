@@ -1,4 +1,5 @@
 import React from "react";
+import { values, isEmpty } from "lodash";
 import {
 	IconProps,
 	IconGlobe,
@@ -15,12 +16,13 @@ import {
 	IconTwitter,
 	IconDiscord,
 	IconGlassdoor,
-} from "./Icons";
-
+	IconEye,
+} from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
-} from "../utils";
+} from "@/utils";
+import { getFullAddress } from "@/utils/helpers";
 
 type Props = {
 	className?: string;
@@ -31,15 +33,18 @@ type Props = {
 	totalEmployees?: number;
 	yearFounded?: string | null;
 	location?: string | null;
+	locationJson?: any;
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
+	showEmails?: boolean;
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
+	onEmailClick?: () => void;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -53,14 +58,25 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	roles,
 	investmentsLength = 0,
 	emails = [],
+	showEmails,
+	onEmailClick,
 	linkedIn,
 	github,
 	careerPage,
 	location,
+	locationJson,
 	twitter,
 	discord,
 	glassdoor,
 }) => {
+	const isEmptyLocationJson = values(locationJson).every(isEmpty);
+	let locationText = "";
+	if (!isEmptyLocationJson) {
+		locationText = getFullAddress(locationJson);
+	} else if (location) {
+		locationText = location;
+	}
+
 	let infoItems: {
 		icon?: React.FC<IconProps>;
 		link?: string;
@@ -93,10 +109,10 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				" Total Funding Raised",
 		});
 	}
-	if (location) {
+	if (locationText) {
 		infoItems.push({
 			icon: IconLocation,
-			text: location,
+			text: locationText,
 		});
 	}
 	if (totalEmployees) {
@@ -174,6 +190,8 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 	const baseClasses = "flex space-x-2 py-1 px-2 rounded-md";
 
+	const upgrade = true;
+
 	return (
 		<section className={className}>
 			{heading && <h2 className="text-xl font-bold mb-2">{heading}</h2>}
@@ -188,7 +206,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 									className="h-6 w-6 shrink-0 text-dark-500"
 								/>
 							)}
-							<span>{item.text}</span>
+							<span className="break-words min-w-0">{item.text}</span>
 						</>
 					);
 
@@ -213,18 +231,50 @@ export const ElemKeyInfo: React.FC<Props> = ({
 						</li>
 					);
 				})}
-				{emails && emails.length > 0 && (
-					<li>
+
+				{/* Old */}
+				{!upgrade && emails?.length > 0 && (
+					<>
 						{emails.map((_email, i: number) => [
-							i > 0 && ", ",
-							<a
+							<li
 								key={i}
-								className={`${baseClasses} flex-1 transition-all cursor-not-allowed hover:blur-sm hover:bg-slate-200`}
+								className={`${baseClasses} flex-1 items-center justify-between transition-all`}
 							>
-								&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-							</a>,
+								<div className="flex items-center">
+									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
+									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+								</div>
+							</li>,
 						])}
-					</li>
+					</>
+				)}
+
+				{/* New */}
+				{upgrade && (
+					<>
+						{emails.map((email, i: number) => [
+							<li
+								key={i}
+								onClick={onEmailClick}
+								className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+							>
+								<div className="flex items-center">
+									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
+									{showEmails ? (
+										email
+									) : (
+										<>
+											&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+										</>
+									)}
+								</div>
+								<div className="flex items-center text-primary-500">
+									<IconEye className="h-5 w-5 shrink-0 mr-1" />
+									show
+								</div>
+							</li>,
+						])}
+					</>
 				)}
 			</ul>
 		</section>

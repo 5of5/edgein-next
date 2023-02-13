@@ -18,11 +18,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const email: string = req.body.email;
   const user_group_id: number = req.body.groupId;
 
-  const userData = await UserService.findOneUserByEmail(email);
+  const existedInvites = await GroupService.onCheckGroupInviteExists(email, user_group_id);
 
-  if (userData) {
-    await GroupService.onAddGroupMember(userData.id, user_group_id);
+  if (existedInvites) {
+    return res.status(400).json({ message: `An invitation with email ${email} already exists` });
   }
+
+  const userData = await UserService.findOneUserByEmail(email);
 
   const {
     data: { insert_user_group_invites_one },
@@ -35,11 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id
           email
           user_group_id
-          user_group {
-            id
-            name
-            description
-          }
+          created_by_user_id
         }
       }
     `,
@@ -47,11 +45,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       object: {
         email,
         user_group_id,
+        created_by_user_id: user?.id,
       },
     },
   });
 
-  res.send(insert_user_group_invites_one);
+  if (userData) {
+    const member = await GroupService.onAddGroupMember(userData.id, user_group_id);
+    return res.send({ member, invite: insert_user_group_invites_one });
+  }
+
+  return res.send({ member: null, invite: insert_user_group_invites_one });
 };
 
 export default handler;

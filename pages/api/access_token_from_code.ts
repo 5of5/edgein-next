@@ -1,7 +1,7 @@
 import qs from "qs";
 import UserService from "../../utils/users";
 import CookieService from "../../utils/cookie";
-import auth0Library from "../../utils/auth0Library";
+import auth0Library from "../../utils/auth0-library";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { createHmac } from "crypto";
 
@@ -174,27 +174,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				}
 			}
 
-			const hmac = createHmac(
-				"sha256",
-				"vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"
-			);
-			hmac.update(String(userData.id));
+			const newUserToken = UserService.createToken(userData, isFirstLogin);
 
 			// Author a couple of cookies to persist a user's session
-			const token = await CookieService.createUserToken({
-				id: userData.id,
-				intercomUserHash: hmac.digest("hex"),
-				email: userData.email,
-				role: userData.role,
-				publicAddress: userData.external_id,
-				isFirstLogin,
-				display_name: userData.display_name,
-				auth0_linkedin_id: userData.auth0_linkedin_id,
-				auth0_user_pass_id: userData.auth0_user_pass_id,
-				profileName: userData.person?.name,
-				profilePicture: userData.person?.picture,
-				reference_id: userData.reference_id,
-			});
+			const token = await CookieService.createUserToken(newUserToken);
 			CookieService.setTokenCookie(res, token);
 		}
 	} catch (ex: any) {

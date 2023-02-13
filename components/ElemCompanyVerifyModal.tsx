@@ -103,7 +103,6 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 		offset: null,
 		where: {
 			slug: { _neq: "" },
-			status: { _eq: "published" },
 			name: { _ilike: `%${search}%` },
 		} as Companies_Bool_Exp,
 	});
@@ -113,7 +112,6 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 		offset: null,
 		where: {
 			slug: { _neq: "" },
-			status: { _eq: "published" },
 			name: { _ilike: `%${search}%` },
 		} as Vc_Firms_Bool_Exp,
 	});
@@ -196,7 +194,7 @@ export const ElemCompanyVerifyModal: React.FC<Props> = ({
 								leaveFrom="opacity-100 scale-100"
 								leaveTo="opacity-0 scale-95"
 							>
-								<Dialog.Panel className="w-full max-w-xl transform overflow-y-auto rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+								<Dialog.Panel className="w-full max-w-xl transform overflow-y-auto rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
 									{!isEmailEntered ? (
 										<>
 											<Dialog.Title as="h3" className="text-2xl font-bold">

@@ -40,7 +40,6 @@ export const ElemCohort: FC<Props> = ({
 		_and: [
 			{
 				slug: { _neq: "" || currentSlug },
-				status: { _eq: "published" },
 			},
 			{ tags: { _contains: tag1 } },
 			{ tags: { _contains: tag2 } },

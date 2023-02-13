@@ -1,6 +1,7 @@
 query GetUserProfile ($id: Int!) {
   users_by_pk(id: $id) {
     id
+    billing_org_id
     organization_companies {
       id
       company {
