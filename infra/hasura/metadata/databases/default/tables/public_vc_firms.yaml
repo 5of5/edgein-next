@@ -34,6 +34,15 @@ array_relationships:
         table:
           schema: public
           name: investors
+  - name: news_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: news_organizations
+        insertion_order: null
+        column_mapping:
+          id: vc_firm_id
   - name: to_links
     using:
       manual_configuration:

@@ -86,6 +86,16 @@ query GetVCFirm($slug: String!) {
 				logo
 			}
 		}
+		news_links {
+			id
+			news {
+				id
+				date
+				text
+				link
+				status
+			}
+		}	
 	}
 }
 

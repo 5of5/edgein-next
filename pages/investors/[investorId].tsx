@@ -20,6 +20,7 @@ import {
 	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
+	News,
 	useGetVcFirmQuery,
 	Vc_Firms,
 } from "@/graphql/types";
@@ -35,6 +36,7 @@ import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
+	sortNews: Array<News>;
 	getInvestments: Array<Investment_Rounds>;
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -88,6 +90,17 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+
+	const sortActivities =
+    [...sortedInvestmentRounds, ...props.sortNews]
+      ?.slice()
+      .sort((a: any, b: any) => {
+        return (
+          new Date(a?.date || a?.round_date || "").getTime() -
+          new Date(b?.date || b?.round_date || "").getTime()
+        );
+      })
+      .reverse() || [];
 
 	//TabBar
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -245,7 +258,7 @@ const VCFirm: NextPage<Props> = (props) => {
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
 							<ElemOrganizationActivity
 								resourceType="vc_firms"
-								resourceInvestments={sortedInvestmentRounds}
+								resourceInvestments={sortActivities}
 								resourceName={vcfirm.name}
 							/>
 						</div>
@@ -328,6 +341,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		})
 		.reverse();
 
+	const sortNews =
+		vc_firms.vc_firms[0].news_links
+			?.slice()
+			?.map(item => ({...item.news, type: "news"}))
+			?.filter(item => item.status === "published")
+			.sort((a, b) => {
+				return (
+					new Date(a?.date ?? "").getTime() -
+					new Date(b?.date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
+
 	let metaTitle = null;
 	if (vc_firms.vc_firms[0].name) {
 		metaTitle =
@@ -340,6 +366,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			vcfirm: vc_firms.vc_firms[0],
 			getInvestments,
 			sortByDateAscInvestments,
+			sortNews,
 		},
 	};
 };
