@@ -10,11 +10,16 @@ import {
 	IconInformationCircle,
 } from "@/components/Icons";
 
+type VelocityTokenType = {
+	coin: string;
+	velocity: number;
+}
+
 type Props = {
 	className?: string;
 	heading?: string;
 	employeeListings?: string | null;
-	tokenExchangeValue?: number | null;
+	tokenExchangeValue?: (VelocityTokenType | null)[];
 };
 
 export const ElemVelocity: React.FC<Props> = ({
@@ -23,7 +28,7 @@ export const ElemVelocity: React.FC<Props> = ({
 	employeeListings = null,
 	tokenExchangeValue = null,
 }) => {
-	if (!employeeListings && !tokenExchangeValue) {
+	if (!employeeListings && tokenExchangeValue?.length === 0) {
 		return null;
 	}
 
@@ -41,11 +46,15 @@ export const ElemVelocity: React.FC<Props> = ({
 		});
 	}
 
-	if (tokenExchangeValue) {
-		velocityItems.push({
-			icon: IconCurrencyDollar,
-			text: "Token Exchange Value",
-			number: Number(tokenExchangeValue),
+	if (tokenExchangeValue && tokenExchangeValue.length > 0) {
+		tokenExchangeValue.forEach(element => {
+			if (element) {
+				velocityItems.push({
+					icon: IconCurrencyDollar,
+					text: `Token Exchange Value (${element?.coin})`,
+					number: Number(element?.velocity),
+				});
+			}
 		});
 	}
 

@@ -104,9 +104,14 @@ const Company: NextPage<Props> = (props: Props) => {
     );
     setTokenInfo(coinsInfo);
   }, []);
-	const velocityToken = tokenInfo[0]?.vol24H
-    ? Math.round((tokenInfo[0]?.vol24H / tokenInfo[0]?.marketCap) * 100) / 100
-    : null;
+	const velocityToken = tokenInfo.map(token => (
+		(token?.vol24H && token?.marketCap)
+    ? {
+				coin: token.ticker,
+				velocity: Math.round((token?.vol24H / token?.marketCap) * 100) / 100
+			}
+    : null
+	));
 
 	useEffect(() => {
 		if (company.overview) {
