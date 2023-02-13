@@ -22,6 +22,7 @@ import {
 	GetCompanyDocument,
 	GetCompanyQuery,
 	Investment_Rounds,
+	News,
 	useGetCompanyQuery,
 	//Investments,
 } from "@/graphql/types";
@@ -38,6 +39,7 @@ import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
+	sortNews: News[];
 	metrics: Metric[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -46,7 +48,6 @@ const Company: NextPage<Props> = (props: Props) => {
 	const { user } = useAuth();
 	const router = useRouter();
 	const { companyId } = router.query;
-
 	const [company, setCompany] = useState<Companies>(props.company);
 
 	const [tokenInfo, setTokenInfo] = useState<TokenInfo>({
@@ -123,6 +124,17 @@ const Company: NextPage<Props> = (props: Props) => {
 	}
 
 	const sortedInvestmentRounds = props.sortRounds;
+
+	const sortActivities =
+    [...sortedInvestmentRounds, ...props.sortNews]
+      ?.slice()
+      .sort((a: any, b: any) => {
+        return (
+          new Date(a?.date || a?.round_date || "").getTime() -
+          new Date(b?.date || b?.round_date || "").getTime()
+        );
+      })
+      .reverse() || [];
 
 	// Company tags
 	let companyTags: string[] = [];
@@ -395,7 +407,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
 								resourceType="companies"
-								resourceInvestments={sortedInvestmentRounds}
+								resourceInvestments={sortActivities}
 							/>
 						</div>
 					</div>
@@ -476,6 +488,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			})
 			.reverse() || [];
 
+	const sortNews =
+		company.news_links
+			?.slice()
+			?.map(item => ({...item.news, type: "news"}))
+			?.filter(item => item.status === "published")
+			.sort((a, b) => {
+				return (
+					new Date(a?.date ?? "").getTime() -
+					new Date(b?.date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
+
 	let metaTitle = null;
 	if (company.name) {
 		metaTitle =
@@ -493,6 +518,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			metaDescription,
 			company,
 			sortRounds,
+			sortNews,
 			metrics: tokenInfoMetrics,
 		},
 	};

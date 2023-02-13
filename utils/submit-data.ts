@@ -20,6 +20,7 @@ export type ResourceTypes =
   | "event_person"
   | "event_organization"
   | "resource_links"
+  | "news"
 ;
 
 export const partnerLookUp = async (apiKey: string) => {

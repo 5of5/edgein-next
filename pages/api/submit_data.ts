@@ -33,6 +33,7 @@ const NODE_NAME: Record<ResourceTypes, string> = {
 	event_person: "event_person",
 	event_organization: "event_organization",
 	resource_links: "resource_link",
+	news: "news",
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
