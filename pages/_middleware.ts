@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
 		// process.env.DEV_MODE
 		|| req.method === 'HEAD'
 	) {
-		return datadome(req);
+		return NextResponse.next();
 	}
 
 	if (
