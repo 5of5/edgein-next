@@ -115,7 +115,17 @@ query GetCompany($slug: String!) {
 				overview
 				logo
       }
-    }		
+    }
+		news_links {
+			id
+			news {
+				id
+				date
+				text
+				link
+				status
+			}
+		}	
 	}
 }
 
