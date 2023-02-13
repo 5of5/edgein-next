@@ -688,6 +688,9 @@ export const tags = [
 	"SaaS",
 	"Brand",
 	"Stablecoin",
+	"Media",
+	"Event",
+	"Cybersecurity"
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
@@ -717,3 +720,7 @@ export const eventPersonTypeChoices = [
     name: "Organizer",
   },
 ];
+
+export const DATADOME_TAGS = 'https://js.datadome.co/tags.js'
+
+export const DATADOME_JS = 'https://api-js.datadome.co/js/'
