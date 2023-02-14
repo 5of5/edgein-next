@@ -397,7 +397,7 @@ const InvestmentsFilters: NumericFilter[] = [
 	},
 	{
 		title: "5 or less Investments",
-		rangeStart: 1,
+		rangeStart: 0,
 		rangeEnd: 5,
 	},
 	{
