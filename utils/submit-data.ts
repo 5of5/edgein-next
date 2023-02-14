@@ -24,12 +24,12 @@ export type ResourceTypes =
 ;
 
 export const partnerLookUp = async (apiKey: string) => {
-	const {
-		data: {
-			data_partners: [data_partner],
-		},
-	} = await query({
-		query: `
+  const {
+    data: {
+      data_partners: [data_partner],
+    },
+  } = await query({
+    query: `
     query lookup_data_partner($apiKey: String!) {
       data_partners(where: {api_key: {_eq: $apiKey}}) {
         id
@@ -37,20 +37,20 @@ export const partnerLookUp = async (apiKey: string) => {
         api_key
       }
     }`,
-		variables: { apiKey },
-	});
-	return data_partner;
+    variables: { apiKey },
+  });
+  return data_partner;
 };
 
 export const resourceIdLookup = async (
-	resourceType: string,
-	resourceIdentifier: Array<Record<string, any>>,
+  resourceType: string,
+  resourceIdentifier: Array<Record<string, any>>,
 ) => {
-	if (!resourceIdentifier) {
-		return undefined;
-	}
+  if (!resourceIdentifier) {
+    return undefined;
+  }
 
-	try {
+  try {
     let argumentList: Array<string> = [];
     let filterClauses: Array<string> = [];
     let variables: Record<string, any> = {};
@@ -60,7 +60,7 @@ export const resourceIdLookup = async (
 
       let identifierMethod = item.method;
       if (!identifierMethod)
-		    identifierMethod = '_eq';
+        identifierMethod = '_eq';
 
       argumentList.push(`$${item.field}: ${typeof item.value === 'number' ? 'Int!' : 'String!'}`);
       filterClauses.push(`{${item.field}:{${identifierMethod}:$${item.field}}}`);
@@ -70,29 +70,29 @@ export const resourceIdLookup = async (
     if (argumentList.length == 0)
       return;
 
-		const { data } = await query({
-			query: `
+    const { data } = await query({
+      query: `
       query lookup_resource(${argumentList.join(', ')}) {
-				${resourceType}(where: {_and: [${filterClauses.join(', ')}]}) {
-					id
+        ${resourceType}(where: {_and: [${filterClauses.join(', ')}]}) {
+          id
         }
       }`,
-			variables,
-		});
+      variables,
+    });
 
-		return data[resourceType][0].id;
-	} catch (e) {
-		return;
-	}
+    return data[resourceType][0].id;
+  } catch (e) {
+    return;
+  }
 };
 
 export const fieldLookup = async (path: string) => {
-	const {
-		data: {
-			data_fields: [data_field],
-		},
-	} = await query({
-		query: `
+  const {
+    data: {
+      data_fields: [data_field],
+    },
+  } = await query({
+    query: `
     query lookup_data_field($path: String!) {
       data_fields(where: {path: {_eq: $path}}) {
         name
@@ -101,24 +101,24 @@ export const fieldLookup = async (path: string) => {
         regex_transform
         description
         regex_test
-				is_valid_identifier
+        is_valid_identifier
         restricted_admin
         data_type
       }
     }
     `,
-		variables: { path },
-	});
-	return data_field;
+    variables: { path },
+  });
+  return data_field;
 };
 
 export const insertDataRaw = async (data: Array<Record<string, any>>) => {
-	const {
-		data: {
-			insert_data_raw: { returning },
-		},
-	} = await mutate({
-		mutation: `
+  const {
+    data: {
+      insert_data_raw: { returning },
+    },
+  } = await mutate({
+    mutation: `
     mutation submit_data_raw($input: [data_raw_insert_input!]!) {
       insert_data_raw(objects: $input) {
         returning {
@@ -133,22 +133,22 @@ export const insertDataRaw = async (data: Array<Record<string, any>>) => {
       }
     }
     `,
-		variables: { input: data },
-	});
-	return returning;
+    variables: { input: data },
+  });
+  return returning;
 };
 
 export const updateMainTable = async (resourceType: string, id: Number, setValues: Record<string, any>) => {
-	await mutate({
-		mutation: `
+  await mutate({
+    mutation: `
     mutation update_main_table($id: Int!, $setValues: ${resourceType}_set_input!) {
       update_${resourceType}(_set: $setValues, where: {id: {_eq: $id}}) {
         affected_rows
       }
     }
     `,
-		variables: { id, setValues },
-	});
+    variables: { id, setValues },
+  });
 };
 
 export const deleteMainTableRecord = async (resourceType: string, id: Number) => {
@@ -270,11 +270,11 @@ export const insertResourceData = async (
 ) => {
   const { data } = await mutate({
     mutation: `
-			mutation insert_${resourceType}($object: ${resourceType}_insert_input!) {
-				insert_${resourceType}_one(object: $object) {
-						id
-				}
-			}
+      mutation insert_${resourceType}($object: ${resourceType}_insert_input!) {
+        insert_${resourceType}_one(object: $object) {
+            id
+        }
+      }
     `,
     variables: {
       object: properties,
@@ -399,8 +399,9 @@ export const mutateActionAndDataRaw = async (
   if (actionType === "Change Data")
     await updateMainTable(resourceType, resourceId, setMainTableValues);
   else if (actionType === "Insert Data") {
-			const response = await insertResourceData(resourceType, setMainTableValues);
-      validData.forEach(data => data.resource_id = response?.id);
+      const response = await insertResourceData(resourceType, setMainTableValues);
+      resourceId = response?.id
+      validData.forEach(data => data.resource_id = resourceId);
   }
   const insertResult = await insertDataRaw(validData);
 
