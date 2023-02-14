@@ -63,7 +63,7 @@ export default function SignUpModal(props: Props) {
 		if (validator.isEmail(value)) {
 			setEmailError("");
 		} else {
-			setEmailError("Please enter valid email.");
+			setEmailError("Please enter valid Web3 email.");
 		}
 	};
 
@@ -254,7 +254,7 @@ export default function SignUpModal(props: Props) {
 													onChange={(event) =>
 														validateName(event?.target.value)
 													}
-													placeholder="Full Name"
+													placeholder="Full name"
 													className={`${
 														nameError === ""
 															? "ring-1 ring-slate-200"
@@ -277,7 +277,7 @@ export default function SignUpModal(props: Props) {
 													onChange={(event) =>
 														validateEmail(event?.target.value)
 													}
-													placeholder="Email"
+													placeholder="Web3 work email"
 													className={`${
 														emailError === ""
 															? "ring-1 ring-slate-200"
