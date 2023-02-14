@@ -11,6 +11,7 @@ import {
   ActionType,
   getCompanyByRoundId,
   ResourceTypes,
+  NODE_NAME,
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
@@ -18,21 +19,6 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
-const NODE_NAME: Record<ResourceTypes, string> = {
-  companies: "company",
-  vc_firms: "vc_firm",
-  people: "people",
-  blockchains: "blockchain",
-  coins: "coin",
-  investment_rounds: "investment_round",
-  investments: "investment",
-  team_members: "team_member",
-  investors: "investor",
-  events: "event",
-  event_person: "event_person",
-  event_organization: "event_organization",
-  resource_links: "resource_link",
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!["POST", "PUT", "DELETE"].includes(req.method as string))

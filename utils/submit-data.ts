@@ -23,6 +23,22 @@ export type ResourceTypes =
   | "resource_links"
 ;
 
+export const NODE_NAME: Record<ResourceTypes, string> = {
+  companies: "company",
+  vc_firms: "vc_firm",
+  people: "people",
+  blockchains: "blockchain",
+  coins: "coin",
+  investment_rounds: "investment_round",
+  investments: "investment",
+  team_members: "team_member",
+  investors: "investor",
+  events: "event",
+  event_person: "event_person",
+  event_organization: "event_organization",
+  resource_links: "resource_link",
+};
+
 export const partnerLookUp = async (apiKey: string) => {
   const {
     data: {
@@ -62,7 +78,7 @@ export const resourceIdLookup = async (
       if (!identifierMethod)
         identifierMethod = '_eq';
 
-      argumentList.push(`$${item.field}: ${typeof item.value === 'number' ? 'Int!' : 'String!'}`);
+      argumentList.push(`$${item.field}: ${typeof item.value === 'number' || item.field === 'id' ? 'Int!' : 'String!'}`);
       filterClauses.push(`{${item.field}:{${identifierMethod}:$${item.field}}}`);
       variables[item.field] = item.value;
     }
@@ -244,7 +260,7 @@ export const onSubmitData = (
     body: JSON.stringify({
       partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
       resource_type: type,
-      resource_identifier: { field: "id", value: transformInput.id },
+      resource_identifier: [{ field: "id", value: transformInput.id }],
       resource,
     }),
   })
@@ -284,7 +300,7 @@ export const insertResourceData = async (
 };
 
 const notInsertValueType = (value: any) =>
-  value === "" ||
+  value === undefined || value === "" ||
   value === null ||
   (value &&
     Object.keys(value).length === 0 &&
@@ -346,6 +362,18 @@ export const mutateActionAndDataRaw = async (
 
   for (let field in resourceObj) {
     let value = resourceObj[field];
+    // If field is lookup pattern <resource_type>:<field>
+    // we convert the field to <resource_type>_id and lookup for its value
+    if (field.includes(':') && field.split(':').length == 2) {
+      let [lookupResourceType, lookupField] = field.split(':');
+      let lookupResource: string = NODE_NAME[lookupResourceType as ResourceTypes]
+
+      if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
+        value = await resourceIdLookup(lookupResourceType, [{field: lookupField, value}]);
+        field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+      }
+    }
+
     if (
       (actionType === "Insert Data" && !notInsertValueType(value)) ||
       actionType === "Change Data"
@@ -403,6 +431,7 @@ export const mutateActionAndDataRaw = async (
       resourceId = response?.id
       validData.forEach(data => data.resource_id = resourceId);
   }
+
   const insertResult = await insertDataRaw(validData);
 
   return { id: resourceId, action, resources: invalidData.concat(insertResult) };
