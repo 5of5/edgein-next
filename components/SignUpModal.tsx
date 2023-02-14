@@ -55,15 +55,26 @@ export default function SignUpModal(props: Props) {
 			setErrorMessage(
 				"Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character"
 			);
+			return true;
 		}
 	};
+
+	function isFreeEmail(email: string) {
+		const pattern = /@(gmail|yahoo|hotmail)/i;
+		return pattern.test(email);
+	}
 
 	const validateEmail = (value: string) => {
 		setEmail(value);
 		if (validator.isEmail(value)) {
+			if (isFreeEmail(value)) {
+				setEmailError("Please enter a work email.");
+				return true
+			}	
 			setEmailError("");
 		} else {
 			setEmailError("Please enter valid email.");
+			return true;
 		}
 	};
 
@@ -73,6 +84,7 @@ export default function SignUpModal(props: Props) {
 			setNameError("");
 		} else {
 			setNameError("Please enter your full name.");
+			return true;
 		}
 	};
 
@@ -96,9 +108,9 @@ export default function SignUpModal(props: Props) {
 	};
 
 	const onSignUp = async () => {
-		validateEmail(email);
-		validateName(name);
-		validate(password);
+		if (validateEmail(email) || validateName(name) || validate(password)) {
+			return;
+		}
 		if (!name || !email || !password) {
 			return;
 		}
