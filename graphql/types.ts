@@ -1551,6 +1551,7 @@ export type Companies = {
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
@@ -1819,6 +1820,7 @@ export type Companies_Bool_Exp = {
   investor_amount: InputMaybe<Bigint_Comparison_Exp>;
   layer: InputMaybe<String_Comparison_Exp>;
   layer_detail: InputMaybe<String_Comparison_Exp>;
+  library: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
@@ -2205,6 +2207,7 @@ export type Companies_Insert_Input = {
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -2259,6 +2262,7 @@ export type Companies_Max_Fields = {
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
@@ -2305,6 +2309,7 @@ export type Companies_Min_Fields = {
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
@@ -2378,6 +2383,7 @@ export type Companies_Order_By = {
   investor_amount: InputMaybe<Order_By>;
   layer: InputMaybe<Order_By>;
   layer_detail: InputMaybe<Order_By>;
+  library: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
@@ -2469,6 +2475,8 @@ export enum Companies_Select_Column {
   /** column name */
   LayerDetail = 'layer_detail',
   /** column name */
+  Library = 'library',
+  /** column name */
   Location = 'location',
   /** column name */
   LocationJson = 'location_json',
@@ -2544,6 +2552,7 @@ export type Companies_Set_Input = {
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -2653,6 +2662,8 @@ export enum Companies_Update_Column {
   Layer = 'layer',
   /** column name */
   LayerDetail = 'layer_detail',
+  /** column name */
+  Library = 'library',
   /** column name */
   Location = 'location',
   /** column name */
@@ -12141,6 +12152,7 @@ export type People = {
   investors: Array<Investors>;
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
+  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
@@ -12289,6 +12301,7 @@ export type People_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
+  library: InputMaybe<String_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
@@ -12353,6 +12366,7 @@ export type People_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
+  library: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
@@ -12378,6 +12392,7 @@ export type People_Max_Fields = {
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
@@ -12401,6 +12416,7 @@ export type People_Min_Fields = {
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
@@ -12449,6 +12465,7 @@ export type People_Order_By = {
   id: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
+  library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   personal_email: InputMaybe<Order_By>;
@@ -12496,6 +12513,8 @@ export enum People_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Library = 'library',
+  /** column name */
   Linkedin = 'linkedin',
   /** column name */
   Name = 'name',
@@ -12531,6 +12550,7 @@ export type People_Set_Input = {
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
+  library: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
@@ -12588,6 +12608,8 @@ export enum People_Update_Column {
   Github = 'github',
   /** column name */
   Id = 'id',
+  /** column name */
+  Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
   /** column name */
@@ -17744,6 +17766,7 @@ export type Vc_Firms = {
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
   latest_investment: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   logo: Maybe<Scalars['jsonb']>;
@@ -17971,6 +17994,7 @@ export type Vc_Firms_Bool_Exp = {
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
   latest_investment: InputMaybe<String_Comparison_Exp>;
+  library: InputMaybe<String_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
@@ -18322,6 +18346,7 @@ export type Vc_Firms_Insert_Input = {
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
   latest_investment: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -18347,6 +18372,7 @@ export type Vc_Firms_Max_Fields = {
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   latest_investment: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -18366,6 +18392,7 @@ export type Vc_Firms_Min_Fields = {
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   latest_investment: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -18411,6 +18438,7 @@ export type Vc_Firms_Order_By = {
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
   latest_investment: InputMaybe<Order_By>;
+  library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
@@ -18454,6 +18482,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   LatestInvestment = 'latest_investment',
   /** column name */
+  Library = 'library',
+  /** column name */
   Linkedin = 'linkedin',
   /** column name */
   Location = 'location',
@@ -18489,6 +18519,7 @@ export type Vc_Firms_Set_Input = {
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   latest_investment: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -18539,6 +18570,8 @@ export enum Vc_Firms_Update_Column {
   Id = 'id',
   /** column name */
   LatestInvestment = 'latest_investment',
+  /** column name */
+  Library = 'library',
   /** column name */
   Linkedin = 'linkedin',
   /** column name */
