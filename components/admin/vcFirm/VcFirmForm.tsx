@@ -178,6 +178,7 @@ const VcFirmForm = ({
             },
           }}
         />
+        <TextInput className={textInputClassName} source="library" />
       </SimpleForm>
     </div>
   );

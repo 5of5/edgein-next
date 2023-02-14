@@ -94,8 +94,11 @@ select_permissions:
       computed_fields:
         - num_of_investments
       filter:
-        status:
-          _eq: published
+        _and:
+          - status:
+              _eq: published
+          - library:
+              _eq: web3
       limit: 50
   - role: user
     permission:
@@ -132,7 +135,10 @@ select_permissions:
       computed_fields:
         - num_of_investments
       filter:
-        status:
-          _eq: published
+        _and:
+          - status:
+              _eq: published
+          - library:
+              _eq: web3
       limit: 50
       allow_aggregations: true

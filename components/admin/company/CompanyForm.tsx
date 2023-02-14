@@ -289,6 +289,7 @@ const CompanyForm = ({
             },
           }}
         />
+        <TextInput className={inputClassName} source="library" />
       </SimpleForm>
     </div>
   );
