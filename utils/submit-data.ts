@@ -262,6 +262,7 @@ export const onSubmitData = (
       resource_type: type,
       resource_identifier: [{ field: "id", value: transformInput.id }],
       resource,
+      force_update: true
     }),
   })
     .then((res) => {
