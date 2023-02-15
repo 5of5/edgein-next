@@ -144,7 +144,7 @@ select_permissions:
           - status:
               _eq: published
           - library:
-              _eq: web3
+              _eq: Web3
       limit: 50
   - role: user
     permission:
@@ -231,6 +231,6 @@ select_permissions:
           - status:
               _eq: published
           - library:
-              _eq: web3
+              _eq: Web3
       limit: 50
       allow_aggregations: true

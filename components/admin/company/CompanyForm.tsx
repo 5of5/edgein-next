@@ -21,6 +21,7 @@ import {
   status,
   tags,
   companyChoices,
+  libraryChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
@@ -289,7 +290,11 @@ const CompanyForm = ({
             },
           }}
         />
-        <TextInput className={inputClassName} source="library" />
+        <SelectInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+        />
       </SimpleForm>
     </div>
   );

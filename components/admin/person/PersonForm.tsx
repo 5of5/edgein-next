@@ -12,6 +12,7 @@ import {
 import {
   validateNameAndSlugAndEmailAndDomain,
   status,
+  libraryChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
@@ -141,7 +142,11 @@ const PersonForm = ({
             },
           }}
         />
-        <TextInput className={inputClassName} source="library" />
+        <SelectInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+        />
       </SimpleForm>
     </div>
   );
