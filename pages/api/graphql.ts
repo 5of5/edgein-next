@@ -27,6 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }  
     }
   }
+  console.log({user, headers});
   const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
