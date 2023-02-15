@@ -4,7 +4,7 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 		Accept: "application/json",
 		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
 	}
-	if (opt.isAdmin === false) {
+	if (opt?.isAdmin === false) {
 		headers['x-hasura-role'] = process.env.HASURA_VIEWER ?? "";
 	}
 	return await fetch(
