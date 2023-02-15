@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import type { NextPage, GetStaticProps } from "next";
+import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
@@ -417,14 +417,15 @@ const Companies: NextPage<Props> = ({
 	);
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
 		GetCompaniesDocument,
 		{
 			offset: 0,
 			limit: 50,
 			where: { slug: { _neq: "" } },
-		}
+		},
+		context.req.cookies
 	);
 
 	return {

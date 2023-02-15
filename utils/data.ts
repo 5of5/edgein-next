@@ -1,12 +1,36 @@
-export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>):Promise<{ data?: QueryType, errors?: any }> => {
+import CookieService from './cookie';
+
+export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, cookies?: any):Promise<{ data?: QueryType, errors?: any }> => {
+	const user = await CookieService.getUser(CookieService.getAuthToken(cookies || {}));
+  let configHasuraHeaders: {
+    "x-hasura-admin-secret"?: string;
+    "x-hasura-role"?: string;
+    "X-hasura-user-id"?: string;
+  } = {};
+ 
+	if (user) {
+		if (user?.role === "user") {
+			configHasuraHeaders = {
+				'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+				'x-hasura-role': process.env.HASURA_VIEWER ?? "",
+				'X-hasura-user-id': user?.id.toString() ?? ''
+			}  
+		} else {
+			configHasuraHeaders = {
+				'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+				'X-hasura-user-id': user?.id.toString() ?? ''
+			}  
+		}
+	}
+
 	return await fetch(
 		process.env.GRAPHQL_ENDPOINT ?? "",
 		{
 			method: "POST",
 			headers: {
+				...configHasuraHeaders,
 				"Content-Type": "application/json",
 				Accept: "application/json",
-				'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
 			},
 			body: JSON.stringify({
 				query,

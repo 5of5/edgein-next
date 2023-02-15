@@ -466,7 +466,8 @@ const Company: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId }
+		{ slug: context.params?.companyId },
+		context.req.cookies
 	);
 
 	if (!companies?.companies[0]) {
