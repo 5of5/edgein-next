@@ -74,6 +74,7 @@ async function getUser(token: string) {
     new TextEncoder().encode(process.env.ENCRYPTION_SECRET)
   )
   let payload = verified.payload
+  console.log(verified)
   
   if (!payload) {
     return null
