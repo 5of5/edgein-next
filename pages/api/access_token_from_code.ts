@@ -3,14 +3,6 @@ import UserService from "../../utils/users";
 import CookieService from "../../utils/cookie";
 import auth0Library from "../../utils/auth0-library";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createHmac } from "crypto";
-
-const hasuraClaims = {
-	"https://hasura.io/jwt/claims": {
-		"x-hasura-allowed-roles": ["user"],
-		"x-hasura-default-role": "user",
-	},
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== "POST") return res.status(405).end();
@@ -82,7 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			let userData: any = {};
 			let isUserPassPrimaryAccount = false;
 			let isLinkedInPrimaryAccount = false;
-			if (!loggedInUser) {
+			if (!loggedInUser || !loggedInUser.email) {
 				// get the user info from the user table
 				userData = await UserService.findOneUserByEmail(userInfoInJson.email);
 				// create the user and return the response
