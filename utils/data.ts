@@ -1,13 +1,17 @@
-export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>):Promise<{ data?: QueryType, errors?: any }> => {
+export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, opt?: {isAdmin?: boolean}):Promise<{ data?: QueryType, errors?: any }> => {
+	const headers: Record<string, string> = {
+		"Content-Type": "application/json",
+		Accept: "application/json",
+		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
+	}
+	if (opt.isAdmin === false) {
+		headers['x-hasura-role'] = process.env.HASURA_VIEWER ?? "";
+	}
 	return await fetch(
 		process.env.GRAPHQL_ENDPOINT ?? "",
 		{
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-				'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
-			},
+			headers: headers,
 			body: JSON.stringify({
 				query,
 				variables

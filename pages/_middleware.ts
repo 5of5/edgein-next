@@ -47,7 +47,7 @@ export async function middleware(req: NextRequest) {
 		url.searchParams.get("revalidation_auth") ===
 		process.env.REVALIDATION_AUTH_TOKEN
 	) {
-		return datadome(req);
+		return process.env.DEV_MODE ? NextResponse.next() : datadome(req);
 	}
 	let user;
 	try {
@@ -74,5 +74,5 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	return datadome(req);
+	return process.env.DEV_MODE ? NextResponse.next() : datadome(req);
 }
