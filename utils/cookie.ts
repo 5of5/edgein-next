@@ -1,6 +1,6 @@
 import { CookieSerializeOptions, serialize } from "cookie"
 import { nanoid } from 'nanoid'
-import { UserToken } from "@/models/User"
+import { UserToken, User } from "@/models/User"
 import { jwtVerify, SignJWT } from 'jose'
 import type { NextApiResponse } from 'next'
 
@@ -65,7 +65,7 @@ function getUsageToken(cookies: Record<string, string>) {
   return cookies[USAGE_NAME]
 }
 
-async function getUser(token: string) {
+async function getUser(token: string): Promise<(User & {_iat?: number}) | null> {
   if (!token) {
     return null
   }
@@ -88,7 +88,7 @@ async function getUser(token: string) {
       return null
     }
   }
-  return {...user, _iat:payload.iat}
+  return {...(user as User), _iat:payload.iat}
 }
 
 async function getUsage(token: string) {
