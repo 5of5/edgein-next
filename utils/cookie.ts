@@ -88,7 +88,7 @@ async function getUser(token: string) {
       return null
     }
   }
-  return user
+  return {...user, _iat:payload.iat}
 }
 
 async function getUsage(token: string) {
