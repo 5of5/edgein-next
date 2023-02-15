@@ -348,6 +348,7 @@ export const mutateActionAndDataRaw = async (
   resourceObj: Record<string, any>,
   resourceType: string,
   actionType: ActionType,
+  forceUpdate: Boolean
 ) => {
   const currentTime = new Date();
   let validData: Array<Record<string, any>> = [];
@@ -387,7 +388,7 @@ export const mutateActionAndDataRaw = async (
           field,
           message: "Invalid Field",
         });
-      else if (existedData && existedData[field])
+      else if (existedData && existedData[field] && !forceUpdate)
         invalidData.push({
           resource: resourceType,
           field,

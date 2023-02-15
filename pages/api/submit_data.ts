@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
   const resourceObj: Record<string, any> = req.body.resource;
-
+  const forceUpdate: Boolean = req.body.force_update;
   try {
     if (
       apiKey === undefined ||
@@ -108,7 +108,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       resourceId,
       resourceObj,
       resourceType,
-      actionType
+      actionType,
+      forceUpdate,
     );
 
     if (resourceId === undefined) {
