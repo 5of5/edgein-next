@@ -12,15 +12,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       headers  = {
         Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
         'x-hasura-role': process.env.HASURA_VIEWER ?? "",
-        'X-hasura-user-id': user?.id.toString() ?? ''
+        'X-hasura-user-id': user?.id?.toString() ?? ''
       }  
     } else {
       headers  = {
         'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-        'X-hasura-user-id': user?.id.toString() ?? ''
+        'X-hasura-user-id': user?.id?.toString() ?? ''
       }  
     }
-  console.log({user, headers, DEV_MODE: process.env.DEV_MODE});
   const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
