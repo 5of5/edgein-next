@@ -5,12 +5,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
   let headers: {'x-hasura-role'?: string, 'X-hasura-user-id': string} & { Authorization: string } |
     {'x-hasura-admin-secret': string }
-  if (process.env.DEV_MODE) {
-    headers  = {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-      'X-hasura-user-id': user?.id.toString() ?? ''
-    }
-  } else {
     if (!user) {
       return res.status(401).end()
     }
@@ -26,8 +20,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         'X-hasura-user-id': user?.id.toString() ?? ''
       }  
     }
-  }
-  console.log({user, headers});
+  console.log({user, headers, DEV_MODE: process.env.DEV_MODE});
   const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
