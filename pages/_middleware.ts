@@ -62,11 +62,11 @@ export async function middleware(req: NextRequest) {
 				);	
 			// }
 		}
-		if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
-			return NextResponse.redirect(
-				new URL(`/404?redirect=${encodeURIComponent(url.pathname)}`, req.url)
-			);
-		}
+		// if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
+		// 	return NextResponse.redirect(
+		// 		new URL(`/404?redirect=${encodeURIComponent(url.pathname)}`, req.url)
+		// 	);
+		// }
 	} catch (error) {
 		console.log(error);
 		return NextResponse.redirect(
