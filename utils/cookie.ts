@@ -10,13 +10,13 @@ const MAX_AGE = 60 * 60 * 24 * 90 // 90 days
 const USAGE_AGE = 60 * 60 * 24 // 1 days
 const hasuraClaims = {
   "https://hasura.io/jwt/claims": {
-    "x-hasura-allowed-roles": ["user"],
-    "x-hasura-default-role": "user",
+    "x-hasura-allowed-roles": ["user", "viewer"],
+    "x-hasura-default-role": "viewer",
   }
 }
 const hasuraAnnonClaims = {
   "https://hasura.io/jwt/claims": {
-    "x-hasura-allowed-roles": ["annoy_user"],
+    "x-hasura-allowed-roles": ["annoy_user", "viewer"],
     "x-hasura-default-role": "annoy_user",
   }
 }
