@@ -249,7 +249,7 @@ export const insertActionDataChange = async (
 };
 
 export const onSubmitData = (
-  type: ResourceTypes,
+  type: string,
   transformInput: any,
   method: "POST" | "PUT" | "DELETE",
 ) => {
