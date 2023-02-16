@@ -663,7 +663,7 @@ export const tags = [
 	"DApps",
 	"Wallet",
 	"Oracle",
-	"Side-Chain",
+	"Side Chain",
 	"Database",
 	"Messaging",
 	"Asset",
