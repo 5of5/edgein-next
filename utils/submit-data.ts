@@ -34,11 +34,11 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   investments: "investment",
   team_members: "team_member",
   investors: "investor",
-	events: "event",
-	event_person: "event_person",
-	event_organization: "event_organization",
-	resource_links: "resource_link",
-	news: "news",
+  events: "event",
+  event_person: "event_person",
+  event_organization: "event_organization",
+  resource_links: "resource_link",
+  news: "news",
 };
 
 export const partnerLookUp = async (apiKey: string) => {
