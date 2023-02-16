@@ -81,7 +81,7 @@ const Investors: NextPage<Props> = ({
 	);
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }],
 	};
 
 	useEffect(() => {
@@ -362,7 +362,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { slug: { _neq: "" } },
+			where: { _and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }] },
 		}
 	);
 

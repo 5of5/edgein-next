@@ -140,11 +140,8 @@ select_permissions:
         - year_founded
         - youtube
       filter:
-        _and:
-          - status:
-              _eq: published
-          - library:
-              _eq: Web3
+        - status:
+          _eq: published
       limit: 50
   - role: user
     permission:
@@ -227,10 +224,7 @@ select_permissions:
         - year_founded
         - youtube
       filter:
-        _and:
-          - status:
-              _eq: published
-          - library:
-              _eq: Web3
+        - status:
+          _eq: published
       limit: 50
       allow_aggregations: true
