@@ -115,6 +115,7 @@ select_permissions:
         - investor_amount
         - layer
         - layer_detail
+        - library
         - location
         - location_json
         - logo
@@ -140,7 +141,7 @@ select_permissions:
         - year_founded
         - youtube
       filter:
-        - status:
+        status:
           _eq: published
       limit: 50
   - role: user
@@ -199,6 +200,7 @@ select_permissions:
         - investor_amount
         - layer
         - layer_detail
+        - library
         - location
         - location_json
         - logo
@@ -224,7 +226,7 @@ select_permissions:
         - year_founded
         - youtube
       filter:
-        - status:
+        status:
           _eq: published
       limit: 50
       allow_aggregations: true

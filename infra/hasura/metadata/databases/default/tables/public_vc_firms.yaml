@@ -78,6 +78,7 @@ select_permissions:
         - created_at
         - id
         - latest_investment
+        - library
         - linkedin
         - location
         - logo
@@ -94,7 +95,7 @@ select_permissions:
       computed_fields:
         - num_of_investments
       filter:
-        - status:
+        status:
           _eq: published
       limit: 50
   - role: user
@@ -116,6 +117,7 @@ select_permissions:
         - created_at
         - id
         - latest_investment
+        - library
         - linkedin
         - location
         - logo
@@ -132,7 +134,7 @@ select_permissions:
       computed_fields:
         - num_of_investments
       filter:
-        - status:
+        status:
           _eq: published
       limit: 50
       allow_aggregations: true
