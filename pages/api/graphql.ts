@@ -11,7 +11,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (user.role === "user" || req.headers['is-viewer'] === 'true') {
       headers  = {
         Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
-        'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
         'x-hasura-role': process.env.HASURA_VIEWER ?? "",
         'X-hasura-user-id': user?.id?.toString() ?? ''
       }  

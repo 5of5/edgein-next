@@ -1,11 +1,12 @@
 import CookieService from './cookie';
 
 export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, cookies?: any):Promise<{ data?: QueryType, errors?: any }> => {
-	const user = await CookieService.getUser(CookieService.getAuthToken(cookies || {}));
+	const authToken = CookieService.getAuthToken(cookies || {});
+	const user = await CookieService.getUser(authToken);
 	const headers: Record<string, string> = {
 		"Content-Type": "application/json",
 		Accept: "application/json",
-		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+		Authorization: `Bearer ${authToken}`,
 		'X-hasura-user-id': user?.id?.toString() ?? '',
 		'x-hasura-role':  process.env.HASURA_VIEWER ?? ""
 	}
