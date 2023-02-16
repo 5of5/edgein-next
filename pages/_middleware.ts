@@ -40,7 +40,7 @@ export async function middleware(req: NextRequest) {
 		// process.env.DEV_MODE
 		|| req.method === 'HEAD'
 	) {
-		return datadome(req);
+		return NextResponse.next();
 	}
 
 	if (
@@ -53,15 +53,14 @@ export async function middleware(req: NextRequest) {
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
-			const usage = await CookieService.getUsage(CookieService.getUsageToken(req.cookies))
-			console.log(usage, url.pathname);
-			if (!usage || usage.pages < USAGE_LIMIT || (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)) {
-				return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1)}))
-			} else {
+			// const usage = await CookieService.getUsage(CookieService.getUsageToken(req.cookies))
+			// if (!usage || usage.pages < USAGE_LIMIT || (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)) {
+			// 	return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1)}))
+			// } else {
 				return NextResponse.redirect(
 					new URL(`/login/?usage=true&redirect=${encodeURIComponent(url.pathname)}`, req.url)
 				);	
-			}
+			// }
 		}
 		if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
 			return NextResponse.redirect(

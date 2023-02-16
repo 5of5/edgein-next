@@ -49,9 +49,9 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 											</span>
 
 											{
-												activity?.type === "news"
+												activity && (activity?.type === "news"
 													? (renderNews(activity))
-													: (renderActivity(activity, resourceType, resourceName))
+													: (renderActivity(activity, resourceType, resourceName)))
 											}
 										</li>
 									);

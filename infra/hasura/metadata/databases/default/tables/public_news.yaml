@@ -22,5 +22,7 @@ select_permissions:
         - text
         - link
         - status
-      filter: {}
+      filter:
+        status:
+          _eq: published
       limit: 50
