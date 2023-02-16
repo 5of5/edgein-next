@@ -241,9 +241,13 @@ const Person: NextPage<Props> = (props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {
-		slug: context.params?.personId,
-	});
+	const { data: people } = await runGraphQl<GetPersonQuery>(
+		GetPersonDocument,
+		{
+			slug: context.params?.personId,
+		},
+		context.req.cookies
+	);
 
 	if (!people?.people?.[0]) {
 		return {
