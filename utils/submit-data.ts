@@ -21,6 +21,7 @@ export type ResourceTypes =
   | "event_person"
   | "event_organization"
   | "resource_links"
+  | "news"
 ;
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
@@ -33,10 +34,11 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   investments: "investment",
   team_members: "team_member",
   investors: "investor",
-  events: "event",
-  event_person: "event_person",
-  event_organization: "event_organization",
-  resource_links: "resource_link",
+	events: "event",
+	event_person: "event_person",
+	event_organization: "event_organization",
+	resource_links: "resource_link",
+	news: "news",
 };
 
 export const partnerLookUp = async (apiKey: string) => {
