@@ -432,7 +432,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Companies - EdgeIn.io",
 			metaDescription:
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
-			companiesCount: companies?.companies_aggregate.aggregate?.count,
+			companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
 			initialCompanies: companies?.companies,
 			companyFilters: CompaniesFilters,
 			companyLayers: LayersFilters,
