@@ -724,3 +724,71 @@ export const eventPersonTypeChoices = [
 export const DATADOME_TAGS = 'https://js.datadome.co/tags.js'
 
 export const DATADOME_JS = 'https://api-js.datadome.co/js/'
+
+export const companiesFilterOptions = [
+  {
+    category: "Location",
+    items: [
+      {
+        label: "Add country",
+        value: "country",
+      },
+      {
+        label: "Add state",
+        value: "state",
+      },
+      {
+        label: "Add city",
+        value: "city",
+      },
+    ],
+  },
+  {
+    category: "Description keywords",
+    items: [
+      {
+        label: "Add keywords",
+        value: "keywords",
+      },
+    ],
+  },
+  {
+    category: "Industry",
+    items: [
+      {
+        label: "Select industry",
+        value: "industry",
+      },
+    ],
+  },
+  {
+    category: "Financials",
+    items: [
+      {
+        label: "Funding type",
+        value: "fundingType",
+      },
+      {
+        label: "Funding amount total",
+        value: "fundingAmount",
+      },
+      {
+        label: "Last funding date",
+        value: "lastFundingDate",
+      },
+      {
+        label: "Funding investors",
+        value: "fundingInvestors",
+      },
+    ],
+  },
+  {
+    category: "Team",
+    items: [
+      {
+        label: "Team size",
+        value: "teamSize",
+      },
+    ],
+  },
+];
