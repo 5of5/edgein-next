@@ -119,6 +119,9 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 						const isFollowing = listMembers.some(
 							(mem) => mem.list_id === item.id
 						);
+						if (!item) {
+							return (<></>);
+						}
 						const listItem = (
 							<li
 								key={item.id}
