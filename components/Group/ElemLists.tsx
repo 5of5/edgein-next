@@ -117,6 +117,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 				<ul className="mt-4 flex flex-col gap-4">
 					{lists.map((item) => {
 						if (!item) {
+							debugger;
 							return (<></>);
 						}
 						const isFollowing = listMembers.some(
