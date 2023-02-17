@@ -116,12 +116,12 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 			{lists.length > 0 ? (
 				<ul className="mt-4 flex flex-col gap-4">
 					{lists.map((item) => {
-						const isFollowing = listMembers.some(
-							(mem) => mem.list_id === item.id
-						);
 						if (!item) {
 							return (<></>);
 						}
+						const isFollowing = listMembers.some(
+							(mem) => mem.list_id === item.id
+						)
 						const listItem = (
 							<li
 								key={item.id}
