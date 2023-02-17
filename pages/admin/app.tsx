@@ -279,6 +279,19 @@ const AdminApp = () => {
 					onSubmitData(type, nullInputTransform(type, obj), "POST"),
 				update: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "PUT"),
+				deleteMany: async (type, obj: any) => {
+					const response = await Promise.all(
+						obj.ids.map(async (id: number) => {
+							await onSubmitData(
+								type,
+								nullInputTransform(type, { id, previousData: { id } }),
+								"DELETE"
+							);
+							return { id };
+						})
+					);
+					return { data: response };
+				},
 				delete: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "DELETE"),
 			});
