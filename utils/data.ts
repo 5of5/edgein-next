@@ -1,11 +1,14 @@
-export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, opt?: {isAdmin?: boolean}):Promise<{ data?: QueryType, errors?: any }> => {
+import CookieService from './cookie';
+
+export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, cookies?: any):Promise<{ data?: QueryType, errors?: any }> => {
+	const authToken = CookieService.getAuthToken(cookies || {});
+	const user = await CookieService.getUser(authToken);
 	const headers: Record<string, string> = {
 		"Content-Type": "application/json",
 		Accept: "application/json",
-		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
-	}
-	if (opt?.isAdmin === false) {
-		headers['x-hasura-role'] = process.env.HASURA_VIEWER ?? "";
+		Authorization: `Bearer ${authToken}`,
+		'X-hasura-user-id': user?.id?.toString() ?? '',
+		'x-hasura-role':  process.env.HASURA_VIEWER ?? ""
 	}
 	return await fetch(
 		process.env.GRAPHQL_ENDPOINT ?? "",

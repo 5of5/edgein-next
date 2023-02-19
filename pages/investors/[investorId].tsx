@@ -314,7 +314,8 @@ const VCFirm: NextPage<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
-		{ slug: context.params?.investorId }
+		{ slug: context.params?.investorId },
+		context.req.cookies
 	);
 
 	if (!vc_firms?.vc_firms[0]) {
