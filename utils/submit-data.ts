@@ -43,6 +43,25 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   news: "news",
 };
 
+const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
+  return [
+    "companies",
+    "vc_firms",
+    "people",
+    "blockchains",
+    "coins",
+    "investment_rounds",
+    "investments",
+    "team_members",
+    "investors",
+    "events",
+    "event_person",
+    "event_organization",
+    "resource_links",
+    "news"
+  ].includes(resourceType);
+}
+
 export const partnerLookUp = async (apiKey: string) => {
   const {
     data: {
@@ -107,31 +126,29 @@ export const resourceIdLookup = async (
 };
 
 export const fieldLookup = async (path: string) => {
-  try {
-    const {
-      data: {
-        data_fields: [data_field],
-      },
-    } = await query({
-      query: `
-      query lookup_data_field($path: String!) {
-        data_fields(where: {path: {_eq: $path}}) {
-          name
-          resource
-          weight
-          regex_transform
-          description
-          regex_test
-          is_valid_identifier
-          restricted_admin
-          data_type
-        }
+  const {
+    data: {
+      data_fields: [data_field],
+    },
+  } = await query({
+    query: `
+    query lookup_data_field($path: String!) {
+      data_fields(where: {path: {_eq: $path}}) {
+        name
+        resource
+        weight
+        regex_transform
+        description
+        regex_test
+        is_valid_identifier
+        restricted_admin
+        data_type
       }
-      `,
-      variables: { path },
-    });
-    return data_field;
-  } catch { return }
+    }
+    `,
+    variables: { path },
+  });
+  return data_field;
 };
 
 export const insertDataRaw = async (data: Array<Record<string, any>>) => {
@@ -389,21 +406,31 @@ export const mutateActionAndDataRaw = async (
     // we convert the field to <resource_type>_id and lookup for its value
     if (field.includes(':') && field.split(':').length == 2) {
       let [lookupResourceType, lookupField] = field.split(':');
-      let lookupResource: string = NODE_NAME[lookupResourceType as ResourceTypes]
-
-      if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
-        value = await resourceIdLookup(lookupResourceType as ResourceTypes, [{field: lookupField, value}]);
-        field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+      if (isResourceType(lookupResourceType)) {
+        let lookupResource: string = NODE_NAME[lookupResourceType]
+        if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
+          value = await resourceIdLookup(lookupResourceType, [{field: lookupField, value}]);
+          field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+        } else {
+          invalidData.push({
+            resource: lookupResourceType,
+            lookupField,
+            message: "Invalid Field",
+          });
+          continue;
+        }
+      } else {
+        invalidData.push({
+          resource: lookupResourceType,
+          lookupField,
+          message: "Invalid Resource Type",
+        });
+        continue;
       }
     }
 
-    if (
-      (actionType === "Insert Data" && !notInsertValueType(value)) ||
-      actionType === "Change Data"
-    ) {
-      let dataField: Data_Fields = await fieldLookup(
-        `${fieldPathLookup}.${field}`
-      );
+    if ((actionType === "Insert Data" && !notInsertValueType(value)) || actionType === "Change Data") {
+      let dataField: Data_Fields = await fieldLookup(`${fieldPathLookup}.${field}`);
       if (dataField === undefined || (dataField?.restricted_admin && user?.role !== "admin"))
         invalidData.push({
           resource: resourceType,
