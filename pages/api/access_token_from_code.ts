@@ -69,6 +69,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			// check loggedin user and linkedin user email should be same
 			const userToken = CookieService.getAuthToken(req.cookies);
 			const loggedInUser = await CookieService.getUser(userToken);
+			if (loggedInUser && loggedInUser.active === false) {
+				return res.status(403).send({ message: "Error: Please try again" });
+			}		
 			const auth0SubInfo = userInfoInJson.sub.split("|");
 			const connectionType = auth0SubInfo[0];
 			let userData: any = {};

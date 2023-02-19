@@ -20,6 +20,7 @@ person {
   id
 }
 additional_emails
+active
 `
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {

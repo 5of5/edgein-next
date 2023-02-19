@@ -74,7 +74,6 @@ async function getUser(token: string): Promise<(User & {_iat?: number}) | null> 
     new TextEncoder().encode(process.env.ENCRYPTION_SECRET)
   )
   let payload = verified.payload
-  console.log(verified)
   
   if (!payload) {
     return null

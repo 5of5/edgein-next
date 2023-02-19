@@ -35,6 +35,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const emailExist = await UserService.findOneUserByEmail(email);
 	// if email does not exist, then redirect user for registartion
 	if (!emailExist) return res.status(404).send({ nextStep: "SIGNUP" });
+	if (emailExist.active === false) {
+		return res.status(403).send({ message: "Error: Please try again" });
+	}
 	if (!emailExist.auth0_user_pass_id)
 		return res
 			.status(404)
