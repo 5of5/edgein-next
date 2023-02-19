@@ -399,6 +399,7 @@ const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
     reference_id: userData.reference_id,
     reference_user_id: userData.reference_user_id,
     additional_emails: userData.additional_emails,
+    active: userData.active,
     entitlements
   };
 };
