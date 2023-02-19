@@ -424,7 +424,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			offset: 0,
 			limit: 50,
 			where: { slug: { _neq: "" } },
-		}
+		},
 	);
 
 	return {

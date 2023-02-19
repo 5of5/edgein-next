@@ -1,6 +1,6 @@
 import { CookieSerializeOptions, serialize } from "cookie"
 import { nanoid } from 'nanoid'
-import { UserToken } from "@/models/User"
+import { UserToken, User } from "@/models/User"
 import { jwtVerify, SignJWT } from 'jose'
 import type { NextApiResponse } from 'next'
 
@@ -10,13 +10,13 @@ const MAX_AGE = 60 * 60 * 24 * 90 // 90 days
 const USAGE_AGE = 60 * 60 * 24 // 1 days
 const hasuraClaims = {
   "https://hasura.io/jwt/claims": {
-    "x-hasura-allowed-roles": ["user"],
-    "x-hasura-default-role": "user",
+    "x-hasura-allowed-roles": ["user", "viewer"],
+    "x-hasura-default-role": "viewer",
   }
 }
 const hasuraAnnonClaims = {
   "https://hasura.io/jwt/claims": {
-    "x-hasura-allowed-roles": ["annoy_user"],
+    "x-hasura-allowed-roles": ["annoy_user", "viewer"],
     "x-hasura-default-role": "annoy_user",
   }
 }
@@ -65,7 +65,7 @@ function getUsageToken(cookies: Record<string, string>) {
   return cookies[USAGE_NAME]
 }
 
-async function getUser(token: string) {
+async function getUser(token: string): Promise<(User & {_iat?: number}) | null> {
   if (!token) {
     return null
   }
@@ -87,7 +87,7 @@ async function getUser(token: string) {
       return null
     }
   }
-  return user
+  return {...(user as User), _iat:payload.iat}
 }
 
 async function getUsage(token: string) {

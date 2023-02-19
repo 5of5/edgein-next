@@ -17273,6 +17273,7 @@ export type User_Tokens_Variance_Fields = {
 /** columns and relationships of "users" */
 export type Users = {
   __typename?: 'users';
+  active: Scalars['Boolean'];
   additional_emails: Scalars['jsonb'];
   auth0_linkedin_id: Maybe<Scalars['String']>;
   auth0_user_pass_id: Maybe<Scalars['String']>;
@@ -17419,6 +17420,7 @@ export type Users_Bool_Exp = {
   _and: InputMaybe<Array<Users_Bool_Exp>>;
   _not: InputMaybe<Users_Bool_Exp>;
   _or: InputMaybe<Array<Users_Bool_Exp>>;
+  active: InputMaybe<Boolean_Comparison_Exp>;
   additional_emails: InputMaybe<Jsonb_Comparison_Exp>;
   auth0_linkedin_id: InputMaybe<String_Comparison_Exp>;
   auth0_user_pass_id: InputMaybe<String_Comparison_Exp>;
@@ -17474,6 +17476,7 @@ export type Users_Inc_Input = {
 
 /** input type for inserting data into table "users" */
 export type Users_Insert_Input = {
+  active: InputMaybe<Scalars['Boolean']>;
   additional_emails: InputMaybe<Scalars['jsonb']>;
   auth0_linkedin_id: InputMaybe<Scalars['String']>;
   auth0_user_pass_id: InputMaybe<Scalars['String']>;
@@ -17551,6 +17554,7 @@ export type Users_On_Conflict = {
 
 /** Ordering options when selecting data from "users". */
 export type Users_Order_By = {
+  active: InputMaybe<Order_By>;
   additional_emails: InputMaybe<Order_By>;
   auth0_linkedin_id: InputMaybe<Order_By>;
   auth0_user_pass_id: InputMaybe<Order_By>;
@@ -17584,6 +17588,8 @@ export type Users_Prepend_Input = {
 /** select columns of table "users" */
 export enum Users_Select_Column {
   /** column name */
+  Active = 'active',
+  /** column name */
   AdditionalEmails = 'additional_emails',
   /** column name */
   Auth0LinkedinId = 'auth0_linkedin_id',
@@ -17613,6 +17619,7 @@ export enum Users_Select_Column {
 
 /** input type for updating data in table "users" */
 export type Users_Set_Input = {
+  active: InputMaybe<Scalars['Boolean']>;
   additional_emails: InputMaybe<Scalars['jsonb']>;
   auth0_linkedin_id: InputMaybe<Scalars['String']>;
   auth0_user_pass_id: InputMaybe<Scalars['String']>;
@@ -17666,6 +17673,8 @@ export type Users_Sum_Fields = {
 
 /** update columns of table "users" */
 export enum Users_Update_Column {
+  /** column name */
+  Active = 'active',
   /** column name */
   AdditionalEmails = 'additional_emails',
   /** column name */

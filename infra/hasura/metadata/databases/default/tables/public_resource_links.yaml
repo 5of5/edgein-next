@@ -38,3 +38,15 @@ object_relationships:
         insertion_order: null
         column_mapping:
           to_vc_firm_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - from_company_id
+        - from_vc_firm_id
+        - to_company_id
+        - to_vc_firm_id
+        - link_type
+        - id
+      filter: {}
+      limit: 50

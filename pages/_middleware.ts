@@ -47,7 +47,7 @@ export async function middleware(req: NextRequest) {
 		url.searchParams.get("revalidation_auth") ===
 		process.env.REVALIDATION_AUTH_TOKEN
 	) {
-		return datadome(req);
+		return process.env.DEV_MODE ? NextResponse.next() : datadome(req);
 	}
 	let user;
 	try {
@@ -62,11 +62,11 @@ export async function middleware(req: NextRequest) {
 				);	
 			// }
 		}
-		if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
-			return NextResponse.redirect(
-				new URL(`/404?redirect=${encodeURIComponent(url.pathname)}`, req.url)
-			);
-		}
+		// if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
+		// 	return NextResponse.redirect(
+		// 		new URL(`/404?redirect=${encodeURIComponent(url.pathname)}`, req.url)
+		// 	);
+		// }
 	} catch (error) {
 		console.log(error);
 		return NextResponse.redirect(
@@ -74,5 +74,5 @@ export async function middleware(req: NextRequest) {
 		);
 	}
 
-	return datadome(req);
+	return process.env.DEV_MODE ? NextResponse.next() : datadome(req);
 }

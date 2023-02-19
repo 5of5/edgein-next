@@ -32,6 +32,7 @@ export type User = {
   profilePicture: any
   profileName?: string
   entitlements: Entitlements
+  active: boolean
 }
 
 export type UserToken = User & {
