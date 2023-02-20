@@ -3,8 +3,12 @@ import { Popover } from "@headlessui/react";
 import some from "lodash/some";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { IconPlus } from "@/components/Icons";
-import { companiesFilterOptions, tags } from "@/utils/constants";
+import { companiesFilterOptions, roundChoices, tags } from "@/utils/constants";
 import { ElemButton } from "../ElemButton";
+import { InputRadio } from "../InputRadio";
+import { TagInputText } from "../TagInputText";
+import { ElemTagsInput } from "../ElemTagsInput";
+import { ElemMultiRangeSlider } from "../ElemMultiRangeSlider";
 
 type FilterOptionKeys =
   | "country"
@@ -28,12 +32,76 @@ type CategoryFilterOptionProps = {
   onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
+type Filters = {
+  country: {
+    condition: "any" | "none";
+    tags: Array<string>;
+  };
+  state: {
+    condition: "any" | "none";
+    tags: Array<string>;
+  };
+  city: {
+    condition: "any" | "none";
+    tags: Array<string>;
+  };
+  keywords: {
+    tags: Array<string>;
+  };
+  industry: Array<string>;
+  fundingType: Array<string>;
+  fundingAmount: {
+    minVal: number;
+    maxVal: number;
+  };
+  fundingInvestors: {
+    condition: "any" | "none";
+    tags: Array<string>;
+  };
+  teamSize: {
+    minVal: number;
+    maxVal: number;
+  };
+};
+
 type Props = {};
 
 export const ElemCompaniesFilter: FC<Props> = () => {
   const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(
     {} as SelectedFilters
   );
+
+  const [filters, setFilters] = useState<Filters>({
+    country: {
+      condition: "any",
+      tags: [],
+    },
+    state: {
+      condition: "any",
+      tags: [],
+    },
+    city: {
+      condition: "any",
+      tags: [],
+    },
+    keywords: {
+      tags: [],
+    },
+    industry: [],
+    fundingType: [],
+    fundingAmount: {
+      minVal: 25000,
+      maxVal: 1000000,
+    },
+    fundingInvestors: {
+      condition: "any",
+      tags: [],
+    },
+    teamSize: {
+      minVal: 10,
+      maxVal: 20,
+    },
+  });
 
   const allTags = useMemo(() => {
     return tags.filter(
@@ -66,6 +134,83 @@ export const ElemCompaniesFilter: FC<Props> = () => {
 
   const onResetFilters = () => {
     setSelectedFilters({} as SelectedFilters);
+  };
+
+  const onChangeTags = (selectedTags: Array<string>, name: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name as keyof Filters],
+        tags: selectedTags,
+      },
+    }));
+  };
+
+  const onChangeCondition = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    name: string
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev[name as keyof Filters],
+        condition: event.target.value,
+      },
+    }));
+  };
+
+  const onChangeIndustry = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFilterIndustry = [...filters.industry];
+    if (event.target.checked) {
+      newFilterIndustry.push(event.target.name);
+    } else {
+      const index = newFilterIndustry.indexOf(event.target.name);
+      newFilterIndustry.splice(index, 1);
+    }
+    setFilters((prev) => ({
+      ...prev,
+      industry: newFilterIndustry,
+    }));
+  };
+
+  const onChangeFundingType = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newFilterFundingType = [...filters.fundingType];
+    if (event.target.checked) {
+      newFilterFundingType.push(event.target.name);
+    } else {
+      const index = newFilterFundingType.indexOf(event.target.name);
+      newFilterFundingType.splice(index, 1);
+    }
+    setFilters((prev) => ({
+      ...prev,
+      fundingType: newFilterFundingType,
+    }));
+  };
+
+  const onChangeRangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const [option, metric] = name.split(".");
+    setFilters((prev) => ({
+      ...prev,
+      [option]: {
+        ...prev[name as keyof Filters],
+        [metric]: value,
+      },
+    }));
+  };
+
+  const onChangeRangeSlider = (
+    name: string,
+    minVal: number,
+    maxVal: number
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: {
+        minVal,
+        maxVal,
+      },
+    }));
   };
 
   return (
@@ -101,9 +246,26 @@ export const ElemCompaniesFilter: FC<Props> = () => {
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
               <div className="font-bold text-sm">Country</div>
-              <div>
-                <div>is any of these</div>
-                <div>Is none of these</div>
+              <div className="flex flex-col gap-2 mt-2">
+                <InputRadio
+                  name="country"
+                  value="any"
+                  checked={filters.country.condition === "any"}
+                  label="is any of these"
+                  onChange={(event) => onChangeCondition(event, "country")}
+                />
+                <ElemTagsInput
+                  value={filters.country.tags}
+                  placeholder="Enter a country name"
+                  onChange={(tags) => onChangeTags(tags, "country")}
+                />
+                <InputRadio
+                  name="country"
+                  value="none"
+                  checked={filters.country.condition === "none"}
+                  label="is none of these"
+                  onChange={(event) => onChangeCondition(event, "country")}
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
@@ -125,9 +287,26 @@ export const ElemCompaniesFilter: FC<Props> = () => {
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
               <div className="font-bold text-sm">State</div>
-              <div>
-                <div>is any of these</div>
-                <div>Is none of these</div>
+              <div className="flex flex-col gap-2 mt-2">
+                <InputRadio
+                  name="state"
+                  value="any"
+                  checked={filters.state.condition === "any"}
+                  label="is any of these"
+                  onChange={(event) => onChangeCondition(event, "state")}
+                />
+                <ElemTagsInput
+                  value={filters.state.tags}
+                  placeholder="Enter a state name"
+                  onChange={(tags) => onChangeTags(tags, "state")}
+                />
+                <InputRadio
+                  name="state"
+                  value="none"
+                  checked={filters.state.condition === "none"}
+                  label="is none of these"
+                  onChange={(event) => onChangeCondition(event, "state")}
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
@@ -149,9 +328,26 @@ export const ElemCompaniesFilter: FC<Props> = () => {
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
               <div className="font-bold text-sm">City</div>
-              <div>
-                <div>is any of these</div>
-                <div>Is none of these</div>
+              <div className="flex flex-col gap-2 mt-2">
+                <InputRadio
+                  name="city"
+                  value="any"
+                  checked={filters.city.condition === "any"}
+                  label="is any of these"
+                  onChange={(event) => onChangeCondition(event, "city")}
+                />
+                <ElemTagsInput
+                  value={filters.city.tags}
+                  placeholder="Enter a city name"
+                  onChange={(tags) => onChangeTags(tags, "city")}
+                />
+                <InputRadio
+                  name="city"
+                  value="none"
+                  checked={filters.city.condition === "none"}
+                  label="is none of these"
+                  onChange={(event) => onChangeCondition(event, "city")}
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
@@ -174,10 +370,11 @@ export const ElemCompaniesFilter: FC<Props> = () => {
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
               <div className="font-bold text-sm">Description Keywords</div>
               <div className="mt-1">
-                <textarea
-                  className="appearance-none resize-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500 placeholder:text-slate-400"
+                <ElemTagsInput
+                  value={filters.keywords.tags}
                   placeholder="e.g. Wallet, Blockchain, etc."
-                ></textarea>
+                  onChange={(tags) => onChangeTags(tags, "keywords")}
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
@@ -195,7 +392,7 @@ export const ElemCompaniesFilter: FC<Props> = () => {
         {selectedFilters.industry && (
           <Popover className="snap-start shrink-0">
             <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              Industry (2)
+              {`Industry (${filters.industry.length})`}
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content p-5">
               <div className="font-bold text-sm">Industry</div>
@@ -208,7 +405,12 @@ export const ElemCompaniesFilter: FC<Props> = () => {
                     <label className="relative flex items-center gap-2 cursor-pointer w-full  py-2 hover:bg-slate-100">
                       <input
                         id={tag.id}
+                        name={tag.id}
                         type="checkbox"
+                        checked={filters.industry.some(
+                          (item) => item === tag.id
+                        )}
+                        onChange={onChangeIndustry}
                         className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
                       />
                       <div>{tag.name}</div>
@@ -232,11 +434,32 @@ export const ElemCompaniesFilter: FC<Props> = () => {
         {selectedFilters.fundingType && (
           <Popover className="snap-start shrink-0">
             <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              Funding type
+              {`Funding type (${filters.fundingType.length})`}
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
               <div className="font-bold text-sm">Funding type</div>
-              <div className="mt-1">lorem ipsum...</div>
+              <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto no-scrollbar">
+                {roundChoices.map((round) => (
+                  <li
+                    key={round.id}
+                    className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
+                  >
+                    <label className="relative flex items-center gap-2 cursor-pointer w-full  py-2 hover:bg-slate-100">
+                      <input
+                        id={round.id}
+                        name={round.id}
+                        type="checkbox"
+                        checked={filters.fundingType.some(
+                          (item) => item === round.id
+                        )}
+                        onChange={onChangeFundingType}
+                        className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+                      />
+                      <div>{round.name}</div>
+                    </label>
+                  </li>
+                ))}
+              </ul>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
                   onClick={onClearFilterOption}
@@ -257,31 +480,44 @@ export const ElemCompaniesFilter: FC<Props> = () => {
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
               <div className="font-bold text-sm">Funding amount total</div>
-              <div className="flex items-center space-x-2">
-                <div className="">
+              <div className="flex items-center space-x-4">
+                <div className="grow">
                   <div className="text-sm text-slate-600">Min</div>
                   <input
-                    //name=""
+                    name="fundingAmount.minVal"
                     type="text"
-                    //value={}
-                    onChange={() => {}}
+                    value={filters.fundingAmount.minVal}
+                    onChange={onChangeRangeInput}
                     defaultValue={convertToInternationalCurrencySystem(25000)}
-                    className="appearance-none border-none w-20 border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                    className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                   />
                 </div>
-                <div className="pt-4">{"–"}</div>
-                <div className="">
+                <div className="pt-4 flex-none">{"–"}</div>
+                <div className="grow">
                   <div className="text-sm text-slate-600">Max</div>
                   <input
-                    //name=""
+                    name="fundingAmount.maxVal"
                     type="text"
-                    //value={}
-                    onChange={() => {}}
-                    //defaultValue={"Any"}
+                    value={filters.fundingAmount.maxVal}
+                    onChange={onChangeRangeInput}
+                    defaultValue={"Any"}
                     placeholder="Any"
-                    className="appearance-none border-none w-20 border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                    className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                   />
                 </div>
+              </div>
+              <div className="mt-4">
+                <ElemMultiRangeSlider
+                  value={[
+                    filters.fundingAmount.minVal,
+                    filters.fundingAmount.maxVal,
+                  ]}
+                  min={0}
+                  max={1200000}
+                  onChange={({ min, max }: { min: number; max: number }) =>
+                    onChangeRangeSlider("fundingAmount", min, max)
+                  }
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
@@ -324,15 +560,30 @@ export const ElemCompaniesFilter: FC<Props> = () => {
             </Popover.Button>
             <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
               <div className="font-bold text-sm">Funding investors</div>
-              <div className="mt-1">
-                <div>is any of these</div>
-                <textarea
-                  className="appearance-none resize-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500 placeholder:text-slate-400"
+              <div className="flex flex-col gap-2 mt-2">
+                <InputRadio
+                  name="fundingInvestors"
+                  value="any"
+                  checked={filters.fundingInvestors.condition === "any"}
+                  label="is any of these"
+                  onChange={(event) =>
+                    onChangeCondition(event, "fundingInvestors")
+                  }
+                />
+                <ElemTagsInput
+                  value={filters.fundingInvestors.tags}
                   placeholder="Enter an investor name"
-                ></textarea>
-              </div>
-              <div>
-                <div>Is none of these</div>
+                  onChange={(tags) => onChangeTags(tags, "fundingInvestors")}
+                />
+                <InputRadio
+                  name="fundingInvestors"
+                  value="none"
+                  checked={filters.fundingInvestors.condition === "none"}
+                  label="is none of these"
+                  onChange={(event) =>
+                    onChangeCondition(event, "fundingInvestors")
+                  }
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button
@@ -358,10 +609,10 @@ export const ElemCompaniesFilter: FC<Props> = () => {
                 <div className="">
                   <div className="text-sm text-slate-600">Min</div>
                   <input
-                    //name=""
                     type="text"
-                    //value={}
-                    onChange={() => {}}
+                    name="teamSize.minVal"
+                    value={filters.teamSize.minVal}
+                    onChange={onChangeRangeInput}
                     defaultValue={0}
                     className="appearance-none border-none w-20 border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                   />
@@ -370,15 +621,25 @@ export const ElemCompaniesFilter: FC<Props> = () => {
                 <div className="">
                   <div className="text-sm text-slate-600">Max</div>
                   <input
-                    //name=""
                     type="text"
-                    //value={}
-                    onChange={() => {}}
-                    //defaultValue={"Any"}
+                    name="teamSize.maxVal"
+                    value={filters.teamSize.maxVal}
+                    onChange={onChangeRangeInput}
+                    defaultValue={"Any"}
                     placeholder="Any"
                     className="appearance-none border-none w-20 border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                   />
                 </div>
+              </div>
+              <div className="mt-4">
+                <ElemMultiRangeSlider
+                  value={[filters.teamSize.minVal, filters.teamSize.maxVal]}
+                  min={0}
+                  max={100}
+                  onChange={({ min, max }: { min: number; max: number }) =>
+                    onChangeRangeSlider("teamSize", min, max)
+                  }
+                />
               </div>
               <div className="mt-4 pt-2 border-t border-black/5">
                 <button

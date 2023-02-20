@@ -133,3 +133,28 @@
     }
   }
 }
+
+
+/* Removing the default appearance */
+.thumb,
+.thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.thumb {
+  width: calc(100% - 36px);
+  @apply absolute pointer-events-none h-0 outline-none;
+}
+
+/* For Chrome browsers */
+.thumb::-webkit-slider-thumb {
+  pointer-events: all;
+  @apply bg-slate-200 border-none rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
+}
+
+/* For Firefox browsers */
+.thumb::-moz-range-thumb {
+  pointer-events: all;
+  @apply bg-slate-200 border-none rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
+}
