@@ -175,7 +175,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const { data: noteList } = await runGraphQl<GetNotesQuery>(GetNotesDocument, {
 		where: { user_group_id: { _eq: group.id } },
-	});
+	}, context.req.cookies);
 
 	const notes = noteList?.notes || [];
 
