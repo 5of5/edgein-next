@@ -23,10 +23,10 @@ export const ElemCompaniesAddFilter: FC<Props> = ({
   onClose,
   onSelectFilterOption,
 }) => {
-  const wrapperRef = useRef<any>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  const handleClickOutside = (e: any) => {
-    if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+  const handleClickOutside = (e: MouseEvent) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
       onClose();
     }
   };
