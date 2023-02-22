@@ -10,8 +10,10 @@ import { InputRadio } from "../InputRadio";
 import { ElemTagsInput } from "../ElemTagsInput";
 import { ElemMultiRangeSlider } from "../ElemMultiRangeSlider";
 import { InputDate } from "../InputDate";
+import { ElemCompaniesFilterPopover } from "./ElemCompaniesFilterPopover";
+import { ElemCompaniesAddFilter } from "./ElemCompaniesAddFilter";
 
-type FilterOptionKeys =
+export type FilterOptionKeys =
   | "country"
   | "state"
   | "city"
@@ -23,14 +25,6 @@ type FilterOptionKeys =
   | "fundingInvestors"
   | "teamSize";
 
-type CategoryFilterOptionProps = {
-  options: Array<{
-    category: string;
-    items: Array<{ label: string; value: string }>;
-  }>;
-  onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
-};
-
 type DateRangeOptions =
   | "30-days"
   | "60-days"
@@ -41,36 +35,50 @@ type DateRangeOptions =
 
 export type Filters = {
   country?: {
+    open?: boolean;
     condition: "any" | "none";
     tags: Array<string>;
   };
   state?: {
+    open?: boolean;
     condition: "any" | "none";
     tags: Array<string>;
   };
   city?: {
+    open?: boolean;
     condition: "any" | "none";
     tags: Array<string>;
   };
   keywords?: {
+    open?: boolean;
     tags: Array<string>;
   };
-  industry?: Array<string>;
-  fundingType?: Array<string>;
+  industry?: {
+    open?: boolean;
+    tags: Array<string>;
+  };
+  fundingType?: {
+    open?: boolean;
+    tags: Array<string>;
+  };
   fundingAmount?: {
+    open?: boolean;
     minVal?: number;
     maxVal?: number;
   };
   lastFundingDate?: {
+    open?: boolean;
     condition?: DateRangeOptions;
     fromDate?: string;
     toDate?: string;
   };
   fundingInvestors?: {
+    open?: boolean;
     condition: "any" | "none";
     tags: Array<string>;
   };
   teamSize?: {
+    open?: boolean;
     minVal: number;
     maxVal: number;
   };
@@ -82,6 +90,8 @@ type Props = {
 };
 
 export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
+  const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
+
   const [filters, setFilters] = useState<Filters>();
 
   const allTags = useMemo(() => {
@@ -135,17 +145,40 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
   };
 
   const onSelectFilterOption = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setOpenAddFilter(false);
     const { name } = event.target as HTMLButtonElement;
     setFilters((prev) => ({
       ...prev,
-      [name]: getDefaultFilter(name as FilterOptionKeys),
+      [name]: {
+        ...getDefaultFilter(name as FilterOptionKeys),
+        open: true,
+      },
     }));
   };
 
-  const onClearFilterOption = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const { name } = event.target as HTMLButtonElement;
+  const onClearFilterOption = (name: FilterOptionKeys) => {
     setFilters(omit(filters, name));
     onApply(onFormatFilterParams(omit(filters, name)));
+  };
+
+  const onOpenFilterPopover = (name: FilterOptionKeys) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev?.[name],
+        open: true,
+      },
+    }));
+  };
+
+  const onCloseFilterPopover = (name: FilterOptionKeys) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: {
+        ...prev?.[name],
+        open: false,
+      },
+    }));
   };
 
   const onChangeTags = (selectedTags: Array<string>, name: string) => {
@@ -199,7 +232,7 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
   };
 
   const onChangeIndustry = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newFilterIndustry = [...(filters?.industry || [])];
+    const newFilterIndustry = [...(filters?.industry?.tags || [])];
     if (event.target.checked) {
       newFilterIndustry.push(event.target.name);
     } else {
@@ -208,12 +241,15 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
     }
     setFilters((prev) => ({
       ...prev,
-      industry: newFilterIndustry,
+      industry: {
+        ...prev?.industry,
+        tags: newFilterIndustry,
+      },
     }));
   };
 
   const onChangeFundingType = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newFilterFundingType = [...(filters?.fundingType || [])];
+    const newFilterFundingType = [...(filters?.fundingType?.tags || [])];
     if (event.target.checked) {
       newFilterFundingType.push(event.target.name);
     } else {
@@ -222,7 +258,10 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
     }
     setFilters((prev) => ({
       ...prev,
-      fundingType: newFilterFundingType,
+      fundingType: {
+        ...prev?.fundingType,
+        tags: newFilterFundingType,
+      },
     }));
   };
 
@@ -290,500 +329,416 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
   return (
     <section className="w-full flex items-center justify-between mb-1 py-3">
       <div className="flex items-center space-x-3 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x">
-        <Popover className="snap-start shrink-0">
-          <Popover.Button className="relative flex items-center font-bold text-sm text-primary-500 rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1">
-            <IconPlus className="w-5 h-5 mr-1" />
-            Add Filter
-          </Popover.Button>
-          <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content p-5">
-            <div className="grid grid-cols-2 gap-16">
-              <div>
-                <CategoryFilterOption
-                  options={companiesFilterOptions.slice(0, 3)}
-                  onSelectFilterOption={onSelectFilterOption}
-                />
-              </div>
-              <div>
-                <CategoryFilterOption
-                  options={companiesFilterOptions.slice(3)}
-                  onSelectFilterOption={onSelectFilterOption}
-                />
-              </div>
-            </div>
-          </Popover.Panel>
-        </Popover>
+        <ElemCompaniesAddFilter
+          open={openAddFilter}
+          onOpen={() => setOpenAddFilter(true)}
+          onClose={() => setOpenAddFilter(false)}
+          onSelectFilterOption={onSelectFilterOption}
+        />
 
         {filters?.country && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`Country (${filters?.country?.tags?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
-              <div className="font-bold text-sm">Country</div>
-              <div className="flex flex-col gap-2 mt-2">
-                <InputRadio
-                  name="country"
-                  value="any"
-                  checked={filters?.country?.condition === "any"}
-                  label="is any of these"
-                  onChange={(event) => onChangeCondition(event, "country")}
-                />
-                <ElemTagsInput
-                  value={filters?.country?.tags || []}
-                  placeholder="Enter a country name"
-                  onChange={(tags) => onChangeTags(tags, "country")}
-                />
-                <InputRadio
-                  name="country"
-                  value="none"
-                  checked={filters?.country?.condition === "none"}
-                  label="is none of these"
-                  onChange={(event) => onChangeCondition(event, "country")}
-                />
-              </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="country"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+          <ElemCompaniesFilterPopover
+            open={!!filters.country.open}
+            name="country"
+            title={`Country (${filters?.country?.tags?.length || 0})`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Country</div>
+            <div className="flex flex-col gap-2 mt-2">
+              <InputRadio
+                name="country"
+                value="any"
+                checked={filters?.country?.condition === "any"}
+                label="is any of these"
+                onChange={(event) => onChangeCondition(event, "country")}
+              />
+              <ElemTagsInput
+                value={filters?.country?.tags || []}
+                placeholder="Enter a country name"
+                onChange={(tags) => onChangeTags(tags, "country")}
+              />
+              <InputRadio
+                name="country"
+                value="none"
+                checked={filters?.country?.condition === "none"}
+                label="is none of these"
+                onChange={(event) => onChangeCondition(event, "country")}
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.state && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`State (${filters?.state?.tags?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
-              <div className="font-bold text-sm">State</div>
-              <div className="flex flex-col gap-2 mt-2">
-                <InputRadio
-                  name="state"
-                  value="any"
-                  checked={filters?.state?.condition === "any"}
-                  label="is any of these"
-                  onChange={(event) => onChangeCondition(event, "state")}
-                />
-                <ElemTagsInput
-                  value={filters?.state?.tags || []}
-                  placeholder="Enter a state name"
-                  onChange={(tags) => onChangeTags(tags, "state")}
-                />
-                <InputRadio
-                  name="state"
-                  value="none"
-                  checked={filters?.state?.condition === "none"}
-                  label="is none of these"
-                  onChange={(event) => onChangeCondition(event, "state")}
-                />
-              </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="state"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+          <ElemCompaniesFilterPopover
+            open={!!filters.state.open}
+            name="state"
+            title={`State (${filters?.state?.tags?.length || 0})`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">State</div>
+            <div className="flex flex-col gap-2 mt-2">
+              <InputRadio
+                name="state"
+                value="any"
+                checked={filters?.state?.condition === "any"}
+                label="is any of these"
+                onChange={(event) => onChangeCondition(event, "state")}
+              />
+              <ElemTagsInput
+                value={filters?.state?.tags || []}
+                placeholder="Enter a state name"
+                onChange={(tags) => onChangeTags(tags, "state")}
+              />
+              <InputRadio
+                name="state"
+                value="none"
+                checked={filters?.state?.condition === "none"}
+                label="is none of these"
+                onChange={(event) => onChangeCondition(event, "state")}
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.city && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`City (${filters?.city?.tags?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
-              <div className="font-bold text-sm">City</div>
-              <div className="flex flex-col gap-2 mt-2">
-                <InputRadio
-                  name="city"
-                  value="any"
-                  checked={filters?.city?.condition === "any"}
-                  label="is any of these"
-                  onChange={(event) => onChangeCondition(event, "city")}
-                />
-                <ElemTagsInput
-                  value={filters?.city?.tags || []}
-                  placeholder="Enter a city name"
-                  onChange={(tags) => onChangeTags(tags, "city")}
-                />
-                <InputRadio
-                  name="city"
-                  value="none"
-                  checked={filters?.city?.condition === "none"}
-                  label="is none of these"
-                  onChange={(event) => onChangeCondition(event, "city")}
-                />
-              </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="city"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+          <ElemCompaniesFilterPopover
+            open={!!filters.city.open}
+            name="city"
+            title={`City (${filters?.city?.tags?.length || 0})`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">City</div>
+            <div className="flex flex-col gap-2 mt-2">
+              <InputRadio
+                name="city"
+                value="any"
+                checked={filters?.city?.condition === "any"}
+                label="is any of these"
+                onChange={(event) => onChangeCondition(event, "city")}
+              />
+              <ElemTagsInput
+                value={filters?.city?.tags || []}
+                placeholder="Enter a city name"
+                onChange={(tags) => onChangeTags(tags, "city")}
+              />
+              <InputRadio
+                name="city"
+                value="none"
+                checked={filters?.city?.condition === "none"}
+                label="is none of these"
+                onChange={(event) => onChangeCondition(event, "city")}
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.keywords && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`Keywords (${filters?.keywords?.tags?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
-              <div className="font-bold text-sm">Description Keywords</div>
-              <div className="mt-1">
-                <ElemTagsInput
-                  value={filters?.keywords?.tags || []}
-                  placeholder="e.g. Wallet, Blockchain, etc."
-                  onChange={(tags) => onChangeTags(tags, "keywords")}
-                />
-              </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="keywords"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+          <ElemCompaniesFilterPopover
+            open={!!filters.keywords.open}
+            name="keywords"
+            title={`Keywords (${filters?.keywords?.tags?.length || 0})`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Description Keywords</div>
+            <div className="mt-1">
+              <ElemTagsInput
+                value={filters?.keywords?.tags || []}
+                placeholder="e.g. Wallet, Blockchain, etc."
+                onChange={(tags) => onChangeTags(tags, "keywords")}
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.industry && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`Industry (${filters?.industry?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content p-5">
-              <div className="font-bold text-sm">Industry</div>
-              <ul className="grid grid-cols-6 gap-x-5 overflow-y-auto no-scrollbar">
-                {allTags.map((tag) => (
-                  <li
-                    key={tag.id}
-                    className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
-                  >
-                    <label className="relative flex items-center gap-2 cursor-pointer w-full  py-2 hover:bg-slate-100">
-                      <input
-                        id={tag.id}
-                        name={tag.id}
-                        type="checkbox"
-                        checked={filters?.industry?.some(
-                          (item) => item === tag.id
-                        )}
-                        onChange={onChangeIndustry}
-                        className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-                      />
-                      <div>{tag.name}</div>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="industry"
-                  className="text-primary-500"
+          <ElemCompaniesFilterPopover
+            open={!!filters.industry.open}
+            name="industry"
+            title={`Industry (${filters?.industry?.tags?.length || 0})`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Industry</div>
+            <ul className="grid grid-cols-4 gap-x-5 overflow-y-auto no-scrollbar">
+              {allTags.map((tag) => (
+                <li
+                  key={tag.id}
+                  className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
                 >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+                  <label className="relative flex items-center gap-2 cursor-pointer w-full  py-2 hover:bg-slate-100">
+                    <input
+                      id={tag.id}
+                      name={tag.id}
+                      type="checkbox"
+                      checked={filters?.industry?.tags?.some(
+                        (item) => item === tag.id
+                      )}
+                      onChange={onChangeIndustry}
+                      className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+                    />
+                    <div>{tag.name}</div>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.fundingType && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`Funding type (${filters?.fundingType?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
-              <div className="font-bold text-sm">Funding type</div>
-              <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto no-scrollbar">
-                {roundChoices.map((round) => (
-                  <li
-                    key={round.id}
-                    className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
-                  >
-                    <label className="relative flex items-center gap-2 cursor-pointer w-full  py-2 hover:bg-slate-100">
-                      <input
-                        id={round.id}
-                        name={round.id}
-                        type="checkbox"
-                        checked={filters?.fundingType?.some(
-                          (item) => item === round.id
-                        )}
-                        onChange={onChangeFundingType}
-                        className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-                      />
-                      <div>{round.name}</div>
-                    </label>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="fundingType"
-                  className="text-primary-500"
+          <ElemCompaniesFilterPopover
+            open={!!filters.fundingType.open}
+            name="fundingType"
+            title={`Funding type (${filters?.fundingType?.tags?.length || 0})`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Funding type</div>
+            <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto no-scrollbar">
+              {roundChoices.map((round) => (
+                <li
+                  key={round.id}
+                  className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
                 >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+                  <label className="relative flex items-center gap-2 cursor-pointer w-full  py-2 hover:bg-slate-100">
+                    <input
+                      id={round.id}
+                      name={round.id}
+                      type="checkbox"
+                      checked={filters?.fundingType?.tags?.some(
+                        (item) => item === round.id
+                      )}
+                      onChange={onChangeFundingType}
+                      className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+                    />
+                    <div>{round.name}</div>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.fundingAmount && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              Funding amount
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
-              <div className="font-bold text-sm">Funding amount total</div>
-              <div className="flex items-center space-x-4">
-                <div className="grow">
-                  <div className="text-sm text-slate-600">Min</div>
-                  <input
-                    name="fundingAmount.minVal"
-                    type="text"
-                    value={filters?.fundingAmount?.minVal}
-                    onChange={onChangeRangeInput}
-                    defaultValue={convertToInternationalCurrencySystem(25000)}
-                    className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
-                  />
-                </div>
-                <div className="pt-4 flex-none">{"–"}</div>
-                <div className="grow">
-                  <div className="text-sm text-slate-600">Max</div>
-                  <input
-                    name="fundingAmount.maxVal"
-                    type="text"
-                    value={filters?.fundingAmount?.maxVal}
-                    onChange={onChangeRangeInput}
-                    defaultValue={"Any"}
-                    placeholder="Any"
-                    className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
-                  />
-                </div>
-              </div>
-              <div className="mt-4">
-                <ElemMultiRangeSlider
-                  value={[
-                    filters?.fundingAmount?.minVal || 0,
-                    filters?.fundingAmount?.maxVal || 0,
-                  ]}
-                  min={0}
-                  max={50000000}
-                  step={500}
-                  onChange={({ min, max }: { min: number; max: number }) =>
-                    onChangeRangeSlider("fundingAmount", min, max)
-                  }
+          <ElemCompaniesFilterPopover
+            open={!!filters.fundingAmount.open}
+            name="fundingAmount"
+            title="Funding amount"
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Funding amount total</div>
+            <div className="flex items-center space-x-4">
+              <div className="grow">
+                <div className="text-sm text-slate-600">Min</div>
+                <input
+                  name="fundingAmount.minVal"
+                  type="text"
+                  value={filters?.fundingAmount?.minVal}
+                  onChange={onChangeRangeInput}
+                  defaultValue={convertToInternationalCurrencySystem(25000)}
+                  className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                 />
               </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="fundingAmount"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
+              <div className="pt-4 flex-none">{"–"}</div>
+              <div className="grow">
+                <div className="text-sm text-slate-600">Max</div>
+                <input
+                  name="fundingAmount.maxVal"
+                  type="text"
+                  value={filters?.fundingAmount?.maxVal}
+                  onChange={onChangeRangeInput}
+                  defaultValue={"Any"}
+                  placeholder="Any"
+                  className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                />
               </div>
-            </Popover.Panel>
-          </Popover>
+            </div>
+            <div className="mt-4">
+              <ElemMultiRangeSlider
+                value={[
+                  filters?.fundingAmount?.minVal || 0,
+                  filters?.fundingAmount?.maxVal || 0,
+                ]}
+                min={0}
+                max={50000000}
+                step={500}
+                onChange={({ min, max }: { min: number; max: number }) =>
+                  onChangeRangeSlider("fundingAmount", min, max)
+                }
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.lastFundingDate && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              Last funding date
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-md p-5">
-              <div className="font-bold text-sm">Last funding date</div>
-              <div className="flex flex-col gap-2 mt-2">
-                <InputRadio
-                  name="lastFundingDate"
-                  value="30-days"
-                  checked={filters?.lastFundingDate?.condition === "30-days"}
-                  label="Past 30 days"
-                  onChange={onChangeLastFundingDateCondition}
+          <ElemCompaniesFilterPopover
+            open={!!filters.lastFundingDate.open}
+            name="lastFundingDate"
+            title="Last funding date"
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Last funding date</div>
+            <div className="flex flex-col gap-2 mt-2">
+              <InputRadio
+                name="lastFundingDate"
+                value="30-days"
+                checked={filters?.lastFundingDate?.condition === "30-days"}
+                label="Past 30 days"
+                onChange={onChangeLastFundingDateCondition}
+              />
+              <InputRadio
+                name="lastFundingDate"
+                value="60-days"
+                checked={filters?.lastFundingDate?.condition === "60-days"}
+                label="Past 60 days"
+                onChange={onChangeLastFundingDateCondition}
+              />
+              <InputRadio
+                name="lastFundingDate"
+                value="90-days"
+                checked={filters?.lastFundingDate?.condition === "90-days"}
+                label="Past 90 days"
+                onChange={onChangeLastFundingDateCondition}
+              />
+              <InputRadio
+                name="lastFundingDate"
+                value="year"
+                checked={filters?.lastFundingDate?.condition === "year"}
+                label="Past year"
+                onChange={onChangeLastFundingDateCondition}
+              />
+              <InputRadio
+                name="lastFundingDate"
+                value="custom"
+                checked={filters?.lastFundingDate?.condition === "custom"}
+                label="Custom date range"
+                onChange={onChangeLastFundingDateCondition}
+              />
+            </div>
+            {filters?.lastFundingDate?.condition === "custom" && (
+              <div className="flex items-center gap-x-4 mt-2">
+                <InputDate
+                  name="fromDate"
+                  value={filters?.lastFundingDate?.fromDate ?? ""}
+                  onChange={onChangeLastFundingDateRange}
+                  className="block max-w-sm placeholder-slate-500"
                 />
-                <InputRadio
-                  name="lastFundingDate"
-                  value="60-days"
-                  checked={filters?.lastFundingDate?.condition === "60-days"}
-                  label="Past 60 days"
-                  onChange={onChangeLastFundingDateCondition}
-                />
-                <InputRadio
-                  name="lastFundingDate"
-                  value="90-days"
-                  checked={filters?.lastFundingDate?.condition === "90-days"}
-                  label="Past 90 days"
-                  onChange={onChangeLastFundingDateCondition}
-                />
-                <InputRadio
-                  name="lastFundingDate"
-                  value="year"
-                  checked={filters?.lastFundingDate?.condition === "year"}
-                  label="Past year"
-                  onChange={onChangeLastFundingDateCondition}
-                />
-                <InputRadio
-                  name="lastFundingDate"
-                  value="custom"
-                  checked={filters?.lastFundingDate?.condition === "custom"}
-                  label="Custom date range"
-                  onChange={onChangeLastFundingDateCondition}
+                <div className="flex-none">{"–"}</div>
+                <InputDate
+                  name="toDate"
+                  value={filters?.lastFundingDate?.toDate ?? ""}
+                  onChange={onChangeLastFundingDateRange}
+                  className="block max-w-sm placeholder-slate-500"
                 />
               </div>
-              {filters?.lastFundingDate?.condition === "custom" && (
-                <div className="flex items-center gap-x-4 mt-2">
-                  <InputDate
-                    name="fromDate"
-                    value={filters?.lastFundingDate?.fromDate ?? ""}
-                    onChange={onChangeLastFundingDateRange}
-                    className="block max-w-sm placeholder-slate-500"
-                  />
-                  <div className="flex-none">{"–"}</div>
-                  <InputDate
-                    name="toDate"
-                    value={filters?.lastFundingDate?.toDate ?? ""}
-                    onChange={onChangeLastFundingDateRange}
-                    className="block max-w-sm placeholder-slate-500"
-                  />
-                </div>
-              )}
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="lastFundingDate"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+            )}
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.fundingInvestors && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              {`Funding investors (${filters?.fundingInvestors?.tags?.length})`}
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-full max-w-xs p-5">
-              <div className="font-bold text-sm">Funding investors</div>
-              <div className="flex flex-col gap-2 mt-2">
-                <InputRadio
-                  name="fundingInvestors"
-                  value="any"
-                  checked={filters?.fundingInvestors?.condition === "any"}
-                  label="is any of these"
-                  onChange={(event) =>
-                    onChangeCondition(event, "fundingInvestors")
-                  }
-                />
-                <ElemTagsInput
-                  value={filters?.fundingInvestors?.tags || []}
-                  placeholder="Enter an investor name"
-                  onChange={(tags) => onChangeTags(tags, "fundingInvestors")}
-                />
-                <InputRadio
-                  name="fundingInvestors"
-                  value="none"
-                  checked={filters?.fundingInvestors?.condition === "none"}
-                  label="is none of these"
-                  onChange={(event) =>
-                    onChangeCondition(event, "fundingInvestors")
-                  }
-                />
-              </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="fundingInvestors"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
-              </div>
-            </Popover.Panel>
-          </Popover>
+          <ElemCompaniesFilterPopover
+            open={!!filters.fundingInvestors.open}
+            name="fundingInvestors"
+            title={`Funding investors (${
+              filters?.fundingInvestors?.tags?.length || 0
+            })`}
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Funding investors</div>
+            <div className="flex flex-col gap-2 mt-2">
+              <InputRadio
+                name="fundingInvestors"
+                value="any"
+                checked={filters?.fundingInvestors?.condition === "any"}
+                label="is any of these"
+                onChange={(event) =>
+                  onChangeCondition(event, "fundingInvestors")
+                }
+              />
+              <ElemTagsInput
+                value={filters?.fundingInvestors?.tags || []}
+                placeholder="Enter an investor name"
+                onChange={(tags) => onChangeTags(tags, "fundingInvestors")}
+              />
+              <InputRadio
+                name="fundingInvestors"
+                value="none"
+                checked={filters?.fundingInvestors?.condition === "none"}
+                label="is none of these"
+                onChange={(event) =>
+                  onChangeCondition(event, "fundingInvestors")
+                }
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters?.teamSize && (
-          <Popover className="snap-start shrink-0">
-            <Popover.Button className="relative flex items-center font-bold text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-slate-200 ring-inset ring-1 ring-slate-100 hover:bg-slate-300 focus:outline-none focus:ring-1">
-              Team size
-            </Popover.Button>
-            <Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xs p-5">
-              <div className="font-bold text-sm">Team size</div>
-              <div className="flex items-center space-x-2">
-                <div className="">
-                  <div className="text-sm text-slate-600">Min</div>
-                  <input
-                    type="text"
-                    name="teamSize.minVal"
-                    value={filters?.teamSize?.minVal}
-                    onChange={onChangeRangeInput}
-                    defaultValue={0}
-                    className="appearance-none border-none w-20 border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
-                  />
-                </div>
-                <div className="pt-4">{"–"}</div>
-                <div className="">
-                  <div className="text-sm text-slate-600">Max</div>
-                  <input
-                    type="text"
-                    name="teamSize.?maxVal"
-                    value={filters?.teamSize?.maxVal}
-                    onChange={onChangeRangeInput}
-                    defaultValue={"Any"}
-                    placeholder="Any"
-                    className="appearance-none border-none w-20 border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
-                  />
-                </div>
-              </div>
-              <div className="mt-4">
-                <ElemMultiRangeSlider
-                  value={[
-                    filters?.teamSize?.minVal || 0,
-                    filters?.teamSize?.maxVal || 0,
-                  ]}
-                  min={0}
-                  max={200}
-                  step={5}
-                  onChange={({ min, max }: { min: number; max: number }) =>
-                    onChangeRangeSlider("teamSize", min, max)
-                  }
+          <ElemCompaniesFilterPopover
+            open={!!filters.teamSize.open}
+            name="teamSize"
+            title="Team size"
+            onOpen={onOpenFilterPopover}
+            onClose={onCloseFilterPopover}
+            onClear={onClearFilterOption}
+          >
+            <div className="font-bold text-sm">Team size</div>
+            <div className="flex items-center space-x-2">
+              <div className="">
+                <div className="text-sm text-slate-600">Min</div>
+                <input
+                  type="text"
+                  name="teamSize.minVal"
+                  value={filters?.teamSize?.minVal}
+                  onChange={onChangeRangeInput}
+                  defaultValue={0}
+                  className="appearance-none border-none w-20 border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                 />
               </div>
-              <div className="mt-4 pt-2 border-t border-black/5">
-                <button
-                  onClick={onClearFilterOption}
-                  name="teamSize"
-                  className="text-primary-500"
-                >
-                  Clear filter
-                </button>
+              <div className="pt-4">{"–"}</div>
+              <div className="">
+                <div className="text-sm text-slate-600">Max</div>
+                <input
+                  type="text"
+                  name="teamSize.?maxVal"
+                  value={filters?.teamSize?.maxVal}
+                  onChange={onChangeRangeInput}
+                  defaultValue={"Any"}
+                  placeholder="Any"
+                  className="appearance-none border-none w-20 border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                />
               </div>
-            </Popover.Panel>
-          </Popover>
+            </div>
+            <div className="mt-4">
+              <ElemMultiRangeSlider
+                value={[
+                  filters?.teamSize?.minVal || 0,
+                  filters?.teamSize?.maxVal || 0,
+                ]}
+                min={0}
+                max={200}
+                step={5}
+                onChange={({ min, max }: { min: number; max: number }) =>
+                  onChangeRangeSlider("teamSize", min, max)
+                }
+              />
+            </div>
+          </ElemCompaniesFilterPopover>
         )}
 
         {filters && Object.keys(filters).length > 0 && (
@@ -806,33 +761,5 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
         )}
       </div>
     </section>
-  );
-};
-
-const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
-  options,
-  onSelectFilterOption,
-}) => {
-  return (
-    <div className="flex flex-col gap-y-6">
-      {options.map((option) => (
-        <div key={option.category}>
-          <h3 className="font-bold text-sm">{option.category}</h3>
-          <ul className="list-none space-y-1 text-slate-600 leading-snug">
-            {option.items.map((item) => (
-              <li key={item.value}>
-                <button
-                  onClick={onSelectFilterOption}
-                  name={item.value}
-                  className="box-border border-b border-primary-500 transition-all p-0 hover:border-b-2 hover:text-primary-500"
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </div>
   );
 };

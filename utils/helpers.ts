@@ -159,18 +159,18 @@ export const processCompaniesFilters = (
     });
   }
 
-  if (selectedFilters?.industry && selectedFilters.industry.length > 0) {
+  if (selectedFilters?.industry && selectedFilters.industry.tags?.length > 0) {
     filters._and?.push({
-      _and: selectedFilters.industry.map((item) => ({
+      _and: selectedFilters.industry.tags.map((item) => ({
         tags: { _contains: item },
       })),
     });
   }
 
-  if (selectedFilters?.fundingType && selectedFilters.fundingType.length > 0) {
+  if (selectedFilters?.fundingType && selectedFilters.fundingType.tags?.length > 0) {
     filters._and?.push({
       investment_rounds: {
-        _and: selectedFilters.fundingType.map((item) => ({
+        _and: selectedFilters.fundingType.tags.map((item) => ({
           round: { _eq: item },
         })),
       },
