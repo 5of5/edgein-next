@@ -166,7 +166,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
     onClearOption(name);
   };
 
-  const onOpenFilterPopover = (name: FilterOptionKeys) => {
+  const onOpenFilterPopup = (name: FilterOptionKeys) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
@@ -176,7 +176,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
     }));
   };
 
-  const onCloseFilterPopover = (name: FilterOptionKeys) => {
+  const onCloseFilterPopup = (name: FilterOptionKeys) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
@@ -326,6 +326,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 
   const onApplyFilter = (name: FilterOptionKeys) => {
     onApply(name, onFormatFilterParams(name));
+    onCloseFilterPopup(name);
   };
 
   const onResetFilters = () => {
@@ -348,8 +349,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.country.open}
             name="country"
             title={`Country (${filters?.country?.tags?.length || 0})`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -383,8 +384,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.state.open}
             name="state"
             title={`State (${filters?.state?.tags?.length || 0})`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -418,8 +419,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.city.open}
             name="city"
             title={`City (${filters?.city?.tags?.length || 0})`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -453,8 +454,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.keywords.open}
             name="keywords"
             title={`Keywords (${filters?.keywords?.tags?.length || 0})`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -474,8 +475,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.industry.open}
             name="industry"
             title={`Industry (${filters?.industry?.tags?.length || 0})`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -510,8 +511,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.fundingType.open}
             name="fundingType"
             title={`Funding type (${filters?.fundingType?.tags?.length || 0})`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -546,8 +547,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.fundingAmount.open}
             name="fundingAmount"
             title="Funding amount"
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -600,8 +601,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.lastFundingDate.open}
             name="lastFundingDate"
             title="Last funding date"
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -670,8 +671,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             title={`Funding investors (${
               filters?.fundingInvestors?.tags?.length || 0
             })`}
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >
@@ -709,8 +710,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
             open={!!filters.teamSize.open}
             name="teamSize"
             title="Team size"
-            onOpen={onOpenFilterPopover}
-            onClose={onCloseFilterPopover}
+            onOpen={onOpenFilterPopup}
+            onClose={onCloseFilterPopup}
             onClear={onClearFilterOption}
             onApply={onApplyFilter}
           >

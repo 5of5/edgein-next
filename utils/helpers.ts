@@ -71,7 +71,11 @@ export const processCompaniesFilters = (
     if (selectedFilters?.country?.condition === "any") {
       filters._and?.push({
         _or: selectedFilters.country.tags.map((item) => ({
-          location_json: { _contains: { country: item } },
+          location_json: {
+            _cast: {
+              String: {_ilike: `%"country": "${item}"%`}
+            },
+          },
         })),
       });
     }
@@ -82,7 +86,11 @@ export const processCompaniesFilters = (
           {
             _not: {
               _or: selectedFilters.country.tags.map((item) => ({
-                location_json: { _contains: { country: item } },
+                location_json: {
+                  _cast: {
+                    String: {_ilike: `%"country": "${item}"%`}
+                  },
+                },
               })),
             },
           },
@@ -98,7 +106,11 @@ export const processCompaniesFilters = (
 		if (selectedFilters?.state?.condition === "any") {
       filters._and?.push({
         _or: selectedFilters.state.tags.map((item) => ({
-          location_json: { _contains: { state: item } },
+          location_json: {
+            _cast: {
+              String: {_ilike: `%"state": "${item}"%`}
+            },
+          },
         })),
       });
     }
@@ -109,7 +121,11 @@ export const processCompaniesFilters = (
           {
             _not: {
               _or: selectedFilters.state.tags.map((item) => ({
-                location_json: { _contains: { state: item } },
+                location_json: {
+                  _cast: {
+                    String: {_ilike: `%"state": "${item}"%`}
+                  },
+                },
               })),
             },
           },
@@ -125,7 +141,11 @@ export const processCompaniesFilters = (
 		if (selectedFilters?.city?.condition === "any") {
       filters._and?.push({
         _or: selectedFilters.city.tags.map((item) => ({
-          location_json: { _contains: { city: item } },
+          location_json: {
+            _cast: {
+              String: {_ilike: `%"city": "${item}"%`}
+            },
+          },
         })),
       });
     }
@@ -136,7 +156,11 @@ export const processCompaniesFilters = (
           {
             _not: {
               _or: selectedFilters.city.tags.map((item) => ({
-                location_json: { _contains: { city: item } },
+                location_json: {
+                  _cast: {
+                    String: {_ilike: `%"city": "${item}"%`}
+                  },
+                },
               })),
             },
           },
@@ -227,7 +251,7 @@ export const processCompaniesFilters = (
               _or: [
                 {
                   vc_firm: {
-                    _or: [{ name: { _eq: item } }],
+                    _or: [{ name: { _ilike: `%${item}%` } }],
                   },
                 },
               ],
@@ -246,7 +270,7 @@ export const processCompaniesFilters = (
                 _or: [
                   {
                     vc_firm: {
-                      _or: [{ name: { _eq: item } }],
+                      _or: [{ name: { _ilike: `%${item}%` } }],
                     },
                   },
                 ],
