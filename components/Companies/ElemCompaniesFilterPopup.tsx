@@ -1,4 +1,5 @@
 import React, { FC, PropsWithChildren, useEffect, useRef } from "react";
+import { ElemButton } from "../ElemButton";
 import { FilterOptionKeys } from "./ElemCompaniesFilter";
 
 type Props = {
@@ -8,15 +9,17 @@ type Props = {
   onOpen: (name: FilterOptionKeys) => void;
   onClose: (name: FilterOptionKeys) => void;
   onClear: (name: FilterOptionKeys) => void;
+  onApply: (name: FilterOptionKeys) => void;
 };
 
-export const ElemCompaniesFilterPopover: FC<PropsWithChildren<Props>> = ({
+export const ElemCompaniesFilterPopup: FC<PropsWithChildren<Props>> = ({
   open,
   name,
   title,
   onOpen,
   onClose,
   onClear,
+  onApply,
   children,
 }) => {
   const wrapperRef = useRef<any>(null);
@@ -46,6 +49,10 @@ export const ElemCompaniesFilterPopover: FC<PropsWithChildren<Props>> = ({
     onClear(name);
   };
 
+  const onApplyFilter = () => {
+    onApply(name);
+  };
+
   return (
     <div className=" snap-start shrink-0">
       <div
@@ -57,10 +64,10 @@ export const ElemCompaniesFilterPopover: FC<PropsWithChildren<Props>> = ({
       {open && (
         <div
           ref={wrapperRef}
-          className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content p-5"
+          className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content max-w-xl p-5"
         >
           {children}
-          <div className="mt-4 pt-2 border-t border-black/5">
+          <div className="flex items-center justify-between gap-x-4 mt-4 pt-2 border-t border-black/5">
             <button
               onClick={onClearFilterOption}
               name={name}
@@ -68,6 +75,9 @@ export const ElemCompaniesFilterPopover: FC<PropsWithChildren<Props>> = ({
             >
               Clear filter
             </button>
+            <ElemButton btn="primary-light" onClick={onApplyFilter}>
+              Apply
+            </ElemButton>
           </div>
         </div>
       )}

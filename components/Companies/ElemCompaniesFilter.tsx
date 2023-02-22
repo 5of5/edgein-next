@@ -1,16 +1,14 @@
 import React, { FC, useMemo, useState } from "react";
-import { Popover } from "@headlessui/react";
 import { omit, cloneDeep } from "lodash";
 import moment from "moment-timezone";
 import { convertToInternationalCurrencySystem } from "@/utils";
-import { IconPlus } from "@/components/Icons";
-import { companiesFilterOptions, roundChoices, tags } from "@/utils/constants";
+import { roundChoices, tags } from "@/utils/constants";
 import { ElemButton } from "../ElemButton";
 import { InputRadio } from "../InputRadio";
 import { ElemTagsInput } from "../ElemTagsInput";
 import { ElemMultiRangeSlider } from "../ElemMultiRangeSlider";
 import { InputDate } from "../InputDate";
-import { ElemCompaniesFilterPopover } from "./ElemCompaniesFilterPopover";
+import { ElemCompaniesFilterPopup } from "./ElemCompaniesFilterPopup";
 import { ElemCompaniesAddFilter } from "./ElemCompaniesAddFilter";
 
 export type FilterOptionKeys =
@@ -85,14 +83,21 @@ export type Filters = {
 };
 
 type Props = {
-  onApply: (filterParams: Filters) => void;
+  defaultFilters: Filters | null,
+  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
+  onClearOption: (name: FilterOptionKeys) => void;
   onReset: () => void;
 };
 
-export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
+export const ElemCompaniesFilter: FC<Props> = ({
+  defaultFilters,
+  onApply,
+  onClearOption,
+  onReset,
+}) => {
   const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
 
-  const [filters, setFilters] = useState<Filters>();
+  const [filters, setFilters] = useState<Filters | null>(defaultFilters);
 
   const allTags = useMemo(() => {
     return tags.filter(
@@ -158,7 +163,7 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
 
   const onClearFilterOption = (name: FilterOptionKeys) => {
     setFilters(omit(filters, name));
-    onApply(onFormatFilterParams(omit(filters, name)));
+    onClearOption(name);
   };
 
   const onOpenFilterPopover = (name: FilterOptionKeys) => {
@@ -278,13 +283,14 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
   };
 
   const onChangeRangeSlider = (
-    name: string,
+    name: FilterOptionKeys,
     minVal: number,
     maxVal: number
   ) => {
     setFilters((prev) => ({
       ...prev,
       [name]: {
+        ...prev?.[name],
         minVal,
         maxVal,
       },
@@ -304,26 +310,27 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
     }));
   };
 
-  const onFormatFilterParams = (filter: Filters) => {
-    const filterParams = cloneDeep(filter);
-    if (filterParams?.lastFundingDate?.condition === "custom") {
-      filterParams.lastFundingDate.fromDate = moment(
-        filterParams.lastFundingDate.fromDate
+  const onFormatFilterParams = (name: FilterOptionKeys) => {
+    const filterParams: any = cloneDeep(filters?.[name]);
+    if (name === "lastFundingDate" && filterParams?.condition === "custom") {
+      filterParams.fromDate = moment(
+        filterParams.fromDate
       ).toISOString();
-      filterParams.lastFundingDate.toDate = moment(
-        filterParams.lastFundingDate.toDate
+      filterParams.toDate = moment(
+        filterParams.toDate
       ).toISOString();
     }
+    delete filterParams.open;
     return filterParams;
   };
 
-  const onApplyFilters = () => {
-    onApply(onFormatFilterParams(filters as Filters));
+  const onApplyFilter = (name: FilterOptionKeys) => {
+    onApply(name, onFormatFilterParams(name));
   };
 
   const onResetFilters = () => {
     setFilters({});
-    onApply({});
+    onReset();
   };
 
   return (
@@ -337,13 +344,14 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
         />
 
         {filters?.country && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.country.open}
             name="country"
             title={`Country (${filters?.country?.tags?.length || 0})`}
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Country</div>
             <div className="flex flex-col gap-2 mt-2">
@@ -367,17 +375,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 onChange={(event) => onChangeCondition(event, "country")}
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.state && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.state.open}
             name="state"
             title={`State (${filters?.state?.tags?.length || 0})`}
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">State</div>
             <div className="flex flex-col gap-2 mt-2">
@@ -401,17 +410,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 onChange={(event) => onChangeCondition(event, "state")}
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.city && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.city.open}
             name="city"
             title={`City (${filters?.city?.tags?.length || 0})`}
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">City</div>
             <div className="flex flex-col gap-2 mt-2">
@@ -435,17 +445,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 onChange={(event) => onChangeCondition(event, "city")}
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.keywords && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.keywords.open}
             name="keywords"
             title={`Keywords (${filters?.keywords?.tags?.length || 0})`}
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Description Keywords</div>
             <div className="mt-1">
@@ -455,17 +466,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 onChange={(tags) => onChangeTags(tags, "keywords")}
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.industry && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.industry.open}
             name="industry"
             title={`Industry (${filters?.industry?.tags?.length || 0})`}
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Industry</div>
             <ul className="grid grid-cols-4 gap-x-5 overflow-y-auto no-scrollbar">
@@ -490,17 +502,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 </li>
               ))}
             </ul>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.fundingType && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.fundingType.open}
             name="fundingType"
             title={`Funding type (${filters?.fundingType?.tags?.length || 0})`}
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Funding type</div>
             <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto no-scrollbar">
@@ -525,17 +538,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 </li>
               ))}
             </ul>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.fundingAmount && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.fundingAmount.open}
             name="fundingAmount"
             title="Funding amount"
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Funding amount total</div>
             <div className="flex items-center space-x-4">
@@ -565,7 +579,7 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
               </div>
             </div>
             <div className="mt-4">
-              <ElemMultiRangeSlider
+            <ElemMultiRangeSlider
                 value={[
                   filters?.fundingAmount?.minVal || 0,
                   filters?.fundingAmount?.maxVal || 0,
@@ -578,17 +592,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 }
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.lastFundingDate && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.lastFundingDate.open}
             name="lastFundingDate"
             title="Last funding date"
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Last funding date</div>
             <div className="flex flex-col gap-2 mt-2">
@@ -645,11 +660,11 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 />
               </div>
             )}
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.fundingInvestors && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.fundingInvestors.open}
             name="fundingInvestors"
             title={`Funding investors (${
@@ -658,6 +673,7 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Funding investors</div>
             <div className="flex flex-col gap-2 mt-2">
@@ -685,17 +701,18 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 }
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters?.teamSize && (
-          <ElemCompaniesFilterPopover
+          <ElemCompaniesFilterPopup
             open={!!filters.teamSize.open}
             name="teamSize"
             title="Team size"
             onOpen={onOpenFilterPopover}
             onClose={onCloseFilterPopover}
             onClear={onClearFilterOption}
+            onApply={onApplyFilter}
           >
             <div className="font-bold text-sm">Team size</div>
             <div className="flex items-center space-x-2">
@@ -738,18 +755,11 @@ export const ElemCompaniesFilter: FC<Props> = ({ onApply, onReset }) => {
                 }
               />
             </div>
-          </ElemCompaniesFilterPopover>
+          </ElemCompaniesFilterPopup>
         )}
 
         {filters && Object.keys(filters).length > 0 && (
           <div>
-            <ElemButton
-              btn="primary-light"
-              onClick={onApplyFilters}
-              className="snap-start shrink-0"
-            >
-              Apply
-            </ElemButton>
             <ElemButton
               btn="transparent"
               onClick={onResetFilters}

@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
+import moment from "moment-timezone";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderCompanyCard } from "@/components/Placeholders";
 import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
@@ -58,7 +59,37 @@ const Companies: NextPage<Props> = ({
 
   const router = useRouter();
 
-  const [selectedFilters, setSelectedFilters] = useState<Filters | null>(null);
+	const [selectedFilters, setSelectedFilters] = useStateParams<Filters | null>(
+    null,
+    "filters",
+    (filters) => {
+      if (!filters) {
+        return "";
+      }
+      return JSON.stringify(filters);
+    },
+    (filterString) => {
+      if (filterString) {
+        const filterJson: Filters = JSON.parse(filterString);
+        if (filterJson?.lastFundingDate?.fromDate) {
+          filterJson.lastFundingDate.fromDate = moment(
+            filterJson.lastFundingDate.fromDate
+          )
+            .format()
+            .split("T")[0];
+        }
+        if (filterJson?.lastFundingDate?.toDate) {
+          filterJson.lastFundingDate.toDate = moment(
+            filterJson.lastFundingDate.toDate
+          )
+            .format()
+            .split("T")[0];
+        }
+        return filterJson;
+      }
+      return null;
+    }
+  );
 
   // Company status-tag filter
   const [selectedStatusTag, setSelectedStatusTag] =
@@ -161,6 +192,17 @@ const Companies: NextPage<Props> = ({
     });
   }
 
+	if (selectedTags.length > 0) {
+		let allTags: any = [];
+		selectedTags.map((tag) => {
+			allTags.push({ tags: { _contains: tag } });
+		});
+
+		filters._and?.push({
+			_and: allTags,
+		});
+	}
+
   const {
     data: companiesData,
     error,
@@ -222,9 +264,14 @@ const Companies: NextPage<Props> = ({
           </div>
 
           <ElemCompaniesFilter
-            onApply={(filterParams) => {
+						defaultFilters={selectedFilters}
+            onApply={(name, filterParams) => {
 							filters._and = [{ slug: { _neq: "" } }];
-							setSelectedFilters(filterParams)
+							setSelectedFilters({...selectedFilters, [name]: filterParams})
+						}}
+						onClearOption={(name) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({...selectedFilters, [name]: undefined})
 						}}
 						onReset={() => setSelectedFilters(null)}
           />
