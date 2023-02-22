@@ -64,10 +64,7 @@ export const processCompaniesFilters = (
   if (!selectedFilters) {
 		filters._and = [{ slug: { _neq: "" } }];
 	}
-  if (
-    selectedFilters?.country?.tags &&
-    selectedFilters.country.tags.length > 0
-  ) {
+  if (selectedFilters?.country?.tags?.length) {
     if (selectedFilters?.country?.condition === "any") {
       filters._and?.push({
         _or: selectedFilters.country.tags.map((item) => ({
@@ -102,7 +99,7 @@ export const processCompaniesFilters = (
     }
   }
 
-  if (selectedFilters?.state?.tags && selectedFilters.state.tags.length > 0) {
+  if (selectedFilters?.state?.tags?.length) {
 		if (selectedFilters?.state?.condition === "any") {
       filters._and?.push({
         _or: selectedFilters.state.tags.map((item) => ({
@@ -137,7 +134,7 @@ export const processCompaniesFilters = (
     }
   }
 
-  if (selectedFilters?.city?.tags && selectedFilters.city.tags.length > 0) {
+  if (selectedFilters?.city?.tags?.length) {
 		if (selectedFilters?.city?.condition === "any") {
       filters._and?.push({
         _or: selectedFilters.city.tags.map((item) => ({
@@ -172,10 +169,7 @@ export const processCompaniesFilters = (
     }
   }
 
-  if (
-    selectedFilters?.keywords?.tags &&
-    selectedFilters.keywords.tags.length > 0
-  ) {
+  if (selectedFilters?.keywords?.tags?.length) {
     filters._and?.push({
       _or: selectedFilters.keywords.tags.map((item) => ({
         overview: { _ilike: `%${item}%` },
@@ -183,7 +177,7 @@ export const processCompaniesFilters = (
     });
   }
 
-  if (selectedFilters?.industry && selectedFilters.industry.tags?.length > 0) {
+  if (selectedFilters?.industry?.tags?.length) {
     filters._and?.push({
       _and: selectedFilters.industry.tags.map((item) => ({
         tags: { _contains: item },
@@ -191,7 +185,7 @@ export const processCompaniesFilters = (
     });
   }
 
-  if (selectedFilters?.fundingType && selectedFilters.fundingType.tags?.length > 0) {
+  if (selectedFilters?.fundingType?.tags?.length) {
     filters._and?.push({
       investment_rounds: {
         _and: selectedFilters.fundingType.tags.map((item) => ({
@@ -238,11 +232,7 @@ export const processCompaniesFilters = (
     }
   }
 
-  if (
-    selectedFilters?.fundingInvestors &&
-    selectedFilters?.fundingInvestors?.tags &&
-    selectedFilters.fundingInvestors.tags.length > 0
-  ) {
+  if (selectedFilters?.fundingInvestors?.tags?.length) {
     if (selectedFilters.fundingInvestors.condition === "any") {
       filters._and?.push({
         investment_rounds: {
