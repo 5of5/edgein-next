@@ -291,14 +291,14 @@ const Companies: NextPage<Props> = ({
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const { data: companies } = await runGraphQl<GetCompaniesQuery>(
-    GetCompaniesDocument,
-    {
-      offset: 0,
-      limit: 50,
-      where: { slug: { _neq: "" } },
-    }
-  );
+	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
+		GetCompaniesDocument,
+		{
+			offset: 0,
+			limit: 50,
+			where: { slug: { _neq: "" } },
+		},
+	);
 
   return {
     props: {

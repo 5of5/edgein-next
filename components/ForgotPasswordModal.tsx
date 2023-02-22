@@ -1,8 +1,6 @@
-import type { GetStaticProps } from "next";
 import { useState, Fragment } from "react";
 import { ElemButton } from "@/components/ElemButton";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconCheck } from "@/components/Icons";
 
 type Props = {
 	show: boolean;

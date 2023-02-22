@@ -1,4 +1,3 @@
-import type { GetStaticProps } from "next";
 import { useEffect, useState, Fragment } from "react";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";

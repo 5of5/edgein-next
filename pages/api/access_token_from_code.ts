@@ -3,14 +3,6 @@ import UserService from "../../utils/users";
 import CookieService from "../../utils/cookie";
 import auth0Library from "../../utils/auth0-library";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createHmac } from "crypto";
-
-const hasuraClaims = {
-	"https://hasura.io/jwt/claims": {
-		"x-hasura-allowed-roles": ["user"],
-		"x-hasura-default-role": "user",
-	},
-};
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	if (req.method !== "POST") return res.status(405).end();
@@ -77,12 +69,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 			// check loggedin user and linkedin user email should be same
 			const userToken = CookieService.getAuthToken(req.cookies);
 			const loggedInUser = await CookieService.getUser(userToken);
+			if (loggedInUser && loggedInUser.active === false) {
+				return res.status(403).send({ message: "Error: Please try again" });
+			}		
 			const auth0SubInfo = userInfoInJson.sub.split("|");
 			const connectionType = auth0SubInfo[0];
 			let userData: any = {};
 			let isUserPassPrimaryAccount = false;
 			let isLinkedInPrimaryAccount = false;
-			if (!loggedInUser) {
+			if (!loggedInUser || !loggedInUser.email) {
 				// get the user info from the user table
 				userData = await UserService.findOneUserByEmail(userInfoInJson.email);
 				// create the user and return the response
