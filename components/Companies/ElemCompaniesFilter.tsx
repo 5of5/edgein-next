@@ -63,6 +63,8 @@ export type Filters = {
     open?: boolean;
     minVal?: number;
     maxVal?: number;
+    formattedMinVal?: string;
+    formattedMaxVal?: string;
   };
   lastFundingDate?: {
     open?: boolean;
@@ -133,6 +135,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
         return {
           minVal: 0,
           maxVal: 25000000,
+          formattedMinVal: 0,
+          formattedMaxVal: convertToInternationalCurrencySystem(25000000),
         };
       case "lastFundingDate":
         return {
@@ -270,15 +274,59 @@ export const ElemCompaniesFilter: FC<Props> = ({
     }));
   };
 
+
+  const onBlurFundingAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const metric = name.split(".")[1];
+    const newFundingAmount = {
+      ...filters?.fundingAmount
+    }
+    if (metric === "minVal") {
+      newFundingAmount.formattedMinVal = convertToInternationalCurrencySystem(+value);
+    } else {
+      newFundingAmount.formattedMaxVal = convertToInternationalCurrencySystem(+value);
+    }
+    setFilters((prev) => ({
+      ...prev,
+      fundingAmount: newFundingAmount,
+    }));
+  }
+
+  const onFocusFundingAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name } = event.target;
+    const metric = name.split(".")[1];
+    const newFundingAmount = {
+      ...filters?.fundingAmount
+    }
+    if (metric === "minVal") {
+      newFundingAmount.formattedMinVal = newFundingAmount?.minVal?.toString();
+    } else {
+      newFundingAmount.formattedMaxVal = newFundingAmount?.maxVal?.toString();
+    }
+    setFilters((prev) => ({
+      ...prev,
+      fundingAmount: newFundingAmount,
+    }));
+  }
+
   const onChangeRangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     const [option, metric] = name.split(".");
+    const newData: any = {
+      ...filters?.[option as keyof Filters],
+      [metric]: value,
+    }
+    if (option === "fundingAmount") {
+      if (metric === "minVal") {
+        newData.formattedMinVal = value
+      }
+      if (metric === "maxVal") {
+        newData.formattedMaxVal = value
+      }
+    }
     setFilters((prev) => ({
       ...prev,
-      [option]: {
-        ...prev?.[option as keyof Filters],
-        [metric]: value,
-      },
+      [option]: newData,
     }));
   };
 
@@ -287,13 +335,18 @@ export const ElemCompaniesFilter: FC<Props> = ({
     minVal: number,
     maxVal: number
   ) => {
+    const newData: any = {
+      ...filters?.[name],
+      minVal,
+      maxVal,
+    }
+    if (name === "fundingAmount") {
+      newData.formattedMinVal = convertToInternationalCurrencySystem(minVal);
+      newData.formattedMaxVal = convertToInternationalCurrencySystem(maxVal);
+    }
     setFilters((prev) => ({
       ...prev,
-      [name]: {
-        ...prev?.[name],
-        minVal,
-        maxVal,
-      },
+      [name]: newData,
     }));
   };
 
@@ -559,9 +612,10 @@ export const ElemCompaniesFilter: FC<Props> = ({
                 <input
                   name="fundingAmount.minVal"
                   type="text"
-                  value={filters?.fundingAmount?.minVal}
+                  value={filters?.fundingAmount?.formattedMinVal}
                   onChange={onChangeRangeInput}
-                  defaultValue={convertToInternationalCurrencySystem(25000)}
+                  onBlur={onBlurFundingAmount}
+                  onFocus={onFocusFundingAmount}
                   className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                 />
               </div>
@@ -571,10 +625,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
                 <input
                   name="fundingAmount.maxVal"
                   type="text"
-                  value={filters?.fundingAmount?.maxVal}
+                  value={filters?.fundingAmount?.formattedMaxVal}
                   onChange={onChangeRangeInput}
-                  defaultValue={"Any"}
-                  placeholder="Any"
+                  onBlur={onBlurFundingAmount}
+                  onFocus={onFocusFundingAmount}
+                  defaultValue="Any"
                   className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                 />
               </div>
@@ -736,8 +791,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
                   name="teamSize.maxVal"
                   value={filters?.teamSize?.maxVal}
                   onChange={onChangeRangeInput}
-                  defaultValue={"Any"}
-                  placeholder="Any"
+                  defaultValue="Any"
                   className="appearance-none border-none w-20 border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
                 />
               </div>
