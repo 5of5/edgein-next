@@ -14,7 +14,7 @@ const filters = [
 
 export const UserList = () => {
   return (
-    <ElemList filters={filters}>
+    <ElemList filters={filters} disableDelete={true}>
       <EditButton />
       <TextField source="id" />
       <TextField source="email" />

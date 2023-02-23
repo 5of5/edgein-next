@@ -25,6 +25,15 @@ export const UserEdit = () => {
           ]}
           validate={required()}
         />
+        <SelectInput
+          className={inputClassName}
+          source="active"
+          choices={[
+            { id: true, name: "Active" },
+            { id: false, name: "In active" },
+          ]}
+          validate={required()}
+        />
       </SimpleForm>
     </ElemFormBase>
   );

@@ -1,13 +1,35 @@
-export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>):Promise<{ data?: QueryType, errors?: any }> => {
+import CookieService from './cookie';
+
+export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, cookies?: any):Promise<{ data?: QueryType, errors?: any }> => {
+	let headers: Record<string, string> = {};
+	if (cookies) {
+		const authToken = CookieService.getAuthToken(cookies || {});
+		const user = await CookieService.getUser(authToken);
+		headers = {
+			"Content-Type": "application/json",
+			Accept: "application/json",
+			Authorization: `Bearer ${authToken}`,
+			'X-hasura-user-id': user?.id?.toString() ?? '',
+			'x-hasura-role':  process.env.HASURA_VIEWER ?? ""
+		}
+	} else {
+		headers = {
+			"Content-Type": "application/json",
+			Accept: "application/json",
+			'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+			'x-hasura-role':  process.env.HASURA_VIEWER ?? ""
+		}
+	}
+	headers = {
+		"Content-Type": "application/json",
+		Accept: "application/json",
+		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+	}
 	return await fetch(
 		process.env.GRAPHQL_ENDPOINT ?? "",
 		{
 			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json",
-				'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? ""
-			},
+			headers: headers,
 			body: JSON.stringify({
 				query,
 				variables

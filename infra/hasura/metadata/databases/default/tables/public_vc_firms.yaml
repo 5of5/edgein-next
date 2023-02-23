@@ -52,12 +52,6 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: to_vc_firm_id
-computed_fields:
-  - name: num_of_investments
-    definition:
-      function:
-        schema: public
-        name: vc_firms_num_of_investments
 insert_permissions:
   - role: user
     permission:
@@ -83,6 +77,7 @@ select_permissions:
         - location
         - logo
         - name
+        - num_of_investments
         - overview
         - sentiment
         - slug
@@ -92,8 +87,6 @@ select_permissions:
         - updated_at
         - website
         - year_founded
-      computed_fields:
-        - num_of_investments
       filter:
         status:
           _eq: published
@@ -108,8 +101,6 @@ select_permissions:
         - name
         - slug
         - website
-      computed_fields:
-        - num_of_investments
       filter: {}
   - role: viewer
     permission:
@@ -122,6 +113,7 @@ select_permissions:
         - location
         - logo
         - name
+        - num_of_investments
         - overview
         - sentiment
         - slug
@@ -131,8 +123,6 @@ select_permissions:
         - updated_at
         - website
         - year_founded
-      computed_fields:
-        - num_of_investments
       filter:
         status:
           _eq: published

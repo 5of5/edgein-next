@@ -5,6 +5,9 @@ export function fetcher<TData, TVariables>(query: string, variables?: TVariables
       const res = await fetch("/api/graphql/", {
         method: "POST",
           body: JSON.stringify({ query, variables }),
+          headers: {
+            'is-viewer': 'true'
+          }
         });
         if (!res.ok) {
           if (res.redirected && res.url) {

@@ -18,7 +18,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       // get all the companies details
       const companyList = await queryForCompanyList(companyLastSync.value);
-      output['companyList'] = companyList.map((p:any) => `${p.id} ${p.name}`).length
+
       for (const company of companyList) {
         if (company.logo) {
           company.logo = company.logo.url;
@@ -34,6 +34,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const companyIndex = client.initIndex('companies');
       await companyIndex.saveObjects(companyList, { autoGenerateObjectIDIfNotExist: true });
 
+      /** Find deleted companies in actions table and remove them in index */
+      const deletedCompanies = await queryForDeletedResources("companies", companyLastSync.value);
+      companyIndex.deleteObjects(deletedCompanies.map((item: any) => item.resource_id));
+
+      output['companyList'] = companyList.map((p:any) => `${p.id} ${p.name}`).length - deletedCompanies.length;
        // update the last_sync date to current date
        await mutateForlastSync('sync_companies');
     } catch (error) {
@@ -50,7 +55,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       // get all investors details
       const vcfirmsList = await queryForVcFirmsList(investorLastSync.value);
-      output['vcfirmsList'] = vcfirmsList.map((p:any) => `${p.id} ${p.name}`).length
+
       for (const vc_firm of vcfirmsList) {
         if (vc_firm.logo) {
           vc_firm.logo = vc_firm.logo.url;
@@ -61,6 +66,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
       const investorIndex = client.initIndex('vc_firms');
       await investorIndex.saveObjects(vcfirmsList, { autoGenerateObjectIDIfNotExist: true });
+
+      /** Find deleted vc_firms in actions table and remove them in index */
+      const deletedVcFirms = await queryForDeletedResources("vc_firms", companyLastSync.value);
+      investorIndex.deleteObjects(deletedVcFirms.map((item: any) => item.resource_id));
+
+      output['vcfirmsList'] = vcfirmsList.map((p:any) => `${p.id} ${p.name}`).length - deletedVcFirms.length
 
        // update the last_sync date to current date
        await mutateForlastSync('sync_vc_firms');
@@ -78,7 +89,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       try {
         // get all people details
         const peopleList = await queryForPeopleList(peopleLastSync.value);
-        output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length
+
         for (const people of peopleList) {
           if (people.picture) {
             people.picture = people.picture.url;
@@ -88,6 +99,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         const peopleIndex = client.initIndex('people');
         await peopleIndex.saveObjects(peopleList, { autoGenerateObjectIDIfNotExist: true });
+
+        /** Find deleted people in actions table and remove them in index */
+      const deletedPeople = await queryForDeletedResources("people", companyLastSync.value);
+      peopleIndex.deleteObjects(deletedPeople.map((item: any) => item.resource_id));
+
+      output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length - deletedPeople.length;
 
         // update the last_sync date to current date
         await mutateForlastSync('sync_people');
@@ -289,6 +306,34 @@ try {
   });
   } catch (e) {
     throw e
+  }
+}
+
+const queryForDeletedResources = async (resourceType: string, date: any) => {
+  // prepare gql query
+  const fetchQuery = `
+  query query_actions($resourceType: String!, $date: timestamptz) {
+    actions(
+      where: {
+        _and: [
+          {action: {_eq: "Delete Data"}},
+          {resource: {_eq: $resourceType}},
+          {created_at: {_gte: $date}}
+        ]
+      }
+    ){
+      resource_id
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { resourceType, date }
+    })
+    return data.data.actions
+  } catch (ex) {
+    throw ex;
   }
 }
 

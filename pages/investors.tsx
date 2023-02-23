@@ -224,7 +224,7 @@ const Investors: NextPage<Props> = ({
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
-				<ElemRecentInvestments heading="Recent Investor Updates" />
+				<ElemRecentInvestments heading="Recent Updates" />
 			</div>
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">

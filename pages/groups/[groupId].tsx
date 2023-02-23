@@ -148,9 +148,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const token = CookieService.getAuthToken(context.req.cookies);
 	const user = await CookieService.getUser(token);
 
-	const { data } = await runGraphQl<GetGroupQuery>(GetGroupDocument, {
-		id: context.params?.groupId,
-	});
+	const { data } = await runGraphQl<GetGroupQuery>(
+		GetGroupDocument,
+		{
+			id: context.params?.groupId,
+		},
+		context.req.cookies
+	);
 
 	if (!data?.user_groups[0]) {
 		return {
