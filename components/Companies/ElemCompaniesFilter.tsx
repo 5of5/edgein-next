@@ -276,7 +276,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
     setFilters((prev) => ({
       ...prev,
       [option]: {
-        ...prev?.[name as keyof Filters],
+        ...prev?.[option as keyof Filters],
         [metric]: value,
       },
     }));
@@ -733,7 +733,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
                 <div className="text-sm text-slate-600">Max</div>
                 <input
                   type="text"
-                  name="teamSize.?maxVal"
+                  name="teamSize.maxVal"
                   value={filters?.teamSize?.maxVal}
                   onChange={onChangeRangeInput}
                   defaultValue={"Any"}

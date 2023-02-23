@@ -61,7 +61,7 @@ export const ElemMultiRangeSlider: React.FC<Props> = ({
         step={step}
         ref={minValRef}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          const val = Math.min(+event.target.value, maxVal - 1);
+          const val = Math.min(+event.target.value, +maxVal - 1);
           onChange({ min: val, max: maxVal });
           event.target.value = val.toString();
         }}
@@ -75,7 +75,7 @@ export const ElemMultiRangeSlider: React.FC<Props> = ({
         step={step}
         ref={maxValRef}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          const val = Math.max(+event.target.value, minVal + 1);
+          const val = Math.max(+event.target.value, +minVal + 1);
           onChange({ min: minVal, max: val });
           event.target.value = val.toString();
         }}
@@ -86,7 +86,7 @@ export const ElemMultiRangeSlider: React.FC<Props> = ({
         <div className="absolute rounded-sm w-full h-1 bg-slate-200 z-10"></div>
         <div
           ref={range}
-          className="absolute rounded-sm h-1 bg-primary-500 z-20"
+          className="absolute rounded-sm h-1 bg-primary-500 z-20 max-w-full"
         ></div>
       </div>
     </div>
