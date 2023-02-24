@@ -278,6 +278,9 @@ const notInsertValueType = (value: any) =>
   value === undefined || value === "" ||
   value === null ||
   (value &&
+    Object.getPrototypeOf(value) === Object.prototype &&
+    Object.values(value).every(item => !item)) ||
+  (value &&
     Object.keys(value).length === 0 &&
     Object.getPrototypeOf(value) === Object.prototype) ||
   (value && Array.isArray(value) && value.length === 0);

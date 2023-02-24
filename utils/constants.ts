@@ -689,7 +689,9 @@ export const tags = [
 	"Stablecoin",
 	"Media",
 	"Event",
-	"Cybersecurity"
+	"Cybersecurity",
+	"Solana",
+	"Polkadot"
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
@@ -741,6 +743,7 @@ export type ResourceTypes =
   | "event_organization"
   | "resource_links"
   | "news"
+	| "news_organizations"
 ;
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
@@ -758,6 +761,7 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   event_organization: "event_organization",
   resource_links: "resource_link",
   news: "news",
+	news_organizations: "news_organization"
 };
 
 export const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
@@ -775,6 +779,7 @@ export const isResourceType = (resourceType: string): resourceType is ResourceTy
     "event_person",
     "event_organization",
     "resource_links",
-    "news"
+    "news",
+		"news_organization"
   ].includes(resourceType);
 }
