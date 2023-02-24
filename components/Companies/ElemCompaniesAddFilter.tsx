@@ -1,6 +1,8 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { IconPlus } from "@/components/Icons";
 import { companiesFilterOptions } from "@/utils/constants";
+import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
+import { useUser } from "@/context/userContext";
 
 type CategoryFilterOptionProps = {
 	options: Array<{
@@ -50,7 +52,7 @@ export const ElemCompaniesAddFilter: FC<Props> = ({
 			{open && (
 				<div
 					ref={wrapperRef}
-					className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm p-5"
+					className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm lg:max-w-md p-5"
 				>
 					<div className="grid lg:grid-cols-2 lg:gap-16">
 						<div>
@@ -76,27 +78,66 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
 	options,
 	onSelectFilterOption,
 }) => {
-	return (
-		<div className="flex flex-col gap-y-6">
-			{options.map((option) => (
-				<div key={option.category}>
-					<h3 className="font-bold text-sm">{option.category}</h3>
+	const { user } = useUser();
 
-					<ul className="list-none space-y-1 text-slate-600 leading-snug">
-						{option.items.map((item) => (
-							<li key={item.value}>
-								<button
-									onClick={onSelectFilterOption}
-									name={item.value}
-									className="text-left box-border border-b border-primary-500 transition-all p-0 hover:border-b-2 hover:text-primary-500"
-								>
-									{item.label}
-								</button>
-							</li>
-						))}
-					</ul>
-				</div>
-			))}
-		</div>
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const userCanUseFilter = user?.entitlements.viewEmails
+		? user?.entitlements.viewEmails
+		: false;
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	};
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
+
+	return (
+		<>
+			<div className="flex flex-col gap-y-6">
+				{options.map((option) => (
+					<div key={option.category}>
+						<h3 className="font-bold text-sm">{option.category}</h3>
+
+						<ul className="list-none space-y-1 text-slate-600 leading-snug">
+							{option.items.map((item) => (
+								<li key={item.value}>
+									{item.value === "fundingType" ||
+									item.value === "fundingAmount" ||
+									item.value === "lastFundingDate" ||
+									item.value === "fundingInvestors" ||
+									item.value === "teamSize" ? (
+										<button
+											onClick={
+												userCanUseFilter
+													? onSelectFilterOption
+													: onOpenUpgradeDialog
+											}
+											name={item.value}
+											className="text-left box-border border-b border-primary-500 transition-all p-0 hover:border-b-2 hover:text-primary-500"
+										>
+											{item.label}
+										</button>
+									) : (
+										<button
+											onClick={onSelectFilterOption}
+											name={item.value}
+											className="text-left box-border border-b border-primary-500 transition-all p-0 hover:border-b-2 hover:text-primary-500"
+										>
+											{item.label}
+										</button>
+									)}
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
+		</>
 	);
 };
