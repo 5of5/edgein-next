@@ -388,7 +388,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 
 	return (
 		<section className="w-full flex items-center justify-between mb-1 py-3">
-			<div className="flex items-center space-x-3 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-mandatory touch-pan-x">
+			<div className="flex flex-col w-full space-y-3 items-start lg:flex-row lg:items-center lg:space-x-3 lg:space-y-0">
 				<ElemCompaniesAddFilter
 					open={openAddFilter}
 					onOpen={() => setOpenAddFilter(true)}
@@ -833,6 +833,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 					<div>
 						<ElemButton
 							btn="transparent"
+							size="sm"
 							onClick={onResetFilters}
 							className="snap-start shrink-0"
 						>

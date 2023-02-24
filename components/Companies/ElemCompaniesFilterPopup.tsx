@@ -66,7 +66,7 @@ export const ElemCompaniesFilterPopup: FC<PropsWithChildren<Props>> = ({
 			{open && (
 				<div
 					ref={wrapperRef}
-					className={`absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-screen max-w-sm p-5 ${popupClass}`}
+					className={`absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm p-5 ${popupClass}`}
 				>
 					{children}
 					<div className="flex items-center justify-between gap-x-4 mt-2 pt-2 border-t border-black/5">

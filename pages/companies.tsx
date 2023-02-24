@@ -235,9 +235,8 @@ const Companies: NextPage<Props> = ({
 				<div className="bg-white rounded-lg shadow p-5">
 					<h2 className="text-xl font-bold">Companies</h2>
 
-					{/* New Filters UI */}
 					<div
-						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-b border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
 						role="tablist"
 					>
 						<nav className="flex">
