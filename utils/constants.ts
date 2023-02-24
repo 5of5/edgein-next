@@ -780,6 +780,6 @@ export const isResourceType = (resourceType: string): resourceType is ResourceTy
     "event_organization",
     "resource_links",
     "news",
-		"news_organization"
+		"news_organizations"
   ].includes(resourceType);
 }
