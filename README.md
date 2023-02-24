@@ -168,3 +168,24 @@ curl --location --request DELETE 'https://edgein.io/api/submit_data/' --header '
     "resource_type": "<resource_type>",
     "resource_identifier":[<list_of_filters>]
 }'
+
+
+## Scripts
+
+### Prerequisite
+Create .env in scripts directory then cd this directory and run npx ts-node < scripts >
+
+### Update data fields table
+Add below env variables
+PG_USER=< PG_USER >
+PG_HOST=< PG_HOST >
+PG_DATABASE=< PG_DATABASE >
+PG_DATABASE=< PG_DATABASE >
+PG_PORT=< PG_PORT >
+Then run the script update_data_fields.ts
+
+### Clone prodution DB to staging DB
+git checkout to target branch
+export PGPASSWORD='PGPASSWORD'
+export ADMIN_SECRET='HASURA_ADMIN_SECRET'
+bash clone_db_from_production_to_staging.sh

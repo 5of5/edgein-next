@@ -723,3 +723,58 @@ export const eventPersonTypeChoices = [
 export const DATADOME_TAGS = 'https://js.datadome.co/tags.js'
 
 export const DATADOME_JS = 'https://api-js.datadome.co/js/'
+
+export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
+
+export type ResourceTypes =
+  | "companies"
+  | "vc_firms"
+  | "people"
+  | "blockchains"
+  | "coins"
+  | "investment_rounds"
+  | "investments"
+  | "team_members"
+  | "investors"
+  | "events"
+  | "event_person"
+  | "event_organization"
+  | "resource_links"
+  | "news"
+;
+
+export const NODE_NAME: Record<ResourceTypes, string> = {
+  companies: "company",
+  vc_firms: "vc_firm",
+  people: "people",
+  blockchains: "blockchain",
+  coins: "coin",
+  investment_rounds: "investment_round",
+  investments: "investment",
+  team_members: "team_member",
+  investors: "investor",
+  events: "event",
+  event_person: "event_person",
+  event_organization: "event_organization",
+  resource_links: "resource_link",
+  news: "news",
+};
+
+export const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
+  return [
+    "companies",
+    "vc_firms",
+    "people",
+    "blockchains",
+    "coins",
+    "investment_rounds",
+    "investments",
+    "team_members",
+    "investors",
+    "events",
+    "event_person",
+    "event_organization",
+    "resource_links",
+    "news"
+  ].includes(resourceType);
+}

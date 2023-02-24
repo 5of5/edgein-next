@@ -1,66 +1,17 @@
-
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import { Data_Fields } from "@/graphql/types";
 import { User } from "@/models/User";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 import * as util from 'util';
-import { tags } from './constants';
+import {
+  ActionType,
+  ResourceTypes,
+  NODE_NAME,
+  isResourceType,
+  tags
+} from './constants';
 
-
-export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
-export type ResourceTypes =
-  | "companies"
-  | "vc_firms"
-  | "people"
-  | "blockchains"
-  | "coins"
-  | "investment_rounds"
-  | "investments"
-  | "team_members"
-  | "investors"
-  | "events"
-  | "event_person"
-  | "event_organization"
-  | "resource_links"
-  | "news"
-;
-
-export const NODE_NAME: Record<ResourceTypes, string> = {
-  companies: "company",
-  vc_firms: "vc_firm",
-  people: "people",
-  blockchains: "blockchain",
-  coins: "coin",
-  investment_rounds: "investment_round",
-  investments: "investment",
-  team_members: "team_member",
-  investors: "investor",
-  events: "event",
-  event_person: "event_person",
-  event_organization: "event_organization",
-  resource_links: "resource_link",
-  news: "news",
-};
-
-const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
-  return [
-    "companies",
-    "vc_firms",
-    "people",
-    "blockchains",
-    "coins",
-    "investment_rounds",
-    "investments",
-    "team_members",
-    "investors",
-    "events",
-    "event_person",
-    "event_organization",
-    "resource_links",
-    "news"
-  ].includes(resourceType);
-}
 
 export const partnerLookUp = async (apiKey: string) => {
   const {
