@@ -60,7 +60,8 @@ const isResourceType = (resourceType: string): resourceType is ResourceTypes => 
     "event_person",
     "event_organization",
     "resource_links",
-    "news"
+    "news",
+    "news_organizations"
   ].includes(resourceType);
 }
 
