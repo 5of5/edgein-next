@@ -3,6 +3,7 @@ import { IconPlus } from "@/components/Icons";
 import { companiesFilterOptions } from "@/utils/constants";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { useUser } from "@/context/userContext";
+import { IconContributor } from "@/components/Icons";
 
 type CategoryFilterOptionProps = {
 	options: Array<{
@@ -54,7 +55,7 @@ export const ElemCompaniesAddFilter: FC<Props> = ({
 					ref={wrapperRef}
 					className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm lg:max-w-md p-5"
 				>
-					<div className="grid lg:grid-cols-2 lg:gap-16">
+					<div className="grid lg:grid-cols-2 lg:gap-8">
 						<div>
 							<CategoryFilterOption
 								options={companiesFilterOptions.slice(0, 3)}
@@ -115,9 +116,14 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
 													: onOpenUpgradeDialog
 											}
 											name={item.value}
-											className="text-left box-border border-b border-primary-500 transition-all p-0 hover:border-b-2 hover:text-primary-500"
+											className="inline-flex place-items-center space-x-1 text-left box-border transition-all p-0  hover:text-primary-500"
 										>
-											{item.label}
+											{!userCanUseFilter && (
+												<IconContributor className="w-5 h-5 text-primary-500 shrink-0" />
+											)}
+											<span className="border-b border-primary-500 hover:border-b-2">
+												{item.label}
+											</span>
 										</button>
 									) : (
 										<button
