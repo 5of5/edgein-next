@@ -2958,6 +2958,7 @@ export type Data_Actions_Variance_Fields = {
 /** columns and relationships of "data_fields" */
 export type Data_Fields = {
   __typename?: 'data_fields';
+  data_type: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   is_valid_identifier: Scalars['Boolean'];
   name: Scalars['String'];
@@ -3010,6 +3011,7 @@ export type Data_Fields_Bool_Exp = {
   _and: InputMaybe<Array<Data_Fields_Bool_Exp>>;
   _not: InputMaybe<Data_Fields_Bool_Exp>;
   _or: InputMaybe<Array<Data_Fields_Bool_Exp>>;
+  data_type: InputMaybe<String_Comparison_Exp>;
   description: InputMaybe<String_Comparison_Exp>;
   is_valid_identifier: InputMaybe<Boolean_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
@@ -3034,6 +3036,7 @@ export type Data_Fields_Inc_Input = {
 
 /** input type for inserting data into table "data_fields" */
 export type Data_Fields_Insert_Input = {
+  data_type: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   is_valid_identifier: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
@@ -3048,6 +3051,7 @@ export type Data_Fields_Insert_Input = {
 /** aggregate max on columns */
 export type Data_Fields_Max_Fields = {
   __typename?: 'data_fields_max_fields';
+  data_type: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   path: Maybe<Scalars['String']>;
@@ -3060,6 +3064,7 @@ export type Data_Fields_Max_Fields = {
 /** aggregate min on columns */
 export type Data_Fields_Min_Fields = {
   __typename?: 'data_fields_min_fields';
+  data_type: Maybe<Scalars['String']>;
   description: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   path: Maybe<Scalars['String']>;
@@ -3087,6 +3092,7 @@ export type Data_Fields_On_Conflict = {
 
 /** Ordering options when selecting data from "data_fields". */
 export type Data_Fields_Order_By = {
+  data_type: InputMaybe<Order_By>;
   description: InputMaybe<Order_By>;
   is_valid_identifier: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
@@ -3105,6 +3111,8 @@ export type Data_Fields_Pk_Columns_Input = {
 
 /** select columns of table "data_fields" */
 export enum Data_Fields_Select_Column {
+  /** column name */
+  DataType = 'data_type',
   /** column name */
   Description = 'description',
   /** column name */
@@ -3127,6 +3135,7 @@ export enum Data_Fields_Select_Column {
 
 /** input type for updating data in table "data_fields" */
 export type Data_Fields_Set_Input = {
+  data_type: InputMaybe<Scalars['String']>;
   description: InputMaybe<Scalars['String']>;
   is_valid_identifier: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
@@ -3164,6 +3173,8 @@ export type Data_Fields_Sum_Fields = {
 
 /** update columns of table "data_fields" */
 export enum Data_Fields_Update_Column {
+  /** column name */
+  DataType = 'data_type',
   /** column name */
   Description = 'description',
   /** column name */
