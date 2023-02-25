@@ -25,6 +25,8 @@ query GetCompaniesByListId($list_id: Int = 0) {
 			logo
 			sentiment
 			location
+			location_json
+			twitter
 			year_founded
 			total_employees
 			overview

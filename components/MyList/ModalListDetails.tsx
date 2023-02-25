@@ -120,10 +120,10 @@ export const ModalListDetails: FC<Props> = ({
 														<div className="flex flex-wrap gap-2 mt-2">
 															{groups.map((item: any) => (
 																<p
-																	key={item.id}
+																	key={item?.id}
 																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
 																>
-																	{item.name}
+																	{item?.name}
 																</p>
 															))}
 														</div>

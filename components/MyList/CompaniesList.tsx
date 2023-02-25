@@ -93,6 +93,7 @@ export const CompaniesList: FC<Props> = ({
 		() => ({
 			minWidth: 100,
 			width: 120,
+			sortType: "alphanumericNullLast",
 			//maxWidth: 300,
 		}),
 		[]
@@ -100,6 +101,32 @@ export const CompaniesList: FC<Props> = ({
 
 	const emptyCell = React.useMemo(
 		() => <div className="text-slate-400">&mdash;</div>,
+		[]
+	);
+
+	const sortTypes = React.useMemo(
+		() => ({
+			alphanumericNullLast(rowA: any, rowB: any, columnId: string, desc: any) {
+				const a = rowA.values[columnId];
+				const b = rowB.values[columnId];
+
+				if (!a && !b) {
+					return 0;
+				}
+
+				if (!a) {
+					return desc ? -1 : 1;
+				}
+
+				if (!b) {
+					return desc ? 1 : -1;
+				}
+
+				return a
+					.toString()
+					.localeCompare(b.toString(), "en", { numeric: true });
+			},
+		}),
 		[]
 	);
 
@@ -171,15 +198,6 @@ export const CompaniesList: FC<Props> = ({
 				width: 200,
 			},
 			{
-				Header: "Location",
-				accessor: "company.location" as const,
-				Cell: (props: any) => {
-					return <div>{props.value ? props.value : emptyCell}</div>;
-				},
-				disableSortBy: true,
-				minWidth: 180,
-			},
-			{
 				Header: "Description",
 				accessor: "company.overview" as const,
 				Cell: (props: any) => (
@@ -194,6 +212,39 @@ export const CompaniesList: FC<Props> = ({
 				disableSortBy: true,
 				width: 400,
 				minWidth: 300,
+			},
+			// {
+			// 	Header: "Location",
+			// 	accessor: "company.location" as const,
+			// 	Cell: (props: any) => {
+			// 		return <div>{props.value ? props.value : emptyCell}</div>;
+			// 	},
+			// 	disableSortBy: true,
+			// 	minWidth: 180,
+			// },
+			{
+				Header: "City",
+				accessor: "company.location_json.city" as const,
+				Cell: (props: any) => {
+					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+				width: 120,
+			},
+			{
+				Header: "State",
+				accessor: "company.location_json.state" as const,
+				Cell: (props: any) => {
+					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+				width: 120,
+			},
+			{
+				Header: "Country",
+				accessor: "company.location_json.country" as const,
+				Cell: (props: any) => {
+					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+				width: 120,
 			},
 			{
 				Header: "Founded",
@@ -235,7 +286,7 @@ export const CompaniesList: FC<Props> = ({
 							  props.row.original?.company.investment_rounds.length > 0 ? (
 								<>Undisclosed Capital</>
 							) : (
-								<>${props.value}</>
+								<>{emptyCell}</>
 							)}
 						</div>
 					);
@@ -340,6 +391,7 @@ export const CompaniesList: FC<Props> = ({
 			data: getCompanies,
 			disableSortRemove: true,
 			autoResetSortBy: false,
+			sortTypes,
 			initialState: {
 				pageSize: 10,
 			},
