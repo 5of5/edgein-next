@@ -26,9 +26,19 @@ export const getUpdatedDiff = (original: any, target: any) => {
         acc[key] = target[key as keyof {}];
         return acc;
       }
-     
-      if (!isArray(difference) && isObject(difference) && isEmpty(difference))
+
+      if (!isArray(difference) && isObject(difference) && isEmpty(difference)) {
         return acc;
+      }
+
+      if (
+        !original[key as keyof {}] &&
+        isObject(difference) &&
+        (isEmpty(difference) ||
+          Object.values(difference).every((item) => !item))
+      ) {
+        return acc;
+      }
 
       acc[key] = difference;
       return acc;
