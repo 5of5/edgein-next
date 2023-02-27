@@ -53,7 +53,7 @@ export const ElemCompaniesAddFilter: FC<Props> = ({
 			{open && (
 				<div
 					ref={wrapperRef}
-					className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm lg:max-w-md p-5"
+					className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg w-[calc(100vw-50px)] max-w-sm lg:max-w-lg p-5"
 				>
 					<div className="grid lg:grid-cols-2 lg:gap-8">
 						<div>
@@ -94,6 +94,19 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
 		setIsOpenUpgradeDialog(false);
 	};
 
+	function isPremiumFilter(value: string) {
+		if (
+			value === "fundingType" ||
+			value === "fundingAmount" ||
+			value === "lastFundingDate" ||
+			value === "fundingInvestors" ||
+			value === "teamSize"
+		) {
+			return true;
+		}
+		return false;
+	}
+
 	return (
 		<>
 			<div className="flex flex-col gap-y-6">
@@ -101,35 +114,32 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
 					<div key={option.category}>
 						<h3 className="font-bold text-sm">{option.category}</h3>
 
-						<ul className="list-none space-y-1 text-slate-600 leading-snug">
+						<ul className="list-none text-slate-600 leading-tight">
 							{option.items.map((item) => (
 								<li key={item.value}>
-									{item.value === "fundingType" ||
-									item.value === "fundingAmount" ||
-									item.value === "lastFundingDate" ||
-									item.value === "fundingInvestors" ||
-									item.value === "teamSize" ? (
-										<button
-											onClick={
-												userCanUseFilter
-													? onSelectFilterOption
-													: onOpenUpgradeDialog
-											}
-											name={item.value}
-											className="inline-flex place-items-center space-x-1 text-left box-border transition-all p-0  hover:text-primary-500"
-										>
-											{!userCanUseFilter && (
-												<IconContributor className="w-5 h-5 text-primary-500 shrink-0" />
-											)}
-											<span className="border-b border-primary-500 hover:border-b-2">
+									{isPremiumFilter(item.value) ? (
+										<div className="inline-flex">
+											<button
+												onClick={
+													userCanUseFilter === true
+														? onSelectFilterOption
+														: onOpenUpgradeDialog
+												}
+												name={item.value}
+												className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
+											>
+												{!userCanUseFilter && (
+													<IconContributor className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
+												)}
+
 												{item.label}
-											</span>
-										</button>
+											</button>
+										</div>
 									) : (
 										<button
 											onClick={onSelectFilterOption}
 											name={item.value}
-											className="text-left box-border border-b border-primary-500 transition-all p-0 hover:border-b-2 hover:text-primary-500"
+											className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
 										>
 											{item.label}
 										</button>

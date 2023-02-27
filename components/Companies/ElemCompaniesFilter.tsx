@@ -621,7 +621,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 						onClear={onClearFilterOption}
 						onApply={onApplyFilter}
 					>
-						<div className="font-bold text-sm">Funding amount total</div>
+						<div className="font-bold text-sm">Total funding amount</div>
 						<div className="flex items-center space-x-4">
 							<div className="grow">
 								<div className="text-sm text-slate-600">Min</div>
@@ -739,7 +739,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 					<ElemCompaniesFilterPopup
 						open={!!filters.fundingInvestors.open}
 						name="fundingInvestors"
-						title={`Funding investors (${
+						title={`investors (${
 							filters?.fundingInvestors?.tags?.length || 0
 						})`}
 						onOpen={onOpenFilterPopup}
@@ -747,7 +747,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 						onClear={onClearFilterOption}
 						onApply={onApplyFilter}
 					>
-						<div className="font-bold text-sm">Funding investors</div>
+						<div className="font-bold text-sm">Investors</div>
 						<div className="flex flex-col gap-2 mt-2">
 							<InputRadio
 								name="fundingInvestors"
