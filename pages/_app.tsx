@@ -31,7 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
+	const [showPopup, setShowPopup] = useState<Popups>(
+		router.asPath.includes("/login/")
+			? router.asPath.includes("?usage=true")
+				? "usage"
+				: "login"
+			: false
+	);
 
 	//google
 	React.useEffect(() => {
@@ -140,7 +146,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 									</main>
 
 									{(router.asPath.includes("/companies/") ||
-										router.asPath.includes("/investors/")) && (
+										router.asPath.includes("/investors/") ||
+										router.asPath.includes("/events/")) && (
 										<ElemFeedback
 											toggleFeedbackForm={toggleFeedbackForm}
 											setToggleFeedbackForm={setToggleFeedbackForm}
@@ -163,13 +170,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 					}}
 				/> */}
 
-				<><Script id="datadome-script" strategy="lazyOnload">{`
+				<>
+					<Script id="datadome-script" strategy="lazyOnload">{`
 					window.ddjskey = '${process.env.NEXT_PUBLIC_DATADOME_CLIENT_KEY}'
 					window.ddoptions = {
 						endpoint: '${DATADOME_JS}'
 					}
 				`}</Script>
-				<Script src={DATADOME_TAGS} strategy="lazyOnload" /></>
+					<Script src={DATADOME_TAGS} strategy="lazyOnload" />
+				</>
 			</div>
 		</>
 	);
