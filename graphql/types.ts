@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
 import { fetcher } from './fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -18907,6 +18907,128 @@ export type GetGroupQueryVariables = Exact<{
 
 export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
+export type InsertUserGroupMutationVariables = Exact<{
+  object: User_Groups_Insert_Input;
+}>;
+
+
+export type InsertUserGroupMutation = { __typename?: 'mutation_root', insert_user_groups_one: { __typename?: 'user_groups', id: number, name: string, description: string | null, twitter: string | null, telegram: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by_user_id: number } | null };
+
+export type UpdateUserGroupMutationVariables = Exact<{
+  id: Scalars['Int'];
+  changes: User_Groups_Set_Input;
+}>;
+
+
+export type UpdateUserGroupMutation = { __typename?: 'mutation_root', update_user_groups: { __typename?: 'user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, twitter: string | null, telegram: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by_user_id: number, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> } | null };
+
+export type DeleteUserGroupMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupMutation = { __typename?: 'mutation_root', delete_user_groups: { __typename?: 'user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_groups', id: number }> } | null };
+
+export type DeleteUserGroupInvitesByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupInvitesByGroupIdMutation = { __typename?: 'mutation_root', delete_user_group_invites: { __typename?: 'user_group_invites_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_invites', id: number }> } | null };
+
+export type DeleteUserGroupMembersByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupMembersByGroupIdMutation = { __typename?: 'mutation_root', delete_user_group_members: { __typename?: 'user_group_members_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_members', id: number }> } | null };
+
+export type DeleteNotesByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteNotesByGroupIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
+
+export type GetUserGroupByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupByIdQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, created_by_user_id: number, created_at: any }> };
+
+export type GetUserGroupMemberByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupMemberByIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number }> };
+
+export type GetUserGroupMemberByGroupIdQueryVariables = Exact<{
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupMemberByGroupIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_group_id: number, user_id: number, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } }> };
+
+export type GetUserGroupInviteByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupInviteByIdQuery = { __typename?: 'query_root', user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null }> };
+
+export type InsertUserGroupMembersMutationVariables = Exact<{
+  object: User_Group_Members_Insert_Input;
+}>;
+
+
+export type InsertUserGroupMembersMutation = { __typename?: 'mutation_root', insert_user_group_members_one: { __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null }, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
+
+export type GetNoteByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetNoteByIdQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
+
+export type GetUserGroupInvitesByEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type GetUserGroupInvitesByEmailQuery = { __typename?: 'query_root', user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, user_group_id: number }> };
+
+export type GetUserGroupInvitesByEmailAndGroupIdQueryVariables = Exact<{
+  email: Scalars['String'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupInvitesByEmailAndGroupIdQuery = { __typename?: 'query_root', user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null }> };
+
+export type GetUserGroupMembersByUserIdAndGroupIdQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupMembersByUserIdAndGroupIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number }> };
+
+export type DeleteUserGroupInviteByIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupInviteByIdMutation = { __typename?: 'mutation_root', delete_user_group_invites: { __typename?: 'user_group_invites_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_invites', id: number }> } | null };
+
+export type DeleteUserGroupMemberByIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupMemberByIdMutation = { __typename?: 'mutation_root', delete_user_group_members: { __typename?: 'user_group_members_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_members', id: number }> } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -19576,6 +19698,471 @@ useGetGroupQuery.getKey = (variables: GetGroupQueryVariables) => ['GetGroup', va
 ;
 
 useGetGroupQuery.fetcher = (variables: GetGroupQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupQuery, GetGroupQueryVariables>(GetGroupDocument, variables, options);
+export const InsertUserGroupDocument = `
+    mutation InsertUserGroup($object: user_groups_insert_input!) {
+  insert_user_groups_one(object: $object) {
+    id
+    name
+    description
+    twitter
+    telegram
+    discord
+    created_at
+    updated_at
+    created_by_user_id
+  }
+}
+    `;
+export const useInsertUserGroupMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertUserGroupMutation, TError, InsertUserGroupMutationVariables, TContext>) =>
+    useMutation<InsertUserGroupMutation, TError, InsertUserGroupMutationVariables, TContext>(
+      ['InsertUserGroup'],
+      (variables?: InsertUserGroupMutationVariables) => fetcher<InsertUserGroupMutation, InsertUserGroupMutationVariables>(InsertUserGroupDocument, variables)(),
+      options
+    );
+useInsertUserGroupMutation.fetcher = (variables: InsertUserGroupMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupMutation, InsertUserGroupMutationVariables>(InsertUserGroupDocument, variables, options);
+export const UpdateUserGroupDocument = `
+    mutation UpdateUserGroup($id: Int!, $changes: user_groups_set_input!) {
+  update_user_groups(where: {id: {_eq: $id}}, _set: $changes) {
+    affected_rows
+    returning {
+      id
+      name
+      description
+      twitter
+      telegram
+      discord
+      notes {
+        id
+        notes
+      }
+      created_at
+      updated_at
+      created_by_user_id
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+  }
+}
+    `;
+export const useUpdateUserGroupMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserGroupMutation, TError, UpdateUserGroupMutationVariables, TContext>) =>
+    useMutation<UpdateUserGroupMutation, TError, UpdateUserGroupMutationVariables, TContext>(
+      ['UpdateUserGroup'],
+      (variables?: UpdateUserGroupMutationVariables) => fetcher<UpdateUserGroupMutation, UpdateUserGroupMutationVariables>(UpdateUserGroupDocument, variables)(),
+      options
+    );
+useUpdateUserGroupMutation.fetcher = (variables: UpdateUserGroupMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserGroupMutation, UpdateUserGroupMutationVariables>(UpdateUserGroupDocument, variables, options);
+export const DeleteUserGroupDocument = `
+    mutation DeleteUserGroup($id: Int!) {
+  delete_user_groups(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupMutation, TError, DeleteUserGroupMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupMutation, TError, DeleteUserGroupMutationVariables, TContext>(
+      ['DeleteUserGroup'],
+      (variables?: DeleteUserGroupMutationVariables) => fetcher<DeleteUserGroupMutation, DeleteUserGroupMutationVariables>(DeleteUserGroupDocument, variables)(),
+      options
+    );
+useDeleteUserGroupMutation.fetcher = (variables: DeleteUserGroupMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMutation, DeleteUserGroupMutationVariables>(DeleteUserGroupDocument, variables, options);
+export const DeleteUserGroupInvitesByGroupIdDocument = `
+    mutation DeleteUserGroupInvitesByGroupId($groupId: Int!) {
+  delete_user_group_invites(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupInvitesByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupInvitesByGroupIdMutation, TError, DeleteUserGroupInvitesByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupInvitesByGroupIdMutation, TError, DeleteUserGroupInvitesByGroupIdMutationVariables, TContext>(
+      ['DeleteUserGroupInvitesByGroupId'],
+      (variables?: DeleteUserGroupInvitesByGroupIdMutationVariables) => fetcher<DeleteUserGroupInvitesByGroupIdMutation, DeleteUserGroupInvitesByGroupIdMutationVariables>(DeleteUserGroupInvitesByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupInvitesByGroupIdMutation.fetcher = (variables: DeleteUserGroupInvitesByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupInvitesByGroupIdMutation, DeleteUserGroupInvitesByGroupIdMutationVariables>(DeleteUserGroupInvitesByGroupIdDocument, variables, options);
+export const DeleteUserGroupMembersByGroupIdDocument = `
+    mutation DeleteUserGroupMembersByGroupId($groupId: Int!) {
+  delete_user_group_members(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupMembersByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupMembersByGroupIdMutation, TError, DeleteUserGroupMembersByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupMembersByGroupIdMutation, TError, DeleteUserGroupMembersByGroupIdMutationVariables, TContext>(
+      ['DeleteUserGroupMembersByGroupId'],
+      (variables?: DeleteUserGroupMembersByGroupIdMutationVariables) => fetcher<DeleteUserGroupMembersByGroupIdMutation, DeleteUserGroupMembersByGroupIdMutationVariables>(DeleteUserGroupMembersByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupMembersByGroupIdMutation.fetcher = (variables: DeleteUserGroupMembersByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMembersByGroupIdMutation, DeleteUserGroupMembersByGroupIdMutationVariables>(DeleteUserGroupMembersByGroupIdDocument, variables, options);
+export const DeleteNotesByGroupIdDocument = `
+    mutation DeleteNotesByGroupId($groupId: Int!) {
+  delete_notes(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteNotesByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>(
+      ['DeleteNotesByGroupId'],
+      (variables?: DeleteNotesByGroupIdMutationVariables) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteNotesByGroupIdMutation.fetcher = (variables: DeleteNotesByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables, options);
+export const GetUserGroupByIdDocument = `
+    query GetUserGroupById($id: Int!) {
+  user_groups(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    name
+    created_by_user_id
+    created_at
+  }
+}
+    `;
+export const useGetUserGroupByIdQuery = <
+      TData = GetUserGroupByIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupByIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupByIdQuery, TError, TData>(
+      ['GetUserGroupById', variables],
+      fetcher<GetUserGroupByIdQuery, GetUserGroupByIdQueryVariables>(GetUserGroupByIdDocument, variables),
+      options
+    );
+useGetUserGroupByIdQuery.document = GetUserGroupByIdDocument;
+
+
+useGetUserGroupByIdQuery.getKey = (variables: GetUserGroupByIdQueryVariables) => ['GetUserGroupById', variables];
+;
+
+useGetUserGroupByIdQuery.fetcher = (variables: GetUserGroupByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupByIdQuery, GetUserGroupByIdQueryVariables>(GetUserGroupByIdDocument, variables, options);
+export const GetUserGroupMemberByIdDocument = `
+    query GetUserGroupMemberById($id: Int!) {
+  user_group_members(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    user_id
+    user_group_id
+  }
+}
+    `;
+export const useGetUserGroupMemberByIdQuery = <
+      TData = GetUserGroupMemberByIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupMemberByIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupMemberByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupMemberByIdQuery, TError, TData>(
+      ['GetUserGroupMemberById', variables],
+      fetcher<GetUserGroupMemberByIdQuery, GetUserGroupMemberByIdQueryVariables>(GetUserGroupMemberByIdDocument, variables),
+      options
+    );
+useGetUserGroupMemberByIdQuery.document = GetUserGroupMemberByIdDocument;
+
+
+useGetUserGroupMemberByIdQuery.getKey = (variables: GetUserGroupMemberByIdQueryVariables) => ['GetUserGroupMemberById', variables];
+;
+
+useGetUserGroupMemberByIdQuery.fetcher = (variables: GetUserGroupMemberByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupMemberByIdQuery, GetUserGroupMemberByIdQueryVariables>(GetUserGroupMemberByIdDocument, variables, options);
+export const GetUserGroupMemberByGroupIdDocument = `
+    query GetUserGroupMemberByGroupId($user_group_id: Int!) {
+  user_group_members(where: {user_group_id: {_eq: $user_group_id}}) {
+    id
+    user_group_id
+    user_group {
+      id
+      name
+      description
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
+    }
+  }
+}
+    `;
+export const useGetUserGroupMemberByGroupIdQuery = <
+      TData = GetUserGroupMemberByGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupMemberByGroupIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupMemberByGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupMemberByGroupIdQuery, TError, TData>(
+      ['GetUserGroupMemberByGroupId', variables],
+      fetcher<GetUserGroupMemberByGroupIdQuery, GetUserGroupMemberByGroupIdQueryVariables>(GetUserGroupMemberByGroupIdDocument, variables),
+      options
+    );
+useGetUserGroupMemberByGroupIdQuery.document = GetUserGroupMemberByGroupIdDocument;
+
+
+useGetUserGroupMemberByGroupIdQuery.getKey = (variables: GetUserGroupMemberByGroupIdQueryVariables) => ['GetUserGroupMemberByGroupId', variables];
+;
+
+useGetUserGroupMemberByGroupIdQuery.fetcher = (variables: GetUserGroupMemberByGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupMemberByGroupIdQuery, GetUserGroupMemberByGroupIdQueryVariables>(GetUserGroupMemberByGroupIdDocument, variables, options);
+export const GetUserGroupInviteByIdDocument = `
+    query GetUserGroupInviteById($id: Int!) {
+  user_group_invites(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    email
+    user_group_id
+    created_by_user_id
+  }
+}
+    `;
+export const useGetUserGroupInviteByIdQuery = <
+      TData = GetUserGroupInviteByIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupInviteByIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupInviteByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupInviteByIdQuery, TError, TData>(
+      ['GetUserGroupInviteById', variables],
+      fetcher<GetUserGroupInviteByIdQuery, GetUserGroupInviteByIdQueryVariables>(GetUserGroupInviteByIdDocument, variables),
+      options
+    );
+useGetUserGroupInviteByIdQuery.document = GetUserGroupInviteByIdDocument;
+
+
+useGetUserGroupInviteByIdQuery.getKey = (variables: GetUserGroupInviteByIdQueryVariables) => ['GetUserGroupInviteById', variables];
+;
+
+useGetUserGroupInviteByIdQuery.fetcher = (variables: GetUserGroupInviteByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupInviteByIdQuery, GetUserGroupInviteByIdQueryVariables>(GetUserGroupInviteByIdDocument, variables, options);
+export const InsertUserGroupMembersDocument = `
+    mutation InsertUserGroupMembers($object: user_group_members_insert_input!) {
+  insert_user_group_members_one(object: $object) {
+    id
+    user_id
+    user {
+      id
+      display_name
+      email
+      person {
+        id
+        slug
+        picture
+      }
+    }
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useInsertUserGroupMembersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertUserGroupMembersMutation, TError, InsertUserGroupMembersMutationVariables, TContext>) =>
+    useMutation<InsertUserGroupMembersMutation, TError, InsertUserGroupMembersMutationVariables, TContext>(
+      ['InsertUserGroupMembers'],
+      (variables?: InsertUserGroupMembersMutationVariables) => fetcher<InsertUserGroupMembersMutation, InsertUserGroupMembersMutationVariables>(InsertUserGroupMembersDocument, variables)(),
+      options
+    );
+useInsertUserGroupMembersMutation.fetcher = (variables: InsertUserGroupMembersMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupMembersMutation, InsertUserGroupMembersMutationVariables>(InsertUserGroupMembersDocument, variables, options);
+export const GetNoteByIdDocument = `
+    query GetNoteById($id: Int!) {
+  notes(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useGetNoteByIdQuery = <
+      TData = GetNoteByIdQuery,
+      TError = Error
+    >(
+      variables: GetNoteByIdQueryVariables,
+      options?: UseQueryOptions<GetNoteByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetNoteByIdQuery, TError, TData>(
+      ['GetNoteById', variables],
+      fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables),
+      options
+    );
+useGetNoteByIdQuery.document = GetNoteByIdDocument;
+
+
+useGetNoteByIdQuery.getKey = (variables: GetNoteByIdQueryVariables) => ['GetNoteById', variables];
+;
+
+useGetNoteByIdQuery.fetcher = (variables: GetNoteByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables, options);
+export const GetUserGroupInvitesByEmailDocument = `
+    query GetUserGroupInvitesByEmail($email: String!) {
+  user_group_invites(where: {email: {_eq: $email}}) {
+    id
+    user_group_id
+  }
+}
+    `;
+export const useGetUserGroupInvitesByEmailQuery = <
+      TData = GetUserGroupInvitesByEmailQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupInvitesByEmailQueryVariables,
+      options?: UseQueryOptions<GetUserGroupInvitesByEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupInvitesByEmailQuery, TError, TData>(
+      ['GetUserGroupInvitesByEmail', variables],
+      fetcher<GetUserGroupInvitesByEmailQuery, GetUserGroupInvitesByEmailQueryVariables>(GetUserGroupInvitesByEmailDocument, variables),
+      options
+    );
+useGetUserGroupInvitesByEmailQuery.document = GetUserGroupInvitesByEmailDocument;
+
+
+useGetUserGroupInvitesByEmailQuery.getKey = (variables: GetUserGroupInvitesByEmailQueryVariables) => ['GetUserGroupInvitesByEmail', variables];
+;
+
+useGetUserGroupInvitesByEmailQuery.fetcher = (variables: GetUserGroupInvitesByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupInvitesByEmailQuery, GetUserGroupInvitesByEmailQueryVariables>(GetUserGroupInvitesByEmailDocument, variables, options);
+export const GetUserGroupInvitesByEmailAndGroupIdDocument = `
+    query GetUserGroupInvitesByEmailAndGroupId($email: String!, $user_group_id: Int!) {
+  user_group_invites(
+    where: {_and: [{email: {_eq: $email}}, {user_group_id: {_eq: $user_group_id}}]}
+    limit: 1
+  ) {
+    id
+    email
+    user_group_id
+    created_by_user_id
+  }
+}
+    `;
+export const useGetUserGroupInvitesByEmailAndGroupIdQuery = <
+      TData = GetUserGroupInvitesByEmailAndGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupInvitesByEmailAndGroupIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupInvitesByEmailAndGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupInvitesByEmailAndGroupIdQuery, TError, TData>(
+      ['GetUserGroupInvitesByEmailAndGroupId', variables],
+      fetcher<GetUserGroupInvitesByEmailAndGroupIdQuery, GetUserGroupInvitesByEmailAndGroupIdQueryVariables>(GetUserGroupInvitesByEmailAndGroupIdDocument, variables),
+      options
+    );
+useGetUserGroupInvitesByEmailAndGroupIdQuery.document = GetUserGroupInvitesByEmailAndGroupIdDocument;
+
+
+useGetUserGroupInvitesByEmailAndGroupIdQuery.getKey = (variables: GetUserGroupInvitesByEmailAndGroupIdQueryVariables) => ['GetUserGroupInvitesByEmailAndGroupId', variables];
+;
+
+useGetUserGroupInvitesByEmailAndGroupIdQuery.fetcher = (variables: GetUserGroupInvitesByEmailAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupInvitesByEmailAndGroupIdQuery, GetUserGroupInvitesByEmailAndGroupIdQueryVariables>(GetUserGroupInvitesByEmailAndGroupIdDocument, variables, options);
+export const GetUserGroupMembersByUserIdAndGroupIdDocument = `
+    query GetUserGroupMembersByUserIdAndGroupId($user_id: Int!, $user_group_id: Int!) {
+  user_group_members(
+    where: {_and: [{user_id: {_eq: $user_id}}, {user_group_id: {_eq: $user_group_id}}]}
+    limit: 1
+  ) {
+    id
+    user_id
+    user_group_id
+  }
+}
+    `;
+export const useGetUserGroupMembersByUserIdAndGroupIdQuery = <
+      TData = GetUserGroupMembersByUserIdAndGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupMembersByUserIdAndGroupIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupMembersByUserIdAndGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupMembersByUserIdAndGroupIdQuery, TError, TData>(
+      ['GetUserGroupMembersByUserIdAndGroupId', variables],
+      fetcher<GetUserGroupMembersByUserIdAndGroupIdQuery, GetUserGroupMembersByUserIdAndGroupIdQueryVariables>(GetUserGroupMembersByUserIdAndGroupIdDocument, variables),
+      options
+    );
+useGetUserGroupMembersByUserIdAndGroupIdQuery.document = GetUserGroupMembersByUserIdAndGroupIdDocument;
+
+
+useGetUserGroupMembersByUserIdAndGroupIdQuery.getKey = (variables: GetUserGroupMembersByUserIdAndGroupIdQueryVariables) => ['GetUserGroupMembersByUserIdAndGroupId', variables];
+;
+
+useGetUserGroupMembersByUserIdAndGroupIdQuery.fetcher = (variables: GetUserGroupMembersByUserIdAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupMembersByUserIdAndGroupIdQuery, GetUserGroupMembersByUserIdAndGroupIdQueryVariables>(GetUserGroupMembersByUserIdAndGroupIdDocument, variables, options);
+export const DeleteUserGroupInviteByIdDocument = `
+    mutation DeleteUserGroupInviteById($id: Int!) {
+  delete_user_group_invites(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupInviteByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupInviteByIdMutation, TError, DeleteUserGroupInviteByIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupInviteByIdMutation, TError, DeleteUserGroupInviteByIdMutationVariables, TContext>(
+      ['DeleteUserGroupInviteById'],
+      (variables?: DeleteUserGroupInviteByIdMutationVariables) => fetcher<DeleteUserGroupInviteByIdMutation, DeleteUserGroupInviteByIdMutationVariables>(DeleteUserGroupInviteByIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupInviteByIdMutation.fetcher = (variables: DeleteUserGroupInviteByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupInviteByIdMutation, DeleteUserGroupInviteByIdMutationVariables>(DeleteUserGroupInviteByIdDocument, variables, options);
+export const DeleteUserGroupMemberByIdDocument = `
+    mutation DeleteUserGroupMemberById($id: Int!) {
+  delete_user_group_members(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupMemberByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupMemberByIdMutation, TError, DeleteUserGroupMemberByIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupMemberByIdMutation, TError, DeleteUserGroupMemberByIdMutationVariables, TContext>(
+      ['DeleteUserGroupMemberById'],
+      (variables?: DeleteUserGroupMemberByIdMutationVariables) => fetcher<DeleteUserGroupMemberByIdMutation, DeleteUserGroupMemberByIdMutationVariables>(DeleteUserGroupMemberByIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupMemberByIdMutation.fetcher = (variables: DeleteUserGroupMemberByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMemberByIdMutation, DeleteUserGroupMemberByIdMutationVariables>(DeleteUserGroupMemberByIdDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
