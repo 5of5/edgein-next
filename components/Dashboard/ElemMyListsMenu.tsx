@@ -16,14 +16,21 @@ import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { CreateListDialog } from "../MyList/CreateListDialog";
+import useDisclosureState from "@/hooks/useDisclosureState";
 
 type Props = {
 	className?: string;
 };
 
-export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
+const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { listAndFollows: lists, user } = useUser();
+
+	const {
+		btnRef,
+		isDefaultOpen,
+		onDisclosureButtonClick,
+	} = useDisclosureState("disclosure-my-lists-menu-default-open");
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
@@ -80,12 +87,16 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 
 	return (
 		<div className={className}>
-			<Disclosure defaultOpen={true}>
+			<Disclosure defaultOpen={isDefaultOpen}>
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between">
 							<div className="flex items-center">
-								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+								<Disclosure.Button
+									className="flex focus:outline-none hover:opacity-75"
+									ref={btnRef}
+									onClick={onDisclosureButtonClick}
+								>
 									<IconPolygonDown
 										className={`${
 											open ? "rotate-0" : "-rotate-90 "
@@ -224,3 +235,5 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		</div>
 	);
 };
+
+export default ElemMyListsMenu;

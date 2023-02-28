@@ -13,12 +13,13 @@ import { useUser } from "@/context/userContext";
 import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { ElemTooltip } from "../ElemTooltip";
+import useDisclosureState from "@/hooks/useDisclosureState";
 
 type Props = {
 	className?: string;
 };
 
-export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
+const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { myGroups, user } = useUser();
 	const displayedGroups = myGroups.slice(
@@ -29,6 +30,13 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	);
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
+
+	const {
+		btnRef,
+		isDefaultOpen,
+		onDisclosureButtonClick,
+	} = useDisclosureState("disclosure-my-groups-menu-default-open");
+
 
 	const getActiveClass = (id: number) => {
 		return `/groups/${id}/` === router.asPath
@@ -55,12 +63,16 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 
 	return (
 		<div className={className}>
-			<Disclosure defaultOpen={true}>
+			<Disclosure defaultOpen={isDefaultOpen}>
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between group">
 							<div className="flex items-center">
-								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+								<Disclosure.Button
+									className="flex focus:outline-none hover:opacity-75"
+									ref={btnRef}
+									onClick={onDisclosureButtonClick}
+								>
 									<IconPolygonDown
 										className={`${
 											open ? "rotate-0" : "-rotate-90 "
@@ -186,3 +198,5 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 		</div>
 	);
 };
+
+export default ElemMyGroupsMenu;
