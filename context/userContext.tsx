@@ -3,8 +3,8 @@ import { User } from '@/models/User';
 import {
   useGetFollowsByUserQuery,
   GetFollowsByUserQuery,
-  useGetGroupsOfUserQuery,
-  GetGroupsOfUserQuery,
+  GetGroupsQuery,
+  useGetGroupsQuery,
 } from "@/graphql/types";
 import React from 'react';
 import { useQueryClient } from 'react-query';
@@ -20,7 +20,7 @@ type UserValue = {
   user: User | null
   loading: boolean
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
-  myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][]
+  myGroups: GetGroupsQuery['user_groups']
   refetchMyGroups: any
 }
 
@@ -59,7 +59,7 @@ const UserProvider: React.FC<Props> = (props) => {
 		data: groups,
 		error: groupsError,
     refetch: refetchMyGroups,
-	} = useGetGroupsOfUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
+	} = useGetGroupsQuery({}, { enabled: Boolean(user) })
 
   React.useEffect(() => {
 		clarity.init(CLARITY_ID);
@@ -108,10 +108,10 @@ const UserProvider: React.FC<Props> = (props) => {
   }, [listMemberships])
 
   const [myGroups, setMyGroups] = React.useState(
-    groups?.user_group_members?.map(group => group.user_group) || []
+    groups?.user_groups || []
   );
   React.useEffect(() => {
-    setMyGroups(groups?.user_group_members?.map(group => group.user_group) || []);
+    setMyGroups(groups?.user_groups || []);
   }, [groups]);
     
 

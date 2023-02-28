@@ -24,6 +24,7 @@ export type ResourceTypes =
   | "event_organization"
   | "resource_links"
   | "news"
+  | "news_organizations"
 ;
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
@@ -41,6 +42,7 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
   event_organization: "event_organization",
   resource_links: "resource_link",
   news: "news",
+  news_organizations: "news_organization"
 };
 
 const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
@@ -58,7 +60,8 @@ const isResourceType = (resourceType: string): resourceType is ResourceTypes => 
     "event_person",
     "event_organization",
     "resource_links",
-    "news"
+    "news",
+    "news_organizations"
   ].includes(resourceType);
 }
 
@@ -326,6 +329,9 @@ export const insertResourceData = async (
 const notInsertValueType = (value: any) =>
   value === undefined || value === "" ||
   value === null ||
+  (value &&
+    Object.getPrototypeOf(value) === Object.prototype &&
+    Object.values(value).every(item => !item)) ||
   (value &&
     Object.keys(value).length === 0 &&
     Object.getPrototypeOf(value) === Object.prototype) ||
