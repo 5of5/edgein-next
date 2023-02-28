@@ -23,6 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await deleteFollowsForList(user, token, list) // delete follows
     await deleteListMemberIfExist(user, token, list); // delete list member
     await deleteListIfExist(user, token, list); // delete lists
+    await deleteListUserGroupIfExist(list); //delete list_user_groups
     res.status(200).json({ success: true });
   } catch (err: any) {
     res.status(400).json({ message: err.message });
@@ -112,6 +113,27 @@ const deleteListIfExist = async (user: User, token: string, list: Lists) => {
       }
     }
   }, token)
+
+  return returning.length
+}
+
+const deleteListUserGroupIfExist = async (list: Lists) => {
+  const { data: { delete_list_user_groups: { returning } } } = await mutate({
+    mutation: `
+    mutation delete_list_user_groups($where: list_user_groups_bool_exp!) {
+      delete_list_user_groups(where: $where) {
+        returning {
+          id
+        }
+      }
+    }
+    `,
+    variables: {
+      where: {
+        list_id: { _eq: list.id }
+      }
+    }
+  })
 
   return returning.length
 }

@@ -268,10 +268,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 										</>
 									)}
 								</div>
-								<div className="flex items-center text-primary-500">
-									<IconEye className="h-5 w-5 shrink-0 mr-1" />
-									show
-								</div>
+								{!showEmails && (
+									<div className="flex items-center text-primary-500">
+										<IconEye className="h-5 w-5 shrink-0 mr-1" />
+										show
+									</div>
+								)}
 							</li>,
 						])}
 					</>

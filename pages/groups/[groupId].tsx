@@ -28,8 +28,10 @@ import {
 	List_User_Groups_Bool_Exp,
 	Lists,
 } from "@/graphql/types";
+import { IconLockClosed } from "@/components/Icons";
 
 type Props = {
+	isUserBelongToGroup: boolean;
 	group: User_Groups;
 	notes: Array<Notes>;
 };
@@ -97,49 +99,59 @@ const Group: NextPage<Props> = (props: Props) => {
 			{/* <div ref={homeRef} /> */}
 
 			<ElemGroupInformation
+				isUserBelongToGroup={props.isUserBelongToGroup}
 				group={groupData}
 				onInvite={onOpenInviteDialog}
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
 
-			<ElemTabBar
-				className="mt-2 border-t-0"
-				tabs={tabBarItems}
-				showDropdown={false}
-			/>
-			<div ref={listsRef}>
-				<ElemLists
-					group={groupData}
-					lists={
-						(lists?.list_user_groups?.map(
-							(item) => item.list
-						) as Array<Lists>) || []
-					}
-					refetchLists={refetchLists}
-				/>
-			</div>
+			{props.isUserBelongToGroup ? (
+				<>
+					<ElemTabBar
+						className="mt-2 border-t-0"
+						tabs={tabBarItems}
+						showDropdown={false}
+					/>
+					<div ref={listsRef}>
+						<ElemLists
+							group={groupData}
+							lists={
+								(lists?.list_user_groups?.map(
+									(item) => item.list
+								) as Array<Lists>) || []
+							}
+							refetchLists={refetchLists}
+						/>
+					</div>
 
-			<div ref={notesRef}>
-				<ElemNotes notes={props.notes} />
-			</div>
+					<div ref={notesRef}>
+						<ElemNotes notes={props.notes} />
+					</div>
 
-			<div ref={chatRef} />
+					<div ref={chatRef} />
 
-			<ElemInviteDialog
-				isOpen={isOpenInviteDialog}
-				group={groupData}
-				onUpdateGroupData={setGroupData}
-				onClose={onCloseInviteDialog}
-			/>
+					<ElemInviteDialog
+						isOpen={isOpenInviteDialog}
+						group={groupData}
+						onUpdateGroupData={setGroupData}
+						onClose={onCloseInviteDialog}
+					/>
 
-			<ElemSettingDialog
-				isOpen={isOpenSettingDialog}
-				selectedTab={selectedSettingTab}
-				group={groupData}
-				onClose={onCloseSettingDialog}
-				onUpdateGroupData={setGroupData}
-				onInvite={onOpenInviteDialog}
-			/>
+					<ElemSettingDialog
+						isOpen={isOpenSettingDialog}
+						selectedTab={selectedSettingTab}
+						group={groupData}
+						onClose={onCloseSettingDialog}
+						onUpdateGroupData={setGroupData}
+						onInvite={onOpenInviteDialog}
+					/>
+				</>
+			) : (
+				<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+					<IconLockClosed className="h-5 w-5" title="Private" />
+					<p>This is a private group and you has not been invited to.</p>
+				</div>
+			)}
 		</DashboardLayout>
 	);
 };
@@ -164,18 +176,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const group = data.user_groups[0];
 
-	const isUserBelongToGroup = group.user_group_members.find(
+	const isUserBelongToGroup = group.user_group_members.some(
 		(mem) => mem.user.id === user?.id
 	);
-	if (!isUserBelongToGroup) {
-		return {
-			notFound: true,
-		};
-	}
 
-	const { data: noteList } = await runGraphQl<GetNotesQuery>(GetNotesDocument, {
-		where: { user_group_id: { _eq: group.id } },
-	}, context.req.cookies);
+	const { data: noteList } = await runGraphQl<GetNotesQuery>(
+		GetNotesDocument,
+		{
+			where: { user_group_id: { _eq: group.id } },
+		},
+		context.req.cookies
+	);
 
 	const notes = noteList?.notes || [];
 
@@ -192,6 +203,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		props: {
 			metaTitle,
 			metaDescription,
+			isUserBelongToGroup,
 			group,
 			notes,
 		},
