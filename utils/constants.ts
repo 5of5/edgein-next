@@ -12,7 +12,7 @@ const urlPattern = new RegExp(
 	"^(https?:\\/\\/)?" + // protocol
 		"((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
 		"((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-		"(\\:\\d+)?(\\/[-a-z\\d@:%_\+.~#?&//=]*)*" + // port and path
+		"(\\:\\d+)?(\\/[-a-z\\d@:%_+.~#?&//=]*)*" + // port and path
 		"(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
 		"(\\#[-a-z\\d_]*)?$",
 	"i"
@@ -697,31 +697,99 @@ export const tags = [
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
 
 export const eventSizeChoices = [
-  "Less than 10 people",
-  "10-15 people",
-  "16-30 people",
-  "31-100 people",
-  "101-200 people",
-  "201-500 people",
-  "501-1000 people",
-  "1000+ people",
+	"Less than 10 people",
+	"10-15 people",
+	"16-30 people",
+	"31-100 people",
+	"101-200 people",
+	"201-500 people",
+	"501-1000 people",
+	"1000+ people",
 ].map((size) => ({ id: size, name: size }));
 
 export const eventPersonTypeChoices = [
-  {
-    id: "speaker",
-    name: "Speaker",
-  },
-  {
-    id: "attendee",
-    name: "Attendee",
-  },
-  {
-    id: "organizer",
-    name: "Organizer",
-  },
+	{
+		id: "speaker",
+		name: "Speaker",
+	},
+	{
+		id: "attendee",
+		name: "Attendee",
+	},
+	{
+		id: "organizer",
+		name: "Organizer",
+	},
 ];
 
-export const DATADOME_TAGS = 'https://js.datadome.co/tags.js'
+export const DATADOME_TAGS = "https://js.datadome.co/tags.js";
 
-export const DATADOME_JS = 'https://api-js.datadome.co/js/'
+export const DATADOME_JS = "https://api-js.datadome.co/js/";
+
+export const companiesFilterOptions = [
+	{
+		category: "Location",
+		items: [
+			{
+				label: "Add country",
+				value: "country",
+			},
+			{
+				label: "Add state",
+				value: "state",
+			},
+			{
+				label: "Add city",
+				value: "city",
+			},
+		],
+	},
+	{
+		category: "Description keywords",
+		items: [
+			{
+				label: "Add keywords",
+				value: "keywords",
+			},
+		],
+	},
+	{
+		category: "Industry",
+		items: [
+			{
+				label: "Select industry",
+				value: "industry",
+			},
+		],
+	},
+	{
+		category: "Financials",
+		items: [
+			{
+				label: "Funding type",
+				value: "fundingType",
+			},
+			{
+				label: "Total funding amount",
+				value: "fundingAmount",
+			},
+			{
+				label: "Last funding date",
+				value: "lastFundingDate",
+			},
+			{
+				label: "Investors",
+				value: "fundingInvestors",
+			},
+		],
+	},
+	{
+		category: "Team",
+		items: [
+			{
+				label: "Team size",
+				value: "teamSize",
+			},
+		],
+	},
+];
