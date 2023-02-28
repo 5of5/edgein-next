@@ -3,7 +3,7 @@ import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-  let headers: {'x-hasura-role'?: string, 'X-hasura-user-id': string} & { Authorization: string } |
+let headers: {'x-hasura-role'?: string, 'X-hasura-user-id': string} & { Authorization: string } |
     {'x-hasura-admin-secret': string }
     if (!user) {
       return res.status(401).end()
@@ -20,6 +20,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         'X-hasura-user-id': user?.id?.toString() ?? ''
       }  
     }
+    // temporay until everyone gets a new cookie
+    headers  = {
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+      'X-hasura-user-id': user?.id?.toString() ?? ''
+    }  
     const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
