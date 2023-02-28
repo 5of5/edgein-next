@@ -20,10 +20,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         'X-hasura-user-id': user?.id?.toString() ?? ''
       }  
     }
-    headers  = {
-      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-      'X-hasura-user-id': user?.id?.toString() ?? ''
-    }  
     const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
