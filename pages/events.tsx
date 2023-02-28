@@ -1,19 +1,14 @@
 import type { NextPage, GetStaticProps } from "next";
 
-import Head from "next/head";
 import Link from "next/link";
 import React, { useState } from "react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemButton } from "../components/ElemButton";
-import { InputSearch } from "../components/InputSearch";
-import { runGraphQl, formatDate } from "../utils";
+import { formatDate, numberWithCommas } from "../utils";
+import { useStateParams } from "@/hooks/useStateParams";
+import { Pagination } from "@/components/Pagination";
 import moment from "moment-timezone";
-import {
-	IconSearch,
-	IconAnnotation,
-	IconX,
-	IconFilter,
-} from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/Icons";
 
 type Props = {
 	events: Record<string, any>[];
@@ -35,11 +30,31 @@ const Events: NextPage<Props> = ({
 		setInitialLoad(false);
 	}
 
+	const [page, setPage] = useStateParams<number>(
+		0,
+		"page",
+		(pageIndex) => pageIndex + 1 + "",
+		(pageIndex) => Number(pageIndex) - 1
+	);
+
+	// const limit = 50;
+	// const offset = limit * page;
+
+	// const {
+	// 	data: eventsData,
+	// 	error,
+	// 	isLoading,
+	// } = useGetEventsQuery({
+	// 	offset,
+	// 	limit,
+	// 	where: filters as Events_Bool_Exp,
+	// });
+
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Events"
-				subtitle="Don't miss a beat. Here's your lineup for all of the industry's must attend events."
+				subtitle="Don't miss a beat. Here's your lineup for all of the industry's must attend events. Holding an event? Let us know"
 			>
 				{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
 						Submit event
@@ -52,6 +67,8 @@ const Events: NextPage<Props> = ({
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
+					<h2 className="text-xl font-bold mb-2">All Events</h2>
+
 					{events?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
 							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -90,89 +107,63 @@ const Events: NextPage<Props> = ({
 										className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
 									>
 										<div className="">
-											<div className="h-36 rounded-lg w-full bg-[url('https://source.unsplash.com/random/500×200/?shapes')] bg-cover bg-no-repeat bg-center"></div>
+											<div className="h-36 rounded-lg w-full bg-[url('https://source.unsplash.com/random/500×200/?city')] bg-cover bg-no-repeat bg-center"></div>
 										</div>
 										<h3 className="mt-4 text-2xl font-bold break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
 											{event.name}
 										</h3>
 
-										<div className="grow mt-1 font-medium">
+										<div className="grow mt-1">
 											{event.start_date && (
-												<div className="w-full inline-flex py-1">
-													{/* <svg
-														xmlns="http://www.w3.org/2000/svg"
-														className="h-6 w-6 mr-1 text-gray-300 shrink-0"
-														fill="none"
-														viewBox="0 0 24 24"
-														stroke="currentColor"
-														strokeWidth="2"
-													>
-														<path
-															strokeLinecap="round"
-															strokeLinejoin="round"
-															d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-														/>
-													</svg> */}
+												<div className="w-full inline-flex py-1 font-medium">
+													{event.start_date &&
+														formatDate(event.start_date, {
+															month: "short",
+															day: "2-digit",
+															year: "numeric",
+															timeZone: "America/Los_Angeles",
+														})}
 
-													<div className="inline font-medium">
-														{event.start_date &&
-															formatDate(event.start_date, {
+													{event.end_date && (
+														<>
+															&nbsp;&ndash;&nbsp;
+															{formatDate(event.end_date, {
 																month: "short",
 																day: "2-digit",
 																year: "numeric",
 																timeZone: "America/Los_Angeles",
 															})}
-
-														{event.end_date && (
-															<>
-																&nbsp;&ndash;&nbsp;
-																{formatDate(event.end_date, {
-																	month: "short",
-																	day: "2-digit",
-																	year: "numeric",
-																	timeZone: "America/Los_Angeles",
-																})}
-															</>
-														)}
-													</div>
+														</>
+													)}
 												</div>
 											)}
 											{event.location && (
-												<div className="w-full inline-flex py-1">
-													{/* <svg
-														xmlns="http://www.w3.org/2000/svg"
-														className="h-6 w-6 mr-1 text-gray-300 shrink-0"
-														fill="none"
-														viewBox="0 0 24 24"
-														stroke="currentColor"
-														strokeWidth="2"
-													>
-														<path
-															strokeLinecap="round"
-															strokeLinejoin="round"
-															d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-														/>
-														<path
-															strokeLinecap="round"
-															strokeLinejoin="round"
-															d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-														/>
-													</svg> */}
-
-													<div className="inline font-medium text-sm text-gray-400">
-														{event.location}
-													</div>
-												</div>
-											)}
-
-											{event.price != null && (
 												<div className="w-full inline-flex py-1 text-sm text-gray-400">
-													{/* {event.price === "0" ? "YES" : "NO"} */}
-													{event.price > 0
-														? `Starts at $${event.price}`
-														: "Free"}
+													{event.location}
 												</div>
 											)}
+
+											<div className="w-full inline-flex py-1 text-sm text-gray-400">
+												{event.price != null && (
+													<div>
+														{event.price > 0
+															? `Starts at $${event.price}`
+															: "Free"}
+													</div>
+												)}
+												{event.price != null && event.size != null && (
+													<div className="mx-1">{"•"}</div>
+												)}
+												{event.size != null && (
+													<>
+														<div>
+															{event.size < 50
+																? "Less than 50 people"
+																: `${numberWithCommas(event.size)} people`}
+														</div>
+													</>
+												)}
+											</div>
 										</div>
 										<div
 											className="mt-4 flex flex-wrap gap-2"
@@ -190,10 +181,6 @@ const Events: NextPage<Props> = ({
 												);
 											})}
 										</div>
-										{/* <div className="text-sm text-gray-400">
-											<div>{event.venue}</div>
-											<div>{event.location}</div>
-										</div> */}
 
 										{/* <div>
 											<ElemButton className="pl-0 pr-0" btn="transparent" arrow>
@@ -205,6 +192,17 @@ const Events: NextPage<Props> = ({
 							))
 						)}
 					</div>
+
+					<Pagination
+						shownItems={events?.length}
+						totalItems={events?.length} //events_aggregate
+						page={page}
+						itemsPerPage={6} //limit
+						numeric
+						onClickPrev={() => setPage(page - 1)}
+						onClickNext={() => setPage(page + 1)}
+						onClickToPage={(selectedPage) => setPage(selectedPage)}
+					/>
 				</div>
 			</div>
 		</div>
@@ -218,7 +216,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	// const events: { events: Record<string, any>[] } = { events: [] };
 
 	const yesterday = moment().subtract(1, "days");
-	const today = moment(); //moment(new Date());
+	const today = moment();
 	const tomorrow = moment().add(1, "days");
 	const in2days = moment().add(2, "days");
 
@@ -252,6 +250,45 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			},
 			{
 				id: 3,
+				slug: "lame-ai-event",
+				name: "Lame AI event",
+				link: "#Event3Link",
+				location: "Salt Lake City, Utah, United States",
+				venue: "Conference Center",
+				size: 50,
+				start_date: JSON.parse(JSON.stringify(today)),
+				end_date: JSON.parse(JSON.stringify(in2days)),
+				tags: ["Crypto", "Blockchain"],
+				price: 0,
+			},
+			{
+				id: 4,
+				slug: "somelink",
+				name: "Fintech Retreat 23",
+				link: "#Event1Link",
+				location: "San Francisco, California, United States",
+				venue: "Moscone Center",
+				size: 3000,
+				start_date: JSON.parse(JSON.stringify(yesterday)),
+				end_date: JSON.parse(JSON.stringify(tomorrow)),
+				tags: ["Conference", "NFT", "DAO"],
+				price: 199,
+			},
+			{
+				id: 5,
+				slug: "quantum-miami",
+				name: "Quantum Miami",
+				link: "#Event2Link",
+				location: "Miami, Florida, United States",
+				venue: "Mana Wynwood Convention Center",
+				size: 2000,
+				start_date: JSON.parse(JSON.stringify(yesterday)),
+				end_date: JSON.parse(JSON.stringify(in2days)),
+				tags: ["Blockchain", "Conference", "Web3"],
+				price: 499.99,
+			},
+			{
+				id: 6,
 				slug: "lame-ai-event",
 				name: "Lame AI event",
 				link: "#Event3Link",
