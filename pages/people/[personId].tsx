@@ -20,6 +20,8 @@ import { onTrackView } from "@/utils/track";
 import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useIntercom } from "react-use-intercom";
+import { IconCheckBadgeSolid } from "@/components/Icons";
+import { ElemTooltip } from "@/components/ElemTooltip";
 
 type Props = {
 	person: People;
@@ -123,9 +125,24 @@ const Person: NextPage<Props> = (props) => {
 											{removeSpecialCharacterFromString(person.type as string)}
 										</div>
 									)}
-									<h1 className="text-3xl font-bold lg:text-4xl">
-										{person.name}
-									</h1>
+									<div className="flex items-center justify-center space-x-2 lg:justify-start">
+										<h1 className="text-3xl font-bold lg:text-4xl">
+											{person.name}
+										</h1>
+
+										{claimedProfile && (
+											<ElemTooltip
+												content="Claimed profile"
+												className="cursor-pointer"
+											>
+												<IconCheckBadgeSolid
+													className="h-8 w-8 text-primary-500"
+													title="Claimed profile"
+												/>
+											</ElemTooltip>
+										)}
+									</div>
+
 									{!claimedProfile && (
 										<ElemButton
 											className="mt-2"
