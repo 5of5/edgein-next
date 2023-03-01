@@ -9,8 +9,8 @@ const useDisclosureState = (key: string) => {
   }
 
   const onDisclosureButtonClick = () => {
-    console.log('@btnRef',  btnRef?.current?.ariaExpanded)
-    const isOpen = btnRef?.current?.ariaExpanded === "false" ? "true" : "false";
+    console.log('@btnRef',  btnRef?.current?.getAttribute("data-expanded"))
+    const isOpen = btnRef?.current?.getAttribute("data-expanded") === "false" ? "true" : "false";
     localStorage.setItem(key, isOpen);
   };
 

@@ -71,6 +71,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 							<div className="flex items-center">
 								<Disclosure.Button
 									className="flex focus:outline-none hover:opacity-75"
+									data-expanded={open}
 									ref={btnRef}
 									onClick={onDisclosureButtonClick}
 								>

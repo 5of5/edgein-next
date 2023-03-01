@@ -21,6 +21,7 @@ const ElemExploreMenu: FC<Props> = ({ className = "" }) => {
           <div className="w-full flex items-center justify-between">
             <Disclosure.Button
               className="flex focus:outline-none hover:opacity-75"
+              data-expanded={open}
               ref={btnRef}
               onClick={onDisclosureButtonClick}
             >
