@@ -20,25 +20,15 @@ const getIP = (request: any) =>
   );
 
 export const getRateLimitMiddlewares = ({
-  limit = 10,
-  windowMs = 60 * 1000,
-  delayAfter = Math.round(10 / 2),
-  delayMs = 500,
+  limit = Number(process.env.RATE_LIMIT),
+  windowMs = Number(process.env.WINDOWMS),
+  delayAfter = Number(process.env.DELAY_AFTER),
+  delayMs = Number(process.env.DELAYMS),
 } = {}) => {
   // Create a `node-redis` client
   const client = createClient({
-    socket: {
-      port: 6379,
-      host: "35.86.238.186",
-    },
+    url: `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   });
-  // client.on("error", (err) => {
-  //   console.error("connect to redis failed!", err);
-  // });
-  // client.on("connect", () => console.log("client is connect"));
-  // client.on("reconnecting", () => console.log("client is reconnecting"));
-  // client.on("ready", () => console.log("client is ready"));
-  // Then connect to the Redis server
   (async () => {
     // Connect to redis server
     await client.connect();
