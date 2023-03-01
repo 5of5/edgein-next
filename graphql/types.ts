@@ -17781,6 +17781,7 @@ export type Vc_Firms = {
   news_links: Array<News_Organizations>;
   /** An aggregate relationship */
   news_links_aggregate: News_Organizations_Aggregate;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   sentiment: Maybe<Scalars['jsonb']>;
@@ -17984,6 +17985,7 @@ export type Vc_Firms_Append_Input = {
 export type Vc_Firms_Avg_Fields = {
   __typename?: 'vc_firms_avg_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
@@ -18005,6 +18007,7 @@ export type Vc_Firms_Bool_Exp = {
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
+  num_of_exits: InputMaybe<Int_Comparison_Exp>;
   num_of_investments: InputMaybe<Int_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
@@ -18339,6 +18342,7 @@ export type Vc_Firms_Edit_Access_Variance_Order_By = {
 /** input type for incrementing numeric columns in table "vc_firms" */
 export type Vc_Firms_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
 };
 
@@ -18357,6 +18361,7 @@ export type Vc_Firms_Insert_Input = {
   logo: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -18381,6 +18386,7 @@ export type Vc_Firms_Max_Fields = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
@@ -18401,6 +18407,7 @@ export type Vc_Firms_Min_Fields = {
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
@@ -18449,6 +18456,7 @@ export type Vc_Firms_Order_By = {
   logo: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
+  num_of_exits: InputMaybe<Order_By>;
   num_of_investments: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   sentiment: InputMaybe<Order_By>;
@@ -18495,6 +18503,8 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  NumOfExits = 'num_of_exits',
+  /** column name */
   NumOfInvestments = 'num_of_investments',
   /** column name */
   Overview = 'overview',
@@ -18528,6 +18538,7 @@ export type Vc_Firms_Set_Input = {
   location: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -18545,6 +18556,7 @@ export type Vc_Firms_Set_Input = {
 export type Vc_Firms_Stddev_Fields = {
   __typename?: 'vc_firms_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
@@ -18552,6 +18564,7 @@ export type Vc_Firms_Stddev_Fields = {
 export type Vc_Firms_Stddev_Pop_Fields = {
   __typename?: 'vc_firms_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
@@ -18559,6 +18572,7 @@ export type Vc_Firms_Stddev_Pop_Fields = {
 export type Vc_Firms_Stddev_Samp_Fields = {
   __typename?: 'vc_firms_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
@@ -18566,6 +18580,7 @@ export type Vc_Firms_Stddev_Samp_Fields = {
 export type Vc_Firms_Sum_Fields = {
   __typename?: 'vc_firms_sum_fields';
   id: Maybe<Scalars['Int']>;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
 };
 
@@ -18587,6 +18602,8 @@ export enum Vc_Firms_Update_Column {
   Logo = 'logo',
   /** column name */
   Name = 'name',
+  /** column name */
+  NumOfExits = 'num_of_exits',
   /** column name */
   NumOfInvestments = 'num_of_investments',
   /** column name */
@@ -18615,6 +18632,7 @@ export enum Vc_Firms_Update_Column {
 export type Vc_Firms_Var_Pop_Fields = {
   __typename?: 'vc_firms_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
@@ -18622,6 +18640,7 @@ export type Vc_Firms_Var_Pop_Fields = {
 export type Vc_Firms_Var_Samp_Fields = {
   __typename?: 'vc_firms_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
@@ -18629,6 +18648,7 @@ export type Vc_Firms_Var_Samp_Fields = {
 export type Vc_Firms_Variance_Fields = {
   __typename?: 'vc_firms_variance_fields';
   id: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
 };
 
