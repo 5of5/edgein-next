@@ -9,6 +9,7 @@ import {
 } from "@/components/Icons";
 import { useAuth } from "@/hooks/useAuth";
 import useDisclosureState from "@/hooks/useDisclosureState";
+import { MY_EDGEIN_MENU_OPEN_KEY } from "@/utils/constants";
 
 const ElemMyEdgeInMenu = () => {
   const { user } = useAuth();
@@ -18,7 +19,7 @@ const ElemMyEdgeInMenu = () => {
 		btnRef,
 		isDefaultOpen,
 		onDisclosureButtonClick,
-	} = useDisclosureState("disclosure-my-edgein-menu-default-open");
+	} = useDisclosureState(MY_EDGEIN_MENU_OPEN_KEY);
 
   const getActiveClass = (path: string) => {
     return path === router.asPath ? "text-primary-500 bg-slate-200" : "";

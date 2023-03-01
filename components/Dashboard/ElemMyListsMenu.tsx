@@ -17,6 +17,7 @@ import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { CreateListDialog } from "../MyList/CreateListDialog";
 import useDisclosureState from "@/hooks/useDisclosureState";
+import { MY_LISTS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
 	className?: string;
@@ -30,7 +31,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		btnRef,
 		isDefaultOpen,
 		onDisclosureButtonClick,
-	} = useDisclosureState("disclosure-my-lists-menu-default-open");
+	} = useDisclosureState(MY_LISTS_MENU_OPEN_KEY);
 
 	const getCountForList = (listName: string) => {
 		if (lists) {

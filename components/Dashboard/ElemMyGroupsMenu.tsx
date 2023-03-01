@@ -14,6 +14,7 @@ import ElemCreateGroupDialog from "../Group/ElemCreateGroupDialog";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { ElemTooltip } from "../ElemTooltip";
 import useDisclosureState from "@/hooks/useDisclosureState";
+import { MY_GROUPS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
 	className?: string;
@@ -35,7 +36,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 		btnRef,
 		isDefaultOpen,
 		onDisclosureButtonClick,
-	} = useDisclosureState("disclosure-my-groups-menu-default-open");
+	} = useDisclosureState(MY_GROUPS_MENU_OPEN_KEY);
 
 
 	const getActiveClass = (id: number) => {

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Disclosure } from "@headlessui/react";
 import { IconPolygonDown, IconCash, IconCompanies } from "@/components/Icons";
 import useDisclosureState from "@/hooks/useDisclosureState";
+import { EXPLORE_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
   className?: string;
@@ -10,7 +11,7 @@ type Props = {
 
 const ElemExploreMenu: FC<Props> = ({ className = "" }) => {
   const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
-    "disclosure-explore-menu-default-open"
+    EXPLORE_MENU_OPEN_KEY
   );
 
   return (
