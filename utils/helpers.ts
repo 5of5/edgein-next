@@ -7,6 +7,12 @@ import {
   Companies_Bool_Exp,
 } from "@/graphql/types";
 import { DeepPartial } from "@/pages/companies";
+import {
+  EXPLORE_MENU_OPEN_KEY,
+  MY_EDGEIN_MENU_OPEN_KEY,
+  MY_GROUPS_MENU_OPEN_KEY,
+  MY_LISTS_MENU_OPEN_KEY,
+} from "./constants";
 
 const makeObjectWithoutPrototype = () => Object.create(null);
 
@@ -291,3 +297,21 @@ export const processCompaniesFilters = (
   	});
   }
 }
+
+export const clearLocalStorage = () => {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+
+    if (
+      key &&
+      ![
+        MY_EDGEIN_MENU_OPEN_KEY,
+        MY_LISTS_MENU_OPEN_KEY,
+        MY_GROUPS_MENU_OPEN_KEY,
+        EXPLORE_MENU_OPEN_KEY,
+      ].includes(key)
+    ) {
+      localStorage.removeItem(key);
+    }
+  }
+};
