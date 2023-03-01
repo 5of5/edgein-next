@@ -32,12 +32,9 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
 
-	const {
-		btnRef,
-		isDefaultOpen,
-		onDisclosureButtonClick,
-	} = useDisclosureState(MY_GROUPS_MENU_OPEN_KEY);
-
+	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
+		MY_GROUPS_MENU_OPEN_KEY
+	);
 
 	const getActiveClass = (id: number) => {
 		return `/groups/${id}/` === router.asPath
@@ -80,7 +77,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-xl font-bold">Groups</span>
+									<span className="text-xl font-bold">My Groups</span>
 								</Disclosure.Button>
 								<ElemTooltip
 									content="Share your lists and notes with others."
