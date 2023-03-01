@@ -768,18 +768,108 @@ export const companiesFilterOptions = [
 			{
 				label: "Funding type",
 				value: "fundingType",
+				isPremium: true,
 			},
 			{
 				label: "Total funding amount",
 				value: "fundingAmount",
+				isPremium: true,
 			},
 			{
 				label: "Last funding date",
 				value: "lastFundingDate",
+				isPremium: true,
 			},
 			{
 				label: "Investors",
 				value: "fundingInvestors",
+				isPremium: true,
+			},
+		],
+	},
+	{
+		category: "Team",
+		items: [
+			{
+				label: "Team size",
+				value: "teamSize",
+				isPremium: true,
+			},
+		],
+	},
+];
+
+export const investorsFilterOptions = [
+	{
+		category: "Location",
+		items: [
+			{
+				label: "Add country",
+				value: "country",
+				isPremium: true,
+			},
+			{
+				label: "Add state",
+				value: "state",
+				isPremium: true,
+			},
+			{
+				label: "Add city",
+				value: "city",
+				isPremium: true,
+			},
+		],
+	},
+	{
+		category: "Description keywords",
+		items: [
+			{
+				label: "Add keywords",
+				value: "keywords",
+				isPremium: true,
+			},
+		],
+	},
+	{
+		category: "Industry",
+		items: [
+			{
+				label: "Select industry",
+				value: "industry",
+			},
+		],
+	},
+	{
+		category: "Financials",
+		items: [
+			{
+				label: "Investment type",
+				value: "investmentType",
+				isPremium: true,
+			},
+			{
+				label: "Investment amount total",
+				value: "investmentAmountTotal",
+			},
+			{
+				label: "Number of investments",
+				value: "numOfInvestments",
+				isPremium: true,
+			},
+			{
+				label: "Number of exits",
+				value: "numOfExits",
+				isPremium: true,
+			},
+			{
+				label: "Last investment date",
+				value: "lastInvestmentDate",
+				isPremium: true,
+			},
+			{
+				label: "Funded companies",
+				value: "fundedCompanies",
+				isPremium: true,
 			},
 		],
 	},

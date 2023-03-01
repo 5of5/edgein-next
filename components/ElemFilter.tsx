@@ -3,13 +3,13 @@ import { omit, cloneDeep } from "lodash";
 import moment from "moment-timezone";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { roundChoices, tags } from "@/utils/constants";
-import { ElemButton } from "../ElemButton";
-import { InputRadio } from "../InputRadio";
-import { ElemTagsInput } from "../ElemTagsInput";
-import { ElemMultiRangeSlider } from "../ElemMultiRangeSlider";
-import { InputDate } from "../InputDate";
-import { ElemCompaniesFilterPopup } from "./ElemCompaniesFilterPopup";
-import { ElemCompaniesAddFilter } from "./ElemCompaniesAddFilter";
+import { ElemButton } from "./ElemButton";
+import { InputRadio } from "./InputRadio";
+import { ElemTagsInput } from "./ElemTagsInput";
+import { ElemMultiRangeSlider } from "./ElemMultiRangeSlider";
+import { InputDate } from "./InputDate";
+import { ElemFilterPopup } from "./ElemFilterPopup";
+import { ElemAddFilter } from "./ElemAddFilter";
 
 export type FilterOptionKeys =
 	| "country"
@@ -85,13 +85,15 @@ export type Filters = {
 };
 
 type Props = {
+  resourceType: "companies" | "vc_firms";
 	defaultFilters: Filters | null;
 	onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
 	onClearOption: (name: FilterOptionKeys) => void;
 	onReset: () => void;
 };
 
-export const ElemCompaniesFilter: FC<Props> = ({
+export const ElemFilter: FC<Props> = ({
+  resourceType,
 	defaultFilters,
 	onApply,
 	onClearOption,
@@ -389,7 +391,8 @@ export const ElemCompaniesFilter: FC<Props> = ({
 	return (
 		<section className="w-full flex items-center justify-between mb-1 py-3">
 			<div className="flex flex-col w-full space-y-3 items-start lg:flex-row lg:items-center lg:space-x-3 lg:space-y-0">
-				<ElemCompaniesAddFilter
+				<ElemAddFilter
+          resourceType={resourceType}
 					open={openAddFilter}
 					onOpen={() => setOpenAddFilter(true)}
 					onClose={() => setOpenAddFilter(false)}
@@ -397,7 +400,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 				/>
 
 				{filters?.country && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.country.open}
 						name="country"
 						title={`Country (${filters?.country?.tags?.length || 0})`}
@@ -435,11 +438,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								/>
 							</div>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.state && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.state.open}
 						name="state"
 						title={`State (${filters?.state?.tags?.length || 0})`}
@@ -474,11 +477,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								/>
 							</div>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.city && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.city.open}
 						name="city"
 						title={`City (${filters?.city?.tags?.length || 0})`}
@@ -513,11 +516,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								/>
 							</div>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.keywords && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.keywords.open}
 						name="keywords"
 						title={`Keywords (${filters?.keywords?.tags?.length || 0})`}
@@ -535,11 +538,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								subtext="e.g. ai, platform, blockchain, wallet, nft..."
 							/>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.industry && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.industry.open}
 						name="industry"
 						title={`Industry (${filters?.industry?.tags?.length || 0})`}
@@ -572,11 +575,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								</li>
 							))}
 						</ul>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.fundingType && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.fundingType.open}
 						name="fundingType"
 						title={`Funding type (${filters?.fundingType?.tags?.length || 0})`}
@@ -608,11 +611,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								</li>
 							))}
 						</ul>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.fundingAmount && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.fundingAmount.open}
 						name="fundingAmount"
 						title="Funding amount"
@@ -664,11 +667,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								}
 							/>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.lastFundingDate && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.lastFundingDate.open}
 						name="lastFundingDate"
 						title="Last funding date"
@@ -732,11 +735,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								/>
 							</div>
 						)}
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.fundingInvestors && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.fundingInvestors.open}
 						name="fundingInvestors"
 						title={`investors (${
@@ -773,11 +776,11 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								}
 							/>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters?.teamSize && (
-					<ElemCompaniesFilterPopup
+					<ElemFilterPopup
 						open={!!filters.teamSize.open}
 						name="teamSize"
 						title="Team size"
@@ -826,7 +829,7 @@ export const ElemCompaniesFilter: FC<Props> = ({
 								}
 							/>
 						</div>
-					</ElemCompaniesFilterPopup>
+					</ElemFilterPopup>
 				)}
 
 				{filters && Object.keys(filters).length > 0 && (

@@ -21,11 +21,8 @@ import { companyChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/useStateParams";
 import { onTrackView } from "@/utils/track";
-import {
-	ElemCompaniesFilter,
-	Filters,
-} from "@/components/Companies/ElemCompaniesFilter";
 import { processCompaniesFilters } from "@/utils/helpers";
+import { ElemFilter, Filters } from "@/components/ElemFilter";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -261,7 +258,8 @@ const Companies: NextPage<Props> = ({
 						</nav>
 					</div>
 
-					<ElemCompaniesFilter
+					<ElemFilter
+						resourceType="companies"
 						defaultFilters={selectedFilters}
 						onApply={(name, filterParams) => {
 							filters._and = [{ slug: { _neq: "" } }];

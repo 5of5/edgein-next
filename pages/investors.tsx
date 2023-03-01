@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
@@ -29,11 +29,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
+import { Filters, ElemFilter } from "@/components/ElemFilter";
+import moment from "moment-timezone";
 
 type Props = {
 	vcFirmCount: number;
 	initialVCFirms: GetVcFirmsQuery["vc_firms"];
-	investorFilters: TextFilter[];
+	investorsStatusTags: TextFilter[];
 	numberOfInvestments: NumericFilter[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -41,7 +43,7 @@ type Props = {
 const Investors: NextPage<Props> = ({
 	vcFirmCount,
 	initialVCFirms,
-	investorFilters,
+	investorsStatusTags,
 	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
@@ -49,9 +51,12 @@ const Investors: NextPage<Props> = ({
 
 	const router = useRouter();
 
-	// Investor Filter
-	const [selectedInvestorFilters, setSelectedInvestorFilters] = useState(
-		investorFilters[0]
+	// Investor Status Tag
+	const [selectedStatusTag, setSelectedStatusTag] = useStateParams(
+		investorsStatusTags[0],
+		"statusTag",
+		(statusTag) => investorsStatusTags.indexOf(statusTag).toString(),
+		(index) => investorsStatusTags[Number(index)]
 	);
 
 	// Investments Count
@@ -60,8 +65,36 @@ const Investors: NextPage<Props> = ({
 	);
 
 	// Filters
-	const [toggleFilters, setToggleFilters] = useState(
-		selectedInvestmentCount !== numberOfInvestments[0]
+	const [selectedFilters, setSelectedFilters] = useStateParams<Filters | null>(
+		null,
+		"filters",
+		(filters) => {
+			if (!filters) {
+				return "";
+			}
+			return JSON.stringify(filters);
+		},
+		(filterString) => {
+			if (filterString) {
+				const filterJson: Filters = JSON.parse(filterString);
+				if (filterJson?.lastFundingDate?.fromDate) {
+					filterJson.lastFundingDate.fromDate = moment(
+						filterJson.lastFundingDate.fromDate
+					)
+						.format()
+						.split("T")[0];
+				}
+				if (filterJson?.lastFundingDate?.toDate) {
+					filterJson.lastFundingDate.toDate = moment(
+						filterJson.lastFundingDate.toDate
+					)
+						.format()
+						.split("T")[0];
+				}
+				return filterJson;
+			}
+			return null;
+		}
 	);
 
 	const [page, setPage] = useStateParams<number>(
@@ -104,7 +137,7 @@ const Investors: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedInvestmentCount, selectedInvestorFilters]);
+	}, [selectedTags, selectedInvestmentCount, selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -191,9 +224,9 @@ const Investors: NextPage<Props> = ({
 		});
 	}
 
-	if (selectedInvestorFilters.value) {
+	if (selectedStatusTag.value) {
 		filters._and?.push({
-			status_tags: { _contains: selectedInvestorFilters.value },
+			status_tags: { _contains: selectedStatusTag.value },
 		});
 	}
 
@@ -228,44 +261,57 @@ const Investors: NextPage<Props> = ({
 			</div>
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-					{selectedTags.length > 0 ? (
-						<div className="lg:flex items-baseline gap-2">
-							<h2 className="text-xl font-bold">
-								Investors ({numberWithCommas(vcfirms_aggregate)})
-							</h2>
-							{selectedTags.length > 0 && (
-								<div className="flex flex-wrap items-baseline">
-									{selectedTags?.map((item, index: number) => {
-										return (
-											<span key={index} className="pr-1">
-												{item}
-												{index != selectedTags.length - 1 && ","}
-											</span>
-										);
-									})}
-									<div
-										className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
-										onClick={clearTagFilters}
-									>
-										clear tags filter
-										<IconX className="ml-0.5 h-3" />
-									</div>
-								</div>
-							)}
-						</div>
-					) : (
-						<h2 className="text-xl font-bold">All Investors</h2>
-					)}
+				<h2 className="text-xl font-bold">Investors</h2>
 
-					<section className="pt-2 pb-3">
+				<div
+						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+						role="tablist"
+					>
+						<nav className="flex">
+							{investorsStatusTags &&
+								investorsStatusTags.map((tab: any, index: number) =>
+									tab.disabled === true ? (
+										<Fragment key={index}></Fragment>
+									) : (
+										<button
+											key={index}
+											onClick={() => setSelectedStatusTag(tab)}
+											className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+												selectedStatusTag.value === tab.value
+													? "text-primary-500 border-primary-500"
+													: "border-transparent  hover:bg-slate-200"
+											} ${tab.disabled ? "cursor-not-allowed" : ""}}`}
+										>
+											{tab.title}
+										</button>
+									)
+								)}
+						</nav>
+					</div>
+
+					<ElemFilter
+						resourceType="vc_firms"
+						defaultFilters={selectedFilters}
+						onApply={(name, filterParams) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
+						}}
+						onClearOption={(name) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({ ...selectedFilters, [name]: undefined });
+						}}
+						onReset={() => setSelectedFilters(null)}
+					/>
+
+					{/* <section className="pt-2 pb-3">
 						<div className="w-full flex flex-wrap justify-between lg:space-x-5 lg:flex-nowrap">
 							<InputSelect
 								className="md:shrink md:basis-0"
 								buttonClasses="w-auto"
 								dropdownClasses="w-60"
-								value={selectedInvestorFilters}
-								onChange={setSelectedInvestorFilters}
-								options={investorFilters}
+								value={selectedStatusTag}
+								onChange={setSelectedStatusTag}
+								options={investorsStatusTags}
 							/>
 
 							<div className="w-full overflow-hidden grow min-w-0 order-last lg:order-none">
@@ -297,7 +343,7 @@ const Investors: NextPage<Props> = ({
 								/>
 							</div>
 						)}
-					</section>
+					</section> */}
 
 					{vcFirms?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -373,7 +419,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
 			vcFirmCount: vcFirms?.vc_firms_aggregate.aggregate?.count || 0,
 			initialVCFirms: vcFirms?.vc_firms || [],
-			investorFilters: investorsFilters,
+			investorsStatusTags,
 			numberOfInvestments: InvestmentsFilters,
 		},
 	};
@@ -426,7 +472,7 @@ const investorFilterValue = investorChoices.map((option) => {
 	};
 });
 
-const investorsFilters: TextFilter[] = [
+const investorsStatusTags: TextFilter[] = [
 	{
 		title: "All Investors",
 		value: "",

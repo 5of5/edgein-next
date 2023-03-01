@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren, useEffect, useRef } from "react";
-import { ElemButton } from "../ElemButton";
-import { FilterOptionKeys } from "./ElemCompaniesFilter";
+import { ElemButton } from "./ElemButton";
+import { FilterOptionKeys } from "./ElemFilter";
 
 type Props = {
 	open: boolean;
@@ -13,7 +13,7 @@ type Props = {
 	popupClass?: string;
 };
 
-export const ElemCompaniesFilterPopup: FC<PropsWithChildren<Props>> = ({
+export const ElemFilterPopup: FC<PropsWithChildren<Props>> = ({
 	open,
 	name,
 	title,
