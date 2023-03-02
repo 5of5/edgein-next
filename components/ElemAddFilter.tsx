@@ -114,7 +114,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
             <ul className="list-none text-slate-600 leading-tight">
               {option.items.map((item) => (
                 <li key={item.value}>
-                  {item.isPremium ? (
+                  {/* {item.isPremium ? (
                     <div className="inline-flex">
                       <button
                         onClick={
@@ -132,7 +132,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                         {item.label}
                       </button>
                     </div>
-                  ) : (
+                  ) : ( */}
                     <button
                       onClick={onSelectFilterOption}
                       name={item.value}
@@ -140,7 +140,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                     >
                       {item.label}
                     </button>
-                  )}
+                  {/* )} */}
                 </li>
               ))}
             </ul>

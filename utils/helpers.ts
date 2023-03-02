@@ -2,7 +2,7 @@ import isArray from "lodash/isArray";
 import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
-import { Filters } from "@/components/Companies/ElemCompaniesFilter";
+import { Filters } from "@/components/ElemFilter";
 import {
   Companies_Bool_Exp,
 } from "@/graphql/types";
