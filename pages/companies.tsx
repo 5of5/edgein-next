@@ -21,8 +21,9 @@ import { companyChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/useStateParams";
 import { onTrackView } from "@/utils/track";
-import { processCompaniesFilters } from "@/utils/helpers";
-import { ElemFilter, Filters } from "@/components/ElemFilter";
+import { processCompaniesFilters } from "@/utils/filter";
+import { ElemFilter } from "@/components/ElemFilter";
+import { Filters } from "@/models/Filter";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(

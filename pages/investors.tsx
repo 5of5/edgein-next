@@ -18,15 +18,16 @@ import {
 	Vc_Firms_Bool_Exp,
 	Vc_Firms,
 } from "@/graphql/types";
-import { DeepPartial, NumericFilter } from "@/pages/companies";
+import { DeepPartial } from "@/pages/companies";
 import { runGraphQl } from "@/utils";
 import { investorChoices } from "@/utils/constants";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
-import { Filters, ElemFilter } from "@/components/ElemFilter";
+import { ElemFilter } from "@/components/ElemFilter";
+import { Filters } from "@/models/Filter";
 import moment from "moment-timezone";
-import { processInvestorsFilters } from "@/utils/helpers";
+import { processInvestorsFilters } from "@/utils/filter";
 
 type Props = {
 	vcFirmCount: number;
