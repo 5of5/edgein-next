@@ -306,110 +306,110 @@ export const processInvestorsFilters = (
   if (!selectedFilters) {
 		filters._and = [{ slug: { _neq: "" } }];
 	}
-  // if (selectedFilters?.country?.tags?.length) {
-  //   if (selectedFilters?.country?.condition === "any") {
-  //     filters._and?.push({
-  //       _or: selectedFilters.country.tags.map((item) => ({
-  //         location_json: {
-  //           _cast: {
-  //             String: {_ilike: `%"country": "${item}"%`}
-  //           },
-  //         },
-  //       })),
-  //     });
-  //   }
+  if (selectedFilters?.country?.tags?.length) {
+    if (selectedFilters?.country?.condition === "any") {
+      filters._and?.push({
+        _or: selectedFilters.country.tags.map((item) => ({
+          location_json: {
+            _cast: {
+              String: {_ilike: `%"country": "${item}"%`}
+            },
+          },
+        })),
+      });
+    }
 
-  //   if (selectedFilters?.country?.condition === "none") {
-  //     filters._and?.push({
-  //       _or: [
-  //         {
-  //           _not: {
-  //             _or: selectedFilters.country.tags.map((item) => ({
-  //               location_json: {
-  //                 _cast: {
-  //                   String: {_ilike: `%"country": "${item}"%`}
-  //                 },
-  //               },
-  //             })),
-  //           },
-  //         },
-  //         {
-  //           location_json: { _is_null: true },
-  //         },
-  //       ],
-  //     });
-  //   }
-  // }
+    if (selectedFilters?.country?.condition === "none") {
+      filters._and?.push({
+        _or: [
+          {
+            _not: {
+              _or: selectedFilters.country.tags.map((item) => ({
+                location_json: {
+                  _cast: {
+                    String: {_ilike: `%"country": "${item}"%`}
+                  },
+                },
+              })),
+            },
+          },
+          {
+            location_json: { _is_null: true },
+          },
+        ],
+      });
+    }
+  }
 
-  // if (selectedFilters?.state?.tags?.length) {
-	// 	if (selectedFilters?.state?.condition === "any") {
-  //     filters._and?.push({
-  //       _or: selectedFilters.state.tags.map((item) => ({
-  //         location_json: {
-  //           _cast: {
-  //             String: {_ilike: `%"state": "${item}"%`}
-  //           },
-  //         },
-  //       })),
-  //     });
-  //   }
+  if (selectedFilters?.state?.tags?.length) {
+		if (selectedFilters?.state?.condition === "any") {
+      filters._and?.push({
+        _or: selectedFilters.state.tags.map((item) => ({
+          location_json: {
+            _cast: {
+              String: {_ilike: `%"state": "${item}"%`}
+            },
+          },
+        })),
+      });
+    }
 
-  //   if (selectedFilters?.state?.condition === "none") {
-  //     filters._and?.push({
-  //       _or: [
-  //         {
-  //           _not: {
-  //             _or: selectedFilters.state.tags.map((item) => ({
-  //               location_json: {
-  //                 _cast: {
-  //                   String: {_ilike: `%"state": "${item}"%`}
-  //                 },
-  //               },
-  //             })),
-  //           },
-  //         },
-  //         {
-  //           location_json: { _is_null: true },
-  //         },
-  //       ],
-  //     });
-  //   }
-  // }
+    if (selectedFilters?.state?.condition === "none") {
+      filters._and?.push({
+        _or: [
+          {
+            _not: {
+              _or: selectedFilters.state.tags.map((item) => ({
+                location_json: {
+                  _cast: {
+                    String: {_ilike: `%"state": "${item}"%`}
+                  },
+                },
+              })),
+            },
+          },
+          {
+            location_json: { _is_null: true },
+          },
+        ],
+      });
+    }
+  }
 
-  // if (selectedFilters?.city?.tags?.length) {
-	// 	if (selectedFilters?.city?.condition === "any") {
-  //     filters._and?.push({
-  //       _or: selectedFilters.city.tags.map((item) => ({
-  //         location_json: {
-  //           _cast: {
-  //             String: {_ilike: `%"city": "${item}"%`}
-  //           },
-  //         },
-  //       })),
-  //     });
-  //   }
+  if (selectedFilters?.city?.tags?.length) {
+		if (selectedFilters?.city?.condition === "any") {
+      filters._and?.push({
+        _or: selectedFilters.city.tags.map((item) => ({
+          location_json: {
+            _cast: {
+              String: {_ilike: `%"city": "${item}"%`}
+            },
+          },
+        })),
+      });
+    }
 
-  //   if (selectedFilters?.city?.condition === "none") {
-  //     filters._and?.push({
-  //       _or: [
-  //         {
-  //           _not: {
-  //             _or: selectedFilters.city.tags.map((item) => ({
-  //               location_json: {
-  //                 _cast: {
-  //                   String: {_ilike: `%"city": "${item}"%`}
-  //                 },
-  //               },
-  //             })),
-  //           },
-  //         },
-  //         {
-  //           location_json: { _is_null: true },
-  //         },
-  //       ],
-  //     });
-  //   }
-  // }
+    if (selectedFilters?.city?.condition === "none") {
+      filters._and?.push({
+        _or: [
+          {
+            _not: {
+              _or: selectedFilters.city.tags.map((item) => ({
+                location_json: {
+                  _cast: {
+                    String: {_ilike: `%"city": "${item}"%`}
+                  },
+                },
+              })),
+            },
+          },
+          {
+            location_json: { _is_null: true },
+          },
+        ],
+      });
+    }
+  }
 
   if (selectedFilters?.keywords?.tags?.length) {
     filters._and?.push({

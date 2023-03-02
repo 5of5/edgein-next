@@ -30,9 +30,6 @@ export const getRootStyle = (formRef: any) => ({
       flexDirection: "row !important",
     },
   },
-  ".MuiFormHelperText-root": {
-    display: "none",
-  },
   ".customForm": {
     "& > form": {
       maxWidth: formRef?.current?.offsetWidth || "100%",
