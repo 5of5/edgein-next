@@ -8,6 +8,7 @@ import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemButton } from "../ElemButton";
+import { PlaceholderPerson } from "../Placeholders";
 
 type Props = {
 	isOpen: boolean;
@@ -200,10 +201,12 @@ const ElemInviteDialog: React.FC<Props> = ({
 													/>
 												</div>
 
-												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white border border-slate-200 w-full max-h-60 overflow-scroll">
-													{isLoading ? (
-														<div className="px-6 py-4 text-center text-lg font-bold">
-															Searching...
+												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
+													{isLoading && query != "" ? (
+														<div className="px-4 py-2">
+															{Array.from({ length: 3 }, (_, i) => (
+																<PlaceholderPerson key={i} />
+															))}
 														</div>
 													) : searchedPeople?.length > 0 ? (
 														searchedPeople.map((person: any) => (
@@ -231,10 +234,13 @@ const ElemInviteDialog: React.FC<Props> = ({
 															</Combobox.Option>
 														))
 													) : (
-														<div className="text-center ">
-															<div className="px-6 py-4 text-lg font-bold">
-																Not Found
-															</div>
+														<div className="text-center">
+															{query != "" && (
+																<div className="px-6 py-4 text-lg font-bold">
+																	Not Found
+																</div>
+															)}
+
 															{validator.isEmail(query) && (
 																<Combobox.Option
 																	value={{
