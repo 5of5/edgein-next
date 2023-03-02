@@ -4,7 +4,7 @@ export const withImageTransformData = (
   finalValue: any
 ) => ({
   ...data,
-  logo: imageResponse?.url || '',
+  logo: imageResponse?.file?.url || '',
   coin_id: !data.coin_id ? null : data.coin_id,
   tags: finalValue,
 });

@@ -4,7 +4,7 @@ export const withImageTransformData = (
   finalValue: any
 ) => ({
   ...data,
-  picture: imageResponse?.url || '',
+  picture: imageResponse?.file?.url || '',
 });
 
 export const withoutImageTransformData = (data: any, finalValue: any) => ({
