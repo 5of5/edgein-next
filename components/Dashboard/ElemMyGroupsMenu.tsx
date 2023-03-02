@@ -7,6 +7,7 @@ import {
 	IconPlus,
 	IconPolygonDown,
 	IconInformationCircle,
+	IconContributor,
 } from "@/components/Icons";
 import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
@@ -165,7 +166,11 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 										onClick={onOpenUpgradeDialog}
 										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
-										<IconGroupPlus className="h-6 w-6" title="Create Group" />
+										<IconContributor
+											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
+											title="Unlock groups"
+										/>
+										{/* <IconGroupPlus className="h-6 w-6" title="Create Group" /> */}
 										<span>Unlock All Your Groups</span>
 									</button>
 								</li>
