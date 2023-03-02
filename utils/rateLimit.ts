@@ -25,26 +25,59 @@ export const getRateLimitMiddlewares = ({
   delayAfter = Number(process.env.DELAY_AFTER),
   delayMs = Number(process.env.DELAYMS),
 } = {}) => {
+  let isConnected = true;
   // Create a `node-redis` client
   const client = createClient({
     url: `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   });
-  (async () => {
-    // Connect to redis server
-    await client.connect();
-  })();
+  function getRedisClient(timeoutMs: any) {
+    return new Promise((resolve, reject) => {
+      client.connect();
+      const timer = setTimeout(() => reject("timeout"), timeoutMs);
+      client.on("ready", () => {
+        clearTimeout(timer);
+        resolve(client);
+      });
+      client.on("error", (err) => {
+        clearTimeout(timer);
+        reject(err);
+      });
+    });
+  }
+  const redisReadyTimeoutMs = 10000;
+  getRedisClient(redisReadyTimeoutMs).then(
+    (redisClient) => {
+      isConnected = true;
+      // the client has connected to redis sucessfully
+    },
+    (error) => {
+      isConnected = false;
+    }
+  );
+  // using redis server when user connected to server
+  if (isConnected) {
+    return [
+      slowDown({ keyGenerator: getIP, windowMs, delayAfter, delayMs }),
+      rateLimit({
+        keyGenerator: getIP,
+        windowMs,
+        max: limit,
+        standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+        legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+        // Redis store configuration
+        store: new RedisStore({
+          sendCommand: (...args: string[]) => client.sendCommand(args),
+        }),
+      }),
+    ];
+  }
+  // just by pass using redis server when user cannot connect to redis server
   return [
     slowDown({ keyGenerator: getIP, windowMs, delayAfter, delayMs }),
     rateLimit({
       keyGenerator: getIP,
       windowMs,
       max: limit,
-      standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-      legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-      // Redis store configuration
-      store: new RedisStore({
-        sendCommand: (...args: string[]) => client.sendCommand(args),
-      }),
     }),
   ];
 };
