@@ -3,17 +3,13 @@ import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
-import { InputSelect } from "@/components/InputSelect";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemButton } from "@/components/ElemButton";
-import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
 import { Pagination } from "@/components/Pagination";
 import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
 import {
 	IconSearch,
 	IconAnnotation,
-	IconX,
-	IconFilter,
 } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
@@ -23,20 +19,19 @@ import {
 	Vc_Firms,
 } from "@/graphql/types";
 import { DeepPartial, NumericFilter } from "@/pages/companies";
-import { runGraphQl, numberWithCommas } from "@/utils";
+import { runGraphQl } from "@/utils";
 import { investorChoices } from "@/utils/constants";
-import { useAuth } from "@/hooks/useAuth";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
 import { Filters, ElemFilter } from "@/components/ElemFilter";
 import moment from "moment-timezone";
+import { processInvestorsFilters } from "@/utils/helpers";
 
 type Props = {
 	vcFirmCount: number;
 	initialVCFirms: GetVcFirmsQuery["vc_firms"];
 	investorsStatusTags: TextFilter[];
-	numberOfInvestments: NumericFilter[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -44,7 +39,6 @@ const Investors: NextPage<Props> = ({
 	vcFirmCount,
 	initialVCFirms,
 	investorsStatusTags,
-	numberOfInvestments,
 	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
@@ -57,11 +51,6 @@ const Investors: NextPage<Props> = ({
 		"statusTag",
 		(statusTag) => investorsStatusTags.indexOf(statusTag).toString(),
 		(index) => investorsStatusTags[Number(index)]
-	);
-
-	// Investments Count
-	const [selectedInvestmentCount, setSelectedInvestmentCount] = useState(
-		numberOfInvestments[0]
 	);
 
 	// Filters
@@ -123,13 +112,12 @@ const Investors: NextPage<Props> = ({
 		}
 		if (
 			initialLoad &&
-			selectedTags.length !== 0 &&
-			selectedInvestmentCount.rangeEnd !== 0
+			selectedTags.length !== 0
 		) {
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedInvestmentCount]);
+	}, [selectedTags]);
 
 	useEffect(() => {
 		onTrackView({
@@ -137,7 +125,7 @@ const Investors: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedInvestmentCount, selectedStatusTag]);
+	}, [selectedTags, selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -184,25 +172,8 @@ const Investors: NextPage<Props> = ({
 			  );
 	};
 
-	const clearTagFilters = async () => {
-		setSelectedTags([]);
-
-		toast.custom(
-			(t) => (
-				<div
-					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-						t.visible ? "animate-fade-in-up" : "opacity-0"
-					}`}
-				>
-					Tag Filters Removed
-				</div>
-			),
-			{
-				duration: 3000,
-				position: "top-center",
-			}
-		);
-	};
+	/** Handle selected filter params */
+	processInvestorsFilters(filters, selectedFilters);
 
 	if (selectedTags.length > 0) {
 		let allTags: any = [];
@@ -212,15 +183,6 @@ const Investors: NextPage<Props> = ({
 
 		filters._and?.push({
 			_and: allTags,
-		});
-	}
-
-	if (selectedInvestmentCount.rangeEnd !== 0) {
-		filters._and?.push({
-			_and: [
-				{ num_of_investments: { _gt: selectedInvestmentCount.rangeStart } },
-				{ num_of_investments: { _lte: selectedInvestmentCount.rangeEnd } },
-			],
 		});
 	}
 
@@ -303,48 +265,6 @@ const Investors: NextPage<Props> = ({
 						onReset={() => setSelectedFilters(null)}
 					/>
 
-					{/* <section className="pt-2 pb-3">
-						<div className="w-full flex flex-wrap justify-between lg:space-x-5 lg:flex-nowrap">
-							<InputSelect
-								className="md:shrink md:basis-0"
-								buttonClasses="w-auto"
-								dropdownClasses="w-60"
-								value={selectedStatusTag}
-								onChange={setSelectedStatusTag}
-								options={investorsStatusTags}
-							/>
-
-							<div className="w-full overflow-hidden grow min-w-0 order-last lg:order-none">
-								<ElemTagsCarousel
-									onClick={filterByTag}
-									selectedTags={selectedTags}
-								/>
-							</div>
-
-							<div className="self-end sm:shrink sm:basis-0 sm:self-auto">
-								<ElemButton
-									onClick={() => setToggleFilters(!toggleFilters)}
-									btn="white"
-									roundedFull={false}
-									className="rounded-md font-normal focus:ring-1 focus:ring-slate-200"
-								>
-									<IconFilter className="w-5 h-5 mr-1" />
-									Filters
-								</ElemButton>
-							</div>
-						</div>
-						{toggleFilters && (
-							<div className="mt-3 grid gap-5 grid-cols-1 lg:grid-cols-3">
-								<InputSelect
-									className="w-full"
-									value={selectedInvestmentCount}
-									onChange={setSelectedInvestmentCount}
-									options={numberOfInvestments}
-								/>
-							</div>
-						)}
-					</section> */}
-
 					{vcFirms?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
 							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
@@ -420,7 +340,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			vcFirmCount: vcFirms?.vc_firms_aggregate.aggregate?.count || 0,
 			initialVCFirms: vcFirms?.vc_firms || [],
 			investorsStatusTags,
-			numberOfInvestments: InvestmentsFilters,
 		},
 	};
 };
@@ -433,35 +352,6 @@ interface TextFilter {
 	icon?: string;
 	value: string;
 }
-
-// Total Investments Filter
-const InvestmentsFilters: NumericFilter[] = [
-	{
-		title: "Number of Investments",
-		rangeStart: 0,
-		rangeEnd: 0,
-	},
-	{
-		title: "5 or less Investments",
-		rangeStart: 0,
-		rangeEnd: 5,
-	},
-	{
-		title: "6-15 Investments",
-		rangeStart: 6,
-		rangeEnd: 15,
-	},
-	{
-		title: "16-25 Investments",
-		rangeStart: 16,
-		rangeEnd: 25,
-	},
-	{
-		title: "25+ Investments",
-		rangeStart: 25,
-		rangeEnd: 1000000000,
-	},
-];
 
 const investorFilterValue = investorChoices.map((option) => {
 	return {
