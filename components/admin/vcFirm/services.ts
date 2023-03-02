@@ -26,7 +26,7 @@ export const withImageTransformData = (
   finalValue: any
 ) => ({
   ...data,
-  logo: imageResponse.file,
+  logo: imageResponse?.url || '',
   tags: finalValue,
 });
 
