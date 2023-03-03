@@ -141,43 +141,50 @@ const Companies: NextPage<Props> = ({
 	) => {
 		event.stopPropagation();
 		event.preventDefault();
+		const newFilterOption = [...(selectedFilters?.industry?.tags || [])];
+		setSelectedFilters({ ...selectedFilters, industry: {
+			...selectedFilters?.industry,
+			tags: newFilterOption.includes(tag)
+			? newFilterOption.filter((t) => t !== tag)
+			: [tag, ...newFilterOption],
+		}, });
 
-		const newTags = selectedTags.includes(tag)
-			? selectedTags.filter((t) => t !== tag)
-			: [tag, ...selectedTags];
-		setSelectedTags(newTags);
+		// const newTags = selectedTags.includes(tag)
+		// 	? selectedTags.filter((t) => t !== tag)
+		// 	: [tag, ...selectedTags];
+		// setSelectedTags(newTags);
 
-		selectedTags.includes(tag)
-			? toast.custom(
-					(t) => (
-						<div
-							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-								t.visible ? "animate-fade-in-up" : "opacity-0"
-							}`}
-						>
-							Removed &ldquo;{tag}&rdquo; Filter
-						</div>
-					),
-					{
-						duration: 3000,
-						position: "top-center",
-					}
-			  )
-			: toast.custom(
-					(t) => (
-						<div
-							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-								t.visible ? "animate-fade-in-up" : "opacity-0"
-							}`}
-						>
-							Added &ldquo;{tag}&rdquo; Filter
-						</div>
-					),
-					{
-						duration: 3000,
-						position: "top-center",
-					}
-			  );
+		// selectedTags.includes(tag)
+		// 	? toast.custom(
+		// 			(t) => (
+		// 				<div
+		// 					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+		// 						t.visible ? "animate-fade-in-up" : "opacity-0"
+		// 					}`}
+		// 				>
+		// 					Removed &ldquo;{tag}&rdquo; Filter
+		// 				</div>
+		// 			),
+		// 			{
+		// 				duration: 3000,
+		// 				position: "top-center",
+		// 			}
+		// 	  )
+		// 	: toast.custom(
+		// 			(t) => (
+		// 				<div
+		// 					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+		// 						t.visible ? "animate-fade-in-up" : "opacity-0"
+		// 					}`}
+		// 				>
+		// 					Added &ldquo;{tag}&rdquo; Filter
+		// 				</div>
+		// 			),
+		// 			{
+		// 				duration: 3000,
+		// 				position: "top-center",
+		// 			}
+		// 	  );
 	};
 
 	/** Handle selected filter params */
@@ -189,16 +196,16 @@ const Companies: NextPage<Props> = ({
 		});
 	}
 
-	if (selectedTags.length > 0) {
-		let allTags: any = [];
-		selectedTags.map((tag) => {
-			allTags.push({ tags: { _contains: tag } });
-		});
+	// if (selectedTags.length > 0) {
+	// 	let allTags: any = [];
+	// 	selectedTags.map((tag) => {
+	// 		allTags.push({ tags: { _contains: tag } });
+	// 	});
 
-		filters._and?.push({
-			_and: allTags,
-		});
-	}
+	// 	filters._and?.push({
+	// 		_and: allTags,
+	// 	});
+	// }
 
 	const {
 		data: companiesData,

@@ -67,16 +67,16 @@ const Investors: NextPage<Props> = ({
 		(filterString) => {
 			if (filterString) {
 				const filterJson: Filters = JSON.parse(filterString);
-				if (filterJson?.lastFundingDate?.fromDate) {
-					filterJson.lastFundingDate.fromDate = moment(
-						filterJson.lastFundingDate.fromDate
+				if (filterJson?.lastInvestmentDate?.fromDate) {
+					filterJson.lastInvestmentDate.fromDate = moment(
+						filterJson.lastInvestmentDate.fromDate
 					)
 						.format()
 						.split("T")[0];
 				}
-				if (filterJson?.lastFundingDate?.toDate) {
-					filterJson.lastFundingDate.toDate = moment(
-						filterJson.lastFundingDate.toDate
+				if (filterJson?.lastInvestmentDate?.toDate) {
+					filterJson.lastInvestmentDate.toDate = moment(
+						filterJson.lastInvestmentDate.toDate
 					)
 						.format()
 						.split("T")[0];
