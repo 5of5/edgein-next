@@ -32,6 +32,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     WHERE vc_firm_id = vc.id
     GROUP BY vc_firm_id)`, []);
 
+  await client.query(`UPDATE vc_firms vc SET investment_amount_total = (SELECT SUM(investment_rounds.amount)
+    FROM investments
+    INNER JOIN investment_rounds
+      ON investments.round_id = investment_rounds.id
+    WHERE
+      investments.vc_firm_id = vc.id)`, []);
+
+  await client.query(`UPDATE vc_firms vc SET team_size = (SELECT count(*)
+    FROM investors
+    WHERE
+    investors.vc_firm_id = vc.id)`, []);
+
   res.send({ success: true });
 }
 

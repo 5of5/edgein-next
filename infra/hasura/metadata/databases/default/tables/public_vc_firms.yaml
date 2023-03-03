@@ -71,6 +71,7 @@ select_permissions:
       columns:
         - created_at
         - id
+        - investment_amount_total
         - latest_investment
         - linkedin
         - location
@@ -83,6 +84,7 @@ select_permissions:
         - slug
         - status_tags
         - tags
+        - team_size
         - twitter
         - updated_at
         - website
@@ -107,6 +109,7 @@ select_permissions:
       columns:
         - created_at
         - id
+        - investment_amount_total
         - latest_investment
         - linkedin
         - location
@@ -119,6 +122,7 @@ select_permissions:
         - slug
         - status_tags
         - tags
+        - team_size
         - twitter
         - updated_at
         - website
