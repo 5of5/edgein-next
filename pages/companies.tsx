@@ -148,7 +148,7 @@ const Companies: NextPage<Props> = ({
 			}, });
 		}
 
-		newFilterOption.includes(tag)
+		currentFilterOption.includes(tag)
 			? toast.custom(
 					(t) => (
 						<div
