@@ -96,13 +96,6 @@ const Investors: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useStateParams<string[]>(
-		[],
-		"tags",
-		(tagArr) => tagArr.join(","),
-		(tag) => tag.split(",")
-	);
-
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" } }],
 	};
@@ -112,13 +105,12 @@ const Investors: NextPage<Props> = ({
 			setPage(0);
 		}
 		if (
-			initialLoad &&
-			selectedTags.length !== 0
+			initialLoad
 		) {
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags]);
+	}, []);
 
 	useEffect(() => {
 		onTrackView({
@@ -126,7 +118,7 @@ const Investors: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedStatusTag]);
+	}, [selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -135,12 +127,21 @@ const Investors: NextPage<Props> = ({
 		event.stopPropagation();
 		event.preventDefault();
 
-		const newTags = selectedTags.includes(tag)
-			? selectedTags.filter((t) => t !== tag)
-			: [tag, ...selectedTags];
-		setSelectedTags(newTags);
+		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(tag)
+		? currentFilterOption.filter((t) => t !== tag)
+		: [tag, ...currentFilterOption]
 
-		selectedTags.includes(tag)
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, industry: undefined });
+		} else {
+			setSelectedFilters({ ...selectedFilters, industry: {
+				...selectedFilters?.industry,
+				tags: newFilterOption,
+			}, });
+		}
+
+		newFilterOption.includes(tag)
 			? toast.custom(
 					(t) => (
 						<div
@@ -175,17 +176,6 @@ const Investors: NextPage<Props> = ({
 
 	/** Handle selected filter params */
 	processInvestorsFilters(filters, selectedFilters);
-
-	if (selectedTags.length > 0) {
-		let allTags: any = [];
-		selectedTags.map((tag) => {
-			allTags.push({ tags: { _contains: tag } });
-		});
-
-		filters._and?.push({
-			_and: allTags,
-		});
-	}
 
 	if (selectedStatusTag.value) {
 		filters._and?.push({
@@ -254,7 +244,7 @@ const Investors: NextPage<Props> = ({
 
 					<ElemFilter
 						resourceType="vc_firms"
-						defaultFilters={selectedFilters}
+						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
 							filters._and = [{ slug: { _neq: "" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });

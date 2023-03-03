@@ -105,13 +105,6 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useStateParams<string[]>(
-		[],
-		"tags",
-		(tagArr) => tagArr.join(","),
-		(tag) => tag.split(",")
-	);
-
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" } }],
 	};
@@ -122,7 +115,6 @@ const Companies: NextPage<Props> = ({
 		}
 		if (
 			initialLoad &&
-			selectedTags.length !== 0 &&
 			selectedStatusTag.value !== ""
 		) {
 			setInitialLoad(false);
@@ -133,7 +125,7 @@ const Companies: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedStatusTag]);
+	}, [selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -141,50 +133,52 @@ const Companies: NextPage<Props> = ({
 	) => {
 		event.stopPropagation();
 		event.preventDefault();
-		const newFilterOption = [...(selectedFilters?.industry?.tags || [])];
-		setSelectedFilters({ ...selectedFilters, industry: {
-			...selectedFilters?.industry,
-			tags: newFilterOption.includes(tag)
-			? newFilterOption.filter((t) => t !== tag)
-			: [tag, ...newFilterOption],
-		}, });
 
-		// const newTags = selectedTags.includes(tag)
-		// 	? selectedTags.filter((t) => t !== tag)
-		// 	: [tag, ...selectedTags];
-		// setSelectedTags(newTags);
+		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(tag)
+		? currentFilterOption.filter((t) => t !== tag)
+		: [tag, ...currentFilterOption]
 
-		// selectedTags.includes(tag)
-		// 	? toast.custom(
-		// 			(t) => (
-		// 				<div
-		// 					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-		// 						t.visible ? "animate-fade-in-up" : "opacity-0"
-		// 					}`}
-		// 				>
-		// 					Removed &ldquo;{tag}&rdquo; Filter
-		// 				</div>
-		// 			),
-		// 			{
-		// 				duration: 3000,
-		// 				position: "top-center",
-		// 			}
-		// 	  )
-		// 	: toast.custom(
-		// 			(t) => (
-		// 				<div
-		// 					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-		// 						t.visible ? "animate-fade-in-up" : "opacity-0"
-		// 					}`}
-		// 				>
-		// 					Added &ldquo;{tag}&rdquo; Filter
-		// 				</div>
-		// 			),
-		// 			{
-		// 				duration: 3000,
-		// 				position: "top-center",
-		// 			}
-		// 	  );
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, industry: undefined });
+		} else {
+			setSelectedFilters({ ...selectedFilters, industry: {
+				...selectedFilters?.industry,
+				tags: newFilterOption,
+			}, });
+		}
+
+		newFilterOption.includes(tag)
+			? toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Removed &ldquo;{tag}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  )
+			: toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Added &ldquo;{tag}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  );
 	};
 
 	/** Handle selected filter params */
@@ -195,17 +189,6 @@ const Companies: NextPage<Props> = ({
 			status_tags: { _contains: selectedStatusTag.value },
 		});
 	}
-
-	// if (selectedTags.length > 0) {
-	// 	let allTags: any = [];
-	// 	selectedTags.map((tag) => {
-	// 		allTags.push({ tags: { _contains: tag } });
-	// 	});
-
-	// 	filters._and?.push({
-	// 		_and: allTags,
-	// 	});
-	// }
 
 	const {
 		data: companiesData,
@@ -268,7 +251,7 @@ const Companies: NextPage<Props> = ({
 
 					<ElemFilter
 						resourceType="companies"
-						defaultFilters={selectedFilters}
+						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
 							filters._and = [{ slug: { _neq: "" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });

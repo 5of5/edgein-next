@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { omit, cloneDeep } from "lodash";
 import moment from "moment-timezone";
 import { convertToInternationalCurrencySystem } from "@/utils";
@@ -14,7 +14,7 @@ import { ElemAddFilter } from "./ElemAddFilter";
 
 type Props = {
   resourceType: "companies" | "vc_firms";
-  defaultFilters: Filters | null;
+  filterValues: Filters | null;
   onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
   onClearOption: (name: FilterOptionKeys) => void;
   onReset: () => void;
@@ -22,14 +22,18 @@ type Props = {
 
 export const ElemFilter: FC<Props> = ({
   resourceType,
-  defaultFilters,
+  filterValues,
   onApply,
   onClearOption,
   onReset,
 }) => {
   const [openAddFilter, setOpenAddFilter] = useState<boolean>(false);
 
-  const [filters, setFilters] = useState<Filters | null>(defaultFilters);
+  const [filters, setFilters] = useState<Filters | null>(filterValues);
+
+	useEffect(() => {
+		setFilters(filterValues);
+	}, [filterValues])
 
   const onSelectFilterOption = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenAddFilter(false);
@@ -272,6 +276,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
+									key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={`${optionMetadata.title} (${
@@ -319,6 +324,7 @@ export const ElemFilter: FC<Props> = ({
             if (option === "keywords") {
               return (
                 <ElemFilterPopup
+									key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={`${optionMetadata.title} (${
@@ -351,6 +357,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
+									key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={`${optionMetadata.title} (${
@@ -397,6 +404,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
+									key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={optionMetadata.title || ""}
@@ -459,6 +467,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
+									key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={optionMetadata.title || ""}
@@ -535,6 +544,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
+									key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={optionMetadata.title || ""}
