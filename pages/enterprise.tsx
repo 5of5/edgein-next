@@ -1,0 +1,131 @@
+import type { NextPage } from "next";
+import React from "react";
+import { ElemButton } from "@/components/ElemButton";
+import { FigureBlurredCircle } from "@/components/Figures";
+import { FigureDash } from "@/components/Figures";
+import Image from "next/image";
+import { Transition } from "@headlessui/react";
+import { useUser } from "@/context/userContext";
+import { Popups } from "@/components/TheNavbar";
+
+import Builders from "@/public/images/builders.svg";
+import People from "@/public/images/people.svg";
+
+type Props = {
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
+};
+
+const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
+	const { user } = useUser();
+
+	return (
+		<>
+			<div className="relative -mb-24 overflow-hidden">
+				<figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
+					<Image
+						src="/images/bg-blur-shapes.png"
+						alt="Blur"
+						width={620}
+						height={1000}
+						priority
+					/>
+				</figure>
+				<FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
+
+				<section className="pt-16 -mb-20 px-4 sm:px-6 lg:px-8">
+					<div className="max-w-5xl mx-auto">
+						<h1 className="text-4xl font-bold text-center px-12 sm:text-5xl">
+							The exclusive Web3 platform for market intelligence.
+						</h1>
+						<div className="max-w-2xl mx-auto relative mt-8 -z-10">
+							<Transition
+								appear={true}
+								show={true}
+								enter="transition ease-in-out duration-1000 delay-700"
+								enterFrom="opacity-0 translate-y-10"
+								enterTo="opacity-100 translate-y-0"
+							>
+								<div className="aspect-video w-full min-h-[1px] rounded-2xl bg-gradient-to-tr from-gray-50/80 to-gray-50/20 border border-slate-200 opacity-100 backdrop-blur-3xl">
+									<FigureDash className="mx-3 my-1 aspect-video max-w-full" />
+								</div>
+							</Transition>
+						</div>
+					</div>
+				</section>
+
+				<section className="bg-white border-y border-slate-200">
+					<div className="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+						<div className="block md:w-full md:grid md:grid-cols-2 md:gap-10">
+							<div className="flex items-start space-x-4">
+								<img src={Builders} alt="Builders" className="shrink-0 w-12" />
+								<div>
+									<h3 className="text-2xl font-bold">
+										Reach 1,000s of builders in Web3 every day.
+									</h3>
+
+									<ul className="mt-4 ml-4 text-slate-600 text-lg list-disc">
+										<li>
+											Largest database of web3 companies, from alpha to large
+											brands
+										</li>
+										<li>Connect with founders, investors and team members</li>
+										<li>Filter by location, projects, and industry tags.</li>
+									</ul>
+								</div>
+							</div>
+							<div className="flex items-start space-x-4 mt-12 sm:mt-0">
+								<img src={People} alt="Builders" className="shrink-0 w-12" />
+								<div>
+									<h3 className="text-2xl font-bold">
+										Get curated leads to connect with the right people faster
+										and easier.
+									</h3>
+									<ul className="mt-4 ml-4 text-slate-600 text-lg list-disc">
+										<li>Emails of team members from 43,000+ companies</li>
+										<li>Social data for 30,000 people</li>
+										<li>Highly engaged Web3 community members.</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div className="mt-16 p-16 rounded-lg bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE]">
+							<div className="max-w-2xl mx-auto">
+								<h3 className=" text-3xl font-bold text-white">
+									Ecosystem plans discounts available for first 15 early
+									partners, until April 15th:
+								</h3>
+								<p className="text-xl text-gray-100">
+									$4,995, Now $995 for 1 year.
+								</p>
+								<p className="mt-6 text-xl text-gray-100">
+									*1,000 leads based on initial request
+								</p>
+								<p className="text-xl text-gray-100">
+									*100 $15 Contributor accounts 6 months
+								</p>
+								<p className="text-xl text-gray-100">
+									*100 $5 Collaborator accounts 12 months.
+								</p>
+								<p className="mt-6 text-xl text-gray-100">
+									Price will increase month on month starting April 1, starting
+									at $999/year.
+								</p>
+								<ElemButton
+									href="/"
+									arrow
+									size="lg"
+									className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
+								>
+									Action
+								</ElemButton>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</>
+	);
+};
+
+export default Enterprise;
