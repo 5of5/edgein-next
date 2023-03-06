@@ -2,7 +2,7 @@ import { useEffect, useState, Fragment } from "react";
 import { ElemButton } from "@/components/ElemButton";
 import { InputText } from "@/components/InputText";
 import { ElemLogo } from "./ElemLogo";
-import { IconLinkedIn } from "./Icons";
+import { IconLinkedIn, IconExclamationTriangle } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 const validator = require("validator");
@@ -57,11 +57,16 @@ export default function LoginModal(props: Props) {
 		}
 	};
 
-	const onLogin = async () => {
+	const onLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		event.stopPropagation();
+		setIsLoading(true);
+
 		validateEmail(email);
 		validatePassword(password);
 
 		if (emailError || passwordError || !email || !password) {
+			setIsLoading(false);
 			return;
 		}
 
@@ -87,7 +92,8 @@ export default function LoginModal(props: Props) {
 					if (res.nextStep && res.nextStep === "SIGNUP") {
 						onSignUp(email, password);
 					} else {
-						setUnsuccessMessage(res.message);
+						setIsLoading(false);
+						setUnsuccessMessage("Incorrect email or password."); //res.message
 					}
 				} catch (err) {
 					setIsLoading(false);
@@ -143,51 +149,44 @@ export default function LoginModal(props: Props) {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
+							<Dialog.Panel className="max-w-lg w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide lg:p-12">
 								<div className="max-w-xs mx-auto w-full">
-									{unsuccessMessage ? (
-										<>
-											{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-											<p className="mt-2 text-slate-600 text-center">
-												{unsuccessMessage}
-											</p>
-										</>
-									) : (
-										<>
-											<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-												<ElemLogo mode="icon" className="w-10 aspect-square" />
-											</div>
-											<h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-												Log In
-											</h1>
-											<ElemButton
-												roundedFull={false}
-												onClick={onLinkedInClick}
-												btn="transparent"
-												className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] ring-1 ring-inset ring-black/10 hover:ring-2 hover:ring-[#0077B5] hover:text-[#0077B5] hover:bg-slate-50"
-											>
-												<IconLinkedIn
-													title="LinkedIn"
-													className="h-6 w-6 text-[#0077B5]"
-												/>
-												Login with LinkedIn
-											</ElemButton>
+									<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
+										<ElemLogo mode="icon" className="w-10 aspect-square" />
+									</div>
+									<h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
+										Login
+									</h1>
+									<ElemButton
+										roundedFull={false}
+										onClick={onLinkedInClick}
+										btn="transparent"
+										className="w-full mt-5 gap-x-2 text-center rounded-full text-[#0077B5] bg-white ring-1 ring-slate-200 hover:bg-slate-200 hover:!text-[#0077B5]"
+									>
+										<IconLinkedIn
+											title="LinkedIn"
+											className="h-6 w-6 text-[#0077B5]"
+										/>
+										Login with LinkedIn
+									</ElemButton>
 
-											<div className="flex py-3 items-center">
-												<div className="flex-grow border-t border-black/10"></div>
-												<span className="flex-shrink mx-4 font-bold">or</span>
-												<div className="flex-grow border-t border-black/10"></div>
-											</div>
+									<div className="flex py-3 items-center">
+										<div className="flex-grow border-t border-black/10"></div>
+										<span className="flex-shrink mx-4 font-bold">or</span>
+										<div className="flex-grow border-t border-black/10"></div>
+									</div>
 
-											<div className="flex flex-col space-y-2">
+									<div>
+										<form onSubmit={onLogin}>
+											<div className="flex flex-col space-y-4">
 												<label>
+													<span className="text-sm font-medium">Email</span>
 													<InputText
 														name="email"
 														type="email"
 														value={email}
 														disabled={isLoading}
 														onChange={(event) => setEmail(event?.target.value)}
-														placeholder="Email"
 														className={`${
 															emailError === ""
 																? "ring-1 ring-slate-200"
@@ -201,6 +200,17 @@ export default function LoginModal(props: Props) {
 													)}
 												</label>
 												<label>
+													<span className="text-sm font-medium">
+														<div className="flex justify-between">
+															<span>Password</span>
+															<span
+																onClick={onForgotPassword}
+																className="text-primary-500 cursor-pointer hover:underline"
+															>
+																Forgot your password?
+															</span>
+														</div>
+													</span>
 													<InputText
 														name="password"
 														type="password"
@@ -209,7 +219,6 @@ export default function LoginModal(props: Props) {
 														onChange={(event) =>
 															setPassword(event?.target.value)
 														}
-														placeholder="Password"
 														className={`${
 															passwordError === ""
 																? "ring-1 ring-slate-200"
@@ -222,38 +231,50 @@ export default function LoginModal(props: Props) {
 														</div>
 													)}
 												</label>
-												<button
-													onClick={onForgotPassword}
-													className="w-full text-right text-sm underline text-slate-600 hover:text-primary-500"
-												>
-													Forgot Password?
-												</button>
 
-												<div>
-													<ElemButton
-														className="w-full my-2"
-														onClick={onLogin}
-														btn="primary"
-														loading={isLoading}
+												{unsuccessMessage && (
+													<p className="mt-1 flex items-center font-bold text-sm text-red-500">
+														<IconExclamationTriangle className="h-5 w-5 mr-1" />
+														{unsuccessMessage}
+													</p>
+												)}
+												{/* <button
+														onClick={onForgotPassword}
+														type="button"
+														className="w-full text-right text-sm underline text-slate-600 hover:text-primary-500"
 													>
-														Login
-													</ElemButton>
-												</div>
-
-												<div>
-													<div className="w-full mt-4 text-sm text-center text-slate-600">
-														Don&rsquo;t have an account?
+														Forgot your password?
+													</button> */}
+												{/* 
 														<button
-															onClick={() => onSignUp("", "")}
-															className="inline underline ml-0.5 text-dark-500 hover:text-primary-500"
+															//onClick={onLogin}
+															type="submit"
+															className="inline-flex items-center font-bold focus:outline-none focus:ring-0 text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-80 my-2 px-4 py-1.5 rounded-full justify-center w-full"
 														>
-															Sign up
-														</button>
-													</div>
-												</div>
+															Login
+														</button> */}
+												<ElemButton
+													className="w-full mt-10"
+													btn="primary"
+													loading={isLoading}
+												>
+													Login
+												</ElemButton>
 											</div>
-										</>
-									)}
+										</form>
+
+										<div>
+											<div className="w-full mt-6 text-sm text-center text-slate-600">
+												Don&rsquo;t have an account?
+												<button
+													onClick={() => onSignUp("", "")}
+													className="inline ml-0.5 text-primary-500 hover:underline"
+												>
+													Sign up
+												</button>
+											</div>
+										</div>
+									</div>
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>

@@ -8,12 +8,14 @@ const TOKEN_NAME = "api_token"
 const USAGE_NAME = "e_token";
 const MAX_AGE = 60 * 60 * 24 * 90 // 90 days
 const USAGE_AGE = 60 * 60 * 24 // 1 days
-const hasuraClaims = {
+const hasuraClaims = (userId: string) => ({
   "https://hasura.io/jwt/claims": {
     "x-hasura-allowed-roles": ["user", "viewer"],
     "x-hasura-default-role": "viewer",
+    "x-hasura-user-id": userId,
+    "x-hasura-role": "viewer",
   }
-}
+})
 const hasuraAnnonClaims = {
   "https://hasura.io/jwt/claims": {
     "x-hasura-allowed-roles": ["annoy_user", "viewer"],
@@ -116,7 +118,7 @@ async function getUsage(token: string) {
 }
 
 async function createUserToken(userData: UserToken) {
-  return new SignJWT({ user: JSON.stringify(userData), ...hasuraClaims })
+  return new SignJWT({ user: JSON.stringify(userData), ...hasuraClaims(userData.id.toString()) })
       .setProtectedHeader({ alg: 'HS256' })
       .setJti(nanoid())
       .setIssuedAt()

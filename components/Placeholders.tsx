@@ -42,6 +42,17 @@ export const PlaceholderNote: React.FC = () => {
 	);
 };
 
+export const PlaceholderPerson: React.FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast bg-white rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 w-full py-2">
+				<div className="aspect-square rounded-full bg-slate-200 w-10 h-10 shrink-0"></div>
+				<div className="ml-2 h-3 bg-slate-200 rounded-full w-2/3"></div>
+			</div>
+		</div>
+	);
+};
+
 export const PlaceholderActivity: React.FC = () => {
 	return (
 		<div className="flex flex-col animate-pulse-fast p-1 mb-6 bg-white rounded-lg md:h-full">
