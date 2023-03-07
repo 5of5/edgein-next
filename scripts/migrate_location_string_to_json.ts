@@ -29,7 +29,7 @@ const onMigrateLocationJson = async (resourceType: string) => {
           )}`,
           {
             headers: {
-              Authorization: process.env.RADAR_API_KEY,
+              Authorization: process.env.RADAR_API_KEY ?? "",
             },
           }
         );
