@@ -671,7 +671,7 @@ export const tags = [
 	"Marketplace",
 	"Exchange",
 	"Gaming",
-	"Defi",
+	"DeFi",
 	"Blockchain",
 	"Crypto",
 	"NFT",
@@ -691,7 +691,7 @@ export const tags = [
 	"Event",
 	"Cybersecurity",
 	"Solana",
-	"Polkadot"
+	"Polkadot",
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
@@ -725,60 +725,61 @@ export const eventPersonTypeChoices = [
 export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
 
 export type ResourceTypes =
-  | "companies"
-  | "vc_firms"
-  | "people"
-  | "blockchains"
-  | "coins"
-  | "investment_rounds"
-  | "investments"
-  | "team_members"
-  | "investors"
-  | "events"
-  | "event_person"
-  | "event_organization"
-  | "resource_links"
-  | "news"
-	| "news_organizations"
-;
+	| "companies"
+	| "vc_firms"
+	| "people"
+	| "blockchains"
+	| "coins"
+	| "investment_rounds"
+	| "investments"
+	| "team_members"
+	| "investors"
+	| "events"
+	| "event_person"
+	| "event_organization"
+	| "resource_links"
+	| "news"
+	| "news_organizations";
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
-  companies: "company",
-  vc_firms: "vc_firm",
-  people: "people",
-  blockchains: "blockchain",
-  coins: "coin",
-  investment_rounds: "investment_round",
-  investments: "investment",
-  team_members: "team_member",
-  investors: "investor",
-  events: "event",
-  event_person: "event_person",
-  event_organization: "event_organization",
-  resource_links: "resource_link",
-  news: "news",
-	news_organizations: "news_organization"
+	companies: "company",
+	vc_firms: "vc_firm",
+	people: "people",
+	blockchains: "blockchain",
+	coins: "coin",
+	investment_rounds: "investment_round",
+	investments: "investment",
+	team_members: "team_member",
+	investors: "investor",
+	events: "event",
+	event_person: "event_person",
+	event_organization: "event_organization",
+	resource_links: "resource_link",
+	news: "news",
+	news_organizations: "news_organization",
 };
 
-export const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
-  return [
-    "companies",
-    "vc_firms",
-    "people",
-    "blockchains",
-    "coins",
-    "investment_rounds",
-    "investments",
-    "team_members",
-    "investors",
-    "events",
-    "event_person",
-    "event_organization",
-    "resource_links",
-    "news",
-		"news_organizations"
-  ].includes(resourceType);
-}
+export const isResourceType = (
+	resourceType: string
+): resourceType is ResourceTypes => {
+	return [
+		"companies",
+		"vc_firms",
+		"people",
+		"blockchains",
+		"coins",
+		"investment_rounds",
+		"investments",
+		"team_members",
+		"investors",
+		"events",
+		"event_person",
+		"event_organization",
+		"resource_links",
+		"news",
+		"news_organizations",
+	].includes(resourceType);
+};
 
 export const DATADOME_TAGS = "https://js.datadome.co/tags.js";
 
@@ -864,17 +865,14 @@ export const investorsFilterOptions = [
 			{
 				label: "Add country",
 				value: "country",
-				isPremium: true,
 			},
 			{
 				label: "Add state",
 				value: "state",
-				isPremium: true,
 			},
 			{
 				label: "Add city",
 				value: "city",
-				isPremium: true,
 			},
 		],
 	},
@@ -884,7 +882,6 @@ export const investorsFilterOptions = [
 			{
 				label: "Add keywords",
 				value: "keywords",
-				isPremium: true,
 			},
 		],
 	},
@@ -908,6 +905,7 @@ export const investorsFilterOptions = [
 			{
 				label: "Investment amount total",
 				value: "investmentAmountTotal",
+				isPremium: true,
 			},
 			{
 				label: "Number of investments",
@@ -937,6 +935,7 @@ export const investorsFilterOptions = [
 			{
 				label: "Team size",
 				value: "teamSize",
+				isPremium: true,
 			},
 		],
 	},

@@ -7,10 +7,7 @@ import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestme
 import { ElemButton } from "@/components/ElemButton";
 import { Pagination } from "@/components/Pagination";
 import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
-import {
-	IconSearch,
-	IconAnnotation,
-} from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -28,6 +25,7 @@ import { ElemFilter } from "@/components/ElemFilter";
 import { Filters } from "@/models/Filter";
 import moment from "moment-timezone";
 import { processInvestorsFilters } from "@/utils/filter";
+import { useIntercom } from "react-use-intercom";
 
 type Props = {
 	vcFirmCount: number;
@@ -104,9 +102,7 @@ const Investors: NextPage<Props> = ({
 		if (!initialLoad) {
 			setPage(0);
 		}
-		if (
-			initialLoad
-		) {
+		if (initialLoad) {
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,16 +125,19 @@ const Investors: NextPage<Props> = ({
 
 		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
 		const newFilterOption = currentFilterOption.includes(tag)
-		? currentFilterOption.filter((t) => t !== tag)
-		: [tag, ...currentFilterOption]
+			? currentFilterOption.filter((t) => t !== tag)
+			: [tag, ...currentFilterOption];
 
 		if (newFilterOption.length === 0) {
 			setSelectedFilters({ ...selectedFilters, industry: undefined });
 		} else {
-			setSelectedFilters({ ...selectedFilters, industry: {
-				...selectedFilters?.industry,
-				tags: newFilterOption,
-			}, });
+			setSelectedFilters({
+				...selectedFilters,
+				industry: {
+					...selectedFilters?.industry,
+					tags: newFilterOption,
+				},
+			});
 		}
 
 		currentFilterOption.includes(tag)
@@ -202,6 +201,8 @@ const Investors: NextPage<Props> = ({
 		? vcFirmCount
 		: vcFirmsData?.vc_firms_aggregate?.aggregate?.count || 0;
 
+	const { showNewMessages } = useIntercom();
+
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
@@ -214,9 +215,9 @@ const Investors: NextPage<Props> = ({
 			</div>
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-				<h2 className="text-xl font-bold">Investors</h2>
+					<h2 className="text-xl font-bold">Investors</h2>
 
-				<div
+					<div
 						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
 						role="tablist"
 					>
@@ -279,7 +280,27 @@ const Investors: NextPage<Props> = ({
 
 					<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 						{error ? (
-							<h4>Error loading investors</h4>
+							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+								<div className="max-w-xl mx-auto">
+									<h4 className="mt-5 text-3xl font-bold">
+										Error loading investors
+									</h4>
+									<div className="mt-1 text-lg text-slate-600">
+										Please check spelling, reset filters, or{" "}
+										<button
+											onClick={() =>
+												showNewMessages(
+													`Hi EdgeIn, I'd like to report an error on investors page`
+												)
+											}
+											className="inline underline decoration-primary-500 hover:text-primary-500"
+										>
+											<span>report error</span>
+										</button>
+										.
+									</div>
+								</div>
+							</div>
 						) : isLoading && !initialLoad ? (
 							<>
 								{Array.from({ length: 15 }, (_, i) => (

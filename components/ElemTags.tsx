@@ -26,7 +26,11 @@ export const ElemTags: React.FC<Props> = ({
 							key={index}
 							className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all cursor-pointer hover:bg-slate-300"
 						>
-							<a href={`/${resourceType}/?tags=${tag}`}>{tag}</a>
+							<a
+								href={`/${resourceType}/?filters={"industry":{"tags":["${tag}"]}}`}
+							>
+								{tag}
+							</a>
 						</li>
 					);
 				})}
