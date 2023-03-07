@@ -18872,6 +18872,15 @@ export type GetRelevantCompaniesQueryVariables = Exact<{
 
 export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, logo: any | null, name: string | null, slug: string, sentiment: any | null }> };
 
+export type GetEventsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  where: Events_Bool_Exp;
+}>;
+
+
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, notes: string | null, location: any | null, link: string | null, size: string | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
@@ -19333,6 +19342,50 @@ useGetRelevantCompaniesQuery.getKey = (variables: GetRelevantCompaniesQueryVaria
 ;
 
 useGetRelevantCompaniesQuery.fetcher = (variables: GetRelevantCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables, options);
+export const GetEventsDocument = `
+    query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
+  events(
+    where: $where
+    order_by: {start_date: desc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    notes
+    location
+    link
+    size
+    start_date
+    end_date
+    created_at
+  }
+  events_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetEventsQuery = <
+      TData = GetEventsQuery,
+      TError = Error
+    >(
+      variables: GetEventsQueryVariables,
+      options?: UseQueryOptions<GetEventsQuery, TError, TData>
+    ) =>
+    useQuery<GetEventsQuery, TError, TData>(
+      ['GetEvents', variables],
+      fetcher<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, variables),
+      options
+    );
+useGetEventsQuery.document = GetEventsDocument;
+
+
+useGetEventsQuery.getKey = (variables: GetEventsQueryVariables) => ['GetEvents', variables];
+;
+
+useGetEventsQuery.fetcher = (variables: GetEventsQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {
