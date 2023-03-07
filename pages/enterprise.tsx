@@ -7,7 +7,6 @@ import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import { Popups } from "@/components/TheNavbar";
-import { loadStripe } from "@/utils/stripe";
 import Builders from "@/public/images/builders.svg";
 import People from "@/public/images/people.svg";
 
@@ -66,9 +65,9 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 									<ul className="mt-4 ml-4 text-slate-600 text-lg list-disc">
 										<li>
 											Largest database of web3 companies, from alpha to large
-											brands
+											brands.
 										</li>
-										<li>Connect with founders, investors and team members</li>
+										<li>Connect with founders, investors and team members.</li>
 										<li>Filter by location, projects, and industry tags.</li>
 									</ul>
 								</div>
@@ -81,8 +80,8 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 										and easier.
 									</h3>
 									<ul className="mt-4 ml-4 text-slate-600 text-lg list-disc">
-										<li>Emails of team members from 43,000+ companies</li>
-										<li>Social data for 30,000 people</li>
+										<li>Emails of team members from 43,000+ companies.</li>
+										<li>Social data for 30,000 people.</li>
 										<li>Highly engaged Web3 community members.</li>
 									</ul>
 								</div>
