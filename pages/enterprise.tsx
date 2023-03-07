@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import { Popups } from "@/components/TheNavbar";
-
+import { loadStripe } from "@/utils/stripe";
 import Builders from "@/public/images/builders.svg";
 import People from "@/public/images/people.svg";
 
@@ -105,19 +105,20 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 									*100 $15 Contributor accounts 6 months
 								</p>
 								<p className="text-xl text-gray-100">
-									*100 $5 Collaborator accounts 12 months.
+									*100 $5 Collaborator accounts 12 months
 								</p>
 								<p className="mt-6 text-xl text-gray-100">
-									Price will increase month on month starting April 1, starting
-									at $999/year.
+									Prices will increase month on month starting April 1st.
+									Starting at $999/year with a limit of 15 per level.
 								</p>
 								<ElemButton
-									href="/"
+									href="https://buy.stripe.com/00gdTG7pWfjM0jSfZ2"
+									target="_blank"
 									arrow
 									size="lg"
 									className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
 								>
-									Action
+									Get started now
 								</ElemButton>
 							</div>
 						</div>
