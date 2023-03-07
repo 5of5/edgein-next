@@ -185,6 +185,17 @@ export const processCompaniesFilters = (
     }
   }
 
+  if (selectedFilters?.address?.value) {
+    filters._and?.push({
+      geopoint: {
+        _st_d_within: {
+          distance: 20 * 1609.344, // miles to meters
+          from: selectedFilters.address.value?.geometry
+        }
+      }
+    })
+  }
+
   if (selectedFilters?.keywords?.tags?.length) {
     filters._and?.push({
       _or: selectedFilters.keywords.tags.map((item) => ({

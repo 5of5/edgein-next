@@ -10,11 +10,13 @@ import { ElemMultiRangeSlider } from "../ElemMultiRangeSlider";
 import { InputDate } from "../InputDate";
 import { ElemCompaniesFilterPopup } from "./ElemCompaniesFilterPopup";
 import { ElemCompaniesAddFilter } from "./ElemCompaniesAddFilter";
+import ElemAddressFilter from "../ElemAddressFilter";
 
 export type FilterOptionKeys =
 	| "country"
 	| "state"
 	| "city"
+	| "address"
 	| "keywords"
 	| "industry"
 	| "fundingType"
@@ -46,6 +48,10 @@ export type Filters = {
 		open?: boolean;
 		condition: "any" | "none";
 		tags: Array<string>;
+	};
+	address?: {
+		value?: any;
+		open?: boolean;
 	};
 	keywords?: {
 		open?: boolean;
@@ -256,6 +262,16 @@ export const ElemCompaniesFilter: FC<Props> = ({
 			},
 		}));
 	};
+
+	const onChangeAddress = (value: any) => {
+		setFilters((prev) => ({
+			...prev,
+			address: {
+				...prev?.address,
+				value,
+			},
+		}));
+	}
 
 	const onChangeFundingType = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newFilterFundingType = [...(filters?.fundingType?.tags || [])];
@@ -512,6 +528,26 @@ export const ElemCompaniesFilter: FC<Props> = ({
 									onChange={(event) => onChangeCondition(event, "city")}
 								/>
 							</div>
+						</div>
+					</ElemCompaniesFilterPopup>
+				)}
+
+				{filters?.address && (
+					<ElemCompaniesFilterPopup
+						open={!!filters.address.open}
+						name="address"
+						title="Address"
+						onOpen={onOpenFilterPopup}
+						onClose={onCloseFilterPopup}
+						onClear={onClearFilterOption}
+						onApply={onApplyFilter}
+					>
+						<div className="font-bold text-sm">Address</div>
+						<div className="flex flex-col gap-2 mt-2">
+							<ElemAddressFilter
+								value={filters.address.value}
+								onChange={onChangeAddress}
+							/>
 						</div>
 					</ElemCompaniesFilterPopup>
 				)}
