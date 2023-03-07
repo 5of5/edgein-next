@@ -72,18 +72,21 @@ select_permissions:
         - created_at
         - geopoint
         - id
+        - investment_amount_total
         - latest_investment
         - linkedin
         - location
         - location_json
         - logo
         - name
+        - num_of_exits
         - num_of_investments
         - overview
         - sentiment
         - slug
         - status_tags
         - tags
+        - team_size
         - twitter
         - updated_at
         - website
@@ -109,18 +112,21 @@ select_permissions:
         - created_at
         - geopoint
         - id
+        - investment_amount_total
         - latest_investment
         - linkedin
         - location
         - location_json
         - logo
         - name
+        - num_of_exits
         - num_of_investments
         - overview
         - sentiment
         - slug
         - status_tags
         - tags
+        - team_size
         - twitter
         - updated_at
         - website
