@@ -439,7 +439,7 @@ export const mutateActionAndDataRaw = async (
         }
 
         if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
-          || forceUpdate)
+            || forceUpdate)
           setMainTableValues[field] = transformedValue;
 
         validData.push({

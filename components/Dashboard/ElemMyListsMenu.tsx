@@ -9,6 +9,7 @@ import {
 	IconListPlus,
 	IconInformationCircle,
 	IconPlus,
+	IconContributor,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
@@ -27,11 +28,9 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { listAndFollows: lists, user } = useUser();
 
-	const {
-		btnRef,
-		isDefaultOpen,
-		onDisclosureButtonClick,
-	} = useDisclosureState(MY_LISTS_MENU_OPEN_KEY);
+	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
+		MY_LISTS_MENU_OPEN_KEY
+	);
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
@@ -205,7 +204,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										onClick={onOpenUpgradeDialog}
 										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
-										<IconListPlus className="h-6 w-6" title="Create List" />
+										<IconContributor
+											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
+											title="Unlock lists"
+										/>
+										{/* <IconListPlus className="h-6 w-6" title="Create List" /> */}
 										<span>Unlock All Your Lists</span>
 									</button>
 								</li>
