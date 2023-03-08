@@ -128,6 +128,32 @@ export const insertDataRaw = async (data: Array<Record<string, any>>) => {
   return returning;
 };
 
+export const insertDataDiscard = async (data: Array<Record<string, any>>) => {
+  const {
+    data: {
+      insert_data_discard: { returning },
+    },
+  } = await mutate({
+    mutation: `
+    mutation submit_data_discard($input: [data_discard_insert_input!]!) {
+      insert_data_discard(objects: $input) {
+        returning {
+          id
+          created_at
+          resource
+          resource_id
+          field
+          value
+          accuracy_weight
+        }
+      }
+    }
+    `,
+    variables: { input: data },
+  });
+  return returning;
+};
+
 export const updateMainTable = async (resourceType: ResourceTypes, id: Number, setValues: Record<string, any>) => {
   await mutate({
     mutation: `
@@ -398,9 +424,23 @@ export const mutateActionAndDataRaw = async (
         if (dataField.data_type)
           transformedValue = formatValue(transformedValue, dataField.data_type);
         if (!validateValue(resourceType, field, transformedValue))
-          continue;
+          {
+            const dataObject = [
+              {
+                resource: resourceType,
+                field,
+                value: resourceObj[field],
+                partner: partnerId,
+                accuracy_weight: 1,
+                resource_id: resourceId,
+              },
+            ];
+            const data = await insertDataDiscard(dataObject);
+            continue;
+          }
 
-        if (!existedData || notInsertValueType(existedData[field]) || forceUpdate)
+          if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
+          || forceUpdate)
           setMainTableValues[field] = transformedValue;
 
         validData.push({
