@@ -400,7 +400,8 @@ export const mutateActionAndDataRaw = async (
         if (!validateValue(resourceType, field, transformedValue))
           continue;
 
-        if (!existedData || notInsertValueType(existedData[field]) || forceUpdate)
+        if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
+            || forceUpdate)
           setMainTableValues[field] = transformedValue;
 
         validData.push({
