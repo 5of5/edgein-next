@@ -9,6 +9,7 @@ import { useUser } from "@/context/userContext";
 import { Popups } from "@/components/TheNavbar";
 import Builders from "@/public/images/builders.svg";
 import People from "@/public/images/people.svg";
+import { IconCheck } from "@/components/Icons";
 
 type Props = {
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
@@ -33,7 +34,7 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 
 				<section className="pt-16 -mb-20 px-4 sm:px-6 lg:px-8">
 					<div className="max-w-5xl mx-auto">
-						<h1 className="text-4xl font-bold text-center px-12 sm:text-5xl">
+						<h1 className="text-4xl font-bold text-center sm:text-5xl lg:px-12">
 							The exclusive Web3 platform for market intelligence.
 						</h1>
 						<div className="max-w-2xl mx-auto relative mt-8 -z-10">
@@ -55,40 +56,88 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 				<section className="bg-white border-y border-slate-200">
 					<div className="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
 						<div className="block md:w-full md:grid md:grid-cols-2 md:gap-10">
-							<div className="flex items-start space-x-4">
-								<img src={Builders} alt="Builders" className="shrink-0 w-12" />
+							<div className="flex flex-col items-start lg:flex-row lg:space-x-4">
+								<img
+									src={Builders}
+									alt="Builders"
+									className="flex-shrink-0 w-12"
+								/>
 								<div>
-									<h3 className="text-2xl font-bold">
+									<h3 className="text-2xl font-bold mt-2 lg:mt-0">
 										Reach 1,000s of builders in Web3 every day.
 									</h3>
 
-									<ul className="mt-4 ml-4 text-slate-600 text-lg list-disc">
-										<li>
-											Largest database of web3 companies, from alpha to large
-											brands.
+									<ul className="mt-4 text-slate-600 text-lg">
+										<li className="flex">
+											<IconCheck
+												className="h-6 w-6 flex-shrink-0 text-primary-500"
+												aria-hidden="true"
+											/>
+											<div className="ml-2">
+												Largest database of web3 companies, from alpha to large
+												brands.
+											</div>
 										</li>
-										<li>Connect with founders, investors and team members.</li>
-										<li>Filter by location, projects, and industry tags.</li>
+										<li className="flex">
+											<IconCheck
+												className="h-6 w-6 flex-shrink-0 text-primary-500"
+												aria-hidden="true"
+											/>
+											<div className="ml-2">
+												Connect with founders, investors and team members.
+											</div>
+										</li>
+										<li className="flex">
+											<IconCheck
+												className="h-6 w-6 flex-shrink-0 text-primary-500"
+												aria-hidden="true"
+											/>
+											<div className="ml-2">
+												Filter by location, projects, and industry tags.
+											</div>
+										</li>
 									</ul>
 								</div>
 							</div>
-							<div className="flex items-start space-x-4 mt-12 sm:mt-0">
+							<div className="flex flex-col items-start mt-12 sm:mt-0 lg:flex-row lg:space-x-4">
 								<img src={People} alt="Builders" className="shrink-0 w-12" />
 								<div>
-									<h3 className="text-2xl font-bold">
+									<h3 className="text-2xl font-bold mt-2 lg:mt-0">
 										Get curated leads to connect with the right people faster
 										and easier.
 									</h3>
-									<ul className="mt-4 ml-4 text-slate-600 text-lg list-disc">
-										<li>Emails of team members from 43,000+ companies.</li>
-										<li>Social data for 30,000 people.</li>
-										<li>Highly engaged Web3 community members.</li>
+									<ul className="mt-4 text-slate-600 text-lg">
+										<li className="flex">
+											<IconCheck
+												className="h-6 w-6 flex-shrink-0 text-primary-500"
+												aria-hidden="true"
+											/>
+											<div className="ml-2">
+												Emails of team members from 43,000+ companies.
+											</div>
+										</li>
+										<li className="flex">
+											<IconCheck
+												className="h-6 w-6 flex-shrink-0 text-primary-500"
+												aria-hidden="true"
+											/>
+											<div className="ml-2">Social data for 30,000 people.</div>
+										</li>
+										<li className="flex">
+											<IconCheck
+												className="h-6 w-6 flex-shrink-0 text-primary-500"
+												aria-hidden="true"
+											/>
+											<div className="ml-2">
+												Highly engaged Web3 community members.
+											</div>
+										</li>
 									</ul>
 								</div>
 							</div>
 						</div>
 
-						<div className="mt-16 p-16 rounded-lg bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE]">
+						<div className="mt-16 p-8 rounded-lg bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] sm:p-16">
 							<div className="max-w-2xl mx-auto">
 								<h3 className=" text-3xl font-bold text-white">
 									Ecosystem plans discounts available for first 15 early
