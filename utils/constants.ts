@@ -878,6 +878,10 @@ export const investorsFilterOptions = [
 				label: "Add city",
 				value: "city",
 			},
+			{
+				label: "Add address",
+				value: "address",
+			},
 		],
 	},
 	{

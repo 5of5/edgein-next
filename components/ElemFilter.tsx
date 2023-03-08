@@ -11,6 +11,7 @@ import { ElemMultiRangeSlider } from "./ElemMultiRangeSlider";
 import { InputDate } from "./InputDate";
 import { ElemFilterPopup } from "./ElemFilterPopup";
 import { ElemAddFilter } from "./ElemAddFilter";
+import ElemAddressFilter from "./ElemAddressFilter";
 
 type Props = {
   resourceType: "companies" | "vc_firms";
@@ -31,9 +32,9 @@ export const ElemFilter: FC<Props> = ({
 
   const [filters, setFilters] = useState<Filters | null>(filterValues);
 
-	useEffect(() => {
-		setFilters(filterValues);
-	}, [filterValues])
+  useEffect(() => {
+    setFilters(filterValues);
+  }, [filterValues]);
 
   const onSelectFilterOption = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpenAddFilter(false);
@@ -91,6 +92,16 @@ export const ElemFilter: FC<Props> = ({
       [name]: {
         ...prev?.[name as keyof Filters],
         condition: event.target.value,
+      },
+    }));
+  };
+
+  const onChangeAddress = (value: any) => {
+    setFilters((prev) => ({
+      ...prev,
+      address: {
+        ...prev?.address,
+        value,
       },
     }));
   };
@@ -276,7 +287,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
-									key={option}
+                  key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={`${optionMetadata.title} (${
@@ -321,10 +332,32 @@ export const ElemFilter: FC<Props> = ({
               );
             }
 
+            if (option === "address") {
+              return (
+                <ElemFilterPopup
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={optionMetadata.title || ''}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                >
+                  <div className="font-bold text-sm">{optionMetadata.heading}</div>
+                  <div className="flex flex-col gap-2 mt-2">
+                    <ElemAddressFilter
+                      value={filters[option]?.value}
+                      onChange={onChangeAddress}
+                    />
+                  </div>
+                </ElemFilterPopup>
+              );
+            }
+
             if (option === "keywords") {
               return (
                 <ElemFilterPopup
-									key={option}
+                  key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={`${optionMetadata.title} (${
@@ -357,7 +390,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
-									key={option}
+                  key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={`${optionMetadata.title} (${
@@ -404,7 +437,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
-									key={option}
+                  key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={optionMetadata.title || ""}
@@ -467,7 +500,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
-									key={option}
+                  key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={optionMetadata.title || ""}
@@ -544,7 +577,7 @@ export const ElemFilter: FC<Props> = ({
             ) {
               return (
                 <ElemFilterPopup
-									key={option}
+                  key={option}
                   open={!!filters[option]?.open}
                   name={option}
                   title={optionMetadata.title || ""}
