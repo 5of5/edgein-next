@@ -423,23 +423,22 @@ export const mutateActionAndDataRaw = async (
           transformedValue = util.format(dataField.regex_transform, transformedValue);
         if (dataField.data_type)
           transformedValue = formatValue(transformedValue, dataField.data_type);
-        if (!validateValue(resourceType, field, transformedValue))
-          {
-            const dataObject = [
-              {
-                resource: resourceType,
-                field,
-                value: resourceObj[field],
-                partner: partnerId,
-                accuracy_weight: 1,
-                resource_id: resourceId,
-              },
-            ];
-            const data = await insertDataDiscard(dataObject);
-            continue;
-          }
+        if (!validateValue(resourceType, field, transformedValue)){
+          const dataObject = [
+            {
+              resource: resourceType,
+              field,
+              value: resourceObj[field],
+              partner: partnerId,
+              accuracy_weight: 1,
+              resource_id: resourceId,
+            }
+          ];
+          const data = await insertDataDiscard(dataObject);
+          continue;
+        }
 
-          if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
+        if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
           || forceUpdate)
           setMainTableValues[field] = transformedValue;
 
