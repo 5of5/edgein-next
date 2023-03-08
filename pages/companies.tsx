@@ -21,11 +21,9 @@ import { companyChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/useStateParams";
 import { onTrackView } from "@/utils/track";
-import {
-	ElemCompaniesFilter,
-	Filters,
-} from "@/components/Companies/ElemCompaniesFilter";
-import { processCompaniesFilters } from "@/utils/helpers";
+import { processCompaniesFilters } from "@/utils/filter";
+import { ElemFilter } from "@/components/ElemFilter";
+import { Filters } from "@/models/Filter";
 import { useIntercom } from "react-use-intercom";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
@@ -108,13 +106,6 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useStateParams<string[]>(
-		[],
-		"tags",
-		(tagArr) => tagArr.join(","),
-		(tag) => tag.split(",")
-	);
-
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" } }],
 	};
@@ -125,7 +116,6 @@ const Companies: NextPage<Props> = ({
 		}
 		if (
 			initialLoad &&
-			selectedTags.length !== 0 &&
 			selectedStatusTag.value !== ""
 		) {
 			setInitialLoad(false);
@@ -136,7 +126,7 @@ const Companies: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedStatusTag]);
+	}, [selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -145,12 +135,21 @@ const Companies: NextPage<Props> = ({
 		event.stopPropagation();
 		event.preventDefault();
 
-		const newTags = selectedTags.includes(tag)
-			? selectedTags.filter((t) => t !== tag)
-			: [tag, ...selectedTags];
-		setSelectedTags(newTags);
+		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(tag)
+		? currentFilterOption.filter((t) => t !== tag)
+		: [tag, ...currentFilterOption]
 
-		selectedTags.includes(tag)
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, industry: undefined });
+		} else {
+			setSelectedFilters({ ...selectedFilters, industry: {
+				...selectedFilters?.industry,
+				tags: newFilterOption,
+			}, });
+		}
+
+		currentFilterOption.includes(tag)
 			? toast.custom(
 					(t) => (
 						<div
@@ -189,17 +188,6 @@ const Companies: NextPage<Props> = ({
 	if (selectedStatusTag.value) {
 		filters._and?.push({
 			status_tags: { _contains: selectedStatusTag.value },
-		});
-	}
-
-	if (selectedTags.length > 0) {
-		let allTags: any = [];
-		selectedTags.map((tag) => {
-			allTags.push({ tags: { _contains: tag } });
-		});
-
-		filters._and?.push({
-			_and: allTags,
 		});
 	}
 
@@ -264,8 +252,9 @@ const Companies: NextPage<Props> = ({
 						</nav>
 					</div>
 
-					<ElemCompaniesFilter
-						defaultFilters={selectedFilters}
+					<ElemFilter
+						resourceType="companies"
+						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
 							filters._and = [{ slug: { _neq: "" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });

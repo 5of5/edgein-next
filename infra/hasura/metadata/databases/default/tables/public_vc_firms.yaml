@@ -70,11 +70,13 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - geopoint
         - id
         - investment_amount_total
         - latest_investment
         - linkedin
         - location
+        - location_json
         - logo
         - name
         - num_of_exits
@@ -108,11 +110,13 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - geopoint
         - id
         - investment_amount_total
         - latest_investment
         - linkedin
         - location
+        - location_json
         - logo
         - name
         - num_of_exits
