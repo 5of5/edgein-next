@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/ElemHeading";
 import { PlaceholderInvestorCard } from "@/components/Placeholders";
-import { InputSelect } from "@/components/InputSelect";
 import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
 import { ElemButton } from "@/components/ElemButton";
-import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
 import { Pagination } from "@/components/Pagination";
 import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
-import {
-	IconSearch,
-	IconAnnotation,
-	IconX,
-	IconFilter,
-} from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/Icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -22,46 +15,74 @@ import {
 	Vc_Firms_Bool_Exp,
 	Vc_Firms,
 } from "@/graphql/types";
-import { DeepPartial, NumericFilter } from "@/pages/companies";
-import { runGraphQl, numberWithCommas } from "@/utils";
+import { DeepPartial } from "@/pages/companies";
+import { runGraphQl } from "@/utils";
 import { investorChoices } from "@/utils/constants";
-import { useAuth } from "@/hooks/useAuth";
 import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
+import { ElemFilter } from "@/components/ElemFilter";
+import { Filters } from "@/models/Filter";
+import moment from "moment-timezone";
+import { processInvestorsFilters } from "@/utils/filter";
+import { useIntercom } from "react-use-intercom";
 
 type Props = {
 	vcFirmCount: number;
 	initialVCFirms: GetVcFirmsQuery["vc_firms"];
-	investorFilters: TextFilter[];
-	numberOfInvestments: NumericFilter[];
+	investorsStatusTags: TextFilter[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Investors: NextPage<Props> = ({
 	vcFirmCount,
 	initialVCFirms,
-	investorFilters,
-	numberOfInvestments,
+	investorsStatusTags,
 	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
 
-	// Investor Filter
-	const [selectedInvestorFilters, setSelectedInvestorFilters] = useState(
-		investorFilters[0]
-	);
-
-	// Investments Count
-	const [selectedInvestmentCount, setSelectedInvestmentCount] = useState(
-		numberOfInvestments[0]
+	// Investor Status Tag
+	const [selectedStatusTag, setSelectedStatusTag] = useStateParams(
+		investorsStatusTags[0],
+		"statusTag",
+		(statusTag) => investorsStatusTags.indexOf(statusTag).toString(),
+		(index) => investorsStatusTags[Number(index)]
 	);
 
 	// Filters
-	const [toggleFilters, setToggleFilters] = useState(
-		selectedInvestmentCount !== numberOfInvestments[0]
+	const [selectedFilters, setSelectedFilters] = useStateParams<Filters | null>(
+		null,
+		"filters",
+		(filters) => {
+			if (!filters) {
+				return "";
+			}
+			return JSON.stringify(filters);
+		},
+		(filterString) => {
+			if (filterString) {
+				const filterJson: Filters = JSON.parse(filterString);
+				if (filterJson?.lastInvestmentDate?.fromDate) {
+					filterJson.lastInvestmentDate.fromDate = moment(
+						filterJson.lastInvestmentDate.fromDate
+					)
+						.format()
+						.split("T")[0];
+				}
+				if (filterJson?.lastInvestmentDate?.toDate) {
+					filterJson.lastInvestmentDate.toDate = moment(
+						filterJson.lastInvestmentDate.toDate
+					)
+						.format()
+						.split("T")[0];
+				}
+				return filterJson;
+			}
+			return null;
+		}
 	);
 
 	const [page, setPage] = useStateParams<number>(
@@ -73,13 +94,6 @@ const Investors: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useStateParams<string[]>(
-		[],
-		"tags",
-		(tagArr) => tagArr.join(","),
-		(tag) => tag.split(",")
-	);
-
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
 		_and: [{ slug: { _neq: "" } }],
 	};
@@ -88,15 +102,11 @@ const Investors: NextPage<Props> = ({
 		if (!initialLoad) {
 			setPage(0);
 		}
-		if (
-			initialLoad &&
-			selectedTags.length !== 0 &&
-			selectedInvestmentCount.rangeEnd !== 0
-		) {
+		if (initialLoad) {
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedInvestmentCount]);
+	}, []);
 
 	useEffect(() => {
 		onTrackView({
@@ -104,7 +114,7 @@ const Investors: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedTags, selectedInvestmentCount, selectedInvestorFilters]);
+	}, [selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -113,12 +123,24 @@ const Investors: NextPage<Props> = ({
 		event.stopPropagation();
 		event.preventDefault();
 
-		const newTags = selectedTags.includes(tag)
-			? selectedTags.filter((t) => t !== tag)
-			: [tag, ...selectedTags];
-		setSelectedTags(newTags);
+		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(tag)
+			? currentFilterOption.filter((t) => t !== tag)
+			: [tag, ...currentFilterOption];
 
-		selectedTags.includes(tag)
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, industry: undefined });
+		} else {
+			setSelectedFilters({
+				...selectedFilters,
+				industry: {
+					...selectedFilters?.industry,
+					tags: newFilterOption,
+				},
+			});
+		}
+
+		currentFilterOption.includes(tag)
 			? toast.custom(
 					(t) => (
 						<div
@@ -151,49 +173,12 @@ const Investors: NextPage<Props> = ({
 			  );
 	};
 
-	const clearTagFilters = async () => {
-		setSelectedTags([]);
+	/** Handle selected filter params */
+	processInvestorsFilters(filters, selectedFilters);
 
-		toast.custom(
-			(t) => (
-				<div
-					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-						t.visible ? "animate-fade-in-up" : "opacity-0"
-					}`}
-				>
-					Tag Filters Removed
-				</div>
-			),
-			{
-				duration: 3000,
-				position: "top-center",
-			}
-		);
-	};
-
-	if (selectedTags.length > 0) {
-		let allTags: any = [];
-		selectedTags.map((tag) => {
-			allTags.push({ tags: { _contains: tag } });
-		});
-
+	if (selectedStatusTag.value) {
 		filters._and?.push({
-			_and: allTags,
-		});
-	}
-
-	if (selectedInvestmentCount.rangeEnd !== 0) {
-		filters._and?.push({
-			_and: [
-				{ num_of_investments: { _gt: selectedInvestmentCount.rangeStart } },
-				{ num_of_investments: { _lte: selectedInvestmentCount.rangeEnd } },
-			],
-		});
-	}
-
-	if (selectedInvestorFilters.value) {
-		filters._and?.push({
-			status_tags: { _contains: selectedInvestorFilters.value },
+			status_tags: { _contains: selectedStatusTag.value },
 		});
 	}
 
@@ -216,6 +201,8 @@ const Investors: NextPage<Props> = ({
 		? vcFirmCount
 		: vcFirmsData?.vc_firms_aggregate?.aggregate?.count || 0;
 
+	const { showNewMessages } = useIntercom();
+
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
@@ -228,76 +215,47 @@ const Investors: NextPage<Props> = ({
 			</div>
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-					{selectedTags.length > 0 ? (
-						<div className="lg:flex items-baseline gap-2">
-							<h2 className="text-xl font-bold">
-								Investors ({numberWithCommas(vcfirms_aggregate)})
-							</h2>
-							{selectedTags.length > 0 && (
-								<div className="flex flex-wrap items-baseline">
-									{selectedTags?.map((item, index: number) => {
-										return (
-											<span key={index} className="pr-1">
-												{item}
-												{index != selectedTags.length - 1 && ","}
-											</span>
-										);
-									})}
-									<div
-										className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
-										onClick={clearTagFilters}
-									>
-										clear tags filter
-										<IconX className="ml-0.5 h-3" />
-									</div>
-								</div>
-							)}
-						</div>
-					) : (
-						<h2 className="text-xl font-bold">All Investors</h2>
-					)}
+					<h2 className="text-xl font-bold">Investors</h2>
 
-					<section className="pt-2 pb-3">
-						<div className="w-full flex flex-wrap justify-between lg:space-x-5 lg:flex-nowrap">
-							<InputSelect
-								className="md:shrink md:basis-0"
-								buttonClasses="w-auto"
-								dropdownClasses="w-60"
-								value={selectedInvestorFilters}
-								onChange={setSelectedInvestorFilters}
-								options={investorFilters}
-							/>
+					<div
+						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+						role="tablist"
+					>
+						<nav className="flex">
+							{investorsStatusTags &&
+								investorsStatusTags.map((tab: any, index: number) =>
+									tab.disabled === true ? (
+										<Fragment key={index}></Fragment>
+									) : (
+										<button
+											key={index}
+											onClick={() => setSelectedStatusTag(tab)}
+											className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+												selectedStatusTag.value === tab.value
+													? "text-primary-500 border-primary-500"
+													: "border-transparent  hover:bg-slate-200"
+											} ${tab.disabled ? "cursor-not-allowed" : ""}}`}
+										>
+											{tab.title}
+										</button>
+									)
+								)}
+						</nav>
+					</div>
 
-							<div className="w-full overflow-hidden grow min-w-0 order-last lg:order-none">
-								<ElemTagsCarousel
-									onClick={filterByTag}
-									selectedTags={selectedTags}
-								/>
-							</div>
-
-							<div className="self-end sm:shrink sm:basis-0 sm:self-auto">
-								<ElemButton
-									onClick={() => setToggleFilters(!toggleFilters)}
-									btn="white"
-									roundedFull={false}
-									className="rounded-md font-normal focus:ring-1 focus:ring-slate-200"
-								>
-									<IconFilter className="w-5 h-5 mr-1" />
-									Filters
-								</ElemButton>
-							</div>
-						</div>
-						{toggleFilters && (
-							<div className="mt-3 grid gap-5 grid-cols-1 lg:grid-cols-3">
-								<InputSelect
-									className="w-full"
-									value={selectedInvestmentCount}
-									onChange={setSelectedInvestmentCount}
-									options={numberOfInvestments}
-								/>
-							</div>
-						)}
-					</section>
+					<ElemFilter
+						resourceType="vc_firms"
+						filterValues={selectedFilters}
+						onApply={(name, filterParams) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
+						}}
+						onClearOption={(name) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({ ...selectedFilters, [name]: undefined });
+						}}
+						onReset={() => setSelectedFilters(null)}
+					/>
 
 					{vcFirms?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -322,7 +280,27 @@ const Investors: NextPage<Props> = ({
 
 					<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 						{error ? (
-							<h4>Error loading investors</h4>
+							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+								<div className="max-w-xl mx-auto">
+									<h4 className="mt-5 text-3xl font-bold">
+										Error loading investors
+									</h4>
+									<div className="mt-1 text-lg text-slate-600">
+										Please check spelling, reset filters, or{" "}
+										<button
+											onClick={() =>
+												showNewMessages(
+													`Hi EdgeIn, I'd like to report an error on investors page`
+												)
+											}
+											className="inline underline decoration-primary-500 hover:text-primary-500"
+										>
+											<span>report error</span>
+										</button>
+										.
+									</div>
+								</div>
+							</div>
 						) : isLoading && !initialLoad ? (
 							<>
 								{Array.from({ length: 15 }, (_, i) => (
@@ -373,8 +351,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 				"We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry.",
 			vcFirmCount: vcFirms?.vc_firms_aggregate.aggregate?.count || 0,
 			initialVCFirms: vcFirms?.vc_firms || [],
-			investorFilters: investorsFilters,
-			numberOfInvestments: InvestmentsFilters,
+			investorsStatusTags,
 		},
 	};
 };
@@ -388,35 +365,6 @@ interface TextFilter {
 	value: string;
 }
 
-// Total Investments Filter
-const InvestmentsFilters: NumericFilter[] = [
-	{
-		title: "Number of Investments",
-		rangeStart: 0,
-		rangeEnd: 0,
-	},
-	{
-		title: "5 or less Investments",
-		rangeStart: 0,
-		rangeEnd: 5,
-	},
-	{
-		title: "6-15 Investments",
-		rangeStart: 6,
-		rangeEnd: 15,
-	},
-	{
-		title: "16-25 Investments",
-		rangeStart: 16,
-		rangeEnd: 25,
-	},
-	{
-		title: "25+ Investments",
-		rangeStart: 25,
-		rangeEnd: 1000000000,
-	},
-];
-
 const investorFilterValue = investorChoices.map((option) => {
 	return {
 		title: option.name,
@@ -426,7 +374,7 @@ const investorFilterValue = investorChoices.map((option) => {
 	};
 });
 
-const investorsFilters: TextFilter[] = [
+const investorsStatusTags: TextFilter[] = [
 	{
 		title: "All Investors",
 		value: "",

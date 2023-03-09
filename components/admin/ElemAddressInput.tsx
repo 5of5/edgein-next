@@ -47,7 +47,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
   return (
     <Autocomplete
       id="elem-address-component"
-      sx={{ width: "49%" }}
+      sx={{ width: "49%", marginBottom: 3 }}
       filterOptions={(x) => x}
       getOptionLabel={(option) => option.formattedAddress}
       options={options}
