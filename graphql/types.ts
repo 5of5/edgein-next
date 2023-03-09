@@ -17786,6 +17786,7 @@ export type Vc_Firms = {
   /** An aggregate relationship */
   from_links_aggregate: Resource_Links_Aggregate;
   id: Scalars['Int'];
+  investment_amount_total: Maybe<Scalars['bigint']>;
   /** An array relationship */
   investments: Array<Investments>;
   /** An aggregate relationship */
@@ -17804,6 +17805,7 @@ export type Vc_Firms = {
   news_links: Array<News_Organizations>;
   /** An aggregate relationship */
   news_links_aggregate: News_Organizations_Aggregate;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   sentiment: Maybe<Scalars['jsonb']>;
@@ -17811,6 +17813,7 @@ export type Vc_Firms = {
   status: Scalars['String'];
   status_tags: Maybe<Scalars['jsonb']>;
   tags: Maybe<Scalars['jsonb']>;
+  team_size: Maybe<Scalars['Int']>;
   /** An array relationship */
   to_links: Array<Resource_Links>;
   /** An aggregate relationship */
@@ -17997,6 +18000,7 @@ export type Vc_Firms_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Vc_Firms_Append_Input = {
+  location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
@@ -18007,7 +18011,10 @@ export type Vc_Firms_Append_Input = {
 export type Vc_Firms_Avg_Fields = {
   __typename?: 'vc_firms_avg_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "vc_firms". All fields are combined with a logical 'AND'. */
@@ -18019,16 +18026,20 @@ export type Vc_Firms_Bool_Exp = {
   external_id: InputMaybe<String_Comparison_Exp>;
   follows: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
   from_links: InputMaybe<Resource_Links_Bool_Exp>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  investment_amount_total: InputMaybe<Bigint_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
   latest_investment: InputMaybe<String_Comparison_Exp>;
   library: InputMaybe<String_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
+  location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   news_links: InputMaybe<News_Organizations_Bool_Exp>;
+  num_of_exits: InputMaybe<Int_Comparison_Exp>;
   num_of_investments: InputMaybe<Int_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
@@ -18036,6 +18047,7 @@ export type Vc_Firms_Bool_Exp = {
   status: InputMaybe<String_Comparison_Exp>;
   status_tags: InputMaybe<Jsonb_Comparison_Exp>;
   tags: InputMaybe<Jsonb_Comparison_Exp>;
+  team_size: InputMaybe<Int_Comparison_Exp>;
   to_links: InputMaybe<Resource_Links_Bool_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -18057,6 +18069,7 @@ export enum Vc_Firms_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Vc_Firms_Delete_At_Path_Input = {
+  location_json: InputMaybe<Array<Scalars['String']>>;
   logo: InputMaybe<Array<Scalars['String']>>;
   sentiment: InputMaybe<Array<Scalars['String']>>;
   status_tags: InputMaybe<Array<Scalars['String']>>;
@@ -18065,6 +18078,7 @@ export type Vc_Firms_Delete_At_Path_Input = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Vc_Firms_Delete_Elem_Input = {
+  location_json: InputMaybe<Scalars['Int']>;
   logo: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['Int']>;
   status_tags: InputMaybe<Scalars['Int']>;
@@ -18073,6 +18087,7 @@ export type Vc_Firms_Delete_Elem_Input = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Vc_Firms_Delete_Key_Input = {
+  location_json: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['String']>;
@@ -18363,7 +18378,10 @@ export type Vc_Firms_Edit_Access_Variance_Order_By = {
 /** input type for incrementing numeric columns in table "vc_firms" */
 export type Vc_Firms_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
+  investment_amount_total: InputMaybe<Scalars['bigint']>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
+  team_size: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "vc_firms" */
@@ -18372,16 +18390,20 @@ export type Vc_Firms_Insert_Input = {
   external_id: InputMaybe<Scalars['String']>;
   follows: InputMaybe<Follows_Vc_Firms_Arr_Rel_Insert_Input>;
   from_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
+  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
+  investment_amount_total: InputMaybe<Scalars['bigint']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
   latest_investment: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   news_links: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -18389,6 +18411,7 @@ export type Vc_Firms_Insert_Input = {
   status: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
+  team_size: InputMaybe<Scalars['Int']>;
   to_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -18402,15 +18425,18 @@ export type Vc_Firms_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  investment_amount_total: Maybe<Scalars['bigint']>;
   latest_investment: Maybe<Scalars['String']>;
   library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  team_size: Maybe<Scalars['Int']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   website: Maybe<Scalars['String']>;
@@ -18423,15 +18449,18 @@ export type Vc_Firms_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   external_id: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  investment_amount_total: Maybe<Scalars['bigint']>;
   latest_investment: Maybe<Scalars['String']>;
   library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
   overview: Maybe<Scalars['String']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
+  team_size: Maybe<Scalars['Int']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   website: Maybe<Scalars['String']>;
@@ -18467,16 +18496,20 @@ export type Vc_Firms_Order_By = {
   external_id: InputMaybe<Order_By>;
   follows_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Order_By>;
   from_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
+  geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  investment_amount_total: InputMaybe<Order_By>;
   investments_aggregate: InputMaybe<Investments_Aggregate_Order_By>;
   investors_aggregate: InputMaybe<Investors_Aggregate_Order_By>;
   latest_investment: InputMaybe<Order_By>;
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
+  location_json: InputMaybe<Order_By>;
   logo: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   news_links_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
+  num_of_exits: InputMaybe<Order_By>;
   num_of_investments: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   sentiment: InputMaybe<Order_By>;
@@ -18484,6 +18517,7 @@ export type Vc_Firms_Order_By = {
   status: InputMaybe<Order_By>;
   status_tags: InputMaybe<Order_By>;
   tags: InputMaybe<Order_By>;
+  team_size: InputMaybe<Order_By>;
   to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -18498,6 +18532,7 @@ export type Vc_Firms_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Vc_Firms_Prepend_Input = {
+  location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
@@ -18511,7 +18546,11 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   ExternalId = 'external_id',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Id = 'id',
+  /** column name */
+  InvestmentAmountTotal = 'investment_amount_total',
   /** column name */
   LatestInvestment = 'latest_investment',
   /** column name */
@@ -18521,9 +18560,13 @@ export enum Vc_Firms_Select_Column {
   /** column name */
   Location = 'location',
   /** column name */
+  LocationJson = 'location_json',
+  /** column name */
   Logo = 'logo',
   /** column name */
   Name = 'name',
+  /** column name */
+  NumOfExits = 'num_of_exits',
   /** column name */
   NumOfInvestments = 'num_of_investments',
   /** column name */
@@ -18538,6 +18581,8 @@ export enum Vc_Firms_Select_Column {
   StatusTags = 'status_tags',
   /** column name */
   Tags = 'tags',
+  /** column name */
+  TeamSize = 'team_size',
   /** column name */
   Twitter = 'twitter',
   /** column name */
@@ -18552,13 +18597,17 @@ export enum Vc_Firms_Select_Column {
 export type Vc_Firms_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   external_id: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
+  investment_amount_total: InputMaybe<Scalars['bigint']>;
   latest_investment: InputMaybe<Scalars['String']>;
   library: InputMaybe<Scalars['String']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
+  num_of_exits: InputMaybe<Scalars['Int']>;
   num_of_investments: InputMaybe<Scalars['Int']>;
   overview: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -18566,6 +18615,7 @@ export type Vc_Firms_Set_Input = {
   status: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
+  team_size: InputMaybe<Scalars['Int']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   website: InputMaybe<Scalars['String']>;
@@ -18576,28 +18626,40 @@ export type Vc_Firms_Set_Input = {
 export type Vc_Firms_Stddev_Fields = {
   __typename?: 'vc_firms_stddev_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Vc_Firms_Stddev_Pop_Fields = {
   __typename?: 'vc_firms_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Vc_Firms_Stddev_Samp_Fields = {
   __typename?: 'vc_firms_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Vc_Firms_Sum_Fields = {
   __typename?: 'vc_firms_sum_fields';
   id: Maybe<Scalars['Int']>;
+  investment_amount_total: Maybe<Scalars['bigint']>;
+  num_of_exits: Maybe<Scalars['Int']>;
   num_of_investments: Maybe<Scalars['Int']>;
+  team_size: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "vc_firms" */
@@ -18607,7 +18669,11 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   ExternalId = 'external_id',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Id = 'id',
+  /** column name */
+  InvestmentAmountTotal = 'investment_amount_total',
   /** column name */
   LatestInvestment = 'latest_investment',
   /** column name */
@@ -18617,9 +18683,13 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   Location = 'location',
   /** column name */
+  LocationJson = 'location_json',
+  /** column name */
   Logo = 'logo',
   /** column name */
   Name = 'name',
+  /** column name */
+  NumOfExits = 'num_of_exits',
   /** column name */
   NumOfInvestments = 'num_of_investments',
   /** column name */
@@ -18635,6 +18705,8 @@ export enum Vc_Firms_Update_Column {
   /** column name */
   Tags = 'tags',
   /** column name */
+  TeamSize = 'team_size',
+  /** column name */
   Twitter = 'twitter',
   /** column name */
   UpdatedAt = 'updated_at',
@@ -18648,21 +18720,30 @@ export enum Vc_Firms_Update_Column {
 export type Vc_Firms_Var_Pop_Fields = {
   __typename?: 'vc_firms_var_pop_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Vc_Firms_Var_Samp_Fields = {
   __typename?: 'vc_firms_var_samp_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Vc_Firms_Variance_Fields = {
   __typename?: 'vc_firms_variance_fields';
   id: Maybe<Scalars['Float']>;
+  investment_amount_total: Maybe<Scalars['Float']>;
+  num_of_exits: Maybe<Scalars['Float']>;
   num_of_investments: Maybe<Scalars['Float']>;
+  team_size: Maybe<Scalars['Float']>;
 };
 
 /** List of waitlist emailIds */

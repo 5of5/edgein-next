@@ -2,7 +2,8 @@ import { mutate } from "@/graphql/hasuraAdmin";
 import { Follows } from "@/graphql/types";
 import { flatten, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
-import { ActionType, getCompanyByRoundId, ResourceTypes } from "./submit-data";
+import { getCompanyByRoundId } from "./submit-data";
+import { ActionType, ResourceTypes } from "@/utils/constants"
 
 type NotificationParamType = {
 	target_user_id: number;

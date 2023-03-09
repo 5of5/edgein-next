@@ -9,6 +9,7 @@ import {
 	IconListPlus,
 	IconInformationCircle,
 	IconPlus,
+	IconContributor,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
@@ -16,14 +17,20 @@ import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { CreateListDialog } from "../MyList/CreateListDialog";
+import useDisclosureState from "@/hooks/useDisclosureState";
+import { MY_LISTS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
 	className?: string;
 };
 
-export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
+const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { listAndFollows: lists, user } = useUser();
+
+	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
+		MY_LISTS_MENU_OPEN_KEY
+	);
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
@@ -80,12 +87,17 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 
 	return (
 		<div className={className}>
-			<Disclosure defaultOpen={true}>
+			<Disclosure defaultOpen={isDefaultOpen}>
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between">
 							<div className="flex items-center">
-								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+								<Disclosure.Button
+									className="flex focus:outline-none hover:opacity-75"
+									data-expanded={open}
+									ref={btnRef}
+									onClick={onDisclosureButtonClick}
+								>
 									<IconPolygonDown
 										className={`${
 											open ? "rotate-0" : "-rotate-90 "
@@ -192,7 +204,11 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										onClick={onOpenUpgradeDialog}
 										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
-										<IconListPlus className="h-6 w-6" title="Create List" />
+										<IconContributor
+											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
+											title="Unlock lists"
+										/>
+										{/* <IconListPlus className="h-6 w-6" title="Create List" /> */}
 										<span>Unlock All Your Lists</span>
 									</button>
 								</li>
@@ -224,3 +240,5 @@ export const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		</div>
 	);
 };
+
+export default ElemMyListsMenu;

@@ -4,7 +4,7 @@ export const withImageTransformData = (
   finalValue: any
 ) => ({
   ...data,
-  logo: imageResponse.file,
+  logo: imageResponse?.file?.url || '',
   coin_id: !data.coin_id ? null : data.coin_id,
   tags: finalValue,
 });
@@ -29,9 +29,6 @@ export const getRootStyle = (formRef: any) => ({
       flexWrap: "wrap",
       flexDirection: "row !important",
     },
-  },
-  ".MuiFormHelperText-root": {
-    display: "none",
   },
   ".customForm": {
     "& > form": {

@@ -82,6 +82,7 @@ export const VcFirmList = () => {
       <TextField source="year_founded" />
       <TextField source="twitter" />
       <TextField source="location" />
+      <TextField source="location_json" />
       <FunctionField
         source="tags"
         render={(record: any) => (record.tags ? record.tags.join() : "")}

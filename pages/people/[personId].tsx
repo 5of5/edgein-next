@@ -17,7 +17,6 @@ import {
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
-import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useIntercom } from "react-use-intercom";
 import { IconCheckBadgeSolid } from "@/components/Icons";
@@ -65,21 +64,6 @@ const Person: NextPage<Props> = (props) => {
 			  ]
 			: []),
 	];
-
-	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-	const [showEmails, setShowEmails] = useState(false);
-
-	const onEmailClick = () => {
-		if (user?.entitlements?.viewEmails) {
-			setShowEmails(!showEmails);
-			// TODO add action
-		} else {
-			setIsOpenUpgradeDialog(true);
-		}
-	};
-	const onCloseUpgradeDialog = () => {
-		setIsOpenUpgradeDialog(false);
-	};
 
 	const [claimedProfile, setClaimedProfile] = useState(false);
 
@@ -190,8 +174,6 @@ const Person: NextPage<Props> = (props) => {
 							linkedIn={person.linkedin}
 							investmentsLength={person.investments?.length}
 							emails={personEmails}
-							onEmailClick={onEmailClick}
-							showEmails={showEmails}
 							github={person.github}
 							twitter={person.twitter_url}
 							location={person.city}
@@ -248,11 +230,6 @@ const Person: NextPage<Props> = (props) => {
 					</div>
 				)}
 			</div>
-
-			<ElemUpgradeDialog
-				isOpen={isOpenUpgradeDialog}
-				onClose={onCloseUpgradeDialog}
-			/>
 		</div>
 	);
 };

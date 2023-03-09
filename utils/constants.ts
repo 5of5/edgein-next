@@ -12,7 +12,7 @@ const urlPattern = new RegExp(
 	"^(https?:\\/\\/)?" + // protocol
 		"((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
 		"((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-		"(\\:\\d+)?(\\/[-a-z\\d@:%_\+.~#?&//=]*)*" + // port and path
+		"(\\:\\d+)?(\\/[-a-z\\d@:%_+.~#?&//=]*)*" + // port and path
 		"(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
 		"(\\#[-a-z\\d_]*)?$",
 	"i"
@@ -564,6 +564,7 @@ export const investorChoices = [
 	{
 		id: "Acquired",
 		name: "Acquired",
+		disabled: true,
 	},
 	{
 		id: "Dead",
@@ -671,7 +672,7 @@ export const tags = [
 	"Marketplace",
 	"Exchange",
 	"Gaming",
-	"Defi",
+	"DeFi",
 	"Blockchain",
 	"Crypto",
 	"NFT",
@@ -691,42 +692,262 @@ export const tags = [
 	"Event",
 	"Cybersecurity",
 	"Solana",
-	"Polkadot"
+	"Polkadot",
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
 
 export const eventSizeChoices = [
-  "Less than 10 people",
-  "10-15 people",
-  "16-30 people",
-  "31-100 people",
-  "101-200 people",
-  "201-500 people",
-  "501-1000 people",
-  "1000+ people",
+	"Less than 10 people",
+	"10-15 people",
+	"16-30 people",
+	"31-100 people",
+	"101-200 people",
+	"201-500 people",
+	"501-1000 people",
+	"1000+ people",
 ].map((size) => ({ id: size, name: size }));
 
 export const eventPersonTypeChoices = [
-  {
-    id: "speaker",
-    name: "Speaker",
-  },
-  {
-    id: "attendee",
-    name: "Attendee",
-  },
-  {
-    id: "organizer",
-    name: "Organizer",
-  },
+	{
+		id: "speaker",
+		name: "Speaker",
+	},
+	{
+		id: "attendee",
+		name: "Attendee",
+	},
+	{
+		id: "organizer",
+		name: "Organizer",
+	},
 ];
 
-export const DATADOME_TAGS = 'https://js.datadome.co/tags.js'
-
-export const DATADOME_JS = 'https://api-js.datadome.co/js/'
+export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
 
 export const libraryChoices = [
   "Web3",
   "AI",
 ].map((item) => ({ id: item, name: item }));
+
+export type ResourceTypes =
+	| "companies"
+	| "vc_firms"
+	| "people"
+	| "blockchains"
+	| "coins"
+	| "investment_rounds"
+	| "investments"
+	| "team_members"
+	| "investors"
+	| "events"
+	| "event_person"
+	| "event_organization"
+	| "resource_links"
+	| "news"
+	| "news_organizations";
+
+export const NODE_NAME: Record<ResourceTypes, string> = {
+	companies: "company",
+	vc_firms: "vc_firm",
+	people: "people",
+	blockchains: "blockchain",
+	coins: "coin",
+	investment_rounds: "investment_round",
+	investments: "investment",
+	team_members: "team_member",
+	investors: "investor",
+	events: "event",
+	event_person: "event_person",
+	event_organization: "event_organization",
+	resource_links: "resource_link",
+	news: "news",
+	news_organizations: "news_organization",
+};
+
+export const isResourceType = (
+	resourceType: string
+): resourceType is ResourceTypes => {
+	return [
+		"companies",
+		"vc_firms",
+		"people",
+		"blockchains",
+		"coins",
+		"investment_rounds",
+		"investments",
+		"team_members",
+		"investors",
+		"events",
+		"event_person",
+		"event_organization",
+		"resource_links",
+		"news",
+		"news_organizations",
+	].includes(resourceType);
+};
+
+export const DATADOME_TAGS = "https://js.datadome.co/tags.js";
+
+export const DATADOME_JS = "https://api-js.datadome.co/js/";
+
+export const companiesFilterOptions = [
+	{
+		category: "Location",
+		items: [
+			{
+				label: "Add country",
+				value: "country",
+			},
+			{
+				label: "Add state",
+				value: "state",
+			},
+			{
+				label: "Add city",
+				value: "city",
+			},
+		],
+	},
+	{
+		category: "Description keywords",
+		items: [
+			{
+				label: "Add keywords",
+				value: "keywords",
+			},
+		],
+	},
+	{
+		category: "Industry",
+		items: [
+			{
+				label: "Select industry",
+				value: "industry",
+			},
+		],
+	},
+	{
+		category: "Financials",
+		items: [
+			{
+				label: "Funding type",
+				value: "fundingType",
+				isPremium: true,
+			},
+			{
+				label: "Total funding amount",
+				value: "fundingAmount",
+				isPremium: true,
+			},
+			{
+				label: "Last funding date",
+				value: "lastFundingDate",
+				isPremium: true,
+			},
+			{
+				label: "Investors",
+				value: "fundingInvestors",
+				isPremium: true,
+			},
+		],
+	},
+	{
+		category: "Team",
+		items: [
+			{
+				label: "Team size",
+				value: "teamSize",
+				isPremium: true,
+			},
+		],
+	},
+];
+
+export const investorsFilterOptions = [
+	{
+		category: "Location",
+		items: [
+			{
+				label: "Add country",
+				value: "country",
+			},
+			{
+				label: "Add state",
+				value: "state",
+			},
+			{
+				label: "Add city",
+				value: "city",
+			},
+		],
+	},
+	{
+		category: "Description keywords",
+		items: [
+			{
+				label: "Add keywords",
+				value: "keywords",
+			},
+		],
+	},
+	{
+		category: "Industry",
+		items: [
+			{
+				label: "Select industry",
+				value: "industry",
+			},
+		],
+	},
+	{
+		category: "Financials",
+		items: [
+			{
+				label: "Investment type",
+				value: "investmentType",
+				isPremium: true,
+			},
+			{
+				label: "Investment amount total",
+				value: "investmentAmountTotal",
+				isPremium: true,
+			},
+			{
+				label: "Number of investments",
+				value: "numOfInvestments",
+				isPremium: true,
+			},
+			{
+				label: "Number of exits",
+				value: "numOfExits",
+				isPremium: true,
+			},
+			{
+				label: "Last investment date",
+				value: "lastInvestmentDate",
+				isPremium: true,
+			},
+			{
+				label: "Funded companies",
+				value: "fundedCompanies",
+				isPremium: true,
+			},
+		],
+	},
+	{
+		category: "Team",
+		items: [
+			{
+				label: "Team size",
+				value: "teamSize",
+				isPremium: true,
+			},
+		],
+	},
+];
+
+export const MY_EDGEIN_MENU_OPEN_KEY = "disclosure-my-edgein-menu-default-open";
+export const MY_LISTS_MENU_OPEN_KEY = "disclosure-my-lists-menu-default-open";
+export const MY_GROUPS_MENU_OPEN_KEY = "disclosure-my-groups-menu-default-open";
+export const EXPLORE_MENU_OPEN_KEY = "disclosure-explore-menu-default-open";
