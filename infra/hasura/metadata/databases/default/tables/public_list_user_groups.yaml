@@ -27,5 +27,9 @@ select_permissions:
         - id
         - list_id
         - user_group_id
-      filter: {}
+      filter:
+        user_group:
+          user_group_members:
+            user_id:
+              _eq: X-Hasura-User-Id
       limit: 50

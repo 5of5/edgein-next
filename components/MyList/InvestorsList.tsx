@@ -119,12 +119,39 @@ export const InvestorsList: FC<Props> = ({
 			minWidth: 100,
 			width: 120,
 			//maxWidth: 300,
+			sortType: "alphanumericNullLast",
 		}),
 		[]
 	);
 
 	const emptyCell = React.useMemo(
 		() => <div className="text-slate-400">&mdash;</div>,
+		[]
+	);
+
+	const sortTypes = React.useMemo(
+		() => ({
+			alphanumericNullLast(rowA: any, rowB: any, columnId: string, desc: any) {
+				const a = rowA.values[columnId];
+				const b = rowB.values[columnId];
+
+				if (!a && !b) {
+					return 0;
+				}
+
+				if (!a) {
+					return desc ? -1 : 1;
+				}
+
+				if (!b) {
+					return desc ? 1 : -1;
+				}
+
+				return a
+					.toString()
+					.localeCompare(b.toString(), "en", { numeric: true });
+			},
+		}),
 		[]
 	);
 
@@ -406,6 +433,7 @@ export const InvestorsList: FC<Props> = ({
 			data: getInvestors,
 			disableSortRemove: true,
 			autoResetSortBy: false,
+			sortTypes,
 			initialState: {
 				pageSize: 10,
 			},

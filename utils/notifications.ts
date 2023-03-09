@@ -2,7 +2,8 @@ import { mutate } from "@/graphql/hasuraAdmin";
 import { Follows } from "@/graphql/types";
 import { flatten, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
-import { ActionType, getCompanyByRoundId, ResourceTypes } from "./submit-data";
+import { getCompanyByRoundId } from "./submit-data";
+import { ActionType, ResourceTypes } from "@/utils/constants"
 
 type NotificationParamType = {
 	target_user_id: number;
@@ -133,19 +134,21 @@ export const processNotification = async (
 		);
 		targetUsers = unionBy(flatten(targetUsers), "user_id");
 		await Promise.all(
-			targetUsers.map(async (targetUser: any) =>
-				insertNotification({
-					target_user_id: targetUser?.user_id,
-					event_type: actionType,
-					follow_resource_type: followedResourceType,
-					notification_resource_type: notificationResourceType,
-					message: getMessageContents(actionType, notificationResourceType),
-					company_id:
-						followedResourceType === "companies" ? followResourceId : null,
-					vc_firm_id:
-						followedResourceType === "vc_firms" ? followResourceId : null,
-					action_ids: actionIds,
-				})
+			targetUsers.map(async (targetUser: any) => {
+					if (targetUser?.user_id)
+						insertNotification({
+							target_user_id: targetUser?.user_id,
+							event_type: actionType,
+							follow_resource_type: followedResourceType,
+							notification_resource_type: notificationResourceType,
+							message: getMessageContents(actionType, notificationResourceType),
+							company_id:
+								followedResourceType === "companies" ? followResourceId : null,
+							vc_firm_id:
+								followedResourceType === "vc_firms" ? followResourceId : null,
+							action_ids: actionIds,
+						})
+				}
 			)
 		);
 	}

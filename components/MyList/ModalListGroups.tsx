@@ -33,8 +33,8 @@ export const ModalListGroups: FC<Props> = ({
 	useEffect(() => {
 		setSelectedGroups(
 			listGroups.map((item) => ({
-				id: item.id,
-				title: item.name,
+				id: item?.id,
+				title: item?.name,
 			}))
 		);
 		setError("");
