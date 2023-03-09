@@ -3,7 +3,7 @@ import React from "react";
 type Props = {
 	className?: string;
 	heading?: string;
-	resourceType: "companies" | "investors";
+	resourceType: "companies" | "investors" | "events";
 	tags?: (string | null)[];
 };
 
