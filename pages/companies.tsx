@@ -24,6 +24,7 @@ import { onTrackView } from "@/utils/track";
 import { processCompaniesFilters } from "@/utils/filter";
 import { ElemFilter } from "@/components/ElemFilter";
 import { Filters } from "@/models/Filter";
+import { useIntercom } from "react-use-intercom";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -208,6 +209,8 @@ const Companies: NextPage<Props> = ({
 		? companiesCount
 		: companiesData?.companies_aggregate?.aggregate?.count || 0;
 
+	const { showNewMessages } = useIntercom();
+
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
@@ -285,10 +288,30 @@ const Companies: NextPage<Props> = ({
 					)}
 
 					<div
-						className={`grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
+						className={`min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
 					>
 						{error ? (
-							<h4>Error loading companies</h4>
+							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+								<div className="max-w-xl mx-auto">
+									<h4 className="mt-5 text-3xl font-bold">
+										Error loading companies
+									</h4>
+									<div className="mt-1 text-lg text-slate-600">
+										Please check spelling, reset filters, or{" "}
+										<button
+											onClick={() =>
+												showNewMessages(
+													`Hi EdgeIn, I'd like to report an error on companies page`
+												)
+											}
+											className="inline underline decoration-primary-500 hover:text-primary-500"
+										>
+											<span>report error</span>
+										</button>
+										.
+									</div>
+								</div>
+							</div>
 						) : isLoading && !initialLoad ? (
 							<>
 								{Array.from({ length: 9 }, (_, i) => (
