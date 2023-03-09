@@ -16,30 +16,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // query people
   const fetchQuery = `
-  query query_people($text: String) {
-    people(where: {_or: [
-      {name: {_ilike: $text}}, 
-      {work_email: {_ilike: $text}},
-      {personal_email: {_ilike: $text}},
+  query query_people($query: String, $searchText: jsonb) {
+    users(where: {_or: [
+      {email: {_ilike: $query}}, 
+      {additional_emails: {_contains: $searchText}}, 
+      {person: {
+        _or: [
+          {name: {_ilike: $query}}, 
+          {work_email: {_ilike: $query}},
+          {personal_email: {_ilike: $query}},
+        ]
+      }}
     ]}, 
-      limit: 100) {
-      id
-      name
-      slug
-      picture
-      work_email
-      personal_email
+      limit: 50) {
+        id
+        display_name
+        email
+        person {
+          id
+          picture
+          slug
+        }
     }
   }
   `;
   try {
     const {
-      data: { people },
+      data: { users },
     } = await query({
       query: fetchQuery,
-      variables: { text: `%${searchText}%` },
+      variables: { query: `%${searchText}%`, searchText },
     });
-    return res.send(people);
+    return res.send(users);
   } catch (ex) {
     res.status(500).send(ex);
   }

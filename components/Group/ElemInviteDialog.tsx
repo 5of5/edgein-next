@@ -34,7 +34,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 	const debouncedQuery = useDebounce(query, 700);
 
 	const { data: searchedPeople, error } = useSWR(
-		() => (debouncedQuery ? ["/api/search_people", query] : null),
+		() => (debouncedQuery ? ["/api/search_people/", query] : null),
 		peopleFetcher
 	);
 
