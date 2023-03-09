@@ -34,6 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         email
         person {
           id
+          name
           picture
           slug
         }
