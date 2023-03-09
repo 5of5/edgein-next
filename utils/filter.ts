@@ -566,14 +566,14 @@ export const processInvestorsFilters = (
     });
   }
 
-  // if (selectedFilters?.investmentAmountTotal?.maxVal) {
-  // 	filters._and?.push({
-  // 		_and: [
-  // 			{ investment_amount_total: { _gt: selectedFilters?.investmentAmountTotal?.minVal ?? 0 } },
-  // 			{ investment_amount_total: { _lte:selectedFilters?.investmentAmountTotal?.maxVal } },
-  // 		],
-  // 	});
-  // }
+  if (selectedFilters?.investmentAmountTotal?.maxVal) {
+  	filters._and?.push({
+  		_and: [
+  			{ investment_amount_total: { _gt: selectedFilters?.investmentAmountTotal?.minVal ?? 0 } },
+  			{ investment_amount_total: { _lte:selectedFilters?.investmentAmountTotal?.maxVal } },
+  		],
+  	});
+  }
 
   if (selectedFilters?.numOfInvestments?.maxVal) {
     filters._and?.push({
@@ -592,14 +592,14 @@ export const processInvestorsFilters = (
     });
   }
 
-  // if (selectedFilters?.numOfExits?.maxVal) {
-  // 	filters._and?.push({
-  // 		_and: [
-  // 			{ num_of_exits: { _gt: selectedFilters?.numOfExits?.minVal ?? 0 } },
-  // 			{ num_of_exits: { _lte:selectedFilters?.numOfExits?.maxVal } },
-  // 		],
-  // 	});
-  // }
+  if (selectedFilters?.numOfExits?.maxVal) {
+  	filters._and?.push({
+  		_and: [
+  			{ num_of_exits: { _gt: selectedFilters?.numOfExits?.minVal ?? 0 } },
+  			{ num_of_exits: { _lte:selectedFilters?.numOfExits?.maxVal } },
+  		],
+  	});
+  }
 
   if (
     selectedFilters?.lastInvestmentDate?.condition &&
@@ -669,12 +669,12 @@ export const processInvestorsFilters = (
     }
   }
 
-  // if (selectedFilters?.teamSize?.maxVal) {
-  // 	filters._and?.push({
-  // 		_and: [
-  // 			{ team_size: { _gt: selectedFilters?.teamSize?.minVal ?? 0 } },
-  // 			{ team_size: { _lte:selectedFilters?.teamSize?.maxVal } },
-  // 		],
-  // 	});
-  // }
+  if (selectedFilters?.teamSize?.maxVal) {
+  	filters._and?.push({
+  		_and: [
+  			{ team_size: { _gt: selectedFilters?.teamSize?.minVal ?? 0 } },
+  			{ team_size: { _lte:selectedFilters?.teamSize?.maxVal } },
+  		],
+  	});
+  }
 };
