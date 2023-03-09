@@ -44,6 +44,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     WHERE
     investors.vc_firm_id = vc.id)`, []);
 
+  // Add new companies for any lists in follow table if a list follows a vc_firm, added followed-companies are invested by this vc_firm
+  // Delete all invested companies in follow table first
+  await client.query(`DELETE FROM follows WHERE created_by_user_id = 0`, []);
+  // Then add new ones
+  await client.query(`INSERT INTO follows (resource_type, resource_id, list_id, created_by_user_id)
+    (
+      SELECT 'companies', t3.company_id, t1.list_id, 0 FROM (
+          SELECT list_id, resource_id FROM follows_vc_firms
+        ) AS t1
+        INNER JOIN investments AS t2 ON t1.resource_id = t2.vc_firm_id
+        INNER JOIN investment_rounds AS t3 ON t2.round_id = t3.id
+      WHERE t2.vc_firm_id IS NOT NULL AND t3.company_id IS NOT NULL
+    ) ON CONFLICT DO NOTHING`, []);
+
   res.send({ success: true });
 }
 
