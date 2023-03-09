@@ -564,6 +564,7 @@ export const investorChoices = [
 	{
 		id: "Acquired",
 		name: "Acquired",
+		disabled: true,
 	},
 	{
 		id: "Dead",
