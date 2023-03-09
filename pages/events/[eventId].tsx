@@ -11,21 +11,10 @@ import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
 import { ElemOrganizationActivity } from "@/components/ElemOrganizationActivity";
-import {
-	Events,
-	Companies,
-	GetEventsDocument,
-	GetEventsQuery,
-	useGetCompanyQuery,
-	//Investments,
-} from "@/graphql/types";
+import { Events, GetEventsDocument, GetEventsQuery } from "@/graphql/types";
 import { useAuth } from "@/hooks/useAuth";
 import { sortBy } from "lodash";
-import {
-	formatDate,
-	convertToInternationalCurrencySystem,
-	numberWithCommas,
-} from "@/utils";
+import { formatDate } from "@/utils";
 
 type Props = {
 	event: any; //Event
@@ -35,7 +24,7 @@ type Props = {
 const Event: NextPage<Props> = (props: Props) => {
 	const { user } = useAuth();
 	const router = useRouter();
-	const { companyId } = router.query;
+	const { eventId } = router.query;
 
 	const [event, setEvent] = useState<any>(props.event); //<Event>
 
@@ -161,7 +150,7 @@ const Event: NextPage<Props> = (props: Props) => {
 						resourceName={event.name}
 						showDropdown={false}
 					>
-						<div className="space-x-2">
+						<div className="flex items-center space-x-2">
 							<ElemSocialShare
 								resourceName={event.name}
 								resourceTags={event.tags}
@@ -196,7 +185,7 @@ const Event: NextPage<Props> = (props: Props) => {
 					<div className="col-span-8">
 						<div className="w-full p-5 bg-white shadow rounded-lg">
 							<h2 className="text-xl font-bold">Overview</h2>
-							<p className="text-lg">
+							<p className="text-lg text-slate-600">
 								Bring your ideas to life Space Warp is a jam-packed program
 								leading up to the launch of Filecoin’s Virtual Machine on
 								mainnet in March 2023. The program includes grants, a hackathon,
@@ -236,9 +225,9 @@ const Event: NextPage<Props> = (props: Props) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	// const { data: events } = await runGraphQl<GetCompanyQuery>(
-	// 	GetCompanyDocument,
-	// 	{ slug: context.params?.companyId },
+	// const { data: events } = await runGraphQl<GetEventQuery>(
+	// 	GetEventDocument,
+	// 	{ slug: context.params?.eventId },
 	// 	context.req.cookies
 	// );
 
