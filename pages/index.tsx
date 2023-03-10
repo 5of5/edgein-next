@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Script from "next/script";
 import React from "react";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
 import { ElemButton } from "@/components/ElemButton";
@@ -125,6 +126,16 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 					<FigureCircleDashes className="absolute -bottom-112 -right-52 " />
 				</div>
 			</section>
+
+
+			<Script
+				strategy="lazyOnload"
+				src='https://s.opensend.com/os.min.js'
+				// @ts-ignore:next-line
+				osid='X6L7L49B'
+				ostyp='6311ae17'
+				async
+			/>
 		</>
 	);
 };
