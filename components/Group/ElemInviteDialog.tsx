@@ -81,6 +81,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 				body: JSON.stringify({
 					email: query,
 					groupId: group.id,
+					inviteUserId: selectedUser.id,
 				}),
 			});
 			const apiResponse = await res.json();
@@ -107,7 +108,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 				if (selectedUser?.id) {
 					onSendInvitationMail(
 						query,
-						selectedUser.name,
+						selectedUser?.person?.name || selectedUser?.display_name,
 						group.name,
 						group.id
 					);

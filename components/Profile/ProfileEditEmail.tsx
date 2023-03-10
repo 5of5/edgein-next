@@ -42,34 +42,26 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
         </div>
       ),
       {
-        duration: 3000,
+        duration: 5000,
         position: "top-center",
       }
     );
   };
 
-  const onUpdateAdditionalEmails = async (additionalEmails: string[]) => {
-    await fetch("/api/update-additional-emails/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        additionalEmails,
-      }),
-    });
-    refreshUser();
-  };
-
   const onSaveNewEmail = async () => {
     if (validator.isEmail(newEmail)) {
       setEmailError("");
-      await onUpdateAdditionalEmails([
-        ...(user?.additional_emails ?? []),
-        newEmail,
-      ]);
-      onShowToast(`Added email ${newEmail}`);
+      await fetch("/api/send_confirm_additional_email/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: newEmail,
+        }),
+      });
+      onShowToast(`A verify link has been sent to your email ${newEmail}. Please check your mailbox.`);
       onCancel();
     } else {
       setEmailError("Invalid email address");
@@ -77,9 +69,19 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
   };
 
   const onRemoveEmail = async (email: string) => {
-    await onUpdateAdditionalEmails([
-      ...(user?.additional_emails ?? []).filter((item) => item !== email),
-    ]);
+    await fetch("/api/update_additional_emails/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        additionalEmails: [
+          ...(user?.additional_emails ?? []).filter((item) => item !== email),
+        ],
+      }),
+    });
+    refreshUser();
     onShowToast(`Removed email ${email}`);
   };
 
