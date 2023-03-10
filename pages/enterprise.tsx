@@ -141,23 +141,23 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 							<div className="max-w-2xl mx-auto">
 								<h3 className=" text-3xl font-bold text-white">
 									Ecosystem plans discounts available for first 15 early
-									partners, until April 15th:
+									partners, until April 1st:
 								</h3>
 								<p className="text-xl text-gray-100">
 									$4,995, Now $995 for 1 year.
 								</p>
 								<p className="mt-6 text-xl text-gray-100">
-									*1,000 leads based on initial request
+									*1,000 leads based on initial request.
 								</p>
 								<p className="text-xl text-gray-100">
-									*100 $15 Contributor accounts 6 months
+									*100 $15 Contributor accounts 6 months.
 								</p>
 								<p className="text-xl text-gray-100">
-									*100 $5 Collaborator accounts 12 months
+									*100 $5 Collaborator accounts 12 months.
 								</p>
 								<p className="mt-6 text-xl text-gray-100">
 									Prices will increase month on month starting April 1st.
-									Starting at $999/year with a limit of 15 per level.
+									Starting at $995/year with a limit of 15 per level.
 								</p>
 								<ElemButton
 									href="https://buy.stripe.com/00gdTG7pWfjM0jSfZ2"
