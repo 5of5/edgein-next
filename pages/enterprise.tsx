@@ -137,7 +137,7 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 							</div>
 						</div>
 
-						<div className="mt-16 p-8 rounded-lg bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] sm:p-16">
+						<div className="mt-16 p-8 rounded-5xl bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] sm:p-16">
 							<div className="max-w-2xl mx-auto">
 								<h3 className=" text-3xl font-bold text-white">
 									Ecosystem plans discounts available for first 15 early
