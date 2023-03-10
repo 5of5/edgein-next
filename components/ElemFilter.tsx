@@ -12,6 +12,7 @@ import { InputDate } from "./InputDate";
 import { ElemFilterPopup } from "./ElemFilterPopup";
 import { ElemAddFilter } from "./ElemAddFilter";
 import ElemAddressFilter from "./ElemAddressFilter";
+import { InputText } from "./InputText";
 
 type Props = {
   resourceType: "companies" | "vc_firms";
@@ -95,6 +96,16 @@ export const ElemFilter: FC<Props> = ({
       },
     }));
   };
+
+  const onChangeDistance = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilters((prev) => ({
+      ...prev,
+      address: {
+        ...prev?.address,
+        distance: +event.target.value,
+      },
+    }));
+  }
 
   const onChangeAddress = (value: any) => {
     setFilters((prev) => ({
@@ -344,7 +355,18 @@ export const ElemFilter: FC<Props> = ({
                   onApply={onApplyFilter}
                 >
                   <div className="font-bold text-sm">{optionMetadata.heading}</div>
-                  <div className="flex flex-col gap-2 mt-2">
+                  <div className="flex items-center flex-wrap gap-2">
+                    <span>Find within</span>
+                    <InputText
+                      type="number"
+                      onChange={onChangeDistance}
+                      value={filters[option]?.distance}
+                      name="distance"
+                      className="w-16"
+                    />
+                    <span>miles from this address:</span>
+                  </div>
+                  <div className="flex flex-col gap-2 mt-4">
                     <ElemAddressFilter
                       value={filters[option]?.value}
                       onChange={onChangeAddress}

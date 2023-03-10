@@ -37,6 +37,7 @@ export type Filters = {
     tags: Array<string>;
   };
   address?: {
+    distance?: number;
     value?: any;
     open?: boolean;
   };

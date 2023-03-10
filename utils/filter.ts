@@ -20,6 +20,10 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
         condition: "any",
         tags: [],
       };
+    case "address":
+      return {
+        distance: 20,
+      };
     case "keywords":
       return {
         tags: [],
@@ -323,7 +327,7 @@ export const processCompaniesFilters = (
     filters._and?.push({
       geopoint: {
         _st_d_within: {
-          distance: 20 * 1609.344, // miles to meters
+          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
           from: selectedFilters.address.value?.geometry
         }
       }
@@ -559,7 +563,7 @@ export const processInvestorsFilters = (
     filters._and?.push({
       geopoint: {
         _st_d_within: {
-          distance: 20 * 1609.344, // miles to meters
+          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
           from: selectedFilters.address.value?.geometry
         }
       }
