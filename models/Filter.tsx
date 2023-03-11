@@ -36,6 +36,11 @@ export type Filters = {
     condition: "any" | "none";
     tags: Array<string>;
   };
+  address?: {
+    distance?: number;
+    value?: any;
+    open?: boolean;
+  };
   keywords?: {
     open?: boolean;
     tags: Array<string>;
