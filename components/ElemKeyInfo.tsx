@@ -197,7 +197,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 	const onInfoClick = (info: string) => () => {
 		if (user?.entitlements?.viewEmails) {
-			setShowInfo({...showInfo, [info]: !showInfo[info]});
+			setShowInfo({ ...showInfo, [info]: !showInfo[info] });
 			// TODO add action
 		} else {
 			setIsOpenUpgradeDialog(true);
@@ -213,71 +213,76 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 			<ul className="flex flex-col space-y-2">
 				{infoItems.map((item, index: number) => {
-										let itemInner = (
-											<>
-												{item.icon && (
-													<item.icon
-														title={item.text}
-														className="h-6 w-6 shrink-0 text-dark-500"
-													/>
-												)}
-												<span className="break-words min-w-0">{item.text}</span>
-											</>
-										);
-					
-										if (item.link?.length) {
-											itemInner = (
-												<li key={index}>
-													<a
-														className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
-														href={item.link}
-														target={item.target ? item.target : "_blank"}
-														rel="noopener noreferrer"
-														title={item.text}
-													>
-														{itemInner}
-													</a>
-												</li>
-											);
-										}
-										itemInner = (
-											<li key={index} className={baseClasses}>
-												{itemInner}
-											</li>
-										);					
+					let itemInner = (
+						<>
+							{item.icon && (
+								<item.icon
+									title={item.text}
+									className="h-6 w-6 shrink-0 text-dark-500"
+								/>
+							)}
+							<span className="break-words min-w-0">{item.text}</span>
+						</>
+					);
+
+					if (item.link?.length) {
+						itemInner = (
+							<a
+								key={index}
+								className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
+								href={item.link}
+								target={item.target ? item.target : "_blank"}
+								rel="noopener noreferrer"
+								title={item.text}
+							>
+								{itemInner}
+							</a>
+						);
+					}
+
+					itemInner = (
+						<li key={index} className={!item.link ? baseClasses : ""}>
+							{itemInner}
+						</li>
+					);
+
 					if (item.showHide) {
 						return (
 							<>
-							<li key={index} onClick={onInfoClick(item.text)} className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}>
-								<div className="flex items-center">
-									{item.icon && (
-										<item.icon
-											title={item.text}
-											className="h-6 w-6  mr-2 shrink-0 text-dark-500"
-										/>
-									)}
-									{showInfo[item.text] ? (
-										<a
-											className={`transition-all text-primary-500 hover:bg-slate-200`}
-											href={item.link}
-											target={item.target ? item.target : "_blank"}
-											rel="noopener noreferrer"
-											title={item.text}
-										>
-											{item.text}
-										</a>									
-									) : (
-										<>
-											&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-										</>
-									)}
-								</div>
-								<div className="flex items-center text-primary-500">
-									<IconEye className="h-5 w-5 shrink-0 mr-1" />
-									show
-								</div>
-							</li>
-						</>
+								<li
+									key={index}
+									onClick={onInfoClick(item.text)}
+									className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+								>
+									<div className="flex items-center">
+										{item.icon && (
+											<item.icon
+												title={item.text}
+												className="h-6 w-6  mr-2 shrink-0 text-dark-500"
+											/>
+										)}
+										{showInfo[item.text] ? (
+											<a
+												className={`transition-all text-primary-500 hover:bg-slate-200`}
+												href={item.link}
+												target={item.target ? item.target : "_blank"}
+												rel="noopener noreferrer"
+												title={item.text}
+											>
+												{item.text}
+											</a>
+										) : (
+											<>
+												&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
+											</>
+										)}
+									</div>
+									<div className="flex items-center text-primary-500">
+										<IconEye className="h-5 w-5 shrink-0 mr-1" />
+										show
+									</div>
+								</li>
+							</>
 						);
 					} else {
 						return itemInner;
@@ -287,12 +292,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				{emails.map((email, i: number) => [
 					<li
 						key={i}
-						onClick={onInfoClick('email')}
+						onClick={onInfoClick("email")}
 						className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
 					>
 						<div className="flex items-center">
 							<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
-							{showInfo['email'] ? (
+							{showInfo["email"] ? (
 								email
 							) : (
 								<>

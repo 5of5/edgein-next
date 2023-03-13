@@ -20,6 +20,10 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
         condition: "any",
         tags: [],
       };
+    case "address":
+      return {
+        distance: 20,
+      };
     case "keywords":
       return {
         tags: [],
@@ -85,6 +89,12 @@ export const getFilterOptionMetadata = (
         title: "City",
         heading: "City",
         placeholder: "Add city name, press enter ⏎",
+      };
+
+    case "address":
+      return {
+        title: "Address",
+        heading: "Address",
       };
 
     case "keywords":
@@ -313,6 +323,17 @@ export const processCompaniesFilters = (
     }
   }
 
+  if (selectedFilters?.address?.value) {
+    filters._and?.push({
+      geopoint: {
+        _st_d_within: {
+          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+          from: selectedFilters.address.value?.geometry
+        }
+      }
+    })
+  }
+
   if (selectedFilters?.keywords?.tags?.length) {
     filters._and?.push({
       _or: selectedFilters.keywords.tags.map((item) => ({
@@ -536,6 +557,17 @@ export const processInvestorsFilters = (
         ],
       });
     }
+  }
+
+  if (selectedFilters?.address?.value) {
+    filters._and?.push({
+      geopoint: {
+        _st_d_within: {
+          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+          from: selectedFilters.address.value?.geometry
+        }
+      }
+    })
   }
 
   if (selectedFilters?.keywords?.tags?.length) {

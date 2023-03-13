@@ -32,11 +32,12 @@ docker ps
 ```
 your output should look something like:
 ```
+872fe454e029   redis:6.2-alpine               "docker-entrypoint.s…"   5 minutes ago  Up 5 minutes           0.0.0.0:6379->6379/tcp   infra-cache-1
 968caa7ae2fe   postgres:14.1                  "docker-entrypoint.s…"   23 hours ago   Up 23 hours (healthy)   0.0.0.0:5432->5432/tcp   infra-postgres-1
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
 The Hasura web console should now be available at `http://localhost:8080`. Check `/infra/hasura/config.yaml` for the password.
-
+The redis server is running on `127.0.0.1:6379` for applying rate limit. Now can test graphql_query api locally.
 ### Load Schema and Initial Data
 This is taken care of using the `docker-entrypoint-initdb.d` directory populated from `infra/hasura/bootstrap-dev`. No further action should be required.
 
@@ -128,6 +129,9 @@ ELB and EC2 cluster hosted in US-East-2
 
 ### Jenkins
 ELB and EC2 hosted in US-West-2
+
+### redis server
+EC2 hosted in US-West-2
 
 ## API
 

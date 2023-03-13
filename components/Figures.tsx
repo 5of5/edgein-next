@@ -24,10 +24,20 @@ export const FigureBlurredBg: React.FC<FigureProps> = ({ className }) => {
 	);
 };
 
+export const FigureBlurredRectangle: React.FC<FigureProps> = ({
+	className,
+}) => {
+	return (
+		<figure
+			className={`${className} h-44 w-[800px] bg-gradient-to-bl from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] mix-blend-multiply opacity-30 blur-2xl`}
+		></figure>
+	);
+};
+
 export const FigureBlurredCircle: React.FC<FigureProps> = ({ className }) => {
 	return (
 		<figure
-			className={`${className} from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] w-96 h-96 rounded-full bg-gradient-to-bl filter mix-blend-multiply opacity-30 blur-3xl`}
+			className={`${className} from-[#F8DA4B] via-[#FE33D0] to-[#1B01FE] w-96 h-96 rounded-full bg-gradient-to-bl filter mix-blend-multiply opacity-30 blur-2xl`}
 		></figure>
 	);
 };

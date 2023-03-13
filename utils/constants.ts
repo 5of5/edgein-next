@@ -807,6 +807,10 @@ export const companiesFilterOptions = [
 				label: "Add city",
 				value: "city",
 			},
+			{
+				label: "Add address",
+				value: "address",
+			},
 		],
 	},
 	{
@@ -879,6 +883,10 @@ export const investorsFilterOptions = [
 			{
 				label: "Add city",
 				value: "city",
+			},
+			{
+				label: "Add address",
+				value: "address",
 			},
 		],
 	},
