@@ -15,7 +15,7 @@ import ElemAddressFilter from "./ElemAddressFilter";
 import { InputText } from "./InputText";
 
 type Props = {
-  resourceType: "companies" | "vc_firms";
+  resourceType: "companies" | "vc_firms" | "events";
   filterValues: Filters | null;
   onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
   onClearOption: (name: FilterOptionKeys) => void;
@@ -206,7 +206,7 @@ export const ElemFilter: FC<Props> = ({
       ...filters?.[option as keyof Filters],
       [metric]: value,
     };
-    if (option === "fundingAmount" || option === "investmentAmountTotal") {
+    if (option === "fundingAmount" || option === "investmentAmountTotal" || option === "eventPrice") {
       if (metric === "minVal") {
         newData.formattedMinVal = value;
       }
@@ -230,7 +230,7 @@ export const ElemFilter: FC<Props> = ({
       minVal,
       maxVal,
     };
-    if (name === "fundingAmount" || name === "investmentAmountTotal") {
+    if (name === "fundingAmount" || name === "investmentAmountTotal" || name === "eventPrice") {
       newData.formattedMinVal = convertToInternationalCurrencySystem(minVal);
       newData.formattedMaxVal = convertToInternationalCurrencySystem(maxVal);
     }
@@ -255,7 +255,7 @@ export const ElemFilter: FC<Props> = ({
   const onFormatFilterParams = (name: FilterOptionKeys) => {
     const filterParams: any = cloneDeep(filters?.[name]);
     if (
-      (name === "lastFundingDate" || name === "lastInvestmentDate") &&
+      (name === "lastFundingDate" || name === "lastInvestmentDate" || name === "eventDate") &&
       filterParams?.condition === "custom"
     ) {
       filterParams.fromDate = moment(filterParams.fromDate).toISOString();
@@ -408,7 +408,8 @@ export const ElemFilter: FC<Props> = ({
             if (
               option === "industry" ||
               option === "fundingType" ||
-              option === "investmentType"
+              option === "investmentType" ||
+              option === "eventType"
             ) {
               return (
                 <ElemFilterPopup
@@ -455,7 +456,8 @@ export const ElemFilter: FC<Props> = ({
 
             if (
               option === "fundingAmount" ||
-              option === "investmentAmountTotal"
+              option === "investmentAmountTotal" ||
+              option === "eventPrice"
             ) {
               return (
                 <ElemFilterPopup
@@ -518,7 +520,8 @@ export const ElemFilter: FC<Props> = ({
 
             if (
               option === "lastFundingDate" ||
-              option === "lastInvestmentDate"
+              option === "lastInvestmentDate" ||
+              option === "eventDate"
             ) {
               return (
                 <ElemFilterPopup
@@ -595,7 +598,8 @@ export const ElemFilter: FC<Props> = ({
             if (
               option === "teamSize" ||
               option === "numOfInvestments" ||
-              option === "numOfExits"
+              option === "numOfExits" ||
+              option === "eventSize"
             ) {
               return (
                 <ElemFilterPopup

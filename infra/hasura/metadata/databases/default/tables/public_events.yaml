@@ -38,7 +38,7 @@ select_permissions:
         - start_date
         - id
         - parent_event_id
-        - location
+        - location_json
         - link
         - name
         - notes

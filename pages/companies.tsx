@@ -23,8 +23,8 @@ import { useStateParams } from "@/hooks/useStateParams";
 import { onTrackView } from "@/utils/track";
 import { processCompaniesFilters } from "@/utils/filter";
 import { ElemFilter } from "@/components/ElemFilter";
-import { Filters } from "@/models/Filter";
 import { useIntercom } from "react-use-intercom";
+import useFilterParams from "@/hooks/useFilterParams";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -58,37 +58,7 @@ const Companies: NextPage<Props> = ({
 
 	const router = useRouter();
 
-	const [selectedFilters, setSelectedFilters] = useStateParams<Filters | null>(
-		null,
-		"filters",
-		(filters) => {
-			if (!filters) {
-				return "";
-			}
-			return JSON.stringify(filters);
-		},
-		(filterString) => {
-			if (filterString) {
-				const filterJson: Filters = JSON.parse(filterString);
-				if (filterJson?.lastFundingDate?.fromDate) {
-					filterJson.lastFundingDate.fromDate = moment(
-						filterJson.lastFundingDate.fromDate
-					)
-						.format()
-						.split("T")[0];
-				}
-				if (filterJson?.lastFundingDate?.toDate) {
-					filterJson.lastFundingDate.toDate = moment(
-						filterJson.lastFundingDate.toDate
-					)
-						.format()
-						.split("T")[0];
-				}
-				return filterJson;
-			}
-			return null;
-		}
-	);
+	const { selectedFilters, setSelectedFilters } = useFilterParams();
 
 	// Company status-tag filter
 	const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(

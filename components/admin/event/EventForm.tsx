@@ -8,6 +8,7 @@ import {
   ReferenceInput,
   AutocompleteInput,
   NumberInput,
+  AutocompleteArrayInput,
 } from "react-admin";
 import ElemAddressInput from "../ElemAddressInput";
 
@@ -36,34 +37,34 @@ const EventForm = ({ action, toolbar, currentData }: EventFormProps) => {
       />
       <DateInput className={inputClassName} source="start_date" />
       <DateInput className={inputClassName} source="end_date" />
-      <SelectInput
+      <AutocompleteArrayInput
         className={inputClassName}
         source="types"
         choices={eventTypeChoices}
+        style={{ padding: 0, border: "none" }}
       />
       <ElemAddressInput
         defaultLocation={currentData?.location}
         defaultGeoPoint={currentData?.geopoint}
-        locationFieldName="location"
       />
       <TextInput
         className={inputClassName}
-        source="location.address"
+        source="location_json.address"
         label="Address"
       />
       <TextInput
         className={inputClassName}
-        source="location.city"
+        source="location_json.city"
         label="City"
       />
       <TextInput
         className={inputClassName}
-        source="location.state"
+        source="location_json.state"
         label="State"
       />
       <TextInput
         className={inputClassName}
-        source="location.country"
+        source="location_json.country"
         label="Country"
       />
       <TextInput

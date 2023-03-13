@@ -4,9 +4,13 @@ import {
   FilterOptionMetadata,
   Filters,
 } from "@/models/Filter";
-import { Companies_Bool_Exp, Vc_Firms_Bool_Exp } from "@/graphql/types";
+import {
+  Companies_Bool_Exp,
+  Events_Bool_Exp,
+  Vc_Firms_Bool_Exp,
+} from "@/graphql/types";
 import { DeepPartial } from "@/pages/companies";
-import { roundChoices, tags } from "@/utils/constants";
+import { eventTypeChoices, roundChoices, tags } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
 
 export const getDefaultFilter = (name: FilterOptionKeys) => {
@@ -31,6 +35,7 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
     case "industry":
     case "fundingType":
     case "investmentType":
+    case "eventType":
       return [];
     case "fundingAmount":
     case "investmentAmountTotal":
@@ -42,6 +47,7 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
       };
     case "lastFundingDate":
     case "lastInvestmentDate":
+    case "eventDate":
       return {
         condition: "30-days",
         fromDate: moment().subtract(30, "days").toISOString(),
@@ -60,6 +66,18 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
       return {
         minVal: 1,
         maxVal: 3,
+      };
+    case "eventSize":
+      return {
+        minVal: 0,
+        maxVal: 100,
+      };
+    case "eventPrice":
+      return {
+        minVal: 0,
+        maxVal: 100,
+        formattedMinVal: convertToInternationalCurrencySystem(0),
+        formattedMaxVal: convertToInternationalCurrencySystem(100),
       };
     default:
       return null;
@@ -206,6 +224,37 @@ export const getFilterOptionMetadata = (
         placeholder: "Add company name, press enter ⏎",
       };
 
+    case "eventType":
+      return {
+        title: "Event type",
+        heading: "Event type",
+        choices: eventTypeChoices,
+      };
+
+    case "eventDate":
+      return {
+        title: "Date",
+        heading: "Date",
+      };
+
+    case "eventPrice":
+      return {
+        title: "Price",
+        heading: "Price",
+        min: 0,
+        max: 10000,
+        step: 1,
+      };
+
+    case "eventSize":
+      return {
+        title: "Size",
+        heading: "Size",
+        min: 0,
+        max: 10000,
+        step: 1,
+      };
+
     default:
       return {};
   }
@@ -328,10 +377,10 @@ export const processCompaniesFilters = (
       geopoint: {
         _st_d_within: {
           distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
-          from: selectedFilters.address.value?.geometry
-        }
-      }
-    })
+          from: selectedFilters.address.value?.geometry,
+        },
+      },
+    });
   }
 
   if (selectedFilters?.keywords?.tags?.length) {
@@ -564,10 +613,10 @@ export const processInvestorsFilters = (
       geopoint: {
         _st_d_within: {
           distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
-          from: selectedFilters.address.value?.geometry
-        }
-      }
-    })
+          from: selectedFilters.address.value?.geometry,
+        },
+      },
+    });
   }
 
   if (selectedFilters?.keywords?.tags?.length) {
@@ -599,12 +648,20 @@ export const processInvestorsFilters = (
   }
 
   if (selectedFilters?.investmentAmountTotal?.maxVal) {
-  	filters._and?.push({
-  		_and: [
-  			{ investment_amount_total: { _gt: selectedFilters?.investmentAmountTotal?.minVal ?? 0 } },
-  			{ investment_amount_total: { _lte:selectedFilters?.investmentAmountTotal?.maxVal } },
-  		],
-  	});
+    filters._and?.push({
+      _and: [
+        {
+          investment_amount_total: {
+            _gt: selectedFilters?.investmentAmountTotal?.minVal ?? 0,
+          },
+        },
+        {
+          investment_amount_total: {
+            _lte: selectedFilters?.investmentAmountTotal?.maxVal,
+          },
+        },
+      ],
+    });
   }
 
   if (selectedFilters?.numOfInvestments?.maxVal) {
@@ -625,12 +682,12 @@ export const processInvestorsFilters = (
   }
 
   if (selectedFilters?.numOfExits?.maxVal) {
-  	filters._and?.push({
-  		_and: [
-  			{ num_of_exits: { _gt: selectedFilters?.numOfExits?.minVal ?? 0 } },
-  			{ num_of_exits: { _lte:selectedFilters?.numOfExits?.maxVal } },
-  		],
-  	});
+    filters._and?.push({
+      _and: [
+        { num_of_exits: { _gt: selectedFilters?.numOfExits?.minVal ?? 0 } },
+        { num_of_exits: { _lte: selectedFilters?.numOfExits?.maxVal } },
+      ],
+    });
   }
 
   if (
@@ -702,11 +759,197 @@ export const processInvestorsFilters = (
   }
 
   if (selectedFilters?.teamSize?.maxVal) {
-  	filters._and?.push({
-  		_and: [
-  			{ team_size: { _gt: selectedFilters?.teamSize?.minVal ?? 0 } },
-  			{ team_size: { _lte:selectedFilters?.teamSize?.maxVal } },
-  		],
-  	});
+    filters._and?.push({
+      _and: [
+        { team_size: { _gt: selectedFilters?.teamSize?.minVal ?? 0 } },
+        { team_size: { _lte: selectedFilters?.teamSize?.maxVal } },
+      ],
+    });
+  }
+};
+
+export const processEventsFilters = (
+  filters: DeepPartial<Events_Bool_Exp>,
+  selectedFilters: Filters | null
+) => {
+  if (!selectedFilters) {
+    filters._and = [];
+  }
+  if (selectedFilters?.country?.tags?.length) {
+    if (selectedFilters?.country?.condition === "any") {
+      filters._and?.push({
+        _or: selectedFilters.country.tags.map((item) => ({
+          location_json: {
+            _cast: {
+              String: { _ilike: `%"country": "${item}"%` },
+            },
+          },
+        })),
+      });
+    }
+
+    if (selectedFilters?.country?.condition === "none") {
+      filters._and?.push({
+        _or: [
+          {
+            _not: {
+              _or: selectedFilters.country.tags.map((item) => ({
+                location_json: {
+                  _cast: {
+                    String: { _ilike: `%"country": "${item}"%` },
+                  },
+                },
+              })),
+            },
+          },
+          {
+            location_json: { _is_null: true },
+          },
+        ],
+      });
+    }
+  }
+
+  if (selectedFilters?.state?.tags?.length) {
+    if (selectedFilters?.state?.condition === "any") {
+      filters._and?.push({
+        _or: selectedFilters.state.tags.map((item) => ({
+          location_json: {
+            _cast: {
+              String: { _ilike: `%"state": "${item}"%` },
+            },
+          },
+        })),
+      });
+    }
+
+    if (selectedFilters?.state?.condition === "none") {
+      filters._and?.push({
+        _or: [
+          {
+            _not: {
+              _or: selectedFilters.state.tags.map((item) => ({
+                location_json: {
+                  _cast: {
+                    String: { _ilike: `%"state": "${item}"%` },
+                  },
+                },
+              })),
+            },
+          },
+          {
+            location_json: { _is_null: true },
+          },
+        ],
+      });
+    }
+  }
+
+  if (selectedFilters?.city?.tags?.length) {
+    if (selectedFilters?.city?.condition === "any") {
+      filters._and?.push({
+        _or: selectedFilters.city.tags.map((item) => ({
+          location_json: {
+            _cast: {
+              String: { _ilike: `%"city": "${item}"%` },
+            },
+          },
+        })),
+      });
+    }
+
+    if (selectedFilters?.city?.condition === "none") {
+      filters._and?.push({
+        _or: [
+          {
+            _not: {
+              _or: selectedFilters.city.tags.map((item) => ({
+                location_json: {
+                  _cast: {
+                    String: { _ilike: `%"city": "${item}"%` },
+                  },
+                },
+              })),
+            },
+          },
+          {
+            location_json: { _is_null: true },
+          },
+        ],
+      });
+    }
+  }
+
+  if (selectedFilters?.address?.value) {
+    filters._and?.push({
+      geopoint: {
+        _st_d_within: {
+          distance: (selectedFilters.address.distance || 20) * 1609.344, // miles to meters
+          from: selectedFilters.address.value?.geometry,
+        },
+      },
+    });
+  }
+
+  if (selectedFilters?.keywords?.tags?.length) {
+    filters._and?.push({
+      _or: selectedFilters.keywords.tags.map((item) => ({
+        notes: { _ilike: `%${item}%` },
+      })),
+    });
+  }
+
+  if (selectedFilters?.eventType?.tags?.length) {
+    filters._and?.push({
+      _and: selectedFilters.eventType.tags.map((item) => ({
+        types: { _contains: item },
+      })),
+    });
+  }
+
+  if (selectedFilters?.eventPrice?.maxVal) {
+    filters._and?.push({
+      _and: [
+        { price: { _gt: selectedFilters?.eventPrice?.minVal ?? 0 } },
+        { price: { _lte: selectedFilters?.eventPrice?.maxVal } },
+      ],
+    });
+  }
+
+  // if (selectedFilters?.eventSize?.maxVal) {
+  //   filters._and?.push({
+  //     _and: [
+  //       { size: { _gt: selectedFilters?.eventSize?.minVal ?? 0 } },
+  //       { size: { _lte: selectedFilters?.eventSize?.maxVal } },
+  //     ],
+  //   });
+  // }
+
+  if (
+    selectedFilters?.eventDate?.condition &&
+    selectedFilters?.eventDate?.fromDate
+  ) {
+    if (selectedFilters?.eventDate?.condition !== "custom") {
+      filters._and?.push({
+        start_date: { _gte: selectedFilters.eventDate.fromDate },
+      });
+    }
+    if (
+      selectedFilters?.eventDate?.condition === "custom" &&
+      selectedFilters.eventDate.toDate
+    ) {
+      filters._and?.push({
+        _and: [
+          {
+            start_date: {
+              _gte: selectedFilters.eventDate.fromDate,
+            },
+          },
+          {
+            end_date: { _lte: selectedFilters.eventDate.toDate },
+          },
+        ],
+      });
+    }
   }
 };

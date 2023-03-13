@@ -33,8 +33,8 @@ export const EventList = () => {
       <SelectField source="types" choices={eventTypeChoices} />
       <FunctionField
         cellClassName="truncate"
-        source="location"
-        render={(record: any) => getFullAddress(record.location)}
+        source="location_json"
+        render={(record: any) => getFullAddress(record.location_json)}
       />
       <TextField source="link" />
       <TextField source="notes" />

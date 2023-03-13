@@ -8,9 +8,11 @@ query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
 		id
 		name
 		notes
-		location
+		location_json
 		link
 		size
+		price
+		types
 		start_date
 		end_date
 		created_at

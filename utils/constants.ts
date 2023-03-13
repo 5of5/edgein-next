@@ -955,6 +955,66 @@ export const investorsFilterOptions = [
 	},
 ];
 
+
+export const eventsFilterOptions = [
+	{
+		category: "Location",
+		items: [
+			{
+				label: "Add country",
+				value: "country",
+			},
+			{
+				label: "Add state",
+				value: "state",
+			},
+			{
+				label: "Add city",
+				value: "city",
+			},
+			{
+				label: "Add address",
+				value: "address",
+			},
+		],
+	},
+	{
+		category: "Details",
+		items: [
+			{
+				label: "Select date",
+				value: "eventDate",
+			},
+			{
+				label: "Select price",
+				value: "eventPrice",
+			},
+			{
+				label: "Select size",
+				value: "eventSize",
+			},
+		],
+	},
+	{
+		category: "Event types",
+		items: [
+			{
+				label: "Select type",
+				value: "eventType",
+			},
+		],
+	},
+	{
+		category: "Description keywords",
+		items: [
+			{
+				label: "Add keywords",
+				value: "keywords",
+			},
+		],
+	},
+];
+
 export const MY_EDGEIN_MENU_OPEN_KEY = "disclosure-my-edgein-menu-default-open";
 export const MY_LISTS_MENU_OPEN_KEY = "disclosure-my-lists-menu-default-open";
 export const MY_GROUPS_MENU_OPEN_KEY = "disclosure-my-groups-menu-default-open";

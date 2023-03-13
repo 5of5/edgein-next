@@ -3,6 +3,7 @@ import { IconPlus } from "@/components/Icons";
 import {
   companiesFilterOptions,
   investorsFilterOptions,
+  eventsFilterOptions,
 } from "@/utils/constants";
 import { useUser } from "@/context/userContext";
 import { IconContributor } from "@/components/Icons";
@@ -17,7 +18,7 @@ type CategoryFilterOptionProps = {
 };
 
 type Props = {
-  resourceType: "companies" | "vc_firms";
+  resourceType: "companies" | "vc_firms" | "events";
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
@@ -31,10 +32,11 @@ export const ElemAddFilter: FC<Props> = ({
   onClose,
   onSelectFilterOption,
 }) => {
-  const filterOptions =
-    resourceType === "companies"
-      ? companiesFilterOptions
-      : investorsFilterOptions;
+  const filterOptions = {
+    "companies": companiesFilterOptions,
+    "vc_firms": investorsFilterOptions,
+    "events": eventsFilterOptions,
+  }[resourceType];
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -68,13 +70,13 @@ export const ElemAddFilter: FC<Props> = ({
           <div className="grid lg:grid-cols-2 lg:gap-8">
             <div>
               <CategoryFilterOption
-                options={filterOptions.slice(0, 3)}
+                options={filterOptions.slice(0, resourceType === "events" ? 2 : 3)}
                 onSelectFilterOption={onSelectFilterOption}
               />
             </div>
             <div className="mt-6 lg:mt-0">
               <CategoryFilterOption
-                options={filterOptions.slice(3)}
+                options={filterOptions.slice(resourceType === "events" ? 2 : 3)}
                 onSelectFilterOption={onSelectFilterOption}
               />
             </div>

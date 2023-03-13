@@ -7,14 +7,9 @@ import { useDebounce } from "@/hooks/useDebounce";
 type Props = {
   defaultLocation?: any;
   defaultGeoPoint?: any;
-  locationFieldName?: string;
 };
 
-const ElemAddressInput = ({
-  defaultLocation,
-  defaultGeoPoint,
-  locationFieldName = "location_json",
-}: Props) => {
+const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
   const { setValue: setFormValue } = useFormContext();
   const [value, setValue] = useState<any>(null);
   const [inputValue, setInputValue] = useState("");
@@ -65,10 +60,10 @@ const ElemAddressInput = ({
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
         setFormValue(
-          locationFieldName,
+          "location_json",
           newValue
             ? {
-                address: `${newValue?.street || ""} ${newValue?.number || ""} `,
+                address: `${newValue?.street || ''} ${newValue?.number || ''} `,
                 city: newValue?.city,
                 state: newValue?.state,
                 country: newValue?.country,

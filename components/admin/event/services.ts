@@ -1,10 +1,13 @@
 export const transform = (event: any) => {
   let data = { ...event };
+  const typesValue = data.types ? data.types : [];
+  data.types =
+    typeof typesValue === "string" ? typesValue.split(",") : typesValue;
   if (
-    (!data?.location?.address &&
-      !data?.location?.city &&
-      !data?.location?.state &&
-      !data?.location?.country &&
+    (!data?.location_json?.address &&
+      !data?.location_json?.city &&
+      !data?.location_json?.state &&
+      !data?.location_json?.country &&
       data?.geopoint) ||
     !data?.geopoint
   ) {

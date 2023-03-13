@@ -4917,7 +4917,7 @@ export type Events = {
   geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
   link: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['jsonb']>;
+  location_json: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
   notes: Maybe<Scalars['String']>;
   /** An object relationship */
@@ -4973,7 +4973,7 @@ export type EventsEvent_Person_AggregateArgs = {
 
 
 /** columns and relationships of "events" */
-export type EventsLocationArgs = {
+export type EventsLocation_JsonArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
@@ -5015,7 +5015,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
-  location: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -5039,7 +5039,7 @@ export type Events_Bool_Exp = {
   geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
-  location: InputMaybe<Jsonb_Comparison_Exp>;
+  location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
   parent_event: InputMaybe<Events_Bool_Exp>;
@@ -5060,19 +5060,19 @@ export enum Events_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
-  location: InputMaybe<Array<Scalars['String']>>;
+  location_json: InputMaybe<Array<Scalars['String']>>;
   types: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
-  location: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['Int']>;
   types: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
-  location: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['String']>;
 };
 
@@ -5092,7 +5092,7 @@ export type Events_Insert_Input = {
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   link: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
   parent_event: InputMaybe<Events_Obj_Rel_Insert_Input>;
@@ -5171,7 +5171,7 @@ export type Events_Order_By = {
   geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
-  location: InputMaybe<Order_By>;
+  location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
   parent_event: InputMaybe<Events_Order_By>;
@@ -5191,7 +5191,7 @@ export type Events_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
-  location: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -5208,7 +5208,7 @@ export enum Events_Select_Column {
   /** column name */
   Link = 'link',
   /** column name */
-  Location = 'location',
+  LocationJson = 'location_json',
   /** column name */
   Name = 'name',
   /** column name */
@@ -5236,7 +5236,7 @@ export type Events_Set_Input = {
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   link: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
@@ -5293,7 +5293,7 @@ export enum Events_Update_Column {
   /** column name */
   Link = 'link',
   /** column name */
-  Location = 'location',
+  LocationJson = 'location_json',
   /** column name */
   Name = 'name',
   /** column name */
@@ -17834,6 +17834,7 @@ export type Vc_Firms = {
   from_links: Array<Resource_Links>;
   /** An aggregate relationship */
   from_links_aggregate: Resource_Links_Aggregate;
+  geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
   investment_amount_total: Maybe<Scalars['bigint']>;
   /** An array relationship */
@@ -17848,6 +17849,7 @@ export type Vc_Firms = {
   library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
+  location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
   name: Maybe<Scalars['String']>;
   /** An array relationship */
@@ -17951,6 +17953,12 @@ export type Vc_FirmsInvestors_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Investors_Order_By>>;
   where: InputMaybe<Investors_Bool_Exp>;
+};
+
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -19042,7 +19050,7 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, notes: string | null, location: any | null, link: string | null, size: string | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -19516,9 +19524,11 @@ export const GetEventsDocument = `
     id
     name
     notes
-    location
+    location_json
     link
     size
+    price
+    types
     start_date
     end_date
     created_at

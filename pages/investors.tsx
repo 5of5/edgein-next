@@ -22,10 +22,9 @@ import { useStateParams } from "@/hooks/useStateParams";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
 import { ElemFilter } from "@/components/ElemFilter";
-import { Filters } from "@/models/Filter";
-import moment from "moment-timezone";
 import { processInvestorsFilters } from "@/utils/filter";
 import { useIntercom } from "react-use-intercom";
+import useFilterParams from "@/hooks/useFilterParams";
 
 type Props = {
 	vcFirmCount: number;
@@ -53,37 +52,7 @@ const Investors: NextPage<Props> = ({
 	);
 
 	// Filters
-	const [selectedFilters, setSelectedFilters] = useStateParams<Filters | null>(
-		null,
-		"filters",
-		(filters) => {
-			if (!filters) {
-				return "";
-			}
-			return JSON.stringify(filters);
-		},
-		(filterString) => {
-			if (filterString) {
-				const filterJson: Filters = JSON.parse(filterString);
-				if (filterJson?.lastInvestmentDate?.fromDate) {
-					filterJson.lastInvestmentDate.fromDate = moment(
-						filterJson.lastInvestmentDate.fromDate
-					)
-						.format()
-						.split("T")[0];
-				}
-				if (filterJson?.lastInvestmentDate?.toDate) {
-					filterJson.lastInvestmentDate.toDate = moment(
-						filterJson.lastInvestmentDate.toDate
-					)
-						.format()
-						.split("T")[0];
-				}
-				return filterJson;
-			}
-			return null;
-		}
-	);
+	const { selectedFilters, setSelectedFilters } = useFilterParams();
 
 	const [page, setPage] = useStateParams<number>(
 		0,
