@@ -1,4 +1,6 @@
 import React from "react";
+import { useParams } from "react-router-dom";
+import { useGetOne } from "react-admin";
 import ElemTitle from "../ElemTitle";
 import ElemFormBase from "../ElemFormBase";
 import EventForm from "./EventForm";
@@ -7,6 +9,9 @@ import { EventPersonTable } from "./EventPersonTable";
 import { EventOrganizationTable } from "./EventOrganizationTable";
 
 export const EventEdit = () => {
+  const { id } = useParams();
+  const { data: currentData } = useGetOne("events", { id });
+
   return (
     <div style={{ paddingBottom: "20px" }}>
       <ElemFormBase
@@ -14,7 +19,7 @@ export const EventEdit = () => {
         action="edit"
         transform={transform}
       >
-        <EventForm action="edit" />
+        <EventForm action="edit" currentData={currentData} />
       </ElemFormBase>
       <EventPersonTable />
       <EventOrganizationTable />

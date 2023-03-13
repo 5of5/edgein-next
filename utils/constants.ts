@@ -954,3 +954,14 @@ export const MY_EDGEIN_MENU_OPEN_KEY = "disclosure-my-edgein-menu-default-open";
 export const MY_LISTS_MENU_OPEN_KEY = "disclosure-my-lists-menu-default-open";
 export const MY_GROUPS_MENU_OPEN_KEY = "disclosure-my-groups-menu-default-open";
 export const EXPLORE_MENU_OPEN_KEY = "disclosure-explore-menu-default-open";
+
+export const eventTypeChoices = [
+	"Hackathon",
+	"Online",
+	"Ethereum",
+	"Festival",
+	"Blockchain",
+	"Conference",
+	"Web3",
+	"Crypto",
+].map((item) => ({ id: item, name: item }));

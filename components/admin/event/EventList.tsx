@@ -1,4 +1,4 @@
-import { eventSizeChoices } from "@/utils/constants";
+import { eventSizeChoices, eventTypeChoices } from "@/utils/constants";
 import { getFullAddress } from "@/utils/helpers";
 import React from "react";
 import {
@@ -8,6 +8,7 @@ import {
   FunctionField,
   ReferenceField,
   SelectField,
+  NumberField,
 } from "react-admin";
 import ElemList from "../ElemList";
 
@@ -29,6 +30,7 @@ export const EventList = () => {
       <TextField source="name" />
       <TextField source="start_date" />
       <TextField source="end_date" />
+      <SelectField source="types" choices={eventTypeChoices} />
       <FunctionField
         cellClassName="truncate"
         source="location"
@@ -37,6 +39,7 @@ export const EventList = () => {
       <TextField source="link" />
       <TextField source="notes" />
       <SelectField source="size" choices={eventSizeChoices} />
+      <NumberField source="price" />
       <ReferenceField
         label="Parent event"
         source="parent_event_id"

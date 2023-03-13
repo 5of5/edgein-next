@@ -64,7 +64,7 @@ export const getFullAddress = (locationJson: any) => {
   const state = locationJson?.state || '';
   const country = locationJson?.country || '';
   return [address, city, state, country]
-    .filter((item) => !isEmpty(item))
+    .filter((item) => !isEmpty(item.trim()))
     .join(", ");
 }
 

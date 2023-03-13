@@ -4903,6 +4903,7 @@ export type Events = {
   event_person: Array<Event_Person>;
   /** An aggregate relationship */
   event_person_aggregate: Event_Person_Aggregate;
+  geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
   link: Maybe<Scalars['String']>;
   location: Maybe<Scalars['jsonb']>;
@@ -4911,9 +4912,11 @@ export type Events = {
   /** An object relationship */
   parent_event: Maybe<Events>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Scalars['String'];
+  types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
 };
 
@@ -4963,6 +4966,12 @@ export type EventsLocationArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
+
+/** columns and relationships of "events" */
+export type EventsTypesArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
 /** aggregated selection of "events" */
 export type Events_Aggregate = {
   __typename?: 'events_aggregate';
@@ -4996,6 +5005,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
   location: InputMaybe<Scalars['jsonb']>;
+  types: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -5003,6 +5013,7 @@ export type Events_Avg_Fields = {
   __typename?: 'events_avg_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "events". All fields are combined with a logical 'AND'. */
@@ -5014,6 +5025,7 @@ export type Events_Bool_Exp = {
   end_date: InputMaybe<Date_Comparison_Exp>;
   event_organization: InputMaybe<Event_Organization_Bool_Exp>;
   event_person: InputMaybe<Event_Person_Bool_Exp>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<Jsonb_Comparison_Exp>;
@@ -5021,9 +5033,11 @@ export type Events_Bool_Exp = {
   notes: InputMaybe<String_Comparison_Exp>;
   parent_event: InputMaybe<Events_Bool_Exp>;
   parent_event_id: InputMaybe<Int_Comparison_Exp>;
+  price: InputMaybe<Numeric_Comparison_Exp>;
   size: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
+  types: InputMaybe<Jsonb_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
 };
 
@@ -5036,22 +5050,26 @@ export enum Events_Constraint {
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
   location: InputMaybe<Array<Scalars['String']>>;
+  types: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
   location: InputMaybe<Scalars['Int']>;
+  types: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
   location: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "events" */
 export type Events_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "events" */
@@ -5060,6 +5078,7 @@ export type Events_Insert_Input = {
   end_date: InputMaybe<Scalars['date']>;
   event_organization: InputMaybe<Event_Organization_Arr_Rel_Insert_Input>;
   event_person: InputMaybe<Event_Person_Arr_Rel_Insert_Input>;
+  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   link: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['jsonb']>;
@@ -5067,9 +5086,11 @@ export type Events_Insert_Input = {
   notes: InputMaybe<Scalars['String']>;
   parent_event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   status: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5083,6 +5104,7 @@ export type Events_Max_Fields = {
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
@@ -5099,6 +5121,7 @@ export type Events_Min_Fields = {
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
@@ -5134,6 +5157,7 @@ export type Events_Order_By = {
   end_date: InputMaybe<Order_By>;
   event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Order_By>;
   event_person_aggregate: InputMaybe<Event_Person_Aggregate_Order_By>;
+  geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
   location: InputMaybe<Order_By>;
@@ -5141,9 +5165,11 @@ export type Events_Order_By = {
   notes: InputMaybe<Order_By>;
   parent_event: InputMaybe<Events_Order_By>;
   parent_event_id: InputMaybe<Order_By>;
+  price: InputMaybe<Order_By>;
   size: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
+  types: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
 };
 
@@ -5155,6 +5181,7 @@ export type Events_Pk_Columns_Input = {
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
   location: InputMaybe<Scalars['jsonb']>;
+  types: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "events" */
@@ -5164,6 +5191,8 @@ export enum Events_Select_Column {
   /** column name */
   EndDate = 'end_date',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Id = 'id',
   /** column name */
   Link = 'link',
@@ -5176,11 +5205,15 @@ export enum Events_Select_Column {
   /** column name */
   ParentEventId = 'parent_event_id',
   /** column name */
+  Price = 'price',
+  /** column name */
   Size = 'size',
   /** column name */
   StartDate = 'start_date',
   /** column name */
   Status = 'status',
+  /** column name */
+  Types = 'types',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -5189,15 +5222,18 @@ export enum Events_Select_Column {
 export type Events_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   link: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   status: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
@@ -5206,6 +5242,7 @@ export type Events_Stddev_Fields = {
   __typename?: 'events_stddev_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -5213,6 +5250,7 @@ export type Events_Stddev_Pop_Fields = {
   __typename?: 'events_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5220,6 +5258,7 @@ export type Events_Stddev_Samp_Fields = {
   __typename?: 'events_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -5227,6 +5266,7 @@ export type Events_Sum_Fields = {
   __typename?: 'events_sum_fields';
   id: Maybe<Scalars['Int']>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
 };
 
 /** update columns of table "events" */
@@ -5236,6 +5276,8 @@ export enum Events_Update_Column {
   /** column name */
   EndDate = 'end_date',
   /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Id = 'id',
   /** column name */
   Link = 'link',
@@ -5248,11 +5290,15 @@ export enum Events_Update_Column {
   /** column name */
   ParentEventId = 'parent_event_id',
   /** column name */
+  Price = 'price',
+  /** column name */
   Size = 'size',
   /** column name */
   StartDate = 'start_date',
   /** column name */
   Status = 'status',
+  /** column name */
+  Types = 'types',
   /** column name */
   UpdatedAt = 'updated_at'
 }
@@ -5262,6 +5308,7 @@ export type Events_Var_Pop_Fields = {
   __typename?: 'events_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -5269,6 +5316,7 @@ export type Events_Var_Samp_Fields = {
   __typename?: 'events_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -5276,6 +5324,7 @@ export type Events_Variance_Fields = {
   __typename?: 'events_variance_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */

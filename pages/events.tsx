@@ -18,6 +18,7 @@ import {
 import { DeepPartial } from "./companies";
 import { onTrackView } from "@/utils/track";
 import { useRouter } from "next/router";
+import { getFullAddress } from "@/utils/helpers";
 
 type Props = {
 	eventsCount: number;
@@ -171,7 +172,7 @@ const Events: NextPage<Props> = ({
 											)}
 											{event.location && (
 												<div className="w-full inline-flex py-1 text-sm text-gray-400">
-													{event.location}
+													{getFullAddress(event.location)}
 												</div>
 											)}
 

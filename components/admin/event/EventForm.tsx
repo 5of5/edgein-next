@@ -1,4 +1,4 @@
-import { eventSizeChoices, status } from "@/utils/constants";
+import { eventSizeChoices, eventTypeChoices, status } from "@/utils/constants";
 import React, { ReactElement } from "react";
 import {
   SimpleForm,
@@ -7,14 +7,17 @@ import {
   SelectInput,
   ReferenceInput,
   AutocompleteInput,
+  NumberInput,
 } from "react-admin";
+import ElemAddressInput from "../ElemAddressInput";
 
 type EventFormProps = {
   action: "create" | "edit";
   toolbar?: ReactElement | false;
+  currentData?: any;
 };
 
-const EventForm = ({ action, toolbar }: EventFormProps) => {
+const EventForm = ({ action, toolbar, currentData }: EventFormProps) => {
   const inputClassName =
     "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
 
@@ -33,6 +36,16 @@ const EventForm = ({ action, toolbar }: EventFormProps) => {
       />
       <DateInput className={inputClassName} source="start_date" />
       <DateInput className={inputClassName} source="end_date" />
+      <SelectInput
+        className={inputClassName}
+        source="types"
+        choices={eventTypeChoices}
+      />
+      <ElemAddressInput
+        defaultLocation={currentData?.location}
+        defaultGeoPoint={currentData?.geopoint}
+        locationFieldName="location"
+      />
       <TextInput
         className={inputClassName}
         source="location.address"
@@ -53,6 +66,17 @@ const EventForm = ({ action, toolbar }: EventFormProps) => {
         source="location.country"
         label="Country"
       />
+      <TextInput
+        className={inputClassName}
+        source="geopoint"
+        format={(value) =>
+          value?.coordinates
+            ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
+            : ""
+        }
+        label="Geopoint"
+        disabled
+      />
       <TextInput className={inputClassName} source="link" />
       <TextInput className={inputClassName} source="notes" />
       <SelectInput
@@ -60,6 +84,7 @@ const EventForm = ({ action, toolbar }: EventFormProps) => {
         source="size"
         choices={eventSizeChoices}
       />
+      <NumberInput className={inputClassName} source="price" />
       <ReferenceInput
         label="Parent event"
         source="parent_event_id"
