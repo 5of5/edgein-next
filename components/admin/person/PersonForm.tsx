@@ -12,6 +12,7 @@ import {
 import {
   validateNameAndSlugAndEmailAndDomain,
   status,
+  libraryChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
@@ -140,6 +141,12 @@ const PersonForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue="Web3"
         />
       </SimpleForm>
     </div>

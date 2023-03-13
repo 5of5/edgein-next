@@ -33,7 +33,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 	const offset = null;
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }],
 	};
 
 	const {

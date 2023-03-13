@@ -74,6 +74,7 @@ select_permissions:
         - id
         - investment_amount_total
         - latest_investment
+        - library
         - linkedin
         - location
         - location_json
@@ -114,6 +115,7 @@ select_permissions:
         - id
         - investment_amount_total
         - latest_investment
+        - library
         - linkedin
         - location
         - location_json

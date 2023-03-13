@@ -11,6 +11,7 @@ import {
 } from "react-admin";
 import {
   companyChoices,
+  libraryChoices,
   status,
   validateNameAndSlugAndEmailAndDomain,
 } from "@/utils/constants";
@@ -209,6 +210,12 @@ const VcFirmForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectInput
+          className={textInputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue="Web3"
         />
       </SimpleForm>
     </div>
