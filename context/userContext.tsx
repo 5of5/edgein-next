@@ -22,6 +22,7 @@ type UserValue = {
   listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
   myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][]
   refetchMyGroups: any
+  refreshUser: () => void;
 }
 
 const userContext = React.createContext<UserValue>({
@@ -30,6 +31,7 @@ const userContext = React.createContext<UserValue>({
   listAndFollows: [],
   myGroups: [],
   refetchMyGroups: () => {},
+  refreshUser: () => {},
 });
 const useUser = () => {
   const queryClient = useQueryClient()
@@ -45,7 +47,7 @@ type Props = {
 };
 
 const UserProvider: React.FC<Props> = (props) => {
-  const { user, error: userError, loading } = useAuth();
+  const { user, error: userError, loading, refreshUser } = useAuth();
   const { boot, shutdown } = useIntercom();
   const Provider = userContext.Provider;
 
@@ -117,7 +119,14 @@ const UserProvider: React.FC<Props> = (props) => {
 
   return (
     <Provider
-      value={{ user: user || null, loading, listAndFollows, myGroups, refetchMyGroups }}
+      value={{
+        user: user || null,
+        loading,
+        listAndFollows,
+        myGroups,
+        refetchMyGroups,
+        refreshUser,
+      }}
     >
       {user && !user.email.endsWith("@edgein.io") ? (
         <FullStory org={FULLSTORY_ORG_ID} />

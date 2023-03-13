@@ -29,6 +29,7 @@ export const PersonList = () => {
       <TextField source="personal_email" />
       <TextField source="work_email" />
       <TextField source="linkedin" />
+      <TextField source="library" />
       <TextField source="status" />
       {/* <TextField source="counter" /> */}
     </ElemList>

@@ -107,7 +107,7 @@ const Companies: NextPage<Props> = ({
 	const offset = limit * page;
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }],
 	};
 
 	useEffect(() => {
@@ -256,11 +256,11 @@ const Companies: NextPage<Props> = ({
 						resourceType="companies"
 						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
-							filters._and = [{ slug: { _neq: "" } }];
+							filters._and = [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [{ slug: { _neq: "" } }];
+							filters._and = [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}
@@ -353,7 +353,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { slug: { _neq: "" } },
+			where: { _and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }] }
 		}
 	);
 
@@ -362,7 +362,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Companies - EdgeIn.io",
 			metaDescription:
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
-			companiesCount: companies?.companies_aggregate.aggregate?.count,
+			companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
 			initialCompanies: companies?.companies,
 			companyStatusTags,
 		},

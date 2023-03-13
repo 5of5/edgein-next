@@ -158,7 +158,14 @@ const queryForCompanyList = async (date: any) => {
   // prepare gql query
   const fetchQuery = `
   query query_companies($date: timestamptz) {
-    companies(where: {updated_at: {_gte: $date}}) {
+    companies(
+      where: {
+        _and: [
+          {updated_at: {_gte: $date}},
+          {library: {_eq: "web3"}}
+        ]
+      }
+    ) {
       id
       name
       overview
@@ -188,7 +195,14 @@ const queryForVcFirmsList = async (date: any) => {
   // prepare gql query
   const fetchQuery = `
   query query_vcfirms($date: timestamptz) {
-    vc_firms(where: {updated_at: {_gte: $date}}) {
+    vc_firms(
+      where: {
+        _and: [
+          {updated_at: {_gte: $date}},
+          {library: {_eq: "web3"}}
+        ]
+      }
+    ) {
       id
       name
       logo
@@ -211,7 +225,14 @@ const queryForPeopleList = async (date: any) => {
   // prepare gql query
   const fetchQuery = `
   query query_people($date: timestamptz) {
-    people(where: {updated_at: {_gte: $date}}) {
+    people(
+      where: {
+        _and: [
+          {updated_at: {_gte: $date}},
+          {library: {_eq: "web3"}}
+        ]
+      }
+    ) {
       id
       name
       work_email
