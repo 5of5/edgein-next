@@ -146,6 +146,7 @@ const PersonForm = ({
           className={inputClassName}
           source="library"
           choices={libraryChoices}
+          defaultValue="Web3"
         />
       </SimpleForm>
     </div>

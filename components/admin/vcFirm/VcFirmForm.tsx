@@ -215,6 +215,7 @@ const VcFirmForm = ({
           className={textInputClassName}
           source="library"
           choices={libraryChoices}
+          defaultValue="Web3"
         />
       </SimpleForm>
     </div>

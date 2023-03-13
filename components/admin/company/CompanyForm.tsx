@@ -294,6 +294,7 @@ const CompanyForm = ({
           className={inputClassName}
           source="library"
           choices={libraryChoices}
+          defaultValue="Web3"
         />
       </SimpleForm>
     </div>

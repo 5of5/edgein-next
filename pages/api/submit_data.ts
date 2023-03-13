@@ -100,15 +100,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     let actionType: ActionType = "Change Data";
 
     // create a new one
-    if (resourceId === undefined)
+    if (resourceId === undefined) {
       actionType = "Insert Data";
+    }
+
+    const properties = {...resourceObj};
+
+    if (
+      actionType === "Insert Data" &&
+      ["companies", "vc_firms", "people"].includes(resourceType) &&
+      !resourceObj?.library
+    ) {
+      properties.library = "Web3";
+    }
 
     const insertResult = await mutateActionAndDataRaw(
       partnerId,
       user,
       NODE_NAME[resourceType],
       resourceId,
-      resourceObj,
+      properties,
       resourceType,
       actionType,
       forceUpdate,
