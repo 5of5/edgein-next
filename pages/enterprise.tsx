@@ -1,7 +1,10 @@
 import type { NextPage } from "next";
 import React from "react";
 import { ElemButton } from "@/components/ElemButton";
-import { FigureBlurredCircle } from "@/components/Figures";
+import {
+	FigureBlurredCircle,
+	FigureBlurredRectangle,
+} from "@/components/Figures";
 import { FigureDash } from "@/components/Figures";
 import Image from "next/image";
 import { Transition } from "@headlessui/react";
@@ -21,18 +24,11 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 	return (
 		<>
 			<div className="relative -mb-24 overflow-hidden">
-				<figure className="absolute opacity-50 -z-10 -top-10 left-0 translate-y-[-10%] translate-x-[-55%] sm:left-1/2 sm:translate-y-[-6%] sm:translate-x-[-140%] lg:translate-x-[-130%] xl:translate-x-[-142%]">
-					<Image
-						src="/images/bg-blur-shapes.png"
-						alt="Blur"
-						width={620}
-						height={1000}
-						priority
-					/>
-				</figure>
-				<FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
+				<section className="relative pt-16 -mb-20 px-4 sm:px-6 lg:px-8">
+					<FigureBlurredCircle className="absolute -z-10 top-20 -left-72 sm:top-20 sm:-left-64" />
+					<FigureBlurredRectangle className="absolute -z-10 top-0 -right-96 rotate-45 sm:top-2/3 sm:right-0" />
+					<FigureBlurredRectangle className="absolute -z-10 top-1/3 -right-96 rotate-45 hidden sm:block" />
 
-				<section className="pt-16 -mb-20 px-4 sm:px-6 lg:px-8">
 					<div className="max-w-5xl mx-auto">
 						<h1 className="text-4xl font-bold text-center sm:text-5xl lg:px-12">
 							The exclusive Web3 platform for market intelligence.
@@ -137,27 +133,27 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 							</div>
 						</div>
 
-						<div className="mt-16 p-8 rounded-lg bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] sm:p-16">
-							<div className="max-w-2xl mx-auto">
+						<div className="mt-16 p-8 relative overflow-hidden rounded-5xl bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] sm:p-16">
+							<div className="max-w-2xl mx-auto relative z-10">
 								<h3 className=" text-3xl font-bold text-white">
-									Ecosystem plans discounts available for first 15 early
-									partners, until April 15th:
+									Ecosystem plan discounts available for first 15 early
+									partners, until April 1st:
 								</h3>
 								<p className="text-xl text-gray-100">
 									$4,995, Now $995 for 1 year.
 								</p>
 								<p className="mt-6 text-xl text-gray-100">
-									*1,000 leads based on initial request
+									*1,000 leads based on initial request.
 								</p>
 								<p className="text-xl text-gray-100">
-									*100 $15 Contributor accounts 6 months
+									*100 $15 Contributor accounts 6 months.
 								</p>
 								<p className="text-xl text-gray-100">
-									*100 $5 Collaborator accounts 12 months
+									*100 $5 Collaborator accounts 12 months.
 								</p>
 								<p className="mt-6 text-xl text-gray-100">
 									Prices will increase month on month starting April 1st.
-									Starting at $999/year with a limit of 15 per level.
+									Starting at $995/year with a limit of 15 per level.
 								</p>
 								<ElemButton
 									href="https://buy.stripe.com/00gdTG7pWfjM0jSfZ2"
@@ -169,6 +165,7 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 									Get started now
 								</ElemButton>
 							</div>
+							<figure className="absolute -bottom-72 -left-24 w-96 h-96 bg-[#F72784] rounded-full blur-3xl z-0 opacity-70"></figure>
 						</div>
 					</div>
 				</section>
