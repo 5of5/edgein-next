@@ -1,6 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
 import GroupService from "@/utils/groups";
-import UserService from "@/utils/users";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
@@ -17,14 +16,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // params:
   const email: string = req.body.email;
   const user_group_id: number = req.body.groupId;
+  const inviteUserId: number = req.body.inviteUserId;
 
   const existedInvites = await GroupService.onCheckGroupInviteExists(email, user_group_id);
 
   if (existedInvites) {
     return res.status(400).json({ message: `An invitation with email ${email} already exists` });
   }
-
-  const userData = await UserService.findOneUserByEmail(email);
 
   const {
     data: { insert_user_group_invites_one },
@@ -50,8 +48,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
-  if (userData) {
-    const member = await GroupService.onAddGroupMember(userData.id, user_group_id);
+  if (inviteUserId) {
+    const member = await GroupService.onAddGroupMember(inviteUserId, user_group_id);
     return res.send({ member, invite: insert_user_group_invites_one });
   }
 
