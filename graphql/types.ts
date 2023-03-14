@@ -4904,6 +4904,7 @@ export type Event_Person_Variance_Order_By = {
 /** columns and relationships of "events" */
 export type Events = {
   __typename?: 'events';
+  banner: Maybe<Scalars['jsonb']>;
   created_at: Scalars['timestamptz'];
   end_date: Maybe<Scalars['date']>;
   /** An array relationship */
@@ -4925,10 +4926,17 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Scalars['String'];
   types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "events" */
+export type EventsBannerArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -5015,6 +5023,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
+  banner: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
 };
@@ -5032,6 +5041,7 @@ export type Events_Bool_Exp = {
   _and: InputMaybe<Array<Events_Bool_Exp>>;
   _not: InputMaybe<Events_Bool_Exp>;
   _or: InputMaybe<Array<Events_Bool_Exp>>;
+  banner: InputMaybe<Jsonb_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   end_date: InputMaybe<Date_Comparison_Exp>;
   event_organization: InputMaybe<Event_Organization_Bool_Exp>;
@@ -5046,6 +5056,7 @@ export type Events_Bool_Exp = {
   parent_event_id: InputMaybe<Int_Comparison_Exp>;
   price: InputMaybe<Numeric_Comparison_Exp>;
   size: InputMaybe<String_Comparison_Exp>;
+  slug: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   types: InputMaybe<Jsonb_Comparison_Exp>;
@@ -5055,23 +5066,28 @@ export type Events_Bool_Exp = {
 /** unique or primary key constraints on table "events" */
 export enum Events_Constraint {
   /** unique or primary key constraint */
-  EventsPkey = 'events_pkey'
+  EventsPkey = 'events_pkey',
+  /** unique or primary key constraint */
+  EventsSlugKey = 'events_slug_key'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
+  banner: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   types: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
+  banner: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   types: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
+  banner: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['String']>;
 };
@@ -5085,6 +5101,7 @@ export type Events_Inc_Input = {
 
 /** input type for inserting data into table "events" */
 export type Events_Insert_Input = {
+  banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
   event_organization: InputMaybe<Event_Organization_Arr_Rel_Insert_Input>;
@@ -5099,6 +5116,7 @@ export type Events_Insert_Input = {
   parent_event_id: InputMaybe<Scalars['Int']>;
   price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
+  slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   status: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['jsonb']>;
@@ -5117,6 +5135,7 @@ export type Events_Max_Fields = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -5134,6 +5153,7 @@ export type Events_Min_Fields = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -5164,6 +5184,7 @@ export type Events_On_Conflict = {
 
 /** Ordering options when selecting data from "events". */
 export type Events_Order_By = {
+  banner: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
   event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Order_By>;
@@ -5178,6 +5199,7 @@ export type Events_Order_By = {
   parent_event_id: InputMaybe<Order_By>;
   price: InputMaybe<Order_By>;
   size: InputMaybe<Order_By>;
+  slug: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
   types: InputMaybe<Order_By>;
@@ -5191,12 +5213,15 @@ export type Events_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
+  banner: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "events" */
 export enum Events_Select_Column {
+  /** column name */
+  Banner = 'banner',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -5220,6 +5245,8 @@ export enum Events_Select_Column {
   /** column name */
   Size = 'size',
   /** column name */
+  Slug = 'slug',
+  /** column name */
   StartDate = 'start_date',
   /** column name */
   Status = 'status',
@@ -5231,6 +5258,7 @@ export enum Events_Select_Column {
 
 /** input type for updating data in table "events" */
 export type Events_Set_Input = {
+  banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   end_date: InputMaybe<Scalars['date']>;
   geopoint: InputMaybe<Scalars['geography']>;
@@ -5242,6 +5270,7 @@ export type Events_Set_Input = {
   parent_event_id: InputMaybe<Scalars['Int']>;
   price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
+  slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
   status: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['jsonb']>;
@@ -5283,6 +5312,8 @@ export type Events_Sum_Fields = {
 /** update columns of table "events" */
 export enum Events_Update_Column {
   /** column name */
+  Banner = 'banner',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   EndDate = 'end_date',
@@ -5304,6 +5335,8 @@ export enum Events_Update_Column {
   Price = 'price',
   /** column name */
   Size = 'size',
+  /** column name */
+  Slug = 'slug',
   /** column name */
   StartDate = 'start_date',
   /** column name */
@@ -19050,7 +19083,7 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -19523,6 +19556,8 @@ export const GetEventsDocument = `
   ) {
     id
     name
+    slug
+    banner
     notes
     location_json
     link

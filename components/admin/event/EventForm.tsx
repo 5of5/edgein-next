@@ -1,3 +1,4 @@
+import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
 import { eventSizeChoices, eventTypeChoices, status } from "@/utils/constants";
 import React, { ReactElement } from "react";
 import {
@@ -9,16 +10,38 @@ import {
   AutocompleteInput,
   NumberInput,
   AutocompleteArrayInput,
+  FormDataConsumer,
+  FileInput,
+  ImageField,
+  required,
+  useGetList,
 } from "react-admin";
 import ElemAddressInput from "../ElemAddressInput";
+import ElemSlugInput from "../ElemSlugInput";
 
 type EventFormProps = {
   action: "create" | "edit";
   toolbar?: ReactElement | false;
   currentData?: any;
+  isImageUpdated: boolean;
+  banner: any;
+  onSelect: (files: any) => void;
+  onDropRejected: (files: any) => void;
 };
 
-const EventForm = ({ action, toolbar, currentData }: EventFormProps) => {
+const EventForm = ({
+  action,
+  toolbar,
+  currentData, 
+  isImageUpdated,
+  banner,
+  onSelect,
+  onDropRejected,
+}: EventFormProps) => {
+  const { data: events } = useGetList("events", {});
+
+  const { slug, onGenerateSlug } = useAdminHandleSlug(events);
+
   const inputClassName =
     "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
 
@@ -31,10 +54,31 @@ const EventForm = ({ action, toolbar, currentData }: EventFormProps) => {
           source="id"
         />
       )}
-      <TextInput
-        className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
-        source="name"
-      />
+      <FormDataConsumer>
+        {({ formData, ...rest }) => (
+            <TextInput
+            className={inputClassName}
+            source="name"
+            onBlur={(e) => onGenerateSlug(e.target.value, formData)}
+            {...rest}
+          />
+        )}
+      </FormDataConsumer>
+      <ElemSlugInput slug={slug} validate={required()} />
+      <FileInput
+        className="w-full"
+        onRemove={onDropRejected}
+        options={{ onDrop: onSelect }}
+        source="banner"
+        label="Banner"
+        accept="image/*"
+        placeholder={<p>Drop your file here</p>}
+      >
+        <ImageField source="src" title="title" />
+      </FileInput>
+      {action === "edit" && !banner && !isImageUpdated && (
+        <ImageField className="w-full" source="banner.url" title="Banner" />
+      )}
       <DateInput className={inputClassName} source="start_date" />
       <DateInput className={inputClassName} source="end_date" />
       <AutocompleteArrayInput

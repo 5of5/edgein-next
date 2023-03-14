@@ -7,6 +7,8 @@ query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
 	) {
 		id
 		name
+		slug
+		banner
 		notes
 		location_json
 		link

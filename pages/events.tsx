@@ -5,7 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemFeaturedEvents } from "@/components/Events/ElemFeaturedEvents";
 import { ElemButton } from "../components/ElemButton";
-import { runGraphQl, formatDate, numberWithCommas } from "../utils";
+import { runGraphQl, formatDate } from "../utils";
 import { useStateParams } from "@/hooks/useStateParams";
 import { Pagination } from "@/components/Pagination";
 import moment from "moment-timezone";
@@ -258,14 +258,19 @@ const Events: NextPage<Props> = ({
 							</>
 						) : (
 							events?.map((event) => (
-								<Link key={event.id} href={`/events/${event.id}`}>
+								<Link key={event.id} href={`/events/${event.slug}`}>
 									<a
 										key={event.id}
 										className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
 									>
-										<div className="">
-											<div className="h-36 rounded-lg w-full bg-[url('https://source.unsplash.com/random/500×200/?city')] bg-cover bg-no-repeat bg-center"></div>
-										</div>
+										<div>
+                        <div
+                          className={`h-36 rounded-lg w-full bg-[url('${
+                            event.banner?.url ||
+                            "https://source.unsplash.com/random/500×200/?city"
+                          }')] bg-cover bg-no-repeat bg-center`}
+                        />
+                      </div>
 										<h3 className="mt-4 text-2xl font-bold break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
 											{event.name}
 										</h3>

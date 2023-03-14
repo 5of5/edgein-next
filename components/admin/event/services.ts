@@ -1,4 +1,4 @@
-export const transform = (event: any) => {
+const transformEventFormData = (event: any) => {
   let data = { ...event };
   const typesValue = data.types ? data.types : [];
   data.types =
@@ -17,3 +17,16 @@ export const transform = (event: any) => {
     ? { ...data, parent_event_id: null }
     : data;
 };
+
+export const withImageTransformData = (
+  data: any,
+  imageResponse: any,
+  finalValue: any
+) => ({
+  ...transformEventFormData(data),
+  banner: imageResponse?.file?.url || "",
+});
+
+export const withoutImageTransformData = (data: any, finalValue: any) => ({
+  ...transformEventFormData(data),
+});

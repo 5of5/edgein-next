@@ -34,6 +34,7 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - banner
         - created_at
         - end_date
         - geopoint
@@ -45,6 +46,7 @@ select_permissions:
         - parent_event_id
         - price
         - size
+        - slug
         - start_date
         - status
         - types

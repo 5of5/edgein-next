@@ -9,6 +9,7 @@ import {
   ReferenceField,
   SelectField,
   NumberField,
+  ImageField,
 } from "react-admin";
 import ElemList from "../ElemList";
 
@@ -28,6 +29,8 @@ export const EventList = () => {
       <EditButton />
       <TextField source="id" />
       <TextField source="name" />
+      <TextField source="slug" />
+      <ImageField className="logoFile" source="banner.url" label="Banner" />
       <TextField source="start_date" />
       <TextField source="end_date" />
       <SelectField source="types" choices={eventTypeChoices} />
