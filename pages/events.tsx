@@ -264,13 +264,12 @@ const Events: NextPage<Props> = ({
 										className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
 									>
 										<div>
-                        <div
-                          className={`h-36 rounded-lg w-full bg-[url('${
-                            event.banner?.url ||
-                            "https://source.unsplash.com/random/500×200/?city"
-                          }')] bg-cover bg-no-repeat bg-center`}
-                        />
-                      </div>
+											<div
+												className="h-36 rounded-lg w-full bg-cover bg-no-repeat bg-center"
+												style={{ backgroundImage: `url(${event.banner?.url ||
+													"https://source.unsplash.com/random/500×200/?city"})` }}
+											/>
+                    </div>
 										<h3 className="mt-4 text-2xl font-bold break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
 											{event.name}
 										</h3>
