@@ -19085,6 +19085,13 @@ export type GetEventsQueryVariables = Exact<{
 
 export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
+export type GetEventQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
@@ -19594,6 +19601,74 @@ useGetEventsQuery.getKey = (variables: GetEventsQueryVariables) => ['GetEvents',
 ;
 
 useGetEventsQuery.fetcher = (variables: GetEventsQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, variables, options);
+export const GetEventDocument = `
+    query GetEvent($slug: String!) {
+  events(where: {slug: {_eq: $slug}}) {
+    id
+    name
+    slug
+    banner
+    notes
+    location_json
+    link
+    size
+    price
+    types
+    start_date
+    end_date
+    created_at
+    event_person {
+      id
+      type
+      created_at
+      person {
+        id
+        slug
+        name
+        picture
+        linkedin
+        personal_email
+        work_email
+      }
+    }
+    event_organization {
+      id
+      created_at
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+}
+    `;
+export const useGetEventQuery = <
+      TData = GetEventQuery,
+      TError = Error
+    >(
+      variables: GetEventQueryVariables,
+      options?: UseQueryOptions<GetEventQuery, TError, TData>
+    ) =>
+    useQuery<GetEventQuery, TError, TData>(
+      ['GetEvent', variables],
+      fetcher<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables),
+      options
+    );
+useGetEventQuery.document = GetEventDocument;
+
+
+useGetEventQuery.getKey = (variables: GetEventQueryVariables) => ['GetEvent', variables];
+;
+
+useGetEventQuery.fetcher = (variables: GetEventQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {

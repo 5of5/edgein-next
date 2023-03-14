@@ -25,3 +25,51 @@ query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
 		}
 	}
 }
+
+query GetEvent($slug: String!) {
+	events(where: { slug: { _eq: $slug } }) {
+		id
+		name
+		slug
+		banner
+		notes
+		location_json
+		link
+		size
+		price
+		types
+		start_date
+		end_date
+		created_at
+		event_person {
+			id
+			type
+			created_at
+			person {
+				id
+				slug
+				name
+				picture
+				linkedin
+				personal_email
+				work_email
+			}
+		}
+		event_organization {
+			id
+			created_at
+			company {
+				id
+				name
+				slug
+				logo
+			}
+			vc_firm {
+				id
+				name
+				slug
+				logo
+			}
+		}
+	}
+}

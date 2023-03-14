@@ -1,84 +1,70 @@
-import React, { useEffect, useState, MutableRefObject, useRef } from "react";
+import React, { MutableRefObject, useRef } from "react";
 import { NextPage, GetServerSideProps } from "next";
-import Link from "next/link";
-import moment from "moment-timezone";
-import { useRouter } from "next/router";
-import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { runGraphQl } from "@/utils";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
-import { ElemOrganizationActivity } from "@/components/ElemOrganizationActivity";
-import { Events, GetEventsDocument, GetEventsQuery } from "@/graphql/types";
-import { useAuth } from "@/hooks/useAuth";
+import { GetEventDocument, GetEventQuery } from "@/graphql/types";
 import { sortBy } from "lodash";
 import { formatDate } from "@/utils";
+import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
+import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
+import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 
 type Props = {
-	event: any; //Event
+	event: GetEventQuery["events"][0];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Event: NextPage<Props> = (props: Props) => {
-	const { user } = useAuth();
-	const router = useRouter();
-	const { eventId } = router.query;
-
-	const [event, setEvent] = useState<any>(props.event); //<Event>
-
-	const [overviewMore, setOverviewMore] = useState(false);
-	const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
-	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
-
+const Event: NextPage<Props> = ({ event }) => {
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	// useEffect(() => {
-	// 	if (event.overview) {
-	// 		setOverviewDivHeight(overviewDiv.current.scrollHeight);
-	// 	}
-	// }, [event]);
 
 	if (!event) {
 		return <h1>Not Found</h1>;
 	}
 
-	// Event tags
-	//let eventTags: string[] = [];
-
-	// if (event.tags) {
-	// 	event.tags.map((tag: string, i: number) => [eventTags.push(tag)]);
-	// }
-
-	// const firstTag = event.tags ? event.tags[0] : "";
-	// const secondTag = event.tags ? event.tags[1] : "";
+	// const firstTag = event.types ? event.types[0] : "";
+	// const secondTag = event.types ? event.types[1] : "";
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
-	if (event.speakers?.length > 0) {
+	if (event.event_person?.some(item => item.type === "speaker")) {
 		tabBarItems.push({ name: "Speakers", ref: speakersRef });
 	}
-	if (event.sponsors?.length > 0) {
+	if (event.event_organization?.length > 0) {
 		tabBarItems.push({ name: "Sponsors", ref: sponsorsRef });
 	}
+
+	const speakers = event.event_person?.filter(item => item.type === "speaker");
+
+	const sortedActivities =
+    [...speakers, ...event.event_organization]
+      ?.slice()
+      .sort((a: any, b: any) => {
+        return (
+          new Date(a?.created_date || "").getTime() -
+          new Date(b?.created_date || "").getTime()
+        );
+      })
+      .reverse() || [];
 
 	return (
 		<>
 			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="mb-4">
-						{event.photo && (
-							<div className="m-auto h-96 flex items-center justify-center rounded-[20px] overflow-hidden">
-								<img
-									className="h-auto w-full "
-									src={event.photo}
-									alt={event.name}
-								/>
-							</div>
-						)}
+						<div className="m-auto h-96 flex items-center justify-center rounded-[20px] overflow-hidden">
+							<img
+								className="h-auto w-full "
+								src={event.banner?.url || "https://source.unsplash.com/random/500×200/?city"}
+								alt={event.name}
+							/>
+						</div>
 					</div>
 
 					{event.start_date && (
@@ -135,11 +121,11 @@ const Event: NextPage<Props> = (props: Props) => {
 						</div>
 					</div>
 					<div>
-						{event.tags?.length > 0 && (
+						{event.types?.length > 0 && (
 							<ElemTags
 								className="mt-4"
 								resourceType={"events"}
-								tags={event.tags}
+								tags={event.types}
 							/>
 						)}
 					</div>
@@ -153,8 +139,8 @@ const Event: NextPage<Props> = (props: Props) => {
 						<div className="flex items-center space-x-2">
 							<ElemSocialShare
 								resourceName={event.name}
-								resourceTags={event.tags}
-								resourceTwitterUrl={event.twitter}
+								resourceTags={event.types}
+								resourceTwitterUrl={event.link}
 								resourceType={"events"}
 							/>
 							<ElemButton btn="white">Going</ElemButton>
@@ -174,112 +160,63 @@ const Event: NextPage<Props> = (props: Props) => {
 						<ElemKeyInfo
 							className="sticky top-4"
 							heading="Key Info"
-							website={event.website}
-							linkedIn={event.event_linkedin}
-							twitter={event.twitter}
-							location={event.location}
+							website={event.link}
 							locationJson={event.location_json}
-							discord={event.discord}
 						/>
 					</div>
 					<div className="col-span-8">
 						<div className="w-full p-5 bg-white shadow rounded-lg">
 							<h2 className="text-xl font-bold">Overview</h2>
 							<p className="text-lg text-slate-600">
-								Bring your ideas to life Space Warp is a jam-packed program
-								leading up to the launch of Filecoin’s Virtual Machine on
-								mainnet in March 2023. The program includes grants, a hackathon,
-								a builders’ leaderboard, and more totalling over $400k in FIL
-								tokens. Be among the first to build FVM and join the community
-								showcase at the launch party early next year.{" "}
+								{event.notes}
 							</p>
 						</div>
 						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
-							<h2 className="text-xl font-bold">Activity</h2>
+							<ElemEventActivity activities={sortedActivities} />
 						</div>
 					</div>
 				</div>
-			</div>
 
-			{event.speakers?.length > 0 && (
-				<div
-					ref={speakersRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="team"
-				>
-					Event Speakers
-				</div>
-			)}
+				{speakers?.length > 0 && (
+					<div
+						ref={speakersRef}
+						className="mt-7 p-5 rounded-lg bg-white shadow"
+						id="speakers"
+					>
+						<ElemSpeakerGrid
+							people={speakers}
+						/>
+					</div>
+				)}
 
-			{event.sponsors?.length > 0 && (
+				{event.event_organization?.length > 0 && (
 				<div
 					ref={sponsorsRef}
 					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="team"
+					id="sponsors"
 				>
-					Event Sponsors
+					<ElemSponsorGrid organizations={event.event_organization} />
 				</div>
 			)}
+			</div>
 		</>
 	);
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	// const { data: events } = await runGraphQl<GetEventQuery>(
-	// 	GetEventDocument,
-	// 	{ slug: context.params?.eventId },
-	// 	context.req.cookies
-	// );
+	const { data: events } = await runGraphQl<GetEventQuery>(
+		GetEventDocument,
+		{ slug: context.params?.eventId },
+		context.req.cookies
+	);
 
-	const yesterday = moment().subtract(1, "days");
-	const today = moment();
-	const tomorrow = moment().add(1, "days");
-	const in2days = moment().add(2, "days");
-
-	const eventsData = {
-		events: [
-			{
-				id: 1,
-				slug: "somelink",
-				name: "Sickest AI and Web3 event",
-				link: "#Event1Link",
-				photo: "https://source.unsplash.com/random/500×200/?city",
-				location: "San Francisco, California, United States",
-				venue: "Moscone Center",
-				size: 4000,
-				start_date: JSON.parse(JSON.stringify(yesterday)),
-				end_date: JSON.parse(JSON.stringify(tomorrow)),
-				tags: ["Conference", "NFT", "DAO"],
-				price: 199,
-			},
-			{
-				id: 2,
-				slug: "just-an-ok-web3-event",
-				name: "Just an ok Web3 event",
-				link: "#Event2Link",
-				location: "Miami, Florida, United States",
-				venue: "Mana Wynwood Convention Center",
-				size: 2000,
-				start_date: JSON.parse(JSON.stringify(yesterday)),
-				end_date: JSON.parse(JSON.stringify(in2days)),
-				tags: ["Blockchain", "Conference", "Web3"],
-				price: 499.99,
-			},
-		],
-	};
-
-	// const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
-	// 	offset: 0,
-	// 	limit: 50,
-	// });
-
-	if (!eventsData?.events[0]) {
+	if (!events?.events[0]) {
 		return {
 			notFound: true,
 		};
 	}
 
-	const event = eventsData?.events[0];
+	const event = sortBy(events?.events, "status").reverse()[0];
 
 	let metaTitle = null;
 	if (event.name) {
@@ -287,9 +224,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 	let metaDescription = null;
 
-	// if (event?.overview) {
-	// 	metaDescription = event.overview;
-	// }
+	if (event?.notes) {
+		metaDescription = event.notes;
+	}
 
 	return {
 		props: {
