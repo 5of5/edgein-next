@@ -34,17 +34,20 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - created_at
         - end_date
-        - start_date
+        - geopoint
         - id
-        - parent_event_id
-        - location_json
         - link
+        - location_json
         - name
         - notes
+        - parent_event_id
+        - price
         - size
+        - start_date
         - status
-        - created_at
+        - types
         - updated_at
       filter:
         status:

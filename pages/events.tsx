@@ -297,7 +297,7 @@ const Events: NextPage<Props> = ({
 											
 											{event?.types?.length > 0 && (
 												<div
-													className="mt-4 flex flex-wrap gap-2"
+													className="my-2 flex flex-wrap gap-2"
 													onClick={(e) => e.stopPropagation()}
 												>
 													{event.types.map((type: string) => (
@@ -319,7 +319,7 @@ const Events: NextPage<Props> = ({
 											)}
 
 											<div className="w-full inline-flex py-1 text-sm text-gray-400">
-												{/* {event.price != null && (
+												{event.price != null && (
 													<div>
 														{event.price > 0
 															? `Starts at $${event.price}`
@@ -328,33 +328,18 @@ const Events: NextPage<Props> = ({
 												)}
 												{event.price != null && event.size != null && (
 													<div className="mx-1">{"•"}</div>
-												)} */}
+												)}
 												{event.size != null && (
 													<>
 														<div>
-															{+event.size < 50
+															{/* {+event.size < 50
 																? "Less than 50 people"
-																: `${numberWithCommas(+event.size)} people`}
+																: `${numberWithCommas(+event.size)} people`} */}
+																{event.size}
 														</div>
 													</>
 												)}
 											</div>
-										</div>
-										<div
-											className="mt-4 flex flex-wrap gap-2"
-											onClick={(e) => e.stopPropagation()}
-										>
-											{/* {event.tags?.map((tag: string, index: number) => {
-												return (
-													<div
-														key={index}
-														//onClick={(e) => tagOnClick(e, tag)}
-														className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
-													>
-														{tag}
-													</div>
-												);
-											})} */}
 										</div>
 
 										{/* <div>
