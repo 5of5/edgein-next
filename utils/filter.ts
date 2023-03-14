@@ -67,11 +67,6 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
         minVal: 1,
         maxVal: 3,
       };
-    case "eventSize":
-      return {
-        minVal: 0,
-        maxVal: 100,
-      };
     case "eventPrice":
       return {
         minVal: 0,
@@ -916,14 +911,11 @@ export const processEventsFilters = (
     });
   }
 
-  // if (selectedFilters?.eventSize?.maxVal) {
-  //   filters._and?.push({
-  //     _and: [
-  //       { size: { _gt: selectedFilters?.eventSize?.minVal ?? 0 } },
-  //       { size: { _lte: selectedFilters?.eventSize?.maxVal } },
-  //     ],
-  //   });
-  // }
+  if (selectedFilters?.eventSize?.value?.title) {
+    filters._and?.push({
+     size: { _eq: selectedFilters.eventSize.value.title }
+    });
+  }
 
   if (
     selectedFilters?.eventDate?.condition &&

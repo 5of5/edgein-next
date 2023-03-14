@@ -13,6 +13,8 @@ import { ElemFilterPopup } from "./ElemFilterPopup";
 import { ElemAddFilter } from "./ElemAddFilter";
 import ElemAddressFilter from "./ElemAddressFilter";
 import { InputText } from "./InputText";
+import { InputSelect } from "./InputSelect";
+import { eventSizeChoices } from "@/utils/constants";
 
 type Props = {
   resourceType: "companies" | "vc_firms" | "events";
@@ -251,6 +253,16 @@ export const ElemFilter: FC<Props> = ({
       },
     }));
   };
+
+  const onChangeEventSize = (value: Record<string, any>) => {
+    setFilters((prev) => ({
+      ...prev,
+      eventSize: {
+        ...prev?.eventSize,
+        value,
+      },
+    }));
+  }
 
   const onFormatFilterParams = (name: FilterOptionKeys) => {
     const filterParams: any = cloneDeep(filters?.[name]);
@@ -598,8 +610,7 @@ export const ElemFilter: FC<Props> = ({
             if (
               option === "teamSize" ||
               option === "numOfInvestments" ||
-              option === "numOfExits" ||
-              option === "eventSize"
+              option === "numOfExits"
             ) {
               return (
                 <ElemFilterPopup
@@ -652,6 +663,33 @@ export const ElemFilter: FC<Props> = ({
                       onChange={({ min, max }: { min: number; max: number }) =>
                         onChangeRangeSlider(option, min, max)
                       }
+                    />
+                  </div>
+                </ElemFilterPopup>
+              );
+            }
+
+            if (option === "eventSize") {
+              return (
+                <ElemFilterPopup
+                  key={option}
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={optionMetadata.title || ""}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                >
+                  <div className="font-bold text-sm">
+                    {optionMetadata.heading}
+                  </div>
+                  <div className="py-2">
+                    <InputSelect
+                      options={eventSizeChoices.map(item => ({id: item.id, title: item.name}))}
+                      value={filters[option]?.value}
+                      onChange={onChangeEventSize}
+                      className="text-slate-600 text-base w-full"
                     />
                   </div>
                 </ElemFilterPopup>

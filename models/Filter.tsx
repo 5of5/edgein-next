@@ -127,8 +127,7 @@ export type Filters = {
   };
   eventSize?: {
     open?: boolean;
-    minVal: number;
-    maxVal: number;
+    value?: Record<string, any>;
   };
 };
 
