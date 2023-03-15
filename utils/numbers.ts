@@ -9,7 +9,7 @@ export const formatDate = (
 	}
 
 	var date = new Date(dateString);
-	date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+	//date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
 
 	if (!options) {
 		return date.toLocaleDateString("en-us", {

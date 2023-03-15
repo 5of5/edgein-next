@@ -5,6 +5,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { IconCheck } from "@/components/Icons";
 import { formatDate } from "@/utils";
 import { ElemPhoto } from "@/components/ElemPhoto";
+import moment from "moment-timezone";
 import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 import {
 	GetNotificationsForUserQuery,
@@ -26,9 +27,10 @@ const Notifications: NextPage = () => {
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		user?.entitlements.listsCount
-			? user?.entitlements.listsCount
-			: notifications?.length
+		notifications?.length
+		// user?.entitlements.listsCount
+		// 	? user?.entitlements.listsCount
+		// 	: notifications?.length
 	);
 
 	const [notificationsLimit, setNotificationsLimit] = useState(4);
@@ -46,7 +48,7 @@ const Notifications: NextPage = () => {
 	};
 
 	return (
-		<div className="max-w-4xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+		<div className="max-w-3xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 			<div className="bg-white shadow rounded-lg p-5">
 				<div className="flex items-center justify-between mb-2">
 					<h2 className="text-xl font-bold">Notifications</h2>
@@ -62,6 +64,17 @@ const Notifications: NextPage = () => {
 							const organization = notification.company
 								? notification.company
 								: notification.vc_firm;
+
+							// let zoneVal = moment(notification.created_at)
+							// 	.tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
+							// 	.format("MMM D, ha");
+
+							let userTimezone = moment.tz.guess();
+
+							var notificationCreatedAt = moment(notification.created_at)
+								.tz(userTimezone)
+								.format("MMM D");
+
 							return (
 								<a
 									href={getLink(notification)}
@@ -82,13 +95,15 @@ const Notifications: NextPage = () => {
 											</span>
 											{notification.message}
 											<p className="text-xs text-primary-500 font-bold">
-												{formatDate(notification.created_at, {
+												{notificationCreatedAt}
+												{/* {formatDate(notification.created_at, {
 													month: "short",
 													day: "2-digit",
 													// year: "numeric",
-													// hour: "2-digit",
-													// minute: "2-digit",
-												})}
+													hour: "numeric",
+													//hour: "2-digit",
+													timeZone: userTimezone,
+												})} */}
 											</p>
 										</div>
 									</div>
