@@ -12,6 +12,7 @@ import { formatDate } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
 import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
+import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -28,8 +29,8 @@ const Event: NextPage<Props> = ({ event }) => {
 		return <h1>Not Found</h1>;
 	}
 
-	// const firstTag = event.types ? event.types[0] : "";
-	// const secondTag = event.types ? event.types[1] : "";
+	const firstTag = event.types ? event.types[0] : "";
+	const secondTag = event.types ? event.types[1] : "";
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -200,6 +201,14 @@ const Event: NextPage<Props> = ({ event }) => {
 					<ElemSponsorGrid organizations={event.event_organization} />
 				</div>
 			)}
+			{event.types && (
+				<ElemSimilarEvents
+					className="mt-7"
+					currentSlug={event.slug}
+					tag1={firstTag}
+					tag2={secondTag}
+				/>
+				)}
 			</div>
 		</>
 	);

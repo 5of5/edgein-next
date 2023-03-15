@@ -1,11 +1,10 @@
 import type { NextPage, GetStaticProps } from "next";
-import Link from "next/link";
 import React, { Fragment, useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemFeaturedEvents } from "@/components/Events/ElemFeaturedEvents";
 import { ElemButton } from "../components/ElemButton";
-import { runGraphQl, formatDate } from "../utils";
+import { runGraphQl } from "../utils";
 import { useStateParams } from "@/hooks/useStateParams";
 import { Pagination } from "@/components/Pagination";
 import moment from "moment-timezone";
@@ -19,10 +18,11 @@ import {
 import { DeepPartial } from "./companies";
 import { onTrackView } from "@/utils/track";
 import { useRouter } from "next/router";
-import { getFullAddress } from "@/utils/helpers";
 import { ElemFilter } from "@/components/ElemFilter";
 import { processEventsFilters } from "@/utils/filter";
 import useFilterParams from "@/hooks/useFilterParams";
+import { ElemEventCard } from "@/components/Events/ElemEventCard";
+import { PlaceholderEventCard } from "@/components/Placeholders";
 
 type Props = {
 	eventTabs: TextFilter[];
@@ -62,7 +62,7 @@ const Events: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const filters: DeepPartial<Events_Bool_Exp> = {_and: []};
+	const filters: DeepPartial<Events_Bool_Exp> = {_and: [{ slug: { _neq: "" } }]};
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -216,11 +216,11 @@ const Events: NextPage<Props> = ({
 						resourceType="events"
 						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
-							filters._and = [];
+							filters._and = [{ slug: { _neq: "" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [];
+							filters._and = [{ slug: { _neq: "" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}
@@ -252,107 +252,13 @@ const Events: NextPage<Props> = ({
 							<h4>Error loading events</h4>
 						) : isLoading && !initialLoad ? (
 							<>
-								{/* {Array.from({ length: 9 }, (_, i) => (
+								{Array.from({ length: 9 }, (_, i) => (
 									<PlaceholderEventCard key={i} />
-								))} */}
+								))}
 							</>
 						) : (
 							events?.map((event) => (
-								<Link key={event.id} href={`/events/${event.slug}`}>
-									<a
-										key={event.id}
-										className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
-									>
-										<div>
-											<div
-												className="h-36 rounded-lg w-full bg-cover bg-no-repeat bg-center"
-												style={{ backgroundImage: `url(${event.banner?.url ||
-													"https://source.unsplash.com/random/500×200/?city"})` }}
-											/>
-                    </div>
-										<h3 className="mt-4 text-2xl font-bold break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
-											{event.name}
-										</h3>
-
-										<div className="grow mt-1">
-											{event.start_date && (
-												<div className="w-full inline-flex py-1 font-medium">
-													{event.start_date &&
-														formatDate(event.start_date, {
-															month: "short",
-															day: "2-digit",
-															year: "numeric",
-															timeZone: "America/Los_Angeles",
-														})}
-
-													{event.end_date && (
-														<>
-															&nbsp;&ndash;&nbsp;
-															{formatDate(event.end_date, {
-																month: "short",
-																day: "2-digit",
-																year: "numeric",
-																timeZone: "America/Los_Angeles",
-															})}
-														</>
-													)}
-												</div>
-											)}
-											
-											{event?.types?.length > 0 && (
-												<div
-													className="my-2 flex flex-wrap gap-2"
-													onClick={(e) => e.stopPropagation()}
-												>
-													{event.types.map((type: string) => (
-															<div
-																key={type}
-																onClick={(e) => onClickType(e, type)}
-																className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
-															>
-																{type}
-															</div>
-													))}
-												</div>
-											)}
-
-											{event.location_json && (
-												<div className="w-full inline-flex py-1 text-sm text-gray-400">
-													{getFullAddress(event.location_json)}
-												</div>
-											)}
-
-											<div className="w-full inline-flex py-1 text-sm text-gray-400">
-												{event.price != null && (
-													<div>
-														{event.price > 0
-															? `Starts at $${event.price}`
-															: "Free"}
-													</div>
-												)}
-												{event.price != null && event.size != null && (
-													<div className="mx-1">{"•"}</div>
-												)}
-												{event.size != null && (
-													<>
-														<div>
-															{/* {+event.size < 50
-																? "Less than 50 people"
-																: `${numberWithCommas(+event.size)} people`} */}
-																{event.size}
-														</div>
-													</>
-												)}
-											</div>
-										</div>
-
-										{/* <div>
-											<ElemButton className="pl-0 pr-0" btn="transparent" arrow>
-												View
-											</ElemButton>
-										</div> */}
-									</a>
-								</Link>
+								<ElemEventCard key={event.id} event={event} onClickType={onClickType} />
 							))
 						)}
 					</div>
@@ -378,7 +284,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
 		offset: 0,
 		limit: 50,
-		where: { _and: [] },
+		where: { _and: [{ slug: { _neq: "" } }] },
 	});
 
 	return {
