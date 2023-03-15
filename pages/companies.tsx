@@ -107,7 +107,7 @@ const Companies: NextPage<Props> = ({
 	const offset = limit * page;
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }],
+		_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
 	};
 
 	useEffect(() => {
@@ -256,11 +256,11 @@ const Companies: NextPage<Props> = ({
 						resourceType="companies"
 						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
-							filters._and = [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }];
+							filters._and = [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }];
+							filters._and = [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}
@@ -353,7 +353,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { _and: [{ slug: { _neq: "" } }, { library: { _eq: "Web3" } }] }
+			where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] }
 		}
 	);
 
