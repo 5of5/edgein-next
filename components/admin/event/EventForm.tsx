@@ -143,6 +143,31 @@ const EventForm = ({
           emptyValue={2}
         />
       </ReferenceInput>
+      <TextInput
+        className={inputClassName}
+        source="twitter"
+        label="Twitter"
+      />
+      <TextInput
+        className={inputClassName}
+        source="facebook"
+        label="Facebook"
+      />
+      <TextInput
+        className={inputClassName}
+        source="instagram"
+        label="Instagram"
+      />
+      <TextInput
+        className={inputClassName}
+        source="discord"
+        label="Discord"
+      />
+      <TextInput
+        className={inputClassName}
+        source="telegram"
+        label="Telegram"
+      />
       <SelectInput
         className={inputClassName}
         source="status"

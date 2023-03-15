@@ -40,6 +40,11 @@ query GetEvent($slug: String!) {
 		types
 		start_date
 		end_date
+		twitter
+		facebook
+		instagram
+		discord
+		telegram
 		created_at
 		event_person {
 			id

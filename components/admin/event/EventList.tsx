@@ -50,6 +50,11 @@ export const EventList = () => {
       >
         <TextField source="name" />
       </ReferenceField>
+      <TextField source="twitter" />
+      <TextField source="facebook" />
+      <TextField source="instagram" />
+      <TextField source="discord" />
+      <TextField source="telegram" />
       <TextField source="status" />
     </ElemList>
   );

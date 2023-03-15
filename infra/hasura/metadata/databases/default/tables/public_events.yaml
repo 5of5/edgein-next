@@ -36,9 +36,12 @@ select_permissions:
       columns:
         - banner
         - created_at
+        - discord
         - end_date
+        - facebook
         - geopoint
         - id
+        - instagram
         - link
         - location_json
         - name
@@ -49,6 +52,8 @@ select_permissions:
         - slug
         - start_date
         - status
+        - telegram
+        - twitter
         - types
         - updated_at
       filter:

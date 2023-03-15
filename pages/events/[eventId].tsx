@@ -140,7 +140,7 @@ const Event: NextPage<Props> = ({ event }) => {
 							<ElemSocialShare
 								resourceName={event.name}
 								resourceTags={event.types}
-								resourceTwitterUrl={event.link}
+								resourceTwitterUrl={event.twitter}
 								resourceType={"events"}
 							/>
 							<ElemButton btn="white">Going</ElemButton>
@@ -162,6 +162,8 @@ const Event: NextPage<Props> = ({ event }) => {
 							heading="Key Info"
 							website={event.link}
 							locationJson={event.location_json}
+							twitter={event.twitter}
+							discord={event.discord}
 						/>
 					</div>
 					<div className="col-span-8">
