@@ -8,6 +8,7 @@ import { ElemButton } from "../components/ElemButton";
 import { runGraphQl, formatDate } from "../utils";
 import { useStateParams } from "@/hooks/useStateParams";
 import { Pagination } from "@/components/Pagination";
+import { PlaceholderEventCard } from "@/components/Placeholders";
 import moment from "moment-timezone";
 import { IconSearch, IconAnnotation } from "@/components/Icons";
 import {
@@ -47,8 +48,9 @@ const Events: NextPage<Props> = ({
 		(statusTag) => eventTabs.indexOf(statusTag).toString(),
 		(index) => ({
 			...eventTabs[Number(index)],
-			date: Number(index) === 0 ? "" : moment().subtract(1, "days").toISOString()
-		}),
+			date:
+				Number(index) === 0 ? "" : moment().subtract(1, "days").toISOString(),
+		})
 	);
 
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -62,7 +64,7 @@ const Events: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const filters: DeepPartial<Events_Bool_Exp> = {_and: []};
+	const filters: DeepPartial<Events_Bool_Exp> = { _and: [] };
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -83,61 +85,61 @@ const Events: NextPage<Props> = ({
 	}, [selectedTab]);
 
 	const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
 
-    const currentFilterOption = [...(selectedFilters?.eventType?.tags || [])];
-    const newFilterOption = currentFilterOption.includes(type)
-      ? currentFilterOption.filter((t) => t !== type)
-      : [type, ...currentFilterOption];
+		const currentFilterOption = [...(selectedFilters?.eventType?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(type)
+			? currentFilterOption.filter((t) => t !== type)
+			: [type, ...currentFilterOption];
 
-    if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, eventType: undefined });
-    } else {
-      setSelectedFilters({
-        ...selectedFilters,
-        eventType: {
-          ...selectedFilters?.eventType,
-          tags: newFilterOption,
-        },
-      });
-    }
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, eventType: undefined });
+		} else {
+			setSelectedFilters({
+				...selectedFilters,
+				eventType: {
+					...selectedFilters?.eventType,
+					tags: newFilterOption,
+				},
+			});
+		}
 
-    currentFilterOption.includes(type)
-      ? toast.custom(
-          (t) => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? "animate-fade-in-up" : "opacity-0"
-              }`}
-            >
-              Removed &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: "top-center",
-          }
-        )
-      : toast.custom(
-          (t) => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? "animate-fade-in-up" : "opacity-0"
-              }`}
-            >
-              Added &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: "top-center",
-          }
-        );
-  };
+		currentFilterOption.includes(type)
+			? toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Removed &ldquo;{type}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  )
+			: toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Added &ldquo;{type}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  );
+	};
 
 	/** Handle selected filter params */
 	processEventsFilters(filters, selectedFilters);
@@ -167,7 +169,7 @@ const Events: NextPage<Props> = ({
 		? eventsCount
 		: eventsData?.events_aggregate?.aggregate?.count || 0;
 
-		return (
+	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Events"
@@ -252,9 +254,9 @@ const Events: NextPage<Props> = ({
 							<h4>Error loading events</h4>
 						) : isLoading && !initialLoad ? (
 							<>
-								{/* {Array.from({ length: 9 }, (_, i) => (
+								{Array.from({ length: 9 }, (_, i) => (
 									<PlaceholderEventCard key={i} />
-								))} */}
+								))}
 							</>
 						) : (
 							events?.map((event) => (
@@ -266,10 +268,14 @@ const Events: NextPage<Props> = ({
 										<div>
 											<div
 												className="h-36 rounded-lg w-full bg-cover bg-no-repeat bg-center"
-												style={{ backgroundImage: `url(${event.banner?.url ||
-													"https://source.unsplash.com/random/500×200/?city"})` }}
+												style={{
+													backgroundImage: `url(${
+														event.banner?.url ||
+														"https://source.unsplash.com/random/500×200/?city"
+													})`,
+												}}
 											/>
-                    </div>
+										</div>
 										<h3 className="mt-4 text-2xl font-bold break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
 											{event.name}
 										</h3>
@@ -298,29 +304,33 @@ const Events: NextPage<Props> = ({
 													)}
 												</div>
 											)}
-											
+
 											{event?.types?.length > 0 && (
 												<div
 													className="my-2 flex flex-wrap gap-2"
 													onClick={(e) => e.stopPropagation()}
 												>
 													{event.types.map((type: string) => (
-															<div
-																key={type}
-																onClick={(e) => onClickType(e, type)}
-																className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
-															>
-																{type}
-															</div>
+														<div
+															key={type}
+															onClick={(e) => onClickType(e, type)}
+															className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
+														>
+															{type}
+														</div>
 													))}
 												</div>
 											)}
 
-											{event.location_json && (
-												<div className="w-full inline-flex py-1 text-sm text-gray-400">
-													{getFullAddress(event.location_json)}
-												</div>
-											)}
+											<div className="w-full inline-flex py-1 text-sm text-gray-400">
+												{/* {event.venue} */}
+												{/* {event.venue != null && event.location_json != null && (
+													<div className="mx-1">{"•"}</div>
+												)} */}
+												{event.location_json && (
+													<div>{getFullAddress(event.location_json)}</div>
+												)}
+											</div>
 
 											<div className="w-full inline-flex py-1 text-sm text-gray-400">
 												{event.price != null && (
@@ -339,7 +349,7 @@ const Events: NextPage<Props> = ({
 															{/* {+event.size < 50
 																? "Less than 50 people"
 																: `${numberWithCommas(+event.size)} people`} */}
-																{event.size}
+															{event.size}
 														</div>
 													</>
 												)}

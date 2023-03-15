@@ -23,7 +23,6 @@ const Event: NextPage<Props> = ({ event }) => {
 	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-
 	if (!event) {
 		return <h1>Not Found</h1>;
 	}
@@ -33,35 +32,40 @@ const Event: NextPage<Props> = ({ event }) => {
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
-	if (event.event_person?.some(item => item.type === "speaker")) {
+	if (event.event_person?.some((item) => item.type === "speaker")) {
 		tabBarItems.push({ name: "Speakers", ref: speakersRef });
 	}
 	if (event.event_organization?.length > 0) {
 		tabBarItems.push({ name: "Sponsors", ref: sponsorsRef });
 	}
 
-	const speakers = event.event_person?.filter(item => item.type === "speaker");
+	const speakers = event.event_person?.filter(
+		(item) => item.type === "speaker"
+	);
 
 	const sortedActivities =
-    [...speakers, ...event.event_organization]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.created_date || "").getTime() -
-          new Date(b?.created_date || "").getTime()
-        );
-      })
-      .reverse() || [];
+		[...speakers, ...event.event_organization]
+			?.slice()
+			.sort((a: any, b: any) => {
+				return (
+					new Date(a?.created_date || "").getTime() -
+					new Date(b?.created_date || "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	return (
 		<>
 			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="mb-4">
-						<div className="m-auto h-96 flex items-center justify-center rounded-[20px] overflow-hidden">
+						<div className="m-auto h-52 sm:h-72 lg:h-96 flex items-center justify-center shrink-0 rounded-[20px] overflow-hidden">
 							<img
-								className="h-auto w-full "
-								src={event.banner?.url || "https://source.unsplash.com/random/500×200/?city"}
+								className="object-cover h-96 w-full max-w-full max-h-full"
+								src={
+									event.banner?.url ||
+									"https://source.unsplash.com/random/500×200/?city"
+								}
 								alt={event.name}
 							/>
 						</div>
@@ -169,9 +173,7 @@ const Event: NextPage<Props> = ({ event }) => {
 					<div className="col-span-8">
 						<div className="w-full p-5 bg-white shadow rounded-lg">
 							<h2 className="text-xl font-bold">Overview</h2>
-							<p className="text-lg text-slate-600">
-								{event.notes}
-							</p>
+							<p className="text-lg text-slate-600">{event.notes}</p>
 						</div>
 						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
 							<ElemEventActivity activities={sortedActivities} />
@@ -185,21 +187,19 @@ const Event: NextPage<Props> = ({ event }) => {
 						className="mt-7 p-5 rounded-lg bg-white shadow"
 						id="speakers"
 					>
-						<ElemSpeakerGrid
-							people={speakers}
-						/>
+						<ElemSpeakerGrid people={speakers} />
 					</div>
 				)}
 
 				{event.event_organization?.length > 0 && (
-				<div
-					ref={sponsorsRef}
-					className="mt-7 p-5 rounded-lg bg-white shadow"
-					id="sponsors"
-				>
-					<ElemSponsorGrid organizations={event.event_organization} />
-				</div>
-			)}
+					<div
+						ref={sponsorsRef}
+						className="mt-7 p-5 rounded-lg bg-white shadow"
+						id="sponsors"
+					>
+						<ElemSponsorGrid organizations={event.event_organization} />
+					</div>
+				)}
 			</div>
 		</>
 	);
