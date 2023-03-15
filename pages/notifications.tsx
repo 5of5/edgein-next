@@ -27,10 +27,9 @@ const Notifications: NextPage = () => {
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		notifications?.length
-		// user?.entitlements.listsCount
-		// 	? user?.entitlements.listsCount
-		// 	: notifications?.length
+		user?.entitlements.listsCount
+			? user?.entitlements.listsCount
+			: notifications?.length
 	);
 
 	const [notificationsLimit, setNotificationsLimit] = useState(4);
