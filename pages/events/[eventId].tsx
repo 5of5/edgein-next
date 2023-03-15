@@ -78,7 +78,7 @@ const Event: NextPage<Props> = ({ event }) => {
 									month: "short",
 									day: "2-digit",
 									year: "numeric",
-									timeZone: event.timezone || '',
+									timeZone: event.timezone || undefined,
 								})}
 
 							{event.end_date && (
@@ -88,7 +88,7 @@ const Event: NextPage<Props> = ({ event }) => {
 										month: "short",
 										day: "2-digit",
 										year: "numeric",
-										timeZone: event.timezone || '',
+										timeZone: event.timezone || undefined,
 									})}
 								</>
 							)}

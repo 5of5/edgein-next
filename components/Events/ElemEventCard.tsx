@@ -39,7 +39,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
                   month: "short",
                   day: "2-digit",
                   year: "numeric",
-                  timeZone: event.timezone || '',
+                  timeZone: event.timezone || undefined,
                 })}
 
               {event.end_date && (
@@ -49,7 +49,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
                     month: "short",
                     day: "2-digit",
                     year: "numeric",
-                    timeZone: event.timezone || '',
+                    timeZone: event.timezone || undefined,
                   })}
                 </>
               )}
