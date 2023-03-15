@@ -62,6 +62,7 @@ query GetEvent($slug: String!) {
 		}
 		event_organization {
 			id
+			type
 			created_at
 			company {
 				id

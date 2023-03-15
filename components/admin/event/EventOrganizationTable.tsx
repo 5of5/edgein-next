@@ -11,7 +11,7 @@ import ContentCreate from "@mui/icons-material/Add";
 
 import { useParams } from "react-router-dom";
 
-import { FormControl } from "@mui/material";
+import { InputLabel, MenuItem, FormControl, Select } from "@mui/material";
 
 import {
   AutocompleteInput,
@@ -21,6 +21,7 @@ import {
   Datagrid,
   useGetList,
   ReferenceField,
+  SelectField,
   TextField,
   Button,
   ReferenceInput,
@@ -34,6 +35,7 @@ import {
 
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+import { eventOrganizationTypeChoices } from "@/utils/constants";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -145,22 +147,17 @@ export const EventOrganizationTable = () => {
     });
   };
 
-  const handleChange = (target: number, value: any) => {
-    if (target === 0)
-      setEventOrganizationData({
-        ...eventOrganizationData,
-        company_id: value,
-      });
-    else
-      setEventOrganizationData({
-        ...eventOrganizationData,
-        vc_firm_id: value,
-      });
+  const handleChange = (field: string, value: any) => {
+    setEventOrganizationData({
+      ...eventOrganizationData,
+      [field]: value,
+    });
   };
 
   const handleSave = () => {
     const data = {
       event_id: parseInt(currentId!),
+      type: eventOrganizationData.type,
       company_id:
         eventOrganizationData.company_id === ""
           ? null
@@ -237,6 +234,11 @@ export const EventOrganizationTable = () => {
           >
             <TextField source="name" />
           </ReferenceField>
+          <SelectField
+            source="type"
+            choices={eventOrganizationTypeChoices}
+            sortable={false}
+          />
           <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
           <CustomDeleteButton />
         </Datagrid>
@@ -252,7 +254,7 @@ export const EventOrganizationTable = () => {
         >
           <DialogTitle>Event Organization</DialogTitle>
           <DialogContent>
-            <Form>
+            <Form defaultValues={currRecord}>
               {(!eventOrganizationData?.id || currRecord?.company_id) && (
                 <FormControl
                   variant="filled"
@@ -269,12 +271,11 @@ export const EventOrganizationTable = () => {
                     reference="companies"
                   >
                     <AutocompleteInput
-                      defaultValue={currRecord?.company_id}
                       optionText="name"
                       optionValue="id"
                       filterToQuery={(search) => ({ name: search })}
                       onChange={(company_id) => {
-                        handleChange(0, company_id);
+                        handleChange("company_id", company_id);
                       }}
                     />
                   </ReferenceInput>
@@ -297,17 +298,31 @@ export const EventOrganizationTable = () => {
                     reference="vc_firms"
                   >
                     <AutocompleteInput
-                      defaultValue={currRecord?.vc_firm_id}
                       optionText="name"
                       optionValue="id"
                       filterToQuery={(search) => ({ name: search })}
                       onChange={(vc_firm_id) => {
-                        handleChange(1, vc_firm_id);
+                        handleChange("vc_firm_id", vc_firm_id);
                       }}
                     />
                   </ReferenceInput>
                 </FormControl>
               )}
+
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <InputLabel>Type</InputLabel>
+                <Select
+                  defaultValue={currRecord?.type}
+                  value={eventOrganizationData?.type}
+                  onChange={(e) => handleChange("type", e.target.value)}
+                >
+                  {eventOrganizationTypeChoices?.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
 
               <FormControl
                 variant="filled"

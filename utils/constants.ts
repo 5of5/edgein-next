@@ -723,6 +723,17 @@ export const eventPersonTypeChoices = [
 	},
 ];
 
+export const eventOrganizationTypeChoices = [
+	{
+		id: "sponsor",
+		name: "Sponsor",
+	},
+	{
+		id: "organizer",
+		name: "Organizer",
+	},
+];
+
 export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
 
 export const libraryChoices = [

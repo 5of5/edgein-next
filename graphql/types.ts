@@ -4228,6 +4228,7 @@ export type Event_Organization = {
   event: Maybe<Events>;
   event_id: Scalars['Int'];
   id: Scalars['Int'];
+  type: Maybe<Scalars['String']>;
   /** An object relationship */
   vc_firm: Maybe<Vc_Firms>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -4313,6 +4314,7 @@ export type Event_Organization_Bool_Exp = {
   event: InputMaybe<Events_Bool_Exp>;
   event_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
   vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
@@ -4339,6 +4341,7 @@ export type Event_Organization_Insert_Input = {
   event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   event_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
@@ -4350,6 +4353,7 @@ export type Event_Organization_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -4359,6 +4363,7 @@ export type Event_Organization_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -4369,6 +4374,7 @@ export type Event_Organization_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -4378,6 +4384,7 @@ export type Event_Organization_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -4405,6 +4412,7 @@ export type Event_Organization_Order_By = {
   event: InputMaybe<Events_Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   vc_firm: InputMaybe<Vc_Firms_Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
@@ -4425,6 +4433,8 @@ export enum Event_Organization_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Type = 'type',
+  /** column name */
   VcFirmId = 'vc_firm_id'
 }
 
@@ -4434,6 +4444,7 @@ export type Event_Organization_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   event_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -4515,6 +4526,8 @@ export enum Event_Organization_Update_Column {
   EventId = 'event_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  Type = 'type',
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
@@ -19145,7 +19158,7 @@ export type GetEventQueryVariables = Exact<{
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -19693,6 +19706,7 @@ export const GetEventDocument = `
     }
     event_organization {
       id
+      type
       created_at
       company {
         id

@@ -42,9 +42,7 @@ export const ElemEventActivity: React.FC<Props> = ({ activities }) => {
                             activity?.person?.name ||
                             activity?.company?.name ||
                             activity?.vc_firm?.name
-                          } was added as a ${
-                            activity?.person ? "speakers" : "sponsor"
-                          }`}
+                          } was added as a ${activity?.type}`}
                         </div>
                         <p className="text-sm">
                           {formatDate(activity.created_at as string, {

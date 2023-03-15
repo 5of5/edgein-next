@@ -7,7 +7,7 @@ import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
 import { GetEventDocument, GetEventQuery } from "@/graphql/types";
-import { sortBy } from "lodash";
+import { orderBy, sortBy } from "lodash";
 import { formatDate } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
 import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
@@ -44,16 +44,15 @@ const Event: NextPage<Props> = ({ event }) => {
 		(item) => item.type === "speaker"
 	);
 
-	const sortedActivities =
-		[...speakers, ...event.event_organization]
-			?.slice()
-			.sort((a: any, b: any) => {
-				return (
-					new Date(a?.created_date || "").getTime() -
-					new Date(b?.created_date || "").getTime()
-				);
-			})
-			.reverse() || [];
+	const sponsors = event.event_organization?.filter(
+		(item) => item.type === "sponsor"
+	);
+
+	const sortedActivities = orderBy(
+    [...event.event_person, ...event.event_organization]?.slice() || [],
+    ["created_at"],
+    ["desc"]
+  );
 
 	return (
 		<>
@@ -192,13 +191,13 @@ const Event: NextPage<Props> = ({ event }) => {
 					</div>
 				)}
 
-				{event.event_organization?.length > 0 && (
+				{sponsors.length > 0 && (
 					<div
 						ref={sponsorsRef}
 						className="mt-7 p-5 rounded-lg bg-white shadow"
 						id="sponsors"
 					>
-						<ElemSponsorGrid organizations={event.event_organization} />
+						<ElemSponsorGrid organizations={sponsors} />
 					</div>
 				)}
 				{event.types && (
