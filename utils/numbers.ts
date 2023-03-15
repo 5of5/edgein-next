@@ -140,3 +140,9 @@ export const getTimeOfWork = (startDate: string, endDate: string) => {
 		.duration(timeDiff)
 		.months()} mo`;
 };
+
+export const getTimeString = (value: Date) => {
+	const hour = new Date(value).getHours()
+	const mins = ('0'+ new Date(value).getMinutes()).slice(-2);
+	return `${hour}:${mins}`;
+}

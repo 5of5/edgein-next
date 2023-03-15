@@ -11,12 +11,16 @@ query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
 		banner
 		notes
 		location_json
+		venue_name
 		link
 		size
 		price
 		types
 		start_date
+		start_time
 		end_date
+		end_time
+		timezone
 		created_at
 	}
 	events_aggregate(where: $where) {
@@ -34,12 +38,16 @@ query GetEvent($slug: String!) {
 		banner
 		notes
 		location_json
+		venue_name
 		link
 		size
 		price
 		types
 		start_date
+		start_time
 		end_date
+		end_time
+		timezone
 		twitter
 		facebook
 		instagram

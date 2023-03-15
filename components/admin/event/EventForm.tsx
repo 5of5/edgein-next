@@ -1,10 +1,13 @@
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
-import { eventSizeChoices, eventTypeChoices, status } from "@/utils/constants";
+import { getTimeString } from "@/utils";
+import { eventSizeChoices, eventTypeChoices, status, timezoneChoices } from "@/utils/constants";
+import moment from "moment-timezone";
 import React, { ReactElement } from "react";
 import {
   SimpleForm,
   TextInput,
   DateInput,
+  TimeInput,
   SelectInput,
   ReferenceInput,
   AutocompleteInput,
@@ -56,7 +59,7 @@ const EventForm = ({
       )}
       <FormDataConsumer>
         {({ formData, ...rest }) => (
-            <TextInput
+          <TextInput
             className={inputClassName}
             source="name"
             onBlur={(e) => onGenerateSlug(e.target.value, formData)}
@@ -80,7 +83,26 @@ const EventForm = ({
         <ImageField className="w-full" source="banner.url" title="Banner" />
       )}
       <DateInput className={inputClassName} source="start_date" />
+      <TimeInput
+        className={inputClassName}
+        source="start_time"
+        format={(v) => (moment(v).isValid() ? getTimeString(v) : v)}
+        parse={(v) => (moment(v).isValid() ? getTimeString(v) : v)}
+      />
       <DateInput className={inputClassName} source="end_date" />
+      <TimeInput
+        className={inputClassName}
+        source="end_time"
+        format={(v) => (moment(v).isValid() ? getTimeString(v) : v)}
+        parse={(v) => (moment(v).isValid() ? getTimeString(v) : v)}
+      />
+      <AutocompleteInput
+        className={inputClassName}
+        source="timezone"
+        defaultValue="America/Los_Angeles"
+        choices={timezoneChoices}
+        style={{ padding: 0, border: "none" }}
+      />
       <AutocompleteArrayInput
         className={inputClassName}
         source="types"
@@ -90,6 +112,11 @@ const EventForm = ({
       <ElemAddressInput
         defaultLocation={currentData?.location}
         defaultGeoPoint={currentData?.geopoint}
+      />
+      <TextInput
+        className={inputClassName}
+        source="venue_name"
+        label="Venue name"
       />
       <TextInput
         className={inputClassName}

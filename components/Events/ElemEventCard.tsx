@@ -39,7 +39,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
                   month: "short",
                   day: "2-digit",
                   year: "numeric",
-                  timeZone: "America/Los_Angeles",
+                  timeZone: event.timezone || '',
                 })}
 
               {event.end_date && (
@@ -49,7 +49,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
                     month: "short",
                     day: "2-digit",
                     year: "numeric",
-                    timeZone: "America/Los_Angeles",
+                    timeZone: event.timezone || '',
                   })}
                 </>
               )}
@@ -77,14 +77,10 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
             </div>
           )}
 
-          <div className="w-full inline-flex py-1 text-sm text-gray-400">
-            {/* {event.venue} */}
-            {/* {event.venue != null && event.location_json != null && (
-													<div className="mx-1">{"•"}</div>
-												)} */}
-            {event.location_json && (
-              <div>{getFullAddress(event.location_json)}</div>
-            )}
+          <div className="text-sm text-gray-400 break-words">
+            {`${event.venue_name || ""}${
+              event.venue_name && event.location_json ? " • " : ""
+            }${getFullAddress(event.location_json)}`}
           </div>
 
           <div className="w-full inline-flex py-1 text-sm text-gray-400">

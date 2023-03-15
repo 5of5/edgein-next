@@ -38,6 +38,7 @@ select_permissions:
         - created_at
         - discord
         - end_date
+        - end_time
         - facebook
         - geopoint
         - id
@@ -51,11 +52,14 @@ select_permissions:
         - size
         - slug
         - start_date
+        - start_time
         - status
         - telegram
+        - timezone
         - twitter
         - types
         - updated_at
+        - venue_name
       filter:
         status:
           _eq: published

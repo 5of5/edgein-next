@@ -78,7 +78,7 @@ const Event: NextPage<Props> = ({ event }) => {
 									month: "short",
 									day: "2-digit",
 									year: "numeric",
-									timeZone: "America/Los_Angeles",
+									timeZone: event.timezone || '',
 								})}
 
 							{event.end_date && (
@@ -88,7 +88,7 @@ const Event: NextPage<Props> = ({ event }) => {
 										month: "short",
 										day: "2-digit",
 										year: "numeric",
-										timeZone: "America/Los_Angeles",
+										timeZone: event.timezone || '',
 									})}
 								</>
 							)}
@@ -165,6 +165,7 @@ const Event: NextPage<Props> = ({ event }) => {
 							className="sticky top-4"
 							heading="Key Info"
 							website={event.link}
+							venue={event.venue_name}
 							locationJson={event.location_json}
 							twitter={event.twitter}
 							discord={event.discord}

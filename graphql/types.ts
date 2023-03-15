@@ -19,6 +19,7 @@ export type Scalars = {
   geometry: any;
   jsonb: any;
   numeric: any;
+  time: any;
   timestamp: any;
   timestamptz: any;
 };
@@ -4921,6 +4922,7 @@ export type Events = {
   created_at: Scalars['timestamptz'];
   discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
+  end_time: Maybe<Scalars['time']>;
   /** An array relationship */
   event_organization: Array<Event_Organization>;
   /** An aggregate relationship */
@@ -4944,11 +4946,14 @@ export type Events = {
   size: Maybe<Scalars['String']>;
   slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
+  start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
   telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
+  venue_name: Maybe<Scalars['String']>;
 };
 
 
@@ -5063,6 +5068,7 @@ export type Events_Bool_Exp = {
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
   end_date: InputMaybe<Date_Comparison_Exp>;
+  end_time: InputMaybe<Time_Comparison_Exp>;
   event_organization: InputMaybe<Event_Organization_Bool_Exp>;
   event_person: InputMaybe<Event_Person_Bool_Exp>;
   facebook: InputMaybe<String_Comparison_Exp>;
@@ -5079,11 +5085,14 @@ export type Events_Bool_Exp = {
   size: InputMaybe<String_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
+  start_time: InputMaybe<Time_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
+  timezone: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   types: InputMaybe<Jsonb_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  venue_name: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "events" */
@@ -5128,6 +5137,7 @@ export type Events_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   discord: InputMaybe<Scalars['String']>;
   end_date: InputMaybe<Scalars['date']>;
+  end_time: InputMaybe<Scalars['time']>;
   event_organization: InputMaybe<Event_Organization_Arr_Rel_Insert_Input>;
   event_person: InputMaybe<Event_Person_Arr_Rel_Insert_Input>;
   facebook: InputMaybe<Scalars['String']>;
@@ -5144,11 +5154,14 @@ export type Events_Insert_Input = {
   size: InputMaybe<Scalars['String']>;
   slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
+  start_time: InputMaybe<Scalars['time']>;
   status: InputMaybe<Scalars['String']>;
   telegram: InputMaybe<Scalars['String']>;
+  timezone: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
+  venue_name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -5170,8 +5183,10 @@ export type Events_Max_Fields = {
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
+  venue_name: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -5193,8 +5208,10 @@ export type Events_Min_Fields = {
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
+  venue_name: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "events" */
@@ -5226,6 +5243,7 @@ export type Events_Order_By = {
   created_at: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  end_time: InputMaybe<Order_By>;
   event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Order_By>;
   event_person_aggregate: InputMaybe<Event_Person_Aggregate_Order_By>;
   facebook: InputMaybe<Order_By>;
@@ -5242,11 +5260,14 @@ export type Events_Order_By = {
   size: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
+  start_time: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
   telegram: InputMaybe<Order_By>;
+  timezone: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
   types: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
+  venue_name: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: events */
@@ -5271,6 +5292,8 @@ export enum Events_Select_Column {
   Discord = 'discord',
   /** column name */
   EndDate = 'end_date',
+  /** column name */
+  EndTime = 'end_time',
   /** column name */
   Facebook = 'facebook',
   /** column name */
@@ -5298,15 +5321,21 @@ export enum Events_Select_Column {
   /** column name */
   StartDate = 'start_date',
   /** column name */
+  StartTime = 'start_time',
+  /** column name */
   Status = 'status',
   /** column name */
   Telegram = 'telegram',
+  /** column name */
+  Timezone = 'timezone',
   /** column name */
   Twitter = 'twitter',
   /** column name */
   Types = 'types',
   /** column name */
-  UpdatedAt = 'updated_at'
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VenueName = 'venue_name'
 }
 
 /** input type for updating data in table "events" */
@@ -5315,6 +5344,7 @@ export type Events_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   discord: InputMaybe<Scalars['String']>;
   end_date: InputMaybe<Scalars['date']>;
+  end_time: InputMaybe<Scalars['time']>;
   facebook: InputMaybe<Scalars['String']>;
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
@@ -5328,11 +5358,14 @@ export type Events_Set_Input = {
   size: InputMaybe<Scalars['String']>;
   slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
+  start_time: InputMaybe<Scalars['time']>;
   status: InputMaybe<Scalars['String']>;
   telegram: InputMaybe<Scalars['String']>;
+  timezone: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
+  venue_name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -5378,6 +5411,8 @@ export enum Events_Update_Column {
   /** column name */
   EndDate = 'end_date',
   /** column name */
+  EndTime = 'end_time',
+  /** column name */
   Facebook = 'facebook',
   /** column name */
   Geopoint = 'geopoint',
@@ -5404,15 +5439,21 @@ export enum Events_Update_Column {
   /** column name */
   StartDate = 'start_date',
   /** column name */
+  StartTime = 'start_time',
+  /** column name */
   Status = 'status',
   /** column name */
   Telegram = 'telegram',
+  /** column name */
+  Timezone = 'timezone',
   /** column name */
   Twitter = 'twitter',
   /** column name */
   Types = 'types',
   /** column name */
-  UpdatedAt = 'updated_at'
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VenueName = 'venue_name'
 }
 
 /** aggregate var_pop on columns */
@@ -16231,6 +16272,19 @@ export type Team_Members_Variance_Order_By = {
   person_id: InputMaybe<Order_By>;
 };
 
+/** Boolean expression to compare columns of type "time". All fields are combined with logical 'AND'. */
+export type Time_Comparison_Exp = {
+  _eq: InputMaybe<Scalars['time']>;
+  _gt: InputMaybe<Scalars['time']>;
+  _gte: InputMaybe<Scalars['time']>;
+  _in: InputMaybe<Array<Scalars['time']>>;
+  _is_null: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['time']>;
+  _lte: InputMaybe<Scalars['time']>;
+  _neq: InputMaybe<Scalars['time']>;
+  _nin: InputMaybe<Array<Scalars['time']>>;
+};
+
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type Timestamp_Comparison_Exp = {
   _eq: InputMaybe<Scalars['timestamp']>;
@@ -19151,14 +19205,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, notes: string | null, location_json: any | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, end_date: any | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -19635,12 +19689,16 @@ export const GetEventsDocument = `
     banner
     notes
     location_json
+    venue_name
     link
     size
     price
     types
     start_date
+    start_time
     end_date
+    end_time
+    timezone
     created_at
   }
   events_aggregate(where: $where) {
@@ -19678,12 +19736,16 @@ export const GetEventDocument = `
     banner
     notes
     location_json
+    venue_name
     link
     size
     price
     types
     start_date
+    start_time
     end_date
+    end_time
+    timezone
     twitter
     facebook
     instagram

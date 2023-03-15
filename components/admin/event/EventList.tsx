@@ -32,13 +32,17 @@ export const EventList = () => {
       <TextField source="slug" />
       <ImageField className="logoFile" source="banner.url" label="Banner" />
       <TextField source="start_date" />
+      <TextField source="start_time" />
       <TextField source="end_date" />
+      <TextField source="end_time" />
+      <TextField source="timezone" />
       <SelectField source="types" choices={eventTypeChoices} />
       <FunctionField
         cellClassName="truncate"
         source="location_json"
         render={(record: any) => getFullAddress(record.location_json)}
       />
+      <TextField source="venue_name" />
       <TextField source="link" />
       <TextField source="notes" />
       <SelectField source="size" choices={eventSizeChoices} />
