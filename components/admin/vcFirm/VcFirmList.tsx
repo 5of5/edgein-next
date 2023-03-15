@@ -87,7 +87,10 @@ export const VcFirmList = () => {
         source="tags"
         render={(record: any) => (record.tags ? record.tags.join() : "")}
       />
-      <TextField source="library" />
+      <FunctionField
+        source="library"
+        render={(record: any) => (record.library ? record.library.join() : "")}
+      />
       {/* <TextField source="counter" /> */}
     </ElemList>
   );
