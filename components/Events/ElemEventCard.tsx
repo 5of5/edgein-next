@@ -14,7 +14,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
     <Link key={event.id} href={`/events/${event.slug}`}>
       <a
         key={event.id}
-        className="flex flex-col mx-auto w-full h-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
+        className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
       >
         <div>
           <div
@@ -77,11 +77,15 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
             </div>
           )}
 
-          {event.location_json && (
-            <div className="w-full inline-flex py-1 text-sm text-gray-400">
-              {getFullAddress(event.location_json)}
-            </div>
-          )}
+          <div className="w-full inline-flex py-1 text-sm text-gray-400">
+            {/* {event.venue} */}
+            {/* {event.venue != null && event.location_json != null && (
+													<div className="mx-1">{"•"}</div>
+												)} */}
+            {event.location_json && (
+              <div>{getFullAddress(event.location_json)}</div>
+            )}
+          </div>
 
           <div className="w-full inline-flex py-1 text-sm text-gray-400">
             {event.price != null && (
@@ -92,9 +96,24 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
             {event.price != null && event.size != null && (
               <div className="mx-1">{"•"}</div>
             )}
-            {event.size != null && <div>{event.size}</div>}
+            {event.size != null && (
+              <>
+                <div>
+                  {/* {+event.size < 50
+																? "Less than 50 people"
+																: `${numberWithCommas(+event.size)} people`} */}
+                  {event.size}
+                </div>
+              </>
+            )}
           </div>
         </div>
+
+        {/* <div>
+											<ElemButton className="pl-0 pr-0" btn="transparent" arrow>
+												View
+											</ElemButton>
+										</div> */}
       </a>
     </Link>
   );

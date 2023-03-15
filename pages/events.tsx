@@ -7,6 +7,7 @@ import { ElemButton } from "../components/ElemButton";
 import { runGraphQl } from "../utils";
 import { useStateParams } from "@/hooks/useStateParams";
 import { Pagination } from "@/components/Pagination";
+import { PlaceholderEventCard } from "@/components/Placeholders";
 import moment from "moment-timezone";
 import { IconSearch, IconAnnotation } from "@/components/Icons";
 import {
@@ -22,7 +23,6 @@ import { ElemFilter } from "@/components/ElemFilter";
 import { processEventsFilters } from "@/utils/filter";
 import useFilterParams from "@/hooks/useFilterParams";
 import { ElemEventCard } from "@/components/Events/ElemEventCard";
-import { PlaceholderEventCard } from "@/components/Placeholders";
 
 type Props = {
 	eventTabs: TextFilter[];
@@ -47,8 +47,9 @@ const Events: NextPage<Props> = ({
 		(statusTag) => eventTabs.indexOf(statusTag).toString(),
 		(index) => ({
 			...eventTabs[Number(index)],
-			date: Number(index) === 0 ? "" : moment().subtract(1, "days").toISOString()
-		}),
+			date:
+				Number(index) === 0 ? "" : moment().subtract(1, "days").toISOString(),
+		})
 	);
 
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -83,61 +84,61 @@ const Events: NextPage<Props> = ({
 	}, [selectedTab]);
 
 	const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
 
-    const currentFilterOption = [...(selectedFilters?.eventType?.tags || [])];
-    const newFilterOption = currentFilterOption.includes(type)
-      ? currentFilterOption.filter((t) => t !== type)
-      : [type, ...currentFilterOption];
+		const currentFilterOption = [...(selectedFilters?.eventType?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(type)
+			? currentFilterOption.filter((t) => t !== type)
+			: [type, ...currentFilterOption];
 
-    if (newFilterOption.length === 0) {
-      setSelectedFilters({ ...selectedFilters, eventType: undefined });
-    } else {
-      setSelectedFilters({
-        ...selectedFilters,
-        eventType: {
-          ...selectedFilters?.eventType,
-          tags: newFilterOption,
-        },
-      });
-    }
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, eventType: undefined });
+		} else {
+			setSelectedFilters({
+				...selectedFilters,
+				eventType: {
+					...selectedFilters?.eventType,
+					tags: newFilterOption,
+				},
+			});
+		}
 
-    currentFilterOption.includes(type)
-      ? toast.custom(
-          (t) => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? "animate-fade-in-up" : "opacity-0"
-              }`}
-            >
-              Removed &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: "top-center",
-          }
-        )
-      : toast.custom(
-          (t) => (
-            <div
-              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? "animate-fade-in-up" : "opacity-0"
-              }`}
-            >
-              Added &ldquo;{type}&rdquo; Filter
-            </div>
-          ),
-          {
-            duration: 3000,
-            position: "top-center",
-          }
-        );
-  };
+		currentFilterOption.includes(type)
+			? toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Removed &ldquo;{type}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  )
+			: toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Added &ldquo;{type}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  );
+	};
 
 	/** Handle selected filter params */
 	processEventsFilters(filters, selectedFilters);
@@ -167,7 +168,7 @@ const Events: NextPage<Props> = ({
 		? eventsCount
 		: eventsData?.events_aggregate?.aggregate?.count || 0;
 
-		return (
+	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Events"

@@ -81,7 +81,7 @@ export const ElemSimilarEvents: FC<Props> = ({
 							return (
 								<ElemCarouselCard
 									key={event.id}
-									className={`p-3 bg-slate-500 basis-full sm:basis-1/2 lg:basis-1/3`}
+									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
 									<ElemEventCard event={event} />
 								</ElemCarouselCard>
