@@ -19679,7 +19679,7 @@ export const GetEventsDocument = `
     query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
   events(
     where: $where
-    order_by: {start_date: desc}
+    order_by: {start_date: asc}
     limit: $limit
     offset: $offset
   ) {

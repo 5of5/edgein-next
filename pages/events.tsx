@@ -48,7 +48,9 @@ const Events: NextPage<Props> = ({
 		(index) => ({
 			...eventTabs[Number(index)],
 			date:
-				Number(index) === 0 ? "" : moment().subtract(1, "days").toISOString(),
+				Number(index) === 0
+					? moment().toISOString()
+					: moment().subtract(1, "days").toISOString(),
 		})
 	);
 
@@ -63,7 +65,9 @@ const Events: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const filters: DeepPartial<Events_Bool_Exp> = {_and: [{ slug: { _neq: "" } }]};
+	const filters: DeepPartial<Events_Bool_Exp> = {
+		_and: [{ slug: { _neq: "" } }],
+	};
 
 	useEffect(() => {
 		if (!initialLoad) {
@@ -142,6 +146,12 @@ const Events: NextPage<Props> = ({
 
 	/** Handle selected filter params */
 	processEventsFilters(filters, selectedFilters);
+
+	if (selectedTab.value === "upcoming") {
+		filters._and?.push({
+			start_date: { _gte: selectedTab.date },
+		});
+	}
 
 	if (selectedTab.value === "past") {
 		filters._and?.push({
@@ -259,7 +269,11 @@ const Events: NextPage<Props> = ({
 							</>
 						) : (
 							events?.map((event) => (
-								<ElemEventCard key={event.id} event={event} onClickType={onClickType} />
+								<ElemEventCard
+									key={event.id}
+									event={event}
+									onClickType={onClickType}
+								/>
 							))
 						)}
 					</div>
@@ -310,8 +324,8 @@ interface TextFilter {
 
 const eventTabs: TextFilter[] = [
 	{
-		title: "All",
-		value: "",
+		title: "Upcoming",
+		value: "upcoming",
 	},
 	{
 		title: "Past",
