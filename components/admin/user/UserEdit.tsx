@@ -12,7 +12,7 @@ import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 import UserResetPasswordButton from "./UserResetPasswordButton";
 
-const PostCreateToolbar = () => {
+const UserEditToolbar = () => {
   return (
     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
       <SaveButton label="Save" />
@@ -30,7 +30,7 @@ export const UserEdit = () => {
 
   return (
     <ElemFormBase title={<ElemTitle category="Users" />} action="edit">
-      <SimpleForm toolbar={<PostCreateToolbar />}>
+      <SimpleForm toolbar={<UserEditToolbar />}>
         <TextInput className={inputClassName} disabled source="id" />
         <TextInput className={inputClassName} disabled source="email" />
         <TextInput className={inputClassName} source="display_name" />
