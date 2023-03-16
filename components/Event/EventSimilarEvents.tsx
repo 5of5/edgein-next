@@ -5,6 +5,7 @@ import { ElemCarouselCard } from "@/components/ElemCarouselCard";
 import {
 	Events_Bool_Exp,
 	Maybe,
+  Order_By,
   useGetEventsQuery,
 } from "@/graphql/types";
 import { ElemEventCard } from "../Events/ElemEventCard";
@@ -50,6 +51,7 @@ export const ElemSimilarEvents: FC<Props> = ({
 	} = useGetEventsQuery({
 		offset,
 		limit,
+		order: Order_By.Desc,
 		where: filters as Events_Bool_Exp,
 	});
 

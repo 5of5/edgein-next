@@ -15,6 +15,7 @@ import {
 	GetEventsQuery,
 	useGetEventsQuery,
 	Events_Bool_Exp,
+	Order_By,
 } from "@/graphql/types";
 import { DeepPartial } from "./companies";
 import { onTrackView } from "@/utils/track";
@@ -77,7 +78,7 @@ const Events: NextPage<Props> = ({
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [selectedTab]);
 
 	useEffect(() => {
 		onTrackView({
@@ -166,6 +167,7 @@ const Events: NextPage<Props> = ({
 	} = useGetEventsQuery({
 		offset,
 		limit,
+		order: selectedTab.value === "past" ? Order_By.Desc : Order_By.Asc,
 		where: filters as Events_Bool_Exp,
 	});
 
@@ -299,6 +301,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
 		offset: 0,
 		limit: 50,
+		order: Order_By.Asc,
 		where: { _and: [{ slug: { _neq: "" } }] },
 	});
 

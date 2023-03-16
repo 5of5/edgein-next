@@ -19201,6 +19201,7 @@ export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: 
 export type GetEventsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
   where: Events_Bool_Exp;
 }>;
 
@@ -19676,10 +19677,10 @@ useGetRelevantCompaniesQuery.getKey = (variables: GetRelevantCompaniesQueryVaria
 
 useGetRelevantCompaniesQuery.fetcher = (variables: GetRelevantCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables, options);
 export const GetEventsDocument = `
-    query GetEvents($limit: Int, $offset: Int, $where: events_bool_exp!) {
+    query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
   events(
     where: $where
-    order_by: {start_date: asc}
+    order_by: {start_date: $order}
     limit: $limit
     offset: $offset
   ) {

@@ -75,7 +75,7 @@ const Investors: NextPage<Props> = ({
 			setInitialLoad(false);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [selectedStatusTag]);
 
 	useEffect(() => {
 		onTrackView({
