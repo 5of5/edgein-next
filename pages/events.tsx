@@ -42,7 +42,7 @@ const Events: NextPage<Props> = ({
 	const router = useRouter();
 
 	const [selectedTab, setSelectedTab] = useStateParams(
-		eventTabs[0],
+		{...eventTabs[0], date: moment().toISOString()},
 		"tab",
 		(statusTag) => eventTabs.indexOf(statusTag).toString(),
 		(index) => ({

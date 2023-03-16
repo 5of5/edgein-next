@@ -698,14 +698,14 @@ export const tags = [
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;
 
 export const eventSizeChoices = [
-	"Less than 10 people",
-	"10-15 people",
-	"16-30 people",
-	"31-100 people",
-	"101-200 people",
-	"201-500 people",
-	"501-1000 people",
-	"1000+ people",
+	"Less than 50 people",
+	"50 - 100 people",
+	"101 - 1,000 people",
+	"1,001 - 5,000 people",
+	"5,001 - 10,000 people",
+	"10,001 - 25,000 people",
+	"25,001 - 100,000 people",
+	"100,000+ people",
 ].map((size) => ({ id: size, name: size }));
 
 export const eventPersonTypeChoices = [
