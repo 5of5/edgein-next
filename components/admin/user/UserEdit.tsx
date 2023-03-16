@@ -1,7 +1,28 @@
 import React from "react";
-import { SimpleForm, TextInput, SelectInput, required } from "react-admin";
+import {
+  SimpleForm,
+  TextInput,
+  SelectInput,
+  required,
+  Toolbar,
+  SaveButton,
+  DeleteButton,
+} from "react-admin";
 import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
+import UserResetPasswordButton from "./UserResetPasswordButton";
+
+const PostCreateToolbar = () => {
+  return (
+    <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+      <SaveButton label="Save" />
+      <div>
+        <UserResetPasswordButton />
+        <DeleteButton label="Delete" sx={{ marginLeft: 1 }} />
+      </div>
+    </Toolbar>
+  );
+};
 
 export const UserEdit = () => {
   const inputClassName =
@@ -9,7 +30,7 @@ export const UserEdit = () => {
 
   return (
     <ElemFormBase title={<ElemTitle category="Users" />} action="edit">
-      <SimpleForm>
+      <SimpleForm toolbar={<PostCreateToolbar />}>
         <TextInput className={inputClassName} disabled source="id" />
         <TextInput className={inputClassName} disabled source="email" />
         <TextInput className={inputClassName} source="display_name" />
