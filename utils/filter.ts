@@ -889,7 +889,7 @@ export const processEventsFilters = (
   if (selectedFilters?.keywords?.tags?.length) {
     filters._and?.push({
       _or: selectedFilters.keywords.tags.map((item) => ({
-        notes: { _ilike: `%${item}%` },
+        overview: { _ilike: `%${item}%` },
       })),
     });
   }

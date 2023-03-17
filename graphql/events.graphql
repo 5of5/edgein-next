@@ -9,6 +9,7 @@ query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_boo
 		name
 		slug
 		banner
+		overview
 		notes
 		location_json
 		venue_name
@@ -36,6 +37,7 @@ query GetEvent($slug: String!) {
 		name
 		slug
 		banner
+		overview
 		notes
 		location_json
 		venue_name

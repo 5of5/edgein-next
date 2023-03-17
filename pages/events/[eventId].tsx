@@ -174,7 +174,7 @@ const Event: NextPage<Props> = ({ event }) => {
 					<div className="col-span-8">
 						<div className="w-full p-5 bg-white shadow rounded-lg">
 							<h2 className="text-xl font-bold">Overview</h2>
-							<p className="text-lg text-slate-600">{event.notes}</p>
+							<p className="text-lg text-slate-600">{event.overview}</p>
 						</div>
 						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
 							<ElemEventActivity activities={sortedActivities} />
@@ -235,8 +235,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 	let metaDescription = null;
 
-	if (event?.notes) {
-		metaDescription = event.notes;
+	if (event?.overview) {
+		metaDescription = event.overview;
 	}
 
 	return {

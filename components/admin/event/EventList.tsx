@@ -43,6 +43,7 @@ export const EventList = () => {
         render={(record: any) => getFullAddress(record.location_json)}
       />
       <TextField source="venue_name" />
+      <TextField source="overview" />
       <TextField source="link" />
       <TextField source="notes" />
       <SelectField source="size" choices={eventSizeChoices} />

@@ -28,4 +28,7 @@ alter table "public"."events" add column "end_time" time
  null;
 alter table "public"."events" add column "timezone" text
  null;
+alter table "public"."events" add column "overview" text
+ null;
+
 

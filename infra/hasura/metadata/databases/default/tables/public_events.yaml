@@ -47,6 +47,7 @@ select_permissions:
         - location_json
         - name
         - notes
+        - overview
         - parent_event_id
         - price
         - size

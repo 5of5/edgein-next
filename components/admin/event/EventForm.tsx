@@ -149,6 +149,7 @@ const EventForm = ({
         label="Geopoint"
         disabled
       />
+      <TextInput className={inputClassName} source="overview" />
       <TextInput className={inputClassName} source="link" />
       <TextInput className={inputClassName} source="notes" />
       <SelectInput
