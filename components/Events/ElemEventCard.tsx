@@ -18,7 +18,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 		<Link key={event.id} href={`/events/${event.slug}`}>
 			<a
 				key={event.id}
-				className="flex flex-col mx-auto w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
+				className="flex flex-col box-border mx-auto h-full w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
 			>
 				<ElemPhoto
 					photo={
