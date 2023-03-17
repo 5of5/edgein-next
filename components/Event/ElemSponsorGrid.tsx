@@ -13,6 +13,14 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
   const columns = React.useMemo(
     () => [
       {
+        Header: "Type",
+        accessor: "sponsor_type" as const,
+        width: 80,
+        Cell: (props: any) => (
+          <span>{props.value}</span>
+        )
+      },
+      {
         Header: "Sponsor",
         accessor: "company" as const,
         Cell: (props: any) => {

@@ -18,8 +18,6 @@ alter table "public"."events" add column "discord" text
  null;
 alter table "public"."events" add column "telegram" text
  null;
-alter table "public"."event_organization" add column "type" text
- null;
 alter table "public"."events" add column "venue_name" text
  null;
 alter table "public"."events" add column "start_time" time
@@ -30,5 +28,3 @@ alter table "public"."events" add column "timezone" text
  null;
 alter table "public"."events" add column "overview" text
  null;
-
-

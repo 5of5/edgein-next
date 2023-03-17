@@ -37,6 +37,7 @@ select_permissions:
         - created_at
         - event_id
         - id
+        - sponsor_type
         - type
         - vc_firm_id
       filter: {}

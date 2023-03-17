@@ -25,6 +25,7 @@ import {
   TextField,
   Button,
   ReferenceInput,
+  TextInput,
   Form,
   useRecordContext,
   useDelete,
@@ -135,6 +136,8 @@ export const EventOrganizationTable = () => {
       id: rec.id,
       company_id: rec.company_id,
       vc_firm_id: rec.vc_firm_id,
+      type: rec.type,
+      sponsor_type: rec.sponsor_type,
     });
   };
 
@@ -158,6 +161,10 @@ export const EventOrganizationTable = () => {
     const data = {
       event_id: parseInt(currentId!),
       type: eventOrganizationData.type,
+      sponsor_type:
+        eventOrganizationData.type === "sponsor"
+          ? eventOrganizationData.sponsor_type
+          : null,
       company_id:
         eventOrganizationData.company_id === ""
           ? null
@@ -239,6 +246,7 @@ export const EventOrganizationTable = () => {
             choices={eventOrganizationTypeChoices}
             sortable={false}
           />
+          <TextField source="sponsor_type" />
           <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
           <CustomDeleteButton />
         </Datagrid>
@@ -323,6 +331,18 @@ export const EventOrganizationTable = () => {
                   ))}
                 </Select>
               </FormControl>
+
+              {eventOrganizationData?.type === "sponsor" && (
+                <FormControl variant="filled" sx={{ width: "100%" }}>
+                  <TextInput
+                    source="sponsor_type"
+                    defaultValue={currRecord?.sponsor_type}
+                    onChange={(e) =>
+                      handleChange("sponsor_type", e.target.value)
+                    }
+                  />
+                </FormControl>
+              )}
 
               <FormControl
                 variant="filled"
