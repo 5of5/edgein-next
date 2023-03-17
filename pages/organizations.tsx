@@ -11,7 +11,6 @@ import {
 	Resource_Edit_Access,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { runGraphQl } from "@/utils";
 import { GetStaticProps } from "next";
 import { FC, useEffect, useState } from "react";
 import Link from "next/link";

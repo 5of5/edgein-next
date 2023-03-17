@@ -29,6 +29,7 @@ import {
 	Lists,
 } from "@/graphql/types";
 import { IconLockClosed } from "@/components/Icons";
+import redisClient from "@/utils/redis-client-rate-limit";
 
 type Props = {
 	isUserBelongToGroup: boolean;
@@ -165,7 +166,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		{
 			id: context.params?.groupId,
 		},
-		context.req.cookies
+		context.req.cookies,
+		redisClient,
 	);
 
 	if (!data?.user_groups[0]) {
@@ -185,7 +187,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		{
 			where: { user_group_id: { _eq: group.id } },
 		},
-		context.req.cookies
+		context.req.cookies,
+		redisClient,
 	);
 
 	const notes = noteList?.notes || [];

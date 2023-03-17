@@ -1,34 +1,48 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import CookieService from '../../utils/cookie'
+import { simpleRateLimit } from '@/utils/rateLimit';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import CookieService from '../../utils/cookie';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
   let headers: {'x-hasura-role'?: string, 'x-hasura-user-id'?: string} & { Authorization: string } |
   //let headers: {'x-hasura-role'?: string} & { Authorization: string } |
-    {'x-hasura-admin-secret': string }
-    if (!user) {
-      return res.status(401).end()
-    }
-    if (user.role === "user" || req.headers['is-viewer'] === 'true') {
-      headers  = {
-        Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
-        'x-hasura-role': process.env.HASURA_VIEWER ?? "",
-      }  
-    } else {
-      headers  = {
-        'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-      }  
-    }
-    // temporay until everyone gets a new cookie
+    {'x-hasura-admin-secret': string };
+  if (!user) {
+    return res.status(401).end();
+  }
+  if (user.role === "user" || req.headers['is-viewer'] === 'true') {
+    headers  = {
+      Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
+      'x-hasura-role': process.env.HASURA_VIEWER ?? "",
+    };
+  } else {
     headers  = {
       'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-      'x-hasura-user-id': user?.id?.toString() ?? ''
-    }  
-    const opts = {
+    };
+  }
+  // temporay until everyone gets a new cookie
+  headers  = {
+    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+    'x-hasura-user-id': user?.id?.toString() ?? ''
+  };
+
+  if (["GetCompany($slug", "GetVCFirm($slug"].some((e) => req.body.includes(e)))
+    if (user.role !== 'admin' && !(await simpleRateLimit(user.id)))
+      try {
+        var { query, variables } = JSON.parse(req.body);
+        if (query.includes("GetCompany"))
+          variables.slug = "01-exchange";
+        else if (query.includes("GetVCFirm"))
+          variables.slug = "alameda-research";
+        req.body = JSON.stringify({ query, variables });
+      } catch (e) {}
+
+  const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
     headers      
-  }
+  };
+
   const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);
 
 

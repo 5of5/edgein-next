@@ -35,6 +35,7 @@ import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+import redisClient from "@/utils/redis-client-rate-limit";
 
 type Props = {
 	company: Companies;
@@ -467,7 +468,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
 		{ slug: context.params?.companyId },
-		context.req.cookies
+		context.req.cookies,
+		redisClient,
 	);
 
 	if (!companies?.companies[0]) {

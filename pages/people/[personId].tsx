@@ -21,6 +21,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIntercom } from "react-use-intercom";
 import { IconCheckBadgeSolid } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
+import redisClient from "@/utils/redis-client-rate-limit";
 
 type Props = {
 	person: People;
@@ -240,7 +241,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		{
 			slug: context.params?.personId,
 		},
-		context.req.cookies
+		context.req.cookies,
+		redisClient,
 	);
 
 	if (!people?.people?.[0]) {

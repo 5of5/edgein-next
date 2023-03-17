@@ -6,7 +6,7 @@ import React from "react";
 import { ElemHeading } from "../components/ElemHeading";
 import { ElemButton } from "../components/ElemButton";
 import { InputSearch } from "../components/InputSearch";
-import { runGraphQl, formatDate } from "../utils";
+import { formatDate } from "../utils";
 
 type Props = {
 	events: Record<string, any>[];

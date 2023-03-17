@@ -37,6 +37,7 @@ import { TagInputText } from "@/components/TagInputText";
 import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
 import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
 import { InputDate } from "@/components/InputDate";
+import redisClient from "@/utils/redis-client-rate-limit";
 
 type GridProps = {
 	children: any;
@@ -926,7 +927,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
 		{ slug: context.params?.companyId },
-		context.req.cookies
+		context.req.cookies,
+		redisClient,
 	);
 
 	if (!companies?.companies[0]) {

@@ -32,6 +32,7 @@ import { onTrackView } from "@/utils/track";
 import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+import redisClient from "@/utils/redis-client-rate-limit";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -316,7 +317,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
 		{ slug: context.params?.investorId },
-		context.req.cookies
+		context.req.cookies,
+		redisClient,
 	);
 
 	if (!vc_firms?.vc_firms[0]) {
