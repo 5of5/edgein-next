@@ -44,48 +44,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     WHERE
     investors.vc_firm_id = vc.id)`, []);
 
-  // Creating a special list type that automatically follows the companies in a vc firms portfolio
-  // the list represents the group of companies the vc firm has invested in
-
-  // Reset data
-  // Delete all list_members of portfolio
-  await client.query(`DELETE FROM list_members WHERE list_id IN (
-    SELECT id FROM lists WHERE created_by_id = 0)`, []);
-  // Delete all invested companies in follow table
-  await client.query(`DELETE FROM follows WHERE created_by_user_id = 0`, []);
-  // Delete all vc_firm portfolio lists
-  await client.query(`DELETE FROM lists WHERE created_by_id = 0`, []);
-
-  // Add vc_firms into lists table with name is <vc_firm_id>-vc_firm_portfolio created by user 0
-  await client.query(`INSERT INTO lists (name, created_by_id)
-    (
-      SELECT id || '-' || name || ' portfolio', 0 FROM vc_firms WHERE num_of_investments > 0
-    ) ON CONFLICT DO NOTHING`, []);
+  // Reset invested companies of porfolio lists
+  await client.query(`DELETE FROM follows WHERE list_id IN 
+    (SELECT id FROM lists WHERE "type" = 'portfolio')
+    AND resource_type = 'companies'`, []);
 
   // Add invested companies of vc_firms into follows table
   await client.query(`INSERT INTO follows (resource_type, list_id, resource_id, created_by_user_id)
     (
-    SELECT 'companies', t1.id, t3.company_id, 0 FROM (
-      SELECT id, split_part(name, '-', 1)::int AS vc_id FROM lists WHERE created_by_id = 0) AS t1
-      INNER JOIN investments AS t2 ON t1.vc_id = t2.vc_firm_id 
-      INNER JOIN investment_rounds AS t3 ON t2.round_id = t3.id
-    WHERE t2.vc_firm_id IS NOT NULL AND t3.company_id IS NOT NULL
-    ) ON CONFLICT DO NOTHING`, []);
-
-  // Then add vc_firm portfolio list into list_members
-  // where user_id is owner or follow of any list contains this vc_firm
-  await client.query(`INSERT INTO list_members (list_id, user_id, member_type)
-    (
-    SELECT t2.id, t3.user_id, 'follow' FROM (
-      SELECT list_id, resource_id FROM follows_vc_firms
-      ) AS t1
-      INNER JOIN (
-        SELECT id, split_part(name, '-', 1)::int AS vc_id FROM lists WHERE created_by_id = 0
-      ) AS t2 ON t1.resource_id = t2.vc_id 
-      INNER JOIN list_members AS t3 ON t3.list_id = t1.list_id 
-    WHERE t2.id IS NOT NULL AND t3.user_id IS NOT NULL
-    )
-    ON CONFLICT DO NOTHING`, []);
+    SELECT 'companies', t1.id, t4.company_id, t1.created_by_id FROM (
+      SELECT id, created_by_id FROM lists WHERE "type" = 'portfolio') AS t1
+      INNER JOIN follows_vc_firms AS t2 ON t1.id = t2.list_id 
+      INNER JOIN investments AS t3 ON t2.resource_id = t3.vc_firm_id 
+      INNER JOIN investment_rounds AS t4 ON t3.round_id = t4.id
+    WHERE t3.vc_firm_id IS NOT NULL AND t4.company_id IS NOT NULL
+  ) ON CONFLICT DO NOTHING`, []);
 
   res.send({ success: true });
 }

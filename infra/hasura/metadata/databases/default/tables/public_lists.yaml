@@ -57,10 +57,11 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - created_at
         - created_by_id
         - id
         - name
-        - created_at
+        - type
       computed_fields:
         - total_no_of_resources
       filter:
