@@ -48,6 +48,8 @@ const Event: NextPage<Props> = ({ event }) => {
 		(item) => item.type === "sponsor"
 	);
 
+	const sortedSponsors = sortBy(sponsors, "sponsor_type");
+
 	const sortedActivities = orderBy(
 		[...event.event_person, ...event.event_organization]?.slice() || [],
 		["created_at"],
@@ -229,7 +231,7 @@ const Event: NextPage<Props> = ({ event }) => {
 						className="mt-7 p-5 rounded-lg bg-white shadow"
 						id="sponsors"
 					>
-						<ElemSponsorGrid organizations={sponsors} />
+						<ElemSponsorGrid organizations={sortedSponsors} />
 					</div>
 				)}
 				{event.types && (
