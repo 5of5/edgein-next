@@ -6,6 +6,7 @@ import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemReactions } from "@/components/ElemReactions";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
 import { getLayerClass } from "@/utils/style";
+import { useRouter } from "next/router";
 import {
 	Companies_Bool_Exp,
 	Maybe,
@@ -36,6 +37,8 @@ export const ElemCohort: FC<Props> = ({
 	const limit = 12;
 	const offset = null;
 
+	const router = useRouter();
+
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: [
 			{
@@ -57,6 +60,20 @@ export const ElemCohort: FC<Props> = ({
 	});
 
 	const companies = companiesData?.companies;
+
+	const onClickType = (
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		router.push(
+			`/companies/?filters=${encodeURIComponent(
+				`{"industry":{"tags":["${type}"]}}`
+			)}`
+		);
+	};
 
 	return (
 		<section className={`bg-white rounded-lg p-5 shadow ${className}`}>
@@ -129,7 +146,12 @@ export const ElemCohort: FC<Props> = ({
 													return (
 														<div
 															key={index}
-															className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full`}
+															className="shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300"
+															onClick={(e) => {
+																if (onClickType) {
+																	onClickType(e, tag);
+																}
+															}}
 														>
 															{tag}
 														</div>
