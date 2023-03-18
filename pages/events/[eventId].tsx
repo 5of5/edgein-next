@@ -8,7 +8,7 @@ import { ElemButton } from "@/components/ElemButton";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
 import { GetEventDocument, GetEventQuery } from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
-import { formatDate } from "@/utils";
+import { formatDate, formatTime } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
 import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
@@ -49,19 +49,56 @@ const Event: NextPage<Props> = ({ event }) => {
 	);
 
 	const sortedActivities = orderBy(
-    [...event.event_person, ...event.event_organization]?.slice() || [],
-    ["created_at"],
-    ["desc"]
-  );
+		[...event.event_person, ...event.event_organization]?.slice() || [],
+		["created_at"],
+		["desc"]
+	);
+
+	const customDateFormat = (
+		date: string,
+		time?: string,
+		timezone?: string | null
+	) => {
+		const theDate = formatDate(date, {
+			month: "short",
+			day: "2-digit",
+			year: "numeric",
+			timeZone: timezone || undefined,
+			//timeZoneName: "short",
+		});
+
+		if (!time) {
+			return theDate;
+		}
+
+		const newEventDateWithTime = new Date(`${date} ${time}`);
+
+		const theTime = formatTime(newEventDateWithTime, {
+			hour: "2-digit",
+			minute: "2-digit",
+			timeZone: timezone || undefined,
+		});
+
+		return `${theDate} at ${theTime}`;
+	};
 
 	return (
 		<>
 			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="mb-4">
-						<div className="m-auto h-52 sm:h-72 lg:h-96 flex items-center justify-center shrink-0 rounded-[20px] overflow-hidden">
+						<div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
+							<div
+								className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+								style={{
+									backgroundImage: `url(${
+										event.banner?.url ||
+										"https://source.unsplash.com/random/500×200/?city"
+									})`,
+								}}
+							></div>
 							<img
-								className="object-cover h-96 w-full max-w-full max-h-full"
+								className="object-fit h-full max-w-full max-h-full"
 								src={
 									event.banner?.url ||
 									"https://source.unsplash.com/random/500×200/?city"
@@ -73,29 +110,23 @@ const Event: NextPage<Props> = ({ event }) => {
 
 					{event.start_date && (
 						<div className="w-full inline-flex py-1 font-medium text-xl text-slate-500">
-							{event.start_date &&
-								formatDate(event.start_date, {
-									month: "short",
-									day: "2-digit",
-									year: "numeric",
-									timeZone: event.timezone || undefined,
-								})}
-
-							{event.end_date && (
-								<>
-									&nbsp;&ndash;&nbsp;
-									{formatDate(event.end_date, {
-										month: "short",
-										day: "2-digit",
-										year: "numeric",
-										timeZone: event.timezone || undefined,
-									})}
-								</>
+							{customDateFormat(
+								event.start_date,
+								event.start_time,
+								event.timezone
 							)}
+
+							{event.end_date &&
+								` – ${customDateFormat(
+									event.end_date,
+									event.end_time,
+									event.timezone
+								)}`}
 						</div>
 					)}
-					<div className="flex items-start justify-between gap-20">
-						<h1 className="text-4xl font-bold md:text-5xl">{event.name}</h1>
+
+					<div className="items-start justify-between lg:flex lg:gap-20">
+						<h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
 						<div className="self-center flex items-center gap-x-2 shrink-0">
 							{/* <ul className="flex -space-x-3 overflow-hidden cursor-pointer">
 								{event.attendees?.map((mem, index) => (
@@ -147,8 +178,8 @@ const Event: NextPage<Props> = ({ event }) => {
 								resourceTwitterUrl={event.twitter}
 								resourceType={"events"}
 							/>
-							<ElemButton btn="white">Going</ElemButton>
-							<ElemButton btn="primary">RSVP</ElemButton>
+							{/* <ElemButton btn="white">Going</ElemButton>
+							<ElemButton btn="primary">RSVP</ElemButton> */}
 						</div>
 					</ElemTabBar>
 				</div>

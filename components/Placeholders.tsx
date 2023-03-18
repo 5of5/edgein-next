@@ -202,7 +202,7 @@ export const PlaceholderEventCard: React.FC = () => {
 	return (
 		<div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
 			<div className="flex items-center shrink-0 mb-4 w-full">
-				<div className="rounded-lg bg-slate-200 h-52 w-full"></div>
+				<div className="rounded-lg bg-slate-200 h-36 w-full"></div>
 			</div>
 			<div className="flex-1 space-y-4 py-1">
 				<div className="h-4 bg-slate-200 rounded w-2/3"></div>

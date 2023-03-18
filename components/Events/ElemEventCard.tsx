@@ -18,25 +18,33 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 		<Link key={event.id} href={`/events/${event.slug}`}>
 			<a
 				key={event.id}
-				className="flex flex-col box-border mx-auto h-full w-full p-5 cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
+				className="flex flex-col box-border mx-auto h-full w-full cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
 			>
-				<ElemPhoto
-					photo={
-						event.banner || {
-							url: "https://source.unsplash.com/random/500×200/?city",
+				<div className="relative z-0 flex items-center justify-center shrink-0 w-full h-32 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
+					<div
+						className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+						style={{
+							backgroundImage: `url(${
+								event.banner?.url ||
+								"https://source.unsplash.com/random/500×200/?city"
+							})`,
+						}}
+					></div>
+					<img
+						className="relative object-fit w-full max-w-full"
+						src={
+							event.banner?.url ||
+							"https://source.unsplash.com/random/500×200/?city"
 						}
-					}
-					wrapClass="-mt-5 -mx-5 h-40 flex items-center justify-center shrink-0 rounded-tl-lg rounded-tr-lg overflow-hidden"
-					imgClass="object-cover h-40 w-full max-w-full max-h-full"
-					imgAlt={event.name}
-					placeholderClass="text-slate-300"
-				/>
+						alt={event.name}
+					/>
+				</div>
 
-				<h3 className="mt-4 text-2xl font-bold break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
+				<h3 className="mt-4 text-2xl font-bold break-words min-w-0 px-5 sm:text-lg lg:text-xl group-hover:opacity-60">
 					{event.name}
 				</h3>
 
-				<div className="grow">
+				<div className="grow px-5 pb-5">
 					{event.start_date && (
 						<p className="font-medium">
 							{event.start_date &&
@@ -104,12 +112,6 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 						</div>
 					)}
 				</div>
-
-				{/* <div>
-					<ElemButton className="pl-0 pr-0" btn="transparent" arrow>
-						View
-					</ElemButton>
-				</div> */}
 			</a>
 		</Link>
 	);
