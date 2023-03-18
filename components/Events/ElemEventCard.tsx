@@ -20,7 +20,7 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 				key={event.id}
 				className="flex flex-col box-border mx-auto h-full w-full cursor-pointer border border-black/10 rounded-lg transition-all hover:scale-102 hover:shadow"
 			>
-				<div className="relative z-0 flex items-center justify-center shrink-0 w-full h-32 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
+				<div className="relative z-0 flex items-center justify-center shrink-0 w-full h-32 mb-4 rounded-tl-lg rounded-tr-lg overflow-hidden shadow">
 					<div
 						className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
 						style={{
@@ -40,35 +40,35 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 					/>
 				</div>
 
-				<h3 className="mt-4 text-2xl font-bold break-words min-w-0 px-5 sm:text-lg lg:text-xl group-hover:opacity-60">
-					{event.name}
-				</h3>
+				{event.start_date && (
+					<p className="font-medium uppercase text-sm px-5 ">
+						{event.start_date &&
+							formatDate(event.start_date, {
+								month: "short",
+								day: "2-digit",
+								year: "numeric",
+								timeZone: event.timezone || undefined,
+							})}
 
-				<div className="grow px-5 pb-5">
-					{event.start_date && (
-						<p className="font-medium">
-							{event.start_date &&
-								formatDate(event.start_date, {
+						{event.end_date && (
+							<>
+								&nbsp;&ndash;&nbsp;
+								{formatDate(event.end_date, {
 									month: "short",
 									day: "2-digit",
 									year: "numeric",
 									timeZone: event.timezone || undefined,
 								})}
+							</>
+						)}
+					</p>
+				)}
 
-							{event.end_date && (
-								<>
-									&nbsp;&ndash;&nbsp;
-									{formatDate(event.end_date, {
-										month: "short",
-										day: "2-digit",
-										year: "numeric",
-										timeZone: event.timezone || undefined,
-									})}
-								</>
-							)}
-						</p>
-					)}
+				<h3 className="text-2xl font-bold break-words min-w-0 px-5 sm:text-lg lg:text-xl group-hover:opacity-60">
+					{event.name}
+				</h3>
 
+				<div className="grow px-5 pb-5">
 					{event?.types?.length > 0 && (
 						<div
 							className="my-2 flex flex-wrap gap-2"

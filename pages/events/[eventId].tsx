@@ -111,7 +111,7 @@ const Event: NextPage<Props> = ({ event }) => {
 					</div>
 
 					{event.start_date && (
-						<div className="w-full inline-flex py-1 font-medium text-xl text-slate-500">
+						<div className="w-full inline-flex py-1 font-medium uppercase text-lg text-slate-600">
 							{customDateFormat(
 								event.start_date,
 								event.start_time,
