@@ -173,6 +173,7 @@ const Event: NextPage<Props> = ({ event }) => {
 								className="mt-4"
 								resourceType={"events"}
 								tags={event.types}
+								filter="eventType"
 							/>
 						)}
 					</div>
