@@ -2,11 +2,12 @@ import React, { FC } from "react";
 import { PlaceholderEventCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
+import { useRouter } from "next/router";
 import {
 	Events_Bool_Exp,
 	Maybe,
-  Order_By,
-  useGetEventsQuery,
+	Order_By,
+	useGetEventsQuery,
 } from "@/graphql/types";
 import { ElemEventCard } from "../Events/ElemEventCard";
 
@@ -17,14 +18,14 @@ export type DeepPartial<T> = T extends object
 	: T;
 
 type Props = {
-  className?: string;
+	className?: string;
 	currentSlug: Maybe<string>;
 	tag1?: string;
 	tag2?: string;
 };
 
 export const ElemSimilarEvents: FC<Props> = ({
-  className,
+	className,
 	currentSlug,
 	tag1,
 	tag2,
@@ -32,14 +33,13 @@ export const ElemSimilarEvents: FC<Props> = ({
 	const limit = 12;
 	const offset = null;
 
+	const router = useRouter();
+
 	const filters: DeepPartial<Events_Bool_Exp> = {
 		_and: [
 			{
 				slug: { _neq: "" || currentSlug },
-        _or: [
-          { types: { _contains: tag1 } },
-          { types: { _contains: tag2 } },
-        ]
+				_or: [{ types: { _contains: tag1 } }, { types: { _contains: tag2 } }],
 			},
 		],
 	};
@@ -55,7 +55,21 @@ export const ElemSimilarEvents: FC<Props> = ({
 		where: filters as Events_Bool_Exp,
 	});
 
-  const events = eventsData?.events;
+	const events = eventsData?.events;
+
+	const onClickType = (
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		router.push(
+			`/events/?filters=${encodeURIComponent(
+				`{"eventType":{"tags":["${type}"]}}`
+			)}`
+		);
+	};
 
 	return (
 		<section className={`bg-white rounded-lg p-5 shadow ${className}`}>
@@ -85,7 +99,7 @@ export const ElemSimilarEvents: FC<Props> = ({
 									key={event.id}
 									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
-									<ElemEventCard event={event} />
+									<ElemEventCard event={event} onClickType={onClickType} />
 								</ElemCarouselCard>
 							);
 						})}
