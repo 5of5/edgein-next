@@ -5,6 +5,7 @@ import { ElemTags } from "@/components/ElemTags";
 import { runGraphQl } from "@/utils";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
+import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
 import { GetEventDocument, GetEventQuery } from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
@@ -13,6 +14,7 @@ import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
 import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
+import Link from "next/link";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -42,6 +44,10 @@ const Event: NextPage<Props> = ({ event }) => {
 
 	const speakers = event.event_person?.filter(
 		(item) => item.type === "speaker"
+	);
+
+	const attendees = event.event_person?.filter(
+		(item) => item.type === "attendee"
 	);
 
 	const sponsors = event.event_organization?.filter(
@@ -129,33 +135,39 @@ const Event: NextPage<Props> = ({ event }) => {
 
 					<div className="items-start justify-between lg:flex lg:gap-20">
 						<h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
-						<div className="self-center flex items-center gap-x-2 shrink-0">
-							{/* <ul className="flex -space-x-3 overflow-hidden cursor-pointer">
-								{event.attendees?.map((mem, index) => (
-									<li key={mem.id}>
-										{mem.user.person?.picture ? (
-											<ElemPhoto
-												photo={mem.user.person?.picture}
-												wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8 relative z-${
-													(3 - index) * 10
-												} relative`}
-												imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-												imgAlt={mem.user.display_name}
-											/>
-										) : (
-											<div
-												className={`flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize relative  z-${
-													(3 - index) * 10
-												}`}
-											>
-												{mem.user.display_name?.charAt(0)}
-											</div>
-										)}
-									</li>
-								))}
-							</ul>
-							<span className="font-bold">{event.attendees?.length}</span> */}
-						</div>
+						{attendees?.length > 0 && (
+							<div className="self-center flex items-center gap-x-2 shrink-0">
+								<ul className="flex -space-x-3">
+									{attendees?.map((attendee, index) => (
+										<li
+											key={attendee.id}
+											className="relative"
+											style={{
+												zIndex: 1000 - index,
+											}}
+										>
+											<Link href={`/people/${attendee.person?.slug}`}>
+												<a>
+													{attendee.person?.picture ? (
+														<ElemPhoto
+															photo={attendee.person.picture}
+															wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
+															imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
+															imgAlt={attendee.person?.name}
+														/>
+													) : (
+														<div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
+															{attendee.person?.name?.charAt(0)}
+														</div>
+													)}
+												</a>
+											</Link>
+										</li>
+									))}
+								</ul>
+								<span className="font-bold">{attendees?.length}</span>
+							</div>
+						)}
 					</div>
 					<div>
 						{event.types?.length > 0 && (
