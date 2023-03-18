@@ -284,8 +284,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		metaDescription = event.overview;
 	}
 
+	let metaImage = null;
+	if (event.banner?.url) {
+		metaImage = event.banner?.url ? event.banner?.url : `/social.jpg`;
+	}
+
 	return {
 		props: {
+			metaImage,
 			metaTitle,
 			metaDescription,
 			event,
