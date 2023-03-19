@@ -14,6 +14,7 @@ import {
   useGetList,
   regex,
   required,
+  SelectArrayInput,
 } from "react-admin";
 import {
   companyLayerChoices,
@@ -290,11 +291,11 @@ const CompanyForm = ({
             },
           }}
         />
-        <SelectInput
+        <SelectArrayInput
           className={inputClassName}
           source="library"
           choices={libraryChoices}
-          defaultValue="Web3"
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

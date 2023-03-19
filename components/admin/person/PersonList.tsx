@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageField, TextField, EditButton, TextInput } from "react-admin";
+import { ImageField, TextField, EditButton, TextInput, FunctionField } from "react-admin";
 import ElemList from "../ElemList";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -29,7 +29,10 @@ export const PersonList = () => {
       <TextField source="personal_email" />
       <TextField source="work_email" />
       <TextField source="linkedin" />
-      <TextField source="library" />
+      <FunctionField
+        source="library"
+        render={(record: any) => (record.library ? record.library.join() : "")}
+      />
       <TextField source="status" />
       {/* <TextField source="counter" /> */}
     </ElemList>
