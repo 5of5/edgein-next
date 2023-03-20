@@ -44,6 +44,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     WHERE
     investors.vc_firm_id = vc.id)`, []);
 
+  // Reset invested companies of porfolio lists
+  await client.query(`DELETE FROM follows WHERE list_id IN 
+    (SELECT id FROM lists WHERE "type" = 'portfolio')
+    AND resource_type = 'companies'`, []);
+
+  // Add invested companies of vc_firms into follows table
+  await client.query(`INSERT INTO follows (resource_type, list_id, resource_id, created_by_user_id)
+    (
+    SELECT 'companies', t1.id, t4.company_id, t1.created_by_id FROM (
+      SELECT id, created_by_id FROM lists WHERE "type" = 'portfolio') AS t1
+      INNER JOIN follows_vc_firms AS t2 ON t1.id = t2.list_id 
+      INNER JOIN investments AS t3 ON t2.resource_id = t3.vc_firm_id 
+      INNER JOIN investment_rounds AS t4 ON t3.round_id = t4.id
+    WHERE t3.vc_firm_id IS NOT NULL AND t4.company_id IS NOT NULL
+  ) ON CONFLICT DO NOTHING`, []);
+
   res.send({ success: true });
 }
 
