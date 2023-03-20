@@ -18153,11 +18153,6 @@ export type Vc_FirmsInvestors_AggregateArgs = {
 };
 
 /** columns and relationships of "vc_firms" */
-export type Vc_FirmsLocation_JsonArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "vc_firms" */
 export type Vc_FirmsLibraryArgs = {
   path: InputMaybe<Scalars['String']>;
 };
