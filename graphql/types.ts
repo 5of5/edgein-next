@@ -1561,7 +1561,7 @@ export type Companies = {
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
-  library: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['jsonb']>;
   location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   logo: Maybe<Scalars['jsonb']>;
@@ -1659,6 +1659,12 @@ export type CompaniesInvestment_Rounds_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Investment_Rounds_Order_By>>;
   where: InputMaybe<Investment_Rounds_Bool_Exp>;
+};
+
+
+/** columns and relationships of "companies" */
+export type CompaniesLibraryArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -1783,6 +1789,7 @@ export type Companies_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Companies_Append_Input = {
+  library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -1830,7 +1837,7 @@ export type Companies_Bool_Exp = {
   investor_amount: InputMaybe<Bigint_Comparison_Exp>;
   layer: InputMaybe<String_Comparison_Exp>;
   layer_detail: InputMaybe<String_Comparison_Exp>;
-  library: InputMaybe<String_Comparison_Exp>;
+  library: InputMaybe<Jsonb_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   logo: InputMaybe<Jsonb_Comparison_Exp>;
@@ -1875,6 +1882,7 @@ export enum Companies_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Companies_Delete_At_Path_Input = {
+  library: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   logo: InputMaybe<Array<Scalars['String']>>;
   sentiment: InputMaybe<Array<Scalars['String']>>;
@@ -1884,6 +1892,7 @@ export type Companies_Delete_At_Path_Input = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Companies_Delete_Elem_Input = {
+  library: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   logo: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['Int']>;
@@ -1893,6 +1902,7 @@ export type Companies_Delete_Elem_Input = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Companies_Delete_Key_Input = {
+  library: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
@@ -2217,7 +2227,7 @@ export type Companies_Insert_Input = {
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
-  library: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -2272,7 +2282,6 @@ export type Companies_Max_Fields = {
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
-  library: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
@@ -2319,7 +2328,6 @@ export type Companies_Min_Fields = {
   investor_amount: Maybe<Scalars['bigint']>;
   layer: Maybe<Scalars['String']>;
   layer_detail: Maybe<Scalars['String']>;
-  library: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   market_verified: Maybe<Scalars['String']>;
   medium: Maybe<Scalars['String']>;
@@ -2431,6 +2439,7 @@ export type Companies_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Companies_Prepend_Input = {
+  library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -2562,7 +2571,7 @@ export type Companies_Set_Input = {
   investor_amount: InputMaybe<Scalars['bigint']>;
   layer: InputMaybe<Scalars['String']>;
   layer_detail: InputMaybe<Scalars['String']>;
-  library: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
@@ -12387,7 +12396,7 @@ export type People = {
   investors: Array<Investors>;
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
-  library: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
@@ -12453,6 +12462,12 @@ export type PeopleInvestors_AggregateArgs = {
 
 
 /** columns and relationships of "people" */
+export type PeopleLibraryArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "people" */
 export type PeoplePictureArgs = {
   path: InputMaybe<Scalars['String']>;
 };
@@ -12511,6 +12526,7 @@ export type People_Aggregate_FieldsCountArgs = {
 export type People_Append_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
+  library: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -12536,7 +12552,7 @@ export type People_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
-  library: InputMaybe<String_Comparison_Exp>;
+  library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
@@ -12565,6 +12581,7 @@ export enum People_Constraint {
 export type People_Delete_At_Path_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Array<Scalars['String']>>;
+  library: InputMaybe<Array<Scalars['String']>>;
   picture: InputMaybe<Array<Scalars['String']>>;
 };
 
@@ -12572,6 +12589,7 @@ export type People_Delete_At_Path_Input = {
 export type People_Delete_Elem_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['Int']>;
+  library: InputMaybe<Scalars['Int']>;
   picture: InputMaybe<Scalars['Int']>;
 };
 
@@ -12579,6 +12597,7 @@ export type People_Delete_Elem_Input = {
 export type People_Delete_Key_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['String']>;
 };
 
@@ -12601,7 +12620,7 @@ export type People_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
-  library: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
@@ -12627,7 +12646,6 @@ export type People_Max_Fields = {
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
-  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
@@ -12651,7 +12669,6 @@ export type People_Min_Fields = {
   facebook_url: Maybe<Scalars['String']>;
   github: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
-  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   personal_email: Maybe<Scalars['String']>;
@@ -12724,6 +12741,7 @@ export type People_Pk_Columns_Input = {
 export type People_Prepend_Input = {
   /** [{"email": "john@example.com", "isPrimary": false}, {"email": "johny@example.com", "isPrimary": true}] */
   email: InputMaybe<Scalars['jsonb']>;
+  library: InputMaybe<Scalars['jsonb']>;
   picture: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -12785,7 +12803,7 @@ export type People_Set_Input = {
   facebook_url: InputMaybe<Scalars['String']>;
   github: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
-  library: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
   personal_email: InputMaybe<Scalars['String']>;
@@ -18025,7 +18043,7 @@ export type Vc_Firms = {
   /** An aggregate relationship */
   investors_aggregate: Investors_Aggregate;
   latest_investment: Maybe<Scalars['String']>;
-  library: Maybe<Scalars['String']>;
+  library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
@@ -18134,6 +18152,22 @@ export type Vc_FirmsInvestors_AggregateArgs = {
   where: InputMaybe<Investors_Bool_Exp>;
 };
 
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsLibraryArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "vc_firms" */
+export type Vc_FirmsLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
 
 /** columns and relationships of "vc_firms" */
 export type Vc_FirmsLocation_JsonArgs = {
@@ -18236,6 +18270,7 @@ export type Vc_Firms_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Vc_Firms_Append_Input = {
+  library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -18268,7 +18303,7 @@ export type Vc_Firms_Bool_Exp = {
   investments: InputMaybe<Investments_Bool_Exp>;
   investors: InputMaybe<Investors_Bool_Exp>;
   latest_investment: InputMaybe<String_Comparison_Exp>;
-  library: InputMaybe<String_Comparison_Exp>;
+  library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   location: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
@@ -18305,6 +18340,7 @@ export enum Vc_Firms_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Vc_Firms_Delete_At_Path_Input = {
+  library: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   logo: InputMaybe<Array<Scalars['String']>>;
   sentiment: InputMaybe<Array<Scalars['String']>>;
@@ -18314,6 +18350,7 @@ export type Vc_Firms_Delete_At_Path_Input = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Vc_Firms_Delete_Elem_Input = {
+  library: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   logo: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['Int']>;
@@ -18323,6 +18360,7 @@ export type Vc_Firms_Delete_Elem_Input = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Vc_Firms_Delete_Key_Input = {
+  library: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
@@ -18632,7 +18670,7 @@ export type Vc_Firms_Insert_Input = {
   investments: InputMaybe<Investments_Arr_Rel_Insert_Input>;
   investors: InputMaybe<Investors_Arr_Rel_Insert_Input>;
   latest_investment: InputMaybe<Scalars['String']>;
-  library: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
@@ -18663,7 +18701,6 @@ export type Vc_Firms_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
   latest_investment: Maybe<Scalars['String']>;
-  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -18687,7 +18724,6 @@ export type Vc_Firms_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   investment_amount_total: Maybe<Scalars['bigint']>;
   latest_investment: Maybe<Scalars['String']>;
-  library: Maybe<Scalars['String']>;
   linkedin: Maybe<Scalars['String']>;
   location: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
@@ -18768,6 +18804,7 @@ export type Vc_Firms_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Vc_Firms_Prepend_Input = {
+  library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
@@ -18837,7 +18874,7 @@ export type Vc_Firms_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   investment_amount_total: InputMaybe<Scalars['bigint']>;
   latest_investment: InputMaybe<Scalars['String']>;
-  library: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   location: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
@@ -19331,7 +19368,7 @@ export type GetVcFirmQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, status: string | null } | null }> }> };
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, location_json: any | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, status: string | null } | null }> }> };
 
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -20501,6 +20538,7 @@ export const GetVcFirmDocument = `
     overview
     year_founded
     location
+    location_json
     twitter
     investors {
       id
