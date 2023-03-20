@@ -1,10 +1,18 @@
+import { generatePassword } from "@/utils";
 import { useState } from "react";
-import { Button, Confirm, useRecordContext, useNotify } from "react-admin";
+import {
+  Button,
+  Confirm,
+  useRecordContext,
+  useNotify,
+  useRefresh,
+} from "react-admin";
 import { useMutation } from "react-query";
 
 const UserResetPasswordButton = () => {
   const record = useRecordContext();
   const notify = useNotify();
+  const refresh = useRefresh();
 
   const [open, setOpen] = useState(false);
 
@@ -14,13 +22,17 @@ const UserResetPasswordButton = () => {
 
   const { mutate, isLoading } = useMutation(
     () =>
-      fetch("/api/change_password/", {
+      fetch("/api/reset_password/", {
         method: "POST",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: record.email }),
+        body: JSON.stringify({
+          userId: record.id,
+          auth0UserId: record.auth0_user_pass_id,
+          password: generatePassword(),
+        }),
       }),
     {
       onSuccess: async (response) => {
@@ -28,7 +40,8 @@ const UserResetPasswordButton = () => {
           const err = await response.json();
           notify(err.message, { type: "error" });
         } else {
-          notify(`An email has been sent to ${record.email}`, { type: "info" });
+          refresh();
+          notify("Reset password successful", { type: "info" });
         }
         handleDialogClose();
       },

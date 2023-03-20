@@ -13,6 +13,7 @@ import {
 import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
 import UserResetPasswordButton from "./UserResetPasswordButton";
+import UserResetPasswordTable from "./UserResetPasswordTable";
 
 const UserEditToolbar = () => {
   return (
@@ -39,45 +40,48 @@ export const UserEdit = () => {
   });
 
   return (
-    <ElemFormBase
-      title={<ElemTitle category="Users" />}
-      action="edit"
-      transform={transform}
-    >
-      <SimpleForm toolbar={<UserEditToolbar />}>
-        <TextInput className={inputClassName} disabled source="id" />
-        <TextInput className={inputClassName} disabled source="email" />
-        <TextInput className={inputClassName} source="display_name" />
-        <TextInput className={inputClassName} source="person_id" />
-        <SelectInput
-          className={inputClassName}
-          source="role"
-          choices={[
-            { id: "admin", name: "Admin" },
-            { id: "user", name: "User" },
-            { id: "cms", name: "CMS" },
-            { id: "cms-readonly", name: "CMS Readonly" },
-          ]}
-          validate={required()}
-        />
-        <ArrayInput source="additional_emails">
-          <SimpleFormIterator
-            disableReordering
-            sx={{ margin: 2, paddingTop: 1 }}
-          >
-            <TextInput className={inputClassName} source="email" />
-          </SimpleFormIterator>
-        </ArrayInput>
-        <SelectInput
-          className={inputClassName}
-          source="active"
-          choices={[
-            { id: true, name: "Active" },
-            { id: false, name: "In active" },
-          ]}
-          validate={required()}
-        />
-      </SimpleForm>
-    </ElemFormBase>
+    <div style={{ paddingBottom: "20px" }}>
+      <ElemFormBase
+        title={<ElemTitle category="Users" />}
+        action="edit"
+        transform={transform}
+      >
+        <SimpleForm toolbar={<UserEditToolbar />}>
+          <TextInput className={inputClassName} disabled source="id" />
+          <TextInput className={inputClassName} disabled source="email" />
+          <TextInput className={inputClassName} source="display_name" />
+          <TextInput className={inputClassName} source="person_id" />
+          <SelectInput
+            className={inputClassName}
+            source="role"
+            choices={[
+              { id: "admin", name: "Admin" },
+              { id: "user", name: "User" },
+              { id: "cms", name: "CMS" },
+              { id: "cms-readonly", name: "CMS Readonly" },
+            ]}
+            validate={required()}
+          />
+          <ArrayInput source="additional_emails">
+            <SimpleFormIterator
+              disableReordering
+              sx={{ margin: 2, paddingTop: 1 }}
+            >
+              <TextInput className={inputClassName} source="email" />
+            </SimpleFormIterator>
+          </ArrayInput>
+          <SelectInput
+            className={inputClassName}
+            source="active"
+            choices={[
+              { id: true, name: "Active" },
+              { id: false, name: "In active" },
+            ]}
+            validate={required()}
+          />
+        </SimpleForm>
+      </ElemFormBase>
+      <UserResetPasswordTable />
+    </div>
   );
 };
