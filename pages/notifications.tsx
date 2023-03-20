@@ -105,6 +105,7 @@ const Notifications: NextPage = () => {
 												wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200"
 												imgClass="object-fit max-w-full max-h-full"
 												imgAlt="Company Name"
+												placeholderClass="text-slate-300"
 											/>
 											<div>
 												<div className="inline text-sm leading-tight lg:text-base">
@@ -117,15 +118,9 @@ const Notifications: NextPage = () => {
 												{/* <p className="text-xs text-primary-500 font-semibold">
 													{notificationCreatedAt}
 												</p> */}
-												<p className="text-xs text-primary-500 font-semibold">
+												<p className="text-xs text-primary-500 font-bold">
 													{notificationFromNow}
 												</p>
-												{/* <p className="text-xs text-primary-500 font-medium">
-													{notificationCreatedAt}
-												</p>
-												<p className="text-xs text-primary-500 font">
-													{notificationCreatedAt}
-												</p> */}
 											</div>
 										</div>
 
