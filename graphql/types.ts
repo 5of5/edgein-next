@@ -18165,12 +18165,6 @@ export type Vc_FirmsLocation_JsonArgs = {
 
 
 /** columns and relationships of "vc_firms" */
-export type Vc_FirmsLocation_JsonArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "vc_firms" */
 export type Vc_FirmsLogoArgs = {
   path: InputMaybe<Scalars['String']>;
 };
