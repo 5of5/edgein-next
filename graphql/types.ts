@@ -19,7 +19,6 @@ export type Scalars = {
   geometry: any;
   jsonb: any;
   numeric: any;
-  time: any;
   timestamp: any;
   timestamptz: any;
 };
@@ -4238,8 +4237,6 @@ export type Event_Organization = {
   event: Maybe<Events>;
   event_id: Scalars['Int'];
   id: Scalars['Int'];
-  sponsor_type: Maybe<Scalars['String']>;
-  type: Maybe<Scalars['String']>;
   /** An object relationship */
   vc_firm: Maybe<Vc_Firms>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -4325,8 +4322,6 @@ export type Event_Organization_Bool_Exp = {
   event: InputMaybe<Events_Bool_Exp>;
   event_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
-  sponsor_type: InputMaybe<String_Comparison_Exp>;
-  type: InputMaybe<String_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
   vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
@@ -4353,8 +4348,6 @@ export type Event_Organization_Insert_Input = {
   event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   event_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
-  sponsor_type: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['String']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
@@ -4366,8 +4359,6 @@ export type Event_Organization_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
-  sponsor_type: Maybe<Scalars['String']>;
-  type: Maybe<Scalars['String']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -4377,8 +4368,6 @@ export type Event_Organization_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  sponsor_type: InputMaybe<Order_By>;
-  type: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -4389,8 +4378,6 @@ export type Event_Organization_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
-  sponsor_type: Maybe<Scalars['String']>;
-  type: Maybe<Scalars['String']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -4400,8 +4387,6 @@ export type Event_Organization_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  sponsor_type: InputMaybe<Order_By>;
-  type: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -4429,8 +4414,6 @@ export type Event_Organization_Order_By = {
   event: InputMaybe<Events_Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  sponsor_type: InputMaybe<Order_By>;
-  type: InputMaybe<Order_By>;
   vc_firm: InputMaybe<Vc_Firms_Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
@@ -4451,10 +4434,6 @@ export enum Event_Organization_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  SponsorType = 'sponsor_type',
-  /** column name */
-  Type = 'type',
-  /** column name */
   VcFirmId = 'vc_firm_id'
 }
 
@@ -4464,8 +4443,6 @@ export type Event_Organization_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   event_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
-  sponsor_type: InputMaybe<Scalars['String']>;
-  type: InputMaybe<Scalars['String']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -4547,10 +4524,6 @@ export enum Event_Organization_Update_Column {
   EventId = 'event_id',
   /** column name */
   Id = 'id',
-  /** column name */
-  SponsorType = 'sponsor_type',
-  /** column name */
-  Type = 'type',
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
@@ -4940,11 +4913,8 @@ export type Event_Person_Variance_Order_By = {
 /** columns and relationships of "events" */
 export type Events = {
   __typename?: 'events';
-  banner: Maybe<Scalars['jsonb']>;
   created_at: Scalars['timestamptz'];
-  discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
-  end_time: Maybe<Scalars['time']>;
   /** An array relationship */
   event_organization: Array<Event_Organization>;
   /** An aggregate relationship */
@@ -4953,36 +4923,18 @@ export type Events = {
   event_person: Array<Event_Person>;
   /** An aggregate relationship */
   event_person_aggregate: Event_Person_Aggregate;
-  facebook: Maybe<Scalars['String']>;
-  geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
-  instagram: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
-  location_json: Maybe<Scalars['jsonb']>;
+  location: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
   notes: Maybe<Scalars['String']>;
-  overview: Maybe<Scalars['String']>;
   /** An object relationship */
   parent_event: Maybe<Events>;
   parent_event_id: Maybe<Scalars['Int']>;
-  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
-  start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
-  telegram: Maybe<Scalars['String']>;
-  timezone: Maybe<Scalars['String']>;
-  twitter: Maybe<Scalars['String']>;
-  types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
-  venue_name: Maybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "events" */
-export type EventsBannerArgs = {
-  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -5027,13 +4979,7 @@ export type EventsEvent_Person_AggregateArgs = {
 
 
 /** columns and relationships of "events" */
-export type EventsLocation_JsonArgs = {
-  path: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "events" */
-export type EventsTypesArgs = {
+export type EventsLocationArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
@@ -5069,9 +5015,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
-  banner: InputMaybe<Scalars['jsonb']>;
-  location_json: InputMaybe<Scalars['jsonb']>;
-  types: InputMaybe<Scalars['jsonb']>;
+  location: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -5079,7 +5023,6 @@ export type Events_Avg_Fields = {
   __typename?: 'events_avg_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "events". All fields are combined with a logical 'AND'. */
@@ -5087,158 +5030,99 @@ export type Events_Bool_Exp = {
   _and: InputMaybe<Array<Events_Bool_Exp>>;
   _not: InputMaybe<Events_Bool_Exp>;
   _or: InputMaybe<Array<Events_Bool_Exp>>;
-  banner: InputMaybe<Jsonb_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  discord: InputMaybe<String_Comparison_Exp>;
   end_date: InputMaybe<Date_Comparison_Exp>;
-  end_time: InputMaybe<Time_Comparison_Exp>;
   event_organization: InputMaybe<Event_Organization_Bool_Exp>;
   event_person: InputMaybe<Event_Person_Bool_Exp>;
-  facebook: InputMaybe<String_Comparison_Exp>;
-  geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
-  instagram: InputMaybe<String_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
-  location_json: InputMaybe<Jsonb_Comparison_Exp>;
+  location: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
-  overview: InputMaybe<String_Comparison_Exp>;
   parent_event: InputMaybe<Events_Bool_Exp>;
   parent_event_id: InputMaybe<Int_Comparison_Exp>;
-  price: InputMaybe<Numeric_Comparison_Exp>;
   size: InputMaybe<String_Comparison_Exp>;
-  slug: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
-  start_time: InputMaybe<Time_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
-  telegram: InputMaybe<String_Comparison_Exp>;
-  timezone: InputMaybe<String_Comparison_Exp>;
-  twitter: InputMaybe<String_Comparison_Exp>;
-  types: InputMaybe<Jsonb_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  venue_name: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "events" */
 export enum Events_Constraint {
   /** unique or primary key constraint */
-  EventsPkey = 'events_pkey',
-  /** unique or primary key constraint */
-  EventsSlugKey = 'events_slug_key'
+  EventsPkey = 'events_pkey'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
-  banner: InputMaybe<Array<Scalars['String']>>;
-  location_json: InputMaybe<Array<Scalars['String']>>;
-  types: InputMaybe<Array<Scalars['String']>>;
+  location: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
-  banner: InputMaybe<Scalars['Int']>;
-  location_json: InputMaybe<Scalars['Int']>;
-  types: InputMaybe<Scalars['Int']>;
+  location: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
-  banner: InputMaybe<Scalars['String']>;
-  location_json: InputMaybe<Scalars['String']>;
-  types: InputMaybe<Scalars['String']>;
+  location: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "events" */
 export type Events_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
-  price: InputMaybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "events" */
 export type Events_Insert_Input = {
-  banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
-  discord: InputMaybe<Scalars['String']>;
   end_date: InputMaybe<Scalars['date']>;
-  end_time: InputMaybe<Scalars['time']>;
   event_organization: InputMaybe<Event_Organization_Arr_Rel_Insert_Input>;
   event_person: InputMaybe<Event_Person_Arr_Rel_Insert_Input>;
-  facebook: InputMaybe<Scalars['String']>;
-  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
-  instagram: InputMaybe<Scalars['String']>;
   link: InputMaybe<Scalars['String']>;
-  location_json: InputMaybe<Scalars['jsonb']>;
+  location: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
-  overview: InputMaybe<Scalars['String']>;
   parent_event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   parent_event_id: InputMaybe<Scalars['Int']>;
-  price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
-  slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
-  start_time: InputMaybe<Scalars['time']>;
   status: InputMaybe<Scalars['String']>;
-  telegram: InputMaybe<Scalars['String']>;
-  timezone: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
-  types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
-  venue_name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type Events_Max_Fields = {
   __typename?: 'events_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
-  discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
-  facebook: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
-  instagram: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
-  overview: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
-  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
-  telegram: Maybe<Scalars['String']>;
-  timezone: Maybe<Scalars['String']>;
-  twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
-  venue_name: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type Events_Min_Fields = {
   __typename?: 'events_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
-  discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
-  facebook: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
-  instagram: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
-  overview: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
-  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
-  telegram: Maybe<Scalars['String']>;
-  timezone: Maybe<Scalars['String']>;
-  twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
-  venue_name: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "events" */
@@ -5266,36 +5150,21 @@ export type Events_On_Conflict = {
 
 /** Ordering options when selecting data from "events". */
 export type Events_Order_By = {
-  banner: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
-  discord: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
-  end_time: InputMaybe<Order_By>;
   event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Order_By>;
   event_person_aggregate: InputMaybe<Event_Person_Aggregate_Order_By>;
-  facebook: InputMaybe<Order_By>;
-  geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  instagram: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
-  location_json: InputMaybe<Order_By>;
+  location: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
-  overview: InputMaybe<Order_By>;
   parent_event: InputMaybe<Events_Order_By>;
   parent_event_id: InputMaybe<Order_By>;
-  price: InputMaybe<Order_By>;
   size: InputMaybe<Order_By>;
-  slug: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
-  start_time: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
-  telegram: InputMaybe<Order_By>;
-  timezone: InputMaybe<Order_By>;
-  twitter: InputMaybe<Order_By>;
-  types: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
-  venue_name: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: events */
@@ -5305,98 +5174,51 @@ export type Events_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
-  banner: InputMaybe<Scalars['jsonb']>;
-  location_json: InputMaybe<Scalars['jsonb']>;
-  types: InputMaybe<Scalars['jsonb']>;
+  location: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "events" */
 export enum Events_Select_Column {
   /** column name */
-  Banner = 'banner',
-  /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  Discord = 'discord',
   /** column name */
   EndDate = 'end_date',
   /** column name */
-  EndTime = 'end_time',
-  /** column name */
-  Facebook = 'facebook',
-  /** column name */
-  Geopoint = 'geopoint',
-  /** column name */
   Id = 'id',
-  /** column name */
-  Instagram = 'instagram',
   /** column name */
   Link = 'link',
   /** column name */
-  LocationJson = 'location_json',
+  Location = 'location',
   /** column name */
   Name = 'name',
   /** column name */
   Notes = 'notes',
   /** column name */
-  Overview = 'overview',
-  /** column name */
   ParentEventId = 'parent_event_id',
-  /** column name */
-  Price = 'price',
   /** column name */
   Size = 'size',
   /** column name */
-  Slug = 'slug',
-  /** column name */
   StartDate = 'start_date',
-  /** column name */
-  StartTime = 'start_time',
   /** column name */
   Status = 'status',
   /** column name */
-  Telegram = 'telegram',
-  /** column name */
-  Timezone = 'timezone',
-  /** column name */
-  Twitter = 'twitter',
-  /** column name */
-  Types = 'types',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  VenueName = 'venue_name'
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "events" */
 export type Events_Set_Input = {
-  banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
-  discord: InputMaybe<Scalars['String']>;
   end_date: InputMaybe<Scalars['date']>;
-  end_time: InputMaybe<Scalars['time']>;
-  facebook: InputMaybe<Scalars['String']>;
-  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
-  instagram: InputMaybe<Scalars['String']>;
   link: InputMaybe<Scalars['String']>;
-  location_json: InputMaybe<Scalars['jsonb']>;
+  location: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
-  overview: InputMaybe<Scalars['String']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
-  price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
-  slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
-  start_time: InputMaybe<Scalars['time']>;
   status: InputMaybe<Scalars['String']>;
-  telegram: InputMaybe<Scalars['String']>;
-  timezone: InputMaybe<Scalars['String']>;
-  twitter: InputMaybe<Scalars['String']>;
-  types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
-  venue_name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -5404,7 +5226,6 @@ export type Events_Stddev_Fields = {
   __typename?: 'events_stddev_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -5412,7 +5233,6 @@ export type Events_Stddev_Pop_Fields = {
   __typename?: 'events_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5420,7 +5240,6 @@ export type Events_Stddev_Samp_Fields = {
   __typename?: 'events_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -5428,65 +5247,34 @@ export type Events_Sum_Fields = {
   __typename?: 'events_sum_fields';
   id: Maybe<Scalars['Int']>;
   parent_event_id: Maybe<Scalars['Int']>;
-  price: Maybe<Scalars['numeric']>;
 };
 
 /** update columns of table "events" */
 export enum Events_Update_Column {
   /** column name */
-  Banner = 'banner',
-  /** column name */
   CreatedAt = 'created_at',
-  /** column name */
-  Discord = 'discord',
   /** column name */
   EndDate = 'end_date',
   /** column name */
-  EndTime = 'end_time',
-  /** column name */
-  Facebook = 'facebook',
-  /** column name */
-  Geopoint = 'geopoint',
-  /** column name */
   Id = 'id',
-  /** column name */
-  Instagram = 'instagram',
   /** column name */
   Link = 'link',
   /** column name */
-  LocationJson = 'location_json',
+  Location = 'location',
   /** column name */
   Name = 'name',
   /** column name */
   Notes = 'notes',
   /** column name */
-  Overview = 'overview',
-  /** column name */
   ParentEventId = 'parent_event_id',
-  /** column name */
-  Price = 'price',
   /** column name */
   Size = 'size',
   /** column name */
-  Slug = 'slug',
-  /** column name */
   StartDate = 'start_date',
-  /** column name */
-  StartTime = 'start_time',
   /** column name */
   Status = 'status',
   /** column name */
-  Telegram = 'telegram',
-  /** column name */
-  Timezone = 'timezone',
-  /** column name */
-  Twitter = 'twitter',
-  /** column name */
-  Types = 'types',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  VenueName = 'venue_name'
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -5494,7 +5282,6 @@ export type Events_Var_Pop_Fields = {
   __typename?: 'events_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -5502,7 +5289,6 @@ export type Events_Var_Samp_Fields = {
   __typename?: 'events_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -5510,7 +5296,6 @@ export type Events_Variance_Fields = {
   __typename?: 'events_variance_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
-  price: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */
@@ -13141,7 +12926,7 @@ export type Query_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
-  /** fetch data from the table: "reset_passwords" */
+   /** fetch data from the table: "reset_passwords" */
   reset_passwords: Array<Reset_Passwords>;
   /** fetch aggregated fields from the table: "reset_passwords" */
   reset_passwords_aggregate: Reset_Passwords_Aggregate;
@@ -16661,19 +16446,6 @@ export type Team_Members_Variance_Order_By = {
   person_id: InputMaybe<Order_By>;
 };
 
-/** Boolean expression to compare columns of type "time". All fields are combined with logical 'AND'. */
-export type Time_Comparison_Exp = {
-  _eq: InputMaybe<Scalars['time']>;
-  _gt: InputMaybe<Scalars['time']>;
-  _gte: InputMaybe<Scalars['time']>;
-  _in: InputMaybe<Array<Scalars['time']>>;
-  _is_null: InputMaybe<Scalars['Boolean']>;
-  _lt: InputMaybe<Scalars['time']>;
-  _lte: InputMaybe<Scalars['time']>;
-  _neq: InputMaybe<Scalars['time']>;
-  _nin: InputMaybe<Array<Scalars['time']>>;
-};
-
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
 export type Timestamp_Comparison_Exp = {
   _eq: InputMaybe<Scalars['timestamp']>;
@@ -18498,7 +18270,6 @@ export type Vc_FirmsInvestors_AggregateArgs = {
   order_by: InputMaybe<Array<Investors_Order_By>>;
   where: InputMaybe<Investors_Bool_Exp>;
 };
-
 
 /** columns and relationships of "vc_firms" */
 export type Vc_FirmsLibraryArgs = {
