@@ -5,6 +5,7 @@ import {
   SimpleForm,
   TextInput,
   SelectInput,
+  SelectArrayInput,
   FormDataConsumer,
   useGetList,
   AutocompleteArrayInput,
@@ -211,11 +212,11 @@ const VcFirmForm = ({
             },
           }}
         />
-        <SelectInput
+        <SelectArrayInput
           className={textInputClassName}
           source="library"
           choices={libraryChoices}
-          defaultValue="Web3"
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

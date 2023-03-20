@@ -166,7 +166,10 @@ export const CompanyList = () => {
       <TextField source="location_json" />
       <TextField source="discord" />
       <TextField source="glassdoor" />
-      <TextField source="library" />
+      <FunctionField
+        source="library"
+        render={(record: any) => (record.library ? record.library.join() : "")}
+      />
       <FunctionField
         source="tags"
         render={(record: any) => (record.tags ? record.tags.join() : "")}

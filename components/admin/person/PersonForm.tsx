@@ -5,6 +5,7 @@ import {
   TextInput,
   FileInput,
   SelectInput,
+  SelectArrayInput,
   SimpleForm,
   useGetList,
   required,
@@ -142,11 +143,11 @@ const PersonForm = ({
             },
           }}
         />
-        <SelectInput
+        <SelectArrayInput
           className={inputClassName}
           source="library"
           choices={libraryChoices}
-          defaultValue="Web3"
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

@@ -3,10 +3,12 @@ import {
   SimpleForm,
   TextInput,
   SelectInput,
-  required,
   Toolbar,
   SaveButton,
   DeleteButton,
+  ArrayInput,
+  SimpleFormIterator,
+  required,
 } from "react-admin";
 import ElemFormBase from "../ElemFormBase";
 import ElemTitle from "../ElemTitle";
@@ -28,8 +30,20 @@ export const UserEdit = () => {
   const inputClassName =
     "w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
 
+  const transform = (data: any) => ({
+    ...data,
+    additional_emails:
+      data.additional_emails && data.additional_emails.length > 0
+        ? data.additional_emails.map((item: { email: string }) => item.email)
+        : data.additional_emails,
+  });
+
   return (
-    <ElemFormBase title={<ElemTitle category="Users" />} action="edit">
+    <ElemFormBase
+      title={<ElemTitle category="Users" />}
+      action="edit"
+      transform={transform}
+    >
       <SimpleForm toolbar={<UserEditToolbar />}>
         <TextInput className={inputClassName} disabled source="id" />
         <TextInput className={inputClassName} disabled source="email" />
@@ -46,6 +60,14 @@ export const UserEdit = () => {
           ]}
           validate={required()}
         />
+        <ArrayInput source="additional_emails">
+          <SimpleFormIterator
+            disableReordering
+            sx={{ margin: 2, paddingTop: 1 }}
+          >
+            <TextInput className={inputClassName} source="email" />
+          </SimpleFormIterator>
+        </ArrayInput>
         <SelectInput
           className={inputClassName}
           source="active"

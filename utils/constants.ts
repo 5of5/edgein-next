@@ -725,10 +725,10 @@ export const eventPersonTypeChoices = [
 
 export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
 
-export const libraryChoices = [
-  "Web3",
-  "AI",
-].map((item) => ({ id: item, name: item }));
+export const libraryChoices = ["Web3", "AI"].map((item) => ({
+	id: item,
+	name: item,
+}));
 
 export type ResourceTypes =
 	| "companies"
@@ -823,10 +823,10 @@ export const companiesFilterOptions = [
 		],
 	},
 	{
-		category: "Industry",
+		category: "Tags",
 		items: [
 			{
-				label: "Select industry",
+				label: "Select tags",
 				value: "industry",
 			},
 		],
@@ -900,10 +900,10 @@ export const investorsFilterOptions = [
 		],
 	},
 	{
-		category: "Industry",
+		category: "Tags",
 		items: [
 			{
-				label: "Select industry",
+				label: "Select tags",
 				value: "industry",
 			},
 		],
