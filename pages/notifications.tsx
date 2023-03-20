@@ -85,17 +85,16 @@ const Notifications: NextPage = () => {
 
 							let userTimezone = moment.tz.guess();
 
-							var notificationCreatedAt = moment(notification.created_at)
-								.tz(userTimezone)
-								.format("MMM D");
+							// const notificationCreatedAt = moment(notification.created_at)
+							// 	.tz(userTimezone)
+							// 	.format("MMM D");
+
+							const notificationFromNow = moment(
+								notification.created_at
+							).fromNow();
 
 							return (
-								<div
-									key={index}
-									className="relative flex items-center group"
-									//key={notification.company?.id || notification?.vc_firm?.id}
-									//	className={`flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100`}
-								>
+								<div key={index} className="relative flex items-center group">
 									<a
 										href={getLink(notification)}
 										className="relative flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100"
@@ -115,9 +114,18 @@ const Notifications: NextPage = () => {
 													{notification.message}
 												</div>
 
-												<p className="text-xs text-primary-500 font-bold">
+												{/* <p className="text-xs text-primary-500 font-semibold">
+													{notificationCreatedAt}
+												</p> */}
+												<p className="text-xs text-primary-500 font-semibold">
+													{notificationFromNow}
+												</p>
+												{/* <p className="text-xs text-primary-500 font-medium">
 													{notificationCreatedAt}
 												</p>
+												<p className="text-xs text-primary-500 font">
+													{notificationCreatedAt}
+												</p> */}
 											</div>
 										</div>
 
