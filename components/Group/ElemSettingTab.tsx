@@ -81,7 +81,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 			onSuccess: async (response, value) => {
 				if (response.status !== 200) {
 					const err = await response.json();
-					toast.error(
+					toast.custom(
 						(t) => (
 							<div
 								className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
