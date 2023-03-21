@@ -108,6 +108,7 @@ const Notifications: NextPage = () => {
 								<div key={index} className="relative flex items-center group">
 									<a
 										href={getLink(notification)}
+										onClick={() => markAsRead(notification.id)}
 										className="relative flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100"
 									>
 										<div className="flex items-center space-x-2 pr-20">
