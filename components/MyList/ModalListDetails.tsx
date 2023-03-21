@@ -1,4 +1,4 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Switch } from "@headlessui/react";
 import { FC, Fragment, useState } from "react";
 import { ModalListName } from "@/components/MyList/ModalListName";
 import {
@@ -16,10 +16,13 @@ type Props = {
 	theListCreator?: string | null;
 	theListDate?: string;
 	theListId: number;
+	isCreator: boolean;
+	theListPublic: boolean;
 	groups: Array<any>;
 	onSaveListName: (name: string) => void;
 	onDeleteList: (id: number) => void;
 	onAddGroups: (ids: Array<number>) => void;
+	onChangePublic: (value: boolean) => void;
 };
 
 export const ModalListDetails: FC<Props> = ({
@@ -28,10 +31,13 @@ export const ModalListDetails: FC<Props> = ({
 	theListCreator,
 	theListDate,
 	theListId,
+	isCreator,
+	theListPublic,
 	groups,
 	onSaveListName,
 	onDeleteList,
 	onAddGroups,
+	onChangePublic,
 }) => {
 	const [listDetailsModal, setListDetailsModal] = useState(false);
 	const [listNameModal, setListNameModal] = useState(false);
@@ -105,9 +111,11 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Name</h3>
 													<p className="capitalize">{theListName}</p>
 												</div>
-												<div className="text-primary-500 text-sm font-bold">
-													Edit
-												</div>
+												{isCreator && (
+													<div className="text-primary-500 text-sm font-bold">
+														Edit
+													</div>
+												)}
 											</button>
 
 											<button
@@ -131,9 +139,11 @@ export const ModalListDetails: FC<Props> = ({
 														<p className="text-slate-500">Share with group</p>
 													)}
 												</div>
-												<div className="text-primary-500 text-sm font-bold">
-													Edit
-												</div>
+												{isCreator && (
+													<div className="text-primary-500 text-sm font-bold">
+														Edit
+													</div>
+												)}
 											</button>
 
 											{theListDescription && (
@@ -147,9 +157,36 @@ export const ModalListDetails: FC<Props> = ({
 															{theListDescription ? theListDescription : ""}
 														</p>
 													</div>
-													<div className="text-primary-500">Edit</div>
+													{isCreator && (
+														<div className="text-primary-500">Edit</div>
+													)}
 												</button>
 											)}
+
+											<div>
+                        <div className="flex items-center justify-between space-x-1 px-4 py-3 cursor-pointer hover:bg-slate-100">
+                          <p className="font-bold">Public</p>
+                          <Switch
+                            checked={theListPublic}
+                            onChange={onChangePublic}
+														disabled={!isCreator}
+                            className={`${
+                              theListPublic ? "bg-primary-600" : "bg-gray-200"
+                            } ${
+                              !isCreator ? "opacity-60" : ""
+                            } relative inline-flex h-6 w-11 items-center rounded-full`}
+													>
+                            <span className="sr-only">Set list public</span>
+                            <span
+                              className={`${
+                                theListPublic
+                                  ? "translate-x-6"
+                                  : "translate-x-1"
+                              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                            />
+                          </Switch>
+                        </div>
+                      </div>
 
 											{theListCreator && (
 												<div className="flex justify-between w-full p-3">
@@ -165,22 +202,25 @@ export const ModalListDetails: FC<Props> = ({
 												</div>
 											)}
 										</div>
-										<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
-											<button
-												className="flex justify-between w-full p-3 hover:bg-slate-100"
-												onClick={() => setListDeleteModal(true)}
-											>
-												<div className="text-left text-rose-500">
-													<h3 className="flex items-center font-bold">
-														<IconTrash
-															className="h-5 w-5 mr-2"
-															title="Delete List"
-														/>
-														Delete List
-													</h3>
-												</div>
-											</button>
-										</div>
+
+										{isCreator && (
+											<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+												<button
+													className="flex justify-between w-full p-3 hover:bg-slate-100"
+													onClick={() => setListDeleteModal(true)}
+												>
+													<div className="text-left text-rose-500">
+														<h3 className="flex items-center font-bold">
+															<IconTrash
+																className="h-5 w-5 mr-2"
+																title="Delete List"
+															/>
+															Delete List
+														</h3>
+													</div>
+												</button>
+											</div>
+										)}
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>

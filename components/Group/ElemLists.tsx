@@ -23,7 +23,7 @@ type Props = {
 };
 
 export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
-	const { user, listAndFollows } = useUser();
+	const { user, listAndFollows, refreshProfile } = useUser();
 
 	const [isOpenAddList, setIsOpenAddList] = useState<boolean>(false);
 
@@ -65,6 +65,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 
 		if (response.status === 200) {
 			refetch();
+			refreshProfile();
 		}
 	};
 

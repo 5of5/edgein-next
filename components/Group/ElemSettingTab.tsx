@@ -192,9 +192,12 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
             <Switch
               checked={!!isPublicGroup}
               onChange={togglePublic}
-              className={`${
-                isPublicGroup ? "bg-primary-600" : "bg-gray-200"
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
+							disabled={!isGroupManager}
+							className={`${
+								isPublicGroup ? "bg-primary-600" : "bg-gray-200"
+							} ${
+								!isGroupManager ? "opacity-60" : ""
+							} relative inline-flex h-6 w-11 items-center rounded-full`}
             >
               <span className="sr-only">Set group public</span>
               <span

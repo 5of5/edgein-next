@@ -8178,6 +8178,7 @@ export type Lists = {
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
+  public: Maybe<Scalars['Boolean']>;
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
   /** An array relationship */
@@ -8316,6 +8317,7 @@ export type Lists_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
+  public: InputMaybe<Boolean_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
 };
@@ -8344,6 +8346,7 @@ export type Lists_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
   user_groups: InputMaybe<List_User_Groups_Arr_Rel_Insert_Input>;
 };
 
@@ -8398,6 +8401,7 @@ export type Lists_Order_By = {
   id: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
+  public: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
   user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Order_By>;
 };
@@ -8416,7 +8420,9 @@ export enum Lists_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Public = 'public',
 }
 
 /** input type for updating data in table "lists" */
@@ -8425,6 +8431,7 @@ export type Lists_Set_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
 };
 
 /** aggregate stddev on columns */
@@ -8464,7 +8471,9 @@ export enum Lists_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Public = 'public',
 }
 
 /** aggregate var_pop on columns */
@@ -19035,7 +19044,7 @@ export type GetFollowsByUserQueryVariables = Exact<{
 }>;
 
 
-export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, created_by_id: number, created_at: any | null, total_no_of_resources: number | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }> } }> };
+export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, total_no_of_resources: number | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }> } }> };
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -19070,14 +19079,14 @@ export type GetListUserGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
 }>;
 
 
-export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
+export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -19497,6 +19506,7 @@ export const GetFollowsByUserDocument = `
     list {
       name
       id
+      public
       created_by_id
       created_at
       total_no_of_resources
@@ -19744,6 +19754,7 @@ export const GetListUserGroupsDocument = `
     list {
       id
       name
+      public
       created_at
       created_by {
         id
@@ -19787,6 +19798,7 @@ export const GetListMembersDocument = `
     list {
       id
       name
+      public
       created_at
       created_by {
         id

@@ -24,6 +24,7 @@ import {
 } from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/userContext";
+import { ElemButton } from "@/components/ElemButton";
 
 type Props = {};
 
@@ -57,7 +58,7 @@ const MyList: NextPage<Props> = ({}) => {
 			method: "PUT",
 			body: JSON.stringify({
 				id: parseInt(router.query.listId as string),
-				name,
+				payload: { name },
 			}),
 			headers: {
 				Accept: "application/json",
@@ -147,11 +148,65 @@ const MyList: NextPage<Props> = ({}) => {
 		}
 	};
 
+	const onChangePublic = async (value: boolean) => {
+		const res = await fetch(`/api/update_list/`, {
+			method: "PUT",
+			body: JSON.stringify({
+				id: parseInt(router.query.listId as string),
+				payload: { public: value },
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		});
+
+		if (res.ok) {
+			setTheListPublic(value);
+			refreshProfile();
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						List updated
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "top-center",
+				}
+			);
+		}
+	};
+
+	const onFollowList = async () => {
+		const response = await fetch("/api/toggle_follow_list/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				listId: theListId,
+				userId: user?.id,
+			}),
+		});
+
+		if (response.status === 200) {
+			refreshProfile();
+		}
+	};
+
 	const [theListId, setTheListId] = useState(0);
 
 	const [theListCreatorId, setTheListCreatorId] = useState<any>();
 
 	const [theListCreatedDate, setTheListCreatedDate] = useState<string>();
+
+	const [theListPublic, setTheListPublic] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (lists) {
@@ -168,6 +223,8 @@ const MyList: NextPage<Props> = ({}) => {
 					return list ? getNameFromListName(list) : "";
 				});
 
+				setTheListPublic(!!list?.public);
+
 				setTheListCreatorId(() => {
 					return list ? getUserIdFromListCreator(list) : "";
 				});
@@ -177,9 +234,11 @@ const MyList: NextPage<Props> = ({}) => {
 						? !["hot", "like", "crap"].includes(getNameFromListName(list))
 						: false;
 				});
+
+				setIsFollowing(true);
 			} else {
 				setSelectedListName(startCase(router.query.slug as string));
-				setIsCustomList(true);
+				setIsCustomList(router.query.listId as string !== "0");
 				setIsFollowing(false);
 			}
 		}
@@ -190,8 +249,8 @@ const MyList: NextPage<Props> = ({}) => {
 		setSelectedListName,
 		setTheListCreatorId,
 		setIsCustomList,
+		setTheListPublic,
 	]);
-
 	useEffect(() => {
 		if (router.isReady) {
 			setTheListId(parseInt(router.query?.listId as string));
@@ -221,7 +280,6 @@ const MyList: NextPage<Props> = ({}) => {
 	}, [companiesData, vcFirms]);
 
 	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
-
 	return (
 		<DashboardLayout>
 			<div className="w-full mb-2">
@@ -239,8 +297,10 @@ const MyList: NextPage<Props> = ({}) => {
 									theListName={selectedListName ? selectedListName : ""}
 									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
 									theListCreator={user?.display_name}
+									theListPublic={theListPublic}
 									theListDate={theListCreatedDate}
 									theListId={parseInt(router.query.listId as string)}
+									isCreator={theListCreatorId === user?.id}
 									groups={
 										groups?.list_user_groups?.map(
 											(group) => group.user_group
@@ -249,12 +309,18 @@ const MyList: NextPage<Props> = ({}) => {
 									onSaveListName={onSaveListName}
 									onDeleteList={onDeleteList}
 									onAddGroups={onAddGroups}
+									onChangePublic={onChangePublic}
 								/>
 							</>
 						) : (
-							<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-								Previewing: {listNameTitle}
-							</h1>
+							<div className="flex items-center gap-x-2">
+								<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+									Previewing: {listNameTitle}
+								</h1>
+								{isCustomList && (
+									<ElemButton btn="primary" onClick={onFollowList}>Follow</ElemButton>
+								)}
+							</div>
 						)
 					) : (
 						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
@@ -272,33 +338,41 @@ const MyList: NextPage<Props> = ({}) => {
 				)}
 			</div>
 
-			{companiesError ? (
-				<h4>Error loading companies</h4>
-			) : companiesLoading ? (
-				<div className="rounded-lg p-5 bg-white shadow mb-8">
-					<PlaceholderTable />
-				</div>
-			) : (
-				<CompaniesList
-					companies={companies}
-					selectedListName={selectedListName}
-					isCustomList={isCustomList}
-				/>
-			)}
+			{!isCustomList || isFollowing || theListCreatorId === user?.id ? (
+        <>
+          {companiesError ? (
+            <h4>Error loading companies</h4>
+          ) : companiesLoading ? (
+            <div className="rounded-lg p-5 bg-white shadow mb-8">
+              <PlaceholderTable />
+            </div>
+          ) : (
+            <CompaniesList
+              companies={companies}
+              selectedListName={selectedListName}
+              isCustomList={isCustomList}
+            />
+          )}
 
-			{vcFirmsError ? (
-				<h4>Error loading Investors</h4>
-			) : vcFirmsLoading ? (
-				<div className="rounded-lg p-5 bg-white shadow mb-8">
-					<PlaceholderTable />
+          {vcFirmsError ? (
+            <h4>Error loading Investors</h4>
+          ) : vcFirmsLoading ? (
+            <div className="rounded-lg p-5 bg-white shadow mb-8">
+              <PlaceholderTable />
+            </div>
+          ) : (
+            <InvestorsList
+              vcfirms={vcfirms}
+              selectedListName={selectedListName}
+              isCustomList={isCustomList}
+            />
+          )}
+        </>
+      ) : (
+        <div className=" w-full mt-7 p-5 bg-white shadow rounded-lg">
+					<p>Follow list to explore more information</p>
 				</div>
-			) : (
-				<InvestorsList
-					vcfirms={vcfirms}
-					selectedListName={selectedListName}
-					isCustomList={isCustomList}
-				/>
-			)}
+      )}
 
 			<Toaster />
 		</DashboardLayout>
