@@ -63,6 +63,7 @@ export const ElemSaveToList: FC<Props> = ({
 						follows_companies: [],
 						follows_vcfirms: [],
 						total_no_of_resources: 0,
+						public: false,
 					};
 					newLists.push(list);
 				} else {
