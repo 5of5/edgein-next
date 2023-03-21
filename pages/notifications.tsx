@@ -28,7 +28,7 @@ const getLink = (
 const Notifications: NextPage = () => {
 	const { user } = useAuth();
 
-	const { data } = useGetNotificationsForUserQuery({ user: user?.id || 0 });
+	const { data, refetch } = useGetNotificationsForUserQuery({ user: user?.id || 0 });
 	const notifications = data?.notifications;
 
 	const displayedNotifications = notifications?.slice(
@@ -52,11 +52,19 @@ const Notifications: NextPage = () => {
 		setIsOpenUpgradeDialog(false);
 	};
 
-	const markAsRead = (organization: string | null | undefined, id: number) => {
-		const log = organization
-			? `${organization} notification read. notification id:${id}`
-			: id;
-		return console.log(log);
+	const markAsRead = async (id?: number, all?: boolean) => {
+		await fetch("/api/mark_notification_read/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				id,
+				all,
+			}),
+		});
+		refetch();
 	};
 
 	const { showNewMessages } = useIntercom();
@@ -66,7 +74,10 @@ const Notifications: NextPage = () => {
 			<div className="bg-white shadow rounded-lg p-5">
 				<div className="flex items-center justify-between mb-2">
 					<h2 className="text-xl font-bold">Notifications</h2>
-					<button className="flex items-center text-sm hover:text-primary-500">
+					<button
+						className="flex items-center text-sm hover:text-primary-500"
+						onClick={() => markAsRead(undefined, true)}
+					>
 						<IconCheck className="h-4 mr-1" />
 						Mark all as read
 					</button>
@@ -159,7 +170,7 @@ const Notifications: NextPage = () => {
 													<>
 														<button
 															onClick={() => {
-																markAsRead(organization?.name, index);
+																markAsRead(notification.id);
 																close();
 															}}
 															className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
