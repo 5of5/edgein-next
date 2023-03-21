@@ -162,7 +162,7 @@ const queryForCompanyList = async (date: any) => {
       where: {
         _and: [
           {updated_at: {_gte: $date}},
-          {library: {_eq: "web3"}}
+          {library: {_contains: "Web3"}}
         ]
       }
     ) {
@@ -199,7 +199,7 @@ const queryForVcFirmsList = async (date: any) => {
       where: {
         _and: [
           {updated_at: {_gte: $date}},
-          {library: {_eq: "web3"}}
+          {library: {_contains: "Web3"}}
         ]
       }
     ) {
@@ -229,7 +229,7 @@ const queryForPeopleList = async (date: any) => {
       where: {
         _and: [
           {updated_at: {_gte: $date}},
-          {library: {_eq: "web3"}}
+          {library: {_contains: "Web3"}}
         ]
       }
     ) {
