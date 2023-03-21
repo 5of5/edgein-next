@@ -24,6 +24,7 @@ import { ElemFilter } from "@/components/ElemFilter";
 import { processEventsFilters } from "@/utils/filter";
 import useFilterParams from "@/hooks/useFilterParams";
 import { ElemEventCard } from "@/components/Events/ElemEventCard";
+import { useIntercom } from "react-use-intercom";
 
 type Props = {
 	eventTabs: TextFilter[];
@@ -42,8 +43,10 @@ const Events: NextPage<Props> = ({
 
 	const router = useRouter();
 
+	const { showNewMessages } = useIntercom();
+
 	const [selectedTab, setSelectedTab] = useStateParams(
-		{...eventTabs[0], date: moment().toISOString()},
+		{ ...eventTabs[0], date: moment().toISOString() },
 		"tab",
 		(statusTag) => eventTabs.indexOf(statusTag).toString(),
 		(index) => ({
@@ -184,11 +187,21 @@ const Events: NextPage<Props> = ({
 		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Events"
-				subtitle="Don't miss a beat. Here's your lineup for all of the industry's must attend events. Holding an event? Let us know"
+				//subtitle={`Don't miss a beat. Here's your lineup for all of the industry's must attend events. Holding an event? Let us know.`}
 			>
-				{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
-						Submit event
-					</ElemButton> */}
+				<p className="max-w-3xl mt-5 text-xl text-slate-600">
+					Don&rsquo;t miss a beat. Here&rsquo;s your lineup for all of the
+					industry&rsquo;s must attend events. Holding an event?{" "}
+					<button
+						onClick={() =>
+							showNewMessages(`Hi EdgeIn, I'd like to submit an event`)
+						}
+						className="text-primary-500 hover:underline"
+					>
+						Let us know
+					</button>
+					.
+				</p>
 			</ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">

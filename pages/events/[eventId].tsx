@@ -15,6 +15,8 @@ import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
 import Link from "next/link";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -218,8 +220,12 @@ const Event: NextPage<Props> = ({ event }) => {
 					<div className="col-span-8">
 						{event.overview && (
 							<div className="w-full p-5 bg-white shadow rounded-lg">
-								<h2 className="text-xl font-bold">Overview</h2>
-								<p className="text-lg text-slate-600">{event.overview}</p>
+								<div className="flex items-center justify-between mb-2 border-b border-black/10">
+									<h2 className="text-xl font-bold">Overview</h2>
+								</div>
+								<div className="py-4 text-lg text-slate-600">
+									{parse(newLineToP(event.overview))}
+								</div>
 							</div>
 						)}
 
