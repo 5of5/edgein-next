@@ -216,10 +216,13 @@ const Event: NextPage<Props> = ({ event }) => {
 						/>
 					</div>
 					<div className="col-span-8">
-						<div className="w-full p-5 bg-white shadow rounded-lg">
-							<h2 className="text-xl font-bold">Overview</h2>
-							<p className="text-lg text-slate-600">{event.overview}</p>
-						</div>
+						{event.overview && (
+							<div className="w-full p-5 bg-white shadow rounded-lg">
+								<h2 className="text-xl font-bold">Overview</h2>
+								<p className="text-lg text-slate-600">{event.overview}</p>
+							</div>
+						)}
+
 						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
 							<ElemEventActivity activities={sortedActivities} />
 						</div>
