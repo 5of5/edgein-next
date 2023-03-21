@@ -191,20 +191,28 @@ const Group: NextPage<Props> = (props: Props) => {
 		);
 	}
 
-	if (groupData.is_private) {
+	if (groupData.public) {
 		return (
 			<DashboardLayout>
 			{/* <div ref={homeRef} /> */}
-
+	
 				<ElemGroupInformation
 					isUserBelongToGroup={isUserBelongToGroup}
 					group={groupData}
 					onInvite={onOpenInviteDialog}
 					onOpenSettingDialog={onOpenSettingDialog}
 				/>
-				<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-					<IconLockClosed className="h-5 w-5" title="Private" />
-					<p>This is a private group and you has not been invited to.</p>
+				<div className="flex items-center gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+					<IconInformationCircle className="h-5 w-5" title="Private" />
+					<p>Join group to explore more information</p>
+					<ElemButton
+						btn="primary"
+						className="px-8 ml-4"
+						loading={isAddingGroupMember}
+						onClick={() => addGroupMember()}
+					>
+						Join
+					</ElemButton>
 				</div>
 			</DashboardLayout>
 		)
@@ -220,17 +228,9 @@ const Group: NextPage<Props> = (props: Props) => {
 				onInvite={onOpenInviteDialog}
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
-			<div className="flex items-center gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-				<IconInformationCircle className="h-5 w-5" title="Private" />
-				<p>Join group to explore more information</p>
-				<ElemButton
-					btn="primary"
-					className="px-8 ml-4"
-					loading={isAddingGroupMember}
-					onClick={() => addGroupMember()}
-				>
-					Join
-				</ElemButton>
+			<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+				<IconLockClosed className="h-5 w-5" title="Private" />
+				<p>This is a private group and you has not been invited to.</p>
 			</div>
 		</DashboardLayout>
 	)

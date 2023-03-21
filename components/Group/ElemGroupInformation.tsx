@@ -103,11 +103,11 @@ export const ElemGroupInformation: React.FC<Props> = ({
               <IconGroup className="w-6 h-6 mr-1" />
               <span className="font-bold text-xl capitalize">{group.name}</span>
             </div>
-            {!group.is_private && (
+            {group.public && (
               <div className="flex items-center gap-x-2 shrink-0">
                 <ElemMemberAvatarList
                   members={group.user_group_members}
-                  onClick={() => onOpenSettingDialog("members")}
+                  onClick={() => {}}
                 />
                 <span className="font-bold">
                   {group.user_group_members.length}

@@ -16771,12 +16771,12 @@ export type User_Groups = {
   description: Maybe<Scalars['String']>;
   discord: Maybe<Scalars['String']>;
   id: Scalars['Int'];
-  is_private: Maybe<Scalars['Boolean']>;
   name: Scalars['String'];
   /** An array relationship */
   notes: Array<Notes>;
   /** An aggregate relationship */
   notes_aggregate: Notes_Aggregate;
+  public: Maybe<Scalars['Boolean']>;
   telegram: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -16898,9 +16898,9 @@ export type User_Groups_Bool_Exp = {
   description: InputMaybe<String_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
-  is_private: InputMaybe<Boolean_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<Notes_Bool_Exp>;
+  public: InputMaybe<Boolean_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -16928,9 +16928,9 @@ export type User_Groups_Insert_Input = {
   description: InputMaybe<Scalars['String']>;
   discord: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
-  is_private: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Notes_Arr_Rel_Insert_Input>;
+  public: InputMaybe<Scalars['Boolean']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -16997,9 +16997,9 @@ export type User_Groups_Order_By = {
   description: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
-  is_private: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes_aggregate: InputMaybe<Notes_Aggregate_Order_By>;
+  public: InputMaybe<Order_By>;
   telegram: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -17025,9 +17025,9 @@ export enum User_Groups_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsPrivate = 'is_private',
-  /** column name */
   Name = 'name',
+  /** column name */
+  Public = 'public',
   /** column name */
   Telegram = 'telegram',
   /** column name */
@@ -17043,8 +17043,8 @@ export type User_Groups_Set_Input = {
   description: InputMaybe<Scalars['String']>;
   discord: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
-  is_private: InputMaybe<Scalars['Boolean']>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -17091,9 +17091,9 @@ export enum User_Groups_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  IsPrivate = 'is_private',
-  /** column name */
   Name = 'name',
+  /** column name */
+  Public = 'public',
   /** column name */
   Telegram = 'telegram',
   /** column name */
@@ -17932,6 +17932,7 @@ export type Vc_FirmsInvestors_AggregateArgs = {
   order_by: InputMaybe<Array<Investors_Order_By>>;
   where: InputMaybe<Investors_Bool_Exp>;
 };
+
 
 /** columns and relationships of "vc_firms" */
 export type Vc_FirmsLibraryArgs = {
@@ -19055,14 +19056,14 @@ export type GetGroupsOfUserQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, is_private: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
+export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, is_private: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
+export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
@@ -19645,7 +19646,7 @@ export const GetGroupsOfUserDocument = `
       telegram
       twitter
       discord
-      is_private
+      public
       created_by {
         id
         display_name
@@ -19685,7 +19686,7 @@ export const GetGroupDocument = `
     telegram
     twitter
     discord
-    is_private
+    public
     created_by_user_id
     created_by {
       id

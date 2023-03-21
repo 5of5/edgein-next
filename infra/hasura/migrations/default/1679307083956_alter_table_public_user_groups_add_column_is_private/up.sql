@@ -1,2 +1,2 @@
-alter table "public"."user_groups" add column "is_private" boolean
- null default 'true';
+alter table "public"."user_groups" add column "public" boolean
+ null default 'false';

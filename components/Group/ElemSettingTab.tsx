@@ -25,7 +25,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 
 	const isGroupManager = user?.id === group.created_by_user_id;
 
-	const isPublicGroup = !group.is_private;
+	const isPublicGroup = group.public;
 
 	const fields = [
 		{
@@ -73,7 +73,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 				body: JSON.stringify({
 					id: group.id,
 					payload: {
-						is_private: !value,
+						public: value,
 					},
 				}),
 			}),
@@ -114,7 +114,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 					);
 					onUpdateGroupData((prev: User_Groups) => ({
 						...prev,
-						is_private: !value,
+						public: value,
 					}));
 				}
 			},
@@ -190,7 +190,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
           >
             <p className="font-bold">Public</p>
             <Switch
-              checked={isPublicGroup}
+              checked={!!isPublicGroup}
               onChange={togglePublic}
               className={`${
                 isPublicGroup ? "bg-primary-600" : "bg-gray-200"

@@ -15,7 +15,7 @@ query GetGroupsOfUser($user_id: Int!) {
       telegram
       twitter
       discord
-      is_private
+      public
       created_by {
         id
         display_name
@@ -35,7 +35,7 @@ query GetGroup($id: Int!) {
     telegram
     twitter
     discord
-    is_private
+    public
     created_by_user_id
     created_by {
       id
