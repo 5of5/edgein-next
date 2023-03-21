@@ -94,9 +94,81 @@ const Group: NextPage<Props> = (props: Props) => {
 		setIsOpenSettingDialog(false);
 	};
 
+	if (props.isUserBelongToGroup) {
+		return (
+			<DashboardLayout>
+				{/* <div ref={homeRef} /> */}
+	
+				<ElemGroupInformation
+					isUserBelongToGroup={props.isUserBelongToGroup}
+					group={groupData}
+					onInvite={onOpenInviteDialog}
+					onOpenSettingDialog={onOpenSettingDialog}
+				/>
+				<ElemTabBar
+					className="mt-2 border-t-0"
+					tabs={tabBarItems}
+					showDropdown={false}
+				/>
+				<div ref={listsRef}>
+					<ElemLists
+						group={groupData}
+						lists={
+							(lists?.list_user_groups?.map(
+								(item) => item.list
+							) as Array<Lists>) || []
+						}
+						refetchLists={refetchLists}
+					/>
+				</div>
+
+				<div ref={notesRef}>
+					<ElemNotes notes={props.notes} />
+				</div>
+
+				<div ref={chatRef} />
+
+				<ElemInviteDialog
+					isOpen={isOpenInviteDialog}
+					group={groupData}
+					onUpdateGroupData={setGroupData}
+					onClose={onCloseInviteDialog}
+				/>
+
+				<ElemSettingDialog
+					isOpen={isOpenSettingDialog}
+					selectedTab={selectedSettingTab}
+					group={groupData}
+					onClose={onCloseSettingDialog}
+					onUpdateGroupData={setGroupData}
+					onInvite={onOpenInviteDialog}
+				/>
+			</DashboardLayout>
+		);
+	}
+
+	if (groupData.is_private) {
+		return (
+			<DashboardLayout>
+			{/* <div ref={homeRef} /> */}
+
+				<ElemGroupInformation
+					isUserBelongToGroup={props.isUserBelongToGroup}
+					group={groupData}
+					onInvite={onOpenInviteDialog}
+					onOpenSettingDialog={onOpenSettingDialog}
+				/>
+				<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+					<IconLockClosed className="h-5 w-5" title="Private" />
+					<p>This is a private group and you has not been invited to.</p>
+				</div>
+			</DashboardLayout>
+		)
+	}
+
 	return (
 		<DashboardLayout>
-			{/* <div ref={homeRef} /> */}
+		{/* <div ref={homeRef} /> */}
 
 			<ElemGroupInformation
 				isUserBelongToGroup={props.isUserBelongToGroup}
@@ -104,56 +176,12 @@ const Group: NextPage<Props> = (props: Props) => {
 				onInvite={onOpenInviteDialog}
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
-
-			{props.isUserBelongToGroup ? (
-				<>
-					<ElemTabBar
-						className="mt-2 border-t-0"
-						tabs={tabBarItems}
-						showDropdown={false}
-					/>
-					<div ref={listsRef}>
-						<ElemLists
-							group={groupData}
-							lists={
-								(lists?.list_user_groups?.map(
-									(item) => item.list
-								) as Array<Lists>) || []
-							}
-							refetchLists={refetchLists}
-						/>
-					</div>
-
-					<div ref={notesRef}>
-						<ElemNotes notes={props.notes} />
-					</div>
-
-					<div ref={chatRef} />
-
-					<ElemInviteDialog
-						isOpen={isOpenInviteDialog}
-						group={groupData}
-						onUpdateGroupData={setGroupData}
-						onClose={onCloseInviteDialog}
-					/>
-
-					<ElemSettingDialog
-						isOpen={isOpenSettingDialog}
-						selectedTab={selectedSettingTab}
-						group={groupData}
-						onClose={onCloseSettingDialog}
-						onUpdateGroupData={setGroupData}
-						onInvite={onOpenInviteDialog}
-					/>
-				</>
-			) : (
-				<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-					<IconLockClosed className="h-5 w-5" title="Private" />
-					<p>This is a private group and you has not been invited to.</p>
-				</div>
-			)}
+			<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+				<IconLockClosed className="h-5 w-5" title="Private" />
+				<p>This is a public group and you has not been invited to.</p>
+			</div>
 		</DashboardLayout>
-	);
+	)
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
