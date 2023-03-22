@@ -104,10 +104,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			path: "/investors",
 			name: "Investors",
 		},
-		{
-			path: "/events",
-			name: "Events",
-		},
+		// {
+		// 	path: "/events",
+		// 	name: "Events",
+		// },
 	];
 
 	if (user) {
