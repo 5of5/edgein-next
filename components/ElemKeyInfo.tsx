@@ -14,10 +14,14 @@ import {
 	IconEmail,
 	IconLocation,
 	IconTwitter,
+	IconInstagram,
+	IconTelegram,
+	IconFacebook,
 	IconDiscord,
 	IconGlassdoor,
 	IconEye,
 	IconHome,
+	IconTicket,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -37,12 +41,17 @@ type Props = {
 	yearFounded?: string | null;
 	location?: string | null;
 	locationJson?: any;
+	price?: number | null;
+	attendees?: string | null;
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
+	instagram?: string | null;
+	facebook?: string | null;
+	telegram?: string | null;
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
@@ -65,7 +74,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	careerPage,
 	location,
 	locationJson,
+	price,
+	attendees,
 	twitter,
+	instagram,
+	facebook,
+	telegram,
 	discord,
 	glassdoor,
 	venue,
@@ -111,6 +125,18 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			text:
 				convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
 				" Total Funding Raised",
+		});
+	}
+	if (price) {
+		infoItems.push({
+			icon: IconTicket,
+			text: "Starts at $" + numberWithCommas(price),
+		});
+	}
+	if (attendees) {
+		infoItems.push({
+			icon: IconUsers,
+			text: attendees,
 		});
 	}
 	if (venue) {
@@ -177,11 +203,32 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: github,
 		});
 	}
+	if (facebook) {
+		infoItems.push({
+			icon: IconFacebook,
+			text: "Facebook",
+			link: facebook,
+		});
+	}
 	if (twitter) {
 		infoItems.push({
 			icon: IconTwitter,
 			text: "Twitter",
 			link: twitter,
+		});
+	}
+	if (instagram) {
+		infoItems.push({
+			icon: IconInstagram,
+			text: "Instagram",
+			link: instagram,
+		});
+	}
+	if (telegram) {
+		infoItems.push({
+			icon: IconTelegram,
+			text: "Telegram",
+			link: telegram,
 		});
 	}
 	if (discord) {
