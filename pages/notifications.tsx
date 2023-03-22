@@ -28,20 +28,19 @@ const getLink = (
 const Notifications: NextPage = () => {
 	const { user } = useAuth();
 
-	const { data } = useGetNotificationsForUserQuery({ user: user?.id || 0 });
+	const { data, refetch } = useGetNotificationsForUserQuery({ user: user?.id || 0 });
 	const notifications = data?.notifications;
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		notifications?.length
-		// user?.entitlements.listsCount
-		// 	? user?.entitlements.listsCount
-		// 	: notifications?.length
+		user?.entitlements.listsCount
+			? user?.entitlements.listsCount
+			: notifications?.length
 	);
 
-	const [notificationsLimit, setNotificationsLimit] = useState(4);
+	const [notificationsLimit, setNotificationsLimit] = useState(5);
 	const showMoreNotifications = () => {
-		setNotificationsLimit(notificationsLimit + 5);
+		setNotificationsLimit(notificationsLimit + 10);
 	};
 
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -53,11 +52,19 @@ const Notifications: NextPage = () => {
 		setIsOpenUpgradeDialog(false);
 	};
 
-	const markAsRead = (organization: string | null | undefined, id: number) => {
-		const log = organization
-			? `${organization} notification read. notification id:${id}`
-			: id;
-		return console.log(log);
+	const markAsRead = async (id?: number, all?: boolean) => {
+		await fetch("/api/mark_notification_read/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				id,
+				all,
+			}),
+		});
+		refetch();
 	};
 
 	const { showNewMessages } = useIntercom();
@@ -67,7 +74,10 @@ const Notifications: NextPage = () => {
 			<div className="bg-white shadow rounded-lg p-5">
 				<div className="flex items-center justify-between mb-2">
 					<h2 className="text-xl font-bold">Notifications</h2>
-					<button className="flex items-center text-sm hover:text-primary-500">
+					<button
+						className="flex items-center text-sm hover:text-primary-500"
+						onClick={() => markAsRead(undefined, true)}
+					>
 						<IconCheck className="h-4 mr-1" />
 						Mark all as read
 					</button>
@@ -86,19 +96,19 @@ const Notifications: NextPage = () => {
 
 							let userTimezone = moment.tz.guess();
 
-							var notificationCreatedAt = moment(notification.created_at)
-								.tz(userTimezone)
-								.format("MMM D");
+							// const notificationCreatedAt = moment(notification.created_at)
+							// 	.tz(userTimezone)
+							// 	.format("MMM D");
+
+							const notificationFromNow = moment(
+								notification.created_at
+							).fromNow();
 
 							return (
-								<div
-									key={index}
-									className="relative flex items-center group"
-									//key={notification.company?.id || notification?.vc_firm?.id}
-									//	className={`flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100`}
-								>
+								<div key={index} className="relative flex items-center group">
 									<a
 										href={getLink(notification)}
+										onClick={() => markAsRead(notification.id)}
 										className="relative flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100"
 									>
 										<div className="flex items-center space-x-2 pr-20">
@@ -107,6 +117,7 @@ const Notifications: NextPage = () => {
 												wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200"
 												imgClass="object-fit max-w-full max-h-full"
 												imgAlt="Company Name"
+												placeholderClass="text-slate-300"
 											/>
 											<div>
 												<div className="inline text-sm leading-tight lg:text-base">
@@ -116,8 +127,11 @@ const Notifications: NextPage = () => {
 													{notification.message}
 												</div>
 
-												<p className="text-xs text-primary-500 font-bold">
+												{/* <p className="text-xs text-primary-500 font-semibold">
 													{notificationCreatedAt}
+												</p> */}
+												<p className="text-xs text-primary-500 font-bold">
+													{notificationFromNow}
 												</p>
 											</div>
 										</div>
@@ -157,7 +171,7 @@ const Notifications: NextPage = () => {
 													<>
 														<button
 															onClick={() => {
-																markAsRead(organization?.name, index);
+																markAsRead(notification.id);
 																close();
 															}}
 															className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
