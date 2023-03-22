@@ -4,6 +4,7 @@ query GetNotificationsForUser($user: Int!) {
 		order_by: { created_at: desc }
 		limit: 100
 	) {
+		id
 		read
 		created_at
 		event_type

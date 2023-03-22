@@ -19310,7 +19310,7 @@ export type GetNotificationsForUserQueryVariables = Exact<{
 }>;
 
 
-export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> };
+export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> };
 
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -20083,6 +20083,7 @@ export const GetNotificationsForUserDocument = `
     order_by: {created_at: desc}
     limit: 100
   ) {
+    id
     read
     created_at
     event_type
