@@ -12,6 +12,7 @@ import { orderBy, sortBy } from "lodash";
 import { formatDate, formatTime } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
 import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
+import { ElemOrganizers } from "@/components/Event/ElemOrganizers";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
 import { randomImageOfCity } from "@/utils/helpers";
@@ -26,6 +27,7 @@ type Props = {
 
 const Event: NextPage<Props> = ({ event }) => {
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const organizersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -41,7 +43,7 @@ const Event: NextPage<Props> = ({ event }) => {
 	if (event.event_person?.some((item) => item.type === "speaker")) {
 		tabBarItems.push({ name: "Speakers", ref: speakersRef });
 	}
-	if (event.event_organization?.length > 0) {
+	if (event.event_organization?.some((item) => item.type === "sponsor")) {
 		tabBarItems.push({ name: "Sponsors", ref: sponsorsRef });
 	}
 
@@ -56,6 +58,12 @@ const Event: NextPage<Props> = ({ event }) => {
 	const sponsors = event.event_organization?.filter(
 		(item) => item.type === "sponsor"
 	);
+
+	const organizers = event.event_organization?.filter(
+		(item) => item.type === "organizer"
+	);
+
+	console.log(organizers);
 
 	const sortedActivities = orderBy(
 		[...event.event_person, ...event.event_organization]?.slice() || [],
@@ -214,19 +222,34 @@ const Event: NextPage<Props> = ({ event }) => {
 							website={event.link}
 							venue={event.venue_name}
 							locationJson={event.location_json}
+							price={event.price}
+							attendees={event.size}
 							twitter={event.twitter}
 							discord={event.discord}
+							instagram={event.instagram}
+							facebook={event.facebook}
+							telegram={event.telegram}
 						/>
 					</div>
 					<div className="col-span-8">
 						{event.overview && (
-							<div className="w-full p-5 bg-white shadow rounded-lg">
-								<div className="flex items-center justify-between mb-2 border-b border-black/10">
-									<h2 className="text-xl font-bold">Overview</h2>
-								</div>
-								<div className="py-4 text-lg text-slate-600">
+							<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
+								<h2 className="text-xl font-bold w-full mb-2 border-b border-black/10">
+									Overview
+								</h2>
+								<div className="text-lg text-slate-600 prose">
 									{parse(newLineToP(event.overview))}
 								</div>
+							</div>
+						)}
+
+						{organizers?.length > 0 && (
+							<div
+								ref={organizersRef}
+								className="mt-7 p-5 bg-white shadow rounded-lg"
+								id="organizers"
+							>
+								<ElemOrganizers organizations={organizers} />
 							</div>
 						)}
 
