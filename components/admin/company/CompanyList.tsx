@@ -168,11 +168,11 @@ export const CompanyList = () => {
       <TextField source="glassdoor" />
       <FunctionField
         source="library"
-        render={(record: any) => (record.library ? record.library.join() : "")}
+        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
       />
       <FunctionField
         source="tags"
-        render={(record: any) => (record.tags ? record.tags.join() : "")}
+        render={(record: any) => (Array.isArray(record.tags) ? record.tags.join() : record.tags ?? "")}
       />
       {/* <TextField source="counter" /> */}
     </ElemList>
