@@ -1,172 +1,309 @@
-import type { NextPage, GetServerSideProps } from "next";
-import { useRouter } from "next/router";
-import { ElemButton } from "../../components/ElemButton";
-import { runGraphQl, formatDate, truncateWords } from "../../utils";
+import React, { MutableRefObject, useRef } from "react";
+import { NextPage, GetServerSideProps } from "next";
+import { ElemKeyInfo } from "@/components/ElemKeyInfo";
+import { ElemTags } from "@/components/ElemTags";
+import { runGraphQl } from "@/utils";
+import { ElemTabBar } from "@/components/ElemTabBar";
+import { ElemButton } from "@/components/ElemButton";
+import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemSocialShare } from "@/components/ElemSocialShare";
+import { GetEventDocument, GetEventQuery } from "@/graphql/types";
+import { orderBy, sortBy } from "lodash";
+import { formatDate, formatTime } from "@/utils";
+import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
+import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
+import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
+import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
+import { randomImageOfCity } from "@/utils/helpers";
+import Link from "next/link";
+import parse from "html-react-parser";
+import { newLineToP } from "@/utils/text";
 
 type Props = {
-	event: Record<string, any>;
+	event: GetEventQuery["events"][0];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Event: NextPage<Props> = ({ event }) => {
-	const router = useRouter();
-	const { eventId } = router.query;
-
-	// const goBack = () => router.back();
-
-	//const event = props.event;
+	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	if (!event) {
 		return <h1>Not Found</h1>;
 	}
 
+	const firstTag = event.types ? event.types[0] : "";
+	const secondTag = event.types ? event.types[1] : "";
+
+	// Tabs
+	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
+	if (event.event_person?.some((item) => item.type === "speaker")) {
+		tabBarItems.push({ name: "Speakers", ref: speakersRef });
+	}
+	if (event.event_organization?.length > 0) {
+		tabBarItems.push({ name: "Sponsors", ref: sponsorsRef });
+	}
+
+	const speakers = event.event_person?.filter(
+		(item) => item.type === "speaker"
+	);
+
+	const attendees = event.event_person?.filter(
+		(item) => item.type === "attendee"
+	);
+
+	const sponsors = event.event_organization?.filter(
+		(item) => item.type === "sponsor"
+	);
+
+	const sortedActivities = orderBy(
+		[...event.event_person, ...event.event_organization]?.slice() || [],
+		["created_at"],
+		["desc"]
+	);
+
+	const customDateFormat = (
+		date: string,
+		time?: string,
+		timezone?: string | null
+	) => {
+		const theDate = formatDate(date, {
+			month: "short",
+			day: "2-digit",
+			year: "numeric",
+			timeZone: timezone || undefined,
+			//timeZoneName: "short",
+		});
+
+		if (!time) {
+			return theDate;
+		}
+
+		const newEventDateWithTime = new Date(`${date} ${time}`);
+
+		const theTime = formatTime(newEventDateWithTime, {
+			hour: "2-digit",
+			minute: "2-digit",
+			timeZone: timezone || undefined,
+		});
+
+		return `${theDate} at ${theTime}`;
+	};
+
 	return (
-		<div>
-			<div className="absolute w-full z-0 bg-gray-200 overflow-hidden">
-				<div className="relative text-white object-cover h-96 w-full blur-lg brightness-90">
-					Event image as bg
+		<>
+			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
+				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+					<div className="mb-4">
+						<div className="relative m-auto h-auto max-h-[410px] flex items-center justify-center shrink-0 ring-1 ring-slate-200 rounded-[20px] overflow-hidden ">
+							<div
+								className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
+								style={{
+									backgroundImage: `url(${
+										event.banner?.url ||
+										randomImageOfCity(event.location_json?.city)
+									})`,
+								}}
+							></div>
+							<img
+								className="object-fit h-full max-w-full max-h-full"
+								src={
+									event.banner?.url ||
+									randomImageOfCity(event.location_json?.city, "1220x400")
+								}
+								alt={event.name}
+							/>
+						</div>
+					</div>
+
+					{event.start_date && (
+						<div className="w-full inline-flex py-1 font-medium uppercase text-lg text-slate-600">
+							{customDateFormat(
+								event.start_date,
+								event.start_time,
+								event.timezone
+							)}
+
+							{event.end_date &&
+								` – ${customDateFormat(
+									event.end_date,
+									event.end_time,
+									event.timezone
+								)}`}
+						</div>
+					)}
+
+					<div className="items-start justify-between lg:flex lg:gap-20">
+						<h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
+						{attendees?.length > 0 && (
+							<div className="self-center flex items-center gap-x-2 shrink-0">
+								<ul className="flex -space-x-3">
+									{attendees?.map((attendee, index) => (
+										<li
+											key={attendee.id}
+											className="relative"
+											style={{
+												zIndex: 1000 - index,
+											}}
+										>
+											<Link href={`/people/${attendee.person?.slug}`}>
+												<a>
+													{attendee.person?.picture ? (
+														<ElemPhoto
+															photo={attendee.person.picture}
+															wrapClass={`flex items-center justify-center aspect-square shrink-0 bg-white rounded-full w-8 shadow`}
+															imgClass="object-contain w-full h-full rounded-full  border border-gray-50"
+															imgAlt={attendee.person?.name}
+														/>
+													) : (
+														<div className="flex items-center justify-center aspect-square w-8 rounded-full bg-slate-300 text-dark-500 border border-gray-50 text-lg capitalize">
+															{attendee.person?.name?.charAt(0)}
+														</div>
+													)}
+												</a>
+											</Link>
+										</li>
+									))}
+								</ul>
+								<span className="font-bold">{attendees?.length}</span>
+							</div>
+						)}
+					</div>
+					<div>
+						{event.types?.length > 0 && (
+							<ElemTags
+								className="mt-4"
+								resourceType={"events"}
+								tags={event.types}
+								filter="eventType"
+							/>
+						)}
+					</div>
+
+					<ElemTabBar
+						className="mt-4 border-b-0"
+						tabs={tabBarItems}
+						resourceName={event.name}
+						showDropdown={false}
+					>
+						<div className="flex items-center space-x-2">
+							<ElemSocialShare
+								resourceName={event.name}
+								resourceTags={event.types}
+								resourceTwitterUrl={event.twitter}
+								resourceType={"events"}
+							/>
+							{/* <ElemButton btn="white">Going</ElemButton>
+							<ElemButton btn="primary">RSVP</ElemButton> */}
+						</div>
+					</ElemTabBar>
 				</div>
 			</div>
 
-			<div className="relative z-10 pt-10 mb-44 px-4 sm:px-6 lg:px-8">
-				<div className="max-w-7xl mx-auto bg-white rounded-lg shadow-sm rounded-tl-lg rounded-tr-lg overflow-hidden">
-					<div className="flex flex-col md:grid md:grid-cols-3">
-						<div className="col-span-2 h-72 sm:h-96">
-							<div className="object-contain w-full h-full bg-dark-700"></div>
-						</div>
-						<div className="col-span-1">
-							<div className="p-6 flex flex-col h-full justify-between">
-								<div>
-									{event.startDate && (
-										<div>
-											<time
-												className="inline-block text-center shadow-md rounded-md border border-gray-50 px-3 py-1"
-												dateTime={event.startDate}
-											>
-												<p className="uppercase">
-													{formatDate(event.startDate, {
-														month: "short",
-													})}
-												</p>
-												<p className="text-xl">
-													{formatDate(event.startDate, {
-														day: "2-digit",
-													})}
-												</p>
-											</time>
-										</div>
-									)}
-									<h1 className="text-3xl my-4 font-bold">{event.event}</h1>
-
-									{event.description && (
-										<p className="text-slate-600">
-											{truncateWords(event.description)}
-										</p>
-									)}
+			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+				<div
+					className="mt-7 lg:grid lg:grid-cols-11 lg:gap-7"
+					ref={overviewRef}
+					id="overview"
+				>
+					<div className="col-span-3">
+						<ElemKeyInfo
+							className="sticky top-4"
+							heading="Key Info"
+							website={event.link}
+							venue={event.venue_name}
+							locationJson={event.location_json}
+							twitter={event.twitter}
+							discord={event.discord}
+						/>
+					</div>
+					<div className="col-span-8">
+						{event.overview && (
+							<div className="w-full p-5 bg-white shadow rounded-lg">
+								<div className="flex items-center justify-between mb-2 border-b border-black/10">
+									<h2 className="text-xl font-bold">Overview</h2>
 								</div>
-								{/* <div className="mt-auto text-lg text-slate-400">$99</div> */}
+								<div className="py-4 text-lg text-slate-600">
+									{parse(newLineToP(event.overview))}
+								</div>
 							</div>
+						)}
+
+						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
+							<ElemEventActivity activities={sortedActivities} />
 						</div>
 					</div>
-
-					<div className="flex flex-col p-3 border-y border-gray-200 md:grid md:grid-cols-3 gap-5 items-center">
-						<div className="col-span-2">
-							{/* Event size */}
-							{event.eventSizeAttendeesSponsorExhibition && (
-								<>{event.eventSizeAttendeesSponsorExhibition}</>
-							)}
-						</div>
-						<div className="col-span-1">
-							<ElemButton btn="dark" arrow>
-								Event website
-							</ElemButton>
-						</div>
-					</div>
-
-					<div className="flex flex-col md:grid md:grid-cols-3 gap-5 py-14 px-6">
-						<div className="col-span-2 text-xl text-gray-500">
-							{event.description && <>{event.description}</>}
-						</div>
-
-						<div className="col-span-1">
-							<h3 className="font-bold">Dates</h3>
-							{event.startDate ? (
-								<p>
-									{formatDate(event.startDate, {
-										weekday: "long",
-										month: "long",
-										day: "2-digit",
-									})}
-
-									{event.endDate && (
-										<>
-											<span className="px-1">&ndash;</span>
-											{formatDate(event.endDate, {
-												weekday: "long",
-												month: "long",
-												day: "2-digit",
-											})}
-										</>
-									)}
-								</p>
-							) : (
-								<p className="empty">TBD</p>
-							)}
-
-							<h3 className="font-bold mt-6">Location</h3>
-							{event.location ? (
-								<p>{event.location}</p>
-							) : (
-								<p className="empty">TBD</p>
-							)}
-						</div>
-					</div>
-
-					{/* <div className="mt-14 py-6 px-6">
-						<h2 className="text-3xl font-bold">Speakers</h2>
-						<div className="flex flex-col md:grid md:grid-cols-4 gap-5 mt-3 w-full">
-							<div className="border border-dark-100 p-6 rounded-lg transition-all hover:bg-white hover:shadow-md hover:-translate-y-1">
-								Speaker image
-								<h3 className="font-bold text-center text-xl mt-2">
-									Speaker Name
-								</h3>
-							</div>
-						</div>
-					</div> */}
 				</div>
+
+				{speakers?.length > 0 && (
+					<div
+						ref={speakersRef}
+						className="mt-7 p-5 rounded-lg bg-white shadow"
+						id="speakers"
+					>
+						<ElemSpeakerGrid people={speakers} />
+					</div>
+				)}
+
+				{sponsors.length > 0 && (
+					<div
+						ref={sponsorsRef}
+						className="mt-7 p-5 rounded-lg bg-white shadow"
+						id="sponsors"
+					>
+						<ElemSponsorGrid organizations={sponsors} />
+					</div>
+				)}
+				{event.types && (
+					<ElemSimilarEvents
+						className="mt-7"
+						currentSlug={event.slug}
+						tag1={firstTag}
+						tag2={secondTag}
+					/>
+				)}
 			</div>
-		</div>
+		</>
 	);
 };
 
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const gql = `{
-    events(slug: "${context.params?.eventId}") {
-      id
-      event
-	  description
-      slug
-      date
-	  startDate
-	  endDate
-	  eventSizeAttendeesSponsorExhibition
-	  location
-    }
-  }
-`;
-	const { data: events } = await runGraphQl<{ events: Record<string, any>[] }>(
-		gql, {}, context.req.cookies
+	const { data: events } = await runGraphQl<GetEventQuery>(
+		GetEventDocument,
+		{ slug: context.params?.eventId },
+		context.req.cookies
 	);
 
-	if (!(events && events.events && events.events[0])) {
+	if (!events?.events[0]) {
 		return {
 			notFound: true,
 		};
 	}
 
+	const event = sortBy(events?.events, "status").reverse()[0];
+
+	let metaTitle = null;
+	if (event.name) {
+		metaTitle = event.name + ": Speakers, Sponsors, & Activity - EdgeIn.io";
+	}
+	let metaDescription = null;
+
+	if (event?.overview) {
+		metaDescription = event.overview;
+	}
+
+	let metaImage = null;
+	if (event.banner?.url) {
+		metaImage = event.banner?.url ? event.banner?.url : `/social.jpg`;
+	}
+
 	return {
 		props: {
-			event: events.events[0],
+			metaImage,
+			metaTitle,
+			metaDescription,
+			event,
 		},
 	};
 };

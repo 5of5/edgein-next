@@ -1,4 +1,9 @@
-import React, { MutableRefObject, useState, useEffect } from "react";
+import React, {
+	MutableRefObject,
+	useState,
+	useEffect,
+	PropsWithChildren,
+} from "react";
 import {
 	IconEllipsisHorizontal,
 	IconExclamationTriangle,
@@ -19,11 +24,12 @@ type Props = {
 	resourceName?: string | null;
 };
 
-export const ElemTabBar: React.FC<Props> = ({
+export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 	className,
 	tabs,
 	showDropdown = true,
 	resourceName = "",
+	children,
 }) => {
 	const [isActive, setActive] = useState(0);
 	const [dropdownIsOpen, setDropdownIsOpen] = useState(true);
@@ -56,6 +62,7 @@ export const ElemTabBar: React.FC<Props> = ({
 						</button>
 					))}
 			</nav>
+			{children}
 			{showDropdown && (
 				<Popover className="relative z-10">
 					<Popover.Button

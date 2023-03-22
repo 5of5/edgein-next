@@ -17,6 +17,7 @@ import {
 	IconDiscord,
 	IconGlassdoor,
 	IconEye,
+	IconHome,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -45,6 +46,7 @@ type Props = {
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
+	venue?: string | null;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -66,6 +68,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	twitter,
 	discord,
 	glassdoor,
+	venue,
 }) => {
 	const { user } = useAuth();
 
@@ -108,6 +111,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			text:
 				convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
 				" Total Funding Raised",
+		});
+	}
+	if (venue) {
+		infoItems.push({
+			icon: IconHome,
+			text: venue,
 		});
 	}
 	if (locationText) {

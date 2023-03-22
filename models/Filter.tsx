@@ -108,6 +108,27 @@ export type Filters = {
     condition: "any" | "none";
     tags: Array<string>;
   };
+  eventType?: {
+    open?: boolean;
+    tags: Array<string>;
+  };
+  eventDate?: {
+    open?: boolean;
+    condition?: DateRangeOptions;
+    fromDate?: string;
+    toDate?: string;
+  };
+  eventPrice?: {
+    open?: boolean;
+    minVal: number;
+    maxVal: number;
+    formattedMinVal?: string;
+    formattedMaxVal?: string;
+  };
+  eventSize?: {
+    open?: boolean;
+    value?: Record<string, any>;
+  };
 };
 
 export type FilterOptionKeys = keyof Filters;

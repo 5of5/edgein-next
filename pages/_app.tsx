@@ -31,7 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
+	const [showPopup, setShowPopup] = useState<Popups>(
+		router.asPath.includes("/login/")
+			? router.asPath.includes("?usage=true")
+				? "usage"
+				: "login"
+			: false
+	);
 
 	//google
 	React.useEffect(() => {
@@ -70,7 +76,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 	let metaDescription = pageProps.metaDescription
 		? pageProps.metaDescription
 		: "Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
-	let metaImage = pageProps.metaImage ? pageProps.metaImage : `/social.jpg`;
+	let metaImage = pageProps.metaImage
+		? pageProps.metaImage
+		: `https://edgein.io/social.jpg`;
 
 	return (
 		<>
@@ -91,11 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={metaDescription}
 					key="tw-description"
 				/>
-				<meta
-					name="twitter:image"
-					content={`https://edgein.io${metaImage}`}
-					key="tw-social"
-				/>
+				<meta name="twitter:image" content={`${metaImage}`} key="tw-social" />
 				<meta property="og:title" content={metaTitle} key="og-title" />
 				<meta
 					property="og:description"
@@ -104,11 +108,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				/>
 				<meta property="og:url" content="https://edgein.io/" key="og-url" />
 				<meta property="og:type" content="website" key="og-type" />
-				<meta
-					property="og:image"
-					content={`https://edgein.io${metaImage}`}
-					key="og-image"
-				/>
+				<meta property="og:image" content={`${metaImage}`} key="og-image" />
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"
@@ -140,7 +140,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 									</main>
 
 									{(router.asPath.includes("/companies/") ||
-										router.asPath.includes("/investors/")) && (
+										router.asPath.includes("/investors/") ||
+										router.asPath.includes("/events/")) && (
 										<ElemFeedback
 											toggleFeedbackForm={toggleFeedbackForm}
 											setToggleFeedbackForm={setToggleFeedbackForm}
@@ -163,13 +164,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 					}}
 				/> */}
 
-				<><Script id="datadome-script" strategy="lazyOnload">{`
+				<>
+					<Script id="datadome-script" strategy="lazyOnload">{`
 					window.ddjskey = '${process.env.NEXT_PUBLIC_DATADOME_CLIENT_KEY}'
 					window.ddoptions = {
 						endpoint: '${DATADOME_JS}'
 					}
 				`}</Script>
-				<Script src={DATADOME_TAGS} strategy="lazyOnload" /></>
+					<Script src={DATADOME_TAGS} strategy="lazyOnload" />
+				</>
 			</div>
 		</>
 	);
