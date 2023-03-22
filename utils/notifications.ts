@@ -1,6 +1,6 @@
 import { mutate } from "@/graphql/hasuraAdmin";
-import { Follows } from "@/graphql/types";
-import { flatten, unionBy } from "lodash";
+import { Follows, GetNotificationsForUserQuery } from "@/graphql/types";
+import { flatten, startCase, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
 import { getCompanyByRoundId } from "./submit-data";
 import { ActionType, ResourceTypes } from "@/utils/constants";
@@ -135,8 +135,8 @@ export const processNotification = async (
 		targetUsers = unionBy(flatten(targetUsers), "user_id");
 		await Promise.all(
 			targetUsers.map(async (targetUser: any) => {
-				if (targetUser?.user_id)
-					insertNotification({
+				if (targetUser?.user_id) {
+					const notificationResponse = await insertNotification({
 						target_user_id: targetUser?.user_id,
 						event_type: actionType,
 						follow_resource_type: followedResourceType,
@@ -148,6 +148,13 @@ export const processNotification = async (
 							followedResourceType === "vc_firms" ? followResourceId : null,
 						action_ids: actionIds,
 					});
+
+					await Promise.all(
+						actionIds.map(async (actionId) => {
+							await insertNotificationAction(notificationResponse.id, actionId);
+						})
+					);
+				}
 			})
 		);
 	}
@@ -209,4 +216,56 @@ export const processNotificationOnDelete = async (
 			[actionId]
 		);
 	}
+};
+
+export const getNotificationChangedData = (notification: GetNotificationsForUserQuery["notifications"][0]) => {
+	if (notification.event_type === "Change Data") {
+		if (notification.notification_actions.length > 1) {
+			return {
+				message: 'has been updated',
+				extensions: notification.notification_actions.map(item => ({
+					field: Object.keys(item?.action?.properties)[0],
+					value: Object.values(item?.action?.properties)[0],
+				})),
+			};
+		}
+
+		const changedData = notification.notification_actions[0]?.action?.properties;
+		const field = Object.keys(changedData)[0];
+		const value = Object.values(changedData)[0];
+		return {
+			message: `has been changed the ${startCase(field)} to ${value}`,
+			extensions: [],
+		};
+	}
+
+	return {
+		message: notification.message,
+		extensions: [],
+	};
+}
+
+export const insertNotificationAction = async (notificationId: number, actionId: number) => {
+	const insertNotificationActionQuery = `
+    mutation InsertNotificationAction($object: notification_actions_insert_input!) {
+      insert_notification_actions_one(
+        object: $object
+      ) {
+        id
+      }
+    }
+  `;
+
+	const {
+		data: { insert_notification_actions_one },
+	} = await mutate({
+		mutation: insertNotificationActionQuery,
+		variables: {
+			object: {
+				notification_id: notificationId,
+				action_id: actionId,
+			},
+		},
+	});
+	return insert_notification_actions_one;
 };
