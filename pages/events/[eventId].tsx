@@ -14,6 +14,7 @@ import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
 import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
+import { randomImageOfCity } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
@@ -101,7 +102,7 @@ const Event: NextPage<Props> = ({ event }) => {
 								style={{
 									backgroundImage: `url(${
 										event.banner?.url ||
-										"https://source.unsplash.com/random/500×200/?city"
+										randomImageOfCity(event.location_json?.city)
 									})`,
 								}}
 							></div>
@@ -109,7 +110,7 @@ const Event: NextPage<Props> = ({ event }) => {
 								className="object-fit h-full max-w-full max-h-full"
 								src={
 									event.banner?.url ||
-									"https://source.unsplash.com/random/500×200/?city"
+									randomImageOfCity(event.location_json?.city, "1220x400")
 								}
 								alt={event.name}
 							/>

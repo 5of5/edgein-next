@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { GetEventsQuery } from "@/graphql/types";
-import { getFullAddress } from "@/utils/helpers";
+import { getFullAddress, randomImageOfCity } from "@/utils/helpers";
 import { values, isEmpty } from "lodash";
 import { formatDate } from "@/utils";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -26,15 +26,14 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 						style={{
 							backgroundImage: `url(${
 								event.banner?.url ||
-								"https://source.unsplash.com/random/500×200/?city"
+								randomImageOfCity(event.location_json?.city)
 							})`,
 						}}
 					></div>
 					<img
 						className="relative object-fit w-full max-w-full"
 						src={
-							event.banner?.url ||
-							"https://source.unsplash.com/random/500×200/?city"
+							event.banner?.url || randomImageOfCity(event.location_json?.city)
 						}
 						alt={event.name}
 					/>
