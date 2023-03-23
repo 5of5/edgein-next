@@ -8824,6 +8824,10 @@ export type Mutation_Root = {
   delete_people: Maybe<People_Mutation_Response>;
   /** delete single row from the table: "people" */
   delete_people_by_pk: Maybe<People>;
+  /** delete data from the table: "reset_passwords" */
+  delete_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** delete single row from the table: "reset_passwords" */
+  delete_reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** delete data from the table: "resource_edit_access" */
   delete_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** delete single row from the table: "resource_edit_access" */
@@ -8990,6 +8994,10 @@ export type Mutation_Root = {
   insert_people: Maybe<People_Mutation_Response>;
   /** insert a single row into the table: "people" */
   insert_people_one: Maybe<People>;
+  /** insert data into the table: "reset_passwords" */
+  insert_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** insert a single row into the table: "reset_passwords" */
+  insert_reset_passwords_one: Maybe<Reset_Passwords>;
   /** insert data into the table: "resource_edit_access" */
   insert_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** insert a single row into the table: "resource_edit_access" */
@@ -9152,6 +9160,10 @@ export type Mutation_Root = {
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
   update_people_by_pk: Maybe<People>;
+  /** update data of the table: "reset_passwords" */
+  update_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** update single row of the table: "reset_passwords" */
+  update_reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** update data of the table: "resource_edit_access" */
   update_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** update single row of the table: "resource_edit_access" */
@@ -9547,6 +9559,18 @@ export type Mutation_RootDelete_PeopleArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_People_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Reset_PasswordsArgs = {
+  where: Reset_Passwords_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Reset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -10102,6 +10126,20 @@ export type Mutation_RootInsert_PeopleArgs = {
 export type Mutation_RootInsert_People_OneArgs = {
   object: People_Insert_Input;
   on_conflict: InputMaybe<People_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Reset_PasswordsArgs = {
+  objects: Array<Reset_Passwords_Insert_Input>;
+  on_conflict: InputMaybe<Reset_Passwords_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Reset_Passwords_OneArgs = {
+  object: Reset_Passwords_Insert_Input;
+  on_conflict: InputMaybe<Reset_Passwords_On_Conflict>;
 };
 
 
@@ -10786,6 +10824,22 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
   _prepend: InputMaybe<People_Prepend_Input>;
   _set: InputMaybe<People_Set_Input>;
   pk_columns: People_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_PasswordsArgs = {
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  where: Reset_Passwords_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_Passwords_By_PkArgs = {
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  pk_columns: Reset_Passwords_Pk_Columns_Input;
 };
 
 
@@ -13087,6 +13141,12 @@ export type Query_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+   /** fetch data from the table: "reset_passwords" */
+  reset_passwords: Array<Reset_Passwords>;
+  /** fetch aggregated fields from the table: "reset_passwords" */
+  reset_passwords_aggregate: Reset_Passwords_Aggregate;
+  /** fetch data from the table: "reset_passwords" using primary key columns */
+  reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
@@ -13852,6 +13912,29 @@ export type Query_RootPeople_By_PkArgs = {
 };
 
 
+export type Query_RootReset_PasswordsArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Query_RootReset_Passwords_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Query_RootReset_Passwords_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootResource_Edit_AccessArgs = {
   distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14097,6 +14180,241 @@ export type Query_RootWaitlist_Emails_AggregateArgs = {
 
 export type Query_RootWaitlist_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+/** columns and relationships of "reset_passwords" */
+export type Reset_Passwords = {
+  __typename?: 'reset_passwords';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  generated_password: Scalars['String'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  user: Maybe<Users>;
+  user_id: Scalars['Int'];
+};
+
+/** aggregated selection of "reset_passwords" */
+export type Reset_Passwords_Aggregate = {
+  __typename?: 'reset_passwords_aggregate';
+  aggregate: Maybe<Reset_Passwords_Aggregate_Fields>;
+  nodes: Array<Reset_Passwords>;
+};
+
+/** aggregate fields of "reset_passwords" */
+export type Reset_Passwords_Aggregate_Fields = {
+  __typename?: 'reset_passwords_aggregate_fields';
+  avg: Maybe<Reset_Passwords_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Reset_Passwords_Max_Fields>;
+  min: Maybe<Reset_Passwords_Min_Fields>;
+  stddev: Maybe<Reset_Passwords_Stddev_Fields>;
+  stddev_pop: Maybe<Reset_Passwords_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Reset_Passwords_Stddev_Samp_Fields>;
+  sum: Maybe<Reset_Passwords_Sum_Fields>;
+  var_pop: Maybe<Reset_Passwords_Var_Pop_Fields>;
+  var_samp: Maybe<Reset_Passwords_Var_Samp_Fields>;
+  variance: Maybe<Reset_Passwords_Variance_Fields>;
+};
+
+
+/** aggregate fields of "reset_passwords" */
+export type Reset_Passwords_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Reset_Passwords_Avg_Fields = {
+  __typename?: 'reset_passwords_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "reset_passwords". All fields are combined with a logical 'AND'. */
+export type Reset_Passwords_Bool_Exp = {
+  _and: InputMaybe<Array<Reset_Passwords_Bool_Exp>>;
+  _not: InputMaybe<Reset_Passwords_Bool_Exp>;
+  _or: InputMaybe<Array<Reset_Passwords_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  generated_password: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  user: InputMaybe<Users_Bool_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "reset_passwords" */
+export enum Reset_Passwords_Constraint {
+  /** unique or primary key constraint */
+  ResetPasswordsPkey = 'reset_passwords_pkey'
+}
+
+/** input type for incrementing numeric columns in table "reset_passwords" */
+export type Reset_Passwords_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "reset_passwords" */
+export type Reset_Passwords_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Reset_Passwords_Max_Fields = {
+  __typename?: 'reset_passwords_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  generated_password: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Reset_Passwords_Min_Fields = {
+  __typename?: 'reset_passwords_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  generated_password: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "reset_passwords" */
+export type Reset_Passwords_Mutation_Response = {
+  __typename?: 'reset_passwords_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Reset_Passwords>;
+};
+
+/** on_conflict condition type for table "reset_passwords" */
+export type Reset_Passwords_On_Conflict = {
+  constraint: Reset_Passwords_Constraint;
+  update_columns: Array<Reset_Passwords_Update_Column>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "reset_passwords". */
+export type Reset_Passwords_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  generated_password: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  user: InputMaybe<Users_Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: reset_passwords */
+export type Reset_Passwords_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "reset_passwords" */
+export enum Reset_Passwords_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  GeneratedPassword = 'generated_password',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "reset_passwords" */
+export type Reset_Passwords_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Reset_Passwords_Stddev_Fields = {
+  __typename?: 'reset_passwords_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Reset_Passwords_Stddev_Pop_Fields = {
+  __typename?: 'reset_passwords_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Reset_Passwords_Stddev_Samp_Fields = {
+  __typename?: 'reset_passwords_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Reset_Passwords_Sum_Fields = {
+  __typename?: 'reset_passwords_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "reset_passwords" */
+export enum Reset_Passwords_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  GeneratedPassword = 'generated_password',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Reset_Passwords_Var_Pop_Fields = {
+  __typename?: 'reset_passwords_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Reset_Passwords_Var_Samp_Fields = {
+  __typename?: 'reset_passwords_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Reset_Passwords_Variance_Fields = {
+  __typename?: 'reset_passwords_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** Add access to user if he has verified the access to organization */
@@ -14906,6 +15224,12 @@ export type Subscription_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "reset_passwords" */
+  reset_passwords: Array<Reset_Passwords>;
+  /** fetch aggregated fields from the table: "reset_passwords" */
+  reset_passwords_aggregate: Reset_Passwords_Aggregate;
+  /** fetch data from the table: "reset_passwords" using primary key columns */
+  reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
@@ -15667,6 +15991,29 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 
 export type Subscription_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootReset_PasswordsArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Subscription_RootReset_Passwords_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Subscription_RootReset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
