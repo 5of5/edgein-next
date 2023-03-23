@@ -20,6 +20,7 @@ import {
 	AutocompleteArrayInput,
 	FormDataConsumer,
 	FileInput,
+	BooleanInput,
 	ImageField,
 	required,
 	useGetList,
@@ -193,6 +194,7 @@ const EventForm = ({
 				source="telegram"
 				label="Telegram"
 			/>
+			<BooleanInput className="w-full" label="Featured" source="is_featured" />
 			<SelectInput
 				className={inputClassName}
 				source="status"
