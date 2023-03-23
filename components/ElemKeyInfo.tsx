@@ -127,10 +127,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				" Total Funding Raised",
 		});
 	}
-	if (price) {
+
+	if (price != null) {
 		infoItems.push({
 			icon: IconTicket,
-			text: "Starts at $" + numberWithCommas(price),
+			text: price === 0 ? "Free" : "Starts at $" + numberWithCommas(price),
 		});
 	}
 	if (attendees) {

@@ -63,8 +63,6 @@ const Event: NextPage<Props> = ({ event }) => {
 		(item) => item.type === "organizer"
 	);
 
-	console.log(organizers);
-
 	const sortedActivities = orderBy(
 		[...event.event_person, ...event.event_organization]?.slice() || [],
 		["created_at"],
