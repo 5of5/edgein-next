@@ -112,9 +112,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (
       actionType === "Insert Data" &&
       ["companies", "vc_firms", "people"].includes(resourceType) &&
-      !resourceObj?.library
+      (!resourceObj?.library || resourceObj?.library?.length === 0)
     ) {
-      properties.library = "Web3";
+      properties.library = ["Web3"];
     }
 
     const insertResult = await mutateActionAndDataRaw(
