@@ -603,28 +603,36 @@ export const ElemFilter: FC<Props> = ({
                       name={option}
                       value="30-days"
                       checked={filters?.[option]?.condition === "30-days"}
-                      label={`${dateCondition === "past" ? "Past" : "Next"} 30 days`}
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } 30 days`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
                       name={option}
                       value="60-days"
                       checked={filters?.[option]?.condition === "60-days"}
-                      label={`${dateCondition === "past" ? "Past" : "Next"} 60 days`}
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } 60 days`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
                       name={option}
                       value="90-days"
                       checked={filters?.[option]?.condition === "90-days"}
-                      label={`${dateCondition === "past" ? "Past" : "Next"} 90 days`}
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } 90 days`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
                       name={option}
                       value="year"
                       checked={filters?.[option]?.condition === "year"}
-                      label={`${dateCondition === "past" ? "Past" : "Next"} year`}
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } year`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
@@ -639,20 +647,32 @@ export const ElemFilter: FC<Props> = ({
                     <div className="flex items-center gap-x-4 mt-2">
                       <InputDate
                         name={`${option}.fromDate`}
-                        value={filters?.[option]?.fromDate ?? ""}
+                        value={
+                          filters?.[option]?.fromDate
+                            ? moment(filters?.[option]?.fromDate).format(
+                                "YYYY-MM-DD"
+                              )
+                            : ""
+                        }
                         onChange={onChangeDateRange}
                         className="block max-w-sm placeholder-slate-500"
-												min={optionMetadata.minDate}
-												max={optionMetadata.maxDate}
+                        min={optionMetadata.minDate}
+                        max={optionMetadata.maxDate}
                       />
                       <div className="flex-none">{"–"}</div>
                       <InputDate
                         name={`${option}.toDate`}
-                        value={filters?.[option]?.toDate ?? ""}
+                        value={
+                          filters?.[option]?.toDate
+                            ? moment(filters?.[option]?.toDate).format(
+                                "YYYY-MM-DD"
+                              )
+                            : ""
+                        }
                         onChange={onChangeDateRange}
                         className="block max-w-sm placeholder-slate-500"
-												min={optionMetadata.minDate}
-												max={optionMetadata.maxDate}
+                        min={optionMetadata.minDate}
+                        max={optionMetadata.maxDate}
                       />
                     </div>
                   )}
