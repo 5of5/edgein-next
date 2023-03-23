@@ -10,6 +10,8 @@ export type FilterOptionMetadata = {
   min?: number;
   max?: number;
   step?: number;
+  minDate?: string | number;
+  maxDate?: string | number;
 };
 
 export type DateRangeOptions =
@@ -132,3 +134,5 @@ export type Filters = {
 };
 
 export type FilterOptionKeys = keyof Filters;
+
+export type DateCondition = "past" | "next";

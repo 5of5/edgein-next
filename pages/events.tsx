@@ -49,13 +49,7 @@ const Events: NextPage<Props> = ({
 		{ ...eventTabs[0], date: moment().toISOString() },
 		"tab",
 		(statusTag) => eventTabs.indexOf(statusTag).toString(),
-		(index) => ({
-			...eventTabs[Number(index)],
-			date:
-				Number(index) === 0
-					? moment().toISOString()
-					: moment().subtract(1, "days").toISOString(),
-		})
+		(index) => eventTabs[Number(index)],
 	);
 
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -90,6 +84,11 @@ const Events: NextPage<Props> = ({
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedTab]);
+
+	const onChangeTab = (tab: any) => {
+		setSelectedTab(tab);
+		setSelectedFilters(null);
+	}
 
 	const onClickType = (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -151,18 +150,17 @@ const Events: NextPage<Props> = ({
 	/** Handle selected filter params */
 	processEventsFilters(filters, selectedFilters);
 
-	if (selectedTab.value === "upcoming") {
+	if (selectedTab.value === "upcoming" && !selectedFilters?.eventDate?.condition) {
 		filters._and?.push({
 			start_date: { _gte: selectedTab.date },
 		});
 	}
 
-	if (selectedTab.value === "past") {
+	if (selectedTab.value === "past" && !selectedFilters?.eventDate?.condition) {
 		filters._and?.push({
 			start_date: { _lte: selectedTab.date },
 		});
 	}
-
 	const {
 		data: eventsData,
 		error,
@@ -224,7 +222,7 @@ const Events: NextPage<Props> = ({
 									) : (
 										<button
 											key={index}
-											onClick={() => setSelectedTab(tab)}
+											onClick={() => onChangeTab(tab)}
 											className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
 												selectedTab.value === tab.value
 													? "text-primary-500 border-primary-500"
@@ -241,6 +239,7 @@ const Events: NextPage<Props> = ({
 					<ElemFilter
 						resourceType="events"
 						filterValues={selectedFilters}
+						dateCondition={selectedTab?.value === "past" ? "past" : "next"}
 						onApply={(name, filterParams) => {
 							filters._and = [{ slug: { _neq: "" } }];
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
@@ -335,16 +334,18 @@ export default Events;
 interface TextFilter {
 	title: string;
 	value: string;
-	date?: string;
+	date: string;
 }
 
 const eventTabs: TextFilter[] = [
 	{
 		title: "Upcoming",
 		value: "upcoming",
+		date: moment().toISOString(),
 	},
 	{
 		title: "Past",
 		value: "past",
+		date: moment().subtract(1, "days").toISOString(),
 	},
 ];

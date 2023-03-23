@@ -1,5 +1,6 @@
 import moment from "moment-timezone";
 import {
+	DateCondition,
 	FilterOptionKeys,
 	FilterOptionMetadata,
 	Filters,
@@ -13,7 +14,10 @@ import { DeepPartial } from "@/pages/companies";
 import { eventTypeChoices, roundChoices, tags } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
 
-export const getDefaultFilter = (name: FilterOptionKeys) => {
+export const getDefaultFilter = (
+  name: FilterOptionKeys,
+  dateCondition: DateCondition = "past"
+) => {
   switch (name) {
     case "country":
     case "state":
@@ -47,10 +51,21 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
       };
     case "lastFundingDate":
     case "lastInvestmentDate":
+			return {
+        condition: "30-days",
+        fromDate: moment().subtract(30, "days").toISOString(),
+      };
     case "eventDate":
       return {
         condition: "30-days",
-        fromDate: moment().subtract(30, "days").toISOString(),
+        fromDate:
+          dateCondition === "past"
+            ? moment().subtract(30, "days").toISOString()
+            : moment().toISOString(),
+				toDate:
+          dateCondition === "past"
+            ? moment().toISOString()
+            : moment().add(30, "days").toISOString(),
       };
     case "teamSize":
       return {
@@ -80,7 +95,8 @@ export const getDefaultFilter = (name: FilterOptionKeys) => {
 };
 
 export const getFilterOptionMetadata = (
-	option: FilterOptionKeys
+	option: FilterOptionKeys,
+	dateCondition: DateCondition = "past",
 ): FilterOptionMetadata => {
 	switch (option) {
 		case "country":
@@ -230,6 +246,14 @@ export const getFilterOptionMetadata = (
       return {
         title: "Date",
         heading: "Date",
+				minDate:
+					dateCondition === "past"
+						? undefined
+						: moment().toISOString().split('T')[0],
+				maxDate:
+					dateCondition === "past"
+						? moment().subtract(1, "days").toISOString().split('T')[0]
+						: undefined,
       };
 
     case "eventPrice":
@@ -765,7 +789,8 @@ export const processInvestorsFilters = (
 
 export const processEventsFilters = (
   filters: DeepPartial<Events_Bool_Exp>,
-  selectedFilters: Filters | null
+  selectedFilters: Filters | null,
+	dateCondition: DateCondition = "past",
 ) => {
   if (!selectedFilters) {
     filters._and = [];
@@ -919,29 +944,20 @@ export const processEventsFilters = (
 
   if (
     selectedFilters?.eventDate?.condition &&
-    selectedFilters?.eventDate?.fromDate
+    selectedFilters?.eventDate?.fromDate &&
+		selectedFilters?.eventDate?.toDate
   ) {
-    if (selectedFilters?.eventDate?.condition !== "custom") {
-      filters._and?.push({
-        start_date: { _gte: selectedFilters.eventDate.fromDate },
-      });
-    }
-    if (
-      selectedFilters?.eventDate?.condition === "custom" &&
-      selectedFilters.eventDate.toDate
-    ) {
-      filters._and?.push({
-        _and: [
-          {
-            start_date: {
-              _gte: selectedFilters.eventDate.fromDate,
-            },
-          },
-          {
-            end_date: { _lte: selectedFilters.eventDate.toDate },
-          },
-        ],
-      });
-    }
+		filters._and?.push({
+			_and: [
+				{
+					start_date: {
+						_gte: selectedFilters.eventDate.fromDate,
+					},
+				},
+				{
+					end_date: { _lte: selectedFilters.eventDate.toDate },
+				},
+			],
+		});
   }
 };
