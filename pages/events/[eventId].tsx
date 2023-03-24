@@ -15,7 +15,7 @@ import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemOrganizers } from "@/components/Event/ElemOrganizers";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
-import { randomImageOfCity } from "@/utils/helpers";
+import { getEventBanner } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
@@ -96,7 +96,6 @@ const Event: NextPage<Props> = ({ event }) => {
 
 		return `${theDate} at ${theTime}`;
 	};
-
 	return (
 		<>
 			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
@@ -108,15 +107,15 @@ const Event: NextPage<Props> = ({ event }) => {
 								style={{
 									backgroundImage: `url(${
 										event.banner?.url ||
-										randomImageOfCity(event.location_json?.city)
+										getEventBanner(event.location_json?.city)
 									})`,
 								}}
 							></div>
 							<img
-								className="object-fit h-full max-w-full max-h-full"
+								className="object-fit h-full w-full"
 								src={
 									event.banner?.url ||
-									randomImageOfCity(event.location_json?.city, "1220x400")
+									getEventBanner(event.location_json?.city, "1220x400")
 								}
 								alt={event.name}
 							/>
