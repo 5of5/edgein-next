@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { GetEventsQuery } from "@/graphql/types";
-import { getEventBanner, getFullAddress } from "@/utils/helpers";
+import { getEventBanner, getFullAddress, randomImageOfCity } from "@/utils/helpers";
 import { values, isEmpty } from "lodash";
 import { formatDate } from "@/utils";
 
@@ -23,11 +23,10 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 					<div
 						className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
 						style={{
-							backgroundImage: `url(${
-								event.banner?.url ||
-								getEventBanner(event.location_json?.city)
-							})`,
-						}}
+              backgroundImage: `url(${
+                event.banner?.url || getEventBanner(event.location_json?.city)
+              }), url(${randomImageOfCity(event.location_json?.city)})`,
+            }}
 					></div>
 					<img
 						className="relative object-fit w-full max-w-full"
@@ -35,6 +34,12 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 							event.banner?.url || getEventBanner(event.location_json?.city)
 						}
 						alt={event.name}
+						onError={(e) => {
+              (e.target as HTMLImageElement).src = randomImageOfCity(
+                event.location_json?.city
+              );
+              (e.target as HTMLImageElement).onerror = null; // prevents looping
+            }}
 					/>
 				</div>
 
