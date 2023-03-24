@@ -3,7 +3,7 @@ import { omit, cloneDeep } from "lodash";
 import moment from "moment-timezone";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { getDefaultFilter, getFilterOptionMetadata } from "@/utils/filter";
-import { Filters, FilterOptionKeys, DateRangeOptions } from "@/models/Filter";
+import { Filters, FilterOptionKeys, DateRangeOptions, DateCondition } from "@/models/Filter";
 import { ElemButton } from "./ElemButton";
 import { InputRadio } from "./InputRadio";
 import { ElemTagsInput } from "./ElemTagsInput";
@@ -19,6 +19,7 @@ import { eventSizeChoices } from "@/utils/constants";
 type Props = {
   resourceType: "companies" | "vc_firms" | "events";
   filterValues: Filters | null;
+	dateCondition?: DateCondition;
   onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
   onClearOption: (name: FilterOptionKeys) => void;
   onReset: () => void;
@@ -27,6 +28,7 @@ type Props = {
 export const ElemFilter: FC<Props> = ({
 	resourceType,
 	filterValues,
+	dateCondition = "past",
 	onApply,
 	onClearOption,
 	onReset,
@@ -45,7 +47,7 @@ export const ElemFilter: FC<Props> = ({
 		setFilters((prev) => ({
 			...prev,
 			[name]: {
-				...getDefaultFilter(name as FilterOptionKeys),
+				...getDefaultFilter(name as FilterOptionKeys, dateCondition),
 				open: true,
 			},
 		}));
@@ -125,24 +127,69 @@ export const ElemFilter: FC<Props> = ({
 		const optionKey = event.target.name;
 		const selectedCondition = event.target.value as DateRangeOptions;
 		let fromDateString: string | undefined;
-		if (selectedCondition === "30-days") {
-			fromDateString = moment().subtract(30, "days").toISOString();
-		} else if (selectedCondition === "60-days") {
-			fromDateString = moment().subtract(60, "days").toISOString();
-		} else if (selectedCondition === "90-days") {
-			fromDateString = moment().subtract(90, "days").toISOString();
-		} else if (selectedCondition === "year") {
-			fromDateString = moment().subtract(1, "years").toISOString();
-		} else {
-			fromDateString = undefined;
-		}
+		let toDateString: string | undefined;
 
+		if (resourceType === "events") {
+			if (selectedCondition === "30-days") {
+				fromDateString =
+					dateCondition === "past"
+						? moment().subtract(30, "days").toISOString()
+						: moment().toISOString();
+				toDateString =
+					dateCondition === "past"
+						? moment().toISOString()
+						: moment().add(30, "days").toISOString();
+			} else if (selectedCondition === "60-days") {
+				fromDateString =
+					dateCondition === "past"
+						? moment().subtract(60, "days").toISOString()
+						: moment().toISOString();
+				toDateString =
+					dateCondition === "past"
+						? moment().toISOString()
+						: moment().add(60, "days").toISOString();
+			} else if (selectedCondition === "90-days") {
+				fromDateString =
+					dateCondition === "past"
+						? moment().subtract(90, "days").toISOString()
+						: moment().toISOString();
+				toDateString =
+					dateCondition === "past"
+						? moment().toISOString()
+						: moment().add(90, "days").toISOString();
+			} else if (selectedCondition === "year") {
+				fromDateString =
+					dateCondition === "past"
+						? moment().subtract(1, "years").toISOString()
+						: moment().toISOString();
+				toDateString =
+					dateCondition === "past"
+						? moment().toISOString()
+						: moment().add(1, "years").toISOString();
+			} else {
+				fromDateString = undefined;
+			}
+		} else {
+			if (selectedCondition === "30-days") {
+				fromDateString = moment().subtract(30, "days").toISOString();
+			} else if (selectedCondition === "60-days") {
+				fromDateString = moment().subtract(60, "days").toISOString();
+			} else if (selectedCondition === "90-days") {
+				fromDateString = moment().subtract(90, "days").toISOString();
+			} else if (selectedCondition === "year") {
+				fromDateString = moment().subtract(1, "years").toISOString()
+			} else {
+				fromDateString = undefined;
+			}
+		}
+		
 		setFilters((prev) => ({
 			...prev,
 			[optionKey]: {
 				...prev?.[optionKey as keyof Filters],
 				condition: selectedCondition,
 				fromDate: fromDateString,
+				toDate: toDateString,
 			},
 		}));
 	};
@@ -300,7 +347,7 @@ export const ElemFilter: FC<Props> = ({
 
 				{filters &&
 					(Object.keys(filters) as FilterOptionKeys[]).map((option) => {
-						const optionMetadata = getFilterOptionMetadata(option);
+						const optionMetadata = getFilterOptionMetadata(option, dateCondition);
 						if (
 							option === "country" ||
 							option === "state" ||
@@ -556,28 +603,36 @@ export const ElemFilter: FC<Props> = ({
                       name={option}
                       value="30-days"
                       checked={filters?.[option]?.condition === "30-days"}
-                      label="Past 30 days"
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } 30 days`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
                       name={option}
                       value="60-days"
                       checked={filters?.[option]?.condition === "60-days"}
-                      label="Past 60 days"
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } 60 days`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
                       name={option}
                       value="90-days"
                       checked={filters?.[option]?.condition === "90-days"}
-                      label="Past 90 days"
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } 90 days`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
                       name={option}
                       value="year"
                       checked={filters?.[option]?.condition === "year"}
-                      label="Past year"
+                      label={`${
+                        dateCondition === "past" ? "Past" : "Next"
+                      } year`}
                       onChange={onChangeDateCondition}
                     />
                     <InputRadio
@@ -592,16 +647,32 @@ export const ElemFilter: FC<Props> = ({
                     <div className="flex items-center gap-x-4 mt-2">
                       <InputDate
                         name={`${option}.fromDate`}
-                        value={filters?.[option]?.fromDate ?? ""}
+                        value={
+                          filters?.[option]?.fromDate
+                            ? moment(filters?.[option]?.fromDate).format(
+                                "YYYY-MM-DD"
+                              )
+                            : ""
+                        }
                         onChange={onChangeDateRange}
                         className="block max-w-sm placeholder-slate-500"
+                        min={optionMetadata.minDate}
+                        max={optionMetadata.maxDate}
                       />
                       <div className="flex-none">{"–"}</div>
                       <InputDate
                         name={`${option}.toDate`}
-                        value={filters?.[option]?.toDate ?? ""}
+                        value={
+                          filters?.[option]?.toDate
+                            ? moment(filters?.[option]?.toDate).format(
+                                "YYYY-MM-DD"
+                              )
+                            : ""
+                        }
                         onChange={onChangeDateRange}
                         className="block max-w-sm placeholder-slate-500"
+                        min={optionMetadata.minDate}
+                        max={optionMetadata.maxDate}
                       />
                     </div>
                   )}

@@ -10,6 +10,7 @@ import {
   SelectField,
   NumberField,
   ImageField,
+  BooleanField,
 } from "react-admin";
 import ElemList from "../ElemList";
 
@@ -60,6 +61,7 @@ export const EventList = () => {
       <TextField source="instagram" />
       <TextField source="discord" />
       <TextField source="telegram" />
+      <BooleanField source="is_featured" />
       <TextField source="status" />
     </ElemList>
   );

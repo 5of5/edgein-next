@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 import { PlaceholderEventCard } from "@/components/Placeholders";
 import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
 import { ElemCarouselCard } from "@/components/ElemCarouselCard";
@@ -9,7 +9,6 @@ import {
 	useGetEventsQuery,
 } from "@/graphql/types";
 import { ElemEventCard } from "./ElemEventCard";
-import moment from "moment-timezone";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -31,17 +30,11 @@ export const ElemFeaturedEvents: FC<Props> = ({
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
-	const [dateYesterday, setDateYesterday] = useState<any>();
-
-	useEffect(() => {
-		setDateYesterday(moment().subtract(1, "days").toDate().toISOString());
-	}, []);
-
 	const filters: DeepPartial<Events_Bool_Exp> = {
 		_and: [
 			{
 				slug: { _neq: "" },
-				start_date: { _gte: dateYesterday },
+				is_featured: { _eq: true },
 			},
 		],
 	};

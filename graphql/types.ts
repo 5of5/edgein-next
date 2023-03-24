@@ -4957,6 +4957,7 @@ export type Events = {
   geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
   instagram: Maybe<Scalars['String']>;
+  is_featured: Maybe<Scalars['Boolean']>;
   link: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
@@ -4967,7 +4968,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -5098,6 +5099,7 @@ export type Events_Bool_Exp = {
   geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   instagram: InputMaybe<String_Comparison_Exp>;
+  is_featured: InputMaybe<Boolean_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
@@ -5168,6 +5170,7 @@ export type Events_Insert_Input = {
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
   link: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
@@ -5277,6 +5280,7 @@ export type Events_Order_By = {
   geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   instagram: InputMaybe<Order_By>;
+  is_featured: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
@@ -5331,6 +5335,8 @@ export enum Events_Select_Column {
   /** column name */
   Instagram = 'instagram',
   /** column name */
+  IsFeatured = 'is_featured',
+  /** column name */
   Link = 'link',
   /** column name */
   LocationJson = 'location_json',
@@ -5379,6 +5385,7 @@ export type Events_Set_Input = {
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
   link: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
@@ -5451,6 +5458,8 @@ export enum Events_Update_Column {
   Id = 'id',
   /** column name */
   Instagram = 'instagram',
+  /** column name */
+  IsFeatured = 'is_featured',
   /** column name */
   Link = 'link',
   /** column name */
@@ -19604,14 +19613,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -20099,6 +20108,7 @@ export const GetEventsDocument = `
     end_date
     end_time
     timezone
+    is_featured
     created_at
   }
   events_aggregate(where: $where) {
@@ -20152,6 +20162,7 @@ export const GetEventDocument = `
     instagram
     discord
     telegram
+    is_featured
     created_at
     event_person {
       id

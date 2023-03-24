@@ -43,6 +43,7 @@ select_permissions:
         - geopoint
         - id
         - instagram
+        - is_featured
         - link
         - location_json
         - name
