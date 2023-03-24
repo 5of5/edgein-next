@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useTable, useSortBy, usePagination } from "react-table";
-import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/Icons";
+import { IconSortUp, IconSortDown } from "@/components/Icons";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { Pagination } from "@/components/Pagination";
 import { GetEventQuery } from "@/graphql/types";
@@ -65,7 +65,7 @@ export const ElemSponsorGrid: React.FC<Props> = ({ organizations }) => {
 					return null;
 				},
 				width: 280,
-				disableSortBy: false,
+				disableSortBy: true,
 			},
 		],
 		[]
