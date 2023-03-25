@@ -15,7 +15,7 @@ import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
 import { ElemOrganizers } from "@/components/Event/ElemOrganizers";
 import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
 import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
-import { randomImageOfCity } from "@/utils/helpers";
+import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
@@ -96,7 +96,6 @@ const Event: NextPage<Props> = ({ event }) => {
 
 		return `${theDate} at ${theTime}`;
 	};
-
 	return (
 		<>
 			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
@@ -107,18 +106,23 @@ const Event: NextPage<Props> = ({ event }) => {
 								className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
 								style={{
 									backgroundImage: `url(${
-										event.banner?.url ||
-										randomImageOfCity(event.location_json?.city)
-									})`,
+										event.banner?.url || getEventBanner(event.location_json?.city)
+									}), url(${randomImageOfCity(event.location_json?.city)})`,
 								}}
 							></div>
 							<img
-								className="object-fit h-full max-w-full max-h-full"
+								className="object-fit h-full w-full"
 								src={
 									event.banner?.url ||
-									randomImageOfCity(event.location_json?.city, "1220x400")
+									getEventBanner(event.location_json?.city, "1220x400")
 								}
 								alt={event.name}
+								onError={(e) => {
+									(e.target as HTMLImageElement).src = randomImageOfCity(
+										event.location_json?.city
+									);
+									(e.target as HTMLImageElement).onerror = null; // prevents looping
+								}}
 							/>
 						</div>
 					</div>
