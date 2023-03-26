@@ -218,23 +218,26 @@ export const processNotificationOnDelete = async (
 	}
 };
 
-export const getNotificationChangedData = (notification: GetNotificationsForUserQuery["notifications"][0]) => {
+export const getNotificationChangedData = (
+	notification: GetNotificationsForUserQuery["notifications"][0]
+) => {
 	if (notification.event_type === "Change Data") {
 		if (notification.notification_actions.length > 1) {
 			return {
-				message: 'has been updated',
-				extensions: notification.notification_actions.map(item => ({
+				message: "has been updated",
+				extensions: notification.notification_actions.map((item) => ({
 					field: Object.keys(item?.action?.properties)[0],
 					value: Object.values(item?.action?.properties)[0],
 				})),
 			};
 		}
 
-		const changedData = notification.notification_actions[0]?.action?.properties;
+		const changedData =
+			notification.notification_actions[0]?.action?.properties;
 		const field = Object.keys(changedData)[0];
 		const value = Object.values(changedData)[0];
 		return {
-			message: `has been changed the ${startCase(field)} to ${value}`,
+			message: `has updated ${startCase(field)}`, // to ${value}`,
 			extensions: [],
 		};
 	}
@@ -243,9 +246,12 @@ export const getNotificationChangedData = (notification: GetNotificationsForUser
 		message: notification.message,
 		extensions: [],
 	};
-}
+};
 
-export const insertNotificationAction = async (notificationId: number, actionId: number) => {
+export const insertNotificationAction = async (
+	notificationId: number,
+	actionId: number
+) => {
 	const insertNotificationActionQuery = `
     mutation InsertNotificationAction($object: notification_actions_insert_input!) {
       insert_notification_actions_one(
