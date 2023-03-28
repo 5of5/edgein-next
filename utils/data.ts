@@ -22,6 +22,7 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 		"Content-Type": "application/json",
 		Accept: "application/json",
 		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+		'x-hasura-role':  process.env.HASURA_VIEWER ?? "",
 	}
 	return await fetch(
 		process.env.GRAPHQL_ENDPOINT ?? "",
