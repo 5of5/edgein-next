@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { useMemo, useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
@@ -19,8 +19,7 @@ import {
 	useGetNotificationsForUserQuery,
 } from "@/graphql/types";
 import { useIntercom } from "react-use-intercom";
-import { startCase } from "lodash";
-import { getNotificationChangedData } from "@/utils/notifications";
+import { filterExcludeNotifications, getNotificationChangedData } from "@/utils/notifications";
 
 const getLink = (
 	notification: GetNotificationsForUserQuery["notifications"][0]
@@ -32,10 +31,14 @@ const getLink = (
 const Notifications: NextPage = () => {
 	const { user } = useAuth();
 
+	const excludeProperties = useMemo(() => {
+		return ["status_tags"]
+	}, []);
+
 	const { data, refetch } = useGetNotificationsForUserQuery({
 		user: user?.id || 0,
 	});
-	const notifications = data?.notifications;
+	const notifications = filterExcludeNotifications(data?.notifications || [], excludeProperties);
 
 	const displayedNotifications = notifications?.slice(
 		0,

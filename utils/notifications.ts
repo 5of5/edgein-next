@@ -279,3 +279,30 @@ export const insertNotificationAction = async (
 	});
 	return insert_notification_actions_one;
 };
+
+export const filterExcludeNotifications = (
+  notifications: GetNotificationsForUserQuery["notifications"],
+  excludeProperties: string[]
+) => {
+  let results = notifications?.filter(
+    (item) =>
+      item.notification_actions.length > 1 ||
+      (item.notification_actions.length === 1 &&
+        !excludeProperties.includes(
+          Object.keys(item.notification_actions[0]?.action?.properties || {})[0]
+        ))
+  );
+
+  results.forEach((item) => {
+    if (item.notification_actions.length > 1) {
+      item.notification_actions = item.notification_actions.filter(
+        (element) =>
+          !excludeProperties.includes(
+            Object.keys(element.action?.properties || {})[0]
+          )
+      );
+    }
+  });
+
+  return results;
+};
