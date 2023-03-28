@@ -235,13 +235,15 @@ export const getNotificationChangedData = (
 		const changedData =
 			notification.notification_actions[0]?.action?.properties;
 
-		const field = Object.keys(changedData)[0];
-		const value = Object.values(changedData)[0];
-
-		return {
-			message: `Updated ${startCase(field)}`, // to ${value}`,
-			extensions: [],
-		};
+		if (changedData) {
+			const field = Object.keys(changedData)[0];
+			const value = Object.values(changedData)[0];
+	
+			return {
+				message: `Updated ${startCase(field)}`, // to ${value}`,
+				extensions: [],
+			};
+		}
 	}
 
 	return {
