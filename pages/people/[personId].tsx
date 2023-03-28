@@ -1,6 +1,7 @@
 import React, { MutableRefObject, useRef, useEffect, useState } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { flatten, union} from "lodash";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
@@ -21,6 +22,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useIntercom } from "react-use-intercom";
 import { IconCheckBadgeSolid } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
+import { ElemTags } from "@/components/ElemTags";
 
 type Props = {
 	person: People;
@@ -47,6 +49,10 @@ const Person: NextPage<Props> = (props) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
+
+	const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
+	const companyTags = flatten(person.team_members.map(item => item?.company?.tags));
+	const personTags = union(vcFirmTags, companyTags).filter(item => item);
 
 	const personEmails = [
 		...(person.work_email ? [person.work_email] : []),
@@ -126,6 +132,18 @@ const Person: NextPage<Props> = (props) => {
 											</ElemTooltip>
 										)}
 									</div>
+
+									{personTags?.length > 0 && (
+                    <ElemTags
+                      className="my-4"
+                      resourceType={
+                        person.team_members.length > 0
+                          ? "companies"
+                          : "investors"
+                      }
+                      tags={personTags}
+                    />
+                  )}
 
 									{!claimedProfile && (
 										<ElemButton
