@@ -4964,6 +4964,7 @@ export type Events = {
   geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
   instagram: Maybe<Scalars['String']>;
+  is_featured: Maybe<Scalars['Boolean']>;
   link: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
@@ -5105,6 +5106,7 @@ export type Events_Bool_Exp = {
   geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   instagram: InputMaybe<String_Comparison_Exp>;
+  is_featured: InputMaybe<Boolean_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
@@ -5175,6 +5177,7 @@ export type Events_Insert_Input = {
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
   link: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
@@ -5284,6 +5287,7 @@ export type Events_Order_By = {
   geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   instagram: InputMaybe<Order_By>;
+  is_featured: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
@@ -5338,6 +5342,8 @@ export enum Events_Select_Column {
   /** column name */
   Instagram = 'instagram',
   /** column name */
+  IsFeatured = 'is_featured',
+  /** column name */
   Link = 'link',
   /** column name */
   LocationJson = 'location_json',
@@ -5386,6 +5392,7 @@ export type Events_Set_Input = {
   geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
   link: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
@@ -5458,6 +5465,8 @@ export enum Events_Update_Column {
   Id = 'id',
   /** column name */
   Instagram = 'instagram',
+  /** column name */
+  IsFeatured = 'is_featured',
   /** column name */
   Link = 'link',
   /** column name */
@@ -8835,6 +8844,10 @@ export type Mutation_Root = {
   delete_people: Maybe<People_Mutation_Response>;
   /** delete single row from the table: "people" */
   delete_people_by_pk: Maybe<People>;
+  /** delete data from the table: "reset_passwords" */
+  delete_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** delete single row from the table: "reset_passwords" */
+  delete_reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** delete data from the table: "resource_edit_access" */
   delete_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** delete single row from the table: "resource_edit_access" */
@@ -9005,6 +9018,10 @@ export type Mutation_Root = {
   insert_people: Maybe<People_Mutation_Response>;
   /** insert a single row into the table: "people" */
   insert_people_one: Maybe<People>;
+  /** insert data into the table: "reset_passwords" */
+  insert_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** insert a single row into the table: "reset_passwords" */
+  insert_reset_passwords_one: Maybe<Reset_Passwords>;
   /** insert data into the table: "resource_edit_access" */
   insert_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** insert a single row into the table: "resource_edit_access" */
@@ -9171,6 +9188,10 @@ export type Mutation_Root = {
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
   update_people_by_pk: Maybe<People>;
+  /** update data of the table: "reset_passwords" */
+  update_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** update single row of the table: "reset_passwords" */
+  update_reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** update data of the table: "resource_edit_access" */
   update_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** update single row of the table: "resource_edit_access" */
@@ -9578,6 +9599,18 @@ export type Mutation_RootDelete_PeopleArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_People_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Reset_PasswordsArgs = {
+  where: Reset_Passwords_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Reset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -10147,6 +10180,20 @@ export type Mutation_RootInsert_PeopleArgs = {
 export type Mutation_RootInsert_People_OneArgs = {
   object: People_Insert_Input;
   on_conflict: InputMaybe<People_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Reset_PasswordsArgs = {
+  objects: Array<Reset_Passwords_Insert_Input>;
+  on_conflict: InputMaybe<Reset_Passwords_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Reset_Passwords_OneArgs = {
+  object: Reset_Passwords_Insert_Input;
+  on_conflict: InputMaybe<Reset_Passwords_On_Conflict>;
 };
 
 
@@ -10847,6 +10894,22 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
   _prepend: InputMaybe<People_Prepend_Input>;
   _set: InputMaybe<People_Set_Input>;
   pk_columns: People_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_PasswordsArgs = {
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  where: Reset_Passwords_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_Passwords_By_PkArgs = {
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  pk_columns: Reset_Passwords_Pk_Columns_Input;
 };
 
 
@@ -13506,6 +13569,12 @@ export type Query_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+   /** fetch data from the table: "reset_passwords" */
+  reset_passwords: Array<Reset_Passwords>;
+  /** fetch aggregated fields from the table: "reset_passwords" */
+  reset_passwords_aggregate: Reset_Passwords_Aggregate;
+  /** fetch data from the table: "reset_passwords" using primary key columns */
+  reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
@@ -14294,6 +14363,29 @@ export type Query_RootPeople_By_PkArgs = {
 };
 
 
+export type Query_RootReset_PasswordsArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Query_RootReset_Passwords_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Query_RootReset_Passwords_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootResource_Edit_AccessArgs = {
   distinct_on: InputMaybe<Array<Resource_Edit_Access_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14539,6 +14631,241 @@ export type Query_RootWaitlist_Emails_AggregateArgs = {
 
 export type Query_RootWaitlist_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+/** columns and relationships of "reset_passwords" */
+export type Reset_Passwords = {
+  __typename?: 'reset_passwords';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  generated_password: Scalars['String'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  user: Maybe<Users>;
+  user_id: Scalars['Int'];
+};
+
+/** aggregated selection of "reset_passwords" */
+export type Reset_Passwords_Aggregate = {
+  __typename?: 'reset_passwords_aggregate';
+  aggregate: Maybe<Reset_Passwords_Aggregate_Fields>;
+  nodes: Array<Reset_Passwords>;
+};
+
+/** aggregate fields of "reset_passwords" */
+export type Reset_Passwords_Aggregate_Fields = {
+  __typename?: 'reset_passwords_aggregate_fields';
+  avg: Maybe<Reset_Passwords_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Reset_Passwords_Max_Fields>;
+  min: Maybe<Reset_Passwords_Min_Fields>;
+  stddev: Maybe<Reset_Passwords_Stddev_Fields>;
+  stddev_pop: Maybe<Reset_Passwords_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Reset_Passwords_Stddev_Samp_Fields>;
+  sum: Maybe<Reset_Passwords_Sum_Fields>;
+  var_pop: Maybe<Reset_Passwords_Var_Pop_Fields>;
+  var_samp: Maybe<Reset_Passwords_Var_Samp_Fields>;
+  variance: Maybe<Reset_Passwords_Variance_Fields>;
+};
+
+
+/** aggregate fields of "reset_passwords" */
+export type Reset_Passwords_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Reset_Passwords_Avg_Fields = {
+  __typename?: 'reset_passwords_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "reset_passwords". All fields are combined with a logical 'AND'. */
+export type Reset_Passwords_Bool_Exp = {
+  _and: InputMaybe<Array<Reset_Passwords_Bool_Exp>>;
+  _not: InputMaybe<Reset_Passwords_Bool_Exp>;
+  _or: InputMaybe<Array<Reset_Passwords_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  generated_password: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  user: InputMaybe<Users_Bool_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "reset_passwords" */
+export enum Reset_Passwords_Constraint {
+  /** unique or primary key constraint */
+  ResetPasswordsPkey = 'reset_passwords_pkey'
+}
+
+/** input type for incrementing numeric columns in table "reset_passwords" */
+export type Reset_Passwords_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "reset_passwords" */
+export type Reset_Passwords_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Reset_Passwords_Max_Fields = {
+  __typename?: 'reset_passwords_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  generated_password: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Reset_Passwords_Min_Fields = {
+  __typename?: 'reset_passwords_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  generated_password: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "reset_passwords" */
+export type Reset_Passwords_Mutation_Response = {
+  __typename?: 'reset_passwords_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Reset_Passwords>;
+};
+
+/** on_conflict condition type for table "reset_passwords" */
+export type Reset_Passwords_On_Conflict = {
+  constraint: Reset_Passwords_Constraint;
+  update_columns: Array<Reset_Passwords_Update_Column>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "reset_passwords". */
+export type Reset_Passwords_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  generated_password: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  user: InputMaybe<Users_Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: reset_passwords */
+export type Reset_Passwords_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "reset_passwords" */
+export enum Reset_Passwords_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  GeneratedPassword = 'generated_password',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "reset_passwords" */
+export type Reset_Passwords_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Reset_Passwords_Stddev_Fields = {
+  __typename?: 'reset_passwords_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Reset_Passwords_Stddev_Pop_Fields = {
+  __typename?: 'reset_passwords_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Reset_Passwords_Stddev_Samp_Fields = {
+  __typename?: 'reset_passwords_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Reset_Passwords_Sum_Fields = {
+  __typename?: 'reset_passwords_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "reset_passwords" */
+export enum Reset_Passwords_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  GeneratedPassword = 'generated_password',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Reset_Passwords_Var_Pop_Fields = {
+  __typename?: 'reset_passwords_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Reset_Passwords_Var_Samp_Fields = {
+  __typename?: 'reset_passwords_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Reset_Passwords_Variance_Fields = {
+  __typename?: 'reset_passwords_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** Add access to user if he has verified the access to organization */
@@ -15354,6 +15681,12 @@ export type Subscription_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "reset_passwords" */
+  reset_passwords: Array<Reset_Passwords>;
+  /** fetch aggregated fields from the table: "reset_passwords" */
+  reset_passwords_aggregate: Reset_Passwords_Aggregate;
+  /** fetch data from the table: "reset_passwords" using primary key columns */
+  reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
@@ -16138,6 +16471,29 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 
 export type Subscription_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootReset_PasswordsArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Subscription_RootReset_Passwords_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Subscription_RootReset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -19728,14 +20084,14 @@ export type GetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
 
 export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -19805,7 +20161,7 @@ export type GetPersonQueryVariables = Exact<{
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -20223,6 +20579,7 @@ export const GetEventsDocument = `
     end_date
     end_time
     timezone
+    is_featured
     created_at
   }
   events_aggregate(where: $where) {
@@ -20276,6 +20633,7 @@ export const GetEventDocument = `
     instagram
     discord
     telegram
+    is_featured
     created_at
     event_person {
       id
@@ -20787,6 +21145,7 @@ export const GetPersonDocument = `
         logo
         overview
         location
+        tags
       }
     }
     team_members {
@@ -20803,6 +21162,7 @@ export const GetPersonDocument = `
         logo
         overview
         location
+        tags
       }
     }
     investments {
@@ -20816,6 +21176,7 @@ export const GetPersonDocument = `
           slug
           name
           logo
+          tags
         }
       }
     }

@@ -1639,3 +1639,227 @@ export const timezoneChoices = [
 	id: item,
 	name: item,
 }));
+
+
+export const eventBannerList = [
+  {
+    city: "dubai",
+    url: "https://images.unsplash.com/photo-1619806840163-38e329be64bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZHViYWl8fHx8fHwxNjc5NjQxNjk4&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "paris",
+    url: "https://images.unsplash.com/photo-1471874708433-acd480424946?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGFyaXMsY2l0eXx8fHx8fDE2Nzk2NDE4ODU&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "moritz",
+    url: "https://images.unsplash.com/photo-1655884893362-b1d2fe29bcb4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c3Rtb3JpdHp8fHx8fHwxNjc5NjQyMTE2&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "park city and salt lake city",
+    url: "https://images.unsplash.com/photo-1462900157664-3ecc405a9341?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c2FsdCBsYWtlIGNpdHl8fHx8fHwxNjc5NjQyMjE2&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "miami",
+    url: "https://images.unsplash.com/photo-1509081258900-a15e84ae6953?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bWlhbWkgY2l0eXx8fHx8fDE2Nzk2NDIzNzM&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "san francisco",
+    url: "https://images.unsplash.com/photo-1521747116042-5a810fda9664?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c2FuZnJhbmNpc2NvfHx8fHx8MTY3OTY0MjQwMA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "istanbul",
+    url: "https://images.unsplash.com/photo-1623439845268-0f864b14e0fa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8aXN0YW5idWx8fHx8fHwxNjc5NjQyNDQ2&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "tel aviv",
+    url: "https://images.unsplash.com/photo-1598087494985-12fce9b2603b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dGVsIGF2aXZ8fHx8fHwxNjc5NjQyNTA4&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "philadelphia",
+    url: "https://images.unsplash.com/photo-1544295699-624f04212074?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cGhpbGFkZWxwaGlhfHx8fHx8MTY3OTY0MjUzOQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+		city: "fort lauderdale",
+    url: "https://images.unsplash.com/photo-1533280385001-c32ffcbd52a7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8Zm9ydCBsYXVkZXJkYWxlfHx8fHx8MTY3OTY0MjgyNQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "barcelona",
+    url: "https://images.unsplash.com/photo-1544918877-460635b6d13e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmFyY2Vsb25hfHx8fHx8MTY3OTY0Mjg0MA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "manama",
+    url: "https://images.unsplash.com/photo-1642122791899-07dd7541276b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bWFuYW1hfHx8fHx8MTY3OTY0MjkwNg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "singapore",
+    url: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8c2luZ2Fwb3JlfHx8fHx8MTY3OTY0MjkzOQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "lisbon",
+    url: "https://images.unsplash.com/photo-1558003813-d1074f0aa419?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bGlzYm9ufHx8fHx8MTY3OTY0Mjk1Nw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "denver",
+    url: "https://images.unsplash.com/photo-1616042616042-f9d81bbc6ac9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZGVudmVyfHx8fHx8MTY3OTY0MzEyMQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "london",
+    url: "https://images.unsplash.com/photo-1488747279002-c8523379faaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bG9uZG9ufHx8fHx8MTY3OTY0MzIwMg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "austin",
+    url: "https://images.unsplash.com/photo-1558527109-b6d363793627?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YXVzdGlufHx8fHx8MTY3OTY0MzIyMg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "hamburg",
+    url: "https://images.unsplash.com/photo-1553547274-0df401ae03c9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8aGFtYnVyZ3x8fHx8fDE2Nzk2NDMyNDY&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "ho chi minh city",
+    url: "https://images.unsplash.com/photo-1635684228990-890fda1deb7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8aG8gY2hpIG1pbmggY2l0eXx8fHx8fDE2Nzk2NDMzMTM&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "porto",
+    url: "https://images.unsplash.com/photo-1564644840889-ea4a344404df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cG9ydG98fHx8fHwxNjc5NjQzMzYz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "johannesburg",
+    url: "https://images.unsplash.com/photo-1552937075-967cf58b74a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8am9oYW5uZXNidXJnfHx8fHx8MTY3OTY0MzM5MQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "atlanta",
+    url: "https://images.unsplash.com/photo-1473042904451-00171c69419d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YXRsYW50YXx8fHx8fDE2Nzk2NDM0MDk&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "tallin",
+    url: "https://images.unsplash.com/photo-1564951537954-29dd59397b90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dGFsbGlufHx8fHx8MTY3OTY0MzQ0MA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "tokyo",
+    url: "https://images.unsplash.com/photo-1565356277201-8c2f9e5df911?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dG9reW98fHx8fHwxNjc5NjQzNDU5&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "taipei",
+    url: "https://images.unsplash.com/photo-1470004914212-05527e49370b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dGFpcGVpfHx8fHx8MTY3OTY0MzQ5MA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "los angeles",
+    url: "https://images.unsplash.com/photo-1525876285538-4cc52d170c0d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bG9zIGFuZ2VsZXN8fHx8fHwxNjc5NjQzNjk4&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "washington",
+    url: "https://images.unsplash.com/photo-1591553161262-0eeddc1f5c23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8d2FzaGluZ3RvbiBjaXR5fHx8fHx8MTY3OTY0Mzc2MQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "hong kong",
+    url: "https://images.unsplash.com/photo-1620015092538-e33c665fc181?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8aG9uZyBrb25nfHx8fHx8MTY3OTY0Mzc5OQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "nassau",
+    url: "https://images.unsplash.com/photo-1617170709172-d19ee6cd406c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bmFzc2F1IGNpdHl8fHx8fHwxNjc5NjQzODcx&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "bucharest",
+    url: "https://images.unsplash.com/photo-1583916588652-b9477dcf9751?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YnVjaGFyZXN0IGNpdHkgYnVpbGRpbmd8fHx8fHwxNjc5NjQ0MDA5&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "new delhi",
+    url: "https://images.unsplash.com/photo-1583608563020-9772ff491a8c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8ZGVsaGkgY2l0eXx8fHx8fDE2Nzk2NDQxMzE&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "rio",
+    url: "https://images.unsplash.com/photo-1548963670-aaaa8f73a5e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cmlvIGRlIGphbmVpcm98fHx8fHwxNjc5NjQ0MjUy&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "new york",
+    url: "https://images.unsplash.com/photo-1582070915618-9140bdc5035e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bmV3IHlvcmt8fHx8fHwxNjc5NjQ4ODk4&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "prague",
+    url: "https://images.unsplash.com/photo-1559564612-7a85b6c940f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cHJhZ3VlfHx8fHx8MTY3OTY0NDQxMw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "zurich",
+    url: "https://images.unsplash.com/photo-1560278652-d660200913e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8enVyaWNofHx8fHx8MTY3OTY0NDQ1Ng&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "omaha",
+    url: "https://images.unsplash.com/photo-1540921128506-76448386fb51?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8b21haGF8fHx8fHwxNjc5NjQ0NTk5&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "brussels",
+    url: "https://images.unsplash.com/photo-1587854669512-c12cd86f28d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YnJ1c3NlbHN8fHx8fHwxNjc5NjQ0NjM0&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "toronto",
+    url: "https://images.unsplash.com/photo-1603466182843-75f713ba06b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dG9yb250b3x8fHx8fDE2Nzk2NDQ3NTU&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "vienna",
+    url: "https://images.unsplash.com/photo-1558555574-2a1a6e347cf2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dmllbm5hfHx8fHx8MTY3OTY0NDgxMQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "manila",
+    url: "https://images.unsplash.com/photo-1597285952775-1382215fbff0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bWFuaWxhfHx8fHx8MTY3OTY0NDkyNw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "berlin",
+    url: "https://images.unsplash.com/photo-1551354099-068f333a4e8f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmVybGlufHx8fHx8MTY3OTY0NDk5NA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "warsaw",
+    url: "https://images.unsplash.com/photo-1573157268794-d13e94d325e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8d2Fyc2F3fHx8fHx8MTY3OTY0NTA0Mg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "liechtenstein",
+    url: "https://images.unsplash.com/photo-1661101494681-2149c3de889b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bGllY2h0ZW5zdGVpbnx8fHx8fDE2Nzk2NDUxNTY&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "bayfront subzone",
+    url: "https://images.unsplash.com/photo-1665764067489-963b7a9cbd88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmF5ZnJvbnQgc3Viem9ufHx8fHx8MTY3OTY0NTUyOQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "bengaluru",
+    url: "https://images.unsplash.com/photo-1611318310857-eeef8b779857?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmVuZ2FsdXJ1fHx8fHx8MTY3OTY0NTU2OQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "mumbai",
+    url: "https://images.unsplash.com/photo-1601961405399-801fb1f34581?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bXVtYmFpfHx8fHx8MTY3OTY0NTcyOA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "amsterdam",
+    url: "https://images.unsplash.com/photo-1622015524070-5ea7caac2643?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YW1zdGVyZGFtfHx8fHx8MTY3OTY0NTc2NA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "belgrade",
+    url: "https://images.unsplash.com/photo-1647249893918-e75e1c00ae59?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8YmVsZ3JhZGV8fHx8fHwxNjc5NjQ1ODQz&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "valencia",
+    url: "https://images.unsplash.com/photo-1565969163749-9d6aa37f977e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8dmFsZW5jaWF8fHx8fHwxNjc5NjQ1ODc1&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+    city: "golden sands",
+    url: "https://images.unsplash.com/photo-1615409822213-8e70aa8041a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8Z29sZGVuIHNhbmRzfHx8fHx8MTY3OTY0NTkyNw&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+  },
+	{
+		city: "melbourne",
+		url: "https://images.unsplash.com/photo-1546868762-b61266729c8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bWVsYm91cm5lfHx8fHx8MTY3OTY0NjAzOA&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+	},
+	{
+		city: "cambridge",
+		url: "https://images.unsplash.com/20/cambridge.JPG?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8Y2FtYnJpZGdlfHx8fHx8MTY3OTY0NjA4Mg&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+	},
+	{
+		city: "las vegas",
+		url: "https://images.unsplash.com/photo-1534219066561-ae20285bd59e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8bGFzIHZlZ2FzfHx8fHx8MTY3OTY0NjExMQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+	},
+	{
+		city: "chicago",
+		url: "https://images.unsplash.com/photo-1606760517201-75f1569e5cdf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8Y2hpY2Fnb3x8fHx8fDE2Nzk2NDYxNDM&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+	},
+  {
+		city: "podgorica",
+		url: "https://images.unsplash.com/photo-1641899936619-b3cc3cfe2cbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxfDB8MXxyYW5kb218MHx8cG9kZ29yaWNhfHx8fHx8MTY3OTY0NjE5NQ&ixlib=rb-4.0.3&q=80&utm_campaign=api-credit&utm_medium=referral&utm_source=unsplash_source&w=1080",
+	},
+];

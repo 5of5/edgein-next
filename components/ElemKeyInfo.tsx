@@ -127,10 +127,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
 				" Total Funding Raised",
 		});
 	}
-	if (price) {
+
+	if (price != null) {
 		infoItems.push({
 			icon: IconTicket,
-			text: "Starts at $" + numberWithCommas(price),
+			text: price === 0 ? "Free" : "Starts at $" + numberWithCommas(price),
 		});
 	}
 	if (attendees) {
@@ -304,41 +305,37 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 					if (item.showHide) {
 						return (
-							<>
-								<li
-									key={index}
-									onClick={onInfoClick(item.text)}
-									className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
-								>
-									<div className="flex items-center">
-										{item.icon && (
-											<item.icon
-												title={item.text}
-												className="h-6 w-6  mr-2 shrink-0 text-dark-500"
-											/>
-										)}
-										{showInfo[item.text] ? (
-											<a
-												className={`transition-all text-primary-500 hover:bg-slate-200`}
-												href={item.link}
-												target={item.target ? item.target : "_blank"}
-												rel="noopener noreferrer"
-												title={item.text}
-											>
-												{item.text}
-											</a>
-										) : (
-											<>
-												&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-											</>
-										)}
-									</div>
-									<div className="flex items-center text-primary-500">
-										<IconEye className="h-5 w-5 shrink-0 mr-1" />
-										show
-									</div>
-								</li>
-							</>
+							<li
+								key={index}
+								onClick={onInfoClick(item.text)}
+								className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+							>
+								<div className="flex items-center">
+									{item.icon && (
+										<item.icon
+											title={item.text}
+											className="h-6 w-6  mr-2 shrink-0 text-dark-500"
+										/>
+									)}
+									{showInfo[item.text] ? (
+										<a
+											className={`transition-all text-primary-500 hover:bg-slate-200`}
+											href={item.link}
+											target={item.target ? item.target : "_blank"}
+											rel="noopener noreferrer"
+											title={item.text}
+										>
+											{item.text}
+										</a>
+									) : (
+										<>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</>
+									)}
+								</div>
+								<div className="flex items-center text-primary-500">
+									<IconEye className="h-5 w-5 shrink-0 mr-1" />
+									show
+								</div>
+							</li>
 						);
 					} else {
 						return itemInner;

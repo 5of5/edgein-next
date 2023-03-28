@@ -3,6 +3,7 @@ import isEqual from "lodash/isEqual";
 import isEmpty from "lodash/isEmpty";
 import isObject from "lodash/isObject";
 import {
+	eventBannerList,
 	EXPLORE_MENU_OPEN_KEY,
 	MY_EDGEIN_MENU_OPEN_KEY,
 	MY_GROUPS_MENU_OPEN_KEY,
@@ -80,6 +81,21 @@ export const randomImageOfCity = (city: string, size?: string) => {
 	const cityUrl = baseUrl + city.replace(/[,.-\s]/g, "").toLowerCase();
 
 	return cityUrl;
+};
+
+export const getEventBanner = (city: string, size?: string) => {
+  if (!city) {
+    return randomImageOfCity(city, size);
+  }
+
+  const banner = eventBannerList.find((item) =>
+    city.toLowerCase().includes(item.city)
+  );
+  if (banner) {
+    return banner.url;
+  }
+
+  return randomImageOfCity(city, size);
 };
 
 export const clearLocalStorage = () => {
