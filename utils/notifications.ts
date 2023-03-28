@@ -73,39 +73,39 @@ const getMessageContents = (
 ) => {
 	if (actionType === "Change Data") {
 		if (notificationResourceType === "team_members") {
-			return "updated team information";
+			return "updated team info";
 		} else if (notificationResourceType === "investments") {
 			return "updated investments data";
 		} else if (notificationResourceType === "investment_rounds") {
 			return "updated investment round";
 		} else if (notificationResourceType === "investors") {
-			return "updated team information";
+			return "updated team info";
 		} else if (notificationResourceType === "event_organization") {
-			return "updated event information";
+			return "updated event info";
 		}
 		return "updated key info";
 	} else if (actionType === "Insert Data") {
 		if (notificationResourceType === "team_members") {
-			return "added new team information";
+			return "added new team members";
 		} else if (notificationResourceType === "investments") {
-			return "added new investments data";
+			return "added new investments";
 		} else if (notificationResourceType === "investment_rounds") {
-			return "added a new investment round";
+			return "added new investment round";
 		} else if (notificationResourceType === "investors") {
-			return "added new team information";
+			return "added new team members";
 		} else if (notificationResourceType === "event_organization") {
 			return "added a new event";
 		}
 		return "added new key info";
 	} else {
 		if (notificationResourceType === "team_members") {
-			return "deleted a team information";
+			return "deleted a team info";
 		} else if (notificationResourceType === "investments") {
 			return "deleted an investments data";
 		} else if (notificationResourceType === "investment_rounds") {
 			return "deleted an investment round";
 		} else if (notificationResourceType === "investors") {
-			return "deleted a team information";
+			return "deleted a team info";
 		} else if (notificationResourceType === "companies") {
 			return "deleted a company";
 		} else if (notificationResourceType === "vc_firms") {
@@ -224,7 +224,7 @@ export const getNotificationChangedData = (
 	if (notification.event_type === "Change Data") {
 		if (notification.notification_actions.length > 1) {
 			return {
-				message: "has been updated",
+				message: `has been updated`,
 				extensions: notification.notification_actions.map((item) => ({
 					field: Object.keys(item?.action?.properties)[0],
 					value: Object.values(item?.action?.properties)[0],
@@ -234,10 +234,12 @@ export const getNotificationChangedData = (
 
 		const changedData =
 			notification.notification_actions[0]?.action?.properties;
+
 		const field = Object.keys(changedData)[0];
 		const value = Object.values(changedData)[0];
+
 		return {
-			message: `has updated ${startCase(field)}`, // to ${value}`,
+			message: `Updated ${startCase(field)}`, // to ${value}`,
 			extensions: [],
 		};
 	}

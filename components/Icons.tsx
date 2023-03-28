@@ -1207,6 +1207,7 @@ export const IconBell: React.FC<IconProps> = ({
 			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 			stroke="currentColor"
 			strokeLinecap="round"
+			strokeLinejoin="round"
 		>
 			<title>{title ? title : "Notification"}</title>
 			<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
