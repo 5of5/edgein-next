@@ -25,10 +25,12 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 		'x-hasura-role': process.env.HASURA_VIEWER ?? "",
 	}
 
-	const user = await CookieService.getUser(CookieService.getAuthToken(cookies));
-	// Allow admin to access draft records
-	if (user?.role === 'admin')
-		delete headers['x-hasura-role'];
+	if (cookies) {
+		const user = await CookieService.getUser(CookieService.getAuthToken(cookies));
+		// Allow admin to access draft records
+		if (user?.role === 'admin')
+			delete headers['x-hasura-role'];
+	}
 
 	return await fetch(
 		process.env.GRAPHQL_ENDPOINT ?? "",
