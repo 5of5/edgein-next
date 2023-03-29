@@ -132,7 +132,7 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 								<div className="mt-6 float-right">
 									<ElemButton
 										btn="primary"
-										disabled={error ? true : false}
+										disabled={listName === "" || error ? true : false}
 										loading={isLoading}
 										onClick={handleCreate}
 									>

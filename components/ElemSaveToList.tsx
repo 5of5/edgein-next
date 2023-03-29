@@ -31,10 +31,19 @@ export const ElemSaveToList: FC<Props> = ({
 }) => {
 	let [isOpen, setIsOpen] = useState(false);
 	const [showNew, setShowNew] = useState(false);
-	const [newName, setNewName] = useState<string>("");
 	const [listsData, setListsData] = useState([] as List[]);
-
 	const { user, listAndFollows, refreshProfile } = useUser();
+	const [listName, setListName] = useState<string>("");
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		setListName(listName);
+		if (listName && listName.length < 3) {
+			setError("List name should have at least 3 characters.");
+		} else {
+			setError("");
+		}
+	}, [listName]);
 
 	useEffect(() => {
 		if (listAndFollows)
@@ -128,13 +137,14 @@ export const ElemSaveToList: FC<Props> = ({
 		}
 	};
 
-	const onCreate = async (event: React.MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-		if (user) {
-			await toggleToList(`${user.id}-${newName}`, "add");
+	const handleCreate = async () => {
+		if (error || !listName || !user) {
+			return;
+		} else {
+			await toggleToList(`${user.id}-${listName}`, "add");
 			// hide input
 			setShowNew(false);
-			setNewName("");
+			setListName("");
 		}
 	};
 
@@ -214,25 +224,17 @@ export const ElemSaveToList: FC<Props> = ({
 									</button>
 								</div>
 								<div className="flex items-center justify-between px-3 py-1.5 from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r">
-									<Dialog.Title>
-										<h2 className="text-lg font-bold text-white">
-											Save to List
-										</h2>
+									<Dialog.Title className="text-lg font-bold text-white">
+										Save to List
 									</Dialog.Title>
 								</div>
 
-								{/* {listsData.length === 0 && (
-									<div className="p-3">
-										<div className="flex items-center justify-center w-10 aspect-square rounded-full bg-primary-100">
-											<IconCustomList className="w-6 aspect-square text-primary-500" />
-										</div>
-										<h2 className="text-lg font-bold">No lists yet</h2>
-										<p className="text-slate-500">
-											EdgeIn allows you to efficiently create lists of companies
-											and investors that matter to you.
-										</p>
-									</div>
-								)} */}
+								{listsData.length === 0 && (
+									<p className="p-3 text-slate-500 text-lg">
+										Group organizations that matter to you in a list so you can
+										compare, sort, and more.
+									</p>
+								)}
 
 								<ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-slate-100">
 									{listsData?.map((list) => {
@@ -246,7 +248,6 @@ export const ElemSaveToList: FC<Props> = ({
 													labelClass="grow py-3 pr-3"
 													label={getNameFromListName(list)}
 													checked={selected}
-													//onChange={(e) => {}}
 													onClick={(e) => onClickHandler(e, list, selected)}
 												/>
 											</li>
@@ -255,32 +256,47 @@ export const ElemSaveToList: FC<Props> = ({
 								</ul>
 
 								{!showNew && listsData.length > 0 && (
-									<div className="border-t border-slate-300">
-										<ElemButton
-											btn="transparent"
-											onClick={() => setShowNew(true)}
-											className="py-3 w-full !justify-start"
-										>
-											<IconListPlus className="w-6 h-6 mr-1" />
-											Create new list
-										</ElemButton>
+									<div className="flex border-t border-slate-300 p-3">
+										<div className="ml-auto">
+											<ElemButton
+												btn="primary"
+												onClick={() => setShowNew(true)}
+											>
+												<IconListPlus className="w-6 h-6 mr-1" />
+												Create new list
+											</ElemButton>
+										</div>
 									</div>
 								)}
 
 								{(showNew || listsData.length === 0) && (
 									<div className="p-3 border-t border-slate-300 ease-in-out duration-300">
-										<InputText
-											label="Name"
-											type="text"
-											onChange={(e) => setNewName(e.target.value)}
-											value={newName}
-											name="name"
-											placeholder="Enter List Name..."
-										/>
+										<label>
+											<InputText
+												label="Name"
+												type="text"
+												onChange={(e) => setListName(e.target.value)}
+												value={listName}
+												required={true}
+												name="name"
+												placeholder="Enter List Name..."
+												className={`${
+													error === ""
+														? "ring-1 ring-slate-200"
+														: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+												}`}
+											/>
+											{error === "" ? null : (
+												<div className="mt-2 font-bold text-sm text-rose-400">
+													{error}
+												</div>
+											)}
+										</label>
 										<div className="flex">
 											<ElemButton
-												onClick={(e) => onCreate(e)}
+												onClick={handleCreate}
 												className="mt-3 ml-auto"
+												disabled={listName === "" || error ? true : false}
 												roundedFull
 												btn="primary"
 											>
