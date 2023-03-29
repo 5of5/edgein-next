@@ -94,8 +94,10 @@ const MyList: NextPage<Props> = ({}) => {
 		if (deleteRes.ok) {
 			const hotId =
 				find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
+
 			router.push(`/lists/${hotId}/hot`);
 			refreshProfile();
+			router.reload();
 			toast.custom(
 				(t) => (
 					<div

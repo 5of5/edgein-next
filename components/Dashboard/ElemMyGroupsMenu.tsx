@@ -154,7 +154,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 												group.id
 											)}`}
 										>
-											<IconGroup className="h-6 w-6" />
+											<IconGroup className="h-6 w-6 shrink-0" />
 											<span>{group.name}</span>
 										</a>
 									</Link>
