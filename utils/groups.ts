@@ -18,14 +18,26 @@ import {
   GetGroupQuery,
   GetUserGroupMemberByGroupIdQuery,
   User_Groups_Insert_Input,
-  Notes_Insert_Input,
+  InsertUserGroupMutation,
+  UpdateUserGroupMutation,
+  DeleteUserGroupMutation,
+  DeleteUserGroupInvitesByGroupIdMutation,
+  DeleteUserGroupMembersByGroupIdMutation,
+  DeleteNotesByGroupIdMutation,
+  GetUserGroupInviteByIdQuery,
+  GetUserGroupMemberByIdQuery,
+  InsertUserGroupMembersMutation,
+  GetNoteByIdQuery,
+  GetUserGroupInvitesByEmailQuery,
+  GetUserGroupInvitesByEmailAndGroupIdQuery,
+  GetUserGroupMembersByUserIdAndGroupIdQuery,
 } from "@/graphql/types";
 
 const onInsertGroup = async (payload: User_Groups_Insert_Input) => {
   try {
     const {
       data: { insert_user_groups_one },
-    } = await mutate({
+    } = await mutate<InsertUserGroupMutation>({
       mutation: InsertUserGroupDocument,
       variables: {
         object: payload,
@@ -41,14 +53,14 @@ const onUpdateGroup = async (id: number, changes: User_Groups_Insert_Input) => {
   try {
     const {
       data: { update_user_groups },
-    } = await mutate({
+    } = await mutate<UpdateUserGroupMutation>({
       mutation: UpdateUserGroupDocument,
       variables: {
         id,
         changes,
       },
     });
-    return update_user_groups.returning[0];
+    return update_user_groups?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -58,13 +70,13 @@ const onDeleteGroup = async (id: number) => {
   try {
     const {
       data: { delete_user_groups },
-    } = await mutate({
+    } = await mutate<DeleteUserGroupMutation>({
       mutation: DeleteUserGroupDocument,
       variables: {
         id,
       },
     });
-    return delete_user_groups.returning[0];
+    return delete_user_groups?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -74,13 +86,13 @@ const onDeleteGroupInvites = async (groupId: number) => {
   try {
     const {
       data: { delete_user_group_invites },
-    } = await mutate({
+    } = await mutate<DeleteUserGroupInvitesByGroupIdMutation>({
       mutation: DeleteUserGroupInvitesByGroupIdDocument,
       variables: {
         groupId,
       },
     });
-    return delete_user_group_invites.returning[0];
+    return delete_user_group_invites?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -90,13 +102,13 @@ const onDeleteGroupMembers = async (groupId: number) => {
   try {
     const {
       data: { delete_user_group_members },
-    } = await mutate({
+    } = await mutate<DeleteUserGroupMembersByGroupIdMutation>({
       mutation: DeleteUserGroupMembersByGroupIdDocument,
       variables: {
         groupId,
       },
     });
-    return delete_user_group_members.returning[0];
+    return delete_user_group_members?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -106,13 +118,13 @@ const onDeleteNotesByGroupId = async (groupId: number) => {
   try {
     const {
       data: { delete_notes },
-    } = await mutate({
+    } = await mutate<DeleteNotesByGroupIdMutation>({
       mutation: DeleteNotesByGroupIdDocument,
       variables: {
         groupId,
       },
     });
-    return delete_notes.returning[0];
+    return delete_notes?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -120,7 +132,7 @@ const onDeleteNotesByGroupId = async (groupId: number) => {
 
 const onFindGroupById = async (groupId: number) => {
   try {
-    const data = await query({
+    const data = await query<GetGroupQuery>({
       query: GetGroupDocument,
       variables: { id: groupId },
     });
@@ -132,7 +144,7 @@ const onFindGroupById = async (groupId: number) => {
 
 const onFindUserGroupMembers = async (groupId: number) => {
   try {
-    const data = await query({
+    const data = await query<GetUserGroupMemberByGroupIdQuery>({
       query: GetUserGroupMemberByGroupIdDocument,
       variables: { user_group_id: groupId },
     });
@@ -144,7 +156,7 @@ const onFindUserGroupMembers = async (groupId: number) => {
 
 const onFindUserGroupInviteById = async (id: number) => {
   try {
-    const data = await query({
+    const data = await query<GetUserGroupInviteByIdQuery>({
       query: GetUserGroupInviteByIdDocument,
       variables: { id },
     });
@@ -156,7 +168,7 @@ const onFindUserGroupInviteById = async (id: number) => {
 
 const onFindUserGroupMemberById = async (id: number) => {
   try {
-    const data = await query({
+    const data = await query<GetUserGroupMemberByIdQuery>({
       query: GetUserGroupMemberByIdDocument,
       variables: { id },
     });
@@ -169,7 +181,7 @@ const onFindUserGroupMemberById = async (id: number) => {
 const onAddGroupMember = async (user_id: number, user_group_id: number) => {
   const {
     data: { insert_user_group_members_one },
-  } = await mutate({
+  } = await mutate<InsertUserGroupMembersMutation>({
     mutation: InsertUserGroupMembersDocument,
     variables: {
       object: {
@@ -184,7 +196,7 @@ const onAddGroupMember = async (user_id: number, user_group_id: number) => {
 
 const onFindNoteById = async (id: number) => {
   try {
-    const data = await query({
+    const data = await query<GetNoteByIdQuery>({
       query: GetNoteByIdDocument,
       variables: { id },
     });
@@ -230,7 +242,7 @@ const onLookupResource = async (resourceType: string, resourceId: number) => {
 
 const onFindUserGroupInvitesByEmail = async (email: string) => {
   try {
-    const { data } = await query({
+    const { data } = await query<GetUserGroupInvitesByEmailQuery>({
       query: GetUserGroupInvitesByEmailDocument,
       variables: { email },
     });
@@ -245,7 +257,7 @@ const onCheckGroupInviteExists = async (
   user_group_id: number
 ) => {
   try {
-    const data = await query({
+    const data = await query<GetUserGroupInvitesByEmailAndGroupIdQuery>({
       query: GetUserGroupInvitesByEmailAndGroupIdDocument,
       variables: { email, user_group_id },
     });
@@ -260,7 +272,7 @@ const onCheckGroupMemberExists = async (
   user_group_id: number
 ) => {
   try {
-    const data = await query({
+    const data = await query<GetUserGroupMembersByUserIdAndGroupIdQuery>({
       query: GetUserGroupMembersByUserIdAndGroupIdDocument,
       variables: { user_id, user_group_id },
     });
