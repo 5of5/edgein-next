@@ -108,7 +108,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     case "DELETE": {
-      const note: Notes = await GroupService.onFindNoteById(id);
+      const note = await GroupService.onFindNoteById(id);
       const isNoteCreator = user.id === note?.created_by;
       if (!isNoteCreator) {
         return res
