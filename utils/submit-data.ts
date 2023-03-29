@@ -1,69 +1,17 @@
-
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import { Data_Fields } from "@/graphql/types";
 import { User } from "@/models/User";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 import * as util from 'util';
-import { tags } from './constants';
+import {
+  ActionType,
+  ResourceTypes,
+  NODE_NAME,
+  isResourceType,
+  tags
+} from './constants';
 
-
-export type ActionType = "Insert Data" | "Change Data" | "Delete Data";
-export type ResourceTypes =
-  | "companies"
-  | "vc_firms"
-  | "people"
-  | "blockchains"
-  | "coins"
-  | "investment_rounds"
-  | "investments"
-  | "team_members"
-  | "investors"
-  | "events"
-  | "event_person"
-  | "event_organization"
-  | "resource_links"
-  | "news"
-  | "news_organizations"
-;
-
-export const NODE_NAME: Record<ResourceTypes, string> = {
-  companies: "company",
-  vc_firms: "vc_firm",
-  people: "people",
-  blockchains: "blockchain",
-  coins: "coin",
-  investment_rounds: "investment_round",
-  investments: "investment",
-  team_members: "team_member",
-  investors: "investor",
-  events: "event",
-  event_person: "event_person",
-  event_organization: "event_organization",
-  resource_links: "resource_link",
-  news: "news",
-  news_organizations: "news_organization"
-};
-
-const isResourceType = (resourceType: string): resourceType is ResourceTypes => {
-  return [
-    "companies",
-    "vc_firms",
-    "people",
-    "blockchains",
-    "coins",
-    "investment_rounds",
-    "investments",
-    "team_members",
-    "investors",
-    "events",
-    "event_person",
-    "event_organization",
-    "resource_links",
-    "news",
-    "news_organizations"
-  ].includes(resourceType);
-}
 
 export const partnerLookUp = async (apiKey: string) => {
   const {
@@ -163,6 +111,32 @@ export const insertDataRaw = async (data: Array<Record<string, any>>) => {
     mutation: `
     mutation submit_data_raw($input: [data_raw_insert_input!]!) {
       insert_data_raw(objects: $input) {
+        returning {
+          id
+          created_at
+          resource
+          resource_id
+          field
+          value
+          accuracy_weight
+        }
+      }
+    }
+    `,
+    variables: { input: data },
+  });
+  return returning;
+};
+
+export const insertDataDiscard = async (data: Array<Record<string, any>>) => {
+  const {
+    data: {
+      insert_data_discard: { returning },
+    },
+  } = await mutate({
+    mutation: `
+    mutation submit_data_discard($input: [data_discard_insert_input!]!) {
+      insert_data_discard(objects: $input) {
         returning {
           id
           created_at
@@ -449,10 +423,23 @@ export const mutateActionAndDataRaw = async (
           transformedValue = util.format(dataField.regex_transform, transformedValue);
         if (dataField.data_type)
           transformedValue = formatValue(transformedValue, dataField.data_type);
-        if (!validateValue(resourceType, field, transformedValue))
+        if (!validateValue(resourceType, field, transformedValue)){
+          const dataObject = [
+            {
+              resource: resourceType,
+              field,
+              value: resourceObj[field],
+              partner: partnerId,
+              accuracy_weight: 1,
+              resource_id: resourceId,
+            }
+          ];
+          const data = await insertDataDiscard(dataObject);
           continue;
+        }
 
-        if (!existedData || notInsertValueType(existedData[field]) || forceUpdate)
+        if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
+            || forceUpdate)
           setMainTableValues[field] = transformedValue;
 
         validData.push({

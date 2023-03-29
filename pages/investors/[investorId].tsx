@@ -92,15 +92,15 @@ const VCFirm: NextPage<Props> = (props) => {
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
 	const sortActivities =
-    [...sortedInvestmentRounds, ...props.sortNews]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.date || a?.round_date || "").getTime() -
-          new Date(b?.date || b?.round_date || "").getTime()
-        );
-      })
-      .reverse() || [];
+		[...sortedInvestmentRounds, ...props.sortNews]
+			?.slice()
+			.sort((a: any, b: any) => {
+				return (
+					new Date(a?.date || a?.round_date || "").getTime() -
+					new Date(b?.date || b?.round_date || "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	//TabBar
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -185,7 +185,7 @@ const VCFirm: NextPage<Props> = (props) => {
 									>
 										{parse(newLineToP(vcfirm.overview))}
 									</div>
-									{overviewDivHeight > 72 && (
+									{overviewDivHeight > 84 && (
 										<ElemButton
 											onClick={() => setOverviewMore(!overviewMore)}
 											btn="transparent"
@@ -245,6 +245,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							yearFounded={vcfirm.year_founded}
 							linkedIn={vcfirm.linkedin}
 							location={vcfirm.location}
+							locationJson={vcfirm.location_json}
 							twitter={vcfirm.twitter}
 						/>
 					</div>
@@ -345,12 +346,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const sortNews =
 		vc_firms.vc_firms[0].news_links
 			?.slice()
-			?.map(item => ({...item.news, type: "news"}))
-			?.filter(item => item.status === "published")
+			?.map((item) => ({ ...item.news, type: "news" }))
+			?.filter((item) => item.status === "published")
 			.sort((a, b) => {
 				return (
-					new Date(a?.date ?? "").getTime() -
-					new Date(b?.date ?? "").getTime()
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
 				);
 			})
 			.reverse() || [];

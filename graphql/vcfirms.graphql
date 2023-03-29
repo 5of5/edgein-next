@@ -11,6 +11,7 @@ query GetVCFirm($slug: String!) {
 		overview
 		year_founded
 		location
+		location_json
 		twitter
 		investors {
 			id

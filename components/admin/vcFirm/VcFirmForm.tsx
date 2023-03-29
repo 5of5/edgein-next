@@ -5,18 +5,21 @@ import {
   SimpleForm,
   TextInput,
   SelectInput,
+  SelectArrayInput,
   FormDataConsumer,
   useGetList,
   AutocompleteArrayInput,
 } from "react-admin";
 import {
   companyChoices,
+  libraryChoices,
   status,
   validateNameAndSlugAndEmailAndDomain,
 } from "@/utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
+import ElemAddressInput from "../ElemAddressInput";
 
 type VcFirmFormProps = {
   action: "create" | "edit";
@@ -131,9 +134,40 @@ const VcFirmForm = ({
           source="status"
           choices={status}
         />
+        <ElemAddressInput
+          defaultLocation={currentData?.location_json}
+          defaultGeoPoint={currentData?.geopoint}
+        />
         <TextInput
-          className={`w-[49%] ${textInputClassName}`}
-          source="location"
+          className={textInputClassName}
+          source="location_json.address"
+          label="Address"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="location_json.city"
+          label="City"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="location_json.state"
+          label="State"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="location_json.country"
+          label="Country"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="geopoint"
+          format={(value) =>
+            value?.coordinates
+              ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
+              : ""
+          }
+          label="Geopoint"
+          disabled
         />
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
@@ -177,6 +211,12 @@ const VcFirmForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectArrayInput
+          className={textInputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

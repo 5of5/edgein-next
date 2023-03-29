@@ -34,7 +34,8 @@ export async function middleware(req: NextRequest) {
 			`/admin/app/`,
 			`/admin/admin/`,
 			`/api/submit_data/`,
-			`/api/batch_job/`
+			`/api/batch_job/`,
+			`/api/data-runs/`
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
@@ -52,6 +53,9 @@ export async function middleware(req: NextRequest) {
 		return process.env.DEV_MODE ? NextResponse.next() : datadome(req);
 	}
 	let user;
+	const redirectPath = url.pathname.startsWith("/api")
+    ? ""
+    : `redirect=${encodeURIComponent(url.pathname)}`;
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
@@ -60,7 +64,7 @@ export async function middleware(req: NextRequest) {
 			// 	return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1)}))
 			// } else {
 				return NextResponse.redirect(
-					new URL(`/login/?usage=true&redirect=${encodeURIComponent(url.pathname)}`, req.url)
+					new URL(`/login/?usage=true&${redirectPath}`, req.url)
 				);	
 			// }
 		}
@@ -72,7 +76,7 @@ export async function middleware(req: NextRequest) {
 	} catch (error) {
 		console.log(error);
 		return NextResponse.redirect(
-			new URL(`/login/?redirect=${encodeURIComponent(url.pathname)}`, req.url)
+			new URL(`/login/?${redirectPath}`, req.url)
 		);
 	}
 

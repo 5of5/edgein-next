@@ -82,9 +82,14 @@ export const VcFirmList = () => {
       <TextField source="year_founded" />
       <TextField source="twitter" />
       <TextField source="location" />
+      <TextField source="location_json" />
+      <FunctionField
+        source="library"
+        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
+      />
       <FunctionField
         source="tags"
-        render={(record: any) => (record.tags ? record.tags.join() : "")}
+        render={(record: any) => (Array.isArray(record.tags) ? record.tags.join() : record.tags ?? "")}
       />
       {/* <TextField source="counter" /> */}
     </ElemList>

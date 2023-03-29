@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { values, isEmpty } from "lodash";
 import {
 	IconProps,
@@ -14,15 +14,22 @@ import {
 	IconEmail,
 	IconLocation,
 	IconTwitter,
+	IconInstagram,
+	IconTelegram,
+	IconFacebook,
 	IconDiscord,
 	IconGlassdoor,
 	IconEye,
+	IconHome,
+	IconTicket,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
 } from "@/utils";
 import { getFullAddress } from "@/utils/helpers";
+import { ElemUpgradeDialog } from "./ElemUpgradeDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 type Props = {
 	className?: string;
@@ -34,17 +41,21 @@ type Props = {
 	yearFounded?: string | null;
 	location?: string | null;
 	locationJson?: any;
+	price?: number | null;
+	attendees?: string | null;
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
-	showEmails?: boolean;
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
+	instagram?: string | null;
+	facebook?: string | null;
+	telegram?: string | null;
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
-	onEmailClick?: () => void;
+	venue?: string | null;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -58,17 +69,23 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	roles,
 	investmentsLength = 0,
 	emails = [],
-	showEmails,
-	onEmailClick,
 	linkedIn,
 	github,
 	careerPage,
 	location,
 	locationJson,
+	price,
+	attendees,
 	twitter,
+	instagram,
+	facebook,
+	telegram,
 	discord,
 	glassdoor,
+	venue,
 }) => {
+	const { user } = useAuth();
+
 	const isEmptyLocationJson = values(locationJson).every(isEmpty);
 	let locationText = "";
 	if (!isEmptyLocationJson) {
@@ -82,6 +99,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 		link?: string;
 		text: string;
 		target?: string;
+		showHide?: boolean;
 	}[] = [];
 
 	if (website) {
@@ -107,6 +125,25 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			text:
 				convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
 				" Total Funding Raised",
+		});
+	}
+
+	if (price != null) {
+		infoItems.push({
+			icon: IconTicket,
+			text: price === 0 ? "Free" : "Starts at $" + numberWithCommas(price),
+		});
+	}
+	if (attendees) {
+		infoItems.push({
+			icon: IconUsers,
+			text: attendees,
+		});
+	}
+	if (venue) {
+		infoItems.push({
+			icon: IconHome,
+			text: venue,
 		});
 	}
 	if (locationText) {
@@ -157,6 +194,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			icon: IconLinkedIn,
 			text: "LinkedIn",
 			link: linkedIn,
+			showHide: true,
 		});
 	}
 	if (github) {
@@ -166,11 +204,32 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: github,
 		});
 	}
+	if (facebook) {
+		infoItems.push({
+			icon: IconFacebook,
+			text: "Facebook",
+			link: facebook,
+		});
+	}
 	if (twitter) {
 		infoItems.push({
 			icon: IconTwitter,
 			text: "Twitter",
 			link: twitter,
+		});
+	}
+	if (instagram) {
+		infoItems.push({
+			icon: IconInstagram,
+			text: "Instagram",
+			link: instagram,
+		});
+	}
+	if (telegram) {
+		infoItems.push({
+			icon: IconTelegram,
+			text: "Telegram",
+			link: telegram,
 		});
 	}
 	if (discord) {
@@ -190,7 +249,20 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 	const baseClasses = "flex space-x-2 py-1 px-2 rounded-md";
 
-	const upgrade = true;
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+	const [showInfo, setShowInfo] = useState<Record<string, boolean>>({});
+
+	const onInfoClick = (info: string) => () => {
+		if (user?.entitlements?.viewEmails) {
+			setShowInfo({ ...showInfo, [info]: !showInfo[info] });
+			// TODO add action
+		} else {
+			setIsOpenUpgradeDialog(true);
+		}
+	};
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
 
 	return (
 		<section className={className}>
@@ -198,7 +270,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 			<ul className="flex flex-col space-y-2">
 				{infoItems.map((item, index: number) => {
-					const itemInner = (
+					let itemInner = (
 						<>
 							{item.icon && (
 								<item.icon
@@ -211,74 +283,92 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					);
 
 					if (item.link?.length) {
-						return (
-							<li key={index}>
-								<a
-									className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
-									href={item.link}
-									target={item.target ? item.target : "_blank"}
-									rel="noopener noreferrer"
-									title={item.text}
-								>
-									{itemInner}
-								</a>
-							</li>
+						itemInner = (
+							<a
+								key={index}
+								className={`${baseClasses} flex-1 transition-all text-primary-500 hover:bg-slate-200`}
+								href={item.link}
+								target={item.target ? item.target : "_blank"}
+								rel="noopener noreferrer"
+								title={item.text}
+							>
+								{itemInner}
+							</a>
 						);
 					}
-					return (
-						<li key={index} className={baseClasses}>
+
+					itemInner = (
+						<li key={index} className={!item.link ? baseClasses : ""}>
 							{itemInner}
 						</li>
 					);
-				})}
 
-				{/* Old */}
-				{!upgrade && emails?.length > 0 && (
-					<>
-						{emails.map((_email, i: number) => [
+					if (item.showHide) {
+						return (
 							<li
-								key={i}
-								className={`${baseClasses} flex-1 items-center justify-between transition-all`}
-							>
-								<div className="flex items-center">
-									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
-									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-								</div>
-							</li>,
-						])}
-					</>
-				)}
-
-				{/* New */}
-				{upgrade && (
-					<>
-						{emails.map((email, i: number) => [
-							<li
-								key={i}
-								onClick={onEmailClick}
+								key={index}
+								onClick={onInfoClick(item.text)}
 								className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
 							>
 								<div className="flex items-center">
-									<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
-									{showEmails ? (
-										email
+									{item.icon && (
+										<item.icon
+											title={item.text}
+											className="h-6 w-6  mr-2 shrink-0 text-dark-500"
+										/>
+									)}
+									{showInfo[item.text] ? (
+										<a
+											className={`transition-all text-primary-500 hover:bg-slate-200`}
+											href={item.link}
+											target={item.target ? item.target : "_blank"}
+											rel="noopener noreferrer"
+											title={item.text}
+										>
+											{item.text}
+										</a>
 									) : (
-										<>
-											&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-										</>
+										<>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</>
 									)}
 								</div>
-								{!showEmails && (
-									<div className="flex items-center text-primary-500">
-										<IconEye className="h-5 w-5 shrink-0 mr-1" />
-										show
-									</div>
-								)}
-							</li>,
-						])}
-					</>
-				)}
+								<div className="flex items-center text-primary-500">
+									<IconEye className="h-5 w-5 shrink-0 mr-1" />
+									show
+								</div>
+							</li>
+						);
+					} else {
+						return itemInner;
+					}
+				})}
+
+				{emails.map((email, i: number) => [
+					<li
+						key={i}
+						onClick={onInfoClick("email")}
+						className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+					>
+						<div className="flex items-center">
+							<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
+							{showInfo["email"] ? (
+								email
+							) : (
+								<>
+									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+								</>
+							)}
+						</div>
+						<div className="flex items-center text-primary-500">
+							<IconEye className="h-5 w-5 shrink-0 mr-1" />
+							show
+						</div>
+					</li>,
+				])}
 			</ul>
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 		</section>
 	);
 };

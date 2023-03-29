@@ -1,13 +1,20 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
+import useAdminTransform from "@/hooks/useAdminTransform";
 import ElemToolbar from "../ElemToolbar";
 import ElemFormBase from "../ElemFormBase";
 import EventForm from "./EventForm";
-import { transform } from "./services";
+import { withImageTransformData, withoutImageTransformData } from './services';
 
 export const EventCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
+
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+  useAdminTransform({
+    withImageTransformData,
+    withoutImageTransformData,
+  });
 
   const handleSaveDraft = (data: any) => {
     data.status = "draft";
@@ -20,6 +27,10 @@ export const EventCreate = () => {
       <EventForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}
+        isImageUpdated={isImageUpdated}
+        banner={logo}
+        onSelect={onSelect}
+        onDropRejected={onDropRejected}
       />
     </ElemFormBase>
   );

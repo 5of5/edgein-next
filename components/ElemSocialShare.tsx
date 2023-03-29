@@ -16,10 +16,10 @@ type Props = {
 	resourceName: string | null;
 	resourceTags: Array<string>;
 	resourceTwitterUrl: string | null;
-	sentimentHot: number | null;
-	sentimentLike: number | null;
-	sentimentCrap: number | null;
-	resourceType: "companies" | "vc_firms";
+	sentimentHot?: number | null;
+	sentimentLike?: number | null;
+	sentimentCrap?: number | null;
+	resourceType: "companies" | "vc_firms" | "events";
 };
 
 export const ElemSocialShare: FC<Props> = ({

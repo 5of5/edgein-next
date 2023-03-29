@@ -88,6 +88,10 @@ module.exports = {
         '102': '1.02',
         '600': '6',
       },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
+      },
       opacity: {
         '15': '.15',
       },

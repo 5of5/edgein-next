@@ -14,6 +14,7 @@ import {
   useGetList,
   regex,
   required,
+  SelectArrayInput,
 } from "react-admin";
 import {
   companyLayerChoices,
@@ -21,6 +22,7 @@ import {
   status,
   tags,
   companyChoices,
+  libraryChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
@@ -288,6 +290,12 @@ const CompanyForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectArrayInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

@@ -8,6 +8,7 @@ import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemButton } from "../ElemButton";
+import { PlaceholderPerson } from "../Placeholders";
 
 type Props = {
 	isOpen: boolean;
@@ -28,12 +29,12 @@ const ElemInviteDialog: React.FC<Props> = ({
 	onClose,
 }) => {
 	const [query, setQuery] = useState("");
-	const [selectedPerson, setSelectedPerson] = useState<any>(null);
+	const [selectedUser, setSelectedUser] = useState<any>(null);
 
 	const debouncedQuery = useDebounce(query, 700);
 
 	const { data: searchedPeople, error } = useSWR(
-		() => (debouncedQuery ? ["/api/search_people", query] : null),
+		() => (debouncedQuery ? ["/api/search_people/", query] : null),
 		peopleFetcher
 	);
 
@@ -52,7 +53,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 				Accept: "application/json",
 			},
 			body: JSON.stringify({
-				isExistedUser: !!selectedPerson?.id,
+				isExistedUser: !!selectedUser?.id,
 				email,
 				resource: {
 					recipientName,
@@ -78,8 +79,9 @@ const ElemInviteDialog: React.FC<Props> = ({
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					email: selectedPerson.work_email || selectedPerson.slug,
+					email: query,
 					groupId: group.id,
+					inviteUserId: selectedUser.id,
 				}),
 			});
 			const apiResponse = await res.json();
@@ -103,12 +105,10 @@ const ElemInviteDialog: React.FC<Props> = ({
 						user_group_invites: [...prev.user_group_invites, invite],
 					}));
 				}
-				const emailAddress =
-					selectedPerson.work_email || selectedPerson.personal_email;
-				if (emailAddress) {
+				if (selectedUser?.id) {
 					onSendInvitationMail(
-						emailAddress,
-						selectedPerson.name,
+						query,
+						selectedUser?.person?.name || selectedUser?.display_name,
 						group.name,
 						group.id
 					);
@@ -121,7 +121,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 		if (!isOpen) {
 			setTimeout(() => {
 				reset();
-				setSelectedPerson(null);
+				setSelectedUser(null);
 			}, 300);
 		}
 	}, [isOpen, reset]);
@@ -174,7 +174,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
 								{isSuccess ? (
 									<p className="text-slate-500 mt-4">
-										An invitation has been sent to {selectedPerson?.name}
+										An invitation has been sent to {selectedUser?.person?.name || selectedUser?.display_name}
 									</p>
 								) : inviteError ? (
 									<p className="text-red-500 mt-4">
@@ -183,8 +183,8 @@ const ElemInviteDialog: React.FC<Props> = ({
 								) : (
 									<>
 										<Combobox
-											value={selectedPerson}
-											onChange={setSelectedPerson}
+											value={selectedUser}
+											onChange={setSelectedUser}
 										>
 											<div className="relative">
 												<div className="flex flex-col gap-1 mt-6">
@@ -195,52 +195,56 @@ const ElemInviteDialog: React.FC<Props> = ({
 														className="w-full mt-1 px-3 py-1.5 text-dark-500 relative bg-white rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400"
 														placeholder="e.g: Ashley or ashley@edgein.io"
 														autoComplete={"off"}
-														displayValue={(person: any) => person?.name ?? ""}
+														displayValue={(option: any) => option?.person?.name || option?.display_name}
 														onChange={(event) => setQuery(event.target.value)}
 													/>
 												</div>
 
-												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white border border-slate-200 w-full max-h-60 overflow-scroll">
-													{isLoading ? (
-														<div className="px-6 py-4 text-center text-lg font-bold">
-															Searching...
+												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
+													{isLoading && query != "" ? (
+														<div className="px-4 py-2">
+															{Array.from({ length: 3 }, (_, i) => (
+																<PlaceholderPerson key={i} />
+															))}
 														</div>
 													) : searchedPeople?.length > 0 ? (
-														searchedPeople.map((person: any) => (
+														searchedPeople.map((item: any) => (
 															<Combobox.Option
-																key={person.id}
-																value={person}
+																key={item.id}
+																value={item}
 																className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
 															>
-																{person?.picture ? (
+																{item?.person?.picture ? (
 																	<ElemPhoto
 																		wrapClass="w-10 h-10 aspect-square shrink-0"
 																		imgClass="object-cover rounded-full border border-slate-100"
-																		photo={person?.picture}
+																		photo={item.person.picture}
 																		placeholder="user2"
 																		placeholderClass="text-slate-300"
-																		imgAlt={person.name}
+																		imgAlt={item.person.name}
 																	/>
 																) : (
 																	<div className="flex items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
-																		{person.name?.charAt(0)}
+																		{item?.display_name?.charAt(0)}
 																	</div>
 																)}
 
-																<span>{person.name}</span>
+																<span>{item?.person?.name || item?.display_name}</span>
 															</Combobox.Option>
 														))
 													) : (
-														<div className="text-center ">
-															<div className="px-6 py-4 text-lg font-bold">
-																Not Found
-															</div>
+														<div className="text-center">
+															{query != "" && (
+																<div className="px-6 py-4 text-lg font-bold">
+																	Not Found
+																</div>
+															)}
+
 															{validator.isEmail(query) && (
 																<Combobox.Option
 																	value={{
 																		id: null,
-																		name: query,
-																		work_email: query,
+																		display_name: query,
 																	}}
 																	className="py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
 																>
@@ -257,7 +261,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 										<div className="mt-6 float-right">
 											<ElemButton
 												btn="primary"
-												disabled={!selectedPerson}
+												disabled={!selectedUser}
 												loading={isSubmitting}
 												onClick={handleInvite}
 											>
