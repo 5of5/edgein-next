@@ -229,6 +229,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ];
       const data = await insertDataDiscard(dataObject);
     }
+    if(error[0].extensions.code === "constraint-violation"){
+      let message:string="";
+      if(error[0].message.includes("Not-NULL")){
+        message="These fields require the value. However, They receive null values. Please check again"
+      }else if(error[0].message.includes("Uniqueness violation")){
+        message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" requires the unique value. However, It receives duplicate value. Please use another value`;
+      }
+      if(message.length>0){
+        error[0].message=message
+      }
+    }
+    if(error[0].extensions.code==="validation-failed"){
+      let message:string="";
+      message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" not found in this table. Please check again`;
+      error[0].message=message
+    }
     return res.status(500).send(error[0] || error);
   }
 };
