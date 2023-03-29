@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef, useEffect, useState } from "react";
+import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { flatten, union} from "lodash";
@@ -13,7 +13,7 @@ import {
 	GetPersonQuery,
 	Investment_Rounds,
 	People,
-	useGetUserProfileQuery,
+	useGetUserByPersonIdQuery,
 } from "@/graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
@@ -71,23 +71,12 @@ const Person: NextPage<Props> = (props) => {
 			: []),
 	];
 
-	const [claimedProfile, setClaimedProfile] = useState(false);
-
 	const profileUrl = `https://edgein.io${router.asPath}`;
 
-	const {
-		data: users,
-		refetch,
-		isLoading,
-	} = useGetUserProfileQuery({
-		id: user?.id ?? 0,
-	});
+	const { data: linkedUser, isLoading: isLoadingLinkedUser } =
+    useGetUserByPersonIdQuery({ person_id: person?.id });
 
-	useEffect(() => {
-		if (users?.users_by_pk?.person) {
-			setClaimedProfile(true);
-		}
-	}, [users]);
+  const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
 
 	return (
 		<div className="relative">
@@ -145,7 +134,7 @@ const Person: NextPage<Props> = (props) => {
                     />
                   )}
 
-									{!claimedProfile && (
+									{!isLoadingLinkedUser && !claimedProfile && (
 										<ElemButton
 											className="mt-2"
 											btn="primary"
