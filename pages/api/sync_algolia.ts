@@ -101,10 +101,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await peopleIndex.saveObjects(peopleList, { autoGenerateObjectIDIfNotExist: true });
 
         /** Find deleted people in actions table and remove them in index */
-      const deletedPeople = await queryForDeletedResources("people", companyLastSync.value);
-      peopleIndex.deleteObjects(deletedPeople.map((item: any) => item.resource_id));
+        const deletedPeople = await queryForDeletedResources("people", companyLastSync.value);
+        peopleIndex.deleteObjects(deletedPeople.map((item: any) => item.resource_id));
 
-      output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length - deletedPeople.length;
+        output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length - deletedPeople.length;
 
         // update the last_sync date to current date
         await mutateForlastSync('sync_people');
@@ -161,6 +161,7 @@ const queryForCompanyList = async (date: any) => {
     companies(
       where: {
         _and: [
+          {status: {_eq: "published"}},
           {updated_at: {_gte: $date}},
           {library: {_contains: "Web3"}}
         ]
@@ -198,6 +199,7 @@ const queryForVcFirmsList = async (date: any) => {
     vc_firms(
       where: {
         _and: [
+          {status: {_eq: "published"}},
           {updated_at: {_gte: $date}},
           {library: {_contains: "Web3"}}
         ]
@@ -228,6 +230,7 @@ const queryForPeopleList = async (date: any) => {
     people(
       where: {
         _and: [
+          {status: {_eq: "published"}},
           {updated_at: {_gte: $date}},
           {library: {_contains: "Web3"}}
         ]
