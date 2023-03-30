@@ -1,8 +1,9 @@
 import { useAuth } from "@/hooks/useAuth";
+import { useMemo } from "react";
 import { IconBell } from "@/components/Icons";
 import Link from "next/link";
-
 import { useGetNotificationsForUserQuery } from "@/graphql/types";
+import { filterExcludeNotifications } from "@/utils/notifications";
 
 export const NotificationAlerts = () => {
 	const { user } = useAuth();
@@ -10,7 +11,20 @@ export const NotificationAlerts = () => {
 	const { data } = useGetNotificationsForUserQuery({
 		user: user?.id || 0,
 	});
-	const notifications = data?.notifications.filter((item) => !item?.read);
+
+	const excludeProperties = useMemo(() => {
+		return ["status_tags"];
+	}, []);
+
+	const excludeResourceTypes = useMemo(() => {
+		return ["event_organization"];
+	}, []);
+
+	const notifications = filterExcludeNotifications(
+		data?.notifications || [],
+		excludeResourceTypes,
+		excludeProperties
+	).filter((item) => !item?.read);
 
 	const notificationsCount = notifications ? notifications.length : 0;
 
