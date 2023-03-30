@@ -1040,6 +1040,7 @@ export const eventTypeChoices = [
 	"Conference",
 	"Web3",
 	"Crypto",
+	"Awards",
 ].map((item) => ({ id: item, name: item }));
 
 export const timezoneChoices = [

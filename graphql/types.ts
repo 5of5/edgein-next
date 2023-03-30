@@ -20180,6 +20180,13 @@ export type GetUserProfileQueryVariables = Exact<{
 
 export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
 
+export type GetUserByPersonIdQueryVariables = Exact<{
+  person_id: Scalars['Int'];
+}>;
+
+
+export type GetUserByPersonIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null }> };
+
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -21355,6 +21362,104 @@ useGetUserProfileQuery.getKey = (variables: GetUserProfileQueryVariables) => ['G
 ;
 
 useGetUserProfileQuery.fetcher = (variables: GetUserProfileQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserProfileQuery, GetUserProfileQueryVariables>(GetUserProfileDocument, variables, options);
+export const GetUserByPersonIdDocument = `
+    query GetUserByPersonId($person_id: Int!) {
+  users(where: {person_id: {_eq: $person_id}}) {
+    id
+    billing_org_id
+    organization_companies {
+      id
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    organization_vc_firms {
+      id
+      vc_firm {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    person {
+      id
+      name
+      personal_email
+      picture
+      slug
+      status
+      type
+      work_email
+      linkedin
+      github
+      city
+      country
+      facebook_url
+      twitter_url
+      website_url
+      about
+      email
+      team_members {
+        id
+        end_date
+        start_date
+        founder
+        function
+        title
+        company {
+          id
+          slug
+          name
+          logo
+          overview
+          location
+        }
+      }
+      investments {
+        investment_round {
+          id
+          round_date
+          round
+          amount
+          company {
+            id
+            slug
+            name
+            logo
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetUserByPersonIdQuery = <
+      TData = GetUserByPersonIdQuery,
+      TError = Error
+    >(
+      variables: GetUserByPersonIdQueryVariables,
+      options?: UseQueryOptions<GetUserByPersonIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByPersonIdQuery, TError, TData>(
+      ['GetUserByPersonId', variables],
+      fetcher<GetUserByPersonIdQuery, GetUserByPersonIdQueryVariables>(GetUserByPersonIdDocument, variables),
+      options
+    );
+useGetUserByPersonIdQuery.document = GetUserByPersonIdDocument;
+
+
+useGetUserByPersonIdQuery.getKey = (variables: GetUserByPersonIdQueryVariables) => ['GetUserByPersonId', variables];
+;
+
+useGetUserByPersonIdQuery.fetcher = (variables: GetUserByPersonIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPersonIdQuery, GetUserByPersonIdQueryVariables>(GetUserByPersonIdDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
