@@ -19786,6 +19786,36 @@ export type GetListMembersQueryVariables = Exact<{
 
 export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
 
+export type GetListUserGroupsByListIdQueryVariables = Exact<{
+  listId: Scalars['Int'];
+}>;
+
+
+export type GetListUserGroupsByListIdQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number }> };
+
+export type InsertListUserGroupsMutationVariables = Exact<{
+  object: List_User_Groups_Insert_Input;
+}>;
+
+
+export type InsertListUserGroupsMutation = { __typename?: 'mutation_root', insert_list_user_groups_one: { __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number } | null };
+
+export type DeleteListUserGroupsByListIdAndGroupIdMutationVariables = Exact<{
+  list_id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type DeleteListUserGroupsByListIdAndGroupIdMutation = { __typename?: 'mutation_root', delete_list_user_groups: { __typename?: 'list_user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'list_user_groups', id: number }> } | null };
+
+export type GetListUserGroupsByListIdAndGroupIdQueryVariables = Exact<{
+  list_id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetListUserGroupsByListIdAndGroupIdQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number }> };
+
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
 }>;
@@ -21134,6 +21164,105 @@ useGetListMembersQuery.getKey = (variables: GetListMembersQueryVariables) => ['G
 ;
 
 useGetListMembersQuery.fetcher = (variables: GetListMembersQueryVariables, options?: RequestInit['headers']) => fetcher<GetListMembersQuery, GetListMembersQueryVariables>(GetListMembersDocument, variables, options);
+export const GetListUserGroupsByListIdDocument = `
+    query GetListUserGroupsByListId($listId: Int!) {
+  list_user_groups(where: {list_id: {_eq: $listId}}) {
+    id
+    list_id
+    user_group_id
+  }
+}
+    `;
+export const useGetListUserGroupsByListIdQuery = <
+      TData = GetListUserGroupsByListIdQuery,
+      TError = Error
+    >(
+      variables: GetListUserGroupsByListIdQueryVariables,
+      options?: UseQueryOptions<GetListUserGroupsByListIdQuery, TError, TData>
+    ) =>
+    useQuery<GetListUserGroupsByListIdQuery, TError, TData>(
+      ['GetListUserGroupsByListId', variables],
+      fetcher<GetListUserGroupsByListIdQuery, GetListUserGroupsByListIdQueryVariables>(GetListUserGroupsByListIdDocument, variables),
+      options
+    );
+useGetListUserGroupsByListIdQuery.document = GetListUserGroupsByListIdDocument;
+
+
+useGetListUserGroupsByListIdQuery.getKey = (variables: GetListUserGroupsByListIdQueryVariables) => ['GetListUserGroupsByListId', variables];
+;
+
+useGetListUserGroupsByListIdQuery.fetcher = (variables: GetListUserGroupsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsByListIdQuery, GetListUserGroupsByListIdQueryVariables>(GetListUserGroupsByListIdDocument, variables, options);
+export const InsertListUserGroupsDocument = `
+    mutation InsertListUserGroups($object: list_user_groups_insert_input!) {
+  insert_list_user_groups_one(object: $object) {
+    id
+    list_id
+    user_group_id
+  }
+}
+    `;
+export const useInsertListUserGroupsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertListUserGroupsMutation, TError, InsertListUserGroupsMutationVariables, TContext>) =>
+    useMutation<InsertListUserGroupsMutation, TError, InsertListUserGroupsMutationVariables, TContext>(
+      ['InsertListUserGroups'],
+      (variables?: InsertListUserGroupsMutationVariables) => fetcher<InsertListUserGroupsMutation, InsertListUserGroupsMutationVariables>(InsertListUserGroupsDocument, variables)(),
+      options
+    );
+useInsertListUserGroupsMutation.fetcher = (variables: InsertListUserGroupsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertListUserGroupsMutation, InsertListUserGroupsMutationVariables>(InsertListUserGroupsDocument, variables, options);
+export const DeleteListUserGroupsByListIdAndGroupIdDocument = `
+    mutation DeleteListUserGroupsByListIdAndGroupId($list_id: Int!, $user_group_id: Int!) {
+  delete_list_user_groups(
+    where: {_and: [{list_id: {_eq: $list_id}}, {user_group_id: {_eq: $user_group_id}}]}
+  ) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListUserGroupsByListIdAndGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListUserGroupsByListIdAndGroupIdMutation, TError, DeleteListUserGroupsByListIdAndGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteListUserGroupsByListIdAndGroupIdMutation, TError, DeleteListUserGroupsByListIdAndGroupIdMutationVariables, TContext>(
+      ['DeleteListUserGroupsByListIdAndGroupId'],
+      (variables?: DeleteListUserGroupsByListIdAndGroupIdMutationVariables) => fetcher<DeleteListUserGroupsByListIdAndGroupIdMutation, DeleteListUserGroupsByListIdAndGroupIdMutationVariables>(DeleteListUserGroupsByListIdAndGroupIdDocument, variables)(),
+      options
+    );
+useDeleteListUserGroupsByListIdAndGroupIdMutation.fetcher = (variables: DeleteListUserGroupsByListIdAndGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListUserGroupsByListIdAndGroupIdMutation, DeleteListUserGroupsByListIdAndGroupIdMutationVariables>(DeleteListUserGroupsByListIdAndGroupIdDocument, variables, options);
+export const GetListUserGroupsByListIdAndGroupIdDocument = `
+    query GetListUserGroupsByListIdAndGroupId($list_id: Int!, $user_group_id: Int!) {
+  list_user_groups(
+    where: {_and: [{list_id: {_eq: $list_id}}, {user_group_id: {_eq: $user_group_id}}]}
+  ) {
+    id
+    list_id
+    user_group_id
+  }
+}
+    `;
+export const useGetListUserGroupsByListIdAndGroupIdQuery = <
+      TData = GetListUserGroupsByListIdAndGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetListUserGroupsByListIdAndGroupIdQueryVariables,
+      options?: UseQueryOptions<GetListUserGroupsByListIdAndGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetListUserGroupsByListIdAndGroupIdQuery, TError, TData>(
+      ['GetListUserGroupsByListIdAndGroupId', variables],
+      fetcher<GetListUserGroupsByListIdAndGroupIdQuery, GetListUserGroupsByListIdAndGroupIdQueryVariables>(GetListUserGroupsByListIdAndGroupIdDocument, variables),
+      options
+    );
+useGetListUserGroupsByListIdAndGroupIdQuery.document = GetListUserGroupsByListIdAndGroupIdDocument;
+
+
+useGetListUserGroupsByListIdAndGroupIdQuery.getKey = (variables: GetListUserGroupsByListIdAndGroupIdQueryVariables) => ['GetListUserGroupsByListIdAndGroupId', variables];
+;
+
+useGetListUserGroupsByListIdAndGroupIdQuery.fetcher = (variables: GetListUserGroupsByListIdAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsByListIdAndGroupIdQuery, GetListUserGroupsByListIdAndGroupIdQueryVariables>(GetListUserGroupsByListIdAndGroupIdDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {

@@ -43,3 +43,56 @@ query GetListMembers($where: list_members_bool_exp!) {
     }
   }
 }
+
+query GetListUserGroupsByListId($listId: Int!) {
+  list_user_groups(where: { list_id: { _eq: $listId } }) {
+    id
+    list_id
+    user_group_id
+  }
+}
+
+mutation InsertListUserGroups($object: list_user_groups_insert_input!) {
+  insert_list_user_groups_one(object: $object) {
+    id
+    list_id
+    user_group_id
+  }
+}
+
+mutation DeleteListUserGroupsByListIdAndGroupId(
+  $list_id: Int!
+  $user_group_id: Int!
+) {
+  delete_list_user_groups(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        { user_group_id: { _eq: $user_group_id } }
+      ]
+    }
+  ) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+query GetListUserGroupsByListIdAndGroupId(
+  $list_id: Int!
+  $user_group_id: Int!
+) {
+  list_user_groups(
+    where: {
+      _and: [
+        { list_id: { _eq: $list_id } }
+        { user_group_id: { _eq: $user_group_id } }
+      ]
+    }
+  ) {
+    id
+    list_id
+    user_group_id
+  }
+}
