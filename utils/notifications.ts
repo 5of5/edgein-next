@@ -94,7 +94,7 @@ const getMessageContents = (
 		} else if (notificationResourceType === "investors") {
 			return "added new team members";
 		} else if (notificationResourceType === "event_organization") {
-			return "added a new event";
+			return "was added to event";
 		}
 		return "added new key info";
 	} else {
@@ -236,11 +236,32 @@ export const getNotificationChangedData = (
 			notification.notification_actions[0]?.action?.properties;
 
 		if (changedData) {
-			const field = Object.keys(changedData)[0];
+			let field = Object.keys(changedData)[0];
 			const value = Object.values(changedData)[0];
-	
+
+			if (field === "location_json") {
+				field = "location";
+			} else if (field === "investor_amount") {
+				field = "total funding raised";
+			} else if (
+				field === "glassdoor" ||
+				field === "twitter" ||
+				field === "facebook" ||
+				field === "discord" ||
+				field === "instagram"
+			) {
+				field = startCase(field);
+			} else if (field === "company_linkedin") {
+				field = "LinkedIn";
+			} else if (field === "youtube") {
+				field = "YouTube";
+			} else if (field === "investment_rounds") {
+				field = "something";
+			} else if (field === "velocity_linkedin" || field === "velocity_token") {
+				field = "velocity";
+			}
 			return {
-				message: `Updated ${startCase(field)}`, // to ${value}`,
+				message: `updated ${field.replace(/_/g, " ")}`, // ${startCase(field)} to ${value}`,
 				extensions: [],
 			};
 		}
@@ -281,28 +302,28 @@ export const insertNotificationAction = async (
 };
 
 export const filterExcludeNotifications = (
-  notifications: GetNotificationsForUserQuery["notifications"],
-  excludeProperties: string[]
+	notifications: GetNotificationsForUserQuery["notifications"],
+	excludeProperties: string[]
 ) => {
-  let results = notifications?.filter(
-    (item) =>
-      item.notification_actions.length > 1 ||
-      (item.notification_actions.length === 1 &&
-        !excludeProperties.includes(
-          Object.keys(item.notification_actions[0]?.action?.properties || {})[0]
-        ))
-  );
+	let results = notifications?.filter(
+		(item) =>
+			item.notification_actions.length > 1 ||
+			(item.notification_actions.length === 1 &&
+				!excludeProperties.includes(
+					Object.keys(item.notification_actions[0]?.action?.properties || {})[0]
+				))
+	);
 
-  results.forEach((item) => {
-    if (item.notification_actions.length > 1) {
-      item.notification_actions = item.notification_actions.filter(
-        (element) =>
-          !excludeProperties.includes(
-            Object.keys(element.action?.properties || {})[0]
-          )
-      );
-    }
-  });
+	results.forEach((item) => {
+		if (item.notification_actions.length > 1) {
+			item.notification_actions = item.notification_actions.filter(
+				(element) =>
+					!excludeProperties.includes(
+						Object.keys(element.action?.properties || {})[0]
+					)
+			);
+		}
+	});
 
-  return results;
+	return results;
 };

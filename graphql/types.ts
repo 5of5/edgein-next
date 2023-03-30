@@ -8411,6 +8411,7 @@ export type Lists = {
   name: Scalars['String'];
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
   /** An array relationship */
   user_groups: Array<List_User_Groups>;
   /** An aggregate relationship */
@@ -8548,6 +8549,7 @@ export type Lists_Bool_Exp = {
   list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
 };
 
@@ -8575,6 +8577,7 @@ export type Lists_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
   user_groups: InputMaybe<List_User_Groups_Arr_Rel_Insert_Input>;
 };
 
@@ -8585,6 +8588,7 @@ export type Lists_Max_Fields = {
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -8594,6 +8598,7 @@ export type Lists_Min_Fields = {
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "lists" */
@@ -8630,6 +8635,7 @@ export type Lists_Order_By = {
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Order_By>;
 };
 
@@ -8647,7 +8653,9 @@ export enum Lists_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Type = 'type'
 }
 
 /** input type for updating data in table "lists" */
@@ -8656,6 +8664,7 @@ export type Lists_Set_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -8695,7 +8704,9 @@ export enum Lists_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Type = 'type'
 }
 
 /** aggregate var_pop on columns */
@@ -13569,7 +13580,7 @@ export type Query_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
-   /** fetch data from the table: "reset_passwords" */
+  /** fetch data from the table: "reset_passwords" */
   reset_passwords: Array<Reset_Passwords>;
   /** fetch aggregated fields from the table: "reset_passwords" */
   reset_passwords_aggregate: Reset_Passwords_Aggregate;

@@ -19,7 +19,10 @@ import {
 	useGetNotificationsForUserQuery,
 } from "@/graphql/types";
 import { useIntercom } from "react-use-intercom";
-import { filterExcludeNotifications, getNotificationChangedData } from "@/utils/notifications";
+import {
+	filterExcludeNotifications,
+	getNotificationChangedData,
+} from "@/utils/notifications";
 
 const getLink = (
 	notification: GetNotificationsForUserQuery["notifications"][0]
@@ -32,19 +35,23 @@ const Notifications: NextPage = () => {
 	const { user } = useAuth();
 
 	const excludeProperties = useMemo(() => {
-		return ["status_tags"]
+		return ["status_tags", "event_organization"];
 	}, []);
 
 	const { data, refetch } = useGetNotificationsForUserQuery({
 		user: user?.id || 0,
 	});
-	const notifications = filterExcludeNotifications(data?.notifications || [], excludeProperties);
+	const notifications = filterExcludeNotifications(
+		data?.notifications || [],
+		excludeProperties
+	);
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		user?.entitlements.listsCount
-			? user?.entitlements.listsCount
-			: notifications?.length
+		notifications?.length
+		// user?.entitlements.listsCount
+		// 	? user?.entitlements.listsCount
+		// 	: notifications?.length
 	);
 
 	const [notificationsLimit, setNotificationsLimit] = useState(5);
