@@ -1,5 +1,5 @@
 query GetNotes($where: notes_bool_exp!) {
-  notes(where: $where, order_by: {created_at: asc}) {
+  notes(where: $where, order_by: { created_at: asc }) {
     id
     notes
     created_by
@@ -11,6 +11,75 @@ query GetNotes($where: notes_bool_exp!) {
     user_group {
       id
       name
+    }
+  }
+}
+
+query GetNoteById($id: Int!) {
+  notes(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+
+mutation DeleteNotesByGroupId($groupId: Int!) {
+  delete_notes(where: { user_group_id: { _eq: $groupId } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertNote($object: notes_insert_input!) {
+  insert_notes_one(object: $object) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateNote($id: Int!, $notes: String!) {
+  update_notes(where: { id: { _eq: $id } }, _set: { notes: $notes }) {
+    affected_rows
+    returning {
+      id
+      notes
+      created_by
+      created_at
+      resource_type
+      resource_id
+      user_group_id
+      user_group {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation DeleteNoteById($id: Int!) {
+  delete_notes(where: { id: { _eq: $id } }) {
+    affected_rows
+    returning {
+      id
     }
   }
 }

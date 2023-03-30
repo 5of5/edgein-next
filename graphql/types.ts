@@ -19693,13 +19693,6 @@ export type DeleteUserGroupMembersByGroupIdMutationVariables = Exact<{
 
 export type DeleteUserGroupMembersByGroupIdMutation = { __typename?: 'mutation_root', delete_user_group_members: { __typename?: 'user_group_members_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_members', id: number }> } | null };
 
-export type DeleteNotesByGroupIdMutationVariables = Exact<{
-  groupId: Scalars['Int'];
-}>;
-
-
-export type DeleteNotesByGroupIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
-
 export type GetUserGroupByIdQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -19734,13 +19727,6 @@ export type InsertUserGroupMembersMutationVariables = Exact<{
 
 
 export type InsertUserGroupMembersMutation = { __typename?: 'mutation_root', insert_user_group_members_one: { __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null }, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
-
-export type GetNoteByIdQueryVariables = Exact<{
-  id: Scalars['Int'];
-}>;
-
-
-export type GetNoteByIdQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
 
 export type GetUserGroupInvitesByEmailQueryVariables = Exact<{
   email: Scalars['String'];
@@ -19779,6 +19765,13 @@ export type DeleteUserGroupMemberByIdMutationVariables = Exact<{
 
 export type DeleteUserGroupMemberByIdMutation = { __typename?: 'mutation_root', delete_user_group_members: { __typename?: 'user_group_members_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_members', id: number }> } | null };
 
+export type InsertUserGroupInvitesMutationVariables = Exact<{
+  object: User_Group_Invites_Insert_Input;
+}>;
+
+
+export type InsertUserGroupInvitesMutation = { __typename?: 'mutation_root', insert_user_group_invites_one: { __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -19799,6 +19792,42 @@ export type GetNotesQueryVariables = Exact<{
 
 
 export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
+
+export type GetNoteByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetNoteByIdQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
+
+export type DeleteNotesByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteNotesByGroupIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
+
+export type InsertNoteMutationVariables = Exact<{
+  object: Notes_Insert_Input;
+}>;
+
+
+export type InsertNoteMutation = { __typename?: 'mutation_root', insert_notes_one: { __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
+
+export type UpdateNoteMutationVariables = Exact<{
+  id: Scalars['Int'];
+  notes: Scalars['String'];
+}>;
+
+
+export type UpdateNoteMutation = { __typename?: 'mutation_root', update_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } }> } | null };
+
+export type DeleteNoteByIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteNoteByIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
 
 export type GetNotificationsForUserQueryVariables = Exact<{
   user: Scalars['Int'];
@@ -20712,26 +20741,6 @@ export const useDeleteUserGroupMembersByGroupIdMutation = <
       options
     );
 useDeleteUserGroupMembersByGroupIdMutation.fetcher = (variables: DeleteUserGroupMembersByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMembersByGroupIdMutation, DeleteUserGroupMembersByGroupIdMutationVariables>(DeleteUserGroupMembersByGroupIdDocument, variables, options);
-export const DeleteNotesByGroupIdDocument = `
-    mutation DeleteNotesByGroupId($groupId: Int!) {
-  delete_notes(where: {user_group_id: {_eq: $groupId}}) {
-    affected_rows
-    returning {
-      id
-    }
-  }
-}
-    `;
-export const useDeleteNotesByGroupIdMutation = <
-      TError = Error,
-      TContext = unknown
-    >(options?: UseMutationOptions<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>) =>
-    useMutation<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>(
-      ['DeleteNotesByGroupId'],
-      (variables?: DeleteNotesByGroupIdMutationVariables) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables)(),
-      options
-    );
-useDeleteNotesByGroupIdMutation.fetcher = (variables: DeleteNotesByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables, options);
 export const GetUserGroupByIdDocument = `
     query GetUserGroupById($id: Int!) {
   user_groups(where: {id: {_eq: $id}}, limit: 1) {
@@ -20889,42 +20898,6 @@ export const useInsertUserGroupMembersMutation = <
       options
     );
 useInsertUserGroupMembersMutation.fetcher = (variables: InsertUserGroupMembersMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupMembersMutation, InsertUserGroupMembersMutationVariables>(InsertUserGroupMembersDocument, variables, options);
-export const GetNoteByIdDocument = `
-    query GetNoteById($id: Int!) {
-  notes(where: {id: {_eq: $id}}, limit: 1) {
-    id
-    notes
-    created_by
-    created_at
-    resource_type
-    resource_id
-    user_group_id
-    user_group {
-      id
-      name
-    }
-  }
-}
-    `;
-export const useGetNoteByIdQuery = <
-      TData = GetNoteByIdQuery,
-      TError = Error
-    >(
-      variables: GetNoteByIdQueryVariables,
-      options?: UseQueryOptions<GetNoteByIdQuery, TError, TData>
-    ) =>
-    useQuery<GetNoteByIdQuery, TError, TData>(
-      ['GetNoteById', variables],
-      fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables),
-      options
-    );
-useGetNoteByIdQuery.document = GetNoteByIdDocument;
-
-
-useGetNoteByIdQuery.getKey = (variables: GetNoteByIdQueryVariables) => ['GetNoteById', variables];
-;
-
-useGetNoteByIdQuery.fetcher = (variables: GetNoteByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables, options);
 export const GetUserGroupInvitesByEmailDocument = `
     query GetUserGroupInvitesByEmail($email: String!) {
   user_group_invites(where: {email: {_eq: $email}}) {
@@ -21055,6 +21028,26 @@ export const useDeleteUserGroupMemberByIdMutation = <
       options
     );
 useDeleteUserGroupMemberByIdMutation.fetcher = (variables: DeleteUserGroupMemberByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMemberByIdMutation, DeleteUserGroupMemberByIdMutationVariables>(DeleteUserGroupMemberByIdDocument, variables, options);
+export const InsertUserGroupInvitesDocument = `
+    mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
+  insert_user_group_invites_one(object: $object) {
+    id
+    email
+    user_group_id
+    created_by_user_id
+  }
+}
+    `;
+export const useInsertUserGroupInvitesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertUserGroupInvitesMutation, TError, InsertUserGroupInvitesMutationVariables, TContext>) =>
+    useMutation<InsertUserGroupInvitesMutation, TError, InsertUserGroupInvitesMutationVariables, TContext>(
+      ['InsertUserGroupInvites'],
+      (variables?: InsertUserGroupInvitesMutationVariables) => fetcher<InsertUserGroupInvitesMutation, InsertUserGroupInvitesMutationVariables>(InsertUserGroupInvitesDocument, variables)(),
+      options
+    );
+useInsertUserGroupInvitesMutation.fetcher = (variables: InsertUserGroupInvitesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupInvitesMutation, InsertUserGroupInvitesMutationVariables>(InsertUserGroupInvitesDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
@@ -21178,6 +21171,139 @@ useGetNotesQuery.getKey = (variables: GetNotesQueryVariables) => ['GetNotes', va
 ;
 
 useGetNotesQuery.fetcher = (variables: GetNotesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, variables, options);
+export const GetNoteByIdDocument = `
+    query GetNoteById($id: Int!) {
+  notes(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useGetNoteByIdQuery = <
+      TData = GetNoteByIdQuery,
+      TError = Error
+    >(
+      variables: GetNoteByIdQueryVariables,
+      options?: UseQueryOptions<GetNoteByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetNoteByIdQuery, TError, TData>(
+      ['GetNoteById', variables],
+      fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables),
+      options
+    );
+useGetNoteByIdQuery.document = GetNoteByIdDocument;
+
+
+useGetNoteByIdQuery.getKey = (variables: GetNoteByIdQueryVariables) => ['GetNoteById', variables];
+;
+
+useGetNoteByIdQuery.fetcher = (variables: GetNoteByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables, options);
+export const DeleteNotesByGroupIdDocument = `
+    mutation DeleteNotesByGroupId($groupId: Int!) {
+  delete_notes(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteNotesByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>(
+      ['DeleteNotesByGroupId'],
+      (variables?: DeleteNotesByGroupIdMutationVariables) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteNotesByGroupIdMutation.fetcher = (variables: DeleteNotesByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables, options);
+export const InsertNoteDocument = `
+    mutation InsertNote($object: notes_insert_input!) {
+  insert_notes_one(object: $object) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useInsertNoteMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertNoteMutation, TError, InsertNoteMutationVariables, TContext>) =>
+    useMutation<InsertNoteMutation, TError, InsertNoteMutationVariables, TContext>(
+      ['InsertNote'],
+      (variables?: InsertNoteMutationVariables) => fetcher<InsertNoteMutation, InsertNoteMutationVariables>(InsertNoteDocument, variables)(),
+      options
+    );
+useInsertNoteMutation.fetcher = (variables: InsertNoteMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNoteMutation, InsertNoteMutationVariables>(InsertNoteDocument, variables, options);
+export const UpdateNoteDocument = `
+    mutation UpdateNote($id: Int!, $notes: String!) {
+  update_notes(where: {id: {_eq: $id}}, _set: {notes: $notes}) {
+    affected_rows
+    returning {
+      id
+      notes
+      created_by
+      created_at
+      resource_type
+      resource_id
+      user_group_id
+      user_group {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const useUpdateNoteMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>) =>
+    useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
+      ['UpdateNote'],
+      (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(UpdateNoteDocument, variables)(),
+      options
+    );
+useUpdateNoteMutation.fetcher = (variables: UpdateNoteMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(UpdateNoteDocument, variables, options);
+export const DeleteNoteByIdDocument = `
+    mutation DeleteNoteById($id: Int!) {
+  delete_notes(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteNoteByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteNoteByIdMutation, TError, DeleteNoteByIdMutationVariables, TContext>) =>
+    useMutation<DeleteNoteByIdMutation, TError, DeleteNoteByIdMutationVariables, TContext>(
+      ['DeleteNoteById'],
+      (variables?: DeleteNoteByIdMutationVariables) => fetcher<DeleteNoteByIdMutation, DeleteNoteByIdMutationVariables>(DeleteNoteByIdDocument, variables)(),
+      options
+    );
+useDeleteNoteByIdMutation.fetcher = (variables: DeleteNoteByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNoteByIdMutation, DeleteNoteByIdMutationVariables>(DeleteNoteByIdDocument, variables, options);
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($user: Int!) {
   notifications(

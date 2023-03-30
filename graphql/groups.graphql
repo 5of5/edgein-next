@@ -131,15 +131,6 @@ mutation DeleteUserGroupMembersByGroupId($groupId: Int!) {
   }
 }
 
-mutation DeleteNotesByGroupId($groupId: Int!) {
-  delete_notes(where: { user_group_id: { _eq: $groupId } }) {
-    affected_rows
-    returning {
-      id
-    }
-  }
-}
-
 query GetUserGroupById($id: Int!) {
   user_groups(where: { id: { _eq: $id } }, limit: 1) {
     id
@@ -198,22 +189,6 @@ mutation InsertUserGroupMembers($object: user_group_members_insert_input!) {
         picture
       }
     }
-    user_group_id
-    user_group {
-      id
-      name
-    }
-  }
-}
-
-query GetNoteById($id: Int!) {
-  notes(where: { id: { _eq: $id } }, limit: 1) {
-    id
-    notes
-    created_by
-    created_at
-    resource_type
-    resource_id
     user_group_id
     user_group {
       id
@@ -283,5 +258,16 @@ mutation DeleteUserGroupMemberById($id: Int!) {
     returning {
       id
     }
+  }
+}
+
+mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
+  insert_user_group_invites_one(
+    object: $object
+  ) {
+    id
+    email
+    user_group_id
+    created_by_user_id
   }
 }
