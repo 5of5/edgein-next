@@ -168,7 +168,12 @@ export const ModalListDetails: FC<Props> = ({
 										<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
 											<button
 												className="flex justify-between w-full p-3 hover:bg-slate-100"
-												onClick={() => setListDeleteModal(true)}
+												onClick={() => {
+													setListDetailsModal(false);
+													setTimeout(() => {
+														setListDeleteModal(true);
+													}, 300);
+												}}
 											>
 												<div className="text-left text-rose-500">
 													<h3 className="flex items-center font-bold">
