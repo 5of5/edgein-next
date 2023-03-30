@@ -35,7 +35,11 @@ const Notifications: NextPage = () => {
 	const { user } = useAuth();
 
 	const excludeProperties = useMemo(() => {
-		return ["status_tags", "event_organization"];
+		return ["status_tags"];
+	}, []);
+
+	const excludeResourceTypes = useMemo(() => {
+		return ["event_organization"];
 	}, []);
 
 	const { data, refetch } = useGetNotificationsForUserQuery({
@@ -43,6 +47,7 @@ const Notifications: NextPage = () => {
 	});
 	const notifications = filterExcludeNotifications(
 		data?.notifications || [],
+		excludeResourceTypes,
 		excludeProperties
 	);
 
