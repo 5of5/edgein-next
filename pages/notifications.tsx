@@ -9,7 +9,6 @@ import {
 	IconExclamationTriangle,
 	IconChevronDownMini,
 } from "@/components/Icons";
-import { formatDate } from "@/utils";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { Disclosure, Popover, Transition } from "@headlessui/react";
 import moment from "moment-timezone";
@@ -116,9 +115,9 @@ const Notifications: NextPage = () => {
 
 							let userTimezone = moment.tz.guess();
 
-							// const notificationCreatedAt = moment(notification.created_at)
-							// 	.tz(userTimezone)
-							// 	.format("MMM D");
+							const notificationCreatedAt = moment(notification.created_at)
+								.tz(userTimezone)
+								.format("MMM D");
 
 							const notificationFromNow = moment(
 								notification.created_at
@@ -187,7 +186,7 @@ const Notifications: NextPage = () => {
 								<div
 									onClick={() => markAsRead(notification.id)}
 									className={`flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100 ${
-										notification.read ? "bg-transparent" : "bg-primary-100"
+										notification.read ? "bg-transparent" : "bg-slate-100"
 									}`}
 								>
 									<div className="flex items-center space-x-2 pr-20">
@@ -236,8 +235,10 @@ const Notifications: NextPage = () => {
 
 									<div className="flex items-center space-x-4">
 										<div
-											className={`w-2.5 h-2.5 shrink-0 rounded-full ${
-												notification.read ? "bg-transparent" : "bg-primary-500"
+											className={`w-3 h-3 rounded-full bg-gradient-to-r shrink-0 ${
+												notification.read
+													? "bg-transparent"
+													: "from-blue-800 via-primary-500 to-primary-400 "
 											}`}
 										></div>
 									</div>

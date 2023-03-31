@@ -88,7 +88,7 @@ const getMessageContents = (
 		if (notificationResourceType === "team_members") {
 			return "added new team members";
 		} else if (notificationResourceType === "investments") {
-			return "added new investments";
+			return "added new investor";
 		} else if (notificationResourceType === "investment_rounds") {
 			return "added new investment round";
 		} else if (notificationResourceType === "investors") {
@@ -307,16 +307,16 @@ export const filterExcludeNotifications = (
 	excludeProperties: string[]
 ) => {
 	let results = notifications?.filter(
-    (item) =>
-      !excludeResourceTypes.includes(item.notification_resource_type) &&
-      (item.notification_actions.length > 1 ||
-        (item.notification_actions.length === 1 &&
-          !excludeProperties.includes(
-            Object.keys(
-              item.notification_actions[0]?.action?.properties || {}
-            )[0]
-          )))
-  );
+		(item) =>
+			!excludeResourceTypes.includes(item.notification_resource_type) &&
+			(item.notification_actions.length > 1 ||
+				(item.notification_actions.length === 1 &&
+					!excludeProperties.includes(
+						Object.keys(
+							item.notification_actions[0]?.action?.properties || {}
+						)[0]
+					)))
+	);
 
 	results.forEach((item) => {
 		if (item.notification_actions.length > 1) {
