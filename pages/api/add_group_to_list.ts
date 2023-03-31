@@ -2,8 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import difference from "lodash/difference";
 import { query, mutate } from "@/graphql/hasuraAdmin";
 import {
-  DeleteListUserGroupsByListIdAndGroupIdDocument,
-  DeleteListUserGroupsByListIdAndGroupIdMutation,
+  DeleteListUserGroupsDocument,
+  DeleteListUserGroupsMutation,
   GetListUserGroupsByListIdDocument,
   GetListUserGroupsByListIdQuery,
   InsertListUserGroupsDocument,
@@ -68,11 +68,13 @@ const onAddListToGroup = async (list_id: number, user_group_id: number) => {
 const onDeleteListGroup = async (list_id: number, user_group_id: number) => {
   const {
     data: { delete_list_user_groups },
-  } = await mutate<DeleteListUserGroupsByListIdAndGroupIdMutation>({
-    mutation: DeleteListUserGroupsByListIdAndGroupIdDocument,
+  } = await mutate<DeleteListUserGroupsMutation>({
+    mutation: DeleteListUserGroupsDocument,
     variables: {
-      list_id,
-      user_group_id,
+      where: {
+        list_id: { _eq: list_id },
+        user_group_id: { _eq: user_group_id },
+      }
     },
   });
   return delete_list_user_groups?.returning[0];

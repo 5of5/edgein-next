@@ -19563,6 +19563,13 @@ export type Waitlist_Emails_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+export type InsertActionMutationVariables = Exact<{
+  object: Actions_Insert_Input;
+}>;
+
+
+export type InsertActionMutation = { __typename?: 'mutation_root', insert_actions_one: { __typename?: 'actions', id: number } | null };
+
 export type GetAllCoinsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -19605,6 +19612,21 @@ export type GetRelevantCompaniesQueryVariables = Exact<{
 
 export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, logo: any | null, name: string | null, slug: string, sentiment: any | null }> };
 
+export type GetSentimentByCompanyIdQueryVariables = Exact<{
+  companyId: Scalars['Int'];
+}>;
+
+
+export type GetSentimentByCompanyIdQuery = { __typename?: 'query_root', companies_by_pk: { __typename?: 'companies', sentiment: any | null, slug: string } | null };
+
+export type UpdateSentimentByCompanyIdMutationVariables = Exact<{
+  companyId: Scalars['Int'];
+  sentiment: Scalars['jsonb'];
+}>;
+
+
+export type UpdateSentimentByCompanyIdMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', sentiment: any | null } | null };
+
 export type GetEventsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -19642,6 +19664,30 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 
 
 export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: string | null, sentiment: any | null, logo: any | null, slug: string, location: string | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: string | null, round: string | null } | null }> } | null }> };
+
+export type UpsertFollowsMutationVariables = Exact<{
+  listId: InputMaybe<Scalars['Int']>;
+  resourceId: InputMaybe<Scalars['Int']>;
+  resourceType: InputMaybe<Scalars['String']>;
+  userId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertFollowsMutation = { __typename?: 'mutation_root', insert_follows_one: { __typename?: 'follows', id: number } | null };
+
+export type DeleteFollowsMutationVariables = Exact<{
+  where: Follows_Bool_Exp;
+}>;
+
+
+export type DeleteFollowsMutation = { __typename?: 'mutation_root', delete_follows: { __typename?: 'follows_mutation_response', returning: Array<{ __typename?: 'follows', id: number }> } | null };
+
+export type GetFollowByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetFollowByIdQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, created_by_user_id: number, resource_type: string, resource_id: number, list_id: number | null }> };
 
 export type GetGroupsOfUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -19800,14 +19846,6 @@ export type InsertListUserGroupsMutationVariables = Exact<{
 
 export type InsertListUserGroupsMutation = { __typename?: 'mutation_root', insert_list_user_groups_one: { __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number } | null };
 
-export type DeleteListUserGroupsByListIdAndGroupIdMutationVariables = Exact<{
-  list_id: Scalars['Int'];
-  user_group_id: Scalars['Int'];
-}>;
-
-
-export type DeleteListUserGroupsByListIdAndGroupIdMutation = { __typename?: 'mutation_root', delete_list_user_groups: { __typename?: 'list_user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'list_user_groups', id: number }> } | null };
-
 export type GetListUserGroupsByListIdAndGroupIdQueryVariables = Exact<{
   list_id: Scalars['Int'];
   user_group_id: Scalars['Int'];
@@ -19815,6 +19853,65 @@ export type GetListUserGroupsByListIdAndGroupIdQueryVariables = Exact<{
 
 
 export type GetListUserGroupsByListIdAndGroupIdQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number }> };
+
+export type UpsertListMutationVariables = Exact<{
+  userId: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpsertListMutation = { __typename?: 'mutation_root', insert_lists_one: { __typename?: 'lists', id: number } | null };
+
+export type UpsertMembershipMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  listId: Scalars['Int'];
+}>;
+
+
+export type UpsertMembershipMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number } | null };
+
+export type GetListByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetListByIdQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string }> };
+
+export type DeleteListMembersMutationVariables = Exact<{
+  where: List_Members_Bool_Exp;
+}>;
+
+
+export type DeleteListMembersMutation = { __typename?: 'mutation_root', delete_list_members: { __typename?: 'list_members_mutation_response', returning: Array<{ __typename?: 'list_members', id: number }> } | null };
+
+export type DeleteListsMutationVariables = Exact<{
+  where: Lists_Bool_Exp;
+}>;
+
+
+export type DeleteListsMutation = { __typename?: 'mutation_root', delete_lists: { __typename?: 'lists_mutation_response', returning: Array<{ __typename?: 'lists', id: number }> } | null };
+
+export type DeleteListUserGroupsMutationVariables = Exact<{
+  where: List_User_Groups_Bool_Exp;
+}>;
+
+
+export type DeleteListUserGroupsMutation = { __typename?: 'mutation_root', delete_list_user_groups: { __typename?: 'list_user_groups_mutation_response', returning: Array<{ __typename?: 'list_user_groups', id: number }> } | null };
+
+export type InsertListMembersMutationVariables = Exact<{
+  object: List_Members_Insert_Input;
+}>;
+
+
+export type InsertListMembersMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null };
+
+export type UpdateListNameByIdMutationVariables = Exact<{
+  listId: Scalars['Int'];
+  newname: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateListNameByIdMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number, name: string }> } | null };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -19939,7 +20036,39 @@ export type GetAllVcFirmsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
 
+export type GetSentimentByVcFirmIdQueryVariables = Exact<{
+  vcFirmId: Scalars['Int'];
+}>;
 
+
+export type GetSentimentByVcFirmIdQuery = { __typename?: 'query_root', vc_firms_by_pk: { __typename?: 'vc_firms', sentiment: any | null, slug: string } | null };
+
+export type UpdateSentimentByVcFirmIdMutationVariables = Exact<{
+  vcFirmId: Scalars['Int'];
+  sentiment: Scalars['jsonb'];
+}>;
+
+
+export type UpdateSentimentByVcFirmIdMutation = { __typename?: 'mutation_root', update_vc_firms_by_pk: { __typename?: 'vc_firms', sentiment: any | null } | null };
+
+
+export const InsertActionDocument = `
+    mutation InsertAction($object: actions_insert_input!) {
+  insert_actions_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertActionMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertActionMutation, TError, InsertActionMutationVariables, TContext>) =>
+    useMutation<InsertActionMutation, TError, InsertActionMutationVariables, TContext>(
+      ['InsertAction'],
+      (variables?: InsertActionMutationVariables) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables)(),
+      options
+    );
+useInsertActionMutation.fetcher = (variables: InsertActionMutationVariables, options?: RequestInit['headers']) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables, options);
 export const GetAllCoinsDocument = `
     query GetAllCoins {
   coins {
@@ -20271,6 +20400,53 @@ useGetRelevantCompaniesQuery.getKey = (variables: GetRelevantCompaniesQueryVaria
 ;
 
 useGetRelevantCompaniesQuery.fetcher = (variables: GetRelevantCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables, options);
+export const GetSentimentByCompanyIdDocument = `
+    query GetSentimentByCompanyId($companyId: Int!) {
+  companies_by_pk(id: $companyId) {
+    sentiment
+    slug
+  }
+}
+    `;
+export const useGetSentimentByCompanyIdQuery = <
+      TData = GetSentimentByCompanyIdQuery,
+      TError = Error
+    >(
+      variables: GetSentimentByCompanyIdQueryVariables,
+      options?: UseQueryOptions<GetSentimentByCompanyIdQuery, TError, TData>
+    ) =>
+    useQuery<GetSentimentByCompanyIdQuery, TError, TData>(
+      ['GetSentimentByCompanyId', variables],
+      fetcher<GetSentimentByCompanyIdQuery, GetSentimentByCompanyIdQueryVariables>(GetSentimentByCompanyIdDocument, variables),
+      options
+    );
+useGetSentimentByCompanyIdQuery.document = GetSentimentByCompanyIdDocument;
+
+
+useGetSentimentByCompanyIdQuery.getKey = (variables: GetSentimentByCompanyIdQueryVariables) => ['GetSentimentByCompanyId', variables];
+;
+
+useGetSentimentByCompanyIdQuery.fetcher = (variables: GetSentimentByCompanyIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetSentimentByCompanyIdQuery, GetSentimentByCompanyIdQueryVariables>(GetSentimentByCompanyIdDocument, variables, options);
+export const UpdateSentimentByCompanyIdDocument = `
+    mutation UpdateSentimentByCompanyId($companyId: Int!, $sentiment: jsonb!) {
+  update_companies_by_pk(
+    pk_columns: {id: $companyId}
+    _set: {sentiment: $sentiment}
+  ) {
+    sentiment
+  }
+}
+    `;
+export const useUpdateSentimentByCompanyIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateSentimentByCompanyIdMutation, TError, UpdateSentimentByCompanyIdMutationVariables, TContext>) =>
+    useMutation<UpdateSentimentByCompanyIdMutation, TError, UpdateSentimentByCompanyIdMutationVariables, TContext>(
+      ['UpdateSentimentByCompanyId'],
+      (variables?: UpdateSentimentByCompanyIdMutationVariables) => fetcher<UpdateSentimentByCompanyIdMutation, UpdateSentimentByCompanyIdMutationVariables>(UpdateSentimentByCompanyIdDocument, variables)(),
+      options
+    );
+useUpdateSentimentByCompanyIdMutation.fetcher = (variables: UpdateSentimentByCompanyIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByCompanyIdMutation, UpdateSentimentByCompanyIdMutationVariables>(UpdateSentimentByCompanyIdDocument, variables, options);
 export const GetEventsDocument = `
     query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
   events(
@@ -20543,6 +20719,75 @@ useGetVcFirmsByListIdQuery.getKey = (variables?: GetVcFirmsByListIdQueryVariable
 ;
 
 useGetVcFirmsByListIdQuery.fetcher = (variables?: GetVcFirmsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables, options);
+export const UpsertFollowsDocument = `
+    mutation UpsertFollows($listId: Int, $resourceId: Int, $resourceType: String, $userId: Int) {
+  insert_follows_one(
+    object: {list_id: $listId, resource_id: $resourceId, resource_type: $resourceType, created_by_user_id: $userId}
+    on_conflict: {constraint: follows_resource_type_resource_id_list_id_key}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpsertFollowsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertFollowsMutation, TError, UpsertFollowsMutationVariables, TContext>) =>
+    useMutation<UpsertFollowsMutation, TError, UpsertFollowsMutationVariables, TContext>(
+      ['UpsertFollows'],
+      (variables?: UpsertFollowsMutationVariables) => fetcher<UpsertFollowsMutation, UpsertFollowsMutationVariables>(UpsertFollowsDocument, variables)(),
+      options
+    );
+useUpsertFollowsMutation.fetcher = (variables?: UpsertFollowsMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertFollowsMutation, UpsertFollowsMutationVariables>(UpsertFollowsDocument, variables, options);
+export const DeleteFollowsDocument = `
+    mutation DeleteFollows($where: follows_bool_exp!) {
+  delete_follows(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteFollowsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteFollowsMutation, TError, DeleteFollowsMutationVariables, TContext>) =>
+    useMutation<DeleteFollowsMutation, TError, DeleteFollowsMutationVariables, TContext>(
+      ['DeleteFollows'],
+      (variables?: DeleteFollowsMutationVariables) => fetcher<DeleteFollowsMutation, DeleteFollowsMutationVariables>(DeleteFollowsDocument, variables)(),
+      options
+    );
+useDeleteFollowsMutation.fetcher = (variables: DeleteFollowsMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteFollowsMutation, DeleteFollowsMutationVariables>(DeleteFollowsDocument, variables, options);
+export const GetFollowByIdDocument = `
+    query GetFollowById($id: Int!) {
+  follows(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    created_by_user_id
+    resource_type
+    resource_id
+    list_id
+  }
+}
+    `;
+export const useGetFollowByIdQuery = <
+      TData = GetFollowByIdQuery,
+      TError = Error
+    >(
+      variables: GetFollowByIdQueryVariables,
+      options?: UseQueryOptions<GetFollowByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetFollowByIdQuery, TError, TData>(
+      ['GetFollowById', variables],
+      fetcher<GetFollowByIdQuery, GetFollowByIdQueryVariables>(GetFollowByIdDocument, variables),
+      options
+    );
+useGetFollowByIdQuery.document = GetFollowByIdDocument;
+
+
+useGetFollowByIdQuery.getKey = (variables: GetFollowByIdQueryVariables) => ['GetFollowById', variables];
+;
+
+useGetFollowByIdQuery.fetcher = (variables: GetFollowByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowByIdQuery, GetFollowByIdQueryVariables>(GetFollowByIdDocument, variables, options);
 export const GetGroupsOfUserDocument = `
     query GetGroupsOfUser($user_id: Int!) {
   user_group_members(where: {user_id: {_eq: $user_id}}) {
@@ -21211,28 +21456,6 @@ export const useInsertListUserGroupsMutation = <
       options
     );
 useInsertListUserGroupsMutation.fetcher = (variables: InsertListUserGroupsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertListUserGroupsMutation, InsertListUserGroupsMutationVariables>(InsertListUserGroupsDocument, variables, options);
-export const DeleteListUserGroupsByListIdAndGroupIdDocument = `
-    mutation DeleteListUserGroupsByListIdAndGroupId($list_id: Int!, $user_group_id: Int!) {
-  delete_list_user_groups(
-    where: {_and: [{list_id: {_eq: $list_id}}, {user_group_id: {_eq: $user_group_id}}]}
-  ) {
-    affected_rows
-    returning {
-      id
-    }
-  }
-}
-    `;
-export const useDeleteListUserGroupsByListIdAndGroupIdMutation = <
-      TError = Error,
-      TContext = unknown
-    >(options?: UseMutationOptions<DeleteListUserGroupsByListIdAndGroupIdMutation, TError, DeleteListUserGroupsByListIdAndGroupIdMutationVariables, TContext>) =>
-    useMutation<DeleteListUserGroupsByListIdAndGroupIdMutation, TError, DeleteListUserGroupsByListIdAndGroupIdMutationVariables, TContext>(
-      ['DeleteListUserGroupsByListIdAndGroupId'],
-      (variables?: DeleteListUserGroupsByListIdAndGroupIdMutationVariables) => fetcher<DeleteListUserGroupsByListIdAndGroupIdMutation, DeleteListUserGroupsByListIdAndGroupIdMutationVariables>(DeleteListUserGroupsByListIdAndGroupIdDocument, variables)(),
-      options
-    );
-useDeleteListUserGroupsByListIdAndGroupIdMutation.fetcher = (variables: DeleteListUserGroupsByListIdAndGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListUserGroupsByListIdAndGroupIdMutation, DeleteListUserGroupsByListIdAndGroupIdMutationVariables>(DeleteListUserGroupsByListIdAndGroupIdDocument, variables, options);
 export const GetListUserGroupsByListIdAndGroupIdDocument = `
     query GetListUserGroupsByListIdAndGroupId($list_id: Int!, $user_group_id: Int!) {
   list_user_groups(
@@ -21263,6 +21486,186 @@ useGetListUserGroupsByListIdAndGroupIdQuery.getKey = (variables: GetListUserGrou
 ;
 
 useGetListUserGroupsByListIdAndGroupIdQuery.fetcher = (variables: GetListUserGroupsByListIdAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsByListIdAndGroupIdQuery, GetListUserGroupsByListIdAndGroupIdQueryVariables>(GetListUserGroupsByListIdAndGroupIdDocument, variables, options);
+export const UpsertListDocument = `
+    mutation UpsertList($userId: Int, $name: String) {
+  insert_lists_one(
+    object: {created_by_id: $userId, name: $name}
+    on_conflict: {constraint: lists_created_by_id_name_key, update_columns: created_by_id}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpsertListMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertListMutation, TError, UpsertListMutationVariables, TContext>) =>
+    useMutation<UpsertListMutation, TError, UpsertListMutationVariables, TContext>(
+      ['UpsertList'],
+      (variables?: UpsertListMutationVariables) => fetcher<UpsertListMutation, UpsertListMutationVariables>(UpsertListDocument, variables)(),
+      options
+    );
+useUpsertListMutation.fetcher = (variables?: UpsertListMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertListMutation, UpsertListMutationVariables>(UpsertListDocument, variables, options);
+export const UpsertMembershipDocument = `
+    mutation UpsertMembership($userId: Int!, $listId: Int!) {
+  insert_list_members_one(
+    object: {user_id: $userId, list_id: $listId, member_type: "owner"}
+    on_conflict: {update_columns: user_id, constraint: list_members_list_id_user_id_key}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpsertMembershipMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertMembershipMutation, TError, UpsertMembershipMutationVariables, TContext>) =>
+    useMutation<UpsertMembershipMutation, TError, UpsertMembershipMutationVariables, TContext>(
+      ['UpsertMembership'],
+      (variables?: UpsertMembershipMutationVariables) => fetcher<UpsertMembershipMutation, UpsertMembershipMutationVariables>(UpsertMembershipDocument, variables)(),
+      options
+    );
+useUpsertMembershipMutation.fetcher = (variables: UpsertMembershipMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertMembershipMutation, UpsertMembershipMutationVariables>(UpsertMembershipDocument, variables, options);
+export const GetListByIdDocument = `
+    query GetListById($id: Int!) {
+  lists(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    name
+  }
+}
+    `;
+export const useGetListByIdQuery = <
+      TData = GetListByIdQuery,
+      TError = Error
+    >(
+      variables: GetListByIdQueryVariables,
+      options?: UseQueryOptions<GetListByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetListByIdQuery, TError, TData>(
+      ['GetListById', variables],
+      fetcher<GetListByIdQuery, GetListByIdQueryVariables>(GetListByIdDocument, variables),
+      options
+    );
+useGetListByIdQuery.document = GetListByIdDocument;
+
+
+useGetListByIdQuery.getKey = (variables: GetListByIdQueryVariables) => ['GetListById', variables];
+;
+
+useGetListByIdQuery.fetcher = (variables: GetListByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListByIdQuery, GetListByIdQueryVariables>(GetListByIdDocument, variables, options);
+export const DeleteListMembersDocument = `
+    mutation DeleteListMembers($where: list_members_bool_exp!) {
+  delete_list_members(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListMembersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListMembersMutation, TError, DeleteListMembersMutationVariables, TContext>) =>
+    useMutation<DeleteListMembersMutation, TError, DeleteListMembersMutationVariables, TContext>(
+      ['DeleteListMembers'],
+      (variables?: DeleteListMembersMutationVariables) => fetcher<DeleteListMembersMutation, DeleteListMembersMutationVariables>(DeleteListMembersDocument, variables)(),
+      options
+    );
+useDeleteListMembersMutation.fetcher = (variables: DeleteListMembersMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListMembersMutation, DeleteListMembersMutationVariables>(DeleteListMembersDocument, variables, options);
+export const DeleteListsDocument = `
+    mutation DeleteLists($where: lists_bool_exp!) {
+  delete_lists(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListsMutation, TError, DeleteListsMutationVariables, TContext>) =>
+    useMutation<DeleteListsMutation, TError, DeleteListsMutationVariables, TContext>(
+      ['DeleteLists'],
+      (variables?: DeleteListsMutationVariables) => fetcher<DeleteListsMutation, DeleteListsMutationVariables>(DeleteListsDocument, variables)(),
+      options
+    );
+useDeleteListsMutation.fetcher = (variables: DeleteListsMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListsMutation, DeleteListsMutationVariables>(DeleteListsDocument, variables, options);
+export const DeleteListUserGroupsDocument = `
+    mutation DeleteListUserGroups($where: list_user_groups_bool_exp!) {
+  delete_list_user_groups(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListUserGroupsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListUserGroupsMutation, TError, DeleteListUserGroupsMutationVariables, TContext>) =>
+    useMutation<DeleteListUserGroupsMutation, TError, DeleteListUserGroupsMutationVariables, TContext>(
+      ['DeleteListUserGroups'],
+      (variables?: DeleteListUserGroupsMutationVariables) => fetcher<DeleteListUserGroupsMutation, DeleteListUserGroupsMutationVariables>(DeleteListUserGroupsDocument, variables)(),
+      options
+    );
+useDeleteListUserGroupsMutation.fetcher = (variables: DeleteListUserGroupsMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListUserGroupsMutation, DeleteListUserGroupsMutationVariables>(DeleteListUserGroupsDocument, variables, options);
+export const InsertListMembersDocument = `
+    mutation InsertListMembers($object: list_members_insert_input!) {
+  insert_list_members_one(object: $object) {
+    id
+    member_type
+    list_id
+    list {
+      id
+      name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
+    }
+  }
+}
+    `;
+export const useInsertListMembersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertListMembersMutation, TError, InsertListMembersMutationVariables, TContext>) =>
+    useMutation<InsertListMembersMutation, TError, InsertListMembersMutationVariables, TContext>(
+      ['InsertListMembers'],
+      (variables?: InsertListMembersMutationVariables) => fetcher<InsertListMembersMutation, InsertListMembersMutationVariables>(InsertListMembersDocument, variables)(),
+      options
+    );
+useInsertListMembersMutation.fetcher = (variables: InsertListMembersMutationVariables, options?: RequestInit['headers']) => fetcher<InsertListMembersMutation, InsertListMembersMutationVariables>(InsertListMembersDocument, variables, options);
+export const UpdateListNameByIdDocument = `
+    mutation UpdateListNameById($listId: Int!, $newname: String) {
+  update_lists(where: {id: {_eq: $listId}}, _set: {name: $newname}) {
+    affected_rows
+    returning {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useUpdateListNameByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateListNameByIdMutation, TError, UpdateListNameByIdMutationVariables, TContext>) =>
+    useMutation<UpdateListNameByIdMutation, TError, UpdateListNameByIdMutationVariables, TContext>(
+      ['UpdateListNameById'],
+      (variables?: UpdateListNameByIdMutationVariables) => fetcher<UpdateListNameByIdMutation, UpdateListNameByIdMutationVariables>(UpdateListNameByIdDocument, variables)(),
+      options
+    );
+useUpdateListNameByIdMutation.fetcher = (variables: UpdateListNameByIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateListNameByIdMutation, UpdateListNameByIdMutationVariables>(UpdateListNameByIdDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {
@@ -22115,3 +22518,50 @@ useGetAllVcFirmsQuery.getKey = (variables?: GetAllVcFirmsQueryVariables) => vari
 ;
 
 useGetAllVcFirmsQuery.fetcher = (variables?: GetAllVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables, options);
+export const GetSentimentByVcFirmIdDocument = `
+    query GetSentimentByVcFirmId($vcFirmId: Int!) {
+  vc_firms_by_pk(id: $vcFirmId) {
+    sentiment
+    slug
+  }
+}
+    `;
+export const useGetSentimentByVcFirmIdQuery = <
+      TData = GetSentimentByVcFirmIdQuery,
+      TError = Error
+    >(
+      variables: GetSentimentByVcFirmIdQueryVariables,
+      options?: UseQueryOptions<GetSentimentByVcFirmIdQuery, TError, TData>
+    ) =>
+    useQuery<GetSentimentByVcFirmIdQuery, TError, TData>(
+      ['GetSentimentByVcFirmId', variables],
+      fetcher<GetSentimentByVcFirmIdQuery, GetSentimentByVcFirmIdQueryVariables>(GetSentimentByVcFirmIdDocument, variables),
+      options
+    );
+useGetSentimentByVcFirmIdQuery.document = GetSentimentByVcFirmIdDocument;
+
+
+useGetSentimentByVcFirmIdQuery.getKey = (variables: GetSentimentByVcFirmIdQueryVariables) => ['GetSentimentByVcFirmId', variables];
+;
+
+useGetSentimentByVcFirmIdQuery.fetcher = (variables: GetSentimentByVcFirmIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetSentimentByVcFirmIdQuery, GetSentimentByVcFirmIdQueryVariables>(GetSentimentByVcFirmIdDocument, variables, options);
+export const UpdateSentimentByVcFirmIdDocument = `
+    mutation UpdateSentimentByVcFirmId($vcFirmId: Int!, $sentiment: jsonb!) {
+  update_vc_firms_by_pk(
+    pk_columns: {id: $vcFirmId}
+    _set: {sentiment: $sentiment}
+  ) {
+    sentiment
+  }
+}
+    `;
+export const useUpdateSentimentByVcFirmIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateSentimentByVcFirmIdMutation, TError, UpdateSentimentByVcFirmIdMutationVariables, TContext>) =>
+    useMutation<UpdateSentimentByVcFirmIdMutation, TError, UpdateSentimentByVcFirmIdMutationVariables, TContext>(
+      ['UpdateSentimentByVcFirmId'],
+      (variables?: UpdateSentimentByVcFirmIdMutationVariables) => fetcher<UpdateSentimentByVcFirmIdMutation, UpdateSentimentByVcFirmIdMutationVariables>(UpdateSentimentByVcFirmIdDocument, variables)(),
+      options
+    );
+useUpdateSentimentByVcFirmIdMutation.fetcher = (variables: UpdateSentimentByVcFirmIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByVcFirmIdMutation, UpdateSentimentByVcFirmIdMutationVariables>(UpdateSentimentByVcFirmIdDocument, variables, options);

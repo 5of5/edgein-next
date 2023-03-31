@@ -60,25 +60,6 @@ mutation InsertListUserGroups($object: list_user_groups_insert_input!) {
   }
 }
 
-mutation DeleteListUserGroupsByListIdAndGroupId(
-  $list_id: Int!
-  $user_group_id: Int!
-) {
-  delete_list_user_groups(
-    where: {
-      _and: [
-        { list_id: { _eq: $list_id } }
-        { user_group_id: { _eq: $user_group_id } }
-      ]
-    }
-  ) {
-    affected_rows
-    returning {
-      id
-    }
-  }
-}
-
 query GetListUserGroupsByListIdAndGroupId(
   $list_id: Int!
   $user_group_id: Int!
@@ -96,3 +77,92 @@ query GetListUserGroupsByListIdAndGroupId(
     user_group_id
   }
 }
+
+mutation UpsertList($userId: Int, $name: String) {
+  insert_lists_one(
+    object: { created_by_id: $userId, name: $name }
+    on_conflict: {
+      constraint: lists_created_by_id_name_key
+      update_columns: created_by_id
+    }
+  ) {
+    id
+  }
+}
+
+mutation UpsertMembership($userId: Int!, $listId: Int!) {
+  insert_list_members_one(
+    object: { user_id: $userId, list_id: $listId, member_type: "owner" }
+    on_conflict: {
+      update_columns: user_id
+      constraint: list_members_list_id_user_id_key
+    }
+  ) {
+    id
+  }
+}
+
+query GetListById($id: Int!) {
+  lists(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    name
+  }
+}
+
+mutation DeleteListMembers($where: list_members_bool_exp!) {
+  delete_list_members(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation DeleteLists($where: lists_bool_exp!) {
+  delete_lists(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation DeleteListUserGroups($where: list_user_groups_bool_exp!) {
+  delete_list_user_groups(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertListMembers($object: list_members_insert_input!) {
+  insert_list_members_one(object: $object) {
+    id
+    member_type
+    list_id
+    list {
+      id
+      name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
+    }
+  }
+}
+
+ mutation UpdateListNameById($listId: Int!, $newname: String) {
+   update_lists(where: { id: { _eq: $listId } }, _set: { name: $newname }) {
+     affected_rows
+     returning {
+       id
+       name
+     }
+   }
+ }

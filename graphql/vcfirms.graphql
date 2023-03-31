@@ -173,3 +173,19 @@ query GetAllVCFirms {
 		slug
 	}
 }
+
+query GetSentimentByVcFirmId($vcFirmId: Int!) {
+  vc_firms_by_pk(id: $vcFirmId) {
+    sentiment
+    slug
+  }
+}
+
+mutation UpdateSentimentByVcFirmId($vcFirmId: Int!, $sentiment: jsonb!) {
+  update_vc_firms_by_pk(
+    pk_columns: { id: $vcFirmId }
+    _set: { sentiment: $sentiment }
+  ) {
+    sentiment
+  }
+}  

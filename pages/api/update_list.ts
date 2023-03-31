@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { mutate } from '@/graphql/hasuraAdmin'
 import CookieService from '../../utils/cookie'
+import { UpdateListNameByIdDocument, UpdateListNameByIdMutation } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "PUT") {
@@ -26,27 +27,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const mutateForlastSync = async (listId: string, newname: string) => {
-  // prepare gql query
-  const updateListName = `
-  mutation update_lists($listId: Int!, $newname: String) {
-    update_lists(
-      where: {id: {_eq: $listId}},
-      _set: { name: $newname }
-    ) {
-      affected_rows
-      returning {
-        id
-        name
-      }
-    }
-  }
-`
-try {
-  const mutateResult = await mutate({
-    mutation: updateListName,
-    variables:{ listId, newname }
-  });
-  return mutateResult.data.update_lists.returning[0]
+  try {
+    const mutateResult = await mutate<UpdateListNameByIdMutation>({
+      mutation: UpdateListNameByIdDocument,
+      variables:{ listId, newname }
+    });
+    return mutateResult.data.update_lists?.returning[0]
   } catch (e) {
     throw e
   }
