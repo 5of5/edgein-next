@@ -9,7 +9,9 @@ import {
   FormDataConsumer,
   useGetList,
   AutocompleteArrayInput,
+  useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 import {
   companyChoices,
   libraryChoices,
@@ -25,7 +27,6 @@ type VcFirmFormProps = {
   action: "create" | "edit";
   toolbar?: ReactElement | false;
   slugValidate?: any;
-  currentData?: any;
   onCheckScreenHeight: () => void;
   isImageUpdated: boolean;
   logo: any;
@@ -37,13 +38,19 @@ const VcFirmForm = ({
   action,
   toolbar,
   slugValidate,
-  currentData,
   onCheckScreenHeight,
   isImageUpdated,
   logo,
   onSelect,
   onDropRejected,
 }: VcFirmFormProps) => {
+  const { id } = useParams();
+  const { data: currentData } = useGetOne(
+    "vc_firms",
+    { id },
+    { enabled: !!id }
+  );
+
   const { data: vcFirm } = useGetList("vc_firms", {});
   const formRef = useRef<any>(null);
   const [isIcon, setIsIcon] = useState(action === "edit");
