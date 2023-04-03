@@ -188,7 +188,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 												kebabCase(getNameFromListName(list))
 											)}`}
 										>
-											<IconCustomList className="h-6 w-6" />
+											<IconCustomList className="h-6 w-6 shrink-0" />
 											<span>
 												{getNameFromListName(list)} (
 												{getCountForList(getNameFromListName(list))})

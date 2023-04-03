@@ -80,6 +80,9 @@ module.exports = {
         blue,
         transparent: 'transparent',
       },
+      padding: {
+        '18': '72px',
+      },
       spacing: {
         '88': '22rem',
         '112': '28rem'

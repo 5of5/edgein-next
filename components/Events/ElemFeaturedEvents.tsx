@@ -9,6 +9,7 @@ import {
 	useGetEventsQuery,
 } from "@/graphql/types";
 import { ElemEventCard } from "./ElemEventCard";
+import moment from "moment-timezone";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -35,6 +36,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
 			{
 				slug: { _neq: "" },
 				is_featured: { _eq: true },
+				//end_date: { _gte: moment().subtract(1, "days").format("YYYY-MM-DD") },
 			},
 		],
 	};

@@ -138,7 +138,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "companies",
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
 
@@ -148,7 +148,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "vc_firms",
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
 
@@ -160,7 +160,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "companies",
             resourceType,
             actionType,
-            [insertResult?.action?.id]
+            insertResult?.actions
           );
         }
 
@@ -169,7 +169,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "vc_firms",
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
 
@@ -180,7 +180,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "companies",
             resourceType,
             actionType,
-            [insertResult?.action?.id]
+            insertResult?.actions
           );
         }
         if (resourceObj?.vc_firm_id) {
@@ -189,7 +189,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "vc_firms",
             resourceType,
             actionType,
-            [insertResult?.action?.id]
+            insertResult?.actions
           );
         }
       }
@@ -202,7 +202,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           resourceType,
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
     }

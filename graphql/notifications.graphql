@@ -24,6 +24,14 @@ query GetNotificationsForUser($user: Int!) {
 			slug
 			logo
 		}
+		notification_actions {
+			id
+			action_id
+			action {
+				id
+				properties
+			}
+		}
 	}
 }
 
@@ -50,5 +58,11 @@ mutation MarkNotificationsAsRead($where: notifications_bool_exp!) {
     returning {
       id
     }
+  }
+}
+
+mutation InsertNotificationActions($object: notification_actions_insert_input!) {
+  insert_notification_actions_one(object: $object) {
+    id
   }
 }
