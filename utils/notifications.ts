@@ -1,5 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
-import { Follows } from "@/graphql/types";
+import { Follows, InsertNotificationsDocument, InsertNotificationsMutation } from "@/graphql/types";
 import { flatten, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
 import { getCompanyByRoundId } from "./submit-data";
@@ -26,31 +26,10 @@ export const insertNotification = async ({
 	vc_firm_id,
 	action_ids,
 }: NotificationParamType) => {
-	const insertNotificationQuery = `
-    mutation InsertNotifications($object: notifications_insert_input!) {
-      insert_notifications_one(
-        object: $object
-      ) {
-        id
-        target_user_id
-        event_type
-        follow_resource_type
-        notification_resource_type
-        company_id
-        vc_firm_id
-        message
-        read_at
-        created_at
-        updated_at
-        read
-      }
-    }
-  `;
-
 	const {
 		data: { insert_notifications_one },
-	} = await mutate({
-		mutation: insertNotificationQuery,
+	} = await mutate<InsertNotificationsMutation>({
+		mutation: InsertNotificationsDocument,
 		variables: {
 			object: {
 				target_user_id,

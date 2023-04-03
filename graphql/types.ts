@@ -19570,6 +19570,35 @@ export type InsertActionMutationVariables = Exact<{
 
 export type InsertActionMutation = { __typename?: 'mutation_root', insert_actions_one: { __typename?: 'actions', id: number } | null };
 
+export type GetDeleteDataActionsQueryVariables = Exact<{
+  resourceType: Scalars['String'];
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetDeleteDataActionsQuery = { __typename?: 'query_root', actions: Array<{ __typename?: 'actions', resource_id: number | null }> };
+
+export type GetLastSyncQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLastSyncQuery = { __typename?: 'query_root', application_meta: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> };
+
+export type UpdateApplicationMetaValueMutationVariables = Exact<{
+  value: InputMaybe<Scalars['timestamptz']>;
+  key: Scalars['String'];
+}>;
+
+
+export type UpdateApplicationMetaValueMutation = { __typename?: 'mutation_root', update_application_meta: { __typename?: 'application_meta_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> } | null };
+
+export type UpdateApplicationMetaErrorMutationVariables = Exact<{
+  error: InputMaybe<Scalars['String']>;
+  key: Scalars['String'];
+}>;
+
+
+export type UpdateApplicationMetaErrorMutation = { __typename?: 'mutation_root', update_application_meta: { __typename?: 'application_meta_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> } | null };
+
 export type GetAllCoinsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -19626,6 +19655,21 @@ export type UpdateSentimentByCompanyIdMutationVariables = Exact<{
 
 
 export type UpdateSentimentByCompanyIdMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', sentiment: any | null } | null };
+
+export type GetCompaniesByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetCompaniesByDateQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, overview: string | null, tags: any | null, logo: any | null, slug: string, aliases: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null }> };
+
+export type UpdateCompanyByPkMutationVariables = Exact<{
+  companyId: Scalars['Int'];
+  data: InputMaybe<Companies_Set_Input>;
+}>;
+
+
+export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
 
 export type GetEventsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -19818,6 +19862,20 @@ export type InsertUserGroupInvitesMutationVariables = Exact<{
 
 export type InsertUserGroupInvitesMutation = { __typename?: 'mutation_root', insert_user_group_invites_one: { __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null } | null };
 
+export type UpsertInvestmentRoundMutationVariables = Exact<{
+  data: Investment_Rounds_Insert_Input;
+}>;
+
+
+export type UpsertInvestmentRoundMutation = { __typename?: 'mutation_root', insert_investment_rounds_one: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, currency: string | null } | null };
+
+export type UpsertInvestmentsMutationVariables = Exact<{
+  data: Array<Investments_Insert_Input> | Investments_Insert_Input;
+}>;
+
+
+export type UpsertInvestmentsMutation = { __typename?: 'mutation_root', insert_investments: { __typename?: 'investments_mutation_response', returning: Array<{ __typename?: 'investments', id: number, round_id: number | null, person_id: number | null, vc_firm_id: number | null, amount: any | null }> } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -19963,6 +20021,20 @@ export type GetNotificationsForUserQueryVariables = Exact<{
 
 export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> };
 
+export type InsertNotificationsMutationVariables = Exact<{
+  object: Notifications_Insert_Input;
+}>;
+
+
+export type InsertNotificationsMutation = { __typename?: 'mutation_root', insert_notifications_one: { __typename?: 'notifications', id: number, target_user_id: number, event_type: string, follow_resource_type: string, notification_resource_type: string, company_id: number | null, vc_firm_id: number | null, message: string | null, read_at: any | null, created_at: any, updated_at: any, read: boolean } | null };
+
+export type MarkNotificationsAsReadMutationVariables = Exact<{
+  where: Notifications_Bool_Exp;
+}>;
+
+
+export type MarkNotificationsAsReadMutation = { __typename?: 'mutation_root', update_notifications: { __typename?: 'notifications_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notifications', id: number }> } | null };
+
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -19979,6 +20051,36 @@ export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetAllPersonsQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null }> };
+
+export type SearchPeopleQueryVariables = Exact<{
+  query: InputMaybe<Scalars['String']>;
+  searchText: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type SearchPeopleQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string } | null }> };
+
+export type GetPeopleByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetPeopleByDateQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, work_email: string | null, personal_email: string | null, picture: any | null, slug: string }> };
+
+export type UpdatePeopleByPkMutationVariables = Exact<{
+  set: InputMaybe<People_Set_Input>;
+  id: Scalars['Int'];
+}>;
+
+
+export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
+
+export type UpsertTeamMemberMutationVariables = Exact<{
+  data: Team_Members_Insert_Input;
+}>;
+
+
+export type UpsertTeamMemberMutation = { __typename?: 'mutation_root', insert_team_members_one: { __typename?: 'team_members', id: number, function: string | null, person_id: number | null, company_id: number | null, title: string | null, start_date: any | null, end_date: any | null, seniority: string | null } | null };
 
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -20051,6 +20153,13 @@ export type UpdateSentimentByVcFirmIdMutationVariables = Exact<{
 
 export type UpdateSentimentByVcFirmIdMutation = { __typename?: 'mutation_root', update_vc_firms_by_pk: { __typename?: 'vc_firms', sentiment: any | null } | null };
 
+export type GetVcFirmsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetVcFirmsByDateQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
+
 
 export const InsertActionDocument = `
     mutation InsertAction($object: actions_insert_input!) {
@@ -20069,6 +20178,111 @@ export const useInsertActionMutation = <
       options
     );
 useInsertActionMutation.fetcher = (variables: InsertActionMutationVariables, options?: RequestInit['headers']) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables, options);
+export const GetDeleteDataActionsDocument = `
+    query GetDeleteDataActions($resourceType: String!, $date: timestamptz) {
+  actions(
+    where: {_and: [{action: {_eq: "Delete Data"}}, {resource: {_eq: $resourceType}}, {created_at: {_gte: $date}}]}
+  ) {
+    resource_id
+  }
+}
+    `;
+export const useGetDeleteDataActionsQuery = <
+      TData = GetDeleteDataActionsQuery,
+      TError = Error
+    >(
+      variables: GetDeleteDataActionsQueryVariables,
+      options?: UseQueryOptions<GetDeleteDataActionsQuery, TError, TData>
+    ) =>
+    useQuery<GetDeleteDataActionsQuery, TError, TData>(
+      ['GetDeleteDataActions', variables],
+      fetcher<GetDeleteDataActionsQuery, GetDeleteDataActionsQueryVariables>(GetDeleteDataActionsDocument, variables),
+      options
+    );
+useGetDeleteDataActionsQuery.document = GetDeleteDataActionsDocument;
+
+
+useGetDeleteDataActionsQuery.getKey = (variables: GetDeleteDataActionsQueryVariables) => ['GetDeleteDataActions', variables];
+;
+
+useGetDeleteDataActionsQuery.fetcher = (variables: GetDeleteDataActionsQueryVariables, options?: RequestInit['headers']) => fetcher<GetDeleteDataActionsQuery, GetDeleteDataActionsQueryVariables>(GetDeleteDataActionsDocument, variables, options);
+export const GetLastSyncDocument = `
+    query GetLastSync {
+  application_meta(
+    where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}
+  ) {
+    id
+    key
+    value
+  }
+}
+    `;
+export const useGetLastSyncQuery = <
+      TData = GetLastSyncQuery,
+      TError = Error
+    >(
+      variables?: GetLastSyncQueryVariables,
+      options?: UseQueryOptions<GetLastSyncQuery, TError, TData>
+    ) =>
+    useQuery<GetLastSyncQuery, TError, TData>(
+      variables === undefined ? ['GetLastSync'] : ['GetLastSync', variables],
+      fetcher<GetLastSyncQuery, GetLastSyncQueryVariables>(GetLastSyncDocument, variables),
+      options
+    );
+useGetLastSyncQuery.document = GetLastSyncDocument;
+
+
+useGetLastSyncQuery.getKey = (variables?: GetLastSyncQueryVariables) => variables === undefined ? ['GetLastSync'] : ['GetLastSync', variables];
+;
+
+useGetLastSyncQuery.fetcher = (variables?: GetLastSyncQueryVariables, options?: RequestInit['headers']) => fetcher<GetLastSyncQuery, GetLastSyncQueryVariables>(GetLastSyncDocument, variables, options);
+export const UpdateApplicationMetaValueDocument = `
+    mutation UpdateApplicationMetaValue($value: timestamptz, $key: String!) {
+  update_application_meta(
+    where: {key: {_eq: $key}}
+    _set: {value: $value, error: ""}
+  ) {
+    affected_rows
+    returning {
+      id
+      key
+      value
+    }
+  }
+}
+    `;
+export const useUpdateApplicationMetaValueMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateApplicationMetaValueMutation, TError, UpdateApplicationMetaValueMutationVariables, TContext>) =>
+    useMutation<UpdateApplicationMetaValueMutation, TError, UpdateApplicationMetaValueMutationVariables, TContext>(
+      ['UpdateApplicationMetaValue'],
+      (variables?: UpdateApplicationMetaValueMutationVariables) => fetcher<UpdateApplicationMetaValueMutation, UpdateApplicationMetaValueMutationVariables>(UpdateApplicationMetaValueDocument, variables)(),
+      options
+    );
+useUpdateApplicationMetaValueMutation.fetcher = (variables: UpdateApplicationMetaValueMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateApplicationMetaValueMutation, UpdateApplicationMetaValueMutationVariables>(UpdateApplicationMetaValueDocument, variables, options);
+export const UpdateApplicationMetaErrorDocument = `
+    mutation UpdateApplicationMetaError($error: String, $key: String!) {
+  update_application_meta(where: {key: {_eq: $key}}, _set: {error: $error}) {
+    affected_rows
+    returning {
+      id
+      key
+      value
+    }
+  }
+}
+    `;
+export const useUpdateApplicationMetaErrorMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateApplicationMetaErrorMutation, TError, UpdateApplicationMetaErrorMutationVariables, TContext>) =>
+    useMutation<UpdateApplicationMetaErrorMutation, TError, UpdateApplicationMetaErrorMutationVariables, TContext>(
+      ['UpdateApplicationMetaError'],
+      (variables?: UpdateApplicationMetaErrorMutationVariables) => fetcher<UpdateApplicationMetaErrorMutation, UpdateApplicationMetaErrorMutationVariables>(UpdateApplicationMetaErrorDocument, variables)(),
+      options
+    );
+useUpdateApplicationMetaErrorMutation.fetcher = (variables: UpdateApplicationMetaErrorMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateApplicationMetaErrorMutation, UpdateApplicationMetaErrorMutationVariables>(UpdateApplicationMetaErrorDocument, variables, options);
 export const GetAllCoinsDocument = `
     query GetAllCoins {
   coins {
@@ -20447,6 +20661,61 @@ export const useUpdateSentimentByCompanyIdMutation = <
       options
     );
 useUpdateSentimentByCompanyIdMutation.fetcher = (variables: UpdateSentimentByCompanyIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByCompanyIdMutation, UpdateSentimentByCompanyIdMutationVariables>(UpdateSentimentByCompanyIdDocument, variables, options);
+export const GetCompaniesByDateDocument = `
+    query GetCompaniesByDate($date: timestamptz) {
+  companies(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+  ) {
+    id
+    name
+    overview
+    tags
+    logo
+    slug
+    aliases
+    coin {
+      ticker
+      name
+    }
+  }
+}
+    `;
+export const useGetCompaniesByDateQuery = <
+      TData = GetCompaniesByDateQuery,
+      TError = Error
+    >(
+      variables?: GetCompaniesByDateQueryVariables,
+      options?: UseQueryOptions<GetCompaniesByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetCompaniesByDateQuery, TError, TData>(
+      variables === undefined ? ['GetCompaniesByDate'] : ['GetCompaniesByDate', variables],
+      fetcher<GetCompaniesByDateQuery, GetCompaniesByDateQueryVariables>(GetCompaniesByDateDocument, variables),
+      options
+    );
+useGetCompaniesByDateQuery.document = GetCompaniesByDateDocument;
+
+
+useGetCompaniesByDateQuery.getKey = (variables?: GetCompaniesByDateQueryVariables) => variables === undefined ? ['GetCompaniesByDate'] : ['GetCompaniesByDate', variables];
+;
+
+useGetCompaniesByDateQuery.fetcher = (variables?: GetCompaniesByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByDateQuery, GetCompaniesByDateQueryVariables>(GetCompaniesByDateDocument, variables, options);
+export const UpdateCompanyByPkDocument = `
+    mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
+  update_companies_by_pk(pk_columns: {id: $companyId}, _set: $data) {
+    id
+  }
+}
+    `;
+export const useUpdateCompanyByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateCompanyByPkMutation, TError, UpdateCompanyByPkMutationVariables, TContext>) =>
+    useMutation<UpdateCompanyByPkMutation, TError, UpdateCompanyByPkMutationVariables, TContext>(
+      ['UpdateCompanyByPk'],
+      (variables?: UpdateCompanyByPkMutationVariables) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables)(),
+      options
+    );
+useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
 export const GetEventsDocument = `
     query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
   events(
@@ -21323,6 +21592,57 @@ export const useInsertUserGroupInvitesMutation = <
       options
     );
 useInsertUserGroupInvitesMutation.fetcher = (variables: InsertUserGroupInvitesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupInvitesMutation, InsertUserGroupInvitesMutationVariables>(InsertUserGroupInvitesDocument, variables, options);
+export const UpsertInvestmentRoundDocument = `
+    mutation UpsertInvestmentRound($data: investment_rounds_insert_input!) {
+  insert_investment_rounds_one(
+    object: $data
+    on_conflict: {constraint: investment_rounds_pkey, update_columns: [round_date, round, amount, valuation, currency]}
+  ) {
+    id
+    round_date
+    round
+    amount
+    valuation
+    currency
+  }
+}
+    `;
+export const useUpsertInvestmentRoundMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertInvestmentRoundMutation, TError, UpsertInvestmentRoundMutationVariables, TContext>) =>
+    useMutation<UpsertInvestmentRoundMutation, TError, UpsertInvestmentRoundMutationVariables, TContext>(
+      ['UpsertInvestmentRound'],
+      (variables?: UpsertInvestmentRoundMutationVariables) => fetcher<UpsertInvestmentRoundMutation, UpsertInvestmentRoundMutationVariables>(UpsertInvestmentRoundDocument, variables)(),
+      options
+    );
+useUpsertInvestmentRoundMutation.fetcher = (variables: UpsertInvestmentRoundMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentRoundMutation, UpsertInvestmentRoundMutationVariables>(UpsertInvestmentRoundDocument, variables, options);
+export const UpsertInvestmentsDocument = `
+    mutation UpsertInvestments($data: [investments_insert_input!]!) {
+  insert_investments(
+    objects: $data
+    on_conflict: {constraint: investments_pkey, update_columns: [amount]}
+  ) {
+    returning {
+      id
+      round_id
+      person_id
+      vc_firm_id
+      amount
+    }
+  }
+}
+    `;
+export const useUpsertInvestmentsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertInvestmentsMutation, TError, UpsertInvestmentsMutationVariables, TContext>) =>
+    useMutation<UpsertInvestmentsMutation, TError, UpsertInvestmentsMutationVariables, TContext>(
+      ['UpsertInvestments'],
+      (variables?: UpsertInvestmentsMutationVariables) => fetcher<UpsertInvestmentsMutation, UpsertInvestmentsMutationVariables>(UpsertInvestmentsDocument, variables)(),
+      options
+    );
+useUpsertInvestmentsMutation.fetcher = (variables: UpsertInvestmentsMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentsMutation, UpsertInvestmentsMutationVariables>(UpsertInvestmentsDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
@@ -21885,6 +22205,54 @@ useGetNotificationsForUserQuery.getKey = (variables: GetNotificationsForUserQuer
 ;
 
 useGetNotificationsForUserQuery.fetcher = (variables: GetNotificationsForUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotificationsForUserQuery, GetNotificationsForUserQueryVariables>(GetNotificationsForUserDocument, variables, options);
+export const InsertNotificationsDocument = `
+    mutation InsertNotifications($object: notifications_insert_input!) {
+  insert_notifications_one(object: $object) {
+    id
+    target_user_id
+    event_type
+    follow_resource_type
+    notification_resource_type
+    company_id
+    vc_firm_id
+    message
+    read_at
+    created_at
+    updated_at
+    read
+  }
+}
+    `;
+export const useInsertNotificationsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertNotificationsMutation, TError, InsertNotificationsMutationVariables, TContext>) =>
+    useMutation<InsertNotificationsMutation, TError, InsertNotificationsMutationVariables, TContext>(
+      ['InsertNotifications'],
+      (variables?: InsertNotificationsMutationVariables) => fetcher<InsertNotificationsMutation, InsertNotificationsMutationVariables>(InsertNotificationsDocument, variables)(),
+      options
+    );
+useInsertNotificationsMutation.fetcher = (variables: InsertNotificationsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationsMutation, InsertNotificationsMutationVariables>(InsertNotificationsDocument, variables, options);
+export const MarkNotificationsAsReadDocument = `
+    mutation MarkNotificationsAsRead($where: notifications_bool_exp!) {
+  update_notifications(where: $where, _set: {read: true}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useMarkNotificationsAsReadMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<MarkNotificationsAsReadMutation, TError, MarkNotificationsAsReadMutationVariables, TContext>) =>
+    useMutation<MarkNotificationsAsReadMutation, TError, MarkNotificationsAsReadMutationVariables, TContext>(
+      ['MarkNotificationsAsRead'],
+      (variables?: MarkNotificationsAsReadMutationVariables) => fetcher<MarkNotificationsAsReadMutation, MarkNotificationsAsReadMutationVariables>(MarkNotificationsAsReadDocument, variables)(),
+      options
+    );
+useMarkNotificationsAsReadMutation.fetcher = (variables: MarkNotificationsAsReadMutationVariables, options?: RequestInit['headers']) => fetcher<MarkNotificationsAsReadMutation, MarkNotificationsAsReadMutationVariables>(MarkNotificationsAsReadDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
@@ -22030,6 +22398,164 @@ useGetAllPersonsQuery.getKey = (variables?: GetAllPersonsQueryVariables) => vari
 ;
 
 useGetAllPersonsQuery.fetcher = (variables?: GetAllPersonsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, variables, options);
+export const SearchPeopleDocument = `
+    query SearchPeople($query: String, $searchText: jsonb) {
+  users(
+    where: {_or: [{email: {_ilike: $query}}, {additional_emails: {_contains: $searchText}}, {person: {_or: [{name: {_ilike: $query}}, {work_email: {_ilike: $query}}, {personal_email: {_ilike: $query}}]}}]}
+    limit: 50
+  ) {
+    id
+    display_name
+    email
+    person {
+      id
+      name
+      picture
+      slug
+    }
+  }
+}
+    `;
+export const useSearchPeopleQuery = <
+      TData = SearchPeopleQuery,
+      TError = Error
+    >(
+      variables?: SearchPeopleQueryVariables,
+      options?: UseQueryOptions<SearchPeopleQuery, TError, TData>
+    ) =>
+    useQuery<SearchPeopleQuery, TError, TData>(
+      variables === undefined ? ['SearchPeople'] : ['SearchPeople', variables],
+      fetcher<SearchPeopleQuery, SearchPeopleQueryVariables>(SearchPeopleDocument, variables),
+      options
+    );
+useSearchPeopleQuery.document = SearchPeopleDocument;
+
+
+useSearchPeopleQuery.getKey = (variables?: SearchPeopleQueryVariables) => variables === undefined ? ['SearchPeople'] : ['SearchPeople', variables];
+;
+
+useSearchPeopleQuery.fetcher = (variables?: SearchPeopleQueryVariables, options?: RequestInit['headers']) => fetcher<SearchPeopleQuery, SearchPeopleQueryVariables>(SearchPeopleDocument, variables, options);
+export const GetPeopleByDateDocument = `
+    query GetPeopleByDate($date: timestamptz) {
+  people(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+  ) {
+    id
+    name
+    work_email
+    personal_email
+    picture
+    slug
+  }
+}
+    `;
+export const useGetPeopleByDateQuery = <
+      TData = GetPeopleByDateQuery,
+      TError = Error
+    >(
+      variables?: GetPeopleByDateQueryVariables,
+      options?: UseQueryOptions<GetPeopleByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetPeopleByDateQuery, TError, TData>(
+      variables === undefined ? ['GetPeopleByDate'] : ['GetPeopleByDate', variables],
+      fetcher<GetPeopleByDateQuery, GetPeopleByDateQueryVariables>(GetPeopleByDateDocument, variables),
+      options
+    );
+useGetPeopleByDateQuery.document = GetPeopleByDateDocument;
+
+
+useGetPeopleByDateQuery.getKey = (variables?: GetPeopleByDateQueryVariables) => variables === undefined ? ['GetPeopleByDate'] : ['GetPeopleByDate', variables];
+;
+
+useGetPeopleByDateQuery.fetcher = (variables?: GetPeopleByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByDateQuery, GetPeopleByDateQueryVariables>(GetPeopleByDateDocument, variables, options);
+export const UpdatePeopleByPkDocument = `
+    mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
+  update_people_by_pk(_set: $set, pk_columns: {id: $id}) {
+    id
+    name
+    personal_email
+    picture
+    slug
+    status
+    type
+    work_email
+    linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    about
+    email
+    team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+      }
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+        }
+      }
+    }
+  }
+}
+    `;
+export const useUpdatePeopleByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdatePeopleByPkMutation, TError, UpdatePeopleByPkMutationVariables, TContext>) =>
+    useMutation<UpdatePeopleByPkMutation, TError, UpdatePeopleByPkMutationVariables, TContext>(
+      ['UpdatePeopleByPk'],
+      (variables?: UpdatePeopleByPkMutationVariables) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables)(),
+      options
+    );
+useUpdatePeopleByPkMutation.fetcher = (variables: UpdatePeopleByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables, options);
+export const UpsertTeamMemberDocument = `
+    mutation UpsertTeamMember($data: team_members_insert_input!) {
+  insert_team_members_one(
+    object: $data
+    on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: [function, title, founder, start_date, end_date]}
+  ) {
+    id
+    function
+    person_id
+    company_id
+    title
+    start_date
+    end_date
+    seniority
+  }
+}
+    `;
+export const useUpsertTeamMemberMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertTeamMemberMutation, TError, UpsertTeamMemberMutationVariables, TContext>) =>
+    useMutation<UpsertTeamMemberMutation, TError, UpsertTeamMemberMutationVariables, TContext>(
+      ['UpsertTeamMember'],
+      (variables?: UpsertTeamMemberMutationVariables) => fetcher<UpsertTeamMemberMutation, UpsertTeamMemberMutationVariables>(UpsertTeamMemberDocument, variables)(),
+      options
+    );
+useUpsertTeamMemberMutation.fetcher = (variables: UpsertTeamMemberMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertTeamMemberMutation, UpsertTeamMemberMutationVariables>(UpsertTeamMemberDocument, variables, options);
 export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
@@ -22565,3 +23091,34 @@ export const useUpdateSentimentByVcFirmIdMutation = <
       options
     );
 useUpdateSentimentByVcFirmIdMutation.fetcher = (variables: UpdateSentimentByVcFirmIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByVcFirmIdMutation, UpdateSentimentByVcFirmIdMutationVariables>(UpdateSentimentByVcFirmIdDocument, variables, options);
+export const GetVcFirmsByDateDocument = `
+    query GetVcFirmsByDate($date: timestamptz) {
+  vc_firms(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+  ) {
+    id
+    name
+    logo
+    slug
+  }
+}
+    `;
+export const useGetVcFirmsByDateQuery = <
+      TData = GetVcFirmsByDateQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsByDateQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsByDateQuery, TError, TData>(
+      variables === undefined ? ['GetVcFirmsByDate'] : ['GetVcFirmsByDate', variables],
+      fetcher<GetVcFirmsByDateQuery, GetVcFirmsByDateQueryVariables>(GetVcFirmsByDateDocument, variables),
+      options
+    );
+useGetVcFirmsByDateQuery.document = GetVcFirmsByDateDocument;
+
+
+useGetVcFirmsByDateQuery.getKey = (variables?: GetVcFirmsByDateQueryVariables) => variables === undefined ? ['GetVcFirmsByDate'] : ['GetVcFirmsByDate', variables];
+;
+
+useGetVcFirmsByDateQuery.fetcher = (variables?: GetVcFirmsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByDateQuery, GetVcFirmsByDateQueryVariables>(GetVcFirmsByDateDocument, variables, options);

@@ -3,3 +3,17 @@ mutation InsertAction($object: actions_insert_input!) {
     id
   }
 }
+
+query GetDeleteDataActions($resourceType: String!, $date: timestamptz) {
+  actions(
+    where: {
+      _and: [
+        { action: { _eq: "Delete Data" } }
+        { resource: { _eq: $resourceType } }
+        { created_at: { _gte: $date } }
+      ]
+    }
+  ) {
+    resource_id
+  }
+}
