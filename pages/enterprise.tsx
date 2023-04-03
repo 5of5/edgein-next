@@ -1,12 +1,13 @@
 import type { NextPage } from "next";
 import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { ElemButton } from "@/components/ElemButton";
 import {
 	FigureBlurredCircle,
 	FigureBlurredRectangle,
 } from "@/components/Figures";
 import { FigureDash } from "@/components/Figures";
-import Image from "next/image";
 import { Transition } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
 import { Popups } from "@/components/TheNavbar";
@@ -20,6 +21,34 @@ type Props = {
 
 const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 	const { user } = useUser();
+
+	const partners = [
+		{
+			title: "Akkadian",
+			image: "/images/akkadian.png",
+			link: "/investors/akkadian-ventures/",
+		},
+		{
+			title: "Shima",
+			image: "/images/shima.png",
+			link: "/investors/shima/",
+		},
+		{
+			title: "Fireblocks",
+			image: "/images/fireblocks.png",
+			link: "/companies/fireblocks/",
+		},
+		{
+			title: "Tokentag",
+			image: "/images/tokentag.png",
+			link: "/companies/tokentag/",
+		},
+		{
+			title: "4k",
+			image: "/images/4k.png",
+			link: "/companies/4k/",
+		},
+	];
 
 	return (
 		<>
@@ -166,6 +195,28 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 								</ElemButton>
 							</div>
 							<figure className="absolute -bottom-72 -left-24 w-96 h-96 bg-[#F72784] rounded-full blur-3xl z-0 opacity-70"></figure>
+						</div>
+					</div>
+				</section>
+
+				<section className="">
+					<div className="max-w-5xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+						<h3 className="text-2xl font-bold text-center mt-2 lg:mt-0">
+							Current ecosystem partners
+						</h3>
+						<div className="grid grid-cols-2 mt-6 md:w-full sm:grid-cols-5 gap-10">
+							{partners.map((item: any) => (
+								<div
+									key={item.title}
+									className="flex items-center justify-center"
+								>
+									<Link href={item.link}>
+										<a className="block">
+											{item.image && <img src={item.image} alt={item.title} />}
+										</a>
+									</Link>
+								</div>
+							))}
 						</div>
 					</div>
 				</section>
