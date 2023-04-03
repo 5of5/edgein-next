@@ -1,6 +1,6 @@
 import { mutate } from "@/graphql/hasuraAdmin";
-import { Follows } from "@/graphql/types";
-import { flatten, unionBy } from "lodash";
+import { Follows, GetNotificationsForUserQuery } from "@/graphql/types";
+import { flatten, startCase, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
 import { getCompanyByRoundId } from "./submit-data";
 import { ActionType, ResourceTypes } from "@/utils/constants";
@@ -73,39 +73,39 @@ const getMessageContents = (
 ) => {
 	if (actionType === "Change Data") {
 		if (notificationResourceType === "team_members") {
-			return "updated team information";
+			return "updated team info";
 		} else if (notificationResourceType === "investments") {
 			return "updated investments data";
 		} else if (notificationResourceType === "investment_rounds") {
 			return "updated investment round";
 		} else if (notificationResourceType === "investors") {
-			return "updated team information";
+			return "updated team info";
 		} else if (notificationResourceType === "event_organization") {
-			return "updated event information";
+			return "updated event info";
 		}
 		return "updated key info";
 	} else if (actionType === "Insert Data") {
 		if (notificationResourceType === "team_members") {
-			return "added new team information";
+			return "added new team members";
 		} else if (notificationResourceType === "investments") {
-			return "added new investments data";
+			return "added new investor";
 		} else if (notificationResourceType === "investment_rounds") {
-			return "added a new investment round";
+			return "added new investment round";
 		} else if (notificationResourceType === "investors") {
-			return "added new team information";
+			return "added new team members";
 		} else if (notificationResourceType === "event_organization") {
-			return "added a new event";
+			return "was added to event";
 		}
 		return "added new key info";
 	} else {
 		if (notificationResourceType === "team_members") {
-			return "deleted a team information";
+			return "deleted a team info";
 		} else if (notificationResourceType === "investments") {
 			return "deleted an investments data";
 		} else if (notificationResourceType === "investment_rounds") {
 			return "deleted an investment round";
 		} else if (notificationResourceType === "investors") {
-			return "deleted a team information";
+			return "deleted a team info";
 		} else if (notificationResourceType === "companies") {
 			return "deleted a company";
 		} else if (notificationResourceType === "vc_firms") {
@@ -135,8 +135,8 @@ export const processNotification = async (
 		targetUsers = unionBy(flatten(targetUsers), "user_id");
 		await Promise.all(
 			targetUsers.map(async (targetUser: any) => {
-				if (targetUser?.user_id)
-					insertNotification({
+				if (targetUser?.user_id) {
+					const notificationResponse = await insertNotification({
 						target_user_id: targetUser?.user_id,
 						event_type: actionType,
 						follow_resource_type: followedResourceType,
@@ -148,6 +148,13 @@ export const processNotification = async (
 							followedResourceType === "vc_firms" ? followResourceId : null,
 						action_ids: actionIds,
 					});
+
+					await Promise.all(
+						actionIds.map(async (actionId) => {
+							await insertNotificationAction(notificationResponse.id, actionId);
+						})
+					);
+				}
 			})
 		);
 	}
@@ -209,4 +216,118 @@ export const processNotificationOnDelete = async (
 			[actionId]
 		);
 	}
+};
+
+export const getNotificationChangedData = (
+	notification: GetNotificationsForUserQuery["notifications"][0]
+) => {
+	if (notification.event_type === "Change Data") {
+		if (notification.notification_actions.length > 1) {
+			return {
+				message: `has been updated`,
+				extensions: notification.notification_actions.map((item) => ({
+					field: Object.keys(item?.action?.properties)[0],
+					value: Object.values(item?.action?.properties)[0],
+				})),
+			};
+		}
+
+		const changedData =
+			notification.notification_actions[0]?.action?.properties;
+
+		if (changedData) {
+			let field = Object.keys(changedData)[0];
+			const value = Object.values(changedData)[0];
+
+			if (field === "location_json") {
+				field = "location";
+			} else if (field === "investor_amount") {
+				field = "total funding raised";
+			} else if (
+				field === "glassdoor" ||
+				field === "twitter" ||
+				field === "facebook" ||
+				field === "discord" ||
+				field === "instagram"
+			) {
+				field = startCase(field);
+			} else if (field === "company_linkedin") {
+				field = "LinkedIn";
+			} else if (field === "youtube") {
+				field = "YouTube";
+			} else if (field === "investment_rounds") {
+				field = "something";
+			} else if (field === "velocity_linkedin" || field === "velocity_token") {
+				field = "velocity";
+			}
+			return {
+				message: `updated ${field.replace(/_/g, " ")}`, // ${startCase(field)} to ${value}`,
+				extensions: [],
+			};
+		}
+	}
+
+	return {
+		message: notification.message,
+		extensions: [],
+	};
+};
+
+export const insertNotificationAction = async (
+	notificationId: number,
+	actionId: number
+) => {
+	const insertNotificationActionQuery = `
+    mutation InsertNotificationAction($object: notification_actions_insert_input!) {
+      insert_notification_actions_one(
+        object: $object
+      ) {
+        id
+      }
+    }
+  `;
+
+	const {
+		data: { insert_notification_actions_one },
+	} = await mutate({
+		mutation: insertNotificationActionQuery,
+		variables: {
+			object: {
+				notification_id: notificationId,
+				action_id: actionId,
+			},
+		},
+	});
+	return insert_notification_actions_one;
+};
+
+export const filterExcludeNotifications = (
+	notifications: GetNotificationsForUserQuery["notifications"],
+	excludeResourceTypes: string[],
+	excludeProperties: string[]
+) => {
+	let results = notifications?.filter(
+		(item) =>
+			!excludeResourceTypes.includes(item.notification_resource_type) &&
+			(item.notification_actions.length > 1 ||
+				(item.notification_actions.length === 1 &&
+					!excludeProperties.includes(
+						Object.keys(
+							item.notification_actions[0]?.action?.properties || {}
+						)[0]
+					)))
+	);
+
+	results.forEach((item) => {
+		if (item.notification_actions.length > 1) {
+			item.notification_actions = item.notification_actions.filter(
+				(element) =>
+					!excludeProperties.includes(
+						Object.keys(element.action?.properties || {})[0]
+					)
+			);
+		}
+	});
+
+	return results;
 };

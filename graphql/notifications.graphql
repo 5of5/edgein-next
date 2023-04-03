@@ -24,5 +24,13 @@ query GetNotificationsForUser($user: Int!) {
 			slug
 			logo
 		}
+		notification_actions {
+			id
+			action_id
+			action {
+				id
+				properties
+			}
+		}
 	}
 }
