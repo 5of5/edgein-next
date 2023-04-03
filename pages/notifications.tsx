@@ -89,7 +89,7 @@ const Notifications: NextPage = () => {
 	const { showNewMessages } = useIntercom();
 
 	return (
-		<div className="max-w-3xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+		<div className="max-w-3xl mx-auto sm:mt-7 sm:px-6 lg:px-8">
 			<div className="bg-white shadow rounded-lg p-5 ring-2 ring-white">
 				<div className="flex items-center justify-between mb-2">
 					<h2 className="text-xl font-bold">Notifications</h2>
@@ -132,10 +132,10 @@ const Notifications: NextPage = () => {
 
 							const notificationPopover = (
 								<Popover
-									className="absolute right-10 transition-all hidden group-hover:block"
+									className="relative mr-1 group-hover:block transition-all sm:absolute sm:right-10 sm:hidden sm:mr-0"
 									style={{ zIndex: 9999 - index }}
 								>
-									<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+									<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
 										<IconEllipsisHorizontal
 											className="h-6 w-6 group-hover:text-primary-500"
 											title="Options"
@@ -185,11 +185,11 @@ const Notifications: NextPage = () => {
 							const component = (
 								<div
 									onClick={() => markAsRead(notification.id)}
-									className={`flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100 ${
+									className={`flex items-center justify-between px-2 sm:px-5 py-2 shrink-0 w-full hover:bg-slate-100 ${
 										notification.read ? "bg-transparent" : "bg-slate-100"
 									}`}
 								>
-									<div className="flex items-center space-x-2 pr-20">
+									<div className="flex items-center space-x-2 sm:pr-20">
 										<ElemPhoto
 											photo={organization?.logo}
 											wrapClass="shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200"
@@ -233,7 +233,7 @@ const Notifications: NextPage = () => {
 										</div>
 									</div>
 
-									<div className="flex items-center space-x-4">
+									<div className="hidden sm:flex items-center space-x-4">
 										<div
 											className={`w-3 h-3 rounded-full bg-gradient-to-r shrink-0 ${
 												notification.read
@@ -259,20 +259,6 @@ const Notifications: NextPage = () => {
 										</div>
 										{enableExpand && (
 											<Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
-												{/* updated{" "}
-												{extensions.map((item: any, index) => (
-													<span key={item.field} className="text-sm">
-														{index ? ", " : ""}
-														{index === extensions.length - 1 ? "and " : ""}
-														{item.field === "velocity_linkedin" ? (
-															<>velocity</>
-														) : item.field === "location_json" ? (
-															<>location</>
-														) : (
-															<>{item.field.replace("_", " ")}</>
-														)}
-													</span>
-												))} */}
 												<ul className="pl-1 list-disc list-inside space-y-2">
 													{extensions.map((item: any) => (
 														<li key={item.field} className="text-sm">
@@ -291,9 +277,6 @@ const Notifications: NextPage = () => {
 														</li>
 													))}
 												</ul>
-												{/* <Link href={getLink(notification)} passHref>
-													<a>View {organization?.name}</a>
-												</Link> */}
 											</Disclosure.Panel>
 										)}
 									</Disclosure>
@@ -301,7 +284,9 @@ const Notifications: NextPage = () => {
 							} else {
 								return (
 									<div
-										className="relative flex items-center group"
+										className={`relative flex items-center group ${
+											notification.read ? "bg-transparent" : "bg-slate-100"
+										}`}
 										key={notification.id}
 									>
 										<Link href={getLink(notification)} passHref>
