@@ -186,7 +186,9 @@ const Notifications: NextPage = () => {
 								<div
 									onClick={() => markAsRead(notification.id)}
 									className={`flex items-center justify-between px-2 sm:px-5 py-2 shrink-0 w-full group-hover:bg-slate-100 ${
-										notification.read ? "bg-transparent" : "bg-slate-100"
+										notification.read
+											? "bg-transparent opacity-60"
+											: "bg-slate-100"
 									}`}
 								>
 									<div className="flex items-center space-x-2 sm:pr-20">
