@@ -14,7 +14,7 @@ import { TheFooter } from "@/components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
-// import { DATADOME_JS, DATADOME_TAGS } from "@/utils/constants";
+
 const INTERCOM_APP_ID = "jm3hf6lp";
 
 declare global {
