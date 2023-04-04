@@ -133,7 +133,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const eventIndex = client.initIndex('events');
       await eventIndex.saveObjects(eventList, { autoGenerateObjectIDIfNotExist: true });
 
-      /** Find deleted companies in actions table and remove them in index */
+      /** Find deleted events in actions table and remove them in index */
       const deletedEvents = await queryForDeletedResources("events", eventLastSync.value);
       eventIndex.deleteObjects(deletedEvents.map((item: any) => item.resource_id));
 
