@@ -1,6 +1,5 @@
 import CookieService from "../utils/cookie";
 import { NextResponse, NextRequest } from "next/server";
-// import datadome from '@/lib/datadome';
 
 const USAGE_LIMIT = 5
 
@@ -51,7 +50,6 @@ export async function middleware(req: NextRequest) {
 		process.env.REVALIDATION_AUTH_TOKEN
 	) {
 		return NextResponse.next() ;
-		// return process.env.DEV_MODE ? NextResponse.next() : datadome(req);
 	}
 	let user;
 	const redirectPath = url.pathname.startsWith("/api")

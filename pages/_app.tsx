@@ -164,15 +164,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 					}}
 				/> */}
 
-				{/* <>
-					<Script id="datadome-script" strategy="lazyOnload">{`
-					window.ddjskey = '${process.env.NEXT_PUBLIC_DATADOME_CLIENT_KEY}'
-					window.ddoptions = {
-						endpoint: '${DATADOME_JS}'
-					}
-				`}</Script>
-					<Script src={DATADOME_TAGS} strategy="lazyOnload" />
-				</> */}
 			</div>
 		</>
 	);
