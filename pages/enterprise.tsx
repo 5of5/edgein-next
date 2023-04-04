@@ -25,27 +25,27 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 	const partners = [
 		{
 			title: "Akkadian",
-			image: "/images/akkadian.png",
+			image: "/images/akkadian.svg",
 			link: "/investors/akkadian-ventures/",
 		},
 		{
 			title: "Shima",
-			image: "/images/shima.png",
-			link: "/investors/shima/",
+			image: "/images/shima-capital.png",
+			link: "/investors/shima-capital/",
 		},
 		{
 			title: "Fireblocks",
-			image: "/images/fireblocks.png",
+			image: "/images/fireblocks.svg",
 			link: "/companies/fireblocks/",
 		},
 		{
 			title: "Tokentag",
-			image: "/images/tokentag.png",
+			image: "/images/tokentag.svg",
 			link: "/companies/tokentag/",
 		},
 		{
 			title: "4k",
-			image: "/images/4k.png",
+			image: "/images/4k.svg",
 			link: "/companies/4k/",
 		},
 	];
@@ -212,7 +212,13 @@ const Enterprise: NextPage<Props> = ({ setShowPopup }) => {
 								>
 									<Link href={item.link}>
 										<a className="block">
-											{item.image && <img src={item.image} alt={item.title} />}
+											{item.image && (
+												<img
+													src={item.image}
+													alt={item.title}
+													className="w-full h-auto"
+												/>
+											)}
 										</a>
 									</Link>
 								</div>
