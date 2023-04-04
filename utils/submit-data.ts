@@ -309,7 +309,7 @@ export const mutateActionAndDataRaw = async (
   let validData: Array<Record<string, any>> = [];
   let invalidData: Array<Record<string, any>> = [];
   let setMainTableValues: Record<string, any> = {};
-  const actions = [];
+  const actions: number[] = [];
 
   let existedData;
   if (actionType == 'Change Data') {
@@ -397,7 +397,7 @@ export const mutateActionAndDataRaw = async (
           user?.id,
           partnerId
         );
-        actions.push(actionResponse?.id);
+        actions.push(actionResponse?.id || 0);
       }
     }
   }
@@ -412,7 +412,7 @@ export const mutateActionAndDataRaw = async (
 
   const insertResult = await insertDataRaw(validData);
 
-  return { id: resourceId, actions, resources: invalidData.concat(insertResult || {}) };
+  return { id: resourceId, actions, resources: invalidData.concat(insertResult || []) };
 };
 
 

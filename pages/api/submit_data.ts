@@ -1,4 +1,3 @@
-import { Data_Partners } from "@/graphql/types";
 import {
   processNotification,
   processNotificationOnDelete,
@@ -45,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       return res.status(400).send({ message: "Bad Request" });
 
-    const partner: Data_Partners = await partnerLookUp(apiKey);
+    const partner = await partnerLookUp(apiKey);
     if (partner?.id === undefined) {
       if (!(user?.role === "admin")) {
         return res.status(401).send({ message: "Unauthorized Partner" });
@@ -92,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await processNotificationOnDelete(
         resourceType,
         resourceId,
-        action?.id,
+        action?.id || 0,
         resourceObj
       );
       return res.send(resourceObj);
@@ -138,7 +137,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "companies",
           resourceType,
           actionType,
-          insertResult?.actions
+          insertResult?.actions 
         );
       }
 
@@ -156,7 +155,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (resourceObj?.round_id) {
           const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
           await processNotification(
-            investmentRound?.company_id,
+            investmentRound?.company_id || 0,
             "companies",
             resourceType,
             actionType,

@@ -178,7 +178,7 @@ export const processNotificationOnDelete = async (
 		if (resourceObj?.round_id) {
 			const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
 			await processNotification(
-				investmentRound?.company_id,
+				investmentRound?.company_id || 0,
 				"companies",
 				resourceType,
 				"Delete Data",
