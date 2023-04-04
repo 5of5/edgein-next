@@ -115,6 +115,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
+    // get last sync info for events
+  const eventLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_events');
+  output['eventLastSync'] = eventLastSync.value
+  if (eventLastSync) {
+    try {
+      // get all the events details
+      const eventList = await queryForEventList(eventLastSync.value);
+
+      for (const event of eventList) {
+        if (event.banner) {
+          event.banner = event.banner.url;
+        }
+        event.objectID = event.id;
+        delete event.id;
+      }
+      const eventIndex = client.initIndex('events');
+      await eventIndex.saveObjects(eventList, { autoGenerateObjectIDIfNotExist: true });
+
+      /** Find deleted companies in actions table and remove them in index */
+      const deletedEvents = await queryForDeletedResources("events", eventLastSync.value);
+      eventIndex.deleteObjects(deletedEvents.map((item: any) => item.resource_id));
+
+      output['eventList'] = eventList.map((p:any) => `${p.id} ${p.name}`).length - deletedEvents.length;
+       // update the last_sync date to current date
+       await mutateForlastSync('sync_events');
+    } catch (error) {
+      // update the last_error
+      output['eventsError'] = error
+      await mutateForError('sync_events', prepareError(error));
+    }
+  }
+
     res.send({ success: true, ...output })
 }
 
@@ -135,7 +167,7 @@ const queryForlastSync = async () => {
   // prepare gql query
   const fetchQuery = `
   query query_last_sync {
-    application_meta(where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}) {
+    application_meta(where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people", "sync_events"]}}) {
       id
       key
       value
@@ -251,6 +283,42 @@ const queryForPeopleList = async (date: any) => {
       variables: { date }
     })
     return data.data.people
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+
+// queries local user using graphql endpoint
+const queryForEventList = async (date: any) => {
+  // prepare gql query
+  const fetchQuery = `
+  query query_events($date: timestamptz) {
+    events(
+      where: {
+        _and: [
+          {status: {_eq: "published"}},
+          {updated_at: {_gte: $date}},
+        ]
+      }
+    ) {
+      id
+      name
+      slug
+      overview
+      banner
+      location_json
+      start_date
+      end_date
+    }
+  }
+  `
+  try {
+    const data = await query({
+      query: fetchQuery,
+      variables: { date }
+    })
+    return data.data.events
   } catch (ex) {
     throw ex;
   }
