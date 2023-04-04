@@ -93,7 +93,7 @@ async function findOneUserById(id: number) {
   }
 }
 
-async function updateBillingOrg(userId: number, billingOrgId: string) {
+async function updateBillingOrg(userId: number, billingOrgId: number) {
   try {
     const data = await mutate<UpdateUserBillingOrgMutation>({
       mutation: UpdateUserBillingOrgDocument,

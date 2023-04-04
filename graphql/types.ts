@@ -1,4 +1,4 @@
-import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 import { fetcher } from './fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -8705,6 +8705,7 @@ export type Lists = {
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
+  public: Maybe<Scalars['Boolean']>;
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
   type: Maybe<Scalars['String']>;
@@ -8844,6 +8845,7 @@ export type Lists_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
+  public: InputMaybe<Boolean_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
@@ -8873,6 +8875,7 @@ export type Lists_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
   type: InputMaybe<Scalars['String']>;
   user_groups: InputMaybe<List_User_Groups_Arr_Rel_Insert_Input>;
 };
@@ -8930,6 +8933,7 @@ export type Lists_Order_By = {
   id: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
+  public: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
   user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Order_By>;
@@ -8951,6 +8955,8 @@ export enum Lists_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  Public = 'public',
+  /** column name */
   Type = 'type'
 }
 
@@ -8960,6 +8966,7 @@ export type Lists_Set_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
   type: InputMaybe<Scalars['String']>;
 };
 
@@ -9001,6 +9008,8 @@ export enum Lists_Update_Column {
   Id = 'id',
   /** column name */
   Name = 'name',
+  /** column name */
+  Public = 'public',
   /** column name */
   Type = 'type'
 }
@@ -18260,6 +18269,7 @@ export type User_Groups = {
   notes: Array<Notes>;
   /** An aggregate relationship */
   notes_aggregate: Notes_Aggregate;
+  public: Maybe<Scalars['Boolean']>;
   telegram: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -18383,6 +18393,7 @@ export type User_Groups_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<Notes_Bool_Exp>;
+  public: InputMaybe<Boolean_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -18412,6 +18423,7 @@ export type User_Groups_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Notes_Arr_Rel_Insert_Input>;
+  public: InputMaybe<Scalars['Boolean']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -18480,6 +18492,7 @@ export type User_Groups_Order_By = {
   id: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes_aggregate: InputMaybe<Notes_Aggregate_Order_By>;
+  public: InputMaybe<Order_By>;
   telegram: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -18507,6 +18520,8 @@ export enum User_Groups_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  Public = 'public',
+  /** column name */
   Telegram = 'telegram',
   /** column name */
   Twitter = 'twitter',
@@ -18522,6 +18537,7 @@ export type User_Groups_Set_Input = {
   discord: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -18569,6 +18585,8 @@ export enum User_Groups_Update_Column {
   Id = 'id',
   /** column name */
   Name = 'name',
+  /** column name */
+  Public = 'public',
   /** column name */
   Telegram = 'telegram',
   /** column name */
@@ -20507,6 +20525,30 @@ export type UpdateApplicationMetaErrorMutationVariables = Exact<{
 
 export type UpdateApplicationMetaErrorMutation = { __typename?: 'mutation_root', update_application_meta: { __typename?: 'application_meta_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> } | null };
 
+export type InsertBillingOrgMutationVariables = Exact<{
+  customer_id: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  plan: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type InsertBillingOrgMutation = { __typename?: 'mutation_root', insert_billing_org_one: { __typename?: 'billing_org', id: number } | null };
+
+export type GetBillingOrgByCustomerIdQueryVariables = Exact<{
+  customerId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetBillingOrgByCustomerIdQuery = { __typename?: 'query_root', billing_org: Array<{ __typename?: 'billing_org', customer_id: string, id: number, plan: string, status: string, user_limit: number }> };
+
+export type UpdateBillingOrgMutationVariables = Exact<{
+  id: Scalars['Int'];
+  status?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateBillingOrgMutation = { __typename?: 'mutation_root', update_billing_org_by_pk: { __typename?: 'billing_org', id: number, status: string } | null };
+
 export type GetAllCoinsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20685,6 +20727,14 @@ export type GetFollowByIdQueryVariables = Exact<{
 
 export type GetFollowByIdQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, created_by_user_id: number, resource_type: string, resource_id: number, list_id: number | null }> };
 
+export type GetFollowsByResourceQueryVariables = Exact<{
+  resourceId: Scalars['Int'];
+  resourceType: Scalars['String'];
+}>;
+
+
+export type GetFollowsByResourceQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null, list: { __typename?: 'lists', list_members: Array<{ __typename?: 'list_members', id: number, user_id: number }> } | null }> };
+
 export type GetGroupsOfUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
@@ -20834,6 +20884,13 @@ export type UpsertInvestmentsMutationVariables = Exact<{
 
 
 export type UpsertInvestmentsMutation = { __typename?: 'mutation_root', insert_investments: { __typename?: 'investments_mutation_response', returning: Array<{ __typename?: 'investments', id: number, round_id: number | null, person_id: number | null, vc_firm_id: number | null, amount: any | null }> } | null };
+
+export type DeleteInvestmentMutationVariables = Exact<{
+  investmentId: Scalars['Int'];
+}>;
+
+
+export type DeleteInvestmentMutation = { __typename?: 'mutation_root', delete_investments_by_pk: { __typename?: 'investments', id: number } | null };
 
 export type InsertInvestorMutationVariables = Exact<{
   personId: InputMaybe<Scalars['Int']>;
@@ -21049,6 +21106,13 @@ export type UpdatePeopleByPkMutationVariables = Exact<{
 
 export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
 
+export type InsertResetPasswordMutationVariables = Exact<{
+  object: Reset_Passwords_Insert_Input;
+}>;
+
+
+export type InsertResetPasswordMutation = { __typename?: 'mutation_root', insert_reset_passwords_one: { __typename?: 'reset_passwords', id: number, user_id: number, generated_password: string, created_at: any } | null };
+
 export type InsertEditAccessMutationVariables = Exact<{
   userId: InputMaybe<Scalars['Int']>;
   resourceId: InputMaybe<Scalars['Int']>;
@@ -21248,6 +21312,19 @@ export type GetVcFirmsByDateQueryVariables = Exact<{
 
 export type GetVcFirmsByDateQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
 
+export type UpdateVcFirmTagsByPkMutationVariables = Exact<{
+  id: Scalars['Int'];
+  tags: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateVcFirmTagsByPkMutation = { __typename?: 'mutation_root', update_vc_firms_by_pk: { __typename?: 'vc_firms', id: number } | null };
+
+export type GetVcFirmsInvestmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVcFirmsInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, tags: any | null } | null } | null }> }> };
+
 export type UpsertWaitlistEmailMutationVariables = Exact<{
   email: InputMaybe<Scalars['String']>;
 }>;
@@ -21409,6 +21486,73 @@ export const useUpdateApplicationMetaErrorMutation = <
       options
     );
 useUpdateApplicationMetaErrorMutation.fetcher = (variables: UpdateApplicationMetaErrorMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateApplicationMetaErrorMutation, UpdateApplicationMetaErrorMutationVariables>(UpdateApplicationMetaErrorDocument, variables, options);
+export const InsertBillingOrgDocument = `
+    mutation InsertBillingOrg($customer_id: String, $status: String, $plan: String) {
+  insert_billing_org_one(
+    object: {customer_id: $customer_id, status: $status, plan: $plan, user_limit: 1}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertBillingOrgMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertBillingOrgMutation, TError, InsertBillingOrgMutationVariables, TContext>) =>
+    useMutation<InsertBillingOrgMutation, TError, InsertBillingOrgMutationVariables, TContext>(
+      ['InsertBillingOrg'],
+      (variables?: InsertBillingOrgMutationVariables) => fetcher<InsertBillingOrgMutation, InsertBillingOrgMutationVariables>(InsertBillingOrgDocument, variables)(),
+      options
+    );
+useInsertBillingOrgMutation.fetcher = (variables?: InsertBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<InsertBillingOrgMutation, InsertBillingOrgMutationVariables>(InsertBillingOrgDocument, variables, options);
+export const GetBillingOrgByCustomerIdDocument = `
+    query GetBillingOrgByCustomerId($customerId: String = "") {
+  billing_org(where: {customer_id: {_eq: $customerId}}) {
+    customer_id
+    id
+    plan
+    status
+    user_limit
+  }
+}
+    `;
+export const useGetBillingOrgByCustomerIdQuery = <
+      TData = GetBillingOrgByCustomerIdQuery,
+      TError = Error
+    >(
+      variables?: GetBillingOrgByCustomerIdQueryVariables,
+      options?: UseQueryOptions<GetBillingOrgByCustomerIdQuery, TError, TData>
+    ) =>
+    useQuery<GetBillingOrgByCustomerIdQuery, TError, TData>(
+      variables === undefined ? ['GetBillingOrgByCustomerId'] : ['GetBillingOrgByCustomerId', variables],
+      fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables),
+      options
+    );
+useGetBillingOrgByCustomerIdQuery.document = GetBillingOrgByCustomerIdDocument;
+
+
+useGetBillingOrgByCustomerIdQuery.getKey = (variables?: GetBillingOrgByCustomerIdQueryVariables) => variables === undefined ? ['GetBillingOrgByCustomerId'] : ['GetBillingOrgByCustomerId', variables];
+;
+
+useGetBillingOrgByCustomerIdQuery.fetcher = (variables?: GetBillingOrgByCustomerIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables, options);
+export const UpdateBillingOrgDocument = `
+    mutation UpdateBillingOrg($id: Int!, $status: String = "") {
+  update_billing_org_by_pk(pk_columns: {id: $id}, _set: {status: $status}) {
+    id
+    status
+  }
+}
+    `;
+export const useUpdateBillingOrgMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateBillingOrgMutation, TError, UpdateBillingOrgMutationVariables, TContext>) =>
+    useMutation<UpdateBillingOrgMutation, TError, UpdateBillingOrgMutationVariables, TContext>(
+      ['UpdateBillingOrg'],
+      (variables?: UpdateBillingOrgMutationVariables) => fetcher<UpdateBillingOrgMutation, UpdateBillingOrgMutationVariables>(UpdateBillingOrgDocument, variables)(),
+      options
+    );
+useUpdateBillingOrgMutation.fetcher = (variables: UpdateBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateBillingOrgMutation, UpdateBillingOrgMutationVariables>(UpdateBillingOrgDocument, variables, options);
 export const GetAllCoinsDocument = `
     query GetAllCoins {
   coins {
@@ -22345,6 +22489,41 @@ useGetFollowByIdQuery.getKey = (variables: GetFollowByIdQueryVariables) => ['Get
 ;
 
 useGetFollowByIdQuery.fetcher = (variables: GetFollowByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowByIdQuery, GetFollowByIdQueryVariables>(GetFollowByIdDocument, variables, options);
+export const GetFollowsByResourceDocument = `
+    query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
+  follows(
+    where: {_and: [{resource_id: {_eq: $resourceId}}, {resource_type: {_eq: $resourceType}}]}
+  ) {
+    id
+    list_id
+    list {
+      list_members {
+        id
+        user_id
+      }
+    }
+  }
+}
+    `;
+export const useGetFollowsByResourceQuery = <
+      TData = GetFollowsByResourceQuery,
+      TError = Error
+    >(
+      variables: GetFollowsByResourceQueryVariables,
+      options?: UseQueryOptions<GetFollowsByResourceQuery, TError, TData>
+    ) =>
+    useQuery<GetFollowsByResourceQuery, TError, TData>(
+      ['GetFollowsByResource', variables],
+      fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables),
+      options
+    );
+useGetFollowsByResourceQuery.document = GetFollowsByResourceDocument;
+
+
+useGetFollowsByResourceQuery.getKey = (variables: GetFollowsByResourceQueryVariables) => ['GetFollowsByResource', variables];
+;
+
+useGetFollowsByResourceQuery.fetcher = (variables: GetFollowsByResourceQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables, options);
 export const GetGroupsOfUserDocument = `
     query GetGroupsOfUser($user_id: Int!) {
   user_group_members(where: {user_id: {_eq: $user_id}}) {
@@ -22958,6 +23137,23 @@ export const useUpsertInvestmentsMutation = <
       options
     );
 useUpsertInvestmentsMutation.fetcher = (variables: UpsertInvestmentsMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentsMutation, UpsertInvestmentsMutationVariables>(UpsertInvestmentsDocument, variables, options);
+export const DeleteInvestmentDocument = `
+    mutation DeleteInvestment($investmentId: Int!) {
+  delete_investments_by_pk(id: $investmentId) {
+    id
+  }
+}
+    `;
+export const useDeleteInvestmentMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteInvestmentMutation, TError, DeleteInvestmentMutationVariables, TContext>) =>
+    useMutation<DeleteInvestmentMutation, TError, DeleteInvestmentMutationVariables, TContext>(
+      ['DeleteInvestment'],
+      (variables?: DeleteInvestmentMutationVariables) => fetcher<DeleteInvestmentMutation, DeleteInvestmentMutationVariables>(DeleteInvestmentDocument, variables)(),
+      options
+    );
+useDeleteInvestmentMutation.fetcher = (variables: DeleteInvestmentMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteInvestmentMutation, DeleteInvestmentMutationVariables>(DeleteInvestmentDocument, variables, options);
 export const InsertInvestorDocument = `
     mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
   insert_investors_one(
@@ -23889,6 +24085,26 @@ export const useUpdatePeopleByPkMutation = <
       options
     );
 useUpdatePeopleByPkMutation.fetcher = (variables: UpdatePeopleByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables, options);
+export const InsertResetPasswordDocument = `
+    mutation InsertResetPassword($object: reset_passwords_insert_input!) {
+  insert_reset_passwords_one(object: $object) {
+    id
+    user_id
+    generated_password
+    created_at
+  }
+}
+    `;
+export const useInsertResetPasswordMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertResetPasswordMutation, TError, InsertResetPasswordMutationVariables, TContext>) =>
+    useMutation<InsertResetPasswordMutation, TError, InsertResetPasswordMutationVariables, TContext>(
+      ['InsertResetPassword'],
+      (variables?: InsertResetPasswordMutationVariables) => fetcher<InsertResetPasswordMutation, InsertResetPasswordMutationVariables>(InsertResetPasswordDocument, variables)(),
+      options
+    );
+useInsertResetPasswordMutation.fetcher = (variables: InsertResetPasswordMutationVariables, options?: RequestInit['headers']) => fetcher<InsertResetPasswordMutation, InsertResetPasswordMutationVariables>(InsertResetPasswordDocument, variables, options);
 export const InsertEditAccessDocument = `
     mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
   insert_resource_edit_access_one(
@@ -24964,6 +25180,57 @@ useGetVcFirmsByDateQuery.getKey = (variables?: GetVcFirmsByDateQueryVariables) =
 ;
 
 useGetVcFirmsByDateQuery.fetcher = (variables?: GetVcFirmsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByDateQuery, GetVcFirmsByDateQueryVariables>(GetVcFirmsByDateDocument, variables, options);
+export const UpdateVcFirmTagsByPkDocument = `
+    mutation UpdateVcFirmTagsByPk($id: Int!, $tags: jsonb) {
+  update_vc_firms_by_pk(_set: {tags: $tags}, pk_columns: {id: $id}) {
+    id
+  }
+}
+    `;
+export const useUpdateVcFirmTagsByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateVcFirmTagsByPkMutation, TError, UpdateVcFirmTagsByPkMutationVariables, TContext>) =>
+    useMutation<UpdateVcFirmTagsByPkMutation, TError, UpdateVcFirmTagsByPkMutationVariables, TContext>(
+      ['UpdateVcFirmTagsByPk'],
+      (variables?: UpdateVcFirmTagsByPkMutationVariables) => fetcher<UpdateVcFirmTagsByPkMutation, UpdateVcFirmTagsByPkMutationVariables>(UpdateVcFirmTagsByPkDocument, variables)(),
+      options
+    );
+useUpdateVcFirmTagsByPkMutation.fetcher = (variables: UpdateVcFirmTagsByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateVcFirmTagsByPkMutation, UpdateVcFirmTagsByPkMutationVariables>(UpdateVcFirmTagsByPkDocument, variables, options);
+export const GetVcFirmsInvestmentsDocument = `
+    query GetVcFirmsInvestments {
+  vc_firms {
+    id
+    investments {
+      investment_round {
+        company {
+          id
+          tags
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetVcFirmsInvestmentsQuery = <
+      TData = GetVcFirmsInvestmentsQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsInvestmentsQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsInvestmentsQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsInvestmentsQuery, TError, TData>(
+      variables === undefined ? ['GetVcFirmsInvestments'] : ['GetVcFirmsInvestments', variables],
+      fetcher<GetVcFirmsInvestmentsQuery, GetVcFirmsInvestmentsQueryVariables>(GetVcFirmsInvestmentsDocument, variables),
+      options
+    );
+useGetVcFirmsInvestmentsQuery.document = GetVcFirmsInvestmentsDocument;
+
+
+useGetVcFirmsInvestmentsQuery.getKey = (variables?: GetVcFirmsInvestmentsQueryVariables) => variables === undefined ? ['GetVcFirmsInvestments'] : ['GetVcFirmsInvestments', variables];
+;
+
+useGetVcFirmsInvestmentsQuery.fetcher = (variables?: GetVcFirmsInvestmentsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsInvestmentsQuery, GetVcFirmsInvestmentsQueryVariables>(GetVcFirmsInvestmentsDocument, variables, options);
 export const UpsertWaitlistEmailDocument = `
     mutation UpsertWaitlistEmail($email: String) {
   insert_waitlist_emails(

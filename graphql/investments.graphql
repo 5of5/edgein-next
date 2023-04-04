@@ -12,3 +12,9 @@ mutation UpsertInvestments($data: [investments_insert_input!]!) {
     }
   }
 }
+
+mutation DeleteInvestment($investmentId: Int!) {
+  delete_investments_by_pk(id: $investmentId) {
+    id
+  }
+}

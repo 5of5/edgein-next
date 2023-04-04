@@ -4,6 +4,8 @@ import {
   DeleteFollowsMutation,
   DeleteListMembersDocument,
   DeleteListMembersMutation,
+  GetFollowsByResourceDocument,
+  GetFollowsByResourceQuery,
   GetListMembersDocument,
   GetListMembersQuery,
   GetSentimentByCompanyIdDocument,
@@ -159,26 +161,8 @@ export const deleteFollowIfExists = async (listId: number, resourceId: number, r
 export const getFollowsByResource = async (resourceId: number, resourceType: string) => {
   const {
     data: { follows }
-  } = await query({
-    query: `
-      query findLists($resourceId: Int!, $resourceType: String!) {
-        follows(where: {
-          _and: [
-            {resource_id: {_eq: $resourceId}},
-            {resource_type: {_eq: $resourceType}}
-          ]
-        }) {
-          id
-          list_id
-          list {
-            list_members {
-              id
-              user_id
-            }
-          }
-        }
-      }
-    `,
+  } = await query<GetFollowsByResourceQuery>({
+    query: GetFollowsByResourceDocument,
     variables: { resourceId, resourceType },
   });
   return follows;

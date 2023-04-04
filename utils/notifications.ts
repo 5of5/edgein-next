@@ -1,6 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
 import {
-  Follows,
   GetNotificationsForUserQuery,
   InsertNotificationActionsDocument,
   InsertNotificationActionsMutation,
@@ -111,12 +110,12 @@ export const processNotification = async (
 	actionIds: number[]
 ) => {
 	if (followResourceId && followedResourceType && actionType) {
-		const follows: Array<Follows> = await getFollowsByResource(
+		const follows = await getFollowsByResource(
 			followResourceId,
 			followedResourceType
 		);
 		let targetUsers: any = follows.map(
-			(item: Follows) => item.list?.list_members
+			(item) => item.list?.list_members
 		);
 		targetUsers = unionBy(flatten(targetUsers), "user_id");
 		await Promise.all(

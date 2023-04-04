@@ -206,3 +206,23 @@ query GetVcFirmsByDate($date: timestamptz) {
     slug
   }
 }
+
+mutation UpdateVcFirmTagsByPk($id: Int!, $tags: jsonb) {
+	update_vc_firms_by_pk(_set: {tags: $tags}, pk_columns: {id: $id}) {
+		id
+	}
+}
+
+query GetVcFirmsInvestments {
+  vc_firms {
+    id
+    investments {
+      investment_round {
+        company {
+          id
+          tags
+        }
+      }
+    }
+  }
+}  
