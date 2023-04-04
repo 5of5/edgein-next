@@ -14,3 +14,10 @@ mutation UpsertInvestmentRound($data: investment_rounds_insert_input!) {
     currency
   }
 }
+
+query GetInvestmentRoundByRoundId($round_id: Int!) {
+  investment_rounds(where: { id: { _eq: $round_id } }) {
+    id
+    company_id
+  }
+}

@@ -2983,6 +2983,302 @@ export type Data_Actions_Variance_Fields = {
   user_value: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "data_discard" */
+export type Data_Discard = {
+  __typename?: 'data_discard';
+  accuracy_weight: Scalars['Int'];
+  created_at: Scalars['timestamp'];
+  field: Scalars['String'];
+  id: Scalars['bigint'];
+  partner: Scalars['Int'];
+  resource: Scalars['String'];
+  resource_id: Scalars['Int'];
+  value: Scalars['jsonb'];
+};
+
+
+/** columns and relationships of "data_discard" */
+export type Data_DiscardValueArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "data_discard" */
+export type Data_Discard_Aggregate = {
+  __typename?: 'data_discard_aggregate';
+  aggregate: Maybe<Data_Discard_Aggregate_Fields>;
+  nodes: Array<Data_Discard>;
+};
+
+/** aggregate fields of "data_discard" */
+export type Data_Discard_Aggregate_Fields = {
+  __typename?: 'data_discard_aggregate_fields';
+  avg: Maybe<Data_Discard_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Data_Discard_Max_Fields>;
+  min: Maybe<Data_Discard_Min_Fields>;
+  stddev: Maybe<Data_Discard_Stddev_Fields>;
+  stddev_pop: Maybe<Data_Discard_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Data_Discard_Stddev_Samp_Fields>;
+  sum: Maybe<Data_Discard_Sum_Fields>;
+  var_pop: Maybe<Data_Discard_Var_Pop_Fields>;
+  var_samp: Maybe<Data_Discard_Var_Samp_Fields>;
+  variance: Maybe<Data_Discard_Variance_Fields>;
+};
+
+
+/** aggregate fields of "data_discard" */
+export type Data_Discard_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Data_Discard_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Data_Discard_Append_Input = {
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Data_Discard_Avg_Fields = {
+  __typename?: 'data_discard_avg_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "data_discard". All fields are combined with a logical 'AND'. */
+export type Data_Discard_Bool_Exp = {
+  _and: InputMaybe<Array<Data_Discard_Bool_Exp>>;
+  _not: InputMaybe<Data_Discard_Bool_Exp>;
+  _or: InputMaybe<Array<Data_Discard_Bool_Exp>>;
+  accuracy_weight: InputMaybe<Int_Comparison_Exp>;
+  created_at: InputMaybe<Timestamp_Comparison_Exp>;
+  field: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Bigint_Comparison_Exp>;
+  partner: InputMaybe<Int_Comparison_Exp>;
+  resource: InputMaybe<String_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  value: InputMaybe<Jsonb_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "data_discard" */
+export enum Data_Discard_Constraint {
+  /** unique or primary key constraint */
+  DataDiscardPkey = 'data_discard_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Data_Discard_Delete_At_Path_Input = {
+  value: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Data_Discard_Delete_Elem_Input = {
+  value: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Data_Discard_Delete_Key_Input = {
+  value: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "data_discard" */
+export type Data_Discard_Inc_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "data_discard" */
+export type Data_Discard_Insert_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate max on columns */
+export type Data_Discard_Max_Fields = {
+  __typename?: 'data_discard_max_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamp']>;
+  field: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Data_Discard_Min_Fields = {
+  __typename?: 'data_discard_min_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamp']>;
+  field: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "data_discard" */
+export type Data_Discard_Mutation_Response = {
+  __typename?: 'data_discard_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Data_Discard>;
+};
+
+/** on_conflict condition type for table "data_discard" */
+export type Data_Discard_On_Conflict = {
+  constraint: Data_Discard_Constraint;
+  update_columns: Array<Data_Discard_Update_Column>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "data_discard". */
+export type Data_Discard_Order_By = {
+  accuracy_weight: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  field: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  partner: InputMaybe<Order_By>;
+  resource: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  value: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: data_discard */
+export type Data_Discard_Pk_Columns_Input = {
+  id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Data_Discard_Prepend_Input = {
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "data_discard" */
+export enum Data_Discard_Select_Column {
+  /** column name */
+  AccuracyWeight = 'accuracy_weight',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Field = 'field',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Partner = 'partner',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "data_discard" */
+export type Data_Discard_Set_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate stddev on columns */
+export type Data_Discard_Stddev_Fields = {
+  __typename?: 'data_discard_stddev_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Data_Discard_Stddev_Pop_Fields = {
+  __typename?: 'data_discard_stddev_pop_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Data_Discard_Stddev_Samp_Fields = {
+  __typename?: 'data_discard_stddev_samp_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Data_Discard_Sum_Fields = {
+  __typename?: 'data_discard_sum_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "data_discard" */
+export enum Data_Discard_Update_Column {
+  /** column name */
+  AccuracyWeight = 'accuracy_weight',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Field = 'field',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Partner = 'partner',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  Value = 'value'
+}
+
+/** aggregate var_pop on columns */
+export type Data_Discard_Var_Pop_Fields = {
+  __typename?: 'data_discard_var_pop_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Data_Discard_Var_Samp_Fields = {
+  __typename?: 'data_discard_var_samp_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Data_Discard_Variance_Fields = {
+  __typename?: 'data_discard_variance_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "data_fields" */
 export type Data_Fields = {
   __typename?: 'data_fields';
@@ -8767,6 +9063,10 @@ export type Mutation_Root = {
   delete_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** delete single row from the table: "data_actions" */
   delete_data_actions_by_pk: Maybe<Data_Actions>;
+  /** delete data from the table: "data_discard" */
+  delete_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** delete single row from the table: "data_discard" */
+  delete_data_discard_by_pk: Maybe<Data_Discard>;
   /** delete data from the table: "data_fields" */
   delete_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** delete single row from the table: "data_fields" */
@@ -8937,6 +9237,10 @@ export type Mutation_Root = {
   insert_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** insert a single row into the table: "data_actions" */
   insert_data_actions_one: Maybe<Data_Actions>;
+  /** insert data into the table: "data_discard" */
+  insert_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** insert a single row into the table: "data_discard" */
+  insert_data_discard_one: Maybe<Data_Discard>;
   /** insert data into the table: "data_fields" */
   insert_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** insert a single row into the table: "data_fields" */
@@ -9111,6 +9415,10 @@ export type Mutation_Root = {
   update_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** update single row of the table: "data_actions" */
   update_data_actions_by_pk: Maybe<Data_Actions>;
+  /** update data of the table: "data_discard" */
+  update_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** update single row of the table: "data_discard" */
+  update_data_discard_by_pk: Maybe<Data_Discard>;
   /** update data of the table: "data_fields" */
   update_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** update single row of the table: "data_fields" */
@@ -9347,6 +9655,18 @@ export type Mutation_RootDelete_Data_ActionsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Data_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Data_DiscardArgs = {
+  where: Data_Discard_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Data_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -9873,6 +10193,20 @@ export type Mutation_RootInsert_Data_ActionsArgs = {
 export type Mutation_RootInsert_Data_Actions_OneArgs = {
   object: Data_Actions_Insert_Input;
   on_conflict: InputMaybe<Data_Actions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Data_DiscardArgs = {
+  objects: Array<Data_Discard_Insert_Input>;
+  on_conflict: InputMaybe<Data_Discard_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Data_Discard_OneArgs = {
+  object: Data_Discard_Insert_Input;
+  on_conflict: InputMaybe<Data_Discard_On_Conflict>;
 };
 
 
@@ -10513,6 +10847,32 @@ export type Mutation_RootUpdate_Data_Actions_By_PkArgs = {
   _inc: InputMaybe<Data_Actions_Inc_Input>;
   _set: InputMaybe<Data_Actions_Set_Input>;
   pk_columns: Data_Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_DiscardArgs = {
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  where: Data_Discard_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_Discard_By_PkArgs = {
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  pk_columns: Data_Discard_Pk_Columns_Input;
 };
 
 
@@ -13446,6 +13806,12 @@ export type Query_Root = {
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table: "data_discard" */
+  data_discard: Array<Data_Discard>;
+  /** fetch aggregated fields from the table: "data_discard" */
+  data_discard_aggregate: Data_Discard_Aggregate;
+  /** fetch data from the table: "data_discard" using primary key columns */
+  data_discard_by_pk: Maybe<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
@@ -13852,6 +14218,29 @@ export type Query_RootData_Actions_AggregateArgs = {
 
 export type Query_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Query_RootData_DiscardArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Query_RootData_Discard_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Query_RootData_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -15558,6 +15947,12 @@ export type Subscription_Root = {
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table: "data_discard" */
+  data_discard: Array<Data_Discard>;
+  /** fetch aggregated fields from the table: "data_discard" */
+  data_discard_aggregate: Data_Discard_Aggregate;
+  /** fetch data from the table: "data_discard" using primary key columns */
+  data_discard_by_pk: Maybe<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
@@ -15964,6 +16359,29 @@ export type Subscription_RootData_Actions_AggregateArgs = {
 
 export type Subscription_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Subscription_RootData_DiscardArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Subscription_RootData_Discard_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Subscription_RootData_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -20153,6 +20571,42 @@ export type UpdateCompanyByPkMutationVariables = Exact<{
 
 export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
 
+export type InsertDataDiscardMutationVariables = Exact<{
+  input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
+}>;
+
+
+export type InsertDataDiscardMutation = { __typename?: 'mutation_root', insert_data_discard: { __typename?: 'data_discard_mutation_response', returning: Array<{ __typename?: 'data_discard', id: any, created_at: any, resource: string, resource_id: number, field: string, value: any, accuracy_weight: number }> } | null };
+
+export type GetDataFieldByPathQueryVariables = Exact<{
+  path: Scalars['String'];
+}>;
+
+
+export type GetDataFieldByPathQuery = { __typename?: 'query_root', data_fields: Array<{ __typename?: 'data_fields', name: string, resource: string, weight: number, regex_transform: string | null, description: string | null, regex_test: string | null, is_valid_identifier: boolean, restricted_admin: boolean, data_type: string | null }> };
+
+export type GetDataPartnerByApiKeyQueryVariables = Exact<{
+  apiKey: Scalars['String'];
+}>;
+
+
+export type GetDataPartnerByApiKeyQuery = { __typename?: 'query_root', data_partners: Array<{ __typename?: 'data_partners', id: number, name: string, api_key: string }> };
+
+export type InsertDataRawMutationVariables = Exact<{
+  input: Array<Data_Raw_Insert_Input> | Data_Raw_Insert_Input;
+}>;
+
+
+export type InsertDataRawMutation = { __typename?: 'mutation_root', insert_data_raw: { __typename?: 'data_raw_mutation_response', returning: Array<{ __typename?: 'data_raw', id: any, created_at: any, resource: string, resource_id: number, field: string, value: any, accuracy_weight: number }> } | null };
+
+export type MarkDataRawAsInactiveMutationVariables = Exact<{
+  resourceType: Scalars['String'];
+  resourceId: Scalars['Int'];
+}>;
+
+
+export type MarkDataRawAsInactiveMutation = { __typename?: 'mutation_root', update_data_raw: { __typename?: 'data_raw_mutation_response', affected_rows: number } | null };
+
 export type GetEventsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
   offset: InputMaybe<Scalars['Int']>;
@@ -20350,6 +20804,13 @@ export type UpsertInvestmentRoundMutationVariables = Exact<{
 
 
 export type UpsertInvestmentRoundMutation = { __typename?: 'mutation_root', insert_investment_rounds_one: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, currency: string | null } | null };
+
+export type GetInvestmentRoundByRoundIdQueryVariables = Exact<{
+  round_id: Scalars['Int'];
+}>;
+
+
+export type GetInvestmentRoundByRoundIdQuery = { __typename?: 'query_root', investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, company_id: number | null }> };
 
 export type UpsertInvestmentsMutationVariables = Exact<{
   data: Array<Investments_Insert_Input> | Investments_Insert_Input;
@@ -21205,6 +21666,138 @@ export const useUpdateCompanyByPkMutation = <
       options
     );
 useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
+export const InsertDataDiscardDocument = `
+    mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
+  insert_data_discard(objects: $input) {
+    returning {
+      id
+      created_at
+      resource
+      resource_id
+      field
+      value
+      accuracy_weight
+    }
+  }
+}
+    `;
+export const useInsertDataDiscardMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertDataDiscardMutation, TError, InsertDataDiscardMutationVariables, TContext>) =>
+    useMutation<InsertDataDiscardMutation, TError, InsertDataDiscardMutationVariables, TContext>(
+      ['InsertDataDiscard'],
+      (variables?: InsertDataDiscardMutationVariables) => fetcher<InsertDataDiscardMutation, InsertDataDiscardMutationVariables>(InsertDataDiscardDocument, variables)(),
+      options
+    );
+useInsertDataDiscardMutation.fetcher = (variables: InsertDataDiscardMutationVariables, options?: RequestInit['headers']) => fetcher<InsertDataDiscardMutation, InsertDataDiscardMutationVariables>(InsertDataDiscardDocument, variables, options);
+export const GetDataFieldByPathDocument = `
+    query GetDataFieldByPath($path: String!) {
+  data_fields(where: {path: {_eq: $path}}) {
+    name
+    resource
+    weight
+    regex_transform
+    description
+    regex_test
+    is_valid_identifier
+    restricted_admin
+    data_type
+  }
+}
+    `;
+export const useGetDataFieldByPathQuery = <
+      TData = GetDataFieldByPathQuery,
+      TError = Error
+    >(
+      variables: GetDataFieldByPathQueryVariables,
+      options?: UseQueryOptions<GetDataFieldByPathQuery, TError, TData>
+    ) =>
+    useQuery<GetDataFieldByPathQuery, TError, TData>(
+      ['GetDataFieldByPath', variables],
+      fetcher<GetDataFieldByPathQuery, GetDataFieldByPathQueryVariables>(GetDataFieldByPathDocument, variables),
+      options
+    );
+useGetDataFieldByPathQuery.document = GetDataFieldByPathDocument;
+
+
+useGetDataFieldByPathQuery.getKey = (variables: GetDataFieldByPathQueryVariables) => ['GetDataFieldByPath', variables];
+;
+
+useGetDataFieldByPathQuery.fetcher = (variables: GetDataFieldByPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetDataFieldByPathQuery, GetDataFieldByPathQueryVariables>(GetDataFieldByPathDocument, variables, options);
+export const GetDataPartnerByApiKeyDocument = `
+    query GetDataPartnerByApiKey($apiKey: String!) {
+  data_partners(where: {api_key: {_eq: $apiKey}}) {
+    id
+    name
+    api_key
+  }
+}
+    `;
+export const useGetDataPartnerByApiKeyQuery = <
+      TData = GetDataPartnerByApiKeyQuery,
+      TError = Error
+    >(
+      variables: GetDataPartnerByApiKeyQueryVariables,
+      options?: UseQueryOptions<GetDataPartnerByApiKeyQuery, TError, TData>
+    ) =>
+    useQuery<GetDataPartnerByApiKeyQuery, TError, TData>(
+      ['GetDataPartnerByApiKey', variables],
+      fetcher<GetDataPartnerByApiKeyQuery, GetDataPartnerByApiKeyQueryVariables>(GetDataPartnerByApiKeyDocument, variables),
+      options
+    );
+useGetDataPartnerByApiKeyQuery.document = GetDataPartnerByApiKeyDocument;
+
+
+useGetDataPartnerByApiKeyQuery.getKey = (variables: GetDataPartnerByApiKeyQueryVariables) => ['GetDataPartnerByApiKey', variables];
+;
+
+useGetDataPartnerByApiKeyQuery.fetcher = (variables: GetDataPartnerByApiKeyQueryVariables, options?: RequestInit['headers']) => fetcher<GetDataPartnerByApiKeyQuery, GetDataPartnerByApiKeyQueryVariables>(GetDataPartnerByApiKeyDocument, variables, options);
+export const InsertDataRawDocument = `
+    mutation InsertDataRaw($input: [data_raw_insert_input!]!) {
+  insert_data_raw(objects: $input) {
+    returning {
+      id
+      created_at
+      resource
+      resource_id
+      field
+      value
+      accuracy_weight
+    }
+  }
+}
+    `;
+export const useInsertDataRawMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertDataRawMutation, TError, InsertDataRawMutationVariables, TContext>) =>
+    useMutation<InsertDataRawMutation, TError, InsertDataRawMutationVariables, TContext>(
+      ['InsertDataRaw'],
+      (variables?: InsertDataRawMutationVariables) => fetcher<InsertDataRawMutation, InsertDataRawMutationVariables>(InsertDataRawDocument, variables)(),
+      options
+    );
+useInsertDataRawMutation.fetcher = (variables: InsertDataRawMutationVariables, options?: RequestInit['headers']) => fetcher<InsertDataRawMutation, InsertDataRawMutationVariables>(InsertDataRawDocument, variables, options);
+export const MarkDataRawAsInactiveDocument = `
+    mutation MarkDataRawAsInactive($resourceType: String!, $resourceId: Int!) {
+  update_data_raw(
+    _set: {is_active: false}
+    where: {_and: [{resource: {_eq: $resourceType}}, {resource_id: {_eq: $resourceId}}]}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const useMarkDataRawAsInactiveMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<MarkDataRawAsInactiveMutation, TError, MarkDataRawAsInactiveMutationVariables, TContext>) =>
+    useMutation<MarkDataRawAsInactiveMutation, TError, MarkDataRawAsInactiveMutationVariables, TContext>(
+      ['MarkDataRawAsInactive'],
+      (variables?: MarkDataRawAsInactiveMutationVariables) => fetcher<MarkDataRawAsInactiveMutation, MarkDataRawAsInactiveMutationVariables>(MarkDataRawAsInactiveDocument, variables)(),
+      options
+    );
+useMarkDataRawAsInactiveMutation.fetcher = (variables: MarkDataRawAsInactiveMutationVariables, options?: RequestInit['headers']) => fetcher<MarkDataRawAsInactiveMutation, MarkDataRawAsInactiveMutationVariables>(MarkDataRawAsInactiveDocument, variables, options);
 export const GetEventsDocument = `
     query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
   events(
@@ -22106,6 +22699,33 @@ export const useUpsertInvestmentRoundMutation = <
       options
     );
 useUpsertInvestmentRoundMutation.fetcher = (variables: UpsertInvestmentRoundMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentRoundMutation, UpsertInvestmentRoundMutationVariables>(UpsertInvestmentRoundDocument, variables, options);
+export const GetInvestmentRoundByRoundIdDocument = `
+    query GetInvestmentRoundByRoundId($round_id: Int!) {
+  investment_rounds(where: {id: {_eq: $round_id}}) {
+    id
+    company_id
+  }
+}
+    `;
+export const useGetInvestmentRoundByRoundIdQuery = <
+      TData = GetInvestmentRoundByRoundIdQuery,
+      TError = Error
+    >(
+      variables: GetInvestmentRoundByRoundIdQueryVariables,
+      options?: UseQueryOptions<GetInvestmentRoundByRoundIdQuery, TError, TData>
+    ) =>
+    useQuery<GetInvestmentRoundByRoundIdQuery, TError, TData>(
+      ['GetInvestmentRoundByRoundId', variables],
+      fetcher<GetInvestmentRoundByRoundIdQuery, GetInvestmentRoundByRoundIdQueryVariables>(GetInvestmentRoundByRoundIdDocument, variables),
+      options
+    );
+useGetInvestmentRoundByRoundIdQuery.document = GetInvestmentRoundByRoundIdDocument;
+
+
+useGetInvestmentRoundByRoundIdQuery.getKey = (variables: GetInvestmentRoundByRoundIdQueryVariables) => ['GetInvestmentRoundByRoundId', variables];
+;
+
+useGetInvestmentRoundByRoundIdQuery.fetcher = (variables: GetInvestmentRoundByRoundIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestmentRoundByRoundIdQuery, GetInvestmentRoundByRoundIdQueryVariables>(GetInvestmentRoundByRoundIdDocument, variables, options);
 export const UpsertInvestmentsDocument = `
     mutation UpsertInvestments($data: [investments_insert_input!]!) {
   insert_investments(

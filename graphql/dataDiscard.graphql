@@ -1,0 +1,13 @@
+mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
+  insert_data_discard(objects: $input) {
+    returning {
+      id
+      created_at
+      resource
+      resource_id
+      field
+      value
+      accuracy_weight
+    }
+  }
+}
