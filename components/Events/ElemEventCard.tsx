@@ -1,7 +1,11 @@
 import { FC } from "react";
 import Link from "next/link";
 import { GetEventsQuery } from "@/graphql/types";
-import { getEventBanner, getFullAddress, randomImageOfCity } from "@/utils/helpers";
+import {
+	getEventBanner,
+	getFullAddress,
+	randomImageOfCity,
+} from "@/utils/helpers";
 import { values, isEmpty } from "lodash";
 import { formatDate } from "@/utils";
 
@@ -13,6 +17,13 @@ type Props = {
 export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 	const isEmptyLocation = values(event.location_json).every(isEmpty);
 
+	const eventPrice =
+		event.price > 0
+			? `Starts at $${event.price}`
+			: event.price?.toString() === "0"
+			? "Free"
+			: null;
+
 	return (
 		<Link key={event.id} href={`/events/${event.slug}`}>
 			<a
@@ -23,23 +34,21 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 					<div
 						className="absolute -z-10 top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
 						style={{
-              backgroundImage: `url(${
-                event.banner?.url || getEventBanner(event.location_json?.city)
-              }), url(${randomImageOfCity(event.location_json?.city)})`,
-            }}
+							backgroundImage: `url(${
+								event.banner?.url || getEventBanner(event.location_json?.city)
+							}), url(${randomImageOfCity(event.location_json?.city)})`,
+						}}
 					></div>
 					<img
 						className="relative object-fit w-full max-w-full"
-						src={
-							event.banner?.url || getEventBanner(event.location_json?.city)
-						}
+						src={event.banner?.url || getEventBanner(event.location_json?.city)}
 						alt={event.name}
 						onError={(e) => {
-              (e.target as HTMLImageElement).src = randomImageOfCity(
-                event.location_json?.city
-              );
-              (e.target as HTMLImageElement).onerror = null; // prevents looping
-            }}
+							(e.target as HTMLImageElement).src = randomImageOfCity(
+								event.location_json?.city
+							);
+							(e.target as HTMLImageElement).onerror = null; // prevents looping
+						}}
 					/>
 				</div>
 
@@ -92,7 +101,6 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 							))}
 						</div>
 					)}
-
 					{(!isEmptyLocation || event.venue_name) && (
 						<div className="mt-1 text-sm text-gray-400 break-words">
 							{`${event.venue_name || ""}${
@@ -101,14 +109,10 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 						</div>
 					)}
 
-					{(event.price || event.size) && (
+					{(eventPrice || event.size) && (
 						<div className="mt-1 text-sm text-gray-400 break-words">
-							{event.price > 0
-								? `Starts at $${event.price}`
-								: event.price === 0
-								? "Free"
-								: ""}
-							{event.price && event.size ? " • " : ""}
+							{eventPrice}
+							{eventPrice && event.size ? " • " : ""}
 							{event.size && (
 								<div className="inline capitalize">{event.size}</div>
 							)}

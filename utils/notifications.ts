@@ -86,17 +86,17 @@ const getMessageContents = (
 		if (notificationResourceType === "team_members") {
 			return "deleted a team info";
 		} else if (notificationResourceType === "investments") {
-			return "deleted an investments data";
+			return "deleted investments data";
 		} else if (notificationResourceType === "investment_rounds") {
-			return "deleted an investment round";
+			return "deleted investment round";
 		} else if (notificationResourceType === "investors") {
-			return "deleted a team info";
+			return "deleted team info";
 		} else if (notificationResourceType === "companies") {
 			return "deleted a company";
 		} else if (notificationResourceType === "vc_firms") {
 			return "deleted an investor";
 		} else if (notificationResourceType === "event_organization") {
-			return "deleted an event";
+			return "deleted event";
 		}
 		return "deleted a key info";
 	}
