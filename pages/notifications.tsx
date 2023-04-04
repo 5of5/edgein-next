@@ -38,7 +38,7 @@ const Notifications: NextPage = () => {
 	}, []);
 
 	const excludeResourceTypes = useMemo(() => {
-		return ["event_organization"];
+		return ["event_organization", "companies"];
 	}, []);
 
 	const { data, refetch } = useGetNotificationsForUserQuery({
