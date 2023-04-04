@@ -20478,6 +20478,14 @@ export type GetDeleteDataActionsQueryVariables = Exact<{
 
 export type GetDeleteDataActionsQuery = { __typename?: 'query_root', actions: Array<{ __typename?: 'actions', resource_id: number | null }> };
 
+export type GetAllowedEmailByEmailOrDomainQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+  domain: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetAllowedEmailByEmailOrDomainQuery = { __typename?: 'query_root', allowed_emails: Array<{ __typename?: 'allowed_emails', id: number, email: string, person_id: number | null }> };
+
 export type GetLastSyncQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -20606,6 +20614,14 @@ export type MarkDataRawAsInactiveMutationVariables = Exact<{
 
 
 export type MarkDataRawAsInactiveMutation = { __typename?: 'mutation_root', update_data_raw: { __typename?: 'data_raw_mutation_response', affected_rows: number } | null };
+
+export type GetDisabledEmailByEmailOrDomainQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+  domain: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetDisabledEmailByEmailOrDomainQuery = { __typename?: 'query_root', disabled_emails: Array<{ __typename?: 'disabled_emails', id: number, email: string }> };
 
 export type GetEventsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -20819,6 +20835,14 @@ export type UpsertInvestmentsMutationVariables = Exact<{
 
 export type UpsertInvestmentsMutation = { __typename?: 'mutation_root', insert_investments: { __typename?: 'investments_mutation_response', returning: Array<{ __typename?: 'investments', id: number, round_id: number | null, person_id: number | null, vc_firm_id: number | null, amount: any | null }> } | null };
 
+export type InsertInvestorMutationVariables = Exact<{
+  personId: InputMaybe<Scalars['Int']>;
+  vcFirmId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type InsertInvestorMutation = { __typename?: 'mutation_root', insert_investors_one: { __typename?: 'investors', id: number } | null };
+
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
@@ -21025,12 +21049,30 @@ export type UpdatePeopleByPkMutationVariables = Exact<{
 
 export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
 
+export type InsertEditAccessMutationVariables = Exact<{
+  userId: InputMaybe<Scalars['Int']>;
+  resourceId: InputMaybe<Scalars['Int']>;
+  resourceType: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type InsertEditAccessMutation = { __typename?: 'mutation_root', insert_resource_edit_access_one: { __typename?: 'resource_edit_access', id: number, user_id: number, resource_id: number, resource_type: string } | null };
+
 export type UpsertTeamMemberMutationVariables = Exact<{
   data: Team_Members_Insert_Input;
 }>;
 
 
 export type UpsertTeamMemberMutation = { __typename?: 'mutation_root', insert_team_members_one: { __typename?: 'team_members', id: number, function: string | null, person_id: number | null, company_id: number | null, title: string | null, start_date: any | null, end_date: any | null, seniority: string | null } | null };
+
+export type InsertTeamMemberMutationVariables = Exact<{
+  personId: InputMaybe<Scalars['Int']>;
+  companyId: InputMaybe<Scalars['Int']>;
+  vcFirmId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type InsertTeamMemberMutation = { __typename?: 'mutation_root', insert_team_members_one: { __typename?: 'team_members', id: number } | null };
 
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -21045,6 +21087,102 @@ export type GetUserByPersonIdQueryVariables = Exact<{
 
 
 export type GetUserByPersonIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null }> };
+
+export type GetUserByPkQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type GetUserByPkQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, additional_emails: any, email: string | null } | null };
+
+export type UpdateUserAdditionalEmailsByPkMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  emails: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateUserAdditionalEmailsByPkMutation = { __typename?: 'mutation_root', update_users_by_pk: { __typename?: 'users', id: number } | null };
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+
+export type UpdateUserBillingOrgMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  billingOrgId: Scalars['Int'];
+}>;
+
+
+export type UpdateUserBillingOrgMutation = { __typename?: 'mutation_root', update_users_by_pk: { __typename?: 'users', id: number } | null };
+
+export type UpsertUsersMutationVariables = Exact<{
+  external_id: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  role: InputMaybe<Scalars['String']>;
+  display_name: InputMaybe<Scalars['String']>;
+  auth0_linkedin_id: InputMaybe<Scalars['String']>;
+  auth0_user_pass_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertUsersMutation = { __typename?: 'mutation_root', insert_users: { __typename?: 'users_mutation_response', returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserEmailVerifiedStatusMutationVariables = Exact<{
+  email: Scalars['String'];
+  is_auth0_verified: InputMaybe<Scalars['Boolean']>;
+}>;
+
+
+export type UpdateUserEmailVerifiedStatusMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserAuth0LinkedInIdMutationVariables = Exact<{
+  email: Scalars['String'];
+  auth0_linkedin_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserAuth0UserPassIdMutationVariables = Exact<{
+  email: Scalars['String'];
+  auth0_user_pass_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserAuth0UserPassIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type GetUserByReferenceIdQueryVariables = Exact<{
+  reference_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUserByReferenceIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+
+export type UpdateUserAdditionalEmailsMutationVariables = Exact<{
+  id: Scalars['Int'];
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type GetUserByAdditionalEmailQueryVariables = Exact<{
+  email: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type GetUserByAdditionalEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -21110,6 +21248,13 @@ export type GetVcFirmsByDateQueryVariables = Exact<{
 
 export type GetVcFirmsByDateQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
 
+export type UpsertWaitlistEmailMutationVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpsertWaitlistEmailMutation = { __typename?: 'mutation_root', insert_waitlist_emails: { __typename?: 'waitlist_emails_mutation_response', returning: Array<{ __typename?: 'waitlist_emails', id: number, email: string }> } | null };
+
 
 export const InsertActionDocument = `
     mutation InsertAction($object: actions_insert_input!) {
@@ -21156,6 +21301,37 @@ useGetDeleteDataActionsQuery.getKey = (variables: GetDeleteDataActionsQueryVaria
 ;
 
 useGetDeleteDataActionsQuery.fetcher = (variables: GetDeleteDataActionsQueryVariables, options?: RequestInit['headers']) => fetcher<GetDeleteDataActionsQuery, GetDeleteDataActionsQueryVariables>(GetDeleteDataActionsDocument, variables, options);
+export const GetAllowedEmailByEmailOrDomainDocument = `
+    query GetAllowedEmailByEmailOrDomain($email: String, $domain: String) {
+  allowed_emails(
+    where: {_or: [{email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}]}
+    limit: 1
+  ) {
+    id
+    email
+    person_id
+  }
+}
+    `;
+export const useGetAllowedEmailByEmailOrDomainQuery = <
+      TData = GetAllowedEmailByEmailOrDomainQuery,
+      TError = Error
+    >(
+      variables?: GetAllowedEmailByEmailOrDomainQueryVariables,
+      options?: UseQueryOptions<GetAllowedEmailByEmailOrDomainQuery, TError, TData>
+    ) =>
+    useQuery<GetAllowedEmailByEmailOrDomainQuery, TError, TData>(
+      variables === undefined ? ['GetAllowedEmailByEmailOrDomain'] : ['GetAllowedEmailByEmailOrDomain', variables],
+      fetcher<GetAllowedEmailByEmailOrDomainQuery, GetAllowedEmailByEmailOrDomainQueryVariables>(GetAllowedEmailByEmailOrDomainDocument, variables),
+      options
+    );
+useGetAllowedEmailByEmailOrDomainQuery.document = GetAllowedEmailByEmailOrDomainDocument;
+
+
+useGetAllowedEmailByEmailOrDomainQuery.getKey = (variables?: GetAllowedEmailByEmailOrDomainQueryVariables) => variables === undefined ? ['GetAllowedEmailByEmailOrDomain'] : ['GetAllowedEmailByEmailOrDomain', variables];
+;
+
+useGetAllowedEmailByEmailOrDomainQuery.fetcher = (variables?: GetAllowedEmailByEmailOrDomainQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllowedEmailByEmailOrDomainQuery, GetAllowedEmailByEmailOrDomainQueryVariables>(GetAllowedEmailByEmailOrDomainDocument, variables, options);
 export const GetLastSyncDocument = `
     query GetLastSync {
   application_meta(
@@ -21798,6 +21974,36 @@ export const useMarkDataRawAsInactiveMutation = <
       options
     );
 useMarkDataRawAsInactiveMutation.fetcher = (variables: MarkDataRawAsInactiveMutationVariables, options?: RequestInit['headers']) => fetcher<MarkDataRawAsInactiveMutation, MarkDataRawAsInactiveMutationVariables>(MarkDataRawAsInactiveDocument, variables, options);
+export const GetDisabledEmailByEmailOrDomainDocument = `
+    query GetDisabledEmailByEmailOrDomain($email: String, $domain: String) {
+  disabled_emails(
+    where: {_or: [{email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}]}
+    limit: 1
+  ) {
+    id
+    email
+  }
+}
+    `;
+export const useGetDisabledEmailByEmailOrDomainQuery = <
+      TData = GetDisabledEmailByEmailOrDomainQuery,
+      TError = Error
+    >(
+      variables?: GetDisabledEmailByEmailOrDomainQueryVariables,
+      options?: UseQueryOptions<GetDisabledEmailByEmailOrDomainQuery, TError, TData>
+    ) =>
+    useQuery<GetDisabledEmailByEmailOrDomainQuery, TError, TData>(
+      variables === undefined ? ['GetDisabledEmailByEmailOrDomain'] : ['GetDisabledEmailByEmailOrDomain', variables],
+      fetcher<GetDisabledEmailByEmailOrDomainQuery, GetDisabledEmailByEmailOrDomainQueryVariables>(GetDisabledEmailByEmailOrDomainDocument, variables),
+      options
+    );
+useGetDisabledEmailByEmailOrDomainQuery.document = GetDisabledEmailByEmailOrDomainDocument;
+
+
+useGetDisabledEmailByEmailOrDomainQuery.getKey = (variables?: GetDisabledEmailByEmailOrDomainQueryVariables) => variables === undefined ? ['GetDisabledEmailByEmailOrDomain'] : ['GetDisabledEmailByEmailOrDomain', variables];
+;
+
+useGetDisabledEmailByEmailOrDomainQuery.fetcher = (variables?: GetDisabledEmailByEmailOrDomainQueryVariables, options?: RequestInit['headers']) => fetcher<GetDisabledEmailByEmailOrDomainQuery, GetDisabledEmailByEmailOrDomainQueryVariables>(GetDisabledEmailByEmailOrDomainDocument, variables, options);
 export const GetEventsDocument = `
     query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
   events(
@@ -22752,6 +22958,26 @@ export const useUpsertInvestmentsMutation = <
       options
     );
 useUpsertInvestmentsMutation.fetcher = (variables: UpsertInvestmentsMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentsMutation, UpsertInvestmentsMutationVariables>(UpsertInvestmentsDocument, variables, options);
+export const InsertInvestorDocument = `
+    mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
+  insert_investors_one(
+    object: {person_id: $personId, vc_firm_id: $vcFirmId}
+    on_conflict: {constraint: investors_vc_firm_id_person_id_key, update_columns: []}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertInvestorMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertInvestorMutation, TError, InsertInvestorMutationVariables, TContext>) =>
+    useMutation<InsertInvestorMutation, TError, InsertInvestorMutationVariables, TContext>(
+      ['InsertInvestor'],
+      (variables?: InsertInvestorMutationVariables) => fetcher<InsertInvestorMutation, InsertInvestorMutationVariables>(InsertInvestorDocument, variables)(),
+      options
+    );
+useInsertInvestorMutation.fetcher = (variables?: InsertInvestorMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvestorMutation, InsertInvestorMutationVariables>(InsertInvestorDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
@@ -23663,6 +23889,29 @@ export const useUpdatePeopleByPkMutation = <
       options
     );
 useUpdatePeopleByPkMutation.fetcher = (variables: UpdatePeopleByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables, options);
+export const InsertEditAccessDocument = `
+    mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
+  insert_resource_edit_access_one(
+    object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}
+    on_conflict: {constraint: resource_edit_access_resource_id_user_id_resource_type_key, update_columns: []}
+  ) {
+    id
+    user_id
+    resource_id
+    resource_type
+  }
+}
+    `;
+export const useInsertEditAccessMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertEditAccessMutation, TError, InsertEditAccessMutationVariables, TContext>) =>
+    useMutation<InsertEditAccessMutation, TError, InsertEditAccessMutationVariables, TContext>(
+      ['InsertEditAccess'],
+      (variables?: InsertEditAccessMutationVariables) => fetcher<InsertEditAccessMutation, InsertEditAccessMutationVariables>(InsertEditAccessDocument, variables)(),
+      options
+    );
+useInsertEditAccessMutation.fetcher = (variables?: InsertEditAccessMutationVariables, options?: RequestInit['headers']) => fetcher<InsertEditAccessMutation, InsertEditAccessMutationVariables>(InsertEditAccessDocument, variables, options);
 export const UpsertTeamMemberDocument = `
     mutation UpsertTeamMember($data: team_members_insert_input!) {
   insert_team_members_one(
@@ -23690,6 +23939,26 @@ export const useUpsertTeamMemberMutation = <
       options
     );
 useUpsertTeamMemberMutation.fetcher = (variables: UpsertTeamMemberMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertTeamMemberMutation, UpsertTeamMemberMutationVariables>(UpsertTeamMemberDocument, variables, options);
+export const InsertTeamMemberDocument = `
+    mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
+  insert_team_members_one(
+    object: {person_id: $personId, company_id: $companyId}
+    on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: []}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertTeamMemberMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertTeamMemberMutation, TError, InsertTeamMemberMutationVariables, TContext>) =>
+    useMutation<InsertTeamMemberMutation, TError, InsertTeamMemberMutationVariables, TContext>(
+      ['InsertTeamMember'],
+      (variables?: InsertTeamMemberMutationVariables) => fetcher<InsertTeamMemberMutation, InsertTeamMemberMutationVariables>(InsertTeamMemberDocument, variables)(),
+      options
+    );
+useInsertTeamMemberMutation.fetcher = (variables?: InsertTeamMemberMutationVariables, options?: RequestInit['headers']) => fetcher<InsertTeamMemberMutation, InsertTeamMemberMutationVariables>(InsertTeamMemberDocument, variables, options);
 export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
@@ -23886,6 +24155,445 @@ useGetUserByPersonIdQuery.getKey = (variables: GetUserByPersonIdQueryVariables) 
 ;
 
 useGetUserByPersonIdQuery.fetcher = (variables: GetUserByPersonIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPersonIdQuery, GetUserByPersonIdQueryVariables>(GetUserByPersonIdDocument, variables, options);
+export const GetUserByPkDocument = `
+    query GetUserByPk($userId: Int!) {
+  users_by_pk(id: $userId) {
+    id
+    additional_emails
+    email
+  }
+}
+    `;
+export const useGetUserByPkQuery = <
+      TData = GetUserByPkQuery,
+      TError = Error
+    >(
+      variables: GetUserByPkQueryVariables,
+      options?: UseQueryOptions<GetUserByPkQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByPkQuery, TError, TData>(
+      ['GetUserByPk', variables],
+      fetcher<GetUserByPkQuery, GetUserByPkQueryVariables>(GetUserByPkDocument, variables),
+      options
+    );
+useGetUserByPkQuery.document = GetUserByPkDocument;
+
+
+useGetUserByPkQuery.getKey = (variables: GetUserByPkQueryVariables) => ['GetUserByPk', variables];
+;
+
+useGetUserByPkQuery.fetcher = (variables: GetUserByPkQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPkQuery, GetUserByPkQueryVariables>(GetUserByPkDocument, variables, options);
+export const UpdateUserAdditionalEmailsByPkDocument = `
+    mutation UpdateUserAdditionalEmailsByPk($userId: Int!, $emails: jsonb) {
+  update_users_by_pk(
+    pk_columns: {id: $userId}
+    _set: {additional_emails: $emails}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpdateUserAdditionalEmailsByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAdditionalEmailsByPkMutation, TError, UpdateUserAdditionalEmailsByPkMutationVariables, TContext>) =>
+    useMutation<UpdateUserAdditionalEmailsByPkMutation, TError, UpdateUserAdditionalEmailsByPkMutationVariables, TContext>(
+      ['UpdateUserAdditionalEmailsByPk'],
+      (variables?: UpdateUserAdditionalEmailsByPkMutationVariables) => fetcher<UpdateUserAdditionalEmailsByPkMutation, UpdateUserAdditionalEmailsByPkMutationVariables>(UpdateUserAdditionalEmailsByPkDocument, variables)(),
+      options
+    );
+useUpdateUserAdditionalEmailsByPkMutation.fetcher = (variables: UpdateUserAdditionalEmailsByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAdditionalEmailsByPkMutation, UpdateUserAdditionalEmailsByPkMutationVariables>(UpdateUserAdditionalEmailsByPkDocument, variables, options);
+export const GetUserByEmailDocument = `
+    query GetUserByEmail($email: String) {
+  users(where: {email: {_eq: $email}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+    `;
+export const useGetUserByEmailQuery = <
+      TData = GetUserByEmailQuery,
+      TError = Error
+    >(
+      variables?: GetUserByEmailQueryVariables,
+      options?: UseQueryOptions<GetUserByEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByEmailQuery, TError, TData>(
+      variables === undefined ? ['GetUserByEmail'] : ['GetUserByEmail', variables],
+      fetcher<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, variables),
+      options
+    );
+useGetUserByEmailQuery.document = GetUserByEmailDocument;
+
+
+useGetUserByEmailQuery.getKey = (variables?: GetUserByEmailQueryVariables) => variables === undefined ? ['GetUserByEmail'] : ['GetUserByEmail', variables];
+;
+
+useGetUserByEmailQuery.fetcher = (variables?: GetUserByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, variables, options);
+export const GetUserByIdDocument = `
+    query GetUserById($id: Int) {
+  users(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    billing_org {
+      customer_id
+    }
+    person {
+      name
+      picture
+    }
+    additional_emails
+  }
+}
+    `;
+export const useGetUserByIdQuery = <
+      TData = GetUserByIdQuery,
+      TError = Error
+    >(
+      variables?: GetUserByIdQueryVariables,
+      options?: UseQueryOptions<GetUserByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByIdQuery, TError, TData>(
+      variables === undefined ? ['GetUserById'] : ['GetUserById', variables],
+      fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, variables),
+      options
+    );
+useGetUserByIdQuery.document = GetUserByIdDocument;
+
+
+useGetUserByIdQuery.getKey = (variables?: GetUserByIdQueryVariables) => variables === undefined ? ['GetUserById'] : ['GetUserById', variables];
+;
+
+useGetUserByIdQuery.fetcher = (variables?: GetUserByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, variables, options);
+export const UpdateUserBillingOrgDocument = `
+    mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
+  update_users_by_pk(
+    pk_columns: {id: $userId}
+    _set: {billing_org_id: $billingOrgId}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpdateUserBillingOrgMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserBillingOrgMutation, TError, UpdateUserBillingOrgMutationVariables, TContext>) =>
+    useMutation<UpdateUserBillingOrgMutation, TError, UpdateUserBillingOrgMutationVariables, TContext>(
+      ['UpdateUserBillingOrg'],
+      (variables?: UpdateUserBillingOrgMutationVariables) => fetcher<UpdateUserBillingOrgMutation, UpdateUserBillingOrgMutationVariables>(UpdateUserBillingOrgDocument, variables)(),
+      options
+    );
+useUpdateUserBillingOrgMutation.fetcher = (variables: UpdateUserBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserBillingOrgMutation, UpdateUserBillingOrgMutationVariables>(UpdateUserBillingOrgDocument, variables, options);
+export const UpsertUsersDocument = `
+    mutation UpsertUsers($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String, $reference_user_id: Int) {
+  insert_users(
+    objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id, reference_user_id: $reference_user_id}]
+    on_conflict: {constraint: users_email_key, update_columns: [external_id]}
+  ) {
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpsertUsersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertUsersMutation, TError, UpsertUsersMutationVariables, TContext>) =>
+    useMutation<UpsertUsersMutation, TError, UpsertUsersMutationVariables, TContext>(
+      ['UpsertUsers'],
+      (variables?: UpsertUsersMutationVariables) => fetcher<UpsertUsersMutation, UpsertUsersMutationVariables>(UpsertUsersDocument, variables)(),
+      options
+    );
+useUpsertUsersMutation.fetcher = (variables?: UpsertUsersMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertUsersMutation, UpsertUsersMutationVariables>(UpsertUsersDocument, variables, options);
+export const UpdateUserEmailVerifiedStatusDocument = `
+    mutation UpdateUserEmailVerifiedStatus($email: String!, $is_auth0_verified: Boolean) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {is_auth0_verified: $is_auth0_verified}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserEmailVerifiedStatusMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserEmailVerifiedStatusMutation, TError, UpdateUserEmailVerifiedStatusMutationVariables, TContext>) =>
+    useMutation<UpdateUserEmailVerifiedStatusMutation, TError, UpdateUserEmailVerifiedStatusMutationVariables, TContext>(
+      ['UpdateUserEmailVerifiedStatus'],
+      (variables?: UpdateUserEmailVerifiedStatusMutationVariables) => fetcher<UpdateUserEmailVerifiedStatusMutation, UpdateUserEmailVerifiedStatusMutationVariables>(UpdateUserEmailVerifiedStatusDocument, variables)(),
+      options
+    );
+useUpdateUserEmailVerifiedStatusMutation.fetcher = (variables: UpdateUserEmailVerifiedStatusMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserEmailVerifiedStatusMutation, UpdateUserEmailVerifiedStatusMutationVariables>(UpdateUserEmailVerifiedStatusDocument, variables, options);
+export const UpdateUserAuth0LinkedInIdDocument = `
+    mutation UpdateUserAuth0LinkedInId($email: String!, $auth0_linkedin_id: String) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {auth0_linkedin_id: $auth0_linkedin_id}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserAuth0LinkedInIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAuth0LinkedInIdMutation, TError, UpdateUserAuth0LinkedInIdMutationVariables, TContext>) =>
+    useMutation<UpdateUserAuth0LinkedInIdMutation, TError, UpdateUserAuth0LinkedInIdMutationVariables, TContext>(
+      ['UpdateUserAuth0LinkedInId'],
+      (variables?: UpdateUserAuth0LinkedInIdMutationVariables) => fetcher<UpdateUserAuth0LinkedInIdMutation, UpdateUserAuth0LinkedInIdMutationVariables>(UpdateUserAuth0LinkedInIdDocument, variables)(),
+      options
+    );
+useUpdateUserAuth0LinkedInIdMutation.fetcher = (variables: UpdateUserAuth0LinkedInIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAuth0LinkedInIdMutation, UpdateUserAuth0LinkedInIdMutationVariables>(UpdateUserAuth0LinkedInIdDocument, variables, options);
+export const UpdateUserAuth0UserPassIdDocument = `
+    mutation UpdateUserAuth0UserPassId($email: String!, $auth0_user_pass_id: String) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {auth0_user_pass_id: $auth0_user_pass_id}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserAuth0UserPassIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAuth0UserPassIdMutation, TError, UpdateUserAuth0UserPassIdMutationVariables, TContext>) =>
+    useMutation<UpdateUserAuth0UserPassIdMutation, TError, UpdateUserAuth0UserPassIdMutationVariables, TContext>(
+      ['UpdateUserAuth0UserPassId'],
+      (variables?: UpdateUserAuth0UserPassIdMutationVariables) => fetcher<UpdateUserAuth0UserPassIdMutation, UpdateUserAuth0UserPassIdMutationVariables>(UpdateUserAuth0UserPassIdDocument, variables)(),
+      options
+    );
+useUpdateUserAuth0UserPassIdMutation.fetcher = (variables: UpdateUserAuth0UserPassIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAuth0UserPassIdMutation, UpdateUserAuth0UserPassIdMutationVariables>(UpdateUserAuth0UserPassIdDocument, variables, options);
+export const GetUserByReferenceIdDocument = `
+    query GetUserByReferenceId($reference_id: String) {
+  users(where: {reference_id: {_eq: $reference_id}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+    `;
+export const useGetUserByReferenceIdQuery = <
+      TData = GetUserByReferenceIdQuery,
+      TError = Error
+    >(
+      variables?: GetUserByReferenceIdQueryVariables,
+      options?: UseQueryOptions<GetUserByReferenceIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByReferenceIdQuery, TError, TData>(
+      variables === undefined ? ['GetUserByReferenceId'] : ['GetUserByReferenceId', variables],
+      fetcher<GetUserByReferenceIdQuery, GetUserByReferenceIdQueryVariables>(GetUserByReferenceIdDocument, variables),
+      options
+    );
+useGetUserByReferenceIdQuery.document = GetUserByReferenceIdDocument;
+
+
+useGetUserByReferenceIdQuery.getKey = (variables?: GetUserByReferenceIdQueryVariables) => variables === undefined ? ['GetUserByReferenceId'] : ['GetUserByReferenceId', variables];
+;
+
+useGetUserByReferenceIdQuery.fetcher = (variables?: GetUserByReferenceIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByReferenceIdQuery, GetUserByReferenceIdQueryVariables>(GetUserByReferenceIdDocument, variables, options);
+export const UpdateUserAdditionalEmailsDocument = `
+    mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
+  update_users(
+    where: {id: {_eq: $id}}
+    _set: {additional_emails: $additional_emails}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserAdditionalEmailsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAdditionalEmailsMutation, TError, UpdateUserAdditionalEmailsMutationVariables, TContext>) =>
+    useMutation<UpdateUserAdditionalEmailsMutation, TError, UpdateUserAdditionalEmailsMutationVariables, TContext>(
+      ['UpdateUserAdditionalEmails'],
+      (variables?: UpdateUserAdditionalEmailsMutationVariables) => fetcher<UpdateUserAdditionalEmailsMutation, UpdateUserAdditionalEmailsMutationVariables>(UpdateUserAdditionalEmailsDocument, variables)(),
+      options
+    );
+useUpdateUserAdditionalEmailsMutation.fetcher = (variables: UpdateUserAdditionalEmailsMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAdditionalEmailsMutation, UpdateUserAdditionalEmailsMutationVariables>(UpdateUserAdditionalEmailsDocument, variables, options);
+export const GetUserByAdditionalEmailDocument = `
+    query GetUserByAdditionalEmail($email: jsonb) {
+  users(where: {additional_emails: {_contains: $email}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+    `;
+export const useGetUserByAdditionalEmailQuery = <
+      TData = GetUserByAdditionalEmailQuery,
+      TError = Error
+    >(
+      variables?: GetUserByAdditionalEmailQueryVariables,
+      options?: UseQueryOptions<GetUserByAdditionalEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByAdditionalEmailQuery, TError, TData>(
+      variables === undefined ? ['GetUserByAdditionalEmail'] : ['GetUserByAdditionalEmail', variables],
+      fetcher<GetUserByAdditionalEmailQuery, GetUserByAdditionalEmailQueryVariables>(GetUserByAdditionalEmailDocument, variables),
+      options
+    );
+useGetUserByAdditionalEmailQuery.document = GetUserByAdditionalEmailDocument;
+
+
+useGetUserByAdditionalEmailQuery.getKey = (variables?: GetUserByAdditionalEmailQueryVariables) => variables === undefined ? ['GetUserByAdditionalEmail'] : ['GetUserByAdditionalEmail', variables];
+;
+
+useGetUserByAdditionalEmailQuery.fetcher = (variables?: GetUserByAdditionalEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByAdditionalEmailQuery, GetUserByAdditionalEmailQueryVariables>(GetUserByAdditionalEmailDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
@@ -24256,3 +24964,26 @@ useGetVcFirmsByDateQuery.getKey = (variables?: GetVcFirmsByDateQueryVariables) =
 ;
 
 useGetVcFirmsByDateQuery.fetcher = (variables?: GetVcFirmsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByDateQuery, GetVcFirmsByDateQueryVariables>(GetVcFirmsByDateDocument, variables, options);
+export const UpsertWaitlistEmailDocument = `
+    mutation UpsertWaitlistEmail($email: String) {
+  insert_waitlist_emails(
+    objects: [{email: $email}]
+    on_conflict: {constraint: waitlist_emails_email_key, update_columns: [email]}
+  ) {
+    returning {
+      id
+      email
+    }
+  }
+}
+    `;
+export const useUpsertWaitlistEmailMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertWaitlistEmailMutation, TError, UpsertWaitlistEmailMutationVariables, TContext>) =>
+    useMutation<UpsertWaitlistEmailMutation, TError, UpsertWaitlistEmailMutationVariables, TContext>(
+      ['UpsertWaitlistEmail'],
+      (variables?: UpsertWaitlistEmailMutationVariables) => fetcher<UpsertWaitlistEmailMutation, UpsertWaitlistEmailMutationVariables>(UpsertWaitlistEmailDocument, variables)(),
+      options
+    );
+useUpsertWaitlistEmailMutation.fetcher = (variables?: UpsertWaitlistEmailMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertWaitlistEmailMutation, UpsertWaitlistEmailMutationVariables>(UpsertWaitlistEmailDocument, variables, options);

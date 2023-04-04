@@ -1,0 +1,14 @@
+mutation UpsertWaitlistEmail($email: String) {
+  insert_waitlist_emails(
+    objects: [{ email: $email }]
+    on_conflict: {
+      constraint: waitlist_emails_email_key
+      update_columns: [email]
+    }
+  ) {
+    returning {
+      id
+      email
+    }
+  }
+}

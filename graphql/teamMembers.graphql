@@ -16,3 +16,15 @@ mutation UpsertTeamMember($data: team_members_insert_input!) {
     seniority
   }
 }
+
+mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
+  insert_team_members_one(
+    object: { person_id: $personId, company_id: $companyId }
+    on_conflict: {
+      constraint: team_members_company_id_person_id_key
+      update_columns: []
+    }
+  ) {
+    id
+  }
+}
