@@ -64,7 +64,7 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 					</span>
 				)}
 			</div>
-			<div className="flex-1 flex justify-between sm:justify-end items-center">
+			<div className="flex-1 flex space-x-2 justify-between sm:justify-end items-center">
 				{page * itemsPerPage > 0 && (
 					<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
 						Prev

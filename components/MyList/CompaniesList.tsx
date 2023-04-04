@@ -528,7 +528,7 @@ export const CompaniesList: FC<Props> = ({
 				</div>
 			)}
 
-			<div className="border border-black/10 rounded-lg overflow-auto">
+			<div className="-mx-5 border-y border-black/10 overflow-auto lg:border lg:rounded-lg lg:mx-0">
 				{page.length > 0 ? (
 					<table
 						{...getTableProps()}
