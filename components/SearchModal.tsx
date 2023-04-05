@@ -20,6 +20,7 @@ import {
 	IconImage,
 } from "@/components/Icons";
 import Link from "next/link";
+import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 
 const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -60,10 +61,12 @@ type HitPeopleProps = {
 type HitEventsProps = {
 	hit: AlgoliaHit<{
 		name: string;
+		slug: string;
+		overview: string;
+		banner: string;
+		location_json: Record<string, string>;
 		start_date: string;
 		end_date: string;
-		banner: string;
-		slug: string;
 		empty: boolean;
 	}>;
 };
@@ -251,15 +254,17 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 					className="flex items-center px-6 py-1 group hover:bg-slate-100"
 				>
 					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
-						{hit.banner ? (
-							<img
-								className="object-contain max-w-full max-h-full"
-								src={hit.banner}
-								alt={hit.name}
-							/>
-						) : (
-							<IconImage className="object-contain max-w-full max-h-full text-slate-200" />
-						)}
+						<img
+							className="object-contain max-w-full max-h-full"
+							src={hit.banner || getEventBanner(hit.location_json?.city)}
+							alt={hit.name}
+							onError={(e) => {
+								(e.target as HTMLImageElement).src = randomImageOfCity(
+									hit.location_json?.city
+								);
+								(e.target as HTMLImageElement).onerror = null; // prevents looping
+							}}
+						/>
 					</div>
 					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
 						<Highlight
@@ -324,7 +329,7 @@ export default function SearchModal(props: any) {
 				<div className="px-6 py-1 mt-5 text-center">
 					<FigureSearch className="mx-auto h-36 lg:h-40" />
 					<div className="mt-3 text-xl font-bold">
-						Search for Companies, Investors, &amp; People
+						Search for Companies, Investors, People &amp; Events
 					</div>
 					<div style={{ display: "none" }}>{children}</div>
 				</div>
@@ -498,7 +503,7 @@ export default function SearchModal(props: any) {
 												</EmptyQueryBoundary>
 											</Index>
 
-											{/* <Index indexName="events">
+											<Index indexName="events">
 												<Configure hitsPerPage={4} />
 												<h3 className="font-bold mt-5 mx-6">Events</h3>
 												<EmptyQueryBoundary>
@@ -517,7 +522,7 @@ export default function SearchModal(props: any) {
 														}}
 													/>
 												</EmptyQueryBoundary>
-											</Index> */}
+											</Index>
 										</MasterEmptyQueryBoundary>
 									</InstantSearch>
 								</Dialog.Panel>

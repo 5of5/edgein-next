@@ -6,6 +6,8 @@ import {
   GetCompaniesByDateQuery,
   GetDeleteDataActionsDocument,
   GetDeleteDataActionsQuery,
+  GetEventsByDateDocument,
+  GetEventsByDateQuery,
   GetLastSyncDocument,
   GetLastSyncQuery,
   GetPeopleByDateDocument,
@@ -131,6 +133,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
+    // get last sync info for events
+  const eventLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_events');
+  output['eventLastSync'] = eventLastSync?.value
+  if (eventLastSync) {
+    try {
+      // get all the events details
+      const eventList: any = await queryForEventList(eventLastSync.value);
+
+      for (const event of eventList) {
+        if (event.banner) {
+          event.banner = event.banner.url;
+        }
+        event.objectID = event.id;
+        delete event.id;
+      }
+      const eventIndex = client.initIndex('events');
+      await eventIndex.saveObjects(eventList, { autoGenerateObjectIDIfNotExist: true });
+
+      /** Find deleted events in actions table and remove them in index */
+      const deletedEvents = await queryForDeletedResources("events", eventLastSync.value);
+      eventIndex.deleteObjects(deletedEvents.map((item: any) => item.resource_id));
+
+      output['eventList'] = eventList.map((p:any) => `${p.id} ${p.name}`).length - deletedEvents.length;
+       // update the last_sync date to current date
+       await mutateForlastSync('sync_events');
+    } catch (error) {
+      // update the last_error
+      output['eventsError'] = error
+      await mutateForError('sync_events', prepareError(error));
+    }
+  }
+
     res.send({ success: true, ...output })
 }
 
@@ -191,6 +225,20 @@ const queryForPeopleList = async (date: any) => {
       variables: { date }
     })
     return data.data.people
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+
+// queries local user using graphql endpoint
+const queryForEventList = async (date: any) => {
+  try {
+    const data = await query<GetEventsByDateQuery>({
+      query: GetEventsByDateDocument,
+      variables: { date }
+    })
+    return data.data.events
   } catch (ex) {
     throw ex;
   }

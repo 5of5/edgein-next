@@ -14,7 +14,7 @@ import { TheFooter } from "@/components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
-import { DATADOME_JS, DATADOME_TAGS } from "@/utils/constants";
+
 const INTERCOM_APP_ID = "jm3hf6lp";
 
 declare global {
@@ -164,15 +164,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 					}}
 				/> */}
 
-				<>
-					<Script id="datadome-script" strategy="lazyOnload">{`
-					window.ddjskey = '${process.env.NEXT_PUBLIC_DATADOME_CLIENT_KEY}'
-					window.ddoptions = {
-						endpoint: '${DATADOME_JS}'
-					}
-				`}</Script>
-					<Script src={DATADOME_TAGS} strategy="lazyOnload" />
-				</>
 			</div>
 		</>
 	);

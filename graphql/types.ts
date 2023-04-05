@@ -20682,6 +20682,13 @@ export type GetEventQueryVariables = Exact<{
 
 export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
+export type GetEventsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
@@ -22283,6 +22290,41 @@ useGetEventQuery.getKey = (variables: GetEventQueryVariables) => ['GetEvent', va
 ;
 
 useGetEventQuery.fetcher = (variables: GetEventQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables, options);
+export const GetEventsByDateDocument = `
+    query GetEventsByDate($date: timestamptz) {
+  events(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}]}
+  ) {
+    id
+    name
+    slug
+    overview
+    banner
+    location_json
+    start_date
+    end_date
+  }
+}
+    `;
+export const useGetEventsByDateQuery = <
+      TData = GetEventsByDateQuery,
+      TError = Error
+    >(
+      variables?: GetEventsByDateQueryVariables,
+      options?: UseQueryOptions<GetEventsByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetEventsByDateQuery, TError, TData>(
+      variables === undefined ? ['GetEventsByDate'] : ['GetEventsByDate', variables],
+      fetcher<GetEventsByDateQuery, GetEventsByDateQueryVariables>(GetEventsByDateDocument, variables),
+      options
+    );
+useGetEventsByDateQuery.document = GetEventsByDateDocument;
+
+
+useGetEventsByDateQuery.getKey = (variables?: GetEventsByDateQueryVariables) => variables === undefined ? ['GetEventsByDate'] : ['GetEventsByDate', variables];
+;
+
+useGetEventsByDateQuery.fetcher = (variables?: GetEventsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsByDateQuery, GetEventsByDateQueryVariables>(GetEventsByDateDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {

@@ -92,3 +92,20 @@ query GetEvent($slug: String!) {
 		}
 	}
 }
+
+query GetEventsByDate($date: timestamptz) {
+  events(
+    where: {
+      _and: [{ status: { _eq: "published" } }, { updated_at: { _gte: $date } }]
+    }
+  ) {
+    id
+    name
+    slug
+    overview
+    banner
+    location_json
+    start_date
+    end_date
+  }
+}
