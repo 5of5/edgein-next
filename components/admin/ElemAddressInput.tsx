@@ -65,7 +65,7 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
             ? {
                 address: `${newValue?.street || ''} ${newValue?.number || ''} `,
                 city: newValue?.city,
-                state: newValue?.state,
+                state: newValue?.state === newValue?.city ? "" : newValue?.state,
                 country: newValue?.country,
               }
             : defaultLocation,
