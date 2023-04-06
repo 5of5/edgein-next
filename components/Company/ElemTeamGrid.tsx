@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Team_Members } from "@/graphql/types";
+import { People, Team_Members } from "@/graphql/types";
 import { ElemPersonCard } from "@/components/ElemPersonCard";
 import { IconEditPencil } from "@/components/Icons";
 import { ElemFilterTags } from "@/components/ElemFilterTags";
 import { uniq, compact, sortBy } from "lodash";
+import { ElemBulkSavePeople } from "../ElemBulkSavePeople";
 
 type Props = {
 	className?: string;
@@ -44,6 +45,10 @@ export const ElemTeamGrid: React.FC<Props> = ({
 				Date.parse(new Date(b.end_date).toString())
 		);
 
+	const personIds = peopleInactiveLast
+    .filter((item) => item.person !== null)
+    .map((item) => (item.person as People).id);
+
 	return (
 		<section className={className}>
 			{heading && (
@@ -56,12 +61,18 @@ export const ElemTeamGrid: React.FC<Props> = ({
 					)}
 				</div>
 			)}
-			<ElemFilterTags
-				onClick={(tag, index) => setSelectedTag(tag)}
-				selectedTag={selectedTag}
-				className="mt-2"
-				tags={allTags}
-			/>
+			<div className="flex items-center justify-between">
+        <ElemFilterTags
+          onClick={(tag, index) => setSelectedTag(tag)}
+          selectedTag={selectedTag}
+          className="mt-2"
+          tags={allTags}
+        />
+       	<ElemBulkSavePeople
+          text="Save team to list"
+          personIds={personIds}
+        />
+      </div>
 			<div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{peopleInactiveLast.map((teamMember) => {
 					return (

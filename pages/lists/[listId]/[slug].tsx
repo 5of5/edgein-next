@@ -9,10 +9,12 @@ import moment from "moment-timezone";
 import {
 	Follows_Companies,
 	Follows_Vc_Firms,
+	Follows_People,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
 	useGetListUserGroupsQuery,
 	List_User_Groups_Bool_Exp,
+	useGetPeopleByListIdQuery,
 } from "@/graphql/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -24,6 +26,7 @@ import {
 } from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/userContext";
+import { PeopleList } from "@/components/MyList/PeopleList";
 
 type Props = {};
 
@@ -40,6 +43,7 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
+	const [people, setPeople] = useState<Follows_People[]>([]);
 
 	const { data: groups, refetch: refetchGroups } = useGetListUserGroupsQuery(
 		{
@@ -216,11 +220,20 @@ const MyList: NextPage<Props> = ({}) => {
 		list_id: theListId,
 	});
 
+	const {
+		data: listPeople,
+		error: listPeopleError,
+		isLoading: listPeopleLoading,
+	} = useGetPeopleByListIdQuery({
+		list_id: theListId,
+	});
+
 	useEffect(() => {
 		if (companiesData)
 			setCompanies(companiesData?.follows_companies as Follows_Companies[]);
 		if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
-	}, [companiesData, vcFirms]);
+		if (listPeople) setPeople(listPeople?.follows_people as Follows_People[]);
+	}, [companiesData, vcFirms, listPeople]);
 
 	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
 
@@ -301,6 +314,18 @@ const MyList: NextPage<Props> = ({}) => {
 					isCustomList={isCustomList}
 				/>
 			)}
+
+			{isCustomList && [
+				listPeopleError && isCustomList ? (
+					<h4>Error loading people</h4>
+				) : listPeopleLoading && isCustomList ? (
+					<div className="rounded-lg p-5 bg-white shadow mb-8">
+						<PlaceholderTable />
+					</div>
+				) : (
+					<PeopleList people={people} selectedListName={selectedListName} />
+				),
+			]}
 
 			<Toaster />
 		</DashboardLayout>

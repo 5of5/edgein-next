@@ -12,6 +12,9 @@ query GetFollowsByUser($user_id: Int!) {
 			follows_vcfirms {
 				resource_id
 			}
+			follows_people {
+				resource_id
+			}
 		}
 	}
 }
@@ -71,6 +74,27 @@ query GetVcFirmsByListId($list_id: Int = 0) {
 					round
 				}
 			}
+		}
+	}
+}
+
+query GetPeopleByListId($list_id: Int = 0) {
+	follows_people(where: { list_id: { _eq: $list_id } }) {
+		id
+		person {
+			id
+			name
+			picture
+			slug
+			type
+			personal_email
+			work_email
+			city
+			country
+			website_url
+			github
+			twitter_url
+			linkedin
 		}
 	}
 }
