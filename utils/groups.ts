@@ -466,6 +466,81 @@ const onCheckGroupMemberExists = async (user_id: number, user_group_id: number) 
   }
 };
 
+const onCheckLikeExists = async (note_id: number, user_id: number) => {
+  try {
+    const data = await query({
+      query: `
+      query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
+        likes(where: {
+          _and: [
+            {note_id: {_eq: $note_id}},
+            {user_id: {_eq: $user_id}}
+          ]
+        }, limit: 1) {
+          id
+        }
+      }
+      `,
+      variables: { note_id, user_id },
+    });
+    return data.data.likes[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const onInsertLike = async (note_id: number, user_id: number) => {
+  try {
+    const {
+      data: { insert_likes_one },
+    } = await mutate({
+      mutation: `
+      mutation InsertLikes($object: likes_insert_input!) {
+        insert_likes_one(
+          object: $object
+        ) {
+          id
+        }
+      }`,
+      variables: {
+        object: {
+          note_id,
+          user_id,
+        },
+      },
+    });
+    return insert_likes_one;
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+
+const onDeleteLike = async (id: number) => {
+  try {
+    const {
+      data: { delete_likes },
+    } = await mutate({
+      mutation: `
+      mutation DeleteLikes($id: Int!) {
+        delete_likes(where: {id: {_eq: $id}}) {
+          affected_rows
+          returning {
+            id
+          }
+        }
+      }
+      `,
+      variables: {
+        id,
+      },
+    });
+    return delete_likes.returning[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
 const GroupService = {
   isUserMemberOfGroup,
   isUserCreatorOfGroup,
@@ -485,5 +560,8 @@ const GroupService = {
   onFindUserGroupInvitesByEmail,
   onCheckGroupInviteExists,
   onCheckGroupMemberExists,
+  onCheckLikeExists,
+  onInsertLike,
+  onDeleteLike,
 };
 export default GroupService;

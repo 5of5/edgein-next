@@ -11,7 +11,7 @@ type Props = {
 export const ElemNotes: React.FC<Props> = ({ notes }) => {
 	//sort by created date
 	const sortedNotes = orderBy(notes, (a) => new Date(a.created_at), ["desc"]);
-console.log('@sortedNotes', sortedNotes)
+
 	return (
 		<div className="w-full mt-7">
 			<h2 className="text-xl font-bold">{`Notes (${notes.length})`}</h2>
