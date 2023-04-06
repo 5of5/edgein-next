@@ -7,7 +7,7 @@
 - "!include public_companies.yaml"
 - "!include public_companies_edit_access.yaml"
 - "!include public_data_actions.yaml"
-  "!include public_data_discard.yaml"
+- "!include public_data_discard.yaml"
 - "!include public_data_fields.yaml"
 - "!include public_data_partners.yaml"
 - "!include public_data_raw.yaml"
