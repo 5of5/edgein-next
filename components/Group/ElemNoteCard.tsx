@@ -4,10 +4,15 @@ import moment from "moment-timezone";
 import { Notes } from "@/graphql/types";
 import { ElemPhoto } from "../ElemPhoto";
 import Link from "next/link";
-import { IconAnnotation } from "@/components/Icons";
+import {
+	IconEllipsisHorizontal,
+	IconAnnotation,
+	IconCheck,
+} from "@/components/Icons";
 //import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
 import { useUser } from "@/context/userContext";
+import { Popover, Transition } from "@headlessui/react";
 
 type Props = {
 	data: Notes;
@@ -83,6 +88,47 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 		}
 	};
 
+	const NotePopover = (
+		<Popover className="group-hover:block transition-all">
+			<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+				<IconEllipsisHorizontal
+					className="h-6 w-6 group-hover:text-primary-500"
+					title="Options"
+				/>
+			</Popover.Button>
+
+			<Transition
+				enter="transition duration-100 ease-out"
+				enterFrom="transform scale-95 opacity-0"
+				enterTo="transform scale-100 opacity-100"
+				leave="transition duration-75 ease-out"
+				leaveFrom="transform scale-100 opacity-100"
+				leaveTo="transform scale-95 opacity-0"
+			>
+				<Popover.Panel className="absolute right-0 overflow-hidden w-48 p-1 divide-y divide-slate-100 rounded-lg bg-white shadow-lg ring-1 ring-black/5">
+					{({ close }) => (
+						<>
+							<button
+								onClick={() => {}}
+								className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
+							>
+								<IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
+								<span className="text-sm">Share to a group</span>
+							</button>
+							<button
+								onClick={() => {}}
+								className="flex items-center space-x-1 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
+							>
+								<IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
+								<span className="text-sm">Report note</span>
+							</button>
+						</>
+					)}
+				</Popover.Panel>
+			</Transition>
+		</Popover>
+	);
+
 	return (
 		<>
 			<div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
@@ -121,7 +167,7 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 							</p>
 						</a>
 					</div>
-					<div>Popover Options</div>
+					<div>{NotePopover}</div>
 				</div>
 				<div className="grow py-2 min-h-fit">
 					<p
