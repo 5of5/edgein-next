@@ -12,5 +12,36 @@ query GetNotes($where: notes_bool_exp!) {
       id
       name
     }
+    likes {
+      id
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
+    comments {
+      id
+      content
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
   }
 }
