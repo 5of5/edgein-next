@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const listName: string = sentimentType ? `sentiment-${user.id}-${sentimentType}` : req.body.listName
 
-  if (resourceType !== 'companies' && resourceType !== 'vc_firms') {
+  if (!["companies", "vc_firms", "people"].includes(resourceType)) {
     return res.status(400).send({ error: `Invalid resource type ${resourceType}`})
   }
 
@@ -48,7 +48,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const follow = !existsFollows && await upsertFollow(list, resourceId, resourceType, user, token)
 
   let sentimentReturn: any
-  if (sentimentType) {
+  if (sentimentType && (resourceType === "companies" || resourceType === "vc_firms")) {
     const { sentiment } = await updateResourceSentimentCount(resourceType, resourceId, token, sentimentType, Boolean(follow), Boolean(existsFollows))
     sentimentReturn = sentiment
   }

@@ -17,7 +17,7 @@ import { find } from "lodash";
 type Props = {
 	resourceName: string | null;
 	resourceId: number;
-	resourceType: "companies" | "vc_firms";
+	resourceType: "companies" | "vc_firms" | "people";
 	slug: string;
 };
 
@@ -71,6 +71,7 @@ export const ElemSaveToList: FC<Props> = ({
 						created_at: "",
 						follows_companies: [],
 						follows_vcfirms: [],
+						follows_people: [],
 						total_no_of_resources: 0,
 					};
 					newLists.push(list);
@@ -90,6 +91,12 @@ export const ElemSaveToList: FC<Props> = ({
 							{ __typename: "follows_vc_firms", resource_id: resourceId },
 						];
 					}
+					if (resourceType === "people") {
+						list.follows_people = [
+							...list.follows_people,
+							{ __typename: "follows_people", resource_id: resourceId },
+						];
+					}
 				} else {
 					if (resourceType === "companies") {
 						list.follows_companies = [
@@ -101,6 +108,13 @@ export const ElemSaveToList: FC<Props> = ({
 					if (resourceType === "vc_firms") {
 						list.follows_vcfirms = [
 							...list.follows_vcfirms.filter(
+								(i) => i.resource_id !== resourceId
+							),
+						];
+					}
+					if (resourceType === "people") {
+						list.follows_people = [
+							...list.follows_people.filter(
 								(i) => i.resource_id !== resourceId
 							),
 						];

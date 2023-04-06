@@ -305,3 +305,33 @@ export const insertListMembers = async (
   });
   return insert_list_members_one;
 };
+
+
+export const checkFollowExists = async (
+  list: Lists,
+  resourceId: string,
+  resourceType: string,
+  userId: number
+) => {
+  const {
+    data: { follows },
+  } = await query({
+    query: `
+    query CheckFollowExists($where: follows_bool_exp!) {
+      follows(where: $where, limit: 1) {
+        id
+      }
+    }
+    `,
+    variables: {
+      where: {
+        resource_id: { _eq: resourceId },
+        resource_type: { _eq: resourceType },
+        created_by_user_id: { _eq: userId },
+        list_id: { _eq: list.id },
+      },
+    },
+  });
+
+  return follows;
+};
