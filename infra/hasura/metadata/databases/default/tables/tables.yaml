@@ -18,6 +18,7 @@
 - "!include public_events.yaml"
 - "!include public_follows.yaml"
 - "!include public_follows_companies.yaml"
+- "!include public_follows_people.yaml"
 - "!include public_follows_vc_firms.yaml"
 - "!include public_investment_rounds.yaml"
 - "!include public_investments.yaml"
