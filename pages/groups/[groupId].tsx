@@ -69,9 +69,8 @@ const Group: NextPage<Props> = (props: Props) => {
 
 	const tabBarItems = useMemo(() => {
 		return [
-			//{ name: "Home", ref: homeRef },
-			{ name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
+			{ name: "Lists", ref: listsRef },
 			// { name: "Chat", ref: chatRef },
 		];
 	}, []);
@@ -94,10 +93,9 @@ const Group: NextPage<Props> = (props: Props) => {
 		setIsOpenSettingDialog(false);
 	};
 
+	//mx-auto px-1 py-1 sm:px-3
 	return (
 		<DashboardLayout>
-			{/* <div ref={homeRef} /> */}
-
 			<ElemGroupInformation
 				isUserBelongToGroup={props.isUserBelongToGroup}
 				group={groupData}
@@ -108,24 +106,32 @@ const Group: NextPage<Props> = (props: Props) => {
 			{props.isUserBelongToGroup ? (
 				<>
 					<ElemTabBar
-						className="mt-2 border-t-0"
+						className="block mt-2 border-t-0 lg:hidden"
 						tabs={tabBarItems}
 						showDropdown={false}
 					/>
-					<div ref={listsRef}>
-						<ElemLists
-							group={groupData}
-							lists={
-								(lists?.list_user_groups?.map(
-									(item) => item.list
-								) as Array<Lists>) || []
-							}
-							refetchLists={refetchLists}
-						/>
-					</div>
-
-					<div ref={notesRef}>
-						<ElemNotes notes={props.notes} />
+					<div className="border-t border-transparent lg:mt-7 lg:border-black/10 lg:flex lg:gap-x-4">
+						<div ref={notesRef} className="flex justify-center flex-1">
+							<ElemNotes
+								className="flex flex-col max-w-2xl"
+								notes={props.notes}
+							/>
+						</div>
+						<div
+							ref={listsRef}
+							className="flex justify-center flex-1 lg:block lg:max-w-lg"
+						>
+							<ElemLists
+								className="flex flex-col w-full max-w-2xl lg:max-w-lg"
+								group={groupData}
+								lists={
+									(lists?.list_user_groups?.map(
+										(item) => item.list
+									) as Array<Lists>) || []
+								}
+								refetchLists={refetchLists}
+							/>
+						</div>
 					</div>
 
 					<div ref={chatRef} />

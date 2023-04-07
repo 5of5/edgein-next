@@ -86,14 +86,16 @@ export const ElemGroupInformation: React.FC<Props> = ({
 								members={group.user_group_members}
 								onClick={() => onOpenSettingDialog("members")}
 							/>
-							<span className="font-bold">{group.user_group_members.length}</span>
+							<span className="font-bold">
+								{group.user_group_members.length}
+							</span>
 							<ElemButton
 								btn="primary"
 								className="gap-x-1 px-1.5 sm:px-4"
 								onClick={onInvite}
 							>
 								<IconUserPlus className="w-5 h-5" />
-								<span className="hidden sm:inline">Add People</span>
+								<span className="hidden sm:inline">Invite</span>
 							</ElemButton>
 						</div>
 					</>

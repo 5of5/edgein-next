@@ -8,6 +8,8 @@ import {
 	IconEllipsisHorizontal,
 	IconAnnotation,
 	IconCheck,
+	IconExclamationTriangle,
+	IconShare3,
 } from "@/components/Icons";
 //import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
@@ -78,11 +80,9 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 		const lastMonth = moment().subtract(1, "months").valueOf();
 		const noteCreated = moment(local_date).valueOf();
 
-		// console.log((date1 > date2 ? 'date1' : 'date2') + " is greater..."  )
-
 		// if note is older than a month
 		if (lastMonth > noteCreated) {
-			return moment(local_date).format("LL"); //.format("LL");
+			return moment(local_date).format("LL");
 		} else {
 			return moment(local_date).fromNow();
 		}
@@ -112,14 +112,14 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 								onClick={() => {}}
 								className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
 							>
-								<IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
+								<IconShare3 className="h-4 aspect-square group-hover:text-primary-500" />
 								<span className="text-sm">Share to a group</span>
 							</button>
 							<button
 								onClick={() => {}}
 								className="flex items-center space-x-1 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
 							>
-								<IconCheck className="h-4 aspect-square group-hover:text-primary-500" />
+								<IconExclamationTriangle className="h-4 aspect-square group-hover:text-primary-500" />
 								<span className="text-sm">Report note</span>
 							</button>
 						</>
@@ -194,16 +194,16 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 						<IconAnnotation className="h-5 w-5 mr-1" /> Comment
 					</button>
 					<button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
+						<IconShare3 className="h-5 w-5 mr-1" />
 						Share
 					</button>
 				</div>
 				<div className="mt-4 flex items-start gap-2">
 					<ElemPhoto
 						photo={user?.person?.picture}
-						//photo={user?.profilePicture || user?.person?.picture}
 						wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
 						imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-						//imgAlt={user?.display_name}
+						imgAlt={user?.person?.name}
 						placeholder="user"
 						placeholderClass="text-slate-300"
 					/>

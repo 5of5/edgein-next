@@ -14,7 +14,8 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 	const { user } = useAuth();
 
 	return (
-		<div className="px-4 sm:px-6 lg:px-8">
+		<div className="px-2 py-1 sm:px-3">
+			{/* px-4 sm:px-6 lg:px-8 */}
 			<div className="max-w-screen-2xl mx-auto">
 				<div className="mt-10 lg:grid lg:grid-cols-9 lg:gap-x-5">
 					<Transition.Root show={sidebarOpen} as={Fragment}>

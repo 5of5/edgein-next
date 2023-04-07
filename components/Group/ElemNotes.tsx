@@ -5,18 +5,21 @@ import Link from "next/link";
 import { orderBy } from "lodash";
 
 type Props = {
+	className?: string;
 	notes: Array<Notes>;
 };
 
-export const ElemNotes: React.FC<Props> = ({ notes }) => {
+export const ElemNotes: React.FC<Props> = (props) => {
 	//sort by created date
-	const sortedNotes = orderBy(notes, (a) => new Date(a.created_at), ["desc"]);
+	const sortedNotes = orderBy(props.notes, (a) => new Date(a.created_at), [
+		"desc",
+	]);
 
 	return (
-		<div className="w-full mt-7">
-			<h2 className="text-xl font-bold">{`Notes (${notes.length})`}</h2>
+		<div className={`${props.className}`}>
+			<h2 className="text-xl font-bold py-2">{`Notes (${props.notes.length})`}</h2>
 
-			{notes.length === 0 ? (
+			{props.notes.length === 0 ? (
 				<p className="text-slate-500 mt-2">
 					Add a note to a{" "}
 					<Link href="/companies" passHref>
@@ -33,7 +36,7 @@ export const ElemNotes: React.FC<Props> = ({ notes }) => {
 					profile and share with the group.
 				</p>
 			) : (
-				<div className="grid grid-cols-1 gap-4 mt-2 sm:grid-cols-2">
+				<div className="flex flex-col gap-y-4">
 					{sortedNotes.map((item) => (
 						<ElemNoteCard key={item.id} data={item} />
 					))}
