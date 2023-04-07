@@ -131,9 +131,9 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 		const cleanUrl = getLink
 			.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "") // removes https://www;
-			.replace(/\/$/, "")
 			.replace(/utm_[^&]+&?/g, "") // removes utm_xxx parameters;
-			.replace(/\?/g, ""); // removes ? character;
+			.replace(/\?.*/g, "$'") // removes anything after ? character
+			.replace(/\/$/, ""); //removes last forward slash
 
 		infoItems.push({
 			icon: IconGlobe,
