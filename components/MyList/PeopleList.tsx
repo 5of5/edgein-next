@@ -294,7 +294,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 			selectedFlatRows.map((row: any, index: number) => row.original?.id)
 		);
 
-		const deleteInvestorsRes = await fetch(`/api/delete_follows/`, {
+		const deletePeopleRes = await fetch(`/api/delete_follows/`, {
 			method: "POST",
 			body: JSON.stringify({ followIds }),
 			headers: {
@@ -303,7 +303,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 			},
 		});
 
-		if (deleteInvestorsRes.ok) {
+		if (deletePeopleRes.ok) {
 			setResourceList((prev) => {
 				return prev?.filter(
 					(resource) => !followIds.includes(resource.id as number)
@@ -358,8 +358,11 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 							</button>
 
 							<div className="text-sm shrink-0">
-								{Object.keys(selectedRowIds).length} organization
-								{Object.keys(selectedRowIds).length > 1 && "s"} selected
+								{Object.keys(selectedRowIds).length}
+								{Object.keys(selectedRowIds).length > 1
+									? " people"
+									: " person"}{" "}
+								selected
 							</div>
 						</>
 					) : (
@@ -545,7 +548,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 						</tbody>
 					</table>
 				) : (
-					<div className="flex flex-col w-full items-center justify-center  p-5 text-slate-600">
+					<div className="flex flex-col w-full items-center justify-center p-5 text-slate-600">
 						<div className="max-w-sm text-center">
 							There are no people in this list.
 						</div>

@@ -315,17 +315,15 @@ const MyList: NextPage<Props> = ({}) => {
 				/>
 			)}
 
-			{isCustomList && [
-				listPeopleError && isCustomList ? (
-					<h4>Error loading people</h4>
-				) : listPeopleLoading && isCustomList ? (
-					<div className="rounded-lg p-5 bg-white shadow mb-8">
-						<PlaceholderTable />
-					</div>
-				) : (
-					<PeopleList people={people} selectedListName={selectedListName} />
-				),
-			]}
+			{isCustomList && listPeopleError ? (
+				<h4>Error loading people</h4>
+			) : isCustomList && listPeopleLoading ? (
+				<div className="rounded-lg p-5 bg-white shadow mb-8">
+					<PlaceholderTable />
+				</div>
+			) : (
+				<PeopleList people={people} selectedListName={selectedListName} />
+			)}
 
 			<Toaster />
 		</DashboardLayout>
