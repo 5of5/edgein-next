@@ -541,6 +541,33 @@ const onDeleteLike = async (id: number) => {
   }
 };
 
+const onInsertComment = async (note_id: number, content: string, user_id: number) => {
+  try {
+    const {
+      data: { insert_comments_one },
+    } = await mutate({
+      mutation: `
+      mutation InsertComments($object: comments_insert_input!) {
+        insert_comments_one(
+          object: $object
+        ) {
+          id
+        }
+      }`,
+      variables: {
+        object: {
+          note_id,
+          content,
+          created_by_user_id: user_id,
+        },
+      },
+    });
+    return insert_comments_one;
+  } catch (ex) {
+    throw ex;
+  }
+};
+
 const GroupService = {
   isUserMemberOfGroup,
   isUserCreatorOfGroup,
@@ -563,5 +590,6 @@ const GroupService = {
   onCheckLikeExists,
   onInsertLike,
   onDeleteLike,
+  onInsertComment,
 };
 export default GroupService;

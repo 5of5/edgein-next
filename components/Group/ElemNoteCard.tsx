@@ -15,6 +15,7 @@ import {
 import { People, useGetUserProfileQuery } from "@/graphql/types";
 import { useUser } from "@/context/userContext";
 import { Popover, Transition } from "@headlessui/react";
+import { InputText } from "../InputText";
 
 type Props = {
 	data: GetNotesQuery["notes"][0];
@@ -49,6 +50,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		fetcher
 	);
 
+	const [commentContent, setCommentContent] = useState<string>("");
 	const [noteAuthor, setNoteAuthor] = useState<People>();
 
 	const { data: users } = useGetUserProfileQuery({
@@ -67,6 +69,8 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 
 	const likesCount = data.likes.length;
 	const isLikedByCurrentUser = data.likes.some(item => item.created_by_user_id === user?.id);
+
+	const commentsCount = data.comments.length;
 
 	useEffect(() => {
 		if (data.notes) {
@@ -103,6 +107,22 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
         noteId: data.id,
       }),
     });
+		refetch();
+  };
+
+	const onAddComment = async () => {
+    await fetch("/api/add_comment/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        noteId: data.id,
+				content: commentContent,
+      }),
+    });
+		setCommentContent("");
 		refetch();
   };
 
@@ -148,69 +168,76 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	);
 
 	return (
-		<>
-			<div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
-				<div className="relative flex items-center space-x-3">
-					<div className="flex-shrink-0 relative mb-2">
-						<ElemPhoto
-							photo={resource?.logo}
-							wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded-lg shadow"
-							imgClass="object-fit max-w-full max-h-full"
-							imgAlt={resource?.name}
-						/>
+    <>
+      <div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
+        <div className="relative flex items-center space-x-3">
+          <div className="flex-shrink-0 relative mb-2">
+            <ElemPhoto
+              photo={resource?.logo}
+              wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded-lg shadow"
+              imgClass="object-fit max-w-full max-h-full"
+              imgAlt={resource?.name}
+            />
 
-						<ElemPhoto
-							photo={noteAuthor?.picture}
-							wrapClass="absolute -right-2 -bottom-2"
-							imgClass="object-fit h-7 w-7 border-2 border-white rounded-full"
-							imgAlt={noteAuthor?.name}
-							placeholder="user"
-							placeholderClass="text-slate-400 bg-white p-0"
-						/>
-					</div>
-					<div className="min-w-0 flex-1">
-						<a href="#" className="focus:outline-none">
-							{/* <span className="absolute inset-0" aria-hidden="true"></span> */}
-							<p className="text-lg leading-tight font-bold">
-								{resource?.name}
-							</p>
-							<p className="truncate text-sm text-slate-600">
-								{/* Created by  */}
-								{noteAuthor?.name}
-								<span aria-hidden="true"> · </span>
-								{formatDateShown(data?.created_at)}
-								{/* {data?.created_at && moment(data?.created_at).fromNow()} */}
+            <ElemPhoto
+              photo={noteAuthor?.picture}
+              wrapClass="absolute -right-2 -bottom-2"
+              imgClass="object-fit h-7 w-7 border-2 border-white rounded-full"
+              imgAlt={noteAuthor?.name}
+              placeholder="user"
+              placeholderClass="text-slate-400 bg-white p-0"
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <a href="#" className="focus:outline-none">
+              {/* <span className="absolute inset-0" aria-hidden="true"></span> */}
+              <p className="text-lg leading-tight font-bold">
+                {resource?.name}
+              </p>
+              <p className="truncate text-sm text-slate-600">
+                {/* Created by  */}
+                {noteAuthor?.name}
+                <span aria-hidden="true"> · </span>
+                {formatDateShown(data?.created_at)}
+                {/* {data?.created_at && moment(data?.created_at).fromNow()} */}
 
-								{/* {moment(data?.created_at).subtract(1, 'months')} */}
-							</p>
-						</a>
-					</div>
-					<div>{NotePopover}</div>
-				</div>
-				<div className="grow py-2 min-h-fit">
-					<p
-						className={`break-words ${!contentShowAll && "line-clamp-5"}`}
-						ref={contentDiv}
-					>
-						{data.notes}
-					</p>
-					{contentDivHeight > 120 && !contentShowAll && (
-						<button
-							type="button"
-							onClick={() => setContentShowAll(!contentShowAll)}
-							className="inline text-primary-500"
-						>
-							See more
-						</button>
-					)}
-				</div>
-				{likesCount > 0 && (
-          <span className="text-sm text-slate-600">{`${likesCount} like${
-            likesCount > 1 ? "s" : ""
-          }`}</span>
-        )}
-				<div className="flex space-x-1 py-1 border-t border-b border-black/10">
-				<button
+                {/* {moment(data?.created_at).subtract(1, 'months')} */}
+              </p>
+            </a>
+          </div>
+          <div>{NotePopover}</div>
+        </div>
+        <div className="grow py-2 min-h-fit">
+          <p
+            className={`break-words ${!contentShowAll && "line-clamp-5"}`}
+            ref={contentDiv}
+          >
+            {data.notes}
+          </p>
+          {contentDivHeight > 120 && !contentShowAll && (
+            <button
+              type="button"
+              onClick={() => setContentShowAll(!contentShowAll)}
+              className="inline text-primary-500"
+            >
+              See more
+            </button>
+          )}
+        </div>
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-slate-600">
+            {likesCount > 0
+              ? `${likesCount} like${likesCount > 1 ? "s" : ""}`
+              : null}
+          </span>
+          <span className="text-sm text-slate-600">
+            {commentsCount > 0
+              ? `${commentsCount} comment${commentsCount > 1 ? "s" : ""}`
+              : null}
+          </span>
+        </div>
+        <div className="flex space-x-1 py-1 border-t border-b border-black/10">
+          <button
             className={`flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium hover:text-primary-500 hover:bg-slate-200 ${
               isLikedByCurrentUser ? "text-primary-500" : "text-slate-600"
             }`}
@@ -218,32 +245,70 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
           >
             Like
           </button>
-					<button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
-						<IconAnnotation className="h-5 w-5 mr-1" /> Comment
-					</button>
-					<button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
-						<IconShare3 className="h-5 w-5 mr-1" />
-						Share
-					</button>
-				</div>
-				<div className="mt-4 flex items-start gap-2">
-					<ElemPhoto
-						photo={user?.person?.picture}
-						wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-						imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-						imgAlt={user?.person?.name}
-						placeholder="user"
-						placeholderClass="text-slate-300"
-					/>
-					<div
+          <button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
+            <IconAnnotation className="h-5 w-5 mr-1" /> Comment
+          </button>
+          <button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
+            <IconShare3 className="h-5 w-5 mr-1" />
+            Share
+          </button>
+        </div>
+				<div className="flex flex-col gap-4 my-4">
+          {data.comments.map((item) => (
+            <div key={item.id} className="flex items-start gap-2">
+              <ElemPhoto
+                photo={item.created_by_user?.person?.picture}
+                wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+                imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+                imgAlt={item.created_by_user?.person?.name}
+                placeholder="user"
+                placeholderClass="text-slate-300"
+              />
+              <div className="bg-slate-100 px-4 py-3 flex-1 rounded-3xl">
+                <p className="text-sm">
+                  <span className=" text-primary-500">
+                    {item.created_by_user?.person?.name ||
+                      item.created_by_user?.display_name}
+                  </span>
+                  <span aria-hidden="true"> · </span>
+                  <span className="text-slate-500">{formatDateShown(item.created_at)}</span>
+                </p>
+                <p className="text-sm mt-2">{item.content}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-2 flex items-center gap-2">
+          <ElemPhoto
+            photo={user?.person?.picture}
+            wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+            imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+            imgAlt={user?.person?.name}
+            placeholder="user"
+            placeholderClass="text-slate-300"
+          />
+          {/* <div
 						className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-1 text-slate-600 hover:bg-slate-200"
 						//onClick={onOpenNoteForm}
 					>
 						Write a comment...
-					</div>
-				</div>
-			</div>
-			{/* <Link
+					</div> */}
+          <InputText
+            name="name"
+            type="text"
+            placeholder="Write a comment..."
+            value={commentContent}
+            onChange={(event) => setCommentContent(event?.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && commentContent) {
+                onAddComment();
+              }
+            }}
+            className="w-full cursor-pointer bg-slate-100 ring-0 rounded-full px-4 py-1 text-slate-600 hover:bg-slate-200"
+          />
+        </div>
+      </div>
+      {/* <Link
 				href={`/${
 					data.resource_type === "vc_firms" ? "investors" : data.resource_type
 				}/${resource?.slug}`}
@@ -281,7 +346,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					</div>
 				</div>
 			</Link> */}
-		</>
-	);
+    </>
+  );
 };
 export default ElemNoteCard;

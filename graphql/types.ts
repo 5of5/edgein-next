@@ -21514,7 +21514,7 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string }, likes: Array<{ __typename?: 'likes', id: number, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
+export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string }, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
 
 export type GetNotificationsForUserQueryVariables = Exact<{
   user: Scalars['Int'];
@@ -22453,6 +22453,7 @@ export const GetNotesDocument = `
     }
     likes {
       id
+      created_at
       created_by_user_id
       created_by_user {
         id
@@ -22469,6 +22470,7 @@ export const GetNotesDocument = `
     comments {
       id
       content
+      created_at
       created_by_user_id
       created_by_user {
         id
