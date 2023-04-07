@@ -35,6 +35,7 @@ type Props = {
 	className?: string;
 	heading?: string;
 	website?: string | null;
+	eventLink?: any | null;
 	totalFundingRaised?: string | null;
 	whitePaper?: string | null;
 	totalEmployees?: number;
@@ -62,6 +63,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	className,
 	heading,
 	website,
+	eventLink,
 	totalFundingRaised,
 	whitePaper,
 	totalEmployees,
@@ -113,6 +115,31 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: website,
 		});
 	}
+
+	if (eventLink) {
+		let getLink = eventLink;
+
+		if (getLink.includes("?q=")) {
+			const getUrl = getLink.split("?q=");
+			getLink = getUrl[1];
+		}
+
+		if (getLink.includes("&")) {
+			const getUrl = getLink.split("&");
+			getLink = getUrl[0];
+		}
+
+		const cleanUrl = getLink
+			.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "")
+			.replace(/\/$/, "");
+
+		infoItems.push({
+			icon: IconGlobe,
+			text: cleanUrl,
+			link: eventLink,
+		});
+	}
+
 	if (yearFounded) {
 		infoItems.push({
 			icon: IconFlag,
