@@ -59,13 +59,17 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
       onChange={(event, newValue: any) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
+        const streetAddress = `${newValue?.number || ""}${
+          newValue?.street ? ` ${newValue.street}` : ""
+        }`;
         setFormValue(
           "location_json",
           newValue
             ? {
-                address: `${newValue?.street || ''} ${newValue?.number || ''} `,
+                address: streetAddress === newValue?.city ? "" : streetAddress,
                 city: newValue?.city,
-                state: newValue?.state === newValue?.city ? "" : newValue?.state,
+                state:
+                  newValue?.state === newValue?.city ? "" : newValue?.state,
                 country: newValue?.country,
               }
             : defaultLocation,
