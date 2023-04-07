@@ -20,20 +20,18 @@ import CookieService from "@/utils/cookie";
 import {
 	GetGroupDocument,
 	GetGroupQuery,
-	GetNotesDocument,
-	GetNotesQuery,
-	Notes,
 	useGetListUserGroupsQuery,
 	User_Groups,
 	List_User_Groups_Bool_Exp,
 	Lists,
+	useGetNotesQuery,
+	Notes_Bool_Exp,
 } from "@/graphql/types";
 import { IconLockClosed } from "@/components/Icons";
 
 type Props = {
 	isUserBelongToGroup: boolean;
 	group: User_Groups;
-	notes: Array<Notes>;
 };
 
 const Group: NextPage<Props> = (props: Props) => {
@@ -51,6 +49,17 @@ const Group: NextPage<Props> = (props: Props) => {
 			where: {
 				user_group_id: { _eq: groupData.id },
 			} as List_User_Groups_Bool_Exp,
+		},
+		{
+			enabled: Boolean(groupData.id),
+		}
+	);
+
+	const { data: notes, refetch: refetchNotes } = useGetNotesQuery(
+		{
+			where: {
+				user_group_id: { _eq: groupData.id },
+			} as Notes_Bool_Exp,
 		},
 		{
 			enabled: Boolean(groupData.id),
@@ -114,7 +123,8 @@ const Group: NextPage<Props> = (props: Props) => {
 						<div ref={notesRef} className="flex justify-center flex-1">
 							<ElemNotes
 								className="flex flex-col max-w-2xl"
-								notes={props.notes}
+								notes={notes?.notes || []}
+								refetchNotes={refetchNotes}
 							/>
 						</div>
 						<div
@@ -186,16 +196,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		(mem) => mem.user.id === user?.id
 	);
 
-	const { data: noteList } = await runGraphQl<GetNotesQuery>(
-		GetNotesDocument,
-		{
-			where: { user_group_id: { _eq: group.id } },
-		},
-		context.req.cookies
-	);
-
-	const notes = noteList?.notes || [];
-
 	let metaTitle = null;
 	if (group.name) {
 		metaTitle = group.name;
@@ -211,7 +211,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			metaDescription,
 			isUserBelongToGroup,
 			group,
-			notes,
 		},
 	};
 };

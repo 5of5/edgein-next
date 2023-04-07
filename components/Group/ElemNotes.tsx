@@ -1,12 +1,13 @@
 import React from "react";
-import { Notes } from "@/graphql/types";
+import { GetNotesQuery } from "@/graphql/types";
 import ElemNoteCard from "./ElemNoteCard";
 import Link from "next/link";
 import { orderBy } from "lodash";
 
 type Props = {
 	className?: string;
-	notes: Array<Notes>;
+	notes: GetNotesQuery["notes"];
+	refetchNotes: () => void;
 };
 
 export const ElemNotes: React.FC<Props> = (props) => {
@@ -38,7 +39,7 @@ export const ElemNotes: React.FC<Props> = (props) => {
 			) : (
 				<div className="flex flex-col gap-y-4">
 					{sortedNotes.map((item) => (
-						<ElemNoteCard key={item.id} data={item} />
+						<ElemNoteCard key={item.id} data={item} refetch={props.refetchNotes} />
 					))}
 				</div>
 			)}

@@ -474,7 +474,7 @@ const onCheckLikeExists = async (note_id: number, user_id: number) => {
         likes(where: {
           _and: [
             {note_id: {_eq: $note_id}},
-            {user_id: {_eq: $user_id}}
+            {created_by_user_id: {_eq: $user_id}}
           ]
         }, limit: 1) {
           id
@@ -505,7 +505,7 @@ const onInsertLike = async (note_id: number, user_id: number) => {
       variables: {
         object: {
           note_id,
-          user_id,
+          created_by_user_id: user_id,
         },
       },
     });

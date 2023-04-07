@@ -1,7 +1,7 @@
 import React, { MutableRefObject, useRef, useEffect, useState } from "react";
 import useSWR from "swr";
 import moment from "moment-timezone";
-import { Notes } from "@/graphql/types";
+import { GetNotesQuery } from "@/graphql/types";
 import { ElemPhoto } from "../ElemPhoto";
 import Link from "next/link";
 import {
@@ -17,7 +17,8 @@ import { useUser } from "@/context/userContext";
 import { Popover, Transition } from "@headlessui/react";
 
 type Props = {
-	data: Notes;
+	data: GetNotesQuery["notes"][0];
+	refetch: () => void;
 };
 
 const fetcher = async (url: string, args: any) => {
@@ -34,7 +35,7 @@ const fetcher = async (url: string, args: any) => {
 	}).then((res) => res.json());
 };
 
-const ElemNoteCard: React.FC<Props> = ({ data }) => {
+const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	const { user } = useUser();
 
 	const { data: resource } = useSWR(
@@ -64,6 +65,9 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 	const contentDiv = useRef() as MutableRefObject<HTMLDivElement>;
 	const [contentDivHeight, setContentDivHeight] = useState(0);
 
+	const likesCount = data.likes.length;
+	const isLikedByCurrentUser = data.likes.some(item => item.created_by_user_id === user?.id);
+
 	useEffect(() => {
 		if (data.notes) {
 			setContentDivHeight(contentDiv.current.scrollHeight);
@@ -87,6 +91,20 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 			return moment(local_date).fromNow();
 		}
 	};
+
+	const onToggleLike = async () => {
+    await fetch("/api/toggle_like_note/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        noteId: data.id,
+      }),
+    });
+		refetch();
+  };
 
 	const NotePopover = (
 		<Popover className="group-hover:block transition-all">
@@ -186,10 +204,20 @@ const ElemNoteCard: React.FC<Props> = ({ data }) => {
 						</button>
 					)}
 				</div>
+				{likesCount > 0 && (
+          <span className="text-sm text-slate-600">{`${likesCount} like${
+            likesCount > 1 ? "s" : ""
+          }`}</span>
+        )}
 				<div className="flex space-x-1 py-1 border-t border-b border-black/10">
-					<button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
-						Like
-					</button>
+				<button
+            className={`flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium hover:text-primary-500 hover:bg-slate-200 ${
+              isLikedByCurrentUser ? "text-primary-500" : "text-slate-600"
+            }`}
+            onClick={onToggleLike}
+          >
+            Like
+          </button>
 					<button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
 						<IconAnnotation className="h-5 w-5 mr-1" /> Comment
 					</button>
