@@ -9,8 +9,10 @@ import {
 	useSortBy,
 	usePagination,
 	useRowSelect,
+	useGlobalFilter,
 } from "react-table";
 import { TableColumnsFilter } from "./TableColumnsFilter";
+import { TableGlobalFilter } from "./TableGlobalFilter";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import {
 	IconSortUp,
@@ -425,8 +427,10 @@ export const InvestorsList: FC<Props> = ({
 		previousPage,
 		selectedFlatRows,
 		toggleHideAllColumns,
-		state: { pageIndex, pageSize, selectedRowIds },
+		state: { pageIndex, pageSize, selectedRowIds, globalFilter },
 		toggleAllRowsSelected,
+		preGlobalFilteredRows,
+		setGlobalFilter,
 	} = useTable(
 		{
 			columns: columns,
@@ -441,6 +445,7 @@ export const InvestorsList: FC<Props> = ({
 			autoResetHiddenColumns: false,
 			autoResetResize: false,
 		},
+		useGlobalFilter,
 		useSortBy,
 		usePagination,
 		useRowSelect,
@@ -537,7 +542,7 @@ export const InvestorsList: FC<Props> = ({
 				</div>
 			)} */}
 
-			{page.length > 0 && (
+			{preGlobalFilteredRows.length > 0 && (
 				<div className="flex items-center space-x-2 mb-2">
 					{Object.keys(selectedRowIds).length > 0 ? (
 						<>
@@ -562,16 +567,23 @@ export const InvestorsList: FC<Props> = ({
 							</div>
 						</>
 					) : (
-						<TableColumnsFilter
-							columns={allColumns}
-							resetColumns={() => toggleHideAllColumns(false)}
-						/>
+						<div className="flex items-center space-x-3">
+							<TableColumnsFilter
+								columns={allColumns}
+								resetColumns={() => toggleHideAllColumns(false)}
+							/>
+							<TableGlobalFilter
+								preGlobalFilteredRows={preGlobalFilteredRows}
+								globalFilter={globalFilter}
+								setGlobalFilter={setGlobalFilter}
+							/>
+						</div>
 					)}
 				</div>
 			)}
 
 			<div className="-mx-5 border-y border-black/10 overflow-auto lg:border lg:rounded-lg lg:mx-0">
-				{page.length > 0 ? (
+				{preGlobalFilteredRows.length > 0 ? (
 					<table
 						{...getTableProps()}
 						className="table-auto divide-y divide-black/10 overscroll-x-none"

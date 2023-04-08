@@ -315,9 +315,11 @@ const MyList: NextPage<Props> = ({}) => {
 				/>
 			)}
 
-			{isCustomList && listPeopleError ? (
+			{!isCustomList ? (
+				<></>
+			) : listPeopleError ? (
 				<h4>Error loading people</h4>
-			) : isCustomList && listPeopleLoading ? (
+			) : listPeopleLoading ? (
 				<div className="rounded-lg p-5 bg-white shadow mb-8">
 					<PlaceholderTable />
 				</div>

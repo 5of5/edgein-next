@@ -1,5 +1,5 @@
 import { Follows_People } from "@/graphql/types";
-import { compact, flatten, last } from "lodash";
+import { compact } from "lodash";
 import React, { FC, useEffect, useState } from "react";
 import { Menu } from "@headlessui/react";
 import {
@@ -8,8 +8,10 @@ import {
 	useSortBy,
 	usePagination,
 	useRowSelect,
+	useGlobalFilter,
 } from "react-table";
 import { TableColumnsFilter } from "./TableColumnsFilter";
+import { TableGlobalFilter } from "./TableGlobalFilter";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import {
 	IconSortUp,
@@ -108,7 +110,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 					</div>
 				),
 				width: 260,
-				minWidth: 200,
+				minWidth: 300,
 				//disableDropdown: true,
 				//disableResizing: true,
 				disableHiding: true,
@@ -135,7 +137,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 												<a
 													key={index}
 													href={`mailto:${email}`}
-													className="inline-block text-sm hover:text-primary-500"
+													className="block text-sm hover:text-primary-500"
 												>
 													{email}
 												</a>
@@ -147,7 +149,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 					);
 				},
 				disableSortBy: true,
-				minWidth: 250,
+				minWidth: 300,
 			},
 			{
 				Header: "Roles",
@@ -162,7 +164,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 					);
 				},
 				//	disableSortBy: true,
-				minWidth: 130,
+				minWidth: 160,
 			},
 			// {
 			// 	Header: "City",
@@ -219,7 +221,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 					);
 				},
 				disableSortBy: true,
-				minWidth: 130,
+				minWidth: 160,
 			},
 			{
 				Header: "Github",
@@ -243,7 +245,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 					);
 				},
 				disableSortBy: true,
-				minWidth: 130,
+				minWidth: 160,
 			},
 		],
 		[emptyCell]
@@ -266,8 +268,10 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 		previousPage,
 		selectedFlatRows,
 		toggleHideAllColumns,
-		state: { pageIndex, pageSize, selectedRowIds },
+		state: { pageIndex, pageSize, selectedRowIds, globalFilter },
 		toggleAllRowsSelected,
+		preGlobalFilteredRows,
+		setGlobalFilter,
 	} = useTable(
 		{
 			columns: columns,
@@ -282,6 +286,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 			autoResetHiddenColumns: false,
 			autoResetResize: false,
 		},
+		useGlobalFilter,
 		useSortBy,
 		usePagination,
 		useRowSelect,
@@ -338,7 +343,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 				)}
 			</div>
 
-			{page.length > 0 && (
+			{preGlobalFilteredRows.length > 0 && (
 				<div className="flex items-center space-x-2 mb-2">
 					{Object.keys(selectedRowIds).length > 0 ? (
 						<>
@@ -366,16 +371,22 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 							</div>
 						</>
 					) : (
-						<TableColumnsFilter
-							columns={allColumns}
-							resetColumns={() => toggleHideAllColumns(false)}
-						/>
+						<div className="flex items-center space-x-3">
+							<TableColumnsFilter
+								columns={allColumns}
+								resetColumns={() => toggleHideAllColumns(false)}
+							/>
+							<TableGlobalFilter
+								preGlobalFilteredRows={preGlobalFilteredRows}
+								globalFilter={globalFilter}
+								setGlobalFilter={setGlobalFilter}
+							/>
+						</div>
 					)}
 				</div>
 			)}
-
 			<div className="-mx-5 border-y border-black/10 overflow-auto lg:border lg:rounded-lg lg:mx-0">
-				{page.length > 0 ? (
+				{preGlobalFilteredRows.length > 0 ? (
 					<table
 						{...getTableProps()}
 						className="table-auto divide-y divide-black/10 overscroll-x-none"
@@ -567,3 +578,33 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 		</div>
 	);
 };
+
+// Define a default UI for filtering
+// const GlobalFilter: any = ({
+// 	preGlobalFilteredRows,
+// 	globalFilter,
+// 	setGlobalFilter,
+// }: any) => {
+// 	const count = preGlobalFilteredRows.length;
+// 	const [value, setValue] = useState(globalFilter);
+
+// 	const onChange = useAsyncDebounce((value) => {
+// 		setGlobalFilter(value || undefined);
+// 	}, 750);
+
+// 	return (
+// 		<span>
+// 			Search:{" "}
+// 			<input
+// 				className="border-2 border-slate-200 p-2 rounded-md w-1/2 focus:outline-teal-500 focus-visible:outline-teal-500"
+// 				value={value || ""}
+// 				onChange={(e) => {
+// 					setValue(e.target.value);
+// 					//setGlobalFilter(e.target.value.length > 0 ? value : undefined);
+// 					onChange(e.target.value);
+// 				}}
+// 				placeholder={`${count} items...`}
+// 			/>
+// 		</span>
+// 	);
+// };
