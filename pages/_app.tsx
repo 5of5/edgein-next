@@ -39,6 +39,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 			: false
 	);
 
+	const [showFooter, setShowFooter] = useState(true);
+
+	React.useEffect(() => {
+		if (
+			router.pathname.includes(
+				"/lists/" || "/groups/" || "account" || "profile"
+			)
+		) {
+			setShowFooter(false);
+		}
+	}, []);
+
 	//google
 	React.useEffect(() => {
 		if (process.env.NEXT_PUBLIC_GTM_ID) {
@@ -114,7 +126,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				src="https://aggle.net/js?pid=J9GEZNSN8"
 				strategy="afterInteractive"
 			></Script>
-			<div className="flex flex-col min-h-screen">
+			<div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
 				<QueryClientProvider client={queryClient}>
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
@@ -147,7 +159,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-									<TheFooter />
+									{showFooter && <TheFooter />}
 								</>
 							</UserProvider>
 						</IntercomProvider>
@@ -163,7 +175,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
-
 			</div>
 		</>
 	);
