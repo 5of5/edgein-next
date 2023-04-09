@@ -199,7 +199,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										>
 											<IconCustomList className="h-6 w-6 shrink-0" />
 											<span className="line-clamp-1 flex-1">
-												{getNameFromListName(list)} really really really long
+												{getNameFromListName(list)}
 											</span>
 											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
 												{getCountForList(getNameFromListName(list))}
