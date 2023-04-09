@@ -22,41 +22,20 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 					onClick={() => setSidebarOpen(true)}
 					className="-ml-4 mt-6 mb-4 rounded-tr-lg rounded-br-lg pl-8 sm:pl-10  md:pl-12 hover:border-primary-500 lg:hidden "
 				>
-					<span className="sr-only">Dashboard List</span>
+					<span className="sr-only">Dashboard Menu</span>
 					<IconWindowSidebar className="w-6 h-6 mr-2" />
 					Sidebar
 				</ElemButton>
 
-				<div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
-					<div className="hidden lg:block fixed z-20 inset-0 top-[3rem] left-[max(0px,calc(50%-45rem))] right-auto w-[19.5rem] pb-96 px-8 overflow-y-auto overscroll-none scrollbar-hide">
-						<DashboardSidebar className="relative" />
+				<div className="max-w-9xl mx-auto px-4 sm:px-6 md:px-8">
+					<div className="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-50rem))] right-auto w-[22rem] pb-10 px-8 overflow-y-auto">
+						<DashboardSidebar />
 					</div>
 
-					<div className="lg:pl-[19.5rem] xl:pl-[25.5rem] min-h-[calc(100vh_-_3rem)] pt-5">
+					<div className="min-h-[calc(100vh_-_3rem)] pt-5 lg:pl-[22rem]">
 						{children}
 					</div>
 				</div>
-
-				{/* <div className="max-w-screen-2xl mx-auto">
-					<div className="mt-10 lg:grid lg:grid-cols-9 lg:gap-x-5">
-						<DashboardSidebar className="py-6 hidden lg:block lg:col-span-2 lg:py-0" />
-
-						<div className="lg:col-span-7">
-							<ElemButton
-								btn="slate"
-								roundedFull={false}
-								onClick={() => setSidebarOpen(true)}
-								className="-ml-4 mb-4 rounded-tr-lg rounded-br-lg pl-6 hover:border-primary-500 lg:hidden"
-							>
-								<span className="sr-only">Dashboard List</span>
-								<IconWindowSidebar className="w-6 h-6 mr-2" />
-								Sidebar
-							</ElemButton>
-
-							{children}
-						</div>
-					</div>
-				</div> */}
 			</div>
 			<Transition.Root show={sidebarOpen} as={Fragment}>
 				<Dialog as="div" className="relative z-40" onClose={setSidebarOpen}>

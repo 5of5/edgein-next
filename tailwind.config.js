@@ -20,7 +20,7 @@ const primary = {
   900: "#20123A",
 }
 
-const dark = {
+const darkBlue = {
   50: "#f3f2f7",
   100: "#e7e6f0",
   200: "#c3bfd9",
@@ -75,7 +75,7 @@ module.exports = {
       colors: {
         ...colors,
         primary,
-        dark,
+        dark: darkBlue,
         gray,
         blue,
         transparent: 'transparent',
@@ -86,6 +86,10 @@ module.exports = {
       spacing: {
         '88': '22rem',
         '112': '28rem'
+      },
+      maxWidth: {
+        '8xl': '90rem',
+        '9xl': '100rem'
       },
       scale: {
         '102': '1.02',

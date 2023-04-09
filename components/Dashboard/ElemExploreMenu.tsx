@@ -35,14 +35,14 @@ const ElemExploreMenu: FC<Props> = ({ className = "" }) => {
 									open ? "rotate-0" : "-rotate-90 "
 								} h-6 w-6 transform transition-all`}
 							/>
-							<span className="text-xl font-bold">Explore</span>
+							<span className="text-lg font-bold">Explore</span>
 						</Disclosure.Button>
 					</div>
 
-					<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
+					<Disclosure.Panel as="ul" className="mt-1 text-slate-600">
 						<li role="button">
 							<Link href={`/companies`}>
-								<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+								<a className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 									<IconCompanies className="w-6 h-6" />
 									<span>Companies</span>
 								</a>
@@ -50,7 +50,7 @@ const ElemExploreMenu: FC<Props> = ({ className = "" }) => {
 						</li>
 						<li role="button">
 							<Link href={`/investors`}>
-								<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+								<a className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 									<IconCash className="w-6 h-6" />
 									<span>Investors</span>
 								</a>
@@ -58,7 +58,7 @@ const ElemExploreMenu: FC<Props> = ({ className = "" }) => {
 						</li>
 						<li role="button">
 							<Link href={`/events`}>
-								<a className="flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
+								<a className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
 									<IconCalendarDays className="w-6 h-6" />
 									<span>Events</span>
 								</a>

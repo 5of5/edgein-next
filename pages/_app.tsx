@@ -40,7 +40,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 	);
 
 	const [showFooter, setShowFooter] = useState(true);
-
 	React.useEffect(() => {
 		if (
 			router.pathname.includes(
@@ -49,7 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 		) {
 			setShowFooter(false);
 		}
-	}, []);
+	}, [router]);
 
 	//google
 	React.useEffect(() => {
