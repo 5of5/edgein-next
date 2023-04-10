@@ -47,8 +47,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 			)
 		) {
 			setShowFooter(false);
+		} else {
+			setShowFooter(true);
 		}
-	}, [router]);
+	}, [router.pathname]);
 
 	//google
 	React.useEffect(() => {

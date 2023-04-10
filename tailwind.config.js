@@ -68,6 +68,9 @@ module.exports = {
     "./utils/style.ts"
   ],
   theme: {
+    fontFamily: {
+      'sans': ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
     extend: {
       fontSize: {
         'base': '1rem',
@@ -142,9 +145,6 @@ module.exports = {
       lineClamp: {
         7: '7',
       }
-    },
-    fontFamily: {
-      'sans': ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     },
   },
   plugins: [

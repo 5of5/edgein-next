@@ -199,7 +199,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 											title={getNameFromListName(list)}
 										>
 											<IconCustomList className="h-6 w-6 shrink-0" />
-											<span className="line-clamp-1 flex-1">
+											<span className="line-clamp-1 break-all flex-1">
 												{getNameFromListName(list)}
 											</span>
 											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
