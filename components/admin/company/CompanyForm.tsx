@@ -194,7 +194,7 @@ const CompanyForm = ({
         />
         <TextInput
           className={inputClassName}
-          source="location_json.address"
+          source="location"
           label="Address"
         />
         <TextInput
