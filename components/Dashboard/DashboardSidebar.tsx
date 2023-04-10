@@ -57,7 +57,7 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 	return (
 		<nav className={`relative  ${className}`}>
 			<div className="sticky top-0 -ml-0.5 pointer-events-none">
-				<div className="h-8 bg-gradient-to-b from-gray-50"></div>
+				<div className="h-8 bg-gradient-to-b from-white lg:from-gray-50"></div>
 			</div>
 
 			<div className="-mt-5">

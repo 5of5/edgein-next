@@ -196,6 +196,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 												list.id,
 												kebabCase(getNameFromListName(list))
 											)}`}
+											title={getNameFromListName(list)}
 										>
 											<IconCustomList className="h-6 w-6 shrink-0" />
 											<span className="line-clamp-1 flex-1">

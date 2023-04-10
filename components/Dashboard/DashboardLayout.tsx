@@ -50,7 +50,6 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 					>
 						<div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
 					</Transition.Child>
-
 					<div className="fixed inset-0 z-40 flex">
 						<Transition.Child
 							as={Fragment}
@@ -71,7 +70,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 									leaveFrom="opacity-100"
 									leaveTo="opacity-0"
 								>
-									<div className="absolute top-2 right-2">
+									<div className="absolute z-10 top-2 right-2">
 										<button
 											onClick={() => setSidebarOpen(false)}
 											className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"

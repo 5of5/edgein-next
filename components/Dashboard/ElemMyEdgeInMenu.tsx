@@ -43,7 +43,7 @@ const ElemMyEdgeInMenu = () => {
 						</Disclosure.Button>
 					</div>
 
-					<Disclosure.Panel as="ul" className="mt-1 text-slate-600">
+					<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
 						<li>
 							<Link href={`/profile`} passHref>
 								<a

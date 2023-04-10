@@ -39,7 +39,7 @@ const ElemExploreMenu: FC<Props> = ({ className = "" }) => {
 						</Disclosure.Button>
 					</div>
 
-					<Disclosure.Panel as="ul" className="mt-1 text-slate-600">
+					<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
 						<li role="button">
 							<Link href={`/companies`}>
 								<a className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500">
