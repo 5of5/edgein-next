@@ -13,7 +13,7 @@ import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
 type Props = {
 	theListName?: string;
 	theListDescription?: string;
-	theListCreator?: string | null;
+	theListCreator: string;
 	allowEdit?: boolean;
 	theListDate?: string;
 	theListId: number;
@@ -27,7 +27,6 @@ export const ModalListDetails: FC<Props> = ({
 	theListName,
 	theListDescription,
 	theListCreator,
-	allowEdit = false,
 	theListDate,
 	theListId,
 	groups,
@@ -107,11 +106,9 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Name</h3>
 													<p className="capitalize">{theListName}</p>
 												</div>
-												{allowEdit && (
-                          <div className="text-primary-500 text-sm font-bold">
-                            Edit
-                          </div>
-                        )}
+												<div className="text-primary-500 text-sm font-bold">
+													Edit
+												</div>
 											</button>
 
 											<button
@@ -122,24 +119,27 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Groups</h3>
 													{groups.length > 0 ? (
 														<div className="flex flex-wrap gap-2 mt-2">
-															{groups.map((item: any, index: number) => (
-																<p
-																	key={index}
-																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
-																>
-																	{item?.name}
-																</p>
-															))}
+															{groups.map((item: any, index: number) => {
+																if (!item) {
+																	return;
+																}
+																return (
+																	<p
+																		key={index}
+																		className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+																	>
+																		{item?.name}
+																	</p>
+																);
+															})}
 														</div>
 													) : (
 														<p className="text-slate-500">Share with group</p>
 													)}
 												</div>
-												{allowEdit && (
-                          <div className="text-primary-500 text-sm font-bold">
-                            Edit
-                          </div>
-                        )}
+												<div className="text-primary-500 text-sm font-bold">
+													Edit
+												</div>
 											</button>
 
 											{theListDescription && (
@@ -153,49 +153,43 @@ export const ModalListDetails: FC<Props> = ({
 															{theListDescription ? theListDescription : ""}
 														</p>
 													</div>
-													{allowEdit && (
-														<div className="text-primary-500">Edit</div>
-													)}
+													<div className="text-primary-500">Edit</div>
 												</button>
 											)}
 
-											{theListCreator && (
-												<div className="flex justify-between w-full p-3">
-													<div className="text-left">
-														<h3 className="font-bold">Created by</h3>
-														<p>
-															<span className="capitalize">
-																{theListCreator}
-															</span>{" "}
-															on {theListDate}
-														</p>
-													</div>
+											<div className="flex justify-between w-full p-3">
+												<div className="text-left">
+													<h3 className="font-bold">Created by</h3>
+													<p>
+														<span className="capitalize">
+															{theListCreator}
+														</span>{" "}
+														on {theListDate}
+													</p>
 												</div>
-											)}
-										</div>
-										{allowEdit && (
-											<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
-												<button
-													className="flex justify-between w-full p-3 hover:bg-slate-100"
-													onClick={() => {
-														setListDetailsModal(false);
-														setTimeout(() => {
-															setListDeleteModal(true);
-														}, 300);
-													}}
-												>
-													<div className="text-left text-rose-500">
-														<h3 className="flex items-center font-bold">
-															<IconTrash
-																className="h-5 w-5 mr-2"
-																title="Delete List"
-															/>
-															Delete List
-														</h3>
-													</div>
-												</button>
 											</div>
-										)}
+										</div>
+										<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
+											<button
+												className="flex justify-between w-full p-3 hover:bg-slate-100"
+												onClick={() => {
+													setListDetailsModal(false);
+													setTimeout(() => {
+														setListDeleteModal(true);
+													}, 300);
+												}}
+											>
+												<div className="text-left text-rose-500">
+													<h3 className="flex items-center font-bold">
+														<IconTrash
+															className="h-5 w-5 mr-2"
+															title="Delete List"
+														/>
+														Delete List
+													</h3>
+												</div>
+											</button>
+										</div>
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>

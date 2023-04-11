@@ -5,6 +5,7 @@ import { ModalListDetails } from "@/components/MyList/ModalListDetails";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { PlaceholderTable } from "@/components/Placeholders";
 import moment from "moment-timezone";
+import Link from "next/link";
 
 import {
 	Follows_Companies,
@@ -15,6 +16,7 @@ import {
 	useGetListUserGroupsQuery,
 	List_User_Groups_Bool_Exp,
 	useGetPeopleByListIdQuery,
+	Users,
 } from "@/graphql/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -30,7 +32,7 @@ import { PeopleList } from "@/components/MyList/PeopleList";
 
 type Props = {};
 
-const MyList: NextPage<Props> = ({}) => {
+const MyList: NextPage<Props> = () => {
 	const { listAndFollows: lists, refreshProfile, user } = useUser();
 	const router = useRouter();
 
@@ -39,7 +41,6 @@ const MyList: NextPage<Props> = ({}) => {
 	);
 
 	const [isCustomList, setIsCustomList] = useState(false);
-	const [isFollowing, setIsFollowing] = useState(true);
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
@@ -157,7 +158,7 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [theListCreatorId, setTheListCreatorId] = useState<any>();
 
-	const [theListCreator, setTheListCreator] = useState<string>("");
+	const [theListCreator, setTheListCreator] = useState<Users>();
 
 	const [theListCreatedDate, setTheListCreatedDate] = useState<string>();
 
@@ -186,13 +187,10 @@ const MyList: NextPage<Props> = ({}) => {
 						: false;
 				});
 
-				setTheListCreator(list.created_by?.person?.name || list.created_by?.display_name || "");
-
-				setIsFollowing(true);
+				setTheListCreator(list.created_by as Users);
 			} else {
 				setSelectedListName(startCase(router.query.slug as string));
 				setIsCustomList(true);
-				setIsFollowing(false);
 			}
 		}
 	}, [
@@ -251,39 +249,52 @@ const MyList: NextPage<Props> = ({}) => {
 					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
 					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
 
-					{}
-
 					{isCustomList ? (
-						isFollowing || theListCreatorId === user?.id ? (
-							<>
-								<ModalListDetails
-									theListName={selectedListName ? selectedListName : ""}
-									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-									theListCreator={theListCreator}
-									allowEdit={theListCreatorId === user?.id}
-									theListDate={theListCreatedDate}
-									theListId={parseInt(router.query.listId as string)}
-									groups={
-										groups?.list_user_groups?.map(
-											(group) => group.user_group
-										) || []
-									}
-									onSaveListName={onSaveListName}
-									onDeleteList={onDeleteList}
-									onAddGroups={onAddGroups}
-								/>
-							</>
-						) : (
-							<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-								Previewing: {listNameTitle}
-							</h1>
-						)
+						<div>
+							{theListCreatorId === user?.id ? (
+								<>
+									<ModalListDetails
+										theListName={selectedListName ? selectedListName : ""}
+										// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
+										theListCreator={theListCreator?.person?.name || theListCreator?.display_name || ""}
+										theListDate={theListCreatedDate}
+										theListId={parseInt(router.query.listId as string)}
+										groups={
+											groups?.list_user_groups?.map(
+												(group) => group.user_group
+											) || []
+										}
+										onSaveListName={onSaveListName}
+										onDeleteList={onDeleteList}
+										onAddGroups={onAddGroups}
+									/>
+								</>
+							) : (
+								<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+									Previewing: {listNameTitle}
+								</h1>
+							)}
+							<p className="pt-1 text-slate-600">
+								by{" "}
+								{theListCreator?.person ? (
+									<Link href={`/people/${theListCreator?.person?.slug}`} passHref>
+										<a className="hover:text-primary-500">{theListCreator?.person?.name}</a>
+									</Link>
+								) : (
+									<span>{theListCreator?.display_name}</span>
+								)}
+								
+								<span aria-hidden="true"> · </span>
+								{theListCreatedDate}
+							</p>
+						</div>
 					) : (
 						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
 							{listNameTitle}
 						</h1>
 					)}
 				</div>
+
 				{(listNameTitle === "hot" ||
 					listNameTitle === "like" ||
 					listNameTitle === "sh**") && (

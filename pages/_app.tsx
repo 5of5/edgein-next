@@ -39,19 +39,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 			: false
 	);
 
-	const [showFooter, setShowFooter] = useState(true);
-	React.useEffect(() => {
-		if (
-			router.pathname.includes(
-				"/lists/" || "/groups/" || "account" || "profile"
-			)
-		) {
-			setShowFooter(false);
-		} else {
-			setShowFooter(true);
-		}
-	}, [router.pathname]);
-
 	//google
 	React.useEffect(() => {
 		if (process.env.NEXT_PUBLIC_GTM_ID) {
@@ -92,6 +79,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 	let metaImage = pageProps.metaImage
 		? pageProps.metaImage
 		: `https://edgein.io/social.jpg`;
+
+	const [showFooter, setShowFooter] = useState(true);
+
+	React.useEffect(() => {
+		const pagesWithoutFooter = ["/groups/", "/account", "/profile", "/lists/"];
+
+		if (
+			pagesWithoutFooter.some((pageUrl) => router.pathname.includes(pageUrl))
+		) {
+			setShowFooter(false);
+		} else {
+			setShowFooter(true);
+		}
+	}, [router.pathname]);
 
 	return (
 		<>
@@ -160,7 +161,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-									{showFooter && <TheFooter />}
+
+									{showFooter === true && <TheFooter />}
 								</>
 							</UserProvider>
 						</IntercomProvider>
