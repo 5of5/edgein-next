@@ -118,14 +118,19 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Groups</h3>
 													{groups.length > 0 ? (
 														<div className="flex flex-wrap gap-2 mt-2">
-															{groups.map((item: any, index: number) => (
-																<p
-																	key={index}
-																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
-																>
-																	{item?.name}
-																</p>
-															))}
+															{groups.map((item: any, index: number) => {
+																if (!item) {
+																	return;
+																}
+																return (
+																	<p
+																		key={index}
+																		className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+																	>
+																		{item?.name}
+																	</p>
+																);
+															})}
 														</div>
 													) : (
 														<p className="text-slate-500">Share with group</p>
