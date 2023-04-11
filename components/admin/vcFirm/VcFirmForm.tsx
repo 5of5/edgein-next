@@ -147,7 +147,7 @@ const VcFirmForm = ({
         />
         <TextInput
           className={textInputClassName}
-          source="location"
+          source="location_json.address"
           label="Address"
         />
         <TextInput
