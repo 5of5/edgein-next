@@ -129,7 +129,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 				strategy="afterInteractive"
 			></Script>
 			<div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
-				<div className="h-20 bg-red-500">{showFooter ? "show" : "hide"}</div>
 				<QueryClientProvider client={queryClient}>
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
