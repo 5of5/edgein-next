@@ -13,7 +13,7 @@ import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
 type Props = {
 	theListName?: string;
 	theListDescription?: string;
-	theListCreator?: string | null;
+	theListAuthor?: any;
 	theListDate?: string;
 	theListId: number;
 	groups: Array<any>;
@@ -25,7 +25,7 @@ type Props = {
 export const ModalListDetails: FC<Props> = ({
 	theListName,
 	theListDescription,
-	theListCreator,
+	theListAuthor,
 	theListDate,
 	theListId,
 	groups,
@@ -118,14 +118,19 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Groups</h3>
 													{groups.length > 0 ? (
 														<div className="flex flex-wrap gap-2 mt-2">
-															{groups.map((item: any, index: number) => (
-																<p
-																	key={index}
-																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
-																>
-																	{item?.name}
-																</p>
-															))}
+															{groups.map((item: any, index: number) => {
+																if (!item) {
+																	return;
+																}
+																return (
+																	<p
+																		key={index}
+																		className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+																	>
+																		{item?.name}
+																	</p>
+																);
+															})}
 														</div>
 													) : (
 														<p className="text-slate-500">Share with group</p>
@@ -151,13 +156,13 @@ export const ModalListDetails: FC<Props> = ({
 												</button>
 											)}
 
-											{theListCreator && (
+											{theListAuthor && (
 												<div className="flex justify-between w-full p-3">
 													<div className="text-left">
 														<h3 className="font-bold">Created by</h3>
 														<p>
 															<span className="capitalize">
-																{theListCreator}
+																{theListAuthor?.name}
 															</span>{" "}
 															on {theListDate}
 														</p>

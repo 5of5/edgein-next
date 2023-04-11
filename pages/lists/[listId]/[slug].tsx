@@ -5,11 +5,14 @@ import { ModalListDetails } from "@/components/MyList/ModalListDetails";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { PlaceholderTable } from "@/components/Placeholders";
 import moment from "moment-timezone";
+import Link from "next/link";
 
 import {
 	Follows_Companies,
 	Follows_Vc_Firms,
 	Follows_People,
+	People,
+	useGetUserProfileQuery,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
 	useGetListUserGroupsQuery,
@@ -30,7 +33,7 @@ import { PeopleList } from "@/components/MyList/PeopleList";
 
 type Props = {};
 
-const MyList: NextPage<Props> = ({}) => {
+const MyList: NextPage<Props> = () => {
 	const { listAndFollows: lists, refreshProfile, user } = useUser();
 	const router = useRouter();
 
@@ -204,6 +207,17 @@ const MyList: NextPage<Props> = ({}) => {
 		}
 	}, [router]);
 
+	const [listAuthor, setListAuthor] = useState<People>();
+
+	const { data: users } = useGetUserProfileQuery({
+		id: theListCreatorId || 0,
+	});
+
+	useEffect(() => {
+		if (router.isReady && users)
+			setListAuthor(users.users_by_pk?.person as People);
+	}, [router, users]);
+
 	const {
 		data: companiesData,
 		error: companiesError,
@@ -245,38 +259,47 @@ const MyList: NextPage<Props> = ({}) => {
 					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
 					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
 
-					{}
-
 					{isCustomList ? (
-						isFollowing || theListCreatorId === user?.id ? (
-							<>
-								<ModalListDetails
-									theListName={selectedListName ? selectedListName : ""}
-									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-									theListCreator={user?.display_name}
-									theListDate={theListCreatedDate}
-									theListId={parseInt(router.query.listId as string)}
-									groups={
-										groups?.list_user_groups?.map(
-											(group) => group.user_group
-										) || []
-									}
-									onSaveListName={onSaveListName}
-									onDeleteList={onDeleteList}
-									onAddGroups={onAddGroups}
-								/>
-							</>
-						) : (
-							<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-								Previewing: {listNameTitle}
-							</h1>
-						)
+						<div>
+							{theListCreatorId === user?.id ? (
+								<>
+									<ModalListDetails
+										theListName={selectedListName ? selectedListName : ""}
+										// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
+										theListAuthor={listAuthor}
+										theListDate={theListCreatedDate}
+										theListId={parseInt(router.query.listId as string)}
+										groups={
+											groups?.list_user_groups?.map(
+												(group) => group.user_group
+											) || []
+										}
+										onSaveListName={onSaveListName}
+										onDeleteList={onDeleteList}
+										onAddGroups={onAddGroups}
+									/>
+								</>
+							) : (
+								<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+									Previewing: {listNameTitle}
+								</h1>
+							)}
+							<p className="pt-1 text-slate-600">
+								by{" "}
+								<Link href={`/people/${listAuthor?.slug}`} passHref>
+									<a className="hover:text-primary-500">{listAuthor?.name}</a>
+								</Link>
+								<span aria-hidden="true"> · </span>
+								{theListCreatedDate}
+							</p>
+						</div>
 					) : (
 						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
 							{listNameTitle}
 						</h1>
 					)}
 				</div>
+
 				{(listNameTitle === "hot" ||
 					listNameTitle === "like" ||
 					listNameTitle === "sh**") && (
@@ -315,17 +338,17 @@ const MyList: NextPage<Props> = ({}) => {
 				/>
 			)}
 
-			{isCustomList && [
-				listPeopleError && isCustomList ? (
-					<h4>Error loading people</h4>
-				) : listPeopleLoading && isCustomList ? (
-					<div className="rounded-lg p-5 bg-white shadow mb-8">
-						<PlaceholderTable />
-					</div>
-				) : (
-					<PeopleList people={people} selectedListName={selectedListName} />
-				),
-			]}
+			{!isCustomList ? (
+				<></>
+			) : listPeopleError ? (
+				<h4>Error loading people</h4>
+			) : listPeopleLoading ? (
+				<div className="rounded-lg p-5 bg-white shadow mb-8">
+					<PlaceholderTable />
+				</div>
+			) : (
+				<PeopleList people={people} selectedListName={selectedListName} />
+			)}
 
 			<Toaster />
 		</DashboardLayout>

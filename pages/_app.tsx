@@ -80,6 +80,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 		? pageProps.metaImage
 		: `https://edgein.io/social.jpg`;
 
+	const [showFooter, setShowFooter] = useState(true);
+
+	React.useEffect(() => {
+		const pagesWithoutFooter = ["/groups/", "/account", "/profile", "/lists/"];
+
+		if (
+			pagesWithoutFooter.some((pageUrl) => router.pathname.includes(pageUrl))
+		) {
+			setShowFooter(false);
+		} else {
+			setShowFooter(true);
+		}
+	}, [router.pathname]);
+
 	return (
 		<>
 			<Head>
@@ -114,7 +128,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				src="https://aggle.net/js?pid=J9GEZNSN8"
 				strategy="afterInteractive"
 			></Script>
-			<div className="flex flex-col min-h-screen">
+			<div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
 				<QueryClientProvider client={queryClient}>
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
@@ -147,7 +161,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-									<TheFooter />
+
+									{showFooter === true && <TheFooter />}
 								</>
 							</UserProvider>
 						</IntercomProvider>
@@ -163,7 +178,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
-
 			</div>
 		</>
 	);

@@ -1,12 +1,20 @@
 import { FC, useEffect, useState } from "react";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/useAuth";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
-const ElemMyEdgeInMenu = dynamic(() => import('./ElemMyEdgeInMenu'), { ssr: false })
-const ElemMyListsMenu = dynamic(() => import('./ElemMyListsMenu'), { ssr: false })
-const ElemMyGroupsMenu = dynamic(() => import('./ElemMyGroupsMenu'), { ssr: false })
-const ElemExploreMenu = dynamic(() => import('./ElemExploreMenu'), { ssr: false })
+const ElemMyEdgeInMenu = dynamic(() => import("./ElemMyEdgeInMenu"), {
+	ssr: false,
+});
+const ElemMyListsMenu = dynamic(() => import("./ElemMyListsMenu"), {
+	ssr: false,
+});
+const ElemMyGroupsMenu = dynamic(() => import("./ElemMyGroupsMenu"), {
+	ssr: false,
+});
+const ElemExploreMenu = dynamic(() => import("./ElemExploreMenu"), {
+	ssr: false,
+});
 
 type Props = {
 	className?: string;
@@ -47,11 +55,17 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 	}, [users]);
 
 	return (
-		<aside className={className}>
-			<ElemMyEdgeInMenu />
-			<ElemMyListsMenu className="mt-6" />
-			<ElemMyGroupsMenu className="mt-6" />
-			<ElemExploreMenu className="mt-6" />
-		</aside>
+		<nav className={`relative  ${className}`}>
+			<div className="sticky top-0 -ml-0.5 pointer-events-none">
+				<div className="h-8 bg-gradient-to-b from-white lg:from-gray-50"></div>
+			</div>
+
+			<div className="-mt-5">
+				<ElemMyEdgeInMenu />
+				<ElemMyListsMenu className="mt-6" />
+				<ElemMyGroupsMenu className="mt-6" />
+				<ElemExploreMenu className="mt-6" />
+			</div>
+		</nav>
 	);
 };

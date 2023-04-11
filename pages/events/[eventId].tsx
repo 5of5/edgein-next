@@ -106,7 +106,8 @@ const Event: NextPage<Props> = ({ event }) => {
 								className="absolute top-0 right-0 bottom-0 left-0 object-cover max-w-full max-h-full -z-10 bg-center bg-no-repeat bg-cover blur-2xl" // blur-[50px]
 								style={{
 									backgroundImage: `url(${
-										event.banner?.url || getEventBanner(event.location_json?.city)
+										event.banner?.url ||
+										getEventBanner(event.location_json?.city)
 									}), url(${randomImageOfCity(event.location_json?.city)})`,
 								}}
 							></div>
@@ -221,7 +222,8 @@ const Event: NextPage<Props> = ({ event }) => {
 						<ElemKeyInfo
 							className="sticky top-4"
 							heading="Key Info"
-							website={event.link}
+							eventLink={event.link}
+							// website={event.link}
 							venue={event.venue_name}
 							locationJson={event.location_json}
 							price={event.price}
