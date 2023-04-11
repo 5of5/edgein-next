@@ -154,23 +154,34 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		refetch();
 	};
 
-	const onChangeCommentInput = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
-    setCommentContent(event.target.value);
-  };
+	useEffect(() => {
+		if (commentInput.current) {
+			setCommentContent(commentInput.current.value);
+		}
+	}, [commentInput, commentContent]);
 
-  const onCommentInputKeyDown = (
-    event: React.KeyboardEvent<HTMLTextAreaElement>
-  ) => {
-    const target = event.target as HTMLTextAreaElement;
-    target.style.height = "inherit";
-    target.style.height = `${target.scrollHeight}px`;
-    if (event.key === "Enter" && commentContent) {
-      onAddComment();
-      target.style.height = "auto";
-    }
-  };
+	const onChangeCommentInput = (
+		event: React.ChangeEvent<HTMLTextAreaElement>
+	) => {
+		setCommentContent(event.target.value);
+
+		const target = event.target as HTMLTextAreaElement;
+		target.style.height = "inherit";
+
+		if (commentContent.length > 0 && target.scrollHeight > 67) {
+			target.style.height = `${target.scrollHeight}px`;
+		} else {
+			target.style.height = "auto";
+		}
+	};
+
+	const onCommentInputKeyDown = (
+		event: React.KeyboardEvent<HTMLTextAreaElement>
+	) => {
+		if (event.key === "Enter" && commentContent) {
+			onAddComment();
+		}
+	};
 
 	const NotePopover = (
 		<Popover className="group-hover:block transition-all">
@@ -361,13 +372,13 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					/>
 
 					<InputTextarea
-						// ref={commentInput}
-						name="name"
+						rows={1}
+						name="comment"
 						placeholder="Write a comment..."
 						value={commentContent}
 						onChange={onChangeCommentInput}
 						onKeyDown={onCommentInputKeyDown}
-						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 py-1 text-slate-600 hover:bg-slate-200 transition-all focus:pb-6"
+						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 h-8 text-slate-600 hover:bg-slate-200 transition-all pb-1 focus:pb-6"
 					/>
 				</div>
 			</div>
