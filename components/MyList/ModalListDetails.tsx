@@ -13,7 +13,7 @@ import { ElemDeleteConfirmModal } from "../ElemDeleteConfirmModal";
 type Props = {
 	theListName?: string;
 	theListDescription?: string;
-	theListCreator?: string | null;
+	theListAuthor?: any;
 	theListDate?: string;
 	theListId: number;
 	groups: Array<any>;
@@ -25,7 +25,7 @@ type Props = {
 export const ModalListDetails: FC<Props> = ({
 	theListName,
 	theListDescription,
-	theListCreator,
+	theListAuthor,
 	theListDate,
 	theListId,
 	groups,
@@ -156,13 +156,13 @@ export const ModalListDetails: FC<Props> = ({
 												</button>
 											)}
 
-											{theListCreator && (
+											{theListAuthor && (
 												<div className="flex justify-between w-full p-3">
 													<div className="text-left">
 														<h3 className="font-bold">Created by</h3>
 														<p>
 															<span className="capitalize">
-																{theListCreator}
+																{theListAuthor?.name}
 															</span>{" "}
 															on {theListDate}
 														</p>
