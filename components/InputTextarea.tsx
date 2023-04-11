@@ -10,6 +10,7 @@ type Props = {
 	placeholder?: string;
 	required?: boolean;
 	rows?: number;
+	onKeyDown?: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
 };
 
 export const InputTextarea: React.FC<PropsWithChildren<Props>> = ({
@@ -22,6 +23,7 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = ({
 	placeholder = "",
 	required = false,
 	rows = 2,
+	onKeyDown,
 }) => {
 	return (
 		<>
@@ -38,6 +40,7 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = ({
 				required={required}
 				placeholder={placeholder}
 				rows={rows}
+				onKeyDown={onKeyDown}
 			/>
 		</>
 	);

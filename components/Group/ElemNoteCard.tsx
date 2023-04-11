@@ -15,7 +15,7 @@ import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
 import { useUser } from "@/context/userContext";
 import { Popover, Transition } from "@headlessui/react";
-import { InputText } from "../InputText";
+import { InputTextarea } from "../InputTextarea";
 
 type Props = {
 	data: GetNotesQuery["notes"][0];
@@ -131,7 +131,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		refetch();
 	};
 
-	//const commentInput = useRef(null);
+	// const commentInput = useRef(null);
 	const commentInput = useRef() as MutableRefObject<HTMLInputElement>;
 
 	const onCommentButton = () => {
@@ -153,6 +153,24 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		setCommentContent("");
 		refetch();
 	};
+
+	const onChangeCommentInput = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setCommentContent(event.target.value);
+  };
+
+  const onCommentInputKeyDown = (
+    event: React.KeyboardEvent<HTMLTextAreaElement>
+  ) => {
+    const target = event.target as HTMLTextAreaElement;
+    target.style.height = "inherit";
+    target.style.height = `${target.scrollHeight}px`;
+    if (event.key === "Enter" && commentContent) {
+      onAddComment();
+      target.style.height = "auto";
+    }
+  };
 
 	const NotePopover = (
 		<Popover className="group-hover:block transition-all">
@@ -342,18 +360,13 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 						placeholderClass="text-slate-300"
 					/>
 
-					<InputText
-						//ref={commentInput}
+					<InputTextarea
+						// ref={commentInput}
 						name="name"
-						type="text"
 						placeholder="Write a comment..."
 						value={commentContent}
-						onChange={(event) => setCommentContent(event?.target.value)}
-						onKeyDown={(event) => {
-							if (event.key === "Enter" && commentContent) {
-								onAddComment();
-							}
-						}}
+						onChange={onChangeCommentInput}
+						onKeyDown={onCommentInputKeyDown}
 						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 py-1 text-slate-600 hover:bg-slate-200 transition-all focus:pb-6"
 					/>
 				</div>
