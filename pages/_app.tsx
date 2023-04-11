@@ -39,19 +39,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 			: false
 	);
 
-	const [showFooter, setShowFooter] = useState(true);
-	React.useEffect(() => {
-		if (
-			router.pathname.includes(
-				"/lists/" || "/groups/" || "account" || "profile"
-			)
-		) {
-			setShowFooter(false);
-		} else {
-			setShowFooter(true);
-		}
-	}, [router.pathname]);
-
 	//google
 	React.useEffect(() => {
 		if (process.env.NEXT_PUBLIC_GTM_ID) {
@@ -93,6 +80,20 @@ function MyApp({ Component, pageProps }: AppProps) {
 		? pageProps.metaImage
 		: `https://edgein.io/social.jpg`;
 
+	const [showFooter, setShowFooter] = useState(true);
+
+	React.useEffect(() => {
+		const pagesWithoutFooter = ["/groups/", "/account", "/profile", "/lists/"];
+
+		if (
+			pagesWithoutFooter.some((pageUrl) => router.pathname.includes(pageUrl))
+		) {
+			setShowFooter(false);
+		} else {
+			setShowFooter(true);
+		}
+	}, [router.pathname]);
+
 	return (
 		<>
 			<Head>
@@ -128,6 +129,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				strategy="afterInteractive"
 			></Script>
 			<div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
+				<div className="h-20 bg-red-500">{showFooter ? "show" : "hide"}</div>
 				<QueryClientProvider client={queryClient}>
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
@@ -160,7 +162,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-									{showFooter && <TheFooter />}
+
+									{showFooter === true && <TheFooter />}
 								</>
 							</UserProvider>
 						</IntercomProvider>
