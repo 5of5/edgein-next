@@ -203,7 +203,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 												{getNameFromListName(list)}
 											</span>
 											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
-												{getCountForList(getNameFromListName(list))}
+												{list.total_no_of_resources}
 											</div>
 										</a>
 									</Link>

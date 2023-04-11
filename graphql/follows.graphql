@@ -4,6 +4,16 @@ query GetFollowsByUser($user_id: Int!) {
 			name
 			id
 			created_by_id
+			created_by {
+				id
+        display_name
+        email
+				person {
+					id
+					slug
+					name
+				}
+			}
 			created_at
 			total_no_of_resources
 			follows_companies {

@@ -157,6 +157,8 @@ const MyList: NextPage<Props> = ({}) => {
 
 	const [theListCreatorId, setTheListCreatorId] = useState<any>();
 
+	const [theListCreator, setTheListCreator] = useState<string>("");
+
 	const [theListCreatedDate, setTheListCreatedDate] = useState<string>();
 
 	useEffect(() => {
@@ -183,6 +185,10 @@ const MyList: NextPage<Props> = ({}) => {
 						? !["hot", "like", "crap"].includes(getNameFromListName(list))
 						: false;
 				});
+
+				setTheListCreator(list.created_by?.person?.name || list.created_by?.display_name || "");
+
+				setIsFollowing(true);
 			} else {
 				setSelectedListName(startCase(router.query.slug as string));
 				setIsCustomList(true);
@@ -253,7 +259,8 @@ const MyList: NextPage<Props> = ({}) => {
 								<ModalListDetails
 									theListName={selectedListName ? selectedListName : ""}
 									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-									theListCreator={user?.display_name}
+									theListCreator={theListCreator}
+									allowEdit={theListCreatorId === user?.id}
 									theListDate={theListCreatedDate}
 									theListId={parseInt(router.query.listId as string)}
 									groups={
