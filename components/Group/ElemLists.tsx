@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import toast, { Toaster } from "react-hot-toast";
 import { kebabCase } from "lodash";
-import { IconCustomList, IconListPlus } from "@/components/Icons";
+import { IconCustomList, IconListPlus, IconCheck } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { getNameFromListName } from "@/utils/reaction";
 import Link from "next/link";
@@ -56,7 +56,7 @@ export const ElemLists: React.FC<Props> = ({
 		title: getNameFromListName(item),
 	}));
 
-	const handleToggleFollow = async (listId: number) => {
+	const handleToggleFollow = async (listId: number, isFollowing: boolean) => {
 		const response = await fetch("/api/toggle_follow_list/", {
 			method: "POST",
 			headers: {
@@ -71,6 +71,23 @@ export const ElemLists: React.FC<Props> = ({
 
 		if (response.status === 200) {
 			refetch();
+			if (isFollowing) {
+				toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							List unfollowed
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+				);
+			}
 		}
 	};
 
@@ -163,7 +180,10 @@ export const ElemLists: React.FC<Props> = ({
 												<IconCustomList className="object-fit max-w-full max-h-full group-hover:text-primary-500" />
 											</div>
 											<div>
-												<h3 className="font-bold leading-tight group-hover:text-primary-500">
+												<h3
+													className="line-clamp-1 break-all font-bold leading-tight group-hover:text-primary-500"
+													title={getNameFromListName(item)}
+												>
 													{getNameFromListName(item)}
 												</h3>
 
@@ -177,26 +197,20 @@ export const ElemLists: React.FC<Props> = ({
 											</div>
 										</a>
 									</Link>
+
 									<ElemButton
-										btn={isFollowing ? "white" : "slate"}
-										className={`${
-											isFollowing
-												? "group hover:bg-red-100 hover:text-red-500 hover:ring-red-500"
-												: ""
-										}`}
-										onClick={() => handleToggleFollow(item.id)}
+										btn="slate"
+										size="sm"
+										className={`${isFollowing ? "" : ""}`}
+										onClick={() => handleToggleFollow(item.id, isFollowing)}
 									>
 										{isFollowing ? (
 											<>
-												<span className="opacity-100 transition-all group-hover:opacity-0 group-hover:hidden">
-													Following
-												</span>
-												<span className="opacity-0 transition-all hidden group-hover:opacity-100 group-hover:inline">
-													Unfollow
-												</span>
+												<IconCheck className="w-5 h-5 mr-1" />
+												Following
 											</>
 										) : (
-											<span>Follow</span>
+											<>Follow</>
 										)}
 									</ElemButton>
 								</li>
