@@ -58,7 +58,7 @@ const useAdminTransform = ({
 		if (attachments.length > 0) {
 			attachmentsResponse = await Promise.all(
 				attachments.map(async (file: any) => {
-					await uploadFile(file);
+					return await uploadFile(file);
 				})
 			);
 		}
