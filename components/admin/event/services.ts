@@ -30,7 +30,7 @@ const transformAttachments = (values: any, attachmentsResponse: any) => {
         label: item.label,
         url:
           attachmentsResponse.find(
-            (element: any) => element.fileName === item.file.name
+            (element: any) => element.fileName === item.file.title
           )?.file?.url || "",
       };
     }),
