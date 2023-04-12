@@ -21,7 +21,7 @@ import {
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { find, startCase } from "lodash";
+import { find } from "lodash";
 import {
   getNameFromListName,
   getUserIdFromListCreator,
@@ -248,8 +248,8 @@ const MyList: NextPage<Props> = () => {
         setTheListCreator(list.created_by as Users);
         setIsFollowing(true);
       } else {
-        setSelectedListName(startCase(router.query.slug as string));
-        setIsCustomList(true);
+        setSelectedListName(router.query.slug as string);
+        setIsCustomList(!["like", "hot", "sh**"].includes(router.query.slug as string));
         setIsFollowing(false);
       }
     }
