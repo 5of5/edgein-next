@@ -21,12 +21,35 @@ const transformEventFormData = (event: any) => {
 export const withImageTransformData = (
   data: any,
   imageResponse: any,
-  finalValue: any
-) => ({
-  ...transformEventFormData(data),
-  banner: imageResponse?.file?.url || "",
-});
+  finalValue: any,
+  attachmentsResponse?: any
+) => {
+  const values = {
+    ...transformEventFormData(data),
+    banner: imageResponse?.file?.url || "",
+  };
+  if (attachmentsResponse) {
+    values.attachments.map((item: any, index: number) => ({
+      ...item,
+      src: attachmentsResponse[index]?.file?.url || "",
+    }));
+  }
+  return values;
+};
 
-export const withoutImageTransformData = (data: any, finalValue: any) => ({
-  ...transformEventFormData(data),
-});
+export const withoutImageTransformData = (
+  data: any,
+  finalValue: any,
+  attachmentsResponse?: any
+) => {
+  const values = {
+    ...transformEventFormData(data),
+  };
+  if (attachmentsResponse) {
+    values.attachments.map((item: any, index: number) => ({
+      ...item,
+      src: attachmentsResponse[index]?.file?.url || "",
+    }));
+  }
+  return values;
+};
