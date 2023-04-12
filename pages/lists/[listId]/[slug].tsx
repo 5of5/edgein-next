@@ -385,49 +385,47 @@ const MyList: NextPage<Props> = () => {
 				)}
 			</div>
 
-			{!isCustomList ||
-				isFollowing ||
-				(theListCreatorId === user?.id && (
-					<>
-						{companiesError ? (
-							<h4>Error loading companies</h4>
-						) : companiesLoading ? (
-							<div className="rounded-lg p-5 bg-white shadow mb-8">
-								<PlaceholderTable />
-							</div>
-						) : (
-							<CompaniesList
-								companies={companies}
-								selectedListName={selectedListName}
-								isCustomList={isCustomList}
-							/>
-						)}
+			{(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
+				<>
+					{companiesError ? (
+						<h4>Error loading companies</h4>
+					) : companiesLoading ? (
+						<div className="rounded-lg p-5 bg-white shadow mb-8">
+							<PlaceholderTable />
+						</div>
+					) : (
+						<CompaniesList
+							companies={companies}
+							selectedListName={selectedListName}
+							isCustomList={isCustomList}
+						/>
+					)}
 
-						{vcFirmsError ? (
-							<h4>Error loading Investors</h4>
-						) : vcFirmsLoading ? (
-							<div className="rounded-lg p-5 bg-white shadow mb-8">
-								<PlaceholderTable />
-							</div>
-						) : (
-							<InvestorsList
-								vcfirms={vcfirms}
-								selectedListName={selectedListName}
-								isCustomList={isCustomList}
-							/>
-						)}
+					{vcFirmsError ? (
+						<h4>Error loading Investors</h4>
+					) : vcFirmsLoading ? (
+						<div className="rounded-lg p-5 bg-white shadow mb-8">
+							<PlaceholderTable />
+						</div>
+					) : (
+						<InvestorsList
+							vcfirms={vcfirms}
+							selectedListName={selectedListName}
+							isCustomList={isCustomList}
+						/>
+					)}
 
-						{listPeopleError ? (
-							<h4>Error loading people</h4>
-						) : listPeopleLoading ? (
-							<div className="rounded-lg p-5 bg-white shadow mb-8">
-								<PlaceholderTable />
-							</div>
-						) : (
-							<PeopleList people={people} selectedListName={selectedListName} />
-						)}
-					</>
-				))}
+					{listPeopleError ? (
+						<h4>Error loading people</h4>
+					) : listPeopleLoading ? (
+						<div className="rounded-lg p-5 bg-white shadow mb-8">
+							<PlaceholderTable />
+						</div>
+					) : (
+						<PeopleList people={people} selectedListName={selectedListName} />
+					)}
+				</>
+			)}
 
 			{theListCreatorId != user?.id && !isFollowing && (
 				<div className=" w-full mt-7 p-5 bg-white shadow rounded-lg">
