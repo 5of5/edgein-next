@@ -5,6 +5,7 @@ query GetListUserGroups($where: list_user_groups_bool_exp!) {
     list {
       id
       name
+      public
       created_at
       created_by {
         id
@@ -28,6 +29,7 @@ query GetListMembers($where: list_members_bool_exp!) {
     list {
       id
       name
+      public
       created_at
       created_by {
         id

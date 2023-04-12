@@ -29,7 +29,7 @@ export const ElemLists: React.FC<Props> = ({
 	refetchLists,
 	className,
 }) => {
-	const { user, listAndFollows } = useUser();
+	const { user, listAndFollows, refreshProfile } = useUser();
 
 	const [isOpenAddList, setIsOpenAddList] = useState<boolean>(false);
 
@@ -88,6 +88,7 @@ export const ElemLists: React.FC<Props> = ({
 					}
 				);
 			}
+			refreshProfile();
 		}
 	};
 

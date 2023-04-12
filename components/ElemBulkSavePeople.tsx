@@ -31,7 +31,10 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   const listData = listAndFollows
     .filter((item) => {
       const sentiment = getNameFromListName(item);
-      return !["hot", "like", "crap"].includes(sentiment);
+      return (
+        !["hot", "like", "crap"].includes(sentiment) &&
+        item.created_by_id === user?.id
+      );
     })
     .sort((a, b) => (a.name < b.name ? -1 : 1));
 

@@ -6,6 +6,7 @@ import React, {
 	useEffect,
 } from "react";
 import { NextPage, GetServerSideProps } from "next";
+import { useMutation } from "react-query";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
@@ -26,15 +27,19 @@ import {
 	Lists,
 	useGetNotesQuery,
 	Notes_Bool_Exp,
+	User_Group_Members,
 } from "@/graphql/types";
-import { IconLockClosed } from "@/components/Icons";
+import { IconInformationCircle, IconLockClosed } from "@/components/Icons";
+import { ElemButton } from "@/components/ElemButton";
+import { useUser } from "@/context/userContext";
 
 type Props = {
-	isUserBelongToGroup: boolean;
 	group: User_Groups;
 };
 
 const Group: NextPage<Props> = (props: Props) => {
+	const { user } = useUser();
+
 	const [groupData, setGroupData] = useState<User_Groups>(props.group);
 
 	const [selectedSettingTab, setSelectedSettingTab] =
@@ -64,6 +69,10 @@ const Group: NextPage<Props> = (props: Props) => {
 		{
 			enabled: Boolean(groupData.id),
 		}
+	);
+
+	const isUserBelongToGroup = groupData.user_group_members.some(
+		(mem) => mem.user.id === user?.id
 	);
 
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -102,74 +111,146 @@ const Group: NextPage<Props> = (props: Props) => {
 		setIsOpenSettingDialog(false);
 	};
 
-	//mx-auto px-1 py-1 sm:px-3
+	const { mutate: addGroupMember, isLoading: isAddingGroupMember } =
+    useMutation(
+      async () => {
+        const res = await fetch("/api/add_group_member/", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            groupId: groupData.id,
+            userId: user?.id,
+          }),
+        });
+        const apiResponse = await res.json();
+        if (!res.ok) {
+          throw apiResponse;
+        } else {
+          return apiResponse;
+        }
+      },
+      {
+        onSuccess: async (response: User_Group_Members) => {
+          setGroupData((prev: User_Groups) => ({
+            ...prev,
+            user_group_members: [...prev.user_group_members, response],
+          }));
+        },
+      }
+    );
+
+	if (!user) {
+		return null;
+	}
+
+	if (isUserBelongToGroup) {
+		return (
+			<DashboardLayout>
+				{/* <div ref={homeRef} /> */}
+	
+				<ElemGroupInformation
+					isUserBelongToGroup={isUserBelongToGroup}
+					group={groupData}
+					onInvite={onOpenInviteDialog}
+					onOpenSettingDialog={onOpenSettingDialog}
+				/>
+				<ElemTabBar
+					className="mt-2 border-t-0"
+					tabs={tabBarItems}
+					showDropdown={false}
+				/>
+				<div className="border-t border-transparent lg:mt-7 lg:border-black/10 lg:flex lg:gap-x-4">
+					<div ref={notesRef} className="flex justify-center flex-1">
+						<ElemNotes
+							className="flex flex-col max-w-2xl"
+							notes={notes?.notes || []}
+							refetchNotes={refetchNotes}
+						/>
+					</div>
+					<div
+						ref={listsRef}
+						className="flex justify-center flex-1 lg:block lg:max-w-lg"
+					>
+						<ElemLists
+							className="flex flex-col w-full max-w-2xl lg:max-w-lg"
+							group={groupData}
+							lists={
+								(lists?.list_user_groups?.map(
+									(item) => item.list
+								) as Array<Lists>) || []
+							}
+							refetchLists={refetchLists}
+						/>
+					</div>
+				</div>
+
+				<div ref={chatRef} />
+
+				<ElemInviteDialog
+					isOpen={isOpenInviteDialog}
+					group={groupData}
+					onUpdateGroupData={setGroupData}
+					onClose={onCloseInviteDialog}
+				/>
+
+				<ElemSettingDialog
+					isOpen={isOpenSettingDialog}
+					selectedTab={selectedSettingTab}
+					group={groupData}
+					onClose={onCloseSettingDialog}
+					onUpdateGroupData={setGroupData}
+					onInvite={onOpenInviteDialog}
+				/>
+			</DashboardLayout>
+		);
+	}
+
+	if (groupData.public) {
+		return (
+			<DashboardLayout>
+			{/* <div ref={homeRef} /> */}
+	
+				<ElemGroupInformation
+					isUserBelongToGroup={isUserBelongToGroup}
+					group={groupData}
+					onInvite={onOpenInviteDialog}
+					onOpenSettingDialog={onOpenSettingDialog}
+				/>
+				<div className="flex items-center gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+					<IconInformationCircle className="h-5 w-5" title="Private" />
+					<p>Join group to explore more information</p>
+					<ElemButton
+						btn="primary"
+						className="px-8 ml-4"
+						loading={isAddingGroupMember}
+						onClick={() => addGroupMember()}
+					>
+						Join
+					</ElemButton>
+				</div>
+			</DashboardLayout>
+		)
+	}
+
 	return (
 		<DashboardLayout>
+		{/* <div ref={homeRef} /> */}
+
 			<ElemGroupInformation
-				isUserBelongToGroup={props.isUserBelongToGroup}
+				isUserBelongToGroup={isUserBelongToGroup}
 				group={groupData}
 				onInvite={onOpenInviteDialog}
 				onOpenSettingDialog={onOpenSettingDialog}
 			/>
-
-			{props.isUserBelongToGroup ? (
-				<>
-					<ElemTabBar
-						className="block mt-2 border-t-0 lg:hidden"
-						tabs={tabBarItems}
-						showDropdown={false}
-					/>
-					<div className="border-t border-transparent lg:mt-7 lg:border-black/10 lg:flex lg:gap-x-4">
-						<div ref={notesRef} className="flex justify-center flex-1">
-							<ElemNotes
-								className="flex flex-col max-w-2xl"
-								notes={notes?.notes || []}
-								refetchNotes={refetchNotes}
-							/>
-						</div>
-						<div
-							ref={listsRef}
-							className="flex justify-center flex-1 lg:block lg:max-w-lg"
-						>
-							<ElemLists
-								className="flex flex-col w-full max-w-2xl lg:max-w-lg"
-								group={groupData}
-								lists={
-									(lists?.list_user_groups?.map(
-										(item) => item.list
-									) as Array<Lists>) || []
-								}
-								refetchLists={refetchLists}
-							/>
-						</div>
-					</div>
-
-					<div ref={chatRef} />
-
-					<ElemInviteDialog
-						isOpen={isOpenInviteDialog}
-						group={groupData}
-						onUpdateGroupData={setGroupData}
-						onClose={onCloseInviteDialog}
-					/>
-
-					<ElemSettingDialog
-						isOpen={isOpenSettingDialog}
-						selectedTab={selectedSettingTab}
-						group={groupData}
-						onClose={onCloseSettingDialog}
-						onUpdateGroupData={setGroupData}
-						onInvite={onOpenInviteDialog}
-					/>
-				</>
-			) : (
-				<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-					<IconLockClosed className="h-5 w-5" title="Private" />
-					<p>This is a private group and you has not been invited to.</p>
-				</div>
-			)}
+			<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
+				<IconLockClosed className="h-5 w-5" title="Private" />
+				<p>This is a private group and you has not been invited to.</p>
+			</div>
 		</DashboardLayout>
-	);
+	)
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -192,10 +273,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const group = data.user_groups[0];
 
-	const isUserBelongToGroup = group.user_group_members.some(
-		(mem) => mem.user.id === user?.id
-	);
-
 	let metaTitle = null;
 	if (group.name) {
 		metaTitle = group.name;
@@ -209,7 +286,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		props: {
 			metaTitle,
 			metaDescription,
-			isUserBelongToGroup,
 			group,
 		},
 	};
