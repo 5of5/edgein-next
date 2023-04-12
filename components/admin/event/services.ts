@@ -18,6 +18,25 @@ const transformEventFormData = (event: any) => {
     : data;
 };
 
+const transformAttachments = (values: any, attachmentsResponse: any) => {
+  return {
+    ...values,
+    attachments: values.attachments.map((item: any) => {
+      if (item.url) {
+        return item;
+      }
+
+      return {
+        label: item.label,
+        url:
+          attachmentsResponse.find(
+            (element: any) => element.fileName === item.file.name
+          )?.file?.url || "",
+      };
+    }),
+  };
+};
+
 export const withImageTransformData = (
   data: any,
   imageResponse: any,
@@ -28,14 +47,8 @@ export const withImageTransformData = (
     ...transformEventFormData(data),
     banner: imageResponse?.file?.url || "",
   };
-  if (attachmentsResponse) {
-    return {
-      ...values,
-      attachments: values.attachments.map((item: any, index: number) => ({
-        ...item,
-        src: attachmentsResponse[index]?.file?.url || "",
-      }))
-    }
+  if (attachmentsResponse && attachmentsResponse.length > 0) {
+    return transformAttachments(values, attachmentsResponse);
   }
   return values;
 };
@@ -48,11 +61,10 @@ export const withoutImageTransformData = (
   const values = {
     ...transformEventFormData(data),
   };
-  if (attachmentsResponse) {
-    values.attachments.map((item: any, index: number) => ({
-      ...item,
-      src: attachmentsResponse[index]?.file?.url || "",
-    }));
+  if (attachmentsResponse && attachmentsResponse.length > 0) {
+    if (attachmentsResponse && attachmentsResponse.length > 0) {
+      return transformAttachments(values, attachmentsResponse);
+    }
   }
   return values;
 };

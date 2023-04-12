@@ -53,12 +53,15 @@ const useAdminTransform = ({
 			deleteFile(oldLogo);
 		}
 
-
 		let attachmentsResponse = null;
 		if (attachments.length > 0) {
 			attachmentsResponse = await Promise.all(
 				attachments.map(async (file: any) => {
-					return await uploadFile(file);
+					const res = await uploadFile(file);
+					return {
+						...res,
+						fileName: file.name,
+					}
 				})
 			);
 		}
@@ -88,6 +91,7 @@ console.log('@attachments', {attachments, attachmentsResponse})
 	};
 
 	const onSelectAttachment = (files: any) => {
+		console.log('@files', files)
 		if (files && files.length > 0) {
 			setAttachments([...attachments, files[0]]);
 		}
