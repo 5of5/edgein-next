@@ -9,7 +9,7 @@ export const formatDate = (
 	}
 
 	var date = new Date(dateString);
-	//date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+	date = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
 
 	if (!options) {
 		return date.toLocaleDateString("en-us", {
@@ -46,16 +46,24 @@ export const getDateToday = (): string => {
 	return date.toISOString().replace(/T.*/, "").split("-").join("-");
 };
 
-export const formatTime = (dateString: string | number): string => {
+export const formatTime = (
+	dateString: string | number | Date,
+	options?: Intl.DateTimeFormatOptions
+): string => {
 	if (!dateString) {
 		return "";
 	}
 	const date = new Date(dateString);
 
-	return date.toLocaleTimeString(navigator.language, {
-		hour: "2-digit",
-		minute: "2-digit",
-	});
+	if (!options) {
+		return date.toLocaleTimeString("en-us", {
+			hour: "2-digit",
+			minute: "2-digit",
+			timeZone: "America/Los_Angeles",
+		});
+	} else {
+		return date.toLocaleTimeString("en-us", options);
+	}
 };
 
 export const convertToDollars = (amount: number) => {
@@ -139,4 +147,10 @@ export const getTimeOfWork = (startDate: string, endDate: string) => {
 	return `${moment.duration(timeDiff).years()} yrs ${moment
 		.duration(timeDiff)
 		.months()} mo`;
+};
+
+export const getTimeString = (value: Date) => {
+	const hour = new Date(value).getHours();
+	const mins = ("0" + new Date(value).getMinutes()).slice(-2);
+	return `${hour}:${mins}`;
 };

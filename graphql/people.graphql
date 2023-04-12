@@ -30,6 +30,7 @@ query GetPerson($slug: String!) {
         logo
         overview
         location
+        tags
       }
     }
     team_members {
@@ -46,6 +47,7 @@ query GetPerson($slug: String!) {
         logo
         overview
         location
+        tags
       }
     }
     investments {
@@ -59,6 +61,7 @@ query GetPerson($slug: String!) {
           slug
           name
           logo
+          tags
         }
       }
     }

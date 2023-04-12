@@ -75,3 +75,81 @@ query GetUserProfile ($id: Int!) {
     }
   }
 }
+
+query GetUserByPersonId ($person_id: Int!) {
+  users(where: {person_id: {_eq: $person_id}}) {
+    id
+    billing_org_id
+    organization_companies {
+      id
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    organization_vc_firms {
+      id
+      vc_firm {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    person {
+      id
+      name
+      personal_email
+      picture
+      slug
+      status
+      type
+      work_email
+      linkedin
+      github
+      city
+      country
+      facebook_url
+      twitter_url
+      website_url
+      about
+      email
+      team_members {
+        id
+        end_date
+        start_date
+        founder
+        function
+        title
+        company {
+          id
+          slug
+          name
+          logo
+          overview
+          location
+        }
+      }
+      investments {
+        investment_round {
+          id
+          round_date
+          round
+          amount
+          company {
+            id
+            slug
+            name
+            logo
+          }
+        }
+      }
+    }
+  }
+}

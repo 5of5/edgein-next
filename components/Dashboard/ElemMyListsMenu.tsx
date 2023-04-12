@@ -1,5 +1,5 @@
 import { getNameFromListName } from "@/utils/reaction";
-import { find, kebabCase } from "lodash";
+import { find, kebabCase, partition, sortBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
@@ -68,6 +68,16 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
+	const partLists = partition(
+    displayedCustomLists,
+    (o) => o.created_by_id === user?.id
+  );
+
+  const createdLists = sortBy(partLists[0], [(o) => getNameFromListName(o)]);
+  const followedLists = sortBy(partLists[1], [(o) => getNameFromListName(o)]);
+
+  const sortedLists = [...createdLists, ...followedLists];
+
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -103,7 +113,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-xl font-bold">My Lists</span>
+									<span className="text-lg font-bold">My Lists</span>
 								</Disclosure.Button>
 								<ElemTooltip
 									content="Monitor organizations of your interest."
@@ -113,7 +123,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</ElemTooltip>
 							</div>
 							<div className="flex gap-x-1">
-								{getCustomLists.length > displayedCustomLists.length ? (
+								{getCustomLists.length > sortedLists.length ? (
 									<button
 										onClick={onOpenUpgradeDialog}
 										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
@@ -138,44 +148,53 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 							<li role="button">
 								<Link href={`/lists/${hotId}/hot`}>
 									<a
-										className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+										className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 											hotId,
 											"hot"
 										)}`}
 									>
-										<EmojiHot className="h-6 w-6" />{" "}
-										<span>Hot ({getCountForList("hot")})</span>
+										<EmojiHot className="h-6 w-6" />
+										<span className="flex-1">Hot</span>
+										<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+											{getCountForList("hot")}
+										</div>
 									</a>
 								</Link>
 							</li>
 							<li role="button">
 								<Link href={`/lists/${likeId}/like`}>
 									<a
-										className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+										className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 											likeId,
 											"like"
 										)}`}
 									>
 										<EmojiLike className="h-6 w-6" />
-										<span>Like ({getCountForList("like")})</span>
+										<span className="flex-1">Like</span>
+										<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+											{getCountForList("like")}
+										</div>
 									</a>
 								</Link>
 							</li>
 							<li role="button">
 								<Link href={`/lists/${crapId}/sh**`}>
 									<a
-										className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+										className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 											crapId,
 											"sh**"
 										)} `}
 									>
 										<EmojiCrap className="h-6 w-6" />
-										<span>Sh** ({getCountForList("crap")})</span>
+										<span className="flex-1">Sh**</span>
+										<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+											{getCountForList("crap")}
+										</div>
 									</a>
 								</Link>
 							</li>
 
-							{displayedCustomLists?.map((list) => (
+							{sortedLists?.map((list) => (
 								<li key={list.id} role="button">
 									<Link
 										href={`/lists/${list.id}/${kebabCase(
@@ -183,26 +202,29 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										)}`}
 									>
 										<a
-											className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 												list.id,
 												kebabCase(getNameFromListName(list))
 											)}`}
+											title={getNameFromListName(list)}
 										>
-											<IconCustomList className="h-6 w-6" />
-											<span>
-												{getNameFromListName(list)} (
-												{getCountForList(getNameFromListName(list))})
+											<IconCustomList className="h-6 w-6 shrink-0" />
+											<span className="line-clamp-1 break-all flex-1">
+												{getNameFromListName(list)}
 											</span>
+											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+												{list.total_no_of_resources}
+											</div>
 										</a>
 									</Link>
 								</li>
 							))}
 
-							{getCustomLists.length > displayedCustomLists.length ? (
+							{getCustomLists.length > sortedLists.length ? (
 								<li role="button">
 									<button
 										onClick={onOpenUpgradeDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
 										<IconContributor
 											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
@@ -216,7 +238,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								<li role="button">
 									<button
 										onClick={onOpenCreateListDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
 										<IconListPlus className="h-6 w-6" title="Create List" />
 										<span>Create List</span>

@@ -17,6 +17,7 @@ import {
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
+  insertDataDiscard,
 } from "@/utils/submit-data";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -34,6 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
   const resourceObj: Record<string, any> = req.body.resource;
   const forceUpdate: Boolean = req.body.force_update;
+  let resourceIdDiscard, partnerIdDiscard;
   try {
     if (
       apiKey === undefined ||
@@ -76,7 +78,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).send({
         message: `Not found ${JSON.stringify(resourceIdentifier)}`,
       });
-
+    resourceIdDiscard = resourceId;
     if (req.method === "DELETE") {
       await deleteMainTableRecord(resourceType, resourceId);
       const action = await insertActionDataChange(
@@ -97,6 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const partnerId: number = partner ? partner.id : 0;
+    partnerIdDiscard = partnerId;
     let actionType: ActionType = "Change Data";
 
     // create a new one
@@ -109,9 +112,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (
       actionType === "Insert Data" &&
       ["companies", "vc_firms", "people"].includes(resourceType) &&
-      !resourceObj?.library
+      (!resourceObj?.library || resourceObj?.library?.length === 0)
     ) {
-      properties.library = "Web3";
+      properties.library = ["Web3"];
     }
 
     const insertResult = await mutateActionAndDataRaw(
@@ -135,7 +138,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "companies",
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
 
@@ -145,7 +148,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "vc_firms",
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
 
@@ -157,7 +160,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "companies",
             resourceType,
             actionType,
-            [insertResult?.action?.id]
+            insertResult?.actions
           );
         }
 
@@ -166,7 +169,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "vc_firms",
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
 
@@ -177,7 +180,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "companies",
             resourceType,
             actionType,
-            [insertResult?.action?.id]
+            insertResult?.actions
           );
         }
         if (resourceObj?.vc_firm_id) {
@@ -186,7 +189,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "vc_firms",
             resourceType,
             actionType,
-            [insertResult?.action?.id]
+            insertResult?.actions
           );
         }
       }
@@ -199,13 +202,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           resourceType,
           resourceType,
           actionType,
-          [insertResult?.action?.id]
+          insertResult?.actions
         );
       }
     }
 
     return res.send(insertResult);
   } catch (error: any) {
+    if (error[0].extensions.code === "validation-failed") {
+      let field = "";
+      for (let key in resourceObj) {
+        const errMessage = error[0].message;
+        if (errMessage.includes(key)) {
+          field = key;
+        }
+      }
+      const dataObject = [
+        {
+          resource: resourceType,
+          field,
+          value: resourceObj[field],
+          partner: partnerIdDiscard,
+          accuracy_weight: 1,
+          resource_id: resourceIdDiscard,
+        },
+      ];
+      const data = await insertDataDiscard(dataObject);
+    }
     return res.status(500).send(error[0] || error);
   }
 };

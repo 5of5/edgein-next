@@ -14,6 +14,7 @@ import {
 	IconCustomList,
 	IconGroup,
 	IconSignOut,
+	IconCalendarDays,
 } from "@/components/Icons";
 import { Transition, Dialog } from "@headlessui/react";
 import { useUser } from "@/context/userContext";
@@ -71,6 +72,12 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 					icon: IconCash,
 					name: "Investors",
 					href: "/investors",
+					onClick: null,
+				},
+				{
+					icon: IconCalendarDays,
+					name: "Events",
+					href: "/events",
 					onClick: null,
 				},
 				...(user

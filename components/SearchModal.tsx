@@ -20,6 +20,8 @@ import {
 	IconImage,
 } from "@/components/Icons";
 import Link from "next/link";
+import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
+import { formatDate } from "@/utils/numbers";
 
 const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -57,6 +59,20 @@ type HitPeopleProps = {
 	}>;
 };
 
+type HitEventsProps = {
+	hit: AlgoliaHit<{
+		name: string;
+		slug: string;
+		overview: string;
+		banner: string;
+		location_json: Record<string, string>;
+		start_date: string;
+		end_date: string;
+		timezone: string;
+		empty: boolean;
+	}>;
+};
+
 const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 	function HitCompanies({ hit }: HitCompaniesProps) {
 		return (
@@ -88,37 +104,39 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 							<IconImage className="object-contain max-w-full max-h-full text-slate-200" />
 						)}
 					</div>
-					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
-						<Highlight
-							attribute="name"
-							hit={hit}
-							classNames={{
-								highlighted:
-									"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
-							}}
-						/>
-					</h2>
-					{hit.coinTicker && (
-						<div className="ml-2 uppercase">
+					<div className="flex grow">
+						<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
 							<Highlight
-								attribute="coinTicker"
+								attribute="name"
 								hit={hit}
 								classNames={{
 									highlighted:
-										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
 								}}
 							/>
-						</div>
-					)}
-					<p className="ml-2 text-sm text-slate-600 line-clamp-1">
-						<Highlight
-							attribute="overview"
-							hit={hit}
-							classNames={{
-								highlighted: "bg-primary-100",
-							}}
-						/>
-					</p>
+						</h2>
+						{hit.coinTicker && (
+							<div className="ml-2 uppercase">
+								<Highlight
+									attribute="coinTicker"
+									hit={hit}
+									classNames={{
+										highlighted:
+											"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+									}}
+								/>
+							</div>
+						)}
+						<p className="ml-2 text-sm text-slate-600 line-clamp-1">
+							<Highlight
+								attribute="overview"
+								hit={hit}
+								classNames={{
+									highlighted: "bg-primary-100",
+								}}
+							/>
+						</p>
+					</div>
 					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 				</a>
 			</Link>
@@ -219,6 +237,98 @@ const HitPeople = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 		);
 	};
 
+const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
+	function HitEvents({ hit }: HitEventsProps) {
+		return (
+			<Link
+				href={
+					isAdmin
+						? `/admin/app/#/events/${hit.objectID}`
+						: `/events/${hit.slug}`
+				}
+				passHref
+			>
+				<a
+					onClick={() => {
+						onClose();
+						if (isAdmin && redirect) {
+							redirect(`/events/${hit.objectID}`);
+						}
+					}}
+					className="flex items-center px-6 py-1 group hover:bg-slate-100"
+				>
+					<div className="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200">
+						<img
+							className="object-contain max-w-full max-h-full"
+							src={hit.banner || getEventBanner(hit.location_json?.city)}
+							alt={hit.name}
+							onError={(e) => {
+								(e.target as HTMLImageElement).src = randomImageOfCity(
+									hit.location_json?.city
+								);
+								(e.target as HTMLImageElement).onerror = null; // prevents looping
+							}}
+						/>
+					</div>
+
+					<div className="flex grow">
+						<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
+							<Highlight
+								attribute="name"
+								hit={hit}
+								classNames={{
+									highlighted:
+										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
+								}}
+							/>
+						</h2>
+
+						{hit.start_date && (
+							<p className="ml-2 text-sm text-slate-600 line-clamp-1">
+								{formatDate(hit.start_date, {
+									month: "short",
+									day: "2-digit",
+									year: "numeric",
+									timeZone: hit.timezone || undefined,
+								})}
+								{/* <Highlight
+								attribute="start_date"
+								hit={hit}
+								classNames={{
+									highlighted:
+										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+								}}
+							/> */}
+
+								{hit.end_date && (
+									<>
+										&nbsp;&ndash;&nbsp;
+										{formatDate(hit.end_date, {
+											month: "short",
+											day: "2-digit",
+											year: "numeric",
+											timeZone: hit.timezone || undefined,
+										})}
+										{/* <Highlight
+										attribute="end_date"
+										hit={hit}
+										classNames={{
+											highlighted:
+												"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+										}}
+									/> */}
+									</>
+								)}
+							</p>
+						)}
+					</div>
+
+					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
+				</a>
+			</Link>
+		);
+	};
+
 export default function SearchModal(props: any) {
 	const emptyView = React.useRef(true);
 
@@ -239,7 +349,7 @@ export default function SearchModal(props: any) {
 				<div className="px-6 py-1 mt-5 text-center">
 					<FigureSearch className="mx-auto h-36 lg:h-40" />
 					<div className="mt-3 text-xl font-bold">
-						Search for Companies, Investors, &amp; People
+						Search for Companies, Investors, People &amp; Events
 					</div>
 					<div style={{ display: "none" }}>{children}</div>
 				</div>
@@ -407,6 +517,27 @@ export default function SearchModal(props: any) {
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
 															loadMore:
 																"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-500",
+															disabledLoadMore: "hidden",
+														}}
+													/>
+												</EmptyQueryBoundary>
+											</Index>
+
+											<Index indexName="events">
+												<Configure hitsPerPage={4} />
+												<h3 className="font-bold mt-5 mx-6">Events</h3>
+												<EmptyQueryBoundary>
+													<InfiniteHits
+														hitComponent={HitEvents(
+															onClose,
+															props.isAdmin,
+															props.redirect
+														)}
+														showPrevious={false}
+														classNames={{
+															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+															loadMore:
+																"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
 															disabledLoadMore: "hidden",
 														}}
 													/>

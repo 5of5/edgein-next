@@ -14,9 +14,14 @@ import {
 	IconEmail,
 	IconLocation,
 	IconTwitter,
+	IconInstagram,
+	IconTelegram,
+	IconFacebook,
 	IconDiscord,
 	IconGlassdoor,
 	IconEye,
+	IconHome,
+	IconTicket,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -30,27 +35,35 @@ type Props = {
 	className?: string;
 	heading?: string;
 	website?: string | null;
+	eventLink?: any | null;
 	totalFundingRaised?: string | null;
 	whitePaper?: string | null;
 	totalEmployees?: number;
 	yearFounded?: string | null;
 	location?: string | null;
 	locationJson?: any;
+	price?: number | null;
+	attendees?: string | null;
 	roles?: string | null;
 	investmentsLength?: number;
 	emails?: string[];
 	linkedIn?: string | null;
 	github?: string | null;
 	twitter?: string | null;
+	instagram?: string | null;
+	facebook?: string | null;
+	telegram?: string | null;
 	discord?: string | null;
 	glassdoor?: string | null;
 	careerPage?: string | null;
+	venue?: string | null;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
 	className,
 	heading,
 	website,
+	eventLink,
 	totalFundingRaised,
 	whitePaper,
 	totalEmployees,
@@ -63,9 +76,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	careerPage,
 	location,
 	locationJson,
+	price,
+	attendees,
 	twitter,
+	instagram,
+	facebook,
+	telegram,
 	discord,
 	glassdoor,
+	venue,
 }) => {
 	const { user } = useAuth();
 
@@ -96,6 +115,33 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: website,
 		});
 	}
+
+	if (eventLink) {
+		let getLink = eventLink;
+
+		if (getLink.includes("?q=")) {
+			const getUrl = getLink.split("?q=");
+			getLink = getUrl[1];
+		}
+
+		if (getLink.includes("&")) {
+			const getUrl = getLink.split("&");
+			getLink = getUrl[0];
+		}
+
+		const cleanUrl = getLink
+			.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "") // removes https://www;
+			.replace(/utm_[^&]+&?/g, "") // removes utm_xxx parameters;
+			.replace(/\?.*/g, "$'") // removes anything after ? character
+			.replace(/\/$/, ""); //removes last forward slash
+
+		infoItems.push({
+			icon: IconGlobe,
+			text: cleanUrl,
+			link: eventLink,
+		});
+	}
+
 	if (yearFounded) {
 		infoItems.push({
 			icon: IconFlag,
@@ -108,6 +154,25 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			text:
 				convertToInternationalCurrencySystem(Number(totalFundingRaised)) +
 				" Total Funding Raised",
+		});
+	}
+
+	if (price != null) {
+		infoItems.push({
+			icon: IconTicket,
+			text: price === 0 ? "Free" : "Starts at $" + numberWithCommas(price),
+		});
+	}
+	if (attendees) {
+		infoItems.push({
+			icon: IconUsers,
+			text: attendees,
+		});
+	}
+	if (venue) {
+		infoItems.push({
+			icon: IconHome,
+			text: venue,
 		});
 	}
 	if (locationText) {
@@ -168,11 +233,32 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: github,
 		});
 	}
+	if (facebook) {
+		infoItems.push({
+			icon: IconFacebook,
+			text: "Facebook",
+			link: facebook,
+		});
+	}
 	if (twitter) {
 		infoItems.push({
 			icon: IconTwitter,
 			text: "Twitter",
 			link: twitter,
+		});
+	}
+	if (instagram) {
+		infoItems.push({
+			icon: IconInstagram,
+			text: "Instagram",
+			link: instagram,
+		});
+	}
+	if (telegram) {
+		infoItems.push({
+			icon: IconTelegram,
+			text: "Telegram",
+			link: telegram,
 		});
 	}
 	if (discord) {
@@ -248,41 +334,37 @@ export const ElemKeyInfo: React.FC<Props> = ({
 
 					if (item.showHide) {
 						return (
-							<>
-								<li
-									key={index}
-									onClick={onInfoClick(item.text)}
-									className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
-								>
-									<div className="flex items-center">
-										{item.icon && (
-											<item.icon
-												title={item.text}
-												className="h-6 w-6  mr-2 shrink-0 text-dark-500"
-											/>
-										)}
-										{showInfo[item.text] ? (
-											<a
-												className={`transition-all text-primary-500 hover:bg-slate-200`}
-												href={item.link}
-												target={item.target ? item.target : "_blank"}
-												rel="noopener noreferrer"
-												title={item.text}
-											>
-												{item.text}
-											</a>
-										) : (
-											<>
-												&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;
-											</>
-										)}
-									</div>
-									<div className="flex items-center text-primary-500">
-										<IconEye className="h-5 w-5 shrink-0 mr-1" />
-										show
-									</div>
-								</li>
-							</>
+							<li
+								key={index}
+								onClick={onInfoClick(item.text)}
+								className={`${baseClasses} flex-1 items-center justify-between transition-all cursor-pointer hover:bg-slate-200`}
+							>
+								<div className="flex items-center">
+									{item.icon && (
+										<item.icon
+											title={item.text}
+											className="h-6 w-6  mr-2 shrink-0 text-dark-500"
+										/>
+									)}
+									{showInfo[item.text] ? (
+										<a
+											className={`transition-all text-primary-500 hover:bg-slate-200`}
+											href={item.link}
+											target={item.target ? item.target : "_blank"}
+											rel="noopener noreferrer"
+											title={item.text}
+										>
+											{item.text}
+										</a>
+									) : (
+										<>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</>
+									)}
+								</div>
+								<div className="flex items-center text-primary-500">
+									<IconEye className="h-5 w-5 shrink-0 mr-1" />
+									show
+								</div>
+							</li>
 						);
 					} else {
 						return itemInner;

@@ -1,0 +1,1 @@
+CREATE TABLE "public"."notification_actions" ("id" serial NOT NULL, "notification_id" integer NOT NULL, "action_id" integer NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );
