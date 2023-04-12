@@ -18,14 +18,12 @@ type Props = {
 		[key: string]: unknown;
 	};
 	hasGeopoint?: boolean 
-	hasAdditionalAttachments?: boolean;
 };
 
 const useAdminTransform = ({
 	withImageTransformData,
 	withoutImageTransformData,
 	hasGeopoint,
-	hasAdditionalAttachments = false,
 }: Props) => {
 	const [logo, setLogo] = useState<any>(null);
 	const [oldLogo, setOldLogo] = useState<any>(null);
@@ -65,7 +63,7 @@ const useAdminTransform = ({
 				})
 			);
 		}
-console.log('@attachments', {attachments, attachmentsResponse})
+
 		if (logo) {
 			const res = await uploadFile(logo);
 			return withImageTransformData(formData, res, finalValue, attachmentsResponse);
@@ -91,19 +89,10 @@ console.log('@attachments', {attachments, attachmentsResponse})
 	};
 
 	const onSelectAttachment = (files: any) => {
-		console.log('@files', files)
 		if (files && files.length > 0) {
 			setAttachments([...attachments, files[0]]);
 		}
 	};
-
-	// const onDropRejectedAttachment = (files: any) => {
-	// 	if (files.id) {
-	// 		setOldLogo(files);
-	// 	}
-	// 	setIsImageUpdated(true);
-	// 	setLogo(null);
-	// };
 
 	return {
 		isImageUpdated,
