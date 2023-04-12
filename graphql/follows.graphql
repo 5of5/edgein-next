@@ -3,6 +3,7 @@ query GetFollowsByUser($user_id: Int!) {
 		list {
 			name
 			id
+			public
 			created_by_id
 			created_by {
 				id
