@@ -2983,6 +2983,302 @@ export type Data_Actions_Variance_Fields = {
   user_value: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "data_discard" */
+export type Data_Discard = {
+  __typename?: 'data_discard';
+  accuracy_weight: Scalars['Int'];
+  created_at: Scalars['timestamp'];
+  field: Scalars['String'];
+  id: Scalars['bigint'];
+  partner: Scalars['Int'];
+  resource: Scalars['String'];
+  resource_id: Scalars['Int'];
+  value: Scalars['jsonb'];
+};
+
+
+/** columns and relationships of "data_discard" */
+export type Data_DiscardValueArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "data_discard" */
+export type Data_Discard_Aggregate = {
+  __typename?: 'data_discard_aggregate';
+  aggregate: Maybe<Data_Discard_Aggregate_Fields>;
+  nodes: Array<Data_Discard>;
+};
+
+/** aggregate fields of "data_discard" */
+export type Data_Discard_Aggregate_Fields = {
+  __typename?: 'data_discard_aggregate_fields';
+  avg: Maybe<Data_Discard_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Data_Discard_Max_Fields>;
+  min: Maybe<Data_Discard_Min_Fields>;
+  stddev: Maybe<Data_Discard_Stddev_Fields>;
+  stddev_pop: Maybe<Data_Discard_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Data_Discard_Stddev_Samp_Fields>;
+  sum: Maybe<Data_Discard_Sum_Fields>;
+  var_pop: Maybe<Data_Discard_Var_Pop_Fields>;
+  var_samp: Maybe<Data_Discard_Var_Samp_Fields>;
+  variance: Maybe<Data_Discard_Variance_Fields>;
+};
+
+
+/** aggregate fields of "data_discard" */
+export type Data_Discard_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Data_Discard_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Data_Discard_Append_Input = {
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Data_Discard_Avg_Fields = {
+  __typename?: 'data_discard_avg_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "data_discard". All fields are combined with a logical 'AND'. */
+export type Data_Discard_Bool_Exp = {
+  _and: InputMaybe<Array<Data_Discard_Bool_Exp>>;
+  _not: InputMaybe<Data_Discard_Bool_Exp>;
+  _or: InputMaybe<Array<Data_Discard_Bool_Exp>>;
+  accuracy_weight: InputMaybe<Int_Comparison_Exp>;
+  created_at: InputMaybe<Timestamp_Comparison_Exp>;
+  field: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Bigint_Comparison_Exp>;
+  partner: InputMaybe<Int_Comparison_Exp>;
+  resource: InputMaybe<String_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  value: InputMaybe<Jsonb_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "data_discard" */
+export enum Data_Discard_Constraint {
+  /** unique or primary key constraint */
+  DataDiscardPkey = 'data_discard_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Data_Discard_Delete_At_Path_Input = {
+  value: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Data_Discard_Delete_Elem_Input = {
+  value: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Data_Discard_Delete_Key_Input = {
+  value: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "data_discard" */
+export type Data_Discard_Inc_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "data_discard" */
+export type Data_Discard_Insert_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate max on columns */
+export type Data_Discard_Max_Fields = {
+  __typename?: 'data_discard_max_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamp']>;
+  field: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Data_Discard_Min_Fields = {
+  __typename?: 'data_discard_min_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamp']>;
+  field: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "data_discard" */
+export type Data_Discard_Mutation_Response = {
+  __typename?: 'data_discard_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Data_Discard>;
+};
+
+/** on_conflict condition type for table "data_discard" */
+export type Data_Discard_On_Conflict = {
+  constraint: Data_Discard_Constraint;
+  update_columns: Array<Data_Discard_Update_Column>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "data_discard". */
+export type Data_Discard_Order_By = {
+  accuracy_weight: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  field: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  partner: InputMaybe<Order_By>;
+  resource: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  value: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: data_discard */
+export type Data_Discard_Pk_Columns_Input = {
+  id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Data_Discard_Prepend_Input = {
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "data_discard" */
+export enum Data_Discard_Select_Column {
+  /** column name */
+  AccuracyWeight = 'accuracy_weight',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Field = 'field',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Partner = 'partner',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "data_discard" */
+export type Data_Discard_Set_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate stddev on columns */
+export type Data_Discard_Stddev_Fields = {
+  __typename?: 'data_discard_stddev_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Data_Discard_Stddev_Pop_Fields = {
+  __typename?: 'data_discard_stddev_pop_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Data_Discard_Stddev_Samp_Fields = {
+  __typename?: 'data_discard_stddev_samp_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Data_Discard_Sum_Fields = {
+  __typename?: 'data_discard_sum_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "data_discard" */
+export enum Data_Discard_Update_Column {
+  /** column name */
+  AccuracyWeight = 'accuracy_weight',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Field = 'field',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Partner = 'partner',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  Value = 'value'
+}
+
+/** aggregate var_pop on columns */
+export type Data_Discard_Var_Pop_Fields = {
+  __typename?: 'data_discard_var_pop_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Data_Discard_Var_Samp_Fields = {
+  __typename?: 'data_discard_var_samp_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Data_Discard_Variance_Fields = {
+  __typename?: 'data_discard_variance_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "data_fields" */
 export type Data_Fields = {
   __typename?: 'data_fields';
@@ -9112,6 +9408,10 @@ export type Mutation_Root = {
   delete_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** delete single row from the table: "data_actions" */
   delete_data_actions_by_pk: Maybe<Data_Actions>;
+  /** delete data from the table: "data_discard" */
+  delete_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** delete single row from the table: "data_discard" */
+  delete_data_discard_by_pk: Maybe<Data_Discard>;
   /** delete data from the table: "data_fields" */
   delete_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** delete single row from the table: "data_fields" */
@@ -9284,6 +9584,10 @@ export type Mutation_Root = {
   insert_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** insert a single row into the table: "data_actions" */
   insert_data_actions_one: Maybe<Data_Actions>;
+  /** insert data into the table: "data_discard" */
+  insert_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** insert a single row into the table: "data_discard" */
+  insert_data_discard_one: Maybe<Data_Discard>;
   /** insert data into the table: "data_fields" */
   insert_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** insert a single row into the table: "data_fields" */
@@ -9462,6 +9766,10 @@ export type Mutation_Root = {
   update_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** update single row of the table: "data_actions" */
   update_data_actions_by_pk: Maybe<Data_Actions>;
+  /** update data of the table: "data_discard" */
+  update_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** update single row of the table: "data_discard" */
+  update_data_discard_by_pk: Maybe<Data_Discard>;
   /** update data of the table: "data_fields" */
   update_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** update single row of the table: "data_fields" */
@@ -9700,6 +10008,18 @@ export type Mutation_RootDelete_Data_ActionsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Data_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Data_DiscardArgs = {
+  where: Data_Discard_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Data_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -10232,6 +10552,20 @@ export type Mutation_RootInsert_Data_ActionsArgs = {
 export type Mutation_RootInsert_Data_Actions_OneArgs = {
   object: Data_Actions_Insert_Input;
   on_conflict: InputMaybe<Data_Actions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Data_DiscardArgs = {
+  objects: Array<Data_Discard_Insert_Input>;
+  on_conflict: InputMaybe<Data_Discard_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Data_Discard_OneArgs = {
+  object: Data_Discard_Insert_Input;
+  on_conflict: InputMaybe<Data_Discard_On_Conflict>;
 };
 
 
@@ -10884,6 +11218,32 @@ export type Mutation_RootUpdate_Data_Actions_By_PkArgs = {
   _inc: InputMaybe<Data_Actions_Inc_Input>;
   _set: InputMaybe<Data_Actions_Set_Input>;
   pk_columns: Data_Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_DiscardArgs = {
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  where: Data_Discard_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_Discard_By_PkArgs = {
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  pk_columns: Data_Discard_Pk_Columns_Input;
 };
 
 
@@ -13825,6 +14185,12 @@ export type Query_Root = {
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table: "data_discard" */
+  data_discard: Array<Data_Discard>;
+  /** fetch aggregated fields from the table: "data_discard" */
+  data_discard_aggregate: Data_Discard_Aggregate;
+  /** fetch data from the table: "data_discard" using primary key columns */
+  data_discard_by_pk: Maybe<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
@@ -14235,6 +14601,29 @@ export type Query_RootData_Actions_AggregateArgs = {
 
 export type Query_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Query_RootData_DiscardArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Query_RootData_Discard_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Query_RootData_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -15959,6 +16348,12 @@ export type Subscription_Root = {
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table: "data_discard" */
+  data_discard: Array<Data_Discard>;
+  /** fetch aggregated fields from the table: "data_discard" */
+  data_discard_aggregate: Data_Discard_Aggregate;
+  /** fetch data from the table: "data_discard" using primary key columns */
+  data_discard_by_pk: Maybe<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
@@ -16369,6 +16764,29 @@ export type Subscription_RootData_Actions_AggregateArgs = {
 
 export type Subscription_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Subscription_RootData_DiscardArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Subscription_RootData_Discard_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Subscription_RootData_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
