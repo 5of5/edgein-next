@@ -29,10 +29,13 @@ export const withImageTransformData = (
     banner: imageResponse?.file?.url || "",
   };
   if (attachmentsResponse) {
-    values.attachments.map((item: any, index: number) => ({
-      ...item,
-      src: attachmentsResponse[index]?.file?.url || "",
-    }));
+    return {
+      ...values,
+      attachments: values.attachments.map((item: any, index: number) => ({
+        ...item,
+        src: attachmentsResponse[index]?.file?.url || "",
+      }))
+    }
   }
   return values;
 };
