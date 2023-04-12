@@ -11,13 +11,12 @@ import {
 	Follows_Companies,
 	Follows_Vc_Firms,
 	Follows_People,
-	People,
-	useGetUserProfileQuery,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
 	useGetListUserGroupsQuery,
 	List_User_Groups_Bool_Exp,
 	useGetPeopleByListIdQuery,
+	Users,
 } from "@/graphql/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -42,7 +41,6 @@ const MyList: NextPage<Props> = () => {
 	);
 
 	const [isCustomList, setIsCustomList] = useState(false);
-	const [isFollowing, setIsFollowing] = useState(true);
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
@@ -160,6 +158,8 @@ const MyList: NextPage<Props> = () => {
 
 	const [theListCreatorId, setTheListCreatorId] = useState<any>();
 
+	const [theListCreator, setTheListCreator] = useState<Users>();
+
 	const [theListCreatedDate, setTheListCreatedDate] = useState<string>();
 
 	useEffect(() => {
@@ -186,10 +186,11 @@ const MyList: NextPage<Props> = () => {
 						? !["hot", "like", "crap"].includes(getNameFromListName(list))
 						: false;
 				});
+
+				setTheListCreator(list.created_by as Users);
 			} else {
 				setSelectedListName(startCase(router.query.slug as string));
 				setIsCustomList(true);
-				setIsFollowing(false);
 			}
 		}
 	}, [
@@ -206,17 +207,6 @@ const MyList: NextPage<Props> = () => {
 			setTheListId(parseInt(router.query?.listId as string));
 		}
 	}, [router]);
-
-	const [listAuthor, setListAuthor] = useState<People>();
-
-	const { data: users } = useGetUserProfileQuery({
-		id: theListCreatorId || 0,
-	});
-
-	useEffect(() => {
-		if (router.isReady && users)
-			setListAuthor(users.users_by_pk?.person as People);
-	}, [router, users]);
 
 	const {
 		data: companiesData,
@@ -266,7 +256,7 @@ const MyList: NextPage<Props> = () => {
 									<ModalListDetails
 										theListName={selectedListName ? selectedListName : ""}
 										// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-										theListAuthor={listAuthor}
+										theListCreator={theListCreator?.person?.name || theListCreator?.display_name || ""}
 										theListDate={theListCreatedDate}
 										theListId={parseInt(router.query.listId as string)}
 										groups={
@@ -286,9 +276,14 @@ const MyList: NextPage<Props> = () => {
 							)}
 							<p className="pt-1 text-slate-600">
 								by{" "}
-								<Link href={`/people/${listAuthor?.slug}`} passHref>
-									<a className="hover:text-primary-500">{listAuthor?.name}</a>
-								</Link>
+								{theListCreator?.person ? (
+									<Link href={`/people/${theListCreator?.person?.slug}`} passHref>
+										<a className="hover:text-primary-500">{theListCreator?.person?.name}</a>
+									</Link>
+								) : (
+									<span>{theListCreator?.display_name}</span>
+								)}
+								
 								<span aria-hidden="true"> · </span>
 								{theListCreatedDate}
 							</p>
