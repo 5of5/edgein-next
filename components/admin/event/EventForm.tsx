@@ -202,20 +202,17 @@ const EventForm = ({
 			<BooleanInput className="w-full" label="Featured" source="is_featured" />
 			<ArrayInput source="attachments" className={inputClassName}>
         <SimpleFormIterator disableReordering sx={{ margin: 2, paddingTop: 1 }}>
-						<TextInput className={inputClassName} source="label" />
-					<FileInput
-						className="w-full"
-						// onRemove={onDropRejected}
-						options={{ onDrop: onSelectAttachment }}
-						source="file"
-						label="File"
-						placeholder={<p>Drop your file here</p>}
-					>
-						<FileField source="src" title="title" />
-					</FileInput>
-					{action === "edit" && (
-						<FileField source="url" title="Attachment" />
-					)}
+          <TextInput className={inputClassName} source="label" />
+          <FileInput
+            className="w-full"
+            options={{ onDrop: onSelectAttachment }}
+            source="file"
+            label="File"
+            placeholder={<p>Drop your file here</p>}
+          >
+            <FileField source="src" title="title" />
+          </FileInput>
+          {action === "edit" && <FileField source="url" title="Attachment" />}
         </SimpleFormIterator>
       </ArrayInput>
 			<SelectInput
