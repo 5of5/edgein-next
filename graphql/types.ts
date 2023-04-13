@@ -5243,6 +5243,7 @@ export type Event_Person_Variance_Order_By = {
 /** columns and relationships of "events" */
 export type Events = {
   __typename?: 'events';
+  attachments: Scalars['jsonb'];
   banner: Maybe<Scalars['jsonb']>;
   created_at: Scalars['timestamptz'];
   discord: Maybe<Scalars['String']>;
@@ -5281,6 +5282,12 @@ export type Events = {
   types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
   venue_name: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsAttachmentsArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -5373,6 +5380,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
@@ -5391,6 +5399,7 @@ export type Events_Bool_Exp = {
   _and: InputMaybe<Array<Events_Bool_Exp>>;
   _not: InputMaybe<Events_Bool_Exp>;
   _or: InputMaybe<Array<Events_Bool_Exp>>;
+  attachments: InputMaybe<Jsonb_Comparison_Exp>;
   banner: InputMaybe<Jsonb_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
@@ -5434,6 +5443,7 @@ export enum Events_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
+  attachments: InputMaybe<Array<Scalars['String']>>;
   banner: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   types: InputMaybe<Array<Scalars['String']>>;
@@ -5441,6 +5451,7 @@ export type Events_Delete_At_Path_Input = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
+  attachments: InputMaybe<Scalars['Int']>;
   banner: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   types: InputMaybe<Scalars['Int']>;
@@ -5448,6 +5459,7 @@ export type Events_Delete_Elem_Input = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
+  attachments: InputMaybe<Scalars['String']>;
   banner: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['String']>;
@@ -5462,6 +5474,7 @@ export type Events_Inc_Input = {
 
 /** input type for inserting data into table "events" */
 export type Events_Insert_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   discord: InputMaybe<Scalars['String']>;
@@ -5572,6 +5585,7 @@ export type Events_On_Conflict = {
 
 /** Ordering options when selecting data from "events". */
 export type Events_Order_By = {
+  attachments: InputMaybe<Order_By>;
   banner: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
@@ -5612,6 +5626,7 @@ export type Events_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
@@ -5619,6 +5634,8 @@ export type Events_Prepend_Input = {
 
 /** select columns of table "events" */
 export enum Events_Select_Column {
+  /** column name */
+  Attachments = 'attachments',
   /** column name */
   Banner = 'banner',
   /** column name */
@@ -5679,6 +5696,7 @@ export enum Events_Select_Column {
 
 /** input type for updating data in table "events" */
 export type Events_Set_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   discord: InputMaybe<Scalars['String']>;
@@ -5743,6 +5761,8 @@ export type Events_Sum_Fields = {
 
 /** update columns of table "events" */
 export enum Events_Update_Column {
+  /** column name */
+  Attachments = 'attachments',
   /** column name */
   Banner = 'banner',
   /** column name */
@@ -20952,7 +20972,7 @@ export type GetEventQueryVariables = Exact<{
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -21509,6 +21529,7 @@ export const GetEventDocument = `
     discord
     telegram
     is_featured
+    attachments
     created_at
     event_person {
       id

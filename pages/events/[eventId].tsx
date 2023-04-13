@@ -233,6 +233,7 @@ const Event: NextPage<Props> = ({ event }) => {
 							instagram={event.instagram}
 							facebook={event.facebook}
 							telegram={event.telegram}
+							attachments={event.attachments}
 						/>
 					</div>
 					<div className="col-span-8">

@@ -57,6 +57,7 @@ query GetEvent($slug: String!) {
 		discord
 		telegram
 		is_featured
+		attachments
 		created_at
 		event_person {
 			id
