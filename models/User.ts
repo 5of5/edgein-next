@@ -19,6 +19,10 @@ export type User = {
   billing_org?: { 
     customer_id?: string
   }
+  billing_signup_id?: string
+  billing_signup_org?: { 
+    customer_id?: string
+  }
   person?: {
     name: string
     picture: any

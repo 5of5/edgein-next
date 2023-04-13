@@ -1,3 +1,4 @@
+import { PlanTypes } from '@/utils/constants';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 import UserService from '../../utils/users'
@@ -9,6 +10,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
       const token = CookieService.getAuthToken(req.cookies)
       const user = await CookieService.getUser(token);
+      const plan: PlanTypes = req.body.plan;
+
       if (!user) return res.status(403).end()
     
       const dbuser = await UserService.findOneUserById(user.id);
@@ -25,12 +28,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // Create Checkout Sessions from body params.
       const metadata = {
         userId: user.id,
+        plan,
       };
+
+      var price = process.env.STRIPE_PRICING_KEY;
+      if (plan === 'community')
+        price = process.env.STRIPE_COMMUNITY_PRICING_KEY;
+
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
             // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: process.env.STRIPE_PRICING_KEY,
+            price,
             quantity: 1,
           },
         ],

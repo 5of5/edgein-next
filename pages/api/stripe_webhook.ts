@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import UserService from "../../utils/users";
 import BillingService from "../../utils/billing-org";
 import { buffer } from "micro";
+import { isPlanType, PlanTypes } from "@/utils/constants";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -79,21 +80,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				customerId = getCustomerId(session.customer || "");
 
 				const userId = metadata.userId;
+				const plan: PlanTypes = metadata.plan;
+				if(!isPlanType(plan)) {
+					res.status(400).send({ error: `Webhook invalid plan` });
+				}
+
 				if (!userId) {
 					res.status(400).send({ error: `Webhook no user id` });
 				}
 				// lookup user
 				const user = await UserService.findOneUserById(userId);
 
-				if (!user.billing_org_id) {
+				if ((plan === 'premium' && !user.billing_org_id) ||
+						(plan === 'community' && !user.billing_signup_id)
+				) {
 					// create billing org
 					const billingOrg = await BillingService.insertBillingOrg(
 						customerId,
 						"active",
-						"basic"
+						plan,
 					);
 					// update user
-					UserService.updateBillingOrg(userId, billingOrg.id);
+					UserService.updateBilling(userId, billingOrg.id, plan);
 				}
 				break;
 			}

@@ -11,6 +11,15 @@ object_relationships:
         insertion_order: null
         column_mapping:
           billing_org_id: id
+  - name: billing_signup_org
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: billing_org
+        insertion_order: null
+        column_mapping:
+          billing_signup_id: id
   - name: person
     using:
       manual_configuration:
@@ -55,6 +64,7 @@ select_permissions:
         - auth0_linkedin_id
         - auth0_user_pass_id
         - billing_org_id
+        - billing_signup_id
         - display_name
         - email
         - external_id
