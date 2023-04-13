@@ -70,6 +70,7 @@ select_permissions:
         - created_by_id
         - id
         - name
+        - public
         - type
       computed_fields:
         - total_no_of_resources
