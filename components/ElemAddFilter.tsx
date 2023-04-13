@@ -15,6 +15,7 @@ type CategoryFilterOptionProps = {
     items: Array<{ label: string; value: string; isPremium?: boolean }>;
   }>;
   onSelectFilterOption: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onOpenUpgradeDialog: () => void;
 };
 
 type Props = {
@@ -37,6 +38,15 @@ export const ElemAddFilter: FC<Props> = ({
     "vc_firms": investorsFilterOptions,
     "events": eventsFilterOptions,
   }[resourceType];
+
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState<boolean>(false);
+
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+  const onCloseUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(false);
+  };
 
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -72,17 +82,23 @@ export const ElemAddFilter: FC<Props> = ({
               <CategoryFilterOption
                 options={filterOptions.slice(0, resourceType === "events" ? 2 : 3)}
                 onSelectFilterOption={onSelectFilterOption}
+                onOpenUpgradeDialog={onOpenUpgradeDialog}
               />
             </div>
             <div className="mt-6 lg:mt-0">
               <CategoryFilterOption
                 options={filterOptions.slice(resourceType === "events" ? 2 : 3)}
                 onSelectFilterOption={onSelectFilterOption}
+                onOpenUpgradeDialog={onOpenUpgradeDialog}
               />
             </div>
           </div>
         </div>
       )}
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
     </div>
   );
 };
@@ -90,69 +106,55 @@ export const ElemAddFilter: FC<Props> = ({
 const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
   options,
   onSelectFilterOption,
+  onOpenUpgradeDialog,
 }) => {
   const { user } = useUser();
-
-  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
   const userCanUseFilter = user?.entitlements.viewEmails
     ? user?.entitlements.viewEmails
     : false;
 
-  const onOpenUpgradeDialog = () => {
-    setIsOpenUpgradeDialog(true);
-  };
-  const onCloseUpgradeDialog = () => {
-    setIsOpenUpgradeDialog(false);
-  };
-
   return (
-    <>
-      <div className="flex flex-col gap-y-6">
-        {options.map((option) => (
-          <div key={option.category}>
-            <h3 className="font-bold text-sm">{option.category}</h3>
+    <div className="flex flex-col gap-y-6">
+      {options.map((option) => (
+        <div key={option.category}>
+          <h3 className="font-bold text-sm">{option.category}</h3>
 
-            <ul className="list-none text-slate-600 leading-tight">
-              {option.items.map((item) => (
-                <li key={item.value}>
-                  {item.isPremium ? (
-                    <div className="inline-flex">
-                      <button
-                        onClick={
-                          userCanUseFilter === true
-                            ? onSelectFilterOption
-                            : onOpenUpgradeDialog
-                        }
-                        name={item.value}
-                        className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
-                      >
-                        {!userCanUseFilter && (
-                          <IconContributor className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
-                        )}
-
-                        {item.label}
-                      </button>
-                    </div>
-                  ) : (
+          <ul className="list-none text-slate-600 leading-tight">
+            {option.items.map((item) => (
+              <li key={item.value}>
+                {item.isPremium ? (
+                  <div className="inline-flex">
                     <button
-                      onClick={onSelectFilterOption}
+                      onClick={
+                        userCanUseFilter === true
+                          ? onSelectFilterOption
+                          : onOpenUpgradeDialog
+                      }
                       name={item.value}
                       className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
                     >
+                      {!userCanUseFilter && (
+                        <IconContributor className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
+                      )}
+
                       {item.label}
                     </button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-      <ElemUpgradeDialog
-        isOpen={isOpenUpgradeDialog}
-        onClose={onCloseUpgradeDialog}
-      />
-    </>
+                  </div>
+                ) : (
+                  <button
+                    onClick={onSelectFilterOption}
+                    name={item.value}
+                    className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
+                  >
+                    {item.label}
+                  </button>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
   );
 };
