@@ -22,7 +22,7 @@ import {
 	IconEye,
 	IconHome,
 	IconTicket,
-	IconInformationCircle,
+	IconDocument,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -35,7 +35,7 @@ import { useAuth } from "@/hooks/useAuth";
 type Attachments = Array<{
 	label: string;
 	url: string;
-}>
+}>;
 
 type Props = {
 	className?: string;
@@ -285,13 +285,13 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	}
 
 	if (attachments && attachments.length > 0) {
-		attachments.forEach(item => {
+		attachments.forEach((item) => {
 			infoItems.push({
-				icon: IconInformationCircle,
+				icon: IconDocument,
 				text: item.label,
 				link: item.url,
 			});
-		})
+		});
 	}
 
 	const baseClasses = "flex space-x-2 py-1 px-2 rounded-md";
