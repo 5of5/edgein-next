@@ -27,6 +27,7 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 
 	if (cookies) {
 		const user = await CookieService.getUser(CookieService.getAuthToken(cookies));
+		headers['x-hasura-user-id'] = user?.id?.toString() ?? '';
 		// Allow admin to access draft records
 		if (user?.role === 'admin')
 			delete headers['x-hasura-role'];
