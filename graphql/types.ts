@@ -9042,6 +9042,7 @@ export type Lists = {
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
   type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   user_groups: Array<List_User_Groups>;
   /** An aggregate relationship */
@@ -9202,6 +9203,7 @@ export type Lists_Bool_Exp = {
   public: InputMaybe<Boolean_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
 };
 
@@ -9232,6 +9234,7 @@ export type Lists_Insert_Input = {
   name: InputMaybe<Scalars['String']>;
   public: InputMaybe<Scalars['Boolean']>;
   type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
   user_groups: InputMaybe<List_User_Groups_Arr_Rel_Insert_Input>;
 };
 
@@ -9243,6 +9246,7 @@ export type Lists_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
@@ -9253,6 +9257,7 @@ export type Lists_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "lists" */
@@ -9292,6 +9297,7 @@ export type Lists_Order_By = {
   public: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
   user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Order_By>;
 };
 
@@ -9313,7 +9319,9 @@ export enum Lists_Select_Column {
   /** column name */
   Public = 'public',
   /** column name */
-  Type = 'type'
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "lists" */
@@ -9324,6 +9332,7 @@ export type Lists_Set_Input = {
   name: InputMaybe<Scalars['String']>;
   public: InputMaybe<Scalars['Boolean']>;
   type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate stddev on columns */
@@ -9367,7 +9376,9 @@ export enum Lists_Update_Column {
   /** column name */
   Public = 'public',
   /** column name */
-  Type = 'type'
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -20979,7 +20990,7 @@ export type GetFollowsByUserQueryVariables = Exact<{
 }>;
 
 
-export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } }> };
+export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, updated_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } }> };
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -21604,6 +21615,7 @@ export const GetFollowsByUserDocument = `
         }
       }
       created_at
+      updated_at
       total_no_of_resources
       follows_companies {
         resource_id

@@ -4,13 +4,14 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, Fragment, useState } from "react";
 import {
-	IconCustomList,
-	IconPolygonDown,
-	IconListPlus,
-	IconInformationCircle,
-	IconPlus,
-	IconContributor,
-	IconEllipsisHorizontal,
+  IconCustomList,
+  IconPolygonDown,
+  IconListPlus,
+  IconInformationCircle,
+  IconPlus,
+  IconContributor,
+  IconEllipsisHorizontal,
+  IconCheck,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
@@ -22,7 +23,7 @@ import useDisclosureState from "@/hooks/useDisclosureState";
 import { listsSortOptions, MY_LISTS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
-	className?: string;
+  className?: string;
 };
 
 const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
@@ -33,7 +34,11 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 		MY_LISTS_MENU_OPEN_KEY
 	);
 
-	const [selectedSortOption, setSelectedSortOption] = useState("");
+  const [selectedSortOption, setSelectedSortOption] = useState(
+    typeof window !== "undefined" && localStorage.getItem("myListsSortOption")
+      ? localStorage.getItem("myListsSortOption")
+      : "default"
+  );
 
 	const getCountForList = (listName: string) => {
 		if (lists) {
@@ -71,17 +76,19 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
-	const partLists = partition(
-    displayedCustomLists,
-    (o) => o.created_by_id === user?.id
-  );
-
-  const createdLists = sortBy(partLists[0], [(o) => getNameFromListName(o)]);
-  const followedLists = sortBy(partLists[1], [(o) => getNameFromListName(o)]);
-
-  let sortedLists = [...createdLists, ...followedLists];
-	if (selectedSortOption === "newest") {
-    sortedLists = sortBy(sortedLists, ["created_at"]);
+  let sortedLists = [...displayedCustomLists];
+  if (selectedSortOption === "default") {
+    const partLists = partition(
+      displayedCustomLists,
+      (o) => o.created_by_id === user?.id
+    );
+    const createdLists = sortBy(partLists[0], [(o) => getNameFromListName(o)]);
+    const followedLists = sortBy(partLists[1], [(o) => getNameFromListName(o)]);
+    sortedLists = [...createdLists, ...followedLists];
+  } else if (selectedSortOption === "newest") {
+    sortedLists = sortBy(displayedCustomLists, ["created_at"]);
+  } else if (selectedSortOption === "recently") {
+    sortedLists = sortBy(displayedCustomLists, ["updated_at"]);
   }
 
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
@@ -145,16 +152,35 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
                     leaveFrom="opacity-100 translate-y-0"
                     leaveTo="opacity-0 translate-y-1"
                   >
-                    <Popover.Panel className="absolute right-0 w-52 block bg-white shadow-md p-2">
-                      {listsSortOptions.map((opt) => (
-                        <button
-													key={opt.value}
-                          className="cursor-pointer w-full text-left text-sm p-2 m-0 transition-all hover:bg-slate-100"
-                          onClick={() => setSelectedSortOption(opt.value)}
-                        >
-                          {opt.label}
-                        </button>
-                      ))}
+                    <Popover.Panel className="absolute right-0 w-52 block bg-white rounded-lg shadow-md p-2">
+                      {({ close }) => (
+                        <div>
+                          {listsSortOptions.map((opt) => (
+                            <button
+                              key={opt.value}
+                              className={`flex items-center justify-between gap-x-1 cursor-pointer w-full
+																text-left text-sm p-2 m-0 transition-all hover:bg-slate-100
+																${opt.value === selectedSortOption ? "text-primary-600 font-medium" : ""}
+																`}
+                              onClick={() => {
+                                setSelectedSortOption(opt.value);
+                                close();
+                                if (typeof window !== undefined) {
+                                  localStorage.setItem(
+                                    "myListsSortOption",
+                                    opt.value
+                                  );
+                                }
+                              }}
+                            >
+                              {opt.label}
+                              {opt.value === selectedSortOption && (
+                                <IconCheck className="w-4 h-4" />
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      )}
                     </Popover.Panel>
                   </Transition>
                 </Popover>

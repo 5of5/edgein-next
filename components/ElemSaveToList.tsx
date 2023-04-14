@@ -78,6 +78,7 @@ export const ElemSaveToList: FC<Props> = ({
 						follows_people: [],
 						total_no_of_resources: 0,
 						public: false,
+						updated_at: "",
 					};
 					newLists.push(list);
 				} else {

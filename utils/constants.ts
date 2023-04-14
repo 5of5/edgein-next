@@ -1863,6 +1863,10 @@ export const eventBannerList = [
 ];
 
 export const listsSortOptions = [
+	{
+    label: "Default",
+    value: "default",
+  },
   {
     label: "Sort by newest",
     value: "newest",
