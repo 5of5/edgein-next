@@ -57,7 +57,9 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	);
 
 	const [commentContent, setCommentContent] = useState<string>("");
+
 	const [noteAuthor, setNoteAuthor] = useState<People>();
+	const [noteAuthorID, setNoteAuthorID] = useState<Number>();
 
 	const { data: users } = useGetUserProfileQuery({
 		id: data?.created_by,
@@ -65,7 +67,10 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 
 	// set note author
 	useEffect(() => {
-		if (users) setNoteAuthor(users.users_by_pk?.person as People);
+		if (users) {
+			setNoteAuthor(users.users_by_pk?.person as People);
+			setNoteAuthorID(users.users_by_pk?.id);
+		}
 	}, [users]);
 
 	// note content see more
@@ -203,7 +208,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		}
 	};
 
-	const NotePopover = (
+	const noteOptions = (
 		<Popover className="transition-all">
 			<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
 				<IconEllipsisHorizontal
@@ -304,7 +309,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 							</div>
 						</div>
 					</div>
-					<div>{NotePopover}</div>
+					<div>{noteAuthorID === user?.id && noteOptions}</div>
 				</div>
 				<div className="grow py-2 min-h-fit">
 					<p
@@ -438,44 +443,6 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					/>
 				</div>
 			</div>
-			{/* <Link
-				href={`/${
-					data.resource_type === "vc_firms" ? "investors" : data.resource_type
-				}/${resource?.slug}`}
-				passHref
-			>
-				<div className="flex flex-col mx-auto w-full cursor-pointer rounded-lg divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full">
-					<div className="grow min-h-[180px]">
-						<p className="break-words line-clamp-7 text-slate-600">
-							{data.notes}
-						</p>
-					</div>
-					<div className="p-4">
-						<div className="flex items-center gap-2">
-							<ElemPhoto
-								photo={resource?.logo}
-								wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-2 bg-white rounded-lg shadow"
-								imgClass="object-fit max-w-full max-h-full"
-								imgAlt={resource?.name}
-							/>
-							<h2
-								className="text-lg font-bold"
-								title={`Company: ${resource?.name}`}
-							>
-								{resource?.name}
-							</h2>
-						</div>
-
-						<div className="pt-2 text-sm text-slate-600">
-							<p>
-								Created {moment(data?.created_at).format("LL")} by{" "}
-								{noteAuthor?.name}
-							</p>
-							<p>Last edit {moment(data?.updated_at).format("LL")}</p>
-						</div>
-					</div>
-				</div>
-			</Link> */}
 		</>
 	);
 };
