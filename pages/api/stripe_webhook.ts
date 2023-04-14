@@ -90,19 +90,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				}
 				// lookup user
 				const user = await UserService.findOneUserById(userId);
-
-				if ((plan === 'premium' && !user.billing_org_id) ||
-						(plan === 'community' && !user.billing_signup_id)
-				) {
-					// create billing org
-					const billingOrg = await BillingService.insertBillingOrg(
-						customerId,
-						"active",
-						plan,
-					);
-					// update user
-					UserService.updateBilling(userId, billingOrg.id, plan);
+				if (user.billing_org_id) {
+					if (user.billing_org?.plan === plan && user.billing_org?.status === "active")
+						break;
 				}
+
+				// create billing org
+				const billingOrg = await BillingService.insertBillingOrg(
+					customerId,
+					"active",
+					plan,
+				);
+				// update user
+				UserService.updateBillingOrg(userId, billingOrg.id);
 				break;
 			}
 			default:

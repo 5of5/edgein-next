@@ -1,6 +1,5 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
 import { Entitlements, User, UserToken } from '@/models/User';
-import { PlanTypes } from '@/utils/constants';
 import { createHmac } from "crypto";
 
 const USER_FIELDS = `
@@ -14,6 +13,13 @@ auth0_linkedin_id
 auth0_user_pass_id
 reference_id
 billing_org_id
+billing_org {
+  customer_id
+  id
+  plan
+  status
+  user_limit
+}
 person {
   name
   picture
@@ -132,26 +138,25 @@ async function findOneUserById(id: number) {
   }
 }
 
-async function updateBilling(userId: number, billingId: string, plan: PlanTypes) {
+async function updateBillingOrg(userId: number, billingOrgId: string) {
   // prepare gql query
-  const billingType = plan === 'community' ? 'billing_signup_id' : 'billing_org_id';
   const usertQuery = `
-    mutation UpdateUserBillingOrg($userId: Int!, $billingId: Int!) {
-      update_users_by_pk(pk_columns: {id: $userId}, _set: {${billingType}: $billingId }) {
+    mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
+      update_users_by_pk(pk_columns: {id: $userId}, _set: {billing_org_id: $billingOrgId }) {
         id
       }
     }  
-  `;
+  `
   try {
     const data = await mutate({
       mutation: usertQuery,
       variables: {
         userId,
-        billingId,
+        billingOrgId
       }
-    });
+    })
 
-    return data.data.update_users_by_pk as User;
+    return data.data.update_users_by_pk as User
   } catch (ex) {
     console.log(ex);
     throw ex;
@@ -412,7 +417,7 @@ const UserService = {
   mutateForWaitlistEmail,
   findOneUserByEmail,
   findOneUserById,
-  updateBilling,
+  updateBillingOrg,
   upsertUser,
   updateEmailVerifiedStatus,
   updateAuth0LinkedInId,
