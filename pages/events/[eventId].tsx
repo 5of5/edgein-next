@@ -23,10 +23,13 @@ import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { useUser } from "@/context/userContext";
+import { ElemRequireLinkPersonDialog } from "@/components/Event/ElemRequireLinkPersonDialog";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	event: GetEventQuery["events"][0];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Event: NextPage<Props> = (props) => {
@@ -36,6 +39,8 @@ const Event: NextPage<Props> = (props) => {
 	const { user } = useUser();
 
 	const [event, setEvent] = useState<GetEventQuery["events"][0]>(props.event);
+
+	const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState<boolean>(false);
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const organizersRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -52,6 +57,19 @@ const Event: NextPage<Props> = (props) => {
 	useEffect(() => {
 		if (eventData) setEvent(eventData.events[0]);
 	}, [eventData]);
+
+	const onOpenLinkPersonDialog = () => {
+    setIsOpenLinkPersonDialog(true);
+  };
+
+  const onCloseLinkPersonDialog = () => {
+    setIsOpenLinkPersonDialog(false);
+  };
+
+  const onClickSearchName = () => {
+    onCloseLinkPersonDialog();
+    props.setShowPopup("search");
+  };
 
 	const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
     useMutation(
@@ -93,7 +111,11 @@ const Event: NextPage<Props> = (props) => {
     );
 
   const handleClickGoingEvent = () => {
-    onAddEventAttendee();
+		if (user?.person) {
+			onAddEventAttendee();
+		} else {
+			onOpenLinkPersonDialog();
+		}
   };
 
 	if (!event) {
@@ -369,6 +391,13 @@ const Event: NextPage<Props> = (props) => {
 					/>
 				)}
 			</div>
+
+			<ElemRequireLinkPersonDialog
+        isOpen={isOpenLinkPersonDialog}
+        onClose={onCloseLinkPersonDialog}
+        onClickSearch={onClickSearchName}
+      />
+
 			<Toaster />
 		</>
 	);
