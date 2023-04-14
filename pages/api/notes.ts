@@ -23,7 +23,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user_group_id = note.user_group_id;
   }
 
-  const isMember = await GroupService.isUserMemberOfGroup(user_group_id, user.id);
+  const isMember = await GroupService.isUserMemberOfGroup(
+    user_group_id,
+    user.id
+  );
 
   if (!isMember) {
     return res
@@ -135,6 +138,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id,
         },
       });
+
+      // Delete likes of note
+      await GroupService.onDeleteLikesByNoteId(id);
+
+      // Delete comments of note
+      await GroupService.onDeleteCommentsByNoteId(id);
+
       return res.send(delete_notes.returning[0]);
     }
 

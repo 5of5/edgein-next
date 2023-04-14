@@ -612,6 +612,56 @@ const onFindCommentById = async (id: number) => {
   }
 };
 
+const onDeleteLikesByNoteId = async (note_id: number) => {
+  try {
+    const {
+      data: { delete_likes },
+    } = await mutate({
+      mutation: `
+      mutation DeleteLikesByNoteId($note_id: Int!) {
+        delete_likes(where: {note_id: {_eq: $note_id}}) {
+          affected_rows
+          returning {
+            id
+          }
+        }
+      }
+      `,
+      variables: {
+        note_id,
+      },
+    });
+    return delete_likes.returning[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const onDeleteCommentsByNoteId = async (note_id: number) => {
+  try {
+    const {
+      data: { delete_comments },
+    } = await mutate({
+      mutation: `
+      mutation DeleteCommentsByNoteId($note_id: Int!) {
+        delete_comments(where: {note_id: {_eq: $note_id}}) {
+          affected_rows
+          returning {
+            id
+          }
+        }
+      }
+      `,
+      variables: {
+        note_id,
+      },
+    });
+    return delete_comments.returning[0];
+  } catch (ex) {
+    throw ex;
+  }
+};
+
 const GroupService = {
   isUserMemberOfGroup,
   isUserCreatorOfGroup,
@@ -637,5 +687,7 @@ const GroupService = {
   onInsertComment,
   onDeleteComment,
   onFindCommentById,
+  onDeleteLikesByNoteId,
+  onDeleteCommentsByNoteId,
 };
 export default GroupService;

@@ -4,6 +4,7 @@ import React, {
 	useEffect,
 	useState,
 	Fragment,
+	ChangeEvent,
 } from "react";
 import useSWR from "swr";
 import moment from "moment-timezone";
@@ -22,6 +23,8 @@ import { People, useGetUserProfileQuery } from "@/graphql/types";
 import { useUser } from "@/context/userContext";
 import { Popover, Transition } from "@headlessui/react";
 import { InputTextarea } from "../InputTextarea";
+import { ElemButton } from "../ElemButton";
+import { useMutation } from "react-query";
 
 type Props = {
 	data: GetNotesQuery["notes"][0];
@@ -61,6 +64,9 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	const [noteAuthor, setNoteAuthor] = useState<People>();
 	const [noteAuthorID, setNoteAuthorID] = useState<Number>();
 
+	const [isEdit, setIsEdit] = useState<boolean>(false);
+	const [updatedNoteContent, setUpdatedNoteContent] = useState<string>(data.notes);
+
 	const { data: users } = useGetUserProfileQuery({
 		id: data?.created_by,
 	});
@@ -86,7 +92,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	const commentsCount = data.comments.length;
 
 	useEffect(() => {
-		if (data.notes) {
+		if (data.notes && contentDiv?.current) {
 			setContentDivHeight(contentDiv.current.scrollHeight);
 		}
 	}, [data.notes]);
@@ -126,6 +132,10 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		} else {
 			return moment(local_date).fromNow(true);
 		}
+	};
+
+	const handleChangeUpdatedNoteContent = (event: ChangeEvent<HTMLTextAreaElement>) => {
+		setUpdatedNoteContent(event.target.value);
 	};
 
 	const onToggleLike = async () => {
@@ -179,6 +189,41 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		refetch();
 	};
 
+	const onDeleteNote = async () => {
+    await fetch("/api/notes/", {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: data.id,
+      }),
+    });
+    refetch();
+  };
+
+	const { mutate: updateNote, isLoading: isUpdatingNote } = useMutation(
+    () =>
+      fetch("/api/notes/", {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: data.id,
+          notes: updatedNoteContent,
+        }),
+      }),
+    {
+      onSuccess: () => {
+        setIsEdit(false);
+        refetch();
+      },
+    }
+  );
+
 	useEffect(() => {
 		if (commentInput.current) {
 			setCommentContent(commentInput.current.value);
@@ -229,14 +274,17 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					{({ close }) => (
 						<>
 							<button
-								onClick={() => {}}
+								onClick={() => {
+									setIsEdit(true);
+									close();
+								}}
 								className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
 							>
 								<IconEditPencil className="h-4 aspect-square group-hover:text-primary-500" />
 								<span className="text-sm font-medium">Edit note</span>
 							</button>
 							<button
-								onClick={() => {}}
+								onClick={onDeleteNote}
 								className="flex items-center space-x-1 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
 							>
 								<IconTrash className="h-4 aspect-square group-hover:text-primary-500" />
@@ -311,25 +359,59 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					</div>
 					<div>{noteAuthorID === user?.id && noteOptions}</div>
 				</div>
-				<div className="grow py-2 min-h-fit">
-					<p
-						className={`break-words ${
-							!contentShowAll && "line-clamp-5"
-						} text-gray-400`}
-						ref={contentDiv}
-					>
-						{data.notes}
-					</p>
-					{contentDivHeight > 120 && !contentShowAll && (
-						<button
-							type="button"
-							onClick={() => setContentShowAll(!contentShowAll)}
-							className="inline text-primary-500"
-						>
-							See more
-						</button>
-					)}
-				</div>
+				{isEdit ? (
+					<div className="py-4">
+						<label>
+							<InputTextarea
+								name="notes"
+								rows={8}
+								value={updatedNoteContent}
+								onChange={handleChangeUpdatedNoteContent}
+								placeholder="What's important about this organization?"
+								className="ring-1 ring-slate-200"
+							/>
+						</label>
+						<div className="flex items-center justify-between py-4">
+							<ElemButton
+								btn="slate"
+								onClick={() => {
+									setIsEdit(false);
+									setUpdatedNoteContent(data.notes);
+								}}
+							>
+								Cancel
+							</ElemButton>
+							<ElemButton
+								btn="primary"
+								disabled={!updatedNoteContent || isUpdatingNote}
+								loading={isUpdatingNote}
+								onClick={() => updateNote()}
+							>
+								Save
+							</ElemButton>
+						</div>
+					</div>
+        ) : (
+          <div className="grow py-2 min-h-fit">
+            <p
+              className={`break-words whitespace-pre-line ${
+                !contentShowAll && "line-clamp-5"
+              } text-gray-400`}
+              ref={contentDiv}
+            >
+              {data.notes}
+            </p>
+            {contentDivHeight > 120 && !contentShowAll && (
+              <button
+                type="button"
+                onClick={() => setContentShowAll(!contentShowAll)}
+                className="inline text-primary-500"
+              >
+                See more
+              </button>
+            )}
+          </div>
+        )}
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-slate-600">
 						{likesCount > 0
