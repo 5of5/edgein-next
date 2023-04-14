@@ -18,7 +18,7 @@ export const ElemNotes: React.FC<Props> = (props) => {
 
 	return (
 		<div className={`${props.className}`}>
-			<h2 className="text-xl font-bold py-2">{`Notes (${props.notes.length})`}</h2>
+			<h2 className="text-lg font-bold pb-1">{`Notes (${props.notes.length})`}</h2>
 
 			{props.notes.length === 0 ? (
 				<p className="text-slate-500 mt-2">
@@ -39,7 +39,11 @@ export const ElemNotes: React.FC<Props> = (props) => {
 			) : (
 				<div className="flex flex-col gap-y-4">
 					{sortedNotes.map((item) => (
-						<ElemNoteCard key={item.id} data={item} refetch={props.refetchNotes} />
+						<ElemNoteCard
+							key={item.id}
+							data={item}
+							refetch={props.refetchNotes}
+						/>
 					))}
 				</div>
 			)}

@@ -147,7 +147,7 @@ export const ElemLists: React.FC<Props> = ({
 		<div className={`mt-7 lg:mt-0 ${className ? className : ""}`}>
 			<div className="flex items-center justify-between py-1">
 				<div>
-					<h2 className="text-xl font-bold">{`Lists (${lists.length})`}</h2>
+					<h2 className="text-lg font-bold">{`Lists (${lists.length})`}</h2>
 				</div>
 				<ElemButton btn="transparent" onClick={() => setIsOpenAddList(true)}>
 					<IconListPlus className="w-6 h-6 mr-1" />
@@ -188,7 +188,7 @@ export const ElemLists: React.FC<Props> = ({
 													{getNameFromListName(item)}
 												</h3>
 
-												<p className="text-slate-500 text-sm">
+												<p className="text-sm text-gray-400">
 													<span className="capitalize">
 														{item.created_by?.display_name}
 													</span>

@@ -10,6 +10,7 @@ import { useMutation } from "react-query";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
+import { ElemGroupAbout } from "@/components/Group/ElemGroupAbout";
 import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
@@ -76,6 +77,7 @@ const Group: NextPage<Props> = (props: Props) => {
 	);
 
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const aboutRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -89,7 +91,7 @@ const Group: NextPage<Props> = (props: Props) => {
 		return [
 			{ name: "Notes", ref: notesRef },
 			{ name: "Lists", ref: listsRef },
-			// { name: "Chat", ref: chatRef },
+			//{ name: "About", ref: aboutRef },
 		];
 	}, []);
 
@@ -112,35 +114,35 @@ const Group: NextPage<Props> = (props: Props) => {
 	};
 
 	const { mutate: addGroupMember, isLoading: isAddingGroupMember } =
-    useMutation(
-      async () => {
-        const res = await fetch("/api/add_group_member/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            groupId: groupData.id,
-            userId: user?.id,
-          }),
-        });
-        const apiResponse = await res.json();
-        if (!res.ok) {
-          throw apiResponse;
-        } else {
-          return apiResponse;
-        }
-      },
-      {
-        onSuccess: async (response: User_Group_Members) => {
-          setGroupData((prev: User_Groups) => ({
-            ...prev,
-            user_group_members: [...prev.user_group_members, response],
-          }));
-        },
-      }
-    );
+		useMutation(
+			async () => {
+				const res = await fetch("/api/add_group_member/", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						groupId: groupData.id,
+						userId: user?.id,
+					}),
+				});
+				const apiResponse = await res.json();
+				if (!res.ok) {
+					throw apiResponse;
+				} else {
+					return apiResponse;
+				}
+			},
+			{
+				onSuccess: async (response: User_Group_Members) => {
+					setGroupData((prev: User_Groups) => ({
+						...prev,
+						user_group_members: [...prev.user_group_members, response],
+					}));
+				},
+			}
+		);
 
 	if (!user) {
 		return null;
@@ -149,53 +151,57 @@ const Group: NextPage<Props> = (props: Props) => {
 	if (isUserBelongToGroup) {
 		return (
 			<DashboardLayout>
-				{/* <div ref={homeRef} /> */}
-	
 				<ElemGroupInformation
 					isUserBelongToGroup={isUserBelongToGroup}
 					group={groupData}
 					onInvite={onOpenInviteDialog}
 					onOpenSettingDialog={onOpenSettingDialog}
 				/>
+
 				<ElemTabBar
-					className="mt-2 border-t-0"
+					className="border-t-transparent"
 					tabs={tabBarItems}
 					showDropdown={false}
 				/>
-				<div className="border-t border-transparent lg:mt-7 lg:border-black/10 lg:flex lg:gap-x-4">
-					<div ref={notesRef} className="flex justify-center flex-1">
+				<div className="lg:flex lg:gap-x-4">
+					<div ref={notesRef} className="mt-7 flex justify-center flex-1">
 						<ElemNotes
 							className="flex flex-col max-w-2xl"
 							notes={notes?.notes || []}
 							refetchNotes={refetchNotes}
 						/>
 					</div>
-					<div
-						ref={listsRef}
-						className="flex justify-center flex-1 lg:block lg:max-w-lg"
-					>
-						<ElemLists
-							className="flex flex-col w-full max-w-2xl lg:max-w-lg"
-							group={groupData}
-							lists={
-								(lists?.list_user_groups?.map(
-									(item) => item.list
-								) as Array<Lists>) || []
-							}
-							refetchLists={refetchLists}
-						/>
+					<div className="flex justify-center flex-1 lg:block lg:max-w-lg">
+						<div className="flex flex-col space-y-7 w-full max-w-2xl lg:max-w-lg">
+							<div ref={aboutRef}>
+								<ElemGroupAbout
+									isUserBelongToGroup={isUserBelongToGroup}
+									group={groupData}
+								/>
+							</div>
+
+							<div ref={listsRef}>
+								<ElemLists
+									//className="flex flex-col w-full max-w-2xl lg:max-w-lg"
+									group={groupData}
+									lists={
+										(lists?.list_user_groups?.map(
+											(item) => item.list
+										) as Array<Lists>) || []
+									}
+									refetchLists={refetchLists}
+								/>
+							</div>
+						</div>
 					</div>
 				</div>
-
 				<div ref={chatRef} />
-
 				<ElemInviteDialog
 					isOpen={isOpenInviteDialog}
 					group={groupData}
 					onUpdateGroupData={setGroupData}
 					onClose={onCloseInviteDialog}
 				/>
-
 				<ElemSettingDialog
 					isOpen={isOpenSettingDialog}
 					selectedTab={selectedSettingTab}
@@ -211,8 +217,6 @@ const Group: NextPage<Props> = (props: Props) => {
 	if (groupData.public) {
 		return (
 			<DashboardLayout>
-			{/* <div ref={homeRef} /> */}
-	
 				<ElemGroupInformation
 					isUserBelongToGroup={isUserBelongToGroup}
 					group={groupData}
@@ -232,13 +236,11 @@ const Group: NextPage<Props> = (props: Props) => {
 					</ElemButton>
 				</div>
 			</DashboardLayout>
-		)
+		);
 	}
 
 	return (
 		<DashboardLayout>
-		{/* <div ref={homeRef} /> */}
-
 			<ElemGroupInformation
 				isUserBelongToGroup={isUserBelongToGroup}
 				group={groupData}
@@ -250,7 +252,7 @@ const Group: NextPage<Props> = (props: Props) => {
 				<p>This is a private group and you has not been invited to.</p>
 			</div>
 		</DashboardLayout>
-	)
+	);
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

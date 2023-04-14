@@ -308,7 +308,9 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 				</div>
 				<div className="grow py-2 min-h-fit">
 					<p
-						className={`break-words ${!contentShowAll && "line-clamp-5"}`}
+						className={`break-words ${
+							!contentShowAll && "line-clamp-5"
+						} text-gray-400`}
 						ref={contentDiv}
 					>
 						{data.notes}

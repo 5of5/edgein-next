@@ -1611,7 +1611,10 @@ export const IconLocation: React.FC<IconProps> = ({
 	);
 };
 
-export const IconEditPencil: React.FC<IconProps> = ({ className, title }) => {
+export const IconEditPencilOLD: React.FC<IconProps> = ({
+	className,
+	title,
+}) => {
 	return (
 		<svg
 			className={className}
@@ -1626,6 +1629,30 @@ export const IconEditPencil: React.FC<IconProps> = ({ className, title }) => {
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+			/>
+		</svg>
+	);
+};
+
+export const IconEditPencil: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Edit"}</title>
+			<path
+				d="M13.6765 5.62489L16.0706 3.22978C16.7928 2.50756 17.41 1.9173 19.4297 3.93689C21.4493 5.95648 20.859 6.57377 20.1368 7.296L7.8891 19.5437C7.36043 20.072 6.70847 20.4604 5.99211 20.6737L2.6 20.7666L2.69289 17.3745C2.90617 16.6581 3.29453 16.0061 3.82289 15.4775L13.6775 5.62489H13.6765ZM13.6765 5.62489L17.7287 9.6771"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);
