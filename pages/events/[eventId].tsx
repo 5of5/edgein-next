@@ -310,6 +310,7 @@ const Event: NextPage<Props> = (props) => {
 							instagram={event.instagram}
 							facebook={event.facebook}
 							telegram={event.telegram}
+							attachments={event.attachments}
 						/>
 					</div>
 					<div className="col-span-8">

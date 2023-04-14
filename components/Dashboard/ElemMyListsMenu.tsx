@@ -1,5 +1,5 @@
 import { getNameFromListName } from "@/utils/reaction";
-import { find, kebabCase } from "lodash";
+import { find, kebabCase, partition, sortBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
@@ -68,6 +68,16 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
+	const partLists = partition(
+    displayedCustomLists,
+    (o) => o.created_by_id === user?.id
+  );
+
+  const createdLists = sortBy(partLists[0], [(o) => getNameFromListName(o)]);
+  const followedLists = sortBy(partLists[1], [(o) => getNameFromListName(o)]);
+
+  const sortedLists = [...createdLists, ...followedLists];
+
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
@@ -113,7 +123,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</ElemTooltip>
 							</div>
 							<div className="flex gap-x-1">
-								{getCustomLists.length > displayedCustomLists.length ? (
+								{getCustomLists.length > sortedLists.length ? (
 									<button
 										onClick={onOpenUpgradeDialog}
 										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
@@ -184,7 +194,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</Link>
 							</li>
 
-							{displayedCustomLists?.map((list) => (
+							{sortedLists?.map((list) => (
 								<li key={list.id} role="button">
 									<Link
 										href={`/lists/${list.id}/${kebabCase(
@@ -199,18 +209,18 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 											title={getNameFromListName(list)}
 										>
 											<IconCustomList className="h-6 w-6 shrink-0" />
-											<span className="line-clamp-1 flex-1">
+											<span className="line-clamp-1 break-all flex-1">
 												{getNameFromListName(list)}
 											</span>
 											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
-												{getCountForList(getNameFromListName(list))}
+												{list.total_no_of_resources}
 											</div>
 										</a>
 									</Link>
 								</li>
 							))}
 
-							{getCustomLists.length > displayedCustomLists.length ? (
+							{getCustomLists.length > sortedLists.length ? (
 								<li role="button">
 									<button
 										onClick={onOpenUpgradeDialog}

@@ -74,7 +74,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 						>
 							<Dialog.Panel className="max-w-2xl w-full mx-auto rounded-lg bg-white shadow-2xl overflow-x-hidden overflow-y-auto overscroll-y-none">
 								<div className="p-3 bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400 text-xl font-bold text-white text-center">
-									{`You ran run out of page views :(`}
+									{`You ran out of page views :(`}
 								</div>
 								<div className="max-w-xl mx-auto w-full">
 									<div className="p-6 lg:p-12">

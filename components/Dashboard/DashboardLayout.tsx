@@ -28,7 +28,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 				</ElemButton>
 
 				<div className="max-w-9xl mx-auto px-4 sm:px-6 md:px-8">
-					<div className="hidden lg:block fixed z-20 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-50rem))] right-auto w-[22rem] pb-10 px-8 overflow-y-auto">
+					<div className="hidden lg:block fixed z-10 inset-0 top-[3.8125rem] left-[max(0px,calc(50%-50rem))] right-auto w-[22rem] pb-10 px-8 overflow-y-auto">
 						<DashboardSidebar />
 					</div>
 
