@@ -83,7 +83,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [showFooter, setShowFooter] = useState(true);
 
 	React.useEffect(() => {
-		const pagesWithoutFooter = ["/groups/", "/account", "/profile", "/lists/"];
+		const pagesWithoutFooter = [
+			"/groups",
+			"/account",
+			"/profile",
+			"/lists",
+			"/notes",
+		];
 
 		if (
 			pagesWithoutFooter.some((pageUrl) => router.pathname.includes(pageUrl))
