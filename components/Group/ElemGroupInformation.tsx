@@ -1,9 +1,5 @@
 import React from "react";
-import {
-	IconGroup,
-	IconChevronDownMini,
-	IconUserPlus,
-} from "@/components/Icons";
+import { IconGroup, IconChevronDownMini, IconPlus } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { User_Groups } from "@/graphql/types";
 import { ElemMemberAvatarList } from "@/components/Group/ElemMemberAvatarList";
@@ -46,10 +42,10 @@ export const ElemGroupInformation: React.FC<Props> = ({
 							</span>
 							<ElemButton
 								btn="primary"
-								className="gap-x-1 px-1.5 sm:px-4"
+								className="gap-x-1 !pl-3"
 								onClick={onInvite}
 							>
-								<IconUserPlus className="w-5 h-5" />
+								<IconPlus className="w-5 h-5" />
 								<span className="hidden sm:inline">Invite</span>
 							</ElemButton>
 						</div>
