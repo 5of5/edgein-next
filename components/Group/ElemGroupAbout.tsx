@@ -53,7 +53,7 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
 	return (
 		<>
-			<div className="mt-7">
+			<div className="mt-4 lg:mt-12">
 				<div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
 					<div>
 						<h2 className="text-lg font-bold">About</h2>

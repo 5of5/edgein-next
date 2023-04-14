@@ -21,21 +21,25 @@ export const ElemNotes: React.FC<Props> = (props) => {
 			<h2 className="text-lg font-bold pb-1">{`Notes (${props.notes.length})`}</h2>
 
 			{props.notes.length === 0 ? (
-				<p className="text-slate-500 mt-2">
-					Add a note to a{" "}
-					<Link href="/companies" passHref>
-						<a className="font-bold hover:border-b hover:text-primary-500">
-							company
-						</a>
-					</Link>{" "}
-					or{" "}
-					<Link href="/investors" passHref>
-						<a className="font-bold hover:border-b hover:text-primary-500">
-							investor
-						</a>
-					</Link>{" "}
-					profile and share with the group.
-				</p>
+				<div className="bg-white shadow rounded-lg px-5 py-4">
+					<p>Looks like there are no notes in this group yet.</p>
+					<ul className="mt-2 list-disc list-inside space-y-1">
+						<li>
+							Visit a{" "}
+							<Link href="/companies" passHref>
+								<a className="text-primary-500 hover:underline">company</a>
+							</Link>{" "}
+							profile, create a note, and add to group.
+						</li>
+						<li>
+							Visit an{" "}
+							<Link href="/investors" passHref>
+								<a className="text-primary-500 hover:underline">investor</a>
+							</Link>{" "}
+							profile, create a note, and add to group.
+						</li>
+					</ul>
+				</div>
 			) : (
 				<div className="flex flex-col gap-y-4">
 					{sortedNotes.map((item) => (

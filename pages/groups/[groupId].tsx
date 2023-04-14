@@ -164,15 +164,15 @@ const Group: NextPage<Props> = (props: Props) => {
 					showDropdown={false}
 				/>
 				<div className="lg:flex lg:gap-x-4">
-					<div ref={notesRef} className="mt-7 flex justify-center flex-1">
+					<div ref={notesRef} className="mt-4 flex justify-center flex-1">
 						<ElemNotes
-							className="flex flex-col max-w-2xl"
+							className="flex flex-col max-w-2xl w-full"
 							notes={notes?.notes || []}
 							refetchNotes={refetchNotes}
 						/>
 					</div>
 					<div className="flex justify-center flex-1 lg:block lg:max-w-lg">
-						<div className="flex flex-col space-y-7 w-full max-w-2xl lg:max-w-lg">
+						<div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
 							<div ref={aboutRef}>
 								<ElemGroupAbout
 									isUserBelongToGroup={isUserBelongToGroup}

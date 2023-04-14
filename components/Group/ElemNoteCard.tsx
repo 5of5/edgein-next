@@ -352,10 +352,6 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					>
 						<IconAnnotation className="h-5 w-5 mr-1" /> Comment
 					</button>
-					{/* <button className="flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium text-slate-600 hover:text-primary-500 hover:bg-slate-200">
-						<IconShare3 className="h-5 w-5 mr-1" />
-						Share
-					</button> */}
 				</div>
 				<div className="flex flex-col space-y-2 mt-2">
 					{data.comments.map((comment) => (
@@ -385,11 +381,6 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 											<p>{comment.content}</p>
 										</div>
 									</div>
-									{/* <p className="text-xs">
-									<span className="text-slate-600">
-										{formatDateShown(item.created_at)}
-									</span>
-								</p> */}
 								</div>
 							</div>
 							{comment.created_by_user_id === user?.id && (

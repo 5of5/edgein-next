@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import toast, { Toaster } from "react-hot-toast";
 import { kebabCase } from "lodash";
-import { IconCustomList, IconListPlus, IconCheck } from "@/components/Icons";
+import { IconCustomList, IconPlus, IconCheck } from "@/components/Icons";
 import { ElemButton } from "@/components/ElemButton";
 import { getNameFromListName } from "@/utils/reaction";
 import Link from "next/link";
@@ -144,20 +144,49 @@ export const ElemLists: React.FC<Props> = ({
 	};
 
 	return (
-		<div className={`mt-7 lg:mt-0 ${className ? className : ""}`}>
-			<div className="flex items-center justify-between py-1">
-				<div>
-					<h2 className="text-lg font-bold">{`Lists (${lists.length})`}</h2>
-				</div>
-				<ElemButton btn="transparent" onClick={() => setIsOpenAddList(true)}>
-					<IconListPlus className="w-6 h-6 mr-1" />
-					<span>Add List</span>
-				</ElemButton>
-			</div>
-
+		<div className={`${className ? className : ""}`}>
 			<div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
-				{lists.length > 0 ? (
-					<ul className="flex flex-col space-y-5">
+				<div className="flex items-center justify-between pb-1 border-b border-black/10">
+					<div>
+						<h2 className="text-lg font-bold">{`Lists (${lists.length})`}</h2>
+					</div>
+					<ElemButton
+						btn="transparent"
+						onClick={() => setIsOpenAddList(true)}
+						className="px-0 py-0"
+					>
+						<IconPlus className="w-5 h-5 mr-1" />
+						<span>Add List</span>
+					</ElemButton>
+				</div>
+
+				{lists?.length === 0 ? (
+					<div className="mt-4">
+						<p>Looks like there are no lists in this group yet.</p>
+						<ul className="mt-2 list-disc list-inside space-y-1">
+							<li>
+								Create a list and{" "}
+								<button
+									onClick={() => setIsOpenAddList(true)}
+									className="text-primary-500 hover:underline"
+								>
+									share list with group
+								</button>
+								.
+							</li>
+							<li>
+								<button
+									onClick={() => setIsOpenAddList(true)}
+									className="text-primary-500 hover:underline"
+								>
+									Share existing list
+								</button>{" "}
+								with group
+							</li>
+						</ul>
+					</div>
+				) : (
+					<ul className="mt-4 flex flex-col space-y-5">
 						{lists.map((item) => {
 							if (!item) {
 								debugger;
@@ -176,7 +205,7 @@ export const ElemLists: React.FC<Props> = ({
 											getNameFromListName(item)
 										)}`}
 									>
-										<a className="flex items-start space-x-3 group">
+										<a className="flex items-start space-x-2 group">
 											<div className="flex items-center justify-center shrink-0 w-6 h-6">
 												<IconCustomList className="object-fit max-w-full max-h-full group-hover:text-primary-500" />
 											</div>
@@ -219,10 +248,6 @@ export const ElemLists: React.FC<Props> = ({
 							return listItem;
 						})}
 					</ul>
-				) : (
-					<p className="text-slate-500 mt-2">
-						Share any of your lists with the group.
-					</p>
 				)}
 			</div>
 
