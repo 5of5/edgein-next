@@ -10,11 +10,13 @@ import {
 import { User_Groups } from "@/graphql/types";
 
 type Props = {
+	className?: string;
 	isUserBelongToGroup: boolean;
 	group: User_Groups;
 };
 
 export const ElemGroupAbout: React.FC<Props> = ({
+	className = "",
 	isUserBelongToGroup,
 	group,
 }) => {
@@ -53,10 +55,10 @@ export const ElemGroupAbout: React.FC<Props> = ({
 
 	return (
 		<>
-			<div className="mt-4 lg:mt-12">
+			<div className={className}>
 				<div className="bg-white shadow rounded-lg px-4 py-4 shrink-0">
 					<div>
-						<h2 className="text-lg font-bold">About</h2>
+						<h2 className="text-lg font-bold">About Group</h2>
 					</div>
 					{group?.description && (
 						<p className="text-gray-400 mb-3">{group?.description}</p>

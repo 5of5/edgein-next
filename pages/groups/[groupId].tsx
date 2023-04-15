@@ -175,6 +175,7 @@ const Group: NextPage<Props> = (props: Props) => {
 						<div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
 							<div ref={aboutRef}>
 								<ElemGroupAbout
+									className="mt-4 lg:mt-12"
 									isUserBelongToGroup={isUserBelongToGroup}
 									group={groupData}
 								/>
@@ -182,7 +183,6 @@ const Group: NextPage<Props> = (props: Props) => {
 
 							<div ref={listsRef}>
 								<ElemLists
-									//className="flex flex-col w-full max-w-2xl lg:max-w-lg"
 									group={groupData}
 									lists={
 										(lists?.list_user_groups?.map(
@@ -237,22 +237,28 @@ const Group: NextPage<Props> = (props: Props) => {
 				</div>
 			</DashboardLayout>
 		);
-	}
+	} else {
+		return (
+			<DashboardLayout>
+				<ElemGroupInformation
+					isUserBelongToGroup={isUserBelongToGroup}
+					group={groupData}
+					onInvite={onOpenInviteDialog}
+					onOpenSettingDialog={onOpenSettingDialog}
+				/>
 
-	return (
-		<DashboardLayout>
-			<ElemGroupInformation
-				isUserBelongToGroup={isUserBelongToGroup}
-				group={groupData}
-				onInvite={onOpenInviteDialog}
-				onOpenSettingDialog={onOpenSettingDialog}
-			/>
-			<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-				<IconLockClosed className="h-5 w-5" title="Private" />
-				<p>This is a private group and you has not been invited to.</p>
-			</div>
-		</DashboardLayout>
-	);
+				<div className="flex justify-center space-y-4 lg:justify-start">
+					<div ref={aboutRef} className="w-full max-w-2xl lg:max-w-lg">
+						<ElemGroupAbout
+							className="mt-4"
+							isUserBelongToGroup={isUserBelongToGroup}
+							group={groupData}
+						/>
+					</div>
+				</div>
+			</DashboardLayout>
+		);
+	}
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
