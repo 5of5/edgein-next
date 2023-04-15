@@ -95,7 +95,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 								) : (
 									<div className={` ${className} truncate`}>
 										<div className="flex items-center">
-											{value.icon && (
+											{value?.icon && (
 												<value.icon
 													title={value.title ? value.title : placeholder}
 													className="h-5 w-5 mr-1 shrink-0 text-dark-500"

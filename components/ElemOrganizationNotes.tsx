@@ -85,7 +85,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 				</div>
 				<ElemButton btn="primary" onClick={onOpenNoteForm} className="!pl-3">
 					<IconPlus className="w-5 h-5 mr-1" />
-					<span>Create a note</span>
+					<span>Create note</span>
 				</ElemButton>
 			</div>
 
@@ -98,7 +98,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 					))}
 				</div>
 			) : notes.length === 0 ? (
-				<div className="mt-4 flex items-start gap-2">
+				<div className="mt-4 flex items-start gap-2 bg-white shadow rounded-lg px-5 py-4">
 					<ElemPhoto
 						photo={user?.profilePicture || user?.person?.picture}
 						wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
@@ -111,7 +111,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 						className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
 						onClick={onOpenNoteForm}
 					>
-						Create a note about this organization.
+						Write your note...
 					</div>
 				</div>
 			) : (
