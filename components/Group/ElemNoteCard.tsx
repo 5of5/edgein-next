@@ -13,10 +13,10 @@ import { ElemPhoto } from "../ElemPhoto";
 import Link from "next/link";
 import {
 	IconEllipsisHorizontal,
+	IconThumbUp,
 	IconAnnotation,
 	IconTrash,
 	IconEditPencil,
-	IconShare3,
 } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
@@ -65,7 +65,9 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	const [noteAuthorID, setNoteAuthorID] = useState<Number>();
 
 	const [isEdit, setIsEdit] = useState<boolean>(false);
-	const [updatedNoteContent, setUpdatedNoteContent] = useState<string>(data.notes);
+	const [updatedNoteContent, setUpdatedNoteContent] = useState<string>(
+		data.notes
+	);
 
 	const { data: users } = useGetUserProfileQuery({
 		id: data?.created_by,
@@ -134,7 +136,9 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		}
 	};
 
-	const handleChangeUpdatedNoteContent = (event: ChangeEvent<HTMLTextAreaElement>) => {
+	const handleChangeUpdatedNoteContent = (
+		event: ChangeEvent<HTMLTextAreaElement>
+	) => {
 		setUpdatedNoteContent(event.target.value);
 	};
 
@@ -152,8 +156,8 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		refetch();
 	};
 
-	// const commentInput = useRef(null);
-	const commentInput = useRef() as MutableRefObject<HTMLInputElement>;
+	const commentInput =
+		React.createRef() as MutableRefObject<HTMLTextAreaElement>;
 
 	const onCommentButton = () => {
 		commentInput.current.focus();
@@ -190,39 +194,39 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	};
 
 	const onDeleteNote = async () => {
-    await fetch("/api/notes/", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: data.id,
-      }),
-    });
-    refetch();
-  };
+		await fetch("/api/notes/", {
+			method: "DELETE",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				id: data.id,
+			}),
+		});
+		refetch();
+	};
 
 	const { mutate: updateNote, isLoading: isUpdatingNote } = useMutation(
-    () =>
-      fetch("/api/notes/", {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: data.id,
-          notes: updatedNoteContent,
-        }),
-      }),
-    {
-      onSuccess: () => {
-        setIsEdit(false);
-        refetch();
-      },
-    }
-  );
+		() =>
+			fetch("/api/notes/", {
+				method: "PUT",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id: data.id,
+					notes: updatedNoteContent,
+				}),
+			}),
+		{
+			onSuccess: () => {
+				setIsEdit(false);
+				refetch();
+			},
+		}
+	);
 
 	useEffect(() => {
 		if (commentInput.current) {
@@ -238,10 +242,10 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 		const target = event.target as HTMLTextAreaElement;
 		target.style.height = "inherit";
 
-		if (commentContent.length > 0 && target.scrollHeight > 67) {
+		if (commentContent.length > 0 && target.scrollHeight > 32) {
 			target.style.height = `${target.scrollHeight}px`;
 		} else {
-			target.style.height = "auto";
+			target.style.height = "2rem";
 		}
 	};
 
@@ -364,7 +368,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 						<label>
 							<InputTextarea
 								name="notes"
-								rows={8}
+								rows={6}
 								value={updatedNoteContent}
 								onChange={handleChangeUpdatedNoteContent}
 								placeholder="What's important about this organization?"
@@ -391,27 +395,27 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 							</ElemButton>
 						</div>
 					</div>
-        ) : (
-          <div className="grow py-2 min-h-fit">
-            <p
-              className={`break-words whitespace-pre-line ${
-                !contentShowAll && "line-clamp-5"
-              } text-gray-400`}
-              ref={contentDiv}
-            >
-              {data.notes}
-            </p>
-            {contentDivHeight > 120 && !contentShowAll && (
-              <button
-                type="button"
-                onClick={() => setContentShowAll(!contentShowAll)}
-                className="inline text-primary-500"
-              >
-                See more
-              </button>
-            )}
-          </div>
-        )}
+				) : (
+					<div className="grow py-2 min-h-fit">
+						<p
+							className={`break-words whitespace-pre-line ${
+								!contentShowAll && "line-clamp-5"
+							} text-gray-400`}
+							ref={contentDiv}
+						>
+							{data.notes}
+						</p>
+						{contentDivHeight > 120 && !contentShowAll && (
+							<button
+								type="button"
+								onClick={() => setContentShowAll(!contentShowAll)}
+								className="inline text-primary-500"
+							>
+								See more
+							</button>
+						)}
+					</div>
+				)}
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-slate-600">
 						{likesCount > 0
@@ -431,6 +435,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 						}`}
 						onClick={onToggleLike}
 					>
+						<IconThumbUp className="h-5 w-5 mr-1" />
 						Like
 					</button>
 					<button
@@ -516,12 +521,13 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 
 					<InputTextarea
 						rows={1}
+						ref={commentInput}
 						name="comment"
 						placeholder="Write a comment..."
 						value={commentContent}
 						onChange={onChangeCommentInput}
 						onKeyDown={onCommentInputKeyDown}
-						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 h-8 text-slate-600 hover:bg-slate-200 transition-all pb-1 focus:pb-6"
+						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 h-8 overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
 					/>
 				</div>
 			</div>
