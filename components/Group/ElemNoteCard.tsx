@@ -254,6 +254,7 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 	) => {
 		if (event.key === "Enter" && commentContent) {
 			onAddComment();
+			setCommentContent("");
 		}
 	};
 
