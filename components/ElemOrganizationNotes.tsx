@@ -12,6 +12,8 @@ import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
 import { ElemPhoto } from "./ElemPhoto";
 import { useUser } from "@/context/userContext";
+import ElemNoteCard from "@/components/Group/ElemNoteCard";
+import { orderBy } from "lodash";
 
 type Props = {
 	resourceId: number;
@@ -56,6 +58,8 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 
 	const notes = noteList?.notes || [];
 
+	const sortedNotes = orderBy(notes, (a) => new Date(a.created_at), ["desc"]);
+
 	return (
 		<>
 			<div className="flex items-center justify-between">
@@ -63,14 +67,10 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 					<h2 className="text-xl font-bold">
 						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}
 					</h2>
-					<div className="flex gap-1">
-						<IconLockClosed className="h-4 w-4" title="Private" />
-						<p className="text-sm">Private</p>
-					</div>
 				</div>
 				<ElemButton btn="slate" onClick={onOpenNoteForm}>
 					<IconPlus className="w-6 h-6 mr-1" />
-					<span>Start a note</span>
+					<span>Create a note</span>
 				</ElemButton>
 			</div>
 
@@ -96,11 +96,16 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 						className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
 						onClick={onOpenNoteForm}
 					>
-						Add a note about this profile and choose who can view.
+						Create a note about this organization.
 					</div>
 				</div>
 			) : (
 				<>
+					<div className="flex flex-col gap-y-4">
+						{sortedNotes.map((item) => (
+							<ElemNoteCard key={item.id} data={item} refetch={refetch} />
+						))}
+					</div>
 					{notes.length > 0 && (
 						<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
 							{notes.map((item) => (

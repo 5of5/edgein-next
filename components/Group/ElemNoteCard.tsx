@@ -14,6 +14,7 @@ import Link from "next/link";
 import {
 	IconEllipsisHorizontal,
 	IconThumbUp,
+	IconThumbUpSolid,
 	IconAnnotation,
 	IconTrash,
 	IconEditPencil,
@@ -432,11 +433,15 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 				<div className="flex space-x-1 py-1 border-t border-b border-black/10">
 					<button
 						className={`flex flex-1 items-center justify-center px-2 py-1 rounded-md shrink grow font-medium hover:bg-slate-200 active:bg-slate-300 ${
-							isLikedByCurrentUser ? "text-primary-500" : ""
+							isLikedByCurrentUser ? "text-primary-500" : "text-slate-600"
 						}`}
 						onClick={onToggleLike}
 					>
-						<IconThumbUp className="h-5 w-5 mr-1" />
+						{isLikedByCurrentUser ? (
+							<IconThumbUpSolid className="h-5 w-5 mr-1" />
+						) : (
+							<IconThumbUp className="h-5 w-5 mr-1" />
+						)}
 						Like
 					</button>
 					<button

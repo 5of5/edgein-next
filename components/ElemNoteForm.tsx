@@ -41,7 +41,7 @@ const ElemNoteForm: React.FC<Props> = ({
 	const groupOptions = useMemo(() => {
 		return myGroups.map((item) => ({
 			id: item.id,
-			title: item.name,
+			title: "Group: " + item.name,
 		}));
 	}, [myGroups]);
 
@@ -179,17 +179,20 @@ const ElemNoteForm: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
-								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
-									<span>{type === "edit" ? "Edit Note" : "Create Note"}</span>
+							<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
+								<div className="relative flex items-center justify-between pb-2 border-b border-slate-200">
+									<Dialog.Title className="flex-1 text-xl text-center font-bold">
+										{type === "edit" ? "Edit Note" : "Create Note"}
+									</Dialog.Title>
 									<button
 										type="button"
 										onClick={onClose}
-										className="focus-visible:outline-none"
+										className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full hover:bg-black/10"
 									>
-										<IconX className="w-5 h-5" />
+										<IconX className="h-6 w-6" />
 									</button>
-								</Dialog.Title>
+								</div>
+
 								<div className="flex items-start gap-2 mt-3 mb-2">
 									{/* TODO: Get selectedNote.last_update_by  */}
 									{type === "edit" ? (
@@ -229,7 +232,8 @@ const ElemNoteForm: React.FC<Props> = ({
 										<div>
 											{!selectedNote && (
 												<label className="text-slate-500">
-													What group can see your note?
+													Select audience
+													{/* What group can see your note? */}
 												</label>
 											)}
 											<InputSelect
@@ -237,7 +241,7 @@ const ElemNoteForm: React.FC<Props> = ({
 												value={selectedGroup}
 												onChange={setSelectedGroup}
 												className="mt-0.5 text-slate-600 text-base w-full"
-												buttonClasses="w-full sm:w-80"
+												buttonClasses="w-full sm:w-fit"
 												disabled={!!selectedNote}
 											/>
 										</div>
@@ -250,7 +254,7 @@ const ElemNoteForm: React.FC<Props> = ({
 										rows={8}
 										value={notes}
 										onChange={handleChangeNote}
-										placeholder="What's important about this organization?"
+										placeholder="Write your note..."
 										className="ring-1 ring-slate-200"
 									/>
 								</label>
@@ -262,7 +266,7 @@ const ElemNoteForm: React.FC<Props> = ({
 										loading={isLoading}
 										onClick={handleSubmit}
 									>
-										{type === "edit" ? "Update Note" : "Save Note"}
+										{type === "edit" ? "Update Note" : "Create Note"}
 									</ElemButton>
 
 									{type === "edit" && selectedNote?.created_by === user?.id && (
