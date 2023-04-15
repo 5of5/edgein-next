@@ -6,13 +6,19 @@ import {
 	Notes_Bool_Exp,
 	useGetNotesQuery,
 } from "@/graphql/types";
-import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
+import {
+	IconGroup,
+	IconPlus,
+	IconLockClosed,
+	IconInformationCircle,
+} from "@/components/Icons";
 import { PlaceholderNote } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
 import { ElemPhoto } from "./ElemPhoto";
 import { useUser } from "@/context/userContext";
 import ElemNoteCard from "@/components/Group/ElemNoteCard";
+import { ElemTooltip } from "@/components/ElemTooltip";
 import { orderBy } from "lodash";
 
 type Props = {
@@ -62,14 +68,23 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 
 	return (
 		<>
-			<div className="flex items-center justify-between">
-				<div>
+			<div className="flex items-center justify-between mb-2">
+				<div className="flex items-center space-x-1">
 					<h2 className="text-xl font-bold">
 						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}
 					</h2>
+					<ElemTooltip
+						size="md"
+						content="Only you can see your notes, but you can change the audience of any specific note."
+					>
+						<IconInformationCircle
+							className="h-5 w-5 text-primary-500"
+							title="About notes"
+						/>
+					</ElemTooltip>
 				</div>
-				<ElemButton btn="slate" onClick={onOpenNoteForm}>
-					<IconPlus className="w-6 h-6 mr-1" />
+				<ElemButton btn="primary" onClick={onOpenNoteForm} className="!pl-3">
+					<IconPlus className="w-5 h-5 mr-1" />
 					<span>Create a note</span>
 				</ElemButton>
 			</div>
@@ -101,12 +116,12 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 				</div>
 			) : (
 				<>
-					<div className="flex flex-col gap-y-4">
+					<div className="grid grid-cols-1 gap-4">
 						{sortedNotes.map((item) => (
 							<ElemNoteCard key={item.id} data={item} refetch={refetch} />
 						))}
 					</div>
-					{notes.length > 0 && (
+					{/* {notes.length > 0 && (
 						<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
 							{notes.map((item) => (
 								<div
@@ -130,10 +145,6 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 											</p>
 										</div>
 
-										{/* <p className="text-sm text-slate-600">
-											Last edit {moment(item.updated_at).format("LL h:mma")}
-										</p> */}
-
 										<p className="text-sm text-slate-600">
 											Created {moment(item.created_at).format("LL")}
 										</p>
@@ -141,7 +152,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 								</div>
 							))}
 						</div>
-					)}
+					)} */}
 				</>
 			)}
 

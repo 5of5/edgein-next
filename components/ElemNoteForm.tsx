@@ -2,7 +2,7 @@ import { Fragment, ChangeEvent, useState, useEffect, useMemo } from "react";
 import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconTrash, IconX } from "@/components/Icons";
+import { IconTrash, IconX, IconGroup } from "@/components/Icons";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { useUser } from "@/context/userContext";
@@ -39,10 +39,16 @@ const ElemNoteForm: React.FC<Props> = ({
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
 
 	const groupOptions = useMemo(() => {
-		return myGroups.map((item) => ({
-			id: item.id,
-			title: "Group: " + item.name,
-		}));
+		const options = [
+			// { id: 0, title: "Just me" },
+			...myGroups.map((item) => ({
+				id: item.id,
+				icon: IconGroup,
+				title: item.name,
+			})),
+		];
+
+		return options;
 	}, [myGroups]);
 
 	const defaultSelectedGroup =
@@ -225,13 +231,13 @@ const ElemNoteForm: React.FC<Props> = ({
 									)}
 
 									<div className="grow">
-										<p className="font-bold capitalize mb-1">
+										<p className="font-bold capitalize mb-1 text-sm">
 											{/* TODO: Get selectedNote.last_update_by  */}
 											{user?.display_name}
 										</p>
 										<div>
 											{!selectedNote && (
-												<label className="text-slate-500">
+												<label className="text-sm text-slate-500">
 													Select audience
 													{/* What group can see your note? */}
 												</label>
@@ -265,6 +271,7 @@ const ElemNoteForm: React.FC<Props> = ({
 										disabled={!notes || !selectedGroup}
 										loading={isLoading}
 										onClick={handleSubmit}
+										className="w-full"
 									>
 										{type === "edit" ? "Update Note" : "Create Note"}
 									</ElemButton>

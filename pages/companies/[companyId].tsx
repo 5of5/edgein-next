@@ -99,8 +99,8 @@ const Company: NextPage<Props> = (props: Props) => {
 	};
 
 	const velocityToken = tokenInfo?.vol24H
-    ? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
-    : null;
+		? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
+		: null;
 
 	useEffect(() => {
 		if (company.overview) {
@@ -126,15 +126,15 @@ const Company: NextPage<Props> = (props: Props) => {
 	const sortedInvestmentRounds = props.sortRounds;
 
 	const sortActivities =
-    [...sortedInvestmentRounds, ...props.sortNews]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.date || a?.round_date || "").getTime() -
-          new Date(b?.date || b?.round_date || "").getTime()
-        );
-      })
-      .reverse() || [];
+		[...sortedInvestmentRounds, ...props.sortNews]
+			?.slice()
+			.sort((a: any, b: any) => {
+				return (
+					new Date(a?.date || a?.round_date || "").getTime() -
+					new Date(b?.date || b?.round_date || "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	// Company tags
 	let companyTags: string[] = [];
@@ -389,16 +389,16 @@ const Company: NextPage<Props> = (props: Props) => {
 									linkedInVerified={company.company_linkedin}
 								/>
 								{(company.velocity_linkedin || velocityToken) && (
-								<ElemVelocity
-									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-									heading="Velocity"
-									employeeListings={company.velocity_linkedin}
-									tokenExchangeValue={velocityToken}
-								/>
-							)}
+									<ElemVelocity
+										className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+										heading="Velocity"
+										employeeListings={company.velocity_linkedin}
+										tokenExchangeValue={velocityToken}
+									/>
+								)}
 							</div>
 						)}
-						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+						<div className="w-full mt-7 p-5 bg-slate-200 border-dashed border-2 border-black/20 rounded-lg">
 							<ElemOrganizationNotes
 								resourceId={company.id}
 								resourceType="companies"
@@ -492,12 +492,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const sortNews =
 		company.news_links
 			?.slice()
-			?.map(item => ({...item.news, type: "news"}))
-			?.filter(item => item.status === "published")
+			?.map((item) => ({ ...item.news, type: "news" }))
+			?.filter((item) => item.status === "published")
 			.sort((a, b) => {
 				return (
-					new Date(a?.date ?? "").getTime() -
-					new Date(b?.date ?? "").getTime()
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
 				);
 			})
 			.reverse() || [];
