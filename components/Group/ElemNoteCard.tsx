@@ -18,6 +18,7 @@ import {
 	IconAnnotation,
 	IconTrash,
 	IconEditPencil,
+	IconGroup,
 } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
@@ -30,6 +31,7 @@ import { useMutation } from "react-query";
 type Props = {
 	data: GetNotesQuery["notes"][0];
 	refetch: () => void;
+	layout?: "organizationAndAuthor" | "groupAndAuthor";
 };
 
 const fetcher = async (url: string, args: any) => {
@@ -46,7 +48,11 @@ const fetcher = async (url: string, args: any) => {
 	}).then((res) => res.json());
 };
 
-const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
+const ElemNoteCard: React.FC<Props> = ({
+	data,
+	refetch,
+	layout = "organizationAndAuthor",
+}) => {
 	const { user } = useUser();
 
 	const { data: resource } = useSWR(
@@ -99,6 +105,12 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 			setContentDivHeight(contentDiv.current.scrollHeight);
 		}
 	}, [data.notes]);
+
+	const getNameFromGroupName = (group: any) => {
+		if (!group) return "";
+		const fragments = group?.name?.split("-");
+		return fragments?.[fragments.length - 1] || "";
+	};
 
 	const formatDateShown = (date: Date) => {
 		moment.updateLocale("en", {
@@ -312,16 +324,29 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 			<div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
 				<div className="relative flex items-center space-x-3">
 					<div className="flex-shrink-0 relative mb-2">
-						<Link href={resourceLink}>
-							<a>
-								<ElemPhoto
-									photo={resource?.logo}
-									wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded-lg shadow"
-									imgClass="object-fit max-w-full max-h-full"
-									imgAlt={resource?.name}
-								/>
-							</a>
-						</Link>
+						{layout === "organizationAndAuthor" ? (
+							<Link href={resourceLink}>
+								<a>
+									<ElemPhoto
+										photo={resource?.logo}
+										wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded-lg shadow"
+										imgClass="object-fit max-w-full max-h-full"
+										imgAlt={resource?.name}
+									/>
+								</a>
+							</Link>
+						) : (
+							<Link href={`/groups/${data?.user_group.id}`}>
+								<a>
+									<div className="flex items-center justify-center w-12 h-12 p-1 bg-white rounded-lg shadow">
+										<IconGroup
+											className="w-8 h-8"
+											title={data?.user_group.name}
+										/>
+									</div>
+								</a>
+							</Link>
+						)}
 
 						<Link href={`/people/${noteAuthor?.slug}`}>
 							<a className="absolute -right-1 -bottom-1">
@@ -340,9 +365,15 @@ const ElemNoteCard: React.FC<Props> = ({ data, refetch }) => {
 					<div className="min-w-0 flex-1">
 						<div>
 							<h2 className="text-lg leading-tight font-bold underline-offset-1 hover:underline">
-								<Link href={resourceLink}>
-									<a>{resource?.name}</a>
-								</Link>
+								{layout === "organizationAndAuthor" ? (
+									<Link href={resourceLink}>
+										<a>{resource?.name}</a>
+									</Link>
+								) : (
+									<Link href={`/groups/${data?.user_group.id}`}>
+										<a>{data?.user_group.name}</a>
+									</Link>
+								)}
 							</h2>
 							<div className="text-sm text-slate-600">
 								<Link href={`/people/${noteAuthor?.slug}`}>

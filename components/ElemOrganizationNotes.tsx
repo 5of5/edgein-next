@@ -118,9 +118,31 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 				</div>
 			) : (
 				<>
-					<div className="grid grid-cols-1 gap-4">
+					<div className="mt-4 flex items-start gap-2 bg-white shadow rounded-lg px-5 py-4">
+						<ElemPhoto
+							photo={user?.profilePicture || user?.person?.picture}
+							wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+							imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+							imgAlt={user?.display_name}
+							placeholder="user"
+							placeholderClass="text-slate-300"
+						/>
+						<div
+							className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
+							onClick={onOpenNoteForm}
+						>
+							Write your note...
+						</div>
+					</div>
+
+					<div className="mt-4 grid grid-cols-1 gap-4">
 						{sortedNotes.map((item) => (
-							<ElemNoteCard key={item.id} data={item} refetch={refetch} />
+							<ElemNoteCard
+								key={item.id}
+								data={item}
+								refetch={refetch}
+								layout="groupAndAuthor"
+							/>
 						))}
 					</div>
 					{/* {notes.length > 0 && (
