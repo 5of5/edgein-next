@@ -70,12 +70,14 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		<>
 			<div className="flex items-center justify-between mb-2">
 				<div className="flex items-center space-x-1">
-					<h2 className="text-xl font-bold">
-						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}
+					<h2 className="flex items-center text-xl font-bold">
+						<IconLockClosed className="h-5 w-5 mr-1" title="Private" />
+						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}{" "}
 					</h2>
 					<ElemTooltip
 						size="md"
-						content="Only you can see your notes, but you can change the audience of any specific note."
+						content="Notes are private to you, but you can change the audience of any note."
+						//content="Only you can see your notes, but you can change the audience of any specific note."
 					>
 						<IconInformationCircle
 							className="h-5 w-5 text-primary-500"

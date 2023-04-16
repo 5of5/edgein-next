@@ -41,11 +41,12 @@ const ElemNoteForm: React.FC<Props> = ({
 
 	const groupOptions = useMemo(() => {
 		const options = [
-			// { id: 0, title: "Just me" },
+			//{ id: 9999, icon: IconLockClosed, title: "Only me" },
 			...myGroups.map((item) => ({
 				id: item.id,
 				icon: IconGroup,
-				title: item.name,
+				title: `${item.name}`,
+				description: `by ${item.created_by?.display_name}`,
 			})),
 		];
 
@@ -206,7 +207,7 @@ const ElemNoteForm: React.FC<Props> = ({
 										<button
 											type="button"
 											onClick={onClose}
-											className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full hover:bg-black/10"
+											className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10"
 										>
 											<IconX className="h-6 w-6" />
 										</button>
@@ -243,13 +244,13 @@ const ElemNoteForm: React.FC<Props> = ({
 										)}
 
 										<div className="grow">
-											<p className="font-bold capitalize mb-1 text-sm">
+											<p className="font-bold capitalize text-sm">
 												{user?.display_name}
 											</p>
 											{groupOptions.length > 0 ? (
 												<div>
 													{!selectedNote && (
-														<label className="text-sm text-slate-500">
+														<label className="block text-sm text-slate-500 leading-tight pb-1">
 															Select audience
 															{/* What group can see your note? */}
 														</label>

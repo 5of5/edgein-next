@@ -375,12 +375,20 @@ const Company: NextPage<Props> = (props: Props) => {
 						/>
 					</div>
 					<div className="col-span-8">
+						<div className="w-full p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
+							{/* border-dashed border-2 border-black/20 */}
+							<ElemOrganizationNotes
+								resourceId={company.id}
+								resourceType="companies"
+							/>
+						</div>
+
 						{(company.market_verified ||
 							company.github ||
 							company.company_linkedin ||
 							company.velocity_linkedin ||
 							company.velocity_token) && (
-							<div className="lg:grid lg:grid-cols-8 lg:gap-7">
+							<div className="mt-7 lg:grid lg:grid-cols-8 lg:gap-7">
 								<ElemCredibility
 									className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
 									heading="Credibility"
@@ -398,12 +406,7 @@ const Company: NextPage<Props> = (props: Props) => {
 								)}
 							</div>
 						)}
-						<div className="w-full mt-7 p-5 bg-slate-200 border-dashed border-2 border-black/20 rounded-lg">
-							<ElemOrganizationNotes
-								resourceId={company.id}
-								resourceType="companies"
-							/>
-						</div>
+
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
 								resourceType="companies"

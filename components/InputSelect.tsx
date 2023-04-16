@@ -104,11 +104,11 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 											<span>{value?.title ? value.title : placeholder}</span>
 										</div>
 
-										{value?.description && (
+										{/* {value?.description && (
 											<span className="text-gray-400 text-sm ml-2">
 												value.description
 											</span>
-										)}
+										)} */}
 									</div>
 								)}
 
@@ -134,7 +134,7 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 											className={({ active }) =>
 												`${
 													active
-														? "text-primary-500 bg-primary-100"
+														? "text-primary-500 bg-gray-50"
 														: "text-dark-500"
 												}  select-none relative py-2 pl-3 pr-4 ${
 													option.disabled
@@ -147,32 +147,44 @@ export const InputSelect: React.FC<PropsWithChildren<Props>> = ({
 											{({ selected }) => (
 												<>
 													<div
-														className={`${
-															selected ? "font-bold" : "font-normal"
-														} truncate align-bottom flex`}
-														title={`${
-															option.title ? option.title : placeholder
-														}${option.description ? option.description : ""}`}
+														className={`truncate align-bottom flex`}
+														title={
+															option.title
+																? option.title
+																: placeholder + option.description
+																? option.description
+																: ""
+														}
 													>
 														{option.icon && (
 															<option.icon
 																title={
 																	option.title ? option.title : placeholder
 																}
-																className="h-5 w-5 mr-1 shrink-0 text-slate-500"
+																className={`h-5 w-5 mr-1 shrink-0 text-slate-500 ${
+																	selected ? "text-primary-500" : ""
+																}`}
 															/>
 														)}
-
 														{/* {option.icon
 															? displayIcon(
 																	option.icon,
 																	`${selected ? "font-bold" : "font-normal"}`
 															  )
 															: ""} */}
-														{option.title ? option.title : placeholder}
-													</div>
-													<div className="text-gray-400 text-xs">
-														{option.description ? option.description : ""}
+														<div>
+															<div
+																className={`truncate ${
+																	selected ? "font-bold" : "font-normal"
+																}
+																`}
+															>
+																{option.title ? option.title : placeholder}
+															</div>
+															<div className="text-gray-400 text-xs">
+																{option.description ? option.description : ""}
+															</div>
+														</div>
 													</div>
 
 													{selected && (
