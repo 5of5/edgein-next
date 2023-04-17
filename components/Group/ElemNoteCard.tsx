@@ -108,12 +108,6 @@ const ElemNoteCard: React.FC<Props> = ({
 		}
 	}, [data.notes]);
 
-	const getNameFromGroupName = (group: any) => {
-		if (!group) return "";
-		const fragments = group?.name?.split("-");
-		return fragments?.[fragments.length - 1] || "";
-	};
-
 	const formatDateShown = (date: Date) => {
 		moment.updateLocale("en", {
 			relativeTime: {
@@ -337,33 +331,25 @@ const ElemNoteCard: React.FC<Props> = ({
 									/>
 								</a>
 							</Link>
+						) : data?.audience ? (
+							<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
+								{data.audience === "only_me" ? (
+									<IconLockClosed className="w-7 h-7" title="Only me" />
+								) : (
+									<IconGlobe className="w-7 h-7" title="Public" />
+								)}
+							</div>
 						) : (
-							data?.audience ? (
-								<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
-									{data.audience === "only_me" ? (
-										<IconLockClosed
+							<Link href={`/groups/${data?.user_group?.id}`}>
+								<a>
+									<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
+										<IconGroup
 											className="w-7 h-7"
-											title="Only me"
+											title={data?.user_group?.name}
 										/>
-									) : (
-										<IconGlobe
-											className="w-7 h-7"
-											title="Public"
-										/>
-									)}
-								</div>
-							) : (
-								<Link href={`/groups/${data?.user_group?.id}`}>
-									<a>
-										<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
-											<IconGroup
-												className="w-7 h-7"
-												title={data?.user_group?.name}
-											/>
-										</div>
-									</a>
-								</Link>
-							)
+									</div>
+								</a>
+							</Link>
 						)}
 
 						<Link href={`/people/${noteAuthor?.slug}`}>
@@ -392,14 +378,25 @@ const ElemNoteCard: React.FC<Props> = ({
 										<a>{data?.user_group?.name}</a>
 									</Link>
 								)}
+
+								{(data.audience === "only_me" ||
+									data.audience === "public") && (
+									<Link href={`/people/${noteAuthor?.slug}`}>
+										<a>{noteAuthor?.name}</a>
+									</Link>
+								)}
 							</h2>
 							<div className="text-sm text-slate-600">
-								<Link href={`/people/${noteAuthor?.slug}`}>
-									<a className="underline-offset-1 hover:underline">
-										{noteAuthor?.name}
-									</a>
-								</Link>
-								<span aria-hidden="true"> · </span>
+								{data.audience === "group" && (
+									<>
+										<Link href={`/people/${noteAuthor?.slug}`}>
+											<a className="underline-offset-1 hover:underline">
+												{noteAuthor?.name}
+											</a>
+										</Link>
+										<span aria-hidden="true"> · </span>
+									</>
+								)}
 								<ElemTooltip
 									content={`${moment(data?.created_at).format(
 										"LL [at] h:mma"
@@ -413,13 +410,18 @@ const ElemNoteCard: React.FC<Props> = ({
 									<>
 										<span aria-hidden="true"> · </span>
 										{data.audience === "only_me" ? (
-                      <IconLockClosed className="inline-flex w-4 h-4" />
-                    ) : (
-                      <IconGlobe className="inline-flex w-4 h-4" />
-                    )}
-                  </>
+											<IconLockClosed
+												className="inline-flex w-4 h-4"
+												title="Only me"
+											/>
+										) : (
+											<IconGlobe
+												className="inline-flex w-4 h-4"
+												title="Public"
+											/>
+										)}
+									</>
 								)}
-
 							</div>
 						</div>
 					</div>
