@@ -37,14 +37,15 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - created_at
         - created_by_user_id
-        - id
         - description
         - discord
+        - id
         - name
+        - public
         - telegram
         - twitter
-        - created_at
         - updated_at
       filter: {}
       limit: 50

@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { GetEventQuery, People } from "@/graphql/types";
 import { ElemPersonCard } from "@/components/ElemPersonCard";
 import { ElemBulkSavePeople } from "../ElemBulkSavePeople";
+import { ElemButton } from "../ElemButton";
+import { numberWithCommas } from "@/utils";
 
 type Props = {
 	people: GetEventQuery["events"][0]["event_person"];
 };
 
 export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
+	const [peopleLimit, setPeopleLimit] = useState(41);
+	const showAllPeople = () => {
+		setPeopleLimit(people?.length);
+	};
+
 	const personIds = people
 		.filter((item) => item.person !== null)
 		.map((item) => (item.person as People).id);
@@ -20,7 +27,7 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
 			</div>
 
 			<div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-				{people.map((item) => {
+				{people.slice(0, peopleLimit).map((item) => {
 					return (
 						<React.Fragment key={item.id}>
 							{item.person && (
@@ -38,6 +45,17 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
 					);
 				})}
 			</div>
+			{peopleLimit < people.length && (
+				<div className="mt-6">
+					<ElemButton
+						btn="ol-primary"
+						onClick={showAllPeople}
+						className="w-full"
+					>
+						Show All {numberWithCommas(people.length)} Speakers
+					</ElemButton>
+				</div>
+			)}
 		</section>
 	);
 };

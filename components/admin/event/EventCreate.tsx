@@ -10,7 +10,7 @@ export const EventCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
 
-  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected, onSelectAttachment } =
   useAdminTransform({
     withImageTransformData,
     withoutImageTransformData,
@@ -31,6 +31,7 @@ export const EventCreate = () => {
         banner={logo}
         onSelect={onSelect}
         onDropRejected={onDropRejected}
+        onSelectAttachment={onSelectAttachment}
       />
     </ElemFormBase>
   );

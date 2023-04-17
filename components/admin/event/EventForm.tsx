@@ -21,9 +21,12 @@ import {
 	FormDataConsumer,
 	FileInput,
 	BooleanInput,
+	ArrayInput,
+	SimpleFormIterator,
 	ImageField,
 	required,
 	useGetList,
+	FileField,
 } from "react-admin";
 import ElemAddressInput from "../ElemAddressInput";
 import ElemSlugInput from "../ElemSlugInput";
@@ -36,6 +39,7 @@ type EventFormProps = {
 	banner: any;
 	onSelect: (files: any) => void;
 	onDropRejected: (files: any) => void;
+	onSelectAttachment: (files: any) => void;
 };
 
 const EventForm = ({
@@ -46,6 +50,7 @@ const EventForm = ({
 	banner,
 	onSelect,
 	onDropRejected,
+	onSelectAttachment,
 }: EventFormProps) => {
 	const { data: events } = useGetList("events", {});
 
@@ -195,6 +200,21 @@ const EventForm = ({
 				label="Telegram"
 			/>
 			<BooleanInput className="w-full" label="Featured" source="is_featured" />
+			<ArrayInput source="attachments" className={inputClassName}>
+        <SimpleFormIterator disableReordering sx={{ margin: 2, paddingTop: 1 }}>
+          <TextInput className={inputClassName} source="label" />
+          <FileInput
+            className="w-full"
+            options={{ onDrop: onSelectAttachment }}
+            source="file"
+            label="File"
+            placeholder={<p>Drop your file here</p>}
+          >
+            <FileField source="src" title="title" />
+          </FileInput>
+          {action === "edit" && <FileField source="url" title="Attachment" />}
+        </SimpleFormIterator>
+      </ArrayInput>
 			<SelectInput
 				className={inputClassName}
 				source="status"

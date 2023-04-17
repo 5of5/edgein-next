@@ -13,7 +13,7 @@ export const EventEdit = () => {
   const { id } = useParams();
   const { data: currentData } = useGetOne("events", { id });
 
-  const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
+  const { isImageUpdated, logo, transform, onSelect, onDropRejected, onSelectAttachment } =
     useAdminTransform({
       withImageTransformData,
       withoutImageTransformData,
@@ -33,6 +33,7 @@ export const EventEdit = () => {
           banner={logo}
           onSelect={onSelect}
           onDropRejected={onDropRejected}
+          onSelectAttachment={onSelectAttachment}
         />
       </ElemFormBase>
       <EventPersonTable />

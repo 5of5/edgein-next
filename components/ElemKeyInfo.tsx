@@ -22,6 +22,7 @@ import {
 	IconEye,
 	IconHome,
 	IconTicket,
+	IconDocument,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -30,6 +31,11 @@ import {
 import { getFullAddress } from "@/utils/helpers";
 import { ElemUpgradeDialog } from "./ElemUpgradeDialog";
 import { useAuth } from "@/hooks/useAuth";
+
+type Attachments = Array<{
+	label: string;
+	url: string;
+}>;
 
 type Props = {
 	className?: string;
@@ -57,6 +63,7 @@ type Props = {
 	glassdoor?: string | null;
 	careerPage?: string | null;
 	venue?: string | null;
+	attachments?: Attachments;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
@@ -85,6 +92,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	discord,
 	glassdoor,
 	venue,
+	attachments,
 }) => {
 	const { user } = useAuth();
 
@@ -273,6 +281,16 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			icon: IconGlassdoor,
 			text: "Glassdoor",
 			link: glassdoor,
+		});
+	}
+
+	if (attachments && attachments.length > 0) {
+		attachments.forEach((item) => {
+			infoItems.push({
+				icon: IconDocument,
+				text: item.label,
+				link: item.url,
+			});
 		});
 	}
 
