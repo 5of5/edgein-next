@@ -359,7 +359,10 @@ const Event: NextPage<Props> = (props) => {
 						)}
 
 						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
-							<ElemEventActivity activities={sortedActivities} />
+							<ElemEventActivity
+								activities={sortedActivities}
+								eventName={event.name}
+							/>
 						</div>
 					</div>
 				</div>
