@@ -261,7 +261,6 @@ const ElemNoteForm: React.FC<Props> = ({
 													{!selectedNote && (
 														<label className="block text-sm text-slate-500 leading-tight pb-1">
 															Select audience
-															{/* What group can see your note? */}
 														</label>
 													)}
 													<InputSelect

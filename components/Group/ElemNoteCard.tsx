@@ -21,6 +21,7 @@ import {
 	IconGroup,
 	IconLockClosed,
 	IconGlobe,
+	IconUsers,
 } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
@@ -33,7 +34,7 @@ import { useMutation } from "react-query";
 type Props = {
 	data: GetNotesQuery["notes"][0];
 	refetch: () => void;
-	layout?: "organizationAndAuthor" | "groupAndAuthor";
+	layout?: "organizationAndAuthor" | "groupAndAuthor" | "author";
 };
 
 const fetcher = async (url: string, args: any) => {
@@ -319,30 +320,22 @@ const ElemNoteCard: React.FC<Props> = ({
 		<>
 			<div className="flex flex-col bg-white shadow rounded-lg px-5 py-4">
 				<div className="relative flex items-center space-x-3">
-					<div className="flex-shrink-0 relative mb-2">
+					<div className="flex-shrink-0 relative">
 						{layout === "organizationAndAuthor" ? (
 							<Link href={resourceLink}>
 								<a>
 									<ElemPhoto
 										photo={resource?.logo}
-										wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded-lg shadow"
+										wrapClass="flex items-center justify-center shrink-0 w-12 h-12 mb-2 p-1 bg-white rounded-lg shadow"
 										imgClass="object-fit max-w-full max-h-full"
 										imgAlt={resource?.name}
 									/>
 								</a>
 							</Link>
-						) : data?.audience ? (
-							<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
-								{data.audience === "only_me" ? (
-									<IconLockClosed className="w-7 h-7" title="Only me" />
-								) : (
-									<IconGlobe className="w-7 h-7" title="Public" />
-								)}
-							</div>
-						) : (
+						) : layout === "groupAndAuthor" ? (
 							<Link href={`/groups/${data?.user_group?.id}`}>
 								<a>
-									<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
+									<div className="flex items-center justify-center w-12 h-12 mb-2 p-1 bg-slate-200 rounded-lg shadow">
 										<IconGroup
 											className="w-7 h-7"
 											title={data?.user_group?.name}
@@ -350,20 +343,37 @@ const ElemNoteCard: React.FC<Props> = ({
 									</div>
 								</a>
 							</Link>
+						) : (
+							// layout === "author"
+							<Link href={`/people/${noteAuthor?.slug}`}>
+								<a>
+									<ElemPhoto
+										photo={noteAuthor?.picture}
+										wrapClass="flex items-center justify-center shrink-0 w-12 h-12 bg-white rounded-full shadow"
+										imgClass="object-fit max-w-full max-h-full rounded-full"
+										imgAlt={noteAuthor?.name}
+										placeholder="user"
+										placeholderClass="text-slate-400 bg-white p-0"
+									/>
+								</a>
+							</Link>
 						)}
 
-						<Link href={`/people/${noteAuthor?.slug}`}>
-							<a className="absolute -right-1 -bottom-1">
-								<ElemPhoto
-									photo={noteAuthor?.picture}
-									wrapClass=""
-									imgClass="object-fit h-7 w-7 border border-white rounded-full"
-									imgAlt={noteAuthor?.name}
-									placeholder="user"
-									placeholderClass="text-slate-400 bg-white p-0"
-								/>
-							</a>
-						</Link>
+						{(layout === "organizationAndAuthor" ||
+							layout === "groupAndAuthor") && (
+							<Link href={`/people/${noteAuthor?.slug}`}>
+								<a className="absolute -right-1 -bottom-1">
+									<ElemPhoto
+										photo={noteAuthor?.picture}
+										wrapClass=""
+										imgClass="object-fit h-7 w-7 border border-white rounded-full"
+										imgAlt={noteAuthor?.name}
+										placeholder="user"
+										placeholderClass="text-slate-400 bg-white p-0"
+									/>
+								</a>
+							</Link>
+						)}
 					</div>
 
 					<div className="min-w-0 flex-1">
@@ -373,21 +383,20 @@ const ElemNoteCard: React.FC<Props> = ({
 									<Link href={resourceLink}>
 										<a>{resource?.name}</a>
 									</Link>
-								) : (
+								) : layout === "groupAndAuthor" ? (
 									<Link href={`/groups/${data?.user_group?.id}`}>
 										<a>{data?.user_group?.name}</a>
 									</Link>
-								)}
-
-								{(data.audience === "only_me" ||
-									data.audience === "public") && (
+								) : (
+									// layout === "author"
 									<Link href={`/people/${noteAuthor?.slug}`}>
 										<a>{noteAuthor?.name}</a>
 									</Link>
 								)}
 							</h2>
 							<div className="text-sm text-slate-600">
-								{data.audience === "group" && (
+								{(layout === "organizationAndAuthor" ||
+									layout === "groupAndAuthor") && (
 									<>
 										<Link href={`/people/${noteAuthor?.slug}`}>
 											<a className="underline-offset-1 hover:underline">
@@ -397,6 +406,7 @@ const ElemNoteCard: React.FC<Props> = ({
 										<span aria-hidden="true"> · </span>
 									</>
 								)}
+
 								<ElemTooltip
 									content={`${moment(data?.created_at).format(
 										"LL [at] h:mma"
@@ -406,9 +416,17 @@ const ElemNoteCard: React.FC<Props> = ({
 								>
 									{formatDateShown(data?.created_at)}
 								</ElemTooltip>
-								{data?.audience && (
+
+								<span aria-hidden="true"> · </span>
+
+								{layout === "organizationAndAuthor" ||
+								layout === "groupAndAuthor" ? (
+									<IconUsers
+										className="inline-flex w-4 h-4"
+										title={`Members of ${data?.user_group?.name}`}
+									/>
+								) : (
 									<>
-										<span aria-hidden="true"> · </span>
 										{data.audience === "only_me" ? (
 											<IconLockClosed
 												className="inline-flex w-4 h-4"
@@ -422,6 +440,8 @@ const ElemNoteCard: React.FC<Props> = ({
 										)}
 									</>
 								)}
+
+								{/* {layout === "author" && } */}
 							</div>
 						</div>
 					</div>

@@ -154,7 +154,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 								key={item.id}
 								data={item}
 								refetch={refetch}
-								layout="groupAndAuthor"
+								layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
 							/>
 						))}
 					</div>
