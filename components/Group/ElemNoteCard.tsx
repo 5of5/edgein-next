@@ -19,6 +19,8 @@ import {
 	IconTrash,
 	IconEditPencil,
 	IconGroup,
+	IconLockClosed,
+	IconGlobe,
 } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { People, useGetUserProfileQuery } from "@/graphql/types";
@@ -336,16 +338,32 @@ const ElemNoteCard: React.FC<Props> = ({
 								</a>
 							</Link>
 						) : (
-							<Link href={`/groups/${data?.user_group.id}`}>
-								<a>
-									<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
-										<IconGroup
+							data?.audience ? (
+								<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
+									{data.audience === "only_me" ? (
+										<IconLockClosed
 											className="w-7 h-7"
-											title={data?.user_group.name}
+											title="Only me"
 										/>
-									</div>
-								</a>
-							</Link>
+									) : (
+										<IconGlobe
+											className="w-7 h-7"
+											title="Public"
+										/>
+									)}
+								</div>
+							) : (
+								<Link href={`/groups/${data?.user_group?.id}`}>
+									<a>
+										<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
+											<IconGroup
+												className="w-7 h-7"
+												title={data?.user_group?.name}
+											/>
+										</div>
+									</a>
+								</Link>
+							)
 						)}
 
 						<Link href={`/people/${noteAuthor?.slug}`}>
@@ -370,8 +388,8 @@ const ElemNoteCard: React.FC<Props> = ({
 										<a>{resource?.name}</a>
 									</Link>
 								) : (
-									<Link href={`/groups/${data?.user_group.id}`}>
-										<a>{data?.user_group.name}</a>
+									<Link href={`/groups/${data?.user_group?.id}`}>
+										<a>{data?.user_group?.name}</a>
 									</Link>
 								)}
 							</h2>
@@ -391,6 +409,17 @@ const ElemNoteCard: React.FC<Props> = ({
 								>
 									{formatDateShown(data?.created_at)}
 								</ElemTooltip>
+								{data?.audience && (
+									<>
+										<span aria-hidden="true"> · </span>
+										{data.audience === "only_me" ? (
+                      <IconLockClosed className="inline-flex w-4 h-4" />
+                    ) : (
+                      <IconGlobe className="inline-flex w-4 h-4" />
+                    )}
+                  </>
+								)}
+
 							</div>
 						</div>
 					</div>

@@ -6,6 +6,7 @@ query GetNotes($where: notes_bool_exp!) {
     created_at
     updated_at
     user_group_id
+    audience
     resource_type
     resource_id
     user_group {

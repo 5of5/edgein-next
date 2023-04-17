@@ -2,7 +2,14 @@ import { Fragment, ChangeEvent, useState, useEffect, useMemo } from "react";
 import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconTrash, IconX, IconGroup, IconGroupPlus } from "@/components/Icons";
+import {
+  IconTrash,
+  IconX,
+  IconGroup,
+  IconGroupPlus,
+  IconLockClosed,
+  IconGlobe,
+} from "@/components/Icons";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { useUser } from "@/context/userContext";
@@ -41,7 +48,8 @@ const ElemNoteForm: React.FC<Props> = ({
 
 	const groupOptions = useMemo(() => {
 		const options = [
-			//{ id: 9999, icon: IconLockClosed, title: "Only me" },
+			{ id: "only_me", icon: IconLockClosed, title: "Only me" },
+			{ id: "public", icon: IconGlobe, title: "Public" },
 			...myGroups.map((item) => ({
 				id: item.id,
 				icon: IconGroup,

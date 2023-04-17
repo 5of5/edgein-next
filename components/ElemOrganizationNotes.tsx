@@ -50,17 +50,30 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 	};
 
 	const {
-		data: noteList,
-		error,
-		isLoading,
-		refetch,
-	} = useGetNotesQuery({
-		where: {
-			resource_id: { _eq: resourceId },
-			resource_type: { _eq: resourceType },
-			user_group_id: { _in: myGroups.map((item) => item.id) },
-		} as Notes_Bool_Exp,
-	});
+    data: noteList,
+    error,
+    isLoading,
+    refetch,
+  } = useGetNotesQuery({
+    where: {
+      resource_id: { _eq: resourceId },
+      resource_type: { _eq: resourceType },
+      _or: [
+        { _or: [{ audience: { _eq: "public" } }] },
+        { _or: [{ user_group_id: { _in: myGroups.map((item) => item.id) } }] },
+        {
+          _or: [
+            {
+              _and: [
+                { audience: { _eq: "only_me" } },
+                { created_by: { _eq: user?.id } },
+              ],
+            },
+          ],
+        },
+      ],
+    } as Notes_Bool_Exp,
+  });
 
 	const notes = noteList?.notes || [];
 

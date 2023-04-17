@@ -13239,6 +13239,7 @@ export type News_Variance_Fields = {
 /** columns and relationships of "notes" */
 export type Notes = {
   __typename?: 'notes';
+  audience: Maybe<Scalars['String']>;
   /** An array relationship */
   comments: Array<Comments>;
   /** An aggregate relationship */
@@ -13255,8 +13256,8 @@ export type Notes = {
   resource_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
-  user_group: User_Groups;
-  user_group_id: Scalars['Int'];
+  user_group: Maybe<User_Groups>;
+  user_group_id: Maybe<Scalars['Int']>;
 };
 
 
@@ -13373,6 +13374,7 @@ export type Notes_Bool_Exp = {
   _and: InputMaybe<Array<Notes_Bool_Exp>>;
   _not: InputMaybe<Notes_Bool_Exp>;
   _or: InputMaybe<Array<Notes_Bool_Exp>>;
+  audience: InputMaybe<String_Comparison_Exp>;
   comments: InputMaybe<Comments_Bool_Exp>;
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
   created_by: InputMaybe<Int_Comparison_Exp>;
@@ -13402,6 +13404,7 @@ export type Notes_Inc_Input = {
 
 /** input type for inserting data into table "notes" */
 export type Notes_Insert_Input = {
+  audience: InputMaybe<Scalars['String']>;
   comments: InputMaybe<Comments_Arr_Rel_Insert_Input>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
@@ -13418,6 +13421,7 @@ export type Notes_Insert_Input = {
 /** aggregate max on columns */
 export type Notes_Max_Fields = {
   __typename?: 'notes_max_fields';
+  audience: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamp']>;
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
@@ -13430,6 +13434,7 @@ export type Notes_Max_Fields = {
 
 /** order by max() on columns of table "notes" */
 export type Notes_Max_Order_By = {
+  audience: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -13443,6 +13448,7 @@ export type Notes_Max_Order_By = {
 /** aggregate min on columns */
 export type Notes_Min_Fields = {
   __typename?: 'notes_min_fields';
+  audience: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamp']>;
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
@@ -13455,6 +13461,7 @@ export type Notes_Min_Fields = {
 
 /** order by min() on columns of table "notes" */
 export type Notes_Min_Order_By = {
+  audience: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -13490,6 +13497,7 @@ export type Notes_On_Conflict = {
 
 /** Ordering options when selecting data from "notes". */
 export type Notes_Order_By = {
+  audience: InputMaybe<Order_By>;
   comments_aggregate: InputMaybe<Comments_Aggregate_Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
@@ -13511,6 +13519,8 @@ export type Notes_Pk_Columns_Input = {
 /** select columns of table "notes" */
 export enum Notes_Select_Column {
   /** column name */
+  Audience = 'audience',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CreatedBy = 'created_by',
@@ -13530,6 +13540,7 @@ export enum Notes_Select_Column {
 
 /** input type for updating data in table "notes" */
 export type Notes_Set_Input = {
+  audience: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
@@ -13610,6 +13621,8 @@ export type Notes_Sum_Order_By = {
 
 /** update columns of table "notes" */
 export enum Notes_Update_Column {
+  /** column name */
+  Audience = 'audience',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -21949,7 +21962,7 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string }, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
+export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number | null, audience: string | null, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
 
 export type GetNotificationsForUserQueryVariables = Exact<{
   user: Scalars['Int'];
@@ -22895,6 +22908,7 @@ export const GetNotesDocument = `
     created_at
     updated_at
     user_group_id
+    audience
     resource_type
     resource_id
     user_group {
