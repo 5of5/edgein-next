@@ -19,9 +19,9 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 		tiers: [
 			{
 				title: "Community",
-				price: 0,
+				price: 5,
 				priceCents: null,
-				//frequency: "/month",
+				frequency: "/month",
 				//predescription: "No Cost - No Risk",
 				click: () => {
 					if (!user) {
@@ -56,7 +56,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 					}
 				},
 				description:
-					"As a Contributor, you help support our free community data model. Get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in Web3.",
+					"As a Contributor, you get real-time updates on the companies, people, deals and events you’re most interested in, giving you an unprecedented edge in Web3.",
 				features: [
 					"Unlimited Search",
 					"Daily Carousel",
