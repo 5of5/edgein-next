@@ -338,9 +338,9 @@ const ElemNoteCard: React.FC<Props> = ({
 						) : (
 							<Link href={`/groups/${data?.user_group.id}`}>
 								<a>
-									<div className="flex items-center justify-center w-12 h-12 p-1 bg-white rounded-lg shadow">
+									<div className="flex items-center justify-center w-12 h-12 p-1 bg-slate-200 rounded-lg shadow">
 										<IconGroup
-											className="w-8 h-8"
+											className="w-7 h-7"
 											title={data?.user_group.name}
 										/>
 									</div>
