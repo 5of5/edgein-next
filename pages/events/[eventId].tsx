@@ -10,7 +10,11 @@ import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
-import { GetEventDocument, GetEventQuery, useGetEventQuery } from "@/graphql/types";
+import {
+	GetEventDocument,
+	GetEventQuery,
+	useGetEventQuery,
+} from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
 import { formatDate, formatTime } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
@@ -40,17 +44,15 @@ const Event: NextPage<Props> = (props) => {
 
 	const [event, setEvent] = useState<GetEventQuery["events"][0]>(props.event);
 
-	const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] = useState<boolean>(false);
+	const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
+		useState<boolean>(false);
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const organizersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
-	const {
-		data: eventData,
-		refetch,
-	} = useGetEventQuery({
+	const { data: eventData, refetch } = useGetEventQuery({
 		slug: eventId as string,
 	});
 
@@ -59,64 +61,64 @@ const Event: NextPage<Props> = (props) => {
 	}, [eventData]);
 
 	const onOpenLinkPersonDialog = () => {
-    setIsOpenLinkPersonDialog(true);
-  };
+		setIsOpenLinkPersonDialog(true);
+	};
 
-  const onCloseLinkPersonDialog = () => {
-    setIsOpenLinkPersonDialog(false);
-  };
+	const onCloseLinkPersonDialog = () => {
+		setIsOpenLinkPersonDialog(false);
+	};
 
-  const onClickSearchName = () => {
-    onCloseLinkPersonDialog();
-    props.setShowPopup("search");
-  };
+	const onClickSearchName = () => {
+		onCloseLinkPersonDialog();
+		props.setShowPopup("search");
+	};
 
 	const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
-    useMutation(
-      () =>
-        fetch("/api/add_event_attendee/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            eventId: event?.id,
-          }),
-        }),
-      {
-        onSuccess: async (response) => {
-          if (response.status !== 200) {
-            const err = await response.json();
-            toast.custom(
-              (t) => (
-                <div
-                  className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                    t.visible ? "animate-fade-in-up" : "opacity-0"
-                  }`}
-                >
-                  {err?.message}
-                </div>
-              ),
-              {
-                duration: 3000,
-                position: "top-center",
-              }
-            );
-          } else {
-            refetch();
-          }
-        }
-      }
-    );
+		useMutation(
+			() =>
+				fetch("/api/add_event_attendee/", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						eventId: event?.id,
+					}),
+				}),
+			{
+				onSuccess: async (response) => {
+					if (response.status !== 200) {
+						const err = await response.json();
+						toast.custom(
+							(t) => (
+								<div
+									className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+										t.visible ? "animate-fade-in-up" : "opacity-0"
+									}`}
+								>
+									{err?.message}
+								</div>
+							),
+							{
+								duration: 3000,
+								position: "top-center",
+							}
+						);
+					} else {
+						refetch();
+					}
+				},
+			}
+		);
 
-  const handleClickGoingEvent = () => {
+	const handleClickGoingEvent = () => {
 		if (user?.person) {
 			onAddEventAttendee();
 		} else {
 			onOpenLinkPersonDialog();
 		}
-  };
+	};
 
 	if (!event) {
 		return <h1>Not Found</h1>;
@@ -280,7 +282,7 @@ const Event: NextPage<Props> = (props) => {
 					</div>
 
 					<ElemTabBar
-						className="mt-4 border-b-0"
+						className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
 						tabs={tabBarItems}
 						resourceName={event.name}
 						showDropdown={false}
@@ -293,19 +295,18 @@ const Event: NextPage<Props> = (props) => {
 								resourceType={"events"}
 							/>
 							{attendees.some(
-                (item) => item.person?.id === user?.person?.id
-              ) ? (
-                <ElemButton btn="primary">Joined</ElemButton>
-              ) : (
-                <ElemButton
-                  btn="primary"
-                  onClick={handleClickGoingEvent}
-                  loading={isLoadingGoingEvent}
-                >
-                  Going
-                </ElemButton>
-              )}
-              {/* <ElemButton btn="primary">RSVP</ElemButton> */}
+								(item) => item.person?.id === user?.person?.id
+							) ? (
+								<ElemButton btn="primary">Joined</ElemButton>
+							) : (
+								<ElemButton
+									btn="primary"
+									onClick={handleClickGoingEvent}
+									loading={isLoadingGoingEvent}
+								>
+									Going
+								</ElemButton>
+							)}
 						</div>
 					</ElemTabBar>
 				</div>
@@ -393,10 +394,10 @@ const Event: NextPage<Props> = (props) => {
 			</div>
 
 			<ElemRequireLinkPersonDialog
-        isOpen={isOpenLinkPersonDialog}
-        onClose={onCloseLinkPersonDialog}
-        onClickSearch={onClickSearchName}
-      />
+				isOpen={isOpenLinkPersonDialog}
+				onClose={onCloseLinkPersonDialog}
+				onClickSearch={onClickSearchName}
+			/>
 
 			<Toaster />
 		</>
