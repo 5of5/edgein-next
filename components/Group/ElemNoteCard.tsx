@@ -100,7 +100,10 @@ const ElemNoteCard: React.FC<Props> = ({
 
 	const onClickSearchName = () => {
 		onCloseLinkPersonDialog();
-		setShowPopup && setShowPopup("search");
+
+		if (setShowPopup) {
+			setShowPopup("search");
+		}
 	};
 
 	// set note author
@@ -293,13 +296,13 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const onCommentInputClick = (
-    event: React.MouseEvent<HTMLTextAreaElement>
-  ) => {
-    if (!user?.person) {
-      event.currentTarget.blur();
-      onOpenLinkPersonDialog();
-    }
-  };
+		event: React.MouseEvent<HTMLTextAreaElement>
+	) => {
+		if (!user?.person) {
+			event.currentTarget.blur();
+			onOpenLinkPersonDialog();
+		}
+	};
 
 	const noteOptions = (
 		<Popover className="transition-all">

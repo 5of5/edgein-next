@@ -20,13 +20,19 @@ import { useUser } from "@/context/userContext";
 import ElemNoteCard from "@/components/Group/ElemNoteCard";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { orderBy } from "lodash";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	resourceId: number;
 	resourceType: string;
+	setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
+const ElemOrganizationNotes: FC<Props> = ({
+	resourceId,
+	resourceType,
+	setShowPopup,
+}) => {
 	const { user, myGroups } = useUser();
 
 	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
@@ -155,6 +161,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 								data={item}
 								refetch={refetch}
 								layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
+								setShowPopup={setShowPopup}
 							/>
 						))}
 					</div>

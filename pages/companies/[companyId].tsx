@@ -35,6 +35,7 @@ import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	company: Companies;
@@ -42,6 +43,7 @@ type Props = {
 	sortNews: News[];
 	metrics: Metric[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -380,6 +382,7 @@ const Company: NextPage<Props> = (props: Props) => {
 							<ElemOrganizationNotes
 								resourceId={company.id}
 								resourceType="companies"
+								setShowPopup={props.setShowPopup}
 							/>
 						</div>
 
