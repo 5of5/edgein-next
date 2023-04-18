@@ -84,6 +84,7 @@ export const ElemLists: React.FC<Props> = ({ group, lists, refetchLists }) => {
 
 		if (response.status === 200) {
 			refetchLists();
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
