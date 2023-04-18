@@ -5,9 +5,13 @@ import { ElemButton } from "../ElemButton";
 
 type Props = {
 	activities: Array<any>;
+	eventName: string;
 };
 
-export const ElemEventActivity: React.FC<Props> = ({ activities }) => {
+export const ElemEventActivity: React.FC<Props> = ({
+	activities,
+	eventName,
+}) => {
 	const [activityLimit, setActivityLimit] = useState(10);
 	const showMoreActivity = () => {
 		setActivityLimit(activityLimit + 10);
@@ -38,11 +42,17 @@ export const ElemEventActivity: React.FC<Props> = ({ activities }) => {
 										<div className="mb-4">
 											<div className="inline leading-7 text-slate-600">
 												<div className="inline font-bold">
-													{`${
-														activity?.person?.name ||
-														activity?.company?.name ||
-														activity?.vc_firm?.name
-													} was added as a ${activity?.type}`}
+													{activity?.type === "attendee" ? (
+														<>{`${activity?.person?.name} is going to ${eventName}`}</>
+													) : (
+														<>
+															{`${
+																activity?.person?.name ||
+																activity?.company?.name ||
+																activity?.vc_firm?.name
+															} was added as a ${activity?.type}`}
+														</>
+													)}
 												</div>
 												<p className="text-sm">
 													{formatDate(activity.created_at as string, {
