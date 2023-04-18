@@ -91,7 +91,7 @@ const Notes: FC<Props> = ({ dropdown }) => {
                 key={item.id}
                 data={item}
                 refetch={refetchNotes}
-                layout="author"
+                layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
               />
             ))}
 					</div>
