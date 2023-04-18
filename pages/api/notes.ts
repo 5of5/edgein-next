@@ -11,28 +11,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // params:
   const notes: string = req.body.notes;
-  let user_group_id: number = req.body.groupId;
+  const groupId: string | number = req.body.groupId;
   const resource_type = req.body.resourceType;
   const resource_id = req.body.resourceId;
   const created_by = user.id;
 
   const id = req.body.id;
 
+
   if (id && req.method !== "POST") {
     const note = await GroupService.onFindNoteById(id);
-    user_group_id = note.user_group_id;
-  }
-
-  const isMember = await GroupService.isUserMemberOfGroup(user_group_id, user.id);
-
-  if (!isMember) {
-    return res
-      .status(403)
-      .json({ message: `You are not allowed to add/edit notes` });
+  
+    if (note?.created_by !== created_by) {
+      return res
+        .status(403)
+        .json({ message: `You are not allowed to add/edit notes` });
+    }
   }
 
   switch (req.method) {
     case "POST": {
+      const isCustomAudience = typeof groupId === "string";
+
+      const user_group_id = isCustomAudience ? null : groupId;
+      const audience = isCustomAudience ? groupId : null;
+
       const insertNoteQuery = `
         mutation InsertNote($object: notes_insert_input!) {
           insert_notes_one(
@@ -44,6 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             created_at
             resource_type
             resource_id
+            audience,
             user_group_id
             user_group {
               id
@@ -60,10 +64,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         variables: {
           object: {
             notes,
-            user_group_id,
+            user_group_id: user_group_id,
             resource_type,
             resource_id,
             created_by,
+            audience,
           },
         },
       });
@@ -135,6 +140,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           id,
         },
       });
+
+      // Delete likes of note
+      await GroupService.onDeleteLikesByNoteId(id);
+
+      // Delete comments of note
+      await GroupService.onDeleteCommentsByNoteId(id);
+
       return res.send(delete_notes.returning[0]);
     }
 

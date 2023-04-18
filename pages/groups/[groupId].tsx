@@ -10,6 +10,7 @@ import { useMutation } from "react-query";
 import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
+import { ElemGroupAbout } from "@/components/Group/ElemGroupAbout";
 import { ElemLists } from "@/components/Group/ElemLists";
 import { ElemNotes } from "@/components/Group/ElemNotes";
 import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
@@ -21,13 +22,12 @@ import CookieService from "@/utils/cookie";
 import {
 	GetGroupDocument,
 	GetGroupQuery,
-	GetNotesDocument,
-	GetNotesQuery,
-	Notes,
 	useGetListUserGroupsQuery,
 	User_Groups,
 	List_User_Groups_Bool_Exp,
 	Lists,
+	useGetNotesQuery,
+	Notes_Bool_Exp,
 	User_Group_Members,
 } from "@/graphql/types";
 import { IconInformationCircle, IconLockClosed } from "@/components/Icons";
@@ -36,7 +36,6 @@ import { useUser } from "@/context/userContext";
 
 type Props = {
 	group: User_Groups;
-	notes: Array<Notes>;
 };
 
 const Group: NextPage<Props> = (props: Props) => {
@@ -62,11 +61,23 @@ const Group: NextPage<Props> = (props: Props) => {
 		}
 	);
 
+	const { data: notes, refetch: refetchNotes } = useGetNotesQuery(
+		{
+			where: {
+				user_group_id: { _eq: groupData.id },
+			} as Notes_Bool_Exp,
+		},
+		{
+			enabled: Boolean(groupData.id),
+		}
+	);
+
 	const isUserBelongToGroup = groupData.user_group_members.some(
 		(mem) => mem.user.id === user?.id
 	);
 
 	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const aboutRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
@@ -78,10 +89,9 @@ const Group: NextPage<Props> = (props: Props) => {
 
 	const tabBarItems = useMemo(() => {
 		return [
-			//{ name: "Home", ref: homeRef },
-			{ name: "Lists", ref: listsRef },
 			{ name: "Notes", ref: notesRef },
-			// { name: "Chat", ref: chatRef },
+			{ name: "Lists", ref: listsRef },
+			//{ name: "About", ref: aboutRef },
 		];
 	}, []);
 
@@ -104,35 +114,35 @@ const Group: NextPage<Props> = (props: Props) => {
 	};
 
 	const { mutate: addGroupMember, isLoading: isAddingGroupMember } =
-    useMutation(
-      async () => {
-        const res = await fetch("/api/add_group_member/", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            groupId: groupData.id,
-            userId: user?.id,
-          }),
-        });
-        const apiResponse = await res.json();
-        if (!res.ok) {
-          throw apiResponse;
-        } else {
-          return apiResponse;
-        }
-      },
-      {
-        onSuccess: async (response: User_Group_Members) => {
-          setGroupData((prev: User_Groups) => ({
-            ...prev,
-            user_group_members: [...prev.user_group_members, response],
-          }));
-        },
-      }
-    );
+		useMutation(
+			async () => {
+				const res = await fetch("/api/add_group_member/", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						groupId: groupData.id,
+						userId: user?.id,
+					}),
+				});
+				const apiResponse = await res.json();
+				if (!res.ok) {
+					throw apiResponse;
+				} else {
+					return apiResponse;
+				}
+			},
+			{
+				onSuccess: async (response: User_Group_Members) => {
+					setGroupData((prev: User_Groups) => ({
+						...prev,
+						user_group_members: [...prev.user_group_members, response],
+					}));
+				},
+			}
+		);
 
 	if (!user) {
 		return null;
@@ -141,44 +151,57 @@ const Group: NextPage<Props> = (props: Props) => {
 	if (isUserBelongToGroup) {
 		return (
 			<DashboardLayout>
-				{/* <div ref={homeRef} /> */}
-	
 				<ElemGroupInformation
 					isUserBelongToGroup={isUserBelongToGroup}
 					group={groupData}
 					onInvite={onOpenInviteDialog}
 					onOpenSettingDialog={onOpenSettingDialog}
 				/>
+
 				<ElemTabBar
-					className="mt-2 border-t-0"
+					className="border-t-transparent"
 					tabs={tabBarItems}
 					showDropdown={false}
 				/>
-				<div ref={listsRef}>
-					<ElemLists
-						group={groupData}
-						lists={
-							(lists?.list_user_groups?.map(
-								(item) => item.list
-							) as Array<Lists>) || []
-						}
-						refetchLists={refetchLists}
-					/>
-				</div>
+				<div className="lg:flex lg:gap-x-4">
+					<div ref={notesRef} className="mt-4 flex justify-center flex-1">
+						<ElemNotes
+							className="flex flex-col max-w-2xl w-full"
+							notes={notes?.notes || []}
+							refetchNotes={refetchNotes}
+						/>
+					</div>
+					<div className="flex justify-center flex-1 lg:block lg:max-w-lg">
+						<div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
+							<div ref={aboutRef}>
+								<ElemGroupAbout
+									className="mt-4 lg:mt-12"
+									isUserBelongToGroup={isUserBelongToGroup}
+									group={groupData}
+								/>
+							</div>
 
-				<div ref={notesRef}>
-					<ElemNotes notes={props.notes} />
+							<div ref={listsRef}>
+								<ElemLists
+									group={groupData}
+									lists={
+										(lists?.list_user_groups?.map(
+											(item) => item.list
+										) as Array<Lists>) || []
+									}
+									refetchLists={refetchLists}
+								/>
+							</div>
+						</div>
+					</div>
 				</div>
-
 				<div ref={chatRef} />
-
 				<ElemInviteDialog
 					isOpen={isOpenInviteDialog}
 					group={groupData}
 					onUpdateGroupData={setGroupData}
 					onClose={onCloseInviteDialog}
 				/>
-
 				<ElemSettingDialog
 					isOpen={isOpenSettingDialog}
 					selectedTab={selectedSettingTab}
@@ -194,8 +217,6 @@ const Group: NextPage<Props> = (props: Props) => {
 	if (groupData.public) {
 		return (
 			<DashboardLayout>
-			{/* <div ref={homeRef} /> */}
-	
 				<ElemGroupInformation
 					isUserBelongToGroup={isUserBelongToGroup}
 					group={groupData}
@@ -215,25 +236,29 @@ const Group: NextPage<Props> = (props: Props) => {
 					</ElemButton>
 				</div>
 			</DashboardLayout>
-		)
+		);
+	} else {
+		return (
+			<DashboardLayout>
+				<ElemGroupInformation
+					isUserBelongToGroup={isUserBelongToGroup}
+					group={groupData}
+					onInvite={onOpenInviteDialog}
+					onOpenSettingDialog={onOpenSettingDialog}
+				/>
+
+				<div className="flex justify-center space-y-4 lg:justify-start">
+					<div ref={aboutRef} className="w-full max-w-2xl lg:max-w-lg">
+						<ElemGroupAbout
+							className="mt-4"
+							isUserBelongToGroup={isUserBelongToGroup}
+							group={groupData}
+						/>
+					</div>
+				</div>
+			</DashboardLayout>
+		);
 	}
-
-	return (
-		<DashboardLayout>
-		{/* <div ref={homeRef} /> */}
-
-			<ElemGroupInformation
-				isUserBelongToGroup={isUserBelongToGroup}
-				group={groupData}
-				onInvite={onOpenInviteDialog}
-				onOpenSettingDialog={onOpenSettingDialog}
-			/>
-			<div className="flex items-stretch gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-				<IconLockClosed className="h-5 w-5" title="Private" />
-				<p>This is a private group and you has not been invited to.</p>
-			</div>
-		</DashboardLayout>
-	)
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -256,16 +281,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 	const group = data.user_groups[0];
 
-	const { data: noteList } = await runGraphQl<GetNotesQuery>(
-		GetNotesDocument,
-		{
-			where: { user_group_id: { _eq: group.id } },
-		},
-		context.req.cookies
-	);
-
-	const notes = noteList?.notes || [];
-
 	let metaTitle = null;
 	if (group.name) {
 		metaTitle = group.name;
@@ -280,7 +295,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			metaTitle,
 			metaDescription,
 			group,
-			notes,
 		},
 	};
 };

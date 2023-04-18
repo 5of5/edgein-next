@@ -6,11 +6,45 @@ query GetNotes($where: notes_bool_exp!) {
     created_at
     updated_at
     user_group_id
+    audience
     resource_type
     resource_id
     user_group {
       id
       name
+    }
+    likes {
+      id
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
+    comments {
+      id
+      content
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
     }
   }
 }

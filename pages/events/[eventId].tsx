@@ -27,8 +27,8 @@ import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { useUser } from "@/context/userContext";
-import { ElemRequireLinkPersonDialog } from "@/components/Event/ElemRequireLinkPersonDialog";
 import { Popups } from "@/components/TheNavbar";
+import { ElemRequiredProfileDialog } from "@/components/ElemRequiredProfileDialog";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -396,8 +396,10 @@ const Event: NextPage<Props> = (props) => {
 				)}
 			</div>
 
-			<ElemRequireLinkPersonDialog
+			<ElemRequiredProfileDialog
 				isOpen={isOpenLinkPersonDialog}
+				title="You have not linked your account to a profile on EdgeIn"
+				content="Search your name and claim profile to be able to mark yourself as going to this event."
 				onClose={onCloseLinkPersonDialog}
 				onClickSearch={onClickSearchName}
 			/>

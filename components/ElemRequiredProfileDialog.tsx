@@ -6,12 +6,16 @@ import { ElemButton } from "@/components/ElemButton";
 
 type Props = {
 	isOpen: boolean;
+  title: string;
+  content: string;
 	onClose: () => void;
 	onClickSearch: () => void;
 };
 
-export const ElemRequireLinkPersonDialog: FC<Props> = ({
+export const ElemRequiredProfileDialog: FC<Props> = ({
 	isOpen,
+  title,
+  content,
 	onClose,
 	onClickSearch,
 }) => {
@@ -56,13 +60,12 @@ export const ElemRequireLinkPersonDialog: FC<Props> = ({
 								</div>
 
 								<Dialog.Title className="mt-4 text-2xl text-center font-bold lg:text-3xl">
-									You have not linked your account to a profile on EdgeIn
+									{title}
 								</Dialog.Title>
 
 								<div className="mt-4 text-slate-600">
 									<p className="text-slate-600">
-										Search your name and claim profile to be able to mark
-										yourself as going to this event.
+										{content}
 									</p>
 								</div>
 

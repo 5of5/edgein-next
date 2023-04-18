@@ -1,12 +1,15 @@
 import { FC, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/useAuth";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
+
 const ElemMyEdgeInMenu = dynamic(() => import("./ElemMyEdgeInMenu"), {
 	ssr: false,
 });
 const ElemMyListsMenu = dynamic(() => import("./ElemMyListsMenu"), {
+	ssr: false,
+});
+const ElemMyNotesMenu = dynamic(() => import("./ElemMyNotesMenu"), {
 	ssr: false,
 });
 const ElemMyGroupsMenu = dynamic(() => import("./ElemMyGroupsMenu"), {
@@ -22,6 +25,7 @@ type Props = {
 
 export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 	const { user } = useAuth();
+
 	const [organizations, setOrganizations] = useState(
 		[] as Resource_Edit_Access[]
 	);
@@ -63,6 +67,7 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 			<div className="-mt-5">
 				<ElemMyEdgeInMenu />
 				<ElemMyListsMenu className="mt-6" />
+				<ElemMyNotesMenu className="mt-6" />
 				<ElemMyGroupsMenu className="mt-6" />
 				<ElemExploreMenu className="mt-6" />
 			</div>
