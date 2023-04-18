@@ -537,22 +537,30 @@ const ElemNoteCard: React.FC<Props> = ({
 					{data.comments.map((comment) => (
 						<div key={comment.id} className="flex items-center gap-2">
 							<div className="flex items-start gap-2">
-								<ElemPhoto
-									photo={comment.created_by_user?.person?.picture}
-									wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
-									imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
-									imgAlt={comment.created_by_user?.person?.name}
-									placeholder="user"
-									placeholderClass="text-slate-300"
-								/>
+								<Link href={`/people/${comment.created_by_user?.person?.slug}`}>
+									<a>
+										<ElemPhoto
+											photo={comment.created_by_user?.person?.picture}
+											wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-8"
+											imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+											imgAlt={comment.created_by_user?.person?.name}
+											placeholder="user"
+											placeholderClass="text-slate-300"
+										/>
+									</a>
+								</Link>
 								<div className="">
 									<div className="inline-flex py-2 px-3 text-sm bg-slate-100 rounded-[18px]">
 										<div>
 											<p className="">
-												<span className="font-bold">
-													{comment.created_by_user?.person?.name ||
-														comment.created_by_user?.display_name}
-												</span>
+												<Link
+													href={`/people/${comment.created_by_user?.person?.slug}`}
+												>
+													<a className="font-bold hover:underline">
+														{comment.created_by_user?.person?.name ||
+															comment.created_by_user?.display_name}
+													</a>
+												</Link>
 												<span aria-hidden="true"> · </span>
 												<span className="text-slate-600">
 													{formatDateShown(comment?.created_at)}
