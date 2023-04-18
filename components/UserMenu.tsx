@@ -78,7 +78,7 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 			as="div"
 			className={`relative hidden lg:relative lg:flex lg:items-center ${className}`}
 		>
-			<Menu.Button className="relative ml-1">
+			<Menu.Button className="relative ml-1" as="div">
 				{user?.person?.picture ? (
 					<ElemPhoto
 						photo={user?.person?.picture}
