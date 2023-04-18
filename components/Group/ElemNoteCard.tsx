@@ -30,11 +30,14 @@ import { Popover, Transition } from "@headlessui/react";
 import { InputTextarea } from "../InputTextarea";
 import { ElemButton } from "../ElemButton";
 import { useMutation } from "react-query";
+import { ElemRequiredProfileDialog } from "../ElemRequiredProfileDialog";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	data: GetNotesQuery["notes"][0];
 	refetch: () => void;
 	layout?: "organizationAndAuthor" | "groupAndAuthor" | "author";
+	setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const fetcher = async (url: string, args: any) => {
@@ -55,6 +58,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	data,
 	refetch,
 	layout = "organizationAndAuthor",
+	setShowPopup,
 }) => {
 	const { user } = useUser();
 
@@ -74,6 +78,9 @@ const ElemNoteCard: React.FC<Props> = ({
 	const [noteAuthor, setNoteAuthor] = useState<People>();
 	const [noteAuthorID, setNoteAuthorID] = useState<Number>();
 
+	const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
+		useState<boolean>(false);
+
 	const [isEdit, setIsEdit] = useState<boolean>(false);
 	const [updatedNoteContent, setUpdatedNoteContent] = useState<string>(
 		data.notes
@@ -82,6 +89,19 @@ const ElemNoteCard: React.FC<Props> = ({
 	const { data: users } = useGetUserProfileQuery({
 		id: data?.created_by,
 	});
+
+	const onOpenLinkPersonDialog = () => {
+		setIsOpenLinkPersonDialog(true);
+	};
+
+	const onCloseLinkPersonDialog = () => {
+		setIsOpenLinkPersonDialog(false);
+	};
+
+	const onClickSearchName = () => {
+		onCloseLinkPersonDialog();
+		setShowPopup && setShowPopup("search");
+	};
 
 	// set note author
 	useEffect(() => {
@@ -170,7 +190,11 @@ const ElemNoteCard: React.FC<Props> = ({
 		React.createRef() as MutableRefObject<HTMLTextAreaElement>;
 
 	const onCommentButton = () => {
-		commentInput.current.focus();
+		if (user?.person) {
+			commentInput.current.focus();
+		} else {
+			onOpenLinkPersonDialog();
+		}
 	};
 
 	const onAddComment = async () => {
@@ -267,6 +291,15 @@ const ElemNoteCard: React.FC<Props> = ({
 			setCommentContent("");
 		}
 	};
+
+	const onCommentInputClick = (
+    event: React.MouseEvent<HTMLTextAreaElement>
+  ) => {
+    if (!user?.person) {
+      event.currentTarget.blur();
+      onOpenLinkPersonDialog();
+    }
+  };
 
 	const noteOptions = (
 		<Popover className="transition-all">
@@ -623,10 +656,18 @@ const ElemNoteCard: React.FC<Props> = ({
 						value={commentContent}
 						onChange={onChangeCommentInput}
 						onKeyDown={onCommentInputKeyDown}
+						onClick={onCommentInputClick}
 						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 h-8 overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
 					/>
 				</div>
 			</div>
+			<ElemRequiredProfileDialog
+				isOpen={isOpenLinkPersonDialog}
+				title="You have not linked your account to a profile on EdgeIn"
+				content="Search your name and claim profile to be able to comment."
+				onClose={onCloseLinkPersonDialog}
+				onClickSearch={onClickSearchName}
+			/>
 		</>
 	);
 };

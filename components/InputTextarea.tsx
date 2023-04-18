@@ -11,6 +11,7 @@ type Props = {
 	required?: boolean;
 	rows?: number;
 	onKeyDown?: (event: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+	onClick?: React.MouseEventHandler<HTMLTextAreaElement>;
 } & { ref?: React.Ref<HTMLTextAreaElement> };
 
 export const InputTextarea: React.FC<PropsWithChildren<Props>> = forwardRef(
@@ -26,6 +27,7 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = forwardRef(
 			required = false,
 			rows = 2,
 			onKeyDown,
+			onClick,
 		},
 		ref
 	) => {
@@ -51,6 +53,7 @@ export const InputTextarea: React.FC<PropsWithChildren<Props>> = forwardRef(
 					placeholder={placeholder}
 					rows={rows}
 					onKeyDown={onKeyDown}
+					onClick={onClick}
 					ref={textareaRef}
 				/>
 			</>
