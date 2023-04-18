@@ -87,8 +87,13 @@ const Notes: FC<Props> = ({ dropdown }) => {
 				) : (
 					<div className="flex flex-col gap-y-4 max-w-2xl">
 						{sortedNotes.map((item) => (
-							<ElemNoteCard key={item.id} data={item} refetch={refetchNotes} />
-						))}
+							<ElemNoteCard
+                key={item.id}
+                data={item}
+                refetch={refetchNotes}
+                layout="author"
+              />
+            ))}
 					</div>
 				)}
 			</div>
