@@ -3,12 +3,12 @@ import { useMutation } from "react-query";
 import toast, { Toaster } from "react-hot-toast";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  IconTrash,
-  IconX,
-  IconGroup,
-  IconGroupPlus,
-  IconLockClosed,
-  IconGlobe,
+	IconTrash,
+	IconX,
+	IconGroup,
+	IconGroupPlus,
+	IconLockClosed,
+	IconGlobe,
 } from "@/components/Icons";
 import { InputTextarea } from "@/components/InputTextarea";
 import { ElemTooltip } from "@/components/ElemTooltip";
@@ -137,6 +137,7 @@ const ElemNoteForm: React.FC<Props> = ({
 
 	const handleSubmit = () => {
 		mutate();
+		setNotes("");
 	};
 
 	const { mutate: deleteNote, isLoading: isDeletingNote } = useMutation(
@@ -260,7 +261,6 @@ const ElemNoteForm: React.FC<Props> = ({
 													{!selectedNote && (
 														<label className="block text-sm text-slate-500 leading-tight pb-1">
 															Select audience
-															{/* What group can see your note? */}
 														</label>
 													)}
 													<InputSelect
