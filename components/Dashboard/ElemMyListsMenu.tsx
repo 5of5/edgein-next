@@ -1,5 +1,5 @@
 import { getNameFromListName } from "@/utils/reaction";
-import { find, kebabCase, partition, sortBy } from "lodash";
+import { find, kebabCase, partition, orderBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { FC, Fragment, useState } from "react";
@@ -82,13 +82,13 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			displayedCustomLists,
 			(o) => o.created_by_id === user?.id
 		);
-		const createdLists = sortBy(partLists[0], [(o) => getNameFromListName(o)]);
-		const followedLists = sortBy(partLists[1], [(o) => getNameFromListName(o)]);
+		const createdLists = orderBy(partLists[0], [(o) => getNameFromListName(o)], ["asc"]);
+		const followedLists = orderBy(partLists[1], [(o) => getNameFromListName(o)], ["asc"]);
 		sortedLists = [...createdLists, ...followedLists];
 	} else if (selectedSortOption === "newest") {
-		sortedLists = sortBy(displayedCustomLists, ["created_at"]);
+		sortedLists = orderBy(displayedCustomLists, [(o) => new Date(o.created_at)], ["desc"]);
 	} else if (selectedSortOption === "recently") {
-		sortedLists = sortBy(displayedCustomLists, ["updated_at"]);
+		sortedLists = orderBy(displayedCustomLists, [(o) => new Date(o.updated_at)], ["desc"]);
 	}
 
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
