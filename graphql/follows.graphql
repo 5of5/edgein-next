@@ -145,6 +145,8 @@ query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
       }
     }
   }
+}
+
 query GetPeopleByListId($list_id: Int = 0) {
 	follows_people(where: { list_id: { _eq: $list_id } }) {
 		id
@@ -164,4 +166,10 @@ query GetPeopleByListId($list_id: Int = 0) {
 			linkedin
 		}
 	}
+}
+
+query CheckFollowExists($where: follows_bool_exp!) {
+  follows(where: $where, limit: 1) {
+    id
+  }
 }

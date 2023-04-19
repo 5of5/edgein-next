@@ -117,3 +117,72 @@ mutation DeleteNoteById($id: Int!) {
     }
   }
 }
+
+mutation InsertLikes($object: likes_insert_input!) {
+  insert_likes_one(object: $object) {
+    id
+  }
+}
+
+mutation DeleteLikes($id: Int!) {
+  delete_likes(where: { id: { _eq: $id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertComments($object: comments_insert_input!) {
+  insert_comments_one(object: $object) {
+    id
+  }
+}
+
+mutation DeleteCommentOne($id: Int!) {
+  delete_comments(where: { id: { _eq: $id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation DeleteLikesByNoteId($note_id: Int!) {
+  delete_likes(where: { note_id: { _eq: $note_id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation DeleteCommentsByNoteId($note_id: Int!) {
+  delete_comments(where: { note_id: { _eq: $note_id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
+  likes(
+    where: {
+      _and: [
+        { note_id: { _eq: $note_id } }
+        { created_by_user_id: { _eq: $user_id } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+  }
+}
+
+query FindCommentById($id: Int!) {
+  comments(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    created_by_user_id
+  }
+}

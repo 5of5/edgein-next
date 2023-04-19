@@ -135,3 +135,27 @@ query GetEventsByDate($date: timestamptz) {
     end_date
   }
 }
+
+mutation InsertEventAttendee($object: event_person_insert_input!) {
+  insert_event_person_one(object: $object) {
+    id
+    event_id
+    person_id
+    type
+  }
+}
+
+query FindEventAttendee($event_id: Int!, $person_id: Int!) {
+  event_person(
+    where: {
+      _and: [
+        { event_id: { _eq: $event_id } }
+        { person_id: { _eq: $person_id } }
+        { type: { _eq: "attendee" } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+  }
+}

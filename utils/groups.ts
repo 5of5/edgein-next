@@ -31,6 +31,22 @@ import {
   GetUserGroupInvitesByEmailQuery,
   GetUserGroupInvitesByEmailAndGroupIdQuery,
   GetUserGroupMembersByUserIdAndGroupIdQuery,
+  InsertLikesMutation,
+  InsertLikesDocument,
+  DeleteLikesMutation,
+  DeleteLikesDocument,
+  InsertCommentsMutation,
+  InsertCommentsDocument,
+  DeleteCommentOneMutation,
+  DeleteCommentOneDocument,
+  DeleteLikesByNoteIdMutation,
+  DeleteLikesByNoteIdDocument,
+  DeleteCommentsByNoteIdMutation,
+  DeleteCommentsByNoteIdDocument,
+  FindNoteLikesOneQuery,
+  FindNoteLikesOneDocument,
+  FindCommentByIdQuery,
+  FindCommentByIdDocument,
 } from "@/graphql/types";
 
 const onInsertGroup = async (payload: User_Groups_Insert_Input) => {
@@ -284,19 +300,8 @@ const onCheckGroupMemberExists = async (
 
 const onCheckLikeExists = async (note_id: number, user_id: number) => {
   try {
-    const data = await query({
-      query: `
-      query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
-        likes(where: {
-          _and: [
-            {note_id: {_eq: $note_id}},
-            {created_by_user_id: {_eq: $user_id}}
-          ]
-        }, limit: 1) {
-          id
-        }
-      }
-      `,
+    const data = await query<FindNoteLikesOneQuery>({
+      query: FindNoteLikesOneDocument,
       variables: { note_id, user_id },
     });
     return data.data.likes[0];
@@ -309,15 +314,8 @@ const onInsertLike = async (note_id: number, user_id: number) => {
   try {
     const {
       data: { insert_likes_one },
-    } = await mutate({
-      mutation: `
-      mutation InsertLikes($object: likes_insert_input!) {
-        insert_likes_one(
-          object: $object
-        ) {
-          id
-        }
-      }`,
+    } = await mutate<InsertLikesMutation>({
+      mutation: InsertLikesDocument,
       variables: {
         object: {
           note_id,
@@ -336,22 +334,13 @@ const onDeleteLike = async (id: number) => {
   try {
     const {
       data: { delete_likes },
-    } = await mutate({
-      mutation: `
-      mutation DeleteLikes($id: Int!) {
-        delete_likes(where: {id: {_eq: $id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteLikesMutation>({
+      mutation: DeleteLikesDocument,
       variables: {
         id,
       },
     });
-    return delete_likes.returning[0];
+    return delete_likes?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -361,15 +350,8 @@ const onInsertComment = async (note_id: number, content: string, user_id: number
   try {
     const {
       data: { insert_comments_one },
-    } = await mutate({
-      mutation: `
-      mutation InsertComments($object: comments_insert_input!) {
-        insert_comments_one(
-          object: $object
-        ) {
-          id
-        }
-      }`,
+    } = await mutate<InsertCommentsMutation>({
+      mutation: InsertCommentsDocument,
       variables: {
         object: {
           note_id,
@@ -388,22 +370,13 @@ const onDeleteComment = async (id: number) => {
   try {
     const {
       data: { delete_comments },
-    } = await mutate({
-      mutation: `
-      mutation DeleteCommentOne($id: Int!) {
-        delete_comments(where: {id: {_eq: $id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteCommentOneMutation>({
+      mutation: DeleteCommentOneDocument,
       variables: {
         id,
       },
     });
-    return delete_comments.returning[0];
+    return delete_comments?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -411,15 +384,8 @@ const onDeleteComment = async (id: number) => {
 
 const onFindCommentById = async (id: number) => {
   try {
-    const data = await query({
-      query: `
-      query FindCommentById($id: Int!) {
-        comments(where: {id: {_eq: $id}}, limit: 1) {
-          id
-          created_by_user_id
-        }
-      }
-      `,
+    const data = await query<FindCommentByIdQuery>({
+      query: FindCommentByIdDocument,
       variables: { id },
     });
     return data.data.comments[0];
@@ -432,22 +398,13 @@ const onDeleteLikesByNoteId = async (note_id: number) => {
   try {
     const {
       data: { delete_likes },
-    } = await mutate({
-      mutation: `
-      mutation DeleteLikesByNoteId($note_id: Int!) {
-        delete_likes(where: {note_id: {_eq: $note_id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteLikesByNoteIdMutation>({
+      mutation: DeleteLikesByNoteIdDocument,
       variables: {
         note_id,
       },
     });
-    return delete_likes.returning[0];
+    return delete_likes?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -457,22 +414,13 @@ const onDeleteCommentsByNoteId = async (note_id: number) => {
   try {
     const {
       data: { delete_comments },
-    } = await mutate({
-      mutation: `
-      mutation DeleteCommentsByNoteId($note_id: Int!) {
-        delete_comments(where: {note_id: {_eq: $note_id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteCommentsByNoteIdMutation>({
+      mutation: DeleteCommentsByNoteIdDocument,
       variables: {
         note_id,
       },
     });
-    return delete_comments.returning[0];
+    return delete_comments?.returning[0];
   } catch (ex) {
     throw ex;
   }

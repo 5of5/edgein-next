@@ -25,6 +25,10 @@ import {
   UpsertMembershipDocument,
   UpsertMembershipMutation,
   Lists,
+  TriggerListUpdatedAtMutation,
+  TriggerListUpdatedAtDocument,
+  CheckFollowExistsQuery,
+  CheckFollowExistsDocument,
 } from "@/graphql/types";
 import { User } from '@/models/User';
 
@@ -228,14 +232,8 @@ export const checkFollowExists = async (
 ) => {
   const {
     data: { follows },
-  } = await query({
-    query: `
-    query CheckFollowExists($where: follows_bool_exp!) {
-      follows(where: $where, limit: 1) {
-        id
-      }
-    }
-    `,
+  } = await query<CheckFollowExistsQuery>({
+    query: CheckFollowExistsDocument,
     variables: {
       where: {
         resource_id: { _eq: resourceId },
@@ -253,25 +251,14 @@ export const triggerListUpdatedAt = async (id: number) => {
   try {
     const {
       data: { update_lists },
-    } = await mutate({
-      mutation: `
-      mutation TriggerListUpdatedAt($id: Int!) {
-        update_lists(
-          where: {id: {_eq: $id}},
-          _set: {updated_at: "${new Date().toISOString()}"}
-        ) {
-          affected_rows 
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<TriggerListUpdatedAtMutation>({
+      mutation: TriggerListUpdatedAtDocument,
       variables: {
         id,
+        updated_at: new Date().toISOString(),
       },
     });
-    return update_lists.returning[0];
+    return update_lists?.returning[0];
   } catch (ex) {
     throw ex;
   }

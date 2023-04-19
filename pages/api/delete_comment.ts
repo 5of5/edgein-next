@@ -1,4 +1,3 @@
-import { Comments } from "@/graphql/types";
 import GroupService from "@/utils/groups";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -15,7 +14,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.body.id;
 
-  const commentOne: Comments = await GroupService.onFindCommentById(id);
+  const commentOne = await GroupService.onFindCommentById(id);
 
   if (commentOne && commentOne.created_by_user_id === user.id) {
     const deleteResponse = await GroupService.onDeleteComment(id);

@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { query, mutate } from "@/graphql/hasuraAdmin";
 import CookieService from "../../utils/cookie";
+import { GetListByIdDocument, GetListByIdQuery, UpdateListByIdDocument, UpdateListByIdMutation } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "PUT") {
@@ -19,16 +20,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const data = await query({
-      query: `
-      query findListOne($listId: Int!) {
-        lists(where: {id: {_eq: $listId}}, limit: 1) {
-          id
-          name
-          created_by_id
-        }
-      }
-      `,
+    const data = await query<GetListByIdQuery>({
+      query: GetListByIdDocument,
       variables: { listId },
     });
 
@@ -38,24 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         .json({ message: "You don't have permission to edit this list" });
     }
 
-    const mutateResult = await mutate({
-      mutation: `
-      mutation update_lists($listId: Int!, $changes: lists_set_input!) {
-        update_lists(
-          where: {id: {_eq: $listId}},
-          _set: $changes
-        ) {
-          affected_rows
-          returning {
-            id
-            name
-          }
-        }
-      }
-    `,
+    const mutateResult = await mutate<UpdateListByIdMutation>({
+      mutation: UpdateListByIdDocument,
       variables: { listId, changes: payload },
     });
-    res.status(200).json(mutateResult.data.update_lists.returning[0]);
+    res.status(200).json(mutateResult.data.update_lists?.returning[0]);
   } catch (err: any) {
     res.status(400).json({ message: err.message });
   }

@@ -108,6 +108,7 @@ query GetListById($id: Int!) {
   lists(where: { id: { _eq: $id } }, limit: 1) {
     id
     name
+    created_by_id
   }
 }
 
@@ -155,6 +156,28 @@ mutation InsertListMembers($object: list_members_insert_input!) {
       id
       display_name
       email
+    }
+  }
+}
+
+mutation UpdateListById($listId: Int!, $changes: lists_set_input!) {
+  update_lists(where: { id: { _eq: $listId } }, _set: $changes) {
+    affected_rows
+    returning {
+      id
+      name
+    }
+  }
+}
+
+ mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
+  update_lists(
+    where: {id: {_eq: $id}},
+    _set: {updated_at: $updated_at}
+  ) {
+    affected_rows 
+    returning {
+      id
     }
   }
 }

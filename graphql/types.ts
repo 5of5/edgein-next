@@ -22081,6 +22081,21 @@ export type GetEventsByDateQueryVariables = Exact<{
 
 export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
+export type InsertEventAttendeeMutationVariables = Exact<{
+  object: Event_Person_Insert_Input;
+}>;
+
+
+export type InsertEventAttendeeMutation = { __typename?: 'mutation_root', insert_event_person_one: { __typename?: 'event_person', id: number, event_id: number, person_id: number, type: string } | null };
+
+export type FindEventAttendeeQueryVariables = Exact<{
+  event_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type FindEventAttendeeQuery = { __typename?: 'query_root', event_person: Array<{ __typename?: 'event_person', id: number }> };
+
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
@@ -22133,12 +22148,20 @@ export type GetFollowsByResourceQueryVariables = Exact<{
 
 
 export type GetFollowsByResourceQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null, list: { __typename?: 'lists', list_members: Array<{ __typename?: 'list_members', id: number, user_id: number }> } | null }> };
+
 export type GetPeopleByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type GetPeopleByListIdQuery = { __typename?: 'query_root', follows_people: Array<{ __typename?: 'follows_people', id: number | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, type: string | null, personal_email: string | null, work_email: string | null, city: string | null, country: string | null, website_url: string | null, github: string | null, twitter_url: string | null, linkedin: string | null } | null }> };
+
+export type CheckFollowExistsQueryVariables = Exact<{
+  where: Follows_Bool_Exp;
+}>;
+
+
+export type CheckFollowExistsQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number }> };
 
 export type GetGroupsOfUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -22362,7 +22385,7 @@ export type GetListByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetListByIdQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string }> };
+export type GetListByIdQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, created_by_id: number }> };
 
 export type DeleteListMembersMutationVariables = Exact<{
   where: List_Members_Bool_Exp;
@@ -22392,13 +22415,21 @@ export type InsertListMembersMutationVariables = Exact<{
 
 export type InsertListMembersMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null };
 
-export type UpdateListNameByIdMutationVariables = Exact<{
+export type UpdateListByIdMutationVariables = Exact<{
   listId: Scalars['Int'];
-  newname: InputMaybe<Scalars['String']>;
+  changes: Lists_Set_Input;
 }>;
 
 
-export type UpdateListNameByIdMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number, name: string }> } | null };
+export type UpdateListByIdMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number, name: string }> } | null };
+
+export type TriggerListUpdatedAtMutationVariables = Exact<{
+  id: Scalars['Int'];
+  updated_at: Scalars['timestamptz'];
+}>;
+
+
+export type TriggerListUpdatedAtMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number }> } | null };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -22412,7 +22443,7 @@ export type GetNoteByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetNoteByIdQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
+export type GetNoteByIdQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type DeleteNotesByGroupIdMutationVariables = Exact<{
   groupId: Scalars['Int'];
@@ -22426,7 +22457,7 @@ export type InsertNoteMutationVariables = Exact<{
 }>;
 
 
-export type InsertNoteMutation = { __typename?: 'mutation_root', insert_notes_one: { __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
+export type InsertNoteMutation = { __typename?: 'mutation_root', insert_notes_one: { __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null } | null };
 
 export type UpdateNoteMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -22434,7 +22465,7 @@ export type UpdateNoteMutationVariables = Exact<{
 }>;
 
 
-export type UpdateNoteMutation = { __typename?: 'mutation_root', update_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number, user_group: { __typename?: 'user_groups', id: number, name: string } }> } | null };
+export type UpdateNoteMutation = { __typename?: 'mutation_root', update_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> } | null };
 
 export type DeleteNoteByIdMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -22442,6 +22473,63 @@ export type DeleteNoteByIdMutationVariables = Exact<{
 
 
 export type DeleteNoteByIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
+
+export type InsertLikesMutationVariables = Exact<{
+  object: Likes_Insert_Input;
+}>;
+
+
+export type InsertLikesMutation = { __typename?: 'mutation_root', insert_likes_one: { __typename?: 'likes', id: number } | null };
+
+export type DeleteLikesMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteLikesMutation = { __typename?: 'mutation_root', delete_likes: { __typename?: 'likes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'likes', id: number }> } | null };
+
+export type InsertCommentsMutationVariables = Exact<{
+  object: Comments_Insert_Input;
+}>;
+
+
+export type InsertCommentsMutation = { __typename?: 'mutation_root', insert_comments_one: { __typename?: 'comments', id: number } | null };
+
+export type DeleteCommentOneMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteCommentOneMutation = { __typename?: 'mutation_root', delete_comments: { __typename?: 'comments_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'comments', id: number }> } | null };
+
+export type DeleteLikesByNoteIdMutationVariables = Exact<{
+  note_id: Scalars['Int'];
+}>;
+
+
+export type DeleteLikesByNoteIdMutation = { __typename?: 'mutation_root', delete_likes: { __typename?: 'likes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'likes', id: number }> } | null };
+
+export type DeleteCommentsByNoteIdMutationVariables = Exact<{
+  note_id: Scalars['Int'];
+}>;
+
+
+export type DeleteCommentsByNoteIdMutation = { __typename?: 'mutation_root', delete_comments: { __typename?: 'comments_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'comments', id: number }> } | null };
+
+export type FindNoteLikesOneQueryVariables = Exact<{
+  note_id: Scalars['Int'];
+  user_id: Scalars['Int'];
+}>;
+
+
+export type FindNoteLikesOneQuery = { __typename?: 'query_root', likes: Array<{ __typename?: 'likes', id: number }> };
+
+export type FindCommentByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type FindCommentByIdQuery = { __typename?: 'query_root', comments: Array<{ __typename?: 'comments', id: number, created_by_user_id: number }> };
 
 export type GetNotificationsForUserQueryVariables = Exact<{
   user: Scalars['Int'];
@@ -23744,6 +23832,55 @@ useGetEventsByDateQuery.getKey = (variables?: GetEventsByDateQueryVariables) => 
 ;
 
 useGetEventsByDateQuery.fetcher = (variables?: GetEventsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsByDateQuery, GetEventsByDateQueryVariables>(GetEventsByDateDocument, variables, options);
+export const InsertEventAttendeeDocument = `
+    mutation InsertEventAttendee($object: event_person_insert_input!) {
+  insert_event_person_one(object: $object) {
+    id
+    event_id
+    person_id
+    type
+  }
+}
+    `;
+export const useInsertEventAttendeeMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertEventAttendeeMutation, TError, InsertEventAttendeeMutationVariables, TContext>) =>
+    useMutation<InsertEventAttendeeMutation, TError, InsertEventAttendeeMutationVariables, TContext>(
+      ['InsertEventAttendee'],
+      (variables?: InsertEventAttendeeMutationVariables) => fetcher<InsertEventAttendeeMutation, InsertEventAttendeeMutationVariables>(InsertEventAttendeeDocument, variables)(),
+      options
+    );
+useInsertEventAttendeeMutation.fetcher = (variables: InsertEventAttendeeMutationVariables, options?: RequestInit['headers']) => fetcher<InsertEventAttendeeMutation, InsertEventAttendeeMutationVariables>(InsertEventAttendeeDocument, variables, options);
+export const FindEventAttendeeDocument = `
+    query FindEventAttendee($event_id: Int!, $person_id: Int!) {
+  event_person(
+    where: {_and: [{event_id: {_eq: $event_id}}, {person_id: {_eq: $person_id}}, {type: {_eq: "attendee"}}]}
+    limit: 1
+  ) {
+    id
+  }
+}
+    `;
+export const useFindEventAttendeeQuery = <
+      TData = FindEventAttendeeQuery,
+      TError = Error
+    >(
+      variables: FindEventAttendeeQueryVariables,
+      options?: UseQueryOptions<FindEventAttendeeQuery, TError, TData>
+    ) =>
+    useQuery<FindEventAttendeeQuery, TError, TData>(
+      ['FindEventAttendee', variables],
+      fetcher<FindEventAttendeeQuery, FindEventAttendeeQueryVariables>(FindEventAttendeeDocument, variables),
+      options
+    );
+useFindEventAttendeeQuery.document = FindEventAttendeeDocument;
+
+
+useFindEventAttendeeQuery.getKey = (variables: FindEventAttendeeQueryVariables) => ['FindEventAttendee', variables];
+;
+
+useFindEventAttendeeQuery.fetcher = (variables: FindEventAttendeeQueryVariables, options?: RequestInit['headers']) => fetcher<FindEventAttendeeQuery, FindEventAttendeeQueryVariables>(FindEventAttendeeDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {
@@ -24041,6 +24178,32 @@ useGetPeopleByListIdQuery.getKey = (variables?: GetPeopleByListIdQueryVariables)
 ;
 
 useGetPeopleByListIdQuery.fetcher = (variables?: GetPeopleByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByListIdQuery, GetPeopleByListIdQueryVariables>(GetPeopleByListIdDocument, variables, options);
+export const CheckFollowExistsDocument = `
+    query CheckFollowExists($where: follows_bool_exp!) {
+  follows(where: $where, limit: 1) {
+    id
+  }
+}
+    `;
+export const useCheckFollowExistsQuery = <
+      TData = CheckFollowExistsQuery,
+      TError = Error
+    >(
+      variables: CheckFollowExistsQueryVariables,
+      options?: UseQueryOptions<CheckFollowExistsQuery, TError, TData>
+    ) =>
+    useQuery<CheckFollowExistsQuery, TError, TData>(
+      ['CheckFollowExists', variables],
+      fetcher<CheckFollowExistsQuery, CheckFollowExistsQueryVariables>(CheckFollowExistsDocument, variables),
+      options
+    );
+useCheckFollowExistsQuery.document = CheckFollowExistsDocument;
+
+
+useCheckFollowExistsQuery.getKey = (variables: CheckFollowExistsQueryVariables) => ['CheckFollowExists', variables];
+;
+
+useCheckFollowExistsQuery.fetcher = (variables: CheckFollowExistsQueryVariables, options?: RequestInit['headers']) => fetcher<CheckFollowExistsQuery, CheckFollowExistsQueryVariables>(CheckFollowExistsDocument, variables, options);
 export const GetGroupsOfUserDocument = `
     query GetGroupsOfUser($user_id: Int!) {
   user_group_members(where: {user_id: {_eq: $user_id}}) {
@@ -24903,6 +25066,7 @@ export const GetListByIdDocument = `
   lists(where: {id: {_eq: $id}}, limit: 1) {
     id
     name
+    created_by_id
   }
 }
     `;
@@ -25017,9 +25181,9 @@ export const useInsertListMembersMutation = <
       options
     );
 useInsertListMembersMutation.fetcher = (variables: InsertListMembersMutationVariables, options?: RequestInit['headers']) => fetcher<InsertListMembersMutation, InsertListMembersMutationVariables>(InsertListMembersDocument, variables, options);
-export const UpdateListNameByIdDocument = `
-    mutation UpdateListNameById($listId: Int!, $newname: String) {
-  update_lists(where: {id: {_eq: $listId}}, _set: {name: $newname}) {
+export const UpdateListByIdDocument = `
+    mutation UpdateListById($listId: Int!, $changes: lists_set_input!) {
+  update_lists(where: {id: {_eq: $listId}}, _set: $changes) {
     affected_rows
     returning {
       id
@@ -25028,16 +25192,36 @@ export const UpdateListNameByIdDocument = `
   }
 }
     `;
-export const useUpdateListNameByIdMutation = <
+export const useUpdateListByIdMutation = <
       TError = Error,
       TContext = unknown
-    >(options?: UseMutationOptions<UpdateListNameByIdMutation, TError, UpdateListNameByIdMutationVariables, TContext>) =>
-    useMutation<UpdateListNameByIdMutation, TError, UpdateListNameByIdMutationVariables, TContext>(
-      ['UpdateListNameById'],
-      (variables?: UpdateListNameByIdMutationVariables) => fetcher<UpdateListNameByIdMutation, UpdateListNameByIdMutationVariables>(UpdateListNameByIdDocument, variables)(),
+    >(options?: UseMutationOptions<UpdateListByIdMutation, TError, UpdateListByIdMutationVariables, TContext>) =>
+    useMutation<UpdateListByIdMutation, TError, UpdateListByIdMutationVariables, TContext>(
+      ['UpdateListById'],
+      (variables?: UpdateListByIdMutationVariables) => fetcher<UpdateListByIdMutation, UpdateListByIdMutationVariables>(UpdateListByIdDocument, variables)(),
       options
     );
-useUpdateListNameByIdMutation.fetcher = (variables: UpdateListNameByIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateListNameByIdMutation, UpdateListNameByIdMutationVariables>(UpdateListNameByIdDocument, variables, options);
+useUpdateListByIdMutation.fetcher = (variables: UpdateListByIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateListByIdMutation, UpdateListByIdMutationVariables>(UpdateListByIdDocument, variables, options);
+export const TriggerListUpdatedAtDocument = `
+    mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
+  update_lists(where: {id: {_eq: $id}}, _set: {updated_at: $updated_at}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useTriggerListUpdatedAtMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<TriggerListUpdatedAtMutation, TError, TriggerListUpdatedAtMutationVariables, TContext>) =>
+    useMutation<TriggerListUpdatedAtMutation, TError, TriggerListUpdatedAtMutationVariables, TContext>(
+      ['TriggerListUpdatedAt'],
+      (variables?: TriggerListUpdatedAtMutationVariables) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables)(),
+      options
+    );
+useTriggerListUpdatedAtMutation.fetcher = (variables: TriggerListUpdatedAtMutationVariables, options?: RequestInit['headers']) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {
@@ -25242,6 +25426,176 @@ export const useDeleteNoteByIdMutation = <
       options
     );
 useDeleteNoteByIdMutation.fetcher = (variables: DeleteNoteByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNoteByIdMutation, DeleteNoteByIdMutationVariables>(DeleteNoteByIdDocument, variables, options);
+export const InsertLikesDocument = `
+    mutation InsertLikes($object: likes_insert_input!) {
+  insert_likes_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertLikesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLikesMutation, TError, InsertLikesMutationVariables, TContext>) =>
+    useMutation<InsertLikesMutation, TError, InsertLikesMutationVariables, TContext>(
+      ['InsertLikes'],
+      (variables?: InsertLikesMutationVariables) => fetcher<InsertLikesMutation, InsertLikesMutationVariables>(InsertLikesDocument, variables)(),
+      options
+    );
+useInsertLikesMutation.fetcher = (variables: InsertLikesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLikesMutation, InsertLikesMutationVariables>(InsertLikesDocument, variables, options);
+export const DeleteLikesDocument = `
+    mutation DeleteLikes($id: Int!) {
+  delete_likes(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteLikesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteLikesMutation, TError, DeleteLikesMutationVariables, TContext>) =>
+    useMutation<DeleteLikesMutation, TError, DeleteLikesMutationVariables, TContext>(
+      ['DeleteLikes'],
+      (variables?: DeleteLikesMutationVariables) => fetcher<DeleteLikesMutation, DeleteLikesMutationVariables>(DeleteLikesDocument, variables)(),
+      options
+    );
+useDeleteLikesMutation.fetcher = (variables: DeleteLikesMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteLikesMutation, DeleteLikesMutationVariables>(DeleteLikesDocument, variables, options);
+export const InsertCommentsDocument = `
+    mutation InsertComments($object: comments_insert_input!) {
+  insert_comments_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertCommentsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertCommentsMutation, TError, InsertCommentsMutationVariables, TContext>) =>
+    useMutation<InsertCommentsMutation, TError, InsertCommentsMutationVariables, TContext>(
+      ['InsertComments'],
+      (variables?: InsertCommentsMutationVariables) => fetcher<InsertCommentsMutation, InsertCommentsMutationVariables>(InsertCommentsDocument, variables)(),
+      options
+    );
+useInsertCommentsMutation.fetcher = (variables: InsertCommentsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertCommentsMutation, InsertCommentsMutationVariables>(InsertCommentsDocument, variables, options);
+export const DeleteCommentOneDocument = `
+    mutation DeleteCommentOne($id: Int!) {
+  delete_comments(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteCommentOneMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteCommentOneMutation, TError, DeleteCommentOneMutationVariables, TContext>) =>
+    useMutation<DeleteCommentOneMutation, TError, DeleteCommentOneMutationVariables, TContext>(
+      ['DeleteCommentOne'],
+      (variables?: DeleteCommentOneMutationVariables) => fetcher<DeleteCommentOneMutation, DeleteCommentOneMutationVariables>(DeleteCommentOneDocument, variables)(),
+      options
+    );
+useDeleteCommentOneMutation.fetcher = (variables: DeleteCommentOneMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteCommentOneMutation, DeleteCommentOneMutationVariables>(DeleteCommentOneDocument, variables, options);
+export const DeleteLikesByNoteIdDocument = `
+    mutation DeleteLikesByNoteId($note_id: Int!) {
+  delete_likes(where: {note_id: {_eq: $note_id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteLikesByNoteIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteLikesByNoteIdMutation, TError, DeleteLikesByNoteIdMutationVariables, TContext>) =>
+    useMutation<DeleteLikesByNoteIdMutation, TError, DeleteLikesByNoteIdMutationVariables, TContext>(
+      ['DeleteLikesByNoteId'],
+      (variables?: DeleteLikesByNoteIdMutationVariables) => fetcher<DeleteLikesByNoteIdMutation, DeleteLikesByNoteIdMutationVariables>(DeleteLikesByNoteIdDocument, variables)(),
+      options
+    );
+useDeleteLikesByNoteIdMutation.fetcher = (variables: DeleteLikesByNoteIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteLikesByNoteIdMutation, DeleteLikesByNoteIdMutationVariables>(DeleteLikesByNoteIdDocument, variables, options);
+export const DeleteCommentsByNoteIdDocument = `
+    mutation DeleteCommentsByNoteId($note_id: Int!) {
+  delete_comments(where: {note_id: {_eq: $note_id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteCommentsByNoteIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteCommentsByNoteIdMutation, TError, DeleteCommentsByNoteIdMutationVariables, TContext>) =>
+    useMutation<DeleteCommentsByNoteIdMutation, TError, DeleteCommentsByNoteIdMutationVariables, TContext>(
+      ['DeleteCommentsByNoteId'],
+      (variables?: DeleteCommentsByNoteIdMutationVariables) => fetcher<DeleteCommentsByNoteIdMutation, DeleteCommentsByNoteIdMutationVariables>(DeleteCommentsByNoteIdDocument, variables)(),
+      options
+    );
+useDeleteCommentsByNoteIdMutation.fetcher = (variables: DeleteCommentsByNoteIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteCommentsByNoteIdMutation, DeleteCommentsByNoteIdMutationVariables>(DeleteCommentsByNoteIdDocument, variables, options);
+export const FindNoteLikesOneDocument = `
+    query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
+  likes(
+    where: {_and: [{note_id: {_eq: $note_id}}, {created_by_user_id: {_eq: $user_id}}]}
+    limit: 1
+  ) {
+    id
+  }
+}
+    `;
+export const useFindNoteLikesOneQuery = <
+      TData = FindNoteLikesOneQuery,
+      TError = Error
+    >(
+      variables: FindNoteLikesOneQueryVariables,
+      options?: UseQueryOptions<FindNoteLikesOneQuery, TError, TData>
+    ) =>
+    useQuery<FindNoteLikesOneQuery, TError, TData>(
+      ['FindNoteLikesOne', variables],
+      fetcher<FindNoteLikesOneQuery, FindNoteLikesOneQueryVariables>(FindNoteLikesOneDocument, variables),
+      options
+    );
+useFindNoteLikesOneQuery.document = FindNoteLikesOneDocument;
+
+
+useFindNoteLikesOneQuery.getKey = (variables: FindNoteLikesOneQueryVariables) => ['FindNoteLikesOne', variables];
+;
+
+useFindNoteLikesOneQuery.fetcher = (variables: FindNoteLikesOneQueryVariables, options?: RequestInit['headers']) => fetcher<FindNoteLikesOneQuery, FindNoteLikesOneQueryVariables>(FindNoteLikesOneDocument, variables, options);
+export const FindCommentByIdDocument = `
+    query FindCommentById($id: Int!) {
+  comments(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    created_by_user_id
+  }
+}
+    `;
+export const useFindCommentByIdQuery = <
+      TData = FindCommentByIdQuery,
+      TError = Error
+    >(
+      variables: FindCommentByIdQueryVariables,
+      options?: UseQueryOptions<FindCommentByIdQuery, TError, TData>
+    ) =>
+    useQuery<FindCommentByIdQuery, TError, TData>(
+      ['FindCommentById', variables],
+      fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables),
+      options
+    );
+useFindCommentByIdQuery.document = FindCommentByIdDocument;
+
+
+useFindCommentByIdQuery.getKey = (variables: FindCommentByIdQueryVariables) => ['FindCommentById', variables];
+;
+
+useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, options?: RequestInit['headers']) => fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables, options);
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($user: Int!) {
   notifications(
