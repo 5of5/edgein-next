@@ -1,16 +1,7 @@
 table:
   schema: public
-  name: news_organizations
+  name: news_person
 object_relationships:
-  - name: company
-    using:
-      manual_configuration:
-        remote_table:
-          schema: public
-          name: companies
-        insertion_order: null
-        column_mapping:
-          company_id: id
   - name: news
     using:
       manual_configuration:
@@ -20,25 +11,24 @@ object_relationships:
         insertion_order: null
         column_mapping:
           news_id: id
-  - name: vc_firm
+  - name: people
     using:
       manual_configuration:
         remote_table:
           schema: public
-          name: vc_firms
+          name: people
         insertion_order: null
         column_mapping:
-          vc_firm_id: id
+          person_id: id
 select_permissions:
   - role: viewer
     permission:
       columns:
-        - company_id
-        - created_at
+        - is_author
         - id
-        - is_publisher
         - news_id
+        - person_id
+        - created_at
         - updated_at
-        - vc_firm_id
       filter: {}
       limit: 50
