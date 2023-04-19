@@ -82,13 +82,29 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			displayedCustomLists,
 			(o) => o.created_by_id === user?.id
 		);
-		const createdLists = orderBy(partLists[0], [(o) => getNameFromListName(o)], ["asc"]);
-		const followedLists = orderBy(partLists[1], [(o) => getNameFromListName(o)], ["asc"]);
+		const createdLists = orderBy(
+			partLists[0],
+			[(o) => getNameFromListName(o)],
+			["asc"]
+		);
+		const followedLists = orderBy(
+			partLists[1],
+			[(o) => getNameFromListName(o)],
+			["asc"]
+		);
 		sortedLists = [...createdLists, ...followedLists];
 	} else if (selectedSortOption === "newest") {
-		sortedLists = orderBy(displayedCustomLists, [(o) => new Date(o.created_at)], ["desc"]);
+		sortedLists = orderBy(
+			displayedCustomLists,
+			[(o) => new Date(o.created_at)],
+			["desc"]
+		);
 	} else if (selectedSortOption === "recently") {
-		sortedLists = orderBy(displayedCustomLists, [(o) => new Date(o.updated_at)], ["desc"]);
+		sortedLists = orderBy(
+			displayedCustomLists,
+			[(o) => new Date(o.updated_at)],
+			["desc"]
+		);
 	}
 
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
@@ -129,7 +145,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									<span className="text-lg font-bold">My Lists</span>
 								</Disclosure.Button>
 								<ElemTooltip
-									content="Monitor organizations of your interest."
+									content="Monitor organizations and people of your interest."
 									className="ml-1"
 								>
 									<IconInformationCircle className="h-5 w-5 text-slate-600" />

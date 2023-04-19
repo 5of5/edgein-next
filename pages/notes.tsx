@@ -2,22 +2,20 @@ import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
 import { useGetNotesQuery, Notes_Bool_Exp } from "@/graphql/types";
 import { GetStaticProps } from "next";
 import { FC } from "react";
-import Link from "next/link";
+import { IconDocumentDownload } from "@/components/Icons";
 import ElemNoteCard from "@/components/Group/ElemNoteCard";
+import { PlaceholderNote } from "@/components/Placeholders";
 import { orderBy } from "lodash";
 //import { useAuth } from "@/hooks/useAuth";
 import { useUser } from "@/context/userContext";
 
-type Props = {
-	dropdown: any[];
-};
+type Props = {};
 
-const Notes: FC<Props> = ({ dropdown }) => {
-	//const { user, myGroups } = useAuth();
+const Notes: FC<Props> = () => {
 	const { user, myGroups } = useUser();
 
 	const {
-		data: notes,
+		data: noteList,
 		error,
 		isLoading,
 		refetch: refetchNotes,
@@ -50,12 +48,10 @@ const Notes: FC<Props> = ({ dropdown }) => {
 		} as Notes_Bool_Exp,
 	});
 
-	const theNotes = notes?.notes || [];
+	const notes = noteList?.notes || [];
 
 	//sort by created date
-	const sortedNotes = orderBy(theNotes, (a) => new Date(a.created_at), [
-		"desc",
-	]);
+	const sortedNotes = orderBy(notes, (a) => new Date(a.created_at), ["desc"]);
 
 	return (
 		<DashboardLayout>
@@ -64,36 +60,46 @@ const Notes: FC<Props> = ({ dropdown }) => {
 					<h1 className="h-6 mr-2 font-bold text-xl capitalize">My Notes</h1>
 				</div>
 
-				{sortedNotes.length === 0 ? (
-					<div className="bg-white shadow rounded-lg px-5 py-4 max-w-2xl">
-						<p>Looks like you haven&rsquo;t created any notes.</p>
-						<ul className="mt-2 list-disc list-inside space-y-1">
-							<li>
-								Visit a{" "}
-								<Link href="/companies" passHref>
-									<a className="text-primary-500 hover:underline">company</a>
-								</Link>{" "}
-								profile and create a note about company.
-							</li>
-							<li>
-								Visit an{" "}
-								<Link href="/investors" passHref>
-									<a className="text-primary-500 hover:underline">investor</a>
-								</Link>{" "}
-								profile and create a note about investor.
-							</li>
-						</ul>
+				{error ? (
+					<h4>Error loading notes</h4>
+				) : isLoading ? (
+					<div className="flex flex-col gap-y-4 mt-4">
+						{Array.from({ length: 2 }, (_, i) => (
+							<div key={i} className="max-w-2xl bg-white shadow rounded-lg">
+								<PlaceholderNote />
+							</div>
+						))}
+					</div>
+				) : notes.length === 0 ? (
+					<div className="max-w-2xl bg-white shadow rounded-lg px-5 py-4">
+						<div className="">
+							<div className="w-full p-12 text-center">
+								<IconDocumentDownload
+									className="mx-auto h-12 w-12 text-slate-300"
+									title="notes"
+								/>
+								<h3 className="mt-2 text-lg font-bold">No notes yet</h3>
+								<p className="mt-1 text-slate-600">
+									Get started by creating a note in a company or investor
+									profile.
+								</p>
+							</div>
+						</div>
 					</div>
 				) : (
 					<div className="flex flex-col gap-y-4 max-w-2xl">
 						{sortedNotes.map((item) => (
 							<ElemNoteCard
-                key={item.id}
-                data={item}
-                refetch={refetchNotes}
-                layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
-              />
-            ))}
+								key={item.id}
+								data={item}
+								refetch={refetchNotes}
+								layout={`${
+									item.user_group_id
+										? "groupAndAuthor"
+										: "organizationAndAuthor"
+								}`}
+							/>
+						))}
 					</div>
 				)}
 			</div>

@@ -26,12 +26,18 @@ export const PlaceholderCompanyCard: React.FC = () => {
 
 export const PlaceholderNote: React.FC = () => {
 	return (
-		<div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
+		<div className="flex flex-col animate-pulse-fast px-5 py-4 bg-white rounded-lg md:h-full">
 			<div className="flex items-center shrink-0 mb-4 w-full">
-				<div className="aspect-square rounded-lg bg-slate-200 w-16 h-16"></div>
+				<div className="relative aspect-square rounded-lg bg-slate-200 w-12 h-12 mb-2">
+					<div className="absolute -right-1 -bottom-1 bg-slate-300 h-7 w-7 rounded-full"></div>
+				</div>
 				<div className="w-full ml-2">
-					<div className="h-6 w-1/3 bg-slate-200 rounded"></div>
-					<div className="mt-2 h-2 w-1/4 bg-slate-200 rounded"></div>
+					<div className="h-4 w-1/3 bg-slate-200 rounded"></div>
+					<div className="flex space-x-2">
+						<div className="mt-2 h-2 w-2/12 bg-slate-200 rounded"></div>
+						<div className="mt-2 h-2 w-6 bg-slate-200 rounded"></div>
+						<div className="mt-2 h-2 w-6 bg-slate-200 rounded"></div>
+					</div>
 				</div>
 			</div>
 			<div className="flex-1 space-y-4 py-1">

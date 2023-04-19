@@ -114,7 +114,7 @@ const ElemOrganizationNotes: FC<Props> = ({
 				<h4>Error loading notes</h4>
 			) : isLoading ? (
 				<div className="grid gap-4 mt-4">
-					{Array.from({ length: 3 }, (_, i) => (
+					{Array.from({ length: 2 }, (_, i) => (
 						<PlaceholderNote key={i} />
 					))}
 				</div>
