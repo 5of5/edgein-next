@@ -1,4 +1,9 @@
-query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
+query GetEvents(
+	$limit: Int
+	$offset: Int
+	$order: order_by!
+	$where: events_bool_exp!
+) {
 	events(
 		where: $where
 		order_by: { start_date: $order }
@@ -57,6 +62,7 @@ query GetEvent($slug: String!) {
 		discord
 		telegram
 		is_featured
+		attachments
 		created_at
 		event_person {
 			id
@@ -66,10 +72,30 @@ query GetEvent($slug: String!) {
 				id
 				slug
 				name
+				type
 				picture
 				linkedin
 				personal_email
 				work_email
+				investors {
+					id
+					title
+					vc_firm {
+						id
+						slug
+						name
+					}
+				}
+				team_members {
+					id
+					founder
+					title
+					company {
+						id
+						slug
+						name
+					}
+				}
 			}
 		}
 		event_organization {

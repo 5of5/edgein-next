@@ -1,0 +1,1 @@
+CREATE TABLE "public"."comments" ("id" serial NOT NULL, "content" text NOT NULL, "note_id" integer NOT NULL, "created_by_user_id" integer NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );

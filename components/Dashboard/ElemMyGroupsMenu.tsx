@@ -78,10 +78,10 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-xl font-bold">My Groups</span>
+									<span className="text-lg font-bold">My Groups</span>
 								</Disclosure.Button>
 								<ElemTooltip
-									content="Share your lists and notes with others."
+									content="Share lists and notes with others."
 									className="ml-1"
 								>
 									<IconInformationCircle className="h-5 w-5 text-slate-600" />
@@ -150,12 +150,15 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<li key={group.id} role="button">
 									<Link href={`/groups/${group.id}/`}>
 										<a
-											className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 												group.id
 											)}`}
+											title={group.name}
 										>
 											<IconGroup className="h-6 w-6 shrink-0" />
-											<span>{group.name}</span>
+											<span className="line-clamp-1 break-all">
+												{group.name}
+											</span>
 										</a>
 									</Link>
 								</li>
@@ -164,13 +167,12 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<li role="button">
 									<button
 										onClick={onOpenUpgradeDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
 										<IconContributor
 											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
 											title="Unlock groups"
 										/>
-										{/* <IconGroupPlus className="h-6 w-6" title="Create Group" /> */}
 										<span>Unlock All Your Groups</span>
 									</button>
 								</li>
@@ -178,7 +180,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<li role="button">
 									<button
 										onClick={onOpenCreateGroupDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
 										<IconGroupPlus className="h-6 w-6" title="Create Group" />
 										<span>Create Group</span>

@@ -23,6 +23,7 @@ import { useIntercom } from "react-use-intercom";
 import { IconCheckBadgeSolid } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemTags } from "@/components/ElemTags";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 
 type Props = {
 	person: People;
@@ -134,19 +135,27 @@ const Person: NextPage<Props> = (props) => {
                     />
                   )}
 
-									{!isLoadingLinkedUser && !claimedProfile && (
-										<ElemButton
-											className="mt-2"
-											btn="primary"
-											onClick={() =>
-												showNewMessages(
-													`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
-												)
-											}
-										>
-											Claim profile
-										</ElemButton>
-									)}
+									<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+										{!isLoadingLinkedUser && !claimedProfile && (
+											<ElemButton
+												btn="primary"
+												onClick={() =>
+													showNewMessages(
+														`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
+													)
+												}
+											>
+												Claim profile
+											</ElemButton>
+										)}
+											
+										<ElemSaveToList
+											resourceName={person.name}
+											resourceId={person.id}
+											resourceType="people"
+											slug={person.slug!}
+										/>
+									</div>
 								</div>
 								<div className="mt-6 lg:mt-0"></div>
 							</div>

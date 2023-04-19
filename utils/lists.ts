@@ -24,6 +24,7 @@ import {
   UpsertListMutation,
   UpsertMembershipDocument,
   UpsertMembershipMutation,
+  Lists,
 } from "@/graphql/types";
 import { User } from '@/models/User';
 
@@ -216,4 +217,62 @@ export const insertListMembers = async (
     },
   });
   return insert_list_members_one;
+};
+
+
+export const checkFollowExists = async (
+  listId: number,
+  resourceId: number,
+  resourceType: string,
+  userId: number
+) => {
+  const {
+    data: { follows },
+  } = await query({
+    query: `
+    query CheckFollowExists($where: follows_bool_exp!) {
+      follows(where: $where, limit: 1) {
+        id
+      }
+    }
+    `,
+    variables: {
+      where: {
+        resource_id: { _eq: resourceId },
+        resource_type: { _eq: resourceType },
+        created_by_user_id: { _eq: userId },
+        list_id: { _eq: listId },
+      },
+    },
+  });
+
+  return follows;
+};
+
+export const triggerListUpdatedAt = async (id: number) => {
+  try {
+    const {
+      data: { update_lists },
+    } = await mutate({
+      mutation: `
+      mutation TriggerListUpdatedAt($id: Int!) {
+        update_lists(
+          where: {id: {_eq: $id}},
+          _set: {updated_at: "${new Date().toISOString()}"}
+        ) {
+          affected_rows 
+          returning {
+            id
+          }
+        }
+      }
+      `,
+      variables: {
+        id,
+      },
+    });
+    return update_lists.returning[0];
+  } catch (ex) {
+    throw ex;
+  }
 };

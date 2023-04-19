@@ -21,6 +21,7 @@ import {
 } from "@/components/Icons";
 import Link from "next/link";
 import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
+import { formatDate } from "@/utils/numbers";
 
 const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -67,6 +68,7 @@ type HitEventsProps = {
 		location_json: Record<string, string>;
 		start_date: string;
 		end_date: string;
+		timezone: string;
 		empty: boolean;
 	}>;
 };
@@ -102,37 +104,39 @@ const HitCompanies = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 							<IconImage className="object-contain max-w-full max-h-full text-slate-200" />
 						)}
 					</div>
-					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
-						<Highlight
-							attribute="name"
-							hit={hit}
-							classNames={{
-								highlighted:
-									"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
-							}}
-						/>
-					</h2>
-					{hit.coinTicker && (
-						<div className="ml-2 uppercase">
+					<div className="flex grow">
+						<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
 							<Highlight
-								attribute="coinTicker"
+								attribute="name"
 								hit={hit}
 								classNames={{
 									highlighted:
-										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
 								}}
 							/>
-						</div>
-					)}
-					<p className="ml-2 text-sm text-slate-600 line-clamp-1">
-						<Highlight
-							attribute="overview"
-							hit={hit}
-							classNames={{
-								highlighted: "bg-primary-100",
-							}}
-						/>
-					</p>
+						</h2>
+						{hit.coinTicker && (
+							<div className="ml-2 uppercase">
+								<Highlight
+									attribute="coinTicker"
+									hit={hit}
+									classNames={{
+										highlighted:
+											"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
+									}}
+								/>
+							</div>
+						)}
+						<p className="ml-2 text-sm text-slate-600 line-clamp-1">
+							<Highlight
+								attribute="overview"
+								hit={hit}
+								classNames={{
+									highlighted: "bg-primary-100",
+								}}
+							/>
+						</p>
+					</div>
 					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 				</a>
 			</Link>
@@ -266,42 +270,58 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 							}}
 						/>
 					</div>
-					<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
-						<Highlight
-							attribute="name"
-							hit={hit}
-							classNames={{
-								highlighted:
-									"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
-							}}
-						/>
-					</h2>
-					{hit.start_date && (
-						<p className="ml-2 text-sm text-slate-600 line-clamp-1">
+
+					<div className="flex grow">
+						<h2 className="min-w-fit font-bold whitespace nowrap ml-2 text-slate-600 group-hover:text-primary-500">
 							<Highlight
+								attribute="name"
+								hit={hit}
+								classNames={{
+									highlighted:
+										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
+								}}
+							/>
+						</h2>
+
+						{hit.start_date && (
+							<p className="ml-2 text-sm text-slate-600 line-clamp-1">
+								{formatDate(hit.start_date, {
+									month: "short",
+									day: "2-digit",
+									year: "numeric",
+									timeZone: hit.timezone || undefined,
+								})}
+								{/* <Highlight
 								attribute="start_date"
 								hit={hit}
 								classNames={{
 									highlighted:
 										"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
 								}}
-							/>
+							/> */}
 
-							{hit.end_date && (
-								<>
-									&nbsp;&ndash;&nbsp;
-									<Highlight
+								{hit.end_date && (
+									<>
+										&nbsp;&ndash;&nbsp;
+										{formatDate(hit.end_date, {
+											month: "short",
+											day: "2-digit",
+											year: "numeric",
+											timeZone: hit.timezone || undefined,
+										})}
+										{/* <Highlight
 										attribute="end_date"
 										hit={hit}
 										classNames={{
 											highlighted:
 												"text-primary-500 border-b-2 border-primary-500 opacity-100 bg-primary-100",
 										}}
-									/>
-								</>
-							)}
-						</p>
-					)}
+									/> */}
+									</>
+								)}
+							</p>
+						)}
+					</div>
 
 					<IconChevronRight className="h-4 w-4 ml-3 shrink-0 group-hover:text-primary-500" />
 				</a>

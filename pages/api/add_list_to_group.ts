@@ -7,6 +7,7 @@ import {
   InsertListUserGroupsDocument,
   InsertListUserGroupsMutation,
 } from "@/graphql/types";
+import { triggerListUpdatedAt } from "@/utils/lists";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -25,7 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     listIds.map(async (listId: number) => {
       const existList = await onFindListUserGroup(listId, groupId);
       if (!existList) {
-        return onAddListToGroup(listId, groupId);
+        const addToGroupResponse = await onAddListToGroup(listId, groupId);
+        await triggerListUpdatedAt(listId);
+        return addToGroupResponse;
       }
       return null;
     })

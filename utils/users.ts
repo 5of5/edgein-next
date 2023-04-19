@@ -268,6 +268,23 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   };
 };
 
+const findUserByPk = async (user_id: number) => {
+  const data = await query({
+    query: `
+    query FindUserByPk($user_id: Int!) {
+      users_by_pk(id: $user_id) {
+        id
+        person {
+          id
+        }
+      }
+    }
+      `,
+    variables: { user_id },
+  });
+  return data.data.users_by_pk;
+};
+
 const UserService = {
   queryForDisabledEmailCheck,
   queryForAllowedEmailCheck,
@@ -285,5 +302,6 @@ const UserService = {
   findOnePeopleBySlug,
   findOneUserByPersonId,
   createToken,
+  findUserByPk,
 };
 export default UserService;

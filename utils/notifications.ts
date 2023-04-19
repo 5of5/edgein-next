@@ -84,7 +84,7 @@ const getMessageContents = (
 		return "added new key info";
 	} else {
 		if (notificationResourceType === "team_members") {
-			return "deleted a team info";
+			return "deleted team info";
 		} else if (notificationResourceType === "investments") {
 			return "deleted investments data";
 		} else if (notificationResourceType === "investment_rounds") {

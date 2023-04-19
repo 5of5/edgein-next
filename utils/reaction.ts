@@ -6,7 +6,7 @@ type ReactionType = SentimentReactionType | ListReactionType;
 
 type SentimentReactionType = {
 	resourceId: number;
-	resourceType: "companies" | "vc_firms";
+	resourceType: "companies" | "vc_firms" | "people";
 	sentiment: "hot" | "like" | "crap";
 	listName?: undefined;
 	pathname: string;
@@ -14,7 +14,7 @@ type SentimentReactionType = {
 
 type ListReactionType = {
 	resourceId: number;
-	resourceType: "companies" | "vc_firms";
+	resourceType: "companies" | "vc_firms" | "people";
 	sentiment?: undefined;
 	listName: string;
 	pathname: string;
@@ -89,8 +89,12 @@ export const isOnList = (
 		list?.follows_vcfirms,
 		(follow) => follow?.resource_id === resourceId
 	);
+	const personIsOnList = find(
+		list?.follows_people,
+		(follow) => follow?.resource_id === resourceId
+	);
 
-	return companyIsOnList || investorIsOnList ? true : false;
+	return companyIsOnList || investorIsOnList || personIsOnList ? true : false;
 };
 
 export const isFollowsExists = (

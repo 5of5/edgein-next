@@ -39,7 +39,7 @@ const Contact: NextPage = () => {
 	};
 
 	return (
-		<div className="relative lg:py-10 lg:min-h-[40vh] -mb-24 pb-36 overflow-hidden">
+		<div className="relative -mb-24 overflow-hidden">
 			<FigureBlurredBg className="-top-10 md:-top-64 lg:-top-32" />
 			<div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
@@ -120,12 +120,11 @@ const Contact: NextPage = () => {
 						)}
 					</div>
 				</div>
-			</div>
-
-			<div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
-				<h2 className="max-w-3xl font-bold text-center text-2xl lg:text-3xl">
+				<h2 className="relative font-bold text-center pt-12 text-2xl lg:text-3xl">
 					Contact our PR team at{" "}
-					<a href="mailto:press@edgein.io">press@edgein.io</a>
+					<a href="mailto:press@edgein.io" className="hover:text-primary-500">
+						press@edgein.io
+					</a>
 				</h2>
 			</div>
 		</div>

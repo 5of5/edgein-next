@@ -6,19 +6,33 @@ import {
 	Notes_Bool_Exp,
 	useGetNotesQuery,
 } from "@/graphql/types";
-import { IconGroup, IconPlus, IconLockClosed } from "@/components/Icons";
+import {
+	IconGroup,
+	IconPlus,
+	IconLockClosed,
+	IconInformationCircle,
+} from "@/components/Icons";
 import { PlaceholderNote } from "./Placeholders";
 import { ElemButton } from "./ElemButton";
 import ElemNoteForm from "./ElemNoteForm";
 import { ElemPhoto } from "./ElemPhoto";
 import { useUser } from "@/context/userContext";
+import ElemNoteCard from "@/components/Group/ElemNoteCard";
+import { ElemTooltip } from "@/components/ElemTooltip";
+import { orderBy } from "lodash";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	resourceId: number;
 	resourceType: string;
+	setShowPopup?: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
+const ElemOrganizationNotes: FC<Props> = ({
+	resourceId,
+	resourceType,
+	setShowPopup,
+}) => {
 	const { user, myGroups } = useUser();
 
 	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
@@ -50,40 +64,62 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 		where: {
 			resource_id: { _eq: resourceId },
 			resource_type: { _eq: resourceType },
-			user_group_id: { _in: myGroups.map((item) => item.id) },
+			_or: [
+				{ _or: [{ audience: { _eq: "public" } }] },
+				{ _or: [{ user_group_id: { _in: myGroups.map((item) => item.id) } }] },
+				{
+					_or: [
+						{
+							_and: [
+								{ audience: { _eq: "only_me" } },
+								{ created_by: { _eq: user?.id } },
+							],
+						},
+					],
+				},
+			],
 		} as Notes_Bool_Exp,
 	});
 
 	const notes = noteList?.notes || [];
 
+	const sortedNotes = orderBy(notes, (a) => new Date(a.created_at), ["desc"]);
+
 	return (
 		<>
-			<div className="flex items-center justify-between">
-				<div>
-					<h2 className="text-xl font-bold">
-						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}
+			<div className="flex items-center justify-between mb-2">
+				<div className="flex items-center space-x-1">
+					<h2 className="flex items-center text-xl font-bold">
+						<IconLockClosed className="h-5 w-5 mr-1" title="Private" />
+						Notes{` ${notes.length > 0 ? "(" + notes.length + ")" : ""}`}{" "}
 					</h2>
-					<div className="flex gap-1">
-						<IconLockClosed className="h-4 w-4" title="Private" />
-						<p className="text-sm">Private</p>
-					</div>
+					<ElemTooltip
+						size="md"
+						content="Notes are private to you, but you can change the audience of any note."
+						//content="Only you can see your notes, but you can change the audience of any specific note."
+					>
+						<IconInformationCircle
+							className="h-5 w-5 text-primary-500"
+							title="About notes"
+						/>
+					</ElemTooltip>
 				</div>
-				<ElemButton btn="slate" onClick={onOpenNoteForm}>
-					<IconPlus className="w-6 h-6 mr-1" />
-					<span>Start a note</span>
+				<ElemButton btn="primary" onClick={onOpenNoteForm} className="!pl-3">
+					<IconPlus className="w-5 h-5 mr-1" />
+					<span>Create note</span>
 				</ElemButton>
 			</div>
 
 			{error ? (
 				<h4>Error loading notes</h4>
 			) : isLoading ? (
-				<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
-					{Array.from({ length: 3 }, (_, i) => (
+				<div className="grid gap-4 mt-4">
+					{Array.from({ length: 2 }, (_, i) => (
 						<PlaceholderNote key={i} />
 					))}
 				</div>
 			) : notes.length === 0 ? (
-				<div className="mt-4 flex items-start gap-2">
+				<div className="mt-4 flex items-start gap-2 bg-white shadow rounded-lg px-5 py-4">
 					<ElemPhoto
 						photo={user?.profilePicture || user?.person?.picture}
 						wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
@@ -96,12 +132,40 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 						className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
 						onClick={onOpenNoteForm}
 					>
-						Add a note about this profile and choose who can view.
+						Write your note...
 					</div>
 				</div>
 			) : (
 				<>
-					{notes.length > 0 && (
+					<div className="mt-4 flex items-start gap-2 bg-white shadow rounded-lg px-5 py-4">
+						<ElemPhoto
+							photo={user?.profilePicture || user?.person?.picture}
+							wrapClass="aspect-square shrink-0 bg-white overflow-hidden rounded-full w-10"
+							imgClass="object-contain w-full h-full rounded-full overflow-hidden border border-gray-50"
+							imgAlt={user?.display_name}
+							placeholder="user"
+							placeholderClass="text-slate-300"
+						/>
+						<div
+							className="w-full cursor-pointer bg-slate-100 rounded-full px-4 py-2 hover:bg-slate-200"
+							onClick={onOpenNoteForm}
+						>
+							Write your note...
+						</div>
+					</div>
+
+					<div className="mt-4 grid grid-cols-1 gap-4">
+						{sortedNotes.map((item) => (
+							<ElemNoteCard
+								key={item.id}
+								data={item}
+								refetch={refetch}
+								layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
+								setShowPopup={setShowPopup}
+							/>
+						))}
+					</div>
+					{/* {notes.length > 0 && (
 						<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
 							{notes.map((item) => (
 								<div
@@ -125,10 +189,6 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 											</p>
 										</div>
 
-										{/* <p className="text-sm text-slate-600">
-											Last edit {moment(item.updated_at).format("LL h:mma")}
-										</p> */}
-
 										<p className="text-sm text-slate-600">
 											Created {moment(item.created_at).format("LL")}
 										</p>
@@ -136,7 +196,7 @@ const ElemOrganizationNotes: FC<Props> = ({ resourceId, resourceType }) => {
 								</div>
 							))}
 						</div>
-					)}
+					)} */}
 				</>
 			)}
 

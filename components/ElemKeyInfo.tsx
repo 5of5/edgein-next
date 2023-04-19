@@ -22,6 +22,7 @@ import {
 	IconEye,
 	IconHome,
 	IconTicket,
+	IconDocument,
 } from "@/components/Icons";
 import {
 	convertToInternationalCurrencySystem,
@@ -31,10 +32,16 @@ import { getFullAddress } from "@/utils/helpers";
 import { ElemUpgradeDialog } from "./ElemUpgradeDialog";
 import { useAuth } from "@/hooks/useAuth";
 
+type Attachments = Array<{
+	label: string;
+	url: string;
+}>;
+
 type Props = {
 	className?: string;
 	heading?: string;
 	website?: string | null;
+	eventLink?: any | null;
 	totalFundingRaised?: string | null;
 	whitePaper?: string | null;
 	totalEmployees?: number;
@@ -56,12 +63,14 @@ type Props = {
 	glassdoor?: string | null;
 	careerPage?: string | null;
 	venue?: string | null;
+	attachments?: Attachments;
 };
 
 export const ElemKeyInfo: React.FC<Props> = ({
 	className,
 	heading,
 	website,
+	eventLink,
 	totalFundingRaised,
 	whitePaper,
 	totalEmployees,
@@ -83,6 +92,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	discord,
 	glassdoor,
 	venue,
+	attachments,
 }) => {
 	const { user } = useAuth();
 
@@ -113,6 +123,33 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: website,
 		});
 	}
+
+	if (eventLink) {
+		let getLink = eventLink;
+
+		if (getLink.includes("?q=")) {
+			const getUrl = getLink.split("?q=");
+			getLink = getUrl[1];
+		}
+
+		if (getLink.includes("&")) {
+			const getUrl = getLink.split("&");
+			getLink = getUrl[0];
+		}
+
+		const cleanUrl = getLink
+			.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "") // removes https://www;
+			.replace(/utm_[^&]+&?/g, "") // removes utm_xxx parameters;
+			.replace(/\?.*/g, "$'") // removes anything after ? character
+			.replace(/\/$/, ""); //removes last forward slash
+
+		infoItems.push({
+			icon: IconGlobe,
+			text: cleanUrl,
+			link: eventLink,
+		});
+	}
+
 	if (yearFounded) {
 		infoItems.push({
 			icon: IconFlag,
@@ -244,6 +281,16 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			icon: IconGlassdoor,
 			text: "Glassdoor",
 			link: glassdoor,
+		});
+	}
+
+	if (attachments && attachments.length > 0) {
+		attachments.forEach((item) => {
+			infoItems.push({
+				icon: IconDocument,
+				text: item.label,
+				link: item.url,
+			});
 		});
 	}
 

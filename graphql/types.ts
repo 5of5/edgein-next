@@ -1529,6 +1529,337 @@ export type Coins_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "comments" */
+export type Comments = {
+  __typename?: 'comments';
+  content: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  note: Maybe<Notes>;
+  note_id: Scalars['Int'];
+};
+
+/** aggregated selection of "comments" */
+export type Comments_Aggregate = {
+  __typename?: 'comments_aggregate';
+  aggregate: Maybe<Comments_Aggregate_Fields>;
+  nodes: Array<Comments>;
+};
+
+/** aggregate fields of "comments" */
+export type Comments_Aggregate_Fields = {
+  __typename?: 'comments_aggregate_fields';
+  avg: Maybe<Comments_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Comments_Max_Fields>;
+  min: Maybe<Comments_Min_Fields>;
+  stddev: Maybe<Comments_Stddev_Fields>;
+  stddev_pop: Maybe<Comments_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Comments_Stddev_Samp_Fields>;
+  sum: Maybe<Comments_Sum_Fields>;
+  var_pop: Maybe<Comments_Var_Pop_Fields>;
+  var_samp: Maybe<Comments_Var_Samp_Fields>;
+  variance: Maybe<Comments_Variance_Fields>;
+};
+
+
+/** aggregate fields of "comments" */
+export type Comments_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Comments_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "comments" */
+export type Comments_Aggregate_Order_By = {
+  avg: InputMaybe<Comments_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Comments_Max_Order_By>;
+  min: InputMaybe<Comments_Min_Order_By>;
+  stddev: InputMaybe<Comments_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Comments_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Comments_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Comments_Sum_Order_By>;
+  var_pop: InputMaybe<Comments_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Comments_Var_Samp_Order_By>;
+  variance: InputMaybe<Comments_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "comments" */
+export type Comments_Arr_Rel_Insert_Input = {
+  data: Array<Comments_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Comments_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Comments_Avg_Fields = {
+  __typename?: 'comments_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "comments" */
+export type Comments_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "comments". All fields are combined with a logical 'AND'. */
+export type Comments_Bool_Exp = {
+  _and: InputMaybe<Array<Comments_Bool_Exp>>;
+  _not: InputMaybe<Comments_Bool_Exp>;
+  _or: InputMaybe<Array<Comments_Bool_Exp>>;
+  content: InputMaybe<String_Comparison_Exp>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  note: InputMaybe<Notes_Bool_Exp>;
+  note_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "comments" */
+export enum Comments_Constraint {
+  /** unique or primary key constraint */
+  CommentsPkey = 'comments_pkey'
+}
+
+/** input type for incrementing numeric columns in table "comments" */
+export type Comments_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "comments" */
+export type Comments_Insert_Input = {
+  content: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note: InputMaybe<Notes_Obj_Rel_Insert_Input>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Comments_Max_Fields = {
+  __typename?: 'comments_max_fields';
+  content: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "comments" */
+export type Comments_Max_Order_By = {
+  content: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Comments_Min_Fields = {
+  __typename?: 'comments_min_fields';
+  content: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "comments" */
+export type Comments_Min_Order_By = {
+  content: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "comments" */
+export type Comments_Mutation_Response = {
+  __typename?: 'comments_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Comments>;
+};
+
+/** on_conflict condition type for table "comments" */
+export type Comments_On_Conflict = {
+  constraint: Comments_Constraint;
+  update_columns: Array<Comments_Update_Column>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "comments". */
+export type Comments_Order_By = {
+  content: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note: InputMaybe<Notes_Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: comments */
+export type Comments_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "comments" */
+export enum Comments_Select_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** input type for updating data in table "comments" */
+export type Comments_Set_Input = {
+  content: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Comments_Stddev_Fields = {
+  __typename?: 'comments_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "comments" */
+export type Comments_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Comments_Stddev_Pop_Fields = {
+  __typename?: 'comments_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "comments" */
+export type Comments_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Comments_Stddev_Samp_Fields = {
+  __typename?: 'comments_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "comments" */
+export type Comments_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Comments_Sum_Fields = {
+  __typename?: 'comments_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "comments" */
+export type Comments_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "comments" */
+export enum Comments_Update_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** aggregate var_pop on columns */
+export type Comments_Var_Pop_Fields = {
+  __typename?: 'comments_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "comments" */
+export type Comments_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Comments_Var_Samp_Fields = {
+  __typename?: 'comments_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "comments" */
+export type Comments_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Comments_Variance_Fields = {
+  __typename?: 'comments_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "comments" */
+export type Comments_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "companies" */
 export type Companies = {
   __typename?: 'companies';
@@ -5243,6 +5574,7 @@ export type Event_Person_Variance_Order_By = {
 /** columns and relationships of "events" */
 export type Events = {
   __typename?: 'events';
+  attachments: Scalars['jsonb'];
   banner: Maybe<Scalars['jsonb']>;
   created_at: Scalars['timestamptz'];
   discord: Maybe<Scalars['String']>;
@@ -5281,6 +5613,12 @@ export type Events = {
   types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
   venue_name: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsAttachmentsArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -5373,6 +5711,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
@@ -5391,6 +5730,7 @@ export type Events_Bool_Exp = {
   _and: InputMaybe<Array<Events_Bool_Exp>>;
   _not: InputMaybe<Events_Bool_Exp>;
   _or: InputMaybe<Array<Events_Bool_Exp>>;
+  attachments: InputMaybe<Jsonb_Comparison_Exp>;
   banner: InputMaybe<Jsonb_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   discord: InputMaybe<String_Comparison_Exp>;
@@ -5434,6 +5774,7 @@ export enum Events_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
+  attachments: InputMaybe<Array<Scalars['String']>>;
   banner: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   types: InputMaybe<Array<Scalars['String']>>;
@@ -5441,6 +5782,7 @@ export type Events_Delete_At_Path_Input = {
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
+  attachments: InputMaybe<Scalars['Int']>;
   banner: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   types: InputMaybe<Scalars['Int']>;
@@ -5448,6 +5790,7 @@ export type Events_Delete_Elem_Input = {
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
+  attachments: InputMaybe<Scalars['String']>;
   banner: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['String']>;
@@ -5462,6 +5805,7 @@ export type Events_Inc_Input = {
 
 /** input type for inserting data into table "events" */
 export type Events_Insert_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   discord: InputMaybe<Scalars['String']>;
@@ -5572,6 +5916,7 @@ export type Events_On_Conflict = {
 
 /** Ordering options when selecting data from "events". */
 export type Events_Order_By = {
+  attachments: InputMaybe<Order_By>;
   banner: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   discord: InputMaybe<Order_By>;
@@ -5612,6 +5957,7 @@ export type Events_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
@@ -5619,6 +5965,8 @@ export type Events_Prepend_Input = {
 
 /** select columns of table "events" */
 export enum Events_Select_Column {
+  /** column name */
+  Attachments = 'attachments',
   /** column name */
   Banner = 'banner',
   /** column name */
@@ -5679,6 +6027,7 @@ export enum Events_Select_Column {
 
 /** input type for updating data in table "events" */
 export type Events_Set_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
   discord: InputMaybe<Scalars['String']>;
@@ -5743,6 +6092,8 @@ export type Events_Sum_Fields = {
 
 /** update columns of table "events" */
 export enum Events_Update_Column {
+  /** column name */
+  Attachments = 'attachments',
   /** column name */
   Banner = 'banner',
   /** column name */
@@ -6296,6 +6647,315 @@ export type Follows_Order_By = {
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   resource_type: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "follows_people" */
+export type Follows_People = {
+  __typename?: 'follows_people';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  person: Maybe<People>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "follows_people" */
+export type Follows_People_Aggregate = {
+  __typename?: 'follows_people_aggregate';
+  aggregate: Maybe<Follows_People_Aggregate_Fields>;
+  nodes: Array<Follows_People>;
+};
+
+/** aggregate fields of "follows_people" */
+export type Follows_People_Aggregate_Fields = {
+  __typename?: 'follows_people_aggregate_fields';
+  avg: Maybe<Follows_People_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Follows_People_Max_Fields>;
+  min: Maybe<Follows_People_Min_Fields>;
+  stddev: Maybe<Follows_People_Stddev_Fields>;
+  stddev_pop: Maybe<Follows_People_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Follows_People_Stddev_Samp_Fields>;
+  sum: Maybe<Follows_People_Sum_Fields>;
+  var_pop: Maybe<Follows_People_Var_Pop_Fields>;
+  var_samp: Maybe<Follows_People_Var_Samp_Fields>;
+  variance: Maybe<Follows_People_Variance_Fields>;
+};
+
+
+/** aggregate fields of "follows_people" */
+export type Follows_People_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Follows_People_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "follows_people" */
+export type Follows_People_Aggregate_Order_By = {
+  avg: InputMaybe<Follows_People_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Follows_People_Max_Order_By>;
+  min: InputMaybe<Follows_People_Min_Order_By>;
+  stddev: InputMaybe<Follows_People_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Follows_People_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Follows_People_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Follows_People_Sum_Order_By>;
+  var_pop: InputMaybe<Follows_People_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Follows_People_Var_Samp_Order_By>;
+  variance: InputMaybe<Follows_People_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "follows_people" */
+export type Follows_People_Arr_Rel_Insert_Input = {
+  data: Array<Follows_People_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Follows_People_Avg_Fields = {
+  __typename?: 'follows_people_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "follows_people" */
+export type Follows_People_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "follows_people". All fields are combined with a logical 'AND'. */
+export type Follows_People_Bool_Exp = {
+  _and: InputMaybe<Array<Follows_People_Bool_Exp>>;
+  _not: InputMaybe<Follows_People_Bool_Exp>;
+  _or: InputMaybe<Array<Follows_People_Bool_Exp>>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  list_id: InputMaybe<Int_Comparison_Exp>;
+  person: InputMaybe<People_Bool_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "follows_people" */
+export type Follows_People_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "follows_people" */
+export type Follows_People_Insert_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  person: InputMaybe<People_Obj_Rel_Insert_Input>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Follows_People_Max_Fields = {
+  __typename?: 'follows_people_max_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "follows_people" */
+export type Follows_People_Max_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Follows_People_Min_Fields = {
+  __typename?: 'follows_people_min_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "follows_people" */
+export type Follows_People_Min_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "follows_people" */
+export type Follows_People_Mutation_Response = {
+  __typename?: 'follows_people_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Follows_People>;
+};
+
+/** Ordering options when selecting data from "follows_people". */
+export type Follows_People_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  person: InputMaybe<People_Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+};
+
+/** select columns of table "follows_people" */
+export enum Follows_People_Select_Column {
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListId = 'list_id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type'
+}
+
+/** input type for updating data in table "follows_people" */
+export type Follows_People_Set_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Follows_People_Stddev_Fields = {
+  __typename?: 'follows_people_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "follows_people" */
+export type Follows_People_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Follows_People_Stddev_Pop_Fields = {
+  __typename?: 'follows_people_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "follows_people" */
+export type Follows_People_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Follows_People_Stddev_Samp_Fields = {
+  __typename?: 'follows_people_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "follows_people" */
+export type Follows_People_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Follows_People_Sum_Fields = {
+  __typename?: 'follows_people_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "follows_people" */
+export type Follows_People_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Follows_People_Var_Pop_Fields = {
+  __typename?: 'follows_people_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "follows_people" */
+export type Follows_People_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Follows_People_Var_Samp_Fields = {
+  __typename?: 'follows_people_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "follows_people" */
+export type Follows_People_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Follows_People_Variance_Fields = {
+  __typename?: 'follows_people_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "follows_people" */
+export type Follows_People_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: follows */
@@ -8052,6 +8712,324 @@ export type Jsonb_Comparison_Exp = {
   _nin: InputMaybe<Array<Scalars['jsonb']>>;
 };
 
+/** columns and relationships of "likes" */
+export type Likes = {
+  __typename?: 'likes';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  note: Maybe<Notes>;
+  note_id: Scalars['Int'];
+};
+
+/** aggregated selection of "likes" */
+export type Likes_Aggregate = {
+  __typename?: 'likes_aggregate';
+  aggregate: Maybe<Likes_Aggregate_Fields>;
+  nodes: Array<Likes>;
+};
+
+/** aggregate fields of "likes" */
+export type Likes_Aggregate_Fields = {
+  __typename?: 'likes_aggregate_fields';
+  avg: Maybe<Likes_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Likes_Max_Fields>;
+  min: Maybe<Likes_Min_Fields>;
+  stddev: Maybe<Likes_Stddev_Fields>;
+  stddev_pop: Maybe<Likes_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Likes_Stddev_Samp_Fields>;
+  sum: Maybe<Likes_Sum_Fields>;
+  var_pop: Maybe<Likes_Var_Pop_Fields>;
+  var_samp: Maybe<Likes_Var_Samp_Fields>;
+  variance: Maybe<Likes_Variance_Fields>;
+};
+
+
+/** aggregate fields of "likes" */
+export type Likes_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Likes_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "likes" */
+export type Likes_Aggregate_Order_By = {
+  avg: InputMaybe<Likes_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Likes_Max_Order_By>;
+  min: InputMaybe<Likes_Min_Order_By>;
+  stddev: InputMaybe<Likes_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Likes_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Likes_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Likes_Sum_Order_By>;
+  var_pop: InputMaybe<Likes_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Likes_Var_Samp_Order_By>;
+  variance: InputMaybe<Likes_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "likes" */
+export type Likes_Arr_Rel_Insert_Input = {
+  data: Array<Likes_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Likes_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Likes_Avg_Fields = {
+  __typename?: 'likes_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "likes" */
+export type Likes_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "likes". All fields are combined with a logical 'AND'. */
+export type Likes_Bool_Exp = {
+  _and: InputMaybe<Array<Likes_Bool_Exp>>;
+  _not: InputMaybe<Likes_Bool_Exp>;
+  _or: InputMaybe<Array<Likes_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  note: InputMaybe<Notes_Bool_Exp>;
+  note_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "likes" */
+export enum Likes_Constraint {
+  /** unique or primary key constraint */
+  LikesPkey = 'likes_pkey'
+}
+
+/** input type for incrementing numeric columns in table "likes" */
+export type Likes_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "likes" */
+export type Likes_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note: InputMaybe<Notes_Obj_Rel_Insert_Input>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Likes_Max_Fields = {
+  __typename?: 'likes_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "likes" */
+export type Likes_Max_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Likes_Min_Fields = {
+  __typename?: 'likes_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "likes" */
+export type Likes_Min_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "likes" */
+export type Likes_Mutation_Response = {
+  __typename?: 'likes_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Likes>;
+};
+
+/** on_conflict condition type for table "likes" */
+export type Likes_On_Conflict = {
+  constraint: Likes_Constraint;
+  update_columns: Array<Likes_Update_Column>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "likes". */
+export type Likes_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note: InputMaybe<Notes_Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: likes */
+export type Likes_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "likes" */
+export enum Likes_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** input type for updating data in table "likes" */
+export type Likes_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Likes_Stddev_Fields = {
+  __typename?: 'likes_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "likes" */
+export type Likes_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Likes_Stddev_Pop_Fields = {
+  __typename?: 'likes_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "likes" */
+export type Likes_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Likes_Stddev_Samp_Fields = {
+  __typename?: 'likes_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "likes" */
+export type Likes_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Likes_Sum_Fields = {
+  __typename?: 'likes_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "likes" */
+export type Likes_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "likes" */
+export enum Likes_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** aggregate var_pop on columns */
+export type Likes_Var_Pop_Fields = {
+  __typename?: 'likes_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "likes" */
+export type Likes_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Likes_Var_Samp_Fields = {
+  __typename?: 'likes_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "likes" */
+export type Likes_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Likes_Variance_Fields = {
+  __typename?: 'likes_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "likes" */
+export type Likes_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "list_members" */
 export type List_Members = {
   __typename?: 'list_members';
@@ -8696,6 +9674,10 @@ export type Lists = {
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
   /** An array relationship */
+  follows_people: Array<Follows_People>;
+  /** An aggregate relationship */
+  follows_people_aggregate: Follows_People_Aggregate;
+  /** An array relationship */
   follows_vcfirms: Array<Follows_Vc_Firms>;
   /** An aggregate relationship */
   follows_vcfirms_aggregate: Follows_Vc_Firms_Aggregate;
@@ -8709,6 +9691,7 @@ export type Lists = {
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
   type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   user_groups: Array<List_User_Groups>;
   /** An aggregate relationship */
@@ -8733,6 +9716,26 @@ export type ListsFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsFollows_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsFollows_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
 };
 
 
@@ -8841,6 +9844,7 @@ export type Lists_Bool_Exp = {
   created_by: InputMaybe<Users_Bool_Exp>;
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
+  follows_people: InputMaybe<Follows_People_Bool_Exp>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
@@ -8848,6 +9852,7 @@ export type Lists_Bool_Exp = {
   public: InputMaybe<Boolean_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
   type: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
 };
 
@@ -8871,12 +9876,14 @@ export type Lists_Insert_Input = {
   created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
+  follows_people: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
   public: InputMaybe<Scalars['Boolean']>;
   type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
   user_groups: InputMaybe<List_User_Groups_Arr_Rel_Insert_Input>;
 };
 
@@ -8888,6 +9895,7 @@ export type Lists_Max_Fields = {
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
@@ -8898,6 +9906,7 @@ export type Lists_Min_Fields = {
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
   type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "lists" */
@@ -8929,6 +9938,7 @@ export type Lists_Order_By = {
   created_by: InputMaybe<Users_Order_By>;
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
+  follows_people_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
   follows_vcfirms_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
@@ -8936,6 +9946,7 @@ export type Lists_Order_By = {
   public: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
   type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
   user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Order_By>;
 };
 
@@ -8957,7 +9968,9 @@ export enum Lists_Select_Column {
   /** column name */
   Public = 'public',
   /** column name */
-  Type = 'type'
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "lists" */
@@ -8968,6 +9981,7 @@ export type Lists_Set_Input = {
   name: InputMaybe<Scalars['String']>;
   public: InputMaybe<Scalars['Boolean']>;
   type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate stddev on columns */
@@ -9011,7 +10025,9 @@ export enum Lists_Update_Column {
   /** column name */
   Public = 'public',
   /** column name */
-  Type = 'type'
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -9062,6 +10078,10 @@ export type Mutation_Root = {
   delete_coins: Maybe<Coins_Mutation_Response>;
   /** delete single row from the table: "coins" */
   delete_coins_by_pk: Maybe<Coins>;
+  /** delete data from the table: "comments" */
+  delete_comments: Maybe<Comments_Mutation_Response>;
+  /** delete single row from the table: "comments" */
+  delete_comments_by_pk: Maybe<Comments>;
   /** delete data from the table: "companies" */
   delete_companies: Maybe<Companies_Mutation_Response>;
   /** delete single row from the table: "companies" */
@@ -9114,6 +10134,8 @@ export type Mutation_Root = {
   delete_follows_by_pk: Maybe<Follows>;
   /** delete data from the table: "follows_companies" */
   delete_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** delete data from the table: "follows_people" */
+  delete_follows_people: Maybe<Follows_People_Mutation_Response>;
   /** delete data from the table: "follows_vc_firms" */
   delete_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** delete data from the table: "investment_rounds" */
@@ -9128,6 +10150,10 @@ export type Mutation_Root = {
   delete_investors: Maybe<Investors_Mutation_Response>;
   /** delete single row from the table: "investors" */
   delete_investors_by_pk: Maybe<Investors>;
+  /** delete data from the table: "likes" */
+  delete_likes: Maybe<Likes_Mutation_Response>;
+  /** delete single row from the table: "likes" */
+  delete_likes_by_pk: Maybe<Likes>;
   /** delete data from the table: "list_members" */
   delete_list_members: Maybe<List_Members_Mutation_Response>;
   /** delete single row from the table: "list_members" */
@@ -9234,6 +10260,10 @@ export type Mutation_Root = {
   insert_coins: Maybe<Coins_Mutation_Response>;
   /** insert a single row into the table: "coins" */
   insert_coins_one: Maybe<Coins>;
+  /** insert data into the table: "comments" */
+  insert_comments: Maybe<Comments_Mutation_Response>;
+  /** insert a single row into the table: "comments" */
+  insert_comments_one: Maybe<Comments>;
   /** insert data into the table: "companies" */
   insert_companies: Maybe<Companies_Mutation_Response>;
   /** insert data into the table: "companies_edit_access" */
@@ -9290,6 +10320,10 @@ export type Mutation_Root = {
   insert_follows_companies_one: Maybe<Follows_Companies>;
   /** insert a single row into the table: "follows" */
   insert_follows_one: Maybe<Follows>;
+  /** insert data into the table: "follows_people" */
+  insert_follows_people: Maybe<Follows_People_Mutation_Response>;
+  /** insert a single row into the table: "follows_people" */
+  insert_follows_people_one: Maybe<Follows_People>;
   /** insert data into the table: "follows_vc_firms" */
   insert_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** insert a single row into the table: "follows_vc_firms" */
@@ -9306,6 +10340,10 @@ export type Mutation_Root = {
   insert_investors: Maybe<Investors_Mutation_Response>;
   /** insert a single row into the table: "investors" */
   insert_investors_one: Maybe<Investors>;
+  /** insert data into the table: "likes" */
+  insert_likes: Maybe<Likes_Mutation_Response>;
+  /** insert a single row into the table: "likes" */
+  insert_likes_one: Maybe<Likes>;
   /** insert data into the table: "list_members" */
   insert_list_members: Maybe<List_Members_Mutation_Response>;
   /** insert a single row into the table: "list_members" */
@@ -9414,6 +10452,10 @@ export type Mutation_Root = {
   update_coins: Maybe<Coins_Mutation_Response>;
   /** update single row of the table: "coins" */
   update_coins_by_pk: Maybe<Coins>;
+  /** update data of the table: "comments" */
+  update_comments: Maybe<Comments_Mutation_Response>;
+  /** update single row of the table: "comments" */
+  update_comments_by_pk: Maybe<Comments>;
   /** update data of the table: "companies" */
   update_companies: Maybe<Companies_Mutation_Response>;
   /** update single row of the table: "companies" */
@@ -9466,6 +10508,8 @@ export type Mutation_Root = {
   update_follows_by_pk: Maybe<Follows>;
   /** update data of the table: "follows_companies" */
   update_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** update data of the table: "follows_people" */
+  update_follows_people: Maybe<Follows_People_Mutation_Response>;
   /** update data of the table: "follows_vc_firms" */
   update_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** update data of the table: "investment_rounds" */
@@ -9480,6 +10524,10 @@ export type Mutation_Root = {
   update_investors: Maybe<Investors_Mutation_Response>;
   /** update single row of the table: "investors" */
   update_investors_by_pk: Maybe<Investors>;
+  /** update data of the table: "likes" */
+  update_likes: Maybe<Likes_Mutation_Response>;
+  /** update single row of the table: "likes" */
+  update_likes_by_pk: Maybe<Likes>;
   /** update data of the table: "list_members" */
   update_list_members: Maybe<List_Members_Mutation_Response>;
   /** update single row of the table: "list_members" */
@@ -9633,6 +10681,18 @@ export type Mutation_RootDelete_CoinsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Coins_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_CommentsArgs = {
+  where: Comments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Comments_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9794,6 +10854,12 @@ export type Mutation_RootDelete_Follows_CompaniesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Follows_PeopleArgs = {
+  where: Follows_People_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Follows_Vc_FirmsArgs = {
   where: Follows_Vc_Firms_Bool_Exp;
 };
@@ -9831,6 +10897,18 @@ export type Mutation_RootDelete_InvestorsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Investors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LikesArgs = {
+  where: Likes_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Likes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -10166,6 +11244,20 @@ export type Mutation_RootInsert_Coins_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_CommentsArgs = {
+  objects: Array<Comments_Insert_Input>;
+  on_conflict: InputMaybe<Comments_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Comments_OneArgs = {
+  object: Comments_Insert_Input;
+  on_conflict: InputMaybe<Comments_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_CompaniesArgs = {
   objects: Array<Companies_Insert_Input>;
   on_conflict: InputMaybe<Companies_On_Conflict>;
@@ -10358,6 +11450,18 @@ export type Mutation_RootInsert_Follows_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Follows_PeopleArgs = {
+  objects: Array<Follows_People_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Follows_People_OneArgs = {
+  object: Follows_People_Insert_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Follows_Vc_FirmsArgs = {
   objects: Array<Follows_Vc_Firms_Insert_Input>;
 };
@@ -10408,6 +11512,20 @@ export type Mutation_RootInsert_InvestorsArgs = {
 export type Mutation_RootInsert_Investors_OneArgs = {
   object: Investors_Insert_Input;
   on_conflict: InputMaybe<Investors_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LikesArgs = {
+  objects: Array<Likes_Insert_Input>;
+  on_conflict: InputMaybe<Likes_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Likes_OneArgs = {
+  object: Likes_Insert_Input;
+  on_conflict: InputMaybe<Likes_On_Conflict>;
 };
 
 
@@ -10810,6 +11928,22 @@ export type Mutation_RootUpdate_Coins_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_CommentsArgs = {
+  _inc: InputMaybe<Comments_Inc_Input>;
+  _set: InputMaybe<Comments_Set_Input>;
+  where: Comments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Comments_By_PkArgs = {
+  _inc: InputMaybe<Comments_Inc_Input>;
+  _set: InputMaybe<Comments_Set_Input>;
+  pk_columns: Comments_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_CompaniesArgs = {
   _append: InputMaybe<Companies_Append_Input>;
   _delete_at_path: InputMaybe<Companies_Delete_At_Path_Input>;
@@ -11058,6 +12192,14 @@ export type Mutation_RootUpdate_Follows_CompaniesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Follows_PeopleArgs = {
+  _inc: InputMaybe<Follows_People_Inc_Input>;
+  _set: InputMaybe<Follows_People_Set_Input>;
+  where: Follows_People_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Follows_Vc_FirmsArgs = {
   _inc: InputMaybe<Follows_Vc_Firms_Inc_Input>;
   _set: InputMaybe<Follows_Vc_Firms_Set_Input>;
@@ -11110,6 +12252,22 @@ export type Mutation_RootUpdate_Investors_By_PkArgs = {
   _inc: InputMaybe<Investors_Inc_Input>;
   _set: InputMaybe<Investors_Set_Input>;
   pk_columns: Investors_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LikesArgs = {
+  _inc: InputMaybe<Likes_Inc_Input>;
+  _set: InputMaybe<Likes_Set_Input>;
+  where: Likes_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Likes_By_PkArgs = {
+  _inc: InputMaybe<Likes_Inc_Input>;
+  _set: InputMaybe<Likes_Set_Input>;
+  pk_columns: Likes_Pk_Columns_Input;
 };
 
 
@@ -12112,16 +13270,65 @@ export type News_Variance_Fields = {
 /** columns and relationships of "notes" */
 export type Notes = {
   __typename?: 'notes';
+  audience: Maybe<Scalars['String']>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
   created_at: Scalars['timestamp'];
   created_by: Scalars['Int'];
   id: Scalars['Int'];
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
   notes: Scalars['String'];
   resource_id: Maybe<Scalars['Int']>;
   resource_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
-  user_group: User_Groups;
-  user_group_id: Scalars['Int'];
+  user_group: Maybe<User_Groups>;
+  user_group_id: Maybe<Scalars['Int']>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesCommentsArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesComments_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesLikesArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesLikes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
 };
 
 /** aggregated selection of "notes" */
@@ -12198,9 +13405,12 @@ export type Notes_Bool_Exp = {
   _and: InputMaybe<Array<Notes_Bool_Exp>>;
   _not: InputMaybe<Notes_Bool_Exp>;
   _or: InputMaybe<Array<Notes_Bool_Exp>>;
+  audience: InputMaybe<String_Comparison_Exp>;
+  comments: InputMaybe<Comments_Bool_Exp>;
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
   created_by: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  likes: InputMaybe<Likes_Bool_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
   resource_type: InputMaybe<String_Comparison_Exp>;
@@ -12225,9 +13435,12 @@ export type Notes_Inc_Input = {
 
 /** input type for inserting data into table "notes" */
 export type Notes_Insert_Input = {
+  audience: InputMaybe<Scalars['String']>;
+  comments: InputMaybe<Comments_Arr_Rel_Insert_Input>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  likes: InputMaybe<Likes_Arr_Rel_Insert_Input>;
   notes: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
   resource_type: InputMaybe<Scalars['String']>;
@@ -12239,6 +13452,7 @@ export type Notes_Insert_Input = {
 /** aggregate max on columns */
 export type Notes_Max_Fields = {
   __typename?: 'notes_max_fields';
+  audience: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamp']>;
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
@@ -12251,6 +13465,7 @@ export type Notes_Max_Fields = {
 
 /** order by max() on columns of table "notes" */
 export type Notes_Max_Order_By = {
+  audience: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -12264,6 +13479,7 @@ export type Notes_Max_Order_By = {
 /** aggregate min on columns */
 export type Notes_Min_Fields = {
   __typename?: 'notes_min_fields';
+  audience: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamp']>;
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
@@ -12276,6 +13492,7 @@ export type Notes_Min_Fields = {
 
 /** order by min() on columns of table "notes" */
 export type Notes_Min_Order_By = {
+  audience: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -12295,6 +13512,13 @@ export type Notes_Mutation_Response = {
   returning: Array<Notes>;
 };
 
+/** input type for inserting object relation for remote table "notes" */
+export type Notes_Obj_Rel_Insert_Input = {
+  data: Notes_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<Notes_On_Conflict>;
+};
+
 /** on_conflict condition type for table "notes" */
 export type Notes_On_Conflict = {
   constraint: Notes_Constraint;
@@ -12304,9 +13528,12 @@ export type Notes_On_Conflict = {
 
 /** Ordering options when selecting data from "notes". */
 export type Notes_Order_By = {
+  audience: InputMaybe<Order_By>;
+  comments_aggregate: InputMaybe<Comments_Aggregate_Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  likes_aggregate: InputMaybe<Likes_Aggregate_Order_By>;
   notes: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   resource_type: InputMaybe<Order_By>;
@@ -12322,6 +13549,8 @@ export type Notes_Pk_Columns_Input = {
 
 /** select columns of table "notes" */
 export enum Notes_Select_Column {
+  /** column name */
+  Audience = 'audience',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -12342,6 +13571,7 @@ export enum Notes_Select_Column {
 
 /** input type for updating data in table "notes" */
 export type Notes_Set_Input = {
+  audience: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
@@ -12422,6 +13652,8 @@ export type Notes_Sum_Order_By = {
 
 /** update columns of table "notes" */
 export enum Notes_Update_Column {
+  /** column name */
+  Audience = 'audience',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -13799,6 +15031,12 @@ export type Query_Root = {
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
+  /** fetch data from the table: "comments" using primary key columns */
+  comments_by_pk: Maybe<Comments>;
   /** fetch data from the table: "companies" */
   companies: Array<Companies>;
   /** fetch aggregated fields from the table: "companies" */
@@ -13879,6 +15117,10 @@ export type Query_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** An array relationship */
+  follows_people: Array<Follows_People>;
+  /** An aggregate relationship */
+  follows_people_aggregate: Follows_People_Aggregate;
   /** fetch data from the table: "follows_vc_firms" */
   follows_vc_firms: Array<Follows_Vc_Firms>;
   /** fetch aggregated fields from the table: "follows_vc_firms" */
@@ -13901,6 +15143,12 @@ export type Query_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
+  /** fetch data from the table: "likes" using primary key columns */
+  likes_by_pk: Maybe<Likes>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
@@ -14162,6 +15410,29 @@ export type Query_RootCoins_AggregateArgs = {
 
 
 export type Query_RootCoins_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootCommentsArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Query_RootComments_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Query_RootComments_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -14478,6 +15749,24 @@ export type Query_RootFollows_Companies_AggregateArgs = {
 };
 
 
+export type Query_RootFollows_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+export type Query_RootFollows_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
 export type Query_RootFollows_Vc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14561,6 +15850,29 @@ export type Query_RootInvestors_AggregateArgs = {
 
 
 export type Query_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootLikesArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Query_RootLikes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Query_RootLikes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -15940,6 +17252,12 @@ export type Subscription_Root = {
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
+  /** fetch data from the table: "comments" using primary key columns */
+  comments_by_pk: Maybe<Comments>;
   /** fetch data from the table: "companies" */
   companies: Array<Companies>;
   /** fetch aggregated fields from the table: "companies" */
@@ -16020,6 +17338,10 @@ export type Subscription_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** An array relationship */
+  follows_people: Array<Follows_People>;
+  /** An aggregate relationship */
+  follows_people_aggregate: Follows_People_Aggregate;
   /** fetch data from the table: "follows_vc_firms" */
   follows_vc_firms: Array<Follows_Vc_Firms>;
   /** fetch aggregated fields from the table: "follows_vc_firms" */
@@ -16042,6 +17364,12 @@ export type Subscription_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
+  /** fetch data from the table: "likes" using primary key columns */
+  likes_by_pk: Maybe<Likes>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
@@ -16303,6 +17631,29 @@ export type Subscription_RootCoins_AggregateArgs = {
 
 
 export type Subscription_RootCoins_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootCommentsArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Subscription_RootComments_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Subscription_RootComments_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -16619,6 +17970,24 @@ export type Subscription_RootFollows_Companies_AggregateArgs = {
 };
 
 
+export type Subscription_RootFollows_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollows_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
 export type Subscription_RootFollows_Vc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -16702,6 +18071,29 @@ export type Subscription_RootInvestors_AggregateArgs = {
 
 
 export type Subscription_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootLikesArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -20680,7 +22072,7 @@ export type GetEventQueryVariables = Exact<{
 }>;
 
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -20694,7 +22086,7 @@ export type GetFollowsByUserQueryVariables = Exact<{
 }>;
 
 
-export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, created_by_id: number, created_at: any | null, total_no_of_resources: number | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }> } }> };
+export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, updated_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } }> };
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -20741,20 +22133,26 @@ export type GetFollowsByResourceQueryVariables = Exact<{
 
 
 export type GetFollowsByResourceQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null, list: { __typename?: 'lists', list_members: Array<{ __typename?: 'list_members', id: number, user_id: number }> } | null }> };
+export type GetPeopleByListIdQueryVariables = Exact<{
+  list_id?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetPeopleByListIdQuery = { __typename?: 'query_root', follows_people: Array<{ __typename?: 'follows_people', id: number | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, type: string | null, personal_email: string | null, work_email: string | null, city: string | null, country: string | null, website_url: string | null, github: string | null, twitter_url: string | null, linkedin: string | null } | null }> };
 
 export type GetGroupsOfUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
 
 
-export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
+export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
+export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
 
 export type InsertUserGroupMutationVariables = Exact<{
   object: User_Groups_Insert_Input;
@@ -20912,14 +22310,14 @@ export type GetListUserGroupsQueryVariables = Exact<{
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
 }>;
 
 
-export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
+export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
 
 export type GetListUserGroupsByListIdQueryVariables = Exact<{
   listId: Scalars['Int'];
@@ -21007,7 +22405,7 @@ export type GetNotesQueryVariables = Exact<{
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
+export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number | null, audience: string | null, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
 
 export type GetNoteByIdQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -22235,6 +23633,7 @@ export const GetEventDocument = `
     discord
     telegram
     is_featured
+    attachments
     created_at
     event_person {
       id
@@ -22244,10 +23643,30 @@ export const GetEventDocument = `
         id
         slug
         name
+        type
         picture
         linkedin
         personal_email
         work_email
+        investors {
+          id
+          title
+          vc_firm {
+            id
+            slug
+            name
+          }
+        }
+        team_members {
+          id
+          founder
+          title
+          company {
+            id
+            slug
+            name
+          }
+        }
       }
     }
     event_organization {
@@ -22331,13 +23750,28 @@ export const GetFollowsByUserDocument = `
     list {
       name
       id
+      public
       created_by_id
+      created_by {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+        }
+      }
       created_at
+      updated_at
       total_no_of_resources
       follows_companies {
         resource_id
       }
       follows_vcfirms {
+        resource_id
+      }
+      follows_people {
         resource_id
       }
     }
@@ -22566,6 +24000,47 @@ useGetFollowsByResourceQuery.getKey = (variables: GetFollowsByResourceQueryVaria
 ;
 
 useGetFollowsByResourceQuery.fetcher = (variables: GetFollowsByResourceQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables, options);
+export const GetPeopleByListIdDocument = `
+    query GetPeopleByListId($list_id: Int = 0) {
+  follows_people(where: {list_id: {_eq: $list_id}}) {
+    id
+    person {
+      id
+      name
+      picture
+      slug
+      type
+      personal_email
+      work_email
+      city
+      country
+      website_url
+      github
+      twitter_url
+      linkedin
+    }
+  }
+}
+    `;
+export const useGetPeopleByListIdQuery = <
+      TData = GetPeopleByListIdQuery,
+      TError = Error
+    >(
+      variables?: GetPeopleByListIdQueryVariables,
+      options?: UseQueryOptions<GetPeopleByListIdQuery, TError, TData>
+    ) =>
+    useQuery<GetPeopleByListIdQuery, TError, TData>(
+      variables === undefined ? ['GetPeopleByListId'] : ['GetPeopleByListId', variables],
+      fetcher<GetPeopleByListIdQuery, GetPeopleByListIdQueryVariables>(GetPeopleByListIdDocument, variables),
+      options
+    );
+useGetPeopleByListIdQuery.document = GetPeopleByListIdDocument;
+
+
+useGetPeopleByListIdQuery.getKey = (variables?: GetPeopleByListIdQueryVariables) => variables === undefined ? ['GetPeopleByListId'] : ['GetPeopleByListId', variables];
+;
+
+useGetPeopleByListIdQuery.fetcher = (variables?: GetPeopleByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByListIdQuery, GetPeopleByListIdQueryVariables>(GetPeopleByListIdDocument, variables, options);
 export const GetGroupsOfUserDocument = `
     query GetGroupsOfUser($user_id: Int!) {
   user_group_members(where: {user_id: {_eq: $user_id}}) {
@@ -22584,6 +24059,7 @@ export const GetGroupsOfUserDocument = `
       telegram
       twitter
       discord
+      public
       created_by {
         id
         display_name
@@ -22623,6 +24099,7 @@ export const GetGroupDocument = `
     telegram
     twitter
     discord
+    public
     created_by_user_id
     created_by {
       id
@@ -23224,6 +24701,7 @@ export const GetListUserGroupsDocument = `
     list {
       id
       name
+      public
       created_at
       created_by {
         id
@@ -23267,6 +24745,7 @@ export const GetListMembersDocument = `
     list {
       id
       name
+      public
       created_at
       created_by {
         id
@@ -23568,11 +25047,45 @@ export const GetNotesDocument = `
     created_at
     updated_at
     user_group_id
+    audience
     resource_type
     resource_id
     user_group {
       id
       name
+    }
+    likes {
+      id
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
+    comments {
+      id
+      content
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
     }
   }
 }

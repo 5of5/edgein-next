@@ -17,7 +17,7 @@ import { find } from "lodash";
 type Props = {
 	resourceName: string | null;
 	resourceId: number;
-	resourceType: "companies" | "vc_firms";
+	resourceType: "companies" | "vc_firms" | "people";
 	slug: string;
 };
 
@@ -51,11 +51,14 @@ export const ElemSaveToList: FC<Props> = ({
 				return listAndFollows
 					.filter((item) => {
 						const sentiment = getNameFromListName(item);
-						return !["hot", "like", "crap"].includes(sentiment);
+						return (
+              !["hot", "like", "crap"].includes(sentiment) &&
+              item.created_by_id === user?.id
+            );
 					})
 					.sort((a, b) => (a.name < b.name ? -1 : 1));
 			});
-	}, [listAndFollows]);
+	}, [listAndFollows, user]);
 
 	const toggleToList = async (listName: string, action: "add" | "remove") => {
 		if (listName && user) {
@@ -68,10 +71,14 @@ export const ElemSaveToList: FC<Props> = ({
 						name: listName,
 						id: -1,
 						created_by_id: user.id,
+						created_by: null,
 						created_at: "",
 						follows_companies: [],
 						follows_vcfirms: [],
+						follows_people: [],
 						total_no_of_resources: 0,
+						public: false,
+						updated_at: "",
 					};
 					newLists.push(list);
 				} else {
@@ -90,6 +97,12 @@ export const ElemSaveToList: FC<Props> = ({
 							{ __typename: "follows_vc_firms", resource_id: resourceId },
 						];
 					}
+					if (resourceType === "people") {
+						list.follows_people = [
+							...list.follows_people,
+							{ __typename: "follows_people", resource_id: resourceId },
+						];
+					}
 				} else {
 					if (resourceType === "companies") {
 						list.follows_companies = [
@@ -101,6 +114,13 @@ export const ElemSaveToList: FC<Props> = ({
 					if (resourceType === "vc_firms") {
 						list.follows_vcfirms = [
 							...list.follows_vcfirms.filter(
+								(i) => i.resource_id !== resourceId
+							),
+						];
+					}
+					if (resourceType === "people") {
+						list.follows_people = [
+							...list.follows_people.filter(
 								(i) => i.resource_id !== resourceId
 							),
 						];
