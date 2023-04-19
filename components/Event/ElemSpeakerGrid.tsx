@@ -28,6 +28,30 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
 
 			<div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{people.slice(0, peopleLimit).map((item) => {
+					const isFounder = item.person?.team_members[0]?.founder
+						? true
+						: false;
+
+					let personTitle = undefined;
+					let personOrganizationName = undefined;
+					if (item.person && item.person.team_members.length > 0) {
+						personTitle = item.person.team_members[0].title
+							? item.person?.team_members[0].title
+							: "";
+
+						if (item.person.team_members[0].company) {
+							personOrganizationName =
+								item.person?.team_members[0].company.name;
+						}
+					} else if (item.person && item.person.investors.length > 0) {
+						personTitle = item.person.investors[0].title
+							? item.person.investors[0].title
+							: "";
+						if (item.person.investors[0].vc_firm) {
+							personOrganizationName = item.person?.investors[0].vc_firm.name;
+						}
+					}
+
 					return (
 						<React.Fragment key={item.id}>
 							{item.person && (
@@ -39,6 +63,9 @@ export const ElemSpeakerGrid: React.FC<Props> = ({ people }) => {
 									linkedin={item.person.linkedin}
 									personal_email={item.person.personal_email}
 									work_email={item.person.work_email}
+									founder={isFounder}
+									text={personTitle}
+									organizationName={personOrganizationName}
 								/>
 							)}
 						</React.Fragment>
