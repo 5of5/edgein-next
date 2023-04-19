@@ -72,18 +72,15 @@ const Notes: FC<Props> = () => {
 					</div>
 				) : notes.length === 0 ? (
 					<div className="max-w-2xl bg-white shadow rounded-lg px-5 py-4">
-						<div className="">
-							<div className="w-full p-12 text-center">
-								<IconDocumentDownload
-									className="mx-auto h-12 w-12 text-slate-300"
-									title="notes"
-								/>
-								<h3 className="mt-2 text-lg font-bold">No notes yet</h3>
-								<p className="mt-1 text-slate-600">
-									Get started by creating a note in a company or investor
-									profile.
-								</p>
-							</div>
+						<div className="w-full p-12 text-center">
+							<IconDocumentDownload
+								className="mx-auto h-12 w-12 text-slate-300"
+								title="notes"
+							/>
+							<h3 className="mt-2 text-lg font-bold">No notes yet</h3>
+							<p className="mt-1 text-slate-600">
+								Get started by creating a note in a company or investor profile.
+							</p>
 						</div>
 					</div>
 				) : (

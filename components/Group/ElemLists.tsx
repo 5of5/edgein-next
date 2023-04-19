@@ -162,29 +162,21 @@ export const ElemLists: React.FC<Props> = ({
 				</div>
 
 				{lists?.length === 0 ? (
-					<div className="mt-4">
-						<p>Looks like there are no lists in this group yet.</p>
-						<ul className="mt-2 list-disc list-inside space-y-1">
-							<li>
-								Create a list and{" "}
-								<button
-									onClick={() => setIsOpenAddList(true)}
-									className="text-primary-500 hover:underline"
-								>
-									share list with group
-								</button>
-								.
-							</li>
-							<li>
-								<button
-									onClick={() => setIsOpenAddList(true)}
-									className="text-primary-500 hover:underline"
-								>
-									Share existing list
-								</button>{" "}
-								with group
-							</li>
-						</ul>
+					<div className="w-full p-12 text-center">
+						<IconCustomList
+							className="mx-auto h-12 w-12 text-slate-300"
+							title="Lists"
+						/>
+						<h3 className="mt-2 text-lg font-bold">
+							No lists have been added to group yet
+						</h3>
+
+						<button
+							onClick={() => setIsOpenAddList(true)}
+							className="mt-1 text-primary-500 hover:underline"
+						>
+							Share one of your lists.
+						</button>
 					</div>
 				) : (
 					<ul className="mt-4 flex flex-col space-y-5">
