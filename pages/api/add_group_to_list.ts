@@ -3,6 +3,7 @@ import difference from "lodash/difference";
 import { query, mutate } from "@/graphql/hasuraAdmin";
 import { List_User_Groups } from "@/graphql/types";
 import CookieService from "../../utils/cookie";
+import { triggerListUpdatedAt } from "@/utils/lists";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -46,6 +47,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const deletedGroups = await Promise.all(
     deleteGroupIds.map((id: number) => onDeleteListGroup(listId, id))
   );
+
+  await triggerListUpdatedAt(listId);
 
   res.send({ addedGroups, deletedGroups });
 };

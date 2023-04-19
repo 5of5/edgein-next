@@ -335,3 +335,31 @@ export const checkFollowExists = async (
 
   return follows;
 };
+
+export const triggerListUpdatedAt = async (id: number) => {
+  try {
+    const {
+      data: { update_lists },
+    } = await mutate({
+      mutation: `
+      mutation TriggerListUpdatedAt($id: Int!) {
+        update_lists(
+          where: {id: {_eq: $id}},
+          _set: {updated_at: "${new Date().toISOString()}"}
+        ) {
+          affected_rows 
+          returning {
+            id
+          }
+        }
+      }
+      `,
+      variables: {
+        id,
+      },
+    });
+    return update_lists.returning[0];
+  } catch (ex) {
+    throw ex;
+  }
+};

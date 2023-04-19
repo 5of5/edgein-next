@@ -138,6 +138,7 @@ const MyList: NextPage<Props> = () => {
 
 		if (res.ok) {
 			refetchGroups();
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div

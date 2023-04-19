@@ -16,6 +16,7 @@ query GetFollowsByUser($user_id: Int!) {
 				}
 			}
 			created_at
+			updated_at
 			total_no_of_resources
 			follows_companies {
 				resource_id
