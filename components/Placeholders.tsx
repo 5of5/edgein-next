@@ -68,6 +68,21 @@ export const PlaceholderActivity: React.FC = () => {
 	);
 };
 
+export const PlaceholderNotification: React.FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast px-5 py-2 bg-white rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 w-full">
+				<div className="aspect-square rounded-lg bg-slate-200 w-12 h-12"></div>
+				<div className="ml-2 w-full">
+					<div className="h-4 w-2/5 bg-slate-200 rounded"></div>
+					<div className="mt-2 h-2 w-1/5 bg-slate-200 rounded"></div>
+				</div>
+				<div className="w-3 h-3 bg-slate-200 rounded-full"></div>
+			</div>
+		</div>
+	);
+};
+
 export const PlaceholderTable: React.FC = () => {
 	return (
 		<>
