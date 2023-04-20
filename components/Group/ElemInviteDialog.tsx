@@ -9,6 +9,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemButton } from "../ElemButton";
 import { PlaceholderPerson } from "../Placeholders";
+import { EmailResources } from "@/pages/api/send_invite_group_member_mail";
 
 type Props = {
 	isOpen: boolean;
@@ -29,7 +30,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 	onClose,
 }) => {
 	const [query, setQuery] = useState("");
-	const [selectedUser, setSelectedUser] = useState<any>(null);
+	const [selectedUsers, setSelectedUsers] = useState<{[key: string]: any}[]>([]);
 
 	const debouncedQuery = useDebounce(query, 700);
 
@@ -40,12 +41,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
 	const isLoading = !error && !searchedPeople;
 
-	const onSendInvitationMail = async (
-		email: string,
-		recipientName: string,
-		groupName: string,
-		groupId: number
-	) => {
+	const onSendInvitationMail = async (emailResources: EmailResources) => {
 		await fetch("/api/send_invite_group_member_mail/", {
 			method: "POST",
 			headers: {
@@ -53,13 +49,9 @@ const ElemInviteDialog: React.FC<Props> = ({
 				Accept: "application/json",
 			},
 			body: JSON.stringify({
-				isExistedUser: !!selectedUser?.id,
-				email,
-				resource: {
-					recipientName,
-					groupName,
-					groupId,
-				},
+				emailResources,
+				groupId: group.id,
+				groupName: group.name,
 			}),
 		});
 	};
@@ -79,9 +71,11 @@ const ElemInviteDialog: React.FC<Props> = ({
 					"Content-Type": "application/json",
 				},
 				body: JSON.stringify({
-					email: query,
 					groupId: group.id,
-					inviteUserId: selectedUser.id,
+					inviteUsers: selectedUsers.map(item => ({
+						id: item.id,
+						email: item.email,
+					})),
 				}),
 			});
 			const apiResponse = await res.json();
@@ -93,26 +87,29 @@ const ElemInviteDialog: React.FC<Props> = ({
 		},
 		{
 			onSuccess: async (response) => {
-				const { member, invite } = response;
-				if (member) {
-					onUpdateGroupData((prev: User_Groups) => ({
-						...prev,
-						user_group_members: [...prev.user_group_members, member],
-					}));
-				} else {
-					onUpdateGroupData((prev: User_Groups) => ({
-						...prev,
-						user_group_invites: [...prev.user_group_invites, invite],
-					}));
-				}
-				if (selectedUser?.id) {
-					onSendInvitationMail(
-						query,
-						selectedUser?.person?.name || selectedUser?.display_name,
-						group.name,
-						group.id
-					);
-				}
+				response.forEach((item: any) => {
+					if (item.member) {
+						onUpdateGroupData((prev: User_Groups) => ({
+							...prev,
+							user_group_members: [...prev.user_group_members, item.member],
+						}));
+					} else if (item.invite) {
+						onUpdateGroupData((prev: User_Groups) => ({
+							...prev,
+							user_group_invites: [...prev.user_group_invites, item.invite],
+						}));
+					}
+				})
+
+				const emailResources: EmailResources = [];
+				selectedUsers.forEach(item => {
+					emailResources.push({
+						isExistedUser: !!item.id,
+						email: item.email,
+						recipientName: item?.person?.name || item?.display_name,
+					})
+				})
+				onSendInvitationMail(emailResources);
 			},
 		}
 	);
@@ -121,7 +118,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 		if (!isOpen) {
 			setTimeout(() => {
 				reset();
-				setSelectedUser(null);
+				setSelectedUsers([]);
 			}, 300);
 		}
 	}, [isOpen, reset]);
@@ -129,6 +126,10 @@ const ElemInviteDialog: React.FC<Props> = ({
 	const handleInvite = () => {
 		mutate();
 	};
+
+	const handleRemove = (id: number) => {
+		setSelectedUsers(selectedUsers.filter((item: any) => item.id !== id));
+	}
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -174,7 +175,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
 								{isSuccess ? (
 									<p className="text-slate-500 mt-4">
-										An invitation has been sent to {selectedUser?.person?.name || selectedUser?.display_name}
+										Invitation has been sent successfully
 									</p>
 								) : inviteError ? (
 									<p className="text-red-500 mt-4">
@@ -183,22 +184,49 @@ const ElemInviteDialog: React.FC<Props> = ({
 								) : (
 									<>
 										<Combobox
-											value={selectedUser}
-											onChange={setSelectedUser}
+											value={selectedUsers}
+											onChange={setSelectedUsers}
+											multiple
 										>
 											<div className="relative">
-												<div className="flex flex-col gap-1 mt-6">
-													<label className="font-bold text-slate-600">
-														Name or Email
-													</label>
-													<Combobox.Input
-														className="w-full mt-1 px-3 py-1.5 text-dark-500 relative bg-white rounded-md border-none outline-none ring-1 ring-slate-300 hover:ring-slate-400 focus:ring-2 focus:ring-primary-500 focus:outline-none placeholder:text-slate-400"
-														placeholder="e.g: Ashley or ashley@edgein.io"
-														autoComplete={"off"}
-														displayValue={(option: any) => option?.person?.name || option?.display_name}
-														onChange={(event) => setQuery(event.target.value)}
-													/>
-												</div>
+											<div className="flex flex-col gap-1 mt-6">
+                          <label className="font-bold text-slate-600">
+                            Name or Email
+                          </label>
+                          <div
+                            className="flex flex-wrap p-2
+														rounded-md ring-1 ring-slate-300
+													 	focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none"
+                          >
+                            {selectedUsers.length > 0 && (
+                              <ul className="flex flex-wrap gap-2">
+                                {selectedUsers.map(item => (
+                                  <li
+                                    key={item.id}
+                                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
+                                  >
+                                    <span>{item?.person?.name || item?.display_name}</span>
+																		<button onClick={() => handleRemove(item.id)}>
+																			<IconX
+																				className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
+																				title="Remove"
+																			/>
+																		</button>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                            <Combobox.Input
+                              className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md 
+															border-none outline-none ring-0 
+														placeholder:text-slate-400 focus:outline-none focus:ring-0"
+                              placeholder="e.g: Ashley or ashley@edgein.io"
+                              autoComplete={"off"}
+															value={query}
+                              onChange={(event) => setQuery(event.target.value)}
+                            />
+                          </div>
+                        </div>
 
 												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
 													{isLoading && query != "" ? (
@@ -245,6 +273,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 																	value={{
 																		id: null,
 																		display_name: query,
+																		email: query,
 																	}}
 																	className="py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
 																>
@@ -261,7 +290,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 										<div className="mt-6 float-right">
 											<ElemButton
 												btn="primary"
-												disabled={!selectedUser}
+												disabled={selectedUsers.length === 0}
 												loading={isSubmitting}
 												onClick={handleInvite}
 											>
