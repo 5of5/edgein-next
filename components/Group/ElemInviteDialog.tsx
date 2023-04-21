@@ -3,7 +3,7 @@ import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
 import { useMutation } from "react-query";
-import { IconX } from "@/components/Icons";
+import { IconX, IconPaperAirplane } from "@/components/Icons";
 import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ElemPhoto } from "@/components/ElemPhoto";
@@ -30,7 +30,9 @@ const ElemInviteDialog: React.FC<Props> = ({
 	onClose,
 }) => {
 	const [query, setQuery] = useState("");
-	const [selectedUsers, setSelectedUsers] = useState<{[key: string]: any}[]>([]);
+	const [selectedUsers, setSelectedUsers] = useState<{ [key: string]: any }[]>(
+		[]
+	);
 
 	const debouncedQuery = useDebounce(query, 700);
 
@@ -71,7 +73,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 				},
 				body: JSON.stringify({
 					groupId: group.id,
-					inviteUsers: selectedUsers.map(item => ({
+					inviteUsers: selectedUsers.map((item) => ({
 						id: item.id,
 						email: item.email,
 					})),
@@ -93,25 +95,29 @@ const ElemInviteDialog: React.FC<Props> = ({
 							...prev,
 							user_group_members: [...prev.user_group_members, item.member],
 						}));
-						const userOne = selectedUsers.find(opt => opt.email === item.member.email);
+						const userOne = selectedUsers.find(
+							(opt) => opt.email === item.member.email
+						);
 						emailResources.push({
 							isExistedUser: true,
 							email: userOne?.email,
 							recipientName: userOne?.person?.name || userOne?.display_name,
-						})
+						});
 					} else if (item.invite) {
 						onUpdateGroupData((prev: User_Groups) => ({
 							...prev,
 							user_group_invites: [...prev.user_group_invites, item.invite],
 						}));
-						const userOne = selectedUsers.find(opt => opt.email === item.invite.email);
+						const userOne = selectedUsers.find(
+							(opt) => opt.email === item.invite.email
+						);
 						emailResources.push({
 							isExistedUser: false,
 							email: userOne?.email,
 							recipientName: userOne?.person?.name || userOne?.display_name,
-						})
+						});
 					}
-				})
+				});
 				if (emailResources.length > 0) {
 					onSendInvitationMail(emailResources);
 				}
@@ -134,7 +140,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 
 	const handleRemove = (id: number) => {
 		setSelectedUsers(selectedUsers.filter((item: any) => item.id !== id));
-	}
+	};
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -162,32 +168,68 @@ const ElemInviteDialog: React.FC<Props> = ({
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
-								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
-									<span>{`Invite people to ${group.name}`}</span>
+							<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-5 text-left align-middle shadow-xl transition-all">
+								<div className="relative flex items-center justify-between">
+									{!inviteResponse && (
+										<Dialog.Title className="flex-1 text-xl font-bold pb-2 border-b border-slate-200">
+											Invite people to group:{" "}
+											<span className="capitalize">{group.name}</span>
+										</Dialog.Title>
+									)}
+
 									<button
 										type="button"
 										onClick={onClose}
-										className="focus-visible:outline-none"
+										className="absolute -top-0.5 right-0 flex items-center justify-center h-8 w-8 bg-transparent active:bg-transparent rounded-full focus:outline-none hover:bg-black/10"
 									>
-										<IconX className="w-5 h-5" />
+										<IconX className="h-6 w-6" />
 									</button>
-								</Dialog.Title>
+								</div>
 
 								{inviteResponse && inviteResponse.length > 0 ? (
-                  <ul className="mt-4 list-disc list-inside">
-                    {inviteResponse.map((res: any, index: number) => {
-                      if (res.error) {
-                        return <li className="text-red-500" key={index}>{res.error}</li>;
-                      }
-                      return (
-                        <li className="text-slate-500" key={index}>
-                          {`Invitation has been sent to ${res.member?.email || res.invite?.email} successfully`}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                ) : (
+									<>
+										<div className="w-full text-center">
+											<IconPaperAirplane
+												className="mx-auto h-12 w-12 text-slate-300"
+												title="Invitation Sent"
+											/>
+											<h3 className="mt-2 text-lg font-bold">
+												Invitation details
+											</h3>
+											<p className="mt-1 text-primary-500 hover:underline"></p>
+										</div>
+
+										<ul className="mt-4 list-disc list-outside pl-4">
+											{inviteResponse.map((res: any, index: number) => {
+												if (res.error) {
+													return (
+														<li className="text-red-500" key={index}>
+															{res.error}
+														</li>
+													);
+												}
+												return (
+													<li className="text-slate-500" key={index}>
+														{`Invitation has been sent to ${
+															res.member?.email || res.invite?.email
+														} successfully`}
+													</li>
+												);
+											})}
+										</ul>
+
+										<ElemButton
+											btn="ol-primary"
+											onClick={() => {
+												reset();
+												setSelectedUsers([]);
+											}}
+											className="mt-4 w-full"
+										>
+											Invite more people
+										</ElemButton>
+									</>
+								) : (
 									<>
 										<Combobox
 											value={selectedUsers}
@@ -195,44 +237,44 @@ const ElemInviteDialog: React.FC<Props> = ({
 											multiple
 										>
 											<div className="relative">
-											<div className="flex flex-col gap-1 mt-6">
-                          <label className="font-bold text-slate-600">
-                            Name or Email
-                          </label>
-                          <div
-                            className="flex flex-wrap p-2
-														rounded-md ring-1 ring-slate-300
-													 	focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none"
-                          >
-                            {selectedUsers.length > 0 && (
-                              <ul className="flex flex-wrap gap-2">
-                                {selectedUsers.map(item => (
-                                  <li
-                                    key={item.id}
-                                    className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
-                                  >
-                                    <span>{item?.person?.name || item?.display_name}</span>
-																		<button onClick={() => handleRemove(item.id)}>
+												<div className="flex flex-col gap-1 mt-6">
+													<label className="font-bold text-slate-600">
+														Name or Email
+													</label>
+													<div className="flex flex-wrap p-2 rounded-md ring-1 ring-slate-300 focus-within:ring-2 focus-within:ring-primary-500 focus-within:outline-none">
+														{selectedUsers.length > 0 && (
+															<ul className="flex flex-wrap gap-2">
+																{selectedUsers.map((item) => (
+																	<li
+																		key={item.id}
+																		className="flex items-center gap-1 bg-slate-200 rounded-md px-2 py-1"
+																	>
+																		<div title={item.email && item.email}>
+																			{item?.person?.name || item?.display_name}
+																		</div>
+																		<button
+																			onClick={() => handleRemove(item.id)}
+																			className="focus:outline-none"
+																			title="Remove"
+																		>
 																			<IconX
 																				className="w-3 h-3 ml-1 cursor-pointer hover:text-primary-500"
 																				title="Remove"
 																			/>
 																		</button>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                            <Combobox.Input
-                              className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md 
-															border-none outline-none ring-0 
-														placeholder:text-slate-400 focus:outline-none focus:ring-0"
-                              placeholder="e.g: Ashley or ashley@edgein.io"
-                              autoComplete={"off"}
+																	</li>
+																))}
+															</ul>
+														)}
+														<Combobox.Input
+															className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
+															placeholder="e.g: Ashley or ashley@edgein.io"
+															autoComplete={"off"}
 															value={query}
-                              onChange={(event) => setQuery(event.target.value)}
-                            />
-                          </div>
-                        </div>
+															onChange={(event) => setQuery(event.target.value)}
+														/>
+													</div>
+												</div>
 
 												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
 													{isLoading && query != "" ? (
@@ -258,12 +300,22 @@ const ElemInviteDialog: React.FC<Props> = ({
 																		imgAlt={item.person.name}
 																	/>
 																) : (
-																	<div className="flex items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
+																	<div className="flex flex-shrink-0 items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
 																		{item?.display_name?.charAt(0)}
 																	</div>
 																)}
 
-																<span>{item?.person?.name || item?.display_name}</span>
+																<div className="flex-shrink-0">
+																	{item?.person?.name || item?.display_name}
+																</div>
+																{item?.email && (
+																	<div
+																		className="text-sm text-slate-600 truncate"
+																		title={item.email}
+																	>
+																		{item.email}
+																	</div>
+																)}
 															</Combobox.Option>
 														))
 													) : (
@@ -281,7 +333,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 																		display_name: query,
 																		email: query,
 																	}}
-																	className="py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
+																	className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
 																>
 																	Send an invitation to email address{" "}
 																	<span className="font-bold">{query}</span>
