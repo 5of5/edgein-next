@@ -30,9 +30,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 	onClose,
 }) => {
 	const [query, setQuery] = useState("");
-	const [selectedUsers, setSelectedUsers] = useState<{ [key: string]: any }[]>(
-		[]
-	);
+	const [selectedUsers, setSelectedUsers] = useState<Record<string, any>[]>([]);
 
 	const debouncedQuery = useDebounce(query, 700);
 
