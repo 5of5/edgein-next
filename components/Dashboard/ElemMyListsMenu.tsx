@@ -30,6 +30,10 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { listAndFollows: lists, user } = useUser();
 
+	const userCanSortLists = user?.entitlements.viewEmails
+		? user?.entitlements.viewEmails
+		: false;
+
 	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
 		MY_LISTS_MENU_OPEN_KEY
 	);
@@ -178,16 +182,20 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 																text-left text-sm p-2 m-0 transition-all hover:bg-slate-100
 																${opt.value === selectedSortOption ? "text-primary-600 font-medium" : ""}
 																`}
-															onClick={() => {
-																setSelectedSortOption(opt.value);
-																close();
-																if (typeof window !== undefined) {
-																	localStorage.setItem(
-																		"myListsSortOption",
-																		opt.value
-																	);
-																}
-															}}
+															onClick={
+																!userCanSortLists
+																	? onOpenUpgradeDialog
+																	: () => {
+																			setSelectedSortOption(opt.value);
+																			close();
+																			if (typeof window !== undefined) {
+																				localStorage.setItem(
+																					"myListsSortOption",
+																					opt.value
+																				);
+																			}
+																	  }
+															}
 														>
 															{opt.label}
 															{opt.value === selectedSortOption && (
