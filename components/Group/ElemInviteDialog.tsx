@@ -87,29 +87,35 @@ const ElemInviteDialog: React.FC<Props> = ({
 		},
 		{
 			onSuccess: async (response) => {
+				const emailResources: EmailResources = [];
 				response.forEach((item: any) => {
 					if (item.member) {
 						onUpdateGroupData((prev: User_Groups) => ({
 							...prev,
 							user_group_members: [...prev.user_group_members, item.member],
 						}));
+						const userOne = selectedUsers.find(opt => opt.email === item.email);
+						emailResources.push({
+							isExistedUser: true,
+							email: userOne?.email,
+							recipientName: userOne?.person?.name || userOne?.display_name,
+						})
 					} else if (item.invite) {
 						onUpdateGroupData((prev: User_Groups) => ({
 							...prev,
 							user_group_invites: [...prev.user_group_invites, item.invite],
 						}));
+						const userOne = selectedUsers.find(opt => opt.email === item.email);
+						emailResources.push({
+							isExistedUser: false,
+							email: userOne?.email,
+							recipientName: userOne?.person?.name || userOne?.display_name,
+						})
 					}
 				})
-
-				const emailResources: EmailResources = [];
-				selectedUsers.forEach(item => {
-					emailResources.push({
-						isExistedUser: !!item.id,
-						email: item.email,
-						recipientName: item?.person?.name || item?.display_name,
-					})
-				})
-				onSendInvitationMail(emailResources);
+				if (emailResources.length > 0) {
+					onSendInvitationMail(emailResources);
+				}
 			},
 		}
 	);

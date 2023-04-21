@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return { member: null, invite: insert_user_group_invites_one };
       }
       return {
-        message: `An invitation with email ${invite.email} already exists`,
+        error: `An invitation with email ${invite.email} already exists`,
       };
     })
   );
