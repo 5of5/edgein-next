@@ -1,4 +1,5 @@
 import { mutate } from "@/graphql/hasuraAdmin";
+import { InsertUserGroupInvitesDocument, InsertUserGroupInvitesMutation } from "@/graphql/types";
 import GroupService from "@/utils/groups";
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
@@ -29,7 +30,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         user_group_id
       );
 
-      let existedMember = false;
+      let existedMember;
       if (invite.id) {
         existedMember = await GroupService.onCheckGroupMemberExists(
           invite.id,
@@ -40,19 +41,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!existedInvites && !existedMember) {
         const {
           data: { insert_user_group_invites_one },
-        } = await mutate({
-          mutation: `
-            mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
-              insert_user_group_invites_one(
-                object: $object
-              ) {
-                id
-                email
-                user_group_id
-                created_by_user_id
-              }
-            }
-          `,
+        } = await mutate<InsertUserGroupInvitesMutation>({
+          mutation: InsertUserGroupInvitesDocument,
           variables: {
             object: {
               email: invite.email,

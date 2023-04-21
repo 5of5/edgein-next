@@ -1,34 +1,60 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
 import {
-  User_Groups,
+  InsertUserGroupDocument,
+  UpdateUserGroupDocument,
+  DeleteUserGroupDocument,
+  DeleteUserGroupInvitesByGroupIdDocument,
+  DeleteUserGroupMembersByGroupIdDocument,
+  DeleteNotesByGroupIdDocument,
+  GetGroupDocument,
+  GetUserGroupMemberByGroupIdDocument,
+  GetUserGroupInviteByIdDocument,
+  GetUserGroupMemberByIdDocument,
+  InsertUserGroupMembersDocument,
+  GetNoteByIdDocument,
+  GetUserGroupInvitesByEmailDocument,
+  GetUserGroupInvitesByEmailAndGroupIdDocument,
+  GetUserGroupMembersByUserIdAndGroupIdDocument,
+  GetGroupQuery,
+  GetUserGroupMemberByGroupIdQuery,
   User_Groups_Insert_Input,
-  User_Group_Members,
+  InsertUserGroupMutation,
+  UpdateUserGroupMutation,
+  DeleteUserGroupMutation,
+  DeleteUserGroupInvitesByGroupIdMutation,
+  DeleteUserGroupMembersByGroupIdMutation,
+  DeleteNotesByGroupIdMutation,
+  GetUserGroupInviteByIdQuery,
+  GetUserGroupMemberByIdQuery,
+  InsertUserGroupMembersMutation,
+  GetNoteByIdQuery,
+  GetUserGroupInvitesByEmailQuery,
+  GetUserGroupInvitesByEmailAndGroupIdQuery,
+  GetUserGroupMembersByUserIdAndGroupIdQuery,
+  InsertLikesMutation,
+  InsertLikesDocument,
+  DeleteLikesMutation,
+  DeleteLikesDocument,
+  InsertCommentsMutation,
+  InsertCommentsDocument,
+  DeleteCommentOneMutation,
+  DeleteCommentOneDocument,
+  DeleteLikesByNoteIdMutation,
+  DeleteLikesByNoteIdDocument,
+  DeleteCommentsByNoteIdMutation,
+  DeleteCommentsByNoteIdDocument,
+  FindNoteLikesOneQuery,
+  FindNoteLikesOneDocument,
+  FindCommentByIdQuery,
+  FindCommentByIdDocument,
 } from "@/graphql/types";
 
 const onInsertGroup = async (payload: User_Groups_Insert_Input) => {
-  const insertGroupQuery = `
-  mutation InsertUserGroup($object: user_groups_insert_input!) {
-    insert_user_groups_one(
-      object: $object
-    ) {
-      id
-      name
-      description
-      twitter
-      telegram
-      discord
-      created_at
-      updated_at
-      created_by_user_id
-    }
-  }
-  `;
-
   try {
     const {
       data: { insert_user_groups_one },
-    } = await mutate({
-      mutation: insertGroupQuery,
+    } = await mutate<InsertUserGroupMutation>({
+      mutation: InsertUserGroupDocument,
       variables: {
         object: payload,
       },
@@ -40,175 +66,90 @@ const onInsertGroup = async (payload: User_Groups_Insert_Input) => {
 };
 
 const onUpdateGroup = async (id: number, changes: User_Groups_Insert_Input) => {
-  const updateGroupQuery = `
-      mutation UpdateUserGroup($id: Int!, $changes: user_groups_set_input!) {
-        update_user_groups(
-          where: {id: {_eq: $id}},
-          _set: $changes
-        ) {
-          affected_rows 
-          returning {
-            id
-            name
-            description
-            twitter
-            telegram
-            discord
-            notes {
-              id
-              notes
-            }
-            created_at
-            updated_at
-            created_by_user_id
-            created_by {
-              id
-              display_name
-              email
-            }
-          }
-        }
-      }
-      `;
-
   try {
     const {
       data: { update_user_groups },
-    } = await mutate({
-      mutation: updateGroupQuery,
+    } = await mutate<UpdateUserGroupMutation>({
+      mutation: UpdateUserGroupDocument,
       variables: {
         id,
         changes,
       },
     });
-    return update_user_groups.returning[0];
+    return update_user_groups?.returning[0];
   } catch (ex) {
     throw ex;
   }
 };
 
 const onDeleteGroup = async (id: number) => {
-  const deleteGroupQuery = `
-  mutation DeleteUserGroups($id: Int!) {
-    delete_user_groups(where: {id: {_eq: $id}}) {
-      affected_rows
-      returning {
-        id
-      }
-    }
-  }
-  `;
-
   try {
     const {
       data: { delete_user_groups },
-    } = await mutate({
-      mutation: deleteGroupQuery,
+    } = await mutate<DeleteUserGroupMutation>({
+      mutation: DeleteUserGroupDocument,
       variables: {
         id,
       },
     });
-    return delete_user_groups.returning[0];
+    return delete_user_groups?.returning[0];
   } catch (ex) {
     throw ex;
   }
 };
 
 const onDeleteGroupInvites = async (groupId: number) => {
-  const deleteGroupInvitesQuery = `
-  mutation DeleteUserGroupInvites($groupId: Int!) {
-    delete_user_group_invites(where: {user_group_id: {_eq: $groupId}}) {
-      affected_rows
-      returning {
-        id
-      }
-    }
-  }
-  `;
-
   try {
     const {
       data: { delete_user_group_invites },
-    } = await mutate({
-      mutation: deleteGroupInvitesQuery,
+    } = await mutate<DeleteUserGroupInvitesByGroupIdMutation>({
+      mutation: DeleteUserGroupInvitesByGroupIdDocument,
       variables: {
         groupId,
       },
     });
-    return delete_user_group_invites.returning[0];
+    return delete_user_group_invites?.returning[0];
   } catch (ex) {
     throw ex;
   }
 };
 
 const onDeleteGroupMembers = async (groupId: number) => {
-  const deleteGroupMembersQuery = `
-  mutation DeleteUserGroupMembers($groupId: Int!) {
-    delete_user_group_members(where: {user_group_id: {_eq: $groupId}}) {
-      affected_rows
-      returning {
-        id
-      }
-    }
-  }
-  `;
-
   try {
     const {
       data: { delete_user_group_members },
-    } = await mutate({
-      mutation: deleteGroupMembersQuery,
+    } = await mutate<DeleteUserGroupMembersByGroupIdMutation>({
+      mutation: DeleteUserGroupMembersByGroupIdDocument,
       variables: {
         groupId,
       },
     });
-    return delete_user_group_members.returning[0];
+    return delete_user_group_members?.returning[0];
   } catch (ex) {
     throw ex;
   }
 };
 
 const onDeleteNotesByGroupId = async (groupId: number) => {
-  const deleteGroupNotesQuery = `
-  mutation DeleteNotes($groupId: Int!) {
-    delete_notes(where: {user_group_id: {_eq: $groupId}}) {
-      affected_rows
-      returning {
-        id
-      }
-    }
-  }
-  `;
-
   try {
     const {
       data: { delete_notes },
-    } = await mutate({
-      mutation: deleteGroupNotesQuery,
+    } = await mutate<DeleteNotesByGroupIdMutation>({
+      mutation: DeleteNotesByGroupIdDocument,
       variables: {
         groupId,
       },
     });
-    return delete_notes.returning[0];
+    return delete_notes?.returning[0];
   } catch (ex) {
     throw ex;
   }
 };
 
 const onFindGroupById = async (groupId: number) => {
-  const findGroupQuery = `
-  query findGroupOne($id: Int!) {
-    user_groups(where: {id: {_eq: $id}}, limit: 1) {
-      id
-      name
-      created_by_user_id
-      created_at
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: findGroupQuery,
+    const data = await query<GetGroupQuery>({
+      query: GetGroupDocument,
       variables: { id: groupId },
     });
     return data.data.user_groups[0];
@@ -218,28 +159,9 @@ const onFindGroupById = async (groupId: number) => {
 };
 
 const onFindUserGroupMembers = async (groupId: number) => {
-  const findGroupMembersQuery = `
-  query findGroupMembers($user_group_id: Int!) {
-    user_group_members(where: {user_group_id: {_eq: $user_group_id}}) {
-      id
-      user_group_id
-      user_group {
-        id
-        name
-        description
-      }
-      user_id
-      user {
-        id
-        display_name
-        email
-      }
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: findGroupMembersQuery,
+    const data = await query<GetUserGroupMemberByGroupIdQuery>({
+      query: GetUserGroupMemberByGroupIdDocument,
       variables: { user_group_id: groupId },
     });
     return data.data.user_group_members;
@@ -249,19 +171,9 @@ const onFindUserGroupMembers = async (groupId: number) => {
 };
 
 const onFindUserGroupInviteById = async (id: number) => {
-  const findGroupInviteQuery = `
-  query findGroupMembers($id: Int!) {
-    user_group_invites(where: {id: {_eq: $id}}, limit: 1) {
-      id
-      email
-      user_group_id
-      created_by_user_id
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: findGroupInviteQuery,
+    const data = await query<GetUserGroupInviteByIdQuery>({
+      query: GetUserGroupInviteByIdDocument,
       variables: { id },
     });
     return data.data.user_group_invites[0];
@@ -271,18 +183,9 @@ const onFindUserGroupInviteById = async (id: number) => {
 };
 
 const onFindUserGroupMemberById = async (id: number) => {
-  const findGroupMemberQuery = `
-  query findGroupMembers($id: Int!) {
-    user_group_members(where: {id: {_eq: $id}}, limit: 1) {
-      id
-      user_id
-      user_group_id
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: findGroupMemberQuery,
+    const data = await query<GetUserGroupMemberByIdQuery>({
+      query: GetUserGroupMemberByIdDocument,
       variables: { id },
     });
     return data.data.user_group_members[0];
@@ -294,32 +197,8 @@ const onFindUserGroupMemberById = async (id: number) => {
 const onAddGroupMember = async (user_id: number, user_group_id: number) => {
   const {
     data: { insert_user_group_members_one },
-  } = await mutate({
-    mutation: `
-    mutation InsertUserGroupMembers($object: user_group_members_insert_input!) {
-      insert_user_group_members_one(
-        object: $object
-      ) {
-        id
-        user_id
-        user {
-          id
-          display_name
-          email
-          person {
-            id
-            slug
-            picture
-          }
-        }
-        user_group_id
-        user_group {
-          id
-          name
-        }
-      }
-    }
-  `,
+  } = await mutate<InsertUserGroupMembersMutation>({
+    mutation: InsertUserGroupMembersDocument,
     variables: {
       object: {
         user_id,
@@ -332,26 +211,9 @@ const onAddGroupMember = async (user_id: number, user_group_id: number) => {
 };
 
 const onFindNoteById = async (id: number) => {
-  const findNoteQuery = `
-  query findNoteOne($id: Int!) {
-    notes(where: {id: {_eq: $id}}, limit: 1) {
-      id
-      notes
-      created_by
-      created_at
-      resource_type
-      resource_id
-      user_group_id
-      user_group {
-        id
-        name
-      }
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: findNoteQuery,
+    const data = await query<GetNoteByIdQuery>({
+      query: GetNoteByIdDocument,
       variables: { id },
     });
     return data.data.notes[0];
@@ -361,12 +223,14 @@ const onFindNoteById = async (id: number) => {
 };
 
 const isUserMemberOfGroup = async (groupId: number, userId: number) => {
-  const members = await GroupService.onFindUserGroupMembers(groupId);
-  return members.some((mem: User_Group_Members) => mem.user_id === userId);
+  const members: GetUserGroupMemberByGroupIdQuery["user_group_members"] =
+    await GroupService.onFindUserGroupMembers(groupId);
+  return members.some((mem) => mem.user_id === userId);
 };
 
 const isUserCreatorOfGroup = async (groupId: number, userId: number) => {
-  const group: User_Groups = await GroupService.onFindGroupById(groupId);
+  const group: GetGroupQuery["user_groups"][0] =
+    await GroupService.onFindGroupById(groupId);
   return group.created_by_user_id === userId;
 };
 
@@ -392,19 +256,10 @@ const onLookupResource = async (resourceType: string, resourceId: number) => {
   }
 };
 
-
 const onFindUserGroupInvitesByEmail = async (email: string) => {
-  const findUserGroupInvitesQuery = `
-  query findUserGroupInvitesByEmail($email: String!) {
-    user_group_invites(where: {email: {_eq: $email}}) {
-      id
-      user_group_id
-    }
-  }
-  `;
   try {
-    const { data } = await query({
-      query: findUserGroupInvitesQuery,
+    const { data } = await query<GetUserGroupInvitesByEmailQuery>({
+      query: GetUserGroupInvitesByEmailDocument,
       variables: { email },
     });
     return data.user_group_invites;
@@ -413,25 +268,13 @@ const onFindUserGroupInvitesByEmail = async (email: string) => {
   }
 };
 
-const onCheckGroupInviteExists = async (email: string, user_group_id: number) => {
-  const findGroupInviteQuery = `
-  query findGroupInvites($email: String!, $user_group_id: Int!) {
-    user_group_invites(where: {
-      _and: [
-        {email: {_eq: $email}},
-        {user_group_id: {_eq: $user_group_id}}
-      ]
-    }, limit: 1) {
-      id
-      email
-      user_group_id
-      created_by_user_id
-    }
-  }
-  `;
+const onCheckGroupInviteExists = async (
+  email: string,
+  user_group_id: number
+) => {
   try {
-    const data = await query({
-      query: findGroupInviteQuery,
+    const data = await query<GetUserGroupInvitesByEmailAndGroupIdQuery>({
+      query: GetUserGroupInvitesByEmailAndGroupIdDocument,
       variables: { email, user_group_id },
     });
     return data.data.user_group_invites[0];
@@ -440,24 +283,13 @@ const onCheckGroupInviteExists = async (email: string, user_group_id: number) =>
   }
 };
 
-const onCheckGroupMemberExists = async (user_id: number, user_group_id: number) => {
-  const findGroupMemberQuery = `
-  query findGroupMembers($user_id: Int!, $user_group_id: Int!) {
-    user_group_members(where: {
-      _and: [
-        {user_id: {_eq: $user_id}},
-        {user_group_id: {_eq: $user_group_id}}
-      ]
-    }, limit: 1) {
-      id
-      user_id
-      user_group_id
-    }
-  }
-  `;
+const onCheckGroupMemberExists = async (
+  user_id: number,
+  user_group_id: number
+) => {
   try {
-    const data = await query({
-      query: findGroupMemberQuery,
+    const data = await query<GetUserGroupMembersByUserIdAndGroupIdQuery>({
+      query: GetUserGroupMembersByUserIdAndGroupIdDocument,
       variables: { user_id, user_group_id },
     });
     return data.data.user_group_members[0];
@@ -468,19 +300,8 @@ const onCheckGroupMemberExists = async (user_id: number, user_group_id: number) 
 
 const onCheckLikeExists = async (note_id: number, user_id: number) => {
   try {
-    const data = await query({
-      query: `
-      query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
-        likes(where: {
-          _and: [
-            {note_id: {_eq: $note_id}},
-            {created_by_user_id: {_eq: $user_id}}
-          ]
-        }, limit: 1) {
-          id
-        }
-      }
-      `,
+    const data = await query<FindNoteLikesOneQuery>({
+      query: FindNoteLikesOneDocument,
       variables: { note_id, user_id },
     });
     return data.data.likes[0];
@@ -493,15 +314,8 @@ const onInsertLike = async (note_id: number, user_id: number) => {
   try {
     const {
       data: { insert_likes_one },
-    } = await mutate({
-      mutation: `
-      mutation InsertLikes($object: likes_insert_input!) {
-        insert_likes_one(
-          object: $object
-        ) {
-          id
-        }
-      }`,
+    } = await mutate<InsertLikesMutation>({
+      mutation: InsertLikesDocument,
       variables: {
         object: {
           note_id,
@@ -520,22 +334,13 @@ const onDeleteLike = async (id: number) => {
   try {
     const {
       data: { delete_likes },
-    } = await mutate({
-      mutation: `
-      mutation DeleteLikes($id: Int!) {
-        delete_likes(where: {id: {_eq: $id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteLikesMutation>({
+      mutation: DeleteLikesDocument,
       variables: {
         id,
       },
     });
-    return delete_likes.returning[0];
+    return delete_likes?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -545,15 +350,8 @@ const onInsertComment = async (note_id: number, content: string, user_id: number
   try {
     const {
       data: { insert_comments_one },
-    } = await mutate({
-      mutation: `
-      mutation InsertComments($object: comments_insert_input!) {
-        insert_comments_one(
-          object: $object
-        ) {
-          id
-        }
-      }`,
+    } = await mutate<InsertCommentsMutation>({
+      mutation: InsertCommentsDocument,
       variables: {
         object: {
           note_id,
@@ -572,22 +370,13 @@ const onDeleteComment = async (id: number) => {
   try {
     const {
       data: { delete_comments },
-    } = await mutate({
-      mutation: `
-      mutation DeleteCommentOne($id: Int!) {
-        delete_comments(where: {id: {_eq: $id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteCommentOneMutation>({
+      mutation: DeleteCommentOneDocument,
       variables: {
         id,
       },
     });
-    return delete_comments.returning[0];
+    return delete_comments?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -595,15 +384,8 @@ const onDeleteComment = async (id: number) => {
 
 const onFindCommentById = async (id: number) => {
   try {
-    const data = await query({
-      query: `
-      query FindCommentById($id: Int!) {
-        comments(where: {id: {_eq: $id}}, limit: 1) {
-          id
-          created_by_user_id
-        }
-      }
-      `,
+    const data = await query<FindCommentByIdQuery>({
+      query: FindCommentByIdDocument,
       variables: { id },
     });
     return data.data.comments[0];
@@ -616,22 +398,13 @@ const onDeleteLikesByNoteId = async (note_id: number) => {
   try {
     const {
       data: { delete_likes },
-    } = await mutate({
-      mutation: `
-      mutation DeleteLikesByNoteId($note_id: Int!) {
-        delete_likes(where: {note_id: {_eq: $note_id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteLikesByNoteIdMutation>({
+      mutation: DeleteLikesByNoteIdDocument,
       variables: {
         note_id,
       },
     });
-    return delete_likes.returning[0];
+    return delete_likes?.returning[0];
   } catch (ex) {
     throw ex;
   }
@@ -641,22 +414,13 @@ const onDeleteCommentsByNoteId = async (note_id: number) => {
   try {
     const {
       data: { delete_comments },
-    } = await mutate({
-      mutation: `
-      mutation DeleteCommentsByNoteId($note_id: Int!) {
-        delete_comments(where: {note_id: {_eq: $note_id}}) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-      `,
+    } = await mutate<DeleteCommentsByNoteIdMutation>({
+      mutation: DeleteCommentsByNoteIdDocument,
       variables: {
         note_id,
       },
     });
-    return delete_comments.returning[0];
+    return delete_comments?.returning[0];
   } catch (ex) {
     throw ex;
   }

@@ -1,4 +1,5 @@
 import { mutate } from '@/graphql/hasuraAdmin'
+import { DeleteInvestmentDocument, DeleteInvestmentMutation } from '@/graphql/types'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -20,16 +21,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const deleteInvestment = async (investmentId: number, token: string) => {
-  const mutation = `
-    mutation DeleteInvestment($investmentId: Int!) {
-      delete_investments_by_pk(id: $investmentId) {
-        id
-      }
-    }
-  `
-
-  return await mutate({
-    mutation,
+  return await mutate<DeleteInvestmentMutation>({
+    mutation: DeleteInvestmentDocument,
     variables: {
       investmentId 
     }

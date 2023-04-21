@@ -1,4 +1,5 @@
 import { mutate } from '@/graphql/hasuraAdmin'
+import { UpsertTeamMemberDocument, UpsertTeamMemberMutation } from '@/graphql/types'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -16,23 +17,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const upserTeamMember = async (variables: any, token: string) => {
-
-  const mutation = `
-    mutation upsert_team_member($data: team_members_insert_input!) {
-      insert_team_members_one(object: $data, on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: [function, title, founder, start_date, end_date]}) {
-        id
-        function
-        person_id
-        company_id
-        title
-        start_date
-        end_date
-        seniority
-      }
-    }
-  `
-  const response = await mutate({
-    mutation,
+  const response = await mutate<UpsertTeamMemberMutation>({
+    mutation: UpsertTeamMemberDocument,
     variables
   }, token)
 

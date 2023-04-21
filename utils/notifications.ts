@@ -1,5 +1,11 @@
 import { mutate } from "@/graphql/hasuraAdmin";
-import { Follows, GetNotificationsForUserQuery } from "@/graphql/types";
+import {
+  GetNotificationsForUserQuery,
+  InsertNotificationActionsDocument,
+  InsertNotificationActionsMutation,
+  InsertNotificationsDocument,
+  InsertNotificationsMutation,
+} from "@/graphql/types";
 import { flatten, startCase, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
 import { getCompanyByRoundId } from "./submit-data";
@@ -26,31 +32,10 @@ export const insertNotification = async ({
 	vc_firm_id,
 	action_ids,
 }: NotificationParamType) => {
-	const insertNotificationQuery = `
-    mutation InsertNotifications($object: notifications_insert_input!) {
-      insert_notifications_one(
-        object: $object
-      ) {
-        id
-        target_user_id
-        event_type
-        follow_resource_type
-        notification_resource_type
-        company_id
-        vc_firm_id
-        message
-        read_at
-        created_at
-        updated_at
-        read
-      }
-    }
-  `;
-
 	const {
 		data: { insert_notifications_one },
-	} = await mutate({
-		mutation: insertNotificationQuery,
+	} = await mutate<InsertNotificationsMutation>({
+		mutation: InsertNotificationsDocument,
 		variables: {
 			object: {
 				target_user_id,
@@ -125,12 +110,12 @@ export const processNotification = async (
 	actionIds: number[]
 ) => {
 	if (followResourceId && followedResourceType && actionType) {
-		const follows: Array<Follows> = await getFollowsByResource(
+		const follows = await getFollowsByResource(
 			followResourceId,
 			followedResourceType
 		);
 		let targetUsers: any = follows.map(
-			(item: Follows) => item.list?.list_members
+			(item) => item.list?.list_members
 		);
 		targetUsers = unionBy(flatten(targetUsers), "user_id");
 		await Promise.all(
@@ -151,7 +136,9 @@ export const processNotification = async (
 
 					await Promise.all(
 						actionIds.map(async (actionId) => {
-							await insertNotificationAction(notificationResponse.id, actionId);
+							if (notificationResponse?.id) {
+								await insertNotificationAction(notificationResponse?.id, actionId);
+							}
 						})
 					);
 				}
@@ -190,7 +177,7 @@ export const processNotificationOnDelete = async (
 		if (resourceObj?.round_id) {
 			const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
 			await processNotification(
-				investmentRound?.company_id,
+				investmentRound?.company_id || 0,
 				"companies",
 				resourceType,
 				"Delete Data",
@@ -277,20 +264,10 @@ export const insertNotificationAction = async (
 	notificationId: number,
 	actionId: number
 ) => {
-	const insertNotificationActionQuery = `
-    mutation InsertNotificationAction($object: notification_actions_insert_input!) {
-      insert_notification_actions_one(
-        object: $object
-      ) {
-        id
-      }
-    }
-  `;
-
 	const {
 		data: { insert_notification_actions_one },
-	} = await mutate({
-		mutation: insertNotificationActionQuery,
+	} = await mutate<InsertNotificationActionsMutation>({
+		mutation: InsertNotificationActionsDocument,
 		variables: {
 			object: {
 				notification_id: notificationId,

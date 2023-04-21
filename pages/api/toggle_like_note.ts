@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "@/utils/cookie";
 import GroupService from "@/utils/groups";
-import { Likes } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -16,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const noteId: number = req.body.noteId;
 
   // check like exists
-  const noteLikesOne: Likes = await GroupService.onCheckLikeExists(
+  const noteLikesOne = await GroupService.onCheckLikeExists(
     noteId,
     user.id
   );

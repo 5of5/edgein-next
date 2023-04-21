@@ -173,3 +173,56 @@ query GetAllVCFirms {
 		slug
 	}
 }
+
+query GetSentimentByVcFirmId($vcFirmId: Int!) {
+  vc_firms_by_pk(id: $vcFirmId) {
+    sentiment
+    slug
+  }
+}
+
+mutation UpdateSentimentByVcFirmId($vcFirmId: Int!, $sentiment: jsonb!) {
+  update_vc_firms_by_pk(
+    pk_columns: { id: $vcFirmId }
+    _set: { sentiment: $sentiment }
+  ) {
+    sentiment
+  }
+}  
+
+query GetVcFirmsByDate($date: timestamptz) {
+  vc_firms(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: "Web3" } }
+      ]
+    }
+  ) {
+    id
+    name
+    logo
+    slug
+  }
+}
+
+mutation UpdateVcFirmTagsByPk($id: Int!, $tags: jsonb) {
+	update_vc_firms_by_pk(_set: {tags: $tags}, pk_columns: {id: $id}) {
+		id
+	}
+}
+
+query GetVcFirmsInvestments {
+  vc_firms {
+    id
+    investments {
+      investment_round {
+        company {
+          id
+          tags
+        }
+      }
+    }
+  }
+}  

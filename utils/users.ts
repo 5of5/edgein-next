@@ -1,69 +1,55 @@
 import { mutate, query } from '@/graphql/hasuraAdmin'
-import { Entitlements, User, UserToken } from '@/models/User';
+import {
+  GetAllowedEmailByEmailOrDomainDocument,
+  GetAllowedEmailByEmailOrDomainQuery,
+  GetDisabledEmailByEmailOrDomainDocument,
+  GetDisabledEmailByEmailOrDomainQuery,
+  GetPersonDocument,
+  GetUserByAdditionalEmailDocument,
+  GetUserByAdditionalEmailQuery,
+  GetUserByEmailDocument,
+  GetUserByEmailQuery,
+  GetUserByIdDocument,
+  GetUserByIdQuery,
+  GetUserByReferenceIdDocument,
+  GetUserByReferenceIdQuery,
+  UpdateUserAdditionalEmailsDocument,
+  UpdateUserAdditionalEmailsMutation,
+  UpdateUserAuth0LinkedInIdDocument,
+  UpdateUserAuth0LinkedInIdMutation,
+  UpdateUserAuth0UserPassIdDocument,
+  UpdateUserAuth0UserPassIdMutation,
+  UpdateUserBillingOrgDocument,
+  UpdateUserBillingOrgMutation,
+  UpdateUserEmailVerifiedStatusDocument,
+  UpdateUserEmailVerifiedStatusMutation,
+  UpsertUsersDocument,
+  UpsertUsersMutation,
+  UpsertWaitlistEmailDocument,
+  UpsertWaitlistEmailMutation,
+  GetPersonQuery,
+  GetUserByPersonIdQuery,
+  GetUserByPersonIdDocument,
+} from "@/graphql/types";
+import { Entitlements, UserToken } from '@/models/User';
 import { createHmac } from "crypto";
 
-const USER_FIELDS = `
-id
-email
-role
-external_id
-is_auth0_verified
-display_name
-auth0_linkedin_id
-auth0_user_pass_id
-reference_id
-billing_org_id
-person {
-  name
-  picture
-  slug
-  id
-}
-additional_emails
-active
-`
-
 async function queryForAllowedEmailCheck(email: string, domain: string) {
-  const fetchQuery = `
-  query query_allowed_emails($email: String, $domain: String) {
-    allowed_emails(where: {_or: [
-      {email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, 
-      {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}
-    ]}, 
-      limit: 1) {
-      id
-      email
-      person_id
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetAllowedEmailByEmailOrDomainQuery>({
+      query: GetAllowedEmailByEmailOrDomainDocument,
       variables: { email, domain }
     })
-    return data.data.allowed_emails[0] as { id: number, email: string, person_id?: number }
+    return data.data.allowed_emails[0]
   } catch (ex) {
     throw ex;
   }
 }
 
 async function queryForDisabledEmailCheck(email: string, domain: string) {
-  const fetchQuery = `
-  query query_disabled_emails($email: String, $domain: String) {
-    disabled_emails(where: {_or: [
-      {email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, 
-      {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}
-    ]}, 
-      limit: 1) {
-      id
-      email
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetDisabledEmailByEmailOrDomainQuery>({
+      query: GetDisabledEmailByEmailOrDomainDocument,
       variables: { email, domain }
     })
     return data.data.disabled_emails[0] as { id: number, email: string }
@@ -73,19 +59,9 @@ async function queryForDisabledEmailCheck(email: string, domain: string) {
 }
 
 async function mutateForWaitlistEmail(email: string) {
-  const upsertWaitListEmail = `
-  mutation upsert_waitlist_email($email: String) {
-    insert_waitlist_emails(objects: [{email: $email}], on_conflict: {constraint: waitlist_emails_email_key, update_columns: [email]}) {
-      returning {
-          id
-          email
-        }
-      }
-    }
-  `
   try {
-    await mutate({
-      mutation: upsertWaitListEmail,
+    await mutate<UpsertWaitlistEmailMutation>({
+      mutation: UpsertWaitlistEmailDocument,
       variables: { email }
     });
   } catch (e) {
@@ -94,62 +70,40 @@ async function mutateForWaitlistEmail(email: string) {
 }
 
 async function findOneUserByEmail(email: string) {
-  const fetchQuery = `
-  query query_users($email: String) {
-    users(where: {email: {_eq: $email}}, limit: 1) {
-      ${USER_FIELDS}
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetUserByEmailQuery>({
+      query: GetUserByEmailDocument,
       variables: { email }
     })
-    return data.data.users[0] as User
+    return data.data.users[0]
   } catch (ex) {
     throw ex;
   }
 }
 
 async function findOneUserById(id: number) {
-  const fetchQuery = `
-  query query_users($id: Int) {
-    users(where: {id: {_eq: $id}}, limit: 1) {
-      ${USER_FIELDS}
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetUserByIdQuery>({
+      query: GetUserByIdDocument,
       variables: { id }
     })
-    return data.data.users[0] as User
+    return data.data.users[0]
   } catch (ex) {
     throw ex;
   }
 }
 
-async function updateBillingOrg(userId: number, billingOrgId: string) {
-  // prepare gql query
-  const usertQuery = `
-    mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
-      update_users_by_pk(pk_columns: {id: $userId}, _set: {billing_org_id: $billingOrgId }) {
-        id
-      }
-    }  
-  `
+async function updateBillingOrg(userId: number, billingOrgId: number) {
   try {
-    const data = await mutate({
-      mutation: usertQuery,
+    const data = await mutate<UpdateUserBillingOrgMutation>({
+      mutation: UpdateUserBillingOrgDocument,
       variables: {
         userId,
         billingOrgId
       }
     })
 
-    return data.data.update_users_by_pk as User
+    return data.data.update_users_by_pk
   } catch (ex) {
     console.log(ex);
     throw ex;
@@ -158,19 +112,9 @@ async function updateBillingOrg(userId: number, billingOrgId: string) {
 
 
 async function upsertUser(userData: any) {
-  // prepare gql query
-  const usertQuery = `
-    mutation upsert_users($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String, $reference_user_id: Int) {
-      insert_users(objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id, reference_user_id: $reference_user_id}], on_conflict: {constraint: users_email_key, update_columns: [external_id]}) {
-        returning {
-          ${USER_FIELDS}
-        }
-      }
-    }
-  `
   try {
-    const data = await mutate({
-      mutation: usertQuery,
+    const data = await mutate<UpsertUsersMutation>({
+      mutation: UpsertUsersDocument,
       variables: {
         external_id: userData._id,
         email: userData.email,
@@ -182,7 +126,7 @@ async function upsertUser(userData: any) {
       }
     })
 
-    return data.data.insert_users.returning[0] as User
+    return data.data.insert_users?.returning[0]
   } catch (ex) {
     console.log(ex);
     throw ex;
@@ -190,154 +134,81 @@ async function upsertUser(userData: any) {
 }
 
 async function updateEmailVerifiedStatus(email: string, is_auth0_verified: boolean) {
-  const updateEmailVerified = `
-  mutation update_users($email: String!, $is_auth0_verified: Boolean) {
-    update_users(
-      where: {email: {_eq: $email}},
-      _set: { is_auth0_verified: $is_auth0_verified }
-    ) {
-      affected_rows
-      returning {
-        ${USER_FIELDS}
-      }
-    }
-  }
-`
 try {
-  const data = await mutate({
-    mutation: updateEmailVerified,
+  const data = await mutate<UpdateUserEmailVerifiedStatusMutation>({
+    mutation: UpdateUserEmailVerifiedStatusDocument,
     variables: { email, is_auth0_verified }
   });
-  return data.data.update_users.returning[0] as User
+  return data.data.update_users?.returning[0]
   } catch (e) {
     throw e
   }
 }
 
 async function updateAuth0LinkedInId(email: string, auth0_linkedin_id: string) {
-  const updateAuth0LinkedIn = `
-  mutation update_users($email: String!, $auth0_linkedin_id: String) {
-    update_users(
-      where: {email: {_eq: $email}},
-      _set: { auth0_linkedin_id: $auth0_linkedin_id }
-    ) {
-      affected_rows
-      returning {
-        ${USER_FIELDS}
-      }
-    }
-  }
-`
 try {
-  const data = await mutate({
-    mutation: updateAuth0LinkedIn,
+  const data = await mutate<UpdateUserAuth0LinkedInIdMutation>({
+    mutation: UpdateUserAuth0LinkedInIdDocument,
     variables: { email, auth0_linkedin_id }
   });
-  return data.data.update_users.returning[0] as User
+  return data.data.update_users?.returning[0]
   } catch (e) {
     throw e
   }
 }
 
 async function updateAuth0UserPassId(email: string, auth0_user_pass_id: string) {
-  const updateAuth0UserPass = `
-  mutation update_users($email: String!, $auth0_user_pass_id: String) {
-    update_users(
-      where: {email: {_eq: $email}},
-      _set: { auth0_user_pass_id: $auth0_user_pass_id }
-    ) {
-      affected_rows
-      returning {
-        ${USER_FIELDS}
-      }
-    }
-  }
-`
 try {
-  const data = await mutate({
-    mutation: updateAuth0UserPass,
+  const data = await mutate<UpdateUserAuth0UserPassIdMutation>({
+    mutation: UpdateUserAuth0UserPassIdDocument,
     variables: { email, auth0_user_pass_id }
   });
-  return data.data.update_users.returning[0] as User
+  return data.data.update_users?.returning[0]
   } catch (e) {
     throw e
   }
 }
 
 async function findOneUserByReferenceId(reference_id: string) {
-  const fetchQuery = `
-  query query_reference_id($reference_id: String) {
-    users(where: {reference_id: {_eq: $reference_id}}, limit: 1) {
-      ${USER_FIELDS}
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetUserByReferenceIdQuery>({
+      query: GetUserByReferenceIdDocument,
       variables: { reference_id }
     })
-    return data.data.users[0] as User
+    return data.data.users[0]
   } catch (ex) {
     throw ex;
   }
 }
 
 async function updateAllowedEmailArray(id: number, additional_emails: string[]) {
-  const updateAllowedEmail = `
-  mutation update_users($id: Int!, $additional_emails: jsonb) {
-    update_users(
-      where: {id: {_eq: $id}},
-      _set: { additional_emails: $additional_emails }
-    ) {
-      affected_rows
-      returning {
-        ${USER_FIELDS}
-      }
-    }
-  }
-`
 try {
-  const data = await mutate({
-    mutation: updateAllowedEmail,
+  const data = await mutate<UpdateUserAdditionalEmailsMutation>({
+    mutation: UpdateUserAdditionalEmailsDocument,
     variables: { id, additional_emails }
   });
-  return data.data.update_users.returning[0] as User
+  return data.data.update_users?.returning[0]
   } catch (e) {
     throw e
   }
 }
 
 async function findOneUserByAdditionalEmail(email: string) {
-  const fetchQuery = `
-  query query_additional_email_users($email: jsonb) {
-    users(where: {additional_emails: {_contains: $email}}, limit: 1) {
-      ${USER_FIELDS}
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetUserByAdditionalEmailQuery>({
+      query: GetUserByAdditionalEmailDocument,
       variables: { email }
     })
-    return data.data.users[0] as User
+    return data.data.users[0]
   } catch (ex) {
     throw ex;
   }
 }
 
 async function findOnePeopleBySlug(slug: string) {
-  const fetchQuery = `
-  query query_slug_people($slug: String!) {
-    people(where: {slug: {_eq: $slug}}, limit: 1) {
-      id
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetPersonQuery>({
+      query: GetPersonDocument,
       variables: { slug },
     });
     return data.data.people[0];
@@ -347,16 +218,9 @@ async function findOnePeopleBySlug(slug: string) {
 }
 
 async function findOneUserByPersonId(personId: number) {
-  const fetchQuery = `
-  query query_users($personId: Int!) {
-    users(where: {person_id: {_eq: $personId}}, limit: 1) {
-      id
-    }
-  }
-  `;
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetUserByPersonIdQuery>({
+      query: GetUserByPersonIdDocument,
       variables: { personId },
     });
     return data.data.users[0];
@@ -365,7 +229,7 @@ async function findOneUserByPersonId(personId: number) {
   }
 }
 
-const createToken = (userData: User, isFirstLogin: boolean): UserToken => {
+const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
   const hmac = createHmac(
     "sha256",
     "vxushJThllW-WS_1Gdi08u4Ged9J4FKMXGn9vqiF"

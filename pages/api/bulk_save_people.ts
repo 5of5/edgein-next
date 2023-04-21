@@ -15,7 +15,7 @@ interface Action {
     listId: number;
     sentiment?: string;
   };
-  resource_id: string;
+  resource_id: number;
   resource: string;
   user: number;
 }
@@ -24,7 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") return res.status(405).end();
 
   // params:
-  const personIds: string[] = req.body.personIds;
+  const personIds: number[] = req.body.personIds;
   const listName: string = req.body.listName;
   const action: "add" | "remove" = req.body.action;
   const pathname: string = req.body.pathname;
@@ -44,17 +44,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (isAddToList) {
         // check if person already follows
         const existsFollows = await checkFollowExists(
-          list,
+          list?.id || 0,
           personId,
           "people",
           user?.id
         );
         // insert follow only if the follows don't exists
         if (existsFollows.length === 0) {
-          await upsertFollow(list, personId, "people", user, token);
+          await upsertFollow(list?.id || 0, personId, "people", user, token);
         }
       } else {
-        await deleteFollowIfExists(list, personId, "people", user, token);
+        await deleteFollowIfExists(list?.id || 0, personId, "people", user, token);
       }
 
       const actionPayload: Action = {
@@ -63,7 +63,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         } List`,
         page: pathname,
         properties: {
-          listId: list.id,
+          listId: list?.id || 0,
         },
         resource_id: personId,
         resource: "people",

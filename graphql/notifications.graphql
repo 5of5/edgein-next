@@ -34,3 +34,35 @@ query GetNotificationsForUser($user: Int!) {
 		}
 	}
 }
+
+mutation InsertNotifications($object: notifications_insert_input!) {
+  insert_notifications_one(object: $object) {
+    id
+    target_user_id
+    event_type
+    follow_resource_type
+    notification_resource_type
+    company_id
+    vc_firm_id
+    message
+    read_at
+    created_at
+    updated_at
+    read
+  }
+}
+
+mutation MarkNotificationsAsRead($where: notifications_bool_exp!) {
+  update_notifications(where: $where, _set: { read: true }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertNotificationActions($object: notification_actions_insert_input!) {
+  insert_notification_actions_one(object: $object) {
+    id
+  }
+}

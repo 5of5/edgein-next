@@ -1,4 +1,16 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
+import {
+  GetUserByPkDocument,
+  GetUserByPkQuery,
+  InsertEditAccessDocument,
+  InsertEditAccessMutation,
+  InsertInvestorDocument,
+  InsertInvestorMutation,
+  InsertTeamMemberDocument,
+  InsertTeamMemberMutation,
+  UpdateUserAdditionalEmailsByPkDocument,
+  UpdateUserAdditionalEmailsByPkMutation,
+} from "@/graphql/types";
 import { tokenTypes } from "@/utils/constants";
 import { deleteToken, findToken } from "@/utils/tokens";
 import { jwtVerify } from "jose";
@@ -52,19 +64,9 @@ const addOrganizationEditAccess = async (payload: any, accessToken: string) => {
   const resourceType = payload.resourceDetails.resourceType
   const resourceId = payload.resourceDetails.resourceId
   const userId = payload.resourceDetails.userId
-  const mutation = `
-    mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
-      insert_resource_edit_access_one(object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}, on_conflict: {constraint: resource_edit_access_resource_id_user_id_resource_type_key, update_columns: []}) {
-        id
-        user_id
-        resource_id
-        resource_type
-      }
-    }
-  `
 
-  return await mutate({
-    mutation,
+  return await mutate<InsertEditAccessMutation>({
+    mutation: InsertEditAccessDocument,
     variables: {
       resourceType,
       resourceId,
@@ -75,55 +77,30 @@ const addOrganizationEditAccess = async (payload: any, accessToken: string) => {
 }
 
 const addTeamMember = async (payload: any, accessToken: string) => {
-  let mutation, variables
   const resourceType = payload.resourceDetails.resourceType
   if (resourceType === 'companies') {
-    mutation = `
-      mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
-        insert_team_members_one(object: {person_id: $personId, company_id: $companyId}, on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: []}) {
-          id
-        }
+    mutate<InsertTeamMemberMutation>({
+      mutation: InsertTeamMemberDocument,
+      variables: {
+        personId: payload.resourceDetails.personId,
+        companyId: payload.resourceDetails.resourceId,
       }
-    `
-    variables = {
-      personId: payload.resourceDetails.personId,
-      companyId: payload.resourceDetails.resourceId,
-    }
+    }, accessToken)
   }
   if (resourceType === 'vc_firms') {
-    mutation = `
-      mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
-        insert_investors_one(object: {person_id: $personId vc_firm_id: $vcFirmId}, on_conflict: {constraint: investors_vc_firm_id_person_id_key, update_columns: []}) {
-          id
-        }
+    mutate<InsertInvestorMutation>({
+      mutation: InsertInvestorDocument,
+      variables: {
+        personId: payload.resourceDetails.personId,
+        vcFirmId: payload.resourceDetails.resourceId,
       }
-    `
-    variables = {
-      personId: payload.resourceDetails.personId,
-      vcFirmId: payload.resourceDetails.resourceId,
-    }
+    }, accessToken)
   }
-
-
-  mutate({
-    mutation: mutation || '',
-    variables: variables || {}
-  }, accessToken)
 }
 
 export const updateUserEmails = async (userId: number, email: string, accessToken: string) => {
-  const queryUser = `
-    query GetUserByPk($userId: Int!) {
-      users_by_pk(id: $userId) {
-        id
-        additional_emails
-        email
-      }
-    }
-  `
-
-  const result = await query({
-    query: queryUser,
+  const result = await query<GetUserByPkQuery>({
+    query: GetUserByPkDocument,
     variables: {
       userId
     }
@@ -137,15 +114,8 @@ export const updateUserEmails = async (userId: number, email: string, accessToke
     if (!emails.includes(email)) emails.push(email)
     else return
 
-  const mutation = `
-    mutation UpdateUserByPk($userId: Int!, $emails: jsonb) {
-      update_users_by_pk(pk_columns: {id: $userId}, _set: {additional_emails: $emails}) {
-        id
-      }
-    }
-  `
-  await mutate({
-    mutation,
+  await mutate<UpdateUserAdditionalEmailsByPkMutation>({
+    mutation: UpdateUserAdditionalEmailsByPkDocument,
     variables: {
       userId,
       emails
