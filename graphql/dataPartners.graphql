@@ -1,0 +1,7 @@
+query GetDataPartnerByApiKey($apiKey: String!) {
+  data_partners(where: { api_key: { _eq: $apiKey } }) {
+    id
+    name
+    api_key
+  }
+}

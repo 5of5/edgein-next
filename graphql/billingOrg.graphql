@@ -1,0 +1,33 @@
+mutation InsertBillingOrg(
+  $customer_id: String
+  $status: String
+  $plan: String
+) {
+  insert_billing_org_one(
+    object: {
+      customer_id: $customer_id
+      status: $status
+      plan: $plan
+      user_limit: 1
+    }
+  ) {
+    id
+  }
+}
+
+query GetBillingOrgByCustomerId($customerId: String = "") {
+  billing_org(where: { customer_id: { _eq: $customerId } }) {
+    customer_id
+    id
+    plan
+    status
+    user_limit
+  }
+}
+
+mutation UpdateBillingOrg($id: Int!, $status: String = "") {
+  update_billing_org_by_pk(pk_columns: { id: $id }, _set: { status: $status }) {
+    id
+    status
+  }
+}

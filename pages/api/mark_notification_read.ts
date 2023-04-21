@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import CookieService from "../../utils/cookie";
 import { mutate } from "@/graphql/hasuraAdmin";
+import { MarkNotificationsAsReadDocument, MarkNotificationsAsReadMutation } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") return res.status(405).end();
@@ -27,23 +28,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   try {
-    const response = await mutate({
-      mutation: `mutation mark_notifications_read($where: notifications_bool_exp!) {
-        update_notifications(
-          where: $where,
-          _set: { read: true }
-        ) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-    `,
+    const response = await mutate<MarkNotificationsAsReadMutation>({
+      mutation: MarkNotificationsAsReadDocument,
       variables: { where },
     });
 
-    return res.send(response.data.update_notifications.returning);
+    return res.send(response.data.update_notifications?.returning);
   } catch (err: any) {
     return res.status(500).send({ message: err.message });
   }

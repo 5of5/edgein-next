@@ -1,6 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { query, mutate } from "@/graphql/hasuraAdmin";
 import { sortBy } from "lodash";
+import {
+  GetVcFirmsInvestmentsDocument,
+  GetVcFirmsInvestmentsQuery,
+  UpdateVcFirmTagsByPkDocument,
+  UpdateVcFirmTagsByPkMutation,
+} from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 	const vcfirmsList = await queryForVcFirmsList();
@@ -30,25 +36,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 // queries local user using graphql endpoint
 const queryForVcFirmsList = async () => {
-	// prepare gql query
-	const fetchQuery = `
-  query query_vc_firms {
-    vc_firms {
-      id
-      investments {
-        investment_round {
-          company {
-            id
-            tags
-          }
-        }
-      }
-    }
-  }  
-  `;
 	try {
-		const data = await query({
-			query: fetchQuery,
+		const data = await query<GetVcFirmsInvestmentsQuery>({
+			query: GetVcFirmsInvestmentsDocument,
 			variables: {},
 		});
 		return data.data.vc_firms;
@@ -57,17 +47,9 @@ const queryForVcFirmsList = async () => {
 	}
 };
 const mutateVcTags = async (id: number, tags: String[]) => {
-	// prepare gql query
-	const updateVcFirm = `
-  mutation update_vc_firms($id: Int!, $tags: jsonb) {
-    update_vc_firms_by_pk(_set: {tags: $tags}, pk_columns: {id: $id}) {
-      id
-    }
-  }
-  `;
 	try {
-		await mutate({
-			mutation: updateVcFirm,
+		await mutate<UpdateVcFirmTagsByPkMutation>({
+			mutation: UpdateVcFirmTagsByPkDocument,
 			variables: { id, tags },
 		});
 	} catch (e) {

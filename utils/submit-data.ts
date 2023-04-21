@@ -1,5 +1,20 @@
 import { mutate, query } from "@/graphql/hasuraAdmin";
-import { Data_Fields } from "@/graphql/types";
+import {
+  InsertActionMutation,
+  InsertActionDocument,
+  GetDataPartnerByApiKeyQuery,
+  GetDataFieldByPathDocument,
+  GetDataPartnerByApiKeyDocument,
+  GetDataFieldByPathQuery,
+  InsertDataRawMutation,
+  InsertDataRawDocument,
+  MarkDataRawAsInactiveMutation,
+  MarkDataRawAsInactiveDocument,
+  GetInvestmentRoundByRoundIdQuery,
+  GetInvestmentRoundByRoundIdDocument,
+  InsertDataDiscardMutation,
+  InsertDataDiscardDocument,
+} from "@/graphql/types";
 import { User } from "@/models/User";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
@@ -18,15 +33,8 @@ export const partnerLookUp = async (apiKey: string) => {
     data: {
       data_partners: [data_partner],
     },
-  } = await query({
-    query: `
-    query lookup_data_partner($apiKey: String!) {
-      data_partners(where: {api_key: {_eq: $apiKey}}) {
-        id
-        name
-        api_key
-      }
-    }`,
+  } = await query<GetDataPartnerByApiKeyQuery>({
+    query: GetDataPartnerByApiKeyDocument,
     variables: { apiKey },
   });
   return data_partner;
@@ -81,77 +89,27 @@ export const fieldLookup = async (path: string) => {
     data: {
       data_fields: [data_field],
     },
-  } = await query({
-    query: `
-    query lookup_data_field($path: String!) {
-      data_fields(where: {path: {_eq: $path}}) {
-        name
-        resource
-        weight
-        regex_transform
-        description
-        regex_test
-        is_valid_identifier
-        restricted_admin
-        data_type
-      }
-    }
-    `,
+  } = await query<GetDataFieldByPathQuery>({
+    query: GetDataFieldByPathDocument,
     variables: { path },
   });
   return data_field;
 };
 
 export const insertDataRaw = async (data: Array<Record<string, any>>) => {
-  const {
-    data: {
-      insert_data_raw: { returning },
-    },
-  } = await mutate({
-    mutation: `
-    mutation submit_data_raw($input: [data_raw_insert_input!]!) {
-      insert_data_raw(objects: $input) {
-        returning {
-          id
-          created_at
-          resource
-          resource_id
-          field
-          value
-          accuracy_weight
-        }
-      }
-    }
-    `,
+  const response = await mutate<InsertDataRawMutation>({
+    mutation: InsertDataRawDocument,
     variables: { input: data },
   });
-  return returning;
+  return response.data.insert_data_raw?.returning;
 };
 
 export const insertDataDiscard = async (data: Array<Record<string, any>>) => {
-  const {
-    data: {
-      insert_data_discard: { returning },
-    },
-  } = await mutate({
-    mutation: `
-    mutation submit_data_discard($input: [data_discard_insert_input!]!) {
-      insert_data_discard(objects: $input) {
-        returning {
-          id
-          created_at
-          resource
-          resource_id
-          field
-          value
-          accuracy_weight
-        }
-      }
-    }
-    `,
+  const response = await mutate<InsertDataDiscardMutation>({
+    mutation: InsertDataDiscardDocument,
     variables: { input: data },
   });
-  return returning;
+  return response.data.insert_data_discard?.returning;
 };
 
 export const updateMainTable = async (resourceType: ResourceTypes, id: Number, setValues: Record<string, any>) => {
@@ -186,22 +144,8 @@ export const deleteMainTableRecord = async (resourceType: ResourceTypes, id: Num
 };
 
 export const markDataRawAsInactive = async (resourceType: ResourceTypes, resourceId: Number) => {
-  await mutate({
-    mutation: `
-      mutation mark_data_raw_as_inactive($resourceType: String!, $resourceId: Int!) {
-        update_data_raw(
-          _set: { is_active: false },
-          where: {
-            _and: [
-              {resource: {_eq: $resourceType}},
-              {resource_id: {_eq: $resourceId}}
-            ]
-          }
-        ) {
-          affected_rows
-        }
-      }
-    `,
+  await mutate<MarkDataRawAsInactiveMutation>({
+    mutation: MarkDataRawAsInactiveDocument,
     variables: {
       resourceType,
       resourceId,
@@ -217,16 +161,8 @@ export const insertActionDataChange = async (
   userId?: Number,
   partnerId?: Number,
 ) => {
-  const { data } = await mutate({
-    mutation: `
-      mutation InsertAction($object: actions_insert_input!) {
-        insert_actions_one(
-          object: $object
-        ) {
-          id
-        }
-      }
-    `,
+  const { data } = await mutate<InsertActionMutation>({
+    mutation: InsertActionDocument,
     variables: {
       object: {
         action: actionType,
@@ -239,7 +175,7 @@ export const insertActionDataChange = async (
       },
     },
   });
-  return data?.[`insert_actions_one`];
+  return data.insert_actions_one;
 };
 
 export const onSubmitData = (
@@ -373,7 +309,7 @@ export const mutateActionAndDataRaw = async (
   let validData: Array<Record<string, any>> = [];
   let invalidData: Array<Record<string, any>> = [];
   let setMainTableValues: Record<string, any> = {};
-  const actions = [];
+  const actions: number[] = [];
 
   let existedData;
   if (actionType == 'Change Data') {
@@ -410,7 +346,7 @@ export const mutateActionAndDataRaw = async (
     }
 
     if ((actionType === "Insert Data" && !notInsertValueType(value)) || actionType === "Change Data") {
-      let dataField: Data_Fields = await fieldLookup(`${fieldPathLookup}.${field}`);
+      let dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
       if (dataField === undefined || (dataField?.restricted_admin && user?.role !== "admin"))
         invalidData.push({
           resource: resourceType,
@@ -461,7 +397,7 @@ export const mutateActionAndDataRaw = async (
           user?.id,
           partnerId
         );
-        actions.push(actionResponse?.id);
+        actions.push(actionResponse?.id || 0);
       }
     }
   }
@@ -476,22 +412,15 @@ export const mutateActionAndDataRaw = async (
 
   const insertResult = await insertDataRaw(validData);
 
-  return { id: resourceId, actions, resources: invalidData.concat(insertResult) };
+  return { id: resourceId, actions, resources: invalidData.concat(insertResult || []) };
 };
 
 
 export const getCompanyByRoundId = async (round_id: number) => {
   const {
     data: { investment_rounds }
-  } = await query({
-    query: `
-      query findCompanyByRoundId($round_id: Int!) {
-        investment_rounds(where: {id: {_eq: $round_id}}) {
-          id
-          company_id
-        }
-      }
-    `,
+  } = await query<GetInvestmentRoundByRoundIdQuery>({
+    query: GetInvestmentRoundByRoundIdDocument,
     variables: { round_id },
   });
   return investment_rounds[0];

@@ -1,4 +1,5 @@
 import { mutate } from '@/graphql/hasuraAdmin';
+import { UpdatePeopleByPkDocument, UpdatePeopleByPkMutation } from '@/graphql/types';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -35,69 +36,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const updatePerson = async (updateBody: any, id: number, token?: string) => {
-  const mutation = `
-  mutation update_people($set: people_set_input, $id: Int!) {
-    update_people_by_pk(_set: $set, pk_columns: {id: $id}) {
-      returning {
-        id
-        name
-        personal_email
-        picture
-        slug
-        status
-        type
-        work_email
-        linkedin
-        github
-        city
-        country
-        facebook_url
-        twitter_url
-        website_url
-        about
-        email
-        team_members {
-          id
-          end_date
-          start_date
-          founder
-          function
-          company {
-            id
-            slug
-            name
-            logo
-            overview
-          }
-        }
-        investments {
-          investment_round {
-            id
-            round_date
-            round
-            amount
-            company {
-              id
-              slug
-              name
-              logo
-            }
-          }
-        }
-      }
-    }
-  }
-`
-
-  const result = await mutate({
-    mutation,
+  const result = await mutate<UpdatePeopleByPkMutation>({
+    mutation: UpdatePeopleByPkDocument,
     variables: {
       id,
       set: updateBody,
     }
   }, token)
 
-  return result.data.update_people.returning[0]
+  return result.data.update_people_by_pk;
 }
 
 export default handler

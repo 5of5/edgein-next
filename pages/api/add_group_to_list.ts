@@ -1,7 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import difference from "lodash/difference";
 import { query, mutate } from "@/graphql/hasuraAdmin";
-import { List_User_Groups } from "@/graphql/types";
+import {
+  DeleteListUserGroupsDocument,
+  DeleteListUserGroupsMutation,
+  GetListUserGroupsByListIdDocument,
+  GetListUserGroupsByListIdQuery,
+  InsertListUserGroupsDocument,
+  InsertListUserGroupsMutation,
+} from "@/graphql/types";
 import CookieService from "../../utils/cookie";
 import { triggerListUpdatedAt } from "@/utils/lists";
 
@@ -20,21 +27,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const {
     data: { list_user_groups },
-  } = await query({
-    query: `
-      query findListUserGroups($listId: Int!) {
-        list_user_groups(where: {list_id: {_eq: $listId}}) {
-          id
-          list_id
-          user_group_id
-        }
-      }
-    `,
+  } = await query<GetListUserGroupsByListIdQuery>({
+    query: GetListUserGroupsByListIdDocument,
     variables: { listId },
   });
 
   const currentGroupIds = list_user_groups.map(
-    (item: List_User_Groups) => item.user_group_id
+    (item) => item.user_group_id
   );
 
   const addGroupIds = difference(newGroupIds, currentGroupIds);
@@ -56,18 +55,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const onAddListToGroup = async (list_id: number, user_group_id: number) => {
   const {
     data: { insert_list_user_groups_one },
-  } = await mutate({
-    mutation: `
-    mutation InsertListUserGroups($object: list_user_groups_insert_input!) {
-      insert_list_user_groups_one(
-        object: $object
-      ) {
-        id
-        list_id
-        user_group_id
-      }
-    }
-  `,
+  } = await mutate<InsertListUserGroupsMutation>({
+    mutation: InsertListUserGroupsDocument,
     variables: {
       object: {
         list_id,
@@ -82,30 +71,16 @@ const onAddListToGroup = async (list_id: number, user_group_id: number) => {
 const onDeleteListGroup = async (list_id: number, user_group_id: number) => {
   const {
     data: { delete_list_user_groups },
-  } = await mutate({
-    mutation: `
-      mutation DeleteListUserGroups($list_id: Int!, $user_group_id: Int!) {
-        delete_list_user_groups(
-          where: {
-            _and: [
-              {list_id: {_eq: $list_id}},
-              {user_group_id: {_eq: $user_group_id}}
-            ]
-          }
-        ) {
-          affected_rows
-          returning {
-            id
-          }
-        }
-      }
-    `,
+  } = await mutate<DeleteListUserGroupsMutation>({
+    mutation: DeleteListUserGroupsDocument,
     variables: {
-      list_id,
-      user_group_id,
+      where: {
+        list_id: { _eq: list_id },
+        user_group_id: { _eq: user_group_id },
+      }
     },
   });
-  return delete_list_user_groups.returning[0];
+  return delete_list_user_groups?.returning[0];
 };
 
 export default handler;
