@@ -76,11 +76,6 @@ const ElemAddressInput = ({ defaultLocation, defaultGeoPoint }: Props) => {
           newValue ? newValue?.geometry : defaultGeoPoint,
           { shouldTouch: true }
         );
-        setFormValue(
-          "location",
-          newValue ? `${newValue?.number || ''} ${newValue?.street || ''} ${newValue?.city || ''} ${newValue?.state || ''} ${newValue?.country || ''}` : defaultLocation,
-          { shouldTouch: true }
-        );
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
