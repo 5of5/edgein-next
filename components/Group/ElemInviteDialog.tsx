@@ -57,10 +57,9 @@ const ElemInviteDialog: React.FC<Props> = ({
 	};
 
 	const {
+		data: inviteResponse,
 		mutate,
 		isLoading: isSubmitting,
-		isSuccess,
-		error: inviteError,
 		reset,
 	} = useMutation(
 		async () => {
@@ -94,7 +93,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 							...prev,
 							user_group_members: [...prev.user_group_members, item.member],
 						}));
-						const userOne = selectedUsers.find(opt => opt.email === item.email);
+						const userOne = selectedUsers.find(opt => opt.email === item.member.email);
 						emailResources.push({
 							isExistedUser: true,
 							email: userOne?.email,
@@ -105,7 +104,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 							...prev,
 							user_group_invites: [...prev.user_group_invites, item.invite],
 						}));
-						const userOne = selectedUsers.find(opt => opt.email === item.email);
+						const userOne = selectedUsers.find(opt => opt.email === item.invite.email);
 						emailResources.push({
 							isExistedUser: false,
 							email: userOne?.email,
@@ -165,11 +164,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 						>
 							<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
-									{isSuccess ? (
-										<p className="text-2xl font-bold">Success</p>
-									) : (
-										<span>{`Invite people to ${group.name}`}</span>
-									)}
+									<span>{`Invite people to ${group.name}`}</span>
 									<button
 										type="button"
 										onClick={onClose}
@@ -179,15 +174,20 @@ const ElemInviteDialog: React.FC<Props> = ({
 									</button>
 								</Dialog.Title>
 
-								{isSuccess ? (
-									<p className="text-slate-500 mt-4">
-										Invitation has been sent successfully
-									</p>
-								) : inviteError ? (
-									<p className="text-red-500 mt-4">
-										{(inviteError as any)?.message}
-									</p>
-								) : (
+								{inviteResponse && inviteResponse.length > 0 ? (
+                  <ul className="mt-4 list-disc list-inside">
+                    {inviteResponse.map((res: any, index: number) => {
+                      if (res.error) {
+                        return <li className="text-red-500" key={index}>{res.error}</li>;
+                      }
+                      return (
+                        <li className="text-slate-500" key={index}>
+                          {`Invitation has been sent to ${res.member?.email || res.invite?.email} successfully`}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
 									<>
 										<Combobox
 											value={selectedUsers}
