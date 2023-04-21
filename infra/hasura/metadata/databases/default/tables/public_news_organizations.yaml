@@ -36,7 +36,7 @@ select_permissions:
         - company_id
         - created_at
         - id
-        - is_publisher
+        - type
         - news_id
         - updated_at
         - vc_firm_id

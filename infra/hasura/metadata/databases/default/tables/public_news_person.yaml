@@ -24,7 +24,7 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - is_author
+        - type
         - id
         - news_id
         - person_id

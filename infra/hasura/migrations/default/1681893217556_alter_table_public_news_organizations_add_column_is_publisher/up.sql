@@ -1,2 +1,2 @@
-alter table "public"."news_organizations" add column "is_publisher" boolean
+alter table "public"."news_organizations" add column "type" TEXT
  null;
