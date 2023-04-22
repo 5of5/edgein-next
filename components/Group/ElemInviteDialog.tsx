@@ -140,6 +140,10 @@ const ElemInviteDialog: React.FC<Props> = ({
 		setSelectedUsers(selectedUsers.filter((item: any) => item.id !== id));
 	};
 
+	const emailHasBeenAdded = selectedUsers.some((el) => el.email === query)
+		? true
+		: false;
+
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
 			<Dialog as="div" className="relative z-40" onClose={onClose}>
@@ -324,19 +328,26 @@ const ElemInviteDialog: React.FC<Props> = ({
 																</div>
 															)}
 
-															{validator.isEmail(query) && (
-																<Combobox.Option
-																	value={{
-																		id: null,
-																		display_name: query,
-																		email: query,
-																	}}
-																	className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
-																>
-																	Send an invitation to email address{" "}
-																	<span className="font-bold">{query}</span>
-																</Combobox.Option>
+															{emailHasBeenAdded && (
+																<div className="py-2 text-red-600">
+																	Email already added
+																</div>
 															)}
+
+															{validator.isEmail(query) &&
+																!emailHasBeenAdded && (
+																	<Combobox.Option
+																		value={{
+																			id: null,
+																			display_name: query,
+																			email: query,
+																		}}
+																		className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
+																	>
+																		Send an invitation to email address{" "}
+																		<span className="font-bold">{query}</span>
+																	</Combobox.Option>
+																)}
 														</div>
 													)}
 												</Combobox.Options>
