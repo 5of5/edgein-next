@@ -50,7 +50,10 @@ export const ElemEventActivity: React.FC<Props> = ({
 																activity?.person?.name ||
 																activity?.company?.name ||
 																activity?.vc_firm?.name
-															} was added as a ${activity?.type}`}
+															} was added as ${
+																activity?.type === "organizer" ? "an" : "a"
+															} ${activity?.type}`}
+															<br />
 														</>
 													)}
 												</div>
