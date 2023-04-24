@@ -32,8 +32,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
-  const resourceObj: Record<string, any> = req.body.resource;
+  const resourceObj: Array<Record<string, any>> | any = req.body.resource;
   const forceUpdate: Boolean = req.body.force_update;
+  let insertResultTemp: any = [];
   let resourceIdDiscard, partnerIdDiscard;
   try {
     if (
@@ -106,26 +107,63 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       actionType = "Insert Data";
     }
 
-    const properties = {...resourceObj};
+    let properties: any;
+    if(Array.isArray(resourceObj)){
+      let propertiesTemp: Array<Record<string, any>> | any =[];
+      resourceObj.forEach((item)=>{
+        propertiesTemp.push({...item});
+      })
+      properties = propertiesTemp;
+    }else{
+      properties = {...resourceObj};
+    }
 
     if (
       actionType === "Insert Data" &&
-      ["companies", "vc_firms", "people"].includes(resourceType) &&
-      (!resourceObj?.library || resourceObj?.library?.length === 0)
+      ["companies", "vc_firms", "people"].includes(resourceType) 
     ) {
-      properties.library = ["Web3"];
+      if(Array.isArray(resourceObj)){
+        resourceObj.forEach((item,idx)=>{
+          if((!item?.library || item?.library?.length === 0)){
+            properties[idx].library = ["Web3"];
+          }
+        })
+      }else{
+        if((!resourceObj?.library || resourceObj?.library?.length === 0)){
+          properties.library = ["Web3"];
+        }
+      }
     }
 
-    const insertResult = await mutateActionAndDataRaw(
-      partnerId,
-      user,
-      NODE_NAME[resourceType],
-      resourceId,
-      properties,
-      resourceType,
-      actionType,
-      forceUpdate,
-    );
+    let insertResult: any;
+    if(Array.isArray(properties)){
+      for(let i=0;i<properties.length;i++){
+        let tempInsertResult = await mutateActionAndDataRaw(
+          partnerId,
+          user,
+          NODE_NAME[resourceType],
+          resourceId,
+          properties[i],
+          resourceType,
+          actionType,
+          forceUpdate,
+        );
+        insertResultTemp.push({...tempInsertResult});
+      }
+      insertResult=insertResultTemp;
+    }else{
+      insertResult = await mutateActionAndDataRaw(
+        partnerId,
+        user,
+        NODE_NAME[resourceType],
+        resourceId,
+        properties,
+        resourceType,
+        actionType,
+        forceUpdate,
+      );
+    }
+    
 
     if (resourceId === undefined) {
       if (
@@ -137,7 +175,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "companies",
           resourceType,
           actionType,
-          insertResult?.actions 
+          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions 
         );
       }
 
@@ -147,7 +185,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "vc_firms",
           resourceType,
           actionType,
-          insertResult?.actions
+          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
         );
       }
 
@@ -159,7 +197,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "companies",
             resourceType,
             actionType,
-            insertResult?.actions
+            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
           );
         }
 
@@ -168,7 +206,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "vc_firms",
           resourceType,
           actionType,
-          insertResult?.actions
+          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
         );
       }
 
@@ -179,7 +217,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "companies",
             resourceType,
             actionType,
-            insertResult?.actions
+            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
           );
         }
         if (resourceObj?.vc_firm_id) {
@@ -188,7 +226,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             "vc_firms",
             resourceType,
             actionType,
-            insertResult?.actions
+            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
           );
         }
       }
@@ -201,11 +239,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           resourceType,
           resourceType,
           actionType,
-          insertResult?.actions
+          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
         );
       }
     }
-
+   
     return res.send(insertResult);
   } catch (error: any) {
     if (error[0].extensions.code === "validation-failed") {
@@ -243,6 +281,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let message:string="";
       message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" not found in this table. Please check again`;
       error[0].message=message
+    }
+    if(Array.isArray(resourceObj)){
+      error[0]["failed-object"] = resourceObj[insertResultTemp.length === 0 ? 0 : insertResultTemp.length];
     }
     return res.status(500).send(error[0] || error);
   }
