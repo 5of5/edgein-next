@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useRef } from "react";
 import validator from "validator";
 import { Dialog, Transition, Combobox } from "@headlessui/react";
 import useSWR from "swr";
@@ -31,6 +31,8 @@ const ElemInviteDialog: React.FC<Props> = ({
 }) => {
 	const [query, setQuery] = useState("");
 	const [selectedUsers, setSelectedUsers] = useState<Record<string, any>[]>([]);
+
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const debouncedQuery = useDebounce(query, 700);
 
@@ -140,9 +142,16 @@ const ElemInviteDialog: React.FC<Props> = ({
 		setSelectedUsers(selectedUsers.filter((item: any) => item.id !== id));
 	};
 
-	const emailHasBeenAdded = selectedUsers.some((el) => el.email === query)
-		? true
-		: false;
+	const handleSelect = (values: Record<string, any>[]) => {
+		setSelectedUsers(values);
+		setQuery("");
+		if (inputRef.current) {
+			inputRef.current.value = "";
+			inputRef.current.focus();
+		}
+	}
+
+	const emailHasBeenAdded = selectedUsers.some((el) => el.email === query);
 
 	return (
 		<Transition appear show={isOpen} as={Fragment}>
@@ -235,7 +244,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 									<>
 										<Combobox
 											value={selectedUsers}
-											onChange={setSelectedUsers}
+											onChange={handleSelect}
 											multiple
 										>
 											<div className="relative">
@@ -272,85 +281,87 @@ const ElemInviteDialog: React.FC<Props> = ({
 															className="flex-1 px-3 py-1 text-dark-500 relative bg-white rounded-md border-none outline-none ring-0 placeholder:text-slate-400 focus:outline-none focus:ring-0"
 															placeholder="e.g: Ashley or ashley@edgein.io"
 															autoComplete={"off"}
-															value={query}
+															ref={inputRef}
 															onChange={(event) => setQuery(event.target.value)}
 														/>
 													</div>
 												</div>
 
-												<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
-													{isLoading && query != "" ? (
-														<div className="px-4 py-2">
-															{Array.from({ length: 3 }, (_, i) => (
-																<PlaceholderPerson key={i} />
-															))}
-														</div>
-													) : searchedPeople?.length > 0 ? (
-														searchedPeople.map((item: any) => (
-															<Combobox.Option
-																key={item.id}
-																value={item}
-																className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
-															>
-																{item?.person?.picture ? (
-																	<ElemPhoto
-																		wrapClass="w-10 h-10 aspect-square shrink-0"
-																		imgClass="object-cover rounded-full border border-slate-100"
-																		photo={item.person.picture}
-																		placeholder="user2"
-																		placeholderClass="text-slate-300"
-																		imgAlt={item.person.name}
-																	/>
-																) : (
-																	<div className="flex flex-shrink-0 items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
-																		{item?.display_name?.charAt(0)}
+												{query && (
+													<Combobox.Options className="absolute mt-1 shadow-md z-20 bg-white rounded-md border border-slate-200 w-full max-h-60 overflow-scroll scrollbar-hide">
+														{isLoading && query != "" ? (
+															<div className="px-4 py-2">
+																{Array.from({ length: 3 }, (_, i) => (
+																	<PlaceholderPerson key={i} />
+																))}
+															</div>
+														) : searchedPeople?.length > 0 ? (
+															searchedPeople.map((item: any) => (
+																<Combobox.Option
+																	key={item.id}
+																	value={item}
+																	className="flex items-center gap-x-2 px-4 py-2 cursor-pointer hover:bg-gray-50 hover:text-primary-500"
+																>
+																	{item?.person?.picture ? (
+																		<ElemPhoto
+																			wrapClass="w-10 h-10 aspect-square shrink-0"
+																			imgClass="object-cover rounded-full border border-slate-100"
+																			photo={item.person.picture}
+																			placeholder="user2"
+																			placeholderClass="text-slate-300"
+																			imgAlt={item.person.name}
+																		/>
+																	) : (
+																		<div className="flex flex-shrink-0 items-center justify-center aspect-square w-10 rounded-full bg-slate-200 text-dark-500 text-xl capitalize">
+																			{item?.display_name?.charAt(0)}
+																		</div>
+																	)}
+
+																	<div className="flex-shrink-0">
+																		{item?.person?.name || item?.display_name}
+																	</div>
+																	{item?.email && (
+																		<div
+																			className="text-sm text-slate-600 truncate"
+																			title={item.email}
+																		>
+																			{item.email}
+																		</div>
+																	)}
+																</Combobox.Option>
+															))
+														) : (
+															<div className="text-center">
+																{query != "" && (
+																	<div className="px-6 py-4 text-lg font-bold">
+																		Not Found
 																	</div>
 																)}
 
-																<div className="flex-shrink-0">
-																	{item?.person?.name || item?.display_name}
-																</div>
-																{item?.email && (
-																	<div
-																		className="text-sm text-slate-600 truncate"
-																		title={item.email}
-																	>
-																		{item.email}
+																{emailHasBeenAdded && (
+																	<div className="py-2 text-red-600">
+																		Email already added
 																	</div>
 																)}
-															</Combobox.Option>
-														))
-													) : (
-														<div className="text-center">
-															{query != "" && (
-																<div className="px-6 py-4 text-lg font-bold">
-																	Not Found
-																</div>
-															)}
 
-															{emailHasBeenAdded && (
-																<div className="py-2 text-red-600">
-																	Email already added
-																</div>
-															)}
-
-															{validator.isEmail(query) &&
-																!emailHasBeenAdded && (
-																	<Combobox.Option
-																		value={{
-																			id: null,
-																			display_name: query,
-																			email: query,
-																		}}
-																		className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
-																	>
-																		Send an invitation to email address{" "}
-																		<span className="font-bold">{query}</span>
-																	</Combobox.Option>
-																)}
-														</div>
-													)}
-												</Combobox.Options>
+																{validator.isEmail(query) &&
+																	!emailHasBeenAdded && (
+																		<Combobox.Option
+																			value={{
+																				id: null,
+																				display_name: query,
+																				email: query,
+																			}}
+																			className="py-2 cursor-pointer text-primary-500 underline hover:bg-gray-50 hover:text-dark-500"
+																		>
+																			Send an invitation to email address{" "}
+																			<span className="font-bold">{query}</span>
+																		</Combobox.Option>
+																	)}
+															</div>
+														)}
+													</Combobox.Options>
+												)}
 											</div>
 										</Combobox>
 
