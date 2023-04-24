@@ -27,8 +27,8 @@ const NewsForm = ({ action, toolbar }: NewsFormProps) => {
         className={inputClassName}
         source="source"
         multiline
-        format={(v) => v.replace(/^"(.*)"$/, "$1")}
-        parse={(v) => `"${v}"`}
+        format={(v) => (v ? v.replace(/^"(.*)"$/, "$1") : "")}
+        parse={(v) => (v ? `"${v}"` : "")}
       />
       <TextInput className={inputClassName} source="kind" />
       <SelectInput
