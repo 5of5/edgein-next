@@ -27,6 +27,7 @@ select_permissions:
         - created_at
         - date
         - id
+        - kind
         - link
         - source
         - status
