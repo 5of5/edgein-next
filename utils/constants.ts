@@ -756,7 +756,8 @@ export type ResourceTypes =
 	| "event_organization"
 	| "resource_links"
 	| "news"
-	| "news_organizations";
+	| "news_organizations"
+	| "news_person";
 
 export const NODE_NAME: Record<ResourceTypes, string> = {
 	companies: "company",
@@ -774,6 +775,7 @@ export const NODE_NAME: Record<ResourceTypes, string> = {
 	resource_links: "resource_link",
 	news: "news",
 	news_organizations: "news_organization",
+	news_person: "news_person",
 };
 
 export const isResourceType = (
@@ -795,6 +797,7 @@ export const isResourceType = (
 		"resource_links",
 		"news",
 		"news_organizations",
+		"news_person",
 	].includes(resourceType);
 };
 

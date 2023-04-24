@@ -3,6 +3,7 @@ import ElemTitle from "../ElemTitle";
 import ElemFormBase from "../ElemFormBase";
 import NewsForm from "./news-form";
 import { NewsOrganizations } from "./news-organizations";
+import { NewsPerson } from "./news-person";
 
 export const NewsEdit = () => {
   return (
@@ -11,6 +12,7 @@ export const NewsEdit = () => {
         <NewsForm action="edit" />
       </ElemFormBase>
       <NewsOrganizations />
+      <NewsPerson />
     </div>
   );
 };
