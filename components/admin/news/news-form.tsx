@@ -1,10 +1,5 @@
 import React, { ReactElement } from "react";
-import {
-  SimpleForm,
-  TextInput,
-  DateInput,
-  SelectInput,
-} from "react-admin";
+import { SimpleForm, TextInput, DateInput, SelectInput } from "react-admin";
 import { status } from "@/utils/constants";
 
 type NewsFormProps = {
@@ -28,6 +23,14 @@ const NewsForm = ({ action, toolbar }: NewsFormProps) => {
       <TextInput className={inputClassName} source="text" />
       <TextInput className={inputClassName} source="link" />
       <DateInput className={inputClassName} source="date" />
+      <TextInput
+        className={inputClassName}
+        source="source"
+        multiline
+        format={(v) => v.replace(/^"(.*)"$/, "$1")}
+        parse={(v) => `"${v}"`}
+      />
+      <TextInput className={inputClassName} source="kind" />
       <SelectInput
         className={inputClassName}
         source="status"

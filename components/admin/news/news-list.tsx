@@ -46,6 +46,8 @@ export const NewsList = () => {
           <ChipField source="name" />
         </SingleFieldList>
       </ReferenceArrayField>
+      <TextField source="source" />
+      <TextField source="kind" />
       <TextField source="status" />
     </ElemList>
   );
