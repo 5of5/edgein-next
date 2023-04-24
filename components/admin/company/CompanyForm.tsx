@@ -13,13 +13,17 @@ import {
   useGetList,
   regex,
   required,
+  SelectArrayInput,
+  useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
   status,
   tags,
   companyChoices,
+  libraryChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
@@ -29,7 +33,6 @@ import ElemAddressInput from "../ElemAddressInput";
 type CompanyFormProps = {
   action: "create" | "edit";
   formRef: any;
-  currentData?: any;
   toolbar?: ReactElement | false;
   isImageUpdated: boolean;
   logo: any;
@@ -39,7 +42,6 @@ type CompanyFormProps = {
 
 const CompanyForm = ({
   action,
-  currentData,
   formRef,
   toolbar,
   isImageUpdated,
@@ -47,6 +49,13 @@ const CompanyForm = ({
   onSelect,
   onDropRejected,
 }: CompanyFormProps) => {
+  const { id } = useParams();
+  const { data: currentData } = useGetOne(
+    "companies",
+    { id },
+    { enabled: !!id }
+  );
+
   const { data: companies } = useGetList("companies", {});
   const [isIcon, setIsIcon] = useState(action === "edit");
   const [keyword, setKeyword] = useState("");
@@ -287,6 +296,12 @@ const CompanyForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectArrayInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

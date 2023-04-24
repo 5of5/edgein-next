@@ -3,8 +3,9 @@ import React from "react";
 type Props = {
 	className?: string;
 	heading?: string;
-	resourceType: "companies" | "investors";
+	resourceType: "companies" | "investors" | "events";
 	tags?: (string | null)[];
+	filter?: string;
 };
 
 export const ElemTags: React.FC<Props> = ({
@@ -12,6 +13,7 @@ export const ElemTags: React.FC<Props> = ({
 	heading,
 	resourceType,
 	tags,
+	filter = "industry",
 }) => {
 	if (!tags) {
 		return <span></span>;
@@ -26,7 +28,13 @@ export const ElemTags: React.FC<Props> = ({
 							key={index}
 							className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all cursor-pointer hover:bg-slate-300"
 						>
-							<a href={`/${resourceType}/?tags=${tag}`}>{tag}</a>
+							<a
+								href={`/${resourceType}/?filters=${encodeURIComponent(
+									`{"${filter}":{"tags":["${tag}"]}}`
+								)}`}
+							>
+								{tag}
+							</a>
 						</li>
 					);
 				})}

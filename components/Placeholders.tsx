@@ -26,18 +26,36 @@ export const PlaceholderCompanyCard: React.FC = () => {
 
 export const PlaceholderNote: React.FC = () => {
 	return (
-		<div className="flex flex-col animate-pulse-fast p-5 bg-white rounded-lg md:h-full">
+		<div className="flex flex-col animate-pulse-fast px-5 py-4 bg-white rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 mb-4 w-full">
+				<div className="relative aspect-square rounded-lg bg-slate-200 w-12 h-12 mb-2">
+					<div className="absolute -right-1 -bottom-1 bg-slate-300 h-7 w-7 rounded-full"></div>
+				</div>
+				<div className="w-full ml-2">
+					<div className="h-4 w-1/3 bg-slate-200 rounded"></div>
+					<div className="flex space-x-2">
+						<div className="mt-2 h-2 w-2/12 bg-slate-200 rounded"></div>
+						<div className="mt-2 h-2 w-6 bg-slate-200 rounded"></div>
+						<div className="mt-2 h-2 w-6 bg-slate-200 rounded"></div>
+					</div>
+				</div>
+			</div>
 			<div className="flex-1 space-y-4 py-1">
-				<div className="h-2 bg-slate-200 rounded"></div>
 				<div className="h-2 bg-slate-200 rounded"></div>
 				<div className="h-2 bg-slate-200 rounded"></div>
 				<div className="h-2 bg-slate-200 rounded w-2/3"></div>
 			</div>
-			<div className="mt-8 flex items-center shrink-0 mb-4 w-full">
-				<div className="aspect-square rounded-lg bg-slate-200 w-7 h-7"></div>
-				<div className="ml-2 h-4 w-1/3 bg-slate-200 rounded"></div>
+		</div>
+	);
+};
+
+export const PlaceholderPerson: React.FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast bg-white rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 w-full py-2">
+				<div className="aspect-square rounded-full bg-slate-200 w-10 h-10 shrink-0"></div>
+				<div className="ml-2 h-3 bg-slate-200 rounded-full w-2/3"></div>
 			</div>
-			<div className="h-2 bg-slate-200 rounded w-2/3"></div>
 		</div>
 	);
 };
@@ -51,6 +69,21 @@ export const PlaceholderActivity: React.FC = () => {
 			</div>
 			<div className="flex-1 space-y-4 ml-4 py-1">
 				<div className="h-2 bg-slate-200 rounded w-1/12"></div>
+			</div>
+		</div>
+	);
+};
+
+export const PlaceholderNotification: React.FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast px-5 py-2 bg-white rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 w-full">
+				<div className="aspect-square rounded-lg bg-slate-200 w-12 h-12"></div>
+				<div className="ml-2 w-full">
+					<div className="h-4 w-2/5 bg-slate-200 rounded"></div>
+					<div className="mt-2 h-2 w-1/5 bg-slate-200 rounded"></div>
+				</div>
+				<div className="w-3 h-3 bg-slate-200 rounded-full"></div>
 			</div>
 		</div>
 	);
@@ -182,6 +215,29 @@ export const PlaceholderInvestorCard: React.FC = () => {
 					<div className="aspect-square rounded-lg h-2 w-2/5 bg-slate-200"></div>
 					<div className="aspect-square rounded-lg h-2 w-2/5 bg-slate-200"></div>
 				</div>
+			</div>
+		</div>
+	);
+};
+
+export const PlaceholderEventCard: React.FC = () => {
+	return (
+		<div className="flex flex-col animate-pulse-fast p-5 bg-white border border-dark-500/10 rounded-lg md:h-full">
+			<div className="flex items-center shrink-0 mb-4 w-full">
+				<div className="rounded-lg bg-slate-200 h-36 w-full"></div>
+			</div>
+			<div className="flex-1 space-y-4 py-1">
+				<div className="h-4 bg-slate-200 rounded w-2/3"></div>
+				<div className="h-2 bg-slate-200 rounded w-2/5"></div>
+			</div>
+			<div className="mt-4 flex items-center space-x-2">
+				<div className="rounded-full h-6 w-10 bg-slate-200"></div>
+				<div className="rounded-full h-6 w-10 bg-slate-200"></div>
+				<div className="rounded-full h-6 w-10 bg-slate-200"></div>
+			</div>
+			<div className="mt-8 flex items-center space-x-2">
+				<div className="rounded-lg h-2 w-2/5 bg-slate-200"></div>
+				<div className="rounded-lg h-2 w-2/5 bg-slate-200"></div>
 			</div>
 		</div>
 	);

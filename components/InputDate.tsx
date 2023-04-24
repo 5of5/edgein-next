@@ -12,6 +12,8 @@ type Props = {
 	required?: boolean;
 	autoComplete?: string;
 	disabled?: boolean;
+	min?: string | number;
+	max?: string | number;
 };
 
 export const InputDate: React.FC<PropsWithChildren<Props>> = ({
@@ -25,6 +27,8 @@ export const InputDate: React.FC<PropsWithChildren<Props>> = ({
 	required = false,
 	autoComplete = "on",
 	disabled,
+	min,
+	max,
 }) => {
 	return (
 		<>
@@ -45,6 +49,8 @@ export const InputDate: React.FC<PropsWithChildren<Props>> = ({
 				required={required}
 				autoComplete={autoComplete}
 				disabled={disabled}
+				min={min}
+				max={max}
 			/>
 		</>
 	);

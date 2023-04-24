@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { List_Members } from "@/graphql/types";
 import {
   deleteListMember,
   findListMemberOne,
@@ -20,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user_id: number = req.body.userId;
   const list_id: number = req.body.listId;
 
-  const listMemberOne: List_Members = await findListMemberOne(list_id, user_id);
+  const listMemberOne = await findListMemberOne(list_id, user_id);
 
   if (listMemberOne) {
     const response = await deleteListMember(listMemberOne.id);

@@ -34,19 +34,37 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - attachments
+        - banner
+        - created_at
+        - discord
         - end_date
-        - start_date
+        - end_time
+        - facebook
+        - geopoint
         - id
-        - parent_event_id
-        - location
+        - instagram
+        - is_featured
         - link
+        - location_json
         - name
         - notes
+        - overview
+        - parent_event_id
+        - price
         - size
+        - slug
+        - start_date
+        - start_time
         - status
-        - created_at
+        - telegram
+        - timezone
+        - twitter
+        - types
         - updated_at
+        - venue_name
       filter:
         status:
           _eq: published
       limit: 50
+      allow_aggregations: true

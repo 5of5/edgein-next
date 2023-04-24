@@ -1,0 +1,37 @@
+query GetLastSync {
+  application_meta(
+    where: { key: { _in: ["sync_companies", "sync_vc_firms", "sync_people"] } }
+  ) {
+    id
+    key
+    value
+  }
+}
+
+mutation UpdateApplicationMetaValue($value: timestamptz, $key: String!) {
+  update_application_meta(
+    where: { key: { _eq: $key } }
+    _set: { value: $value, error: "" }
+  ) {
+    affected_rows
+    returning {
+      id
+      key
+      value
+    }
+  }
+}
+
+mutation UpdateApplicationMetaError($error: String, $key: String!) {
+  update_application_meta(
+    where: { key: { _eq: $key } }
+    _set: { error: $error }
+  ) {
+    affected_rows
+    returning {
+      id
+      key
+      value
+    }
+  }
+}

@@ -1,5 +1,5 @@
 query GetPerson($slug: String!) {
-  people(where: {slug: {_eq: $slug}}) {
+  people(where: { slug: { _eq: $slug } }) {
     id
     name
     personal_email
@@ -30,6 +30,7 @@ query GetPerson($slug: String!) {
         logo
         overview
         location
+        tags
       }
     }
     team_members {
@@ -46,6 +47,123 @@ query GetPerson($slug: String!) {
         logo
         overview
         location
+        tags
+      }
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+          tags
+        }
+      }
+    }
+  }
+}
+
+query GetPersonsPath {
+  people(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+    id
+    name
+    slug
+  }
+}
+
+query GetAllPersons {
+  people {
+    id
+    name
+  }
+}
+
+query SearchPeople($query: String, $searchText: jsonb) {
+  users(
+    where: {
+      _or: [
+        { email: { _ilike: $query } }
+        { additional_emails: { _contains: $searchText } }
+        {
+          person: {
+            _or: [
+              { name: { _ilike: $query } }
+              { work_email: { _ilike: $query } }
+              { personal_email: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+    limit: 50
+  ) {
+    id
+    display_name
+    email
+    person {
+      id
+      name
+      picture
+      slug
+    }
+  }
+}
+
+query GetPeopleByDate($date: timestamptz) {
+  people(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: "Web3" } }
+      ]
+    }
+  ) {
+    id
+    name
+    work_email
+    personal_email
+    picture
+    slug
+  }
+}
+
+mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
+  update_people_by_pk(_set: $set, pk_columns: { id: $id }) {
+    id
+    name
+    personal_email
+    picture
+    slug
+    status
+    type
+    work_email
+    linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    about
+    email
+    team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      company {
+        id
+        slug
+        name
+        logo
+        overview
       }
     }
     investments {
@@ -62,20 +180,5 @@ query GetPerson($slug: String!) {
         }
       }
     }
-  }
-}	
-
-query GetPersonsPath {
-  people(where: {slug: {_neq: ""}}, order_by: {slug: asc}) {
-    id
-    name
-    slug
-  }
-}
-
-query GetAllPersons {
-  people {
-    id
-    name
   }
 }

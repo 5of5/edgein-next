@@ -32,11 +32,12 @@ docker ps
 ```
 your output should look something like:
 ```
+872fe454e029   redis:6.2-alpine               "docker-entrypoint.s…"   5 minutes ago  Up 5 minutes           0.0.0.0:6379->6379/tcp   infra-cache-1
 968caa7ae2fe   postgres:14.1                  "docker-entrypoint.s…"   23 hours ago   Up 23 hours (healthy)   0.0.0.0:5432->5432/tcp   infra-postgres-1
 de3c3c77c736   hasura/graphql-engine:v2.7.0   "graphql-engine serve"   23 hours ago   Up 23 hours             0.0.0.0:8080->8080/tcp   infra-graphql-engine-1
 ```
 The Hasura web console should now be available at `http://localhost:8080`. Check `/infra/hasura/config.yaml` for the password.
-
+The redis server is running on `127.0.0.1:6379` for applying rate limit. Now can test graphql_query api locally.
 ### Load Schema and Initial Data
 This is taken care of using the `docker-entrypoint-initdb.d` directory populated from `infra/hasura/bootstrap-dev`. No further action should be required.
 
@@ -121,10 +122,74 @@ applied, and deletes them so that we don't reapply them.
 ## AWS
 
 ### DNS / Domains
-All managed in Route 53
+Managed in Route 53 and vercel
 
 ### GraphQL
 ELB and EC2 cluster hosted in US-East-2
 
 ### Jenkins
 ELB and EC2 hosted in US-West-2
+
+### redis server
+EC2 hosted in US-West-2
+
+## API
+
+### submit-data
+This API allows partners insert/update/delete edgein data.
+Partner need to be added in data_partners table, then using their api_key o request
+
+#### Insert data
+curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
+    "partner_api_key": "<api_key>",
+    "resource_type": "<resource_type>",
+    "resource_identifier":[{"field": "id"}],
+    "resource":{<resource_obj>}
+}'
+
+<resource_obj> is a json {"< field >": < value >}
+Only support for < resource_type >.< field > that's available in data_fields table.
+The value can be transform if transform pattern is set in data_fields table for this field.
+If "< field >" is "< other_resource_type >:< other_field >" pattern, the "< field >" will be converted into "< other_resource_type >_id"
+and new < value > will be changed to id of other_resource_type record which contains input < value >
+For example: Before using resource data, {"companies:name": "TEST_NAME"} will be converted into {"company_id": "1"}
+where company 1 name is "TEST_NAME"
+
+#### Update data
+curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
+    "partner_api_key": "<api_key>",
+    "resource_type": "<resource_type>",
+    "resource_identifier":[<list_of_filters>],
+    "resource":{<resource_obj>}
+}'
+
+Each filter of <list_of_filters> is a json: {"field": <column_name>, "value": <value_to_filter>, "method": "<graphql_filter_method>"}
+method is optional, default value is "_eq"
+
+#### Delete data
+curl --location --request DELETE 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
+    "partner_api_key": "<api_key>",
+    "resource_type": "<resource_type>",
+    "resource_identifier":[<list_of_filters>]
+}'
+
+
+## Scripts
+
+### Prerequisite
+Create .env in scripts directory then cd this directory and run npx ts-node < scripts >
+
+### Update data fields table
+Add below env variables
+PG_USER=< PG_USER >
+PG_HOST=< PG_HOST >
+PG_DATABASE=< PG_DATABASE >
+PG_DATABASE=< PG_DATABASE >
+PG_PORT=< PG_PORT >
+Then run the script update_data_fields.ts
+
+### Clone prodution DB to staging DB
+git checkout to target branch
+export PGPASSWORD='PGPASSWORD'
+export ADMIN_SECRET='HASURA_ADMIN_SECRET'
+bash clone_db_from_production_to_staging.sh

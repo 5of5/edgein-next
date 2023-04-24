@@ -110,6 +110,7 @@ select_permissions:
         - investor_amount
         - layer
         - layer_detail
+        - library
         - location
         - location_json
         - logo
@@ -193,6 +194,7 @@ select_permissions:
         - investor_amount
         - layer
         - layer_detail
+        - library
         - location
         - location_json
         - logo

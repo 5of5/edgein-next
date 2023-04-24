@@ -37,17 +37,15 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - created_at
         - created_by_user_id
-        - id
         - description
         - discord
+        - id
         - name
+        - public
         - telegram
         - twitter
-        - created_at
         - updated_at
-      filter:
-        user_group_members:
-          user_id:
-            _eq: X-Hasura-User-Id
+      filter: {}
       limit: 50

@@ -1,6 +1,7 @@
-import React, { MutableRefObject, useRef, useEffect, useState } from "react";
+import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { flatten, union} from "lodash";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
@@ -12,14 +13,17 @@ import {
 	GetPersonQuery,
 	Investment_Rounds,
 	People,
-	useGetUserProfileQuery,
+	useGetUserByPersonIdQuery,
 } from "@/graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
 import { onTrackView } from "@/utils/track";
-import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useIntercom } from "react-use-intercom";
+import { IconCheckBadgeSolid } from "@/components/Icons";
+import { ElemTooltip } from "@/components/ElemTooltip";
+import { ElemTags } from "@/components/ElemTags";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
 
 type Props = {
 	person: People;
@@ -47,6 +51,10 @@ const Person: NextPage<Props> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
 
+	const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
+	const companyTags = flatten(person.team_members.map(item => item?.company?.tags));
+	const personTags = union(vcFirmTags, companyTags).filter(item => item);
+
 	const personEmails = [
 		...(person.work_email ? [person.work_email] : []),
 		...(person.personal_email ? [person.personal_email] : []),
@@ -64,38 +72,12 @@ const Person: NextPage<Props> = (props) => {
 			: []),
 	];
 
-	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
-	const [showEmails, setShowEmails] = useState(false);
-
-	const onEmailClick = () => {
-		if (user?.entitlements?.viewEmails) {
-			setShowEmails(!showEmails);
-			// TODO add action
-		} else {
-			setIsOpenUpgradeDialog(true);
-		}
-	};
-	const onCloseUpgradeDialog = () => {
-		setIsOpenUpgradeDialog(false);
-	};
-
-	const [claimedProfile, setClaimedProfile] = useState(false);
-
 	const profileUrl = `https://edgein.io${router.asPath}`;
 
-	const {
-		data: users,
-		refetch,
-		isLoading,
-	} = useGetUserProfileQuery({
-		id: user?.id ?? 0,
-	});
+	const { data: linkedUser, isLoading: isLoadingLinkedUser } =
+    useGetUserByPersonIdQuery({ person_id: person?.id });
 
-	useEffect(() => {
-		if (users?.users_by_pk?.person) {
-			setClaimedProfile(true);
-		}
-	}, [users]);
+  const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
 
 	return (
 		<div className="relative">
@@ -123,22 +105,57 @@ const Person: NextPage<Props> = (props) => {
 											{removeSpecialCharacterFromString(person.type as string)}
 										</div>
 									)}
-									<h1 className="text-3xl font-bold lg:text-4xl">
-										{person.name}
-									</h1>
-									{!claimedProfile && (
-										<ElemButton
-											className="mt-2"
-											btn="primary"
-											onClick={() =>
-												showNewMessages(
-													`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
-												)
-											}
-										>
-											Claim profile
-										</ElemButton>
-									)}
+									<div className="flex items-center justify-center space-x-2 lg:justify-start">
+										<h1 className="text-3xl font-bold lg:text-4xl">
+											{person.name}
+										</h1>
+
+										{claimedProfile && (
+											<ElemTooltip
+												content="Claimed profile"
+												className="cursor-pointer"
+											>
+												<IconCheckBadgeSolid
+													className="h-8 w-8 text-primary-500"
+													title="Claimed profile"
+												/>
+											</ElemTooltip>
+										)}
+									</div>
+
+									{personTags?.length > 0 && (
+                    <ElemTags
+                      className="my-4"
+                      resourceType={
+                        person.team_members.length > 0
+                          ? "companies"
+                          : "investors"
+                      }
+                      tags={personTags}
+                    />
+                  )}
+
+									<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+										{!isLoadingLinkedUser && !claimedProfile && (
+											<ElemButton
+												btn="primary"
+												onClick={() =>
+													showNewMessages(
+														`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
+													)
+												}
+											>
+												Claim profile
+											</ElemButton>
+										)}
+											
+										<ElemSaveToList
+											resourceName={person.name}
+											resourceId={person.id}
+											resourceType="people"
+											slug={person.slug!}
+										/>
+									</div>
 								</div>
 								<div className="mt-6 lg:mt-0"></div>
 							</div>
@@ -173,8 +190,6 @@ const Person: NextPage<Props> = (props) => {
 							linkedIn={person.linkedin}
 							investmentsLength={person.investments?.length}
 							emails={personEmails}
-							onEmailClick={onEmailClick}
-							showEmails={showEmails}
 							github={person.github}
 							twitter={person.twitter_url}
 							location={person.city}
@@ -231,19 +246,18 @@ const Person: NextPage<Props> = (props) => {
 					</div>
 				)}
 			</div>
-
-			<ElemUpgradeDialog
-				isOpen={isOpenUpgradeDialog}
-				onClose={onCloseUpgradeDialog}
-			/>
 		</div>
 	);
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-	const { data: people } = await runGraphQl<GetPersonQuery>(GetPersonDocument, {
-		slug: context.params?.personId,
-	});
+	const { data: people } = await runGraphQl<GetPersonQuery>(
+		GetPersonDocument,
+		{
+			slug: context.params?.personId,
+		},
+		context.req.cookies
+	);
 
 	if (!people?.people?.[0]) {
 		return {

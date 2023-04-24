@@ -15,6 +15,7 @@ import {
 } from "./Icons";
 import { useUser } from "@/context/userContext";
 import Link from "next/link";
+import { clearLocalStorage } from "@/utils/helpers";
 
 type Props = {
 	className?: string;
@@ -31,7 +32,7 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 	}
 
 	const logout = async () => {
-		localStorage.clear();
+		clearLocalStorage();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
 		}).then((res) => res.json());
@@ -77,7 +78,7 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 			as="div"
 			className={`relative hidden lg:relative lg:flex lg:items-center ${className}`}
 		>
-			<Menu.Button className="relative">
+			<Menu.Button className="relative ml-1" as="div">
 				{user?.person?.picture ? (
 					<ElemPhoto
 						photo={user?.person?.picture}

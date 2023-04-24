@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Script from "next/script";
 import React from "react";
 import { FigureIntroSplash } from "@/components/FigureIntroSplash";
 import { ElemButton } from "@/components/ElemButton";
@@ -13,14 +14,34 @@ type Props = {
 const Home: NextPage<Props> = ({ setShowPopup }) => {
 	const { user, loading } = useUser();
 
+	const analytics = [
+		{
+			name: "43k+",
+			description: "Companies and Projects",
+		},
+		{
+			name: "4k+",
+			description: "VC Firms and Angels",
+		},
+		{
+			name: "18k+",
+			description: "Deals and Investments",
+		},
+		{
+			name: "25k",
+			description: "Validated Web3 builders",
+		},
+	];
+
 	return (
 		<>
 			<section className="relative overflow-hidden">
 				<FigureBlurredBg className="-top-20 md:-top-64 lg:-top-80" />
 				<div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 lg:pt-20 lg:pb-32">
-					<div className="mx-auto max-w-3xl">
-						<h1 className="font-bold text-center text-4xl sm:text-6xl">
-							Web3-focused data intelligence for success.
+					<div className="mx-auto max-w-5xl">
+						<h1 className="font-bold text-center text-4xl sm:text-5xl">
+							Web3-focused data intelligence, for the community by the
+							community.
 						</h1>
 					</div>
 					<div className="relative z-30 mx-auto max-w-4xl">
@@ -32,8 +53,12 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 						</h2>
 						<div className="flex justify-center mt-4">
 							{!user && (
-								<ElemButton arrow href="/companies/" btn="primary">
-									Start Exploring Free
+								<ElemButton
+									arrow
+									onClick={() => setShowPopup("signup")}
+									btn="primary"
+								>
+									Join the community
 								</ElemButton>
 							)}
 						</div>
@@ -47,7 +72,27 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 				</div>
 			</section>
 
-			<section className="block mt-0 -mb-24 lg:-mt-48">
+			<section className="block relative mt-0 bg-white/50 backdrop-blur-3xl lg:-mt-48">
+				<div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+					<dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-4">
+						{analytics.map((item) => (
+							<div
+								key={item.name}
+								className="flex space-x-3 lg:flex-col lg:space-x-0"
+							>
+								<dt className="flex items-center gap-x-3 text-4xl font-bold leading-7">
+									{item.name}
+								</dt>
+								<dd className="lg:mt-4 flex text-xl text-slate-600">
+									<p>{item.description}</p>
+								</dd>
+							</div>
+						))}
+					</dl>
+				</div>
+			</section>
+
+			<section className="block mt-0 -mb-24">
 				<div className="col-span-2 relative overflow-hidden p-16 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] text-dark-500 lg:py-20">
 					<div className="max-w-7xl mx-auto text-center text-white relative z-10">
 						<h2 className="max-w-2xl mx-auto text-3xl font-bold sm:text-4xl">
@@ -68,7 +113,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 								arrow
 								className="mt-6 text-primary-500 bg-gradient-to-br from-white to-[#D7D0FF] hover:to-white"
 							>
-								Sign Up
+								Join the community
 							</ElemButton>
 						)}
 					</div>
@@ -81,6 +126,16 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 					<FigureCircleDashes className="absolute -bottom-112 -right-52 " />
 				</div>
 			</section>
+
+
+			<Script
+				strategy="lazyOnload"
+				src='https://s.opensend.com/os.min.js'
+				// @ts-ignore:next-line
+				osid='X6L7L49B'
+				ostyp='6311ae17'
+				async
+			/>
 		</>
 	);
 };

@@ -5,24 +5,28 @@ import {
   SimpleForm,
   TextInput,
   SelectInput,
+  SelectArrayInput,
   FormDataConsumer,
   useGetList,
   AutocompleteArrayInput,
+  useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 import {
   companyChoices,
+  libraryChoices,
   status,
   validateNameAndSlugAndEmailAndDomain,
 } from "@/utils/constants";
 import ElemSlugInput from "../ElemSlugInput";
 import ElemIconGroup from "../ElemIconGroup";
 import useAdminHandleSlug from "@/hooks/useAdminHandleSlug";
+import ElemAddressInput from "../ElemAddressInput";
 
 type VcFirmFormProps = {
   action: "create" | "edit";
   toolbar?: ReactElement | false;
   slugValidate?: any;
-  currentData?: any;
   onCheckScreenHeight: () => void;
   isImageUpdated: boolean;
   logo: any;
@@ -34,13 +38,19 @@ const VcFirmForm = ({
   action,
   toolbar,
   slugValidate,
-  currentData,
   onCheckScreenHeight,
   isImageUpdated,
   logo,
   onSelect,
   onDropRejected,
 }: VcFirmFormProps) => {
+  const { id } = useParams();
+  const { data: currentData } = useGetOne(
+    "vc_firms",
+    { id },
+    { enabled: !!id }
+  );
+
   const { data: vcFirm } = useGetList("vc_firms", {});
   const formRef = useRef<any>(null);
   const [isIcon, setIsIcon] = useState(action === "edit");
@@ -131,9 +141,40 @@ const VcFirmForm = ({
           source="status"
           choices={status}
         />
+        <ElemAddressInput
+          defaultLocation={currentData?.location_json}
+          defaultGeoPoint={currentData?.geopoint}
+        />
         <TextInput
-          className={`w-[49%] ${textInputClassName}`}
-          source="location"
+          className={textInputClassName}
+          source="location_json.address"
+          label="Address"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="location_json.city"
+          label="City"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="location_json.state"
+          label="State"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="location_json.country"
+          label="Country"
+        />
+        <TextInput
+          className={textInputClassName}
+          source="geopoint"
+          format={(value) =>
+            value?.coordinates
+              ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
+              : ""
+          }
+          label="Geopoint"
+          disabled
         />
         <TextInput
           className={`w-[49%] ${textInputClassName}`}
@@ -177,6 +218,12 @@ const VcFirmForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectArrayInput
+          className={textInputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

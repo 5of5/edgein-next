@@ -42,6 +42,7 @@ import { onTrackView } from "@/utils/track";
 import { IconEditPencil, IconAnnotation } from "@/components/Icons";
 import ElemTokenInfo, { Metrics, TokenInfo } from "@/components/Company/ElemTokenInfo";
 import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	company: Companies;
@@ -49,6 +50,7 @@ type Props = {
 	sortNews: News[];
 	metrics: Metrics[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -136,15 +138,15 @@ const Company: NextPage<Props> = (props: Props) => {
 	const sortedInvestmentRounds = props.sortRounds;
 
 	const sortActivities =
-    [...sortedInvestmentRounds, ...props.sortNews]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.date || a?.round_date || "").getTime() -
-          new Date(b?.date || b?.round_date || "").getTime()
-        );
-      })
-      .reverse() || [];
+		[...sortedInvestmentRounds, ...props.sortNews]
+			?.slice()
+			.sort((a: any, b: any) => {
+				return (
+					new Date(a?.date || a?.round_date || "").getTime() -
+					new Date(b?.date || b?.round_date || "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	// Company tags
 	let companyTags: string[] = [];
@@ -328,12 +330,21 @@ const Company: NextPage<Props> = (props: Props) => {
 						/>
 					</div>
 					<div className="col-span-8">
+						<div className="w-full p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
+							{/* border-dashed border-2 border-black/20 */}
+							<ElemOrganizationNotes
+								resourceId={company.id}
+								resourceType="companies"
+								setShowPopup={props.setShowPopup}
+							/>
+						</div>
+
 						{(company.market_verified ||
 							company.github ||
 							company.company_linkedin ||
 							company.velocity_linkedin ||
 							company.velocity_token) && (
-							<div className="lg:grid lg:grid-cols-8 lg:gap-7">
+							<div className="mt-7 lg:grid lg:grid-cols-8 lg:gap-7">
 								<ElemCredibility
 									className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
 									heading="Credibility"
@@ -342,21 +353,16 @@ const Company: NextPage<Props> = (props: Props) => {
 									linkedInVerified={company.company_linkedin}
 								/>
 								{(company.velocity_linkedin || velocityToken) && (
-								<ElemVelocity
-									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-									heading="Velocity"
-									employeeListings={company.velocity_linkedin}
-									tokenExchangeValue={velocityToken}
-								/>
-							)}
+									<ElemVelocity
+										className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+										heading="Velocity"
+										employeeListings={company.velocity_linkedin}
+										tokenExchangeValue={velocityToken}
+									/>
+								)}
 							</div>
 						)}
-						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-							<ElemOrganizationNotes
-								resourceId={company.id}
-								resourceType="companies"
-							/>
-						</div>
+
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
 								resourceType="companies"
@@ -419,7 +425,8 @@ const Company: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId }
+		{ slug: context.params?.companyId },
+		context.req.cookies
 	);
 
 	if (!companies?.companies[0]) {
@@ -444,12 +451,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const sortNews =
 		company.news_links
 			?.slice()
-			?.map(item => ({...item.news, type: "news"}))
-			?.filter(item => item.status === "published")
+			?.map((item) => ({ ...item.news, type: "news" }))
+			?.filter((item) => item.status === "published")
 			.sort((a, b) => {
 				return (
-					new Date(a?.date ?? "").getTime() -
-					new Date(b?.date ?? "").getTime()
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
 				);
 			})
 			.reverse() || [];

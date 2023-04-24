@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { query } from "@/graphql/hasuraAdmin";
 import CookieService from "../../utils/cookie";
+import { SearchPeopleDocument, SearchPeopleQuery } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "GET") {
@@ -14,32 +15,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // params:
   const searchText = req.query.searchText;
 
-  // query people
-  const fetchQuery = `
-  query query_people($text: String) {
-    people(where: {_or: [
-      {name: {_ilike: $text}}, 
-      {work_email: {_ilike: $text}},
-      {personal_email: {_ilike: $text}},
-    ]}, 
-      limit: 100) {
-      id
-      name
-      slug
-      picture
-      work_email
-      personal_email
-    }
-  }
-  `;
   try {
     const {
-      data: { people },
-    } = await query({
-      query: fetchQuery,
-      variables: { text: `%${searchText}%` },
+      data: { users },
+    } = await query<SearchPeopleQuery>({
+      query: SearchPeopleDocument,
+      variables: { query: `%${searchText}%`, searchText },
     });
-    return res.send(people);
+    return res.send(users);
   } catch (ex) {
     res.status(500).send(ex);
   }

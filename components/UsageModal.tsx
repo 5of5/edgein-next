@@ -33,7 +33,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 			text: "Access unlimited people",
 		},
 		{
-			text: "Monitor reaction lists",
+			text: "Access unlimited search",
 		},
 		{
 			text: "Create custom lists",
@@ -74,7 +74,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 						>
 							<Dialog.Panel className="max-w-2xl w-full mx-auto rounded-lg bg-white shadow-2xl overflow-x-hidden overflow-y-auto overscroll-y-none">
 								<div className="p-3 bg-gradient-to-r from-blue-800 via-primary-500 to-primary-400 text-xl font-bold text-white text-center">
-									{`You ran run out of page views :(`}
+									{`You ran out of page views :(`}
 								</div>
 								<div className="max-w-xl mx-auto w-full">
 									<div className="p-6 lg:p-12">
@@ -82,7 +82,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 											<ElemLogo mode="icon" className="w-10 aspect-square" />
 										</div>
 										<h1 className="mt-0 text-2xl font-bold text-center lg:mt-4 lg:mx-8 lg:text-4xl">
-											Access more than 17,000 web3 profiles
+											Access more than 43,000 Web3 profiles
 										</h1>
 										<div className="flex items-center justify-center">
 											<ul className="my-8 space-y-2 lg:text-lg">

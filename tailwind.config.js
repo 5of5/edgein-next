@@ -20,7 +20,7 @@ const primary = {
   900: "#20123A",
 }
 
-const dark = {
+const darkBlue = {
   50: "#f3f2f7",
   100: "#e7e6f0",
   200: "#c3bfd9",
@@ -68,6 +68,9 @@ module.exports = {
     "./utils/style.ts"
   ],
   theme: {
+    fontFamily: {
+      'sans': ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
     extend: {
       fontSize: {
         'base': '1rem',
@@ -75,18 +78,29 @@ module.exports = {
       colors: {
         ...colors,
         primary,
-        dark,
+        dark: darkBlue,
         gray,
         blue,
         transparent: 'transparent',
+      },
+      padding: {
+        '18': '72px',
       },
       spacing: {
         '88': '22rem',
         '112': '28rem'
       },
+      maxWidth: {
+        '8xl': '90rem',
+        '9xl': '100rem'
+      },
       scale: {
         '102': '1.02',
         '600': '6',
+      },
+      borderRadius: {
+        '4xl': '2rem',
+        '5xl': '2.5rem',
       },
       opacity: {
         '15': '.15',
@@ -131,9 +145,6 @@ module.exports = {
       lineClamp: {
         7: '7',
       }
-    },
-    fontFamily: {
-      'sans': ['Metropolis', 'ui-sans-serif', 'system-ui', 'sans-serif'],
     },
   },
   plugins: [

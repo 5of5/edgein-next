@@ -61,6 +61,7 @@ select_permissions:
         - facebook_url
         - github
         - id
+        - library
         - linkedin
         - name
         - personal_email
@@ -111,6 +112,7 @@ select_permissions:
         - facebook_url
         - github
         - id
+        - library
         - linkedin
         - name
         - personal_email

@@ -4,6 +4,7 @@ import { ElemButton } from "@/components/ElemButton";
 import {
 	IconX,
 	IconShareAlt,
+	IconShare3,
 	IconTwitter,
 	IconTelegram,
 	IconLinkedInAlt,
@@ -16,10 +17,10 @@ type Props = {
 	resourceName: string | null;
 	resourceTags: Array<string>;
 	resourceTwitterUrl: string | null;
-	sentimentHot: number | null;
-	sentimentLike: number | null;
-	sentimentCrap: number | null;
-	resourceType: "companies" | "vc_firms";
+	sentimentHot?: number | null;
+	sentimentLike?: number | null;
+	sentimentCrap?: number | null;
+	resourceType: "companies" | "vc_firms" | "events";
 };
 
 export const ElemSocialShare: FC<Props> = ({
@@ -144,7 +145,7 @@ export const ElemSocialShare: FC<Props> = ({
 				roundedFull={true}
 				className="px-2.5"
 			>
-				<IconShareAlt className="w-5 h-5 mr-1" />
+				<IconShare3 className="w-5 h-5 mr-1" />
 				Share
 			</ElemButton>
 

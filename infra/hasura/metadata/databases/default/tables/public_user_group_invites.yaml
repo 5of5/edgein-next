@@ -18,10 +18,11 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - created_at
+        - created_by_user_id
+        - email
         - id
         - user_group_id
-        - email
-        - created_at
       filter:
         user_group:
           user_group_members:
