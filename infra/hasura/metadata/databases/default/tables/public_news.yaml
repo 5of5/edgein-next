@@ -29,6 +29,7 @@ select_permissions:
         - id
         - kind
         - link
+        - metadata
         - source
         - status
         - text
