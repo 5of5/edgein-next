@@ -17,6 +17,8 @@ import {
   useCreate,
   useUpdate,
   useRefresh,
+  SelectField,
+  SelectInput,
 } from "react-admin";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -26,9 +28,9 @@ import ContentSave from "@mui/icons-material/Save";
 import ContentDelete from "@mui/icons-material/Delete";
 import ContentCreate from "@mui/icons-material/Add";
 import FormControl from "@mui/material/FormControl";
-import MuiTextField from "@mui/material/TextField";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+import { newsPersonTypes } from "@/utils/constants";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -214,7 +216,7 @@ export const NewsPerson = () => {
           >
             <TextField source="name" />
           </ReferenceField>
-          <TextField source="type" />
+          <SelectField source="type" choices={newsPersonTypes} />
           <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
           <CustomDeleteButton />
         </Datagrid>
@@ -259,11 +261,10 @@ export const NewsPerson = () => {
               )}
 
               <FormControl variant="filled" sx={{ width: "100%" }}>
-                <MuiTextField
-                  label="Type"
-                  value={newsPersonData?.type}
+                <SelectInput
+                  source="type"
+                  choices={newsPersonTypes}
                   onChange={(e) => handleChange(2, e.target.value)}
-                  variant="filled"
                 />
               </FormControl>
 

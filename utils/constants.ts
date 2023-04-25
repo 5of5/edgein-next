@@ -1877,3 +1877,26 @@ export const listsSortOptions = [
     value: "recently",
   },
 ];
+
+export const newsOrganizationTypes = [
+	{
+		id: "publisher",
+		name: "Publisher",
+	},
+	{
+		id: "subject",
+		name: "Subject",
+	},
+];
+
+
+export const newsPersonTypes = [
+	{
+		id: "author",
+		name: "Author",
+	},
+	{
+		id: "subject",
+		name: "Subject",
+	},
+];
