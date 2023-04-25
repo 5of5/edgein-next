@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ElemButton } from "./ElemButton";
 import { formatDate, convertToIntNum } from "@/utils";
 import { useIntercom } from "react-use-intercom";
+import { IconExternalLink } from "@/components/Icons";
 
 type Props = {
 	heading?: string;
@@ -48,11 +49,14 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 												<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
 											</span>
 
-											{
-												activity && (activity?.type === "news"
-													? (renderNews(activity))
-													: (renderActivity(activity, resourceType, resourceName)))
-											}
+											{activity &&
+												(activity?.type === "news"
+													? renderNews(activity)
+													: renderActivity(
+															activity,
+															resourceType,
+															resourceName
+													  ))}
 										</li>
 									);
 								})}
@@ -90,13 +94,19 @@ const renderNews = (activity: any) => {
 		<div className="mb-4">
 			<div className="inline leading-7 text-slate-600">
 				{activity?.link ? (
-					<Link href={activity.link}>
-						<a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">{activity.text}</a>
-					</Link>
+					<>
+						<div className="inline font-bold mr-1">News:</div>
+						<Link href={activity.link}>
+							<a className="" target="_blank">
+								<span className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+									{activity.text}
+								</span>
+								<IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
+							</a>
+						</Link>
+					</>
 				) : (
-					<div className="inline font-bold">
-						{activity.text}
-					</div>
+					<div className="inline">{activity.text}</div>
 				)}
 				<p className="text-sm">
 					{formatDate(activity.date as string, {
@@ -107,8 +117,8 @@ const renderNews = (activity: any) => {
 				</p>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
 const renderActivity = (
 	activity: any,
@@ -119,9 +129,7 @@ const renderActivity = (
 		<div className="mb-4">
 			<div className="inline leading-7 text-slate-600">
 				{activity.round === "Acquisition" ? (
-					<div className="inline font-bold">
-						Acquired by{" "}
-					</div>
+					<div className="inline font-bold">Acquired by </div>
 				) : (
 					<>
 						<div className="inline font-bold">
@@ -131,9 +139,7 @@ const renderActivity = (
 									${convertToIntNum(activity.amount)}
 								</div>
 							) : (
-								<div className="inline text-green-600">
-									undisclosed capital
-								</div>
+								<div className="inline text-green-600">undisclosed capital</div>
 							)}{" "}
 							{activity.valuation && (
 								<div className="inline">
@@ -148,40 +154,32 @@ const renderActivity = (
 						from{" "}
 					</>
 				)}
-				{activity.investments.map(
-					(item: any, index: number) => {
-						return (
-							<div key={index} className="inline">
-								{index !== 0 &&
-									(index === activity.investments.length - 1
-										? ", and "
-										: ", ")}
+				{activity.investments.map((item: any, index: number) => {
+					return (
+						<div key={index} className="inline">
+							{index !== 0 &&
+								(index === activity.investments.length - 1 ? ", and " : ", ")}
 
-								{item.vc_firm && (
-									<Link
-										href={`/investors/${item.vc_firm?.slug}`}
-									>
-										<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-											{/* <a className="text-primary-500 hover:bg-slate-200"> */}
-											{item.vc_firm["name"]}
-										</a>
-									</Link>
-								)}
-								{item.vc_firm && item.person && <>/</>}
+							{item.vc_firm && (
+								<Link href={`/investors/${item.vc_firm?.slug}`}>
+									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+										{/* <a className="text-primary-500 hover:bg-slate-200"> */}
+										{item.vc_firm["name"]}
+									</a>
+								</Link>
+							)}
+							{item.vc_firm && item.person && <>/</>}
 
-								{item.person && (
-									<Link
-										href={`/people/${item.person["slug"]}`}
-									>
-										<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-											{item.person["name"]}
-										</a>
-									</Link>
-								)}
-							</div>
-						);
-					}
-				)}
+							{item.person && (
+								<Link href={`/people/${item.person["slug"]}`}>
+									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+										{item.person["name"]}
+									</a>
+								</Link>
+							)}
+						</div>
+					);
+				})}
 				.
 			</div>
 
@@ -197,18 +195,14 @@ const renderActivity = (
 		<div className="mb-4">
 			<div className="inline leading-7 text-slate-600">
 				{activity.company && (
-					<Link
-						href={`/companies/${activity.company["slug"]}`}
-					>
+					<Link href={`/companies/${activity.company["slug"]}`}>
 						<a className="border-b border-primary-500 transition-all font-bold hover:border-b-2 hover:text-primary-500">
 							{activity.company["name"]}
 						</a>
 					</Link>
 				)}{" "}
 				{activity.round === "Acquisition" ? (
-					<div className="inline font-bold">
-						Acquired by{" "}
-					</div>
+					<div className="inline font-bold">Acquired by </div>
 				) : (
 					<>
 						<div className="inline font-bold">
@@ -218,9 +212,7 @@ const renderActivity = (
 									${convertToIntNum(activity.amount)}
 								</div>
 							) : (
-								<div className="inline text-green-600">
-									undisclosed capital
-								</div>
+								<div className="inline text-green-600">undisclosed capital</div>
 							)}
 							:{" "}
 							{activity.valuation && (
@@ -233,10 +225,7 @@ const renderActivity = (
 								</div>
 							)}
 						</div>
-						{activity.round
-							? activity.round
-							: "Investment round"}{" "}
-						from{" "}
+						{activity.round ? activity.round : "Investment round"} from{" "}
 					</>
 				)}
 				{resourceName ? resourceName : ""}
@@ -251,5 +240,5 @@ const renderActivity = (
 		</div>
 	) : (
 		<></>
-	)
-}
+	);
+};
