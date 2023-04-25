@@ -48,6 +48,7 @@ export const NewsList = () => {
       </ReferenceArrayField>
       <TextField source="source" />
       <TextField source="kind" />
+      <TextField source="metadata" />
       <TextField source="status" />
     </ElemList>
   );

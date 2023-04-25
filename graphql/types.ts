@@ -12710,6 +12710,7 @@ export type News = {
   id: Scalars['Int'];
   kind: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
+  metadata: Maybe<Scalars['jsonb']>;
   /** An array relationship */
   organizations: Array<News_Organizations>;
   /** An aggregate relationship */
@@ -12722,6 +12723,12 @@ export type News = {
   status: Maybe<Scalars['String']>;
   text: Scalars['String'];
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "news" */
+export type NewsMetadataArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -12802,6 +12809,7 @@ export type News_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type News_Append_Input = {
+  metadata: InputMaybe<Scalars['jsonb']>;
   source: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -12821,6 +12829,7 @@ export type News_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   kind: InputMaybe<String_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
+  metadata: InputMaybe<Jsonb_Comparison_Exp>;
   organizations: InputMaybe<News_Organizations_Bool_Exp>;
   people: InputMaybe<News_Person_Bool_Exp>;
   source: InputMaybe<Jsonb_Comparison_Exp>;
@@ -12837,16 +12846,19 @@ export enum News_Constraint {
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type News_Delete_At_Path_Input = {
+  metadata: InputMaybe<Array<Scalars['String']>>;
   source: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type News_Delete_Elem_Input = {
+  metadata: InputMaybe<Scalars['Int']>;
   source: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type News_Delete_Key_Input = {
+  metadata: InputMaybe<Scalars['String']>;
   source: InputMaybe<Scalars['String']>;
 };
 
@@ -12862,6 +12874,7 @@ export type News_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   kind: InputMaybe<Scalars['String']>;
   link: InputMaybe<Scalars['String']>;
+  metadata: InputMaybe<Scalars['jsonb']>;
   organizations: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
   people: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
   source: InputMaybe<Scalars['jsonb']>;
@@ -12926,6 +12939,7 @@ export type News_Order_By = {
   id: InputMaybe<Order_By>;
   kind: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
+  metadata: InputMaybe<Order_By>;
   organizations_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
   people_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
   source: InputMaybe<Order_By>;
@@ -13664,6 +13678,7 @@ export type News_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type News_Prepend_Input = {
+  metadata: InputMaybe<Scalars['jsonb']>;
   source: InputMaybe<Scalars['jsonb']>;
 };
 
@@ -13679,6 +13694,8 @@ export enum News_Select_Column {
   Kind = 'kind',
   /** column name */
   Link = 'link',
+  /** column name */
+  Metadata = 'metadata',
   /** column name */
   Source = 'source',
   /** column name */
@@ -13696,6 +13713,7 @@ export type News_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   kind: InputMaybe<Scalars['String']>;
   link: InputMaybe<Scalars['String']>;
+  metadata: InputMaybe<Scalars['jsonb']>;
   source: InputMaybe<Scalars['jsonb']>;
   status: InputMaybe<Scalars['String']>;
   text: InputMaybe<Scalars['String']>;
@@ -13738,6 +13756,8 @@ export enum News_Update_Column {
   Kind = 'kind',
   /** column name */
   Link = 'link',
+  /** column name */
+  Metadata = 'metadata',
   /** column name */
   Source = 'source',
   /** column name */

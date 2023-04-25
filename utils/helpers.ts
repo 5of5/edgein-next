@@ -29,7 +29,7 @@ export const getUpdatedDiff = (original: any, target: any) => {
 				target[key as keyof {}]
 			);
 
-			if (["geopoint", "source"].includes(key) && !isEmpty(difference)) {
+			if (["geopoint", "source", "metadata"].includes(key) && !isEmpty(difference)) {
 				acc[key] = target[key as keyof {}];
 				return acc;
 			}
@@ -114,4 +114,16 @@ export const clearLocalStorage = () => {
 			localStorage.removeItem(key);
 		}
 	}
+};
+
+export const isValidJsonString = (jsonString: string) => {
+  try {
+    var o = JSON.parse(jsonString);
+
+    if (o && typeof o === "object") {
+      return o;
+    }
+  } catch (e) {}
+
+  return false;
 };
