@@ -30,7 +30,7 @@ import ContentCreate from "@mui/icons-material/Add";
 import FormControl from "@mui/material/FormControl";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { newsOrganizationTypes } from "@/utils/constants";
+import { newsPersonTypes } from "@/utils/constants";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -45,7 +45,7 @@ const ListActions = ({ onCreate }: any) => {
   return (
     <TopToolbar>
       <Button
-        label="Add News Organization"
+        label="Add News Person"
         variant="text"
         onClick={onCreate}
         startIcon={<ContentCreate />}
@@ -71,7 +71,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete("news_organizations", {
+  const [deleteOne] = useDelete("news_person", {
     id: record.id,
     previousData: record,
   });
@@ -93,7 +93,7 @@ const CustomDeleteButton = () => {
       <Confirm
         isOpen={open}
         title="Remove Information"
-        content="Are you sure you want to delete this organization?"
+        content="Are you sure you want to delete this person?"
         onConfirm={handleConfirm}
         onClose={handleDialogClose}
       />
@@ -101,9 +101,9 @@ const CustomDeleteButton = () => {
   );
 };
 
-export const NewsOrganizations = () => {
+export const NewsPerson = () => {
   const { id: currentId } = useParams();
-  const { data: newsOrganizationList = [] } = useGetList("news_organizations", {
+  const { data: newsPersonList = [] } = useGetList("news_person", {
     filter: { news_id: parseInt(currentId!) },
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -118,19 +118,17 @@ export const NewsOrganizations = () => {
     if (!isCreateLoading || !isUpdateLoading) refresh();
   }, [isCreateLoading, isUpdateLoading, refresh]);
 
-  const [newsOrganizationData, setNewsOrganizationData] = useState<any>({
-    company_id: "",
-    vc_firm_id: "",
+  const [newsPersonData, setNewsPersonData] = useState<any>({
+    person_id: "",
     type: "",
   });
 
   const handleEdit = (rec: any) => {
     setIsOpen(true);
     setCurrRecord(rec);
-    setNewsOrganizationData({
+    setNewsPersonData({
       id: rec.id,
-      company_id: rec.company_id,
-      vc_firm_id: rec.vc_firm_id,
+      person_id: rec.person_id,
       type: rec.type,
     });
   };
@@ -138,27 +136,21 @@ export const NewsOrganizations = () => {
   const handleClose = () => {
     setIsOpen(false);
     setCurrRecord(null);
-    setNewsOrganizationData({
-      company_id: "",
-      vc_firm_id: "",
+    setNewsPersonData({
+      person_id: "",
       type: "",
     });
   };
 
   const handleChange = (target: number, value: any) => {
     if (target === 0)
-      setNewsOrganizationData({
-        ...newsOrganizationData,
-        company_id: value,
-      });
-    else if (target === 1)
-      setNewsOrganizationData({
-        ...newsOrganizationData,
-        vc_firm_id: value,
+      setNewsPersonData({
+        ...newsPersonData,
+        person_id: value,
       });
     else
-      setNewsOrganizationData({
-        ...newsOrganizationData,
+      setNewsPersonData({
+        ...newsPersonData,
         type: value,
       });
   };
@@ -166,25 +158,14 @@ export const NewsOrganizations = () => {
   const handleSave = () => {
     const data = {
       news_id: parseInt(currentId!),
-      company_id:
-        newsOrganizationData.company_id === ""
-          ? null
-          : newsOrganizationData.company_id,
-      vc_firm_id:
-        newsOrganizationData.vc_firm_id === ""
-          ? null
-          : newsOrganizationData.vc_firm_id,
-      type: newsOrganizationData.type,
+      person_id:
+        newsPersonData.person_id === "" ? null : newsPersonData.person_id,
+      type: newsPersonData.type,
     };
     if (!currRecord) {
-      if (data.company_id) {
-        create("news_organizations", { data: { ...data, vc_firm_id: null } });
-      }
-      if (data.vc_firm_id) {
-        create("news_organizations", { data: { ...data, company_id: null } });
-      }
+      create("news_person", { data });
     } else {
-      update("news_organizations", {
+      update("news_person", {
         id: currRecord.id,
         data,
         previousData: currRecord,
@@ -225,25 +206,17 @@ export const NewsOrganizations = () => {
           },
         }}
       >
-        <Datagrid bulkActionButtons={false} data={newsOrganizationList}>
+        <Datagrid bulkActionButtons={false} data={newsPersonList}>
           <TextField source="id" />
           <ReferenceField
-            label="Company"
-            source="company_id"
-            reference="companies"
+            label="Person"
+            source="person_id"
+            reference="people"
             sortable={false}
           >
             <TextField source="name" />
           </ReferenceField>
-          <ReferenceField
-            label="VC firm"
-            source="vc_firm_id"
-            reference="vc_firms"
-            sortable={false}
-          >
-            <TextField source="name" />
-          </ReferenceField>
-          <SelectField source="type" choices={newsOrganizationTypes} />
+          <SelectField source="type" choices={newsPersonTypes} />
           <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
           <CustomDeleteButton />
         </Datagrid>
@@ -257,10 +230,10 @@ export const NewsOrganizations = () => {
           maxWidth="xs"
           onClose={handleClose}
         >
-          <DialogTitle>News Organization</DialogTitle>
+          <DialogTitle>News Person</DialogTitle>
           <DialogContent>
             <Form defaultValues={currRecord}>
-              {(!newsOrganizationData?.id || currRecord?.company_id) && (
+              {(!newsPersonData?.id || currRecord?.person_id) && (
                 <FormControl
                   variant="filled"
                   sx={{
@@ -271,43 +244,16 @@ export const NewsOrganizations = () => {
                   }}
                 >
                   <ReferenceInput
-                    label="Company"
-                    source="company_id"
-                    reference="companies"
+                    label="Person"
+                    source="person_id"
+                    reference="people"
                   >
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
                       filterToQuery={(search) => ({ name: search })}
-                      onChange={(company_id) => {
-                        handleChange(0, company_id);
-                      }}
-                    />
-                  </ReferenceInput>
-                </FormControl>
-              )}
-
-              {(!newsOrganizationData?.id || currRecord?.vc_firm_id) && (
-                <FormControl
-                  variant="filled"
-                  sx={{
-                    width: "100%",
-                    ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                      display: "none",
-                    },
-                  }}
-                >
-                  <ReferenceInput
-                    label="VC firm"
-                    source="vc_firm_id"
-                    reference="vc_firms"
-                  >
-                    <AutocompleteInput
-                      optionText="name"
-                      optionValue="id"
-                      filterToQuery={(search) => ({ name: search })}
-                      onChange={(vc_firm_id) => {
-                        handleChange(1, vc_firm_id);
+                      onChange={(person_id) => {
+                        handleChange(0, person_id);
                       }}
                     />
                   </ReferenceInput>
@@ -317,7 +263,7 @@ export const NewsOrganizations = () => {
               <FormControl variant="filled" sx={{ width: "100%" }}>
                 <SelectInput
                   source="type"
-                  choices={newsOrganizationTypes}
+                  choices={newsPersonTypes}
                   onChange={(e) => handleChange(2, e.target.value)}
                 />
               </FormControl>
@@ -338,10 +284,7 @@ export const NewsOrganizations = () => {
                   label="Save"
                   variant="contained"
                   onClick={handleSave}
-                  disabled={
-                    !newsOrganizationData.company_id &&
-                    !newsOrganizationData.vc_firm_id
-                  }
+                  disabled={!newsPersonData.person_id}
                   startIcon={<ContentSave />}
                 />
               </FormControl>

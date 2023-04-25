@@ -65,6 +65,16 @@ query GetPerson($slug: String!) {
         }
       }
     }
+    news_links {
+			id
+			news {
+				id
+				date
+				text
+				link
+				status
+			}
+		}	
   }
 }
 
