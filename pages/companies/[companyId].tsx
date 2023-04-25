@@ -100,9 +100,10 @@ const Company: NextPage<Props> = (props: Props) => {
 		setTokenInfo(data);
 	};
 
-	const velocityToken = tokenInfo?.vol24H
-		? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
-		: null;
+	const velocityToken =
+		tokenInfo?.vol24H && tokenInfo?.marketCap
+			? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
+			: null;
 
 	useEffect(() => {
 		if (company.overview) {
@@ -385,6 +386,7 @@ const Company: NextPage<Props> = (props: Props) => {
 								setShowPopup={props.setShowPopup}
 							/>
 						</div>
+						<div>Token: {velocityToken}</div>
 
 						{(company.market_verified ||
 							company.github ||
