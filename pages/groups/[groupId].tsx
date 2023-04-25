@@ -159,7 +159,7 @@ const Group: NextPage<Props> = (props: Props) => {
 				/>
 
 				<ElemTabBar
-					className="border-t-transparent"
+					className="border-t-transparent lg:hidden"
 					tabs={tabBarItems}
 					showDropdown={false}
 				/>
