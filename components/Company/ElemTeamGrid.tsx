@@ -46,8 +46,8 @@ export const ElemTeamGrid: React.FC<Props> = ({
 		);
 
 	const personIds = peopleInactiveLast
-    .filter((item) => item.person !== null)
-    .map((item) => (item.person as People).id);
+		.filter((item) => item.person !== null)
+		.map((item) => (item.person as People).id);
 
 	return (
 		<section className={className}>
@@ -61,18 +61,17 @@ export const ElemTeamGrid: React.FC<Props> = ({
 					)}
 				</div>
 			)}
-			<div className="flex items-center justify-between">
-        <ElemFilterTags
-          onClick={(tag, index) => setSelectedTag(tag)}
-          selectedTag={selectedTag}
-          className="mt-2"
-          tags={allTags}
-        />
-       	<ElemBulkSavePeople
-          text="Save team to list"
-          personIds={personIds}
-        />
-      </div>
+			<div className="lg:flex items-center justify-between">
+				<ElemFilterTags
+					onClick={(tag, index) => setSelectedTag(tag)}
+					selectedTag={selectedTag}
+					className="mt-2"
+					tags={allTags}
+				/>
+				<div className="mt-2 lg:mt-0">
+					<ElemBulkSavePeople text="Save team to list" personIds={personIds} />
+				</div>
+			</div>
 			<div className="flex flex-col gap-5 mt-4 sm:grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 				{peopleInactiveLast.map((teamMember) => {
 					return (
