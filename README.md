@@ -144,10 +144,12 @@ curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Co
     "partner_api_key": "<api_key>",
     "resource_type": "<resource_type>",
     "resource_identifier":[{"field": "id"}],
-    "resource":{<resource_obj>}
+    "resource": {<resource_obj>}
 }'
 
-<resource_obj> is a json {"< field >": < value >}
+<resource_obj> is a json {"< field >": < value >} or it can be an array of json [ {"< field >": < value >} , {"< field >": < value >} , ...]
+Support allowing a list input of resource field. The value in array should have the same resource type. If any object in array fails validation, The result will respond the failed object and remaining elements which locate after failed object still not yet validate and insert into database.
+
 Only support for < resource_type >.< field > that's available in data_fields table.
 The value can be transform if transform pattern is set in data_fields table for this field.
 If "< field >" is "< other_resource_type >:< other_field >" pattern, the "< field >" will be converted into "< other_resource_type >_id"
