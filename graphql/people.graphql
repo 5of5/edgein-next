@@ -72,7 +72,13 @@ query GetPerson($slug: String!) {
 				date
 				text
 				link
+        kind
 				status
+				people {
+					id
+					type
+					person_id
+				}
 			}
 		}	
   }

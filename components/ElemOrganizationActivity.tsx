@@ -10,6 +10,7 @@ type Props = {
 	resourceType: "companies" | "vc_firms";
 	resourceInvestments: Array<any>;
 	resourceName?: string | null;
+	resourceId?: number;
 };
 
 export const ElemOrganizationActivity: React.FC<Props> = ({
@@ -17,6 +18,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 	resourceType,
 	resourceInvestments,
 	resourceName,
+	resourceId,
 }) => {
 	const [activityLimit, setActivityLimit] = useState(10);
 	const showMoreActivity = () => {
@@ -51,7 +53,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 
 											{activity &&
 												(activity?.type === "news"
-													? renderNews(activity)
+													? renderNews(activity, resourceType, resourceId)
 													: renderActivity(
 															activity,
 															resourceType,
@@ -89,7 +91,15 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 	);
 };
 
-const renderNews = (activity: any) => {
+const renderNews = (activity: any, resourceType: "companies" | "vc_firms", resourceId?: number) => {
+	const newsOrganizationType = activity.organizations.find(
+    (item: any) =>
+      item[resourceType === "companies" ? "company_id" : "vc_firm_id"] ===
+      resourceId
+  )?.type;
+
+	const isPublisher = newsOrganizationType === "publisher";
+
 	return (
 		<div className="mb-4">
 			<div className="inline leading-7 text-slate-600">
@@ -108,14 +118,21 @@ const renderNews = (activity: any) => {
 				) : (
 					<div className="inline">{activity.text}</div>
 				)}
-				<p className="text-sm">
-					{formatDate(activity.date as string, {
-						month: "short",
-						day: "2-digit",
-						year: "numeric",
-					})}
-					<span>{` • powered by CryptoPanic`}</span>
-				</p>
+				<div className="flex items-center gap-x-2">
+					{isPublisher && (
+            <span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+              Publisher
+            </span>
+          )}
+					<p className="text-sm">
+						{formatDate(activity.date as string, {
+							month: "short",
+							day: "2-digit",
+							year: "numeric",
+						})}
+						<span>{` • powered by CryptoPanic`}</span>
+					</p>
+				</div>
 			</div>
 		</div>
 	);

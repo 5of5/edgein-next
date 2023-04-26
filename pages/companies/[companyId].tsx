@@ -412,6 +412,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
+								resourceId={company.id}
 								resourceType="companies"
 								resourceInvestments={sortActivities}
 							/>
