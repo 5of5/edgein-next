@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const data = await query<GetListByIdQuery>({
       query: GetListByIdDocument,
-      variables: { listId },
+      variables: { id: listId },
     });
 
     if (data.data.lists[0]?.created_by_id !== user?.id) {

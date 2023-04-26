@@ -948,6 +948,30 @@ export const IconLink: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
+export const IconExternalLink: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+		>
+			<title>{title ? title : "External Link"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+			/>
+		</svg>
+	);
+};
+
 export const IconChatBubble: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
@@ -1386,11 +1410,11 @@ export const IconPaperAirplane: React.FC<IconProps> = ({
 			viewBox="0 0 24 24"
 			aria-hidden="true"
 		>
-			<title>{title ? title : "Paper Plane"}</title>
+			<title>{title ? title : "Sent"}</title>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
-				d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+				d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
 			/>
 		</svg>
 	);

@@ -275,6 +275,20 @@ const AdminApp = () => {
 						...metadata,
 					};
 				},
+				getOne: async (type, obj) => {
+          let { data, ...metadata } = await dataProvider.getOne(type, obj);
+          if (type === "news") {
+            data = {
+              ...data,
+              source: data?.source ? JSON.stringify(data.source) : "",
+              metadata: data?.metadata ? JSON.stringify(data.metadata) : "",
+            };
+          }
+          return {
+            data,
+            ...metadata,
+          };
+        },
 				create: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "POST"),
 				update: (type, obj) =>
