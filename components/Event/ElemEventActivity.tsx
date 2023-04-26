@@ -69,19 +69,21 @@ export const ElemEventActivity: React.FC<Props> = ({
 														</>
 													) : activity?.type === "organizer" ? (
 														<>
-															<Link
-																href={
-																	activity.company
-																		? `/companies/${activity?.company?.slug}`
-																		: `/investors/${activity?.vc_firm?.slug}`
-																}
-															>
-																<a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-																	{activity?.company
-																		? activity?.company.name
-																		: activity?.vc_firm.name}
-																</a>
-															</Link>
+															 <Link
+                                href={
+                                  activity?.company
+                                    ? `/companies/${activity?.company?.slug}`
+                                    : activity?.vc_firm
+                                    ? `/investors/${activity?.vc_firm?.slug}`
+                                    : `/people/${activity?.person?.slug}`
+                                }
+                              >
+                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                  {activity?.company?.name ||
+                                    activity?.vc_firm?.name ||
+                                    activity?.person?.name}
+                                </a>
+                              </Link>
 															{` was added as an `}
 															<span className="font-bold capitalize">
 																{activity?.type}
