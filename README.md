@@ -158,6 +158,7 @@ For example: Before using resource data, {"companies:name": "TEST_NAME"} will be
 where company 1 name is "TEST_NAME"
 
 Support for allowing to create relationships when submitting a news item user can specific tickers or other identifiers for people and companies and the api should automatically do the lookup and create the news_organisations record.
+
 For example: when creating a new person in people table. Also providing "<relationship_field>": "person_id" and team_members's values object. Api will automatically create new item record in team_members table. {<resource_obj>} looks like as below:
 "resource":{
   "people": {<people_obj>},
@@ -167,6 +168,9 @@ For example: when creating a new person in people table. Also providing "<relati
   ...
   }
 }
+
+In case input a list of resource field {<resource_obj>} looks like as below:
+"resource": [<people_obj> , <people_obj> ,...]
 
 #### Update data
 curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
