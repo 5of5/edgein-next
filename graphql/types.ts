@@ -1,4 +1,4 @@
-import { useQuery, UseQueryOptions } from 'react-query';
+import { useMutation, useQuery, UseMutationOptions, UseQueryOptions } from 'react-query';
 import { fetcher } from './fetcher';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -19,6 +19,7 @@ export type Scalars = {
   geometry: any;
   jsonb: any;
   numeric: any;
+  time: any;
   timestamp: any;
   timestamptz: any;
 };
@@ -237,6 +238,13 @@ export type Actions_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Actions>;
+};
+
+/** input type for inserting object relation for remote table "actions" */
+export type Actions_Obj_Rel_Insert_Input = {
+  data: Actions_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<Actions_On_Conflict>;
 };
 
 /** on_conflict condition type for table "actions" */
@@ -1519,6 +1527,337 @@ export type Coins_Variance_Fields = {
   blockchain_id: Maybe<Scalars['Float']>;
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "comments" */
+export type Comments = {
+  __typename?: 'comments';
+  content: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  note: Maybe<Notes>;
+  note_id: Scalars['Int'];
+};
+
+/** aggregated selection of "comments" */
+export type Comments_Aggregate = {
+  __typename?: 'comments_aggregate';
+  aggregate: Maybe<Comments_Aggregate_Fields>;
+  nodes: Array<Comments>;
+};
+
+/** aggregate fields of "comments" */
+export type Comments_Aggregate_Fields = {
+  __typename?: 'comments_aggregate_fields';
+  avg: Maybe<Comments_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Comments_Max_Fields>;
+  min: Maybe<Comments_Min_Fields>;
+  stddev: Maybe<Comments_Stddev_Fields>;
+  stddev_pop: Maybe<Comments_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Comments_Stddev_Samp_Fields>;
+  sum: Maybe<Comments_Sum_Fields>;
+  var_pop: Maybe<Comments_Var_Pop_Fields>;
+  var_samp: Maybe<Comments_Var_Samp_Fields>;
+  variance: Maybe<Comments_Variance_Fields>;
+};
+
+
+/** aggregate fields of "comments" */
+export type Comments_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Comments_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "comments" */
+export type Comments_Aggregate_Order_By = {
+  avg: InputMaybe<Comments_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Comments_Max_Order_By>;
+  min: InputMaybe<Comments_Min_Order_By>;
+  stddev: InputMaybe<Comments_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Comments_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Comments_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Comments_Sum_Order_By>;
+  var_pop: InputMaybe<Comments_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Comments_Var_Samp_Order_By>;
+  variance: InputMaybe<Comments_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "comments" */
+export type Comments_Arr_Rel_Insert_Input = {
+  data: Array<Comments_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Comments_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Comments_Avg_Fields = {
+  __typename?: 'comments_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "comments" */
+export type Comments_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "comments". All fields are combined with a logical 'AND'. */
+export type Comments_Bool_Exp = {
+  _and: InputMaybe<Array<Comments_Bool_Exp>>;
+  _not: InputMaybe<Comments_Bool_Exp>;
+  _or: InputMaybe<Array<Comments_Bool_Exp>>;
+  content: InputMaybe<String_Comparison_Exp>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  note: InputMaybe<Notes_Bool_Exp>;
+  note_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "comments" */
+export enum Comments_Constraint {
+  /** unique or primary key constraint */
+  CommentsPkey = 'comments_pkey'
+}
+
+/** input type for incrementing numeric columns in table "comments" */
+export type Comments_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "comments" */
+export type Comments_Insert_Input = {
+  content: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note: InputMaybe<Notes_Obj_Rel_Insert_Input>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Comments_Max_Fields = {
+  __typename?: 'comments_max_fields';
+  content: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "comments" */
+export type Comments_Max_Order_By = {
+  content: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Comments_Min_Fields = {
+  __typename?: 'comments_min_fields';
+  content: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "comments" */
+export type Comments_Min_Order_By = {
+  content: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "comments" */
+export type Comments_Mutation_Response = {
+  __typename?: 'comments_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Comments>;
+};
+
+/** on_conflict condition type for table "comments" */
+export type Comments_On_Conflict = {
+  constraint: Comments_Constraint;
+  update_columns: Array<Comments_Update_Column>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "comments". */
+export type Comments_Order_By = {
+  content: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note: InputMaybe<Notes_Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: comments */
+export type Comments_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "comments" */
+export enum Comments_Select_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** input type for updating data in table "comments" */
+export type Comments_Set_Input = {
+  content: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Comments_Stddev_Fields = {
+  __typename?: 'comments_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "comments" */
+export type Comments_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Comments_Stddev_Pop_Fields = {
+  __typename?: 'comments_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "comments" */
+export type Comments_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Comments_Stddev_Samp_Fields = {
+  __typename?: 'comments_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "comments" */
+export type Comments_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Comments_Sum_Fields = {
+  __typename?: 'comments_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "comments" */
+export type Comments_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "comments" */
+export enum Comments_Update_Column {
+  /** column name */
+  Content = 'content',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** aggregate var_pop on columns */
+export type Comments_Var_Pop_Fields = {
+  __typename?: 'comments_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "comments" */
+export type Comments_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Comments_Var_Samp_Fields = {
+  __typename?: 'comments_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "comments" */
+export type Comments_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Comments_Variance_Fields = {
+  __typename?: 'comments_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "comments" */
+export type Comments_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
 };
 
 /** columns and relationships of "companies" */
@@ -2975,6 +3314,302 @@ export type Data_Actions_Variance_Fields = {
   user_value: Maybe<Scalars['Float']>;
 };
 
+/** columns and relationships of "data_discard" */
+export type Data_Discard = {
+  __typename?: 'data_discard';
+  accuracy_weight: Scalars['Int'];
+  created_at: Scalars['timestamp'];
+  field: Scalars['String'];
+  id: Scalars['bigint'];
+  partner: Scalars['Int'];
+  resource: Scalars['String'];
+  resource_id: Scalars['Int'];
+  value: Scalars['jsonb'];
+};
+
+
+/** columns and relationships of "data_discard" */
+export type Data_DiscardValueArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+/** aggregated selection of "data_discard" */
+export type Data_Discard_Aggregate = {
+  __typename?: 'data_discard_aggregate';
+  aggregate: Maybe<Data_Discard_Aggregate_Fields>;
+  nodes: Array<Data_Discard>;
+};
+
+/** aggregate fields of "data_discard" */
+export type Data_Discard_Aggregate_Fields = {
+  __typename?: 'data_discard_aggregate_fields';
+  avg: Maybe<Data_Discard_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Data_Discard_Max_Fields>;
+  min: Maybe<Data_Discard_Min_Fields>;
+  stddev: Maybe<Data_Discard_Stddev_Fields>;
+  stddev_pop: Maybe<Data_Discard_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Data_Discard_Stddev_Samp_Fields>;
+  sum: Maybe<Data_Discard_Sum_Fields>;
+  var_pop: Maybe<Data_Discard_Var_Pop_Fields>;
+  var_samp: Maybe<Data_Discard_Var_Samp_Fields>;
+  variance: Maybe<Data_Discard_Variance_Fields>;
+};
+
+
+/** aggregate fields of "data_discard" */
+export type Data_Discard_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Data_Discard_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type Data_Discard_Append_Input = {
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate avg on columns */
+export type Data_Discard_Avg_Fields = {
+  __typename?: 'data_discard_avg_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "data_discard". All fields are combined with a logical 'AND'. */
+export type Data_Discard_Bool_Exp = {
+  _and: InputMaybe<Array<Data_Discard_Bool_Exp>>;
+  _not: InputMaybe<Data_Discard_Bool_Exp>;
+  _or: InputMaybe<Array<Data_Discard_Bool_Exp>>;
+  accuracy_weight: InputMaybe<Int_Comparison_Exp>;
+  created_at: InputMaybe<Timestamp_Comparison_Exp>;
+  field: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Bigint_Comparison_Exp>;
+  partner: InputMaybe<Int_Comparison_Exp>;
+  resource: InputMaybe<String_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  value: InputMaybe<Jsonb_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "data_discard" */
+export enum Data_Discard_Constraint {
+  /** unique or primary key constraint */
+  DataDiscardPkey = 'data_discard_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type Data_Discard_Delete_At_Path_Input = {
+  value: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type Data_Discard_Delete_Elem_Input = {
+  value: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type Data_Discard_Delete_Key_Input = {
+  value: InputMaybe<Scalars['String']>;
+};
+
+/** input type for incrementing numeric columns in table "data_discard" */
+export type Data_Discard_Inc_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "data_discard" */
+export type Data_Discard_Insert_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate max on columns */
+export type Data_Discard_Max_Fields = {
+  __typename?: 'data_discard_max_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamp']>;
+  field: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Data_Discard_Min_Fields = {
+  __typename?: 'data_discard_min_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamp']>;
+  field: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "data_discard" */
+export type Data_Discard_Mutation_Response = {
+  __typename?: 'data_discard_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Data_Discard>;
+};
+
+/** on_conflict condition type for table "data_discard" */
+export type Data_Discard_On_Conflict = {
+  constraint: Data_Discard_Constraint;
+  update_columns: Array<Data_Discard_Update_Column>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "data_discard". */
+export type Data_Discard_Order_By = {
+  accuracy_weight: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  field: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  partner: InputMaybe<Order_By>;
+  resource: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  value: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: data_discard */
+export type Data_Discard_Pk_Columns_Input = {
+  id: Scalars['bigint'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type Data_Discard_Prepend_Input = {
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** select columns of table "data_discard" */
+export enum Data_Discard_Select_Column {
+  /** column name */
+  AccuracyWeight = 'accuracy_weight',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Field = 'field',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Partner = 'partner',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "data_discard" */
+export type Data_Discard_Set_Input = {
+  accuracy_weight: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamp']>;
+  field: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['bigint']>;
+  partner: InputMaybe<Scalars['Int']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  value: InputMaybe<Scalars['jsonb']>;
+};
+
+/** aggregate stddev on columns */
+export type Data_Discard_Stddev_Fields = {
+  __typename?: 'data_discard_stddev_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Data_Discard_Stddev_Pop_Fields = {
+  __typename?: 'data_discard_stddev_pop_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Data_Discard_Stddev_Samp_Fields = {
+  __typename?: 'data_discard_stddev_samp_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Data_Discard_Sum_Fields = {
+  __typename?: 'data_discard_sum_fields';
+  accuracy_weight: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['bigint']>;
+  partner: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "data_discard" */
+export enum Data_Discard_Update_Column {
+  /** column name */
+  AccuracyWeight = 'accuracy_weight',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Field = 'field',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Partner = 'partner',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  Value = 'value'
+}
+
+/** aggregate var_pop on columns */
+export type Data_Discard_Var_Pop_Fields = {
+  __typename?: 'data_discard_var_pop_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Data_Discard_Var_Samp_Fields = {
+  __typename?: 'data_discard_var_samp_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Data_Discard_Variance_Fields = {
+  __typename?: 'data_discard_variance_fields';
+  accuracy_weight: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  partner: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
 /** columns and relationships of "data_fields" */
 export type Data_Fields = {
   __typename?: 'data_fields';
@@ -4237,6 +4872,8 @@ export type Event_Organization = {
   event: Maybe<Events>;
   event_id: Scalars['Int'];
   id: Scalars['Int'];
+  sponsor_type: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
   /** An object relationship */
   vc_firm: Maybe<Vc_Firms>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -4322,6 +4959,8 @@ export type Event_Organization_Bool_Exp = {
   event: InputMaybe<Events_Bool_Exp>;
   event_id: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  sponsor_type: InputMaybe<String_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
   vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
@@ -4348,6 +4987,8 @@ export type Event_Organization_Insert_Input = {
   event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   event_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  sponsor_type: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
@@ -4359,6 +5000,8 @@ export type Event_Organization_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  sponsor_type: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -4368,6 +5011,8 @@ export type Event_Organization_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  sponsor_type: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -4378,6 +5023,8 @@ export type Event_Organization_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   event_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
+  sponsor_type: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
 
@@ -4387,6 +5034,8 @@ export type Event_Organization_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  sponsor_type: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
 
@@ -4414,6 +5063,8 @@ export type Event_Organization_Order_By = {
   event: InputMaybe<Events_Order_By>;
   event_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  sponsor_type: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   vc_firm: InputMaybe<Vc_Firms_Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
@@ -4434,6 +5085,10 @@ export enum Event_Organization_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  SponsorType = 'sponsor_type',
+  /** column name */
+  Type = 'type',
+  /** column name */
   VcFirmId = 'vc_firm_id'
 }
 
@@ -4443,6 +5098,8 @@ export type Event_Organization_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   event_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  sponsor_type: InputMaybe<Scalars['String']>;
+  type: InputMaybe<Scalars['String']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
@@ -4524,6 +5181,10 @@ export enum Event_Organization_Update_Column {
   EventId = 'event_id',
   /** column name */
   Id = 'id',
+  /** column name */
+  SponsorType = 'sponsor_type',
+  /** column name */
+  Type = 'type',
   /** column name */
   VcFirmId = 'vc_firm_id'
 }
@@ -4913,8 +5574,12 @@ export type Event_Person_Variance_Order_By = {
 /** columns and relationships of "events" */
 export type Events = {
   __typename?: 'events';
+  attachments: Scalars['jsonb'];
+  banner: Maybe<Scalars['jsonb']>;
   created_at: Scalars['timestamptz'];
+  discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
+  end_time: Maybe<Scalars['time']>;
   /** An array relationship */
   event_organization: Array<Event_Organization>;
   /** An aggregate relationship */
@@ -4923,18 +5588,43 @@ export type Events = {
   event_person: Array<Event_Person>;
   /** An aggregate relationship */
   event_person_aggregate: Event_Person_Aggregate;
+  facebook: Maybe<Scalars['String']>;
+  geopoint: Maybe<Scalars['geography']>;
   id: Scalars['Int'];
+  instagram: Maybe<Scalars['String']>;
+  is_featured: Maybe<Scalars['Boolean']>;
   link: Maybe<Scalars['String']>;
-  location: Maybe<Scalars['jsonb']>;
+  location_json: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
   notes: Maybe<Scalars['String']>;
+  overview: Maybe<Scalars['String']>;
   /** An object relationship */
   parent_event: Maybe<Events>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
+  start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
+  telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
+  twitter: Maybe<Scalars['String']>;
+  types: Maybe<Scalars['jsonb']>;
   updated_at: Scalars['timestamptz'];
+  venue_name: Maybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsAttachmentsArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsBannerArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -4979,7 +5669,13 @@ export type EventsEvent_Person_AggregateArgs = {
 
 
 /** columns and relationships of "events" */
-export type EventsLocationArgs = {
+export type EventsLocation_JsonArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "events" */
+export type EventsTypesArgs = {
   path: InputMaybe<Scalars['String']>;
 };
 
@@ -5015,7 +5711,10 @@ export type Events_Aggregate_FieldsCountArgs = {
 
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Events_Append_Input = {
-  location: InputMaybe<Scalars['jsonb']>;
+  attachments: InputMaybe<Scalars['jsonb']>;
+  banner: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  types: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -5023,6 +5722,7 @@ export type Events_Avg_Fields = {
   __typename?: 'events_avg_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "events". All fields are combined with a logical 'AND'. */
@@ -5030,99 +5730,165 @@ export type Events_Bool_Exp = {
   _and: InputMaybe<Array<Events_Bool_Exp>>;
   _not: InputMaybe<Events_Bool_Exp>;
   _or: InputMaybe<Array<Events_Bool_Exp>>;
+  attachments: InputMaybe<Jsonb_Comparison_Exp>;
+  banner: InputMaybe<Jsonb_Comparison_Exp>;
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  discord: InputMaybe<String_Comparison_Exp>;
   end_date: InputMaybe<Date_Comparison_Exp>;
+  end_time: InputMaybe<Time_Comparison_Exp>;
   event_organization: InputMaybe<Event_Organization_Bool_Exp>;
   event_person: InputMaybe<Event_Person_Bool_Exp>;
+  facebook: InputMaybe<String_Comparison_Exp>;
+  geopoint: InputMaybe<Geography_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  instagram: InputMaybe<String_Comparison_Exp>;
+  is_featured: InputMaybe<Boolean_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
-  location: InputMaybe<Jsonb_Comparison_Exp>;
+  location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
+  overview: InputMaybe<String_Comparison_Exp>;
   parent_event: InputMaybe<Events_Bool_Exp>;
   parent_event_id: InputMaybe<Int_Comparison_Exp>;
+  price: InputMaybe<Numeric_Comparison_Exp>;
   size: InputMaybe<String_Comparison_Exp>;
+  slug: InputMaybe<String_Comparison_Exp>;
   start_date: InputMaybe<Date_Comparison_Exp>;
+  start_time: InputMaybe<Time_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
+  telegram: InputMaybe<String_Comparison_Exp>;
+  timezone: InputMaybe<String_Comparison_Exp>;
+  twitter: InputMaybe<String_Comparison_Exp>;
+  types: InputMaybe<Jsonb_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  venue_name: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "events" */
 export enum Events_Constraint {
   /** unique or primary key constraint */
-  EventsPkey = 'events_pkey'
+  EventsPkey = 'events_pkey',
+  /** unique or primary key constraint */
+  EventsSlugKey = 'events_slug_key'
 }
 
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Events_Delete_At_Path_Input = {
-  location: InputMaybe<Array<Scalars['String']>>;
+  attachments: InputMaybe<Array<Scalars['String']>>;
+  banner: InputMaybe<Array<Scalars['String']>>;
+  location_json: InputMaybe<Array<Scalars['String']>>;
+  types: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Events_Delete_Elem_Input = {
-  location: InputMaybe<Scalars['Int']>;
+  attachments: InputMaybe<Scalars['Int']>;
+  banner: InputMaybe<Scalars['Int']>;
+  location_json: InputMaybe<Scalars['Int']>;
+  types: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Events_Delete_Key_Input = {
-  location: InputMaybe<Scalars['String']>;
+  attachments: InputMaybe<Scalars['String']>;
+  banner: InputMaybe<Scalars['String']>;
+  location_json: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "events" */
 export type Events_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
 };
 
 /** input type for inserting data into table "events" */
 export type Events_Insert_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
+  banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  discord: InputMaybe<Scalars['String']>;
   end_date: InputMaybe<Scalars['date']>;
+  end_time: InputMaybe<Scalars['time']>;
   event_organization: InputMaybe<Event_Organization_Arr_Rel_Insert_Input>;
   event_person: InputMaybe<Event_Person_Arr_Rel_Insert_Input>;
+  facebook: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
+  instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
   link: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
+  overview: InputMaybe<Scalars['String']>;
   parent_event: InputMaybe<Events_Obj_Rel_Insert_Input>;
   parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
+  slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
+  start_time: InputMaybe<Scalars['time']>;
   status: InputMaybe<Scalars['String']>;
+  telegram: InputMaybe<Scalars['String']>;
+  timezone: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
+  venue_name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
 export type Events_Max_Fields = {
   __typename?: 'events_max_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
+  facebook: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  instagram: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
+  overview: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
+  telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
+  twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
+  venue_name: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
 export type Events_Min_Fields = {
   __typename?: 'events_min_fields';
   created_at: Maybe<Scalars['timestamptz']>;
+  discord: Maybe<Scalars['String']>;
   end_date: Maybe<Scalars['date']>;
+  facebook: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
+  instagram: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
   notes: Maybe<Scalars['String']>;
+  overview: Maybe<Scalars['String']>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
+  slug: Maybe<Scalars['String']>;
   start_date: Maybe<Scalars['date']>;
   status: Maybe<Scalars['String']>;
+  telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
+  twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
+  venue_name: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "events" */
@@ -5150,21 +5916,38 @@ export type Events_On_Conflict = {
 
 /** Ordering options when selecting data from "events". */
 export type Events_Order_By = {
+  attachments: InputMaybe<Order_By>;
+  banner: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
+  discord: InputMaybe<Order_By>;
   end_date: InputMaybe<Order_By>;
+  end_time: InputMaybe<Order_By>;
   event_organization_aggregate: InputMaybe<Event_Organization_Aggregate_Order_By>;
   event_person_aggregate: InputMaybe<Event_Person_Aggregate_Order_By>;
+  facebook: InputMaybe<Order_By>;
+  geopoint: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  instagram: InputMaybe<Order_By>;
+  is_featured: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
-  location: InputMaybe<Order_By>;
+  location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes: InputMaybe<Order_By>;
+  overview: InputMaybe<Order_By>;
   parent_event: InputMaybe<Events_Order_By>;
   parent_event_id: InputMaybe<Order_By>;
+  price: InputMaybe<Order_By>;
   size: InputMaybe<Order_By>;
+  slug: InputMaybe<Order_By>;
   start_date: InputMaybe<Order_By>;
+  start_time: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
+  telegram: InputMaybe<Order_By>;
+  timezone: InputMaybe<Order_By>;
+  twitter: InputMaybe<Order_By>;
+  types: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
+  venue_name: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: events */
@@ -5174,51 +5957,105 @@ export type Events_Pk_Columns_Input = {
 
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Events_Prepend_Input = {
-  location: InputMaybe<Scalars['jsonb']>;
+  attachments: InputMaybe<Scalars['jsonb']>;
+  banner: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
+  types: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "events" */
 export enum Events_Select_Column {
   /** column name */
+  Attachments = 'attachments',
+  /** column name */
+  Banner = 'banner',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Discord = 'discord',
   /** column name */
   EndDate = 'end_date',
   /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Facebook = 'facebook',
+  /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Id = 'id',
+  /** column name */
+  Instagram = 'instagram',
+  /** column name */
+  IsFeatured = 'is_featured',
   /** column name */
   Link = 'link',
   /** column name */
-  Location = 'location',
+  LocationJson = 'location_json',
   /** column name */
   Name = 'name',
   /** column name */
   Notes = 'notes',
   /** column name */
+  Overview = 'overview',
+  /** column name */
   ParentEventId = 'parent_event_id',
+  /** column name */
+  Price = 'price',
   /** column name */
   Size = 'size',
   /** column name */
+  Slug = 'slug',
+  /** column name */
   StartDate = 'start_date',
+  /** column name */
+  StartTime = 'start_time',
   /** column name */
   Status = 'status',
   /** column name */
-  UpdatedAt = 'updated_at'
+  Telegram = 'telegram',
+  /** column name */
+  Timezone = 'timezone',
+  /** column name */
+  Twitter = 'twitter',
+  /** column name */
+  Types = 'types',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VenueName = 'venue_name'
 }
 
 /** input type for updating data in table "events" */
 export type Events_Set_Input = {
+  attachments: InputMaybe<Scalars['jsonb']>;
+  banner: InputMaybe<Scalars['jsonb']>;
   created_at: InputMaybe<Scalars['timestamptz']>;
+  discord: InputMaybe<Scalars['String']>;
   end_date: InputMaybe<Scalars['date']>;
+  end_time: InputMaybe<Scalars['time']>;
+  facebook: InputMaybe<Scalars['String']>;
+  geopoint: InputMaybe<Scalars['geography']>;
   id: InputMaybe<Scalars['Int']>;
+  instagram: InputMaybe<Scalars['String']>;
+  is_featured: InputMaybe<Scalars['Boolean']>;
   link: InputMaybe<Scalars['String']>;
-  location: InputMaybe<Scalars['jsonb']>;
+  location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Scalars['String']>;
+  overview: InputMaybe<Scalars['String']>;
   parent_event_id: InputMaybe<Scalars['Int']>;
+  price: InputMaybe<Scalars['numeric']>;
   size: InputMaybe<Scalars['String']>;
+  slug: InputMaybe<Scalars['String']>;
   start_date: InputMaybe<Scalars['date']>;
+  start_time: InputMaybe<Scalars['time']>;
   status: InputMaybe<Scalars['String']>;
+  telegram: InputMaybe<Scalars['String']>;
+  timezone: InputMaybe<Scalars['String']>;
+  twitter: InputMaybe<Scalars['String']>;
+  types: InputMaybe<Scalars['jsonb']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
+  venue_name: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate stddev on columns */
@@ -5226,6 +6063,7 @@ export type Events_Stddev_Fields = {
   __typename?: 'events_stddev_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -5233,6 +6071,7 @@ export type Events_Stddev_Pop_Fields = {
   __typename?: 'events_stddev_pop_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -5240,6 +6079,7 @@ export type Events_Stddev_Samp_Fields = {
   __typename?: 'events_stddev_samp_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -5247,34 +6087,69 @@ export type Events_Sum_Fields = {
   __typename?: 'events_sum_fields';
   id: Maybe<Scalars['Int']>;
   parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
 };
 
 /** update columns of table "events" */
 export enum Events_Update_Column {
   /** column name */
+  Attachments = 'attachments',
+  /** column name */
+  Banner = 'banner',
+  /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Discord = 'discord',
   /** column name */
   EndDate = 'end_date',
   /** column name */
+  EndTime = 'end_time',
+  /** column name */
+  Facebook = 'facebook',
+  /** column name */
+  Geopoint = 'geopoint',
+  /** column name */
   Id = 'id',
+  /** column name */
+  Instagram = 'instagram',
+  /** column name */
+  IsFeatured = 'is_featured',
   /** column name */
   Link = 'link',
   /** column name */
-  Location = 'location',
+  LocationJson = 'location_json',
   /** column name */
   Name = 'name',
   /** column name */
   Notes = 'notes',
   /** column name */
+  Overview = 'overview',
+  /** column name */
   ParentEventId = 'parent_event_id',
+  /** column name */
+  Price = 'price',
   /** column name */
   Size = 'size',
   /** column name */
+  Slug = 'slug',
+  /** column name */
   StartDate = 'start_date',
+  /** column name */
+  StartTime = 'start_time',
   /** column name */
   Status = 'status',
   /** column name */
-  UpdatedAt = 'updated_at'
+  Telegram = 'telegram',
+  /** column name */
+  Timezone = 'timezone',
+  /** column name */
+  Twitter = 'twitter',
+  /** column name */
+  Types = 'types',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VenueName = 'venue_name'
 }
 
 /** aggregate var_pop on columns */
@@ -5282,6 +6157,7 @@ export type Events_Var_Pop_Fields = {
   __typename?: 'events_var_pop_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -5289,6 +6165,7 @@ export type Events_Var_Samp_Fields = {
   __typename?: 'events_var_samp_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -5296,6 +6173,7 @@ export type Events_Variance_Fields = {
   __typename?: 'events_variance_fields';
   id: Maybe<Scalars['Float']>;
   parent_event_id: Maybe<Scalars['Float']>;
+  price: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "float8". All fields are combined with logical 'AND'. */
@@ -5769,6 +6647,315 @@ export type Follows_Order_By = {
   list_id: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   resource_type: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "follows_people" */
+export type Follows_People = {
+  __typename?: 'follows_people';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  person: Maybe<People>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+};
+
+/** aggregated selection of "follows_people" */
+export type Follows_People_Aggregate = {
+  __typename?: 'follows_people_aggregate';
+  aggregate: Maybe<Follows_People_Aggregate_Fields>;
+  nodes: Array<Follows_People>;
+};
+
+/** aggregate fields of "follows_people" */
+export type Follows_People_Aggregate_Fields = {
+  __typename?: 'follows_people_aggregate_fields';
+  avg: Maybe<Follows_People_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Follows_People_Max_Fields>;
+  min: Maybe<Follows_People_Min_Fields>;
+  stddev: Maybe<Follows_People_Stddev_Fields>;
+  stddev_pop: Maybe<Follows_People_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Follows_People_Stddev_Samp_Fields>;
+  sum: Maybe<Follows_People_Sum_Fields>;
+  var_pop: Maybe<Follows_People_Var_Pop_Fields>;
+  var_samp: Maybe<Follows_People_Var_Samp_Fields>;
+  variance: Maybe<Follows_People_Variance_Fields>;
+};
+
+
+/** aggregate fields of "follows_people" */
+export type Follows_People_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Follows_People_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "follows_people" */
+export type Follows_People_Aggregate_Order_By = {
+  avg: InputMaybe<Follows_People_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Follows_People_Max_Order_By>;
+  min: InputMaybe<Follows_People_Min_Order_By>;
+  stddev: InputMaybe<Follows_People_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Follows_People_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Follows_People_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Follows_People_Sum_Order_By>;
+  var_pop: InputMaybe<Follows_People_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Follows_People_Var_Samp_Order_By>;
+  variance: InputMaybe<Follows_People_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "follows_people" */
+export type Follows_People_Arr_Rel_Insert_Input = {
+  data: Array<Follows_People_Insert_Input>;
+};
+
+/** aggregate avg on columns */
+export type Follows_People_Avg_Fields = {
+  __typename?: 'follows_people_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "follows_people" */
+export type Follows_People_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "follows_people". All fields are combined with a logical 'AND'. */
+export type Follows_People_Bool_Exp = {
+  _and: InputMaybe<Array<Follows_People_Bool_Exp>>;
+  _not: InputMaybe<Follows_People_Bool_Exp>;
+  _or: InputMaybe<Array<Follows_People_Bool_Exp>>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  list_id: InputMaybe<Int_Comparison_Exp>;
+  person: InputMaybe<People_Bool_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  resource_type: InputMaybe<String_Comparison_Exp>;
+};
+
+/** input type for incrementing numeric columns in table "follows_people" */
+export type Follows_People_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "follows_people" */
+export type Follows_People_Insert_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  person: InputMaybe<People_Obj_Rel_Insert_Input>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate max on columns */
+export type Follows_People_Max_Fields = {
+  __typename?: 'follows_people_max_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+};
+
+/** order by max() on columns of table "follows_people" */
+export type Follows_People_Max_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Follows_People_Min_Fields = {
+  __typename?: 'follows_people_min_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  resource_type: Maybe<Scalars['String']>;
+};
+
+/** order by min() on columns of table "follows_people" */
+export type Follows_People_Min_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "follows_people" */
+export type Follows_People_Mutation_Response = {
+  __typename?: 'follows_people_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Follows_People>;
+};
+
+/** Ordering options when selecting data from "follows_people". */
+export type Follows_People_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  person: InputMaybe<People_Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  resource_type: InputMaybe<Order_By>;
+};
+
+/** select columns of table "follows_people" */
+export enum Follows_People_Select_Column {
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  ListId = 'list_id',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  ResourceType = 'resource_type'
+}
+
+/** input type for updating data in table "follows_people" */
+export type Follows_People_Set_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  list_id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  resource_type: InputMaybe<Scalars['String']>;
+};
+
+/** aggregate stddev on columns */
+export type Follows_People_Stddev_Fields = {
+  __typename?: 'follows_people_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "follows_people" */
+export type Follows_People_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Follows_People_Stddev_Pop_Fields = {
+  __typename?: 'follows_people_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "follows_people" */
+export type Follows_People_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Follows_People_Stddev_Samp_Fields = {
+  __typename?: 'follows_people_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "follows_people" */
+export type Follows_People_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Follows_People_Sum_Fields = {
+  __typename?: 'follows_people_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  list_id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "follows_people" */
+export type Follows_People_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_pop on columns */
+export type Follows_People_Var_Pop_Fields = {
+  __typename?: 'follows_people_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "follows_people" */
+export type Follows_People_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Follows_People_Var_Samp_Fields = {
+  __typename?: 'follows_people_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "follows_people" */
+export type Follows_People_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Follows_People_Variance_Fields = {
+  __typename?: 'follows_people_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  list_id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "follows_people" */
+export type Follows_People_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  list_id: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: follows */
@@ -7525,6 +8712,324 @@ export type Jsonb_Comparison_Exp = {
   _nin: InputMaybe<Array<Scalars['jsonb']>>;
 };
 
+/** columns and relationships of "likes" */
+export type Likes = {
+  __typename?: 'likes';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  note: Maybe<Notes>;
+  note_id: Scalars['Int'];
+};
+
+/** aggregated selection of "likes" */
+export type Likes_Aggregate = {
+  __typename?: 'likes_aggregate';
+  aggregate: Maybe<Likes_Aggregate_Fields>;
+  nodes: Array<Likes>;
+};
+
+/** aggregate fields of "likes" */
+export type Likes_Aggregate_Fields = {
+  __typename?: 'likes_aggregate_fields';
+  avg: Maybe<Likes_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Likes_Max_Fields>;
+  min: Maybe<Likes_Min_Fields>;
+  stddev: Maybe<Likes_Stddev_Fields>;
+  stddev_pop: Maybe<Likes_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Likes_Stddev_Samp_Fields>;
+  sum: Maybe<Likes_Sum_Fields>;
+  var_pop: Maybe<Likes_Var_Pop_Fields>;
+  var_samp: Maybe<Likes_Var_Samp_Fields>;
+  variance: Maybe<Likes_Variance_Fields>;
+};
+
+
+/** aggregate fields of "likes" */
+export type Likes_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Likes_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "likes" */
+export type Likes_Aggregate_Order_By = {
+  avg: InputMaybe<Likes_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Likes_Max_Order_By>;
+  min: InputMaybe<Likes_Min_Order_By>;
+  stddev: InputMaybe<Likes_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Likes_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Likes_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Likes_Sum_Order_By>;
+  var_pop: InputMaybe<Likes_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Likes_Var_Samp_Order_By>;
+  variance: InputMaybe<Likes_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "likes" */
+export type Likes_Arr_Rel_Insert_Input = {
+  data: Array<Likes_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Likes_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Likes_Avg_Fields = {
+  __typename?: 'likes_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "likes" */
+export type Likes_Avg_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "likes". All fields are combined with a logical 'AND'. */
+export type Likes_Bool_Exp = {
+  _and: InputMaybe<Array<Likes_Bool_Exp>>;
+  _not: InputMaybe<Likes_Bool_Exp>;
+  _or: InputMaybe<Array<Likes_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  note: InputMaybe<Notes_Bool_Exp>;
+  note_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "likes" */
+export enum Likes_Constraint {
+  /** unique or primary key constraint */
+  LikesPkey = 'likes_pkey'
+}
+
+/** input type for incrementing numeric columns in table "likes" */
+export type Likes_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "likes" */
+export type Likes_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note: InputMaybe<Notes_Obj_Rel_Insert_Input>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Likes_Max_Fields = {
+  __typename?: 'likes_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "likes" */
+export type Likes_Max_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Likes_Min_Fields = {
+  __typename?: 'likes_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "likes" */
+export type Likes_Min_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "likes" */
+export type Likes_Mutation_Response = {
+  __typename?: 'likes_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Likes>;
+};
+
+/** on_conflict condition type for table "likes" */
+export type Likes_On_Conflict = {
+  constraint: Likes_Constraint;
+  update_columns: Array<Likes_Update_Column>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "likes". */
+export type Likes_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note: InputMaybe<Notes_Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: likes */
+export type Likes_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "likes" */
+export enum Likes_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** input type for updating data in table "likes" */
+export type Likes_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  note_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Likes_Stddev_Fields = {
+  __typename?: 'likes_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "likes" */
+export type Likes_Stddev_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Likes_Stddev_Pop_Fields = {
+  __typename?: 'likes_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "likes" */
+export type Likes_Stddev_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Likes_Stddev_Samp_Fields = {
+  __typename?: 'likes_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "likes" */
+export type Likes_Stddev_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Likes_Sum_Fields = {
+  __typename?: 'likes_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  note_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "likes" */
+export type Likes_Sum_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "likes" */
+export enum Likes_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NoteId = 'note_id'
+}
+
+/** aggregate var_pop on columns */
+export type Likes_Var_Pop_Fields = {
+  __typename?: 'likes_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "likes" */
+export type Likes_Var_Pop_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Likes_Var_Samp_Fields = {
+  __typename?: 'likes_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "likes" */
+export type Likes_Var_Samp_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Likes_Variance_Fields = {
+  __typename?: 'likes_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  note_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "likes" */
+export type Likes_Variance_Order_By = {
+  created_by_user_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  note_id: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "list_members" */
 export type List_Members = {
   __typename?: 'list_members';
@@ -8169,6 +9674,10 @@ export type Lists = {
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
   /** An array relationship */
+  follows_people: Array<Follows_People>;
+  /** An aggregate relationship */
+  follows_people_aggregate: Follows_People_Aggregate;
+  /** An array relationship */
   follows_vcfirms: Array<Follows_Vc_Firms>;
   /** An aggregate relationship */
   follows_vcfirms_aggregate: Follows_Vc_Firms_Aggregate;
@@ -8178,8 +9687,11 @@ export type Lists = {
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
   name: Scalars['String'];
+  public: Maybe<Scalars['Boolean']>;
   /** Computed field to get total no. of companies in a list */
   total_no_of_resources: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
   /** An array relationship */
   user_groups: Array<List_User_Groups>;
   /** An aggregate relationship */
@@ -8204,6 +9716,26 @@ export type ListsFollows_Companies_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<Follows_Companies_Order_By>>;
   where: InputMaybe<Follows_Companies_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsFollows_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+/** columns and relationships of "lists" */
+export type ListsFollows_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
 };
 
 
@@ -8312,11 +9844,15 @@ export type Lists_Bool_Exp = {
   created_by: InputMaybe<Users_Bool_Exp>;
   created_by_id: InputMaybe<Int_Comparison_Exp>;
   follows_companies: InputMaybe<Follows_Companies_Bool_Exp>;
+  follows_people: InputMaybe<Follows_People_Bool_Exp>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Bool_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
+  public: InputMaybe<Boolean_Comparison_Exp>;
   total_no_of_resources: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   user_groups: InputMaybe<List_User_Groups_Bool_Exp>;
 };
 
@@ -8340,10 +9876,14 @@ export type Lists_Insert_Input = {
   created_by: InputMaybe<Users_Obj_Rel_Insert_Input>;
   created_by_id: InputMaybe<Scalars['Int']>;
   follows_companies: InputMaybe<Follows_Companies_Arr_Rel_Insert_Input>;
+  follows_people: InputMaybe<Follows_People_Arr_Rel_Insert_Input>;
   follows_vcfirms: InputMaybe<Follows_Vc_Firms_Arr_Rel_Insert_Input>;
   id: InputMaybe<Scalars['Int']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
   user_groups: InputMaybe<List_User_Groups_Arr_Rel_Insert_Input>;
 };
 
@@ -8354,6 +9894,8 @@ export type Lists_Max_Fields = {
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** aggregate min on columns */
@@ -8363,6 +9905,8 @@ export type Lists_Min_Fields = {
   created_by_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   name: Maybe<Scalars['String']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
 };
 
 /** response of any mutation on the table "lists" */
@@ -8394,11 +9938,15 @@ export type Lists_Order_By = {
   created_by: InputMaybe<Users_Order_By>;
   created_by_id: InputMaybe<Order_By>;
   follows_companies_aggregate: InputMaybe<Follows_Companies_Aggregate_Order_By>;
+  follows_people_aggregate: InputMaybe<Follows_People_Aggregate_Order_By>;
   follows_vcfirms_aggregate: InputMaybe<Follows_Vc_Firms_Aggregate_Order_By>;
   id: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
   name: InputMaybe<Order_By>;
+  public: InputMaybe<Order_By>;
   total_no_of_resources: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
   user_groups_aggregate: InputMaybe<List_User_Groups_Aggregate_Order_By>;
 };
 
@@ -8416,7 +9964,13 @@ export enum Lists_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Public = 'public',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** input type for updating data in table "lists" */
@@ -8425,6 +9979,9 @@ export type Lists_Set_Input = {
   created_by_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
 };
 
 /** aggregate stddev on columns */
@@ -8464,7 +10021,13 @@ export enum Lists_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
-  Name = 'name'
+  Name = 'name',
+  /** column name */
+  Public = 'public',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
 }
 
 /** aggregate var_pop on columns */
@@ -8515,6 +10078,10 @@ export type Mutation_Root = {
   delete_coins: Maybe<Coins_Mutation_Response>;
   /** delete single row from the table: "coins" */
   delete_coins_by_pk: Maybe<Coins>;
+  /** delete data from the table: "comments" */
+  delete_comments: Maybe<Comments_Mutation_Response>;
+  /** delete single row from the table: "comments" */
+  delete_comments_by_pk: Maybe<Comments>;
   /** delete data from the table: "companies" */
   delete_companies: Maybe<Companies_Mutation_Response>;
   /** delete single row from the table: "companies" */
@@ -8525,6 +10092,10 @@ export type Mutation_Root = {
   delete_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** delete single row from the table: "data_actions" */
   delete_data_actions_by_pk: Maybe<Data_Actions>;
+  /** delete data from the table: "data_discard" */
+  delete_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** delete single row from the table: "data_discard" */
+  delete_data_discard_by_pk: Maybe<Data_Discard>;
   /** delete data from the table: "data_fields" */
   delete_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** delete single row from the table: "data_fields" */
@@ -8563,6 +10134,8 @@ export type Mutation_Root = {
   delete_follows_by_pk: Maybe<Follows>;
   /** delete data from the table: "follows_companies" */
   delete_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** delete data from the table: "follows_people" */
+  delete_follows_people: Maybe<Follows_People_Mutation_Response>;
   /** delete data from the table: "follows_vc_firms" */
   delete_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** delete data from the table: "investment_rounds" */
@@ -8577,6 +10150,10 @@ export type Mutation_Root = {
   delete_investors: Maybe<Investors_Mutation_Response>;
   /** delete single row from the table: "investors" */
   delete_investors_by_pk: Maybe<Investors>;
+  /** delete data from the table: "likes" */
+  delete_likes: Maybe<Likes_Mutation_Response>;
+  /** delete single row from the table: "likes" */
+  delete_likes_by_pk: Maybe<Likes>;
   /** delete data from the table: "list_members" */
   delete_list_members: Maybe<List_Members_Mutation_Response>;
   /** delete single row from the table: "list_members" */
@@ -8597,10 +10174,18 @@ export type Mutation_Root = {
   delete_news_organizations: Maybe<News_Organizations_Mutation_Response>;
   /** delete single row from the table: "news_organizations" */
   delete_news_organizations_by_pk: Maybe<News_Organizations>;
+  /** delete data from the table: "news_person" */
+  delete_news_person: Maybe<News_Person_Mutation_Response>;
+  /** delete single row from the table: "news_person" */
+  delete_news_person_by_pk: Maybe<News_Person>;
   /** delete data from the table: "notes" */
   delete_notes: Maybe<Notes_Mutation_Response>;
   /** delete single row from the table: "notes" */
   delete_notes_by_pk: Maybe<Notes>;
+  /** delete data from the table: "notification_actions" */
+  delete_notification_actions: Maybe<Notification_Actions_Mutation_Response>;
+  /** delete single row from the table: "notification_actions" */
+  delete_notification_actions_by_pk: Maybe<Notification_Actions>;
   /** delete data from the table: "notifications" */
   delete_notifications: Maybe<Notifications_Mutation_Response>;
   /** delete single row from the table: "notifications" */
@@ -8609,6 +10194,10 @@ export type Mutation_Root = {
   delete_people: Maybe<People_Mutation_Response>;
   /** delete single row from the table: "people" */
   delete_people_by_pk: Maybe<People>;
+  /** delete data from the table: "reset_passwords" */
+  delete_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** delete single row from the table: "reset_passwords" */
+  delete_reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** delete data from the table: "resource_edit_access" */
   delete_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** delete single row from the table: "resource_edit_access" */
@@ -8675,6 +10264,10 @@ export type Mutation_Root = {
   insert_coins: Maybe<Coins_Mutation_Response>;
   /** insert a single row into the table: "coins" */
   insert_coins_one: Maybe<Coins>;
+  /** insert data into the table: "comments" */
+  insert_comments: Maybe<Comments_Mutation_Response>;
+  /** insert a single row into the table: "comments" */
+  insert_comments_one: Maybe<Comments>;
   /** insert data into the table: "companies" */
   insert_companies: Maybe<Companies_Mutation_Response>;
   /** insert data into the table: "companies_edit_access" */
@@ -8687,6 +10280,10 @@ export type Mutation_Root = {
   insert_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** insert a single row into the table: "data_actions" */
   insert_data_actions_one: Maybe<Data_Actions>;
+  /** insert data into the table: "data_discard" */
+  insert_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** insert a single row into the table: "data_discard" */
+  insert_data_discard_one: Maybe<Data_Discard>;
   /** insert data into the table: "data_fields" */
   insert_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** insert a single row into the table: "data_fields" */
@@ -8727,6 +10324,10 @@ export type Mutation_Root = {
   insert_follows_companies_one: Maybe<Follows_Companies>;
   /** insert a single row into the table: "follows" */
   insert_follows_one: Maybe<Follows>;
+  /** insert data into the table: "follows_people" */
+  insert_follows_people: Maybe<Follows_People_Mutation_Response>;
+  /** insert a single row into the table: "follows_people" */
+  insert_follows_people_one: Maybe<Follows_People>;
   /** insert data into the table: "follows_vc_firms" */
   insert_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** insert a single row into the table: "follows_vc_firms" */
@@ -8743,6 +10344,10 @@ export type Mutation_Root = {
   insert_investors: Maybe<Investors_Mutation_Response>;
   /** insert a single row into the table: "investors" */
   insert_investors_one: Maybe<Investors>;
+  /** insert data into the table: "likes" */
+  insert_likes: Maybe<Likes_Mutation_Response>;
+  /** insert a single row into the table: "likes" */
+  insert_likes_one: Maybe<Likes>;
   /** insert data into the table: "list_members" */
   insert_list_members: Maybe<List_Members_Mutation_Response>;
   /** insert a single row into the table: "list_members" */
@@ -8763,10 +10368,18 @@ export type Mutation_Root = {
   insert_news_organizations: Maybe<News_Organizations_Mutation_Response>;
   /** insert a single row into the table: "news_organizations" */
   insert_news_organizations_one: Maybe<News_Organizations>;
+  /** insert data into the table: "news_person" */
+  insert_news_person: Maybe<News_Person_Mutation_Response>;
+  /** insert a single row into the table: "news_person" */
+  insert_news_person_one: Maybe<News_Person>;
   /** insert data into the table: "notes" */
   insert_notes: Maybe<Notes_Mutation_Response>;
   /** insert a single row into the table: "notes" */
   insert_notes_one: Maybe<Notes>;
+  /** insert data into the table: "notification_actions" */
+  insert_notification_actions: Maybe<Notification_Actions_Mutation_Response>;
+  /** insert a single row into the table: "notification_actions" */
+  insert_notification_actions_one: Maybe<Notification_Actions>;
   /** insert data into the table: "notifications" */
   insert_notifications: Maybe<Notifications_Mutation_Response>;
   /** insert a single row into the table: "notifications" */
@@ -8775,6 +10388,10 @@ export type Mutation_Root = {
   insert_people: Maybe<People_Mutation_Response>;
   /** insert a single row into the table: "people" */
   insert_people_one: Maybe<People>;
+  /** insert data into the table: "reset_passwords" */
+  insert_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** insert a single row into the table: "reset_passwords" */
+  insert_reset_passwords_one: Maybe<Reset_Passwords>;
   /** insert data into the table: "resource_edit_access" */
   insert_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** insert a single row into the table: "resource_edit_access" */
@@ -8843,6 +10460,10 @@ export type Mutation_Root = {
   update_coins: Maybe<Coins_Mutation_Response>;
   /** update single row of the table: "coins" */
   update_coins_by_pk: Maybe<Coins>;
+  /** update data of the table: "comments" */
+  update_comments: Maybe<Comments_Mutation_Response>;
+  /** update single row of the table: "comments" */
+  update_comments_by_pk: Maybe<Comments>;
   /** update data of the table: "companies" */
   update_companies: Maybe<Companies_Mutation_Response>;
   /** update single row of the table: "companies" */
@@ -8853,6 +10474,10 @@ export type Mutation_Root = {
   update_data_actions: Maybe<Data_Actions_Mutation_Response>;
   /** update single row of the table: "data_actions" */
   update_data_actions_by_pk: Maybe<Data_Actions>;
+  /** update data of the table: "data_discard" */
+  update_data_discard: Maybe<Data_Discard_Mutation_Response>;
+  /** update single row of the table: "data_discard" */
+  update_data_discard_by_pk: Maybe<Data_Discard>;
   /** update data of the table: "data_fields" */
   update_data_fields: Maybe<Data_Fields_Mutation_Response>;
   /** update single row of the table: "data_fields" */
@@ -8891,6 +10516,8 @@ export type Mutation_Root = {
   update_follows_by_pk: Maybe<Follows>;
   /** update data of the table: "follows_companies" */
   update_follows_companies: Maybe<Follows_Companies_Mutation_Response>;
+  /** update data of the table: "follows_people" */
+  update_follows_people: Maybe<Follows_People_Mutation_Response>;
   /** update data of the table: "follows_vc_firms" */
   update_follows_vc_firms: Maybe<Follows_Vc_Firms_Mutation_Response>;
   /** update data of the table: "investment_rounds" */
@@ -8905,6 +10532,10 @@ export type Mutation_Root = {
   update_investors: Maybe<Investors_Mutation_Response>;
   /** update single row of the table: "investors" */
   update_investors_by_pk: Maybe<Investors>;
+  /** update data of the table: "likes" */
+  update_likes: Maybe<Likes_Mutation_Response>;
+  /** update single row of the table: "likes" */
+  update_likes_by_pk: Maybe<Likes>;
   /** update data of the table: "list_members" */
   update_list_members: Maybe<List_Members_Mutation_Response>;
   /** update single row of the table: "list_members" */
@@ -8925,10 +10556,18 @@ export type Mutation_Root = {
   update_news_organizations: Maybe<News_Organizations_Mutation_Response>;
   /** update single row of the table: "news_organizations" */
   update_news_organizations_by_pk: Maybe<News_Organizations>;
+  /** update data of the table: "news_person" */
+  update_news_person: Maybe<News_Person_Mutation_Response>;
+  /** update single row of the table: "news_person" */
+  update_news_person_by_pk: Maybe<News_Person>;
   /** update data of the table: "notes" */
   update_notes: Maybe<Notes_Mutation_Response>;
   /** update single row of the table: "notes" */
   update_notes_by_pk: Maybe<Notes>;
+  /** update data of the table: "notification_actions" */
+  update_notification_actions: Maybe<Notification_Actions_Mutation_Response>;
+  /** update single row of the table: "notification_actions" */
+  update_notification_actions_by_pk: Maybe<Notification_Actions>;
   /** update data of the table: "notifications" */
   update_notifications: Maybe<Notifications_Mutation_Response>;
   /** update single row of the table: "notifications" */
@@ -8937,6 +10576,10 @@ export type Mutation_Root = {
   update_people: Maybe<People_Mutation_Response>;
   /** update single row of the table: "people" */
   update_people_by_pk: Maybe<People>;
+  /** update data of the table: "reset_passwords" */
+  update_reset_passwords: Maybe<Reset_Passwords_Mutation_Response>;
+  /** update single row of the table: "reset_passwords" */
+  update_reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** update data of the table: "resource_edit_access" */
   update_resource_edit_access: Maybe<Resource_Edit_Access_Mutation_Response>;
   /** update single row of the table: "resource_edit_access" */
@@ -9055,6 +10698,18 @@ export type Mutation_RootDelete_Coins_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_CommentsArgs = {
+  where: Comments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Comments_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_CompaniesArgs = {
   where: Companies_Bool_Exp;
 };
@@ -9081,6 +10736,18 @@ export type Mutation_RootDelete_Data_ActionsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Data_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Data_DiscardArgs = {
+  where: Data_Discard_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Data_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -9199,6 +10866,12 @@ export type Mutation_RootDelete_Follows_CompaniesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_Follows_PeopleArgs = {
+  where: Follows_People_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_Follows_Vc_FirmsArgs = {
   where: Follows_Vc_Firms_Bool_Exp;
 };
@@ -9236,6 +10909,18 @@ export type Mutation_RootDelete_InvestorsArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Investors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LikesArgs = {
+  where: Likes_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Likes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9301,6 +10986,18 @@ export type Mutation_RootDelete_News_Organizations_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootDelete_News_PersonArgs = {
+  where: News_Person_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_News_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
 export type Mutation_RootDelete_NotesArgs = {
   where: Notes_Bool_Exp;
 };
@@ -9308,6 +11005,18 @@ export type Mutation_RootDelete_NotesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Notes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Notification_ActionsArgs = {
+  where: Notification_Actions_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Notification_Actions_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9332,6 +11041,18 @@ export type Mutation_RootDelete_PeopleArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_People_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Reset_PasswordsArgs = {
+  where: Reset_Passwords_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Reset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -9547,6 +11268,20 @@ export type Mutation_RootInsert_Coins_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_CommentsArgs = {
+  objects: Array<Comments_Insert_Input>;
+  on_conflict: InputMaybe<Comments_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Comments_OneArgs = {
+  object: Comments_Insert_Input;
+  on_conflict: InputMaybe<Comments_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_CompaniesArgs = {
   objects: Array<Companies_Insert_Input>;
   on_conflict: InputMaybe<Companies_On_Conflict>;
@@ -9583,6 +11318,20 @@ export type Mutation_RootInsert_Data_ActionsArgs = {
 export type Mutation_RootInsert_Data_Actions_OneArgs = {
   object: Data_Actions_Insert_Input;
   on_conflict: InputMaybe<Data_Actions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Data_DiscardArgs = {
+  objects: Array<Data_Discard_Insert_Input>;
+  on_conflict: InputMaybe<Data_Discard_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Data_Discard_OneArgs = {
+  object: Data_Discard_Insert_Input;
+  on_conflict: InputMaybe<Data_Discard_On_Conflict>;
 };
 
 
@@ -9725,6 +11474,18 @@ export type Mutation_RootInsert_Follows_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Follows_PeopleArgs = {
+  objects: Array<Follows_People_Insert_Input>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Follows_People_OneArgs = {
+  object: Follows_People_Insert_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Follows_Vc_FirmsArgs = {
   objects: Array<Follows_Vc_Firms_Insert_Input>;
 };
@@ -9775,6 +11536,20 @@ export type Mutation_RootInsert_InvestorsArgs = {
 export type Mutation_RootInsert_Investors_OneArgs = {
   object: Investors_Insert_Input;
   on_conflict: InputMaybe<Investors_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LikesArgs = {
+  objects: Array<Likes_Insert_Input>;
+  on_conflict: InputMaybe<Likes_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Likes_OneArgs = {
+  object: Likes_Insert_Input;
+  on_conflict: InputMaybe<Likes_On_Conflict>;
 };
 
 
@@ -9849,6 +11624,20 @@ export type Mutation_RootInsert_News_Organizations_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_News_PersonArgs = {
+  objects: Array<News_Person_Insert_Input>;
+  on_conflict: InputMaybe<News_Person_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_News_Person_OneArgs = {
+  object: News_Person_Insert_Input;
+  on_conflict: InputMaybe<News_Person_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_NotesArgs = {
   objects: Array<Notes_Insert_Input>;
   on_conflict: InputMaybe<Notes_On_Conflict>;
@@ -9859,6 +11648,20 @@ export type Mutation_RootInsert_NotesArgs = {
 export type Mutation_RootInsert_Notes_OneArgs = {
   object: Notes_Insert_Input;
   on_conflict: InputMaybe<Notes_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Notification_ActionsArgs = {
+  objects: Array<Notification_Actions_Insert_Input>;
+  on_conflict: InputMaybe<Notification_Actions_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Notification_Actions_OneArgs = {
+  object: Notification_Actions_Insert_Input;
+  on_conflict: InputMaybe<Notification_Actions_On_Conflict>;
 };
 
 
@@ -9887,6 +11690,20 @@ export type Mutation_RootInsert_PeopleArgs = {
 export type Mutation_RootInsert_People_OneArgs = {
   object: People_Insert_Input;
   on_conflict: InputMaybe<People_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Reset_PasswordsArgs = {
+  objects: Array<Reset_Passwords_Insert_Input>;
+  on_conflict: InputMaybe<Reset_Passwords_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Reset_Passwords_OneArgs = {
+  object: Reset_Passwords_Insert_Input;
+  on_conflict: InputMaybe<Reset_Passwords_On_Conflict>;
 };
 
 
@@ -10149,6 +11966,22 @@ export type Mutation_RootUpdate_Coins_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_CommentsArgs = {
+  _inc: InputMaybe<Comments_Inc_Input>;
+  _set: InputMaybe<Comments_Set_Input>;
+  where: Comments_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Comments_By_PkArgs = {
+  _inc: InputMaybe<Comments_Inc_Input>;
+  _set: InputMaybe<Comments_Set_Input>;
+  pk_columns: Comments_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_CompaniesArgs = {
   _append: InputMaybe<Companies_Append_Input>;
   _delete_at_path: InputMaybe<Companies_Delete_At_Path_Input>;
@@ -10195,6 +12028,32 @@ export type Mutation_RootUpdate_Data_Actions_By_PkArgs = {
   _inc: InputMaybe<Data_Actions_Inc_Input>;
   _set: InputMaybe<Data_Actions_Set_Input>;
   pk_columns: Data_Actions_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_DiscardArgs = {
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  where: Data_Discard_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Data_Discard_By_PkArgs = {
+  _append: InputMaybe<Data_Discard_Append_Input>;
+  _delete_at_path: InputMaybe<Data_Discard_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<Data_Discard_Delete_Elem_Input>;
+  _delete_key: InputMaybe<Data_Discard_Delete_Key_Input>;
+  _inc: InputMaybe<Data_Discard_Inc_Input>;
+  _prepend: InputMaybe<Data_Discard_Prepend_Input>;
+  _set: InputMaybe<Data_Discard_Set_Input>;
+  pk_columns: Data_Discard_Pk_Columns_Input;
 };
 
 
@@ -10371,6 +12230,14 @@ export type Mutation_RootUpdate_Follows_CompaniesArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Follows_PeopleArgs = {
+  _inc: InputMaybe<Follows_People_Inc_Input>;
+  _set: InputMaybe<Follows_People_Set_Input>;
+  where: Follows_People_Bool_Exp;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Follows_Vc_FirmsArgs = {
   _inc: InputMaybe<Follows_Vc_Firms_Inc_Input>;
   _set: InputMaybe<Follows_Vc_Firms_Set_Input>;
@@ -10427,6 +12294,22 @@ export type Mutation_RootUpdate_Investors_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_LikesArgs = {
+  _inc: InputMaybe<Likes_Inc_Input>;
+  _set: InputMaybe<Likes_Set_Input>;
+  where: Likes_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Likes_By_PkArgs = {
+  _inc: InputMaybe<Likes_Inc_Input>;
+  _set: InputMaybe<Likes_Set_Input>;
+  pk_columns: Likes_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_List_MembersArgs = {
   _inc: InputMaybe<List_Members_Inc_Input>;
   _set: InputMaybe<List_Members_Set_Input>;
@@ -10476,7 +12359,12 @@ export type Mutation_RootUpdate_Lists_By_PkArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_NewsArgs = {
+  _append: InputMaybe<News_Append_Input>;
+  _delete_at_path: InputMaybe<News_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<News_Delete_Elem_Input>;
+  _delete_key: InputMaybe<News_Delete_Key_Input>;
   _inc: InputMaybe<News_Inc_Input>;
+  _prepend: InputMaybe<News_Prepend_Input>;
   _set: InputMaybe<News_Set_Input>;
   where: News_Bool_Exp;
 };
@@ -10484,7 +12372,12 @@ export type Mutation_RootUpdate_NewsArgs = {
 
 /** mutation root */
 export type Mutation_RootUpdate_News_By_PkArgs = {
+  _append: InputMaybe<News_Append_Input>;
+  _delete_at_path: InputMaybe<News_Delete_At_Path_Input>;
+  _delete_elem: InputMaybe<News_Delete_Elem_Input>;
+  _delete_key: InputMaybe<News_Delete_Key_Input>;
   _inc: InputMaybe<News_Inc_Input>;
+  _prepend: InputMaybe<News_Prepend_Input>;
   _set: InputMaybe<News_Set_Input>;
   pk_columns: News_Pk_Columns_Input;
 };
@@ -10507,6 +12400,22 @@ export type Mutation_RootUpdate_News_Organizations_By_PkArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_News_PersonArgs = {
+  _inc: InputMaybe<News_Person_Inc_Input>;
+  _set: InputMaybe<News_Person_Set_Input>;
+  where: News_Person_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Person_By_PkArgs = {
+  _inc: InputMaybe<News_Person_Inc_Input>;
+  _set: InputMaybe<News_Person_Set_Input>;
+  pk_columns: News_Person_Pk_Columns_Input;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_NotesArgs = {
   _inc: InputMaybe<Notes_Inc_Input>;
   _set: InputMaybe<Notes_Set_Input>;
@@ -10519,6 +12428,22 @@ export type Mutation_RootUpdate_Notes_By_PkArgs = {
   _inc: InputMaybe<Notes_Inc_Input>;
   _set: InputMaybe<Notes_Set_Input>;
   pk_columns: Notes_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Notification_ActionsArgs = {
+  _inc: InputMaybe<Notification_Actions_Inc_Input>;
+  _set: InputMaybe<Notification_Actions_Set_Input>;
+  where: Notification_Actions_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Notification_Actions_By_PkArgs = {
+  _inc: InputMaybe<Notification_Actions_Inc_Input>;
+  _set: InputMaybe<Notification_Actions_Set_Input>;
+  pk_columns: Notification_Actions_Pk_Columns_Input;
 };
 
 
@@ -10571,6 +12496,22 @@ export type Mutation_RootUpdate_People_By_PkArgs = {
   _prepend: InputMaybe<People_Prepend_Input>;
   _set: InputMaybe<People_Set_Input>;
   pk_columns: People_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_PasswordsArgs = {
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  where: Reset_Passwords_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Reset_Passwords_By_PkArgs = {
+  _inc: InputMaybe<Reset_Passwords_Inc_Input>;
+  _set: InputMaybe<Reset_Passwords_Set_Input>;
+  pk_columns: Reset_Passwords_Pk_Columns_Input;
 };
 
 
@@ -10767,14 +12708,27 @@ export type News = {
   created_at: Scalars['timestamptz'];
   date: Maybe<Scalars['date']>;
   id: Scalars['Int'];
+  kind: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
+  metadata: Maybe<Scalars['jsonb']>;
   /** An array relationship */
   organizations: Array<News_Organizations>;
   /** An aggregate relationship */
   organizations_aggregate: News_Organizations_Aggregate;
+  /** An array relationship */
+  people: Array<News_Person>;
+  /** An aggregate relationship */
+  people_aggregate: News_Person_Aggregate;
+  source: Maybe<Scalars['jsonb']>;
   status: Maybe<Scalars['String']>;
   text: Scalars['String'];
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "news" */
+export type NewsMetadataArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -10795,6 +12749,32 @@ export type NewsOrganizations_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<News_Organizations_Order_By>>;
   where: InputMaybe<News_Organizations_Bool_Exp>;
+};
+
+
+/** columns and relationships of "news" */
+export type NewsPeopleArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+/** columns and relationships of "news" */
+export type NewsPeople_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+/** columns and relationships of "news" */
+export type NewsSourceArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 /** aggregated selection of "news" */
@@ -10827,6 +12807,12 @@ export type News_Aggregate_FieldsCountArgs = {
   distinct: InputMaybe<Scalars['Boolean']>;
 };
 
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type News_Append_Input = {
+  metadata: InputMaybe<Scalars['jsonb']>;
+  source: InputMaybe<Scalars['jsonb']>;
+};
+
 /** aggregate avg on columns */
 export type News_Avg_Fields = {
   __typename?: 'news_avg_fields';
@@ -10841,8 +12827,12 @@ export type News_Bool_Exp = {
   created_at: InputMaybe<Timestamptz_Comparison_Exp>;
   date: InputMaybe<Date_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  kind: InputMaybe<String_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
+  metadata: InputMaybe<Jsonb_Comparison_Exp>;
   organizations: InputMaybe<News_Organizations_Bool_Exp>;
+  people: InputMaybe<News_Person_Bool_Exp>;
+  source: InputMaybe<Jsonb_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
   text: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -10854,6 +12844,24 @@ export enum News_Constraint {
   NewsPkey = 'news_pkey'
 }
 
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type News_Delete_At_Path_Input = {
+  metadata: InputMaybe<Array<Scalars['String']>>;
+  source: InputMaybe<Array<Scalars['String']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type News_Delete_Elem_Input = {
+  metadata: InputMaybe<Scalars['Int']>;
+  source: InputMaybe<Scalars['Int']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type News_Delete_Key_Input = {
+  metadata: InputMaybe<Scalars['String']>;
+  source: InputMaybe<Scalars['String']>;
+};
+
 /** input type for incrementing numeric columns in table "news" */
 export type News_Inc_Input = {
   id: InputMaybe<Scalars['Int']>;
@@ -10864,8 +12872,12 @@ export type News_Insert_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   date: InputMaybe<Scalars['date']>;
   id: InputMaybe<Scalars['Int']>;
+  kind: InputMaybe<Scalars['String']>;
   link: InputMaybe<Scalars['String']>;
+  metadata: InputMaybe<Scalars['jsonb']>;
   organizations: InputMaybe<News_Organizations_Arr_Rel_Insert_Input>;
+  people: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
+  source: InputMaybe<Scalars['jsonb']>;
   status: InputMaybe<Scalars['String']>;
   text: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -10877,6 +12889,7 @@ export type News_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   date: Maybe<Scalars['date']>;
   id: Maybe<Scalars['Int']>;
+  kind: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
   text: Maybe<Scalars['String']>;
@@ -10889,6 +12902,7 @@ export type News_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   date: Maybe<Scalars['date']>;
   id: Maybe<Scalars['Int']>;
+  kind: Maybe<Scalars['String']>;
   link: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
   text: Maybe<Scalars['String']>;
@@ -10923,8 +12937,12 @@ export type News_Order_By = {
   created_at: InputMaybe<Order_By>;
   date: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  kind: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
+  metadata: InputMaybe<Order_By>;
   organizations_aggregate: InputMaybe<News_Organizations_Aggregate_Order_By>;
+  people_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
+  source: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
   text: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -10941,6 +12959,7 @@ export type News_Organizations = {
   /** An object relationship */
   news: Maybe<News>;
   news_id: Scalars['Int'];
+  type: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
   vc_firm: Maybe<Vc_Firms>;
@@ -11027,6 +13046,7 @@ export type News_Organizations_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   news: InputMaybe<News_Bool_Exp>;
   news_id: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
   vc_firm_id: InputMaybe<Int_Comparison_Exp>;
@@ -11054,6 +13074,7 @@ export type News_Organizations_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   news: InputMaybe<News_Obj_Rel_Insert_Input>;
   news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
@@ -11066,6 +13087,7 @@ export type News_Organizations_Max_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   news_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
@@ -11076,6 +13098,7 @@ export type News_Organizations_Max_Order_By = {
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   news_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
@@ -11087,6 +13110,7 @@ export type News_Organizations_Min_Fields = {
   created_at: Maybe<Scalars['timestamptz']>;
   id: Maybe<Scalars['Int']>;
   news_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
@@ -11097,6 +13121,7 @@ export type News_Organizations_Min_Order_By = {
   created_at: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   news_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
 };
@@ -11125,6 +13150,7 @@ export type News_Organizations_Order_By = {
   id: InputMaybe<Order_By>;
   news: InputMaybe<News_Order_By>;
   news_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   vc_firm: InputMaybe<Vc_Firms_Order_By>;
   vc_firm_id: InputMaybe<Order_By>;
@@ -11146,6 +13172,8 @@ export enum News_Organizations_Select_Column {
   /** column name */
   NewsId = 'news_id',
   /** column name */
+  Type = 'type',
+  /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
   VcFirmId = 'vc_firm_id'
@@ -11157,6 +13185,7 @@ export type News_Organizations_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   id: InputMaybe<Scalars['Int']>;
   news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
@@ -11240,6 +13269,8 @@ export enum News_Organizations_Update_Column {
   /** column name */
   NewsId = 'news_id',
   /** column name */
+  Type = 'type',
+  /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
   VcFirmId = 'vc_firm_id'
@@ -11296,9 +13327,359 @@ export type News_Organizations_Variance_Order_By = {
   vc_firm_id: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "news_person" */
+export type News_Person = {
+  __typename?: 'news_person';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  news: Maybe<News>;
+  news_id: Scalars['Int'];
+  /** An object relationship */
+  people: Maybe<People>;
+  person_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "news_person" */
+export type News_Person_Aggregate = {
+  __typename?: 'news_person_aggregate';
+  aggregate: Maybe<News_Person_Aggregate_Fields>;
+  nodes: Array<News_Person>;
+};
+
+/** aggregate fields of "news_person" */
+export type News_Person_Aggregate_Fields = {
+  __typename?: 'news_person_aggregate_fields';
+  avg: Maybe<News_Person_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<News_Person_Max_Fields>;
+  min: Maybe<News_Person_Min_Fields>;
+  stddev: Maybe<News_Person_Stddev_Fields>;
+  stddev_pop: Maybe<News_Person_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<News_Person_Stddev_Samp_Fields>;
+  sum: Maybe<News_Person_Sum_Fields>;
+  var_pop: Maybe<News_Person_Var_Pop_Fields>;
+  var_samp: Maybe<News_Person_Var_Samp_Fields>;
+  variance: Maybe<News_Person_Variance_Fields>;
+};
+
+
+/** aggregate fields of "news_person" */
+export type News_Person_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<News_Person_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "news_person" */
+export type News_Person_Aggregate_Order_By = {
+  avg: InputMaybe<News_Person_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<News_Person_Max_Order_By>;
+  min: InputMaybe<News_Person_Min_Order_By>;
+  stddev: InputMaybe<News_Person_Stddev_Order_By>;
+  stddev_pop: InputMaybe<News_Person_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<News_Person_Stddev_Samp_Order_By>;
+  sum: InputMaybe<News_Person_Sum_Order_By>;
+  var_pop: InputMaybe<News_Person_Var_Pop_Order_By>;
+  var_samp: InputMaybe<News_Person_Var_Samp_Order_By>;
+  variance: InputMaybe<News_Person_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "news_person" */
+export type News_Person_Arr_Rel_Insert_Input = {
+  data: Array<News_Person_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<News_Person_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type News_Person_Avg_Fields = {
+  __typename?: 'news_person_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "news_person" */
+export type News_Person_Avg_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "news_person". All fields are combined with a logical 'AND'. */
+export type News_Person_Bool_Exp = {
+  _and: InputMaybe<Array<News_Person_Bool_Exp>>;
+  _not: InputMaybe<News_Person_Bool_Exp>;
+  _or: InputMaybe<Array<News_Person_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  news: InputMaybe<News_Bool_Exp>;
+  news_id: InputMaybe<Int_Comparison_Exp>;
+  people: InputMaybe<People_Bool_Exp>;
+  person_id: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "news_person" */
+export enum News_Person_Constraint {
+  /** unique or primary key constraint */
+  NewsPersonPkey = 'news_person_pkey'
+}
+
+/** input type for incrementing numeric columns in table "news_person" */
+export type News_Person_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "news_person" */
+export type News_Person_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  news: InputMaybe<News_Obj_Rel_Insert_Input>;
+  news_id: InputMaybe<Scalars['Int']>;
+  people: InputMaybe<People_Obj_Rel_Insert_Input>;
+  person_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type News_Person_Max_Fields = {
+  __typename?: 'news_person_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  news_id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by max() on columns of table "news_person" */
+export type News_Person_Max_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type News_Person_Min_Fields = {
+  __typename?: 'news_person_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  news_id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** order by min() on columns of table "news_person" */
+export type News_Person_Min_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "news_person" */
+export type News_Person_Mutation_Response = {
+  __typename?: 'news_person_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<News_Person>;
+};
+
+/** on_conflict condition type for table "news_person" */
+export type News_Person_On_Conflict = {
+  constraint: News_Person_Constraint;
+  update_columns: Array<News_Person_Update_Column>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "news_person". */
+export type News_Person_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  news: InputMaybe<News_Order_By>;
+  news_id: InputMaybe<Order_By>;
+  people: InputMaybe<People_Order_By>;
+  person_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: news_person */
+export type News_Person_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "news_person" */
+export enum News_Person_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NewsId = 'news_id',
+  /** column name */
+  PersonId = 'person_id',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "news_person" */
+export type News_Person_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  person_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type News_Person_Stddev_Fields = {
+  __typename?: 'news_person_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "news_person" */
+export type News_Person_Stddev_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type News_Person_Stddev_Pop_Fields = {
+  __typename?: 'news_person_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "news_person" */
+export type News_Person_Stddev_Pop_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type News_Person_Stddev_Samp_Fields = {
+  __typename?: 'news_person_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "news_person" */
+export type News_Person_Stddev_Samp_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type News_Person_Sum_Fields = {
+  __typename?: 'news_person_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  news_id: Maybe<Scalars['Int']>;
+  person_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "news_person" */
+export type News_Person_Sum_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "news_person" */
+export enum News_Person_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NewsId = 'news_id',
+  /** column name */
+  PersonId = 'person_id',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type News_Person_Var_Pop_Fields = {
+  __typename?: 'news_person_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "news_person" */
+export type News_Person_Var_Pop_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type News_Person_Var_Samp_Fields = {
+  __typename?: 'news_person_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "news_person" */
+export type News_Person_Var_Samp_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type News_Person_Variance_Fields = {
+  __typename?: 'news_person_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+  person_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "news_person" */
+export type News_Person_Variance_Order_By = {
+  id: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  person_id: InputMaybe<Order_By>;
+};
+
 /** primary key columns input for table: news */
 export type News_Pk_Columns_Input = {
   id: Scalars['Int'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type News_Prepend_Input = {
+  metadata: InputMaybe<Scalars['jsonb']>;
+  source: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "news" */
@@ -11310,7 +13691,13 @@ export enum News_Select_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Kind = 'kind',
+  /** column name */
   Link = 'link',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  Source = 'source',
   /** column name */
   Status = 'status',
   /** column name */
@@ -11324,7 +13711,10 @@ export type News_Set_Input = {
   created_at: InputMaybe<Scalars['timestamptz']>;
   date: InputMaybe<Scalars['date']>;
   id: InputMaybe<Scalars['Int']>;
+  kind: InputMaybe<Scalars['String']>;
   link: InputMaybe<Scalars['String']>;
+  metadata: InputMaybe<Scalars['jsonb']>;
+  source: InputMaybe<Scalars['jsonb']>;
   status: InputMaybe<Scalars['String']>;
   text: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -11363,7 +13753,13 @@ export enum News_Update_Column {
   /** column name */
   Id = 'id',
   /** column name */
+  Kind = 'kind',
+  /** column name */
   Link = 'link',
+  /** column name */
+  Metadata = 'metadata',
+  /** column name */
+  Source = 'source',
   /** column name */
   Status = 'status',
   /** column name */
@@ -11393,16 +13789,65 @@ export type News_Variance_Fields = {
 /** columns and relationships of "notes" */
 export type Notes = {
   __typename?: 'notes';
+  audience: Maybe<Scalars['String']>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
   created_at: Scalars['timestamp'];
   created_by: Scalars['Int'];
   id: Scalars['Int'];
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
   notes: Scalars['String'];
   resource_id: Maybe<Scalars['Int']>;
   resource_type: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   /** An object relationship */
-  user_group: User_Groups;
-  user_group_id: Scalars['Int'];
+  user_group: Maybe<User_Groups>;
+  user_group_id: Maybe<Scalars['Int']>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesCommentsArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesComments_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesLikesArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notes" */
+export type NotesLikes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
 };
 
 /** aggregated selection of "notes" */
@@ -11479,9 +13924,12 @@ export type Notes_Bool_Exp = {
   _and: InputMaybe<Array<Notes_Bool_Exp>>;
   _not: InputMaybe<Notes_Bool_Exp>;
   _or: InputMaybe<Array<Notes_Bool_Exp>>;
+  audience: InputMaybe<String_Comparison_Exp>;
+  comments: InputMaybe<Comments_Bool_Exp>;
   created_at: InputMaybe<Timestamp_Comparison_Exp>;
   created_by: InputMaybe<Int_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
+  likes: InputMaybe<Likes_Bool_Exp>;
   notes: InputMaybe<String_Comparison_Exp>;
   resource_id: InputMaybe<Int_Comparison_Exp>;
   resource_type: InputMaybe<String_Comparison_Exp>;
@@ -11506,9 +13954,12 @@ export type Notes_Inc_Input = {
 
 /** input type for inserting data into table "notes" */
 export type Notes_Insert_Input = {
+  audience: InputMaybe<Scalars['String']>;
+  comments: InputMaybe<Comments_Arr_Rel_Insert_Input>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
+  likes: InputMaybe<Likes_Arr_Rel_Insert_Input>;
   notes: InputMaybe<Scalars['String']>;
   resource_id: InputMaybe<Scalars['Int']>;
   resource_type: InputMaybe<Scalars['String']>;
@@ -11520,6 +13971,7 @@ export type Notes_Insert_Input = {
 /** aggregate max on columns */
 export type Notes_Max_Fields = {
   __typename?: 'notes_max_fields';
+  audience: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamp']>;
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
@@ -11532,6 +13984,7 @@ export type Notes_Max_Fields = {
 
 /** order by max() on columns of table "notes" */
 export type Notes_Max_Order_By = {
+  audience: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -11545,6 +13998,7 @@ export type Notes_Max_Order_By = {
 /** aggregate min on columns */
 export type Notes_Min_Fields = {
   __typename?: 'notes_min_fields';
+  audience: Maybe<Scalars['String']>;
   created_at: Maybe<Scalars['timestamp']>;
   created_by: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
@@ -11557,6 +14011,7 @@ export type Notes_Min_Fields = {
 
 /** order by min() on columns of table "notes" */
 export type Notes_Min_Order_By = {
+  audience: InputMaybe<Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
@@ -11576,6 +14031,13 @@ export type Notes_Mutation_Response = {
   returning: Array<Notes>;
 };
 
+/** input type for inserting object relation for remote table "notes" */
+export type Notes_Obj_Rel_Insert_Input = {
+  data: Notes_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<Notes_On_Conflict>;
+};
+
 /** on_conflict condition type for table "notes" */
 export type Notes_On_Conflict = {
   constraint: Notes_Constraint;
@@ -11585,9 +14047,12 @@ export type Notes_On_Conflict = {
 
 /** Ordering options when selecting data from "notes". */
 export type Notes_Order_By = {
+  audience: InputMaybe<Order_By>;
+  comments_aggregate: InputMaybe<Comments_Aggregate_Order_By>;
   created_at: InputMaybe<Order_By>;
   created_by: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
+  likes_aggregate: InputMaybe<Likes_Aggregate_Order_By>;
   notes: InputMaybe<Order_By>;
   resource_id: InputMaybe<Order_By>;
   resource_type: InputMaybe<Order_By>;
@@ -11603,6 +14068,8 @@ export type Notes_Pk_Columns_Input = {
 
 /** select columns of table "notes" */
 export enum Notes_Select_Column {
+  /** column name */
+  Audience = 'audience',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -11623,6 +14090,7 @@ export enum Notes_Select_Column {
 
 /** input type for updating data in table "notes" */
 export type Notes_Set_Input = {
+  audience: InputMaybe<Scalars['String']>;
   created_at: InputMaybe<Scalars['timestamp']>;
   created_by: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
@@ -11704,6 +14172,8 @@ export type Notes_Sum_Order_By = {
 /** update columns of table "notes" */
 export enum Notes_Update_Column {
   /** column name */
+  Audience = 'audience',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CreatedBy = 'created_by',
@@ -11772,6 +14242,324 @@ export type Notes_Variance_Order_By = {
   user_group_id: InputMaybe<Order_By>;
 };
 
+/** columns and relationships of "notification_actions" */
+export type Notification_Actions = {
+  __typename?: 'notification_actions';
+  /** An object relationship */
+  action: Maybe<Actions>;
+  action_id: Scalars['Int'];
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  notification: Maybe<Notifications>;
+  notification_id: Scalars['Int'];
+};
+
+/** aggregated selection of "notification_actions" */
+export type Notification_Actions_Aggregate = {
+  __typename?: 'notification_actions_aggregate';
+  aggregate: Maybe<Notification_Actions_Aggregate_Fields>;
+  nodes: Array<Notification_Actions>;
+};
+
+/** aggregate fields of "notification_actions" */
+export type Notification_Actions_Aggregate_Fields = {
+  __typename?: 'notification_actions_aggregate_fields';
+  avg: Maybe<Notification_Actions_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Notification_Actions_Max_Fields>;
+  min: Maybe<Notification_Actions_Min_Fields>;
+  stddev: Maybe<Notification_Actions_Stddev_Fields>;
+  stddev_pop: Maybe<Notification_Actions_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Notification_Actions_Stddev_Samp_Fields>;
+  sum: Maybe<Notification_Actions_Sum_Fields>;
+  var_pop: Maybe<Notification_Actions_Var_Pop_Fields>;
+  var_samp: Maybe<Notification_Actions_Var_Samp_Fields>;
+  variance: Maybe<Notification_Actions_Variance_Fields>;
+};
+
+
+/** aggregate fields of "notification_actions" */
+export type Notification_Actions_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** order by aggregate values of table "notification_actions" */
+export type Notification_Actions_Aggregate_Order_By = {
+  avg: InputMaybe<Notification_Actions_Avg_Order_By>;
+  count: InputMaybe<Order_By>;
+  max: InputMaybe<Notification_Actions_Max_Order_By>;
+  min: InputMaybe<Notification_Actions_Min_Order_By>;
+  stddev: InputMaybe<Notification_Actions_Stddev_Order_By>;
+  stddev_pop: InputMaybe<Notification_Actions_Stddev_Pop_Order_By>;
+  stddev_samp: InputMaybe<Notification_Actions_Stddev_Samp_Order_By>;
+  sum: InputMaybe<Notification_Actions_Sum_Order_By>;
+  var_pop: InputMaybe<Notification_Actions_Var_Pop_Order_By>;
+  var_samp: InputMaybe<Notification_Actions_Var_Samp_Order_By>;
+  variance: InputMaybe<Notification_Actions_Variance_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "notification_actions" */
+export type Notification_Actions_Arr_Rel_Insert_Input = {
+  data: Array<Notification_Actions_Insert_Input>;
+  /** upsert condition */
+  on_conflict: InputMaybe<Notification_Actions_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type Notification_Actions_Avg_Fields = {
+  __typename?: 'notification_actions_avg_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "notification_actions" */
+export type Notification_Actions_Avg_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "notification_actions". All fields are combined with a logical 'AND'. */
+export type Notification_Actions_Bool_Exp = {
+  _and: InputMaybe<Array<Notification_Actions_Bool_Exp>>;
+  _not: InputMaybe<Notification_Actions_Bool_Exp>;
+  _or: InputMaybe<Array<Notification_Actions_Bool_Exp>>;
+  action: InputMaybe<Actions_Bool_Exp>;
+  action_id: InputMaybe<Int_Comparison_Exp>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  notification: InputMaybe<Notifications_Bool_Exp>;
+  notification_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "notification_actions" */
+export enum Notification_Actions_Constraint {
+  /** unique or primary key constraint */
+  NotificationActionsPkey = 'notification_actions_pkey'
+}
+
+/** input type for incrementing numeric columns in table "notification_actions" */
+export type Notification_Actions_Inc_Input = {
+  action_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  notification_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "notification_actions" */
+export type Notification_Actions_Insert_Input = {
+  action: InputMaybe<Actions_Obj_Rel_Insert_Input>;
+  action_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  notification: InputMaybe<Notifications_Obj_Rel_Insert_Input>;
+  notification_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Notification_Actions_Max_Fields = {
+  __typename?: 'notification_actions_max_fields';
+  action_id: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  notification_id: Maybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "notification_actions" */
+export type Notification_Actions_Max_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Notification_Actions_Min_Fields = {
+  __typename?: 'notification_actions_min_fields';
+  action_id: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  notification_id: Maybe<Scalars['Int']>;
+};
+
+/** order by min() on columns of table "notification_actions" */
+export type Notification_Actions_Min_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "notification_actions" */
+export type Notification_Actions_Mutation_Response = {
+  __typename?: 'notification_actions_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Notification_Actions>;
+};
+
+/** on_conflict condition type for table "notification_actions" */
+export type Notification_Actions_On_Conflict = {
+  constraint: Notification_Actions_Constraint;
+  update_columns: Array<Notification_Actions_Update_Column>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "notification_actions". */
+export type Notification_Actions_Order_By = {
+  action: InputMaybe<Actions_Order_By>;
+  action_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification: InputMaybe<Notifications_Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: notification_actions */
+export type Notification_Actions_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "notification_actions" */
+export enum Notification_Actions_Select_Column {
+  /** column name */
+  ActionId = 'action_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NotificationId = 'notification_id'
+}
+
+/** input type for updating data in table "notification_actions" */
+export type Notification_Actions_Set_Input = {
+  action_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  notification_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Notification_Actions_Stddev_Fields = {
+  __typename?: 'notification_actions_stddev_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "notification_actions" */
+export type Notification_Actions_Stddev_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Notification_Actions_Stddev_Pop_Fields = {
+  __typename?: 'notification_actions_stddev_pop_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "notification_actions" */
+export type Notification_Actions_Stddev_Pop_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Notification_Actions_Stddev_Samp_Fields = {
+  __typename?: 'notification_actions_stddev_samp_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "notification_actions" */
+export type Notification_Actions_Stddev_Samp_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** aggregate sum on columns */
+export type Notification_Actions_Sum_Fields = {
+  __typename?: 'notification_actions_sum_fields';
+  action_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  notification_id: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "notification_actions" */
+export type Notification_Actions_Sum_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** update columns of table "notification_actions" */
+export enum Notification_Actions_Update_Column {
+  /** column name */
+  ActionId = 'action_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  NotificationId = 'notification_id'
+}
+
+/** aggregate var_pop on columns */
+export type Notification_Actions_Var_Pop_Fields = {
+  __typename?: 'notification_actions_var_pop_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "notification_actions" */
+export type Notification_Actions_Var_Pop_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type Notification_Actions_Var_Samp_Fields = {
+  __typename?: 'notification_actions_var_samp_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "notification_actions" */
+export type Notification_Actions_Var_Samp_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type Notification_Actions_Variance_Fields = {
+  __typename?: 'notification_actions_variance_fields';
+  action_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  notification_id: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "notification_actions" */
+export type Notification_Actions_Variance_Order_By = {
+  action_id: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  notification_id: InputMaybe<Order_By>;
+};
+
 /** columns and relationships of "notifications" */
 export type Notifications = {
   __typename?: 'notifications';
@@ -11784,6 +14572,10 @@ export type Notifications = {
   follow_resource_type: Scalars['String'];
   id: Scalars['Int'];
   message: Maybe<Scalars['String']>;
+  /** An array relationship */
+  notification_actions: Array<Notification_Actions>;
+  /** An aggregate relationship */
+  notification_actions_aggregate: Notification_Actions_Aggregate;
   notification_resource_type: Scalars['String'];
   read: Scalars['Boolean'];
   read_at: Maybe<Scalars['timestamptz']>;
@@ -11798,6 +14590,26 @@ export type Notifications = {
 /** columns and relationships of "notifications" */
 export type NotificationsAction_IdsArgs = {
   path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "notifications" */
+export type NotificationsNotification_ActionsArgs = {
+  distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notification_Actions_Order_By>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
+};
+
+
+/** columns and relationships of "notifications" */
+export type NotificationsNotification_Actions_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notification_Actions_Order_By>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
 };
 
 /** aggregated selection of "notifications" */
@@ -11857,6 +14669,7 @@ export type Notifications_Bool_Exp = {
   follow_resource_type: InputMaybe<String_Comparison_Exp>;
   id: InputMaybe<Int_Comparison_Exp>;
   message: InputMaybe<String_Comparison_Exp>;
+  notification_actions: InputMaybe<Notification_Actions_Bool_Exp>;
   notification_resource_type: InputMaybe<String_Comparison_Exp>;
   read: InputMaybe<Boolean_Comparison_Exp>;
   read_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -11905,6 +14718,7 @@ export type Notifications_Insert_Input = {
   follow_resource_type: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
+  notification_actions: InputMaybe<Notification_Actions_Arr_Rel_Insert_Input>;
   notification_resource_type: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
@@ -11955,6 +14769,13 @@ export type Notifications_Mutation_Response = {
   returning: Array<Notifications>;
 };
 
+/** input type for inserting object relation for remote table "notifications" */
+export type Notifications_Obj_Rel_Insert_Input = {
+  data: Notifications_Insert_Input;
+  /** upsert condition */
+  on_conflict: InputMaybe<Notifications_On_Conflict>;
+};
+
 /** on_conflict condition type for table "notifications" */
 export type Notifications_On_Conflict = {
   constraint: Notifications_Constraint;
@@ -11972,6 +14793,7 @@ export type Notifications_Order_By = {
   follow_resource_type: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   message: InputMaybe<Order_By>;
+  notification_actions_aggregate: InputMaybe<Notification_Actions_Aggregate_Order_By>;
   notification_resource_type: InputMaybe<Order_By>;
   read: InputMaybe<Order_By>;
   read_at: InputMaybe<Order_By>;
@@ -12184,6 +15006,10 @@ export type People = {
   library: Maybe<Scalars['jsonb']>;
   linkedin: Maybe<Scalars['String']>;
   name: Maybe<Scalars['String']>;
+  /** An array relationship */
+  news_links: Array<News_Person>;
+  /** An aggregate relationship */
+  news_links_aggregate: News_Person_Aggregate;
   personal_email: Maybe<Scalars['String']>;
   picture: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
@@ -12249,6 +15075,26 @@ export type PeopleInvestors_AggregateArgs = {
 /** columns and relationships of "people" */
 export type PeopleLibraryArgs = {
   path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "people" */
+export type PeopleNews_LinksArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+/** columns and relationships of "people" */
+export type PeopleNews_Links_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
 };
 
 
@@ -12340,6 +15186,7 @@ export type People_Bool_Exp = {
   library: InputMaybe<Jsonb_Comparison_Exp>;
   linkedin: InputMaybe<String_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
+  news_links: InputMaybe<News_Person_Bool_Exp>;
   personal_email: InputMaybe<String_Comparison_Exp>;
   picture: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
@@ -12408,6 +15255,7 @@ export type People_Insert_Input = {
   library: InputMaybe<Scalars['jsonb']>;
   linkedin: InputMaybe<Scalars['String']>;
   name: InputMaybe<Scalars['String']>;
+  news_links: InputMaybe<News_Person_Arr_Rel_Insert_Input>;
   personal_email: InputMaybe<Scalars['String']>;
   picture: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
@@ -12505,6 +15353,7 @@ export type People_Order_By = {
   library: InputMaybe<Order_By>;
   linkedin: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
+  news_links_aggregate: InputMaybe<News_Person_Aggregate_Order_By>;
   personal_email: InputMaybe<Order_By>;
   picture: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
@@ -12728,6 +15577,12 @@ export type Query_Root = {
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
+  /** fetch data from the table: "comments" using primary key columns */
+  comments_by_pk: Maybe<Comments>;
   /** fetch data from the table: "companies" */
   companies: Array<Companies>;
   /** fetch aggregated fields from the table: "companies" */
@@ -12744,6 +15599,12 @@ export type Query_Root = {
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table: "data_discard" */
+  data_discard: Array<Data_Discard>;
+  /** fetch aggregated fields from the table: "data_discard" */
+  data_discard_aggregate: Data_Discard_Aggregate;
+  /** fetch data from the table: "data_discard" using primary key columns */
+  data_discard_by_pk: Maybe<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
@@ -12802,6 +15663,10 @@ export type Query_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** An array relationship */
+  follows_people: Array<Follows_People>;
+  /** An aggregate relationship */
+  follows_people_aggregate: Follows_People_Aggregate;
   /** fetch data from the table: "follows_vc_firms" */
   follows_vc_firms: Array<Follows_Vc_Firms>;
   /** fetch aggregated fields from the table: "follows_vc_firms" */
@@ -12824,6 +15689,12 @@ export type Query_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
+  /** fetch data from the table: "likes" using primary key columns */
+  likes_by_pk: Maybe<Likes>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
@@ -12854,12 +15725,24 @@ export type Query_Root = {
   news_organizations_aggregate: News_Organizations_Aggregate;
   /** fetch data from the table: "news_organizations" using primary key columns */
   news_organizations_by_pk: Maybe<News_Organizations>;
+  /** fetch data from the table: "news_person" */
+  news_person: Array<News_Person>;
+  /** fetch aggregated fields from the table: "news_person" */
+  news_person_aggregate: News_Person_Aggregate;
+  /** fetch data from the table: "news_person" using primary key columns */
+  news_person_by_pk: Maybe<News_Person>;
   /** An array relationship */
   notes: Array<Notes>;
   /** An aggregate relationship */
   notes_aggregate: Notes_Aggregate;
   /** fetch data from the table: "notes" using primary key columns */
   notes_by_pk: Maybe<Notes>;
+  /** An array relationship */
+  notification_actions: Array<Notification_Actions>;
+  /** An aggregate relationship */
+  notification_actions_aggregate: Notification_Actions_Aggregate;
+  /** fetch data from the table: "notification_actions" using primary key columns */
+  notification_actions_by_pk: Maybe<Notification_Actions>;
   /** fetch data from the table: "notifications" */
   notifications: Array<Notifications>;
   /** fetch aggregated fields from the table: "notifications" */
@@ -12872,6 +15755,12 @@ export type Query_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "reset_passwords" */
+  reset_passwords: Array<Reset_Passwords>;
+  /** fetch aggregated fields from the table: "reset_passwords" */
+  reset_passwords_aggregate: Reset_Passwords_Aggregate;
+  /** fetch data from the table: "reset_passwords" using primary key columns */
+  reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
@@ -13077,6 +15966,29 @@ export type Query_RootCoins_By_PkArgs = {
 };
 
 
+export type Query_RootCommentsArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Query_RootComments_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Query_RootComments_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootCompaniesArgs = {
   distinct_on: InputMaybe<Array<Companies_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -13138,6 +16050,29 @@ export type Query_RootData_Actions_AggregateArgs = {
 
 export type Query_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Query_RootData_DiscardArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Query_RootData_Discard_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Query_RootData_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -13366,6 +16301,24 @@ export type Query_RootFollows_Companies_AggregateArgs = {
 };
 
 
+export type Query_RootFollows_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+export type Query_RootFollows_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
 export type Query_RootFollows_Vc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -13449,6 +16402,29 @@ export type Query_RootInvestors_AggregateArgs = {
 
 
 export type Query_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootLikesArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Query_RootLikes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Query_RootLikes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -13568,6 +16544,29 @@ export type Query_RootNews_Organizations_By_PkArgs = {
 };
 
 
+export type Query_RootNews_PersonArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+export type Query_RootNews_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+export type Query_RootNews_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Query_RootNotesArgs = {
   distinct_on: InputMaybe<Array<Notes_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -13587,6 +16586,29 @@ export type Query_RootNotes_AggregateArgs = {
 
 
 export type Query_RootNotes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootNotification_ActionsArgs = {
+  distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notification_Actions_Order_By>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
+};
+
+
+export type Query_RootNotification_Actions_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notification_Actions_Order_By>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
+};
+
+
+export type Query_RootNotification_Actions_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -13633,6 +16655,29 @@ export type Query_RootPeople_AggregateArgs = {
 
 
 export type Query_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootReset_PasswordsArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Query_RootReset_Passwords_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Query_RootReset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -13882,6 +16927,241 @@ export type Query_RootWaitlist_Emails_AggregateArgs = {
 
 export type Query_RootWaitlist_Emails_By_PkArgs = {
   id: Scalars['Int'];
+};
+
+/** columns and relationships of "reset_passwords" */
+export type Reset_Passwords = {
+  __typename?: 'reset_passwords';
+  created_at: Scalars['timestamptz'];
+  /** An object relationship */
+  created_by_user: Maybe<Users>;
+  created_by_user_id: Scalars['Int'];
+  generated_password: Scalars['String'];
+  id: Scalars['Int'];
+  /** An object relationship */
+  user: Maybe<Users>;
+  user_id: Scalars['Int'];
+};
+
+/** aggregated selection of "reset_passwords" */
+export type Reset_Passwords_Aggregate = {
+  __typename?: 'reset_passwords_aggregate';
+  aggregate: Maybe<Reset_Passwords_Aggregate_Fields>;
+  nodes: Array<Reset_Passwords>;
+};
+
+/** aggregate fields of "reset_passwords" */
+export type Reset_Passwords_Aggregate_Fields = {
+  __typename?: 'reset_passwords_aggregate_fields';
+  avg: Maybe<Reset_Passwords_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<Reset_Passwords_Max_Fields>;
+  min: Maybe<Reset_Passwords_Min_Fields>;
+  stddev: Maybe<Reset_Passwords_Stddev_Fields>;
+  stddev_pop: Maybe<Reset_Passwords_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<Reset_Passwords_Stddev_Samp_Fields>;
+  sum: Maybe<Reset_Passwords_Sum_Fields>;
+  var_pop: Maybe<Reset_Passwords_Var_Pop_Fields>;
+  var_samp: Maybe<Reset_Passwords_Var_Samp_Fields>;
+  variance: Maybe<Reset_Passwords_Variance_Fields>;
+};
+
+
+/** aggregate fields of "reset_passwords" */
+export type Reset_Passwords_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Reset_Passwords_Avg_Fields = {
+  __typename?: 'reset_passwords_avg_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "reset_passwords". All fields are combined with a logical 'AND'. */
+export type Reset_Passwords_Bool_Exp = {
+  _and: InputMaybe<Array<Reset_Passwords_Bool_Exp>>;
+  _not: InputMaybe<Reset_Passwords_Bool_Exp>;
+  _or: InputMaybe<Array<Reset_Passwords_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  created_by_user: InputMaybe<Users_Bool_Exp>;
+  created_by_user_id: InputMaybe<Int_Comparison_Exp>;
+  generated_password: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  user: InputMaybe<Users_Bool_Exp>;
+  user_id: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "reset_passwords" */
+export enum Reset_Passwords_Constraint {
+  /** unique or primary key constraint */
+  ResetPasswordsPkey = 'reset_passwords_pkey'
+}
+
+/** input type for incrementing numeric columns in table "reset_passwords" */
+export type Reset_Passwords_Inc_Input = {
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "reset_passwords" */
+export type Reset_Passwords_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Users_Obj_Rel_Insert_Input>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Reset_Passwords_Max_Fields = {
+  __typename?: 'reset_passwords_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  generated_password: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Reset_Passwords_Min_Fields = {
+  __typename?: 'reset_passwords_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  created_by_user_id: Maybe<Scalars['Int']>;
+  generated_password: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "reset_passwords" */
+export type Reset_Passwords_Mutation_Response = {
+  __typename?: 'reset_passwords_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Reset_Passwords>;
+};
+
+/** on_conflict condition type for table "reset_passwords" */
+export type Reset_Passwords_On_Conflict = {
+  constraint: Reset_Passwords_Constraint;
+  update_columns: Array<Reset_Passwords_Update_Column>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "reset_passwords". */
+export type Reset_Passwords_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  created_by_user: InputMaybe<Users_Order_By>;
+  created_by_user_id: InputMaybe<Order_By>;
+  generated_password: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  user: InputMaybe<Users_Order_By>;
+  user_id: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: reset_passwords */
+export type Reset_Passwords_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "reset_passwords" */
+export enum Reset_Passwords_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  GeneratedPassword = 'generated_password',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "reset_passwords" */
+export type Reset_Passwords_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  created_by_user_id: InputMaybe<Scalars['Int']>;
+  generated_password: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  user_id: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Reset_Passwords_Stddev_Fields = {
+  __typename?: 'reset_passwords_stddev_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Reset_Passwords_Stddev_Pop_Fields = {
+  __typename?: 'reset_passwords_stddev_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Reset_Passwords_Stddev_Samp_Fields = {
+  __typename?: 'reset_passwords_stddev_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Reset_Passwords_Sum_Fields = {
+  __typename?: 'reset_passwords_sum_fields';
+  created_by_user_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  user_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "reset_passwords" */
+export enum Reset_Passwords_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  CreatedByUserId = 'created_by_user_id',
+  /** column name */
+  GeneratedPassword = 'generated_password',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** aggregate var_pop on columns */
+export type Reset_Passwords_Var_Pop_Fields = {
+  __typename?: 'reset_passwords_var_pop_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Reset_Passwords_Var_Samp_Fields = {
+  __typename?: 'reset_passwords_var_samp_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Reset_Passwords_Variance_Fields = {
+  __typename?: 'reset_passwords_variance_fields';
+  created_by_user_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  user_id: Maybe<Scalars['Float']>;
 };
 
 /** Add access to user if he has verified the access to organization */
@@ -14547,6 +17827,12 @@ export type Subscription_Root = {
   coins_aggregate: Coins_Aggregate;
   /** fetch data from the table: "coins" using primary key columns */
   coins_by_pk: Maybe<Coins>;
+  /** An array relationship */
+  comments: Array<Comments>;
+  /** An aggregate relationship */
+  comments_aggregate: Comments_Aggregate;
+  /** fetch data from the table: "comments" using primary key columns */
+  comments_by_pk: Maybe<Comments>;
   /** fetch data from the table: "companies" */
   companies: Array<Companies>;
   /** fetch aggregated fields from the table: "companies" */
@@ -14563,6 +17849,12 @@ export type Subscription_Root = {
   data_actions_aggregate: Data_Actions_Aggregate;
   /** fetch data from the table: "data_actions" using primary key columns */
   data_actions_by_pk: Maybe<Data_Actions>;
+  /** fetch data from the table: "data_discard" */
+  data_discard: Array<Data_Discard>;
+  /** fetch aggregated fields from the table: "data_discard" */
+  data_discard_aggregate: Data_Discard_Aggregate;
+  /** fetch data from the table: "data_discard" using primary key columns */
+  data_discard_by_pk: Maybe<Data_Discard>;
   /** fetch data from the table: "data_fields" */
   data_fields: Array<Data_Fields>;
   /** fetch aggregated fields from the table: "data_fields" */
@@ -14621,6 +17913,10 @@ export type Subscription_Root = {
   follows_companies: Array<Follows_Companies>;
   /** An aggregate relationship */
   follows_companies_aggregate: Follows_Companies_Aggregate;
+  /** An array relationship */
+  follows_people: Array<Follows_People>;
+  /** An aggregate relationship */
+  follows_people_aggregate: Follows_People_Aggregate;
   /** fetch data from the table: "follows_vc_firms" */
   follows_vc_firms: Array<Follows_Vc_Firms>;
   /** fetch aggregated fields from the table: "follows_vc_firms" */
@@ -14643,6 +17939,12 @@ export type Subscription_Root = {
   investors_aggregate: Investors_Aggregate;
   /** fetch data from the table: "investors" using primary key columns */
   investors_by_pk: Maybe<Investors>;
+  /** An array relationship */
+  likes: Array<Likes>;
+  /** An aggregate relationship */
+  likes_aggregate: Likes_Aggregate;
+  /** fetch data from the table: "likes" using primary key columns */
+  likes_by_pk: Maybe<Likes>;
   /** An array relationship */
   list_members: Array<List_Members>;
   /** An aggregate relationship */
@@ -14673,12 +17975,24 @@ export type Subscription_Root = {
   news_organizations_aggregate: News_Organizations_Aggregate;
   /** fetch data from the table: "news_organizations" using primary key columns */
   news_organizations_by_pk: Maybe<News_Organizations>;
+  /** fetch data from the table: "news_person" */
+  news_person: Array<News_Person>;
+  /** fetch aggregated fields from the table: "news_person" */
+  news_person_aggregate: News_Person_Aggregate;
+  /** fetch data from the table: "news_person" using primary key columns */
+  news_person_by_pk: Maybe<News_Person>;
   /** An array relationship */
   notes: Array<Notes>;
   /** An aggregate relationship */
   notes_aggregate: Notes_Aggregate;
   /** fetch data from the table: "notes" using primary key columns */
   notes_by_pk: Maybe<Notes>;
+  /** An array relationship */
+  notification_actions: Array<Notification_Actions>;
+  /** An aggregate relationship */
+  notification_actions_aggregate: Notification_Actions_Aggregate;
+  /** fetch data from the table: "notification_actions" using primary key columns */
+  notification_actions_by_pk: Maybe<Notification_Actions>;
   /** fetch data from the table: "notifications" */
   notifications: Array<Notifications>;
   /** fetch aggregated fields from the table: "notifications" */
@@ -14691,6 +18005,12 @@ export type Subscription_Root = {
   people_aggregate: People_Aggregate;
   /** fetch data from the table: "people" using primary key columns */
   people_by_pk: Maybe<People>;
+  /** fetch data from the table: "reset_passwords" */
+  reset_passwords: Array<Reset_Passwords>;
+  /** fetch aggregated fields from the table: "reset_passwords" */
+  reset_passwords_aggregate: Reset_Passwords_Aggregate;
+  /** fetch data from the table: "reset_passwords" using primary key columns */
+  reset_passwords_by_pk: Maybe<Reset_Passwords>;
   /** fetch data from the table: "resource_edit_access" */
   resource_edit_access: Array<Resource_Edit_Access>;
   /** fetch aggregated fields from the table: "resource_edit_access" */
@@ -14896,6 +18216,29 @@ export type Subscription_RootCoins_By_PkArgs = {
 };
 
 
+export type Subscription_RootCommentsArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Subscription_RootComments_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Comments_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Comments_Order_By>>;
+  where: InputMaybe<Comments_Bool_Exp>;
+};
+
+
+export type Subscription_RootComments_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Subscription_RootCompaniesArgs = {
   distinct_on: InputMaybe<Array<Companies_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -14957,6 +18300,29 @@ export type Subscription_RootData_Actions_AggregateArgs = {
 
 export type Subscription_RootData_Actions_By_PkArgs = {
   name: Scalars['String'];
+};
+
+
+export type Subscription_RootData_DiscardArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Subscription_RootData_Discard_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Data_Discard_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Data_Discard_Order_By>>;
+  where: InputMaybe<Data_Discard_Bool_Exp>;
+};
+
+
+export type Subscription_RootData_Discard_By_PkArgs = {
+  id: Scalars['bigint'];
 };
 
 
@@ -15185,6 +18551,24 @@ export type Subscription_RootFollows_Companies_AggregateArgs = {
 };
 
 
+export type Subscription_RootFollows_PeopleArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
+export type Subscription_RootFollows_People_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Follows_People_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Follows_People_Order_By>>;
+  where: InputMaybe<Follows_People_Bool_Exp>;
+};
+
+
 export type Subscription_RootFollows_Vc_FirmsArgs = {
   distinct_on: InputMaybe<Array<Follows_Vc_Firms_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -15268,6 +18652,29 @@ export type Subscription_RootInvestors_AggregateArgs = {
 
 
 export type Subscription_RootInvestors_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootLikesArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikes_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Likes_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Likes_Order_By>>;
+  where: InputMaybe<Likes_Bool_Exp>;
+};
+
+
+export type Subscription_RootLikes_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -15387,6 +18794,29 @@ export type Subscription_RootNews_Organizations_By_PkArgs = {
 };
 
 
+export type Subscription_RootNews_PersonArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Person_Order_By>>;
+  where: InputMaybe<News_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
 export type Subscription_RootNotesArgs = {
   distinct_on: InputMaybe<Array<Notes_Select_Column>>;
   limit: InputMaybe<Scalars['Int']>;
@@ -15406,6 +18836,29 @@ export type Subscription_RootNotes_AggregateArgs = {
 
 
 export type Subscription_RootNotes_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNotification_ActionsArgs = {
+  distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notification_Actions_Order_By>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
+};
+
+
+export type Subscription_RootNotification_Actions_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Notification_Actions_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Notification_Actions_Order_By>>;
+  where: InputMaybe<Notification_Actions_Bool_Exp>;
+};
+
+
+export type Subscription_RootNotification_Actions_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -15452,6 +18905,29 @@ export type Subscription_RootPeople_AggregateArgs = {
 
 
 export type Subscription_RootPeople_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootReset_PasswordsArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Subscription_RootReset_Passwords_AggregateArgs = {
+  distinct_on: InputMaybe<Array<Reset_Passwords_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<Reset_Passwords_Order_By>>;
+  where: InputMaybe<Reset_Passwords_Bool_Exp>;
+};
+
+
+export type Subscription_RootReset_Passwords_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -16097,6 +19573,19 @@ export type Team_Members_Variance_Order_By = {
   company_id: InputMaybe<Order_By>;
   id: InputMaybe<Order_By>;
   person_id: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to compare columns of type "time". All fields are combined with logical 'AND'. */
+export type Time_Comparison_Exp = {
+  _eq: InputMaybe<Scalars['time']>;
+  _gt: InputMaybe<Scalars['time']>;
+  _gte: InputMaybe<Scalars['time']>;
+  _in: InputMaybe<Array<Scalars['time']>>;
+  _is_null: InputMaybe<Scalars['Boolean']>;
+  _lt: InputMaybe<Scalars['time']>;
+  _lte: InputMaybe<Scalars['time']>;
+  _neq: InputMaybe<Scalars['time']>;
+  _nin: InputMaybe<Array<Scalars['time']>>;
 };
 
 /** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
@@ -16776,6 +20265,7 @@ export type User_Groups = {
   notes: Array<Notes>;
   /** An aggregate relationship */
   notes_aggregate: Notes_Aggregate;
+  public: Maybe<Scalars['Boolean']>;
   telegram: Maybe<Scalars['String']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
@@ -16899,6 +20389,7 @@ export type User_Groups_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
   notes: InputMaybe<Notes_Bool_Exp>;
+  public: InputMaybe<Boolean_Comparison_Exp>;
   telegram: InputMaybe<String_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -16928,6 +20419,7 @@ export type User_Groups_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
   notes: InputMaybe<Notes_Arr_Rel_Insert_Input>;
+  public: InputMaybe<Scalars['Boolean']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -16996,6 +20488,7 @@ export type User_Groups_Order_By = {
   id: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
   notes_aggregate: InputMaybe<Notes_Aggregate_Order_By>;
+  public: InputMaybe<Order_By>;
   telegram: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
@@ -17023,6 +20516,8 @@ export enum User_Groups_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  Public = 'public',
+  /** column name */
   Telegram = 'telegram',
   /** column name */
   Twitter = 'twitter',
@@ -17038,6 +20533,7 @@ export type User_Groups_Set_Input = {
   discord: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   name: InputMaybe<Scalars['String']>;
+  public: InputMaybe<Scalars['Boolean']>;
   telegram: InputMaybe<Scalars['String']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
@@ -17085,6 +20581,8 @@ export enum User_Groups_Update_Column {
   Id = 'id',
   /** column name */
   Name = 'name',
+  /** column name */
+  Public = 'public',
   /** column name */
   Telegram = 'telegram',
   /** column name */
@@ -17923,6 +21421,7 @@ export type Vc_FirmsInvestors_AggregateArgs = {
   order_by: InputMaybe<Array<Investors_Order_By>>;
   where: InputMaybe<Investors_Bool_Exp>;
 };
+
 
 /** columns and relationships of "vc_firms" */
 export type Vc_FirmsLibraryArgs = {
@@ -18978,6 +22477,74 @@ export type Waitlist_Emails_Variance_Fields = {
   id: Maybe<Scalars['Float']>;
 };
 
+export type InsertActionMutationVariables = Exact<{
+  object: Actions_Insert_Input;
+}>;
+
+
+export type InsertActionMutation = { __typename?: 'mutation_root', insert_actions_one: { __typename?: 'actions', id: number } | null };
+
+export type GetDeleteDataActionsQueryVariables = Exact<{
+  resourceType: Scalars['String'];
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetDeleteDataActionsQuery = { __typename?: 'query_root', actions: Array<{ __typename?: 'actions', resource_id: number | null }> };
+
+export type GetAllowedEmailByEmailOrDomainQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+  domain: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetAllowedEmailByEmailOrDomainQuery = { __typename?: 'query_root', allowed_emails: Array<{ __typename?: 'allowed_emails', id: number, email: string, person_id: number | null }> };
+
+export type GetLastSyncQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetLastSyncQuery = { __typename?: 'query_root', application_meta: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> };
+
+export type UpdateApplicationMetaValueMutationVariables = Exact<{
+  value: InputMaybe<Scalars['timestamptz']>;
+  key: Scalars['String'];
+}>;
+
+
+export type UpdateApplicationMetaValueMutation = { __typename?: 'mutation_root', update_application_meta: { __typename?: 'application_meta_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> } | null };
+
+export type UpdateApplicationMetaErrorMutationVariables = Exact<{
+  error: InputMaybe<Scalars['String']>;
+  key: Scalars['String'];
+}>;
+
+
+export type UpdateApplicationMetaErrorMutation = { __typename?: 'mutation_root', update_application_meta: { __typename?: 'application_meta_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'application_meta', id: number, key: string, value: any }> } | null };
+
+export type InsertBillingOrgMutationVariables = Exact<{
+  customer_id: InputMaybe<Scalars['String']>;
+  status: InputMaybe<Scalars['String']>;
+  plan: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type InsertBillingOrgMutation = { __typename?: 'mutation_root', insert_billing_org_one: { __typename?: 'billing_org', id: number } | null };
+
+export type GetBillingOrgByCustomerIdQueryVariables = Exact<{
+  customerId?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetBillingOrgByCustomerIdQuery = { __typename?: 'query_root', billing_org: Array<{ __typename?: 'billing_org', customer_id: string, id: number, plan: string, status: string, user_limit: number }> };
+
+export type UpdateBillingOrgMutationVariables = Exact<{
+  id: Scalars['Int'];
+  status?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateBillingOrgMutation = { __typename?: 'mutation_root', update_billing_org_by_pk: { __typename?: 'billing_org', id: number, status: string } | null };
+
 export type GetAllCoinsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -19020,12 +22587,125 @@ export type GetRelevantCompaniesQueryVariables = Exact<{
 
 export type GetRelevantCompaniesQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, logo: any | null, name: string | null, slug: string, sentiment: any | null }> };
 
+export type GetSentimentByCompanyIdQueryVariables = Exact<{
+  companyId: Scalars['Int'];
+}>;
+
+
+export type GetSentimentByCompanyIdQuery = { __typename?: 'query_root', companies_by_pk: { __typename?: 'companies', sentiment: any | null, slug: string } | null };
+
+export type UpdateSentimentByCompanyIdMutationVariables = Exact<{
+  companyId: Scalars['Int'];
+  sentiment: Scalars['jsonb'];
+}>;
+
+
+export type UpdateSentimentByCompanyIdMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', sentiment: any | null } | null };
+
+export type GetCompaniesByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetCompaniesByDateQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, overview: string | null, tags: any | null, logo: any | null, slug: string, aliases: string | null, coin: { __typename?: 'coins', ticker: string, name: string } | null }> };
+
+export type UpdateCompanyByPkMutationVariables = Exact<{
+  companyId: Scalars['Int'];
+  data: InputMaybe<Companies_Set_Input>;
+}>;
+
+
+export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
+
+export type InsertDataDiscardMutationVariables = Exact<{
+  input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
+}>;
+
+
+export type InsertDataDiscardMutation = { __typename?: 'mutation_root', insert_data_discard: { __typename?: 'data_discard_mutation_response', returning: Array<{ __typename?: 'data_discard', id: any, created_at: any, resource: string, resource_id: number, field: string, value: any, accuracy_weight: number }> } | null };
+
+export type GetDataFieldByPathQueryVariables = Exact<{
+  path: Scalars['String'];
+}>;
+
+
+export type GetDataFieldByPathQuery = { __typename?: 'query_root', data_fields: Array<{ __typename?: 'data_fields', name: string, resource: string, weight: number, regex_transform: string | null, description: string | null, regex_test: string | null, is_valid_identifier: boolean, restricted_admin: boolean, data_type: string | null }> };
+
+export type GetDataPartnerByApiKeyQueryVariables = Exact<{
+  apiKey: Scalars['String'];
+}>;
+
+
+export type GetDataPartnerByApiKeyQuery = { __typename?: 'query_root', data_partners: Array<{ __typename?: 'data_partners', id: number, name: string, api_key: string }> };
+
+export type InsertDataRawMutationVariables = Exact<{
+  input: Array<Data_Raw_Insert_Input> | Data_Raw_Insert_Input;
+}>;
+
+
+export type InsertDataRawMutation = { __typename?: 'mutation_root', insert_data_raw: { __typename?: 'data_raw_mutation_response', returning: Array<{ __typename?: 'data_raw', id: any, created_at: any, resource: string, resource_id: number, field: string, value: any, accuracy_weight: number }> } | null };
+
+export type MarkDataRawAsInactiveMutationVariables = Exact<{
+  resourceType: Scalars['String'];
+  resourceId: Scalars['Int'];
+}>;
+
+
+export type MarkDataRawAsInactiveMutation = { __typename?: 'mutation_root', update_data_raw: { __typename?: 'data_raw_mutation_response', affected_rows: number } | null };
+
+export type GetDisabledEmailByEmailOrDomainQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+  domain: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetDisabledEmailByEmailOrDomainQuery = { __typename?: 'query_root', disabled_emails: Array<{ __typename?: 'disabled_emails', id: number, email: string }> };
+
+export type GetEventsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
+  where: Events_Bool_Exp;
+}>;
+
+
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+
+export type GetEventQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
+
+export type GetEventsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
+
+export type InsertEventAttendeeMutationVariables = Exact<{
+  object: Event_Person_Insert_Input;
+}>;
+
+
+export type InsertEventAttendeeMutation = { __typename?: 'mutation_root', insert_event_person_one: { __typename?: 'event_person', id: number, event_id: number, person_id: number, type: string } | null };
+
+export type FindEventAttendeeQueryVariables = Exact<{
+  event_id: Scalars['Int'];
+  person_id: Scalars['Int'];
+}>;
+
+
+export type FindEventAttendeeQuery = { __typename?: 'query_root', event_person: Array<{ __typename?: 'event_person', id: number }> };
+
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
 
 
-export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, created_by_id: number, created_at: any | null, total_no_of_resources: number | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }> } }> };
+export type GetFollowsByUserQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', list: { __typename?: 'lists', name: string, id: number, public: boolean | null, created_by_id: number, created_at: any | null, updated_at: any | null, total_no_of_resources: number | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, follows_companies: Array<{ __typename?: 'follows_companies', resource_id: number | null }>, follows_vcfirms: Array<{ __typename?: 'follows_vc_firms', resource_id: number | null }>, follows_people: Array<{ __typename?: 'follows_people', resource_id: number | null }> } }> };
 
 export type GetCompaniesByListIdQueryVariables = Exact<{
   list_id?: InputMaybe<Scalars['Int']>;
@@ -19041,54 +22721,454 @@ export type GetVcFirmsByListIdQueryVariables = Exact<{
 
 export type GetVcFirmsByListIdQuery = { __typename?: 'query_root', follows_vc_firms: Array<{ __typename?: 'follows_vc_firms', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, num_of_investments: number | null, latest_investment: string | null, sentiment: any | null, logo: any | null, slug: string, location: string | null, year_founded: string | null, overview: string | null, tags: any | null, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, amount: any | null, round_date: string | null, round: string | null } | null }> } | null }> };
 
+export type UpsertFollowsMutationVariables = Exact<{
+  listId: InputMaybe<Scalars['Int']>;
+  resourceId: InputMaybe<Scalars['Int']>;
+  resourceType: InputMaybe<Scalars['String']>;
+  userId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertFollowsMutation = { __typename?: 'mutation_root', insert_follows_one: { __typename?: 'follows', id: number } | null };
+
+export type DeleteFollowsMutationVariables = Exact<{
+  where: Follows_Bool_Exp;
+}>;
+
+
+export type DeleteFollowsMutation = { __typename?: 'mutation_root', delete_follows: { __typename?: 'follows_mutation_response', returning: Array<{ __typename?: 'follows', id: number }> } | null };
+
+export type GetFollowByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetFollowByIdQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, created_by_user_id: number, resource_type: string, resource_id: number, list_id: number | null }> };
+
+export type GetFollowsByResourceQueryVariables = Exact<{
+  resourceId: Scalars['Int'];
+  resourceType: Scalars['String'];
+}>;
+
+
+export type GetFollowsByResourceQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number, list_id: number | null, list: { __typename?: 'lists', list_members: Array<{ __typename?: 'list_members', id: number, user_id: number }> } | null }> };
+
+export type GetPeopleByListIdQueryVariables = Exact<{
+  list_id?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetPeopleByListIdQuery = { __typename?: 'query_root', follows_people: Array<{ __typename?: 'follows_people', id: number | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string, type: string | null, personal_email: string | null, work_email: string | null, city: string | null, country: string | null, website_url: string | null, github: string | null, twitter_url: string | null, linkedin: string | null } | null }> };
+
+export type CheckFollowExistsQueryVariables = Exact<{
+  where: Follows_Bool_Exp;
+}>;
+
+
+export type CheckFollowExistsQuery = { __typename?: 'query_root', follows: Array<{ __typename?: 'follows', id: number }> };
+
 export type GetGroupsOfUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
 }>;
 
 
-export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
+export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
-export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
+export type GetGroupQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }> };
+
+export type InsertUserGroupMutationVariables = Exact<{
+  object: User_Groups_Insert_Input;
+}>;
+
+
+export type InsertUserGroupMutation = { __typename?: 'mutation_root', insert_user_groups_one: { __typename?: 'user_groups', id: number, name: string, description: string | null, twitter: string | null, telegram: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by_user_id: number } | null };
+
+export type UpdateUserGroupMutationVariables = Exact<{
+  id: Scalars['Int'];
+  changes: User_Groups_Set_Input;
+}>;
+
+
+export type UpdateUserGroupMutation = { __typename?: 'mutation_root', update_user_groups: { __typename?: 'user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, twitter: string | null, telegram: string | null, discord: string | null, created_at: any, updated_at: any | null, created_by_user_id: number, notes: Array<{ __typename?: 'notes', id: number, notes: string }>, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> } | null };
+
+export type DeleteUserGroupMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupMutation = { __typename?: 'mutation_root', delete_user_groups: { __typename?: 'user_groups_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_groups', id: number }> } | null };
+
+export type DeleteUserGroupInvitesByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupInvitesByGroupIdMutation = { __typename?: 'mutation_root', delete_user_group_invites: { __typename?: 'user_group_invites_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_invites', id: number }> } | null };
+
+export type DeleteUserGroupMembersByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupMembersByGroupIdMutation = { __typename?: 'mutation_root', delete_user_group_members: { __typename?: 'user_group_members_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_members', id: number }> } | null };
+
+export type GetUserGroupByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupByIdQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, created_by_user_id: number, created_at: any }> };
+
+export type GetUserGroupMemberByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupMemberByIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number }> };
+
+export type GetUserGroupMemberByGroupIdQueryVariables = Exact<{
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupMemberByGroupIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_group_id: number, user_id: number, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } }> };
+
+export type GetUserGroupInviteByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupInviteByIdQuery = { __typename?: 'query_root', user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null }> };
+
+export type InsertUserGroupMembersMutationVariables = Exact<{
+  object: User_Group_Members_Insert_Input;
+}>;
+
+
+export type InsertUserGroupMembersMutation = { __typename?: 'mutation_root', insert_user_group_members_one: { __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null }, user_group: { __typename?: 'user_groups', id: number, name: string } } | null };
+
+export type GetUserGroupInvitesByEmailQueryVariables = Exact<{
+  email: Scalars['String'];
+}>;
+
+
+export type GetUserGroupInvitesByEmailQuery = { __typename?: 'query_root', user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, user_group_id: number }> };
+
+export type GetUserGroupInvitesByEmailAndGroupIdQueryVariables = Exact<{
+  email: Scalars['String'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupInvitesByEmailAndGroupIdQuery = { __typename?: 'query_root', user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null }> };
+
+export type GetUserGroupMembersByUserIdAndGroupIdQueryVariables = Exact<{
+  user_id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetUserGroupMembersByUserIdAndGroupIdQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number }> };
+
+export type DeleteUserGroupInviteByIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupInviteByIdMutation = { __typename?: 'mutation_root', delete_user_group_invites: { __typename?: 'user_group_invites_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_invites', id: number }> } | null };
+
+export type DeleteUserGroupMemberByIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteUserGroupMemberByIdMutation = { __typename?: 'mutation_root', delete_user_group_members: { __typename?: 'user_group_members_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'user_group_members', id: number }> } | null };
+
+export type InsertUserGroupInvitesMutationVariables = Exact<{
+  object: User_Group_Invites_Insert_Input;
+}>;
+
+
+export type InsertUserGroupInvitesMutation = { __typename?: 'mutation_root', insert_user_group_invites_one: { __typename?: 'user_group_invites', id: number, email: string, user_group_id: number, created_by_user_id: number | null } | null };
+
+export type UpsertInvestmentRoundMutationVariables = Exact<{
+  data: Investment_Rounds_Insert_Input;
+}>;
+
+
+export type UpsertInvestmentRoundMutation = { __typename?: 'mutation_root', insert_investment_rounds_one: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, valuation: any | null, currency: string | null } | null };
+
+export type GetInvestmentRoundByRoundIdQueryVariables = Exact<{
+  round_id: Scalars['Int'];
+}>;
+
+
+export type GetInvestmentRoundByRoundIdQuery = { __typename?: 'query_root', investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, company_id: number | null }> };
+
+export type UpsertInvestmentsMutationVariables = Exact<{
+  data: Array<Investments_Insert_Input> | Investments_Insert_Input;
+}>;
+
+
+export type UpsertInvestmentsMutation = { __typename?: 'mutation_root', insert_investments: { __typename?: 'investments_mutation_response', returning: Array<{ __typename?: 'investments', id: number, round_id: number | null, person_id: number | null, vc_firm_id: number | null, amount: any | null }> } | null };
+
+export type DeleteInvestmentMutationVariables = Exact<{
+  investmentId: Scalars['Int'];
+}>;
+
+
+export type DeleteInvestmentMutation = { __typename?: 'mutation_root', delete_investments_by_pk: { __typename?: 'investments', id: number } | null };
+
+export type InsertInvestorMutationVariables = Exact<{
+  personId: InputMaybe<Scalars['Int']>;
+  vcFirmId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type InsertInvestorMutation = { __typename?: 'mutation_root', insert_investors_one: { __typename?: 'investors', id: number } | null };
 
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
 }>;
 
 
-export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+export type GetListUserGroupsQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
 
 export type GetListMembersQueryVariables = Exact<{
   where: List_Members_Bool_Exp;
 }>;
 
 
-export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
+export type GetListMembersQuery = { __typename?: 'query_root', list_members: Array<{ __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, public: boolean | null, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }> };
+
+export type GetListUserGroupsByListIdQueryVariables = Exact<{
+  listId: Scalars['Int'];
+}>;
+
+
+export type GetListUserGroupsByListIdQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number }> };
+
+export type InsertListUserGroupsMutationVariables = Exact<{
+  object: List_User_Groups_Insert_Input;
+}>;
+
+
+export type InsertListUserGroupsMutation = { __typename?: 'mutation_root', insert_list_user_groups_one: { __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number } | null };
+
+export type GetListUserGroupsByListIdAndGroupIdQueryVariables = Exact<{
+  list_id: Scalars['Int'];
+  user_group_id: Scalars['Int'];
+}>;
+
+
+export type GetListUserGroupsByListIdAndGroupIdQuery = { __typename?: 'query_root', list_user_groups: Array<{ __typename?: 'list_user_groups', id: number, list_id: number, user_group_id: number }> };
+
+export type UpsertListMutationVariables = Exact<{
+  userId: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpsertListMutation = { __typename?: 'mutation_root', insert_lists_one: { __typename?: 'lists', id: number } | null };
+
+export type UpsertMembershipMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  listId: Scalars['Int'];
+}>;
+
+
+export type UpsertMembershipMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number } | null };
+
+export type GetListByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetListByIdQuery = { __typename?: 'query_root', lists: Array<{ __typename?: 'lists', id: number, name: string, created_by_id: number }> };
+
+export type DeleteListMembersMutationVariables = Exact<{
+  where: List_Members_Bool_Exp;
+}>;
+
+
+export type DeleteListMembersMutation = { __typename?: 'mutation_root', delete_list_members: { __typename?: 'list_members_mutation_response', returning: Array<{ __typename?: 'list_members', id: number }> } | null };
+
+export type DeleteListsMutationVariables = Exact<{
+  where: Lists_Bool_Exp;
+}>;
+
+
+export type DeleteListsMutation = { __typename?: 'mutation_root', delete_lists: { __typename?: 'lists_mutation_response', returning: Array<{ __typename?: 'lists', id: number }> } | null };
+
+export type DeleteListUserGroupsMutationVariables = Exact<{
+  where: List_User_Groups_Bool_Exp;
+}>;
+
+
+export type DeleteListUserGroupsMutation = { __typename?: 'mutation_root', delete_list_user_groups: { __typename?: 'list_user_groups_mutation_response', returning: Array<{ __typename?: 'list_user_groups', id: number }> } | null };
+
+export type InsertListMembersMutationVariables = Exact<{
+  object: List_Members_Insert_Input;
+}>;
+
+
+export type InsertListMembersMutation = { __typename?: 'mutation_root', insert_list_members_one: { __typename?: 'list_members', id: number, member_type: string, list_id: number, user_id: number, list: { __typename?: 'lists', id: number, name: string, created_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null }, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } | null };
+
+export type UpdateListByIdMutationVariables = Exact<{
+  listId: Scalars['Int'];
+  changes: Lists_Set_Input;
+}>;
+
+
+export type UpdateListByIdMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number, name: string }> } | null };
+
+export type TriggerListUpdatedAtMutationVariables = Exact<{
+  id: Scalars['Int'];
+  updated_at: Scalars['timestamptz'];
+}>;
+
+
+export type TriggerListUpdatedAtMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number }> } | null };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
 }>;
 
 
-export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } }> };
+export type GetNotesQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, updated_at: any | null, user_group_id: number | null, audience: string | null, resource_type: string | null, resource_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null, likes: Array<{ __typename?: 'likes', id: number, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }>, comments: Array<{ __typename?: 'comments', id: number, content: string, created_at: any, created_by_user_id: number, created_by_user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null } | null }> }> };
+
+export type GetNoteByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetNoteByIdQuery = { __typename?: 'query_root', notes: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> };
+
+export type DeleteNotesByGroupIdMutationVariables = Exact<{
+  groupId: Scalars['Int'];
+}>;
+
+
+export type DeleteNotesByGroupIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
+
+export type InsertNoteMutationVariables = Exact<{
+  object: Notes_Insert_Input;
+}>;
+
+
+export type InsertNoteMutation = { __typename?: 'mutation_root', insert_notes_one: { __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null } | null };
+
+export type UpdateNoteMutationVariables = Exact<{
+  id: Scalars['Int'];
+  notes: Scalars['String'];
+}>;
+
+
+export type UpdateNoteMutation = { __typename?: 'mutation_root', update_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number, notes: string, created_by: number, created_at: any, resource_type: string | null, resource_id: number | null, user_group_id: number | null, user_group: { __typename?: 'user_groups', id: number, name: string } | null }> } | null };
+
+export type DeleteNoteByIdMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteNoteByIdMutation = { __typename?: 'mutation_root', delete_notes: { __typename?: 'notes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notes', id: number }> } | null };
+
+export type InsertLikesMutationVariables = Exact<{
+  object: Likes_Insert_Input;
+}>;
+
+
+export type InsertLikesMutation = { __typename?: 'mutation_root', insert_likes_one: { __typename?: 'likes', id: number } | null };
+
+export type DeleteLikesMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteLikesMutation = { __typename?: 'mutation_root', delete_likes: { __typename?: 'likes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'likes', id: number }> } | null };
+
+export type InsertCommentsMutationVariables = Exact<{
+  object: Comments_Insert_Input;
+}>;
+
+
+export type InsertCommentsMutation = { __typename?: 'mutation_root', insert_comments_one: { __typename?: 'comments', id: number } | null };
+
+export type DeleteCommentOneMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteCommentOneMutation = { __typename?: 'mutation_root', delete_comments: { __typename?: 'comments_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'comments', id: number }> } | null };
+
+export type DeleteLikesByNoteIdMutationVariables = Exact<{
+  note_id: Scalars['Int'];
+}>;
+
+
+export type DeleteLikesByNoteIdMutation = { __typename?: 'mutation_root', delete_likes: { __typename?: 'likes_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'likes', id: number }> } | null };
+
+export type DeleteCommentsByNoteIdMutationVariables = Exact<{
+  note_id: Scalars['Int'];
+}>;
+
+
+export type DeleteCommentsByNoteIdMutation = { __typename?: 'mutation_root', delete_comments: { __typename?: 'comments_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'comments', id: number }> } | null };
+
+export type FindNoteLikesOneQueryVariables = Exact<{
+  note_id: Scalars['Int'];
+  user_id: Scalars['Int'];
+}>;
+
+
+export type FindNoteLikesOneQuery = { __typename?: 'query_root', likes: Array<{ __typename?: 'likes', id: number }> };
+
+export type FindCommentByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type FindCommentByIdQuery = { __typename?: 'query_root', comments: Array<{ __typename?: 'comments', id: number, created_by_user_id: number }> };
 
 export type GetNotificationsForUserQueryVariables = Exact<{
   user: Scalars['Int'];
 }>;
 
 
-export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> };
+export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }> };
+
+export type InsertNotificationsMutationVariables = Exact<{
+  object: Notifications_Insert_Input;
+}>;
+
+
+export type InsertNotificationsMutation = { __typename?: 'mutation_root', insert_notifications_one: { __typename?: 'notifications', id: number, target_user_id: number, event_type: string, follow_resource_type: string, notification_resource_type: string, company_id: number | null, vc_firm_id: number | null, message: string | null, read_at: any | null, created_at: any, updated_at: any, read: boolean } | null };
+
+export type MarkNotificationsAsReadMutationVariables = Exact<{
+  where: Notifications_Bool_Exp;
+}>;
+
+
+export type MarkNotificationsAsReadMutation = { __typename?: 'mutation_root', update_notifications: { __typename?: 'notifications_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'notifications', id: number }> } | null };
+
+export type InsertNotificationActionsMutationVariables = Exact<{
+  object: Notification_Actions_Insert_Input;
+}>;
+
+
+export type InsertNotificationActionsMutation = { __typename?: 'mutation_root', insert_notification_actions_one: { __typename?: 'notification_actions', id: number } | null };
 
 export type GetPersonQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
 
-export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> }> };
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, status: string | null } | null }> }> };
 
 export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -19100,12 +23180,170 @@ export type GetAllPersonsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllPersonsQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null }> };
 
+export type SearchPeopleQueryVariables = Exact<{
+  query: InputMaybe<Scalars['String']>;
+  searchText: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type SearchPeopleQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, name: string | null, picture: any | null, slug: string } | null }> };
+
+export type GetPeopleByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetPeopleByDateQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, work_email: string | null, personal_email: string | null, picture: any | null, slug: string }> };
+
+export type UpdatePeopleByPkMutationVariables = Exact<{
+  set: InputMaybe<People_Set_Input>;
+  id: Scalars['Int'];
+}>;
+
+
+export type UpdatePeopleByPkMutation = { __typename?: 'mutation_root', update_people_by_pk: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null };
+
+export type InsertResetPasswordMutationVariables = Exact<{
+  object: Reset_Passwords_Insert_Input;
+}>;
+
+
+export type InsertResetPasswordMutation = { __typename?: 'mutation_root', insert_reset_passwords_one: { __typename?: 'reset_passwords', id: number, user_id: number, generated_password: string, created_at: any } | null };
+
+export type InsertEditAccessMutationVariables = Exact<{
+  userId: InputMaybe<Scalars['Int']>;
+  resourceId: InputMaybe<Scalars['Int']>;
+  resourceType: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type InsertEditAccessMutation = { __typename?: 'mutation_root', insert_resource_edit_access_one: { __typename?: 'resource_edit_access', id: number, user_id: number, resource_id: number, resource_type: string } | null };
+
+export type UpsertTeamMemberMutationVariables = Exact<{
+  data: Team_Members_Insert_Input;
+}>;
+
+
+export type UpsertTeamMemberMutation = { __typename?: 'mutation_root', insert_team_members_one: { __typename?: 'team_members', id: number, function: string | null, person_id: number | null, company_id: number | null, title: string | null, start_date: any | null, end_date: any | null, seniority: string | null } | null };
+
+export type InsertTeamMemberMutationVariables = Exact<{
+  personId: InputMaybe<Scalars['Int']>;
+  companyId: InputMaybe<Scalars['Int']>;
+  vcFirmId: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type InsertTeamMemberMutation = { __typename?: 'mutation_root', insert_team_members_one: { __typename?: 'team_members', id: number } | null };
+
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
 
 
 export type GetUserProfileQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null } | null };
+
+export type GetUserByPersonIdQueryVariables = Exact<{
+  person_id: Scalars['Int'];
+}>;
+
+
+export type GetUserByPersonIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, billing_org_id: number | null, organization_companies: Array<{ __typename?: 'companies_edit_access', id: number | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, organization_vc_firms: Array<{ __typename?: 'vc_firms_edit_access', id: number | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, person: { __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null } | null } | null }> } | null }> };
+
+export type GetUserByPkQueryVariables = Exact<{
+  userId: Scalars['Int'];
+}>;
+
+
+export type GetUserByPkQuery = { __typename?: 'query_root', users_by_pk: { __typename?: 'users', id: number, additional_emails: any, email: string | null } | null };
+
+export type UpdateUserAdditionalEmailsByPkMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  emails: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateUserAdditionalEmailsByPkMutation = { __typename?: 'mutation_root', update_users_by_pk: { __typename?: 'users', id: number } | null };
+
+export type GetUserByEmailQueryVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+
+export type GetUserByIdQueryVariables = Exact<{
+  id: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+
+export type UpdateUserBillingOrgMutationVariables = Exact<{
+  userId: Scalars['Int'];
+  billingOrgId: Scalars['Int'];
+}>;
+
+
+export type UpdateUserBillingOrgMutation = { __typename?: 'mutation_root', update_users_by_pk: { __typename?: 'users', id: number } | null };
+
+export type UpsertUsersMutationVariables = Exact<{
+  external_id: InputMaybe<Scalars['String']>;
+  email: InputMaybe<Scalars['String']>;
+  role: InputMaybe<Scalars['String']>;
+  display_name: InputMaybe<Scalars['String']>;
+  auth0_linkedin_id: InputMaybe<Scalars['String']>;
+  auth0_user_pass_id: InputMaybe<Scalars['String']>;
+  reference_user_id: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type UpsertUsersMutation = { __typename?: 'mutation_root', insert_users: { __typename?: 'users_mutation_response', returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserEmailVerifiedStatusMutationVariables = Exact<{
+  email: Scalars['String'];
+  is_auth0_verified: InputMaybe<Scalars['Boolean']>;
+}>;
+
+
+export type UpdateUserEmailVerifiedStatusMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserAuth0LinkedInIdMutationVariables = Exact<{
+  email: Scalars['String'];
+  auth0_linkedin_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserAuth0LinkedInIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type UpdateUserAuth0UserPassIdMutationVariables = Exact<{
+  email: Scalars['String'];
+  auth0_user_pass_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpdateUserAuth0UserPassIdMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type GetUserByReferenceIdQueryVariables = Exact<{
+  reference_id: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type GetUserByReferenceIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+
+export type UpdateUserAdditionalEmailsMutationVariables = Exact<{
+  id: Scalars['Int'];
+  additional_emails: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateUserAdditionalEmailsMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
+export type GetUserByAdditionalEmailQueryVariables = Exact<{
+  email: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type GetUserByAdditionalEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
@@ -19149,7 +23387,269 @@ export type GetAllVcFirmsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetAllVcFirmsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
 
+export type GetSentimentByVcFirmIdQueryVariables = Exact<{
+  vcFirmId: Scalars['Int'];
+}>;
 
+
+export type GetSentimentByVcFirmIdQuery = { __typename?: 'query_root', vc_firms_by_pk: { __typename?: 'vc_firms', sentiment: any | null, slug: string } | null };
+
+export type UpdateSentimentByVcFirmIdMutationVariables = Exact<{
+  vcFirmId: Scalars['Int'];
+  sentiment: Scalars['jsonb'];
+}>;
+
+
+export type UpdateSentimentByVcFirmIdMutation = { __typename?: 'mutation_root', update_vc_firms_by_pk: { __typename?: 'vc_firms', sentiment: any | null } | null };
+
+export type GetVcFirmsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+}>;
+
+
+export type GetVcFirmsByDateQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, logo: any | null, slug: string }> };
+
+export type UpdateVcFirmTagsByPkMutationVariables = Exact<{
+  id: Scalars['Int'];
+  tags: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateVcFirmTagsByPkMutation = { __typename?: 'mutation_root', update_vc_firms_by_pk: { __typename?: 'vc_firms', id: number } | null };
+
+export type GetVcFirmsInvestmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetVcFirmsInvestmentsQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', company: { __typename?: 'companies', id: number, tags: any | null } | null } | null }> }> };
+
+export type UpsertWaitlistEmailMutationVariables = Exact<{
+  email: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UpsertWaitlistEmailMutation = { __typename?: 'mutation_root', insert_waitlist_emails: { __typename?: 'waitlist_emails_mutation_response', returning: Array<{ __typename?: 'waitlist_emails', id: number, email: string }> } | null };
+
+
+export const InsertActionDocument = `
+    mutation InsertAction($object: actions_insert_input!) {
+  insert_actions_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertActionMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertActionMutation, TError, InsertActionMutationVariables, TContext>) =>
+    useMutation<InsertActionMutation, TError, InsertActionMutationVariables, TContext>(
+      ['InsertAction'],
+      (variables?: InsertActionMutationVariables) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables)(),
+      options
+    );
+useInsertActionMutation.fetcher = (variables: InsertActionMutationVariables, options?: RequestInit['headers']) => fetcher<InsertActionMutation, InsertActionMutationVariables>(InsertActionDocument, variables, options);
+export const GetDeleteDataActionsDocument = `
+    query GetDeleteDataActions($resourceType: String!, $date: timestamptz) {
+  actions(
+    where: {_and: [{action: {_eq: "Delete Data"}}, {resource: {_eq: $resourceType}}, {created_at: {_gte: $date}}]}
+  ) {
+    resource_id
+  }
+}
+    `;
+export const useGetDeleteDataActionsQuery = <
+      TData = GetDeleteDataActionsQuery,
+      TError = Error
+    >(
+      variables: GetDeleteDataActionsQueryVariables,
+      options?: UseQueryOptions<GetDeleteDataActionsQuery, TError, TData>
+    ) =>
+    useQuery<GetDeleteDataActionsQuery, TError, TData>(
+      ['GetDeleteDataActions', variables],
+      fetcher<GetDeleteDataActionsQuery, GetDeleteDataActionsQueryVariables>(GetDeleteDataActionsDocument, variables),
+      options
+    );
+useGetDeleteDataActionsQuery.document = GetDeleteDataActionsDocument;
+
+
+useGetDeleteDataActionsQuery.getKey = (variables: GetDeleteDataActionsQueryVariables) => ['GetDeleteDataActions', variables];
+;
+
+useGetDeleteDataActionsQuery.fetcher = (variables: GetDeleteDataActionsQueryVariables, options?: RequestInit['headers']) => fetcher<GetDeleteDataActionsQuery, GetDeleteDataActionsQueryVariables>(GetDeleteDataActionsDocument, variables, options);
+export const GetAllowedEmailByEmailOrDomainDocument = `
+    query GetAllowedEmailByEmailOrDomain($email: String, $domain: String) {
+  allowed_emails(
+    where: {_or: [{email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}]}
+    limit: 1
+  ) {
+    id
+    email
+    person_id
+  }
+}
+    `;
+export const useGetAllowedEmailByEmailOrDomainQuery = <
+      TData = GetAllowedEmailByEmailOrDomainQuery,
+      TError = Error
+    >(
+      variables?: GetAllowedEmailByEmailOrDomainQueryVariables,
+      options?: UseQueryOptions<GetAllowedEmailByEmailOrDomainQuery, TError, TData>
+    ) =>
+    useQuery<GetAllowedEmailByEmailOrDomainQuery, TError, TData>(
+      variables === undefined ? ['GetAllowedEmailByEmailOrDomain'] : ['GetAllowedEmailByEmailOrDomain', variables],
+      fetcher<GetAllowedEmailByEmailOrDomainQuery, GetAllowedEmailByEmailOrDomainQueryVariables>(GetAllowedEmailByEmailOrDomainDocument, variables),
+      options
+    );
+useGetAllowedEmailByEmailOrDomainQuery.document = GetAllowedEmailByEmailOrDomainDocument;
+
+
+useGetAllowedEmailByEmailOrDomainQuery.getKey = (variables?: GetAllowedEmailByEmailOrDomainQueryVariables) => variables === undefined ? ['GetAllowedEmailByEmailOrDomain'] : ['GetAllowedEmailByEmailOrDomain', variables];
+;
+
+useGetAllowedEmailByEmailOrDomainQuery.fetcher = (variables?: GetAllowedEmailByEmailOrDomainQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllowedEmailByEmailOrDomainQuery, GetAllowedEmailByEmailOrDomainQueryVariables>(GetAllowedEmailByEmailOrDomainDocument, variables, options);
+export const GetLastSyncDocument = `
+    query GetLastSync {
+  application_meta(
+    where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}
+  ) {
+    id
+    key
+    value
+  }
+}
+    `;
+export const useGetLastSyncQuery = <
+      TData = GetLastSyncQuery,
+      TError = Error
+    >(
+      variables?: GetLastSyncQueryVariables,
+      options?: UseQueryOptions<GetLastSyncQuery, TError, TData>
+    ) =>
+    useQuery<GetLastSyncQuery, TError, TData>(
+      variables === undefined ? ['GetLastSync'] : ['GetLastSync', variables],
+      fetcher<GetLastSyncQuery, GetLastSyncQueryVariables>(GetLastSyncDocument, variables),
+      options
+    );
+useGetLastSyncQuery.document = GetLastSyncDocument;
+
+
+useGetLastSyncQuery.getKey = (variables?: GetLastSyncQueryVariables) => variables === undefined ? ['GetLastSync'] : ['GetLastSync', variables];
+;
+
+useGetLastSyncQuery.fetcher = (variables?: GetLastSyncQueryVariables, options?: RequestInit['headers']) => fetcher<GetLastSyncQuery, GetLastSyncQueryVariables>(GetLastSyncDocument, variables, options);
+export const UpdateApplicationMetaValueDocument = `
+    mutation UpdateApplicationMetaValue($value: timestamptz, $key: String!) {
+  update_application_meta(
+    where: {key: {_eq: $key}}
+    _set: {value: $value, error: ""}
+  ) {
+    affected_rows
+    returning {
+      id
+      key
+      value
+    }
+  }
+}
+    `;
+export const useUpdateApplicationMetaValueMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateApplicationMetaValueMutation, TError, UpdateApplicationMetaValueMutationVariables, TContext>) =>
+    useMutation<UpdateApplicationMetaValueMutation, TError, UpdateApplicationMetaValueMutationVariables, TContext>(
+      ['UpdateApplicationMetaValue'],
+      (variables?: UpdateApplicationMetaValueMutationVariables) => fetcher<UpdateApplicationMetaValueMutation, UpdateApplicationMetaValueMutationVariables>(UpdateApplicationMetaValueDocument, variables)(),
+      options
+    );
+useUpdateApplicationMetaValueMutation.fetcher = (variables: UpdateApplicationMetaValueMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateApplicationMetaValueMutation, UpdateApplicationMetaValueMutationVariables>(UpdateApplicationMetaValueDocument, variables, options);
+export const UpdateApplicationMetaErrorDocument = `
+    mutation UpdateApplicationMetaError($error: String, $key: String!) {
+  update_application_meta(where: {key: {_eq: $key}}, _set: {error: $error}) {
+    affected_rows
+    returning {
+      id
+      key
+      value
+    }
+  }
+}
+    `;
+export const useUpdateApplicationMetaErrorMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateApplicationMetaErrorMutation, TError, UpdateApplicationMetaErrorMutationVariables, TContext>) =>
+    useMutation<UpdateApplicationMetaErrorMutation, TError, UpdateApplicationMetaErrorMutationVariables, TContext>(
+      ['UpdateApplicationMetaError'],
+      (variables?: UpdateApplicationMetaErrorMutationVariables) => fetcher<UpdateApplicationMetaErrorMutation, UpdateApplicationMetaErrorMutationVariables>(UpdateApplicationMetaErrorDocument, variables)(),
+      options
+    );
+useUpdateApplicationMetaErrorMutation.fetcher = (variables: UpdateApplicationMetaErrorMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateApplicationMetaErrorMutation, UpdateApplicationMetaErrorMutationVariables>(UpdateApplicationMetaErrorDocument, variables, options);
+export const InsertBillingOrgDocument = `
+    mutation InsertBillingOrg($customer_id: String, $status: String, $plan: String) {
+  insert_billing_org_one(
+    object: {customer_id: $customer_id, status: $status, plan: $plan, user_limit: 1}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertBillingOrgMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertBillingOrgMutation, TError, InsertBillingOrgMutationVariables, TContext>) =>
+    useMutation<InsertBillingOrgMutation, TError, InsertBillingOrgMutationVariables, TContext>(
+      ['InsertBillingOrg'],
+      (variables?: InsertBillingOrgMutationVariables) => fetcher<InsertBillingOrgMutation, InsertBillingOrgMutationVariables>(InsertBillingOrgDocument, variables)(),
+      options
+    );
+useInsertBillingOrgMutation.fetcher = (variables?: InsertBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<InsertBillingOrgMutation, InsertBillingOrgMutationVariables>(InsertBillingOrgDocument, variables, options);
+export const GetBillingOrgByCustomerIdDocument = `
+    query GetBillingOrgByCustomerId($customerId: String = "") {
+  billing_org(where: {customer_id: {_eq: $customerId}}) {
+    customer_id
+    id
+    plan
+    status
+    user_limit
+  }
+}
+    `;
+export const useGetBillingOrgByCustomerIdQuery = <
+      TData = GetBillingOrgByCustomerIdQuery,
+      TError = Error
+    >(
+      variables?: GetBillingOrgByCustomerIdQueryVariables,
+      options?: UseQueryOptions<GetBillingOrgByCustomerIdQuery, TError, TData>
+    ) =>
+    useQuery<GetBillingOrgByCustomerIdQuery, TError, TData>(
+      variables === undefined ? ['GetBillingOrgByCustomerId'] : ['GetBillingOrgByCustomerId', variables],
+      fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables),
+      options
+    );
+useGetBillingOrgByCustomerIdQuery.document = GetBillingOrgByCustomerIdDocument;
+
+
+useGetBillingOrgByCustomerIdQuery.getKey = (variables?: GetBillingOrgByCustomerIdQueryVariables) => variables === undefined ? ['GetBillingOrgByCustomerId'] : ['GetBillingOrgByCustomerId', variables];
+;
+
+useGetBillingOrgByCustomerIdQuery.fetcher = (variables?: GetBillingOrgByCustomerIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables, options);
+export const UpdateBillingOrgDocument = `
+    mutation UpdateBillingOrg($id: Int!, $status: String = "") {
+  update_billing_org_by_pk(pk_columns: {id: $id}, _set: {status: $status}) {
+    id
+    status
+  }
+}
+    `;
+export const useUpdateBillingOrgMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateBillingOrgMutation, TError, UpdateBillingOrgMutationVariables, TContext>) =>
+    useMutation<UpdateBillingOrgMutation, TError, UpdateBillingOrgMutationVariables, TContext>(
+      ['UpdateBillingOrg'],
+      (variables?: UpdateBillingOrgMutationVariables) => fetcher<UpdateBillingOrgMutation, UpdateBillingOrgMutationVariables>(UpdateBillingOrgDocument, variables)(),
+      options
+    );
+useUpdateBillingOrgMutation.fetcher = (variables: UpdateBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateBillingOrgMutation, UpdateBillingOrgMutationVariables>(UpdateBillingOrgDocument, variables, options);
 export const GetAllCoinsDocument = `
     query GetAllCoins {
   coins {
@@ -19481,19 +23981,538 @@ useGetRelevantCompaniesQuery.getKey = (variables: GetRelevantCompaniesQueryVaria
 ;
 
 useGetRelevantCompaniesQuery.fetcher = (variables: GetRelevantCompaniesQueryVariables, options?: RequestInit['headers']) => fetcher<GetRelevantCompaniesQuery, GetRelevantCompaniesQueryVariables>(GetRelevantCompaniesDocument, variables, options);
+export const GetSentimentByCompanyIdDocument = `
+    query GetSentimentByCompanyId($companyId: Int!) {
+  companies_by_pk(id: $companyId) {
+    sentiment
+    slug
+  }
+}
+    `;
+export const useGetSentimentByCompanyIdQuery = <
+      TData = GetSentimentByCompanyIdQuery,
+      TError = Error
+    >(
+      variables: GetSentimentByCompanyIdQueryVariables,
+      options?: UseQueryOptions<GetSentimentByCompanyIdQuery, TError, TData>
+    ) =>
+    useQuery<GetSentimentByCompanyIdQuery, TError, TData>(
+      ['GetSentimentByCompanyId', variables],
+      fetcher<GetSentimentByCompanyIdQuery, GetSentimentByCompanyIdQueryVariables>(GetSentimentByCompanyIdDocument, variables),
+      options
+    );
+useGetSentimentByCompanyIdQuery.document = GetSentimentByCompanyIdDocument;
+
+
+useGetSentimentByCompanyIdQuery.getKey = (variables: GetSentimentByCompanyIdQueryVariables) => ['GetSentimentByCompanyId', variables];
+;
+
+useGetSentimentByCompanyIdQuery.fetcher = (variables: GetSentimentByCompanyIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetSentimentByCompanyIdQuery, GetSentimentByCompanyIdQueryVariables>(GetSentimentByCompanyIdDocument, variables, options);
+export const UpdateSentimentByCompanyIdDocument = `
+    mutation UpdateSentimentByCompanyId($companyId: Int!, $sentiment: jsonb!) {
+  update_companies_by_pk(
+    pk_columns: {id: $companyId}
+    _set: {sentiment: $sentiment}
+  ) {
+    sentiment
+  }
+}
+    `;
+export const useUpdateSentimentByCompanyIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateSentimentByCompanyIdMutation, TError, UpdateSentimentByCompanyIdMutationVariables, TContext>) =>
+    useMutation<UpdateSentimentByCompanyIdMutation, TError, UpdateSentimentByCompanyIdMutationVariables, TContext>(
+      ['UpdateSentimentByCompanyId'],
+      (variables?: UpdateSentimentByCompanyIdMutationVariables) => fetcher<UpdateSentimentByCompanyIdMutation, UpdateSentimentByCompanyIdMutationVariables>(UpdateSentimentByCompanyIdDocument, variables)(),
+      options
+    );
+useUpdateSentimentByCompanyIdMutation.fetcher = (variables: UpdateSentimentByCompanyIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByCompanyIdMutation, UpdateSentimentByCompanyIdMutationVariables>(UpdateSentimentByCompanyIdDocument, variables, options);
+export const GetCompaniesByDateDocument = `
+    query GetCompaniesByDate($date: timestamptz) {
+  companies(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+  ) {
+    id
+    name
+    overview
+    tags
+    logo
+    slug
+    aliases
+    coin {
+      ticker
+      name
+    }
+  }
+}
+    `;
+export const useGetCompaniesByDateQuery = <
+      TData = GetCompaniesByDateQuery,
+      TError = Error
+    >(
+      variables?: GetCompaniesByDateQueryVariables,
+      options?: UseQueryOptions<GetCompaniesByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetCompaniesByDateQuery, TError, TData>(
+      variables === undefined ? ['GetCompaniesByDate'] : ['GetCompaniesByDate', variables],
+      fetcher<GetCompaniesByDateQuery, GetCompaniesByDateQueryVariables>(GetCompaniesByDateDocument, variables),
+      options
+    );
+useGetCompaniesByDateQuery.document = GetCompaniesByDateDocument;
+
+
+useGetCompaniesByDateQuery.getKey = (variables?: GetCompaniesByDateQueryVariables) => variables === undefined ? ['GetCompaniesByDate'] : ['GetCompaniesByDate', variables];
+;
+
+useGetCompaniesByDateQuery.fetcher = (variables?: GetCompaniesByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesByDateQuery, GetCompaniesByDateQueryVariables>(GetCompaniesByDateDocument, variables, options);
+export const UpdateCompanyByPkDocument = `
+    mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
+  update_companies_by_pk(pk_columns: {id: $companyId}, _set: $data) {
+    id
+  }
+}
+    `;
+export const useUpdateCompanyByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateCompanyByPkMutation, TError, UpdateCompanyByPkMutationVariables, TContext>) =>
+    useMutation<UpdateCompanyByPkMutation, TError, UpdateCompanyByPkMutationVariables, TContext>(
+      ['UpdateCompanyByPk'],
+      (variables?: UpdateCompanyByPkMutationVariables) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables)(),
+      options
+    );
+useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
+export const InsertDataDiscardDocument = `
+    mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
+  insert_data_discard(objects: $input) {
+    returning {
+      id
+      created_at
+      resource
+      resource_id
+      field
+      value
+      accuracy_weight
+    }
+  }
+}
+    `;
+export const useInsertDataDiscardMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertDataDiscardMutation, TError, InsertDataDiscardMutationVariables, TContext>) =>
+    useMutation<InsertDataDiscardMutation, TError, InsertDataDiscardMutationVariables, TContext>(
+      ['InsertDataDiscard'],
+      (variables?: InsertDataDiscardMutationVariables) => fetcher<InsertDataDiscardMutation, InsertDataDiscardMutationVariables>(InsertDataDiscardDocument, variables)(),
+      options
+    );
+useInsertDataDiscardMutation.fetcher = (variables: InsertDataDiscardMutationVariables, options?: RequestInit['headers']) => fetcher<InsertDataDiscardMutation, InsertDataDiscardMutationVariables>(InsertDataDiscardDocument, variables, options);
+export const GetDataFieldByPathDocument = `
+    query GetDataFieldByPath($path: String!) {
+  data_fields(where: {path: {_eq: $path}}) {
+    name
+    resource
+    weight
+    regex_transform
+    description
+    regex_test
+    is_valid_identifier
+    restricted_admin
+    data_type
+  }
+}
+    `;
+export const useGetDataFieldByPathQuery = <
+      TData = GetDataFieldByPathQuery,
+      TError = Error
+    >(
+      variables: GetDataFieldByPathQueryVariables,
+      options?: UseQueryOptions<GetDataFieldByPathQuery, TError, TData>
+    ) =>
+    useQuery<GetDataFieldByPathQuery, TError, TData>(
+      ['GetDataFieldByPath', variables],
+      fetcher<GetDataFieldByPathQuery, GetDataFieldByPathQueryVariables>(GetDataFieldByPathDocument, variables),
+      options
+    );
+useGetDataFieldByPathQuery.document = GetDataFieldByPathDocument;
+
+
+useGetDataFieldByPathQuery.getKey = (variables: GetDataFieldByPathQueryVariables) => ['GetDataFieldByPath', variables];
+;
+
+useGetDataFieldByPathQuery.fetcher = (variables: GetDataFieldByPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetDataFieldByPathQuery, GetDataFieldByPathQueryVariables>(GetDataFieldByPathDocument, variables, options);
+export const GetDataPartnerByApiKeyDocument = `
+    query GetDataPartnerByApiKey($apiKey: String!) {
+  data_partners(where: {api_key: {_eq: $apiKey}}) {
+    id
+    name
+    api_key
+  }
+}
+    `;
+export const useGetDataPartnerByApiKeyQuery = <
+      TData = GetDataPartnerByApiKeyQuery,
+      TError = Error
+    >(
+      variables: GetDataPartnerByApiKeyQueryVariables,
+      options?: UseQueryOptions<GetDataPartnerByApiKeyQuery, TError, TData>
+    ) =>
+    useQuery<GetDataPartnerByApiKeyQuery, TError, TData>(
+      ['GetDataPartnerByApiKey', variables],
+      fetcher<GetDataPartnerByApiKeyQuery, GetDataPartnerByApiKeyQueryVariables>(GetDataPartnerByApiKeyDocument, variables),
+      options
+    );
+useGetDataPartnerByApiKeyQuery.document = GetDataPartnerByApiKeyDocument;
+
+
+useGetDataPartnerByApiKeyQuery.getKey = (variables: GetDataPartnerByApiKeyQueryVariables) => ['GetDataPartnerByApiKey', variables];
+;
+
+useGetDataPartnerByApiKeyQuery.fetcher = (variables: GetDataPartnerByApiKeyQueryVariables, options?: RequestInit['headers']) => fetcher<GetDataPartnerByApiKeyQuery, GetDataPartnerByApiKeyQueryVariables>(GetDataPartnerByApiKeyDocument, variables, options);
+export const InsertDataRawDocument = `
+    mutation InsertDataRaw($input: [data_raw_insert_input!]!) {
+  insert_data_raw(objects: $input) {
+    returning {
+      id
+      created_at
+      resource
+      resource_id
+      field
+      value
+      accuracy_weight
+    }
+  }
+}
+    `;
+export const useInsertDataRawMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertDataRawMutation, TError, InsertDataRawMutationVariables, TContext>) =>
+    useMutation<InsertDataRawMutation, TError, InsertDataRawMutationVariables, TContext>(
+      ['InsertDataRaw'],
+      (variables?: InsertDataRawMutationVariables) => fetcher<InsertDataRawMutation, InsertDataRawMutationVariables>(InsertDataRawDocument, variables)(),
+      options
+    );
+useInsertDataRawMutation.fetcher = (variables: InsertDataRawMutationVariables, options?: RequestInit['headers']) => fetcher<InsertDataRawMutation, InsertDataRawMutationVariables>(InsertDataRawDocument, variables, options);
+export const MarkDataRawAsInactiveDocument = `
+    mutation MarkDataRawAsInactive($resourceType: String!, $resourceId: Int!) {
+  update_data_raw(
+    _set: {is_active: false}
+    where: {_and: [{resource: {_eq: $resourceType}}, {resource_id: {_eq: $resourceId}}]}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export const useMarkDataRawAsInactiveMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<MarkDataRawAsInactiveMutation, TError, MarkDataRawAsInactiveMutationVariables, TContext>) =>
+    useMutation<MarkDataRawAsInactiveMutation, TError, MarkDataRawAsInactiveMutationVariables, TContext>(
+      ['MarkDataRawAsInactive'],
+      (variables?: MarkDataRawAsInactiveMutationVariables) => fetcher<MarkDataRawAsInactiveMutation, MarkDataRawAsInactiveMutationVariables>(MarkDataRawAsInactiveDocument, variables)(),
+      options
+    );
+useMarkDataRawAsInactiveMutation.fetcher = (variables: MarkDataRawAsInactiveMutationVariables, options?: RequestInit['headers']) => fetcher<MarkDataRawAsInactiveMutation, MarkDataRawAsInactiveMutationVariables>(MarkDataRawAsInactiveDocument, variables, options);
+export const GetDisabledEmailByEmailOrDomainDocument = `
+    query GetDisabledEmailByEmailOrDomain($email: String, $domain: String) {
+  disabled_emails(
+    where: {_or: [{email: {_eq: $email}, match_type: {_eq: "EMAIL"}}, {email: {_eq: $domain}, match_type: {_eq: "DOMAIN"}}]}
+    limit: 1
+  ) {
+    id
+    email
+  }
+}
+    `;
+export const useGetDisabledEmailByEmailOrDomainQuery = <
+      TData = GetDisabledEmailByEmailOrDomainQuery,
+      TError = Error
+    >(
+      variables?: GetDisabledEmailByEmailOrDomainQueryVariables,
+      options?: UseQueryOptions<GetDisabledEmailByEmailOrDomainQuery, TError, TData>
+    ) =>
+    useQuery<GetDisabledEmailByEmailOrDomainQuery, TError, TData>(
+      variables === undefined ? ['GetDisabledEmailByEmailOrDomain'] : ['GetDisabledEmailByEmailOrDomain', variables],
+      fetcher<GetDisabledEmailByEmailOrDomainQuery, GetDisabledEmailByEmailOrDomainQueryVariables>(GetDisabledEmailByEmailOrDomainDocument, variables),
+      options
+    );
+useGetDisabledEmailByEmailOrDomainQuery.document = GetDisabledEmailByEmailOrDomainDocument;
+
+
+useGetDisabledEmailByEmailOrDomainQuery.getKey = (variables?: GetDisabledEmailByEmailOrDomainQueryVariables) => variables === undefined ? ['GetDisabledEmailByEmailOrDomain'] : ['GetDisabledEmailByEmailOrDomain', variables];
+;
+
+useGetDisabledEmailByEmailOrDomainQuery.fetcher = (variables?: GetDisabledEmailByEmailOrDomainQueryVariables, options?: RequestInit['headers']) => fetcher<GetDisabledEmailByEmailOrDomainQuery, GetDisabledEmailByEmailOrDomainQueryVariables>(GetDisabledEmailByEmailOrDomainDocument, variables, options);
+export const GetEventsDocument = `
+    query GetEvents($limit: Int, $offset: Int, $order: order_by!, $where: events_bool_exp!) {
+  events(
+    where: $where
+    order_by: {start_date: $order}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    banner
+    overview
+    notes
+    location_json
+    venue_name
+    link
+    size
+    price
+    types
+    start_date
+    start_time
+    end_date
+    end_time
+    timezone
+    is_featured
+    created_at
+  }
+  events_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetEventsQuery = <
+      TData = GetEventsQuery,
+      TError = Error
+    >(
+      variables: GetEventsQueryVariables,
+      options?: UseQueryOptions<GetEventsQuery, TError, TData>
+    ) =>
+    useQuery<GetEventsQuery, TError, TData>(
+      ['GetEvents', variables],
+      fetcher<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, variables),
+      options
+    );
+useGetEventsQuery.document = GetEventsDocument;
+
+
+useGetEventsQuery.getKey = (variables: GetEventsQueryVariables) => ['GetEvents', variables];
+;
+
+useGetEventsQuery.fetcher = (variables: GetEventsQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsQuery, GetEventsQueryVariables>(GetEventsDocument, variables, options);
+export const GetEventDocument = `
+    query GetEvent($slug: String!) {
+  events(where: {slug: {_eq: $slug}}) {
+    id
+    name
+    slug
+    banner
+    overview
+    notes
+    location_json
+    venue_name
+    link
+    size
+    price
+    types
+    start_date
+    start_time
+    end_date
+    end_time
+    timezone
+    twitter
+    facebook
+    instagram
+    discord
+    telegram
+    is_featured
+    attachments
+    created_at
+    event_person {
+      id
+      type
+      created_at
+      person {
+        id
+        slug
+        name
+        type
+        picture
+        linkedin
+        personal_email
+        work_email
+        investors {
+          id
+          title
+          vc_firm {
+            id
+            slug
+            name
+          }
+        }
+        team_members {
+          id
+          founder
+          title
+          company {
+            id
+            slug
+            name
+          }
+        }
+      }
+    }
+    event_organization {
+      id
+      type
+      sponsor_type
+      created_at
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+}
+    `;
+export const useGetEventQuery = <
+      TData = GetEventQuery,
+      TError = Error
+    >(
+      variables: GetEventQueryVariables,
+      options?: UseQueryOptions<GetEventQuery, TError, TData>
+    ) =>
+    useQuery<GetEventQuery, TError, TData>(
+      ['GetEvent', variables],
+      fetcher<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables),
+      options
+    );
+useGetEventQuery.document = GetEventDocument;
+
+
+useGetEventQuery.getKey = (variables: GetEventQueryVariables) => ['GetEvent', variables];
+;
+
+useGetEventQuery.fetcher = (variables: GetEventQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables, options);
+export const GetEventsByDateDocument = `
+    query GetEventsByDate($date: timestamptz) {
+  events(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}]}
+  ) {
+    id
+    name
+    slug
+    overview
+    banner
+    location_json
+    start_date
+    end_date
+  }
+}
+    `;
+export const useGetEventsByDateQuery = <
+      TData = GetEventsByDateQuery,
+      TError = Error
+    >(
+      variables?: GetEventsByDateQueryVariables,
+      options?: UseQueryOptions<GetEventsByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetEventsByDateQuery, TError, TData>(
+      variables === undefined ? ['GetEventsByDate'] : ['GetEventsByDate', variables],
+      fetcher<GetEventsByDateQuery, GetEventsByDateQueryVariables>(GetEventsByDateDocument, variables),
+      options
+    );
+useGetEventsByDateQuery.document = GetEventsByDateDocument;
+
+
+useGetEventsByDateQuery.getKey = (variables?: GetEventsByDateQueryVariables) => variables === undefined ? ['GetEventsByDate'] : ['GetEventsByDate', variables];
+;
+
+useGetEventsByDateQuery.fetcher = (variables?: GetEventsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventsByDateQuery, GetEventsByDateQueryVariables>(GetEventsByDateDocument, variables, options);
+export const InsertEventAttendeeDocument = `
+    mutation InsertEventAttendee($object: event_person_insert_input!) {
+  insert_event_person_one(object: $object) {
+    id
+    event_id
+    person_id
+    type
+  }
+}
+    `;
+export const useInsertEventAttendeeMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertEventAttendeeMutation, TError, InsertEventAttendeeMutationVariables, TContext>) =>
+    useMutation<InsertEventAttendeeMutation, TError, InsertEventAttendeeMutationVariables, TContext>(
+      ['InsertEventAttendee'],
+      (variables?: InsertEventAttendeeMutationVariables) => fetcher<InsertEventAttendeeMutation, InsertEventAttendeeMutationVariables>(InsertEventAttendeeDocument, variables)(),
+      options
+    );
+useInsertEventAttendeeMutation.fetcher = (variables: InsertEventAttendeeMutationVariables, options?: RequestInit['headers']) => fetcher<InsertEventAttendeeMutation, InsertEventAttendeeMutationVariables>(InsertEventAttendeeDocument, variables, options);
+export const FindEventAttendeeDocument = `
+    query FindEventAttendee($event_id: Int!, $person_id: Int!) {
+  event_person(
+    where: {_and: [{event_id: {_eq: $event_id}}, {person_id: {_eq: $person_id}}, {type: {_eq: "attendee"}}]}
+    limit: 1
+  ) {
+    id
+  }
+}
+    `;
+export const useFindEventAttendeeQuery = <
+      TData = FindEventAttendeeQuery,
+      TError = Error
+    >(
+      variables: FindEventAttendeeQueryVariables,
+      options?: UseQueryOptions<FindEventAttendeeQuery, TError, TData>
+    ) =>
+    useQuery<FindEventAttendeeQuery, TError, TData>(
+      ['FindEventAttendee', variables],
+      fetcher<FindEventAttendeeQuery, FindEventAttendeeQueryVariables>(FindEventAttendeeDocument, variables),
+      options
+    );
+useFindEventAttendeeQuery.document = FindEventAttendeeDocument;
+
+
+useFindEventAttendeeQuery.getKey = (variables: FindEventAttendeeQueryVariables) => ['FindEventAttendee', variables];
+;
+
+useFindEventAttendeeQuery.fetcher = (variables: FindEventAttendeeQueryVariables, options?: RequestInit['headers']) => fetcher<FindEventAttendeeQuery, FindEventAttendeeQueryVariables>(FindEventAttendeeDocument, variables, options);
 export const GetFollowsByUserDocument = `
     query GetFollowsByUser($user_id: Int!) {
   list_members(where: {user_id: {_eq: $user_id}}) {
     list {
       name
       id
+      public
       created_by_id
+      created_by {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+        }
+      }
       created_at
+      updated_at
       total_no_of_resources
       follows_companies {
         resource_id
       }
       follows_vcfirms {
+        resource_id
+      }
+      follows_people {
         resource_id
       }
     }
@@ -19618,6 +24637,177 @@ useGetVcFirmsByListIdQuery.getKey = (variables?: GetVcFirmsByListIdQueryVariable
 ;
 
 useGetVcFirmsByListIdQuery.fetcher = (variables?: GetVcFirmsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByListIdQuery, GetVcFirmsByListIdQueryVariables>(GetVcFirmsByListIdDocument, variables, options);
+export const UpsertFollowsDocument = `
+    mutation UpsertFollows($listId: Int, $resourceId: Int, $resourceType: String, $userId: Int) {
+  insert_follows_one(
+    object: {list_id: $listId, resource_id: $resourceId, resource_type: $resourceType, created_by_user_id: $userId}
+    on_conflict: {constraint: follows_resource_type_resource_id_list_id_key}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpsertFollowsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertFollowsMutation, TError, UpsertFollowsMutationVariables, TContext>) =>
+    useMutation<UpsertFollowsMutation, TError, UpsertFollowsMutationVariables, TContext>(
+      ['UpsertFollows'],
+      (variables?: UpsertFollowsMutationVariables) => fetcher<UpsertFollowsMutation, UpsertFollowsMutationVariables>(UpsertFollowsDocument, variables)(),
+      options
+    );
+useUpsertFollowsMutation.fetcher = (variables?: UpsertFollowsMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertFollowsMutation, UpsertFollowsMutationVariables>(UpsertFollowsDocument, variables, options);
+export const DeleteFollowsDocument = `
+    mutation DeleteFollows($where: follows_bool_exp!) {
+  delete_follows(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteFollowsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteFollowsMutation, TError, DeleteFollowsMutationVariables, TContext>) =>
+    useMutation<DeleteFollowsMutation, TError, DeleteFollowsMutationVariables, TContext>(
+      ['DeleteFollows'],
+      (variables?: DeleteFollowsMutationVariables) => fetcher<DeleteFollowsMutation, DeleteFollowsMutationVariables>(DeleteFollowsDocument, variables)(),
+      options
+    );
+useDeleteFollowsMutation.fetcher = (variables: DeleteFollowsMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteFollowsMutation, DeleteFollowsMutationVariables>(DeleteFollowsDocument, variables, options);
+export const GetFollowByIdDocument = `
+    query GetFollowById($id: Int!) {
+  follows(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    created_by_user_id
+    resource_type
+    resource_id
+    list_id
+  }
+}
+    `;
+export const useGetFollowByIdQuery = <
+      TData = GetFollowByIdQuery,
+      TError = Error
+    >(
+      variables: GetFollowByIdQueryVariables,
+      options?: UseQueryOptions<GetFollowByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetFollowByIdQuery, TError, TData>(
+      ['GetFollowById', variables],
+      fetcher<GetFollowByIdQuery, GetFollowByIdQueryVariables>(GetFollowByIdDocument, variables),
+      options
+    );
+useGetFollowByIdQuery.document = GetFollowByIdDocument;
+
+
+useGetFollowByIdQuery.getKey = (variables: GetFollowByIdQueryVariables) => ['GetFollowById', variables];
+;
+
+useGetFollowByIdQuery.fetcher = (variables: GetFollowByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowByIdQuery, GetFollowByIdQueryVariables>(GetFollowByIdDocument, variables, options);
+export const GetFollowsByResourceDocument = `
+    query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
+  follows(
+    where: {_and: [{resource_id: {_eq: $resourceId}}, {resource_type: {_eq: $resourceType}}]}
+  ) {
+    id
+    list_id
+    list {
+      list_members {
+        id
+        user_id
+      }
+    }
+  }
+}
+    `;
+export const useGetFollowsByResourceQuery = <
+      TData = GetFollowsByResourceQuery,
+      TError = Error
+    >(
+      variables: GetFollowsByResourceQueryVariables,
+      options?: UseQueryOptions<GetFollowsByResourceQuery, TError, TData>
+    ) =>
+    useQuery<GetFollowsByResourceQuery, TError, TData>(
+      ['GetFollowsByResource', variables],
+      fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables),
+      options
+    );
+useGetFollowsByResourceQuery.document = GetFollowsByResourceDocument;
+
+
+useGetFollowsByResourceQuery.getKey = (variables: GetFollowsByResourceQueryVariables) => ['GetFollowsByResource', variables];
+;
+
+useGetFollowsByResourceQuery.fetcher = (variables: GetFollowsByResourceQueryVariables, options?: RequestInit['headers']) => fetcher<GetFollowsByResourceQuery, GetFollowsByResourceQueryVariables>(GetFollowsByResourceDocument, variables, options);
+export const GetPeopleByListIdDocument = `
+    query GetPeopleByListId($list_id: Int = 0) {
+  follows_people(where: {list_id: {_eq: $list_id}}) {
+    id
+    person {
+      id
+      name
+      picture
+      slug
+      type
+      personal_email
+      work_email
+      city
+      country
+      website_url
+      github
+      twitter_url
+      linkedin
+    }
+  }
+}
+    `;
+export const useGetPeopleByListIdQuery = <
+      TData = GetPeopleByListIdQuery,
+      TError = Error
+    >(
+      variables?: GetPeopleByListIdQueryVariables,
+      options?: UseQueryOptions<GetPeopleByListIdQuery, TError, TData>
+    ) =>
+    useQuery<GetPeopleByListIdQuery, TError, TData>(
+      variables === undefined ? ['GetPeopleByListId'] : ['GetPeopleByListId', variables],
+      fetcher<GetPeopleByListIdQuery, GetPeopleByListIdQueryVariables>(GetPeopleByListIdDocument, variables),
+      options
+    );
+useGetPeopleByListIdQuery.document = GetPeopleByListIdDocument;
+
+
+useGetPeopleByListIdQuery.getKey = (variables?: GetPeopleByListIdQueryVariables) => variables === undefined ? ['GetPeopleByListId'] : ['GetPeopleByListId', variables];
+;
+
+useGetPeopleByListIdQuery.fetcher = (variables?: GetPeopleByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByListIdQuery, GetPeopleByListIdQueryVariables>(GetPeopleByListIdDocument, variables, options);
+export const CheckFollowExistsDocument = `
+    query CheckFollowExists($where: follows_bool_exp!) {
+  follows(where: $where, limit: 1) {
+    id
+  }
+}
+    `;
+export const useCheckFollowExistsQuery = <
+      TData = CheckFollowExistsQuery,
+      TError = Error
+    >(
+      variables: CheckFollowExistsQueryVariables,
+      options?: UseQueryOptions<CheckFollowExistsQuery, TError, TData>
+    ) =>
+    useQuery<CheckFollowExistsQuery, TError, TData>(
+      ['CheckFollowExists', variables],
+      fetcher<CheckFollowExistsQuery, CheckFollowExistsQueryVariables>(CheckFollowExistsDocument, variables),
+      options
+    );
+useCheckFollowExistsQuery.document = CheckFollowExistsDocument;
+
+
+useCheckFollowExistsQuery.getKey = (variables: CheckFollowExistsQueryVariables) => ['CheckFollowExists', variables];
+;
+
+useCheckFollowExistsQuery.fetcher = (variables: CheckFollowExistsQueryVariables, options?: RequestInit['headers']) => fetcher<CheckFollowExistsQuery, CheckFollowExistsQueryVariables>(CheckFollowExistsDocument, variables, options);
 export const GetGroupsOfUserDocument = `
     query GetGroupsOfUser($user_id: Int!) {
   user_group_members(where: {user_id: {_eq: $user_id}}) {
@@ -19636,6 +24826,7 @@ export const GetGroupsOfUserDocument = `
       telegram
       twitter
       discord
+      public
       created_by {
         id
         display_name
@@ -19675,6 +24866,7 @@ export const GetGroupDocument = `
     telegram
     twitter
     discord
+    public
     created_by_user_id
     created_by {
       id
@@ -19724,6 +24916,550 @@ useGetGroupQuery.getKey = (variables: GetGroupQueryVariables) => ['GetGroup', va
 ;
 
 useGetGroupQuery.fetcher = (variables: GetGroupQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupQuery, GetGroupQueryVariables>(GetGroupDocument, variables, options);
+export const InsertUserGroupDocument = `
+    mutation InsertUserGroup($object: user_groups_insert_input!) {
+  insert_user_groups_one(object: $object) {
+    id
+    name
+    description
+    twitter
+    telegram
+    discord
+    created_at
+    updated_at
+    created_by_user_id
+  }
+}
+    `;
+export const useInsertUserGroupMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertUserGroupMutation, TError, InsertUserGroupMutationVariables, TContext>) =>
+    useMutation<InsertUserGroupMutation, TError, InsertUserGroupMutationVariables, TContext>(
+      ['InsertUserGroup'],
+      (variables?: InsertUserGroupMutationVariables) => fetcher<InsertUserGroupMutation, InsertUserGroupMutationVariables>(InsertUserGroupDocument, variables)(),
+      options
+    );
+useInsertUserGroupMutation.fetcher = (variables: InsertUserGroupMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupMutation, InsertUserGroupMutationVariables>(InsertUserGroupDocument, variables, options);
+export const UpdateUserGroupDocument = `
+    mutation UpdateUserGroup($id: Int!, $changes: user_groups_set_input!) {
+  update_user_groups(where: {id: {_eq: $id}}, _set: $changes) {
+    affected_rows
+    returning {
+      id
+      name
+      description
+      twitter
+      telegram
+      discord
+      notes {
+        id
+        notes
+      }
+      created_at
+      updated_at
+      created_by_user_id
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+  }
+}
+    `;
+export const useUpdateUserGroupMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserGroupMutation, TError, UpdateUserGroupMutationVariables, TContext>) =>
+    useMutation<UpdateUserGroupMutation, TError, UpdateUserGroupMutationVariables, TContext>(
+      ['UpdateUserGroup'],
+      (variables?: UpdateUserGroupMutationVariables) => fetcher<UpdateUserGroupMutation, UpdateUserGroupMutationVariables>(UpdateUserGroupDocument, variables)(),
+      options
+    );
+useUpdateUserGroupMutation.fetcher = (variables: UpdateUserGroupMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserGroupMutation, UpdateUserGroupMutationVariables>(UpdateUserGroupDocument, variables, options);
+export const DeleteUserGroupDocument = `
+    mutation DeleteUserGroup($id: Int!) {
+  delete_user_groups(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupMutation, TError, DeleteUserGroupMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupMutation, TError, DeleteUserGroupMutationVariables, TContext>(
+      ['DeleteUserGroup'],
+      (variables?: DeleteUserGroupMutationVariables) => fetcher<DeleteUserGroupMutation, DeleteUserGroupMutationVariables>(DeleteUserGroupDocument, variables)(),
+      options
+    );
+useDeleteUserGroupMutation.fetcher = (variables: DeleteUserGroupMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMutation, DeleteUserGroupMutationVariables>(DeleteUserGroupDocument, variables, options);
+export const DeleteUserGroupInvitesByGroupIdDocument = `
+    mutation DeleteUserGroupInvitesByGroupId($groupId: Int!) {
+  delete_user_group_invites(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupInvitesByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupInvitesByGroupIdMutation, TError, DeleteUserGroupInvitesByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupInvitesByGroupIdMutation, TError, DeleteUserGroupInvitesByGroupIdMutationVariables, TContext>(
+      ['DeleteUserGroupInvitesByGroupId'],
+      (variables?: DeleteUserGroupInvitesByGroupIdMutationVariables) => fetcher<DeleteUserGroupInvitesByGroupIdMutation, DeleteUserGroupInvitesByGroupIdMutationVariables>(DeleteUserGroupInvitesByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupInvitesByGroupIdMutation.fetcher = (variables: DeleteUserGroupInvitesByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupInvitesByGroupIdMutation, DeleteUserGroupInvitesByGroupIdMutationVariables>(DeleteUserGroupInvitesByGroupIdDocument, variables, options);
+export const DeleteUserGroupMembersByGroupIdDocument = `
+    mutation DeleteUserGroupMembersByGroupId($groupId: Int!) {
+  delete_user_group_members(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupMembersByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupMembersByGroupIdMutation, TError, DeleteUserGroupMembersByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupMembersByGroupIdMutation, TError, DeleteUserGroupMembersByGroupIdMutationVariables, TContext>(
+      ['DeleteUserGroupMembersByGroupId'],
+      (variables?: DeleteUserGroupMembersByGroupIdMutationVariables) => fetcher<DeleteUserGroupMembersByGroupIdMutation, DeleteUserGroupMembersByGroupIdMutationVariables>(DeleteUserGroupMembersByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupMembersByGroupIdMutation.fetcher = (variables: DeleteUserGroupMembersByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMembersByGroupIdMutation, DeleteUserGroupMembersByGroupIdMutationVariables>(DeleteUserGroupMembersByGroupIdDocument, variables, options);
+export const GetUserGroupByIdDocument = `
+    query GetUserGroupById($id: Int!) {
+  user_groups(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    name
+    created_by_user_id
+    created_at
+  }
+}
+    `;
+export const useGetUserGroupByIdQuery = <
+      TData = GetUserGroupByIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupByIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupByIdQuery, TError, TData>(
+      ['GetUserGroupById', variables],
+      fetcher<GetUserGroupByIdQuery, GetUserGroupByIdQueryVariables>(GetUserGroupByIdDocument, variables),
+      options
+    );
+useGetUserGroupByIdQuery.document = GetUserGroupByIdDocument;
+
+
+useGetUserGroupByIdQuery.getKey = (variables: GetUserGroupByIdQueryVariables) => ['GetUserGroupById', variables];
+;
+
+useGetUserGroupByIdQuery.fetcher = (variables: GetUserGroupByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupByIdQuery, GetUserGroupByIdQueryVariables>(GetUserGroupByIdDocument, variables, options);
+export const GetUserGroupMemberByIdDocument = `
+    query GetUserGroupMemberById($id: Int!) {
+  user_group_members(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    user_id
+    user_group_id
+  }
+}
+    `;
+export const useGetUserGroupMemberByIdQuery = <
+      TData = GetUserGroupMemberByIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupMemberByIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupMemberByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupMemberByIdQuery, TError, TData>(
+      ['GetUserGroupMemberById', variables],
+      fetcher<GetUserGroupMemberByIdQuery, GetUserGroupMemberByIdQueryVariables>(GetUserGroupMemberByIdDocument, variables),
+      options
+    );
+useGetUserGroupMemberByIdQuery.document = GetUserGroupMemberByIdDocument;
+
+
+useGetUserGroupMemberByIdQuery.getKey = (variables: GetUserGroupMemberByIdQueryVariables) => ['GetUserGroupMemberById', variables];
+;
+
+useGetUserGroupMemberByIdQuery.fetcher = (variables: GetUserGroupMemberByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupMemberByIdQuery, GetUserGroupMemberByIdQueryVariables>(GetUserGroupMemberByIdDocument, variables, options);
+export const GetUserGroupMemberByGroupIdDocument = `
+    query GetUserGroupMemberByGroupId($user_group_id: Int!) {
+  user_group_members(where: {user_group_id: {_eq: $user_group_id}}) {
+    id
+    user_group_id
+    user_group {
+      id
+      name
+      description
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
+    }
+  }
+}
+    `;
+export const useGetUserGroupMemberByGroupIdQuery = <
+      TData = GetUserGroupMemberByGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupMemberByGroupIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupMemberByGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupMemberByGroupIdQuery, TError, TData>(
+      ['GetUserGroupMemberByGroupId', variables],
+      fetcher<GetUserGroupMemberByGroupIdQuery, GetUserGroupMemberByGroupIdQueryVariables>(GetUserGroupMemberByGroupIdDocument, variables),
+      options
+    );
+useGetUserGroupMemberByGroupIdQuery.document = GetUserGroupMemberByGroupIdDocument;
+
+
+useGetUserGroupMemberByGroupIdQuery.getKey = (variables: GetUserGroupMemberByGroupIdQueryVariables) => ['GetUserGroupMemberByGroupId', variables];
+;
+
+useGetUserGroupMemberByGroupIdQuery.fetcher = (variables: GetUserGroupMemberByGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupMemberByGroupIdQuery, GetUserGroupMemberByGroupIdQueryVariables>(GetUserGroupMemberByGroupIdDocument, variables, options);
+export const GetUserGroupInviteByIdDocument = `
+    query GetUserGroupInviteById($id: Int!) {
+  user_group_invites(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    email
+    user_group_id
+    created_by_user_id
+  }
+}
+    `;
+export const useGetUserGroupInviteByIdQuery = <
+      TData = GetUserGroupInviteByIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupInviteByIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupInviteByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupInviteByIdQuery, TError, TData>(
+      ['GetUserGroupInviteById', variables],
+      fetcher<GetUserGroupInviteByIdQuery, GetUserGroupInviteByIdQueryVariables>(GetUserGroupInviteByIdDocument, variables),
+      options
+    );
+useGetUserGroupInviteByIdQuery.document = GetUserGroupInviteByIdDocument;
+
+
+useGetUserGroupInviteByIdQuery.getKey = (variables: GetUserGroupInviteByIdQueryVariables) => ['GetUserGroupInviteById', variables];
+;
+
+useGetUserGroupInviteByIdQuery.fetcher = (variables: GetUserGroupInviteByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupInviteByIdQuery, GetUserGroupInviteByIdQueryVariables>(GetUserGroupInviteByIdDocument, variables, options);
+export const InsertUserGroupMembersDocument = `
+    mutation InsertUserGroupMembers($object: user_group_members_insert_input!) {
+  insert_user_group_members_one(object: $object) {
+    id
+    user_id
+    user {
+      id
+      display_name
+      email
+      person {
+        id
+        slug
+        picture
+      }
+    }
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useInsertUserGroupMembersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertUserGroupMembersMutation, TError, InsertUserGroupMembersMutationVariables, TContext>) =>
+    useMutation<InsertUserGroupMembersMutation, TError, InsertUserGroupMembersMutationVariables, TContext>(
+      ['InsertUserGroupMembers'],
+      (variables?: InsertUserGroupMembersMutationVariables) => fetcher<InsertUserGroupMembersMutation, InsertUserGroupMembersMutationVariables>(InsertUserGroupMembersDocument, variables)(),
+      options
+    );
+useInsertUserGroupMembersMutation.fetcher = (variables: InsertUserGroupMembersMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupMembersMutation, InsertUserGroupMembersMutationVariables>(InsertUserGroupMembersDocument, variables, options);
+export const GetUserGroupInvitesByEmailDocument = `
+    query GetUserGroupInvitesByEmail($email: String!) {
+  user_group_invites(where: {email: {_eq: $email}}) {
+    id
+    user_group_id
+  }
+}
+    `;
+export const useGetUserGroupInvitesByEmailQuery = <
+      TData = GetUserGroupInvitesByEmailQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupInvitesByEmailQueryVariables,
+      options?: UseQueryOptions<GetUserGroupInvitesByEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupInvitesByEmailQuery, TError, TData>(
+      ['GetUserGroupInvitesByEmail', variables],
+      fetcher<GetUserGroupInvitesByEmailQuery, GetUserGroupInvitesByEmailQueryVariables>(GetUserGroupInvitesByEmailDocument, variables),
+      options
+    );
+useGetUserGroupInvitesByEmailQuery.document = GetUserGroupInvitesByEmailDocument;
+
+
+useGetUserGroupInvitesByEmailQuery.getKey = (variables: GetUserGroupInvitesByEmailQueryVariables) => ['GetUserGroupInvitesByEmail', variables];
+;
+
+useGetUserGroupInvitesByEmailQuery.fetcher = (variables: GetUserGroupInvitesByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupInvitesByEmailQuery, GetUserGroupInvitesByEmailQueryVariables>(GetUserGroupInvitesByEmailDocument, variables, options);
+export const GetUserGroupInvitesByEmailAndGroupIdDocument = `
+    query GetUserGroupInvitesByEmailAndGroupId($email: String!, $user_group_id: Int!) {
+  user_group_invites(
+    where: {_and: [{email: {_eq: $email}}, {user_group_id: {_eq: $user_group_id}}]}
+    limit: 1
+  ) {
+    id
+    email
+    user_group_id
+    created_by_user_id
+  }
+}
+    `;
+export const useGetUserGroupInvitesByEmailAndGroupIdQuery = <
+      TData = GetUserGroupInvitesByEmailAndGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupInvitesByEmailAndGroupIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupInvitesByEmailAndGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupInvitesByEmailAndGroupIdQuery, TError, TData>(
+      ['GetUserGroupInvitesByEmailAndGroupId', variables],
+      fetcher<GetUserGroupInvitesByEmailAndGroupIdQuery, GetUserGroupInvitesByEmailAndGroupIdQueryVariables>(GetUserGroupInvitesByEmailAndGroupIdDocument, variables),
+      options
+    );
+useGetUserGroupInvitesByEmailAndGroupIdQuery.document = GetUserGroupInvitesByEmailAndGroupIdDocument;
+
+
+useGetUserGroupInvitesByEmailAndGroupIdQuery.getKey = (variables: GetUserGroupInvitesByEmailAndGroupIdQueryVariables) => ['GetUserGroupInvitesByEmailAndGroupId', variables];
+;
+
+useGetUserGroupInvitesByEmailAndGroupIdQuery.fetcher = (variables: GetUserGroupInvitesByEmailAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupInvitesByEmailAndGroupIdQuery, GetUserGroupInvitesByEmailAndGroupIdQueryVariables>(GetUserGroupInvitesByEmailAndGroupIdDocument, variables, options);
+export const GetUserGroupMembersByUserIdAndGroupIdDocument = `
+    query GetUserGroupMembersByUserIdAndGroupId($user_id: Int!, $user_group_id: Int!) {
+  user_group_members(
+    where: {_and: [{user_id: {_eq: $user_id}}, {user_group_id: {_eq: $user_group_id}}]}
+    limit: 1
+  ) {
+    id
+    user_id
+    user_group_id
+  }
+}
+    `;
+export const useGetUserGroupMembersByUserIdAndGroupIdQuery = <
+      TData = GetUserGroupMembersByUserIdAndGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetUserGroupMembersByUserIdAndGroupIdQueryVariables,
+      options?: UseQueryOptions<GetUserGroupMembersByUserIdAndGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserGroupMembersByUserIdAndGroupIdQuery, TError, TData>(
+      ['GetUserGroupMembersByUserIdAndGroupId', variables],
+      fetcher<GetUserGroupMembersByUserIdAndGroupIdQuery, GetUserGroupMembersByUserIdAndGroupIdQueryVariables>(GetUserGroupMembersByUserIdAndGroupIdDocument, variables),
+      options
+    );
+useGetUserGroupMembersByUserIdAndGroupIdQuery.document = GetUserGroupMembersByUserIdAndGroupIdDocument;
+
+
+useGetUserGroupMembersByUserIdAndGroupIdQuery.getKey = (variables: GetUserGroupMembersByUserIdAndGroupIdQueryVariables) => ['GetUserGroupMembersByUserIdAndGroupId', variables];
+;
+
+useGetUserGroupMembersByUserIdAndGroupIdQuery.fetcher = (variables: GetUserGroupMembersByUserIdAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserGroupMembersByUserIdAndGroupIdQuery, GetUserGroupMembersByUserIdAndGroupIdQueryVariables>(GetUserGroupMembersByUserIdAndGroupIdDocument, variables, options);
+export const DeleteUserGroupInviteByIdDocument = `
+    mutation DeleteUserGroupInviteById($id: Int!) {
+  delete_user_group_invites(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupInviteByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupInviteByIdMutation, TError, DeleteUserGroupInviteByIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupInviteByIdMutation, TError, DeleteUserGroupInviteByIdMutationVariables, TContext>(
+      ['DeleteUserGroupInviteById'],
+      (variables?: DeleteUserGroupInviteByIdMutationVariables) => fetcher<DeleteUserGroupInviteByIdMutation, DeleteUserGroupInviteByIdMutationVariables>(DeleteUserGroupInviteByIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupInviteByIdMutation.fetcher = (variables: DeleteUserGroupInviteByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupInviteByIdMutation, DeleteUserGroupInviteByIdMutationVariables>(DeleteUserGroupInviteByIdDocument, variables, options);
+export const DeleteUserGroupMemberByIdDocument = `
+    mutation DeleteUserGroupMemberById($id: Int!) {
+  delete_user_group_members(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteUserGroupMemberByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteUserGroupMemberByIdMutation, TError, DeleteUserGroupMemberByIdMutationVariables, TContext>) =>
+    useMutation<DeleteUserGroupMemberByIdMutation, TError, DeleteUserGroupMemberByIdMutationVariables, TContext>(
+      ['DeleteUserGroupMemberById'],
+      (variables?: DeleteUserGroupMemberByIdMutationVariables) => fetcher<DeleteUserGroupMemberByIdMutation, DeleteUserGroupMemberByIdMutationVariables>(DeleteUserGroupMemberByIdDocument, variables)(),
+      options
+    );
+useDeleteUserGroupMemberByIdMutation.fetcher = (variables: DeleteUserGroupMemberByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteUserGroupMemberByIdMutation, DeleteUserGroupMemberByIdMutationVariables>(DeleteUserGroupMemberByIdDocument, variables, options);
+export const InsertUserGroupInvitesDocument = `
+    mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
+  insert_user_group_invites_one(object: $object) {
+    id
+    email
+    user_group_id
+    created_by_user_id
+  }
+}
+    `;
+export const useInsertUserGroupInvitesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertUserGroupInvitesMutation, TError, InsertUserGroupInvitesMutationVariables, TContext>) =>
+    useMutation<InsertUserGroupInvitesMutation, TError, InsertUserGroupInvitesMutationVariables, TContext>(
+      ['InsertUserGroupInvites'],
+      (variables?: InsertUserGroupInvitesMutationVariables) => fetcher<InsertUserGroupInvitesMutation, InsertUserGroupInvitesMutationVariables>(InsertUserGroupInvitesDocument, variables)(),
+      options
+    );
+useInsertUserGroupInvitesMutation.fetcher = (variables: InsertUserGroupInvitesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertUserGroupInvitesMutation, InsertUserGroupInvitesMutationVariables>(InsertUserGroupInvitesDocument, variables, options);
+export const UpsertInvestmentRoundDocument = `
+    mutation UpsertInvestmentRound($data: investment_rounds_insert_input!) {
+  insert_investment_rounds_one(
+    object: $data
+    on_conflict: {constraint: investment_rounds_pkey, update_columns: [round_date, round, amount, valuation, currency]}
+  ) {
+    id
+    round_date
+    round
+    amount
+    valuation
+    currency
+  }
+}
+    `;
+export const useUpsertInvestmentRoundMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertInvestmentRoundMutation, TError, UpsertInvestmentRoundMutationVariables, TContext>) =>
+    useMutation<UpsertInvestmentRoundMutation, TError, UpsertInvestmentRoundMutationVariables, TContext>(
+      ['UpsertInvestmentRound'],
+      (variables?: UpsertInvestmentRoundMutationVariables) => fetcher<UpsertInvestmentRoundMutation, UpsertInvestmentRoundMutationVariables>(UpsertInvestmentRoundDocument, variables)(),
+      options
+    );
+useUpsertInvestmentRoundMutation.fetcher = (variables: UpsertInvestmentRoundMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentRoundMutation, UpsertInvestmentRoundMutationVariables>(UpsertInvestmentRoundDocument, variables, options);
+export const GetInvestmentRoundByRoundIdDocument = `
+    query GetInvestmentRoundByRoundId($round_id: Int!) {
+  investment_rounds(where: {id: {_eq: $round_id}}) {
+    id
+    company_id
+  }
+}
+    `;
+export const useGetInvestmentRoundByRoundIdQuery = <
+      TData = GetInvestmentRoundByRoundIdQuery,
+      TError = Error
+    >(
+      variables: GetInvestmentRoundByRoundIdQueryVariables,
+      options?: UseQueryOptions<GetInvestmentRoundByRoundIdQuery, TError, TData>
+    ) =>
+    useQuery<GetInvestmentRoundByRoundIdQuery, TError, TData>(
+      ['GetInvestmentRoundByRoundId', variables],
+      fetcher<GetInvestmentRoundByRoundIdQuery, GetInvestmentRoundByRoundIdQueryVariables>(GetInvestmentRoundByRoundIdDocument, variables),
+      options
+    );
+useGetInvestmentRoundByRoundIdQuery.document = GetInvestmentRoundByRoundIdDocument;
+
+
+useGetInvestmentRoundByRoundIdQuery.getKey = (variables: GetInvestmentRoundByRoundIdQueryVariables) => ['GetInvestmentRoundByRoundId', variables];
+;
+
+useGetInvestmentRoundByRoundIdQuery.fetcher = (variables: GetInvestmentRoundByRoundIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetInvestmentRoundByRoundIdQuery, GetInvestmentRoundByRoundIdQueryVariables>(GetInvestmentRoundByRoundIdDocument, variables, options);
+export const UpsertInvestmentsDocument = `
+    mutation UpsertInvestments($data: [investments_insert_input!]!) {
+  insert_investments(
+    objects: $data
+    on_conflict: {constraint: investments_pkey, update_columns: [amount]}
+  ) {
+    returning {
+      id
+      round_id
+      person_id
+      vc_firm_id
+      amount
+    }
+  }
+}
+    `;
+export const useUpsertInvestmentsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertInvestmentsMutation, TError, UpsertInvestmentsMutationVariables, TContext>) =>
+    useMutation<UpsertInvestmentsMutation, TError, UpsertInvestmentsMutationVariables, TContext>(
+      ['UpsertInvestments'],
+      (variables?: UpsertInvestmentsMutationVariables) => fetcher<UpsertInvestmentsMutation, UpsertInvestmentsMutationVariables>(UpsertInvestmentsDocument, variables)(),
+      options
+    );
+useUpsertInvestmentsMutation.fetcher = (variables: UpsertInvestmentsMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertInvestmentsMutation, UpsertInvestmentsMutationVariables>(UpsertInvestmentsDocument, variables, options);
+export const DeleteInvestmentDocument = `
+    mutation DeleteInvestment($investmentId: Int!) {
+  delete_investments_by_pk(id: $investmentId) {
+    id
+  }
+}
+    `;
+export const useDeleteInvestmentMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteInvestmentMutation, TError, DeleteInvestmentMutationVariables, TContext>) =>
+    useMutation<DeleteInvestmentMutation, TError, DeleteInvestmentMutationVariables, TContext>(
+      ['DeleteInvestment'],
+      (variables?: DeleteInvestmentMutationVariables) => fetcher<DeleteInvestmentMutation, DeleteInvestmentMutationVariables>(DeleteInvestmentDocument, variables)(),
+      options
+    );
+useDeleteInvestmentMutation.fetcher = (variables: DeleteInvestmentMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteInvestmentMutation, DeleteInvestmentMutationVariables>(DeleteInvestmentDocument, variables, options);
+export const InsertInvestorDocument = `
+    mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
+  insert_investors_one(
+    object: {person_id: $personId, vc_firm_id: $vcFirmId}
+    on_conflict: {constraint: investors_vc_firm_id_person_id_key, update_columns: []}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertInvestorMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertInvestorMutation, TError, InsertInvestorMutationVariables, TContext>) =>
+    useMutation<InsertInvestorMutation, TError, InsertInvestorMutationVariables, TContext>(
+      ['InsertInvestor'],
+      (variables?: InsertInvestorMutationVariables) => fetcher<InsertInvestorMutation, InsertInvestorMutationVariables>(InsertInvestorDocument, variables)(),
+      options
+    );
+useInsertInvestorMutation.fetcher = (variables?: InsertInvestorMutationVariables, options?: RequestInit['headers']) => fetcher<InsertInvestorMutation, InsertInvestorMutationVariables>(InsertInvestorDocument, variables, options);
 export const GetListUserGroupsDocument = `
     query GetListUserGroups($where: list_user_groups_bool_exp!) {
   list_user_groups(where: $where) {
@@ -19732,6 +25468,7 @@ export const GetListUserGroupsDocument = `
     list {
       id
       name
+      public
       created_at
       created_by {
         id
@@ -19775,6 +25512,7 @@ export const GetListMembersDocument = `
     list {
       id
       name
+      public
       created_at
       created_by {
         id
@@ -19810,6 +25548,284 @@ useGetListMembersQuery.getKey = (variables: GetListMembersQueryVariables) => ['G
 ;
 
 useGetListMembersQuery.fetcher = (variables: GetListMembersQueryVariables, options?: RequestInit['headers']) => fetcher<GetListMembersQuery, GetListMembersQueryVariables>(GetListMembersDocument, variables, options);
+export const GetListUserGroupsByListIdDocument = `
+    query GetListUserGroupsByListId($listId: Int!) {
+  list_user_groups(where: {list_id: {_eq: $listId}}) {
+    id
+    list_id
+    user_group_id
+  }
+}
+    `;
+export const useGetListUserGroupsByListIdQuery = <
+      TData = GetListUserGroupsByListIdQuery,
+      TError = Error
+    >(
+      variables: GetListUserGroupsByListIdQueryVariables,
+      options?: UseQueryOptions<GetListUserGroupsByListIdQuery, TError, TData>
+    ) =>
+    useQuery<GetListUserGroupsByListIdQuery, TError, TData>(
+      ['GetListUserGroupsByListId', variables],
+      fetcher<GetListUserGroupsByListIdQuery, GetListUserGroupsByListIdQueryVariables>(GetListUserGroupsByListIdDocument, variables),
+      options
+    );
+useGetListUserGroupsByListIdQuery.document = GetListUserGroupsByListIdDocument;
+
+
+useGetListUserGroupsByListIdQuery.getKey = (variables: GetListUserGroupsByListIdQueryVariables) => ['GetListUserGroupsByListId', variables];
+;
+
+useGetListUserGroupsByListIdQuery.fetcher = (variables: GetListUserGroupsByListIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsByListIdQuery, GetListUserGroupsByListIdQueryVariables>(GetListUserGroupsByListIdDocument, variables, options);
+export const InsertListUserGroupsDocument = `
+    mutation InsertListUserGroups($object: list_user_groups_insert_input!) {
+  insert_list_user_groups_one(object: $object) {
+    id
+    list_id
+    user_group_id
+  }
+}
+    `;
+export const useInsertListUserGroupsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertListUserGroupsMutation, TError, InsertListUserGroupsMutationVariables, TContext>) =>
+    useMutation<InsertListUserGroupsMutation, TError, InsertListUserGroupsMutationVariables, TContext>(
+      ['InsertListUserGroups'],
+      (variables?: InsertListUserGroupsMutationVariables) => fetcher<InsertListUserGroupsMutation, InsertListUserGroupsMutationVariables>(InsertListUserGroupsDocument, variables)(),
+      options
+    );
+useInsertListUserGroupsMutation.fetcher = (variables: InsertListUserGroupsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertListUserGroupsMutation, InsertListUserGroupsMutationVariables>(InsertListUserGroupsDocument, variables, options);
+export const GetListUserGroupsByListIdAndGroupIdDocument = `
+    query GetListUserGroupsByListIdAndGroupId($list_id: Int!, $user_group_id: Int!) {
+  list_user_groups(
+    where: {_and: [{list_id: {_eq: $list_id}}, {user_group_id: {_eq: $user_group_id}}]}
+  ) {
+    id
+    list_id
+    user_group_id
+  }
+}
+    `;
+export const useGetListUserGroupsByListIdAndGroupIdQuery = <
+      TData = GetListUserGroupsByListIdAndGroupIdQuery,
+      TError = Error
+    >(
+      variables: GetListUserGroupsByListIdAndGroupIdQueryVariables,
+      options?: UseQueryOptions<GetListUserGroupsByListIdAndGroupIdQuery, TError, TData>
+    ) =>
+    useQuery<GetListUserGroupsByListIdAndGroupIdQuery, TError, TData>(
+      ['GetListUserGroupsByListIdAndGroupId', variables],
+      fetcher<GetListUserGroupsByListIdAndGroupIdQuery, GetListUserGroupsByListIdAndGroupIdQueryVariables>(GetListUserGroupsByListIdAndGroupIdDocument, variables),
+      options
+    );
+useGetListUserGroupsByListIdAndGroupIdQuery.document = GetListUserGroupsByListIdAndGroupIdDocument;
+
+
+useGetListUserGroupsByListIdAndGroupIdQuery.getKey = (variables: GetListUserGroupsByListIdAndGroupIdQueryVariables) => ['GetListUserGroupsByListIdAndGroupId', variables];
+;
+
+useGetListUserGroupsByListIdAndGroupIdQuery.fetcher = (variables: GetListUserGroupsByListIdAndGroupIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListUserGroupsByListIdAndGroupIdQuery, GetListUserGroupsByListIdAndGroupIdQueryVariables>(GetListUserGroupsByListIdAndGroupIdDocument, variables, options);
+export const UpsertListDocument = `
+    mutation UpsertList($userId: Int, $name: String) {
+  insert_lists_one(
+    object: {created_by_id: $userId, name: $name}
+    on_conflict: {constraint: lists_created_by_id_name_key, update_columns: created_by_id}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpsertListMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertListMutation, TError, UpsertListMutationVariables, TContext>) =>
+    useMutation<UpsertListMutation, TError, UpsertListMutationVariables, TContext>(
+      ['UpsertList'],
+      (variables?: UpsertListMutationVariables) => fetcher<UpsertListMutation, UpsertListMutationVariables>(UpsertListDocument, variables)(),
+      options
+    );
+useUpsertListMutation.fetcher = (variables?: UpsertListMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertListMutation, UpsertListMutationVariables>(UpsertListDocument, variables, options);
+export const UpsertMembershipDocument = `
+    mutation UpsertMembership($userId: Int!, $listId: Int!) {
+  insert_list_members_one(
+    object: {user_id: $userId, list_id: $listId, member_type: "owner"}
+    on_conflict: {update_columns: user_id, constraint: list_members_list_id_user_id_key}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpsertMembershipMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertMembershipMutation, TError, UpsertMembershipMutationVariables, TContext>) =>
+    useMutation<UpsertMembershipMutation, TError, UpsertMembershipMutationVariables, TContext>(
+      ['UpsertMembership'],
+      (variables?: UpsertMembershipMutationVariables) => fetcher<UpsertMembershipMutation, UpsertMembershipMutationVariables>(UpsertMembershipDocument, variables)(),
+      options
+    );
+useUpsertMembershipMutation.fetcher = (variables: UpsertMembershipMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertMembershipMutation, UpsertMembershipMutationVariables>(UpsertMembershipDocument, variables, options);
+export const GetListByIdDocument = `
+    query GetListById($id: Int!) {
+  lists(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    name
+    created_by_id
+  }
+}
+    `;
+export const useGetListByIdQuery = <
+      TData = GetListByIdQuery,
+      TError = Error
+    >(
+      variables: GetListByIdQueryVariables,
+      options?: UseQueryOptions<GetListByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetListByIdQuery, TError, TData>(
+      ['GetListById', variables],
+      fetcher<GetListByIdQuery, GetListByIdQueryVariables>(GetListByIdDocument, variables),
+      options
+    );
+useGetListByIdQuery.document = GetListByIdDocument;
+
+
+useGetListByIdQuery.getKey = (variables: GetListByIdQueryVariables) => ['GetListById', variables];
+;
+
+useGetListByIdQuery.fetcher = (variables: GetListByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetListByIdQuery, GetListByIdQueryVariables>(GetListByIdDocument, variables, options);
+export const DeleteListMembersDocument = `
+    mutation DeleteListMembers($where: list_members_bool_exp!) {
+  delete_list_members(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListMembersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListMembersMutation, TError, DeleteListMembersMutationVariables, TContext>) =>
+    useMutation<DeleteListMembersMutation, TError, DeleteListMembersMutationVariables, TContext>(
+      ['DeleteListMembers'],
+      (variables?: DeleteListMembersMutationVariables) => fetcher<DeleteListMembersMutation, DeleteListMembersMutationVariables>(DeleteListMembersDocument, variables)(),
+      options
+    );
+useDeleteListMembersMutation.fetcher = (variables: DeleteListMembersMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListMembersMutation, DeleteListMembersMutationVariables>(DeleteListMembersDocument, variables, options);
+export const DeleteListsDocument = `
+    mutation DeleteLists($where: lists_bool_exp!) {
+  delete_lists(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListsMutation, TError, DeleteListsMutationVariables, TContext>) =>
+    useMutation<DeleteListsMutation, TError, DeleteListsMutationVariables, TContext>(
+      ['DeleteLists'],
+      (variables?: DeleteListsMutationVariables) => fetcher<DeleteListsMutation, DeleteListsMutationVariables>(DeleteListsDocument, variables)(),
+      options
+    );
+useDeleteListsMutation.fetcher = (variables: DeleteListsMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListsMutation, DeleteListsMutationVariables>(DeleteListsDocument, variables, options);
+export const DeleteListUserGroupsDocument = `
+    mutation DeleteListUserGroups($where: list_user_groups_bool_exp!) {
+  delete_list_user_groups(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteListUserGroupsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteListUserGroupsMutation, TError, DeleteListUserGroupsMutationVariables, TContext>) =>
+    useMutation<DeleteListUserGroupsMutation, TError, DeleteListUserGroupsMutationVariables, TContext>(
+      ['DeleteListUserGroups'],
+      (variables?: DeleteListUserGroupsMutationVariables) => fetcher<DeleteListUserGroupsMutation, DeleteListUserGroupsMutationVariables>(DeleteListUserGroupsDocument, variables)(),
+      options
+    );
+useDeleteListUserGroupsMutation.fetcher = (variables: DeleteListUserGroupsMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteListUserGroupsMutation, DeleteListUserGroupsMutationVariables>(DeleteListUserGroupsDocument, variables, options);
+export const InsertListMembersDocument = `
+    mutation InsertListMembers($object: list_members_insert_input!) {
+  insert_list_members_one(object: $object) {
+    id
+    member_type
+    list_id
+    list {
+      id
+      name
+      created_at
+      created_by {
+        id
+        display_name
+        email
+      }
+    }
+    user_id
+    user {
+      id
+      display_name
+      email
+    }
+  }
+}
+    `;
+export const useInsertListMembersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertListMembersMutation, TError, InsertListMembersMutationVariables, TContext>) =>
+    useMutation<InsertListMembersMutation, TError, InsertListMembersMutationVariables, TContext>(
+      ['InsertListMembers'],
+      (variables?: InsertListMembersMutationVariables) => fetcher<InsertListMembersMutation, InsertListMembersMutationVariables>(InsertListMembersDocument, variables)(),
+      options
+    );
+useInsertListMembersMutation.fetcher = (variables: InsertListMembersMutationVariables, options?: RequestInit['headers']) => fetcher<InsertListMembersMutation, InsertListMembersMutationVariables>(InsertListMembersDocument, variables, options);
+export const UpdateListByIdDocument = `
+    mutation UpdateListById($listId: Int!, $changes: lists_set_input!) {
+  update_lists(where: {id: {_eq: $listId}}, _set: $changes) {
+    affected_rows
+    returning {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useUpdateListByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateListByIdMutation, TError, UpdateListByIdMutationVariables, TContext>) =>
+    useMutation<UpdateListByIdMutation, TError, UpdateListByIdMutationVariables, TContext>(
+      ['UpdateListById'],
+      (variables?: UpdateListByIdMutationVariables) => fetcher<UpdateListByIdMutation, UpdateListByIdMutationVariables>(UpdateListByIdDocument, variables)(),
+      options
+    );
+useUpdateListByIdMutation.fetcher = (variables: UpdateListByIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateListByIdMutation, UpdateListByIdMutationVariables>(UpdateListByIdDocument, variables, options);
+export const TriggerListUpdatedAtDocument = `
+    mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
+  update_lists(where: {id: {_eq: $id}}, _set: {updated_at: $updated_at}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useTriggerListUpdatedAtMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<TriggerListUpdatedAtMutation, TError, TriggerListUpdatedAtMutationVariables, TContext>) =>
+    useMutation<TriggerListUpdatedAtMutation, TError, TriggerListUpdatedAtMutationVariables, TContext>(
+      ['TriggerListUpdatedAt'],
+      (variables?: TriggerListUpdatedAtMutationVariables) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables)(),
+      options
+    );
+useTriggerListUpdatedAtMutation.fetcher = (variables: TriggerListUpdatedAtMutationVariables, options?: RequestInit['headers']) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {
@@ -19819,11 +25835,45 @@ export const GetNotesDocument = `
     created_at
     updated_at
     user_group_id
+    audience
     resource_type
     resource_id
     user_group {
       id
       name
+    }
+    likes {
+      id
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
+    comments {
+      id
+      content
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
     }
   }
 }
@@ -19847,13 +25897,317 @@ useGetNotesQuery.getKey = (variables: GetNotesQueryVariables) => ['GetNotes', va
 ;
 
 useGetNotesQuery.fetcher = (variables: GetNotesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotesQuery, GetNotesQueryVariables>(GetNotesDocument, variables, options);
+export const GetNoteByIdDocument = `
+    query GetNoteById($id: Int!) {
+  notes(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useGetNoteByIdQuery = <
+      TData = GetNoteByIdQuery,
+      TError = Error
+    >(
+      variables: GetNoteByIdQueryVariables,
+      options?: UseQueryOptions<GetNoteByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetNoteByIdQuery, TError, TData>(
+      ['GetNoteById', variables],
+      fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables),
+      options
+    );
+useGetNoteByIdQuery.document = GetNoteByIdDocument;
+
+
+useGetNoteByIdQuery.getKey = (variables: GetNoteByIdQueryVariables) => ['GetNoteById', variables];
+;
+
+useGetNoteByIdQuery.fetcher = (variables: GetNoteByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetNoteByIdQuery, GetNoteByIdQueryVariables>(GetNoteByIdDocument, variables, options);
+export const DeleteNotesByGroupIdDocument = `
+    mutation DeleteNotesByGroupId($groupId: Int!) {
+  delete_notes(where: {user_group_id: {_eq: $groupId}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteNotesByGroupIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>) =>
+    useMutation<DeleteNotesByGroupIdMutation, TError, DeleteNotesByGroupIdMutationVariables, TContext>(
+      ['DeleteNotesByGroupId'],
+      (variables?: DeleteNotesByGroupIdMutationVariables) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables)(),
+      options
+    );
+useDeleteNotesByGroupIdMutation.fetcher = (variables: DeleteNotesByGroupIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNotesByGroupIdMutation, DeleteNotesByGroupIdMutationVariables>(DeleteNotesByGroupIdDocument, variables, options);
+export const InsertNoteDocument = `
+    mutation InsertNote($object: notes_insert_input!) {
+  insert_notes_one(object: $object) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+    `;
+export const useInsertNoteMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertNoteMutation, TError, InsertNoteMutationVariables, TContext>) =>
+    useMutation<InsertNoteMutation, TError, InsertNoteMutationVariables, TContext>(
+      ['InsertNote'],
+      (variables?: InsertNoteMutationVariables) => fetcher<InsertNoteMutation, InsertNoteMutationVariables>(InsertNoteDocument, variables)(),
+      options
+    );
+useInsertNoteMutation.fetcher = (variables: InsertNoteMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNoteMutation, InsertNoteMutationVariables>(InsertNoteDocument, variables, options);
+export const UpdateNoteDocument = `
+    mutation UpdateNote($id: Int!, $notes: String!) {
+  update_notes(where: {id: {_eq: $id}}, _set: {notes: $notes}) {
+    affected_rows
+    returning {
+      id
+      notes
+      created_by
+      created_at
+      resource_type
+      resource_id
+      user_group_id
+      user_group {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export const useUpdateNoteMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>) =>
+    useMutation<UpdateNoteMutation, TError, UpdateNoteMutationVariables, TContext>(
+      ['UpdateNote'],
+      (variables?: UpdateNoteMutationVariables) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(UpdateNoteDocument, variables)(),
+      options
+    );
+useUpdateNoteMutation.fetcher = (variables: UpdateNoteMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateNoteMutation, UpdateNoteMutationVariables>(UpdateNoteDocument, variables, options);
+export const DeleteNoteByIdDocument = `
+    mutation DeleteNoteById($id: Int!) {
+  delete_notes(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteNoteByIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteNoteByIdMutation, TError, DeleteNoteByIdMutationVariables, TContext>) =>
+    useMutation<DeleteNoteByIdMutation, TError, DeleteNoteByIdMutationVariables, TContext>(
+      ['DeleteNoteById'],
+      (variables?: DeleteNoteByIdMutationVariables) => fetcher<DeleteNoteByIdMutation, DeleteNoteByIdMutationVariables>(DeleteNoteByIdDocument, variables)(),
+      options
+    );
+useDeleteNoteByIdMutation.fetcher = (variables: DeleteNoteByIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteNoteByIdMutation, DeleteNoteByIdMutationVariables>(DeleteNoteByIdDocument, variables, options);
+export const InsertLikesDocument = `
+    mutation InsertLikes($object: likes_insert_input!) {
+  insert_likes_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertLikesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertLikesMutation, TError, InsertLikesMutationVariables, TContext>) =>
+    useMutation<InsertLikesMutation, TError, InsertLikesMutationVariables, TContext>(
+      ['InsertLikes'],
+      (variables?: InsertLikesMutationVariables) => fetcher<InsertLikesMutation, InsertLikesMutationVariables>(InsertLikesDocument, variables)(),
+      options
+    );
+useInsertLikesMutation.fetcher = (variables: InsertLikesMutationVariables, options?: RequestInit['headers']) => fetcher<InsertLikesMutation, InsertLikesMutationVariables>(InsertLikesDocument, variables, options);
+export const DeleteLikesDocument = `
+    mutation DeleteLikes($id: Int!) {
+  delete_likes(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteLikesMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteLikesMutation, TError, DeleteLikesMutationVariables, TContext>) =>
+    useMutation<DeleteLikesMutation, TError, DeleteLikesMutationVariables, TContext>(
+      ['DeleteLikes'],
+      (variables?: DeleteLikesMutationVariables) => fetcher<DeleteLikesMutation, DeleteLikesMutationVariables>(DeleteLikesDocument, variables)(),
+      options
+    );
+useDeleteLikesMutation.fetcher = (variables: DeleteLikesMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteLikesMutation, DeleteLikesMutationVariables>(DeleteLikesDocument, variables, options);
+export const InsertCommentsDocument = `
+    mutation InsertComments($object: comments_insert_input!) {
+  insert_comments_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertCommentsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertCommentsMutation, TError, InsertCommentsMutationVariables, TContext>) =>
+    useMutation<InsertCommentsMutation, TError, InsertCommentsMutationVariables, TContext>(
+      ['InsertComments'],
+      (variables?: InsertCommentsMutationVariables) => fetcher<InsertCommentsMutation, InsertCommentsMutationVariables>(InsertCommentsDocument, variables)(),
+      options
+    );
+useInsertCommentsMutation.fetcher = (variables: InsertCommentsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertCommentsMutation, InsertCommentsMutationVariables>(InsertCommentsDocument, variables, options);
+export const DeleteCommentOneDocument = `
+    mutation DeleteCommentOne($id: Int!) {
+  delete_comments(where: {id: {_eq: $id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteCommentOneMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteCommentOneMutation, TError, DeleteCommentOneMutationVariables, TContext>) =>
+    useMutation<DeleteCommentOneMutation, TError, DeleteCommentOneMutationVariables, TContext>(
+      ['DeleteCommentOne'],
+      (variables?: DeleteCommentOneMutationVariables) => fetcher<DeleteCommentOneMutation, DeleteCommentOneMutationVariables>(DeleteCommentOneDocument, variables)(),
+      options
+    );
+useDeleteCommentOneMutation.fetcher = (variables: DeleteCommentOneMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteCommentOneMutation, DeleteCommentOneMutationVariables>(DeleteCommentOneDocument, variables, options);
+export const DeleteLikesByNoteIdDocument = `
+    mutation DeleteLikesByNoteId($note_id: Int!) {
+  delete_likes(where: {note_id: {_eq: $note_id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteLikesByNoteIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteLikesByNoteIdMutation, TError, DeleteLikesByNoteIdMutationVariables, TContext>) =>
+    useMutation<DeleteLikesByNoteIdMutation, TError, DeleteLikesByNoteIdMutationVariables, TContext>(
+      ['DeleteLikesByNoteId'],
+      (variables?: DeleteLikesByNoteIdMutationVariables) => fetcher<DeleteLikesByNoteIdMutation, DeleteLikesByNoteIdMutationVariables>(DeleteLikesByNoteIdDocument, variables)(),
+      options
+    );
+useDeleteLikesByNoteIdMutation.fetcher = (variables: DeleteLikesByNoteIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteLikesByNoteIdMutation, DeleteLikesByNoteIdMutationVariables>(DeleteLikesByNoteIdDocument, variables, options);
+export const DeleteCommentsByNoteIdDocument = `
+    mutation DeleteCommentsByNoteId($note_id: Int!) {
+  delete_comments(where: {note_id: {_eq: $note_id}}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useDeleteCommentsByNoteIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<DeleteCommentsByNoteIdMutation, TError, DeleteCommentsByNoteIdMutationVariables, TContext>) =>
+    useMutation<DeleteCommentsByNoteIdMutation, TError, DeleteCommentsByNoteIdMutationVariables, TContext>(
+      ['DeleteCommentsByNoteId'],
+      (variables?: DeleteCommentsByNoteIdMutationVariables) => fetcher<DeleteCommentsByNoteIdMutation, DeleteCommentsByNoteIdMutationVariables>(DeleteCommentsByNoteIdDocument, variables)(),
+      options
+    );
+useDeleteCommentsByNoteIdMutation.fetcher = (variables: DeleteCommentsByNoteIdMutationVariables, options?: RequestInit['headers']) => fetcher<DeleteCommentsByNoteIdMutation, DeleteCommentsByNoteIdMutationVariables>(DeleteCommentsByNoteIdDocument, variables, options);
+export const FindNoteLikesOneDocument = `
+    query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
+  likes(
+    where: {_and: [{note_id: {_eq: $note_id}}, {created_by_user_id: {_eq: $user_id}}]}
+    limit: 1
+  ) {
+    id
+  }
+}
+    `;
+export const useFindNoteLikesOneQuery = <
+      TData = FindNoteLikesOneQuery,
+      TError = Error
+    >(
+      variables: FindNoteLikesOneQueryVariables,
+      options?: UseQueryOptions<FindNoteLikesOneQuery, TError, TData>
+    ) =>
+    useQuery<FindNoteLikesOneQuery, TError, TData>(
+      ['FindNoteLikesOne', variables],
+      fetcher<FindNoteLikesOneQuery, FindNoteLikesOneQueryVariables>(FindNoteLikesOneDocument, variables),
+      options
+    );
+useFindNoteLikesOneQuery.document = FindNoteLikesOneDocument;
+
+
+useFindNoteLikesOneQuery.getKey = (variables: FindNoteLikesOneQueryVariables) => ['FindNoteLikesOne', variables];
+;
+
+useFindNoteLikesOneQuery.fetcher = (variables: FindNoteLikesOneQueryVariables, options?: RequestInit['headers']) => fetcher<FindNoteLikesOneQuery, FindNoteLikesOneQueryVariables>(FindNoteLikesOneDocument, variables, options);
+export const FindCommentByIdDocument = `
+    query FindCommentById($id: Int!) {
+  comments(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    created_by_user_id
+  }
+}
+    `;
+export const useFindCommentByIdQuery = <
+      TData = FindCommentByIdQuery,
+      TError = Error
+    >(
+      variables: FindCommentByIdQueryVariables,
+      options?: UseQueryOptions<FindCommentByIdQuery, TError, TData>
+    ) =>
+    useQuery<FindCommentByIdQuery, TError, TData>(
+      ['FindCommentById', variables],
+      fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables),
+      options
+    );
+useFindCommentByIdQuery.document = FindCommentByIdDocument;
+
+
+useFindCommentByIdQuery.getKey = (variables: FindCommentByIdQueryVariables) => ['FindCommentById', variables];
+;
+
+useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, options?: RequestInit['headers']) => fetcher<FindCommentByIdQuery, FindCommentByIdQueryVariables>(FindCommentByIdDocument, variables, options);
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($user: Int!) {
   notifications(
     where: {target_user_id: {_eq: $user}}
     order_by: {created_at: desc}
-    limit: 10
+    limit: 100
   ) {
+    id
     read
     created_at
     event_type
@@ -19872,6 +26226,14 @@ export const GetNotificationsForUserDocument = `
       name
       slug
       logo
+    }
+    notification_actions {
+      id
+      action_id
+      action {
+        id
+        properties
+      }
     }
   }
 }
@@ -19895,6 +26257,71 @@ useGetNotificationsForUserQuery.getKey = (variables: GetNotificationsForUserQuer
 ;
 
 useGetNotificationsForUserQuery.fetcher = (variables: GetNotificationsForUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetNotificationsForUserQuery, GetNotificationsForUserQueryVariables>(GetNotificationsForUserDocument, variables, options);
+export const InsertNotificationsDocument = `
+    mutation InsertNotifications($object: notifications_insert_input!) {
+  insert_notifications_one(object: $object) {
+    id
+    target_user_id
+    event_type
+    follow_resource_type
+    notification_resource_type
+    company_id
+    vc_firm_id
+    message
+    read_at
+    created_at
+    updated_at
+    read
+  }
+}
+    `;
+export const useInsertNotificationsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertNotificationsMutation, TError, InsertNotificationsMutationVariables, TContext>) =>
+    useMutation<InsertNotificationsMutation, TError, InsertNotificationsMutationVariables, TContext>(
+      ['InsertNotifications'],
+      (variables?: InsertNotificationsMutationVariables) => fetcher<InsertNotificationsMutation, InsertNotificationsMutationVariables>(InsertNotificationsDocument, variables)(),
+      options
+    );
+useInsertNotificationsMutation.fetcher = (variables: InsertNotificationsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationsMutation, InsertNotificationsMutationVariables>(InsertNotificationsDocument, variables, options);
+export const MarkNotificationsAsReadDocument = `
+    mutation MarkNotificationsAsRead($where: notifications_bool_exp!) {
+  update_notifications(where: $where, _set: {read: true}) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+    `;
+export const useMarkNotificationsAsReadMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<MarkNotificationsAsReadMutation, TError, MarkNotificationsAsReadMutationVariables, TContext>) =>
+    useMutation<MarkNotificationsAsReadMutation, TError, MarkNotificationsAsReadMutationVariables, TContext>(
+      ['MarkNotificationsAsRead'],
+      (variables?: MarkNotificationsAsReadMutationVariables) => fetcher<MarkNotificationsAsReadMutation, MarkNotificationsAsReadMutationVariables>(MarkNotificationsAsReadDocument, variables)(),
+      options
+    );
+useMarkNotificationsAsReadMutation.fetcher = (variables: MarkNotificationsAsReadMutationVariables, options?: RequestInit['headers']) => fetcher<MarkNotificationsAsReadMutation, MarkNotificationsAsReadMutationVariables>(MarkNotificationsAsReadDocument, variables, options);
+export const InsertNotificationActionsDocument = `
+    mutation InsertNotificationActions($object: notification_actions_insert_input!) {
+  insert_notification_actions_one(object: $object) {
+    id
+  }
+}
+    `;
+export const useInsertNotificationActionsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertNotificationActionsMutation, TError, InsertNotificationActionsMutationVariables, TContext>) =>
+    useMutation<InsertNotificationActionsMutation, TError, InsertNotificationActionsMutationVariables, TContext>(
+      ['InsertNotificationActions'],
+      (variables?: InsertNotificationActionsMutationVariables) => fetcher<InsertNotificationActionsMutation, InsertNotificationActionsMutationVariables>(InsertNotificationActionsDocument, variables)(),
+      options
+    );
+useInsertNotificationActionsMutation.fetcher = (variables: InsertNotificationActionsMutationVariables, options?: RequestInit['headers']) => fetcher<InsertNotificationActionsMutation, InsertNotificationActionsMutationVariables>(InsertNotificationActionsDocument, variables, options);
 export const GetPersonDocument = `
     query GetPerson($slug: String!) {
   people(where: {slug: {_eq: $slug}}) {
@@ -19928,6 +26355,7 @@ export const GetPersonDocument = `
         logo
         overview
         location
+        tags
       }
     }
     team_members {
@@ -19944,6 +26372,7 @@ export const GetPersonDocument = `
         logo
         overview
         location
+        tags
       }
     }
     investments {
@@ -19957,7 +26386,18 @@ export const GetPersonDocument = `
           slug
           name
           logo
+          tags
         }
+      }
+    }
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        status
       }
     }
   }
@@ -20037,6 +26477,227 @@ useGetAllPersonsQuery.getKey = (variables?: GetAllPersonsQueryVariables) => vari
 ;
 
 useGetAllPersonsQuery.fetcher = (variables?: GetAllPersonsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllPersonsQuery, GetAllPersonsQueryVariables>(GetAllPersonsDocument, variables, options);
+export const SearchPeopleDocument = `
+    query SearchPeople($query: String, $searchText: jsonb) {
+  users(
+    where: {_or: [{email: {_ilike: $query}}, {additional_emails: {_contains: $searchText}}, {person: {_or: [{name: {_ilike: $query}}, {work_email: {_ilike: $query}}, {personal_email: {_ilike: $query}}]}}]}
+    limit: 50
+  ) {
+    id
+    display_name
+    email
+    person {
+      id
+      name
+      picture
+      slug
+    }
+  }
+}
+    `;
+export const useSearchPeopleQuery = <
+      TData = SearchPeopleQuery,
+      TError = Error
+    >(
+      variables?: SearchPeopleQueryVariables,
+      options?: UseQueryOptions<SearchPeopleQuery, TError, TData>
+    ) =>
+    useQuery<SearchPeopleQuery, TError, TData>(
+      variables === undefined ? ['SearchPeople'] : ['SearchPeople', variables],
+      fetcher<SearchPeopleQuery, SearchPeopleQueryVariables>(SearchPeopleDocument, variables),
+      options
+    );
+useSearchPeopleQuery.document = SearchPeopleDocument;
+
+
+useSearchPeopleQuery.getKey = (variables?: SearchPeopleQueryVariables) => variables === undefined ? ['SearchPeople'] : ['SearchPeople', variables];
+;
+
+useSearchPeopleQuery.fetcher = (variables?: SearchPeopleQueryVariables, options?: RequestInit['headers']) => fetcher<SearchPeopleQuery, SearchPeopleQueryVariables>(SearchPeopleDocument, variables, options);
+export const GetPeopleByDateDocument = `
+    query GetPeopleByDate($date: timestamptz) {
+  people(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+  ) {
+    id
+    name
+    work_email
+    personal_email
+    picture
+    slug
+  }
+}
+    `;
+export const useGetPeopleByDateQuery = <
+      TData = GetPeopleByDateQuery,
+      TError = Error
+    >(
+      variables?: GetPeopleByDateQueryVariables,
+      options?: UseQueryOptions<GetPeopleByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetPeopleByDateQuery, TError, TData>(
+      variables === undefined ? ['GetPeopleByDate'] : ['GetPeopleByDate', variables],
+      fetcher<GetPeopleByDateQuery, GetPeopleByDateQueryVariables>(GetPeopleByDateDocument, variables),
+      options
+    );
+useGetPeopleByDateQuery.document = GetPeopleByDateDocument;
+
+
+useGetPeopleByDateQuery.getKey = (variables?: GetPeopleByDateQueryVariables) => variables === undefined ? ['GetPeopleByDate'] : ['GetPeopleByDate', variables];
+;
+
+useGetPeopleByDateQuery.fetcher = (variables?: GetPeopleByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetPeopleByDateQuery, GetPeopleByDateQueryVariables>(GetPeopleByDateDocument, variables, options);
+export const UpdatePeopleByPkDocument = `
+    mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
+  update_people_by_pk(_set: $set, pk_columns: {id: $id}) {
+    id
+    name
+    personal_email
+    picture
+    slug
+    status
+    type
+    work_email
+    linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    about
+    email
+    team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+      }
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+        }
+      }
+    }
+  }
+}
+    `;
+export const useUpdatePeopleByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdatePeopleByPkMutation, TError, UpdatePeopleByPkMutationVariables, TContext>) =>
+    useMutation<UpdatePeopleByPkMutation, TError, UpdatePeopleByPkMutationVariables, TContext>(
+      ['UpdatePeopleByPk'],
+      (variables?: UpdatePeopleByPkMutationVariables) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables)(),
+      options
+    );
+useUpdatePeopleByPkMutation.fetcher = (variables: UpdatePeopleByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdatePeopleByPkMutation, UpdatePeopleByPkMutationVariables>(UpdatePeopleByPkDocument, variables, options);
+export const InsertResetPasswordDocument = `
+    mutation InsertResetPassword($object: reset_passwords_insert_input!) {
+  insert_reset_passwords_one(object: $object) {
+    id
+    user_id
+    generated_password
+    created_at
+  }
+}
+    `;
+export const useInsertResetPasswordMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertResetPasswordMutation, TError, InsertResetPasswordMutationVariables, TContext>) =>
+    useMutation<InsertResetPasswordMutation, TError, InsertResetPasswordMutationVariables, TContext>(
+      ['InsertResetPassword'],
+      (variables?: InsertResetPasswordMutationVariables) => fetcher<InsertResetPasswordMutation, InsertResetPasswordMutationVariables>(InsertResetPasswordDocument, variables)(),
+      options
+    );
+useInsertResetPasswordMutation.fetcher = (variables: InsertResetPasswordMutationVariables, options?: RequestInit['headers']) => fetcher<InsertResetPasswordMutation, InsertResetPasswordMutationVariables>(InsertResetPasswordDocument, variables, options);
+export const InsertEditAccessDocument = `
+    mutation InsertEditAccess($userId: Int, $resourceId: Int, $resourceType: String) {
+  insert_resource_edit_access_one(
+    object: {user_id: $userId, resource_id: $resourceId, resource_type: $resourceType}
+    on_conflict: {constraint: resource_edit_access_resource_id_user_id_resource_type_key, update_columns: []}
+  ) {
+    id
+    user_id
+    resource_id
+    resource_type
+  }
+}
+    `;
+export const useInsertEditAccessMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertEditAccessMutation, TError, InsertEditAccessMutationVariables, TContext>) =>
+    useMutation<InsertEditAccessMutation, TError, InsertEditAccessMutationVariables, TContext>(
+      ['InsertEditAccess'],
+      (variables?: InsertEditAccessMutationVariables) => fetcher<InsertEditAccessMutation, InsertEditAccessMutationVariables>(InsertEditAccessDocument, variables)(),
+      options
+    );
+useInsertEditAccessMutation.fetcher = (variables?: InsertEditAccessMutationVariables, options?: RequestInit['headers']) => fetcher<InsertEditAccessMutation, InsertEditAccessMutationVariables>(InsertEditAccessDocument, variables, options);
+export const UpsertTeamMemberDocument = `
+    mutation UpsertTeamMember($data: team_members_insert_input!) {
+  insert_team_members_one(
+    object: $data
+    on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: [function, title, founder, start_date, end_date]}
+  ) {
+    id
+    function
+    person_id
+    company_id
+    title
+    start_date
+    end_date
+    seniority
+  }
+}
+    `;
+export const useUpsertTeamMemberMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertTeamMemberMutation, TError, UpsertTeamMemberMutationVariables, TContext>) =>
+    useMutation<UpsertTeamMemberMutation, TError, UpsertTeamMemberMutationVariables, TContext>(
+      ['UpsertTeamMember'],
+      (variables?: UpsertTeamMemberMutationVariables) => fetcher<UpsertTeamMemberMutation, UpsertTeamMemberMutationVariables>(UpsertTeamMemberDocument, variables)(),
+      options
+    );
+useUpsertTeamMemberMutation.fetcher = (variables: UpsertTeamMemberMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertTeamMemberMutation, UpsertTeamMemberMutationVariables>(UpsertTeamMemberDocument, variables, options);
+export const InsertTeamMemberDocument = `
+    mutation InsertTeamMember($personId: Int, $companyId: Int, $vcFirmId: Int) {
+  insert_team_members_one(
+    object: {person_id: $personId, company_id: $companyId}
+    on_conflict: {constraint: team_members_company_id_person_id_key, update_columns: []}
+  ) {
+    id
+  }
+}
+    `;
+export const useInsertTeamMemberMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<InsertTeamMemberMutation, TError, InsertTeamMemberMutationVariables, TContext>) =>
+    useMutation<InsertTeamMemberMutation, TError, InsertTeamMemberMutationVariables, TContext>(
+      ['InsertTeamMember'],
+      (variables?: InsertTeamMemberMutationVariables) => fetcher<InsertTeamMemberMutation, InsertTeamMemberMutationVariables>(InsertTeamMemberDocument, variables)(),
+      options
+    );
+useInsertTeamMemberMutation.fetcher = (variables?: InsertTeamMemberMutationVariables, options?: RequestInit['headers']) => fetcher<InsertTeamMemberMutation, InsertTeamMemberMutationVariables>(InsertTeamMemberDocument, variables, options);
 export const GetUserProfileDocument = `
     query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
@@ -20135,6 +26796,543 @@ useGetUserProfileQuery.getKey = (variables: GetUserProfileQueryVariables) => ['G
 ;
 
 useGetUserProfileQuery.fetcher = (variables: GetUserProfileQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserProfileQuery, GetUserProfileQueryVariables>(GetUserProfileDocument, variables, options);
+export const GetUserByPersonIdDocument = `
+    query GetUserByPersonId($person_id: Int!) {
+  users(where: {person_id: {_eq: $person_id}}) {
+    id
+    billing_org_id
+    organization_companies {
+      id
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    organization_vc_firms {
+      id
+      vc_firm {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+      }
+    }
+    person {
+      id
+      name
+      personal_email
+      picture
+      slug
+      status
+      type
+      work_email
+      linkedin
+      github
+      city
+      country
+      facebook_url
+      twitter_url
+      website_url
+      about
+      email
+      team_members {
+        id
+        end_date
+        start_date
+        founder
+        function
+        title
+        company {
+          id
+          slug
+          name
+          logo
+          overview
+          location
+        }
+      }
+      investments {
+        investment_round {
+          id
+          round_date
+          round
+          amount
+          company {
+            id
+            slug
+            name
+            logo
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetUserByPersonIdQuery = <
+      TData = GetUserByPersonIdQuery,
+      TError = Error
+    >(
+      variables: GetUserByPersonIdQueryVariables,
+      options?: UseQueryOptions<GetUserByPersonIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByPersonIdQuery, TError, TData>(
+      ['GetUserByPersonId', variables],
+      fetcher<GetUserByPersonIdQuery, GetUserByPersonIdQueryVariables>(GetUserByPersonIdDocument, variables),
+      options
+    );
+useGetUserByPersonIdQuery.document = GetUserByPersonIdDocument;
+
+
+useGetUserByPersonIdQuery.getKey = (variables: GetUserByPersonIdQueryVariables) => ['GetUserByPersonId', variables];
+;
+
+useGetUserByPersonIdQuery.fetcher = (variables: GetUserByPersonIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPersonIdQuery, GetUserByPersonIdQueryVariables>(GetUserByPersonIdDocument, variables, options);
+export const GetUserByPkDocument = `
+    query GetUserByPk($userId: Int!) {
+  users_by_pk(id: $userId) {
+    id
+    additional_emails
+    email
+  }
+}
+    `;
+export const useGetUserByPkQuery = <
+      TData = GetUserByPkQuery,
+      TError = Error
+    >(
+      variables: GetUserByPkQueryVariables,
+      options?: UseQueryOptions<GetUserByPkQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByPkQuery, TError, TData>(
+      ['GetUserByPk', variables],
+      fetcher<GetUserByPkQuery, GetUserByPkQueryVariables>(GetUserByPkDocument, variables),
+      options
+    );
+useGetUserByPkQuery.document = GetUserByPkDocument;
+
+
+useGetUserByPkQuery.getKey = (variables: GetUserByPkQueryVariables) => ['GetUserByPk', variables];
+;
+
+useGetUserByPkQuery.fetcher = (variables: GetUserByPkQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByPkQuery, GetUserByPkQueryVariables>(GetUserByPkDocument, variables, options);
+export const UpdateUserAdditionalEmailsByPkDocument = `
+    mutation UpdateUserAdditionalEmailsByPk($userId: Int!, $emails: jsonb) {
+  update_users_by_pk(
+    pk_columns: {id: $userId}
+    _set: {additional_emails: $emails}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpdateUserAdditionalEmailsByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAdditionalEmailsByPkMutation, TError, UpdateUserAdditionalEmailsByPkMutationVariables, TContext>) =>
+    useMutation<UpdateUserAdditionalEmailsByPkMutation, TError, UpdateUserAdditionalEmailsByPkMutationVariables, TContext>(
+      ['UpdateUserAdditionalEmailsByPk'],
+      (variables?: UpdateUserAdditionalEmailsByPkMutationVariables) => fetcher<UpdateUserAdditionalEmailsByPkMutation, UpdateUserAdditionalEmailsByPkMutationVariables>(UpdateUserAdditionalEmailsByPkDocument, variables)(),
+      options
+    );
+useUpdateUserAdditionalEmailsByPkMutation.fetcher = (variables: UpdateUserAdditionalEmailsByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAdditionalEmailsByPkMutation, UpdateUserAdditionalEmailsByPkMutationVariables>(UpdateUserAdditionalEmailsByPkDocument, variables, options);
+export const GetUserByEmailDocument = `
+    query GetUserByEmail($email: String) {
+  users(where: {email: {_eq: $email}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+    `;
+export const useGetUserByEmailQuery = <
+      TData = GetUserByEmailQuery,
+      TError = Error
+    >(
+      variables?: GetUserByEmailQueryVariables,
+      options?: UseQueryOptions<GetUserByEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByEmailQuery, TError, TData>(
+      variables === undefined ? ['GetUserByEmail'] : ['GetUserByEmail', variables],
+      fetcher<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, variables),
+      options
+    );
+useGetUserByEmailQuery.document = GetUserByEmailDocument;
+
+
+useGetUserByEmailQuery.getKey = (variables?: GetUserByEmailQueryVariables) => variables === undefined ? ['GetUserByEmail'] : ['GetUserByEmail', variables];
+;
+
+useGetUserByEmailQuery.fetcher = (variables?: GetUserByEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByEmailQuery, GetUserByEmailQueryVariables>(GetUserByEmailDocument, variables, options);
+export const GetUserByIdDocument = `
+    query GetUserById($id: Int) {
+  users(where: {id: {_eq: $id}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    billing_org {
+      customer_id
+    }
+    person {
+      name
+      picture
+    }
+    additional_emails
+  }
+}
+    `;
+export const useGetUserByIdQuery = <
+      TData = GetUserByIdQuery,
+      TError = Error
+    >(
+      variables?: GetUserByIdQueryVariables,
+      options?: UseQueryOptions<GetUserByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByIdQuery, TError, TData>(
+      variables === undefined ? ['GetUserById'] : ['GetUserById', variables],
+      fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, variables),
+      options
+    );
+useGetUserByIdQuery.document = GetUserByIdDocument;
+
+
+useGetUserByIdQuery.getKey = (variables?: GetUserByIdQueryVariables) => variables === undefined ? ['GetUserById'] : ['GetUserById', variables];
+;
+
+useGetUserByIdQuery.fetcher = (variables?: GetUserByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByIdQuery, GetUserByIdQueryVariables>(GetUserByIdDocument, variables, options);
+export const UpdateUserBillingOrgDocument = `
+    mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
+  update_users_by_pk(
+    pk_columns: {id: $userId}
+    _set: {billing_org_id: $billingOrgId}
+  ) {
+    id
+  }
+}
+    `;
+export const useUpdateUserBillingOrgMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserBillingOrgMutation, TError, UpdateUserBillingOrgMutationVariables, TContext>) =>
+    useMutation<UpdateUserBillingOrgMutation, TError, UpdateUserBillingOrgMutationVariables, TContext>(
+      ['UpdateUserBillingOrg'],
+      (variables?: UpdateUserBillingOrgMutationVariables) => fetcher<UpdateUserBillingOrgMutation, UpdateUserBillingOrgMutationVariables>(UpdateUserBillingOrgDocument, variables)(),
+      options
+    );
+useUpdateUserBillingOrgMutation.fetcher = (variables: UpdateUserBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserBillingOrgMutation, UpdateUserBillingOrgMutationVariables>(UpdateUserBillingOrgDocument, variables, options);
+export const UpsertUsersDocument = `
+    mutation UpsertUsers($external_id: String, $email: String, $role: String, $display_name: String, $auth0_linkedin_id: String, $auth0_user_pass_id: String, $reference_user_id: Int) {
+  insert_users(
+    objects: [{external_id: $external_id, email: $email, role: $role, display_name: $display_name, auth0_linkedin_id: $auth0_linkedin_id, auth0_user_pass_id: $auth0_user_pass_id, reference_user_id: $reference_user_id}]
+    on_conflict: {constraint: users_email_key, update_columns: [external_id]}
+  ) {
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpsertUsersMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertUsersMutation, TError, UpsertUsersMutationVariables, TContext>) =>
+    useMutation<UpsertUsersMutation, TError, UpsertUsersMutationVariables, TContext>(
+      ['UpsertUsers'],
+      (variables?: UpsertUsersMutationVariables) => fetcher<UpsertUsersMutation, UpsertUsersMutationVariables>(UpsertUsersDocument, variables)(),
+      options
+    );
+useUpsertUsersMutation.fetcher = (variables?: UpsertUsersMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertUsersMutation, UpsertUsersMutationVariables>(UpsertUsersDocument, variables, options);
+export const UpdateUserEmailVerifiedStatusDocument = `
+    mutation UpdateUserEmailVerifiedStatus($email: String!, $is_auth0_verified: Boolean) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {is_auth0_verified: $is_auth0_verified}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserEmailVerifiedStatusMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserEmailVerifiedStatusMutation, TError, UpdateUserEmailVerifiedStatusMutationVariables, TContext>) =>
+    useMutation<UpdateUserEmailVerifiedStatusMutation, TError, UpdateUserEmailVerifiedStatusMutationVariables, TContext>(
+      ['UpdateUserEmailVerifiedStatus'],
+      (variables?: UpdateUserEmailVerifiedStatusMutationVariables) => fetcher<UpdateUserEmailVerifiedStatusMutation, UpdateUserEmailVerifiedStatusMutationVariables>(UpdateUserEmailVerifiedStatusDocument, variables)(),
+      options
+    );
+useUpdateUserEmailVerifiedStatusMutation.fetcher = (variables: UpdateUserEmailVerifiedStatusMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserEmailVerifiedStatusMutation, UpdateUserEmailVerifiedStatusMutationVariables>(UpdateUserEmailVerifiedStatusDocument, variables, options);
+export const UpdateUserAuth0LinkedInIdDocument = `
+    mutation UpdateUserAuth0LinkedInId($email: String!, $auth0_linkedin_id: String) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {auth0_linkedin_id: $auth0_linkedin_id}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserAuth0LinkedInIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAuth0LinkedInIdMutation, TError, UpdateUserAuth0LinkedInIdMutationVariables, TContext>) =>
+    useMutation<UpdateUserAuth0LinkedInIdMutation, TError, UpdateUserAuth0LinkedInIdMutationVariables, TContext>(
+      ['UpdateUserAuth0LinkedInId'],
+      (variables?: UpdateUserAuth0LinkedInIdMutationVariables) => fetcher<UpdateUserAuth0LinkedInIdMutation, UpdateUserAuth0LinkedInIdMutationVariables>(UpdateUserAuth0LinkedInIdDocument, variables)(),
+      options
+    );
+useUpdateUserAuth0LinkedInIdMutation.fetcher = (variables: UpdateUserAuth0LinkedInIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAuth0LinkedInIdMutation, UpdateUserAuth0LinkedInIdMutationVariables>(UpdateUserAuth0LinkedInIdDocument, variables, options);
+export const UpdateUserAuth0UserPassIdDocument = `
+    mutation UpdateUserAuth0UserPassId($email: String!, $auth0_user_pass_id: String) {
+  update_users(
+    where: {email: {_eq: $email}}
+    _set: {auth0_user_pass_id: $auth0_user_pass_id}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserAuth0UserPassIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAuth0UserPassIdMutation, TError, UpdateUserAuth0UserPassIdMutationVariables, TContext>) =>
+    useMutation<UpdateUserAuth0UserPassIdMutation, TError, UpdateUserAuth0UserPassIdMutationVariables, TContext>(
+      ['UpdateUserAuth0UserPassId'],
+      (variables?: UpdateUserAuth0UserPassIdMutationVariables) => fetcher<UpdateUserAuth0UserPassIdMutation, UpdateUserAuth0UserPassIdMutationVariables>(UpdateUserAuth0UserPassIdDocument, variables)(),
+      options
+    );
+useUpdateUserAuth0UserPassIdMutation.fetcher = (variables: UpdateUserAuth0UserPassIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAuth0UserPassIdMutation, UpdateUserAuth0UserPassIdMutationVariables>(UpdateUserAuth0UserPassIdDocument, variables, options);
+export const GetUserByReferenceIdDocument = `
+    query GetUserByReferenceId($reference_id: String) {
+  users(where: {reference_id: {_eq: $reference_id}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+    `;
+export const useGetUserByReferenceIdQuery = <
+      TData = GetUserByReferenceIdQuery,
+      TError = Error
+    >(
+      variables?: GetUserByReferenceIdQueryVariables,
+      options?: UseQueryOptions<GetUserByReferenceIdQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByReferenceIdQuery, TError, TData>(
+      variables === undefined ? ['GetUserByReferenceId'] : ['GetUserByReferenceId', variables],
+      fetcher<GetUserByReferenceIdQuery, GetUserByReferenceIdQueryVariables>(GetUserByReferenceIdDocument, variables),
+      options
+    );
+useGetUserByReferenceIdQuery.document = GetUserByReferenceIdDocument;
+
+
+useGetUserByReferenceIdQuery.getKey = (variables?: GetUserByReferenceIdQueryVariables) => variables === undefined ? ['GetUserByReferenceId'] : ['GetUserByReferenceId', variables];
+;
+
+useGetUserByReferenceIdQuery.fetcher = (variables?: GetUserByReferenceIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByReferenceIdQuery, GetUserByReferenceIdQueryVariables>(GetUserByReferenceIdDocument, variables, options);
+export const UpdateUserAdditionalEmailsDocument = `
+    mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
+  update_users(
+    where: {id: {_eq: $id}}
+    _set: {additional_emails: $additional_emails}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+    `;
+export const useUpdateUserAdditionalEmailsMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserAdditionalEmailsMutation, TError, UpdateUserAdditionalEmailsMutationVariables, TContext>) =>
+    useMutation<UpdateUserAdditionalEmailsMutation, TError, UpdateUserAdditionalEmailsMutationVariables, TContext>(
+      ['UpdateUserAdditionalEmails'],
+      (variables?: UpdateUserAdditionalEmailsMutationVariables) => fetcher<UpdateUserAdditionalEmailsMutation, UpdateUserAdditionalEmailsMutationVariables>(UpdateUserAdditionalEmailsDocument, variables)(),
+      options
+    );
+useUpdateUserAdditionalEmailsMutation.fetcher = (variables: UpdateUserAdditionalEmailsMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserAdditionalEmailsMutation, UpdateUserAdditionalEmailsMutationVariables>(UpdateUserAdditionalEmailsDocument, variables, options);
+export const GetUserByAdditionalEmailDocument = `
+    query GetUserByAdditionalEmail($email: jsonb) {
+  users(where: {additional_emails: {_contains: $email}}, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+    `;
+export const useGetUserByAdditionalEmailQuery = <
+      TData = GetUserByAdditionalEmailQuery,
+      TError = Error
+    >(
+      variables?: GetUserByAdditionalEmailQueryVariables,
+      options?: UseQueryOptions<GetUserByAdditionalEmailQuery, TError, TData>
+    ) =>
+    useQuery<GetUserByAdditionalEmailQuery, TError, TData>(
+      variables === undefined ? ['GetUserByAdditionalEmail'] : ['GetUserByAdditionalEmail', variables],
+      fetcher<GetUserByAdditionalEmailQuery, GetUserByAdditionalEmailQueryVariables>(GetUserByAdditionalEmailDocument, variables),
+      options
+    );
+useGetUserByAdditionalEmailQuery.document = GetUserByAdditionalEmailDocument;
+
+
+useGetUserByAdditionalEmailQuery.getKey = (variables?: GetUserByAdditionalEmailQueryVariables) => variables === undefined ? ['GetUserByAdditionalEmail'] : ['GetUserByAdditionalEmail', variables];
+;
+
+useGetUserByAdditionalEmailQuery.fetcher = (variables?: GetUserByAdditionalEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByAdditionalEmailQuery, GetUserByAdditionalEmailQueryVariables>(GetUserByAdditionalEmailDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
@@ -20427,3 +27625,155 @@ useGetAllVcFirmsQuery.getKey = (variables?: GetAllVcFirmsQueryVariables) => vari
 ;
 
 useGetAllVcFirmsQuery.fetcher = (variables?: GetAllVcFirmsQueryVariables, options?: RequestInit['headers']) => fetcher<GetAllVcFirmsQuery, GetAllVcFirmsQueryVariables>(GetAllVcFirmsDocument, variables, options);
+export const GetSentimentByVcFirmIdDocument = `
+    query GetSentimentByVcFirmId($vcFirmId: Int!) {
+  vc_firms_by_pk(id: $vcFirmId) {
+    sentiment
+    slug
+  }
+}
+    `;
+export const useGetSentimentByVcFirmIdQuery = <
+      TData = GetSentimentByVcFirmIdQuery,
+      TError = Error
+    >(
+      variables: GetSentimentByVcFirmIdQueryVariables,
+      options?: UseQueryOptions<GetSentimentByVcFirmIdQuery, TError, TData>
+    ) =>
+    useQuery<GetSentimentByVcFirmIdQuery, TError, TData>(
+      ['GetSentimentByVcFirmId', variables],
+      fetcher<GetSentimentByVcFirmIdQuery, GetSentimentByVcFirmIdQueryVariables>(GetSentimentByVcFirmIdDocument, variables),
+      options
+    );
+useGetSentimentByVcFirmIdQuery.document = GetSentimentByVcFirmIdDocument;
+
+
+useGetSentimentByVcFirmIdQuery.getKey = (variables: GetSentimentByVcFirmIdQueryVariables) => ['GetSentimentByVcFirmId', variables];
+;
+
+useGetSentimentByVcFirmIdQuery.fetcher = (variables: GetSentimentByVcFirmIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetSentimentByVcFirmIdQuery, GetSentimentByVcFirmIdQueryVariables>(GetSentimentByVcFirmIdDocument, variables, options);
+export const UpdateSentimentByVcFirmIdDocument = `
+    mutation UpdateSentimentByVcFirmId($vcFirmId: Int!, $sentiment: jsonb!) {
+  update_vc_firms_by_pk(
+    pk_columns: {id: $vcFirmId}
+    _set: {sentiment: $sentiment}
+  ) {
+    sentiment
+  }
+}
+    `;
+export const useUpdateSentimentByVcFirmIdMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateSentimentByVcFirmIdMutation, TError, UpdateSentimentByVcFirmIdMutationVariables, TContext>) =>
+    useMutation<UpdateSentimentByVcFirmIdMutation, TError, UpdateSentimentByVcFirmIdMutationVariables, TContext>(
+      ['UpdateSentimentByVcFirmId'],
+      (variables?: UpdateSentimentByVcFirmIdMutationVariables) => fetcher<UpdateSentimentByVcFirmIdMutation, UpdateSentimentByVcFirmIdMutationVariables>(UpdateSentimentByVcFirmIdDocument, variables)(),
+      options
+    );
+useUpdateSentimentByVcFirmIdMutation.fetcher = (variables: UpdateSentimentByVcFirmIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByVcFirmIdMutation, UpdateSentimentByVcFirmIdMutationVariables>(UpdateSentimentByVcFirmIdDocument, variables, options);
+export const GetVcFirmsByDateDocument = `
+    query GetVcFirmsByDate($date: timestamptz) {
+  vc_firms(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+  ) {
+    id
+    name
+    logo
+    slug
+  }
+}
+    `;
+export const useGetVcFirmsByDateQuery = <
+      TData = GetVcFirmsByDateQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsByDateQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsByDateQuery, TError, TData>(
+      variables === undefined ? ['GetVcFirmsByDate'] : ['GetVcFirmsByDate', variables],
+      fetcher<GetVcFirmsByDateQuery, GetVcFirmsByDateQueryVariables>(GetVcFirmsByDateDocument, variables),
+      options
+    );
+useGetVcFirmsByDateQuery.document = GetVcFirmsByDateDocument;
+
+
+useGetVcFirmsByDateQuery.getKey = (variables?: GetVcFirmsByDateQueryVariables) => variables === undefined ? ['GetVcFirmsByDate'] : ['GetVcFirmsByDate', variables];
+;
+
+useGetVcFirmsByDateQuery.fetcher = (variables?: GetVcFirmsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsByDateQuery, GetVcFirmsByDateQueryVariables>(GetVcFirmsByDateDocument, variables, options);
+export const UpdateVcFirmTagsByPkDocument = `
+    mutation UpdateVcFirmTagsByPk($id: Int!, $tags: jsonb) {
+  update_vc_firms_by_pk(_set: {tags: $tags}, pk_columns: {id: $id}) {
+    id
+  }
+}
+    `;
+export const useUpdateVcFirmTagsByPkMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateVcFirmTagsByPkMutation, TError, UpdateVcFirmTagsByPkMutationVariables, TContext>) =>
+    useMutation<UpdateVcFirmTagsByPkMutation, TError, UpdateVcFirmTagsByPkMutationVariables, TContext>(
+      ['UpdateVcFirmTagsByPk'],
+      (variables?: UpdateVcFirmTagsByPkMutationVariables) => fetcher<UpdateVcFirmTagsByPkMutation, UpdateVcFirmTagsByPkMutationVariables>(UpdateVcFirmTagsByPkDocument, variables)(),
+      options
+    );
+useUpdateVcFirmTagsByPkMutation.fetcher = (variables: UpdateVcFirmTagsByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateVcFirmTagsByPkMutation, UpdateVcFirmTagsByPkMutationVariables>(UpdateVcFirmTagsByPkDocument, variables, options);
+export const GetVcFirmsInvestmentsDocument = `
+    query GetVcFirmsInvestments {
+  vc_firms {
+    id
+    investments {
+      investment_round {
+        company {
+          id
+          tags
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetVcFirmsInvestmentsQuery = <
+      TData = GetVcFirmsInvestmentsQuery,
+      TError = Error
+    >(
+      variables?: GetVcFirmsInvestmentsQueryVariables,
+      options?: UseQueryOptions<GetVcFirmsInvestmentsQuery, TError, TData>
+    ) =>
+    useQuery<GetVcFirmsInvestmentsQuery, TError, TData>(
+      variables === undefined ? ['GetVcFirmsInvestments'] : ['GetVcFirmsInvestments', variables],
+      fetcher<GetVcFirmsInvestmentsQuery, GetVcFirmsInvestmentsQueryVariables>(GetVcFirmsInvestmentsDocument, variables),
+      options
+    );
+useGetVcFirmsInvestmentsQuery.document = GetVcFirmsInvestmentsDocument;
+
+
+useGetVcFirmsInvestmentsQuery.getKey = (variables?: GetVcFirmsInvestmentsQueryVariables) => variables === undefined ? ['GetVcFirmsInvestments'] : ['GetVcFirmsInvestments', variables];
+;
+
+useGetVcFirmsInvestmentsQuery.fetcher = (variables?: GetVcFirmsInvestmentsQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsInvestmentsQuery, GetVcFirmsInvestmentsQueryVariables>(GetVcFirmsInvestmentsDocument, variables, options);
+export const UpsertWaitlistEmailDocument = `
+    mutation UpsertWaitlistEmail($email: String) {
+  insert_waitlist_emails(
+    objects: [{email: $email}]
+    on_conflict: {constraint: waitlist_emails_email_key, update_columns: [email]}
+  ) {
+    returning {
+      id
+      email
+    }
+  }
+}
+    `;
+export const useUpsertWaitlistEmailMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpsertWaitlistEmailMutation, TError, UpsertWaitlistEmailMutationVariables, TContext>) =>
+    useMutation<UpsertWaitlistEmailMutation, TError, UpsertWaitlistEmailMutationVariables, TContext>(
+      ['UpsertWaitlistEmail'],
+      (variables?: UpsertWaitlistEmailMutationVariables) => fetcher<UpsertWaitlistEmailMutation, UpsertWaitlistEmailMutationVariables>(UpsertWaitlistEmailDocument, variables)(),
+      options
+    );
+useUpsertWaitlistEmailMutation.fetcher = (variables?: UpsertWaitlistEmailMutationVariables, options?: RequestInit['headers']) => fetcher<UpsertWaitlistEmailMutation, UpsertWaitlistEmailMutationVariables>(UpsertWaitlistEmailDocument, variables, options);

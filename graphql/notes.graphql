@@ -1,16 +1,188 @@
 query GetNotes($where: notes_bool_exp!) {
-  notes(where: $where, order_by: {created_at: asc}) {
+  notes(where: $where, order_by: { created_at: asc }) {
     id
     notes
     created_by
     created_at
     updated_at
     user_group_id
+    audience
     resource_type
     resource_id
     user_group {
       id
       name
     }
+    likes {
+      id
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
+    comments {
+      id
+      content
+      created_at
+      created_by_user_id
+      created_by_user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          name
+          picture
+        }
+      }
+    }
+  }
+}
+
+query GetNoteById($id: Int!) {
+  notes(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+
+mutation DeleteNotesByGroupId($groupId: Int!) {
+  delete_notes(where: { user_group_id: { _eq: $groupId } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertNote($object: notes_insert_input!) {
+  insert_notes_one(object: $object) {
+    id
+    notes
+    created_by
+    created_at
+    resource_type
+    resource_id
+    user_group_id
+    user_group {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdateNote($id: Int!, $notes: String!) {
+  update_notes(where: { id: { _eq: $id } }, _set: { notes: $notes }) {
+    affected_rows
+    returning {
+      id
+      notes
+      created_by
+      created_at
+      resource_type
+      resource_id
+      user_group_id
+      user_group {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation DeleteNoteById($id: Int!) {
+  delete_notes(where: { id: { _eq: $id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertLikes($object: likes_insert_input!) {
+  insert_likes_one(object: $object) {
+    id
+  }
+}
+
+mutation DeleteLikes($id: Int!) {
+  delete_likes(where: { id: { _eq: $id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation InsertComments($object: comments_insert_input!) {
+  insert_comments_one(object: $object) {
+    id
+  }
+}
+
+mutation DeleteCommentOne($id: Int!) {
+  delete_comments(where: { id: { _eq: $id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation DeleteLikesByNoteId($note_id: Int!) {
+  delete_likes(where: { note_id: { _eq: $note_id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+mutation DeleteCommentsByNoteId($note_id: Int!) {
+  delete_comments(where: { note_id: { _eq: $note_id } }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}
+
+query FindNoteLikesOne($note_id: Int!, $user_id: Int!) {
+  likes(
+    where: {
+      _and: [
+        { note_id: { _eq: $note_id } }
+        { created_by_user_id: { _eq: $user_id } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+  }
+}
+
+query FindCommentById($id: Int!) {
+  comments(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    created_by_user_id
   }
 }

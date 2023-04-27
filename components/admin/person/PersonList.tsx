@@ -31,7 +31,7 @@ export const PersonList = () => {
       <TextField source="linkedin" />
       <FunctionField
         source="library"
-        render={(record: any) => (record.library ? record.library.join() : "")}
+        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
       />
       <TextField source="status" />
       {/* <TextField source="counter" /> */}

@@ -16,7 +16,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         ...payload,
         created_by_user_id: user.id,
       });
-      await GroupService.onAddGroupMember(user.id, data.id);
+      if (data?.id) {
+        await GroupService.onAddGroupMember(user.id, data?.id);
+      }
       return res.send(data);
     }
 

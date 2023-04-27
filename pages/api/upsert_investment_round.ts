@@ -1,4 +1,5 @@
 import { mutate } from '@/graphql/hasuraAdmin'
+import { UpsertInvestmentRoundDocument, UpsertInvestmentRoundMutation, UpsertInvestmentsDocument, UpsertInvestmentsMutation } from '@/graphql/types'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
 
@@ -23,27 +24,14 @@ const upsertInvestmentRound = async (payload: any, token: string) => {
   const investments = payload.investments
   delete payload.investments
 
-  const mutation = `
-    mutation UpsertInvestmentRound($data: investment_rounds_insert_input!) {
-      insert_investment_rounds_one(object: $data, on_conflict: {constraint: investment_rounds_pkey, update_columns: [round_date, round, amount, valuation, currency]}) {
-        id
-        round_date
-        round
-        amount
-        valuation
-        currency
-      }
-    }
-  `
-
-  const data = await mutate({
-    mutation,
+  const data = await mutate<UpsertInvestmentRoundMutation>({
+    mutation: UpsertInvestmentRoundDocument,
     variables: {
       data: payload
     }
   })
 
-  const investmentsData = investments.map((investment: any) => ({ ...investment, round_id: data.data.insert_investment_rounds_one.id }))
+  const investmentsData = investments.map((investment: any) => ({ ...investment, round_id: data.data.insert_investment_rounds_one?.id }))
 
   const resultInvestments = await upsertInvestments(investmentsData, token)
 
@@ -51,28 +39,14 @@ const upsertInvestmentRound = async (payload: any, token: string) => {
 }
 
 const upsertInvestments = async (payload: any, token: string) => {
-  const mutation = `
-    mutation UpsertInvestments($data: [investments_insert_input!]!) {
-      insert_investments(objects: $data, on_conflict: {constraint: investments_pkey, update_columns: [amount]}) {
-        returning {
-          id
-          round_id
-          person_id
-          vc_firm_id
-          amount
-        }
-      }
-    }
-  `
-
-  const result = await mutate({
-    mutation,
+  const result = await mutate<UpsertInvestmentsMutation>({
+    mutation: UpsertInvestmentsDocument,
     variables: {
       data: payload
     }
   })
 
-  return result.data.insert_investments.returning
+  return result.data.insert_investments?.returning
 }
 
 export default handler

@@ -1,6 +1,7 @@
-import React, { MutableRefObject, useRef, useEffect, useState } from "react";
+import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
+import { flatten, union} from "lodash";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemInvestments } from "@/components/Investor/ElemInvestments";
@@ -11,8 +12,9 @@ import {
 	GetPersonDocument,
 	GetPersonQuery,
 	Investment_Rounds,
+	News,
 	People,
-	useGetUserProfileQuery,
+	useGetUserByPersonIdQuery,
 } from "@/graphql/types";
 import { ElemJobsList } from "@/components/Person/ElemJobsList";
 import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
@@ -22,10 +24,14 @@ import { useIntercom } from "react-use-intercom";
 import { IconCheckBadgeSolid } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import redisClient from "@/utils/redis-client-rate-limit";
+import { ElemTags } from "@/components/ElemTags";
+import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemNewsList } from "@/components/Person/ElemNewsList";
 
 type Props = {
 	person: People;
 	sortByDateAscInvestments: Investment_Rounds[];
+	sortNews: News[];
 };
 
 const Person: NextPage<Props> = (props) => {
@@ -49,6 +55,10 @@ const Person: NextPage<Props> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
 
+	const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
+	const companyTags = flatten(person.team_members.map(item => item?.company?.tags));
+	const personTags = union(vcFirmTags, companyTags).filter(item => item);
+
 	const personEmails = [
 		...(person.work_email ? [person.work_email] : []),
 		...(person.personal_email ? [person.personal_email] : []),
@@ -66,23 +76,12 @@ const Person: NextPage<Props> = (props) => {
 			: []),
 	];
 
-	const [claimedProfile, setClaimedProfile] = useState(false);
-
 	const profileUrl = `https://edgein.io${router.asPath}`;
 
-	const {
-		data: users,
-		refetch,
-		isLoading,
-	} = useGetUserProfileQuery({
-		id: user?.id ?? 0,
-	});
+	const { data: linkedUser, isLoading: isLoadingLinkedUser } =
+    useGetUserByPersonIdQuery({ person_id: person?.id });
 
-	useEffect(() => {
-		if (users?.users_by_pk?.person) {
-			setClaimedProfile(true);
-		}
-	}, [users]);
+  const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
 
 	return (
 		<div className="relative">
@@ -128,19 +127,39 @@ const Person: NextPage<Props> = (props) => {
 										)}
 									</div>
 
-									{!claimedProfile && (
-										<ElemButton
-											className="mt-2"
-											btn="primary"
-											onClick={() =>
-												showNewMessages(
-													`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
-												)
-											}
-										>
-											Claim profile
-										</ElemButton>
-									)}
+									{personTags?.length > 0 && (
+                    <ElemTags
+                      className="my-4"
+                      resourceType={
+                        person.team_members.length > 0
+                          ? "companies"
+                          : "investors"
+                      }
+                      tags={personTags}
+                    />
+                  )}
+
+									<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
+										{!isLoadingLinkedUser && !claimedProfile && (
+											<ElemButton
+												btn="primary"
+												onClick={() =>
+													showNewMessages(
+														`Hi EdgeIn, I'd like to claim this profile: ${profileUrl}`
+													)
+												}
+											>
+												Claim profile
+											</ElemButton>
+										)}
+											
+										<ElemSaveToList
+											resourceName={person.name}
+											resourceId={person.id}
+											resourceType="people"
+											slug={person.slug!}
+										/>
+									</div>
 								</div>
 								<div className="mt-6 lg:mt-0"></div>
 							</div>
@@ -197,6 +216,12 @@ const Person: NextPage<Props> = (props) => {
 							<ElemJobsList
 								heading="Experience"
 								team_members={person.team_members}
+								className="mb-7"
+							/>
+						)}
+						{props.sortNews.length > 0 && (
+							<ElemNewsList
+								resourceNews={props.sortNews}
 								className="mb-7"
 							/>
 						)}
@@ -270,10 +295,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		})
 		.reverse();
 
+		const sortNews =
+      people.people[0].news_links
+        ?.slice()
+        ?.map((item) => ({ ...item.news }))
+        ?.filter((item) => item.status === "published")
+        .sort((a, b) => {
+          return (
+            new Date(a?.date ?? "").getTime() -
+            new Date(b?.date ?? "").getTime()
+          );
+        })
+        .reverse() || [];
+
 	return {
 		props: {
 			person: people.people[0],
 			sortByDateAscInvestments,
+			sortNews,
 		},
 	};
 };

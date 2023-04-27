@@ -36,6 +36,7 @@ import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
 import redisClient from "@/utils/redis-client-rate-limit";
+import { Popups } from "@/components/TheNavbar";
 
 type Props = {
 	company: Companies;
@@ -43,6 +44,7 @@ type Props = {
 	sortNews: News[];
 	metrics: Metric[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const Company: NextPage<Props> = (props: Props) => {
@@ -99,9 +101,10 @@ const Company: NextPage<Props> = (props: Props) => {
 		setTokenInfo(data);
 	};
 
-	const velocityToken = tokenInfo?.vol24H
-    ? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
-    : null;
+	const velocityToken =
+		tokenInfo?.vol24H && tokenInfo?.marketCap
+			? Math.round((tokenInfo?.vol24H / tokenInfo?.marketCap) * 100) / 100
+			: null;
 
 	useEffect(() => {
 		if (company.overview) {
@@ -127,15 +130,15 @@ const Company: NextPage<Props> = (props: Props) => {
 	const sortedInvestmentRounds = props.sortRounds;
 
 	const sortActivities =
-    [...sortedInvestmentRounds, ...props.sortNews]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.date || a?.round_date || "").getTime() -
-          new Date(b?.date || b?.round_date || "").getTime()
-        );
-      })
-      .reverse() || [];
+		[...sortedInvestmentRounds, ...props.sortNews]
+			?.slice()
+			.sort((a: any, b: any) => {
+				return (
+					new Date(a?.date || a?.round_date || "").getTime() -
+					new Date(b?.date || b?.round_date || "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	// Company tags
 	let companyTags: string[] = [];
@@ -376,12 +379,20 @@ const Company: NextPage<Props> = (props: Props) => {
 						/>
 					</div>
 					<div className="col-span-8">
+						<div className="w-full p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
+							<ElemOrganizationNotes
+								resourceId={company.id}
+								resourceType="companies"
+								setShowPopup={props.setShowPopup}
+							/>
+						</div>
+
 						{(company.market_verified ||
 							company.github ||
 							company.company_linkedin ||
 							company.velocity_linkedin ||
 							company.velocity_token) && (
-							<div className="lg:grid lg:grid-cols-8 lg:gap-7">
+							<div className="mt-7 lg:grid lg:grid-cols-8 lg:gap-7">
 								<ElemCredibility
 									className="col-span-5 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
 									heading="Credibility"
@@ -390,21 +401,16 @@ const Company: NextPage<Props> = (props: Props) => {
 									linkedInVerified={company.company_linkedin}
 								/>
 								{(company.velocity_linkedin || velocityToken) && (
-								<ElemVelocity
-									className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
-									heading="Velocity"
-									employeeListings={company.velocity_linkedin}
-									tokenExchangeValue={velocityToken}
-								/>
-							)}
+									<ElemVelocity
+										className="col-span-3 mt-7 p-5 bg-white shadow rounded-lg lg:mt-0"
+										heading="Velocity"
+										employeeListings={company.velocity_linkedin}
+										tokenExchangeValue={velocityToken}
+									/>
+								)}
 							</div>
 						)}
-						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-							<ElemOrganizationNotes
-								resourceId={company.id}
-								resourceType="companies"
-							/>
-						</div>
+
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
 								resourceType="companies"
@@ -494,12 +500,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	const sortNews =
 		company.news_links
 			?.slice()
-			?.map(item => ({...item.news, type: "news"}))
-			?.filter(item => item.status === "published")
+			?.map((item) => ({ ...item.news, type: "news" }))
+			?.filter((item) => item.status === "published")
 			.sort((a, b) => {
 				return (
-					new Date(a?.date ?? "").getTime() -
-					new Date(b?.date ?? "").getTime()
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
 				);
 			})
 			.reverse() || [];

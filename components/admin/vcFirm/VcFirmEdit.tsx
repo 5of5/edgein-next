@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useGetOne, required } from "react-admin";
-import { useParams } from "react-router-dom";
+import { required } from "react-admin";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import useAdminTransform from "@/hooks/useAdminTransform";
 import ElemFormBase from "../ElemFormBase";
@@ -17,9 +16,6 @@ export const VcFirmEdit = () => {
   const formRef = useRef<any>(null);
   const { height } = useWindowDimensions();
   const [formHeight, setFormHeight] = useState(0);
-
-  const { id } = useParams();
-  const { data: currentData, isLoading, refetch } = useGetOne("vc_firms", { id });
 
   useEffect(() => {
     if (formRef?.current?.clientHeight + 100 >= height)
@@ -50,7 +46,6 @@ export const VcFirmEdit = () => {
         <VcFirmForm
           action="edit"
           slugValidate={required()}
-          currentData={currentData}
           onCheckScreenHeight={handleCheckScreenHeight}
           isImageUpdated={isImageUpdated}
           logo={logo}
@@ -58,12 +53,7 @@ export const VcFirmEdit = () => {
           onDropRejected={onDropRejected}
         />
       </ElemFormBase>
-      <ElemParentOrganizationEdit
-        isLoading={isLoading}
-        type="vc_firms"
-        currentData={currentData}
-        refetch={refetch}
-      />
+      <ElemParentOrganizationEdit type="vc_firms" />
     </div>
   );
 };

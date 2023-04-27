@@ -14,7 +14,7 @@ import { TheFooter } from "@/components/TheFooter";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { UserProvider } from "@/context/userContext";
 import { IntercomProvider } from "react-use-intercom";
-import { DATADOME_JS, DATADOME_TAGS } from "@/utils/constants";
+
 const INTERCOM_APP_ID = "jm3hf6lp";
 
 declare global {
@@ -31,7 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
+	const [showPopup, setShowPopup] = useState<Popups>(
+		router.asPath.includes("/login/")
+			? router.asPath.includes("?usage=true")
+				? "usage"
+				: "login"
+			: false
+	);
 
 	//google
 	React.useEffect(() => {
@@ -70,7 +76,29 @@ function MyApp({ Component, pageProps }: AppProps) {
 	let metaDescription = pageProps.metaDescription
 		? pageProps.metaDescription
 		: "Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
-	let metaImage = pageProps.metaImage ? pageProps.metaImage : `/social.jpg`;
+	let metaImage = pageProps.metaImage
+		? pageProps.metaImage
+		: `https://edgein.io/social.jpg`;
+
+	const [showFooter, setShowFooter] = useState(true);
+
+	React.useEffect(() => {
+		const pagesWithoutFooter = [
+			"/groups",
+			"/account",
+			"/profile",
+			"/lists",
+			"/notes",
+		];
+
+		if (
+			pagesWithoutFooter.some((pageUrl) => router.pathname.includes(pageUrl))
+		) {
+			setShowFooter(false);
+		} else {
+			setShowFooter(true);
+		}
+	}, [router.pathname]);
 
 	return (
 		<>
@@ -91,11 +119,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={metaDescription}
 					key="tw-description"
 				/>
-				<meta
-					name="twitter:image"
-					content={`https://edgein.io${metaImage}`}
-					key="tw-social"
-				/>
+				<meta name="twitter:image" content={`${metaImage}`} key="tw-social" />
 				<meta property="og:title" content={metaTitle} key="og-title" />
 				<meta
 					property="og:description"
@@ -104,17 +128,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 				/>
 				<meta property="og:url" content="https://edgein.io/" key="og-url" />
 				<meta property="og:type" content="website" key="og-type" />
-				<meta
-					property="og:image"
-					content={`https://edgein.io${metaImage}`}
-					key="og-image"
-				/>
+				<meta property="og:image" content={`${metaImage}`} key="og-image" />
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"
 				strategy="afterInteractive"
 			></Script>
-			<div className="flex flex-col min-h-screen">
+			<div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
 				<QueryClientProvider client={queryClient}>
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
@@ -140,13 +160,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 									</main>
 
 									{(router.asPath.includes("/companies/") ||
-										router.asPath.includes("/investors/")) && (
+										router.asPath.includes("/investors/") ||
+										router.asPath.includes("/events/")) && (
 										<ElemFeedback
 											toggleFeedbackForm={toggleFeedbackForm}
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-									<TheFooter />
+
+									{showFooter === true && <TheFooter />}
 								</>
 							</UserProvider>
 						</IntercomProvider>
@@ -162,14 +184,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 						webpushr('setup',{'key':'BJoDaJ3sIhqPBEIu_Pr_hITFOBxYliRg2FdHdQ5szADOfytgRPNlfpqVpGfdv2tQU9zAm7i8DmCjWcmCAXbXrQs' });`,
 					}}
 				/> */}
-
-				<><Script id="datadome-script" strategy="lazyOnload">{`
-					window.ddjskey = '${process.env.NEXT_PUBLIC_DATADOME_CLIENT_KEY}'
-					window.ddoptions = {
-						endpoint: '${DATADOME_JS}'
-					}
-				`}</Script>
-				<Script src={DATADOME_TAGS} strategy="lazyOnload" /></>
 			</div>
 		</>
 	);

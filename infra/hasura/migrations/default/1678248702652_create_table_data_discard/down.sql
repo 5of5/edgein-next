@@ -1,0 +1,3 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TABLE "public"."data_discard" ("partner" integer NOT NULL, "resource" text NOT NULL, "resource_id" integer NOT NULL, "field" text NOT NULL, "value" jsonb NOT NULL, "created_at" Timestamp NOT NULL DEFAULT now(), "accuracy_weight" integer NOT NULL, "id" bigserial NOT NULL, PRIMARY KEY ("id") , UNIQUE ("id"));

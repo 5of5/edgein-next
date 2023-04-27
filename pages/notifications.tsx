@@ -1,15 +1,18 @@
-import React, { Fragment, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useAuth } from "@/hooks/useAuth";
 import { ElemButton } from "@/components/ElemButton";
+import { PlaceholderNotification } from "@/components/Placeholders";
+import Link from "next/link";
 import {
 	IconCheck,
 	IconEllipsisHorizontal,
 	IconExclamationTriangle,
+	IconChevronDownMini,
+	IconBell,
 } from "@/components/Icons";
-import { formatDate } from "@/utils";
 import { ElemPhoto } from "@/components/ElemPhoto";
-import { Popover, Transition } from "@headlessui/react";
+import { Disclosure, Popover, Transition } from "@headlessui/react";
 import moment from "moment-timezone";
 import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
 import {
@@ -17,6 +20,10 @@ import {
 	useGetNotificationsForUserQuery,
 } from "@/graphql/types";
 import { useIntercom } from "react-use-intercom";
+import {
+	filterExcludeNotifications,
+	getNotificationChangedData,
+} from "@/utils/notifications";
 
 const getLink = (
 	notification: GetNotificationsForUserQuery["notifications"][0]
@@ -27,21 +34,47 @@ const getLink = (
 
 const Notifications: NextPage = () => {
 	const { user } = useAuth();
+	const [initialLoad, setInitialLoad] = useState(true);
 
-	const { data } = useGetNotificationsForUserQuery({ user: user?.id || 0 });
-	const notifications = data?.notifications;
+	useEffect(() => {
+		if (initialLoad) {
+			setInitialLoad(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const excludeProperties = useMemo(() => {
+		return ["status_tags"];
+	}, []);
+
+	const excludeResourceTypes = useMemo(() => {
+		return ["event_organization", "companies"];
+	}, []);
+
+	const { data, error, isLoading, refetch } = useGetNotificationsForUserQuery({
+		user: user?.id || 0,
+	});
+
+	if (!isLoading && initialLoad) {
+		setInitialLoad(false);
+	}
+
+	const notifications = filterExcludeNotifications(
+		data?.notifications || [],
+		excludeResourceTypes,
+		excludeProperties
+	);
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		notifications?.length
-		// user?.entitlements.listsCount
-		// 	? user?.entitlements.listsCount
-		// 	: notifications?.length
+		user?.entitlements.listsCount
+			? user?.entitlements.listsCount
+			: notifications?.length
 	);
 
-	const [notificationsLimit, setNotificationsLimit] = useState(4);
+	const [notificationsLimit, setNotificationsLimit] = useState(5);
 	const showMoreNotifications = () => {
-		setNotificationsLimit(notificationsLimit + 5);
+		setNotificationsLimit(notificationsLimit + 10);
 	};
 
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -53,91 +86,89 @@ const Notifications: NextPage = () => {
 		setIsOpenUpgradeDialog(false);
 	};
 
-	const markAsRead = (organization: string | null | undefined, id: number) => {
-		const log = organization
-			? `${organization} notification read. notification id:${id}`
-			: id;
-		return console.log(log);
+	const markAsRead = async (id?: number, all?: boolean) => {
+		await fetch("/api/mark_notification_read/", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				id,
+				all,
+			}),
+		});
+		refetch();
 	};
 
 	const { showNewMessages } = useIntercom();
 
 	return (
-		<div className="max-w-3xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-			<div className="bg-white shadow rounded-lg p-5">
+		<div className="max-w-3xl mx-auto sm:mt-7 sm:px-6 lg:px-8">
+			<div className="bg-white shadow rounded-lg p-5 ring-2 ring-white">
 				<div className="flex items-center justify-between mb-2">
 					<h2 className="text-xl font-bold">Notifications</h2>
-					<button className="flex items-center text-sm hover:text-primary-500">
+					<button
+						className="flex items-center text-sm hover:text-primary-500"
+						onClick={() => markAsRead(undefined, true)}
+					>
 						<IconCheck className="h-4 mr-1" />
 						Mark all as read
 					</button>
 				</div>
+
 				<div className="-mx-5 border-y border-slate-100 divide-y divide-slate-100">
-					{displayedNotifications
-						?.slice(0, notificationsLimit)
-						.map((notification, index) => {
-							const organization = notification.company
-								? notification.company
-								: notification.vc_firm;
+					{error ? (
+						<h4>Error loading notifications</h4>
+					) : isLoading && !initialLoad ? (
+						<>
+							{Array.from({ length: 5 }, (_, i) => (
+								<PlaceholderNotification key={i} />
+							))}
+						</>
+					) : displayedNotifications.length === 0 ? (
+						<div className="w-full p-12 text-center">
+							<IconBell
+								className="mx-auto h-12 w-12 text-slate-300"
+								strokeWidth={2}
+							/>
+							<h3 className="mt-2 text-lg font-bold">No notifications yet</h3>
+							<p className="mt-1 text-slate-600">
+								Get started by reacting to organizations or adding them to
+								lists.
+							</p>
+						</div>
+					) : (
+						displayedNotifications
+							?.slice(0, notificationsLimit)
+							.map((notification, index) => {
+								const organization = notification.company
+									? notification.company
+									: notification.vc_firm;
 
-							// let zoneVal = moment(notification.created_at)
-							// 	.tz(Intl.DateTimeFormat().resolvedOptions().timeZone)
-							// 	.format("MMM D, ha");
+								//let userTimezone = moment.tz.guess();
 
-							let userTimezone = moment.tz.guess();
+								// const notificationCreatedAt = moment(notification.created_at)
+								// 	.tz(userTimezone)
+								// 	.format("MMM D");
 
-							var notificationCreatedAt = moment(notification.created_at)
-								.tz(userTimezone)
-								.format("MMM D");
+								const notificationFromNow = moment(
+									notification.created_at
+								).fromNow();
 
-							return (
-								<div
-									key={index}
-									className="relative flex items-center group"
-									//key={notification.company?.id || notification?.vc_firm?.id}
-									//	className={`flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100`}
-								>
-									<a
-										href={getLink(notification)}
-										className="relative flex items-center justify-between px-2 sm:px-5 py-1 shrink-0 w-full hover:bg-slate-100"
-									>
-										<div className="flex items-center space-x-2 pr-20">
-											<ElemPhoto
-												photo={organization?.logo}
-												wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200"
-												imgClass="object-fit max-w-full max-h-full"
-												imgAlt="Company Name"
-											/>
-											<div>
-												<div className="inline text-sm leading-tight lg:text-base">
-													<span className="border-b border-primary-500 transition-all font-bold mr-1 hover:border-b-2 hover:text-primary-500">
-														{organization?.name}
-													</span>
-													{notification.message}
-												</div>
+								const { message, extensions } =
+									getNotificationChangedData(notification);
 
-												<p className="text-xs text-primary-500 font-bold">
-													{notificationCreatedAt}
-												</p>
-											</div>
-										</div>
+								const enableExpand =
+									notification.event_type === "Change Data" &&
+									notification.notification_actions.length > 1;
 
-										<div className="flex items-center space-x-4">
-											<div
-												className={`w-2.5 h-2.5 shrink-0 rounded-full ${
-													notification.read
-														? "bg-transparent"
-														: "bg-primary-500"
-												}`}
-											></div>
-										</div>
-									</a>
-
+								const notificationPopover = (
 									<Popover
-										className="absolute right-10 transition-all hidden group-hover:block"
+										className="absolute right-1 group-hover:block transition-all sm:hidden sm:right-10"
 										style={{ zIndex: 9999 - index }}
 									>
-										<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+										<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
 											<IconEllipsisHorizontal
 												className="h-6 w-6 group-hover:text-primary-500"
 												title="Options"
@@ -157,7 +188,7 @@ const Notifications: NextPage = () => {
 													<>
 														<button
 															onClick={() => {
-																markAsRead(organization?.name, index);
+																markAsRead(notification.id);
 																close();
 															}}
 															className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
@@ -182,9 +213,124 @@ const Notifications: NextPage = () => {
 											</Popover.Panel>
 										</Transition>
 									</Popover>
-								</div>
-							);
-						})}
+								);
+
+								const component = (
+									<div
+										onClick={() => markAsRead(notification.id)}
+										className={`flex items-center justify-between px-2 sm:px-5 py-2 shrink-0 w-full group-hover:bg-slate-100 ${
+											notification.read
+												? "bg-transparent opacity-60"
+												: "bg-slate-100"
+										}`}
+									>
+										<div className="flex items-center space-x-2 sm:pr-20">
+											<ElemPhoto
+												photo={organization?.logo}
+												wrapClass="flex items-center shrink-0 w-12 h-12 p-1 bg-white rounded border border-slate-200"
+												imgClass="object-fit max-w-full max-h-full"
+												imgAlt="Company Name"
+												placeholderClass="text-slate-300"
+											/>
+											<div>
+												<div className="inline text-sm leading-tight text-left lg:text-base">
+													{enableExpand ? (
+														<Link href={getLink(notification)} passHref>
+															<a className="border-b border-primary-500 transition-all font-bold mr-1 hover:border-b-2 hover:text-primary-500">
+																{organization?.name}
+															</a>
+														</Link>
+													) : (
+														<span className="border-b border-primary-500 transition-all font-bold mr-1 hover:border-b-2 hover:text-primary-500">
+															{organization?.name}
+														</span>
+													)}
+
+													{message}
+													{extensions.length > 0 && (
+														<>
+															{" | "}
+															<span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
+																Details
+															</span>
+															<IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
+														</>
+													)}
+												</div>
+
+												<div className="text-left">
+													<span className="text-sm text-primary-500 font-medium">
+														{notificationFromNow}
+													</span>
+												</div>
+											</div>
+										</div>
+
+										<div className="hidden sm:flex items-center space-x-4">
+											<div
+												className={`w-3 h-3 rounded-full bg-gradient-to-r shrink-0 ${
+													notification.read
+														? "bg-transparent"
+														: "from-blue-800 via-primary-500 to-primary-400 "
+												}`}
+											></div>
+										</div>
+									</div>
+								);
+
+								if (enableExpand) {
+									return (
+										<Disclosure key={notification.id} as="div">
+											<div className="relative flex items-center group">
+												<Disclosure.Button
+													as="div"
+													className="w-full cursor-pointer"
+												>
+													{component}
+												</Disclosure.Button>
+												{notificationPopover}
+											</div>
+											{enableExpand && (
+												<Disclosure.Panel className="pl-16 lg:pl-18 pr-6 pt-2 pb-6">
+													<ul className="pl-1 list-disc list-inside space-y-2">
+														{extensions.map((item: any) => (
+															<li key={item.field} className="text-sm">
+																{`Updated `}
+																<Link href={getLink(notification)} passHref>
+																	<a className="font-bold hover:text-primary-500">
+																		{item.field === "velocity_linkedin" ? (
+																			<>velocity</>
+																		) : item.field === "location_json" ? (
+																			<>location</>
+																		) : (
+																			<>{item.field.replace("_", " ")}</>
+																		)}
+																	</a>
+																</Link>
+															</li>
+														))}
+													</ul>
+												</Disclosure.Panel>
+											)}
+										</Disclosure>
+									);
+								} else {
+									return (
+										<div
+											className={`relative flex items-center group ${
+												notification.read ? "bg-transparent" : "bg-slate-100"
+											}`}
+											key={notification.id}
+										>
+											<Link href={getLink(notification)} passHref>
+												<a className="block w-full">{component}</a>
+											</Link>
+											{notificationPopover}
+										</div>
+									);
+								}
+							})
+					)}
 				</div>
 
 				{(notifications ? notifications.length : 0) >

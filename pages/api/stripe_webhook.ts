@@ -93,7 +93,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						"basic"
 					);
 					// update user
-					UserService.updateBillingOrg(userId, billingOrg.id);
+					UserService.updateBillingOrg(userId, billingOrg?.id || 0);
 				}
 				break;
 			}

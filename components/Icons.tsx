@@ -294,7 +294,11 @@ export const IconMinus: React.FC<IconProps> = ({ className, title }) => {
 		</svg>
 	);
 };
-export const IconAnnotation: React.FC<IconProps> = ({ className, title }) => {
+export const IconAnnotation: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			viewBox="0 0 24 24"
@@ -302,7 +306,7 @@ export const IconAnnotation: React.FC<IconProps> = ({ className, title }) => {
 			xmlns="http://www.w3.org/2000/svg"
 			className={`${className}`}
 			stroke="currentColor"
-			strokeWidth="2"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 		>
 			<title>{title ? title : "Annotation"}</title>
 			<path
@@ -310,6 +314,39 @@ export const IconAnnotation: React.FC<IconProps> = ({ className, title }) => {
 				strokeLinejoin="round"
 				d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
 			/>
+		</svg>
+	);
+};
+
+export const IconThumbUp: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={`${className}`}
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+		>
+			<title>{title ? title : "Like"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M6.633 10.5c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75A2.25 2.25 0 0116.5 4.5c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23H5.904M14.25 9h2.25M5.904 18.75c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 01-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 10.203 4.167 9.75 5 9.75h1.053c.472 0 .745.556.5.96a8.958 8.958 0 00-1.302 4.665c0 1.194.232 2.333.654 3.375z"
+			/>
+		</svg>
+	);
+};
+
+export const IconThumbUpSolid: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg viewBox="0 0 24 24" className={className} fill="currentColor">
+			<title>{title ? title : "Like"}</title>
+			<path d="M7.493 18.75c-.425 0-.82-.236-.975-.632A7.48 7.48 0 016 15.375c0-1.75.599-3.358 1.602-4.634.151-.192.373-.309.6-.397.473-.183.89-.514 1.212-.924a9.042 9.042 0 012.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 00.322-1.672V3a.75.75 0 01.75-.75 2.25 2.25 0 012.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 01-2.649 7.521c-.388.482-.987.729-1.605.729H14.23c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 00-1.423-.23h-.777zM2.331 10.977a11.969 11.969 0 00-.831 4.398 12 12 0 00.52 3.507c.26.85 1.084 1.368 1.973 1.368H4.9c.445 0 .72-.498.523-.898a8.963 8.963 0 01-.924-3.977c0-1.708.476-3.305 1.302-4.666.245-.403-.028-.959-.5-.959H4.25c-.832 0-1.612.453-1.918 1.227z" />
 		</svg>
 	);
 };
@@ -646,6 +683,30 @@ export const IconDocumentDownload: React.FC<IconProps> = ({
 	);
 };
 
+export const IconDocument: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Document"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+			/>
+		</svg>
+	);
+};
+
 export const IconUsers: React.FC<IconProps> = ({
 	className,
 	title,
@@ -887,6 +948,30 @@ export const IconLink: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
+export const IconExternalLink: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+		>
+			<title>{title ? title : "External Link"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+			/>
+		</svg>
+	);
+};
+
 export const IconChatBubble: React.FC<IconProps> = ({ className, title }) => {
 	return (
 		<svg
@@ -1061,6 +1146,68 @@ export const IconTwitter: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
+export const IconInstagram: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			className={className}
+			fill="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<title>{title ? title : "Instagram"}</title>
+			<path
+				fillRule="evenodd"
+				d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+				clipRule="evenodd"
+			></path>
+		</svg>
+	);
+};
+
+export const IconFacebook: React.FC<IconProps> = ({ className, title }) => {
+	return (
+		<svg
+			className={className}
+			fill="currentColor"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<title>{title ? title : "Facebook"}</title>
+			<path
+				fillRule="evenodd"
+				d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+				clipRule="evenodd"
+			></path>
+		</svg>
+	);
+};
+
+export const IconTicket: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			viewBox="0 0 24 24"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+			className={className}
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<title>{title ? title : "Ticket"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z"
+			/>
+		</svg>
+	);
+};
+
 export const IconBriefcase: React.FC<IconProps> = ({
 	className,
 	title,
@@ -1131,6 +1278,29 @@ export const IconGlobe: React.FC<IconProps> = ({
 	);
 };
 
+export const IconBell: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+		>
+			<title>{title ? title : "Notification"}</title>
+			<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+			<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+		</svg>
+	);
+};
+
 export const IconEmail: React.FC<IconProps> = ({
 	className,
 	title,
@@ -1179,6 +1349,30 @@ export const IconCompanies: React.FC<IconProps> = ({
 	);
 };
 
+export const IconCalendarDays: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
+	return (
+		<svg
+			className={className}
+			fill="none"
+			stroke="currentColor"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+			<title>{title ? title : "Date"}</title>
+			<path
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
+			/>
+		</svg>
+	);
+};
+
 export const IconPlus: React.FC<IconProps> = ({
 	className,
 	title,
@@ -1216,11 +1410,11 @@ export const IconPaperAirplane: React.FC<IconProps> = ({
 			viewBox="0 0 24 24"
 			aria-hidden="true"
 		>
-			<title>{title ? title : "Paper Plane"}</title>
+			<title>{title ? title : "Sent"}</title>
 			<path
 				strokeLinecap="round"
 				strokeLinejoin="round"
-				d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+				d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"
 			/>
 		</svg>
 	);
@@ -1329,7 +1523,11 @@ export const IconChevronUp: React.FC<IconProps> = ({ className, title }) => {
 	);
 };
 
-export const IconHome: React.FC<IconProps> = ({ className, title }) => {
+export const IconHome: React.FC<IconProps> = ({
+	className,
+	title,
+	strokeWidth,
+}) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -1337,7 +1535,7 @@ export const IconHome: React.FC<IconProps> = ({ className, title }) => {
 			fill="none"
 			viewBox="0 0 24 24"
 			stroke="currentColor"
-			strokeWidth={2}
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
 		>
 			<title>{title ? title : "Home"}</title>
 
@@ -1498,7 +1696,10 @@ export const IconLocation: React.FC<IconProps> = ({
 	);
 };
 
-export const IconEditPencil: React.FC<IconProps> = ({ className, title }) => {
+export const IconEditPencilOLD: React.FC<IconProps> = ({
+	className,
+	title,
+}) => {
 	return (
 		<svg
 			className={className}
@@ -1513,6 +1714,30 @@ export const IconEditPencil: React.FC<IconProps> = ({ className, title }) => {
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125"
+			/>
+		</svg>
+	);
+};
+
+export const IconEditPencil: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Edit"}</title>
+			<path
+				d="M13.6765 5.62489L16.0706 3.22978C16.7928 2.50756 17.41 1.9173 19.4297 3.93689C21.4493 5.95648 20.859 6.57377 20.1368 7.296L7.8891 19.5437C7.36043 20.072 6.70847 20.4604 5.99211 20.6737L2.6 20.7666L2.69289 17.3745C2.90617 16.6581 3.29453 16.0061 3.82289 15.4775L13.6775 5.62489H13.6765ZM13.6765 5.62489L17.7287 9.6771"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);
@@ -1685,6 +1910,32 @@ export const IconShareAlt: React.FC<IconProps> = ({
 				strokeLinecap="round"
 				strokeLinejoin="round"
 				d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+			/>
+		</svg>
+	);
+};
+
+export const IconShare3: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 24 24"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Share"}</title>
+			<path
+				fillRule="evenodd"
+				clipRule="evenodd"
+				d="M14.2168 4.04597C14.3539 4.10807 21.3188 10.8489 21.4265 11.0237C21.5126 11.1635 21.5243 11.3768 21.4549 11.544C21.3975 11.6827 14.4554 18.4446 14.2582 18.554C14.004 18.695 13.6881 18.6074 13.4908 18.3412C13.4127 18.2358 13.4107 18.192 13.4003 16.3989L13.3897 14.5644L12.2354 14.5833C10.8496 14.606 10.3708 14.6707 9.3053 14.9793C7.67964 15.4501 6.2276 16.297 4.99417 17.4937C4.28171 18.1849 3.76429 18.8378 3.27139 19.6677C3.05526 20.0315 2.99599 20.1033 2.8509 20.1771C2.75798 20.2244 2.63771 20.2631 2.5836 20.2631C2.42208 20.2631 2.15322 20.1035 2.06961 19.958C2.00213 19.8406 1.99426 19.7662 2.00282 19.3279C2.02092 18.3999 2.17625 17.3947 2.44687 16.4546C2.8517 15.0481 3.59353 13.616 4.52968 12.4338C4.93241 11.9252 5.8453 11.0129 6.35967 10.605C8.12171 9.20748 10.1596 8.37215 12.3797 8.13735C12.6738 8.10626 13.0213 8.08064 13.152 8.08041L13.3897 8.07999L13.4003 6.23045C13.4106 4.43056 13.413 4.37812 13.4896 4.2755C13.6733 4.02955 13.9722 3.93522 14.2168 4.04597Z"
+				strokeLinecap="round"
+				strokeLinejoin="round"
 			/>
 		</svg>
 	);
@@ -1901,6 +2152,28 @@ export const IconDead: React.FC<IconProps> = ({ className, title }) => {
 				transform="rotate(15.487 10.534 14)"
 				fill="#64748B"
 			/>
+		</svg>
+	);
+};
+
+export const IconHide: React.FC<IconProps> = ({
+	className,
+	strokeWidth,
+	title,
+}) => {
+	return (
+		<svg
+			className={className}
+			xmlns="http://www.w3.org/2000/svg"
+			fill="none"
+			viewBox="0 0 32 32"
+			strokeWidth={strokeWidth ? strokeWidth : 1.5}
+			stroke="currentColor"
+		>
+			<title>{title ? title : "Hide"}</title>
+			<path d="M16,9.5c-3.443,0 -6.493,1.022 -8.386,2.57c-1.342,1.099 -2.114,2.465 -2.114,3.93c0,1.465 0.772,2.831 2.114,3.93c1.893,1.548 4.943,2.57 8.386,2.57c3.443,0 6.493,-1.022 8.386,-2.57c1.342,-1.099 2.114,-2.465 2.114,-3.93c0,-1.465 -0.772,-2.831 -2.114,-3.93c-1.893,-1.548 -4.943,-2.57 -8.386,-2.57Zm0,1c3.18,0 6.005,0.914 7.753,2.344c1.085,0.888 1.747,1.972 1.747,3.156c0,1.184 -0.662,2.268 -1.747,3.156c-1.748,1.43 -4.573,2.344 -7.753,2.344c-3.18,0 -6.005,-0.914 -7.753,-2.344c-1.085,-0.888 -1.747,-1.972 -1.747,-3.156c0,-1.184 0.662,-2.268 1.747,-3.156c1.748,-1.43 4.573,-2.344 7.753,-2.344Z" />
+			<path d="M16,12.78c-1.777,0 -3.22,1.443 -3.22,3.22c0,1.777 1.443,3.22 3.22,3.22c1.777,-0 3.22,-1.443 3.22,-3.22c-0,-1.777 -1.443,-3.22 -3.22,-3.22Zm0,1c1.225,0 2.22,0.995 2.22,2.22c-0,1.225 -0.995,2.22 -2.22,2.22c-1.225,-0 -2.22,-0.995 -2.22,-2.22c0,-1.225 0.995,-2.22 2.22,-2.22Z" />
+			<path d="M24.329,22.624l-16,-14c-0.207,-0.182 -0.524,-0.161 -0.705,0.047c-0.182,0.207 -0.161,0.524 0.047,0.705l16,14c0.207,0.182 0.524,0.161 0.705,-0.047c0.182,-0.207 0.161,-0.524 -0.047,-0.705Z" />
 		</svg>
 	);
 };

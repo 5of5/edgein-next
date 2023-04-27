@@ -1,0 +1,27 @@
+mutation InsertDataRaw($input: [data_raw_insert_input!]!) {
+  insert_data_raw(objects: $input) {
+    returning {
+      id
+      created_at
+      resource
+      resource_id
+      field
+      value
+      accuracy_weight
+    }
+  }
+}
+
+mutation MarkDataRawAsInactive($resourceType: String!, $resourceId: Int!) {
+  update_data_raw(
+    _set: { is_active: false }
+    where: {
+      _and: [
+        { resource: { _eq: $resourceType } }
+        { resource_id: { _eq: $resourceId } }
+      ]
+    }
+  ) {
+    affected_rows
+  }
+}

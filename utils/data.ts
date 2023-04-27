@@ -41,10 +41,16 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 		"Content-Type": "application/json",
 		Accept: "application/json",
 		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+		'x-hasura-role': process.env.HASURA_VIEWER ?? "",
 	}
 
 	if (cookies && redisClient && variables) {
 		const user = await CookieService.getUser(CookieService.getAuthToken(cookies));
+		headers['x-hasura-user-id'] = user?.id?.toString() ?? '';
+		// Allow admin to access draft records
+		if (user?.role === 'admin')
+			delete headers['x-hasura-role'];
+
 		if (user?.role !== 'admin' && !(await simpleRateLimit(redisClient, user?.id))) {
 			if (query.includes("GetCompany"))
 				variables.slug = "01-exchange";

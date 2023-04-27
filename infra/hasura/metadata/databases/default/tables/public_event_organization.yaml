@@ -34,8 +34,10 @@ select_permissions:
     permission:
       columns:
         - company_id
+        - created_at
         - event_id
         - id
+        - sponsor_type
+        - type
         - vc_firm_id
-        - created_at
       filter: {}

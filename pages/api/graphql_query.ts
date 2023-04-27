@@ -1,5 +1,6 @@
 import { mutate } from '@/graphql/hasuraAdmin';
 import { applyRateLimit } from '@/utils/rateLimit';
+import { InsertActionDocument, InsertActionMutation } from '@/graphql/types';
 import { partnerLookUp } from '@/utils/submit-data';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
@@ -36,16 +37,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);  
   const json = await proxyRes.json();
 
-  await mutate({
-    mutation: `
-      mutation InsertAction($object: actions_insert_input!) {
-        insert_actions_one(
-          object: $object
-        ) {
-          id
-        }
-      }
-    `,
+  await mutate<InsertActionMutation>({
+    mutation: InsertActionDocument,
     variables: {
       object: {
         action: "API Query",

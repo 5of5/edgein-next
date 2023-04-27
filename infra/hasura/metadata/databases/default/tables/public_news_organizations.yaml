@@ -34,10 +34,11 @@ select_permissions:
     permission:
       columns:
         - company_id
-        - id
-        - news_id
-        - vc_firm_id
         - created_at
+        - id
+        - type
+        - news_id
         - updated_at
+        - vc_firm_id
       filter: {}
       limit: 50

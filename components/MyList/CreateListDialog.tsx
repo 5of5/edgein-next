@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { IconX } from "@/components/Icons";
@@ -19,6 +19,16 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 	const { refreshProfile } = useUser();
 
 	const [listName, setListName] = useState<string>("");
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		setListName(listName);
+		if (listName && listName.length < 3) {
+			setError("List name should have at least 3 characters.");
+		} else {
+			setError("");
+		}
+	}, [listName]);
 
 	const { mutate, isLoading } = useMutation(
 		() =>
@@ -43,7 +53,11 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 	);
 
 	const handleCreate = () => {
-		mutate();
+		if (error || !listName) {
+			return;
+		} else {
+			mutate();
+		}
 	};
 
 	return (
@@ -98,17 +112,27 @@ export const CreateListDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 											type="text"
 											label="Name"
 											value={listName}
+											required={true}
 											onChange={(e) => setListName(e.target.value)}
 											placeholder="Enter List Name..."
-											className="ring-1 ring-slate-200"
+											className={`${
+												error === ""
+													? "ring-1 ring-slate-200"
+													: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+											}`}
 										/>
+										{error === "" ? null : (
+											<div className="mt-2 font-bold text-sm text-rose-400">
+												{error}
+											</div>
+										)}
 									</label>
 								</div>
 
 								<div className="mt-6 float-right">
 									<ElemButton
 										btn="primary"
-										disabled={!listName}
+										disabled={listName === "" || error ? true : false}
 										loading={isLoading}
 										onClick={handleCreate}
 									>

@@ -12,6 +12,7 @@ type Props = {
 	required?: boolean;
 	autoComplete?: string;
 	disabled?: boolean;
+	onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 };
 
 export const InputText: React.FC<PropsWithChildren<Props>> = ({
@@ -26,6 +27,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 	required = false,
 	autoComplete = "on",
 	disabled = false,
+	onKeyDown,
 }) => {
 	return (
 		<>
@@ -45,6 +47,7 @@ export const InputText: React.FC<PropsWithChildren<Props>> = ({
 				required={required}
 				autoComplete={autoComplete}
 				disabled={disabled}
+				onKeyDown={onKeyDown}
 			/>
 		</>
 	);

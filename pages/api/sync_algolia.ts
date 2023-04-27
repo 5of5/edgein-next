@@ -1,6 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import algoliasearch from 'algoliasearch'
 import { query, mutate } from '@/graphql/hasuraAdmin'
+import {
+  GetCompaniesByDateDocument,
+  GetCompaniesByDateQuery,
+  GetDeleteDataActionsDocument,
+  GetDeleteDataActionsQuery,
+  GetEventsByDateDocument,
+  GetEventsByDateQuery,
+  GetLastSyncDocument,
+  GetLastSyncQuery,
+  GetPeopleByDateDocument,
+  GetPeopleByDateQuery,
+  GetVcFirmsByDateDocument,
+  GetVcFirmsByDateQuery,
+  UpdateApplicationMetaErrorDocument,
+  UpdateApplicationMetaErrorMutation,
+  UpdateApplicationMetaValueDocument,
+  UpdateApplicationMetaValueMutation,
+} from "@/graphql/types";
 
 const client = algoliasearch(process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!, process.env.ALGOLIA_WRITE_API_KEY!);
 
@@ -13,11 +31,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // get last sync info for companies
   const companyLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_companies');
-  output['companyLastSync'] = companyLastSync.value
+  output['companyLastSync'] = companyLastSync?.value
   if (companyLastSync) {
     try {
       // get all the companies details
-      const companyList = await queryForCompanyList(companyLastSync.value);
+      const companyList: any = await queryForCompanyList(companyLastSync.value);
 
       for (const company of companyList) {
         if (company.logo) {
@@ -50,11 +68,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   // get last sync info for investors
   const investorLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_vc_firms');
-  output['vcfirmsLastSync'] = investorLastSync.value
+  output['vcfirmsLastSync'] = investorLastSync?.value
   if (investorLastSync) {
     try {
       // get all investors details
-      const vcfirmsList = await queryForVcFirmsList(investorLastSync.value);
+      const vcfirmsList: any = await queryForVcFirmsList(investorLastSync.value);
 
       for (const vc_firm of vcfirmsList) {
         if (vc_firm.logo) {
@@ -68,7 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await investorIndex.saveObjects(vcfirmsList, { autoGenerateObjectIDIfNotExist: true });
 
       /** Find deleted vc_firms in actions table and remove them in index */
-      const deletedVcFirms = await queryForDeletedResources("vc_firms", companyLastSync.value);
+      const deletedVcFirms = await queryForDeletedResources("vc_firms", investorLastSync?.value);
       investorIndex.deleteObjects(deletedVcFirms.map((item: any) => item.resource_id));
 
       output['vcfirmsList'] = vcfirmsList.map((p:any) => `${p.id} ${p.name}`).length - deletedVcFirms.length
@@ -84,11 +102,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     // get last sync info for people
     const peopleLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_people');
-    output['peopleLastSync'] = peopleLastSync.value
+    output['peopleLastSync'] = peopleLastSync?.value
     if (peopleLastSync) {
       try {
         // get all people details
-        const peopleList = await queryForPeopleList(peopleLastSync.value);
+        const peopleList: any = await queryForPeopleList(peopleLastSync.value);
 
         for (const people of peopleList) {
           if (people.picture) {
@@ -101,10 +119,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await peopleIndex.saveObjects(peopleList, { autoGenerateObjectIDIfNotExist: true });
 
         /** Find deleted people in actions table and remove them in index */
-      const deletedPeople = await queryForDeletedResources("people", companyLastSync.value);
-      peopleIndex.deleteObjects(deletedPeople.map((item: any) => item.resource_id));
+        const deletedPeople = await queryForDeletedResources("people", peopleLastSync?.value);
+        peopleIndex.deleteObjects(deletedPeople.map((item: any) => item.resource_id));
 
-      output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length - deletedPeople.length;
+        output['peopleList'] = peopleList.map((p:any) => `${p.id} ${p.name}`).length - deletedPeople.length;
 
         // update the last_sync date to current date
         await mutateForlastSync('sync_people');
@@ -114,6 +132,38 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         await mutateForError('sync_people', prepareError(error));
       }
     }
+
+    // get last sync info for events
+  const eventLastSync = lastSyncArray.find((lastSync: { key: string; }) => lastSync.key === 'sync_events');
+  output['eventLastSync'] = eventLastSync?.value
+  if (eventLastSync) {
+    try {
+      // get all the events details
+      const eventList: any = await queryForEventList(eventLastSync.value);
+
+      for (const event of eventList) {
+        if (event.banner) {
+          event.banner = event.banner.url;
+        }
+        event.objectID = event.id;
+        delete event.id;
+      }
+      const eventIndex = client.initIndex('events');
+      await eventIndex.saveObjects(eventList, { autoGenerateObjectIDIfNotExist: true });
+
+      /** Find deleted events in actions table and remove them in index */
+      const deletedEvents = await queryForDeletedResources("events", eventLastSync.value);
+      eventIndex.deleteObjects(deletedEvents.map((item: any) => item.resource_id));
+
+      output['eventList'] = eventList.map((p:any) => `${p.id} ${p.name}`).length - deletedEvents.length;
+       // update the last_sync date to current date
+       await mutateForlastSync('sync_events');
+    } catch (error) {
+      // update the last_error
+      output['eventsError'] = error
+      await mutateForError('sync_events', prepareError(error));
+    }
+  }
 
     res.send({ success: true, ...output })
 }
@@ -132,19 +182,9 @@ const prepareError = (error: any) => {
 
 // queries local user using graphql endpoint
 const queryForlastSync = async () => {
-  // prepare gql query
-  const fetchQuery = `
-  query query_last_sync {
-    application_meta(where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}) {
-      id
-      key
-      value
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetLastSyncQuery>({
+      query: GetLastSyncDocument,
       variables: {}
     })
     return data.data.application_meta
@@ -155,34 +195,9 @@ const queryForlastSync = async () => {
 
 // queries local user using graphql endpoint
 const queryForCompanyList = async (date: any) => {
-  // prepare gql query
-  const fetchQuery = `
-  query query_companies($date: timestamptz) {
-    companies(
-      where: {
-        _and: [
-          {updated_at: {_gte: $date}},
-          {library: {_eq: "web3"}}
-        ]
-      }
-    ) {
-      id
-      name
-      overview
-      tags
-      logo
-      slug
-      aliases
-      coin {
-        ticker
-        name
-      }
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetCompaniesByDateQuery>({
+      query: GetCompaniesByDateDocument,
       variables: { date }
     })
     return data.data.companies
@@ -192,27 +207,9 @@ const queryForCompanyList = async (date: any) => {
 }
 // queries local user using graphql endpoint
 const queryForVcFirmsList = async (date: any) => {
-  // prepare gql query
-  const fetchQuery = `
-  query query_vcfirms($date: timestamptz) {
-    vc_firms(
-      where: {
-        _and: [
-          {updated_at: {_gte: $date}},
-          {library: {_eq: "web3"}}
-        ]
-      }
-    ) {
-      id
-      name
-      logo
-      slug
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetVcFirmsByDateQuery>({
+      query: GetVcFirmsByDateDocument,
       variables: { date }
     })
     return data.data.vc_firms
@@ -222,29 +219,9 @@ const queryForVcFirmsList = async (date: any) => {
 }
 // queries local user using graphql endpoint
 const queryForPeopleList = async (date: any) => {
-  // prepare gql query
-  const fetchQuery = `
-  query query_people($date: timestamptz) {
-    people(
-      where: {
-        _and: [
-          {updated_at: {_gte: $date}},
-          {library: {_eq: "web3"}}
-        ]
-      }
-    ) {
-      id
-      name
-      work_email
-      personal_email
-      picture
-      slug
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetPeopleByDateQuery>({
+      query: GetPeopleByDateDocument,
       variables: { date }
     })
     return data.data.people
@@ -253,28 +230,27 @@ const queryForPeopleList = async (date: any) => {
   }
 }
 
+
+// queries local user using graphql endpoint
+const queryForEventList = async (date: any) => {
+  try {
+    const data = await query<GetEventsByDateQuery>({
+      query: GetEventsByDateDocument,
+      variables: { date }
+    })
+    return data.data.events
+  } catch (ex) {
+    throw ex;
+  }
+}
+
 const mutateForlastSync = async (keyData: String) => {
   const today = new Date();
   const dateInUTC = today.toISOString()
-  // prepare gql query
-  const updateLatsSyncData = `
-  mutation update_application_meta($value: timestamptz, $key: String!) {
-    update_application_meta(
-      where: {key: {_eq: $key}},
-      _set: { value: $value, error: "" }
-    ) {
-      affected_rows
-      returning {
-        id
-        key
-        value
-      }
-    }
-  }
-`
+  
 try {
-  await mutate({
-    mutation: updateLatsSyncData,
+  await mutate<UpdateApplicationMetaValueMutation>({
+    mutation: UpdateApplicationMetaValueDocument,
     variables: { value: dateInUTC, key: keyData }
   });
   } catch (e) {
@@ -283,25 +259,9 @@ try {
 }
 
 const mutateForError = async (keyData: String, error: String) => {
-  // prepare gql query
-  const updateLatsSyncData = `
-  mutation update_application_meta($error: String, $key: String!) {
-    update_application_meta(
-      where: {key: {_eq: $key}},
-      _set: { error: $error }
-    ) {
-      affected_rows
-      returning {
-        id
-        key
-        value
-      }
-    }
-  }
-`
 try {
-  await mutate({
-    mutation: updateLatsSyncData,
+  await mutate<UpdateApplicationMetaErrorMutation>({
+    mutation: UpdateApplicationMetaErrorDocument,
     variables: { error, key: keyData }
   });
   } catch (e) {
@@ -310,25 +270,9 @@ try {
 }
 
 const queryForDeletedResources = async (resourceType: string, date: any) => {
-  // prepare gql query
-  const fetchQuery = `
-  query query_actions($resourceType: String!, $date: timestamptz) {
-    actions(
-      where: {
-        _and: [
-          {action: {_eq: "Delete Data"}},
-          {resource: {_eq: $resourceType}},
-          {created_at: {_gte: $date}}
-        ]
-      }
-    ){
-      resource_id
-    }
-  }
-  `
   try {
-    const data = await query({
-      query: fetchQuery,
+    const data = await query<GetDeleteDataActionsQuery>({
+      query: GetDeleteDataActionsDocument,
       variables: { resourceType, date }
     })
     return data.data.actions

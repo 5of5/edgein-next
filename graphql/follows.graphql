@@ -3,13 +3,28 @@ query GetFollowsByUser($user_id: Int!) {
 		list {
 			name
 			id
+			public
 			created_by_id
+			created_by {
+				id
+        display_name
+        email
+				person {
+					id
+					slug
+					name
+				}
+			}
 			created_at
+			updated_at
 			total_no_of_resources
 			follows_companies {
 				resource_id
 			}
 			follows_vcfirms {
+				resource_id
+			}
+			follows_people {
 				resource_id
 			}
 		}
@@ -73,4 +88,88 @@ query GetVcFirmsByListId($list_id: Int = 0) {
 			}
 		}
 	}
+}
+
+mutation UpsertFollows(
+  $listId: Int
+  $resourceId: Int
+  $resourceType: String
+  $userId: Int
+) {
+  insert_follows_one(
+    object: {
+      list_id: $listId
+      resource_id: $resourceId
+      resource_type: $resourceType
+      created_by_user_id: $userId
+    }
+    on_conflict: { constraint: follows_resource_type_resource_id_list_id_key }
+  ) {
+    id
+  }
+}
+
+mutation DeleteFollows($where: follows_bool_exp!) {
+  delete_follows(where: $where) {
+    returning {
+      id
+    }
+  }
+}
+
+query GetFollowById($id: Int!) {
+  follows(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    created_by_user_id
+    resource_type
+    resource_id
+    list_id
+  }
+}
+
+query GetFollowsByResource($resourceId: Int!, $resourceType: String!) {
+  follows(
+    where: {
+      _and: [
+        { resource_id: { _eq: $resourceId } }
+        { resource_type: { _eq: $resourceType } }
+      ]
+    }
+  ) {
+    id
+    list_id
+    list {
+      list_members {
+        id
+        user_id
+      }
+    }
+  }
+}
+
+query GetPeopleByListId($list_id: Int = 0) {
+	follows_people(where: { list_id: { _eq: $list_id } }) {
+		id
+		person {
+			id
+			name
+			picture
+			slug
+			type
+			personal_email
+			work_email
+			city
+			country
+			website_url
+			github
+			twitter_url
+			linkedin
+		}
+	}
+}
+
+query CheckFollowExists($where: follows_bool_exp!) {
+  follows(where: $where, limit: 1) {
+    id
+  }
 }
