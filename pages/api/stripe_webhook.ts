@@ -4,6 +4,7 @@ import UserService from "../../utils/users";
 import BillingService from "../../utils/billing-org";
 import { buffer } from "micro";
 import { isPlanType, PlanTypes } from "@/utils/constants";
+import { Billing_Org } from "@/graphql/types";
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -91,7 +92,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				// lookup user
 				const user = await UserService.findOneUserById(userId);
 				if (user.billing_org_id) {
-					if (user.billing_org?.plan === plan && user.billing_org?.status === "active")
+					const billingOrg: Billing_Org = user.billing_org as Billing_Org;
+					if (billingOrg.plan === plan && billingOrg.status === "active")
 						break;
 				}
 

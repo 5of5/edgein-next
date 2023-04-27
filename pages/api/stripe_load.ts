@@ -15,15 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (!user) return res.status(403).end()
     
       const dbuser = await UserService.findOneUserById(user.id);
-      if (dbuser.billing_org?.customer_id
-          && dbuser.billing_org?.plan === plan // TODO remove it using beta version to upgrade plan
-          && dbuser.billing_org?.status === "active"
-      ) {
+      if (dbuser.billing_org?.customer_id) {
         // check if user already has a subscription
         // Authenticate your user.
         const session = await stripe.billingPortal.sessions.create({
           customer: dbuser.billing_org?.customer_id,
-          //flow_data: { type: "subscription_update" },
           return_url: `${req.headers.origin}/account`,
         });
         res.send({ success: true, redirect: session.url })
