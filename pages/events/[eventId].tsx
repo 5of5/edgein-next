@@ -238,7 +238,7 @@ const Event: NextPage<Props> = (props) => {
 						<h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
 						{attendees?.length > 0 && (
 							<div className="self-center flex items-center gap-x-2 shrink-0">
-								<ul className="flex -space-x-3">
+								<ul className="flex -space-x-3 relative z-0">
 									{attendees?.map((attendee, index) => (
 										<li
 											key={attendee.id}
