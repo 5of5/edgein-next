@@ -32,7 +32,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
-  const resourceObj: Array<Record<string, any>> | any = req.body.resource;
+  const resourceObj: Array<Record<string, any>> | Record<string, any> | any = req.body.resource;
   const forceUpdate: Boolean = req.body.force_update;
   let insertResultTemp: any = [];
   let hasRelationship: boolean = false;
@@ -59,7 +59,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         hasRelationship=true;
       }else{
         let newKey = key.replace("&","");
-        if(["companies","vc_firms","team_members","investment_rounds","investments","investors","people","news","news_organizations"].includes(newKey)){
+        if(Object.keys(NODE_NAME).includes(newKey)){
           resourceTypeRelationship = newKey;
         }
       }
@@ -122,9 +122,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     let properties: any;
     if(Array.isArray(resourceObj)){
-      let propertiesTemp: Array<Record<string, any>> | any =[];
+      let propertiesTemp: Array<Record<string, any>> | Record<string, any> =[];
       resourceObj.forEach((item)=>{
-        propertiesTemp.push({...item});
+        if(Object.keys(item).length>2){
+          propertiesTemp.push({...item});
+        }else{
+          let objTemp: Record<string, any> = {};
+          for(let key in item){
+            objTemp[key]={...item[key]};
+          }
+          propertiesTemp.push(objTemp);
+        }
       })
       properties = propertiesTemp;
     }else{
@@ -136,11 +144,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       ["companies", "vc_firms", "people"].includes(resourceType) 
     ) {
       if(Array.isArray(resourceObj)){
-        resourceObj.forEach((item,idx)=>{
-          if((!item?.library || item?.library?.length === 0)){
-            properties[idx].library = ["Web3"];
-          }
-        })
+          resourceObj.forEach((item,idx)=>{
+            if(Object.keys(item).length>2){
+              if((!item?.library || item?.library?.length === 0)){
+                properties[idx].library = ["Web3"];
+              }
+            }else{
+              for(let key in item){
+                if(key === resourceType){
+                  if((!item[key]?.library || item[key]?.library?.length === 0)){
+                    properties[idx][key].library = ["Web3"];
+                  }
+                }
+              }
+            }
+            
+          })
       }else{
         if(hasRelationship){
           if((!resourceRelationship?.library || resourceRelationship?.library?.length === 0)){
@@ -153,21 +172,65 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
       }
     }
-
+    
     let insertResult: any;
     if(Array.isArray(properties)){
       for(let i=0;i<properties.length;i++){
-        let tempInsertResult = await mutateActionAndDataRaw(
-          partnerId,
-          user,
-          NODE_NAME[resourceType],
-          resourceId,
-          properties[i],
-          resourceType,
-          actionType,
-          forceUpdate,
-        );
-        insertResultTemp.push({...tempInsertResult});
+        // verify each element has relationship field in array 
+        if(Object.keys(properties[i]).length>2){
+          hasRelationship = false;
+        }else{
+          hasRelationship = true;
+        }
+        if(hasRelationship){
+          for(let key in properties[i]){
+            if(key === resourceType){
+              resourceRelationship = {...properties[i][key]};
+            }else{
+              resourceTypeRelationship = key.replace("&","");
+            }
+          }
+          // implement insert array relationship
+          let tempInsertResult;
+          tempInsertResult = await mutateActionAndDataRaw(
+            partnerId,
+            user,
+            NODE_NAME[resourceType],
+            resourceId,
+            resourceRelationship,
+            resourceType,
+            actionType,
+            forceUpdate,
+          );
+          insertResultTemp.push({...tempInsertResult});
+          const resourceIdRelationShip: number = await resourceIdLookup(resourceTypeRelationship, resourceIdentifier);
+          const relatedField= properties[i][`&${resourceTypeRelationship}`]["relationship_field"];
+          properties[i][`&${resourceTypeRelationship}`][relatedField]= tempInsertResult.id;
+          delete properties[i][`&${resourceTypeRelationship}`]["relationship_field"];
+          tempInsertResult = await mutateActionAndDataRaw(
+            partnerId,
+            user,
+            NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
+            resourceIdRelationShip,
+            properties[i][`&${resourceTypeRelationship}`],
+            resourceTypeRelationship,
+            actionType,
+            forceUpdate,
+          );
+          insertResultTemp.push({...tempInsertResult});
+        }else{
+          let tempInsertResult = await mutateActionAndDataRaw(
+            partnerId,
+            user,
+            NODE_NAME[resourceType],
+            resourceId,
+            properties[i],
+            resourceType,
+            actionType,
+            forceUpdate,
+          );
+          insertResultTemp.push({...tempInsertResult});
+        }
       }
       insertResult=insertResultTemp;
     }else{
@@ -294,7 +357,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
       }
     }
-   
+    
+    if(Array.isArray(resourceObj)){
+      if(hasRelationship){
+        insertResult.unshift({"successful-elements":insertResultTemp.length/2});
+      }else{
+        insertResult.unshift({"successful-elements":insertResultTemp.length});
+      }
+    }
+
     return res.send(insertResult);
   } catch (error: any) {
     if (error[0].extensions.code === "validation-failed") {
@@ -334,7 +405,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       error[0].message=message
     }
     if(Array.isArray(resourceObj)){
-      error[0]["failed-object"] = resourceObj[insertResultTemp.length === 0 ? 0 : insertResultTemp.length];
+      if(hasRelationship){
+        error[0]["failed-element"] = resourceObj[insertResultTemp.length/2 === 0 ? 0 : insertResultTemp.length/2];
+        error[0]["successful-elements"] = insertResultTemp.length/2 === 0 ? 0 : insertResultTemp.length/2;
+      }else{
+        error[0]["failed-element"] = resourceObj[insertResultTemp.length === 0 ? 0 : insertResultTemp.length];
+        error[0]["successful-elements"] = insertResultTemp.length === 0 ? 0 : insertResultTemp.length;
+      }
     }
     return res.status(500).send(error[0] || error);
   }

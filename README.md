@@ -169,8 +169,38 @@ For example: when creating a new person in people table. Also providing "<relati
   }
 }
 
-In case input a list of resource field {<resource_obj>} looks like as below:
-"resource": [<people_obj> , <people_obj> ,...]
+For example: When input a list of resource field that support creating relationship looks like as below:
+
+curl --location 'http://localhost:3000/api/submit_data' \
+--header 'Content-Type: application/json' \
+--data '{
+"partner_api_key": "<api_key>",
+"resource_type": "news",
+"resource_identifier":[{"field": "id"}],
+"resource":[{
+  "news": {
+  "text": "<values>",
+  "link": "<values>",
+  "date": "<values>",
+  "status": "<values>"
+},
+  "&news_organizations":{
+  "relationship_field": "news_id",
+  "companies:name": "<values>", "vc_firms:name": "<values>" 
+}
+},{
+  "news": {
+  "text": "<values>",
+  "link": "<values>",
+  "date": "<values>",
+  "status": "<values>"
+},
+  "&news_organizations":{
+  "relationship_field": "news_id",
+  "companies:name": "<values>", "vc_firms:name": "<values>" 
+}
+},...]
+}'
 
 #### Update data
 curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
