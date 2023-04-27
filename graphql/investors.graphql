@@ -1,0 +1,11 @@
+mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
+  insert_investors_one(
+    object: { person_id: $personId, vc_firm_id: $vcFirmId }
+    on_conflict: {
+      constraint: investors_vc_firm_id_person_id_key
+      update_columns: []
+    }
+  ) {
+    id
+  }
+}

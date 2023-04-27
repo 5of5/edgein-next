@@ -1,5 +1,8 @@
-import React, { MutableRefObject, useRef } from "react";
+import React, { MutableRefObject, useRef, useState, useEffect } from "react";
 import { NextPage, GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import toast, { Toaster } from "react-hot-toast";
+import { useMutation } from "react-query";
 import { ElemKeyInfo } from "@/components/ElemKeyInfo";
 import { ElemTags } from "@/components/ElemTags";
 import { runGraphQl } from "@/utils";
@@ -7,7 +10,11 @@ import { ElemTabBar } from "@/components/ElemTabBar";
 import { ElemButton } from "@/components/ElemButton";
 import { ElemPhoto } from "@/components/ElemPhoto";
 import { ElemSocialShare } from "@/components/ElemSocialShare";
-import { GetEventDocument, GetEventQuery } from "@/graphql/types";
+import {
+	GetEventDocument,
+	GetEventQuery,
+	useGetEventQuery,
+} from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
 import { formatDate, formatTime } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
@@ -19,17 +26,99 @@ import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
+import { useUser } from "@/context/userContext";
+import { Popups } from "@/components/TheNavbar";
+import { ElemRequiredProfileDialog } from "@/components/ElemRequiredProfileDialog";
 
 type Props = {
 	event: GetEventQuery["events"][0];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-const Event: NextPage<Props> = ({ event }) => {
+const Event: NextPage<Props> = (props) => {
+	const router = useRouter();
+	const { eventId } = router.query;
+
+	const { user } = useUser();
+
+	const [event, setEvent] = useState<GetEventQuery["events"][0]>(props.event);
+
+	const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
+		useState<boolean>(false);
+
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const organizersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
+
+	const { data: eventData, refetch } = useGetEventQuery({
+		slug: eventId as string,
+	});
+
+	useEffect(() => {
+		if (eventData) setEvent(eventData.events[0]);
+	}, [eventData]);
+
+	const onOpenLinkPersonDialog = () => {
+		setIsOpenLinkPersonDialog(true);
+	};
+
+	const onCloseLinkPersonDialog = () => {
+		setIsOpenLinkPersonDialog(false);
+	};
+
+	const onClickSearchName = () => {
+		onCloseLinkPersonDialog();
+		props.setShowPopup("search");
+	};
+
+	const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
+		useMutation(
+			() =>
+				fetch("/api/add_event_attendee/", {
+					method: "POST",
+					headers: {
+						Accept: "application/json",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						eventId: event?.id,
+					}),
+				}),
+			{
+				onSuccess: async (response) => {
+					if (response.status !== 200) {
+						const err = await response.json();
+						toast.custom(
+							(t) => (
+								<div
+									className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+										t.visible ? "animate-fade-in-up" : "opacity-0"
+									}`}
+								>
+									{err?.message}
+								</div>
+							),
+							{
+								duration: 3000,
+								position: "top-center",
+							}
+						);
+					} else {
+						refetch();
+					}
+				},
+			}
+		);
+
+	const handleClickGoingEvent = () => {
+		if (user?.person) {
+			onAddEventAttendee();
+		} else {
+			onOpenLinkPersonDialog();
+		}
+	};
 
 	if (!event) {
 		return <h1>Not Found</h1>;
@@ -193,7 +282,7 @@ const Event: NextPage<Props> = ({ event }) => {
 					</div>
 
 					<ElemTabBar
-						className="mt-4 border-b-0"
+						className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
 						tabs={tabBarItems}
 						resourceName={event.name}
 						showDropdown={false}
@@ -205,8 +294,19 @@ const Event: NextPage<Props> = ({ event }) => {
 								resourceTwitterUrl={event.twitter}
 								resourceType={"events"}
 							/>
-							{/* <ElemButton btn="white">Going</ElemButton>
-							<ElemButton btn="primary">RSVP</ElemButton> */}
+							{attendees.some(
+								(item) => item.person?.id === user?.person?.id
+							) ? (
+								<ElemButton btn="primary">Joined</ElemButton>
+							) : (
+								<ElemButton
+									btn="primary"
+									onClick={handleClickGoingEvent}
+									loading={isLoadingGoingEvent}
+								>
+									Going
+								</ElemButton>
+							)}
 						</div>
 					</ElemTabBar>
 				</div>
@@ -259,7 +359,10 @@ const Event: NextPage<Props> = ({ event }) => {
 						)}
 
 						<div className="mt-7 w-full p-5 bg-white shadow rounded-lg">
-							<ElemEventActivity activities={sortedActivities} />
+							<ElemEventActivity
+								activities={sortedActivities}
+								eventName={event.name}
+							/>
 						</div>
 					</div>
 				</div>
@@ -292,6 +395,16 @@ const Event: NextPage<Props> = ({ event }) => {
 					/>
 				)}
 			</div>
+
+			<ElemRequiredProfileDialog
+				isOpen={isOpenLinkPersonDialog}
+				title="You have not linked your account to a profile on EdgeIn"
+				content="Search your name and claim profile to be able to mark yourself as going to this event."
+				onClose={onCloseLinkPersonDialog}
+				onClickSearch={onClickSearchName}
+			/>
+
+			<Toaster />
 		</>
 	);
 };

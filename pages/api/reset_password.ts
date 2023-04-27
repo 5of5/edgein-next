@@ -1,6 +1,7 @@
 import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { mutate } from "@/graphql/hasuraAdmin";
+import { InsertResetPasswordDocument, InsertResetPasswordMutation } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") return res.status(405).end();
@@ -75,19 +76,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       );
       return res.status(setPasswordRequest.status).send(setPasswordErrResponse);
     }
-    await mutate({
-      mutation: `
-        mutation insert_reset_password($object: reset_passwords_insert_input!) {
-          insert_reset_passwords_one(
-            object: $object
-          ) {
-            id
-          user_id
-          generated_password
-            created_at
-          }
-        }
-      `,
+    await mutate<InsertResetPasswordMutation>({
+      mutation: InsertResetPasswordDocument,
       variables: {
         object: {
           user_id: userId,

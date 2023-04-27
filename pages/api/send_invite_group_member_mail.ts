@@ -2,6 +2,12 @@ import { NextApiResponse, NextApiRequest } from "next";
 import AWS from "aws-sdk";
 import CookieService from "@/utils/cookie";
 
+export type EmailResources = {
+  isExistedUser: boolean;
+  email: string;
+  recipientName: string;
+}[];
+
 type MailParams = {
   email: string;
   senderName: string;
@@ -27,31 +33,35 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(token);
   if (!user) return res.status(403).end();
 
-  const isExistedUser = req.body.isExistedUser;
-  const email = req.body.email;
-  const recipientName = req.body.resource.recipientName;
-  const groupName = req.body.resource.groupName;
-  const groupId = req.body.resource.groupId;
+  const emailResources: EmailResources = req.body.emailResources;
+  const groupName = req.body.groupName;
+  const groupId = req.body.groupId;
 
-  const mailParams: any = {
-    email,
-    senderName: user.display_name || "",
-    groupName,
-    isExistedUser,
-  };
+  const response = await Promise.all(
+    emailResources.map(async (resource) => {
+      const mailParams: any = {
+        email: resource.email,
+        senderName: user.display_name || "",
+        groupName,
+        isExistedUser: resource.isExistedUser,
+      };
+    
+      if (resource.isExistedUser) {
+        const groupUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/groups/${groupId}`;
+        mailParams.groupUrl = groupUrl;
+        mailParams.recipientName = resource.recipientName;
+      } else {
+        const inviteCode = user.reference_id;
+        const signUpUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
+        mailParams.signUpUrl = signUpUrl;
+      }
 
-  if (isExistedUser) {
-    const groupUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/groups/${groupId}`;
-    mailParams.groupUrl = groupUrl;
-    mailParams.recipientName = recipientName;
-  } else {
-    const inviteCode = user.reference_id;
-    const signUpUrl = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
-    mailParams.signUpUrl = signUpUrl;
-  }
+      const emailResponse = await sendInvitationMail(mailParams);
+      return emailResponse;
+    })
+  );
 
-  const emailResponse = await sendInvitationMail(mailParams);
-  res.send(emailResponse);
+  res.send(response);
 };
 
 const sendInvitationMail = async (mailParams: MailParams) => {

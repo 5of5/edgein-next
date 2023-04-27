@@ -81,7 +81,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									<span className="text-lg font-bold">My Groups</span>
 								</Disclosure.Button>
 								<ElemTooltip
-									content="Share your lists and notes with others."
+									content="Share lists and notes with others."
 									className="ml-1"
 								>
 									<IconInformationCircle className="h-5 w-5 text-slate-600" />

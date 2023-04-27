@@ -1,8 +1,8 @@
 import { getNameFromListName } from "@/utils/reaction";
-import { find, kebabCase, partition, sortBy } from "lodash";
+import { find, kebabCase, partition, orderBy } from "lodash";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, Fragment, useState } from "react";
 import {
 	IconCustomList,
 	IconPolygonDown,
@@ -10,15 +10,17 @@ import {
 	IconInformationCircle,
 	IconPlus,
 	IconContributor,
+	IconEllipsisHorizontal,
+	IconCheck,
 } from "@/components/Icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
 import { useUser } from "@/context/userContext";
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Popover, Transition } from "@headlessui/react";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemUpgradeDialog } from "../ElemUpgradeDialog";
 import { CreateListDialog } from "../MyList/CreateListDialog";
 import useDisclosureState from "@/hooks/useDisclosureState";
-import { MY_LISTS_MENU_OPEN_KEY } from "@/utils/constants";
+import { listsSortOptions, MY_LISTS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
 	className?: string;
@@ -28,8 +30,18 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { listAndFollows: lists, user } = useUser();
 
+	const userCanSortLists = user?.entitlements.viewEmails
+		? user?.entitlements.viewEmails
+		: false;
+
 	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
 		MY_LISTS_MENU_OPEN_KEY
+	);
+
+	const [selectedSortOption, setSelectedSortOption] = useState(
+		typeof window !== "undefined" && localStorage.getItem("myListsSortOption")
+			? localStorage.getItem("myListsSortOption")
+			: "default"
 	);
 
 	const getCountForList = (listName: string) => {
@@ -68,15 +80,36 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
-	const partLists = partition(
-    displayedCustomLists,
-    (o) => o.created_by_id === user?.id
-  );
-
-  const createdLists = sortBy(partLists[0], [(o) => getNameFromListName(o)]);
-  const followedLists = sortBy(partLists[1], [(o) => getNameFromListName(o)]);
-
-  const sortedLists = [...createdLists, ...followedLists];
+	let sortedLists = [...displayedCustomLists];
+	if (selectedSortOption === "default") {
+		const partLists = partition(
+			displayedCustomLists,
+			(o) => o.created_by_id === user?.id
+		);
+		const createdLists = orderBy(
+			partLists[0],
+			[(o) => getNameFromListName(o)],
+			["asc"]
+		);
+		const followedLists = orderBy(
+			partLists[1],
+			[(o) => getNameFromListName(o)],
+			["asc"]
+		);
+		sortedLists = [...createdLists, ...followedLists];
+	} else if (selectedSortOption === "newest") {
+		sortedLists = orderBy(
+			displayedCustomLists,
+			[(o) => new Date(o.created_at)],
+			["desc"]
+		);
+	} else if (selectedSortOption === "recently") {
+		sortedLists = orderBy(
+			displayedCustomLists,
+			[(o) => new Date(o.updated_at)],
+			["desc"]
+		);
+	}
 
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -116,31 +149,85 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									<span className="text-lg font-bold">My Lists</span>
 								</Disclosure.Button>
 								<ElemTooltip
-									content="Monitor organizations of your interest."
+									content="Monitor organizations and people of your interest."
 									className="ml-1"
 								>
 									<IconInformationCircle className="h-5 w-5 text-slate-600" />
 								</ElemTooltip>
 							</div>
-							<div className="flex gap-x-1">
-								{getCustomLists.length > sortedLists.length ? (
-									<button
-										onClick={onOpenUpgradeDialog}
-										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
-									>
-										<IconPlus
-											className="h-5 w-5"
-											title="Unlock All Your Lists"
+							<div className="flex items-start gap-x-2">
+								<Popover className="relative">
+									<Popover.Button className="rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200">
+										<IconEllipsisHorizontal
+											className="h-6 w-6 group-hover:text-primary-500"
+											title="Sort"
 										/>
-									</button>
-								) : (
-									<button
-										onClick={onOpenCreateListDialog}
-										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+									</Popover.Button>
+									<Transition
+										as={Fragment}
+										enter="transition ease-out duration-200"
+										enterFrom="opacity-0 translate-y-1"
+										enterTo="opacity-100 translate-y-0"
+										leave="transition ease-in duration-150"
+										leaveFrom="opacity-100 translate-y-0"
+										leaveTo="opacity-0 translate-y-1"
 									>
-										<IconPlus className="h-5 w-5" title="Create List" />
-									</button>
-								)}
+										<Popover.Panel className="absolute right-0 w-52 block bg-white rounded-lg shadow-md p-1">
+											{({ close }) => (
+												<div>
+													{listsSortOptions.map((opt) => (
+														<button
+															key={opt.value}
+															className={`flex items-center justify-between gap-x-1 cursor-pointer w-full
+																text-left text-sm p-2 m-0 transition-all hover:bg-slate-100
+																${opt.value === selectedSortOption ? "text-primary-600 font-medium" : ""}
+																`}
+															onClick={
+																!userCanSortLists
+																	? onOpenUpgradeDialog
+																	: () => {
+																			setSelectedSortOption(opt.value);
+																			close();
+																			if (typeof window !== undefined) {
+																				localStorage.setItem(
+																					"myListsSortOption",
+																					opt.value
+																				);
+																			}
+																	  }
+															}
+														>
+															{opt.label}
+															{opt.value === selectedSortOption && (
+																<IconCheck className="w-4 h-4" />
+															)}
+														</button>
+													))}
+												</div>
+											)}
+										</Popover.Panel>
+									</Transition>
+								</Popover>
+								<div className="flex gap-x-1">
+									{getCustomLists.length > sortedLists.length ? (
+										<button
+											onClick={onOpenUpgradeDialog}
+											className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+										>
+											<IconPlus
+												className="h-5 w-5"
+												title="Unlock All Your Lists"
+											/>
+										</button>
+									) : (
+										<button
+											onClick={onOpenCreateListDialog}
+											className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
+										>
+											<IconPlus className="h-5 w-5" title="Create List" />
+										</button>
+									)}
+								</div>
 							</div>
 						</div>
 

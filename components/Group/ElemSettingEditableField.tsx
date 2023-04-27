@@ -88,7 +88,7 @@ const ElemSettingEditableField: React.FC<Props> = ({
 
 	return (
 		<div
-			className={`flex items-start justify-between px-4 py-3 ${
+			className={`flex items-start justify-between p-3 ${
 				isGroupManager && "cursor-pointer hover:bg-slate-100 "
 			}`}
 			onClick={isGroupManager ? handleOpenEditMode : () => null}

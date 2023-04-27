@@ -17,6 +17,8 @@ import {
   useCreate,
   useUpdate,
   useRefresh,
+  SelectField,
+  SelectInput,
 } from "react-admin";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -25,9 +27,10 @@ import ContentEdit from "@mui/icons-material/Edit";
 import ContentSave from "@mui/icons-material/Save";
 import ContentDelete from "@mui/icons-material/Delete";
 import ContentCreate from "@mui/icons-material/Add";
-import { FormControl } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+import { newsOrganizationTypes } from "@/utils/constants";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -118,6 +121,7 @@ export const NewsOrganizations = () => {
   const [newsOrganizationData, setNewsOrganizationData] = useState<any>({
     company_id: "",
     vc_firm_id: "",
+    type: "",
   });
 
   const handleEdit = (rec: any) => {
@@ -127,6 +131,7 @@ export const NewsOrganizations = () => {
       id: rec.id,
       company_id: rec.company_id,
       vc_firm_id: rec.vc_firm_id,
+      type: rec.type,
     });
   };
 
@@ -136,6 +141,7 @@ export const NewsOrganizations = () => {
     setNewsOrganizationData({
       company_id: "",
       vc_firm_id: "",
+      type: "",
     });
   };
 
@@ -145,10 +151,15 @@ export const NewsOrganizations = () => {
         ...newsOrganizationData,
         company_id: value,
       });
-    else
+    else if (target === 1)
       setNewsOrganizationData({
         ...newsOrganizationData,
         vc_firm_id: value,
+      });
+    else
+      setNewsOrganizationData({
+        ...newsOrganizationData,
+        type: value,
       });
   };
 
@@ -163,6 +174,7 @@ export const NewsOrganizations = () => {
         newsOrganizationData.vc_firm_id === ""
           ? null
           : newsOrganizationData.vc_firm_id,
+      type: newsOrganizationData.type,
     };
     if (!currRecord) {
       if (data.company_id) {
@@ -231,6 +243,7 @@ export const NewsOrganizations = () => {
           >
             <TextField source="name" />
           </ReferenceField>
+          <SelectField source="type" choices={newsOrganizationTypes} />
           <CustomEditButton onEdit={(rec: any) => handleEdit(rec)} />
           <CustomDeleteButton />
         </Datagrid>
@@ -244,9 +257,9 @@ export const NewsOrganizations = () => {
           maxWidth="xs"
           onClose={handleClose}
         >
-          <DialogTitle>Event Organization</DialogTitle>
+          <DialogTitle>News Organization</DialogTitle>
           <DialogContent>
-            <Form>
+            <Form defaultValues={currRecord}>
               {(!newsOrganizationData?.id || currRecord?.company_id) && (
                 <FormControl
                   variant="filled"
@@ -263,7 +276,6 @@ export const NewsOrganizations = () => {
                     reference="companies"
                   >
                     <AutocompleteInput
-                      defaultValue={currRecord?.company_id}
                       optionText="name"
                       optionValue="id"
                       filterToQuery={(search) => ({ name: search })}
@@ -291,7 +303,6 @@ export const NewsOrganizations = () => {
                     reference="vc_firms"
                   >
                     <AutocompleteInput
-                      defaultValue={currRecord?.vc_firm_id}
                       optionText="name"
                       optionValue="id"
                       filterToQuery={(search) => ({ name: search })}
@@ -302,6 +313,14 @@ export const NewsOrganizations = () => {
                   </ReferenceInput>
                 </FormControl>
               )}
+
+              <FormControl variant="filled" sx={{ width: "100%" }}>
+                <SelectInput
+                  source="type"
+                  choices={newsOrganizationTypes}
+                  onChange={(e) => handleChange(2, e.target.value)}
+                />
+              </FormControl>
 
               <FormControl
                 variant="filled"

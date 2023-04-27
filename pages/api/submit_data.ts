@@ -1,4 +1,3 @@
-import { Data_Partners } from "@/graphql/types";
 import {
   processNotification,
   processNotificationOnDelete,
@@ -45,7 +44,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       return res.status(400).send({ message: "Bad Request" });
 
-    const partner: Data_Partners = await partnerLookUp(apiKey);
+    const partner = await partnerLookUp(apiKey);
     if (partner?.id === undefined) {
       if (!(user?.role === "admin")) {
         return res.status(401).send({ message: "Unauthorized Partner" });
@@ -92,7 +91,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await processNotificationOnDelete(
         resourceType,
         resourceId,
-        action?.id,
+        action?.id || 0,
         resourceObj
       );
       return res.send(resourceObj);
@@ -138,7 +137,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "companies",
           resourceType,
           actionType,
-          insertResult?.actions
+          insertResult?.actions 
         );
       }
 
@@ -156,7 +155,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (resourceObj?.round_id) {
           const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
           await processNotification(
-            investmentRound?.company_id,
+            investmentRound?.company_id || 0,
             "companies",
             resourceType,
             actionType,
@@ -228,6 +227,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       ];
       const data = await insertDataDiscard(dataObject);
+    }
+    if(error[0].extensions.code === "constraint-violation"){
+      let message:string="";
+      if(error[0].message.includes("Not-NULL")){
+        message="These fields require the value. However, They receive null values. Please check again"
+      }else if(error[0].message.includes("Uniqueness violation")){
+        message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" requires the unique value. However, It receives duplicate value. Please use another value`;
+      }
+      if(message.length>0){
+        error[0].message=message
+      }
+    }
+    if(error[0].extensions.code==="validation-failed"){
+      let message:string="";
+      message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" not found in this table. Please check again`;
+      error[0].message=message
     }
     return res.status(500).send(error[0] || error);
   }

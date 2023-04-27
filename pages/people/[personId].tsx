@@ -12,6 +12,7 @@ import {
 	GetPersonDocument,
 	GetPersonQuery,
 	Investment_Rounds,
+	News,
 	People,
 	useGetUserByPersonIdQuery,
 } from "@/graphql/types";
@@ -24,10 +25,12 @@ import { IconCheckBadgeSolid } from "@/components/Icons";
 import { ElemTooltip } from "@/components/ElemTooltip";
 import { ElemTags } from "@/components/ElemTags";
 import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { ElemNewsList } from "@/components/Person/ElemNewsList";
 
 type Props = {
 	person: People;
 	sortByDateAscInvestments: Investment_Rounds[];
+	sortNews: News[];
 };
 
 const Person: NextPage<Props> = (props) => {
@@ -215,6 +218,12 @@ const Person: NextPage<Props> = (props) => {
 								className="mb-7"
 							/>
 						)}
+						{props.sortNews.length > 0 && (
+							<ElemNewsList
+								resourceNews={props.sortNews}
+								className="mb-7"
+							/>
+						)}
 						{!person.investors || person.investors.length === 0 ? null : (
 							<ElemInvestorsList
 								heading="Investment Firms"
@@ -284,10 +293,24 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		})
 		.reverse();
 
+		const sortNews =
+      people.people[0].news_links
+        ?.slice()
+        ?.map((item) => ({ ...item.news }))
+        ?.filter((item) => item.status === "published")
+        .sort((a, b) => {
+          return (
+            new Date(a?.date ?? "").getTime() -
+            new Date(b?.date ?? "").getTime()
+          );
+        })
+        .reverse() || [];
+
 	return {
 		props: {
 			person: people.people[0],
 			sortByDateAscInvestments,
+			sortNews,
 		},
 	};
 };

@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import CookieService from '../../utils/cookie'
 import { mutate } from "@/graphql/hasuraAdmin";
+import { UpdateCompanyByPkDocument, UpdateCompanyByPkMutation } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -25,16 +26,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 const updateCompany = async (payload: any, companyId: number, token: string) => {
-  const mutation = `
-    mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
-      update_companies_by_pk(pk_columns: {id: $companyId}, _set: $data) {
-        id
-      }
-    }
-  `
-
-  return await mutate({
-    mutation,
+  return await mutate<UpdateCompanyByPkMutation>({
+    mutation: UpdateCompanyByPkDocument,
     variables: {
       companyId,
       data: payload

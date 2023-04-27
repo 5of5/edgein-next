@@ -1,4 +1,4 @@
-query GetUserProfile ($id: Int!) {
+query GetUserProfile($id: Int!) {
   users_by_pk(id: $id) {
     id
     billing_org_id
@@ -76,8 +76,8 @@ query GetUserProfile ($id: Int!) {
   }
 }
 
-query GetUserByPersonId ($person_id: Int!) {
-  users(where: {person_id: {_eq: $person_id}}) {
+query GetUserByPersonId($person_id: Int!) {
+  users(where: { person_id: { _eq: $person_id } }) {
     id
     billing_org_id
     organization_companies {
@@ -151,5 +151,294 @@ query GetUserByPersonId ($person_id: Int!) {
         }
       }
     }
+  }
+}
+
+query GetUserByPk($userId: Int!) {
+  users_by_pk(id: $userId) {
+    id
+    additional_emails
+    email
+  }
+}
+
+mutation UpdateUserAdditionalEmailsByPk($userId: Int!, $emails: jsonb) {
+  update_users_by_pk(
+    pk_columns: { id: $userId }
+    _set: { additional_emails: $emails }
+  ) {
+    id
+  }
+}
+
+query GetUserByEmail($email: String) {
+  users(where: { email: { _eq: $email } }, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+
+query GetUserById($id: Int) {
+  users(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    billing_org {
+      customer_id
+    }
+    person {
+      name
+      picture
+    }
+    additional_emails
+  }
+}
+
+mutation UpdateUserBillingOrg($userId: Int!, $billingOrgId: Int!) {
+  update_users_by_pk(
+    pk_columns: { id: $userId }
+    _set: { billing_org_id: $billingOrgId }
+  ) {
+    id
+  }
+}
+
+mutation UpsertUsers(
+  $external_id: String
+  $email: String
+  $role: String
+  $display_name: String
+  $auth0_linkedin_id: String
+  $auth0_user_pass_id: String
+  $reference_user_id: Int
+) {
+  insert_users(
+    objects: [
+      {
+        external_id: $external_id
+        email: $email
+        role: $role
+        display_name: $display_name
+        auth0_linkedin_id: $auth0_linkedin_id
+        auth0_user_pass_id: $auth0_user_pass_id
+        reference_user_id: $reference_user_id
+      }
+    ]
+    on_conflict: { constraint: users_email_key, update_columns: [external_id] }
+  ) {
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+
+mutation UpdateUserEmailVerifiedStatus(
+  $email: String!
+  $is_auth0_verified: Boolean
+) {
+  update_users(
+    where: { email: { _eq: $email } }
+    _set: { is_auth0_verified: $is_auth0_verified }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+
+mutation UpdateUserAuth0LinkedInId(
+  $email: String!
+  $auth0_linkedin_id: String
+) {
+  update_users(
+    where: { email: { _eq: $email } }
+    _set: { auth0_linkedin_id: $auth0_linkedin_id }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+
+mutation UpdateUserAuth0UserPassId(
+  $email: String!
+  $auth0_user_pass_id: String
+) {
+  update_users(
+    where: { email: { _eq: $email } }
+    _set: { auth0_user_pass_id: $auth0_user_pass_id }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+
+query GetUserByReferenceId($reference_id: String) {
+  users(where: { reference_id: { _eq: $reference_id } }, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
+  }
+}
+
+mutation UpdateUserAdditionalEmails($id: Int!, $additional_emails: jsonb) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { additional_emails: $additional_emails }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      role
+      external_id
+      is_auth0_verified
+      display_name
+      auth0_linkedin_id
+      auth0_user_pass_id
+      reference_id
+      billing_org_id
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      additional_emails
+      active
+    }
+  }
+}
+
+query GetUserByAdditionalEmail($email: jsonb) {
+  users(where: { additional_emails: { _contains: $email } }, limit: 1) {
+    id
+    email
+    role
+    external_id
+    is_auth0_verified
+    display_name
+    auth0_linkedin_id
+    auth0_user_pass_id
+    reference_id
+    billing_org_id
+    person {
+      name
+      picture
+      slug
+      id
+    }
+    additional_emails
+    active
   }
 }

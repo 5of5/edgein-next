@@ -215,3 +215,49 @@ query GetRelevantCompanies(
 		sentiment
 	}
 }
+
+query GetSentimentByCompanyId($companyId: Int!) {
+  companies_by_pk(id: $companyId) {
+    sentiment
+    slug
+  }
+}
+
+ mutation UpdateSentimentByCompanyId($companyId: Int!, $sentiment: jsonb!) {
+   update_companies_by_pk(
+     pk_columns: { id: $companyId }
+     _set: { sentiment: $sentiment }
+   ) {
+     sentiment
+   }
+ }    
+
+ query GetCompaniesByDate($date: timestamptz) {
+   companies(
+     where: {
+       _and: [
+         { status: { _eq: "published" } }
+         { updated_at: { _gte: $date } }
+         { library: { _contains: "Web3" } }
+       ]
+     }
+   ) {
+     id
+     name
+     overview
+     tags
+     logo
+     slug
+     aliases
+     coin {
+       ticker
+       name
+     }
+   }
+ }
+
+ mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
+   update_companies_by_pk(pk_columns: { id: $companyId }, _set: $data) {
+     id
+   }
+ }

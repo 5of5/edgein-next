@@ -102,7 +102,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					plan,
 				);
 				// update user
-				UserService.updateBillingOrg(userId, billingOrg.id);
+				if (billingOrg)
+					UserService.updateBillingOrg(userId, billingOrg.id);
 				break;
 			}
 			default:

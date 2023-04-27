@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import { useIntercom } from "react-use-intercom";
 import { formatDate } from "@/utils";
 import { ElemButton } from "../ElemButton";
+import Link from "next/link";
 
 type Props = {
 	activities: Array<any>;
+	eventName: string;
 };
 
-export const ElemEventActivity: React.FC<Props> = ({ activities }) => {
+export const ElemEventActivity: React.FC<Props> = ({
+	activities,
+	eventName,
+}) => {
 	const [activityLimit, setActivityLimit] = useState(10);
 	const showMoreActivity = () => {
 		setActivityLimit(activityLimit + 10);
@@ -37,12 +42,65 @@ export const ElemEventActivity: React.FC<Props> = ({ activities }) => {
 
 										<div className="mb-4">
 											<div className="inline leading-7 text-slate-600">
-												<div className="inline font-bold">
-													{`${
-														activity?.person?.name ||
-														activity?.company?.name ||
-														activity?.vc_firm?.name
-													} was added as a ${activity?.type}`}
+												<div className="inline">
+													{activity?.type === "attendee" ? (
+														<>
+															<Link href={`/people/${activity?.person?.slug}`}>
+																<a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+																	{activity?.person?.name}
+																</a>
+															</Link>
+															{` is going to `}
+															<span className="font-bold capitalize">
+																{eventName}
+															</span>
+														</>
+													) : activity?.type === "speaker" ? (
+														<>
+															<Link href={`/people/${activity?.person?.slug}`}>
+																<a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+																	{activity?.person?.name}
+																</a>
+															</Link>
+															{` was added as a `}
+															<span className="font-bold capitalize">
+																{activity?.type}
+															</span>
+														</>
+													) : activity?.type === "organizer" ? (
+														<>
+															 <Link
+                                href={
+                                  activity?.company
+                                    ? `/companies/${activity?.company?.slug}`
+                                    : activity?.vc_firm
+                                    ? `/investors/${activity?.vc_firm?.slug}`
+                                    : `/people/${activity?.person?.slug}`
+                                }
+                              >
+                                <a className="font-bold border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+                                  {activity?.company?.name ||
+                                    activity?.vc_firm?.name ||
+                                    activity?.person?.name}
+                                </a>
+                              </Link>
+															{` was added as an `}
+															<span className="font-bold capitalize">
+																{activity?.type}
+															</span>
+														</>
+													) : (
+														<>
+															{`${
+																activity?.person?.name ||
+																activity?.company?.name ||
+																activity?.vc_firm?.name
+															} was added as ${
+																activity?.type === "organizer" ? "an" : "a"
+															} ${activity?.type}`}
+															<br />
+														</>
+													)}
 												</div>
 												<p className="text-sm">
 													{formatDate(activity.created_at as string, {

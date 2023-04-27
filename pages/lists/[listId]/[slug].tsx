@@ -138,6 +138,7 @@ const MyList: NextPage<Props> = () => {
 
 		if (res.ok) {
 			refetchGroups();
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -338,7 +339,7 @@ const MyList: NextPage<Props> = () => {
 								</>
 							) : (
 								<div className="flex items-center gap-x-2">
-									<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+									<h1 className="mr-2 font-bold text-xl capitalize leading-tight">
 										Previewing: {listNameTitle}
 									</h1>
 									{isCustomList && !isFollowing && (
@@ -369,7 +370,7 @@ const MyList: NextPage<Props> = () => {
 							)}
 						</div>
 					) : (
-						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+						<h1 className="mr-2 font-bold text-xl capitalize leading-tight">
 							{listNameTitle}
 						</h1>
 					)}
