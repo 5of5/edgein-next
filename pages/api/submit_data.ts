@@ -32,11 +32,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
-  const resourceObj: Array<Record<string, any>> | Record<string, any> | any = req.body.resource;
+  const resourceObj: Array<Record<string, any>> | Record<string, any> = req.body.resource;
   const forceUpdate: Boolean = req.body.force_update;
-  let insertResultTemp: any = [];
+  let insertResultTemp: Array<Record<string, any>> | Record<string, any> = [];
   let hasRelationship: boolean = false;
-  let resourceIdDiscard, partnerIdDiscard, resourceRelationship, resourceTypeRelationship : ResourceTypes | any;
+  let resourceTypeRelationship : ResourceTypes = resourceType;
+  let resourceRelationship : Record<string, any> = {};
+  let resourceIdDiscard : number = 0, partnerIdDiscard : number = 0;
   try {
     if (
       apiKey === undefined ||
@@ -55,12 +57,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     for(let key in resourceObj){
       if(key === resourceType){
-        resourceRelationship={...resourceObj[key]};
+        resourceRelationship={...(resourceObj as Record<string, any>)[key]};
         hasRelationship=true;
       }else{
         let newKey = key.replace("&","");
         if(Object.keys(NODE_NAME).includes(newKey)){
-          resourceTypeRelationship = newKey;
+          resourceTypeRelationship = newKey as ResourceTypes;
         }
       }
     }
@@ -120,25 +122,23 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       actionType = "Insert Data";
     }
 
-    let properties: any;
+    let properties: Array<Record<string, any>> | Record<string, any> = [];
     if(Array.isArray(resourceObj)){
-      let propertiesTemp: Array<Record<string, any>> | Record<string, any> =[];
       resourceObj.forEach((item)=>{
         if(Object.keys(item).length>2){
-          propertiesTemp.push({...item});
+          properties.push({...item});
         }else{
           let objTemp: Record<string, any> = {};
           for(let key in item){
             objTemp[key]={...item[key]};
           }
-          propertiesTemp.push(objTemp);
+          properties.push(objTemp);
         }
       })
-      properties = propertiesTemp;
     }else{
       properties = {...resourceObj};
     }
-
+    
     if (
       actionType === "Insert Data" &&
       ["companies", "vc_firms", "people"].includes(resourceType) 
@@ -147,13 +147,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           resourceObj.forEach((item,idx)=>{
             if(Object.keys(item).length>2){
               if((!item?.library || item?.library?.length === 0)){
-                properties[idx].library = ["Web3"];
+                (properties as Record<string, any>)[idx].library = ["Web3"];
               }
             }else{
               for(let key in item){
                 if(key === resourceType){
                   if((!item[key]?.library || item[key]?.library?.length === 0)){
-                    properties[idx][key].library = ["Web3"];
+                    (properties as Record<string, any>)[idx][key].library = ["Web3"];
                   }
                 }
               }
@@ -167,13 +167,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         }else{
           if((!resourceObj?.library || resourceObj?.library?.length === 0)){
-          properties.library = ["Web3"];
+            (properties as Record<string, any>).library = ["Web3"];
           }
         }
       }
     }
     
-    let insertResult: any;
+    let insertResult: Array<Record<string, any>> | Record<string, any>;
     if(Array.isArray(properties)){
       for(let i=0;i<properties.length;i++){
         // verify each element has relationship field in array 
@@ -187,12 +187,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             if(key === resourceType){
               resourceRelationship = {...properties[i][key]};
             }else{
-              resourceTypeRelationship = key.replace("&","");
+              resourceTypeRelationship = key.replace("&","") as ResourceTypes;
             }
           }
           // implement insert array relationship
-          let tempInsertResult;
-          tempInsertResult = await mutateActionAndDataRaw(
+          let tempInsertResult = await mutateActionAndDataRaw(
             partnerId,
             user,
             NODE_NAME[resourceType],
@@ -232,11 +231,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           insertResultTemp.push({...tempInsertResult});
         }
       }
-      insertResult=insertResultTemp;
+      insertResult = insertResultTemp;
     }else{
       if(hasRelationship){
-        let tempInsertResult;
-        tempInsertResult = await mutateActionAndDataRaw(
+        let tempInsertResult = await mutateActionAndDataRaw(
           partnerId,
           user,
           NODE_NAME[resourceType],
@@ -248,21 +246,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         );
         insertResultTemp.push({...tempInsertResult});
         const resourceIdRelationShip: number = await resourceIdLookup(resourceTypeRelationship, resourceIdentifier);
-        const relatedField= resourceObj[`&${resourceTypeRelationship}`]["relationship_field"];
-        resourceObj[`&${resourceTypeRelationship}`][relatedField]= tempInsertResult.id;
-        delete resourceObj[`&${resourceTypeRelationship}`]["relationship_field"];
+        const relatedField= (resourceObj as Record<string, any>)[`&${resourceTypeRelationship}`]["relationship_field"];
+        (resourceObj as Record<string, any>)[`&${resourceTypeRelationship}`][relatedField]= tempInsertResult.id;
+        delete (resourceObj as Record<string, any>)[`&${resourceTypeRelationship}`]["relationship_field"];
         tempInsertResult = await mutateActionAndDataRaw(
           partnerId,
           user,
           NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
           resourceIdRelationShip,
-          resourceObj[`&${resourceTypeRelationship}`],
+          (resourceObj as Record<string, any>)[`&${resourceTypeRelationship}`],
           resourceTypeRelationship,
           actionType,
           forceUpdate,
         );
         insertResultTemp.push({...tempInsertResult});
-        insertResult=insertResultTemp;
+        insertResult = insertResultTemp;
       }else{
         insertResult = await mutateActionAndDataRaw(
           partnerId,
@@ -285,7 +283,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         resourceType === "team_members"
       ) {
         await processNotification(
-          resourceObj?.company_id,
+          (resourceObj as Record<string, any>)?.company_id,
           "companies",
           resourceType,
           actionType,
@@ -295,7 +293,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       if (resourceType === "investors") {
         await processNotification(
-          resourceObj?.vc_firm_id,
+          (resourceObj as Record<string, any>)?.vc_firm_id,
           "vc_firms",
           resourceType,
           actionType,
@@ -304,8 +302,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       if (resourceType === "investments") {
-        if (resourceObj?.round_id) {
-          const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
+        if ((resourceObj as Record<string, any>)?.round_id) {
+          const investmentRound = await getCompanyByRoundId((resourceObj as Record<string, any>).round_id);
           await processNotification(
             investmentRound?.company_id || 0,
             "companies",
@@ -316,7 +314,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         }
 
         await processNotification(
-          resourceObj?.vc_firm_id,
+          (resourceObj as Record<string, any>)?.vc_firm_id,
           "vc_firms",
           resourceType,
           actionType,
@@ -325,18 +323,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
 
       if (resourceType === "event_organization") {
-        if (resourceObj?.company_id) {
+        if ((resourceObj as Record<string, any>)?.company_id) {
           await processNotification(
-            resourceObj.company_id,
+            (resourceObj as Record<string, any>).company_id,
             "companies",
             resourceType,
             actionType,
             Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
           );
         }
-        if (resourceObj?.vc_firm_id) {
+        if ((resourceObj as Record<string, any>)?.vc_firm_id) {
           await processNotification(
-            resourceObj.vc_firm_id,
+            (resourceObj as Record<string, any>).vc_firm_id,
             "vc_firms",
             resourceType,
             actionType,
@@ -380,7 +378,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         {
           resource: resourceType,
           field,
-          value: resourceObj[field],
+          value: (resourceObj as Record<string, any>)[field],
           partner: partnerIdDiscard,
           accuracy_weight: 1,
           resource_id: resourceIdDiscard,
