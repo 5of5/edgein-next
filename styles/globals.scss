@@ -28,19 +28,6 @@
     font-weight: bold;
   }
 
-  html,
-  body {
-    /* Typography */
-    font-family: theme('fontFamily.sans');
-    /* font optimization */
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  body {
-    @apply bg-gray-50 text-dark-500 overscroll-y-none;
-  }
 }
 
 @layer utilities {
@@ -94,19 +81,6 @@
   }
 }
 
-/* Admin */
-.logoFile {
-  img {
-    max-height: 50px !important;
-    max-width: 50px !important;
-  }
-}
-
-.crunchbase-icon {
-  height: 25px;
-  width: 25px;
-}
-
 /* Mobile hamburger button */
 .hamburger-inner,
 .hamburger-inner::before,
@@ -124,6 +98,7 @@
     transition: bottom .075s .12s ease, transform .075s cubic-bezier(.55, .055, .675, .19);
     @apply bottom-[7px];
   }
+
   &.hamburger-active{
     &::before {
       transition: top .075s ease, opacity .075s .12s ease;
@@ -132,4 +107,36 @@
       transition: bottom .075s ease, transform .075s .12s cubic-bezier(.215, .61, .355, 1);
     }
   }
+}
+
+
+/* Range slider: replace default appearance */
+.thumb,
+.thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.thumb {
+  width: calc(100% - 36px);
+  @apply absolute pointer-events-none h-0 outline-none;
+}
+
+/* For Chrome browsers */
+.thumb::-webkit-slider-thumb {
+  pointer-events: all;
+  @apply bg-white border border-black/10 rounded-full shadow cursor-pointer w-4 h-4 relative mt-1;
+}
+
+/* For Firefox browsers */
+.thumb::-moz-range-thumb {
+  pointer-events: all;
+  @apply bg-white border border-black/10 rounded-full shadow-sm cursor-pointer w-4 h-4 relative mt-1;
+}
+
+/* Admin */
+.logoFile img,
+.logoFile .RaImageField-image {
+  height: 48px!important;
+  width: 48px!important;
 }

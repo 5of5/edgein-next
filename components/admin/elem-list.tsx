@@ -3,16 +3,17 @@ import { List, Datagrid, Pagination, BulkDeleteButton, BulkExportButton } from "
 
 type Props = {
   filters?: ReactElement | ReactElement[];
+  disableDelete?: boolean
 };
 
-const ListBulkActions = () => (
+const ListBulkActions = (props:{disableDelete:boolean}) => (
   <>
-    <BulkDeleteButton />
+    {props.disableDelete ? <></> :<BulkDeleteButton />}
     <BulkExportButton />
   </>
 );
 
-const ElemList: FC<PropsWithChildren<Props>> = ({ filters, children }) => {
+const ElemList: FC<PropsWithChildren<Props>> = ({ filters, disableDelete, children }) => {
   return (
     <List
       filters={filters}
@@ -44,7 +45,7 @@ const ElemList: FC<PropsWithChildren<Props>> = ({ filters, children }) => {
         },
       }}
     >
-      <Datagrid bulkActionButtons={<ListBulkActions />}>{children}</Datagrid>
+      <Datagrid bulkActionButtons={<ListBulkActions disableDelete={disableDelete || false} />}>{children}</Datagrid>
     </List>
   );
 };

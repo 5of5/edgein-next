@@ -1,17 +1,18 @@
 import { mutate , query} from "@/graphql/hasuraAdmin";
+import {
+  GetBillingOrgByCustomerIdDocument,
+  GetBillingOrgByCustomerIdQuery,
+  InsertBillingOrgDocument,
+  InsertBillingOrgMutation,
+  UpdateBillingOrgDocument,
+  UpdateBillingOrgMutation,
+} from "@/graphql/types";
 
 
 async function insertBillingOrg(customer_id: string, status: string, plan: string) {
-  const insertBillingOrg = `
-  mutation InsertBillingOrg($customer_id: String, $status: String, $plan: String) {
-    insert_billing_org_one(object: {customer_id: $customer_id, status: $status, plan: $plan, user_limit: 1}) {
-      id
-    }
-  }  
-  `
 try {
-  const data = await mutate({
-    mutation: insertBillingOrg,
+  const data = await mutate<InsertBillingOrgMutation>({
+    mutation: InsertBillingOrgDocument,
     variables: { customer_id, plan, status }
   });
   return data.data.insert_billing_org_one
@@ -21,21 +22,9 @@ try {
 }
 
 async function getBillingOrgByCustomerId(customerId: string) {
-  const getBillingOrgByCustomerId = `
-  query GetBillingOrgByCustomerId($customerId: String = "") {
-    billing_org(where: {customer_id: {_eq: $customerId}}) {
-      customer_id
-      id
-      plan
-      status
-      user_limit
-    }
-  }
-  
-  `
 try {
-  const data = await query({
-    query: getBillingOrgByCustomerId,
+  const data = await query<GetBillingOrgByCustomerIdQuery>({
+    query: GetBillingOrgByCustomerIdDocument,
     variables: { customerId }
   });
   return data.data.billing_org[0]
@@ -44,19 +33,10 @@ try {
   }
 }
 
-async function updateBillingOrg(id: string, status: string) {
-  const updateBillingOrg = `
-  mutation UpdateBillingOrg($id: Int!, $status: String = "") {
-    update_billing_org_by_pk(pk_columns: {id: $id}, _set: {status: $status}) {
-      id
-      status
-    }
-  }
-  
-  `
+async function updateBillingOrg(id: number, status: string) {
 try {
-  const data = await mutate({
-    mutation: updateBillingOrg,
+  const data = await mutate<UpdateBillingOrgMutation>({
+    mutation: UpdateBillingOrgDocument,
     variables: { id, status }
   });
   return data.data.update_billing_org_by_pk

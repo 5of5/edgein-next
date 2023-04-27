@@ -22,6 +22,7 @@ export const CompanyCreate = () => {
     useAdminTransform({
       withImageTransformData,
       withoutImageTransformData,
+      hasGeopoint: true,
     });
 
   const handleSaveDraft = (data: any) => {

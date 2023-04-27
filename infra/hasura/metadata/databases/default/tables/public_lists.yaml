@@ -21,6 +21,15 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: list_id
+  - name: follows_people
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: follows_people
+        insertion_order: null
+        column_mapping:
+          id: list_id
   - name: follows_vcfirms
     using:
       manual_configuration:
@@ -57,10 +66,12 @@ select_permissions:
   - role: viewer
     permission:
       columns:
+        - created_at
         - created_by_id
         - id
         - name
-        - created_at
+        - public
+        - type
       computed_fields:
         - total_no_of_resources
       filter:

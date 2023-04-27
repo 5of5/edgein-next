@@ -29,6 +29,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow"
 						imgClass="object-fit max-w-full max-h-full"
 						imgAlt={name}
+						placeholderClass="text-slate-300"
 					/>
 					<div className="flex items-center justify-center pl-2 md:overflow-hidden">
 						<h3
@@ -40,28 +41,28 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 					</div>
 				</div>
 
-				<div className="flex flex-wrap space-x-6 text-slate-600 mt-4">
-					{num_of_investments !== null && num_of_investments > 0 && (
+				{num_of_investments !== null && num_of_investments > 0 && (
+					<div className="flex flex-wrap space-x-6 text-slate-600 mt-4">
 						<div>
 							<span className="font-bold mr-1">{num_of_investments}</span>
 							Investment
 							{num_of_investments > 1 && "s"}
 						</div>
-					)}
 
-					{/* num_of_exits field needs to be added to DB */}
-					{/* {vcfirm.num_of_exits !== null && vcfirm.num_of_exits > 0 && (
-            <div>
-              <span className="font-bold mr-1">
-                {vcfirm.num_of_exits}
-              </span>
-              Exit
-              {vcfirm.num_of_exits > 1 && "s"}
-            </div>
-          )} */}
-				</div>
+						{/* num_of_exits field needs to be added to DB */}
+						{/* {vcfirm.num_of_exits !== null && vcfirm.num_of_exits > 0 && (
+							<div>
+							<span className="font-bold mr-1">
+								{vcfirm.num_of_exits}
+							</span>
+							Exit
+							{vcfirm.num_of_exits > 1 && "s"}
+							</div>
+						)} */}
+					</div>
+				)}
 				<div className="grow">
-					{tags && (
+					{tags?.length > 0 && (
 						<div
 							className="mt-4 flex flex-wrap gap-2"
 							onClick={(e) => e.stopPropagation()}

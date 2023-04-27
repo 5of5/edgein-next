@@ -59,6 +59,11 @@ import {
 	BlockchainEdit,
 	BlockchainCreate,
 } from "../../components/admin/blockchain";
+import {
+	NewsList,
+	NewsEdit,
+	NewsCreate,
+} from "../../components/admin/news";
 import { useAuth } from "../../hooks/use-auth";
 import { onSubmitData } from "@/utils/submit-data";
 
@@ -145,6 +150,16 @@ const EXTENDED_GET_RESOURCE_LINKS = gql`
 	}
 `;
 
+const EXTENDED_GET_NEWS_ORGANIZATIONS = gql`
+  {
+    organizations {
+			id
+			company_id
+			vc_firm_id
+		}
+	}
+`;
+
 const customBuildFields: BuildFields = (type, fetchType) => {
 	const resourceName = type.name;
 
@@ -154,6 +169,13 @@ const customBuildFields: BuildFields = (type, fetchType) => {
 	if (resourceName === "investment_rounds") {
 		const relatedEntities = extractFieldsFromQuery(
 			EXTENDED_GET_LIST_INVESTMENT_ROUNDS
+		);
+		defaultFields.push(...relatedEntities);
+	}
+
+	if (resourceName === "news") {
+		const relatedEntities = extractFieldsFromQuery(
+			EXTENDED_GET_NEWS_ORGANIZATIONS
 		);
 		defaultFields.push(...relatedEntities);
 	}
@@ -237,15 +259,53 @@ const AdminApp = () => {
 							...getParentSubOrganizations(val),
 						}));
 					}
+					if (type === "news") {
+						data = data.map((val) => ({
+              ...val,
+              company_ids: val?.organizations
+                ?.filter((item: any) => item.company_id)
+                ?.map((item: any) => item.company_id),
+              vc_firm_ids: val?.organizations
+                ?.filter((item: any) => item.vc_firm_id)
+                ?.map((item: any) => item.vc_firm_id),
+            }));
+					}
 					return {
 						data,
 						...metadata,
 					};
 				},
+				getOne: async (type, obj) => {
+          let { data, ...metadata } = await dataProvider.getOne(type, obj);
+          if (type === "news") {
+            data = {
+              ...data,
+              source: data?.source ? JSON.stringify(data.source) : "",
+              metadata: data?.metadata ? JSON.stringify(data.metadata) : "",
+            };
+          }
+          return {
+            data,
+            ...metadata,
+          };
+        },
 				create: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "POST"),
 				update: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "PUT"),
+				deleteMany: async (type, obj: any) => {
+					const response = await Promise.all(
+						obj.ids.map(async (id: number) => {
+							await onSubmitData(
+								type,
+								nullInputTransform(type, { id, previousData: { id } }),
+								"DELETE"
+							);
+							return { id };
+						})
+					);
+					return { data: response };
+				},
 				delete: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "DELETE"),
 			});
@@ -317,6 +377,9 @@ const AdminApp = () => {
 			<Resource
 				{...getResourceProps("events", EventList, EventEdit, EventCreate)}
       />
+			<Resource
+				{...getResourceProps("news", NewsList, NewsEdit, NewsCreate)}
+			/>
 			<Resource
 				{...getResourceProps("companies", CompanyList, CompanyEdit, CompanyCreate)}
 			/>

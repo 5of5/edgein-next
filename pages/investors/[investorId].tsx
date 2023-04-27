@@ -20,6 +20,7 @@ import {
 	GetVcFirmDocument,
 	GetVcFirmQuery,
 	Investment_Rounds,
+	News,
 	useGetVcFirmQuery,
 	Vc_Firms,
 } from "@/graphql/types";
@@ -35,6 +36,7 @@ import ElemOrganizationNotes from "@/components/elem-organization-notes";
 type Props = {
 	vcfirm: Vc_Firms;
 	sortByDateAscInvestments: Array<Investment_Rounds>;
+	sortNews: Array<News>;
 	getInvestments: Array<Investment_Rounds>;
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -88,6 +90,17 @@ const VCFirm: NextPage<Props> = (props) => {
 	}
 
 	const sortedInvestmentRounds = props.sortByDateAscInvestments;
+
+	const sortActivities =
+		[...sortedInvestmentRounds, ...props.sortNews]
+			?.slice()
+			.sort((a: any, b: any) => {
+				return (
+					new Date(a?.date || a?.round_date || "").getTime() -
+					new Date(b?.date || b?.round_date || "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	//TabBar
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
@@ -172,7 +185,7 @@ const VCFirm: NextPage<Props> = (props) => {
 									>
 										{parse(newLineToP(vcfirm.overview))}
 									</div>
-									{overviewDivHeight > 72 && (
+									{overviewDivHeight > 84 && (
 										<ElemButton
 											onClick={() => setOverviewMore(!overviewMore)}
 											btn="transparent"
@@ -232,20 +245,21 @@ const VCFirm: NextPage<Props> = (props) => {
 							yearFounded={vcfirm.year_founded}
 							linkedIn={vcfirm.linkedin}
 							location={vcfirm.location}
+							locationJson={vcfirm.location_json}
 							twitter={vcfirm.twitter}
 						/>
 					</div>
 					<div className="col-span-8">
-						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0 mb-6">
+						<div className="w-full p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
 							<ElemOrganizationNotes
 								resourceId={vcfirm.id}
 								resourceType="vc_firms"
 							/>
 						</div>
-						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg lg:mt-0">
+						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
 								resourceType="vc_firms"
-								resourceInvestments={sortedInvestmentRounds}
+								resourceInvestments={sortActivities}
 								resourceName={vcfirm.name}
 							/>
 						</div>
@@ -301,7 +315,8 @@ const VCFirm: NextPage<Props> = (props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: vc_firms } = await runGraphQl<GetVcFirmQuery>(
 		GetVcFirmDocument,
-		{ slug: context.params?.investorId }
+		{ slug: context.params?.investorId },
+		context.req.cookies
 	);
 
 	if (!vc_firms?.vc_firms[0]) {
@@ -328,6 +343,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		})
 		.reverse();
 
+	const sortNews =
+		vc_firms.vc_firms[0].news_links
+			?.slice()
+			?.map((item) => ({ ...item.news, type: "news" }))
+			?.filter((item) => item.status === "published")
+			.sort((a, b) => {
+				return (
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
+
 	let metaTitle = null;
 	if (vc_firms.vc_firms[0].name) {
 		metaTitle =
@@ -340,6 +367,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			vcfirm: vc_firms.vc_firms[0],
 			getInvestments,
 			sortByDateAscInvestments,
+			sortNews,
 		},
 	};
 };

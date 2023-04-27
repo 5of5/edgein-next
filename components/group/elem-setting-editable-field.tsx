@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useUser } from "@/context/user-context";
 import { User_Groups } from "@/graphql/types";
 import ElemEditDialog from "./elem-edit-dialog";
@@ -88,7 +88,7 @@ const ElemSettingEditableField: React.FC<Props> = ({
 
 	return (
 		<div
-			className={`flex items-start justify-between px-4 py-3 ${
+			className={`flex items-start justify-between p-3 ${
 				isGroupManager && "cursor-pointer hover:bg-slate-100 "
 			}`}
 			onClick={isGroupManager ? handleOpenEditMode : () => null}
@@ -117,8 +117,6 @@ const ElemSettingEditableField: React.FC<Props> = ({
 				onClose={handleCloseEditMode}
 				onSave={handleSave}
 			/>
-
-			<Toaster />
 		</div>
 	);
 };

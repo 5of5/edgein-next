@@ -1,37 +1,48 @@
 import React from "react";
-import { Notes } from "@/graphql/types";
+import { GetNotesQuery } from "@/graphql/types";
+import { IconDocumentDownload } from "@/components/Icons";
+import { orderBy } from "lodash";
 import ElemNoteCard from "./elem-note-card";
-import Link from "next/link";
 
 type Props = {
-	notes: Array<Notes>;
+	className?: string;
+	notes: GetNotesQuery["notes"];
+	refetchNotes: () => void;
 };
 
-export const ElemNotes: React.FC<Props> = ({ notes }) => {
-	return (
-		<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-			<h2 className="text-xl font-bold">{`Notes (${notes.length})`}</h2>
+export const ElemNotes: React.FC<Props> = (props) => {
+	//sort by created date
+	const sortedNotes = orderBy(props.notes, (a) => new Date(a.created_at), [
+		"desc",
+	]);
 
-			{notes.length === 0 ? (
-				<p className="text-slate-500 mt-2">
-					Add a note to a{" "}
-					<Link href="/companies" passHref>
-						<a className="font-bold hover:border-b hover:text-primary-500">
-							company
-						</a>
-					</Link>{" "}
-					or{" "}
-					<Link href="/investors" passHref>
-						<a className="font-bold hover:border-b hover:text-primary-500">
-							investor
-						</a>
-					</Link>{" "}
-					profile and share with the group.
-				</p>
+	return (
+		<div className={`${props.className}`}>
+			<h2 className="text-lg font-bold pb-1">{`Notes (${props.notes.length})`}</h2>
+
+			{props.notes.length === 0 ? (
+				<div className="bg-white shadow rounded-lg w-full p-12 text-center">
+					<IconDocumentDownload
+						className="mx-auto h-12 w-12 text-slate-300"
+						title="Notes"
+					/>
+					<h3 className="mt-2 text-lg font-bold">
+						No notes have been added to group yet
+					</h3>
+
+					<p className="mt-1 text-slate-600">
+						Create a note in a company or investor profile and select group as
+						audience.
+					</p>
+				</div>
 			) : (
-				<div className="grid grid-cols-1 gap-4 mt-2 sm:grid-cols-2 lg:grid-cols-3">
-					{notes.map((item) => (
-						<ElemNoteCard key={item.id} data={item} />
+				<div className="flex flex-col gap-y-4">
+					{sortedNotes.map((item) => (
+						<ElemNoteCard
+							key={item.id}
+							data={item}
+							refetch={props.refetchNotes}
+						/>
 					))}
 				</div>
 			)}

@@ -109,12 +109,30 @@ const AdminApp = () => {
 			);
 			// Fix nullable inputs for graphql
 			setDataProvider({
-				...dataProvider,
-				create: (type, obj) =>
-					dataProvider.create(type, nullInputTransform(type, obj)),
-				update: (type, obj) =>
-					dataProvider.update(type, nullInputTransform(type, obj)),
-			});
+        ...dataProvider,
+        getOne: async (type, obj) => {
+          let { data, ...metadata } = await dataProvider.getOne(type, obj);
+
+          if (type === "users") {
+            if (data.additional_emails && data.additional_emails.length > 0) {
+              data.additional_emails = data.additional_emails.map(
+                (item: string) => ({
+                  email: item,
+                })
+              );
+            }
+          }
+
+          return {
+            data,
+            ...metadata,
+          };
+        },
+        create: (type, obj) =>
+          dataProvider.create(type, nullInputTransform(type, obj)),
+        update: (type, obj) =>
+          dataProvider.update(type, nullInputTransform(type, obj)),
+      });
 		};
 		buildDataProvider();
 	}, []);

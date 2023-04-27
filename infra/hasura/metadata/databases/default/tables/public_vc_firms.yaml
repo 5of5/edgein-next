@@ -34,6 +34,15 @@ array_relationships:
         table:
           schema: public
           name: investors
+  - name: news_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: news_organizations
+        insertion_order: null
+        column_mapping:
+          id: vc_firm_id
   - name: to_links
     using:
       manual_configuration:
@@ -43,12 +52,6 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: to_vc_firm_id
-computed_fields:
-  - name: num_of_investments
-    definition:
-      function:
-        schema: public
-        name: vc_firms_num_of_investments
 insert_permissions:
   - role: user
     permission:
@@ -67,23 +70,28 @@ select_permissions:
     permission:
       columns:
         - created_at
+        - geopoint
         - id
+        - investment_amount_total
         - latest_investment
+        - library
         - linkedin
         - location
+        - location_json
         - logo
         - name
+        - num_of_exits
+        - num_of_investments
         - overview
         - sentiment
         - slug
         - status_tags
         - tags
+        - team_size
         - twitter
         - updated_at
         - website
         - year_founded
-      computed_fields:
-        - num_of_investments
       filter:
         status:
           _eq: published
@@ -98,30 +106,33 @@ select_permissions:
         - name
         - slug
         - website
-      computed_fields:
-        - num_of_investments
       filter: {}
   - role: viewer
     permission:
       columns:
         - created_at
+        - geopoint
         - id
+        - investment_amount_total
         - latest_investment
+        - library
         - linkedin
         - location
+        - location_json
         - logo
         - name
+        - num_of_exits
+        - num_of_investments
         - overview
         - sentiment
         - slug
         - status_tags
         - tags
+        - team_size
         - twitter
         - updated_at
         - website
         - year_founded
-      computed_fields:
-        - num_of_investments
       filter:
         status:
           _eq: published

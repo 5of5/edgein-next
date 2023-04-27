@@ -1,6 +1,4 @@
 import React, { useRef } from "react";
-import { useGetOne } from "react-admin";
-import { useParams } from "react-router-dom";
 import useAdminTransform from "@/hooks/use-admin-transform";
 import ElemTitle from "../elem-title";
 import ElemFormBase from "../elem-form-base";
@@ -19,13 +17,11 @@ export const CompanyEdit = () => {
 
   const rootStyle = getRootStyle(formRef);
 
-  const { id } = useParams();
-  const { data: currentData, isLoading, refetch } = useGetOne("companies", { id });
-
   const { isImageUpdated, logo, transform, onSelect, onDropRejected } =
     useAdminTransform({
       withImageTransformData,
       withoutImageTransformData,
+      hasGeopoint: true,
     });
 
   return (
@@ -39,19 +35,13 @@ export const CompanyEdit = () => {
         <CompanyForm
           action="edit"
           formRef={formRef}
-          currentData={currentData}
           isImageUpdated={isImageUpdated}
           logo={logo}
           onSelect={onSelect}
           onDropRejected={onDropRejected}
         />
       </ElemFormBase>
-      <ElemParentOrganizationEdit
-        isLoading={isLoading}
-        type="companies"
-        currentData={currentData}
-        refetch={refetch}
-      />
+      <ElemParentOrganizationEdit type="companies" />
       <TeamMemberEdit />
       <InvestmentRoundTable />
     </div>

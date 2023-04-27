@@ -14,22 +14,26 @@ import {
   useGetList,
   regex,
   required,
+  SelectArrayInput,
+  useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
   status,
   tags,
   companyChoices,
+  libraryChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../elem-slug-input";
 import ElemIconGroup from "../elem-icon-group";
 import useAdminHandleSlug from "@/hooks/use-admin-handle-slug";
+import ElemAddressInput from "../elem-address-input";
 
 type CompanyFormProps = {
   action: "create" | "edit";
   formRef: any;
-  currentData?: any;
   toolbar?: ReactElement | false;
   isImageUpdated: boolean;
   logo: any;
@@ -39,7 +43,6 @@ type CompanyFormProps = {
 
 const CompanyForm = ({
   action,
-  currentData,
   formRef,
   toolbar,
   isImageUpdated,
@@ -47,6 +50,13 @@ const CompanyForm = ({
   onSelect,
   onDropRejected,
 }: CompanyFormProps) => {
+  const { id } = useParams();
+  const { data: currentData } = useGetOne(
+    "companies",
+    { id },
+    { enabled: !!id }
+  );
+
   const { data: companies } = useGetList("companies", {});
   const [isIcon, setIsIcon] = useState(action === "edit");
   const [keyword, setKeyword] = useState("");
@@ -178,10 +188,41 @@ const CompanyForm = ({
           source="status"
           choices={status}
         />
-        <TextInput className={inputClassName} source="location_json.address" label="Address" />
-        <TextInput className={inputClassName} source="location_json.city" label="City" />
-        <TextInput className={inputClassName} source="location_json.state" label="State" />
-        <TextInput className={inputClassName} source="location_json.country" label="Country" />
+        <ElemAddressInput
+          defaultLocation={currentData?.location_json}
+          defaultGeoPoint={currentData?.geopoint}
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.address"
+          label="Address"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.city"
+          label="City"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.state"
+          label="State"
+        />
+        <TextInput
+          className={inputClassName}
+          source="location_json.country"
+          label="Country"
+        />
+        <TextInput
+          className={inputClassName}
+          source="geopoint"
+          format={(value) =>
+            value?.coordinates
+              ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
+              : ""
+          }
+          label="Geopoint"
+          disabled
+        />
         <AutocompleteArrayInput
           className={inputClassName}
           source="tags"
@@ -256,6 +297,12 @@ const CompanyForm = ({
               display: "block !important",
             },
           }}
+        />
+        <SelectArrayInput
+          className={inputClassName}
+          source="library"
+          choices={libraryChoices}
+          defaultValue={["Web3"]}
         />
       </SimpleForm>
     </div>

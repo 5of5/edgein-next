@@ -1,13 +1,18 @@
 import type { NextPage } from "next";
 import React from "react";
-import { ElemButton } from "@/components/elem-button";
 import { FigureBlurredCircle } from "@/components/figures";
 import Image from "next/image";
 import Link from "next/link";
+import { useIntercom } from "react-use-intercom";
+import { Popups } from "@/components/the-navbar";
 
-type Props = {};
+type Props = {
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
+};
 
-const Custom404: NextPage<Props> = () => {
+const Custom404: NextPage<Props> = ({ setShowPopup }) => {
+	const { show } = useIntercom();
+
 	return (
 		<>
 			<div className="relative -mb-24 overflow-hidden">
@@ -22,24 +27,49 @@ const Custom404: NextPage<Props> = () => {
 				</figure>
 				<FigureBlurredCircle className="absolute -z-10 top-16 right-0 translate-x-[80%] sm:translate-x-[50%] lg:translate-x-[20%]" />
 
-				<section className="py-16 px-4 sm:px-6 lg:px-8 lg:py-32">
-					<div className="max-w-2xl mx-auto lg:max-w-3xl text-center lg:px-12">
-						<h1 className="font-display text-6xl font-bold tracking-tight sm:px-12 sm:text-9xl">
-							404
+				<section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-52">
+					<div className="max-w-2xl mx-auto lg:max-w-3xl lg:px-12">
+						<h1 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+							Page not found!
 						</h1>
 						<p className="mt-6 font-display text-xl leading-relaxed text-slate-600">
-							We couldn&rsquo;t find the page you&rsquo;re looking for. Use the
-							search bar to find what you&rsquo;re looking for or{" "}
+							Sorry, but the page you were looking for could not be found.
+						</p>
+						<p className="mt-6 font-display text-lg leading-relaxed text-slate-600">
+							You can use the{" "}
+							<button
+								className="font-bold text-primary-500 focus:outline-0"
+								onClick={() => {
+									setShowPopup("search");
+								}}
+							>
+								search bar
+							</button>
+							, return to our{" "}
+							<Link href={"/"}>
+								<a className="font-bold text-primary-500">front page</a>
+							</Link>
+							, or{" "}
+							<button
+								className="font-bold text-primary-500 focus:outline-0"
+								onClick={show}
+							>
+								drop us a line
+							</button>{" "}
+							to find what you&rsquo;re looking for.
+							{/* if you can&rsquo;t find what you&rsquo;re
+							looking for. Use the search bar to find what you&rsquo;re looking
+							for or{" "}
 							<Link href={"/contact"}>
 								<a className="text-primary-500">Contact us</a>
 							</Link>{" "}
-							if you still need help.
+							if you still need help. */}
 						</p>
-						<div className="flex justify-center py-8">
+						{/* <div className="flex justify-center py-8">
 							<ElemButton btn="primary" href="/" arrowLeft>
 								Back Home
 							</ElemButton>
-						</div>
+						</div> */}
 					</div>
 				</section>
 			</div>

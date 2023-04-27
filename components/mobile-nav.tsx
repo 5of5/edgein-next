@@ -14,9 +14,11 @@ import {
 	IconCustomList,
 	IconGroup,
 	IconSignOut,
-} from "@/components/icons";
+	IconCalendarDays,
+} from "@/components/Icons";
 import { Transition, Dialog } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
+import { clearLocalStorage } from "@/utils/helpers";
 
 type Props = {
 	className?: string;
@@ -42,7 +44,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	};
 
 	const logout = async () => {
-		localStorage.clear();
+		clearLocalStorage();
 		const authRequest = await fetch("/api/logout/", {
 			method: "POST",
 		}).then((res) => res.json());
@@ -70,6 +72,12 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 					icon: IconCash,
 					name: "Investors",
 					href: "/investors",
+					onClick: null,
+				},
+				{
+					icon: IconCalendarDays,
+					name: "Events",
+					href: "/events",
 					onClick: null,
 				},
 				...(user

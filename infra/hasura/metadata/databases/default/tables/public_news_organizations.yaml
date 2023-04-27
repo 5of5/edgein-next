@@ -1,0 +1,44 @@
+table:
+  schema: public
+  name: news_organizations
+object_relationships:
+  - name: company
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: companies
+        insertion_order: null
+        column_mapping:
+          company_id: id
+  - name: news
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: news
+        insertion_order: null
+        column_mapping:
+          news_id: id
+  - name: vc_firm
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: vc_firms
+        insertion_order: null
+        column_mapping:
+          vc_firm_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - company_id
+        - created_at
+        - id
+        - type
+        - news_id
+        - updated_at
+        - vc_firm_id
+      filter: {}
+      limit: 50

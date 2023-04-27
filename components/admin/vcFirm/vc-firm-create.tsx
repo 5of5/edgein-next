@@ -30,6 +30,7 @@ export const VcFirmCreate = () => {
     useAdminTransform({
       withImageTransformData,
       withoutImageTransformData,
+      hasGeopoint: true,
     });
 
   const handleCheckScreenHeight = () => {

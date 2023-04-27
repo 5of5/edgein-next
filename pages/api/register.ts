@@ -2,7 +2,7 @@ import UserService from "../../utils/users";
 import auth0Library from "../../utils/auth0-library";
 import CookieService from "../../utils/cookie";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { User_Group_Invites } from "@/graphql/types";
+import { GetUserGroupInvitesByEmailQuery } from "@/graphql/types";
 import GroupService from "@/utils/groups";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -149,12 +149,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		const token = await CookieService.createUserToken(userToken);
 		CookieService.setTokenCookie(res, token);
 
-		const userGroupInvites: Array<User_Group_Invites> =
+		const userGroupInvites: GetUserGroupInvitesByEmailQuery["user_group_invites"] =
 			await GroupService.onFindUserGroupInvitesByEmail(email);
 		result.groupInvites = userGroupInvites;
 		if (userGroupInvites && userGroupInvites.length > 0) {
 			await Promise.all(
-				userGroupInvites.map((invites: User_Group_Invites) =>
+				userGroupInvites.map((invites) =>
 					addMember(userData.id, invites.user_group_id)
 				)
 			);

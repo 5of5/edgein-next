@@ -1,4 +1,3 @@
-import type { GetStaticProps } from "next";
 import { useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { Dialog, Transition } from "@headlessui/react";

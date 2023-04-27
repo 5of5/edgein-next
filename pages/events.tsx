@@ -1,160 +1,320 @@
 import type { NextPage, GetStaticProps } from "next";
-
-import Head from "next/head";
-import Link from "next/link";
-import React from "react";
+import React, { Fragment, useState, useEffect } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { ElemHeading } from "../components/elem-heading";
+import { ElemFeaturedEvents } from "@/components/Events/ElemFeaturedEvents";
 import { ElemButton } from "../components/elem-button";
-import { InputSearch } from "../components/input-search";
-import { runGraphQl, formatDate } from "../utils";
+import { runGraphQl } from "../utils";
+import { useStateParams } from "@/hooks/use-state-params";
+import { Pagination } from "@/components/pagination";
+import { PlaceholderEventCard } from "@/components/placeholders";
+import moment from "moment-timezone";
+import { IconSearch, IconAnnotation } from "@/components/Icons";
+import {
+	GetEventsDocument,
+	GetEventsQuery,
+	useGetEventsQuery,
+	Events_Bool_Exp,
+	Order_By,
+} from "@/graphql/types";
+import { DeepPartial } from "./companies";
+import { onTrackView } from "@/utils/track";
+import { useRouter } from "next/router";
+import { ElemFilter } from "@/components/ElemFilter";
+import { processEventsFilters } from "@/utils/filter";
+import useFilterParams from "@/hooks/useFilterParams";
+import { ElemEventCard } from "@/components/Events/ElemEventCard";
+import { useIntercom } from "react-use-intercom";
 
 type Props = {
-	events: Record<string, any>[];
-	sortEvents: Record<string, any>[];
+	eventTabs: TextFilter[];
+	eventsCount: number;
+	initialEvents: GetEventsQuery["events"];
+	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Events: NextPage<Props> = ({ events, sortEvents }) => {
-	const [search, setSearch] = React.useState("");
+const Events: NextPage<Props> = ({
+	eventTabs,
+	eventsCount,
+	initialEvents,
+	setToggleFeedbackForm,
+}) => {
+	const [initialLoad, setInitialLoad] = useState(true);
+
+	const router = useRouter();
+
+	const { showNewMessages } = useIntercom();
+
+	const [selectedTab, setSelectedTab] = useStateParams(
+		{ ...eventTabs[0], date: moment().toISOString() },
+		"tab",
+		(statusTag) => eventTabs.indexOf(statusTag).toString(),
+		(index) => eventTabs[Number(index)],
+	);
+
+	const { selectedFilters, setSelectedFilters } = useFilterParams();
+
+	const [page, setPage] = useStateParams<number>(
+		0,
+		"page",
+		(pageIndex) => pageIndex + 1 + "",
+		(pageIndex) => Number(pageIndex) - 1
+	);
+	const limit = 50;
+	const offset = limit * page;
+
+	const filters: DeepPartial<Events_Bool_Exp> = {
+		_and: [{ slug: { _neq: "" } }],
+	};
+
+	useEffect(() => {
+		if (!initialLoad) {
+			setPage(0);
+		}
+		if (initialLoad) {
+			setInitialLoad(false);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedTab]);
+
+	useEffect(() => {
+		onTrackView({
+			properties: filters,
+			pathname: router.pathname,
+		});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedTab]);
+
+	const onChangeTab = (tab: any) => {
+		setSelectedTab(tab);
+		setSelectedFilters(null);
+	}
+
+	const onClickType = (
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		const currentFilterOption = [...(selectedFilters?.eventType?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(type)
+			? currentFilterOption.filter((t) => t !== type)
+			: [type, ...currentFilterOption];
+
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, eventType: undefined });
+		} else {
+			setSelectedFilters({
+				...selectedFilters,
+				eventType: {
+					...selectedFilters?.eventType,
+					tags: newFilterOption,
+				},
+			});
+		}
+
+		currentFilterOption.includes(type)
+			? toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Removed &ldquo;{type}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  )
+			: toast.custom(
+					(t) => (
+						<div
+							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+								t.visible ? "animate-fade-in-up" : "opacity-0"
+							}`}
+						>
+							Added &ldquo;{type}&rdquo; Filter
+						</div>
+					),
+					{
+						duration: 3000,
+						position: "top-center",
+					}
+			  );
+	};
+
+	/** Handle selected filter params */
+	processEventsFilters(filters, selectedFilters);
+
+	if (selectedTab.value === "upcoming" && !selectedFilters?.eventDate?.condition) {
+		filters._and?.push({
+			start_date: { _gte: selectedTab.date },
+		});
+	}
+
+	if (selectedTab.value === "past" && !selectedFilters?.eventDate?.condition) {
+		filters._and?.push({
+			start_date: { _lte: selectedTab.date },
+		});
+	}
+	const {
+		data: eventsData,
+		error,
+		isLoading,
+	} = useGetEventsQuery({
+		offset,
+		limit,
+		order: selectedTab.value === "past" ? Order_By.Desc : Order_By.Asc,
+		where: filters as Events_Bool_Exp,
+	});
+
+	if (!isLoading && initialLoad) {
+		setInitialLoad(false);
+	}
+
+	const events = initialLoad ? initialEvents : eventsData?.events;
+	const events_aggregate = initialLoad
+		? eventsCount
+		: eventsData?.events_aggregate?.aggregate?.count || 0;
 
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="Events"
-				subtitle="Don't miss a beat. Here's your lineup for all of the industry's must attend events."
+				//subtitle={`Don't miss a beat. Here's your lineup for all of the industry's must attend events. Holding an event? Let us know.`}
 			>
-				{/* <ElemButton href="/" btn="dark" arrow className="mt-6">
-						Submit event
-					</ElemButton> */}
+				<p className="max-w-3xl mt-5 text-xl text-slate-600">
+					Don&rsquo;t miss a beat. Here&rsquo;s your lineup for all of the
+					industry&rsquo;s must attend events. Holding an event?{" "}
+					<button
+						onClick={() =>
+							showNewMessages(`Hi EdgeIn, I'd like to submit an event`)
+						}
+						className="text-primary-500 hover:underline"
+					>
+						Let us know
+					</button>
+					.
+				</p>
 			</ElemHeading>
 
-			<div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 lg:py-10">
-				<div className="w-full flex flex-col py-5 sm:grid sm:gap-5 sm:grid-cols-3 lg:grid-cols-4">
-					<InputSearch
-						label="Search"
-						name="search"
-						value={search}
-						placeholder="Quick Search..."
-						onChange={(e: {
-							target: { value: React.SetStateAction<string> };
-						}) => setSearch(e.target.value)}
+			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+				<ElemFeaturedEvents className="shadow" heading="Featured" />
+			</div>
+
+			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+				<div className="bg-white rounded-lg shadow p-5">
+					<h2 className="text-xl font-bold">Events</h2>
+
+					<div
+						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+						role="tablist"
+					>
+						<nav className="flex">
+							{eventTabs &&
+								eventTabs.map((tab: any, index: number) =>
+									tab.disabled === true ? (
+										<Fragment key={index}></Fragment>
+									) : (
+										<button
+											key={index}
+											onClick={() => onChangeTab(tab)}
+											className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+												selectedTab.value === tab.value
+													? "text-primary-500 border-primary-500"
+													: "border-transparent  hover:bg-slate-200"
+											} ${tab.disabled ? "cursor-not-allowed" : ""}}`}
+										>
+											{tab.title}
+										</button>
+									)
+								)}
+						</nav>
+					</div>
+
+					<ElemFilter
+						resourceType="events"
+						filterValues={selectedFilters}
+						dateCondition={selectedTab?.value === "past" ? "past" : "next"}
+						onApply={(name, filterParams) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
+						}}
+						onClearOption={(name) => {
+							filters._and = [{ slug: { _neq: "" } }];
+							setSelectedFilters({ ...selectedFilters, [name]: undefined });
+						}}
+						onReset={() => setSelectedFilters(null)}
+					/>
+
+					{events?.length === 0 && (
+						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
+							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+								<h2 className="mt-5 text-3xl font-bold">No results found</h2>
+								<div className="mt-1 text-lg text-slate-600">
+									Please check spelling, try different filters, or tell us about
+									missing data.
+								</div>
+								<ElemButton
+									onClick={() => setToggleFeedbackForm(true)}
+									btn="white"
+									className="mt-3"
+								>
+									<IconAnnotation className="w-6 h-6 mr-1" />
+									Tell us about missing data
+								</ElemButton>
+							</div>
+						</div>
+					)}
+
+					<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+						{error ? (
+							<h4>Error loading events</h4>
+						) : isLoading && !initialLoad ? (
+							<>
+								{Array.from({ length: 9 }, (_, i) => (
+									<PlaceholderEventCard key={i} />
+								))}
+							</>
+						) : (
+							events?.map((event) => (
+								<ElemEventCard
+									key={event.id}
+									event={event}
+									onClickType={onClickType}
+								/>
+							))
+						)}
+					</div>
+
+					<Pagination
+						shownItems={events?.length}
+						totalItems={events_aggregate}
+						page={page}
+						itemsPerPage={limit}
+						numeric
+						onClickPrev={() => setPage(page - 1)}
+						onClickNext={() => setPage(page + 1)}
+						onClickToPage={(selectedPage) => setPage(selectedPage)}
 					/>
 				</div>
-
-				<div className="w-full flex flex-col gap-5 sm:grid sm:grid-cols-3 lg:grid-cols-4">
-					{sortEvents
-						.filter(
-							(event) =>
-								!search ||
-								event.event?.toLowerCase().includes(search.toLowerCase())
-						)
-						.map((event) => (
-							<Link key={event.id} href={`/events/${event.slug}`}>
-								<a
-									key={event.id}
-									className="bg-white rounded-lg overflow-hidden cursor-pointer p-7 md:p-7 flex flex-col justify-between md:h-full mx-auto w-full max-w-md transition duration-300 ease-in-out transform group hover:scale-102 hover:shadow-lg focus:ring focus:ring-primary-300"
-								>
-									<h3 className="text-2xl font-bold text-dark-700 break-words min-w-0 sm:text-lg lg:text-xl group-hover:opacity-60">
-										{event.event}
-									</h3>
-
-									<div className="grow mt-1 mb-4 text-gray-400 font-medium">
-										{event.startDate && (
-											<div className="w-full inline-flex py-1">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													className="h-6 w-6 mr-1 text-gray-300"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke="currentColor"
-													strokeWidth="2"
-												>
-													<path
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-													/>
-												</svg>
-
-												<div className="inline font-medium">
-													{event.startDate &&
-														formatDate(event.startDate, {
-															month: "short",
-															day: "2-digit",
-															timeZone: "America/Los_Angeles",
-														})}
-													{event.endDate && (
-														<>
-															&ndash;
-															{formatDate(event.endDate, {
-																day: "2-digit",
-																timeZone: "America/Los_Angeles",
-															})}
-														</>
-													)}
-													{event.startDate && (
-														<>
-															,&nbsp;
-															{formatDate(event.startDate, {
-																year: "numeric",
-															})}
-														</>
-													)}
-
-													{/* <div className="block my-4">{event.date}</div> */}
-												</div>
-											</div>
-										)}
-										{event.location && (
-											<div className="w-full inline-flex py-1">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													className="h-6 w-6 mr-1 text-gray-300"
-													fill="none"
-													viewBox="0 0 24 24"
-													stroke="currentColor"
-													strokeWidth="2"
-												>
-													<path
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-													/>
-													<path
-														strokeLinecap="round"
-														strokeLinejoin="round"
-														d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-													/>
-												</svg>
-
-												<div className="inline font-medium">
-													{event.location}
-												</div>
-											</div>
-										)}
-									</div>
-
-									<div>
-										<ElemButton className="pl-0 pr-0" btn="transparent" arrow>
-											View
-										</ElemButton>
-									</div>
-								</a>
-							</Link>
-						))}
-				</div>
 			</div>
+			<Toaster />
 		</div>
 	);
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	// const { data: events } = await runGraphQl<{events:Record<string, any>[]}>(
-	// 	'{ events(_order_by: {event: "asc"}, _filter: {slug: {_ne: ""}}) { id, event, slug, startDate, endDate, location }}'
-	// );
-	const events: { events: Record<string, any>[] } = { events: [] };
-
-	const sortEvents = events?.events.slice().sort((a, b) => {
-		return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+	const { data: events } = await runGraphQl<GetEventsQuery>(GetEventsDocument, {
+		offset: 0,
+		limit: 50,
+		order: Order_By.Asc,
+		where: { _and: [{ slug: { _neq: "" } }] },
 	});
 
 	return {
@@ -162,10 +322,30 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Events - EdgeIn.io",
 			metaDescription:
 				"Don't miss a beat. Here's your lineup for all of the industry's must attend events.",
-			events: events?.events,
-			sortEvents,
+			eventTabs,
+			eventsCount: events?.events_aggregate.aggregate?.count || 0,
+			initialEvents: events?.events || [],
 		},
 	};
 };
 
 export default Events;
+
+interface TextFilter {
+	title: string;
+	value: string;
+	date: string;
+}
+
+const eventTabs: TextFilter[] = [
+	{
+		title: "Upcoming",
+		value: "upcoming",
+		date: moment().toISOString(),
+	},
+	{
+		title: "Past",
+		value: "past",
+		date: moment().subtract(1, "days").toISOString(),
+	},
+];

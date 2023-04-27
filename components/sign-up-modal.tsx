@@ -4,7 +4,7 @@ import { useEffect, useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { InputText } from "@/components/input-text";
 import { ElemLogo } from "./elem-logo";
-import { IconLinkedIn, IconCheck } from "./icons";
+import { IconLinkedIn, IconCheck, IconExclamationTriangle } from "./Icons";
 import { Dialog, Transition } from "@headlessui/react";
 const validator = require("validator");
 
@@ -55,15 +55,26 @@ export default function SignUpModal(props: Props) {
 			setErrorMessage(
 				"Password should have least 8 characters including a lower-case letter, an upper-case letter, a number, and a special character"
 			);
+			return true;
 		}
 	};
+
+	function isFreeEmail(email: string) {
+		const pattern = /@(gmail|yahoo|hotmail)/i;
+		return pattern.test(email);
+	}
 
 	const validateEmail = (value: string) => {
 		setEmail(value);
 		if (validator.isEmail(value)) {
+			if (isFreeEmail(value)) {
+				setEmailError("Please enter a work email.");
+				return true;
+			}
 			setEmailError("");
 		} else {
-			setEmailError("Please enter valid email.");
+			setEmailError("Please enter valid Web3 email.");
+			return true;
 		}
 	};
 
@@ -73,6 +84,7 @@ export default function SignUpModal(props: Props) {
 			setNameError("");
 		} else {
 			setNameError("Please enter your full name.");
+			return true;
 		}
 	};
 
@@ -95,11 +107,17 @@ export default function SignUpModal(props: Props) {
 		props.onLogin();
 	};
 
-	const onSignUp = async () => {
-		validateEmail(email);
-		validateName(name);
-		validate(password);
+	const onSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		event.stopPropagation();
+		setIsLoading(true);
+
+		if (validateEmail(email) || validateName(name) || validate(password)) {
+			setIsLoading(false);
+			return;
+		}
 		if (!name || !email || !password) {
+			setIsLoading(false);
 			return;
 		}
 
@@ -120,12 +138,14 @@ export default function SignUpModal(props: Props) {
 			if (response.status === 200) {
 				localStorage.removeItem("inviteCode");
 				setIsRegistered(true);
+				setIsLoading(false);
 			} else {
 				try {
 					const res = await response.clone().json();
 					if (res.message && res.message.indexOf("waitlist") > 0) {
 						setIsWaitlisted(true);
 					} else {
+						setIsLoading(false);
 						setUnsuccessMessage(res.message);
 					}
 				} catch (err) {
@@ -171,24 +191,17 @@ export default function SignUpModal(props: Props) {
 						leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 						leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 					>
-						<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
+						<Dialog.Panel className="max-w-lg w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none scrollbar-hide lg:p-12">
 							<div className="max-w-xs mx-auto w-full">
-								{unsuccessMessage ? (
-									<>
-										{/* <h1 className="text-center text-2xl lg:text-3xl font-bold">Registration Complete</h1> */}
-										<p className="mt-2 text-slate-600 text-center">
-											{unsuccessMessage}
-										</p>
-									</>
-								) : isRegistered ? (
+								{isRegistered ? (
 									<>
 										<div className="flex items-center h-12 w-12 p-2 mx-auto rounded-full shadow">
-											<IconCheck className="w-10 aspect-square text-primary-500" />
+											<ElemLogo mode="icon" className="w-10 aspect-square" />
 										</div>
-										<h1 className="mt-4 text-2xl text-center font-bold lg:text-3xl">
+										<h1 className="mt-4 text-2xl font-bold lg:text-3xl">
 											Registration Complete
 										</h1>
-										<p className="mt-2 text-center text-slate-600">
+										<p className="mt-2 text-slate-600">
 											Thank you for creating an account and joining EdgeIn.
 											Verify your email and Log in to get started.
 										</p>
@@ -244,100 +257,116 @@ export default function SignUpModal(props: Props) {
 											<div className="flex-grow border-t border-black/10"></div>
 										</div>
 
-										<div className="flex flex-col space-y-2">
-											<label>
-												<InputText
-													name="name"
-													type="text"
-													value={name}
-													disabled={isLoading}
-													onChange={(event) =>
-														validateName(event?.target.value)
-													}
-													placeholder="Full Name"
-													className={`${
-														nameError === ""
-															? "ring-1 ring-slate-200"
-															: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
-													}`}
-												/>
-												{nameError === "" ? null : (
-													<div className="mt-2 font-bold text-sm text-rose-400">
-														{nameError}
-													</div>
-												)}
-											</label>
+										<div>
+											<form onSubmit={onSignUp}>
+												<div className="flex flex-col space-y-4">
+													<label>
+														<span className="text-sm font-medium">
+															Full name
+														</span>
+														<InputText
+															name="name"
+															type="text"
+															value={name}
+															disabled={isLoading}
+															onChange={(event) =>
+																validateName(event?.target.value)
+															}
+															className={`${
+																nameError === ""
+																	? "ring-1 ring-slate-200"
+																	: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+															}`}
+														/>
+														{nameError === "" ? null : (
+															<div className="mt-2 font-bold text-sm text-rose-400">
+																{nameError}
+															</div>
+														)}
+													</label>
 
-											<label>
-												<InputText
-													name="email"
-													type="email"
-													value={email}
-													disabled={isLoading || props.emailFromLogin != ""}
-													onChange={(event) =>
-														validateEmail(event?.target.value)
-													}
-													placeholder="Email"
-													className={`${
-														emailError === ""
-															? "ring-1 ring-slate-200"
-															: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
-													}`}
-												/>
-												{emailError === "" ? null : (
-													<div className="mt-2 font-bold text-sm text-rose-400">
-														{emailError}
-													</div>
-												)}
-											</label>
+													<label>
+														<span className="text-sm font-medium">
+															Web3 work email
+														</span>
+														<InputText
+															name="email"
+															type="email"
+															value={email}
+															disabled={isLoading || props.emailFromLogin != ""}
+															onChange={(event) =>
+																validateEmail(event?.target.value)
+															}
+															className={`${
+																emailError === ""
+																	? "ring-1 ring-slate-200"
+																	: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+															}`}
+														/>
+														{emailError === "" ? null : (
+															<div className="mt-2 font-bold text-sm text-rose-400">
+																{emailError}
+															</div>
+														)}
+													</label>
 
-											<label>
-												<InputText
-													name="password"
-													type="password"
-													value={password}
-													disabled={isLoading || props.passwordFromLogin != ""}
-													onChange={(event) => validate(event?.target.value)}
-													placeholder="Password"
-													className={`${
-														errorMessage === ""
-															? "ring-1 ring-slate-200"
-															: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
-													}`}
-												/>
-												{errorMessage === "" ? null : (
-													<div className="mt-2 font-bold text-sm text-rose-400">
-														{errorMessage}
-													</div>
-												)}
-											</label>
+													<label>
+														<span className="text-sm font-medium">
+															Password
+														</span>
+														<InputText
+															name="password"
+															type="password"
+															value={password}
+															disabled={
+																isLoading || props.passwordFromLogin != ""
+															}
+															onChange={(event) =>
+																validate(event?.target.value)
+															}
+															className={`${
+																errorMessage === ""
+																	? "ring-1 ring-slate-200"
+																	: "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+															}`}
+														/>
+														{errorMessage === "" ? null : (
+															<div className="mt-2 font-bold text-sm text-rose-400">
+																{errorMessage}
+															</div>
+														)}
+													</label>
+
+													{unsuccessMessage && (
+														<p className="mt-1 flex items-center font-bold text-sm text-red-500">
+															<IconExclamationTriangle className="h-5 w-5 mr-1" />
+															{unsuccessMessage}
+														</p>
+													)}
+
+													<ElemButton
+														//onClick={onSignUp}
+														btn="primary"
+														loading={isLoading}
+														className="w-full mt-2"
+													>
+														Sign up{" "}
+														{props.inviteCode ? "with referral" : "and explore"}
+													</ElemButton>
+												</div>
+											</form>
 
 											<div>
-												<ElemButton
-													onClick={onSignUp}
-													btn="primary"
-													loading={isLoading}
-													className="w-full my-2"
-												>
-													Sign up{" "}
-													{props.inviteCode ? "with referral" : "and explore"}
-												</ElemButton>
-												<p className="text-sm text-center text-slate-600">
+												<p className="mt-2 text-sm text-center text-slate-600">
 													By signing up, you agree to the{" "}
 													<Link href="/terms">
-														<a
-															className="text-dark-500 underline hover:text-primary-500"
-															onClick={onClose}
-														>
+														<a className="hover:underline" onClick={onClose}>
 															Terms
 														</a>
 													</Link>{" "}
 													&amp;{" "}
 													<Link href="/privacy">
-														<a
-															className="text-dark-500 underline hover:text-primary-500"
-															onClick={onClose}
-														>
+														<a className="hover:underline" onClick={onClose}>
 															Policy
 														</a>
 													</Link>
@@ -346,11 +375,11 @@ export default function SignUpModal(props: Props) {
 											</div>
 
 											<div>
-												<div className="w-full mt-4 text-sm text-center text-slate-600">
-													Already have an account?
+												<div className="w-full mt-6 text-sm text-center text-slate-600">
+													Have an account?
 													<button
 														onClick={onLogin}
-														className="inline underline ml-0.5 text-dark-500 hover:text-primary-500"
+														className="inline ml-0.5 text-primary-500 hover:underline"
 													>
 														Log In
 													</button>

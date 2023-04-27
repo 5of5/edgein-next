@@ -74,7 +74,7 @@ const ElemCreateGroupDialog: React.FC<Props> = ({ isOpen, onClose }) => {
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title className="text-xl font-bold flex items-center justify-between">
 									<span>Create Group</span>
 									<button

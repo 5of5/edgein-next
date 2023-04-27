@@ -27,7 +27,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 				<div className="flex shrink-0 w-full">
 					<ElemPhoto
 						photo={logo}
-						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow-md"
+						wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow"
 						imgClass="object-fit max-w-full max-h-full"
 						imgAlt={name}
 						placeholderClass="text-slate-300"

@@ -1,4 +1,4 @@
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, Transition, Switch } from "@headlessui/react";
 import { FC, Fragment, useState } from "react";
 import { ModalListName } from "@/components/my-list/modal-list-name";
 import {
@@ -13,13 +13,16 @@ import { ElemDeleteConfirmModal } from "../elem-delete-confirm-modal";
 type Props = {
 	theListName?: string;
 	theListDescription?: string;
-	theListCreator?: string | null;
+	theListCreator: string;
+	allowEdit?: boolean;
 	theListDate?: string;
 	theListId: number;
+	theListPublic: boolean;
 	groups: Array<any>;
 	onSaveListName: (name: string) => void;
 	onDeleteList: (id: number) => void;
 	onAddGroups: (ids: Array<number>) => void;
+	onChangePublic: (value: boolean) => void;
 };
 
 export const ModalListDetails: FC<Props> = ({
@@ -28,10 +31,12 @@ export const ModalListDetails: FC<Props> = ({
 	theListCreator,
 	theListDate,
 	theListId,
+	theListPublic,
 	groups,
 	onSaveListName,
 	onDeleteList,
 	onAddGroups,
+	onChangePublic,
 }) => {
 	const [listDetailsModal, setListDetailsModal] = useState(false);
 	const [listNameModal, setListNameModal] = useState(false);
@@ -118,14 +123,19 @@ export const ModalListDetails: FC<Props> = ({
 													<h3 className="font-bold">Groups</h3>
 													{groups.length > 0 ? (
 														<div className="flex flex-wrap gap-2 mt-2">
-															{groups.map((item: any) => (
-																<p
-																	key={item.id}
-																	className="capitalize bg-slate-200 px-2 py-1 rounded-md"
-																>
-																	{item.name}
-																</p>
-															))}
+															{groups.map((item: any, index: number) => {
+																if (!item) {
+																	return;
+																}
+																return (
+																	<p
+																		key={index}
+																		className="capitalize bg-slate-200 px-2 py-1 rounded-md"
+																	>
+																		{item?.name}
+																	</p>
+																);
+															})}
 														</div>
 													) : (
 														<p className="text-slate-500">Share with group</p>
@@ -151,24 +161,47 @@ export const ModalListDetails: FC<Props> = ({
 												</button>
 											)}
 
-											{theListCreator && (
-												<div className="flex justify-between w-full p-3">
-													<div className="text-left">
-														<h3 className="font-bold">Created by</h3>
-														<p>
-															<span className="capitalize">
-																{theListCreator}
-															</span>{" "}
-															on {theListDate}
-														</p>
-													</div>
+											<div>
+												<div className="flex items-center justify-between space-x-1 p-3 cursor-pointer hover:bg-slate-100">
+													<p className="font-bold">Public</p>
+													<Switch
+														checked={theListPublic}
+														onChange={onChangePublic}
+														className={`${
+															theListPublic ? "bg-primary-600" : "bg-gray-200"
+														} relative inline-flex h-6 w-11 items-center rounded-full`}
+													>
+														<span className="sr-only">Set list public</span>
+														<span
+															className={`${
+																theListPublic
+																	? "translate-x-6"
+																	: "translate-x-1"
+															} inline-block h-4 w-4 transform rounded-full bg-white transition`}
+														/>
+													</Switch>
 												</div>
-											)}
+											</div>
+
+											<div className="flex justify-between w-full p-3">
+												<div className="text-left">
+													<h3 className="font-bold">Created by</h3>
+													<p>
+														<span className="capitalize">{theListCreator}</span>{" "}
+														on {theListDate}
+													</p>
+												</div>
+											</div>
 										</div>
 										<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden">
 											<button
 												className="flex justify-between w-full p-3 hover:bg-slate-100"
-												onClick={() => setListDeleteModal(true)}
+												onClick={() => {
+													setListDetailsModal(false);
+													setTimeout(() => {
+														setListDeleteModal(true);
+													}, 300);
+												}}
 											>
 												<div className="text-left text-rose-500">
 													<h3 className="flex items-center font-bold">

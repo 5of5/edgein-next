@@ -5,8 +5,26 @@ import { useSWRConfig } from 'swr'
 function fetcher(route: string) {
   /* our token cookie gets sent with this request */
   return fetch(route)
-    .then((r) => r.ok && r.json())
-    .then((user) => user || null);
+    .then(async (r) => {
+      if (!r.ok) {
+        const error: any = new Error('An error occurred while fetching the data.')
+        // Attach extra info to the error object.
+        try {
+          error.info = await r.json()
+        } catch (e) {
+
+        }
+        error.status = r.status
+        throw error
+      }
+      return r.json() || null
+    })
+    .catch(async (r) => {
+      const error: any = new Error('An error occurred while fetching the data.')
+      // Attach extra info to the error object.
+      error.status = r.status
+      throw error
+    })
 }
 
 export function useAuth() {
@@ -16,6 +34,18 @@ export function useAuth() {
 
   const refreshUser = () => {
     mutate("/api/user/")
+  }
+
+  if (error) {
+    if (error.status == 403 && (/(\/companies\/|\/investors\/|\/people\/|\/lists\/|\/groups\/|\/events\/|\/notifications\/|\/profile\/)/.test(window.location.href))) {
+      window.location.href = '/?blocked';
+    }
+    return {
+      user,
+      loading,
+      error,
+      refreshUser,
+    };  
   }
 
   if (user && !user?.entitlements) {

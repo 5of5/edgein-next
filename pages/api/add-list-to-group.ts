@@ -1,6 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { query, mutate } from "@/graphql/hasuraAdmin";
 import CookieService from "../../utils/cookie";
+import {
+  GetListUserGroupsByListIdAndGroupIdDocument,
+  GetListUserGroupsByListIdAndGroupIdQuery,
+  InsertListUserGroupsDocument,
+  InsertListUserGroupsMutation,
+} from "@/graphql/types";
+import { triggerListUpdatedAt } from "@/utils/lists";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -19,7 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     listIds.map(async (listId: number) => {
       const existList = await onFindListUserGroup(listId, groupId);
       if (!existList) {
-        return onAddListToGroup(listId, groupId);
+        const addToGroupResponse = await onAddListToGroup(listId, groupId);
+        await triggerListUpdatedAt(listId);
+        return addToGroupResponse;
       }
       return null;
     })
@@ -31,21 +40,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const onFindListUserGroup = async (list_id: number, user_group_id: number) => {
   const {
     data: { list_user_groups },
-  } = await query({
-    query: `
-      query findListUserGroups($list_id: Int!, $user_group_id: Int!) {
-        list_user_groups(where: {
-          _and: [
-            {list_id: {_eq: $list_id}},
-            {user_group_id: {_eq: $user_group_id}}
-          ]
-        }) {
-          id
-          list_id
-          user_group_id
-        }
-      }
-    `,
+  } = await query<GetListUserGroupsByListIdAndGroupIdQuery>({
+    query: GetListUserGroupsByListIdAndGroupIdDocument,
     variables: { list_id, user_group_id },
   });
 
@@ -55,18 +51,8 @@ const onFindListUserGroup = async (list_id: number, user_group_id: number) => {
 const onAddListToGroup = async (list_id: number, user_group_id: number) => {
   const {
     data: { insert_list_user_groups_one },
-  } = await mutate({
-    mutation: `
-    mutation InsertListUserGroups($object: list_user_groups_insert_input!) {
-      insert_list_user_groups_one(
-        object: $object
-      ) {
-        id
-        list_id
-        user_group_id
-      }
-    }
-  `,
+  } = await mutate<InsertListUserGroupsMutation>({
+    mutation: InsertListUserGroupsDocument,
     variables: {
       object: {
         list_id,

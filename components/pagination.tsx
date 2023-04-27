@@ -58,13 +58,13 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 					</span>
 				) : (
 					<span>
-						Results: {shownItemsStart}
+						Results: {numberWithCommas(shownItemsStart)}
 						{" - "}
-						{shownItemsEnd} of {numberWithCommas(totalItems)}
+						{numberWithCommas(shownItemsEnd)} of {numberWithCommas(totalItems)}
 					</span>
 				)}
 			</div>
-			<div className="flex-1 flex justify-between sm:justify-end items-center">
+			<div className="flex-1 flex space-x-2 justify-between sm:justify-end items-center">
 				{page * itemsPerPage > 0 && (
 					<ElemButton onClick={onClickPrev} btn="white" arrowLeft>
 						Prev
@@ -90,24 +90,19 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 						{page > 0 && (
 							<li
 								className="cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500"
-								//className="font-bold text-gray-300 cursor-pointer"
 								onClick={() => handleClickToPage(page - 1)}
 							>
 								{page}
 							</li>
 						)}
 
-						<li
-							className="cursor-pointer font-bold px-3 py-1.5 text-primary-500"
-							//className="font-bold text-primary-500 cursor-pointer"
-						>
+						<li className="cursor-pointer font-bold px-3 py-1.5 text-primary-500">
 							{page + 1}
 						</li>
 
 						{totalItems > shownItemsEnd && (
 							<li
 								className="cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500"
-								//className="font-bold text-gray-300 cursor-pointer"
 								onClick={() => handleClickToPage(page + 1)}
 							>
 								{page + 2}
@@ -121,7 +116,6 @@ export const Pagination: React.FC<PropsWithChildren<Props>> = ({
 								</li>
 								<li
 									className="hidden cursor-pointer font-bold px-3 py-1.5 text-slate-400 hover:text-primary-500 sm:block"
-									//className="font-bold text-gray-300 cursor-pointer hidden sm:block"
 									onClick={() => handleClickToPage(totalPages - 1)}
 								>
 									{totalPages}

@@ -37,6 +37,15 @@ array_relationships:
         table:
           schema: public
           name: investment_rounds
+  - name: news_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: news_organizations
+        insertion_order: null
+        column_mapping:
+          id: company_id
   - name: teamMembers
     using:
       foreign_key_constraint_on:
@@ -106,6 +115,7 @@ select_permissions:
         - investor_amount
         - layer
         - layer_detail
+        - library
         - location
         - location_json
         - logo
@@ -190,6 +200,7 @@ select_permissions:
         - investor_amount
         - layer
         - layer_detail
+        - library
         - location
         - location_json
         - logo

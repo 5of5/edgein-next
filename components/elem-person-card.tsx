@@ -13,6 +13,7 @@ type Props = {
 	personal_email?: string | null;
 	work_email?: string | null;
 	end_date?: string | null;
+	organizationName?: string | null;
 };
 
 export const ElemPersonCard: React.FC<Props> = ({
@@ -25,6 +26,7 @@ export const ElemPersonCard: React.FC<Props> = ({
 	personal_email,
 	work_email,
 	end_date,
+	organizationName,
 }) => {
 	return (
 		<div>
@@ -49,11 +51,16 @@ export const ElemPersonCard: React.FC<Props> = ({
 							</h3>
 						)}
 
-						{(founder || text) && (
-							<p className="text-sm truncate">
-								{founder && <span title="Founder">Founder</span>}
+						{(founder || text || organizationName) && (
+							<p className="text-sm line-clamp-2">
+								{founder && <span>Founder</span>}
 								{founder && text && `, `}
-								{text && <span title={text}>{text}</span>}
+								{text && <span>{text}</span>}
+								{(founder || text) && organizationName && (
+									<span aria-hidden="true"> · </span>
+								)}
+
+								{organizationName && <span>{organizationName}</span>}
 							</p>
 						)}
 

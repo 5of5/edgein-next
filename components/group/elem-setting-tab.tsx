@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useMutation } from "react-query";
+import { Switch } from "@headlessui/react";
+import toast from "react-hot-toast";
 import { useUser } from "@/context/user-context";
 import { User_Groups } from "@/graphql/types";
 import { IconSignOut, IconTrash, IconX } from "@/components/icons";
@@ -22,6 +24,8 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 	const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<boolean>(false);
 
 	const isGroupManager = user?.id === group.created_by_user_id;
+
+	const isPublicGroup = group.public;
 
 	const fields = [
 		{
@@ -57,6 +61,65 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 	const handleCloseDeleteModal = () => {
 		setIsOpenDeleteModal(false);
 	};
+
+	const { mutate: togglePublic } = useMutation(
+		(value: boolean) =>
+			fetch("/api/groups/", {
+				method: "PUT",
+				headers: {
+					Accept: "application/json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					id: group.id,
+					payload: {
+						public: value,
+					},
+				}),
+			}),
+		{
+			onSuccess: async (response, value) => {
+				if (response.status !== 200) {
+					const err = await response.json();
+					toast.custom(
+						(t) => (
+							<div
+								className={`bg-red-600 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+									t.visible ? "animate-fade-in-up" : "opacity-0"
+								}`}
+							>
+								{err.message}
+							</div>
+						),
+						{
+							duration: 5000,
+							position: "top-center",
+						}
+					);
+				} else {
+					toast.custom(
+						(t) => (
+							<div
+								className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+									t.visible ? "animate-fade-in-up" : "opacity-0"
+								}`}
+							>
+								{`Set to ${value ? "public" : "private"}`}
+							</div>
+						),
+						{
+							duration: 3000,
+							position: "top-center",
+						}
+					);
+					onUpdateGroupData((prev: User_Groups) => ({
+						...prev,
+						public: value,
+					}));
+				}
+			},
+		}
+	);
 
 	const { mutate: deleteGroup, isLoading: isDeleting } = useMutation(
 		() =>
@@ -122,8 +185,29 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 				))}
 
 				<div>
+					<div className="flex items-center justify-between space-x-1 p-3 cursor-pointer hover:bg-slate-100">
+						<p className="font-bold">Public</p>
+						<Switch
+							checked={!!isPublicGroup}
+							onChange={togglePublic}
+							disabled={!isGroupManager}
+							className={`${isPublicGroup ? "bg-primary-600" : "bg-gray-200"} ${
+								!isGroupManager ? "opacity-60" : ""
+							} relative inline-flex h-6 w-11 items-center rounded-full`}
+						>
+							<span className="sr-only">Set group public</span>
+							<span
+								className={`${
+									isPublicGroup ? "translate-x-6" : "translate-x-1"
+								} inline-block h-4 w-4 transform rounded-full bg-white transition`}
+							/>
+						</Switch>
+					</div>
+				</div>
+
+				<div>
 					<div
-						className="flex items-start space-x-1 px-4 py-3 cursor-pointer hover:bg-slate-100"
+						className="flex items-start space-x-1 p-3 cursor-pointer hover:bg-slate-100"
 						onClick={handleLeaveGroup}
 					>
 						<IconSignOut className="w-6 h-6 text-red-500" />
@@ -152,7 +236,7 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 			{isGroupManager && (
 				<div className="bg-white rounded-lg border border-black/10 divide-y divide-black/10 overflow-hidden mt-6">
 					<div
-						className="flex items-center px-4 py-3 cursor-pointer space-x-1 hover:bg-slate-100"
+						className="flex items-center p-3 cursor-pointer space-x-1 hover:bg-slate-100"
 						onClick={handleOpenDeleteModal}
 					>
 						<IconTrash className="w-6 h-6 text-red-500" />

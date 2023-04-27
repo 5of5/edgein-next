@@ -4,13 +4,13 @@ import { useRouter } from "next/router";
 import { useHotkeys } from "react-hotkeys-hook";
 import { ElemLogo } from "@/components/elem-logo";
 import { ElemButton } from "@/components/elem-button";
-//import { NotificationAlerts } from "@/components/NotificationAlerts";
+import { NotificationAlerts } from "@/components/notification-alerts";
 import { UserMenu } from "@/components/user-menu";
 import LoginModal from "@/components/login-modal";
 import UsageModal from "@/components/usage-modal";
 import ForgotPasswordModal from "@/components/forgot-password-modal";
 import SignUpModal from "@/components/sign-up-modal";
-import { IconSearch } from "@/components/icons";
+import { IconSearch } from "@/components/Icons";
 import { MobileNav } from "@/components/mobile-nav";
 import SearchModal from "@/components/search-modal";
 import OnboardingStep1 from "@/components/onboarding/onboarding-step-1";
@@ -104,10 +104,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			path: "/investors",
 			name: "Investors",
 		},
-		// {
-		// 	path: "/events",
-		// 	name: "Events",
-		// },
+		{
+			path: "/events",
+			name: "Events",
+		},
 	];
 
 	if (user) {
@@ -203,7 +203,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						}}
 					/>
 
-					<div className="flex items-center group space-x-2 lg:space-x-3 lg:ml-auto">
+					<div className="flex items-center group space-x-4 lg:space-x-3 lg:ml-auto">
 						{siteNav.map((link, index) => (
 							<Link href={link.path} key={index} passHref>
 								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
@@ -221,8 +221,8 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								>
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
-								{/* <NotificationAlerts /> */}
-								<UserMenu className="" />
+								<NotificationAlerts />
+								<UserMenu />
 							</>
 						) : (
 							<>
@@ -244,7 +244,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						)}
 
 						<MobileNav
-							className="flex lg:hidden items-center ml-2"
+							className="flex lg:hidden items-center"
 							myListsUrl={myListsUrl}
 							myGroupsUrl={myGroupsUrl}
 						/>

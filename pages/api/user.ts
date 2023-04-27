@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import CookieService from '../../utils/cookie'
+import UserService from "../../utils/users";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let user;
@@ -7,15 +8,31 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const token = CookieService.getAuthToken(req.cookies)
     user = await CookieService.getUser(token)
 
-    // TODO if cookie is more than 1 day old refresh token
+    if (user?._iat && user?.email) {
+      if ((new Date()).getTime() > (user._iat * 1000 + (1000 * 60 * 15))) {
+        // is token older than an hour
+
+        const dbUser = await UserService.findOneUserByEmail(user?.email);
+        if (!dbUser || dbUser.active === false) {
+          return res.status(403).end()
+        }
+        const userToken = UserService.createToken(dbUser, false);
+        // Author a couple of cookies to persist a user's session
+        const token = await CookieService.createUserToken(userToken);
+        CookieService.setTokenCookie(res, token);  
+      }
+    }
 
     // now we have access to the data inside of user
     // and we could make database calls or just send back what we have
     // in the token.
     if (user) {
-      res.json(user)
+      if (user.active === false) {
+        return res.status(403).end()
+      }  
+      return res.json(user)
     } else {
-      res.status(401).end()
+      return res.status(401).end()
     }
 
   } catch (error) {

@@ -13,25 +13,28 @@ import {
   useUpdate,
   useDelete,
   useRedirect,
+	useGetOne,
 } from "react-admin";
+import { useParams } from "react-router-dom";
 
 type Props = {
-	isLoading: boolean;
 	type: "companies" | "vc_firms";
-	currentData: any;
-	refetch: () => void;
 };
 
 const ElemParentOrganizationEdit: FC<Props> = ({
-	isLoading,
 	type,
-	currentData,
-	refetch,
 }) => {
   const redirect = useRedirect();
   const [create] = useCreate();
   const [update] = useUpdate();
   const [deleteOne] = useDelete();
+
+	const { id } = useParams();
+  const {
+    data: currentData,
+    isLoading,
+    refetch,
+  } = useGetOne(type, { id }, { enabled: !!id });
 
 	const inputClassName =
 		" px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";

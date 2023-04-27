@@ -7,18 +7,21 @@ import {
 	IconPlus,
 	IconPolygonDown,
 	IconInformationCircle,
+	IconContributor,
 } from "@/components/icons";
 import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
 import ElemCreateGroupDialog from "../group/elem-create-group-dialog";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
 import { ElemTooltip } from "../elem-tooltip";
+import useDisclosureState from "@/hooks/useDisclosureState";
+import { MY_GROUPS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
 	className?: string;
 };
 
-export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
+const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	const router = useRouter();
 	const { myGroups, user } = useUser();
 	const displayedGroups = myGroups.slice(
@@ -29,6 +32,10 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 	);
 
 	const [isOpenCreateGroupDialog, setIsOpenCreateGroupDialog] = useState(false);
+
+	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
+		MY_GROUPS_MENU_OPEN_KEY
+	);
 
 	const getActiveClass = (id: number) => {
 		return `/groups/${id}/` === router.asPath
@@ -55,21 +62,26 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 
 	return (
 		<div className={className}>
-			<Disclosure defaultOpen={true}>
+			<Disclosure defaultOpen={isDefaultOpen}>
 				{({ open }) => (
 					<>
 						<div className="w-full flex items-center justify-between group">
 							<div className="flex items-center">
-								<Disclosure.Button className="flex focus:outline-none hover:opacity-75">
+								<Disclosure.Button
+									className="flex focus:outline-none hover:opacity-75"
+									data-expanded={open}
+									ref={btnRef}
+									onClick={onDisclosureButtonClick}
+								>
 									<IconPolygonDown
 										className={`${
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-xl font-bold">Groups</span>
+									<span className="text-lg font-bold">My Groups</span>
 								</Disclosure.Button>
 								<ElemTooltip
-									content="Share your lists and notes with others."
+									content="Share lists and notes with others."
 									className="ml-1"
 								>
 									<IconInformationCircle className="h-5 w-5 text-slate-600" />
@@ -138,12 +150,15 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<li key={group.id} role="button">
 									<Link href={`/groups/${group.id}/`}>
 										<a
-											className={`flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
 												group.id
 											)}`}
+											title={group.name}
 										>
-											<IconGroup className="h-6 w-6" />
-											<span>{group.name}</span>
+											<IconGroup className="h-6 w-6 shrink-0" />
+											<span className="line-clamp-1 break-all">
+												{group.name}
+											</span>
 										</a>
 									</Link>
 								</li>
@@ -152,9 +167,12 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<li role="button">
 									<button
 										onClick={onOpenUpgradeDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
-										<IconGroupPlus className="h-6 w-6" title="Create Group" />
+										<IconContributor
+											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
+											title="Unlock groups"
+										/>
 										<span>Unlock All Your Groups</span>
 									</button>
 								</li>
@@ -162,7 +180,7 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 								<li role="button">
 									<button
 										onClick={onOpenCreateGroupDialog}
-										className="w-full flex space-x-2 py-1.5 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
+										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 									>
 										<IconGroupPlus className="h-6 w-6" title="Create Group" />
 										<span>Create Group</span>
@@ -186,3 +204,5 @@ export const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 		</div>
 	);
 };
+
+export default ElemMyGroupsMenu;

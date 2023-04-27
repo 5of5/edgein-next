@@ -1,14 +1,11 @@
 import { useAuth } from "../../../hooks/use-auth";
-import { NextPage, GetStaticProps, GetServerSideProps } from "next";
+import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { ElemButton } from "@/components/elem-button";
 import { ElemPhoto } from "@/components/elem-photo";
-import { IconChevronLeft, IconChevronRight } from "@/components/icons";
-import Image from "next/image";
 import { InputText } from "@/components/input-text";
 import { InputTextarea } from "@/components/input-textarea";
 import { InputSelect } from "@/components/input-select";
-import { InputSearch } from "@/components/input-search";
 import { useState, useEffect, useRef, ChangeEvent } from "react";
 import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
 import { ElemTeamSideDrawer } from "@/components/elem-team-side-drawer";
@@ -27,11 +24,9 @@ import {
 import { useRouter } from "next/router";
 import {
 	runGraphQl,
-	convertToInternationalCurrencySystem,
-	formatDate,
 } from "@/utils";
 import { IconProfilePictureUpload } from "@/components/profile/icon-file-upload";
-import { uploadFile, deleteFile } from "@/utils/file-functions";
+import { uploadFile } from "@/utils/file-functions";
 import {
 	companyLayerChoices,
 	validateFieldsForEdit,
@@ -930,7 +925,8 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
 	const { data: companies } = await runGraphQl<GetCompanyQuery>(
 		GetCompanyDocument,
-		{ slug: context.params?.companyId }
+		{ slug: context.params?.companyId },
+		context.req.cookies
 	);
 
 	if (!companies?.companies[0]) {

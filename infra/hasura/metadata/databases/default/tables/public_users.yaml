@@ -50,18 +50,19 @@ select_permissions:
   - role: viewer
     permission:
       columns:
-        - is_auth0_verified
-        - billing_org_id
-        - id
-        - person_id
-        - reference_user_id
+        - active
         - additional_emails
         - auth0_linkedin_id
         - auth0_user_pass_id
+        - billing_org_id
         - display_name
         - email
         - external_id
+        - id
+        - is_auth0_verified
+        - person_id
         - reference_id
+        - reference_user_id
         - role
       filter:
         id:

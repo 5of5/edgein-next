@@ -1,0 +1,22 @@
+table:
+  schema: public
+  name: notification_actions
+object_relationships:
+  - name: action
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: actions
+        insertion_order: null
+        column_mapping:
+          action_id: id
+  - name: notification
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: notifications
+        insertion_order: null
+        column_mapping:
+          notification_id: id
