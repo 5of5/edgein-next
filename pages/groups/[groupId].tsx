@@ -10,7 +10,7 @@ import { useMutation } from "react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { ElemTabBar } from "@/components/elem-tab-bar";
 import { ElemGroupInformation } from "@/components/group/elem-group-information";
-import { ElemGroupAbout } from "@/components/group/ElemGroupAbout";
+import { ElemGroupAbout } from "@/components/group/elem-group-about";
 import { ElemLists } from "@/components/group/elem-lists";
 import { ElemNotes } from "@/components/group/elem-notes";
 import ElemInviteDialog from "@/components/group/elem-invite-dialog";

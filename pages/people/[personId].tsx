@@ -25,7 +25,7 @@ import { IconCheckBadgeSolid } from "@/components/icons";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { ElemTags } from "@/components/elem-tags";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
-import { ElemNewsList } from "@/components/person/ElemNewsList";
+import { ElemNewsList } from "@/components/person/elem-news-list";
 
 type Props = {
 	person: People;

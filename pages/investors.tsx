@@ -21,7 +21,7 @@ import { investorChoices } from "@/utils/constants";
 import { useStateParams } from "@/hooks/use-state-params";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
-import { ElemFilter } from "@/components/ElemFilter";
+import { ElemFilter } from "@/components/elem-filter";
 import { processInvestorsFilters } from "@/utils/filter";
 import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/useFilterParams";

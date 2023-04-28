@@ -4,7 +4,7 @@ import { ElemPersonCard } from "@/components/elem-person-card";
 import { IconEditPencil } from "@/components/icons";
 import { ElemFilterTags } from "@/components/elem-filter-tags";
 import { uniq, compact, sortBy } from "lodash";
-import { ElemBulkSavePeople } from "../ElemBulkSavePeople";
+import { ElemBulkSavePeople } from "../elem-bulk-save-people";
 
 type Props = {
 	className?: string;

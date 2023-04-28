@@ -29,7 +29,7 @@ import { Popover, Transition } from "@headlessui/react";
 import { InputTextarea } from "../input-textarea";
 import { ElemButton } from "../elem-button";
 import { useMutation } from "react-query";
-import { ElemRequiredProfileDialog } from "../ElemRequiredProfileDialog";
+import { ElemRequiredProfileDialog } from "../elem-required-profile-dialog";
 import { Popups } from "@/components/the-navbar";
 
 type Props = {

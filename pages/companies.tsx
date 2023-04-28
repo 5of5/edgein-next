@@ -22,7 +22,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useStateParams } from "@/hooks/use-state-params";
 import { onTrackView } from "@/utils/track";
 import { processCompaniesFilters } from "@/utils/filter";
-import { ElemFilter } from "@/components/ElemFilter";
+import { ElemFilter } from "@/components/elem-filter";
 import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/useFilterParams";
 

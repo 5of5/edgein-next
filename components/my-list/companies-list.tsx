@@ -12,7 +12,7 @@ import {
 	useGlobalFilter,
 } from "react-table";
 import { TableColumnsFilter } from "./table-columns-filter";
-import { TableGlobalFilter } from "./TableGlobalFilter";
+import { TableGlobalFilter } from "./table-global-filter";
 import { ElemPhoto } from "@/components/elem-photo";
 import {
 	IconSortUp,

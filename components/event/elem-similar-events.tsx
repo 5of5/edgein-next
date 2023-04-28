@@ -2,14 +2,14 @@ import React, { FC } from "react";
 import { PlaceholderEventCard } from "@/components/placeholders";
 import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
 import { ElemCarouselCard } from "@/components/elem-carousel-card";
+import { useRouter } from "next/router";
 import {
 	Events_Bool_Exp,
-	GetEventsQuery,
+	Maybe,
 	Order_By,
 	useGetEventsQuery,
 } from "@/graphql/types";
-import { ElemEventCard } from "./ElemEventCard";
-import moment from "moment-timezone";
+import { ElemEventCard } from "../events/elem-event-card";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -19,24 +19,27 @@ export type DeepPartial<T> = T extends object
 
 type Props = {
 	className?: string;
-	heading?: string;
-	itemsLimit?: number;
+	currentSlug: Maybe<string>;
+	tag1?: string;
+	tag2?: string;
 };
 
-export const ElemFeaturedEvents: FC<Props> = ({
-	className = "",
-	heading,
-	itemsLimit,
+export const ElemSimilarEvents: FC<Props> = ({
+	className,
+	currentSlug,
+	tag1,
+	tag2,
 }) => {
-	const limit = itemsLimit ? itemsLimit : 33;
+	const limit = 12;
 	const offset = null;
+
+	const router = useRouter();
 
 	const filters: DeepPartial<Events_Bool_Exp> = {
 		_and: [
 			{
-				slug: { _neq: "" },
-				is_featured: { _eq: true },
-				//end_date: { _gte: moment().subtract(1, "days").format("YYYY-MM-DD") },
+				slug: { _neq: "" || currentSlug },
+				_or: [{ types: { _contains: tag1 } }, { types: { _contains: tag2 } }],
 			},
 		],
 	};
@@ -48,17 +51,32 @@ export const ElemFeaturedEvents: FC<Props> = ({
 	} = useGetEventsQuery({
 		offset,
 		limit,
-		order: Order_By.Asc,
+		order: Order_By.Desc,
 		where: filters as Events_Bool_Exp,
 	});
 
-	const events: GetEventsQuery["events"] = eventsData?.events || [];
+	const events = eventsData?.events;
+
+	const onClickType = (
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
+
+		router.push(
+			`/events/?filters=${encodeURIComponent(
+				`{"eventType":{"tags":["${type}"]}}`
+			)}`
+		);
+	};
 
 	return (
-		<div className={`bg-white rounded-lg p-5 ${className}`}>
-			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
+		<section className={`bg-white rounded-lg p-5 shadow ${className}`}>
+			<h2 className="text-xl font-bold">Similar Events</h2>
+
 			{error ? (
-				<h4>Error loading featured events</h4>
+				<h4>Error loading similar events</h4>
 			) : isLoading ? (
 				<>
 					<div className="flex overflow-hidden -mx-3">
@@ -75,19 +93,19 @@ export const ElemFeaturedEvents: FC<Props> = ({
 			) : (
 				events && (
 					<ElemCarouselWrap>
-						{events.map((event) => {
+						{events.map((event: any) => {
 							return (
 								<ElemCarouselCard
 									key={event.id}
 									className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
 								>
-									<ElemEventCard event={event} />
+									<ElemEventCard event={event} onClickType={onClickType} />
 								</ElemCarouselCard>
 							);
 						})}
 					</ElemCarouselWrap>
 				)
 			)}
-		</div>
+		</section>
 	);
 };

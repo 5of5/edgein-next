@@ -17,18 +17,18 @@ import {
 } from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
 import { formatDate, formatTime } from "@/utils";
-import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
-import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
-import { ElemOrganizers } from "@/components/Event/ElemOrganizers";
-import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
-import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
+import { ElemSpeakerGrid } from "@/components/event/elem-speaker-grid";
+import { ElemSponsorGrid } from "@/components/event/elem-sponsor-grid";
+import { ElemOrganizers } from "@/components/event/elem-organizers";
+import { ElemEventActivity } from "@/components/event/elem-event-activity";
+import { ElemSimilarEvents } from "@/components/event/elem-similar-events";
 import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { useUser } from "@/context/user-context";
 import { Popups } from "@/components/the-navbar";
-import { ElemRequiredProfileDialog } from "@/components/ElemRequiredProfileDialog";
+import { ElemRequiredProfileDialog } from "@/components/elem-required-profile-dialog";
 
 type Props = {
 	event: GetEventQuery["events"][0];

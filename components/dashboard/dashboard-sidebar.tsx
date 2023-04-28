@@ -3,19 +3,19 @@ import { FC, useEffect, useState } from "react";
 import { Resource_Edit_Access, useGetUserProfileQuery } from "@/graphql/types";
 import dynamic from "next/dynamic";
 
-const ElemMyEdgeInMenu = dynamic(() => import("./ElemMyEdgeInMenu"), {
+const ElemMyEdgeInMenu = dynamic(() => import("./elem-my-edge-in-menu"), {
 	ssr: false,
 });
 const ElemMyListsMenu = dynamic(() => import("./elem-my-lists-menu"), {
 	ssr: false,
 });
-const ElemMyNotesMenu = dynamic(() => import("./ElemMyNotesMenu"), {
+const ElemMyNotesMenu = dynamic(() => import("./elem-my-notes-menu"), {
 	ssr: false,
 });
 const ElemMyGroupsMenu = dynamic(() => import("./elem-my-groups-menu"), {
 	ssr: false,
 });
-const ElemExploreMenu = dynamic(() => import("./ElemExploreMenu"), {
+const ElemExploreMenu = dynamic(() => import("./elem-explore-menu"), {
 	ssr: false,
 });
 

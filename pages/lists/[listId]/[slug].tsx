@@ -29,7 +29,7 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import { useUser } from "@/context/user-context";
 import { ElemButton } from "@/components/elem-button";
-import { PeopleList } from "@/components/my-list/PeopleList";
+import { PeopleList } from "@/components/my-list/people-list";
 
 type Props = {};
 

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { GetEventQuery, People } from "@/graphql/types";
 import { ElemPersonCard } from "@/components/elem-person-card";
-import { ElemBulkSavePeople } from "../ElemBulkSavePeople";
+import { ElemBulkSavePeople } from "../elem-bulk-save-people";
 import { ElemButton } from "../elem-button";
 import { numberWithCommas } from "@/utils";
 
