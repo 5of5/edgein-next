@@ -23,7 +23,7 @@ export const ElemGroupInformation: React.FC<Props> = ({
 	onOpenSettingDialog,
 }) => {
 	return (
-		<div className="flex items-center justify-between lg:border-b lg:pb-2 lg:border-black/10">
+		<div className="flex flex-wrap space-y-2 items-center justify-between lg:space-y-0 lg:border-b lg:pb-2 lg:border-black/10">
 			{isUserBelongToGroup ? (
 				<>
 					<button
@@ -43,11 +43,11 @@ export const ElemGroupInformation: React.FC<Props> = ({
 						<span className="font-bold">{group.user_group_members.length}</span>
 						<ElemButton
 							btn="primary"
-							className="gap-x-1 !pl-3"
+							className="gap-x-1 lg:!pl-3"
 							onClick={onInvite}
 						>
-							<IconPlus className="w-5 h-5" />
-							<span className="hidden sm:inline">Invite</span>
+							<IconPlus className="hidden sm:block w-5 h-5" />
+							<span>Invite</span>
 						</ElemButton>
 					</div>
 				</>

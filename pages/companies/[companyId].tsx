@@ -378,7 +378,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						/>
 					</div>
 					<div className="col-span-8">
-						<div className="w-full p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
+						<div className="w-full mt-7 p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
 							<ElemOrganizationNotes
 								resourceId={company.id}
 								resourceType="companies"

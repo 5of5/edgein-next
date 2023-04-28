@@ -172,7 +172,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										leaveFrom="opacity-100 translate-y-0"
 										leaveTo="opacity-0 translate-y-1"
 									>
-										<Popover.Panel className="absolute right-0 w-52 block bg-white rounded-lg shadow-md p-1">
+										<Popover.Panel className="absolute z-10 right-0 w-52 block bg-white rounded-lg shadow-md p-1">
 											{({ close }) => (
 												<div>
 													{listsSortOptions.map((opt) => (
