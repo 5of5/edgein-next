@@ -391,7 +391,7 @@ const MyList: NextPage<Props> = () => {
 					{companiesError ? (
 						<h4>Error loading companies</h4>
 					) : companiesLoading ? (
-						<div className="rounded-lg p-5 bg-white shadow mb-8">
+						<div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
 							<PlaceholderTable />
 						</div>
 					) : (
