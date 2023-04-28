@@ -159,47 +159,38 @@ where company 1 name is "TEST_NAME"
 
 Support for allowing to create relationships when submitting a news item user can specific tickers or other identifiers for people and companies and the api should automatically do the lookup and create the news_organisations record.
 
-For example: when creating a new person in people table. Also providing "<relationship_field>": "person_id" and team_members's values object. Api will automatically create new item record in team_members table. {<resource_obj>} looks like as below:
+For example: when creating a new person in people table. Also providing team_members's values object. Api will automatically create new item record in team_members table. {<resource_obj>} looks like as below:
 "resource":{
-  "people": {<people_obj>},
-  "&team_members":{
-  "relationship_field": "person_id",
-  "companies:name": "TEST_NAME",
-  ...
+  <people_obj>,
+  "team_members":{
+     "companies:name": "TEST_NAME",
   }
 }
 
-For example: When input a list of resource field that support creating relationship looks like as below:
-
-curl --location 'http://localhost:3000/api/submit_data' \
+For example: When input a list of resource field with relationship field for creating news that support creating relationship looks like as below:
+curl --location 'https://edgein.io/api/submit_data' \
 --header 'Content-Type: application/json' \
 --data '{
 "partner_api_key": "<api_key>",
-"resource_type": "news",
+"resource_type": "<resource_type>",
 "resource_identifier":[{"field": "id"}],
 "resource":[{
-  "news": {
-  "text": "<values>",
-  "link": "<values>",
-  "date": "<values>",
-  "status": "<values>"
+  "text": "<value>",
+  "link": "<value>",
+  "date": "<value>",
+  "status": "<value>",
+  "news_organizations":{
+  "companies:name": "<value>", "vc_firms:name": "<value>" }
 },
-  "&news_organizations":{
-  "relationship_field": "news_id",
-  "companies:name": "<values>", "vc_firms:name": "<values>" 
-}
-},{
-  "news": {
-  "text": "<values>",
-  "link": "<values>",
-  "date": "<values>",
-  "status": "<values>"
-},
-  "&news_organizations":{
-  "relationship_field": "news_id",
-  "companies:name": "<values>", "vc_firms:name": "<values>" 
-}
-},...]
+{
+  "text": "<value>",
+  "link": "<value>",
+  "date": "<value>",
+  "status": "<value>",
+  "news_organizations":{
+  "companies:name": "<value>", "vc_firms:name": "<value>" }
+},...
+]
 }'
 
 #### Update data
