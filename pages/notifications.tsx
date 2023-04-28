@@ -87,7 +87,7 @@ const Notifications: NextPage = () => {
 	};
 
 	const markAsRead = async (id?: number, all?: boolean) => {
-		await fetch("/api/mark_notification_read/", {
+		await fetch("/api/mark-notification-read/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",

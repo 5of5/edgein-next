@@ -20,7 +20,7 @@ const VerifyAdditionalEmail = () => {
         if (user?.additional_emails?.includes(email)) {
           setError("This link is expired.");
         } else {
-          const response = await fetch("/api/update_additional_emails/", {
+          const response = await fetch("/api/update-additional-emails/", {
             method: "POST",
             headers: {
               Accept: "application/json",
