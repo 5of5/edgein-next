@@ -5,7 +5,7 @@ import {
 	IconPolygonDown,
 	IconInformationCircle,
 	IconDocumentDownload,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { useUser } from "@/context/user-context";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/elem-tooltip";

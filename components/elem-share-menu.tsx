@@ -6,7 +6,7 @@ import {
 	IconTelegramAlt,
 	IconEmail,
 	IconChatBubble,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { Fragment } from "react";
 import toast, { Toaster } from "react-hot-toast";
 

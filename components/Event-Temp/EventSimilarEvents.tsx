@@ -9,7 +9,7 @@ import {
 	Order_By,
 	useGetEventsQuery,
 } from "@/graphql/types";
-import { ElemEventCard } from "../Events/ElemEventCard";
+import { ElemEventCard } from "../Events-Temp/ElemEventCard";
 
 export type DeepPartial<T> = T extends object
 	? {

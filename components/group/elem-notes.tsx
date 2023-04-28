@@ -1,6 +1,6 @@
 import React from "react";
 import { GetNotesQuery } from "@/graphql/types";
-import { IconDocumentDownload } from "@/components/icons-temp";
+import { IconDocumentDownload } from "@/components/icons";
 import { orderBy } from "lodash";
 import ElemNoteCard from "./elem-note-card";
 

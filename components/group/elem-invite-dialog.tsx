@@ -7,7 +7,7 @@ import { User_Groups } from "@/graphql/types";
 import { useDebounce } from "@/hooks/use-debounce";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemButton } from "../elem-button";
-import { IconX, IconPaperAirplane } from "@/components/icons-temp";
+import { IconX, IconPaperAirplane } from "@/components/icons";
 import { PlaceholderPerson } from "../placeholders";
 import { EmailResources } from "@/pages/api/send-invite-group-member-mail";
 

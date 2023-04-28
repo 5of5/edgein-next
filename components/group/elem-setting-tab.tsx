@@ -5,7 +5,7 @@ import { Switch } from "@headlessui/react";
 import toast from "react-hot-toast";
 import { useUser } from "@/context/user-context";
 import { User_Groups } from "@/graphql/types";
-import { IconSignOut, IconTrash, IconX } from "@/components/icons-temp";
+import { IconSignOut, IconTrash, IconX } from "@/components/icons";
 import ElemSettingEditableField from "./elem-setting-editable-field";
 import { ElemDeleteConfirmModal } from "../elem-delete-confirm-modal";
 

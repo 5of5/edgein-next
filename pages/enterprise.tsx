@@ -13,7 +13,7 @@ import { useUser } from "@/context/user-context";
 import { Popups } from "@/components/the-navbar";
 import Builders from "@/public/images/builders.svg";
 import People from "@/public/images/people.svg";
-import { IconCheck } from "@/components/icons-temp";
+import { IconCheck } from "@/components/icons";
 
 type Props = {
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;

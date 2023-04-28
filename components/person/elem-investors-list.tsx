@@ -1,5 +1,5 @@
 import { Investors } from "@/graphql/types";
-import { IconEditPencil } from "@/components/icons-temp";
+import { IconEditPencil } from "@/components/icons";
 import { ElemPhoto } from "@/components/elem-photo";
 type Props = {
 	className?: string;

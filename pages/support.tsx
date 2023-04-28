@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { ElemButton } from "@/components/elem-button";
-import { IconEmail, IconChatBubble } from "@/components/icons-temp";
+import { IconEmail, IconChatBubble } from "@/components/icons";
 
 import { useIntercom } from "react-use-intercom";
 

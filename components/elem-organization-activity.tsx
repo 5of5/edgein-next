@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ElemButton } from "./elem-button";
 import { formatDate, convertToIntNum } from "@/utils";
 import { useIntercom } from "react-use-intercom";
-import { IconExternalLink } from "@/components/icons-temp";
+import { IconExternalLink } from "@/components/icons";
 
 type Props = {
 	heading?: string;

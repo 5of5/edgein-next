@@ -2,14 +2,14 @@ import type { NextPage, GetStaticProps } from "next";
 import React, { Fragment, useState, useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { ElemHeading } from "../components/elem-heading";
-import { ElemFeaturedEvents } from "@/components/Events/ElemFeaturedEvents";
+import { ElemFeaturedEvents } from "@/components/Events-Temp/ElemFeaturedEvents";
 import { ElemButton } from "../components/elem-button";
 import { runGraphQl } from "../utils";
 import { useStateParams } from "@/hooks/use-state-params";
 import { Pagination } from "@/components/pagination";
 import { PlaceholderEventCard } from "@/components/placeholders";
 import moment from "moment-timezone";
-import { IconSearch, IconAnnotation } from "@/components/icons-temp";
+import { IconSearch, IconAnnotation } from "@/components/icons";
 import {
 	GetEventsDocument,
 	GetEventsQuery,
@@ -23,7 +23,7 @@ import { useRouter } from "next/router";
 import { ElemFilter } from "@/components/ElemFilter";
 import { processEventsFilters } from "@/utils/filter";
 import useFilterParams from "@/hooks/useFilterParams";
-import { ElemEventCard } from "@/components/Events/ElemEventCard";
+import { ElemEventCard } from "@/components/Events-Temp/ElemEventCard";
 import { useIntercom } from "react-use-intercom";
 
 type Props = {

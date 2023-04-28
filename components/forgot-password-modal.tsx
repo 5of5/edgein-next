@@ -1,7 +1,7 @@
 import { useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconCheck } from "@/components/icons-temp";
+import { IconCheck } from "@/components/icons";
 
 type Props = {
 	show: boolean;

@@ -6,7 +6,7 @@ import {
 	IconCash,
 	IconCompanies,
 	IconCalendarDays,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import useDisclosureState from "@/hooks/useDisclosureState";
 import { EXPLORE_MENU_OPEN_KEY } from "@/utils/constants";
 

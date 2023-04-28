@@ -12,7 +12,7 @@ import {
 	IconContributor,
 	IconEllipsisHorizontal,
 	IconCheck,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
 import { useUser } from "@/context/user-context";
 import { ElemTooltip } from "@/components/elem-tooltip";

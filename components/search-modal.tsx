@@ -18,7 +18,7 @@ import {
 	IconChevronRight,
 	IconUser,
 	IconImage,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import Link from "next/link";
 import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 import { formatDate } from "@/utils/numbers";

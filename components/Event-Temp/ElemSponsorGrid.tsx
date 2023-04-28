@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { useTable, useSortBy, usePagination } from "react-table";
-import { IconSortUp, IconSortDown } from "@/components/icons-temp";
+import { IconSortUp, IconSortDown } from "@/components/icons";
 import { ElemPhoto } from "@/components/elem-photo";
 import { Pagination } from "@/components/pagination";
 import { GetEventQuery } from "@/graphql/types";

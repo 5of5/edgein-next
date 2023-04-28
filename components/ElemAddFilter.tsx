@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from "react";
-import { IconPlus } from "@/components/icons-temp";
+import { IconPlus } from "@/components/icons";
 import {
   companiesFilterOptions,
   investorsFilterOptions,
   eventsFilterOptions,
 } from "@/utils/constants";
 import { useUser } from "@/context/user-context";
-import { IconContributor } from "@/components/icons-temp";
+import { IconContributor } from "@/components/icons";
 import { ElemUpgradeDialog } from "./elem-upgrade-dialog";
 
 type CategoryFilterOptionProps = {

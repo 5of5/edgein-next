@@ -1,7 +1,7 @@
 import { FC, Fragment, useState, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { InputText } from "@/components/input-text";
-import { IconX } from "@/components/icons-temp";
+import { IconX } from "@/components/icons";
 import { ElemButton } from "../elem-button";
 
 type Props = {

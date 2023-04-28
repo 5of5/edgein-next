@@ -6,7 +6,7 @@ import { ProfileEdit } from "@/components/profile/profile-edit";
 import { ProfileEditEmail } from "@/components/profile/profile-edit-email";
 import { ProfileEditName } from "@/components/profile/profile-edit-name";
 import { ElemButton } from "@/components/elem-button";
-import { IconSearch } from "@/components/icons-temp";
+import { IconSearch } from "@/components/icons";
 // import { ElemPhoto } from "@/components/elem-photo";
 // import { InputText } from "@/components/InputText";
 // import { InputTextarea } from "@/components/InputTextarea";

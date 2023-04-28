@@ -1,7 +1,7 @@
 import React from "react";
 import { ElemPhoto } from "@/components/elem-photo";
 import { useTable, useSortBy, usePagination } from "react-table";
-import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/icons-temp";
+import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/icons";
 import { Pagination } from "@/components/pagination";
 import Link from "next/link";
 import { numberWithCommas, formatDate, convertToIntNum } from "@/utils";

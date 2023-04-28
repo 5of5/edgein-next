@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ElemPhoto } from "./elem-photo";
-import { IconEmail, IconLinkedIn } from "./icons-temp";
+import { IconEmail, IconLinkedIn } from "./icons";
 import { formatDate } from "@/utils";
 
 type Props = {

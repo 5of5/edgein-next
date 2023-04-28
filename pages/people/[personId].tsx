@@ -21,7 +21,7 @@ import { ElemInvestorsList } from "@/components/person/elem-investors-list";
 import { onTrackView } from "@/utils/track";
 import { useAuth } from "@/hooks/use-auth";
 import { useIntercom } from "react-use-intercom";
-import { IconCheckBadgeSolid } from "@/components/icons-temp";
+import { IconCheckBadgeSolid } from "@/components/icons";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { ElemTags } from "@/components/elem-tags";
 import { ElemSaveToList } from "@/components/elem-save-to-list";

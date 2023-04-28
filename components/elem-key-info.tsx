@@ -23,7 +23,7 @@ import {
 	IconHome,
 	IconTicket,
 	IconDocument,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import {
 	convertToInternationalCurrencySystem,
 	numberWithCommas,

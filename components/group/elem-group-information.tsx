@@ -3,10 +3,10 @@ import {
 	IconGroup,
 	IconChevronDownMini,
 	IconPlus,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { ElemButton } from "@/components/elem-button";
 import { User_Groups } from "@/graphql/types";
-import { ElemMemberAvatarList } from "@/components/group-temp/elem-member-avatar-list";
+import { ElemMemberAvatarList } from "@/components/group/elem-member-avatar-list";
 import { SettingTabProps } from "./elem-setting-dialog";
 
 type Props = {

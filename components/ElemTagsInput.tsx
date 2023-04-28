@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IconX } from "./icons-temp";
+import { IconX } from "./icons";
 
 type Props = {
 	value: Array<string>;

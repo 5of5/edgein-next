@@ -3,7 +3,7 @@ import type { NextPage, GetStaticProps } from "next";
 import { InputText } from "@/components/input-text";
 import { InputTextarea } from "@/components/input-textarea";
 import { ElemButton } from "@/components/elem-button";
-import { IconPaperAirplane } from "@/components/icons-temp";
+import { IconPaperAirplane } from "@/components/icons";
 import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/figures";
 import { useFormspark } from "@formspark/use-formspark";
 

@@ -6,7 +6,7 @@ import {
 	IconTrash,
 	IconCustomList,
 	IconChevronDownMini,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { ModalListGroups } from "./modal-list-groups";
 import { ElemDeleteConfirmModal } from "../elem-delete-confirm-modal";
 

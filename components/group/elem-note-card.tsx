@@ -21,7 +21,7 @@ import {
 	IconLockClosed,
 	IconGlobe,
 	IconUsers,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { GetNotesQuery, People, useGetUserProfileQuery } from "@/graphql/types";
 import { useUser } from "@/context/user-context";

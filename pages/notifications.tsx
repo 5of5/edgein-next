@@ -10,7 +10,7 @@ import {
 	IconExclamationTriangle,
 	IconChevronDownMini,
 	IconBell,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { ElemPhoto } from "@/components/elem-photo";
 import { Disclosure, Popover, Transition } from "@headlessui/react";
 import moment from "moment-timezone";

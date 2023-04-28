@@ -18,8 +18,8 @@ import {
 	IconGroupPlus,
 	IconLockClosed,
 	IconGlobe,
-} from "@/components/icons-temp";
-import ElemCreateGroupDialog from "./group-temp/elem-create-group-dialog";
+} from "@/components/icons";
+import ElemCreateGroupDialog from "./group/elem-create-group-dialog";
 
 type Props = {
 	isOpen: boolean;

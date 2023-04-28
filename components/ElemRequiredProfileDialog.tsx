@@ -1,6 +1,6 @@
 import { FC, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX } from "@/components/icons-temp";
+import { IconX } from "@/components/icons";
 import { ElemLogo } from "@/components/elem-logo";
 import { ElemButton } from "@/components/elem-button";
 

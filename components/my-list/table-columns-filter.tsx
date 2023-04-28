@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { Popover } from "@headlessui/react";
-import { IconColumns } from "../icons-temp";
+import { IconColumns } from "../icons";
 
 type Props = {
 	className?: string;

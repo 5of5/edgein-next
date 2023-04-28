@@ -7,7 +7,7 @@ import {
 	IconEllipsisHorizontal,
 	IconExclamationTriangle,
 	IconPencilSquare,
-} from "@/components/icons-temp";
+} from "@/components/icons";
 import { Popover, Transition } from "@headlessui/react";
 import { useIntercom } from "react-use-intercom";
 

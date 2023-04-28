@@ -5,7 +5,7 @@ import { GetFollowsByUserQuery } from "@/graphql/types";
 import { getNameFromListName } from "@/utils/reaction";
 import { ElemButton } from "@/components/elem-button";
 import { InputText } from "@/components/input-text";
-import { IconX, IconListPlus, IconSpinner } from "@/components/icons-temp";
+import { IconX, IconListPlus, IconSpinner } from "@/components/icons";
 import { Dialog, Transition } from "@headlessui/react";
 import { InputCheckbox } from "@/components/input-checkbox";
 import toast, { Toaster } from "react-hot-toast";
