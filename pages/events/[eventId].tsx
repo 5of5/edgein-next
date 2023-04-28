@@ -76,7 +76,7 @@ const Event: NextPage<Props> = (props) => {
 	const { mutate: onAddEventAttendee, isLoading: isLoadingGoingEvent } =
 		useMutation(
 			() =>
-				fetch("/api/add_event_attendee/", {
+				fetch("/api/add-event-attendee/", {
 					method: "POST",
 					headers: {
 						Accept: "application/json",

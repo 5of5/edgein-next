@@ -175,7 +175,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const onToggleLike = async () => {
-		await fetch("/api/toggle_like_note/", {
+		await fetch("/api/toggle-like-note/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -200,7 +200,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const onAddComment = async () => {
-		await fetch("/api/add_comment/", {
+		await fetch("/api/add-comment/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -216,7 +216,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const onDeleteComment = async (id: number) => {
-		await fetch("/api/delete_comment/", {
+		await fetch("/api/delete-comment/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",

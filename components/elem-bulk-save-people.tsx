@@ -49,7 +49,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
 
   const { mutate: handleSaveToList, isLoading } = useMutation(
     ({ listName, action }: { listName: string; action: "add" | "remove" }) =>
-      fetch("/api/bulk_save_people/", {
+      fetch("/api/bulk-save-people/", {
         method: "POST",
         headers: {
           Accept: "application/json",

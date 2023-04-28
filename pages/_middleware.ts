@@ -32,8 +32,8 @@ export async function middleware(req: NextRequest) {
 			`/api/stripe-webhook/`,
 			`/admin/app/`,
 			`/admin/admin/`,
-			`/api/submit_data/`,
-			`/api/batch_job/`,
+			`/api/submit-data/`,
+			`/api/batch-job/`,
 			`/api/data-runs/`
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
