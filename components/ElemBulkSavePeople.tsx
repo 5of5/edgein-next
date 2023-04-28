@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useMutation } from "react-query";
 import { GetFollowsByUserQuery } from "@/graphql/types";
 import { getNameFromListName } from "@/utils/reaction";
-import { ElemButton } from "@/components/ElemButton";
-import { InputText } from "@/components/InputText";
-import { IconX, IconListPlus, IconSpinner } from "@/components/Icons";
+import { ElemButton } from "@/components/elem-button";
+import { InputText } from "@/components/input-text";
+import { IconX, IconListPlus, IconSpinner } from "@/components/icons-temp";
 import { Dialog, Transition } from "@headlessui/react";
-import { InputCheckbox } from "@/components/InputCheckbox";
+import { InputCheckbox } from "@/components/input-checkbox";
 import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 import { find } from "lodash";
 
 type Props = {

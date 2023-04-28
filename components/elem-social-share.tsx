@@ -9,7 +9,7 @@ import {
 	IconTelegram,
 	IconLinkedInAlt,
 	IconWhatsApp,
-} from "@/components/icons";
+} from "@/components/icons-temp";
 import { Dialog, Transition } from "@headlessui/react";
 import toast, { Toaster } from "react-hot-toast";
 

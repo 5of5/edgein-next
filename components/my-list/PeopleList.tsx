@@ -19,7 +19,7 @@ import {
 	IconX,
 	IconTrash,
 	IconChevronDown,
-} from "@/components/Icons";
+} from "@/components/icons-temp";
 import { Pagination } from "@/components/pagination";
 import { useCheckboxes } from "./indeterminate-checkbox";
 import toast, { Toaster } from "react-hot-toast";

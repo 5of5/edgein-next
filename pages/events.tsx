@@ -9,7 +9,7 @@ import { useStateParams } from "@/hooks/use-state-params";
 import { Pagination } from "@/components/pagination";
 import { PlaceholderEventCard } from "@/components/placeholders";
 import moment from "moment-timezone";
-import { IconSearch, IconAnnotation } from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/icons-temp";
 import {
 	GetEventsDocument,
 	GetEventsQuery,

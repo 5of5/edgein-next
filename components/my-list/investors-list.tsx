@@ -20,7 +20,7 @@ import {
 	IconX,
 	IconTrash,
 	IconChevronDown,
-} from "@/components/icons";
+} from "@/components/icons-temp";
 import { Pagination } from "@/components/pagination";
 import { ElemButton } from "@/components/elem-button";
 import { useCheckboxes } from "./indeterminate-checkbox";

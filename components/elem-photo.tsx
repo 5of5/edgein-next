@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import { IconUser, IconUserCircleSolid } from "@/components/icons";
+import { IconUser, IconUserCircleSolid } from "@/components/icons-temp";
 
 type Props = {
 	photo?: Record<string, any>;

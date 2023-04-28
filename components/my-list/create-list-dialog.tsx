@@ -1,7 +1,7 @@
 import { Fragment, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
-import { IconX } from "@/components/icons";
+import { IconX } from "@/components/icons-temp";
 import { InputText } from "@/components/input-text";
 import { useUser } from "@/context/user-context";
 import { ElemButton } from "../elem-button";

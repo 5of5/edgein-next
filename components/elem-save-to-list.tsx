@@ -7,7 +7,7 @@ import {
 } from "@/utils/reaction";
 import { ElemButton } from "@/components/elem-button";
 import { InputText } from "@/components/input-text";
-import { IconX, IconListPlus, IconCustomList } from "@/components/icons";
+import { IconX, IconListPlus, IconCustomList } from "@/components/icons-temp";
 import { Dialog, Transition } from "@headlessui/react";
 import { InputCheckbox } from "@/components/input-checkbox";
 import toast, { Toaster } from "react-hot-toast";

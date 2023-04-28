@@ -1,6 +1,6 @@
 import { useState, useEffect, FC } from "react";
 import { Combobox } from "@headlessui/react";
-import { useDebounce } from "@/hooks/useDebounce";
+import { useDebounce } from "@/hooks/use-debounce";
 
 type Props = {
   value: any;

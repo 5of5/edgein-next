@@ -5,7 +5,7 @@ import React, {
 	useRef,
 	useEffect,
 } from "react";
-import { IconChevronLeft, IconChevronRight } from "@/components/icons";
+import { IconChevronLeft, IconChevronRight } from "@/components/icons-temp";
 
 type Props = {
 	className?: string;

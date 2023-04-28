@@ -2,18 +2,18 @@ import type { NextPage } from "next";
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemButton } from "@/components/elem-button";
 import {
 	FigureBlurredCircle,
 	FigureBlurredRectangle,
-} from "@/components/Figures";
-import { FigureDash } from "@/components/Figures";
+	FigureDash,
+} from "@/components/figures";
 import { Transition } from "@headlessui/react";
-import { useUser } from "@/context/userContext";
-import { Popups } from "@/components/TheNavbar";
+import { useUser } from "@/context/user-context";
+import { Popups } from "@/components/the-navbar";
 import Builders from "@/public/images/builders.svg";
 import People from "@/public/images/people.svg";
-import { IconCheck } from "@/components/Icons";
+import { IconCheck } from "@/components/icons-temp";
 
 type Props = {
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;

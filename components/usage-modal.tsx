@@ -1,7 +1,7 @@
 import { useEffect, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { ElemLogo } from "@/components/elem-logo";
-import { IconSparkles, IconBadgeCheck } from "@/components/icons";
+import { IconSparkles, IconBadgeCheck } from "@/components/icons-temp";
 import { Dialog, Transition } from "@headlessui/react";
 
 type Props = {

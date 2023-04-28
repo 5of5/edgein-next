@@ -1,6 +1,6 @@
 import { useAuth } from "@/hooks/use-auth";
 import { useMemo } from "react";
-import { IconBell } from "@/components/Icons";
+import { IconBell } from "@/components/icons-temp";
 import Link from "next/link";
 import { useGetNotificationsForUserQuery } from "@/graphql/types";
 import { filterExcludeNotifications } from "@/utils/notifications";

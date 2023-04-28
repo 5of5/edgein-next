@@ -15,7 +15,7 @@ import {
 	IconGroup,
 	IconSignOut,
 	IconCalendarDays,
-} from "@/components/Icons";
+} from "@/components/icons-temp";
 import { Transition, Dialog } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
 import { clearLocalStorage } from "@/utils/helpers";

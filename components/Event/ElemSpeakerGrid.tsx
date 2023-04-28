@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { GetEventQuery, People } from "@/graphql/types";
-import { ElemPersonCard } from "@/components/ElemPersonCard";
+import { ElemPersonCard } from "@/components/elem-person-card";
 import { ElemBulkSavePeople } from "../ElemBulkSavePeople";
-import { ElemButton } from "../ElemButton";
+import { ElemButton } from "../elem-button";
 import { numberWithCommas } from "@/utils";
 
 type Props = {

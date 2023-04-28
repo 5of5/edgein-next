@@ -7,7 +7,7 @@ import { ElemRecentInvestments } from "@/components/investors/elem-recent-invest
 import { ElemButton } from "@/components/elem-button";
 import { Pagination } from "@/components/pagination";
 import { ElemInvestorCard } from "@/components/investors/elem-investor-card";
-import { IconSearch, IconAnnotation } from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/icons-temp";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,

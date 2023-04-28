@@ -3,7 +3,7 @@ import Link from "next/link";
 import { News } from "@/graphql/types";
 import { formatDate } from "@/utils";
 import { ElemButton } from "../elem-button";
-import { IconExternalLink } from "@/components/Icons";
+import { IconExternalLink } from "@/components/icons-temp";
 
 type Props = {
 	className?: string;

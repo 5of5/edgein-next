@@ -7,7 +7,7 @@ import { PlaceholderCompanyCard } from "@/components/placeholders";
 import { ElemRecentCompanies } from "@/components/companies/elem-recent-companies";
 import { ElemButton } from "@/components/elem-button";
 import { runGraphQl } from "@/utils";
-import { IconSearch, IconAnnotation } from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/icons-temp";
 import {
 	Companies,
 	Companies_Bool_Exp,

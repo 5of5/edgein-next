@@ -1,5 +1,5 @@
-import { ElemTooltip } from "@/components/ElemTooltip";
-import { IconEye, IconHide } from "@/components/Icons";
+import { ElemTooltip } from "@/components/elem-tooltip";
+import { IconEye, IconHide } from "@/components/icons-temp";
 import React, { FC, useState } from "react";
 
 type Props = {

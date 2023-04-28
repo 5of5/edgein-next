@@ -3,7 +3,7 @@ import React from "react";
 import { ElemButton } from "@/components/elem-button";
 import { ElemLogo } from "@/components/elem-logo";
 import { FigureBlurredCircle } from "@/components/figures";
-import { IconCheck } from "@/components/icons";
+import { IconCheck } from "@/components/icons-temp";
 import Image from "next/image";
 
 type Props = {};

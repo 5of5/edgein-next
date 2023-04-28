@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import { GetEventQuery } from "@/graphql/types";
 
 type Props = {

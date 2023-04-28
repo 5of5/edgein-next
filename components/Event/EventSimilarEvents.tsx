@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { PlaceholderEventCard } from "@/components/Placeholders";
-import { ElemCarouselWrap } from "@/components/ElemCarouselWrap";
-import { ElemCarouselCard } from "@/components/ElemCarouselCard";
+import { PlaceholderEventCard } from "@/components/placeholders";
+import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
+import { ElemCarouselCard } from "@/components/elem-carousel-card";
 import { useRouter } from "next/router";
 import {
 	Events_Bool_Exp,

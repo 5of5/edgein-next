@@ -6,7 +6,7 @@ import {
 	IconTelegram,
 	IconDiscord,
 	IconLockClosed,
-} from "@/components/Icons";
+} from "@/components/icons-temp";
 import { User_Groups } from "@/graphql/types";
 
 type Props = {

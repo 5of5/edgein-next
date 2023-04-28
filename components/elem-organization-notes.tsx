@@ -16,8 +16,8 @@ import {
 	IconPlus,
 	IconLockClosed,
 	IconInformationCircle,
-} from "@/components/Icons";
-import ElemNoteCard from "@/components/Group/elem-note-card";
+} from "@/components/icons-temp";
+import ElemNoteCard from "@/components/group-temp/elem-note-card";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { orderBy } from "lodash";
 import { Popups } from "@/components/the-navbar";

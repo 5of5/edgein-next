@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import moment from "moment-timezone";
 import toast, { Toaster } from "react-hot-toast";
 import { kebabCase } from "lodash";
-import { IconCustomList, IconPlus, IconCheck } from "@/components/Icons";
+import { IconCustomList, IconPlus, IconCheck } from "@/components/icons-temp";
 import { ElemButton } from "@/components/elem-button";
 import { getNameFromListName } from "@/utils/reaction";
 import Link from "next/link";
@@ -56,13 +56,8 @@ export const ElemLists: React.FC<Props> = ({
 		title: getNameFromListName(item),
 	}));
 
-<<<<<<< HEAD:components/group/elem-lists.tsx
-	const handleToggleFollow = async (listId: number) => {
-		const response = await fetch("/api/toggle-follow-list/", {
-=======
 	const handleToggleFollow = async (listId: number, isFollowing: boolean) => {
 		const response = await fetch("/api/toggle_follow_list/", {
->>>>>>> ce116d2a51f91bd90d616487d57d3597a0e850d3:components/Group/ElemLists.tsx
 			method: "POST",
 			headers: {
 				Accept: "application/json",

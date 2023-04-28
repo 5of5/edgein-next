@@ -1,6 +1,6 @@
 import { FilterOptionKeys } from "@/models/Filter";
 import React, { FC, PropsWithChildren, useEffect, useRef } from "react";
-import { ElemButton } from "./ElemButton";
+import { ElemButton } from "./elem-button";
 
 type Props = {
 	open: boolean;

@@ -7,7 +7,7 @@ import {
 	IconDead,
 	IconAcquired,
 	IconTrending,
-} from "./icons";
+} from "./icons-temp";
 
 type Props = {
 	className?: string;

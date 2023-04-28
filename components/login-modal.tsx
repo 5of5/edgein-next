@@ -2,7 +2,7 @@ import { useEffect, useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { InputText } from "@/components/input-text";
 import { ElemLogo } from "./elem-logo";
-import { IconLinkedIn, IconExclamationTriangle } from "./Icons";
+import { IconLinkedIn, IconExclamationTriangle } from "./icons-temp";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 const validator = require("validator");

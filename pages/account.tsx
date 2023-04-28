@@ -3,7 +3,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { useParams } from "react-router-dom";
 import { ElemButton } from "@/components/elem-button";
 import { InputText } from "@/components/input-text";
-import { IconLinkedIn, IconSparkles } from "@/components/icons";
+import { IconLinkedIn, IconSparkles } from "@/components/icons-temp";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { ElemShareMenu } from "@/components/elem-share-menu";
 import { EditSection } from "@/components/dashboard/edit-section";

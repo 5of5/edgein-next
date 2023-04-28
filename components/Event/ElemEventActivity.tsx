@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useIntercom } from "react-use-intercom";
 import { formatDate } from "@/utils";
-import { ElemButton } from "../ElemButton";
+import { ElemButton } from "../elem-button";
 import Link from "next/link";
 
 type Props = {

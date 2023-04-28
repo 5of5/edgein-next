@@ -9,14 +9,14 @@ import { NextPage, GetServerSideProps } from "next";
 import { useMutation } from "react-query";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { ElemTabBar } from "@/components/elem-tab-bar";
-import { ElemGroupInformation } from "@/components/group/elem-group-information";
-import { ElemGroupAbout } from "@/components/group/ElemGroupAbout";
-import { ElemLists } from "@/components/group/elem-lists";
-import { ElemNotes } from "@/components/group/elem-notes";
-import ElemInviteDialog from "@/components/group/elem-invite-dialog";
+import { ElemGroupInformation } from "@/components/group-temp/elem-group-information";
+import { ElemGroupAbout } from "@/components/group-temp/ElemGroupAbout";
+import { ElemLists } from "@/components/group-temp/elem-lists";
+import { ElemNotes } from "@/components/group-temp/elem-notes";
+import ElemInviteDialog from "@/components/group-temp/elem-invite-dialog";
 import ElemSettingDialog, {
 	SettingTabProps,
-} from "@/components/group/elem-setting-dialog";
+} from "@/components/group-temp/elem-setting-dialog";
 import { runGraphQl } from "@/utils";
 import CookieService from "@/utils/cookie";
 import {
@@ -30,7 +30,7 @@ import {
 	Notes_Bool_Exp,
 	User_Group_Members,
 } from "@/graphql/types";
-import { IconInformationCircle } from "@/components/Icons";
+import { IconInformationCircle } from "@/components/icons-temp";
 import { ElemButton } from "@/components/elem-button";
 import { useUser } from "@/context/user-context";
 

@@ -8,14 +8,14 @@ import {
 	IconPolygonDown,
 	IconInformationCircle,
 	IconContributor,
-} from "@/components/icons";
+} from "@/components/icons-temp";
 import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
-import ElemCreateGroupDialog from "../group/elem-create-group-dialog";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
 import { ElemTooltip } from "../elem-tooltip";
 import useDisclosureState from "@/hooks/useDisclosureState";
 import { MY_GROUPS_MENU_OPEN_KEY } from "@/utils/constants";
+import ElemCreateGroupDialog from "../group-temp/elem-create-group-dialog";
 
 type Props = {
 	className?: string;

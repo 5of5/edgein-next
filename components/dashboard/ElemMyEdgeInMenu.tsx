@@ -6,7 +6,7 @@ import {
 	IconPolygonDown,
 	IconSettings,
 	IconUserCircle,
-} from "@/components/Icons";
+} from "@/components/icons-temp";
 import { useAuth } from "@/hooks/use-auth";
 import useDisclosureState from "@/hooks/useDisclosureState";
 import { MY_EDGEIN_MENU_OPEN_KEY } from "@/utils/constants";

@@ -8,7 +8,7 @@ import {
 	IconArrowUp,
 	IconArrowDown,
 	IconInformationCircle,
-} from "@/components/icons";
+} from "@/components/icons-temp";
 
 type Props = {
 	className?: string;
