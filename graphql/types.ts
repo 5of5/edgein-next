@@ -22604,6 +22604,7 @@ export type UpdateSentimentByCompanyIdMutation = { __typename?: 'mutation_root',
 
 export type GetCompaniesByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
 }>;
 
 
@@ -23190,6 +23191,7 @@ export type SearchPeopleQuery = { __typename?: 'query_root', users: Array<{ __ty
 
 export type GetPeopleByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
 }>;
 
 
@@ -23404,6 +23406,7 @@ export type UpdateSentimentByVcFirmIdMutation = { __typename?: 'mutation_root', 
 
 export type GetVcFirmsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
 }>;
 
 
@@ -23509,7 +23512,7 @@ useGetAllowedEmailByEmailOrDomainQuery.fetcher = (variables?: GetAllowedEmailByE
 export const GetLastSyncDocument = `
     query GetLastSync {
   application_meta(
-    where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people"]}}
+    where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people", "sync_events", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people"]}}
   ) {
     id
     key
@@ -24029,9 +24032,9 @@ export const useUpdateSentimentByCompanyIdMutation = <
     );
 useUpdateSentimentByCompanyIdMutation.fetcher = (variables: UpdateSentimentByCompanyIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByCompanyIdMutation, UpdateSentimentByCompanyIdMutationVariables>(UpdateSentimentByCompanyIdDocument, variables, options);
 export const GetCompaniesByDateDocument = `
-    query GetCompaniesByDate($date: timestamptz) {
+    query GetCompaniesByDate($date: timestamptz, $library: jsonb) {
   companies(
-    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
   ) {
     id
     name
@@ -26515,9 +26518,9 @@ useSearchPeopleQuery.getKey = (variables?: SearchPeopleQueryVariables) => variab
 
 useSearchPeopleQuery.fetcher = (variables?: SearchPeopleQueryVariables, options?: RequestInit['headers']) => fetcher<SearchPeopleQuery, SearchPeopleQueryVariables>(SearchPeopleDocument, variables, options);
 export const GetPeopleByDateDocument = `
-    query GetPeopleByDate($date: timestamptz) {
+    query GetPeopleByDate($date: timestamptz, $library: jsonb) {
   people(
-    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
   ) {
     id
     name
@@ -27673,9 +27676,9 @@ export const useUpdateSentimentByVcFirmIdMutation = <
     );
 useUpdateSentimentByVcFirmIdMutation.fetcher = (variables: UpdateSentimentByVcFirmIdMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateSentimentByVcFirmIdMutation, UpdateSentimentByVcFirmIdMutationVariables>(UpdateSentimentByVcFirmIdDocument, variables, options);
 export const GetVcFirmsByDateDocument = `
-    query GetVcFirmsByDate($date: timestamptz) {
+    query GetVcFirmsByDate($date: timestamptz, $library: jsonb) {
   vc_firms(
-    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: "Web3"}}]}
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
   ) {
     id
     name

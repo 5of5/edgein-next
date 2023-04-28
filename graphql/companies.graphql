@@ -232,13 +232,13 @@ query GetSentimentByCompanyId($companyId: Int!) {
    }
  }    
 
- query GetCompaniesByDate($date: timestamptz) {
+ query GetCompaniesByDate($date: timestamptz, $library: jsonb) {
    companies(
      where: {
        _and: [
          { status: { _eq: "published" } }
          { updated_at: { _gte: $date } }
-         { library: { _contains: "Web3" } }
+         { library: { _contains: $library } }
        ]
      }
    ) {
