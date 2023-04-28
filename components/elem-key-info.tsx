@@ -20,6 +20,7 @@ import {
 	IconDiscord,
 	IconGlassdoor,
 	IconEye,
+	IconEyeSlash,
 	IconHome,
 	IconTicket,
 	IconDocument,
@@ -229,7 +230,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	if (linkedIn) {
 		infoItems.push({
 			icon: IconLinkedIn,
-			text: "LinkedIn",
+			text: "LinkedIn Profile",
 			link: linkedIn,
 			showHide: true,
 		});
@@ -361,12 +362,12 @@ export const ElemKeyInfo: React.FC<Props> = ({
 									{item.icon && (
 										<item.icon
 											title={item.text}
-											className="h-6 w-6  mr-2 shrink-0 text-dark-500"
+											className="h-6 w-6 mr-2 shrink-0 text-dark-500"
 										/>
 									)}
 									{showInfo[item.text] ? (
 										<a
-											className={`transition-all text-primary-500 hover:bg-slate-200`}
+											className={`break-all transition-all text-primary-500 hover:bg-slate-200`}
 											href={item.link}
 											target={item.target ? item.target : "_blank"}
 											rel="noopener noreferrer"
@@ -379,8 +380,15 @@ export const ElemKeyInfo: React.FC<Props> = ({
 									)}
 								</div>
 								<div className="flex items-center text-primary-500">
-									<IconEye className="h-5 w-5 shrink-0 mr-1" />
-									show
+									{showInfo[item.text] ? (
+										<>
+											<IconEyeSlash className="h-5 w-5 shrink-0 mr-1" /> hide
+										</>
+									) : (
+										<>
+											<IconEye className="h-5 w-5 shrink-0 mr-1" /> show
+										</>
+									)}
 								</div>
 							</li>
 						);
@@ -397,17 +405,26 @@ export const ElemKeyInfo: React.FC<Props> = ({
 					>
 						<div className="flex items-center">
 							<IconEmail className="h-6 w-6 shrink-0 mr-2 text-dark-500" />
-							{showInfo["email"] ? (
-								email
-							) : (
-								<>
-									&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
-								</>
-							)}
+							<div className="break-all">
+								{showInfo["email"] ? (
+									email
+								) : (
+									<>
+										&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;@&bull;&bull;&bull;&bull;&bull;&bull;
+									</>
+								)}
+							</div>
 						</div>
 						<div className="flex items-center text-primary-500">
-							<IconEye className="h-5 w-5 shrink-0 mr-1" />
-							show
+							{showInfo["email"] ? (
+								<>
+									<IconEyeSlash className="h-5 w-5 shrink-0 mr-1" /> hide
+								</>
+							) : (
+								<>
+									<IconEye className="h-5 w-5 shrink-0 mr-1" /> show
+								</>
+							)}
 						</div>
 					</li>,
 				])}

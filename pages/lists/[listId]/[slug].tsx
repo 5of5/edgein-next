@@ -405,7 +405,7 @@ const MyList: NextPage<Props> = () => {
 					{vcFirmsError ? (
 						<h4>Error loading Investors</h4>
 					) : vcFirmsLoading ? (
-						<div className="rounded-lg p-5 bg-white shadow mb-8">
+						<div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
 							<PlaceholderTable />
 						</div>
 					) : (
@@ -419,7 +419,7 @@ const MyList: NextPage<Props> = () => {
 					{listPeopleError ? (
 						<h4>Error loading people</h4>
 					) : listPeopleLoading ? (
-						<div className="rounded-lg p-5 bg-white shadow mb-8">
+						<div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
 							<PlaceholderTable />
 						</div>
 					) : (
