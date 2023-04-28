@@ -1,13 +1,13 @@
 import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ElemHeading } from "@/components/ElemHeading";
-import { PlaceholderInvestorCard } from "@/components/Placeholders";
-import { ElemRecentInvestments } from "@/components/Investors/ElemRecentInvestments";
-import { ElemButton } from "@/components/ElemButton";
-import { Pagination } from "@/components/Pagination";
-import { ElemInvestorCard } from "@/components/Investors/ElemInvestorCard";
-import { IconSearch, IconAnnotation } from "@/components/Icons";
+import { ElemHeading } from "@/components/elem-heading";
+import { PlaceholderInvestorCard } from "@/components/placeholders";
+import { ElemRecentInvestments } from "@/components/investors/elem-recent-investments";
+import { ElemButton } from "@/components/elem-button";
+import { Pagination } from "@/components/pagination";
+import { ElemInvestorCard } from "@/components/investors/elem-investor-card";
+import { IconSearch, IconAnnotation } from "@/components/icons";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -18,10 +18,10 @@ import {
 import { DeepPartial } from "@/pages/companies";
 import { runGraphQl } from "@/utils";
 import { investorChoices } from "@/utils/constants";
-import { useStateParams } from "@/hooks/useStateParams";
+import { useStateParams } from "@/hooks/use-state-params";
 import toast, { Toaster } from "react-hot-toast";
 import { onTrackView } from "@/utils/track";
-import { ElemFilter } from "@/components/ElemFilter";
+import { ElemFilter } from "@/components/elem-filter";
 import { processInvestorsFilters } from "@/utils/filter";
 import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/useFilterParams";

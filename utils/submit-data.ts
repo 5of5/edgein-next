@@ -15,7 +15,7 @@ import {
   InsertDataDiscardMutation,
   InsertDataDiscardDocument,
 } from "@/graphql/types";
-import { User } from "@/models/User";
+import { User } from "@/models/user";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 import * as util from 'util';
@@ -187,7 +187,7 @@ export const onSubmitData = (
     method === "DELETE"
       ? transformInput.previousData
       : getUpdatedDiff(transformInput.previousData, transformInput.data);
-  return fetch("/api/submit_data/", {
+  return fetch("/api/submit-data/", {
     method,
     headers: {
       Accept: "application/json",

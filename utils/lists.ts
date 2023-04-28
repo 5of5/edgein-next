@@ -30,7 +30,7 @@ import {
   CheckFollowExistsQuery,
   CheckFollowExistsDocument,
 } from "@/graphql/types";
-import { User } from '@/models/User';
+import { User } from '@/models/user';
 
 export const updateResourceSentimentCount = async (resourceType: 'companies' | 'vc_firms', resourceId: number, token: string, sentimentType: string, shouldInc: boolean, shouldDec: boolean) => {
   if (resourceType === 'companies') {

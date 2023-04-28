@@ -1,3 +1,3 @@
-export * from "./TeamMemberList";
-export * from "./TeamMemberCreate";
-export * from "./TeamMemberEdit";
+export * from "./team-member-list";
+export * from "./team-member-create";
+export * from "./team-member-edit";

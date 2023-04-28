@@ -2,21 +2,21 @@ import React, { useEffect, useState, MutableRefObject, useRef } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemCredibility } from "@/components/Company/ElemCredibility";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemTags } from "@/components/ElemTags";
-import { ElemInvestments } from "@/components/Company/ElemInvestments";
-import { ElemTeamGrid } from "@/components/Company/ElemTeamGrid";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemCredibility } from "@/components/company/elem-credibility";
+import { ElemKeyInfo } from "@/components/elem-key-info";
+import { ElemTags } from "@/components/elem-tags";
+import { ElemInvestments } from "@/components/company/elem-investments";
+import { ElemTeamGrid } from "@/components/company/elem-team-grid";
 import { runGraphQl } from "@/utils";
-import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
-import { ElemCohort } from "@/components/Company/ElemCohort";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemSocialShare } from "@/components/ElemSocialShare";
-import { ElemVelocity } from "@/components/Company/ElemVelocity";
-import { ElemOrganizationActivity } from "@/components/ElemOrganizationActivity";
+import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
+import { ElemCohort } from "@/components/company/elem-cohort";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
+import { ElemButton } from "@/components/elem-button";
+import { ElemSocialShare } from "@/components/elem-social-share";
+import { ElemVelocity } from "@/components/company/elem-velocity";
+import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
 import {
 	Companies,
 	GetCompanyDocument,
@@ -26,16 +26,16 @@ import {
 	useGetCompanyQuery,
 	//Investments,
 } from "@/graphql/types";
-import { ElemReactions } from "@/components/ElemReactions";
-import { useAuth } from "@/hooks/useAuth";
+import { ElemReactions } from "@/components/elem-reactions";
+import { useAuth } from "@/hooks/use-auth";
 import { companyLayerChoices, tokenInfoMetrics } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
 import { sortBy } from "lodash";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
-import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
-import { Popups } from "@/components/TheNavbar";
+import ElemOrganizationNotes from "@/components/elem-organization-notes";
+import { Popups } from "@/components/the-navbar";
 
 type Props = {
 	company: Companies;
@@ -89,7 +89,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	}, [companyData]);
 
 	const getTokenInfo = async (coinId: number) => {
-		const data = await fetch("/api/get_metrics_amount/", {
+		const data = await fetch("/api/get-metrics-amount/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",

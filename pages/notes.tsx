@@ -1,13 +1,13 @@
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useGetNotesQuery, Notes_Bool_Exp } from "@/graphql/types";
 import { GetStaticProps } from "next";
 import { FC } from "react";
-import { IconDocumentDownload } from "@/components/Icons";
-import ElemNoteCard from "@/components/Group/ElemNoteCard";
-import { PlaceholderNote } from "@/components/Placeholders";
+import { IconDocumentDownload } from "@/components/icons";
+import ElemNoteCard from "@/components/group/elem-note-card";
+import { PlaceholderNote } from "@/components/placeholders";
 import { orderBy } from "lodash";
 //import { useAuth } from "@/hooks/useAuth";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 type Props = {};
 

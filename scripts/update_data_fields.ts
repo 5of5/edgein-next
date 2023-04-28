@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
-import { getClient } from './postgres_helpers';
+import { getClient } from './postgres-helpers';
 import { NODE_NAME, isResourceType } from '../utils/constants';
 
 

@@ -2,12 +2,12 @@ import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import moment from "moment-timezone";
-import { ElemHeading } from "@/components/ElemHeading";
-import { PlaceholderCompanyCard } from "@/components/Placeholders";
-import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemHeading } from "@/components/elem-heading";
+import { PlaceholderCompanyCard } from "@/components/placeholders";
+import { ElemRecentCompanies } from "@/components/companies/elem-recent-companies";
+import { ElemButton } from "@/components/elem-button";
 import { runGraphQl } from "@/utils";
-import { IconSearch, IconAnnotation } from "@/components/Icons";
+import { IconSearch, IconAnnotation } from "@/components/icons";
 import {
 	Companies,
 	Companies_Bool_Exp,
@@ -15,14 +15,14 @@ import {
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
-import { Pagination } from "@/components/Pagination";
-import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
+import { Pagination } from "@/components/pagination";
+import { ElemCompanyCard } from "@/components/companies/elem-company-card";
 import { companyChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
-import { useStateParams } from "@/hooks/useStateParams";
+import { useStateParams } from "@/hooks/use-state-params";
 import { onTrackView } from "@/utils/track";
 import { processCompaniesFilters } from "@/utils/filter";
-import { ElemFilter } from "@/components/ElemFilter";
+import { ElemFilter } from "@/components/elem-filter";
 import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/useFilterParams";
 

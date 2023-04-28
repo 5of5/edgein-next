@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
-import { getClient } from "./postgres_helpers";
+import { getClient } from "./postgres-helpers";
 
 const onMigrateLocationJson = async (resourceType: string) => {
   const client = await getClient();

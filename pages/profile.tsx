@@ -1,15 +1,16 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ProfileEdit } from "@/components/Profile/ProfileEdit";
-import { ProfileEditEmail } from "@/components/Profile/ProfileEditEmail";
-import { ProfileEditName } from "@/components/Profile/ProfileEditName";
-import { ElemButton } from "@/components/ElemButton";
-import { IconSearch } from "@/components/Icons";
-// import { ElemPhoto } from "@/components/ElemPhoto";
+
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { ProfileEdit } from "@/components/profile/profile-edit";
+import { ProfileEditEmail } from "@/components/profile/profile-edit-email";
+import { ProfileEditName } from "@/components/profile/profile-edit-name";
+import { ElemButton } from "@/components/elem-button";
+import { IconSearch } from "@/components/icons";
+// import { ElemPhoto } from "@/components/elem-photo";
 // import { InputText } from "@/components/InputText";
 // import { InputTextarea } from "@/components/InputTextarea";
-import { Popups } from "@/components/TheNavbar";
+import { Popups } from "@/components/the-navbar";
 
 import {
 	// GetCompaniesDocument,
@@ -19,7 +20,7 @@ import {
 	// useGetPersonQuery,
 	useGetUserProfileQuery,
 } from "@/graphql/types";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 // import { divide, find, findIndex } from "lodash";
 // import validator from "validator";
 // import { InputSelect } from "@/components/InputSelect";
@@ -286,7 +287,7 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 	// 		return resp.json();
 	// 	}
 
-	// 	const resp = await fetch("/api/team_member/", {
+	// 	const resp = await fetch("/api/team-member/", {
 	// 		method: "POST",
 	// 		body: JSON.stringify({
 	// 			teammember: payload,

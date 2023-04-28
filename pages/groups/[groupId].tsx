@@ -7,16 +7,16 @@ import React, {
 } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import { useMutation } from "react-query";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
-import { ElemGroupAbout } from "@/components/Group/ElemGroupAbout";
-import { ElemLists } from "@/components/Group/ElemLists";
-import { ElemNotes } from "@/components/Group/ElemNotes";
-import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemGroupInformation } from "@/components/group/elem-group-information";
+import { ElemGroupAbout } from "@/components/group/elem-group-about";
+import { ElemLists } from "@/components/group/elem-lists";
+import { ElemNotes } from "@/components/group/elem-notes";
+import ElemInviteDialog from "@/components/group/elem-invite-dialog";
 import ElemSettingDialog, {
 	SettingTabProps,
-} from "@/components/Group/ElemSettingDialog";
+} from "@/components/group/elem-setting-dialog";
 import { runGraphQl } from "@/utils";
 import CookieService from "@/utils/cookie";
 import {
@@ -30,9 +30,9 @@ import {
 	Notes_Bool_Exp,
 	User_Group_Members,
 } from "@/graphql/types";
-import { IconInformationCircle, IconLockClosed } from "@/components/Icons";
-import { ElemButton } from "@/components/ElemButton";
-import { useUser } from "@/context/userContext";
+import { IconInformationCircle } from "@/components/icons";
+import { ElemButton } from "@/components/elem-button";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	group: User_Groups;

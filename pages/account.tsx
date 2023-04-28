@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { useParams } from "react-router-dom";
-import { ElemButton } from "@/components/ElemButton";
-import { InputText } from "@/components/InputText";
-import { IconLinkedIn, IconSparkles } from "@/components/Icons";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ElemShareMenu } from "@/components/ElemShareMenu";
-import { EditSection } from "@/components/Dashboard/EditSection";
+import { ElemButton } from "@/components/elem-button";
+import { InputText } from "@/components/input-text";
+import { IconLinkedIn, IconSparkles } from "@/components/icons";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { ElemShareMenu } from "@/components/elem-share-menu";
+import { EditSection } from "@/components/dashboard/edit-section";
 import { useGetUserProfileQuery } from "@/graphql/types";
-import { ElemSubscribedDialog } from "@/components/ElemSubscribedDialog";
+import { ElemSubscribedDialog } from "@/components/elem-subscribed-dialog";
 import { loadStripe } from "@/utils/stripe";
 
 const validator = require("validator");
@@ -78,7 +78,7 @@ export default function Account() {
 
 	const callChangePassword = async () => {
 		try {
-			const response = await fetch("/api/set_password/", {
+			const response = await fetch("/api/set-password/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",

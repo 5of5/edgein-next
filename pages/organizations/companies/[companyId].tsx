@@ -1,16 +1,16 @@
-import { useAuth } from "../../../hooks/useAuth";
+import { useAuth } from "../../../hooks/use-auth";
 import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { InputText } from "@/components/InputText";
-import { InputTextarea } from "@/components/InputTextarea";
-import { InputSelect } from "@/components/InputSelect";
+import { ElemButton } from "@/components/elem-button";
+import { ElemPhoto } from "@/components/elem-photo";
+import { InputText } from "@/components/input-text";
+import { InputTextarea } from "@/components/input-textarea";
+import { InputSelect } from "@/components/input-select";
 import { useState, useEffect, useRef, ChangeEvent } from "react";
-import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
-import { ElemTeamSideDrawer } from "@/components/ElemTeamSideDrawer";
-import { ElemInvestmentSideDrawer } from "@/components/ElemInvestmentSideDrawer";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
+import { ElemTeamSideDrawer } from "@/components/elem-team-side-drawer";
+import { ElemInvestmentSideDrawer } from "@/components/elem-investment-side-drawer";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import {
 	Investment_Rounds,
 	Companies,
@@ -25,7 +25,7 @@ import { useRouter } from "next/router";
 import {
 	runGraphQl,
 } from "@/utils";
-import { IconProfilePictureUpload } from "@/components/Profile/IconFileUpload";
+import { IconProfilePictureUpload } from "@/components/profile/icon-file-upload";
 import { uploadFile } from "@/utils/file-functions";
 import {
 	companyLayerChoices,
@@ -33,10 +33,10 @@ import {
 	validateTeamMember,
 	validateInvestmentRounds,
 } from "@/utils/constants";
-import { TagInputText } from "@/components/TagInputText";
-import { ElemEditInvestments } from "@/components/Company/ElemEditInvestments";
-import { ElemEditTeam } from "@/components/Company/ElemEditTeam";
-import { InputDate } from "@/components/InputDate";
+import { TagInputText } from "@/components/tag-input-text";
+import { ElemEditInvestments } from "@/components/company/elem-edit-investments";
+import { ElemEditTeam } from "@/components/company/elem-edit-team";
+import { InputDate } from "@/components/input-date";
 
 type GridProps = {
 	children: any;
@@ -139,7 +139,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 	};
 
 	const updateCall = async (companyData: Companies) => {
-		const resp = await fetch("/api/update_company/", {
+		const resp = await fetch("/api/update-company/", {
 			method: "POST",
 			body: JSON.stringify({
 				companyId: companyData?.id,
@@ -173,7 +173,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		setErrorsTeamMembers(error);
 		if (Object.keys(error).length == 0) {
 			setTeamDrawer(false);
-			await fetch("/api/team_member/", {
+			await fetch("/api/team-member/", {
 				method: "POST",
 				body: JSON.stringify({
 					teammember: updatedEmployee,
@@ -209,7 +209,7 @@ const CompanyEdit: NextPage<Props> = (props: Props) => {
 		setErrorsRounds(error);
 		if (Object.keys(error).length == 0) {
 			setInvestmentDrawer(false);
-			await fetch("/api/upsert_investment_round/", {
+			await fetch("/api/upsert-investment-round/", {
 				method: "POST",
 				body: JSON.stringify({
 					investmentRound: tempRound,

@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
 import { Filters } from "@/models/Filter";
-import { useStateParams } from "./useStateParams";
+import { useStateParams } from "./use-state-params";
 
 const formatDateString = (value: string | undefined) => {
   if (value) {

@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 dotenv.config({ path: "./.env" });
-import { getClient } from "./postgres_helpers";
+import { getClient } from "./postgres-helpers";
 
 (async () => {
   const client = await getClient();

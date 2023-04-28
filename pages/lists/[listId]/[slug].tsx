@@ -1,9 +1,9 @@
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { CompaniesList } from "@/components/MyList/CompaniesList";
-import { InvestorsList } from "@/components/MyList/InvestorsList";
-import { ModalListDetails } from "@/components/MyList/ModalListDetails";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
-import { PlaceholderTable } from "@/components/Placeholders";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { CompaniesList } from "@/components/my-list/companies-list";
+import { InvestorsList } from "@/components/my-list/investors-list";
+import { ModalListDetails } from "@/components/my-list/modal-list-details";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
+import { PlaceholderTable } from "@/components/placeholders";
 import moment from "moment-timezone";
 import Link from "next/link";
 
@@ -27,9 +27,9 @@ import {
 	getUserIdFromListCreator,
 } from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/userContext";
-import { ElemButton } from "@/components/ElemButton";
-import { PeopleList } from "@/components/MyList/PeopleList";
+import { useUser } from "@/context/user-context";
+import { ElemButton } from "@/components/elem-button";
+import { PeopleList } from "@/components/my-list/people-list";
 
 type Props = {};
 
@@ -60,7 +60,7 @@ const MyList: NextPage<Props> = () => {
 	);
 
 	const onSaveListName = async (name: string) => {
-		const updateNameRes = await fetch(`/api/update_list/`, {
+		const updateNameRes = await fetch(`/api/update-list/`, {
 			method: "PUT",
 			body: JSON.stringify({
 				id: parseInt(router.query.listId as string),
@@ -94,7 +94,7 @@ const MyList: NextPage<Props> = () => {
 	};
 
 	const onDeleteList = async (id: number) => {
-		const deleteRes = await fetch(`/api/delete_list/?listId=${id}`, {
+		const deleteRes = await fetch(`/api/delete-list/?listId=${id}`, {
 			method: "DELETE",
 		});
 
@@ -124,7 +124,7 @@ const MyList: NextPage<Props> = () => {
 	};
 
 	const onAddGroups = async (groupIds: Array<number>) => {
-		const res = await fetch("/api/add_group_to_list/", {
+		const res = await fetch("/api/add-group-to-list/", {
 			method: "POST",
 			body: JSON.stringify({
 				listId: parseInt(router.query.listId as string),
