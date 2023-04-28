@@ -1,3 +1,3 @@
-export * from "./DisabledEmailList";
-export * from "./DisabledEmailCreate";
-export * from "./DisabledEmailEdit";
+export * from "./disabled-email-list";
+export * from "./disabled-email-create";
+export * from "./disabled-email-edit";

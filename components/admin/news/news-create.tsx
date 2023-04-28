@@ -1,7 +1,7 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
-import ElemToolbar from "../ElemToolbar";
-import ElemFormBase from "../ElemFormBase";
+import ElemToolbar from "../elem-toolbar";
+import ElemFormBase from "../elem-form-base";
 import NewsForm from "./news-form";
 import { transformFormData } from "./services";
 

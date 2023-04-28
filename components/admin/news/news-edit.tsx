@@ -1,6 +1,6 @@
 import React from "react";
-import ElemTitle from "../ElemTitle";
-import ElemFormBase from "../ElemFormBase";
+import ElemTitle from "../elem-title";
+import ElemFormBase from "../elem-form-base";
 import NewsForm from "./news-form";
 import { NewsOrganizations } from "./news-organizations";
 import { NewsPerson } from "./news-person";

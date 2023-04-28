@@ -31,7 +31,7 @@ import {
   GetUserByPersonIdQuery,
   GetUserByPersonIdDocument,
 } from "@/graphql/types";
-import { Entitlements, UserToken } from '@/models/User';
+import { Entitlements, UserToken } from '@/models/user';
 import { createHmac } from "crypto";
 
 async function queryForAllowedEmailCheck(email: string, domain: string) {

@@ -1,7 +1,7 @@
 
 export const loadStripe = async () => {
   try {
-    const response = await fetch("/api/stripe_load/", {
+    const response = await fetch("/api/stripe-load/", {
       method: "POST",
       headers: {
         Accept: "application/json",

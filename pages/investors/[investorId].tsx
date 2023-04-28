@@ -2,16 +2,16 @@ import React, { useEffect, useState, useRef, MutableRefObject } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemTags } from "@/components/ElemTags";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { ElemReactions } from "@/components/ElemReactions";
-import { ElemInvestorGrid } from "@/components/Investor/ElemInvestorGrid";
-import { ElemInvestments } from "@/components/Investor/ElemInvestments";
-import { ElemSocialShare } from "@/components/ElemSocialShare";
-import { ElemOrganizationActivity } from "@/components/ElemOrganizationActivity";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemKeyInfo } from "@/components/elem-key-info";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemTags } from "@/components/elem-tags";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
+import { ElemReactions } from "@/components/elem-reactions";
+import { ElemInvestorGrid } from "@/components/investor/elem-investor-grid";
+import { ElemInvestments } from "@/components/investor/elem-investments";
+import { ElemSocialShare } from "@/components/elem-social-share";
+import { ElemOrganizationActivity } from "@/components/elem-organization-activity";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 
@@ -25,13 +25,13 @@ import {
 	Vc_Firms,
 } from "@/graphql/types";
 
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { uniq } from "lodash";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemButton } from "@/components/elem-button";
 import { onTrackView } from "@/utils/track";
-import { ElemSubOrganizations } from "@/components/ElemSubOrganizations";
-import { IconEditPencil, IconAnnotation } from "@/components/Icons";
-import ElemOrganizationNotes from "@/components/ElemOrganizationNotes";
+import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
+import { IconEditPencil, IconAnnotation } from "@/components/icons";
+import ElemOrganizationNotes from "@/components/elem-organization-notes";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -250,7 +250,7 @@ const VCFirm: NextPage<Props> = (props) => {
 						/>
 					</div>
 					<div className="col-span-8">
-						<div className="w-full p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
+						<div className="w-full mt-7 p-5 bg-slate-200 rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
 							<ElemOrganizationNotes
 								resourceId={vcfirm.id}
 								resourceType="vc_firms"

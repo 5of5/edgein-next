@@ -2,11 +2,11 @@ import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { flatten, union} from "lodash";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemInvestments } from "@/components/Investor/ElemInvestments";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemButton } from "@/components/ElemButton";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemKeyInfo } from "@/components/elem-key-info";
+import { ElemInvestments } from "@/components/investor/elem-investments";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemButton } from "@/components/elem-button";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
 import {
 	GetPersonDocument,
@@ -16,16 +16,16 @@ import {
 	People,
 	useGetUserByPersonIdQuery,
 } from "@/graphql/types";
-import { ElemJobsList } from "@/components/Person/ElemJobsList";
-import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
+import { ElemJobsList } from "@/components/person/elem-jobs-list";
+import { ElemInvestorsList } from "@/components/person/elem-investors-list";
 import { onTrackView } from "@/utils/track";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { useIntercom } from "react-use-intercom";
-import { IconCheckBadgeSolid } from "@/components/Icons";
-import { ElemTooltip } from "@/components/ElemTooltip";
-import { ElemTags } from "@/components/ElemTags";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
-import { ElemNewsList } from "@/components/Person/ElemNewsList";
+import { IconCheckBadgeSolid } from "@/components/icons";
+import { ElemTooltip } from "@/components/elem-tooltip";
+import { ElemTags } from "@/components/elem-tags";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
+import { ElemNewsList } from "@/components/person/elem-news-list";
 
 type Props = {
 	person: People;

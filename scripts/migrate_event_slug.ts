@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 import random from "lodash/random";
 dotenv.config({ path: "./.env" });
-import { getClient } from "./postgres_helpers";
+import { getClient } from "./postgres-helpers";
 
 (async () => {
   const client = await getClient();

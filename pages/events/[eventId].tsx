@@ -3,13 +3,13 @@ import { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import toast, { Toaster } from "react-hot-toast";
 import { useMutation } from "react-query";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemTags } from "@/components/ElemTags";
+import { ElemKeyInfo } from "@/components/elem-key-info";
+import { ElemTags } from "@/components/elem-tags";
 import { runGraphQl } from "@/utils";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemSocialShare } from "@/components/ElemSocialShare";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemButton } from "@/components/elem-button";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemSocialShare } from "@/components/elem-social-share";
 import {
 	GetEventDocument,
 	GetEventQuery,
@@ -17,18 +17,18 @@ import {
 } from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
 import { formatDate, formatTime } from "@/utils";
-import { ElemSpeakerGrid } from "@/components/Event/ElemSpeakerGrid";
-import { ElemSponsorGrid } from "@/components/Event/ElemSponsorGrid";
-import { ElemOrganizers } from "@/components/Event/ElemOrganizers";
-import { ElemEventActivity } from "@/components/Event/ElemEventActivity";
-import { ElemSimilarEvents } from "@/components/Event/EventSimilarEvents";
+import { ElemSpeakerGrid } from "@/components/event/elem-speaker-grid";
+import { ElemSponsorGrid } from "@/components/event/elem-sponsor-grid";
+import { ElemOrganizers } from "@/components/event/elem-organizers";
+import { ElemEventActivity } from "@/components/event/elem-event-activity";
+import { ElemSimilarEvents } from "@/components/event/elem-similar-events";
 import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
-import { useUser } from "@/context/userContext";
-import { Popups } from "@/components/TheNavbar";
-import { ElemRequiredProfileDialog } from "@/components/ElemRequiredProfileDialog";
+import { useUser } from "@/context/user-context";
+import { Popups } from "@/components/the-navbar";
+import { ElemRequiredProfileDialog } from "@/components/elem-required-profile-dialog";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -238,7 +238,7 @@ const Event: NextPage<Props> = (props) => {
 						<h1 className="text-3xl font-bold md:text-5xl">{event.name}</h1>
 						{attendees?.length > 0 && (
 							<div className="self-center flex items-center gap-x-2 shrink-0">
-								<ul className="flex -space-x-3">
+								<ul className="flex -space-x-3 relative z-0">
 									{attendees?.map((attendee, index) => (
 										<li
 											key={attendee.id}
