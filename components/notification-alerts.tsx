@@ -13,7 +13,7 @@ export const NotificationAlerts = () => {
 	});
 
 	const excludeProperties = useMemo(() => {
-		return ["status_tags"];
+		return ["status_tags", "logo"];
 	}, []);
 
 	const excludeResourceTypes = useMemo(() => {
