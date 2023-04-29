@@ -12,6 +12,7 @@ import {
 } from "@/components/icons";
 import { Dialog, Transition } from "@headlessui/react";
 import toast, { Toaster } from "react-hot-toast";
+import { getTwitterHandle } from "@/utils";
 
 type Props = {
 	resourceName: string | null;
@@ -62,9 +63,9 @@ export const ElemSocialShare: FC<Props> = ({
 		);
 	};
 
-	const getTwitterHandle = (url: string) => {
-		return `@` + url.replace(/^.*\/\/[^\/]+/, "").replace("/", "");
-	};
+	// const getTwitterHandle = (url: string) => {
+	// 	return `@` + url.replace(/^.*\/\/[^\/]+/, "").replace("/", "");
+	// };
 
 	let theTags: string[] = [];
 	if (resourceTags) {

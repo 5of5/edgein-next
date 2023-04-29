@@ -26,6 +26,8 @@ import {
 	IconDocument,
 } from "@/components/icons";
 import {
+	getTwitterHandle,
+	removeDomainName,
 	convertToInternationalCurrencySystem,
 	numberWithCommas,
 } from "@/utils";
@@ -230,7 +232,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 	if (linkedIn) {
 		infoItems.push({
 			icon: IconLinkedIn,
-			text: "LinkedIn Profile",
+			text: removeDomainName(linkedIn),
 			link: linkedIn,
 			showHide: true,
 		});
@@ -249,10 +251,11 @@ export const ElemKeyInfo: React.FC<Props> = ({
 			link: facebook,
 		});
 	}
+
 	if (twitter) {
 		infoItems.push({
 			icon: IconTwitter,
-			text: "Twitter",
+			text: getTwitterHandle(twitter),
 			link: twitter,
 		});
 	}
