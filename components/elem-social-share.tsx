@@ -142,7 +142,7 @@ export const ElemSocialShare: FC<Props> = ({
 		<>
 			<ElemButton
 				onClick={onShareButton}
-				btn="white"
+				btn="slate"
 				roundedFull={true}
 				className="px-2.5"
 			>

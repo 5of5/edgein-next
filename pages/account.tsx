@@ -5,7 +5,7 @@ import { ElemButton } from "@/components/elem-button";
 import { InputText } from "@/components/input-text";
 import { IconLinkedIn, IconSparkles } from "@/components/icons";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { ElemShareMenu } from "@/components/elem-share-menu";
+import { ElemInviteLinks } from "@/components/elem-invite-links";
 import { EditSection } from "@/components/dashboard/edit-section";
 import { useGetUserProfileQuery } from "@/graphql/types";
 import { ElemSubscribedDialog } from "@/components/elem-subscribed-dialog";
@@ -111,22 +111,23 @@ export default function Account() {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
-				<div className="flex justify-between items-center pb-2">
-					<h2 className="font-bold text-xl">Invite Code</h2>
+				<div className="flex justify-between items-start pb-2">
+					<div className="max-w-2xl">
+						<h2 className="font-bold text-xl">
+							Get Rewarded for Sharing EdgeIn.
+						</h2>
+						<p className="text-slate-600">
+							Share your code with friends and colleagues and you will be
+							considered a partial data contributor with every future data
+							contribution your invitees make to EdgeIn!
+						</p>
+					</div>
 
 					{user && user.reference_id && (
 						<div className="mt-2 sm:mt-0">
-							<ElemShareMenu user={user} personSlug={personSlug} />
+							<ElemInviteLinks user={user} personSlug={personSlug} />
 						</div>
 					)}
-				</div>
-				<div className="max-w-3xl">
-					<p className="text-slate-600">
-						Get rewarded for sharing EdgeIn. Share your code with friends and
-						colleagues and you will be considered a partial data contributor
-						with every future data contribution your invited network makes to
-						EdgeIn!
-					</p>
 				</div>
 			</div>
 
@@ -150,18 +151,6 @@ export default function Account() {
 								</ElemButton>
 							) : (
 								<>
-									{/* <ElemButton
-										roundedFull={false}
-										onClick={onLinkedInClick}
-										btn="transparent"
-										className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] ring-1 ring-inset ring-black/10 hover:ring-2 hover:ring-[#0077B5] hover:text-[#0077B5] hover:bg-slate-50"
-									>
-										<IconLinkedIn
-											title="LinkedIn"
-											className="h-6 w-6 text-[#0077B5]"
-										/>
-										Login with LinkedIn
-									</ElemButton> */}
 									<ElemButton
 										onClick={onLinkedInClick}
 										btn="white"
@@ -273,18 +262,18 @@ export default function Account() {
 								</div>
 							</div>
 						) : (
-							<div>
-								<h2 className="text-xl font-bold">
-									Try EdgeIn Contributor free for 7 days
+							<div className="p-5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg">
+								<h2 className="text-xl font-bold text-white">
+									Try EdgeIn Contributor FREE for 7 days
 								</h2>
-								<p className="text-slate-600">
+								<p className="text-white opacity-80">
 									Get real-time updates on the companies, people, deals and
 									events you’re most interested in, giving you an unprecedented
 									edge in Web3.
 								</p>
 								<ElemButton
 									onClick={onBillingClick}
-									btn="primary"
+									btn="primary-light"
 									arrow
 									className="mt-4 text-primary-500"
 								>

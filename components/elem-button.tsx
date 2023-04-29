@@ -12,6 +12,7 @@ type Props = {
 		| "danger"
 		| "dark"
 		| "primary"
+		| "purple"
 		| "primary-light"
 		| "transparent"
 		| "white"
@@ -47,6 +48,8 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 	if (btn === "primary") {
 		btnClass =
 			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-80";
+	} else if (btn === "purple") {
+		btnClass = "text-white bg-primary-500 hover:bg-primary-800";
 	} else if (btn === "primary-light") {
 		btnClass = "bg-primary-50 hover:bg-primary-100 text-primary-500";
 	} else if (btn === "ol-primary") {

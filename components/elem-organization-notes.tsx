@@ -104,7 +104,7 @@ const ElemOrganizationNotes: FC<Props> = ({
 						/>
 					</ElemTooltip>
 				</div>
-				<ElemButton btn="primary" onClick={onOpenNoteForm} className="!pl-3">
+				<ElemButton btn="purple" onClick={onOpenNoteForm} className="!pl-3">
 					<IconPlus className="w-5 h-5 mr-1" />
 					<span>Create note</span>
 				</ElemButton>
@@ -156,13 +156,18 @@ const ElemOrganizationNotes: FC<Props> = ({
 
 					<div className="mt-4 grid grid-cols-1 gap-4">
 						{sortedNotes.map((item) => (
-							<ElemNoteCard
-								key={item.id}
-								data={item}
-								refetch={refetch}
-								layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
-								setShowPopup={setShowPopup}
-							/>
+							<>
+								<ElemNoteCard
+									key={item.id}
+									data={item}
+									refetch={refetch}
+									layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
+									setShowPopup={setShowPopup}
+								/>
+								<div className="" onClick={() => onSelectNote(item)}>
+									edit note
+								</div>
+							</>
 						))}
 					</div>
 					{/* {notes.length > 0 && (

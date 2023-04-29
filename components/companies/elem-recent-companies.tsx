@@ -172,6 +172,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 												resourceId={company.id}
 												resourceType={"companies"}
 												slug={company.slug}
+												buttonStyle="white"
 											/>
 										</div>
 									</a>

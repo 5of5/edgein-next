@@ -15,7 +15,7 @@ type Props = {
 	personSlug?: string | null | undefined;
 };
 
-export const ElemShareMenu = ({ user, personSlug }: Props) => {
+export const ElemInviteLinks = ({ user, personSlug }: Props) => {
 	const getInviteLink = () => {
 		const inviteCode = personSlug || user.reference_id;
 		const inviteLink = `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/?invite=${inviteCode}`;
@@ -82,7 +82,7 @@ export const ElemShareMenu = ({ user, personSlug }: Props) => {
 		<Menu as="div" className="relative inline-block text-left">
 			<div>
 				<Menu.Button as="div">
-					<ElemButton btn="primary-light">
+					<ElemButton btn="purple">
 						<IconShare className="h-5 w-5 mr-1.5" aria-hidden="true" />
 						Share
 					</ElemButton>

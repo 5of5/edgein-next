@@ -168,6 +168,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 												resourceId={investor.id}
 												resourceType={"vc_firms"}
 												slug={investor.slug!}
+												buttonStyle="white"
 											/>
 										</div>
 									</a>

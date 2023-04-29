@@ -98,6 +98,7 @@ export const ElemInvestorCard: FC<Props> = ({ vcFirm, tagOnClick }) => {
 						resourceId={id}
 						resourceType={"vc_firms"}
 						slug={slug!}
+						buttonStyle="white"
 					/>
 				</div>
 			</a>
