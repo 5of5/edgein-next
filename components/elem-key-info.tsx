@@ -364,7 +364,7 @@ export const ElemKeyInfo: React.FC<Props> = ({
 								<div className="flex items-center">
 									{item.icon && (
 										<item.icon
-											title={item.text}
+											title={showInfo[item.text] ? item.text : ""}
 											className="h-6 w-6 mr-2 shrink-0 text-dark-500"
 										/>
 									)}
