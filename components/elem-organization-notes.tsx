@@ -1,18 +1,11 @@
-import React, { useState, FC, useEffect } from "react";
-import moment from "moment-timezone";
-import {
-	GetNotesQuery,
-	Notes,
-	Notes_Bool_Exp,
-	useGetNotesQuery,
-} from "@/graphql/types";
+import React, { useState, FC } from "react";
+import { Notes_Bool_Exp, useGetNotesQuery } from "@/graphql/types";
 import { PlaceholderNote } from "./placeholders";
 import { ElemButton } from "./elem-button";
 import ElemNoteForm from "./elem-note-form";
 import { ElemPhoto } from "./elem-photo";
 import { useUser } from "@/context/user-context";
 import {
-	IconGroup,
 	IconPlus,
 	IconLockClosed,
 	IconInformationCircle,
@@ -37,22 +30,12 @@ const ElemOrganizationNotes: FC<Props> = ({
 
 	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
 
-	const [selectedNote, setSelectedNote] = useState<GetNotesQuery["notes"][0]>();
-
 	const onOpenNoteForm = () => {
 		setIsOpenNoteForm(true);
 	};
 
 	const onCloseNoteForm = () => {
 		setIsOpenNoteForm(false);
-		setTimeout(() => {
-			setSelectedNote(undefined);
-		}, 400);
-	};
-
-	const onSelectNote = (note: GetNotesQuery["notes"][0]) => {
-		setSelectedNote(note);
-		onOpenNoteForm();
 	};
 
 	const {
@@ -96,7 +79,6 @@ const ElemOrganizationNotes: FC<Props> = ({
 					<ElemTooltip
 						size="md"
 						content="Notes are private to you, but you can change the audience of any note."
-						//content="Only you can see your notes, but you can change the audience of any specific note."
 					>
 						<IconInformationCircle
 							className="h-5 w-5 text-primary-500"
@@ -156,59 +138,22 @@ const ElemOrganizationNotes: FC<Props> = ({
 
 					<div className="mt-4 grid grid-cols-1 gap-4">
 						{sortedNotes.map((item) => (
-							<>
-								<ElemNoteCard
-									key={item.id}
-									data={item}
-									refetch={refetch}
-									layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
-									setShowPopup={setShowPopup}
-								/>
-								<div className="" onClick={() => onSelectNote(item)}>
-									edit note
-								</div>
-							</>
+							<ElemNoteCard
+								key={item.id}
+								data={item}
+								refetch={refetch}
+								layout={`${item.user_group_id ? "groupAndAuthor" : "author"}`}
+								setShowPopup={setShowPopup}
+							/>
 						))}
 					</div>
-					{/* {notes.length > 0 && (
-						<div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2 lg:grid-cols-3">
-							{notes.map((item) => (
-								<div
-									key={item.id}
-									className="flex flex-col mx-auto w-full cursor-pointer rounded-lg border border-black/10 divide-y divide-black/10 transition-all hover:scale-102 hover:shadow md:h-full"
-									onClick={() => onSelectNote(item)}
-								>
-									<div className="grow p-4">
-										<p className="break-words line-clamp-7 text-slate-600">
-											{item.notes}
-										</p>
-									</div>
-									<div className="p-4">
-										<div
-											className="flex gap-1"
-											title={`Group: ${item.user_group.name}`}
-										>
-											<IconGroup className="w-6 h-6" />
-											<p className="text-lg font-bold">
-												{item.user_group.name}
-											</p>
-										</div>
-
-										<p className="text-sm text-slate-600">
-											Created {moment(item.created_at).format("LL")}
-										</p>
-									</div>
-								</div>
-							))}
-						</div>
-					)} */}
 				</>
 			)}
 
 			<ElemNoteForm
 				isOpen={isOpenNoteForm}
-				type={selectedNote ? "edit" : "create"}
-				selectedNote={selectedNote}
+				type={"create"}
+				//selectedNote={undefined}
 				resourceId={resourceId}
 				resourceType={resourceType}
 				onClose={onCloseNoteForm}
