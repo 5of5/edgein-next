@@ -6,63 +6,175 @@ import {
 	IconTrash,
 	IconCustomList,
 	IconChevronDownMini,
+	IconSettings,
+	IconCheck,
 } from "@/components/icons";
+import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/emojis";
 import { ModalListGroups } from "./modal-list-groups";
 import { ElemDeleteConfirmModal } from "../elem-delete-confirm-modal";
+import Link from "next/link";
+import { ElemButton } from "@/components/elem-button";
+
+import {
+	getNameFromListName,
+	getUserIdFromListCreator,
+} from "@/utils/reaction";
+import { toLabel } from "@/utils";
+import moment from "moment-timezone";
+import { useUser } from "@/context/user-context";
+import { useRouter } from "next/router";
 
 type Props = {
-	theListName?: string;
-	theListDescription?: string;
-	theListCreator: string;
+	list: any;
 	allowEdit?: boolean;
-	theListDate?: string;
-	theListId: number;
-	theListPublic: boolean;
 	groups: Array<any>;
 	onSaveListName: (name: string) => void;
 	onDeleteList: (id: number) => void;
 	onAddGroups: (ids: Array<number>) => void;
 	onChangePublic: (value: boolean) => void;
+	isFollowing: boolean;
+	onFollowList: () => void;
 };
 
-export const ModalListDetails: FC<Props> = ({
-	theListName,
-	theListDescription,
-	theListCreator,
-	theListDate,
-	theListId,
-	theListPublic,
+export const ElemListInformation: FC<Props> = ({
+	list,
 	groups,
 	onSaveListName,
 	onDeleteList,
 	onAddGroups,
 	onChangePublic,
+	isFollowing,
+	onFollowList,
 }) => {
-	const [listDetailsModal, setListDetailsModal] = useState(false);
+	const { user } = useUser();
+	const router = useRouter();
+
+	const [listSettingsModal, setListSettingsModal] = useState(false);
 	const [listNameModal, setListNameModal] = useState(false);
 	const [listDeleteModal, setListDeleteModal] = useState(false);
 	const [listGroupsModal, setListGroupsModal] = useState(false);
 
-	const isOpen = () => {
-		setListDetailsModal(true);
+	const onOpenSettingsDialog = () => {
+		setListSettingsModal(true);
 	};
 
-	const isClosed = () => {
-		setListDetailsModal(false);
+	const onCloseSettingsDialog = () => {
+		setListSettingsModal(false);
 	};
+
+	const isListCreator = getUserIdFromListCreator(list) === user?.id;
+
+	const isCustomList = list
+		? !["hot", "like", "crap"].includes(getNameFromListName(list))
+		: router.query.slug
+		? !["hot", "like", "crap"].includes(router.query.slug as string)
+		: false;
+
+	const isPublicList = !!list?.public;
+
+	const isReactionList = list
+		? ["hot", "like", "crap"].includes(getNameFromListName(list))
+		: false;
+
+	const listName =
+		getNameFromListName(list) === "crap" ? "sh**" : getNameFromListName(list);
 
 	return (
 		<>
-			<button
-				onClick={isOpen}
-				className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
-			>
-				<IconCustomList className="w-6 h-6 mr-1" />
-				<div className="font-bold text-xl capitalize">{theListName}</div>
-				<IconChevronDownMini className="h-5 w-5" />
-			</button>
-			<Transition appear show={listDetailsModal} as={Fragment}>
-				<Dialog as="div" className="relative z-10" onClose={isClosed}>
+			<div className="flex flex-wrap space-y-2 items-end justify-between mb-4 lg:space-y-0 lg:border-b lg:pb-2 lg:border-black/10">
+				{isCustomList ? (
+					<div>
+						{isListCreator ? (
+							<button
+								onClick={onOpenSettingsDialog}
+								className="flex items-center rounded-lg px-1 py-0.5 hover:text-primary-500 hover:bg-slate-200"
+							>
+								<IconCustomList className="w-6 h-6 mr-1" />
+								<div className="font-bold text-xl capitalize">
+									{getNameFromListName(list)}
+								</div>
+								<IconChevronDownMini className="h-5 w-5" />
+							</button>
+						) : (
+							<h1 className="mr-2 font-bold text-xl capitalize leading-tight">
+								Previewing:{" "}
+								{list
+									? getNameFromListName(list)
+									: toLabel(router.query.slug as string)}
+							</h1>
+						)}
+
+						{list?.created_by && (
+							<p className="pt-1 text-slate-600">
+								by{" "}
+								{list?.created_by?.person ? (
+									<Link
+										href={`/people/${list?.created_by?.person?.slug}`}
+										passHref
+									>
+										<a className="hover:text-primary-500">
+											{list?.created_by?.person?.name}
+										</a>
+									</Link>
+								) : (
+									<span>{list?.created_by?.display_name}</span>
+								)}
+								<span aria-hidden="true"> · </span>
+								{moment(list?.created_at).format("LL")}
+							</p>
+						)}
+					</div>
+				) : (
+					<div>
+						<div className="flex items-center">
+							{listName === "hot" && <EmojiHot className="w-6 h-6 mr-2" />}
+							{listName === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
+							{listName === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
+							<h1 className="mr-2 font-bold text-xl capitalize leading-tight">
+								{listName}
+							</h1>
+						</div>
+
+						{listName && (
+							<p className="mt-1 first-letter:uppercase text-slate-600">
+								The {listName} list is generated from your {listName} reactions
+								on EdgeIn.
+							</p>
+						)}
+					</div>
+				)}
+
+				<div className="flex items-center gap-x-2 shrink-0">
+					{isCustomList && isListCreator && (
+						<ElemButton
+							btn="slate"
+							className="gap-x-1 lg:!pl-3"
+							onClick={onOpenSettingsDialog}
+						>
+							<IconSettings className="hidden sm:block w-5 h-5" />
+							<span>Settings</span>
+						</ElemButton>
+					)}
+					{isCustomList && !isFollowing && (
+						<ElemButton btn="primary" onClick={onFollowList}>
+							Follow
+						</ElemButton>
+					)}
+					{isCustomList && isFollowing && !isListCreator && (
+						<ElemButton btn="slate" onClick={onFollowList}>
+							<IconCheck className="w-5 h-5 mr-1" />
+							Following
+						</ElemButton>
+					)}
+				</div>
+			</div>
+
+			<Transition appear show={listSettingsModal} as={Fragment}>
+				<Dialog
+					as="div"
+					className="relative z-10"
+					onClose={onCloseSettingsDialog}
+				>
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
@@ -89,10 +201,10 @@ export const ModalListDetails: FC<Props> = ({
 								<Dialog.Panel className="w-full max-w-lg transform rounded-lg bg-slate-100 shadow-xl transition-all overflow-hidden">
 									<div className="flex items-center justify-between px-6 py-2 bg-white border-b border-black/10">
 										<h2 className="text-xl font-bold capitalize">
-											{theListName}
+											{getNameFromListName(list)}
 										</h2>
 										<button
-											onClick={isClosed}
+											onClick={onCloseSettingsDialog}
 											type="button"
 											className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
 										>
@@ -108,7 +220,9 @@ export const ModalListDetails: FC<Props> = ({
 											>
 												<div className="text-left">
 													<h3 className="font-bold">Name</h3>
-													<p className="capitalize">{theListName}</p>
+													<p className="capitalize">
+														{getNameFromListName(list)}
+													</p>
 												</div>
 												<div className="text-primary-500 text-sm font-bold">
 													Edit
@@ -146,37 +260,20 @@ export const ModalListDetails: FC<Props> = ({
 												</div>
 											</button>
 
-											{theListDescription && (
-												<button
-													className="flex justify-between w-full p-3 hover:bg-slate-100"
-													onClick={isClosed}
-												>
-													<div className="text-left">
-														<h3 className="font-bold">Description</h3>
-														<p>
-															{theListDescription ? theListDescription : ""}
-														</p>
-													</div>
-													<div className="text-primary-500">Edit</div>
-												</button>
-											)}
-
 											<div>
 												<div className="flex items-center justify-between space-x-1 p-3 cursor-pointer hover:bg-slate-100">
 													<p className="font-bold">Public</p>
 													<Switch
-														checked={theListPublic}
+														checked={isPublicList}
 														onChange={onChangePublic}
 														className={`${
-															theListPublic ? "bg-primary-600" : "bg-gray-200"
+															isPublicList ? "bg-primary-600" : "bg-gray-200"
 														} relative inline-flex h-6 w-11 items-center rounded-full`}
 													>
 														<span className="sr-only">Set list public</span>
 														<span
 															className={`${
-																theListPublic
-																	? "translate-x-6"
-																	: "translate-x-1"
+																isPublicList ? "translate-x-6" : "translate-x-1"
 															} inline-block h-4 w-4 transform rounded-full bg-white transition`}
 														/>
 													</Switch>
@@ -187,8 +284,12 @@ export const ModalListDetails: FC<Props> = ({
 												<div className="text-left">
 													<h3 className="font-bold">Created by</h3>
 													<p>
-														<span className="capitalize">{theListCreator}</span>{" "}
-														on {theListDate}
+														<span className="capitalize">
+															{list?.created_by?.person?.name ||
+																list?.created_by?.display_name ||
+																""}
+														</span>{" "}
+														on {moment(list?.created_at).format("LL")}
 													</p>
 												</div>
 											</div>
@@ -197,7 +298,7 @@ export const ModalListDetails: FC<Props> = ({
 											<button
 												className="flex justify-between w-full p-3 hover:bg-slate-100"
 												onClick={() => {
-													setListDetailsModal(false);
+													setListSettingsModal(false);
 													setTimeout(() => {
 														setListDeleteModal(true);
 													}, 300);
@@ -225,7 +326,7 @@ export const ModalListDetails: FC<Props> = ({
 			<ModalListName
 				isOpen={listNameModal}
 				onCloseModal={() => setListNameModal(false)}
-				theListName={theListName ? theListName : ""}
+				theListName={getNameFromListName(list) ? getNameFromListName(list) : ""}
 				onSave={onSaveListName}
 			/>
 
@@ -242,7 +343,7 @@ export const ModalListDetails: FC<Props> = ({
 					</div>
 				}
 				onClose={() => setListDeleteModal(false)}
-				onDelete={() => onDeleteList(theListId)}
+				onDelete={() => onDeleteList(list?.id)}
 			/>
 
 			<ModalListGroups
