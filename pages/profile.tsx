@@ -527,8 +527,7 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 					<div className="max-w-lg">
 						<p className="text-lg text-white opacity-80">
 							You have not linked your account to a profile on EdgeIn. Search
-							your name on the site and claim profile. on the site and claim
-							profile.
+							your name on the site and claim profile.
 						</p>
 						<ElemButton
 							btn="primary-light"
