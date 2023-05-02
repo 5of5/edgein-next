@@ -168,7 +168,7 @@ export const ElemLists: React.FC<Props> = ({
 							title="Lists"
 						/>
 						<h3 className="mt-2 text-lg font-bold">
-							No lists have been added to group yet
+							No lists have been added to group yet.
 						</h3>
 
 						<button

@@ -46,7 +46,7 @@ const ElemMyNotesMenu: FC<Props> = ({ className = "" }) => {
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-lg font-bold">My Notes</span>
+									<span className="text-lg font-bold">Notes</span>
 								</Disclosure.Button>
 								<ElemTooltip
 									content="Monitor your notes on EdgeIn."
@@ -70,7 +70,9 @@ const ElemMyNotesMenu: FC<Props> = ({ className = "" }) => {
 											className="h-6 w-6 shrink-0"
 											title="notes"
 										/>
-										<span className="line-clamp-1 break-all flex-1">Notes</span>
+										<span className="line-clamp-1 break-all flex-1">
+											Your Notes
+										</span>
 										{/* <div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
 											{notes.total_no_of_resources} 
 										</div>*/}

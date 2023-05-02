@@ -57,7 +57,7 @@ const Notes: FC<Props> = () => {
 		<DashboardLayout>
 			<div className="pb-20">
 				<div className="w-full mb-2">
-					<h1 className="h-6 mr-2 font-bold text-xl capitalize">My Notes</h1>
+					<h1 className="h-6 mr-2 font-bold text-xl capitalize">Your Notes</h1>
 				</div>
 
 				{error ? (

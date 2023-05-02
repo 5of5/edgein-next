@@ -33,6 +33,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const userCanSortLists = user?.entitlements.viewEmails
 		? user?.entitlements.viewEmails
 		: false;
+	// fix
 
 	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
 		MY_LISTS_MENU_OPEN_KEY
@@ -80,36 +81,83 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 			: getCustomLists.length
 	);
 
-	let sortedLists = [...displayedCustomLists];
+	// let sortedLists = [...displayedCustomLists];
+	// if (selectedSortOption === "default") {
+	// 	const partLists = partition(
+	// 		displayedCustomLists,
+	// 		(o) => o.created_by_id === user?.id
+	// 	);
+	// 	const createdLists = orderBy(
+	// 		partLists[0],
+	// 		[(o) => getNameFromListName(o)],
+	// 		["asc"]
+	// 	);
+	// 	const followedLists = orderBy(
+	// 		partLists[1],
+	// 		[(o) => getNameFromListName(o)],
+	// 		["asc"]
+	// 	);
+	// 	sortedLists = [...createdLists, ...followedLists];
+	// } else if (selectedSortOption === "newest") {
+	// 	sortedLists = orderBy(
+	// 		displayedCustomLists,
+	// 		[(o) => new Date(o.created_at)],
+	// 		["desc"]
+	// 	);
+	// } else if (selectedSortOption === "recently") {
+	// 	sortedLists = orderBy(
+	// 		displayedCustomLists,
+	// 		[(o) => new Date(o.updated_at)],
+	// 		["desc"]
+	// 	);
+	// }
+
+	const partLists = partition(
+		displayedCustomLists,
+		(o) => o.created_by_id === user?.id
+	);
+
+	let createdLists = [...partLists[0]];
+	let followedLists = [...partLists[1]];
 	if (selectedSortOption === "default") {
 		const partLists = partition(
 			displayedCustomLists,
 			(o) => o.created_by_id === user?.id
 		);
-		const createdLists = orderBy(
+		createdLists = orderBy(
 			partLists[0],
 			[(o) => getNameFromListName(o)],
 			["asc"]
 		);
-		const followedLists = orderBy(
+		followedLists = orderBy(
 			partLists[1],
 			[(o) => getNameFromListName(o)],
 			["asc"]
 		);
-		sortedLists = [...createdLists, ...followedLists];
 	} else if (selectedSortOption === "newest") {
-		sortedLists = orderBy(
-			displayedCustomLists,
+		createdLists = orderBy(
+			partLists[0],
+			[(o) => new Date(o.created_at)],
+			["desc"]
+		);
+		followedLists = orderBy(
+			partLists[1],
 			[(o) => new Date(o.created_at)],
 			["desc"]
 		);
 	} else if (selectedSortOption === "recently") {
-		sortedLists = orderBy(
-			displayedCustomLists,
+		createdLists = orderBy(
+			partLists[0],
+			[(o) => new Date(o.updated_at)],
+			["desc"]
+		);
+		followedLists = orderBy(
+			partLists[1],
 			[(o) => new Date(o.updated_at)],
 			["desc"]
 		);
 	}
+	const totalListCount = createdLists?.length + followedLists?.length;
 
 	const [isOpenCreateListDialog, setIsOpenCreateGroupDialog] = useState(false);
 	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
@@ -146,7 +194,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-lg font-bold">My Lists</span>
+									<span className="text-lg font-bold">Lists</span>
 								</Disclosure.Button>
 								<ElemTooltip
 									content="Monitor organizations and people of your interest."
@@ -157,11 +205,8 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 							</div>
 							<div className="flex items-start gap-x-2">
 								<Popover className="relative">
-									<Popover.Button className="rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200">
-										<IconEllipsisHorizontal
-											className="h-6 w-6 group-hover:text-primary-500"
-											title="Sort"
-										/>
+									<Popover.Button className="rounded-md flex items-center justify-center px-2 py-1 outline-none text-primary-500 transition-all hover:bg-slate-200">
+										Sort
 									</Popover.Button>
 									<Transition
 										as={Fragment}
@@ -208,30 +253,41 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 										</Popover.Panel>
 									</Transition>
 								</Popover>
-								<div className="flex gap-x-1">
-									{getCustomLists.length > sortedLists.length ? (
-										<button
-											onClick={onOpenUpgradeDialog}
-											className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
-										>
-											<IconPlus
-												className="h-5 w-5"
-												title="Unlock All Your Lists"
-											/>
-										</button>
-									) : (
-										<button
-											onClick={onOpenCreateListDialog}
-											className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
-										>
-											<IconPlus className="h-5 w-5" title="Create List" />
-										</button>
-									)}
-								</div>
 							</div>
 						</div>
 
 						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
+							{getCustomLists.length > totalListCount ? (
+								<li role="button">
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+									>
+										<IconContributor
+											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
+											title="Unlock lists"
+										/>
+										<span>Unlock All Lists</span>
+									</button>
+								</li>
+							) : (
+								<li role="button">
+									<button
+										onClick={onOpenCreateListDialog}
+										className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+									>
+										<IconListPlus className="h-6 w-6" title="Create List" />
+										<span>Create new list</span>
+									</button>
+								</li>
+							)}
+
+							{followedLists.length > 0 && createdLists.length > 0 && (
+								<div className="text font-bold text-black text-sm px-2">
+									Your lists
+								</div>
+							)}
+
 							<li role="button">
 								<Link href={`/lists/${hotId}/hot`}>
 									<a
@@ -281,7 +337,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</Link>
 							</li>
 
-							{sortedLists?.map((list) => (
+							{createdLists?.map((list) => (
 								<li key={list.id} role="button">
 									<Link
 										href={`/lists/${list.id}/${kebabCase(
@@ -307,31 +363,63 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</li>
 							))}
 
-							{getCustomLists.length > sortedLists.length ? (
-								<li role="button">
-									<button
-										onClick={onOpenUpgradeDialog}
-										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-									>
-										<IconContributor
-											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
-											title="Unlock lists"
-										/>
-										{/* <IconListPlus className="h-6 w-6" title="Create List" /> */}
-										<span>Unlock All Your Lists</span>
-									</button>
-								</li>
-							) : (
-								<li role="button">
-									<button
-										onClick={onOpenCreateListDialog}
-										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-									>
-										<IconListPlus className="h-6 w-6" title="Create List" />
-										<span>Create List</span>
-									</button>
-								</li>
+							{followedLists.length > 0 && (
+								<div className="text font-bold text-black text-sm pt-1 px-2">
+									Lists you follow
+								</div>
 							)}
+
+							{followedLists?.map((list) => (
+								<li key={list.id} role="button">
+									<Link
+										href={`/lists/${list.id}/${kebabCase(
+											getNameFromListName(list)
+										)}`}
+									>
+										<a
+											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+												list.id,
+												kebabCase(getNameFromListName(list))
+											)}`}
+											title={getNameFromListName(list)}
+										>
+											<IconCustomList className="h-6 w-6 shrink-0" />
+											<span className="line-clamp-1 break-all flex-1">
+												{getNameFromListName(list)}
+											</span>
+											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+												{list.total_no_of_resources}
+											</div>
+										</a>
+									</Link>
+								</li>
+							))}
+
+							{/* {sortedLists?.map((list) => (
+								<li key={list.id} role="button">
+									<Link
+										href={`/lists/${list.id}/${kebabCase(
+											getNameFromListName(list)
+										)}`}
+									>
+										<a
+											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+												list.id,
+												kebabCase(getNameFromListName(list))
+											)}`}
+											title={getNameFromListName(list)}
+										>
+											<IconCustomList className="h-6 w-6 shrink-0" />
+											<span className="line-clamp-1 break-all flex-1">
+												{getNameFromListName(list)}
+											</span>
+											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+												{list.total_no_of_resources}
+											</div>
+										</a>
+									</Link>
+								</li>
+							))} */}
 						</Disclosure.Panel>
 					</>
 				)}
