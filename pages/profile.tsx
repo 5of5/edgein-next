@@ -271,7 +271,7 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 
 	// const updateCall = async (payload: any, type = "profile") => {
 	// 	if (type === "profile") {
-	// 		const resp = await fetch("/api/update_profile/", {
+	// 		const resp = await fetch("/api/update-profile/", {
 	// 			method: "POST",
 	// 			body: JSON.stringify({
 	// 				id: person?.id,
