@@ -22,7 +22,7 @@ import { onTrackView } from "@/utils/track";
 import { useRouter } from "next/router";
 import { ElemFilter } from "@/components/elem-filter";
 import { processEventsFilters } from "@/utils/filter";
-import useFilterParams from "@/hooks/useFilterParams";
+import useFilterParams from "@/hooks/use-filter-params";
 import { ElemEventCard } from "@/components/events/elem-event-card";
 import { useIntercom } from "react-use-intercom";
 

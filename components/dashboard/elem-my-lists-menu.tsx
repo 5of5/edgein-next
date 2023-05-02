@@ -19,7 +19,7 @@ import { ElemTooltip } from "@/components/elem-tooltip";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
 import { CreateListDialog } from "../my-list/create-list-dialog";
 import { Disclosure, Popover, Transition } from "@headlessui/react";
-import useDisclosureState from "@/hooks/useDisclosureState";
+import useDisclosureState from "@/hooks/use-disclosure-state";
 import { listsSortOptions, MY_LISTS_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {

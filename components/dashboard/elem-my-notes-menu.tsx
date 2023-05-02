@@ -9,7 +9,7 @@ import {
 import { useUser } from "@/context/user-context";
 import { Disclosure } from "@headlessui/react";
 import { ElemTooltip } from "@/components/elem-tooltip";
-import useDisclosureState from "@/hooks/useDisclosureState";
+import useDisclosureState from "@/hooks/use-disclosure-state";
 import { MY_NOTES_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {

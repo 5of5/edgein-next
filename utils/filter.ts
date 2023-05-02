@@ -8,6 +8,7 @@ import {
 import {
   Companies_Bool_Exp,
   Events_Bool_Exp,
+  InputMaybe,
   Vc_Firms_Bool_Exp,
 } from "@/graphql/types";
 import { DeepPartial } from "@/pages/companies";
@@ -281,10 +282,11 @@ export const getFilterOptionMetadata = (
 
 export const processCompaniesFilters = (
 	filters: DeepPartial<Companies_Bool_Exp>,
-	selectedFilters: Filters | null
+	selectedFilters: Filters | null,
+	defaultFilters: InputMaybe<Array<Companies_Bool_Exp>>,
 ) => {
 	if (!selectedFilters) {
-		filters._and = [{ slug: { _neq: "" } }];
+		filters._and = defaultFilters;
 	}
 	if (selectedFilters?.country?.tags?.length) {
 		if (selectedFilters?.country?.condition === "any") {

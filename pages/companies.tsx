@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import moment from "moment-timezone";
@@ -13,6 +13,7 @@ import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
+	InputMaybe,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
 import { Pagination } from "@/components/pagination";
@@ -24,7 +25,8 @@ import { onTrackView } from "@/utils/track";
 import { processCompaniesFilters } from "@/utils/filter";
 import { ElemFilter } from "@/components/elem-filter";
 import { useIntercom } from "react-use-intercom";
-import useFilterParams from "@/hooks/useFilterParams";
+import useFilterParams from "@/hooks/use-filter-params";
+import useLibrary from "@/hooks/use-library";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -58,6 +60,8 @@ const Companies: NextPage<Props> = ({
 
 	const router = useRouter();
 
+	const { selectedLibrary, onChangeLibrary } = useLibrary();
+
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
 
 	// Company status-tag filter
@@ -76,8 +80,15 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
+	const defaultFilters = useMemo(() => {
+    return [
+      { slug: { _neq: "" } },
+      { library: { _contains: selectedLibrary } },
+    ];
+  }, [selectedLibrary]);
+
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+		_and: defaultFilters,
 	};
 
 	useEffect(() => {
@@ -153,7 +164,7 @@ const Companies: NextPage<Props> = ({
 	};
 
 	/** Handle selected filter params */
-	processCompaniesFilters(filters, selectedFilters);
+	processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
 	if (selectedStatusTag.value) {
 		filters._and?.push({
@@ -226,11 +237,11 @@ const Companies: NextPage<Props> = ({
 						resourceType="companies"
 						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
-							filters._and = [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}

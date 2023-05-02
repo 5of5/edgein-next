@@ -24,7 +24,7 @@ import { onTrackView } from "@/utils/track";
 import { ElemFilter } from "@/components/elem-filter";
 import { processInvestorsFilters } from "@/utils/filter";
 import { useIntercom } from "react-use-intercom";
-import useFilterParams from "@/hooks/useFilterParams";
+import useFilterParams from "@/hooks/use-filter-params";
 
 type Props = {
 	vcFirmCount: number;
