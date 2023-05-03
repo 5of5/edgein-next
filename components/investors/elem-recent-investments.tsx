@@ -10,6 +10,7 @@ import {
 import { ElemReactions } from "@/components/elem-reactions";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { useAuth } from "@/hooks/use-auth";
+import { formatDate } from "@/utils";
 
 export type DeepPartial<T> = T extends object
 	? {
@@ -100,7 +101,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 
 										{(investor.num_of_investments > 0 ||
 											investor.num_of_exits > 0) && (
-											<div className="flex flex-wrap space-x-6 text-slate-600 mt-4">
+											<div className="flex flex-wrap space-x-1 text-slate-600 mt-4">
 												{investor.num_of_investments !== null &&
 													investor.num_of_investments > 0 && (
 														<div>
@@ -112,17 +113,19 @@ export const ElemRecentInvestments: FC<Props> = ({
 														</div>
 													)}
 
-												{/* num_of_exits field needs to be added to DB */}
-												{/* {investor.num_of_exits !== null &&
-												investor.num_of_exits > 0 && (
-													<div>
-														<span className="font-bold mr-1">
-															{investor.num_of_exits}
-														</span>
-														Exit
-														{investor.num_of_exits > 1 && "s"}
-													</div>
-												)} */}
+												{investor.latest_investment && (
+													<>
+														<div>{"•"}</div>
+														<div>
+															Latest{" "}
+															{formatDate(investor.latest_investment, {
+																month: "short",
+																day: "2-digit",
+																year: "numeric",
+															})}
+														</div>
+													</>
+												)}
 											</div>
 										)}
 
@@ -146,18 +149,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 												{investor.overview}
 											</p>
 										)}
-										{/* <div className="mt-3 text-xs font-bold text-gray-400">
-										{investor. && (
-											<div>
-											Latest Investment
-											{formatDate(investor.latest_investment, {
-												month: "short",
-												day: "2-digit",
-												year: "numeric",
-											})}
-											</div>
-										)}
-										</div> */}
+
 										<div className="flex items-center justify-between mt-4">
 											<ElemReactions
 												resource={investor}

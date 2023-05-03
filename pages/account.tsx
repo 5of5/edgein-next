@@ -111,7 +111,7 @@ export default function Account() {
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
-				<div className="flex justify-between items-start pb-2">
+				<div className="lg:flex justify-between items-start pb-2">
 					<div className="max-w-2xl">
 						<h2 className="font-bold text-xl">
 							Get Rewarded for Sharing EdgeIn.
@@ -124,7 +124,7 @@ export default function Account() {
 					</div>
 
 					{user && user.reference_id && (
-						<div className="mt-2 sm:mt-0">
+						<div className="mt-2 lg:mt-0">
 							<ElemInviteLinks user={user} personSlug={personSlug} />
 						</div>
 					)}
