@@ -287,32 +287,6 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 								</div>
 							)}
 
-							{createdLists?.map((list) => (
-								<li key={list.id} role="button">
-									<Link
-										href={`/lists/${list.id}/${kebabCase(
-											getNameFromListName(list)
-										)}`}
-									>
-										<a
-											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
-												list.id,
-												kebabCase(getNameFromListName(list))
-											)}`}
-											title={getNameFromListName(list)}
-										>
-											<IconCustomList className="h-6 w-6 shrink-0" />
-											<span className="line-clamp-1 break-all flex-1">
-												{getNameFromListName(list)}
-											</span>
-											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
-												{list.total_no_of_resources}
-											</div>
-										</a>
-									</Link>
-								</li>
-							))}
-
 							<li role="button">
 								<Link href={`/lists/${hotId}/hot`}>
 									<a
@@ -361,6 +335,32 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 									</a>
 								</Link>
 							</li>
+
+							{createdLists?.map((list) => (
+								<li key={list.id} role="button">
+									<Link
+										href={`/lists/${list.id}/${kebabCase(
+											getNameFromListName(list)
+										)}`}
+									>
+										<a
+											className={`flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all hover:bg-slate-200 hover:text-primary-500 ${getActiveClass(
+												list.id,
+												kebabCase(getNameFromListName(list))
+											)}`}
+											title={getNameFromListName(list)}
+										>
+											<IconCustomList className="h-6 w-6 shrink-0" />
+											<span className="line-clamp-1 break-all flex-1">
+												{getNameFromListName(list)}
+											</span>
+											<div className="bg-slate-200 inline-block rounded-full font-medium py-0.5 px-2 text-xs">
+												{list.total_no_of_resources}
+											</div>
+										</a>
+									</Link>
+								</li>
+							))}
 
 							{followedLists.length > 0 && (
 								<div className="text font-bold text-black text-sm pt-2 px-2">
