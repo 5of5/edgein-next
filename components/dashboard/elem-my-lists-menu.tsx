@@ -33,7 +33,6 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 	const userCanSortLists = user?.entitlements.viewEmails
 		? user?.entitlements.viewEmails
 		: false;
-	// fix
 
 	const { btnRef, isDefaultOpen, onDisclosureButtonClick } = useDisclosureState(
 		MY_LISTS_MENU_OPEN_KEY

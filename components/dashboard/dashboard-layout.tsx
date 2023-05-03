@@ -32,7 +32,7 @@ export const DashboardLayout: FC<PropsWithChildren<Props>> = ({ children }) => {
 						<DashboardSidebar />
 					</div>
 
-					<div className="min-h-[calc(100vh_-_3rem)] pt-5 lg:pl-[22rem]">
+					<div className="min-h-[calc(100vh_-_3rem)] py-5 lg:pl-[22rem]">
 						{children}
 					</div>
 				</div>
