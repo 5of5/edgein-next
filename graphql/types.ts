@@ -23035,6 +23035,16 @@ export type TriggerListUpdatedAtMutationVariables = Exact<{
 
 export type TriggerListUpdatedAtMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number }> } | null };
 
+export type GetNewsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
+  where: News_Bool_Exp;
+}>;
+
+
+export type GetNewsQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, created_at: any, status: string | null, text: string, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', company: { __typename?: 'companies', id: number, name: string | null, slug: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string } | null }> }> };
+
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
 }>;
@@ -25826,6 +25836,51 @@ export const useTriggerListUpdatedAtMutation = <
       options
     );
 useTriggerListUpdatedAtMutation.fetcher = (variables: TriggerListUpdatedAtMutationVariables, options?: RequestInit['headers']) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables, options);
+export const GetNewsDocument = `
+    query GetNews($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {
+    id
+    date
+    kind
+    link
+    created_at
+    status
+    text
+    updated_at
+    organizations {
+      company {
+        id
+        name
+        slug
+      }
+      vc_firm {
+        id
+        name
+        slug
+      }
+    }
+  }
+}
+    `;
+export const useGetNewsQuery = <
+      TData = GetNewsQuery,
+      TError = Error
+    >(
+      variables: GetNewsQueryVariables,
+      options?: UseQueryOptions<GetNewsQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsQuery, TError, TData>(
+      ['GetNews', variables],
+      fetcher<GetNewsQuery, GetNewsQueryVariables>(GetNewsDocument, variables),
+      options
+    );
+useGetNewsQuery.document = GetNewsDocument;
+
+
+useGetNewsQuery.getKey = (variables: GetNewsQueryVariables) => ['GetNews', variables];
+;
+
+useGetNewsQuery.fetcher = (variables: GetNewsQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsQuery, GetNewsQueryVariables>(GetNewsDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {

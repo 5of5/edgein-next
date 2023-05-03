@@ -166,5 +166,5 @@ export const getCleanWebsiteUrl = (rawUrl: any, protocol?: boolean) => {
 		return rawUrl.split("/").slice(0, 3).join("/");
 	}
 
-	return rawUrl.split("//").pop().split("/")[0];
+	return rawUrl.split("//").pop().split("/")[0].replace("www.", "");
 };

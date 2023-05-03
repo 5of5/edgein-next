@@ -5,10 +5,13 @@ import { ElemHeading } from "@/components/elem-heading";
 import { ElemNewsCard } from "@/components/news/elem-news-card";
 import { useIntercom } from "react-use-intercom";
 import { PlaceholderNewsCard } from "@/components/placeholders";
+import { runGraphQl } from "../utils";
 import toast, { Toaster } from "react-hot-toast";
 
+import { GetNewsDocument, GetNewsQuery, Order_By } from "@/graphql/types";
+
 type Props = {
-	initialNews: any; //GetNewsQuery["news"];
+	initialNews: GetNewsQuery["news"];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -108,129 +111,14 @@ const News: NextPage<Props> = ({ initialNews, setToggleFeedbackForm }) => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-	const news = {
-		news: [
-			{
-				id: 9999,
-				published_at: "2023-04-18T22:31:09.000+0700",
-				title: "Bitcoin Future Path Talk w/ FilbFilb of @Decentrader",
-				link: "https://cryptopanic.com/news/18138691/Bitcoin-Future-Path-Talk-w-FilbFilb-of-Decentrader",
-				source: {
-					kind: "media",
-					path: null,
-					title: "Tone Vays",
-					domain: "youtube.com",
-					region: "en",
-				},
-				text: null,
-			},
-			{
-				id: 9998,
-				published_at: "2023-04-18T22:45:00.000+0700",
-				title:
-					"Valentin Pletnev, CEO of Quasar Finance, on Cosmos Ecosystem and Inter-Blockchain Communication (IBC) Protocol | Ep. 222",
-				link: "https://cryptopanic.com/news/18139278/Valentin-Pletnev-CEO-of-Quasar-Finance-on-Cosmos-Ecosystem-and-Inter-Blockchain-Communication-IBC-Protocol-Ep-222%7C",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Cryptonews",
-					domain: "cryptonews.com",
-					region: "en",
-				},
-				text: null,
-			},
-			{
-				id: 1,
-				published_at: "2023-04-19T20:05:23.137097",
-				title:
-					"Bitcoin falls below US$29,000, Ether slumps, U.S. equities stall on inflation concerns",
-				link: "https://forkast.news/headlines/bitcoin-below-29000-ether-slides-inflation/",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Forkast News",
-					domain: "forkast.news",
-					region: "en",
-				},
-				text: "Bitcoin slid below the US$29,000 mark on Thursday morning in Asia. Ether lost hold of US$2,000 in a sell-off across all top 10 non-stablecoin tokens.",
-			},
-			{
-				id: 2,
-				published_at: "2023-04-19T19:58:45.137097",
-				title:
-					"A16z’s hyped-up orange balls revealed to be an L2 rollup client",
-				link: "https://cointelegraph.com/news/a16z-s-hyped-up-orange-balls-revealed-to-be-an-l2-rollup-client",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Cointelegraph",
-					domain: "cointelegraph.com",
-					region: "en",
-				},
-				text: "An earlier series of tweets sharing images of orange balls were the precursor to the announcement of a client for layer-2 solution Optimism.",
-			},
-			{
-				id: 3,
-				published_at: "2023-01-16T22:42:43.137097",
-				title:
-					"Crypto industry has ushered in a buoyant new year, what’s in store for Q2?",
-				link: "https://ambcrypto.com/crypto-industry-has-ushered-in-a-buoyant-new-year-whats-in-store-for-q2/",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Ambcrypto",
-					domain: "ambcrypto.com",
-					region: "en",
-				},
-				text: "The crypto market showed massive growth in the first quarter of 2023, diverting from the bearish sentiments of 2022. However, it needs to be seen what's next for the market in Q2.",
-			},
-			{
-				id: 4,
-				published_at: "2023-01-16T22:42:43.137097",
-				title:
-					"Crypto industry has ushered in a buoyant new year, what’s in store for Q2?",
-				link: "https://ambcrypto.com/crypto-industry-has-ushered-in-a-buoyant-new-year-whats-in-store-for-q2/",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Ambcrypto",
-					domain: "ambcrypto.com",
-					region: "en",
-				},
-				text: "The crypto market showed massive growth in the first quarter of 2023, diverting from the bearish sentiments of 2022. However, it needs to be seen what's next for the market in Q2.",
-			},
-			{
-				id: 5,
-				published_at: "2023-01-16T22:42:43.137097",
-				title:
-					"Crypto industry has ushered in a buoyant new year, what’s in store for Q2?",
-				link: "https://ambcrypto.com/crypto-industry-has-ushered-in-a-buoyant-new-year-whats-in-store-for-q2/",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Ambcrypto",
-					domain: "ambcrypto.com",
-					region: "en",
-				},
-				text: "The crypto market showed massive growth in the first quarter of 2023, diverting from the bearish sentiments of 2022. However, it needs to be seen what's next for the market in Q2.",
-			},
-			{
-				id: 6,
-				published_at: "2023-01-16T22:42:43.137097",
-				title:
-					"Crypto industry has ushered in a buoyant new year, what’s in store for Q2?",
-				link: "https://ambcrypto.com/crypto-industry-has-ushered-in-a-buoyant-new-year-whats-in-store-for-q2/",
-				source: {
-					kind: "news",
-					path: null,
-					title: "Ambcrypto",
-					domain: "ambcrypto.com",
-					region: "en",
-				},
-				text: "The crypto market showed massive growth in the first quarter of 2023, diverting from the bearish sentiments of 2022. However, it needs to be seen what's next for the market in Q2.",
-			},
-		],
-	};
+	const { data: news } = await runGraphQl<GetNewsQuery>(GetNewsDocument, {
+		offset: 0,
+		limit: 50,
+		order: Order_By.Desc,
+		where: {
+			_and: [{ status: { _eq: "published" } }],
+		},
+	});
 
 	return {
 		props: {

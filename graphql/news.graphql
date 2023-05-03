@@ -1,0 +1,39 @@
+query GetNews(
+	$limit: Int
+	$offset: Int
+	$order: order_by!
+	$where: news_bool_exp!
+) {
+	news(
+		where: $where
+		order_by: { date: $order }
+		limit: $limit
+		offset: $offset
+	) {
+		id
+		date
+		kind
+		link
+		created_at
+		status
+		text
+		updated_at
+		organizations {
+			company {
+				id
+				name
+				slug
+			}
+			vc_firm {
+				id
+				name
+				slug
+			}
+		}
+	}
+	# news_aggregate(where: $where) {
+	# 	aggregate {
+	# 		count
+	# 	}
+	# }
+}

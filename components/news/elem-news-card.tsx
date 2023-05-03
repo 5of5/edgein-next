@@ -5,6 +5,7 @@ import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import Link from "next/link";
 import moment from "moment-timezone";
+import { formatDate } from "@/utils";
 import { getCleanWebsiteUrl } from "@/utils/text";
 
 type Props = {
@@ -19,7 +20,8 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		setPostData(newsPost);
 	}, [newsPost]);
 
-	const { id, published_at, link, title, text, source } = postData;
+	// const { id, published_at, link, title, text, source } = postData;
+	const { id, date, link, text } = postData;
 
 	return (
 		<div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
@@ -33,18 +35,23 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 			<div className="mt-1 flex shrink-0 w-full">
 				<h3
 					className="inline min-w-0 text-lg font-bold break-words line-clamp-2 hover:text-primary-500"
-					title={title ?? ""}
+					title={text ?? ""}
 				>
 					<Link href={link}>
-						<a target="_blank">{title}</a>
+						<a target="_blank">{text}</a>
 					</Link>
 				</h3>
 			</div>
 
 			<div className="grow text-gray-400">
 				<p className="text-sm">
-					{published_at && moment(published_at).fromNow()}
-					{source?.domain && (
+					{/* {date && moment(date).fromNow()} */}
+					{formatDate(date as string, {
+						month: "short",
+						day: "2-digit",
+						year: "numeric",
+					})}
+					{/* {source?.domain && (
 						<>
 							{" by "}
 							<Link href={`https://${source?.domain}`}>
@@ -53,16 +60,21 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 								</a>
 							</Link>
 						</>
-					)}
+					)} */}
 
-					{/* <Link href={getCleanWebsiteUrl(link, true)}>
-						<a
-							target="_blank"
-							className="underline opacity-50 hover:text-primary-500"
-						>
-							{getCleanWebsiteUrl(link)}
-						</a>
-					</Link> */}
+					{link && (
+						<>
+							{" by "}
+							<Link href={getCleanWebsiteUrl(link, true)}>
+								<a
+									target="_blank"
+									className="underline opacity-50 hover:text-primary-500"
+								>
+									{getCleanWebsiteUrl(link, false)}
+								</a>
+							</Link>
+						</>
+					)}
 				</p>
 				{/* {(tags) && (
 					<div
@@ -82,11 +94,11 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 						})}
 					</div>
 				)} */}
-				{text && (
+				{/* {text && (
 					<div className="grow mt-4">
 						<div className="text-gray-400 line-clamp-3">{text}</div>
 					</div>
-				)}
+				)} */}
 			</div>
 
 			{/* <div
