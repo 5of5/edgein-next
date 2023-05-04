@@ -157,13 +157,21 @@ and new < value > will be changed to id of other_resource_type record which cont
 For example: Before using resource data, {"companies:name": "TEST_NAME"} will be converted into {"company_id": "1"}
 where company 1 name is "TEST_NAME"
 
-Support for allowing to create relationships when submitting a news item user can specific tickers or other identifiers for people and companies and the api should automatically do the lookup and create the news_organisations record.
+Support for allowing to create relationships when submitting a news item user can specific tickers or other identifiers for people and companies and the api should automatically do the lookup and create the news_organisations record. Only support to create relationships for people and team_members , news and news_organizations.
 
 For example: when creating a new person in people table. Also providing team_members's values object. Api will automatically create new item record in team_members table. {<resource_obj>} looks like as below:
 "resource":{
   <people_obj>,
   "team_members":{
      "companies:name": "TEST_NAME",
+  }
+}
+
+Support for allowing to create relationships with relationship field can be a string or an array of strings.
+"resource":{
+  <people_obj>,
+  "team_members":{
+     "companies:name": ["TEST_NAME", "TEST_NAME", ...],
   }
 }
 
@@ -180,7 +188,7 @@ curl --location 'https://edgein.io/api/submit_data' \
   "date": "<value>",
   "status": "<value>",
   "news_organizations":{
-  "companies:name": "<value>", "vc_firms:name": "<value>" }
+  "companies:name": [ "<value>" , "<value>" , ... ], "vc_firms:name": [ "<value>" , "<value>" , ... ] }
 },
 {
   "text": "<value>",
@@ -188,7 +196,7 @@ curl --location 'https://edgein.io/api/submit_data' \
   "date": "<value>",
   "status": "<value>",
   "news_organizations":{
-  "companies:name": "<value>", "vc_firms:name": "<value>" }
+  "companies:name": [ "<value>" , "<value>" , ... ], "vc_firms:name": [ "<value>" , "<value>" , ... ] }
 },...
 ]
 }'
