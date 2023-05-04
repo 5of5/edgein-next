@@ -41,54 +41,70 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 
 	return (
 		<div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
-			{kind === "news" ? (
-				<IconNewspaper
-					className="w-6 h-6 mr-1 text-slate-400"
-					title="Article"
-				/>
-			) : kind === "media" ? (
-				<IconPlayCircle className="w-6 h-6 mr-1 text-slate-400" title="Video" />
-			) : (
-				""
-			)}
-
-			{/* {metadata?.image && (
-				<img src={metadata?.image} alt={text} className="rounded-lg" />
-			)} */}
-
-			{link && (
-				<h3
-					className="mt-1 inline leading-7 min-w-0 text-lg font-bold break-words line-clamp-3 hover:text-primary-500"
-					title={text ?? ""}
-				>
-					<Link href={link}>
-						<a target="_blank">
-							{text}
-							<IconExternalLink className="inline-block w-5 h-5 ml-0.5 text-primary-500" />
-						</a>
-					</Link>
-				</h3>
-			)}
-			<div className="grow text-gray-400">
+			<div className="flex flex-wrap items-center">
+				{kind === "news" ? (
+					<IconNewspaper
+						className="w-6 h-6 mr-1 text-slate-400"
+						title="Article"
+					/>
+				) : kind === "media" ? (
+					<IconPlayCircle
+						className="w-6 h-6 mr-1 text-slate-400"
+						title="Video"
+					/>
+				) : (
+					""
+				)}
 				<p className="text-sm">
+					<span className="capitalize">{kind}</span>
+					{" • "}
 					{formatDate(date as string, {
 						month: "short",
 						day: "2-digit",
 						year: "numeric",
 					})}
+				</p>
+			</div>
 
-					{link && (
-						<>
-							{" by "}
-							<Link href={getCleanWebsiteUrl(link, true)}>
-								<a target="_blank" className="underline hover:text-primary-500">
-									{getCleanWebsiteUrl(link, false)}
+			<div className="mt-2 flex items-center">
+				{metadata?.image && (
+					<img
+						src={metadata?.image}
+						alt={text}
+						className="rounded-lg h-16 mr-3"
+					/>
+				)}
+
+				{link && (
+					<div>
+						<h3
+							className="mt-1 inline min-w-0 font-bold break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500"
+							title={text ?? ""}
+						>
+							<Link href={link}>
+								<a target="_blank">
+									<IconExternalLink className="inline-block align-sub w-5 h-5 mr-0.5 text-primary-500" />
+									{text}
 								</a>
 							</Link>
-						</>
-					)}
-				</p>
-
+						</h3>
+						{link && (
+							<span className="text-gray-400">
+								{" by "}
+								<Link href={getCleanWebsiteUrl(link, true)}>
+									<a
+										target="_blank"
+										className="underline hover:text-primary-500"
+									>
+										{getCleanWebsiteUrl(link, false)}
+									</a>
+								</Link>
+							</span>
+						)}
+					</div>
+				)}
+			</div>
+			<div className="grow text-gray-400">
 				{metadata?.description && (
 					<div className="grow mt-4">
 						<div className="text-gray-400 line-clamp-3">
