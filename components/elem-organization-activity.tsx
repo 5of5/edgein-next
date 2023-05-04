@@ -164,7 +164,6 @@ const renderActivity = (
 							{item.vc_firm && (
 								<Link href={`/investors/${item.vc_firm?.slug}`}>
 									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-										{/* <a className="text-primary-500 hover:bg-slate-200"> */}
 										{item.vc_firm["name"]}
 									</a>
 								</Link>

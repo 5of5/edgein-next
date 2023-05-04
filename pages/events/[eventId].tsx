@@ -284,9 +284,7 @@ const Event: NextPage<Props> = (props) => {
 						<div className="flex items-center space-x-2">
 							<ElemSocialShare
 								resourceName={event.name}
-								resourceTags={event.types}
 								resourceTwitterUrl={event.twitter}
-								resourceType={"events"}
 							/>
 							{attendees.some(
 								(item) => item.person?.id === user?.person?.id

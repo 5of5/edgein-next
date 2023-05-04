@@ -212,12 +212,7 @@ const VCFirm: NextPage<Props> = (props) => {
 								/>
 								<ElemSocialShare
 									resourceName={vcfirm.name}
-									resourceTags={vcfirm.tags}
 									resourceTwitterUrl={vcfirm.twitter}
-									sentimentHot={vcfirm.sentiment?.hot}
-									sentimentLike={vcfirm.sentiment?.like}
-									sentimentCrap={vcfirm.sentiment?.crap}
-									resourceType={"vc_firms"}
 								/>
 							</div>
 						</div>
