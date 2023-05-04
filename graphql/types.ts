@@ -23043,7 +23043,7 @@ export type GetNewsQueryVariables = Exact<{
 }>;
 
 
-export type GetNewsQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, created_at: any, status: string | null, text: string, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', company: { __typename?: 'companies', id: number, name: string | null, slug: string } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string } | null }> }> };
+export type GetNewsQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, created_at: any, status: string | null, text: string, metadata: any | null, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }>, news_aggregate: { __typename?: 'news_aggregate', aggregate: { __typename?: 'news_aggregate_fields', count: number } | null } };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -25846,18 +25846,26 @@ export const GetNewsDocument = `
     created_at
     status
     text
+    metadata
     updated_at
     organizations {
       company {
         id
         name
         slug
+        logo
       }
       vc_firm {
         id
         name
         slug
+        logo
       }
+    }
+  }
+  news_aggregate(where: $where) {
+    aggregate {
+      count
     }
   }
 }

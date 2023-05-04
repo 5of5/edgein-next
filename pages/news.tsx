@@ -1,39 +1,80 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
+import { useStateParams } from "@/hooks/use-state-params";
+import { Pagination } from "@/components/pagination";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
 import { ElemNewsCard } from "@/components/news/elem-news-card";
+import { ElemButton } from "../components/elem-button";
 import { useIntercom } from "react-use-intercom";
 import { PlaceholderNewsCard } from "@/components/placeholders";
 import { runGraphQl } from "../utils";
 import toast, { Toaster } from "react-hot-toast";
+import { IconAnnotation, IconSearch } from "@/components/icons";
 
-import { GetNewsDocument, GetNewsQuery, Order_By } from "@/graphql/types";
+import {
+	News,
+	GetNewsDocument,
+	GetNewsQuery,
+	useGetNewsQuery,
+	News_Bool_Exp,
+	Order_By,
+} from "@/graphql/types";
+import { DeepPartial } from "./companies";
 
 type Props = {
+	newsCount: number;
 	initialNews: GetNewsQuery["news"];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const News: NextPage<Props> = ({ initialNews, setToggleFeedbackForm }) => {
+const News: NextPage<Props> = ({
+	newsCount,
+	initialNews,
+	setToggleFeedbackForm,
+}) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 	const router = useRouter();
-	const { showNewMessages } = useIntercom();
+	const { show } = useIntercom();
 
-	const error = false;
-	const isLoading = false;
+	const [page, setPage] = useStateParams<number>(
+		0,
+		"page",
+		(pageIndex) => pageIndex + 1 + "",
+		(pageIndex) => Number(pageIndex) - 1
+	);
+	const limit = 50;
+	const offset = limit * page;
+
+	const filters: DeepPartial<News_Bool_Exp> = {
+		_and: [{ status: { _eq: "published" } }],
+	};
+
+	const {
+		data: newsData,
+		error,
+		isLoading,
+	} = useGetNewsQuery({
+		offset,
+		limit,
+		order: Order_By.Desc,
+		where: filters as News_Bool_Exp,
+	});
 
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
-	//const news = initialLoad ? initialNews : newsData?.news;
-	const news = initialNews;
+
+	const news = initialLoad ? initialNews : newsData?.news;
+	const news_aggregate = initialLoad
+		? newsCount
+		: newsData?.news_aggregate?.aggregate?.count || 0;
 
 	return (
 		<div className="relative overflow-hidden">
 			<ElemHeading
 				title="News"
-				subtitle="Something about News."
+				subtitle="Get the latest news, guides, price and analysis on Web3."
 				className=""
 			></ElemHeading>
 
@@ -43,49 +84,24 @@ const News: NextPage<Props> = ({ initialNews, setToggleFeedbackForm }) => {
 
 					{news?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
-							Empty news
-							{/* <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
 								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
 								<h2 className="mt-5 text-3xl font-bold">No results found</h2>
 								<div className="mt-1 text-lg text-slate-600">
 									Please check spelling, try different filters, or tell us about
 									missing data.
 								</div>
-								<ElemButton
-									onClick={() => setToggleFeedbackForm(true)}
-									btn="white"
-									className="mt-3"
-								>
+								<ElemButton onClick={show} btn="white" className="mt-3">
 									<IconAnnotation className="w-6 h-6 mr-1" />
 									Tell us about missing data
 								</ElemButton>
-							</div> */}
+							</div>
 						</div>
 					)}
 
-					<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+					<div className="mt-3 grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 						{error ? (
-							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-								<div className="max-w-xl mx-auto">
-									<h4 className="mt-5 text-3xl font-bold">
-										Error loading news
-									</h4>
-									<div className="mt-1 text-lg text-slate-600">
-										Please check spelling, reset filters, or{" "}
-										<button
-											onClick={() =>
-												showNewMessages(
-													`Hi EdgeIn, I'd like to report an error on news page`
-												)
-											}
-											className="inline underline decoration-primary-500 hover:text-primary-500"
-										>
-											<span>report error</span>
-										</button>
-										.
-									</div>
-								</div>
-							</div>
+							<h4>Error loading news</h4>
 						) : isLoading && !initialLoad ? (
 							<>
 								{Array.from({ length: 6 }, (_, i) => (
@@ -96,12 +112,23 @@ const News: NextPage<Props> = ({ initialNews, setToggleFeedbackForm }) => {
 							news?.map((item: any) => (
 								<ElemNewsCard
 									key={item.id}
-									newsPost={item as any} //item as News
+									newsPost={item as News}
 									//tagOnClick={filterByTag}
 								/>
 							))
 						)}
 					</div>
+
+					<Pagination
+						shownItems={news?.length}
+						totalItems={news_aggregate}
+						page={page}
+						itemsPerPage={limit}
+						numeric
+						onClickPrev={() => setPage(page - 1)}
+						onClickNext={() => setPage(page + 1)}
+						onClickToPage={(selectedPage) => setPage(selectedPage)}
+					/>
 				</div>
 			</div>
 
@@ -123,7 +150,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	return {
 		props: {
 			metaTitle: "Web3 News - EdgeIn.io",
-			// metaDescription: "",
+			metaDescription:
+				"Get the latest news, guides, price and analysis on Web3",
+			eventsCount: news?.news_aggregate?.aggregate?.count || 0,
 			initialNews: news?.news || [],
 		},
 	};

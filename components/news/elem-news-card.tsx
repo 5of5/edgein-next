@@ -3,13 +3,19 @@ import { ElemPhoto } from "@/components/elem-photo";
 import { ElemReactions } from "@/components/elem-reactions";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { ElemTooltip } from "@/components/elem-tooltip";
+import {
+	IconExternalLink,
+	IconNewspaper,
+	IconPlayCircle,
+} from "@/components/icons";
+import { News } from "@/graphql/types";
 import Link from "next/link";
-import moment from "moment-timezone";
 import { formatDate } from "@/utils";
 import { getCleanWebsiteUrl } from "@/utils/text";
+import parse from "html-react-parser";
 
 type Props = {
-	newsPost: any; //News;
+	newsPost: News;
 	tagOnClick?: any;
 };
 
@@ -20,99 +26,137 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		setPostData(newsPost);
 	}, [newsPost]);
 
-	// const { id, published_at, link, title, text, source } = postData;
-	const { id, date, link, text } = postData;
+	const {
+		// id,
+		kind,
+		date,
+		link,
+		text,
+		// created_at,
+		// updated_at,
+		// status,
+		metadata,
+		//organizations,
+	} = postData;
 
 	return (
 		<div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
-			{/* hover:scale-102 hover:shadow */}
-			<p className="text-xs text-gray-400">
-				Powered by{" "}
-				<Link href={`https://cryptopanic.com/`}>
-					<a target="_blank">CryptoPanic</a>
-				</Link>
-			</p>
-			<div className="mt-1 flex shrink-0 w-full">
+			{kind === "news" ? (
+				<IconNewspaper
+					className="w-6 h-6 mr-1 text-slate-400"
+					title="Article"
+				/>
+			) : kind === "media" ? (
+				<IconPlayCircle className="w-6 h-6 mr-1 text-slate-400" title="Video" />
+			) : (
+				""
+			)}
+
+			{/* {metadata?.image && (
+				<img src={metadata?.image} alt={text} className="rounded-lg" />
+			)} */}
+
+			{link && (
 				<h3
-					className="inline min-w-0 text-lg font-bold break-words line-clamp-2 hover:text-primary-500"
+					className="mt-1 inline leading-7 min-w-0 text-lg font-bold break-words line-clamp-3 hover:text-primary-500"
 					title={text ?? ""}
 				>
 					<Link href={link}>
-						<a target="_blank">{text}</a>
+						<a target="_blank">
+							{text}
+							<IconExternalLink className="inline-block w-5 h-5 ml-0.5 text-primary-500" />
+						</a>
 					</Link>
 				</h3>
-			</div>
-
+			)}
 			<div className="grow text-gray-400">
 				<p className="text-sm">
-					{/* {date && moment(date).fromNow()} */}
 					{formatDate(date as string, {
 						month: "short",
 						day: "2-digit",
 						year: "numeric",
 					})}
-					{/* {source?.domain && (
-						<>
-							{" by "}
-							<Link href={`https://${source?.domain}`}>
-								<a target="_blank" className="underline hover:text-primary-500">
-									{source?.domain && source?.domain}
-								</a>
-							</Link>
-						</>
-					)} */}
 
 					{link && (
 						<>
 							{" by "}
 							<Link href={getCleanWebsiteUrl(link, true)}>
-								<a
-									target="_blank"
-									className="underline opacity-50 hover:text-primary-500"
-								>
+								<a target="_blank" className="underline hover:text-primary-500">
 									{getCleanWebsiteUrl(link, false)}
 								</a>
 							</Link>
 						</>
 					)}
 				</p>
-				{/* {(tags) && (
-					<div
-						className="mt-4 flex flex-wrap gap-2"
-						onClick={(e) => e.stopPropagation()}
-					>
-						{tags?.map((tag: string, index: number) => {
+
+				{metadata?.description && (
+					<div className="grow mt-4">
+						<div className="text-gray-400 line-clamp-3">
+							{parse(metadata?.description)}
+						</div>
+					</div>
+				)}
+
+				{/* {organizations && (
+					<div className="mt-4" onClick={(e) => e.stopPropagation()}>
+						{organizations?.map((organizer: any, index: number) => {
+							const slug = organizer.company
+								? `/companies/${organizer.company?.slug}`
+								: organizer.vc_firm
+								? `/investors/${organizer.vc_firm?.slug}`
+								: "";
+
+							const organization = organizer.company
+								? organizer.company
+								: organizer.vc_firm;
+
 							return (
-								<div
-									key={index}
-									onClick={(e) => tagOnClick(e, tag)}
-									className={`shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300`}
-								>
-									{tag}
-								</div>
+								<>
+									<ElemTooltip
+										content={
+											<ElemPhoto
+												photo={organization?.logo}
+												wrapClass="flex items-center justify-center shrink-0 w-16 h-16 p-2 bg-white rounded-lg shadow"
+												imgClass="object-fit max-w-full max-h-full"
+												imgAlt={organization?.name}
+												placeholderClass="text-slate-300"
+											/>
+										}
+										className="cursor-pointer"
+									>
+										<Link href={slug} key={organizer.id}>
+											<a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+												{organization?.name}
+											</a>
+										</Link>
+									</ElemTooltip>
+									{organizations.length === index + 1 ? "" : ", "}
+								</>
 							);
 						})}
 					</div>
 				)} */}
-				{/* {text && (
-					<div className="grow mt-4">
-						<div className="text-gray-400 line-clamp-3">{text}</div>
-					</div>
-				)} */}
 			</div>
-
+			<div>
+				<p className="mt-4 text-xs text-gray-400">
+					Powered by{" "}
+					<Link href={`https://cryptopanic.com/`}>
+						<a target="_blank">CryptoPanic</a>
+					</Link>
+				</p>
+			</div>
 			{/* <div
-					className="flex items-center justify-between mt-4 gap-x-5"
-					onClick={(e) => e.stopPropagation()}
-				>
-					<ElemReactions resource={newsPost} resourceType={"news"} />
-					<ElemSaveToList
-						resourceName={name}
-						resourceId={id}
-						resourceType={"news"}
-						slug={slug!}
-					/>
-				</div> */}
+				className="flex items-center justify-between mt-4 gap-x-5"
+				onClick={(e) => e.stopPropagation()}
+			>
+				<ElemReactions resource={newsPost} resourceType={"news"} />
+				<ElemSaveToList
+					resourceName={name}
+					resourceId={id}
+					resourceType={"news"}
+					slug={slug!}
+				/>
+			</div> */}
 		</div>
 	);
 };

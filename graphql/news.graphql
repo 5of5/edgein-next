@@ -17,23 +17,26 @@ query GetNews(
 		created_at
 		status
 		text
+		metadata
 		updated_at
 		organizations {
 			company {
 				id
 				name
 				slug
+				logo
 			}
 			vc_firm {
 				id
 				name
 				slug
+				logo
 			}
 		}
 	}
-	# news_aggregate(where: $where) {
-	# 	aggregate {
-	# 		count
-	# 	}
-	# }
+	news_aggregate(where: $where) {
+		aggregate {
+			count
+		}
+	}
 }
