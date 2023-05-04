@@ -19,6 +19,18 @@ type Props = {
 	resourceId: number;
 	resourceType: "companies" | "vc_firms" | "people";
 	slug: string;
+	buttonStyle?:
+		| "danger"
+		| "dark"
+		| "primary"
+		| "purple"
+		| "primary-light"
+		| "transparent"
+		| "white"
+		| "slate"
+		| "ol-white"
+		| "ol-primary"
+		| "";
 };
 
 type List = GetFollowsByUserQuery["list_members"][0]["list"];
@@ -28,6 +40,7 @@ export const ElemSaveToList: FC<Props> = ({
 	resourceId,
 	resourceType,
 	slug,
+	buttonStyle = "purple",
 }) => {
 	let [isOpen, setIsOpen] = useState(false);
 	const [showNew, setShowNew] = useState(false);
@@ -52,9 +65,9 @@ export const ElemSaveToList: FC<Props> = ({
 					.filter((item) => {
 						const sentiment = getNameFromListName(item);
 						return (
-              !["hot", "like", "crap"].includes(sentiment) &&
-              item.created_by_id === user?.id
-            );
+							!["hot", "like", "crap"].includes(sentiment) &&
+							item.created_by_id === user?.id
+						);
 					})
 					.sort((a, b) => (a.name < b.name ? -1 : 1));
 			});
@@ -192,7 +205,8 @@ export const ElemSaveToList: FC<Props> = ({
 		<>
 			<ElemButton
 				onClick={onSaveButton}
-				btn="white"
+				btn={buttonStyle}
+				// btn="white"
 				roundedFull={true}
 				className="px-2.5"
 			>

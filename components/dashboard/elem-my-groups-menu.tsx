@@ -78,7 +78,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 											open ? "rotate-0" : "-rotate-90 "
 										} h-6 w-6 transform transition-all`}
 									/>
-									<span className="text-lg font-bold">My Groups</span>
+									<span className="text-lg font-bold">Groups</span>
 								</Disclosure.Button>
 								<ElemTooltip
 									content="Share lists and notes with others."
@@ -124,7 +124,7 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									</Popover>
 								)} */}
 
-								{myGroups.length > displayedGroups.length ? (
+								{/* {myGroups.length > displayedGroups.length ? (
 									<button
 										onClick={onOpenUpgradeDialog}
 										className="cursor-pointer rounded-md flex items-center justify-center w-7 aspect-square text-primary-500 transition-all hover:bg-slate-200"
@@ -141,11 +141,35 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									>
 										<IconPlus className="h-5 w-5" title="Create Group" />
 									</button>
-								)}
+								)} */}
 							</div>
 						</div>
 
 						<Disclosure.Panel as="ul" className="mt-1 space-y-1 text-slate-600">
+							{myGroups.length > displayedGroups.length ? (
+								<li role="button">
+									<button
+										onClick={onOpenUpgradeDialog}
+										className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+									>
+										<IconContributor
+											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
+											title="Unlock groups"
+										/>
+										<span>Unlock All Groups</span>
+									</button>
+								</li>
+							) : (
+								<li role="button">
+									<button
+										onClick={onOpenCreateGroupDialog}
+										className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
+									>
+										<IconGroupPlus className="h-6 w-6" title="Create Group" />
+										<span>Create Group</span>
+									</button>
+								</li>
+							)}
 							{displayedGroups?.map((group) => (
 								<li key={group.id} role="button">
 									<Link href={`/groups/${group.id}/`}>
@@ -163,30 +187,6 @@ const ElemMyGroupsMenu: FC<Props> = ({ className = "" }) => {
 									</Link>
 								</li>
 							))}
-							{myGroups.length > displayedGroups.length ? (
-								<li role="button">
-									<button
-										onClick={onOpenUpgradeDialog}
-										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-									>
-										<IconContributor
-											className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
-											title="Unlock groups"
-										/>
-										<span>Unlock All Your Groups</span>
-									</button>
-								</li>
-							) : (
-								<li role="button">
-									<button
-										onClick={onOpenCreateGroupDialog}
-										className="w-full flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 hover:bg-slate-200 hover:text-primary-500"
-									>
-										<IconGroupPlus className="h-6 w-6" title="Create Group" />
-										<span>Create Group</span>
-									</button>
-								</li>
-							)}
 						</Disclosure.Panel>
 					</>
 				)}

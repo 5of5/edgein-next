@@ -8,6 +8,7 @@ import { PlaceholderNote } from "@/components/placeholders";
 import { orderBy } from "lodash";
 //import { useAuth } from "@/hooks/useAuth";
 import { useUser } from "@/context/user-context";
+import { ElemButton } from "@/components/elem-button";
 
 type Props = {};
 
@@ -57,7 +58,7 @@ const Notes: FC<Props> = () => {
 		<DashboardLayout>
 			<div className="pb-20">
 				<div className="w-full mb-2">
-					<h1 className="h-6 mr-2 font-bold text-xl capitalize">My Notes</h1>
+					<h1 className="h-6 mr-2 font-bold text-xl capitalize">Your Notes</h1>
 				</div>
 
 				{error ? (
@@ -77,10 +78,18 @@ const Notes: FC<Props> = () => {
 								className="mx-auto h-12 w-12 text-slate-300"
 								title="notes"
 							/>
-							<h3 className="mt-2 text-lg font-bold">No notes yet</h3>
+							<h3 className="mt-2 text-lg font-bold">No notes yet.</h3>
 							<p className="mt-1 text-slate-600">
 								Get started by creating a note in a company or investor profile.
 							</p>
+							<div className="mt-2 flex justify-center space-x-2">
+								<ElemButton href="/companies" btn="white" arrow>
+									Companies
+								</ElemButton>
+								<ElemButton href="/investors" btn="white" arrow>
+									Investors
+								</ElemButton>
+							</div>
 						</div>
 					</div>
 				) : (

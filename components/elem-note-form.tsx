@@ -12,7 +12,6 @@ import moment from "moment-timezone";
 import { GetNotesQuery } from "@/graphql/types";
 import { ElemDeleteConfirmModal } from "./elem-delete-confirm-modal";
 import {
-	IconTrash,
 	IconX,
 	IconGroup,
 	IconGroupPlus,
@@ -71,13 +70,10 @@ const ElemNoteForm: React.FC<Props> = ({
 		setNotes(selectedNote?.notes);
 		setSelectedGroup(
 			groupOptions.find((item) => item.id === selectedNote?.user_group_id) ||
+				groupOptions.find((item) => item.id === selectedNote?.audience) ||
 				groupOptions[0]
 		);
 	}, [selectedNote, groupOptions]);
-
-	const handleOpenDeleteModal = () => {
-		setIsOpenDeleteModal(true);
-	};
 
 	const handleCloseDeleteModal = () => {
 		setIsOpenDeleteModal(false);
@@ -267,7 +263,9 @@ const ElemNoteForm: React.FC<Props> = ({
 														options={groupOptions}
 														value={selectedGroup}
 														onChange={setSelectedGroup}
-														className="mt-0.5 text-slate-600 text-base w-full"
+														className={`mt-0.5 text-slate-600 text-base w-full ${
+															!!selectedNote ? "cursor-not-allowed" : ""
+														}`}
 														buttonClasses="w-full sm:w-fit"
 														disabled={!!selectedNote}
 													/>
@@ -278,7 +276,7 @@ const ElemNoteForm: React.FC<Props> = ({
 													className="flex items-center space-x-2 py-1 px-2 rounded-md flex-1 transition-all bg-slate-200 text-primary-500 hover:bg-slate-200 hover:text-primary-500"
 												>
 													<IconGroupPlus
-														className="h-6 w-6"
+														className="h-5 w-5 mr-1"
 														title="Create Group"
 													/>
 													<span>Create Group</span>
@@ -306,22 +304,8 @@ const ElemNoteForm: React.FC<Props> = ({
 											onClick={handleSubmit}
 											className="w-full"
 										>
-											{type === "edit" ? "Update Note" : "Create Note"}
+											{type === "edit" ? "Save" : "Create Note"}
 										</ElemButton>
-
-										{type === "edit" &&
-											selectedNote?.created_by === user?.id && (
-												<ElemButton
-													btn="transparent"
-													onClick={handleOpenDeleteModal}
-													className="text-red-500 !px-0 shrink-0"
-												>
-													<div className="flex items-center gap-1">
-														<IconTrash className="w-6 h-6" />
-														<span>Delete Note</span>
-													</div>
-												</ElemButton>
-											)}
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>

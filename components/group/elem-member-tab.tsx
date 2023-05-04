@@ -128,7 +128,7 @@ const ElemMemberTab: React.FC<Props> = ({
 								</div>
 							)}
 
-							<p className="font-bold">{member.user.display_name}</p>
+							<p className="font-bold capitalize">{member.user.display_name}</p>
 							{member.user.id === group.created_by_user_id && (
 								<span>(Manager)</span>
 							)}
@@ -164,7 +164,7 @@ const ElemMemberTab: React.FC<Props> = ({
 																} group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
 																onClick={(e) => {
 																	e.preventDefault();
-																 	handleViewProfile(member.user.person?.slug)
+																	handleViewProfile(member.user.person?.slug);
 																}}
 															>
 																View Profile
@@ -180,7 +180,7 @@ const ElemMemberTab: React.FC<Props> = ({
 															} group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
 															onClick={(e) => {
 																e.preventDefault();
-																handleMakeGroupManager(member.user.id)
+																handleMakeGroupManager(member.user.id);
 															}}
 														>
 															Make Group Manager
@@ -197,7 +197,7 @@ const ElemMemberTab: React.FC<Props> = ({
 															} group flex w-full items-center rounded-md px-2 py-1.5 text-sm`}
 															onClick={(e) => {
 																e.preventDefault();
-																handleRemoveFromGroup(member.id)
+																handleRemoveFromGroup(member.id);
 															}}
 														>
 															Remove from Group

@@ -22,7 +22,7 @@ const UserResetPasswordButton = () => {
 
   const { mutate, isLoading } = useMutation(
     () =>
-      fetch("/api/reset_password/", {
+      fetch("/api/reset-password/", {
         method: "POST",
         headers: {
           Accept: "application/json",

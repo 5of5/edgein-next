@@ -110,7 +110,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (
       actionType === "Insert Data" &&
-      ["companies", "vc_firms", "people"].includes(resourceType) &&
+      ["companies", "vc_firms", "people", "events"].includes(resourceType) &&
       (!resourceObj?.library || resourceObj?.library?.length === 0)
     ) {
       properties.library = ["Web3"];

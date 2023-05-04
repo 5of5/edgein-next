@@ -66,9 +66,9 @@ export const DashboardSidebar: FC<Props> = ({ className = "" }) => {
 
 			<div className="-mt-5">
 				<ElemMyEdgeInMenu />
-				<ElemMyListsMenu className="mt-6" />
 				<ElemMyNotesMenu className="mt-6" />
 				<ElemMyGroupsMenu className="mt-6" />
+				<ElemMyListsMenu className="mt-6" />
 				<ElemExploreMenu className="mt-6" />
 			</div>
 		</nav>

@@ -1,6 +1,6 @@
 import { mutate } from '@/graphql/hasuraAdmin';
 import { InsertActionDocument, InsertActionMutation } from '@/graphql/types';
-import applyRateLimit from '@/utils/rateLimit';
+import applyRateLimit from '@/utils/rate-limit';
 import { partnerLookUp } from '@/utils/submit-data';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextCors from 'nextjs-cors';
