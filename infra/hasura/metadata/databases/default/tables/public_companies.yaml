@@ -144,6 +144,7 @@ select_permissions:
         status:
           _eq: published
       limit: 50
+      allow_aggregations: true
   - role: user
     permission:
       columns:

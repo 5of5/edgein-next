@@ -1,6 +1,5 @@
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
-
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { ProfileEdit } from "@/components/profile/profile-edit";
 import { ProfileEditEmail } from "@/components/profile/profile-edit-email";
@@ -272,7 +271,7 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 
 	// const updateCall = async (payload: any, type = "profile") => {
 	// 	if (type === "profile") {
-	// 		const resp = await fetch("/api/update_profile/", {
+	// 		const resp = await fetch("/api/update-profile/", {
 	// 			method: "POST",
 	// 			body: JSON.stringify({
 	// 				id: person?.id,
@@ -519,31 +518,25 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 	return (
 		<DashboardLayout>
 			{!users?.users_by_pk?.person && (
-				<div className="bg-white shadow rounded-lg p-5 mb-5">
+				<div className="mb-5 p-5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg">
 					<div className="sm:flex justify-between items-center mb-2">
-						<h2 className="font-bold text-xl">Claim your Profile</h2>
-
-						<div className="mt-2 sm:mt-0">
-							<ElemButton
-								btn="primary-light"
-								onClick={() => setShowPopup("search")}
-							>
-								<IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
-								Search
-							</ElemButton>
-						</div>
+						<h2 className="font-bold text-2xl text-white">
+							Claim your Profile to unlock some features.
+						</h2>
 					</div>
-					<div className="max-w-3xl">
-						<p className="text-slate-600">
-							You have not linked your account to a profile on EdgeIn.{" "}
-							<button
-								onClick={() => setShowPopup("search")}
-								className="inline border-b border-transparent hover:border-primary-500 hover:text-primary-500"
-							>
-								Search your name
-							</button>{" "}
-							on the site and claim profile.
+					<div className="max-w-lg">
+						<p className="text-lg text-white opacity-80">
+							You have not linked your account to a profile on EdgeIn. Search
+							your name on the site and claim profile.
 						</p>
+						<ElemButton
+							btn="primary-light"
+							onClick={() => setShowPopup("search")}
+							className="mt-4"
+						>
+							<IconSearch className="h-5 w-5 mr-1.5" aria-hidden="true" />
+							Search your name
+						</ElemButton>
 					</div>
 				</div>
 			)}
@@ -554,7 +547,7 @@ const Profile: FC<Props> = ({ companiesDropdown, setShowPopup }) => {
 					{users?.users_by_pk?.person && (
 						<ElemButton
 							href={`/people/${users?.users_by_pk?.person?.slug}/`}
-							btn="white"
+							btn="purple"
 							arrow
 							className="mt-2 sm:mt-0"
 						>

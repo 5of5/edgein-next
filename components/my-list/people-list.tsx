@@ -266,7 +266,7 @@ export const PeopleList: FC<Props> = ({ people, selectedListName }) => {
 			selectedFlatRows.map((row: any, index: number) => row.original?.id)
 		);
 
-		const deletePeopleRes = await fetch(`/api/delete_follows/`, {
+		const deletePeopleRes = await fetch(`/api/delete-follows/`, {
 			method: "POST",
 			body: JSON.stringify({ followIds }),
 			headers: {

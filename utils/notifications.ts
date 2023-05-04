@@ -1,10 +1,10 @@
 import { mutate } from "@/graphql/hasuraAdmin";
 import {
-  GetNotificationsForUserQuery,
-  InsertNotificationActionsDocument,
-  InsertNotificationActionsMutation,
-  InsertNotificationsDocument,
-  InsertNotificationsMutation,
+	GetNotificationsForUserQuery,
+	InsertNotificationActionsDocument,
+	InsertNotificationActionsMutation,
+	InsertNotificationsDocument,
+	InsertNotificationsMutation,
 } from "@/graphql/types";
 import { flatten, startCase, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
@@ -73,7 +73,7 @@ const getMessageContents = (
 		if (notificationResourceType === "team_members") {
 			return "added new team members";
 		} else if (notificationResourceType === "investments") {
-			return "added new investor";
+			return "added new investment";
 		} else if (notificationResourceType === "investment_rounds") {
 			return "added new investment round";
 		} else if (notificationResourceType === "investors") {
@@ -114,9 +114,7 @@ export const processNotification = async (
 			followResourceId,
 			followedResourceType
 		);
-		let targetUsers: any = follows.map(
-			(item) => item.list?.list_members
-		);
+		let targetUsers: any = follows.map((item) => item.list?.list_members);
 		targetUsers = unionBy(flatten(targetUsers), "user_id");
 		await Promise.all(
 			targetUsers.map(async (targetUser: any) => {
@@ -137,7 +135,10 @@ export const processNotification = async (
 					await Promise.all(
 						actionIds.map(async (actionId) => {
 							if (notificationResponse?.id) {
-								await insertNotificationAction(notificationResponse?.id, actionId);
+								await insertNotificationAction(
+									notificationResponse?.id,
+									actionId
+								);
 							}
 						})
 					);

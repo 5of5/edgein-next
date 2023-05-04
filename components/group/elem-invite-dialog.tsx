@@ -37,14 +37,14 @@ const ElemInviteDialog: React.FC<Props> = ({
 	const debouncedQuery = useDebounce(query, 700);
 
 	const { data: searchedPeople, error } = useSWR(
-		() => (debouncedQuery ? ["/api/search_people/", query] : null),
+		() => (debouncedQuery ? ["/api/search-people/", query] : null),
 		peopleFetcher
 	);
 
 	const isLoading = !error && !searchedPeople;
 
 	const onSendInvitationMail = async (emailResources: EmailResources) => {
-		await fetch("/api/send_invite_group_member_mail/", {
+		await fetch("/api/send-invite-group-member-mail/", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -149,7 +149,7 @@ const ElemInviteDialog: React.FC<Props> = ({
 			inputRef.current.value = "";
 			inputRef.current.focus();
 		}
-	}
+	};
 
 	const emailHasBeenAdded = selectedUsers.some((el) => el.email === query);
 

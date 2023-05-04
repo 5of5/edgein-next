@@ -1,7 +1,7 @@
 import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { flatten, union} from "lodash";
+import { flatten, union } from "lodash";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemKeyInfo } from "@/components/elem-key-info";
 import { ElemInvestments } from "@/components/investor/elem-investments";
@@ -54,9 +54,13 @@ const Person: NextPage<Props> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
 
-	const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
-	const companyTags = flatten(person.team_members.map(item => item?.company?.tags));
-	const personTags = union(vcFirmTags, companyTags).filter(item => item);
+	const vcFirmTags = flatten(
+		person.investors.map((item) => item?.vc_firm?.tags)
+	);
+	const companyTags = flatten(
+		person.team_members.map((item) => item?.company?.tags)
+	);
+	const personTags = union(vcFirmTags, companyTags).filter((item) => item);
 
 	const personEmails = [
 		...(person.work_email ? [person.work_email] : []),
@@ -78,9 +82,11 @@ const Person: NextPage<Props> = (props) => {
 	const profileUrl = `https://edgein.io${router.asPath}`;
 
 	const { data: linkedUser, isLoading: isLoadingLinkedUser } =
-    useGetUserByPersonIdQuery({ person_id: person?.id });
+		useGetUserByPersonIdQuery({ person_id: person?.id });
 
-  const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
+	const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
+	const isCurrentUserProfile =
+		claimedProfile && linkedUser?.users[0].id === user?.id;
 
 	return (
 		<div className="relative">
@@ -127,16 +133,16 @@ const Person: NextPage<Props> = (props) => {
 									</div>
 
 									{personTags?.length > 0 && (
-                    <ElemTags
-                      className="my-4"
-                      resourceType={
-                        person.team_members.length > 0
-                          ? "companies"
-                          : "investors"
-                      }
-                      tags={personTags}
-                    />
-                  )}
+										<ElemTags
+											className="my-4"
+											resourceType={
+												person.team_members.length > 0
+													? "companies"
+													: "investors"
+											}
+											tags={personTags}
+										/>
+									)}
 
 									<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
 										{!isLoadingLinkedUser && !claimedProfile && (
@@ -151,13 +157,18 @@ const Person: NextPage<Props> = (props) => {
 												Claim profile
 											</ElemButton>
 										)}
-											
 										<ElemSaveToList
 											resourceName={person.name}
 											resourceId={person.id}
 											resourceType="people"
 											slug={person.slug!}
 										/>
+
+										{isCurrentUserProfile && (
+											<ElemButton btn="slate" href="/profile/">
+												Edit profile
+											</ElemButton>
+										)}
 									</div>
 								</div>
 								<div className="mt-6 lg:mt-0"></div>
@@ -219,10 +230,7 @@ const Person: NextPage<Props> = (props) => {
 							/>
 						)}
 						{props.sortNews.length > 0 && (
-							<ElemNewsList
-								resourceNews={props.sortNews}
-								className="mb-7"
-							/>
+							<ElemNewsList resourceNews={props.sortNews} className="mb-7" />
 						)}
 						{!person.investors || person.investors.length === 0 ? null : (
 							<ElemInvestorsList
@@ -293,18 +301,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		})
 		.reverse();
 
-		const sortNews =
-      people.people[0].news_links
-        ?.slice()
-        ?.map((item) => ({ ...item.news }))
-        ?.filter((item) => item.status === "published")
-        .sort((a, b) => {
-          return (
-            new Date(a?.date ?? "").getTime() -
-            new Date(b?.date ?? "").getTime()
-          );
-        })
-        .reverse() || [];
+	const sortNews =
+		people.people[0].news_links
+			?.slice()
+			?.map((item) => ({ ...item.news }))
+			?.filter((item) => item.status === "published")
+			.sort((a, b) => {
+				return (
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
 
 	return {
 		props: {

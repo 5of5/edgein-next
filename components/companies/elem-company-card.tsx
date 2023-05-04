@@ -99,6 +99,7 @@ export const ElemCompanyCard: FC<Props> = ({ company, tagOnClick }) => {
 						resourceId={id}
 						resourceType={"companies"}
 						slug={slug!}
+						buttonStyle="white"
 					/>
 				</div>
 			</a>

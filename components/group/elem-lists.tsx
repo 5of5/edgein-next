@@ -57,7 +57,7 @@ export const ElemLists: React.FC<Props> = ({
 	}));
 
 	const handleToggleFollow = async (listId: number, isFollowing: boolean) => {
-		const response = await fetch("/api/toggle_follow_list/", {
+		const response = await fetch("/api/toggle-follow-list/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -168,7 +168,7 @@ export const ElemLists: React.FC<Props> = ({
 							title="Lists"
 						/>
 						<h3 className="mt-2 text-lg font-bold">
-							No lists have been added to group yet
+							No lists have been added to group yet.
 						</h3>
 
 						<button

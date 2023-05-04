@@ -185,7 +185,11 @@ const ElemSettingTab: React.FC<Props> = ({ group, onUpdateGroupData }) => {
 				))}
 
 				<div>
-					<div className="flex items-center justify-between space-x-1 p-3 cursor-pointer hover:bg-slate-100">
+					<div
+						className={`flex items-center justify-between space-x-1 p-3 ${
+							!isGroupManager ? "" : "cursor-pointer hover:bg-slate-100"
+						}`}
+					>
 						<p className="font-bold">Public</p>
 						<Switch
 							checked={!!isPublicGroup}

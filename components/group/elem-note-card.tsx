@@ -4,7 +4,6 @@ import React, {
 	useEffect,
 	useState,
 	Fragment,
-	ChangeEvent,
 } from "react";
 import useSWR from "swr";
 import moment from "moment-timezone";
@@ -27,10 +26,9 @@ import { GetNotesQuery, People, useGetUserProfileQuery } from "@/graphql/types";
 import { useUser } from "@/context/user-context";
 import { Popover, Transition } from "@headlessui/react";
 import { InputTextarea } from "../input-textarea";
-import { ElemButton } from "../elem-button";
-import { useMutation } from "react-query";
 import { ElemRequiredProfileDialog } from "../elem-required-profile-dialog";
 import { Popups } from "@/components/the-navbar";
+import ElemNoteForm from "@/components/elem-note-form";
 
 type Props = {
 	data: GetNotesQuery["notes"][0];
@@ -80,10 +78,25 @@ const ElemNoteCard: React.FC<Props> = ({
 	const [isOpenLinkPersonDialog, setIsOpenLinkPersonDialog] =
 		useState<boolean>(false);
 
-	const [isEdit, setIsEdit] = useState<boolean>(false);
-	const [updatedNoteContent, setUpdatedNoteContent] = useState<string>(
-		data.notes
-	);
+	// Edit Notes
+	const [isOpenNoteForm, setIsOpenNoteForm] = useState<boolean>(false);
+	const [selectedNote, setSelectedNote] = useState<GetNotesQuery["notes"][0]>();
+
+	const onOpenNoteForm = () => {
+		setIsOpenNoteForm(true);
+	};
+
+	const onCloseNoteForm = () => {
+		setIsOpenNoteForm(false);
+		setTimeout(() => {
+			setSelectedNote(undefined);
+		}, 400);
+	};
+
+	const onSelectNote = (note: GetNotesQuery["notes"][0]) => {
+		setSelectedNote(note);
+		onOpenNoteForm();
+	};
 
 	const { data: users } = useGetUserProfileQuery({
 		id: data?.created_by,
@@ -168,14 +181,8 @@ const ElemNoteCard: React.FC<Props> = ({
 		}
 	};
 
-	const handleChangeUpdatedNoteContent = (
-		event: ChangeEvent<HTMLTextAreaElement>
-	) => {
-		setUpdatedNoteContent(event.target.value);
-	};
-
 	const onToggleLike = async () => {
-		await fetch("/api/toggle_like_note/", {
+		await fetch("/api/toggle-like-note/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -200,7 +207,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const onAddComment = async () => {
-		await fetch("/api/add_comment/", {
+		await fetch("/api/add-comment/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -216,7 +223,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const onDeleteComment = async (id: number) => {
-		await fetch("/api/delete_comment/", {
+		await fetch("/api/delete-comment/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
@@ -242,27 +249,6 @@ const ElemNoteCard: React.FC<Props> = ({
 		});
 		refetch();
 	};
-
-	const { mutate: updateNote, isLoading: isUpdatingNote } = useMutation(
-		() =>
-			fetch("/api/notes/", {
-				method: "PUT",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					id: data.id,
-					notes: updatedNoteContent,
-				}),
-			}),
-		{
-			onSuccess: () => {
-				setIsEdit(false);
-				refetch();
-			},
-		}
-	);
 
 	useEffect(() => {
 		if (commentInput.current) {
@@ -304,7 +290,7 @@ const ElemNoteCard: React.FC<Props> = ({
 	};
 
 	const noteOptions = (
-		<Popover className="transition-all">
+		<Popover className="relative z-10 transition-all">
 			<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
 				<IconEllipsisHorizontal
 					className="h-6 w-6 group-hover:text-primary-500"
@@ -325,7 +311,7 @@ const ElemNoteCard: React.FC<Props> = ({
 						<>
 							<button
 								onClick={() => {
-									setIsEdit(true);
+									onSelectNote(data);
 									close();
 								}}
 								className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
@@ -333,6 +319,16 @@ const ElemNoteCard: React.FC<Props> = ({
 								<IconEditPencil className="h-4 aspect-square group-hover:text-primary-500" />
 								<span className="text-sm font-medium">Edit note</span>
 							</button>
+							{/* <button
+								onClick={() => {
+									setIsEdit(true);
+									close();
+								}}
+								className="flex items-center space-x-1 w-full px-2 py-2 rounded-lg hover:bg-gray-50 hover:text-primary-500"
+							>
+								<IconEditPencil className="h-4 aspect-square group-hover:text-primary-500" />
+								<span className="text-sm font-medium">Edit note old</span>
+							</button> */}
 							<button
 								onClick={onDeleteNote}
 								className="flex items-center space-x-1 w-full px-2 py-2 hover:bg-gray-50 hover:text-primary-500"
@@ -482,59 +478,27 @@ const ElemNoteCard: React.FC<Props> = ({
 					</div>
 					<div>{noteAuthorID === user?.id && noteOptions}</div>
 				</div>
-				{isEdit ? (
-					<div className="py-4">
-						<label>
-							<InputTextarea
-								name="notes"
-								rows={6}
-								value={updatedNoteContent}
-								onChange={handleChangeUpdatedNoteContent}
-								placeholder="What's important about this organization?"
-								className="ring-1 ring-slate-200"
-							/>
-						</label>
-						<div className="flex items-center justify-between py-4">
-							<ElemButton
-								btn="slate"
-								onClick={() => {
-									setIsEdit(false);
-									setUpdatedNoteContent(data.notes);
-								}}
-							>
-								Cancel
-							</ElemButton>
-							<ElemButton
-								btn="primary"
-								disabled={!updatedNoteContent || isUpdatingNote}
-								loading={isUpdatingNote}
-								onClick={() => updateNote()}
-							>
-								Save
-							</ElemButton>
-						</div>
-					</div>
-				) : (
-					<div className="grow py-2 min-h-fit">
-						<p
-							className={`break-words whitespace-pre-line ${
-								!contentShowAll && "line-clamp-5"
-							} text-gray-400`}
-							ref={contentDiv}
+
+				<div className="grow py-2 min-h-fit">
+					<p
+						className={`break-words whitespace-pre-line ${
+							!contentShowAll && "line-clamp-5"
+						} text-gray-400`}
+						ref={contentDiv}
+					>
+						{data.notes}
+					</p>
+					{contentDivHeight > 120 && !contentShowAll && (
+						<button
+							type="button"
+							onClick={() => setContentShowAll(!contentShowAll)}
+							className="inline text-primary-500"
 						>
-							{data.notes}
-						</p>
-						{contentDivHeight > 120 && !contentShowAll && (
-							<button
-								type="button"
-								onClick={() => setContentShowAll(!contentShowAll)}
-								className="inline text-primary-500"
-							>
-								See more
-							</button>
-						)}
-					</div>
-				)}
+							See more
+						</button>
+					)}
+				</div>
+
 				<div className="flex items-center justify-between">
 					<span className="text-sm text-slate-600">
 						{likesCount > 0
@@ -669,6 +633,16 @@ const ElemNoteCard: React.FC<Props> = ({
 				content="Search your name and claim profile to be able to comment."
 				onClose={onCloseLinkPersonDialog}
 				onClickSearch={onClickSearchName}
+			/>
+
+			<ElemNoteForm
+				isOpen={isOpenNoteForm}
+				type={selectedNote ? "edit" : "create"}
+				selectedNote={selectedNote}
+				resourceId={data.resource_id as number}
+				resourceType={data?.resource_type as string}
+				onClose={onCloseNoteForm}
+				onRefetchNotes={refetch}
 			/>
 		</>
 	);

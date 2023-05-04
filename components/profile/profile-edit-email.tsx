@@ -51,7 +51,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
   const onSaveNewEmail = async () => {
     if (validator.isEmail(newEmail)) {
       setEmailError("");
-      await fetch("/api/send_confirm_additional_email/", {
+      await fetch("/api/send-confirm-additional-email/", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -69,7 +69,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
   };
 
   const onRemoveEmail = async (email: string) => {
-    await fetch("/api/update_additional_emails/", {
+    await fetch("/api/update-additional-emails/", {
       method: "POST",
       headers: {
         Accept: "application/json",

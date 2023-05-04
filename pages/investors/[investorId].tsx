@@ -32,6 +32,7 @@ import { onTrackView } from "@/utils/track";
 import { ElemSubOrganizations } from "@/components/elem-sub-organizations";
 import { IconEditPencil, IconAnnotation } from "@/components/icons";
 import ElemOrganizationNotes from "@/components/elem-organization-notes";
+import { Popups } from "@/components/the-navbar";
 
 type Props = {
 	vcfirm: Vc_Firms;
@@ -39,6 +40,7 @@ type Props = {
 	sortNews: Array<News>;
 	getInvestments: Array<Investment_Rounds>;
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 const VCFirm: NextPage<Props> = (props) => {
@@ -219,7 +221,6 @@ const VCFirm: NextPage<Props> = (props) => {
 								/>
 							</div>
 						</div>
-						{/* <div className="col-span-3 mt-7 lg:mt-0">Placeholder</div> */}
 					</div>
 
 					<ElemTabBar
@@ -254,6 +255,7 @@ const VCFirm: NextPage<Props> = (props) => {
 							<ElemOrganizationNotes
 								resourceId={vcfirm.id}
 								resourceType="vc_firms"
+								setShowPopup={props.setShowPopup}
 							/>
 						</div>
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
