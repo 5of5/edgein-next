@@ -289,6 +289,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             }
 
           }
+          hasRelationship = false;
         }else{
           let tempInsertResult = await mutateActionAndDataRaw(
             partnerId,
