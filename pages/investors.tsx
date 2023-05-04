@@ -15,7 +15,6 @@ import {
 	Vc_Firms_Bool_Exp,
 	Vc_Firms,
 } from "@/graphql/types";
-import { DeepPartial } from "@/pages/companies";
 import { runGraphQl } from "@/utils";
 import { investorChoices } from "@/utils/constants";
 import { useStateParams } from "@/hooks/use-state-params";
@@ -25,6 +24,8 @@ import { ElemFilter } from "@/components/elem-filter";
 import { processInvestorsFilters } from "@/utils/filter";
 import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/use-filter-params";
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	vcFirmCount: number;
@@ -42,6 +43,8 @@ const Investors: NextPage<Props> = ({
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
+
+	const { selectedLibrary } = useLibrary();
 
 	// Investor Status Tag
 	const [selectedStatusTag, setSelectedStatusTag] = useStateParams(
@@ -63,8 +66,13 @@ const Investors: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
+	const defaultFilters = [
+    { slug: { _neq: "" } },
+    { library: { _contains: selectedLibrary } },
+  ];
+
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+		_and: defaultFilters,
 	};
 
 	useEffect(() => {
@@ -143,7 +151,7 @@ const Investors: NextPage<Props> = ({
 	};
 
 	/** Handle selected filter params */
-	processInvestorsFilters(filters, selectedFilters);
+	processInvestorsFilters(filters, selectedFilters, defaultFilters);
 
 	if (selectedStatusTag.value) {
 		filters._and?.push({
@@ -216,11 +224,11 @@ const Investors: NextPage<Props> = ({
 						resourceType="vc_firms"
 						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
-							filters._and = [{ slug: { _neq: "" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [{ slug: { _neq: "" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}

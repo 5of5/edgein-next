@@ -232,7 +232,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 																	: () => {
 																			setSelectedSortOption(opt.value);
 																			close();
-																			if (typeof window !== undefined) {
+																			if (typeof window !== 'undefined') {
 																				localStorage.setItem(
 																					"myListsSortOption",
 																					opt.value

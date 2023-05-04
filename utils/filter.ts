@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import isEmpty from "lodash/isEmpty";
 import {
 	DateCondition,
 	FilterOptionKeys,
@@ -8,10 +9,9 @@ import {
 import {
   Companies_Bool_Exp,
   Events_Bool_Exp,
-  InputMaybe,
   Vc_Firms_Bool_Exp,
 } from "@/graphql/types";
-import { DeepPartial } from "@/pages/companies";
+import { DeepPartial } from "@/types/common";
 import { eventTypeChoices, roundChoices, tags } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
 
@@ -283,9 +283,9 @@ export const getFilterOptionMetadata = (
 export const processCompaniesFilters = (
 	filters: DeepPartial<Companies_Bool_Exp>,
 	selectedFilters: Filters | null,
-	defaultFilters: InputMaybe<Array<Companies_Bool_Exp>>,
+	defaultFilters: DeepPartial<Companies_Bool_Exp[]>,
 ) => {
-	if (!selectedFilters) {
+	if (!selectedFilters || isEmpty(selectedFilters)) {
 		filters._and = defaultFilters;
 	}
 	if (selectedFilters?.country?.tags?.length) {
@@ -519,10 +519,11 @@ export const processCompaniesFilters = (
 
 export const processInvestorsFilters = (
 	filters: DeepPartial<Vc_Firms_Bool_Exp>,
-	selectedFilters: Filters | null
+	selectedFilters: Filters | null,
+	defaultFilters: DeepPartial<Vc_Firms_Bool_Exp[]>,
 ) => {
-	if (!selectedFilters) {
-		filters._and = [{ slug: { _neq: "" } }];
+	if (!selectedFilters || isEmpty(selectedFilters)) {
+		filters._and = defaultFilters;
 	}
 	if (selectedFilters?.country?.tags?.length) {
 		if (selectedFilters?.country?.condition === "any") {
@@ -792,11 +793,12 @@ export const processInvestorsFilters = (
 export const processEventsFilters = (
   filters: DeepPartial<Events_Bool_Exp>,
   selectedFilters: Filters | null,
+	defaultFilters: DeepPartial<Vc_Firms_Bool_Exp[]>,
 	dateCondition: DateCondition = "past",
 ) => {
-  if (!selectedFilters) {
-    filters._and = [];
-  }
+	if (!selectedFilters || isEmpty(selectedFilters)) {
+		filters._and = defaultFilters;
+	}
   if (selectedFilters?.country?.tags?.length) {
     if (selectedFilters?.country?.condition === "any") {
       filters._and?.push({

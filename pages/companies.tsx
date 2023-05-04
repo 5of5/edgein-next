@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import moment from "moment-timezone";
@@ -13,7 +13,6 @@ import {
 	Companies_Bool_Exp,
 	GetCompaniesDocument,
 	GetCompaniesQuery,
-	InputMaybe,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
 import { Pagination } from "@/components/pagination";
@@ -27,6 +26,7 @@ import { ElemFilter } from "@/components/elem-filter";
 import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/use-filter-params";
 import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -44,12 +44,6 @@ type Props = {
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
-
 const Companies: NextPage<Props> = ({
 	companiesCount,
 	initialCompanies,
@@ -60,7 +54,7 @@ const Companies: NextPage<Props> = ({
 
 	const router = useRouter();
 
-	const { selectedLibrary, onChangeLibrary } = useLibrary();
+	const { selectedLibrary } = useLibrary();
 
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
 
@@ -80,12 +74,10 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const defaultFilters = useMemo(() => {
-    return [
-      { slug: { _neq: "" } },
-      { library: { _contains: selectedLibrary } },
-    ];
-  }, [selectedLibrary]);
+	const defaultFilters = [
+    { slug: { _neq: "" } },
+    { library: { _contains: selectedLibrary } },
+  ];
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: defaultFilters,

@@ -1,5 +1,5 @@
 import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types";
-import { DeepPartial } from "@/pages/companies";
+import { DeepPartial } from "@/types/common";
 import { find, has } from "lodash";
 
 type ReactionType = SentimentReactionType | ListReactionType;
