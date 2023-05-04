@@ -1,7 +1,7 @@
-import { useAuth } from "../hooks/useAuth";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemCompanyVerifyModal } from "@/components/ElemCompanyVerifyModal";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { useAuth } from "../hooks/use-auth";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemCompanyVerifyModal } from "@/components/elem-company-verify-modal";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import {
 	GetCompaniesDocument,
 	GetCompaniesQuery,

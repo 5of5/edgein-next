@@ -190,13 +190,13 @@ mutation UpdateSentimentByVcFirmId($vcFirmId: Int!, $sentiment: jsonb!) {
   }
 }  
 
-query GetVcFirmsByDate($date: timestamptz) {
+query GetVcFirmsByDate($date: timestamptz, $library: jsonb) {
   vc_firms(
     where: {
       _and: [
         { status: { _eq: "published" } }
         { updated_at: { _gte: $date } }
-        { library: { _contains: "Web3" } }
+        { library: { _contains: $library } }
       ]
     }
   ) {

@@ -1,8 +1,9 @@
 import React from "react";
 import { useCreate, useRedirect } from "react-admin";
-import ElemToolbar from "../ElemToolbar";
-import ElemFormBase from "../ElemFormBase";
+import ElemToolbar from "../elem-toolbar";
+import ElemFormBase from "../elem-form-base";
 import NewsForm from "./news-form";
+import { transformFormData } from "./services";
 
 export const NewsCreate = () => {
   const [create] = useCreate();
@@ -15,7 +16,11 @@ export const NewsCreate = () => {
   };
 
   return (
-    <ElemFormBase title="Create a news" action="create">
+    <ElemFormBase
+      title="Create a news"
+      action="create"
+      transform={transformFormData}
+    >
       <NewsForm
         action="create"
         toolbar={<ElemToolbar onSaveDraft={handleSaveDraft} />}

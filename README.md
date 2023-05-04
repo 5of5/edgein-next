@@ -140,7 +140,7 @@ This API allows partners insert/update/delete edgein data.
 Partner need to be added in data_partners table, then using their api_key o request
 
 #### Insert data
-curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
+curl --location --request POST 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
     "partner_api_key": "<api_key>",
     "resource_type": "<resource_type>",
     "resource_identifier":[{"field": "id"}],
@@ -202,7 +202,7 @@ curl --location 'https://edgein.io/api/submit_data' \
 }'
 
 #### Update data
-curl --location --request POST 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
+curl --location --request POST 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
     "partner_api_key": "<api_key>",
     "resource_type": "<resource_type>",
     "resource_identifier":[<list_of_filters>],
@@ -213,7 +213,7 @@ Each filter of <list_of_filters> is a json: {"field": <column_name>, "value": <v
 method is optional, default value is "_eq"
 
 #### Delete data
-curl --location --request DELETE 'https://edgein.io/api/submit_data/' --header 'Content-Type: application/json' --data-raw '{
+curl --location --request DELETE 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
     "partner_api_key": "<api_key>",
     "resource_type": "<resource_type>",
     "resource_identifier":[<list_of_filters>]

@@ -1,3 +1,3 @@
-export * from "./DataPartnerList";
-export * from "./DataPartnerCreate";
-export * from "./DataPartnerEdit";
+export * from "./data-partner-list";
+export * from "./data-partner-create";
+export * from "./data-partner-edit";

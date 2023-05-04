@@ -7,7 +7,7 @@ import {
   SingleFieldList,
   ChipField,
 } from "react-admin";
-import ElemList from "../ElemList";
+import ElemList from "../elem-list";
 
 const filters = [
   <TextInput
@@ -46,6 +46,9 @@ export const NewsList = () => {
           <ChipField source="name" />
         </SingleFieldList>
       </ReferenceArrayField>
+      <TextField source="source" />
+      <TextField source="kind" />
+      <TextField source="metadata" />
       <TextField source="status" />
     </ElemList>
   );

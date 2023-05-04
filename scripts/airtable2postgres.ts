@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import { companiesMapping, investmentRoundsMapping, investmentsMapping, peopleMapping, vcFirmMapping, teamMembersMapping, Mapping, coinsMapping } from './mapping'
-import { getClient, upsertBatch } from './postgres_helpers'
-import { getAirtableTable } from './airtable_helpers'
+import { getClient, upsertBatch } from './postgres-helpers'
+import { getAirtableTable } from './airtable-helpers'
 import { Client } from 'pg';
 import { keyBy, compact, Dictionary } from 'lodash'
 import slugify from 'slugify'

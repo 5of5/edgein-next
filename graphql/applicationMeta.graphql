@@ -1,6 +1,19 @@
 query GetLastSync {
   application_meta(
-    where: { key: { _in: ["sync_companies", "sync_vc_firms", "sync_people"] } }
+    where: {
+      key: {
+        _in: [
+          "sync_web3_companies"
+          "sync_web3_vc_firms"
+          "sync_web3_people"
+          "sync_web3_events"
+          "sync_ai_companies"
+          "sync_ai_vc_firms"
+          "sync_ai_people"
+          "sync_ai_events"
+        ]
+      }
+    }
   ) {
     id
     key

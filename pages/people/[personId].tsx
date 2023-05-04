@@ -1,33 +1,36 @@
 import React, { MutableRefObject, useRef, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
 import { useRouter } from "next/router";
-import { flatten, union} from "lodash";
-import { ElemPhoto } from "@/components/ElemPhoto";
-import { ElemKeyInfo } from "@/components/ElemKeyInfo";
-import { ElemInvestments } from "@/components/Investor/ElemInvestments";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemButton } from "@/components/ElemButton";
+import { flatten, union } from "lodash";
+import { ElemPhoto } from "@/components/elem-photo";
+import { ElemKeyInfo } from "@/components/elem-key-info";
+import { ElemInvestments } from "@/components/investor/elem-investments";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemButton } from "@/components/elem-button";
 import { runGraphQl, removeSpecialCharacterFromString } from "@/utils";
 import {
 	GetPersonDocument,
 	GetPersonQuery,
 	Investment_Rounds,
+	News,
 	People,
 	useGetUserByPersonIdQuery,
 } from "@/graphql/types";
-import { ElemJobsList } from "@/components/Person/ElemJobsList";
-import { ElemInvestorsList } from "@/components/Person/ElemInvestorsList";
+import { ElemJobsList } from "@/components/person/elem-jobs-list";
+import { ElemInvestorsList } from "@/components/person/elem-investors-list";
 import { onTrackView } from "@/utils/track";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/use-auth";
 import { useIntercom } from "react-use-intercom";
-import { IconCheckBadgeSolid } from "@/components/Icons";
-import { ElemTooltip } from "@/components/ElemTooltip";
-import { ElemTags } from "@/components/ElemTags";
-import { ElemSaveToList } from "@/components/ElemSaveToList";
+import { IconCheckBadgeSolid } from "@/components/icons";
+import { ElemTooltip } from "@/components/elem-tooltip";
+import { ElemTags } from "@/components/elem-tags";
+import { ElemSaveToList } from "@/components/elem-save-to-list";
+import { ElemNewsList } from "@/components/person/elem-news-list";
 
 type Props = {
 	person: People;
 	sortByDateAscInvestments: Investment_Rounds[];
+	sortNews: News[];
 };
 
 const Person: NextPage<Props> = (props) => {
@@ -51,9 +54,13 @@ const Person: NextPage<Props> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [person]);
 
-	const vcFirmTags = flatten(person.investors.map(item => item?.vc_firm?.tags));
-	const companyTags = flatten(person.team_members.map(item => item?.company?.tags));
-	const personTags = union(vcFirmTags, companyTags).filter(item => item);
+	const vcFirmTags = flatten(
+		person.investors.map((item) => item?.vc_firm?.tags)
+	);
+	const companyTags = flatten(
+		person.team_members.map((item) => item?.company?.tags)
+	);
+	const personTags = union(vcFirmTags, companyTags).filter((item) => item);
 
 	const personEmails = [
 		...(person.work_email ? [person.work_email] : []),
@@ -75,9 +82,11 @@ const Person: NextPage<Props> = (props) => {
 	const profileUrl = `https://edgein.io${router.asPath}`;
 
 	const { data: linkedUser, isLoading: isLoadingLinkedUser } =
-    useGetUserByPersonIdQuery({ person_id: person?.id });
+		useGetUserByPersonIdQuery({ person_id: person?.id });
 
-  const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
+	const claimedProfile = linkedUser?.users && linkedUser.users.length > 0;
+	const isCurrentUserProfile =
+		claimedProfile && linkedUser?.users[0].id === user?.id;
 
 	return (
 		<div className="relative">
@@ -124,16 +133,16 @@ const Person: NextPage<Props> = (props) => {
 									</div>
 
 									{personTags?.length > 0 && (
-                    <ElemTags
-                      className="my-4"
-                      resourceType={
-                        person.team_members.length > 0
-                          ? "companies"
-                          : "investors"
-                      }
-                      tags={personTags}
-                    />
-                  )}
+										<ElemTags
+											className="my-4"
+											resourceType={
+												person.team_members.length > 0
+													? "companies"
+													: "investors"
+											}
+											tags={personTags}
+										/>
+									)}
 
 									<div className="flex flex-wrap items-center mt-4 gap-x-5 gap-y-3 sm:gap-y-0">
 										{!isLoadingLinkedUser && !claimedProfile && (
@@ -148,13 +157,18 @@ const Person: NextPage<Props> = (props) => {
 												Claim profile
 											</ElemButton>
 										)}
-											
 										<ElemSaveToList
 											resourceName={person.name}
 											resourceId={person.id}
 											resourceType="people"
 											slug={person.slug!}
 										/>
+
+										{isCurrentUserProfile && (
+											<ElemButton btn="slate" href="/profile/">
+												Edit profile
+											</ElemButton>
+										)}
 									</div>
 								</div>
 								<div className="mt-6 lg:mt-0"></div>
@@ -214,6 +228,9 @@ const Person: NextPage<Props> = (props) => {
 								team_members={person.team_members}
 								className="mb-7"
 							/>
+						)}
+						{props.sortNews.length > 0 && (
+							<ElemNewsList resourceNews={props.sortNews} className="mb-7" />
 						)}
 						{!person.investors || person.investors.length === 0 ? null : (
 							<ElemInvestorsList
@@ -284,10 +301,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		})
 		.reverse();
 
+	const sortNews =
+		people.people[0].news_links
+			?.slice()
+			?.map((item) => ({ ...item.news }))
+			?.filter((item) => item.status === "published")
+			.sort((a, b) => {
+				return (
+					new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
+				);
+			})
+			.reverse() || [];
+
 	return {
 		props: {
 			person: people.people[0],
 			sortByDateAscInvestments,
+			sortNews,
 		},
 	};
 };

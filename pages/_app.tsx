@@ -7,12 +7,12 @@ import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { LoaderPlasma } from "@/components/LoaderPlasma";
-import { Popups, TheNavbar } from "@/components/TheNavbar";
-import { ElemFeedback } from "@/components/ElemFeedback";
-import { TheFooter } from "@/components/TheFooter";
+import { LoaderPlasma } from "@/components/loader-plasma";
+import { Popups, TheNavbar } from "@/components/the-navbar";
+import { ElemFeedback } from "@/components/elem-feedback";
+import { TheFooter } from "@/components/the-footer";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { UserProvider } from "@/context/userContext";
+import { UserProvider } from "@/context/user-context";
 import { IntercomProvider } from "react-use-intercom";
 
 const INTERCOM_APP_ID = "jm3hf6lp";
@@ -146,7 +146,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 										showPopup={showPopup}
 										setShowPopup={setShowPopup}
 									/>
-									<main className="grow selection:bg-primary-200">
+									<main className="mt-11 grow selection:bg-primary-200">
 										{pageLoading ? (
 											<LoaderPlasma />
 										) : (

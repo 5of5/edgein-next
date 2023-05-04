@@ -22,7 +22,7 @@ import {
 import { CoinList, CoinCreate, CoinEdit } from "../../components/admin/coin";
 import { EventList, EventCreate, EventEdit } from "../../components/admin/event";
 import { ApolloClient, gql, InMemoryCache } from "@apollo/client";
-import ElemAppBar from "@/components/admin/ElemAppBar";
+import ElemAppBar from "@/components/admin/elem-app-bar";
 import { getParentSubOrganizations } from "@/utils/resource-link";
 import {
 	InvestmentRoundCreate,
@@ -64,7 +64,7 @@ import {
 	NewsEdit,
 	NewsCreate,
 } from "../../components/admin/news";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/use-auth";
 import { onSubmitData } from "@/utils/submit-data";
 
 const MyLogin = () => {
@@ -275,6 +275,20 @@ const AdminApp = () => {
 						...metadata,
 					};
 				},
+				getOne: async (type, obj) => {
+          let { data, ...metadata } = await dataProvider.getOne(type, obj);
+          if (type === "news") {
+            data = {
+              ...data,
+              source: data?.source ? JSON.stringify(data.source) : "",
+              metadata: data?.metadata ? JSON.stringify(data.metadata) : "",
+            };
+          }
+          return {
+            data,
+            ...metadata,
+          };
+        },
 				create: (type, obj) =>
 					onSubmitData(type, nullInputTransform(type, obj), "POST"),
 				update: (type, obj) =>

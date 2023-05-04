@@ -1,7 +1,7 @@
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
 
 const VerifyAdditionalEmail = () => {
   const { user, refreshUser } = useUser();
@@ -20,7 +20,7 @@ const VerifyAdditionalEmail = () => {
         if (user?.additional_emails?.includes(email)) {
           setError("This link is expired.");
         } else {
-          const response = await fetch("/api/update_additional_emails/", {
+          const response = await fetch("/api/update-additional-emails/", {
             method: "POST",
             headers: {
               Accept: "application/json",
