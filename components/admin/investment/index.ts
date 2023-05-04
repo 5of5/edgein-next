@@ -1,3 +1,3 @@
-export * from "./InvestmentList";
-export * from "./InvestmentCreate";
-export * from "./InvestmentEdit";
+export * from "./investment-list";
+export * from "./investment-create";
+export * from "./investment-edit";

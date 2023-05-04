@@ -1,3 +1,3 @@
-export * from "./VcFirmCreate";
-export * from "./VcFirmEdit";
-export * from "./VcFirmList";
+export * from "./vc-firm-create";
+export * from "./vc-firm-edit";
+export * from "./vc-firm-list";

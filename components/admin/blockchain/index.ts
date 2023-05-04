@@ -1,3 +1,3 @@
-export * from "./BlockchainList";
-export * from "./BlockchainCreate";
-export * from "./BlockchainEdit";
+export * from "./blockchain-list";
+export * from "./blockchain-create";
+export * from "./blockchain-edit";

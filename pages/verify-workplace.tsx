@@ -1,4 +1,4 @@
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { FC, useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -13,7 +13,7 @@ const VerifyWorkplace: FC<Props> = ({}) => {
 		const token = router.query.vtoken as string;
 
 		if (token) {
-			const resp = await fetch(`/api/verify_workplace/?vtoken=${token}`, {
+			const resp = await fetch(`/api/verify-workplace/?vtoken=${token}`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",

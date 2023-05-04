@@ -14,7 +14,7 @@ import {
 import CssBaseline from "@mui/material/CssBaseline";
 
 import { ApolloClient, InMemoryCache } from "@apollo/client";
-import ElemAppBar from "@/components/admin/ElemAppBar";
+import ElemAppBar from "@/components/admin/elem-app-bar";
 import {
 	DisabledEmailList,
 	DisabledEmailEdit,
@@ -26,7 +26,7 @@ import {
 	DataPartnerCreate,
 	DataPartnerEdit,
 } from "../../components/admin/dataPartner";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../hooks/use-auth";
 import { onSubmitData } from "@/utils/submit-data";
 
 const MyLogin = () => {

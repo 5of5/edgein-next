@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import React from "react";
-import { FigureBlurredCircle } from "@/components/Figures";
+import { FigureBlurredCircle } from "@/components/figures";
 import Image from "next/image";
 import Link from "next/link";
 import { useIntercom } from "react-use-intercom";
-import { Popups } from "@/components/TheNavbar";
+import { Popups } from "@/components/the-navbar";
 
 type Props = {
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;

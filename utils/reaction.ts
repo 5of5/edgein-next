@@ -131,7 +131,7 @@ export const getNewTempSentiment = (
 export const createListWithMultipleResources = async (
 	payload: MultipleListResourceType
 ) => {
-	const resp = await fetch("/api/multiple_resources_to_list/", {
+	const resp = await fetch("/api/multiple-resources-to-list/", {
 		method: "POST",
 		headers: {
 			Accept: "application/json",

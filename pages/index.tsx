@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import Script from "next/script";
 import React from "react";
-import { FigureIntroSplash } from "@/components/FigureIntroSplash";
-import { ElemButton } from "@/components/ElemButton";
-import { useUser } from "@/context/userContext";
-import { FigureBlurredBg, FigureCircleDashes } from "@/components/Figures";
-import { Popups } from "@/components/TheNavbar";
+import { FigureIntroSplash } from "@/components/figure-intro-splash";
+import { ElemButton } from "@/components/elem-button";
+import { useUser } from "@/context/user-context";
+import { FigureBlurredBg, FigureCircleDashes } from "@/components/figures";
+import { Popups } from "@/components/the-navbar";
 
 type Props = {
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;

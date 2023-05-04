@@ -7,16 +7,16 @@ import React, {
 } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import { useMutation } from "react-query";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ElemTabBar } from "@/components/ElemTabBar";
-import { ElemGroupInformation } from "@/components/Group/ElemGroupInformation";
-import { ElemGroupAbout } from "@/components/Group/ElemGroupAbout";
-import { ElemLists } from "@/components/Group/ElemLists";
-import { ElemNotes } from "@/components/Group/ElemNotes";
-import ElemInviteDialog from "@/components/Group/ElemInviteDialog";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { ElemTabBar } from "@/components/elem-tab-bar";
+import { ElemGroupInformation } from "@/components/group/elem-group-information";
+import { ElemGroupAbout } from "@/components/group/elem-group-about";
+import { ElemLists } from "@/components/group/elem-lists";
+import { ElemNotes } from "@/components/group/elem-notes";
+import ElemInviteDialog from "@/components/group/elem-invite-dialog";
 import ElemSettingDialog, {
 	SettingTabProps,
-} from "@/components/Group/ElemSettingDialog";
+} from "@/components/group/elem-setting-dialog";
 import { runGraphQl } from "@/utils";
 import CookieService from "@/utils/cookie";
 import {
@@ -30,9 +30,9 @@ import {
 	Notes_Bool_Exp,
 	User_Group_Members,
 } from "@/graphql/types";
-import { IconInformationCircle, IconLockClosed } from "@/components/Icons";
-import { ElemButton } from "@/components/ElemButton";
-import { useUser } from "@/context/userContext";
+import { IconUsers } from "@/components/icons";
+import { ElemButton } from "@/components/elem-button";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	group: User_Groups;
@@ -76,12 +76,8 @@ const Group: NextPage<Props> = (props: Props) => {
 		(mem) => mem.user.id === user?.id
 	);
 
-	// const homeRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const aboutRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const listsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const notesRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const chatRef = useRef() as MutableRefObject<HTMLDivElement>;
-	const settingsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	const [isOpenInviteDialog, setIsOpenInviteDialog] = useState(false);
 
@@ -91,7 +87,6 @@ const Group: NextPage<Props> = (props: Props) => {
 		return [
 			{ name: "Notes", ref: notesRef },
 			{ name: "Lists", ref: listsRef },
-			//{ name: "About", ref: aboutRef },
 		];
 	}, []);
 
@@ -116,7 +111,7 @@ const Group: NextPage<Props> = (props: Props) => {
 	const { mutate: addGroupMember, isLoading: isAddingGroupMember } =
 		useMutation(
 			async () => {
-				const res = await fetch("/api/add_group_member/", {
+				const res = await fetch("/api/add-group-member/", {
 					method: "POST",
 					headers: {
 						Accept: "application/json",
@@ -173,7 +168,7 @@ const Group: NextPage<Props> = (props: Props) => {
 					</div>
 					<div className="flex justify-center flex-1 lg:block lg:max-w-lg">
 						<div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
-							<div ref={aboutRef}>
+							<div>
 								<ElemGroupAbout
 									className="mt-4 lg:mt-12"
 									isUserBelongToGroup={isUserBelongToGroup}
@@ -195,7 +190,6 @@ const Group: NextPage<Props> = (props: Props) => {
 						</div>
 					</div>
 				</div>
-				<div ref={chatRef} />
 				<ElemInviteDialog
 					isOpen={isOpenInviteDialog}
 					group={groupData}
@@ -222,18 +216,44 @@ const Group: NextPage<Props> = (props: Props) => {
 					group={groupData}
 					onInvite={onOpenInviteDialog}
 					onOpenSettingDialog={onOpenSettingDialog}
+					isAddingGroupMember={isAddingGroupMember}
+					onAddGroupMember={() => addGroupMember()}
 				/>
-				<div className="flex items-center gap-1 w-full mt-7 p-5 bg-white shadow rounded-lg">
-					<IconInformationCircle className="h-5 w-5" title="Private" />
-					<p>Join group to explore more information</p>
-					<ElemButton
-						btn="primary"
-						className="px-8 ml-4"
-						loading={isAddingGroupMember}
-						onClick={() => addGroupMember()}
-					>
-						Join
-					</ElemButton>
+				<div className="lg:flex lg:gap-x-4">
+					<div className="mt-4 flex justify-center flex-1">
+						<div className="flex flex-col max-w-2xl w-full">
+							<div className="bg-white shadow rounded-lg max-w-2xl w-full p-12 text-center">
+								<IconUsers
+									className="mx-auto h-12 w-12 text-slate-300"
+									title="Join group"
+								/>
+								<h3 className="mt-2 text-lg font-bold">
+									Join this group to view and participate.
+								</h3>
+								{/* <p className="mt-1 text-slate-600">
+									placeholder text
+								</p> */}
+								<ElemButton
+									btn="primary"
+									loading={isAddingGroupMember}
+									onClick={() => addGroupMember()}
+									className="mt-2"
+								>
+									Join group
+								</ElemButton>
+							</div>
+						</div>
+					</div>
+
+					<div className="flex justify-center flex-1 lg:block lg:max-w-lg">
+						<div className="flex flex-col space-y-4 w-full max-w-2xl lg:max-w-lg">
+							<ElemGroupAbout
+								className="mt-4"
+								isUserBelongToGroup={isUserBelongToGroup}
+								group={groupData}
+							/>
+						</div>
+					</div>
 				</div>
 			</DashboardLayout>
 		);
@@ -248,7 +268,7 @@ const Group: NextPage<Props> = (props: Props) => {
 				/>
 
 				<div className="flex justify-center space-y-4 lg:justify-start">
-					<div ref={aboutRef} className="w-full max-w-2xl lg:max-w-lg">
+					<div className="w-full max-w-2xl lg:max-w-lg">
 						<ElemGroupAbout
 							className="mt-4"
 							isUserBelongToGroup={isUserBelongToGroup}

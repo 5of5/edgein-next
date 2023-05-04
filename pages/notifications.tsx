@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useEffect } from "react";
 import type { NextPage, GetServerSideProps } from "next";
-import { useAuth } from "@/hooks/useAuth";
-import { ElemButton } from "@/components/ElemButton";
-import { PlaceholderNotification } from "@/components/Placeholders";
+import { useAuth } from "@/hooks/use-auth";
+import { ElemButton } from "@/components/elem-button";
+import { PlaceholderNotification } from "@/components/placeholders";
 import Link from "next/link";
 import {
 	IconCheck,
@@ -10,11 +10,11 @@ import {
 	IconExclamationTriangle,
 	IconChevronDownMini,
 	IconBell,
-} from "@/components/Icons";
-import { ElemPhoto } from "@/components/ElemPhoto";
+} from "@/components/icons";
+import { ElemPhoto } from "@/components/elem-photo";
 import { Disclosure, Popover, Transition } from "@headlessui/react";
 import moment from "moment-timezone";
-import { ElemUpgradeDialog } from "@/components/ElemUpgradeDialog";
+import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
 import {
 	GetNotificationsForUserQuery,
 	useGetNotificationsForUserQuery,
@@ -44,7 +44,7 @@ const Notifications: NextPage = () => {
 	}, []);
 
 	const excludeProperties = useMemo(() => {
-		return ["status_tags"];
+		return ["status_tags", "logo"];
 	}, []);
 
 	const excludeResourceTypes = useMemo(() => {
@@ -87,7 +87,7 @@ const Notifications: NextPage = () => {
 	};
 
 	const markAsRead = async (id?: number, all?: boolean) => {
-		await fetch("/api/mark_notification_read/", {
+		await fetch("/api/mark-notification-read/", {
 			method: "POST",
 			headers: {
 				Accept: "application/json",
