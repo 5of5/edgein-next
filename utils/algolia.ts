@@ -21,6 +21,14 @@ import { SearchClient } from "algoliasearch";
 
 type LibraryTypes = "Web3" | "AI";
 
+type SyncParams = {
+  client: SearchClient;
+  lastSyncArray: GetLastSyncQuery["application_meta"];
+  key: string;
+  library: LibraryTypes;
+  index: string;
+};
+
 export const queryForLastSync = async () => {
   try {
     const data = await query<GetLastSyncQuery>({
@@ -69,11 +77,11 @@ const queryForPeopleList = async (date: any, library: LibraryTypes) => {
   }
 };
 
-const queryForEventList = async (date: any) => {
+const queryForEventList = async (date: any, library: LibraryTypes) => {
   try {
     const data = await query<GetEventsByDateQuery>({
       query: GetEventsByDateDocument,
-      variables: { date },
+      variables: { date, library },
     });
     return data.data.events;
   } catch (ex) {
@@ -130,13 +138,8 @@ const prepareError = (error: any) => {
   return preparedError;
 };
 
-export const syncCompanies = async (
-  client: SearchClient,
-  lastSyncArray: GetLastSyncQuery["application_meta"],
-  key: string,
-  library: LibraryTypes,
-  index: string
-) => {
+export const syncCompanies = async (params: SyncParams) => {
+  const { client, lastSyncArray, key, library, index } = params;
   const output: Record<string, any> = {};
   const companyLastSync = lastSyncArray.find(
     (lastSync: { key: string }) => lastSync.key === key
@@ -190,13 +193,8 @@ export const syncCompanies = async (
   return output;
 };
 
-export const syncVcFirms = async (
-  client: SearchClient,
-  lastSyncArray: GetLastSyncQuery["application_meta"],
-  key: string,
-  library: LibraryTypes,
-  index: string
-) => {
+export const syncVcFirms = async (params: SyncParams) => {
+  const { client, lastSyncArray, key, library, index } = params;
   const output: Record<string, any> = {};
   const investorLastSync = lastSyncArray.find(
     (lastSync: { key: string }) => lastSync.key === key
@@ -246,13 +244,8 @@ export const syncVcFirms = async (
   return output;
 };
 
-export const syncPeople = async (
-  client: SearchClient,
-  lastSyncArray: GetLastSyncQuery["application_meta"],
-  key: string,
-  library: LibraryTypes,
-  index: string
-) => {
+export const syncPeople = async (params: SyncParams) => {
+  const { client, lastSyncArray, key, library, index } = params;
   const output: Record<string, any> = {};
   const peopleLastSync = lastSyncArray.find(
     (lastSync: { key: string }) => lastSync.key === key
@@ -302,19 +295,20 @@ export const syncPeople = async (
   return output;
 };
 
-export const syncEvents = async (
-  client: SearchClient,
-  lastSyncArray: GetLastSyncQuery["application_meta"]
-) => {
+export const syncEvents = async (params: SyncParams) => {
+  const { client, lastSyncArray, key, library, index } = params;
   const output: Record<string, any> = {};
   const eventLastSync = lastSyncArray.find(
-    (lastSync: { key: string }) => lastSync.key === "sync_events"
+    (lastSync: { key: string }) => lastSync.key === key
   );
-  output["eventLastSync"] = eventLastSync?.value;
+  output[`eventLastSync_${key}`] = eventLastSync?.value;
   if (eventLastSync) {
     try {
       // get all the events details
-      const eventList: any = await queryForEventList(eventLastSync.value);
+      const eventList: any = await queryForEventList(
+        eventLastSync.value,
+        library
+      );
 
       for (const event of eventList) {
         if (event.banner) {
@@ -323,7 +317,7 @@ export const syncEvents = async (
         event.objectID = event.id;
         delete event.id;
       }
-      const eventIndex = client.initIndex("events");
+      const eventIndex = client.initIndex(index);
       await eventIndex.saveObjects(eventList, {
         autoGenerateObjectIDIfNotExist: true,
       });
@@ -337,15 +331,15 @@ export const syncEvents = async (
         deletedEvents.map((item: any) => item.resource_id)
       );
 
-      output["eventList"] =
+      output[`eventList_${key}`] =
         eventList.map((p: any) => `${p.id} ${p.name}`).length -
         deletedEvents.length;
       // update the last_sync date to current date
-      await mutateForLastSync("sync_events");
+      await mutateForLastSync(key);
     } catch (error) {
       // update the last_error
-      output["eventsError"] = error;
-      await mutateForError("sync_events", prepareError(error));
+      output[`eventsError_${key}`] = error;
+      await mutateForError(key, prepareError(error));
     }
   }
   return output;

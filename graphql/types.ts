@@ -5593,6 +5593,7 @@ export type Events = {
   id: Scalars['Int'];
   instagram: Maybe<Scalars['String']>;
   is_featured: Maybe<Scalars['Boolean']>;
+  library: Maybe<Scalars['jsonb']>;
   link: Maybe<Scalars['String']>;
   location_json: Maybe<Scalars['jsonb']>;
   name: Scalars['String'];
@@ -5669,6 +5670,12 @@ export type EventsEvent_Person_AggregateArgs = {
 
 
 /** columns and relationships of "events" */
+export type EventsLibraryArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "events" */
 export type EventsLocation_JsonArgs = {
   path: InputMaybe<Scalars['String']>;
 };
@@ -5713,6 +5720,7 @@ export type Events_Aggregate_FieldsCountArgs = {
 export type Events_Append_Input = {
   attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
+  library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
 };
@@ -5743,6 +5751,7 @@ export type Events_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   instagram: InputMaybe<String_Comparison_Exp>;
   is_featured: InputMaybe<Boolean_Comparison_Exp>;
+  library: InputMaybe<Jsonb_Comparison_Exp>;
   link: InputMaybe<String_Comparison_Exp>;
   location_json: InputMaybe<Jsonb_Comparison_Exp>;
   name: InputMaybe<String_Comparison_Exp>;
@@ -5776,6 +5785,7 @@ export enum Events_Constraint {
 export type Events_Delete_At_Path_Input = {
   attachments: InputMaybe<Array<Scalars['String']>>;
   banner: InputMaybe<Array<Scalars['String']>>;
+  library: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   types: InputMaybe<Array<Scalars['String']>>;
 };
@@ -5784,6 +5794,7 @@ export type Events_Delete_At_Path_Input = {
 export type Events_Delete_Elem_Input = {
   attachments: InputMaybe<Scalars['Int']>;
   banner: InputMaybe<Scalars['Int']>;
+  library: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   types: InputMaybe<Scalars['Int']>;
 };
@@ -5792,6 +5803,7 @@ export type Events_Delete_Elem_Input = {
 export type Events_Delete_Key_Input = {
   attachments: InputMaybe<Scalars['String']>;
   banner: InputMaybe<Scalars['String']>;
+  library: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   types: InputMaybe<Scalars['String']>;
 };
@@ -5818,6 +5830,7 @@ export type Events_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
   is_featured: InputMaybe<Scalars['Boolean']>;
+  library: InputMaybe<Scalars['jsonb']>;
   link: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
@@ -5929,6 +5942,7 @@ export type Events_Order_By = {
   id: InputMaybe<Order_By>;
   instagram: InputMaybe<Order_By>;
   is_featured: InputMaybe<Order_By>;
+  library: InputMaybe<Order_By>;
   link: InputMaybe<Order_By>;
   location_json: InputMaybe<Order_By>;
   name: InputMaybe<Order_By>;
@@ -5959,6 +5973,7 @@ export type Events_Pk_Columns_Input = {
 export type Events_Prepend_Input = {
   attachments: InputMaybe<Scalars['jsonb']>;
   banner: InputMaybe<Scalars['jsonb']>;
+  library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   types: InputMaybe<Scalars['jsonb']>;
 };
@@ -5987,6 +6002,8 @@ export enum Events_Select_Column {
   Instagram = 'instagram',
   /** column name */
   IsFeatured = 'is_featured',
+  /** column name */
+  Library = 'library',
   /** column name */
   Link = 'link',
   /** column name */
@@ -6038,6 +6055,7 @@ export type Events_Set_Input = {
   id: InputMaybe<Scalars['Int']>;
   instagram: InputMaybe<Scalars['String']>;
   is_featured: InputMaybe<Scalars['Boolean']>;
+  library: InputMaybe<Scalars['jsonb']>;
   link: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   name: InputMaybe<Scalars['String']>;
@@ -6114,6 +6132,8 @@ export enum Events_Update_Column {
   Instagram = 'instagram',
   /** column name */
   IsFeatured = 'is_featured',
+  /** column name */
+  Library = 'library',
   /** column name */
   Link = 'link',
   /** column name */
@@ -22681,6 +22701,7 @@ export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typen
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
 }>;
 
 
@@ -23512,7 +23533,7 @@ useGetAllowedEmailByEmailOrDomainQuery.fetcher = (variables?: GetAllowedEmailByE
 export const GetLastSyncDocument = `
     query GetLastSync {
   application_meta(
-    where: {key: {_in: ["sync_companies", "sync_vc_firms", "sync_people", "sync_events", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people"]}}
+    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events"]}}
   ) {
     id
     key
@@ -24405,9 +24426,9 @@ useGetEventQuery.getKey = (variables: GetEventQueryVariables) => ['GetEvent', va
 
 useGetEventQuery.fetcher = (variables: GetEventQueryVariables, options?: RequestInit['headers']) => fetcher<GetEventQuery, GetEventQueryVariables>(GetEventDocument, variables, options);
 export const GetEventsByDateDocument = `
-    query GetEventsByDate($date: timestamptz) {
+    query GetEventsByDate($date: timestamptz, $library: jsonb) {
   events(
-    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}]}
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
   ) {
     id
     name

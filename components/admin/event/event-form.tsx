@@ -5,6 +5,7 @@ import {
 	eventTypeChoices,
 	status,
 	timezoneChoices,
+	libraryChoices,
 } from "@/utils/constants";
 import moment from "moment-timezone";
 import React, { ReactElement } from "react";
@@ -18,6 +19,7 @@ import {
 	AutocompleteInput,
 	NumberInput,
 	AutocompleteArrayInput,
+	SelectArrayInput,
 	FormDataConsumer,
 	FileInput,
 	BooleanInput,
@@ -200,6 +202,12 @@ const EventForm = ({
 				label="Telegram"
 			/>
 			<BooleanInput className="w-full" label="Featured" source="is_featured" />
+			<SelectArrayInput
+        className={inputClassName}
+        source="library"
+        choices={libraryChoices}
+        defaultValue={["Web3"]}
+      />
 			<ArrayInput source="attachments" className={inputClassName}>
         <SimpleFormIterator disableReordering sx={{ margin: 2, paddingTop: 1 }}>
           <TextInput className={inputClassName} source="label" />

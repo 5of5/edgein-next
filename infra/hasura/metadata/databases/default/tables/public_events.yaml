@@ -45,6 +45,7 @@ select_permissions:
         - id
         - instagram
         - is_featured
+        - library
         - link
         - location_json
         - name

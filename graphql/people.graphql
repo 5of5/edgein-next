@@ -124,7 +124,7 @@ query SearchPeople($query: String, $searchText: jsonb) {
   }
 }
 
-query GetPeopleByDate($date: timestamptz, , $library: jsonb) {
+query GetPeopleByDate($date: timestamptz, $library: jsonb) {
   people(
     where: {
       _and: [
