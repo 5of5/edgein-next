@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { ElemButton } from "@/components/elem-button";
 import {
 	IconX,
-	IconShareAlt,
 	IconShare3,
 	IconTwitter,
 	IconTelegram,
@@ -16,27 +15,18 @@ import { getTwitterHandle } from "@/utils";
 
 type Props = {
 	resourceName: string | null;
-	resourceTags: Array<string>;
 	resourceTwitterUrl: string | null;
-	sentimentHot?: number | null;
-	sentimentLike?: number | null;
-	sentimentCrap?: number | null;
-	resourceType: "companies" | "vc_firms" | "events";
 };
 
 export const ElemSocialShare: FC<Props> = ({
 	resourceName,
-	resourceTags,
 	resourceTwitterUrl,
-	sentimentHot,
-	sentimentLike,
-	sentimentCrap,
-	resourceType,
 }) => {
 	const router = useRouter();
 	const pageUrl = `https://edgein.io${router.asPath}`;
 
 	let [isOpen, setIsOpen] = useState(false);
+	const [isCopied, setIsCopied] = useState(false);
 
 	const onShareButton = (event: React.MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -46,6 +36,7 @@ export const ElemSocialShare: FC<Props> = ({
 
 	const onCopy = async (pageUrl: string) => {
 		navigator.clipboard.writeText(pageUrl);
+		setIsCopied(true);
 		toast.custom(
 			(t) => (
 				<div
@@ -63,37 +54,16 @@ export const ElemSocialShare: FC<Props> = ({
 		);
 	};
 
-	// const getTwitterHandle = (url: string) => {
-	// 	return `@` + url.replace(/^.*\/\/[^\/]+/, "").replace("/", "");
-	// };
-
-	let theTags: string[] = [];
-	if (resourceTags) {
-		resourceTags.map((tag: string, i: number) => [
-			theTags.push("#" + tag.replace(/\s+/g, "")),
-		]);
-	}
-	const hashtagsFromTags = theTags.join(" ");
-
-	let sentiments: string | null = "";
-	if (sentimentHot || sentimentLike || sentimentCrap) {
-		const hotCount = sentimentHot ? sentimentHot : 0;
-		const likeCount = sentimentLike ? sentimentLike : 0;
-		const crapCount = sentimentCrap ? sentimentCrap : 0;
-
-		sentiments = `Current reactions: 🔥${hotCount} 👍${likeCount} 💩${crapCount}`;
-	}
+	const onClose = () => {
+		setIsOpen(false);
+		setIsCopied(false);
+	};
 
 	const twitterContent = `Check out ${
 		resourceTwitterUrl ? getTwitterHandle(resourceTwitterUrl) : resourceName
-	} on @edgeinio right now: ${pageUrl}`;
+	} on @EdgeInio: ${pageUrl}`;
 
-	//${sentiments} ${hashtagsFromTags}
-
-	const content = `Check out ${resourceName} on @edgeinio right now`;
-	// resourceType === "companies"
-	// 	? `${resourceName}: Credibility, Activity, Team & Investors`
-	// 	: `${resourceName}: Activity, Team & Investments`;
+	const content = `Check out ${resourceName} on EdgeIn.io`;
 
 	const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
 		twitterContent.trim()
@@ -151,13 +121,7 @@ export const ElemSocialShare: FC<Props> = ({
 			</ElemButton>
 
 			<Transition.Root show={isOpen} as={Fragment}>
-				<Dialog
-					as="div"
-					onClose={() => {
-						setIsOpen(false);
-					}}
-					className="relative z-[60]"
-				>
+				<Dialog as="div" onClose={onClose} className="relative z-[60]">
 					<Transition.Child
 						as={Fragment}
 						enter="ease-out duration-300"
@@ -185,9 +149,7 @@ export const ElemSocialShare: FC<Props> = ({
 									<h2 className="text-lg font-bold">Share</h2>
 
 									<button
-										onClick={() => {
-											setIsOpen(false);
-										}}
+										onClick={onClose}
 										type="button"
 										className="flex items-center justify-center h-8 w-8 rounded-full hover:bg-slate-100"
 									>
@@ -229,7 +191,7 @@ export const ElemSocialShare: FC<Props> = ({
 											roundedFull={true}
 											className="px-2.5"
 										>
-											Copy
+											{isCopied ? "Copied" : "Copy"}
 										</ElemButton>
 									</div>
 

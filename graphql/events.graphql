@@ -119,10 +119,14 @@ query GetEvent($slug: String!) {
 	}
 }
 
-query GetEventsByDate($date: timestamptz) {
+query GetEventsByDate($date: timestamptz, $library: jsonb) {
   events(
     where: {
-      _and: [{ status: { _eq: "published" } }, { updated_at: { _gte: $date } }]
+     _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
     }
   ) {
     id

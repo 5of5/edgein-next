@@ -282,7 +282,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 							)}
 
 							{followedLists.length > 0 && createdLists.length > 0 && (
-								<div className="text font-bold text-black text-sm px-2">
+								<div className="text font-bold text-black text-sm pt-2 px-2">
 									Your lists
 								</div>
 							)}
@@ -363,7 +363,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = "" }) => {
 							))}
 
 							{followedLists.length > 0 && (
-								<div className="text font-bold text-black text-sm pt-1 px-2">
+								<div className="text font-bold text-black text-sm pt-2 px-2">
 									Lists you follow
 								</div>
 							)}

@@ -24,7 +24,6 @@ import {
 	Investment_Rounds,
 	News,
 	useGetCompanyQuery,
-	//Investments,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/elem-reactions";
 import { useAuth } from "@/hooks/use-auth";
@@ -114,7 +113,6 @@ const Company: NextPage<Props> = (props: Props) => {
 	useEffect(() => {
 		if (company && company.coin) {
 			getTokenInfo(company.coin.id);
-			// getTokenInfo('bnb')
 		}
 	}, [company]);
 
@@ -272,12 +270,7 @@ const Company: NextPage<Props> = (props: Props) => {
 								/>
 								<ElemSocialShare
 									resourceName={company.name}
-									resourceTags={company.tags}
 									resourceTwitterUrl={company.twitter}
-									sentimentHot={company.sentiment?.hot}
-									sentimentLike={company.sentiment?.like}
-									sentimentCrap={company.sentiment?.crap}
-									resourceType={"companies"}
 								/>
 							</div>
 						</div>
@@ -360,7 +353,7 @@ const Company: NextPage<Props> = (props: Props) => {
 				>
 					<div className="col-span-3">
 						<ElemKeyInfo
-							className="sticky top-4"
+							className="sticky top-11"
 							heading="Key Info"
 							website={company.website}
 							totalFundingRaised={company.investor_amount}
@@ -378,7 +371,7 @@ const Company: NextPage<Props> = (props: Props) => {
 						/>
 					</div>
 					<div className="col-span-8">
-						<div className="w-full mt-7 p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)]">
+						<div className="w-full mt-7 p-5 bg-slate-200  rounded-lg shadow-[inset_0_2px_4px_rgba(0,0,0,0.07)] lg:mt-0">
 							<ElemOrganizationNotes
 								resourceId={company.id}
 								resourceType="companies"

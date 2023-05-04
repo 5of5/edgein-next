@@ -62,6 +62,14 @@ export const EventList = () => {
       <TextField source="discord" />
       <TextField source="telegram" />
       <BooleanField source="is_featured" />
+      <FunctionField
+        source="library"
+        render={(record: any) =>
+          Array.isArray(record.library)
+            ? record.library.join()
+            : record.library ?? ""
+        }
+      />
       <TextField source="status" />
     </ElemList>
   );

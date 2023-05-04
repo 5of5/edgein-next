@@ -124,13 +124,13 @@ query SearchPeople($query: String, $searchText: jsonb) {
   }
 }
 
-query GetPeopleByDate($date: timestamptz) {
+query GetPeopleByDate($date: timestamptz, $library: jsonb) {
   people(
     where: {
       _and: [
         { status: { _eq: "published" } }
         { updated_at: { _gte: $date } }
-        { library: { _contains: "Web3" } }
+        { library: { _contains: $library } }
       ]
     }
   ) {

@@ -9,12 +9,10 @@ import { IconChevronLeft, IconChevronRight } from "@/components/icons";
 
 type Props = {
 	className?: string;
-	itemsToShow?: number;
 };
 
 export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 	className = "",
-	itemsToShow,
 	children,
 }) => {
 	const maxScrollWidth = useRef(0);
@@ -61,17 +59,6 @@ export const ElemCarouselWrap: FC<PropsWithChildren<Props>> = ({
 			? carousel.current.scrollWidth - carousel.current.offsetWidth
 			: 0;
 	}, []);
-
-	// let itemsToShowClass = "";
-	// if (itemsToShow === 2) {
-	// 	itemsToShowClass = "basis-1/2 sm:basis-1/2 lg:basis-1/2";
-	// } else if (itemsToShow === 3) {
-	// 	itemsToShowClass = "basis-full sm:basis-1/2 lg:basis-1/3";
-	// } else if (itemsToShow === 4) {
-	// 	itemsToShowClass = "basis-1/2 sm:basis-1/4 lg:basis-1/4";
-	// } else {
-	// 	itemsToShowClass = "basis-1/2 sm:basis-1/4 lg:basis-1/5";
-	// }
 
 	return (
 		<div className={`${className}`}>
