@@ -179,142 +179,135 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	};
 
 	return (
-		<header className="overflow-y-visible z-40 block fixed top-0 left-0 right-0">
-			<div className="px-1 py-1 sm:px-3 shadow bg-white/80 backdrop-blur">
-				<nav
-					className="flex items-center justify-between lg:justify-start w-full mx-auto transition-all"
-					aria-label="Global"
-				>
-					<div className="flex items-center">
-						<div className="flex-none lg:mr-4">
-							<Link href={user ? "/companies" : "/"} passHref>
-								<a>
-									<ElemLogo
-										mode="logo"
-										className="h-6 w-auto transition duration-200 ease-in-out scale-90 scheme-standard hover:scale-95 sm:h-8"
-									/>
-								</a>
-							</Link>
-						</div>
+		<header className="overflow-y-visible z-40 block">
+			<nav
+				className="fixed top-0 left-0 right-0 flex items-center justify-between lg:justify-start w-full mx-auto px-1 py-1 sm:px-3 shadow bg-white/80 backdrop-blur transition-all"
+				aria-label="Global"
+			>
+				<div className="flex items-center">
+					<div className="flex-none lg:mr-4">
+						<Link href={user ? "/companies" : "/"} passHref>
+							<a>
+								<ElemLogo
+									mode="logo"
+									className="h-6 w-auto transition duration-200 ease-in-out scale-90 scheme-standard hover:scale-95 sm:h-8"
+								/>
+							</a>
+						</Link>
 					</div>
-					<ElemSearchBox
-						onClick={() => {
-							setShowPopup("search");
+				</div>
+				<ElemSearchBox
+					onClick={() => {
+						setShowPopup("search");
+					}}
+				/>
+
+				<div className="flex items-center group space-x-4 lg:space-x-3 lg:ml-auto">
+					{siteNav.map((link, index) => (
+						<Link href={link.path} key={index} passHref>
+							<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
+								{link.name}
+							</a>
+						</Link>
+					))}
+
+					{user ? (
+						<>
+							<ElemButton
+								onClick={() => setShowPopup("search")}
+								btn="slate"
+								className="h-9 w-9 !px-0 !py-0 sm:hidden"
+							>
+								<IconSearch className="h-5 w-5" />
+							</ElemButton>
+							<NotificationAlerts />
+							<UserMenu />
+						</>
+					) : (
+						<>
+							<ElemButton
+								onClick={() => setShowPopup("login")}
+								btn="ol-primary"
+								className="px-2.5 sm:px-3"
+							>
+								Log In
+							</ElemButton>
+							<ElemButton
+								onClick={() => setShowPopup("signup")}
+								btn="primary"
+								className="px-2.5 sm:px-3"
+							>
+								Sign Up
+							</ElemButton>
+						</>
+					)}
+				</div>
+
+				<UsageModal
+					onSignUp={showSignUpModal}
+					show={showPopup === "usage"}
+					onClose={onModalClose}
+				/>
+
+				<LoginModal
+					linkedInError={linkedInError}
+					onSignUp={showSignUpModal}
+					onForgotPassword={() => setShowPopup("forgotPassword")}
+					show={showPopup === "login"}
+					onClose={onModalClose}
+				/>
+				<SignUpModal
+					inviteCode={inviteCode}
+					passwordFromLogin={passwordFromLogin}
+					emailFromLogin={emailFromLogin}
+					onLogin={showLoginModal}
+					show={showPopup === "signup"}
+					onClose={onModalClose}
+				/>
+				<ForgotPasswordModal
+					show={showPopup === "forgotPassword"}
+					onClose={onModalClose}
+					onBack={onBackFromForgotPassword}
+				/>
+				<SearchModal
+					show={showPopup === "search"}
+					onClose={() => setShowPopup(false)}
+				/>
+				{onboardingStep === 1 && (
+					<OnboardingStep1
+						selectedOption={selectedOption}
+						show={onboardingStep === 1 && !loading}
+						onClose={() => setOnboardingStep(0)}
+						onNext={(selectedOption) => {
+							setSelectedOption(selectedOption);
+							setOnboardingStep(2);
+						}}
+						user={user}
+					/>
+				)}
+				{onboardingStep === 2 && (
+					<OnboardingStep2
+						selectedOption={selectedOption}
+						locationTags={locationTags}
+						industryTags={industryTags}
+						show={onboardingStep === 2 && !loading}
+						onClose={() => {
+							setOnboardingStep(0);
+						}}
+						onNext={(locationTags, industryTags) => {
+							//setOnboardingStep(3);
+							setOnboardingStep(0);
+							setLocationTags(locationTags);
+							setIndustryTags(industryTags);
+						}}
+						onBack={(locationTags, industryTags) => {
+							setLocationTags(locationTags);
+							setIndustryTags(industryTags);
+							setOnboardingStep(1);
 						}}
 					/>
-
-					<div className="flex items-center group space-x-4 lg:space-x-3 lg:ml-auto">
-						{siteNav.map((link, index) => (
-							<Link href={link.path} key={index} passHref>
-								<a className="hidden lg:inline-block px-2.5 py-1.5 font-bold transition duration-150 group-hover:opacity-50 hover:!opacity-100">
-									{link.name}
-								</a>
-							</Link>
-						))}
-
-						{user ? (
-							<>
-								<ElemButton
-									onClick={() => setShowPopup("search")}
-									btn="slate"
-									className="h-9 w-9 !px-0 !py-0 sm:hidden"
-								>
-									<IconSearch className="h-5 w-5" />
-								</ElemButton>
-								<NotificationAlerts />
-								<UserMenu />
-							</>
-						) : (
-							<>
-								<ElemButton
-									onClick={() => setShowPopup("login")}
-									btn="ol-primary"
-									className="px-2.5 sm:px-3"
-								>
-									Log In
-								</ElemButton>
-								<ElemButton
-									onClick={() => setShowPopup("signup")}
-									btn="primary"
-									className="px-2.5 sm:px-3"
-								>
-									Sign Up
-								</ElemButton>
-							</>
-						)}
-
-						<MobileNav
-							className="flex lg:hidden items-center"
-							myListsUrl={myListsUrl}
-							myGroupsUrl={myGroupsUrl}
-						/>
-					</div>
-
-					<UsageModal
-						onSignUp={showSignUpModal}
-						show={showPopup === "usage"}
-						onClose={onModalClose}
-					/>
-
-					<LoginModal
-						linkedInError={linkedInError}
-						onSignUp={showSignUpModal}
-						onForgotPassword={() => setShowPopup("forgotPassword")}
-						show={showPopup === "login"}
-						onClose={onModalClose}
-					/>
-					<SignUpModal
-						inviteCode={inviteCode}
-						passwordFromLogin={passwordFromLogin}
-						emailFromLogin={emailFromLogin}
-						onLogin={showLoginModal}
-						show={showPopup === "signup"}
-						onClose={onModalClose}
-					/>
-					<ForgotPasswordModal
-						show={showPopup === "forgotPassword"}
-						onClose={onModalClose}
-						onBack={onBackFromForgotPassword}
-					/>
-					<SearchModal
-						show={showPopup === "search"}
-						onClose={() => setShowPopup(false)}
-					/>
-					{onboardingStep === 1 && (
-						<OnboardingStep1
-							selectedOption={selectedOption}
-							show={onboardingStep === 1 && !loading}
-							onClose={() => setOnboardingStep(0)}
-							onNext={(selectedOption) => {
-								setSelectedOption(selectedOption);
-								setOnboardingStep(2);
-							}}
-							user={user}
-						/>
-					)}
-					{onboardingStep === 2 && (
-						<OnboardingStep2
-							selectedOption={selectedOption}
-							locationTags={locationTags}
-							industryTags={industryTags}
-							show={onboardingStep === 2 && !loading}
-							onClose={() => {
-								setOnboardingStep(0);
-							}}
-							onNext={(locationTags, industryTags) => {
-								//setOnboardingStep(3);
-								setOnboardingStep(0);
-								setLocationTags(locationTags);
-								setIndustryTags(industryTags);
-							}}
-							onBack={(locationTags, industryTags) => {
-								setLocationTags(locationTags);
-								setIndustryTags(industryTags);
-								setOnboardingStep(1);
-							}}
-						/>
-					)}
-					{/* {onboardingStep === 3 && (
+				)}
+				{/* {onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
@@ -330,8 +323,12 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							user={user}
 						/>
 					)} */}
-				</nav>
-			</div>
+			</nav>
+			<MobileNav
+				className=""
+				myListsUrl={myListsUrl}
+				myGroupsUrl={myGroupsUrl}
+			/>
 		</header>
 	);
 };
