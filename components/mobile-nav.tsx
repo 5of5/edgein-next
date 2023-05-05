@@ -1,8 +1,7 @@
-import { FC, PropsWithChildren, Fragment, useState, useEffect } from "react";
+import { FC, PropsWithChildren, Fragment, useState } from "react";
 import { find, kebabCase, first } from "lodash";
 import Link from "next/link";
 import { getNameFromListName } from "@/utils/reaction";
-import { ElemButton } from "./elem-button";
 import {
 	IconX,
 	IconLinkedIn,
@@ -16,11 +15,8 @@ import {
 	IconGroup,
 	IconSignOut,
 	IconCalendarDays,
-	IconBell,
-	IconUserCircle,
 } from "@/components/icons";
 import { Transition, Dialog } from "@headlessui/react";
-import { ElemPhoto } from "@/components/elem-photo";
 import { useUser } from "@/context/user-context";
 import { clearLocalStorage } from "@/utils/helpers";
 
@@ -46,27 +42,6 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	const onClose = () => {
 		setNavOpen(false);
 	};
-
-	const [prevScrollPos, setPrevScrollPos] = useState(0);
-	const [visible, setVisible] = useState(true);
-
-	const handleScroll = () => {
-		const currentScrollPos = window.scrollY;
-
-		if (currentScrollPos > prevScrollPos) {
-			setVisible(false);
-		} else {
-			setVisible(true);
-		}
-
-		setPrevScrollPos(currentScrollPos);
-	};
-
-	useEffect(() => {
-		window.addEventListener("scroll", handleScroll);
-
-		return () => window.removeEventListener("scroll", handleScroll);
-	});
 
 	const logout = async () => {
 		clearLocalStorage();
@@ -166,136 +141,22 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 		},
 	];
 
-	const nav = [
-		{
-			icon: IconCompanies,
-			name: "Companies",
-			href: "/companies",
-			onClick: null,
-		},
-		{
-			icon: IconCash,
-			name: "Investors",
-			href: "/investors",
-			onClick: null,
-		},
-		{
-			icon: IconCalendarDays,
-			name: "Events",
-			href: "/events",
-			onClick: null,
-		},
-		{
-			icon: IconCalendarDays,
-			name: "News",
-			href: "/news",
-			onClick: null,
-		},
-		{
-			icon: IconBell,
-			name: "Notifications",
-			href: "/notifications",
-			onClick: null,
-		},
-		// ...(user
-		// 	? [
-		// 			{
-		// 				icon: IconCustomList,
-		// 				name: "My Lists",
-		// 				href: myListsUrl,
-		// 				onClick: null,
-		// 			},
-		// 	  ]
-		// 	: []),
-		// ...(myGroupsUrl
-		// 	? [
-		// 			{
-		// 				icon: IconGroup,
-		// 				name: "My Groups",
-		// 				href: myGroupsUrl,
-		// 				onClick: null,
-		// 			},
-		// 	  ]
-		// 	: []),
-		// ...(user
-		// 	? [
-		// 			{
-		// 				icon: IconSettings,
-		// 				name: "Account Settings",
-		// 				href: "/account",
-		// 				onClick: null,
-		// 			},
-		// 			{
-		// 				icon: IconSignOut,
-		// 				name: "Sign out",
-		// 				onClick: () => {
-		// 					logout(), setNavOpen(false);
-		// 				},
-		// 			},
-		// 	  ]
-		// 	: []),
-		// ,
-	];
-
 	return (
 		<>
-			<div
-				className={`fixed grid grid-cols-6 w-full items-center bg-white/80 backdrop-blur transition-all lg:hidden ${
-					visible ? "bottom-0" : "-bottom-12"
-				} ${className} `}
-			>
-				{nav.map((item, index) => (
-					<div key={index}>
-						<Link href={item?.href ? item.href : ""}>
-							<a
-								onClick={item?.onClick ? item?.onClick : onClose}
-								className="text-sm"
-							>
-								{item?.icon && (
-									<item.icon title={item.name} className="h-6 w-6 shrink-0" />
-								)}
-								{item?.name}
-							</a>
-						</Link>
-					</div>
-				))}
-
-				<div onClick={onOpen} className="cursor-pointer text-sm">
-					{user?.person?.picture ? (
-						<ElemPhoto
-							photo={user?.person?.picture}
-							wrapClass="flex items-center justify-center shrink-0 w-7 h-7 bg-white rounded-full shadow border border-black/10"
-							imgClass="object-cover max-w-full max-h-full rounded-full"
-							imgAlt={"profile"}
-							placeholder="user"
-							placeholderClass="text-slate-400 hover:text-slate-400"
-						/>
-					) : (
-						<ElemButton btn="slate" className="h-9 w-auto px-1 py-1.5 group">
-							<IconUserCircle
-								className="h-6 w-6"
-								title={user?.display_name ? user.display_name : ""}
-							/>
-							{/* <IconChevronDownMini className="h-5 w-5" aria-hidden="true" /> */}
-						</ElemButton>
-					)}
-					Menu
-				</div>
-
-				{/* <button
-						onClick={onOpen}
-						className="hamburger relative w-8 h-[36px] px-[3px] py-4"
-					>
-						<span
-							className={`${
-								navOpen
-									? "hamburger-active rotate-45 before:top-0 before:opacity-0 after:bottom-0 after:rotate-90"
-									: ""
-							} hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}
-						></span>
-						<span className="sr-only">Toggle menu</span>
-					</button> */}
-
+			<div className={className}>
+				<button
+					onClick={onOpen}
+					className="hamburger relative w-8 h-[36px] px-[3px] py-4"
+				>
+					<span
+						className={`${
+							navOpen
+								? "hamburger-active rotate-45 before:top-0 before:opacity-0 after:bottom-0 after:rotate-90"
+								: ""
+						} hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}
+					></span>
+					<span className="sr-only">Toggle menu</span>
+				</button>
 				<Transition.Root show={navOpen} as={Fragment}>
 					<Dialog
 						as="div"
