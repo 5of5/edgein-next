@@ -1,7 +1,8 @@
-import { FC, PropsWithChildren, Fragment, useState } from "react";
+import { FC, PropsWithChildren, Fragment, useState, useEffect } from "react";
 import { find, kebabCase, first } from "lodash";
 import Link from "next/link";
 import { getNameFromListName } from "@/utils/reaction";
+import { ElemButton } from "./elem-button";
 import {
 	IconX,
 	IconLinkedIn,
@@ -14,11 +15,16 @@ import {
 	IconCustomList,
 	IconGroup,
 	IconSignOut,
+	IconCalendar,
 	IconCalendarDays,
+	IconBell,
+	IconUserCircle,
 } from "@/components/icons";
 import { Transition, Dialog } from "@headlessui/react";
+import { ElemPhoto } from "@/components/elem-photo";
 import { useUser } from "@/context/user-context";
 import { clearLocalStorage } from "@/utils/helpers";
+import { useRouter } from "next/router";
 
 type Props = {
 	className?: string;
@@ -32,6 +38,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	myGroupsUrl,
 }) => {
 	const { user } = useUser();
+	const router = useRouter();
 
 	const [navOpen, setNavOpen] = useState(false);
 
@@ -42,6 +49,27 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	const onClose = () => {
 		setNavOpen(false);
 	};
+
+	const [prevScrollPos, setPrevScrollPos] = useState(0);
+	const [visible, setVisible] = useState(true);
+
+	const handleScroll = () => {
+		const currentScrollPos = window.scrollY;
+
+		if (currentScrollPos > prevScrollPos) {
+			setVisible(false);
+		} else {
+			setVisible(true);
+		}
+
+		setPrevScrollPos(currentScrollPos);
+	};
+
+	useEffect(() => {
+		window.addEventListener("scroll", handleScroll);
+
+		return () => window.removeEventListener("scroll", handleScroll);
+	});
 
 	const logout = async () => {
 		clearLocalStorage();
@@ -75,7 +103,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 					onClick: null,
 				},
 				{
-					icon: IconCalendarDays,
+					icon: IconCalendar,
 					name: "Events",
 					href: "/events",
 					onClick: null,
@@ -141,29 +169,167 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 		},
 	];
 
+	const nav = [
+		{
+			icon: IconCompanies,
+			name: "Companies",
+			href: "/companies",
+			onClick: null,
+		},
+		{
+			icon: IconCash,
+			name: "Investors",
+			href: "/investors",
+			onClick: null,
+		},
+		{
+			icon: IconCalendar,
+			name: "Events",
+			href: "/events",
+			onClick: null,
+		},
+		{
+			icon: IconCalendarDays,
+			name: "News",
+			href: "/news",
+			onClick: null,
+		},
+		{
+			icon: IconBell,
+			name: "Notifications",
+			href: "/notifications",
+			onClick: null,
+		},
+		// ...(user
+		// 	? [
+		// 			{
+		// 				icon: IconCustomList,
+		// 				name: "My Lists",
+		// 				href: myListsUrl,
+		// 				onClick: null,
+		// 			},
+		// 	  ]
+		// 	: []),
+		// ...(myGroupsUrl
+		// 	? [
+		// 			{
+		// 				icon: IconGroup,
+		// 				name: "My Groups",
+		// 				href: myGroupsUrl,
+		// 				onClick: null,
+		// 			},
+		// 	  ]
+		// 	: []),
+		// ...(user
+		// 	? [
+		// 			{
+		// 				icon: IconSettings,
+		// 				name: "Account Settings",
+		// 				href: "/account",
+		// 				onClick: null,
+		// 			},
+		// 			{
+		// 				icon: IconSignOut,
+		// 				name: "Sign out",
+		// 				onClick: () => {
+		// 					logout(), setNavOpen(false);
+		// 				},
+		// 			},
+		// 	  ]
+		// 	: []),
+		// ,
+	];
+
 	return (
 		<>
-			<div className={className}>
-				<button
-					onClick={onOpen}
-					className="hamburger relative w-8 h-[36px] px-[3px] py-4"
-				>
-					<span
-						className={`${
+			<div
+				className={`fixed z-40 w-full items-center shadow-up transition-all lg:hidden ${className} bottom-0`}
+			>
+				{/* {visible ? "bottom-0" : "-bottom-12"} */}
+				<ul className="grid grid-cols-6 bg-white/80 backdrop-blur p-1">
+					{nav.map((item, index) => (
+						<li
+							key={index}
+							className={
+								router.pathname == item?.href && navOpen === false
+									? "border-t-2 border-primary-500"
+									: "border-t-2 border-transparent"
+							}
+						>
+							<Link href={item?.href ? item.href : ""}>
+								<a
+									onClick={item?.onClick ? item?.onClick : onClose}
+									className="flex flex-col items-center h-full text-[11px]"
+								>
+									{item?.icon && (
+										<div className="flex items-center justify-center h-7 aspect-square">
+											<item.icon
+												title={item.name}
+												className="h-6 w-6 shrink-0"
+											/>
+										</div>
+									)}
+
+									{item?.name}
+								</a>
+							</Link>
+						</li>
+					))}
+
+					<li
+						className={
 							navOpen
-								? "hamburger-active rotate-45 before:top-0 before:opacity-0 after:bottom-0 after:rotate-90"
-								: ""
-						} hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}
-					></span>
-					<span className="sr-only">Toggle menu</span>
-				</button>
+								? "border-t-2 border-primary-500"
+								: "border-t-2 border-transparent"
+						}
+					>
+						<a
+							onClick={onOpen}
+							className="flex flex-col items-center h-full text-[11px] cursor-pointer"
+						>
+							{user?.person?.picture ? (
+								<ElemPhoto
+									photo={user?.person?.picture}
+									wrapClass="flex items-center justify-center shrink-0 w-7 h-7 bg-white rounded-full shadow border border-black/10"
+									imgClass="object-cover max-w-full max-h-full rounded-full"
+									imgAlt={"profile"}
+									placeholder="user"
+									placeholderClass="text-slate-400 hover:text-slate-400"
+								/>
+							) : (
+								<div className="flex items-center justify-center h-7 aspect-square">
+									<IconUserCircle
+										className="h-6 w-6 shrink-0"
+										title={user?.display_name ? user.display_name : ""}
+									/>
+								</div>
+							)}
+							Menu
+						</a>
+					</li>
+				</ul>
+
+				{/* <button
+						onClick={onOpen}
+						className="hamburger relative w-8 h-[36px] px-[3px] py-4"
+					>
+						<span
+							className={`${
+								navOpen
+									? "hamburger-active rotate-45 before:top-0 before:opacity-0 after:bottom-0 after:rotate-90"
+									: ""
+							} hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}
+						></span>
+						<span className="sr-only">Toggle menu</span>
+					</button> */}
+
 				<Transition.Root show={navOpen} as={Fragment}>
 					<Dialog
 						as="div"
-						className="relative z-40 lg:hidden"
+						className="relative z-30 lg:hidden"
 						onClose={onClose}
 					>
-						<Transition.Child
+						{/* <Transition.Child
 							as={Fragment}
 							enter="transition-opacity ease-linear duration-300"
 							enterFrom="opacity-0"
@@ -173,12 +339,12 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 							leaveTo="opacity-0"
 						>
 							<div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
-						</Transition.Child>
+						</Transition.Child> */}
 
 						<div className="fixed inset-0 z-40 flex justify-end">
-							<div className="flex-shrink-0 w-14">
-								{/* Dummy element to force sidebar to shrink to fit close icon */}
-							</div>
+							{/* <div className="flex-shrink-0 w-14">
+								Dummy element to force sidebar to shrink to fit close icon
+							</div> */}
 							<Transition.Child
 								as={Fragment}
 								enter="transition ease-in-out duration-300 transform"
@@ -188,7 +354,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 								leaveFrom="translate-x-0"
 								leaveTo="translate-x-full"
 							>
-								<Dialog.Panel className="max-w-md w-full bg-white flex-1 flex flex-col">
+								<Dialog.Panel className="w-full bg-white flex-1 flex flex-col">
 									<Dialog.Title className="flex items-center justify-end px-1 py-2">
 										<button type="button" onClick={onClose}>
 											<IconX className="h-8 w-8" title="close" />
@@ -198,9 +364,9 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 									<div className="flex flex-col h-full overflow-y-auto divide-y divide-black/10 px-8">
 										{navigation.map((section, index) => (
 											<div key={index} className="pt-6 pb-3 first:pt-0">
-												<h3 className="text-xl font-bold">{section.heading}</h3>
+												<h3 className="text-xl font-bold">Menu</h3>
 
-												<ul>
+												<ul className="grid grid-cols-2">
 													{section.links.map((item, index) => (
 														<li key={index}>
 															<Link href={item?.href ? item.href : ""}>
