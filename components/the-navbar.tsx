@@ -179,9 +179,9 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	};
 
 	return (
-		<header className="overflow-y-visible z-40 block">
+		<header className="overflow-y-visible block">
 			<nav
-				className="fixed top-0 left-0 right-0 flex items-center justify-between lg:justify-start w-full mx-auto px-1 py-1 sm:px-3 shadow bg-white/80 backdrop-blur transition-all"
+				className="fixed z-30 top-0 left-0 right-0 flex items-center justify-between lg:justify-start w-full mx-auto px-1 py-1 sm:px-3 shadow bg-white/80 backdrop-blur transition-all"
 				aria-label="Global"
 			>
 				<div className="flex items-center">
@@ -326,6 +326,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			</nav>
 			<MobileNav
 				className=""
+				setShowPopup={setShowPopup}
 				myListsUrl={myListsUrl}
 				myGroupsUrl={myGroupsUrl}
 			/>

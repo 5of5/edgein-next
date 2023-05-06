@@ -16,26 +16,31 @@ import {
 	IconGroup,
 	IconSignOut,
 	IconCalendar,
-	IconCalendarDays,
+	IconNewspaper,
 	IconBell,
+	IconDocumentDownload,
 	IconUserCircle,
+	IconSearch,
 } from "@/components/icons";
 import { Transition, Dialog } from "@headlessui/react";
 import { ElemPhoto } from "@/components/elem-photo";
 import { useUser } from "@/context/user-context";
 import { clearLocalStorage } from "@/utils/helpers";
 import { useRouter } from "next/router";
+import { Popups } from "@/components/the-navbar";
 
 type Props = {
 	className?: string;
 	myListsUrl?: string;
 	myGroupsUrl?: string;
+	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
 export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	className = "",
 	myListsUrl,
 	myGroupsUrl,
+	setShowPopup,
 }) => {
 	const { user } = useUser();
 	const router = useRouter();
@@ -47,6 +52,11 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	};
 
 	const onClose = () => {
+		setNavOpen(false);
+	};
+
+	const onOpenSearch = () => {
+		setShowPopup("search");
 		setNavOpen(false);
 	};
 
@@ -86,89 +96,6 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 		}
 	};
 
-	const navigation = [
-		{
-			heading: "Explore",
-			links: [
-				{
-					icon: IconCompanies,
-					name: "Companies",
-					href: "/companies",
-					onClick: null,
-				},
-				{
-					icon: IconCash,
-					name: "Investors",
-					href: "/investors",
-					onClick: null,
-				},
-				{
-					icon: IconCalendar,
-					name: "Events",
-					href: "/events",
-					onClick: null,
-				},
-				...(user
-					? [
-							{
-								icon: IconCustomList,
-								name: "My Lists",
-								href: myListsUrl,
-								onClick: null,
-							},
-					  ]
-					: []),
-				...(myGroupsUrl
-					? [
-							{
-								icon: IconGroup,
-								name: "My Groups",
-								href: myGroupsUrl,
-								onClick: null,
-							},
-					  ]
-					: []),
-				...(user
-					? [
-							{
-								icon: IconSettings,
-								name: "Account Settings",
-								href: "/account",
-								onClick: null,
-							},
-							{
-								icon: IconSignOut,
-								name: "Sign out",
-								onClick: () => {
-									logout(), setNavOpen(false);
-								},
-							},
-					  ]
-					: []),
-				,
-			],
-		},
-		{
-			//heading: "Follow Us",
-			links: [
-				{ icon: IconUsers, name: "Team", href: "/team", onClick: null },
-				{ icon: IconEmail, name: "Contact", href: "/contact", onClick: null },
-				{
-					icon: IconLinkedIn,
-					name: "LinkedIn",
-					href: "https://www.linkedin.com/company/edgein/",
-					onClick: null,
-				},
-				{
-					icon: IconTwitter,
-					name: "Twitter",
-					href: "https://twitter.com/EdgeInio",
-					onClick: null,
-				},
-			],
-		},
-	];
-
 	const nav = [
 		{
 			icon: IconCompanies,
@@ -189,7 +116,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 			onClick: null,
 		},
 		{
-			icon: IconCalendarDays,
+			icon: IconNewspaper,
 			name: "News",
 			href: "/news",
 			onClick: null,
@@ -200,72 +127,120 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 			href: "/notifications",
 			onClick: null,
 		},
-		// ...(user
-		// 	? [
-		// 			{
-		// 				icon: IconCustomList,
-		// 				name: "My Lists",
-		// 				href: myListsUrl,
-		// 				onClick: null,
-		// 			},
-		// 	  ]
-		// 	: []),
-		// ...(myGroupsUrl
-		// 	? [
-		// 			{
-		// 				icon: IconGroup,
-		// 				name: "My Groups",
-		// 				href: myGroupsUrl,
-		// 				onClick: null,
-		// 			},
-		// 	  ]
-		// 	: []),
-		// ...(user
-		// 	? [
-		// 			{
-		// 				icon: IconSettings,
-		// 				name: "Account Settings",
-		// 				href: "/account",
-		// 				onClick: null,
-		// 			},
-		// 			{
-		// 				icon: IconSignOut,
-		// 				name: "Sign out",
-		// 				onClick: () => {
-		// 					logout(), setNavOpen(false);
-		// 				},
-		// 			},
-		// 	  ]
-		// 	: []),
-		// ,
+	];
+
+	const menuPanel = [
+		{
+			icon: IconDocumentDownload,
+			name: "Notes",
+			href: "/notes",
+			onClick: null,
+		},
+		...(myGroupsUrl
+			? [
+					{
+						icon: IconGroup,
+						name: "Groups",
+						href: myGroupsUrl,
+						onClick: null,
+					},
+			  ]
+			: []),
+		...(user
+			? [
+					{
+						icon: IconCustomList,
+						name: "Lists",
+						href: myListsUrl,
+						onClick: null,
+					},
+			  ]
+			: []),
+		{
+			icon: IconCompanies,
+			name: "Companies",
+			href: "/companies",
+			onClick: null,
+		},
+		{
+			icon: IconCash,
+			name: "Investors",
+			href: "/investors",
+			onClick: null,
+		},
+		{
+			icon: IconCalendar,
+			name: "Events",
+			href: "/events",
+			onClick: null,
+		},
+		{
+			icon: IconNewspaper,
+			name: "News",
+			href: "/news",
+			onClick: null,
+		},
+		...(user
+			? [
+					{
+						icon: IconSettings,
+						name: "Account Settings",
+						href: "/account",
+						onClick: null,
+					},
+					{
+						icon: IconSignOut,
+						name: "Sign out",
+						onClick: () => {
+							logout(), setNavOpen(false);
+						},
+					},
+			  ]
+			: []),
+		// { icon: IconUsers, name: "Team", href: "/team", onClick: null },
+		// { icon: IconEmail, name: "Contact", href: "/contact", onClick: null },
+		// {
+		// 	icon: IconLinkedIn,
+		// 	name: "LinkedIn",
+		// 	href: "https://www.linkedin.com/company/edgein/",
+		// 	onClick: null,
+		// },
+		// {
+		// 	icon: IconTwitter,
+		// 	name: "Twitter",
+		// 	href: "https://twitter.com/EdgeInio",
+		// 	onClick: null,
+		// },
+		,
 	];
 
 	return (
 		<>
 			<div
-				className={`fixed z-40 w-full items-center shadow-up transition-all lg:hidden ${className} bottom-0`}
+				className={`fixed z-50 w-full items-center shadow-up transition-all lg:hidden ${className} bottom-0`}
 			>
 				{/* {visible ? "bottom-0" : "-bottom-12"} */}
-				<ul className="grid grid-cols-6 bg-white/80 backdrop-blur p-1">
+
+				<ul className="grid grid-cols-6 bg-white/80 backdrop-blur px-1 pb-0.5">
 					{nav.map((item, index) => (
 						<li
 							key={index}
-							className={
+							className={`pt-0.5 ${
 								router.pathname == item?.href && navOpen === false
 									? "border-t-2 border-primary-500"
 									: "border-t-2 border-transparent"
-							}
+							}`}
 						>
 							<Link href={item?.href ? item.href : ""}>
 								<a
 									onClick={item?.onClick ? item?.onClick : onClose}
-									className="flex flex-col items-center h-full text-[11px]"
+									className=" flex flex-col items-center h-full text-[11px]"
 								>
 									{item?.icon && (
 										<div className="flex items-center justify-center h-7 aspect-square">
 											<item.icon
 												title={item.name}
-												className="h-6 w-6 shrink-0"
+												className="h-6 w-6 shrink-0 text-slate-600"
 											/>
 										</div>
 									)}
@@ -277,11 +252,11 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 					))}
 
 					<li
-						className={
+						className={`pt-0.5 ${
 							navOpen
 								? "border-t-2 border-primary-500"
 								: "border-t-2 border-transparent"
-						}
+						}`}
 					>
 						<a
 							onClick={onOpen}
@@ -308,95 +283,71 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 						</a>
 					</li>
 				</ul>
-
-				{/* <button
-						onClick={onOpen}
-						className="hamburger relative w-8 h-[36px] px-[3px] py-4"
-					>
-						<span
-							className={`${
-								navOpen
-									? "hamburger-active rotate-45 before:top-0 before:opacity-0 after:bottom-0 after:rotate-90"
-									: ""
-							} hamburger-inner block -mt-px top-1/2 transition ease-in-out duration-150 before:block before:content-[''] after:block after:content-['']`}
-						></span>
-						<span className="sr-only">Toggle menu</span>
-					</button> */}
-
-				<Transition.Root show={navOpen} as={Fragment}>
-					<Dialog
-						as="div"
-						className="relative z-30 lg:hidden"
-						onClose={onClose}
-					>
-						{/* <Transition.Child
-							as={Fragment}
-							enter="transition-opacity ease-linear duration-300"
-							enterFrom="opacity-0"
-							enterTo="opacity-100"
-							leave="transition-opacity ease-linear duration-300"
-							leaveFrom="opacity-100"
-							leaveTo="opacity-0"
-						>
-							<div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
-						</Transition.Child> */}
-
-						<div className="fixed inset-0 z-40 flex justify-end">
-							{/* <div className="flex-shrink-0 w-14">
-								Dummy element to force sidebar to shrink to fit close icon
-							</div> */}
-							<Transition.Child
-								as={Fragment}
-								enter="transition ease-in-out duration-300 transform"
-								enterFrom="translate-x-full"
-								enterTo="translate-x-0"
-								leave="transition ease-in-out duration-300 transform"
-								leaveFrom="translate-x-0"
-								leaveTo="translate-x-full"
-							>
-								<Dialog.Panel className="w-full bg-white flex-1 flex flex-col">
-									<Dialog.Title className="flex items-center justify-end px-1 py-2">
-										<button type="button" onClick={onClose}>
-											<IconX className="h-8 w-8" title="close" />
-										</button>
-									</Dialog.Title>
-
-									<div className="flex flex-col h-full overflow-y-auto divide-y divide-black/10 px-8">
-										{navigation.map((section, index) => (
-											<div key={index} className="pt-6 pb-3 first:pt-0">
-												<h3 className="text-xl font-bold">Menu</h3>
-
-												<ul className="grid grid-cols-2">
-													{section.links.map((item, index) => (
-														<li key={index}>
-															<Link href={item?.href ? item.href : ""}>
-																<a
-																	onClick={
-																		item?.onClick ? item?.onClick : onClose
-																	}
-																	className="flex items-center py-3 text-lg hover:text-primary-500"
-																>
-																	{item?.icon && (
-																		<item.icon
-																			title={item.name}
-																			className="h-6 w-6 mr-4 shrink-0"
-																		/>
-																	)}
-																	{item?.name}
-																</a>
-															</Link>
-														</li>
-													))}
-												</ul>
-											</div>
-										))}
-									</div>
-								</Dialog.Panel>
-							</Transition.Child>
-						</div>
-					</Dialog>
-				</Transition.Root>
 			</div>
+			<Transition.Root show={navOpen} as={Fragment}>
+				<Dialog as="div" className="relative z-40 lg:hidden" onClose={onClose}>
+					<div className="fixed inset-0 flex justify-end">
+						<Transition.Child
+							as={Fragment}
+							enter="transition ease-in-out duration-300 transform"
+							enterFrom="translate-x-full"
+							enterTo="translate-x-0"
+							leave="transition ease-in-out duration-300 transform"
+							leaveFrom="translate-x-0"
+							leaveTo="translate-x-full"
+						>
+							<Dialog.Panel className="w-full bg-gray-50">
+								<div className="flex justify-between items-center px-4 py-3">
+									<Dialog.Title className="text-xl font-bold">
+										Menu
+										{/* <button type="button" onClick={onClose}>
+										<IconX className="h-8 w-8" title="close" />
+									</button> */}
+									</Dialog.Title>
+									<div className="flex space-x-2">
+										<ElemButton
+											onClick={onClose}
+											href="/account"
+											btn="slate"
+											className="h-9 w-9 !px-0 !py-0 outline-none"
+										>
+											<IconSettings className="h-5 w-5" />
+										</ElemButton>
+										<ElemButton
+											onClick={onOpenSearch}
+											btn="slate"
+											className="h-9 w-9 !px-0 !py-0"
+										>
+											<IconSearch className="h-5 w-5" strokeWidth={1.5} />
+										</ElemButton>
+									</div>
+								</div>
+
+								<ul className="grid grid-cols-2 gap-4 px-4">
+									{menuPanel.map((item, index) => (
+										<li key={index}>
+											<Link href={item?.href ? item.href : ""}>
+												<a
+													onClick={item?.onClick ? item?.onClick : onClose}
+													className="block p-3 outline-none bg-white shadow rounded-lg"
+												>
+													{item?.icon && (
+														<item.icon
+															title={item.name}
+															className="h-6 w-6 shrink-0"
+														/>
+													)}
+													<span className="leading-tight">{item?.name}</span>
+												</a>
+											</Link>
+										</li>
+									))}
+								</ul>
+							</Dialog.Panel>
+						</Transition.Child>
+					</div>
+				</Dialog>
+			</Transition.Root>
 		</>
 	);
 };
