@@ -230,7 +230,11 @@ const Person: NextPage<Props> = (props) => {
 							/>
 						)}
 						{props.sortNews.length > 0 && (
-							<ElemNewsList resourceNews={props.sortNews} className="mb-7" />
+							<ElemNewsList
+								resourceId={person.id}
+								resourceNews={props.sortNews}
+								className="mb-7"
+							/>
 						)}
 						{!person.investors || person.investors.length === 0 ? null : (
 							<ElemInvestorsList

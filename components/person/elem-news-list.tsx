@@ -8,9 +8,10 @@ import { IconExternalLink } from "@/components/icons";
 type Props = {
 	className?: string;
 	resourceNews: News[];
+	resourceId: number;
 };
 
-export const ElemNewsList: React.FC<Props> = ({ className, resourceNews }) => {
+export const ElemNewsList: React.FC<Props> = ({ className, resourceNews, resourceId }) => {
 	const [limit, setLimit] = useState(10);
 	const onShowMore = () => {
 		setLimit(limit + 10);
@@ -27,6 +28,12 @@ export const ElemNewsList: React.FC<Props> = ({ className, resourceNews }) => {
 					<>
 						<ul className="flex flex-col">
 							{resourceNews.slice(0, limit).map((item, index) => {
+								const newsPersonType = item.people.find(
+                  (person: any) => person.person_id === resourceId
+                )?.type;
+
+                const isAuthor = newsPersonType === "author";
+
 								return (
 									<li
 										key={index}
@@ -52,13 +59,20 @@ export const ElemNewsList: React.FC<Props> = ({ className, resourceNews }) => {
 													) : (
 														<div className="inline">{item.text}</div>
 													)}
-													<p className="text-sm">
-														{formatDate(item.date as string, {
-															month: "short",
-															day: "2-digit",
-															year: "numeric",
-														})}
-													</p>
+													<div className="flex items-center gap-x-2">
+                            {isAuthor && (
+                              <span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+                                Author
+                              </span>
+                            )}
+                            <p className="text-sm">
+                              {formatDate(item.date as string, {
+                                month: "short",
+                                day: "2-digit",
+                                year: "numeric",
+                              })}
+                            </p>
+                          </div>
 												</div>
 											</div>
 										)}
