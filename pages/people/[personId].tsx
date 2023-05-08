@@ -282,13 +282,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
-	const getInvestments = people.people[0].investments.map((round) => {
-		if (typeof round.investment_round === "object") {
-			return round.investment_round;
-		} else {
-			return null;
-		}
-	});
+	const getInvestments = people.people[0].investments
+    .filter((item) => typeof item.investment_round === "object")
+    .map((item) => item.investment_round);
 
 	const sortByDateAscInvestments = getInvestments
 		.slice()
