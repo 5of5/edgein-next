@@ -22,6 +22,7 @@ import {
 import Link from "next/link";
 import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
 import { formatDate } from "@/utils/numbers";
+import useLibrary from "@/hooks/use-library";
 
 const searchClient = algoliasearch(
 	process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
@@ -332,6 +333,8 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 export default function SearchModal(props: any) {
 	const emptyView = React.useRef(true);
 
+	const { selectedLibrary } = useLibrary();
+
 	const onClose = () => {
 		props.onClose();
 	};
@@ -460,7 +463,11 @@ export default function SearchModal(props: any) {
 										</header>
 
 										<MasterEmptyQueryBoundary>
-											<Index indexName="companies">
+										<Index
+                        indexName={
+                          selectedLibrary === "Web3" ? "companies" : "ai_companies"
+                        }
+                      >
 												<Configure hitsPerPage={4} />
 												<h3 className="font-bold mt-5 mx-6">Companies</h3>
 												<EmptyQueryBoundary>
@@ -481,7 +488,11 @@ export default function SearchModal(props: any) {
 												</EmptyQueryBoundary>
 											</Index>
 
-											<Index indexName="vc_firms">
+											<Index
+                        indexName={
+                          selectedLibrary === "Web3" ? "vc_firms" : "ai_vc_firms"
+                        }
+                      >
 												<Configure hitsPerPage={4} />
 												<h3 className="font-bold mt-5 mx-6">Investors</h3>
 												<EmptyQueryBoundary>
@@ -502,7 +513,11 @@ export default function SearchModal(props: any) {
 												</EmptyQueryBoundary>
 											</Index>
 
-											<Index indexName="people">
+											<Index
+                        indexName={
+                          selectedLibrary === "Web3" ? "people" : "ai_people"
+                        }
+                      >
 												<Configure hitsPerPage={4} />
 												<h3 className="font-bold mt-5 mx-6">People</h3>
 												<EmptyQueryBoundary>
@@ -523,7 +538,11 @@ export default function SearchModal(props: any) {
 												</EmptyQueryBoundary>
 											</Index>
 
-											<Index indexName="events">
+											<Index
+                        indexName={
+                          selectedLibrary === "Web3" ? "events" : "ai_events"
+                        }
+                      >
 												<Configure hitsPerPage={4} />
 												<h3 className="font-bold mt-5 mx-6">Events</h3>
 												<EmptyQueryBoundary>

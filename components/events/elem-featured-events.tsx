@@ -10,12 +10,8 @@ import {
 } from "@/graphql/types";
 import { ElemEventCard } from "./elem-event-card";
 import moment from "moment-timezone";
-
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	className?: string;
@@ -28,6 +24,8 @@ export const ElemFeaturedEvents: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
+	const { selectedLibrary } = useLibrary();
+
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -36,6 +34,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
 			{
 				slug: { _neq: "" },
 				is_featured: { _eq: true },
+				library: { _contains: selectedLibrary },
 				//end_date: { _gte: moment().subtract(1, "days").format("YYYY-MM-DD") },
 			},
 		],

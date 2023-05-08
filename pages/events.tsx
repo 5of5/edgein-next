@@ -17,14 +17,15 @@ import {
 	Events_Bool_Exp,
 	Order_By,
 } from "@/graphql/types";
-import { DeepPartial } from "./companies";
 import { onTrackView } from "@/utils/track";
 import { useRouter } from "next/router";
 import { ElemFilter } from "@/components/elem-filter";
 import { processEventsFilters } from "@/utils/filter";
-import useFilterParams from "@/hooks/useFilterParams";
+import useFilterParams from "@/hooks/use-filter-params";
 import { ElemEventCard } from "@/components/events/elem-event-card";
 import { useIntercom } from "react-use-intercom";
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	eventTabs: TextFilter[];
@@ -42,6 +43,8 @@ const Events: NextPage<Props> = ({
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
+
+	const { selectedLibrary } = useLibrary();
 
 	const { showNewMessages } = useIntercom();
 
@@ -63,8 +66,13 @@ const Events: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
+	const defaultFilters = [
+    { slug: { _neq: "" } },
+    { library: { _contains: selectedLibrary } },
+  ];
+
 	const filters: DeepPartial<Events_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }],
+		_and: defaultFilters,
 	};
 
 	useEffect(() => {
@@ -148,7 +156,7 @@ const Events: NextPage<Props> = ({
 	};
 
 	/** Handle selected filter params */
-	processEventsFilters(filters, selectedFilters);
+	processEventsFilters(filters, selectedFilters, defaultFilters);
 
 	if (selectedTab.value === "upcoming" && !selectedFilters?.eventDate?.condition) {
 		filters._and?.push({
@@ -241,11 +249,11 @@ const Events: NextPage<Props> = ({
 						filterValues={selectedFilters}
 						dateCondition={selectedTab?.value === "past" ? "past" : "next"}
 						onApply={(name, filterParams) => {
-							filters._and = [{ slug: { _neq: "" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [{ slug: { _neq: "" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}
@@ -314,7 +322,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		offset: 0,
 		limit: 50,
 		order: Order_By.Asc,
-		where: { _and: [{ slug: { _neq: "" } }] },
+		where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] },
 	});
 
 	return {

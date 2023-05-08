@@ -12,12 +12,8 @@ import {
 	Maybe,
 	useGetCompaniesRecentQuery,
 } from "@/graphql/types";
-
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	className?: string;
@@ -34,6 +30,8 @@ export const ElemCohort: FC<Props> = ({
 	tag1,
 	tag2,
 }) => {
+	const { selectedLibrary } = useLibrary();
+
 	const limit = 12;
 	const offset = null;
 
@@ -44,6 +42,7 @@ export const ElemCohort: FC<Props> = ({
 			{
 				slug: { _neq: "" || currentSlug },
 			},
+			{ library: { _contains: selectedLibrary } },
 			{ tags: { _contains: tag1 } },
 			{ tags: { _contains: tag2 } },
 		],

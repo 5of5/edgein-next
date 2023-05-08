@@ -7,7 +7,7 @@ import {
 	IconCompanies,
 	IconCalendarDays,
 } from "@/components/icons";
-import useDisclosureState from "@/hooks/useDisclosureState";
+import useDisclosureState from "@/hooks/use-disclosure-state";
 import { EXPLORE_MENU_OPEN_KEY } from "@/utils/constants";
 
 type Props = {
