@@ -36,7 +36,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		// updated_at,
 		// status,
 		metadata,
-		//organizations,
+		organizations,
 	} = postData;
 
 	return (
@@ -113,7 +113,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 					</div>
 				)}
 
-				{/* {organizations && (
+				{organizations && (
 					<div className="mt-4" onClick={(e) => e.stopPropagation()}>
 						{organizations?.map((organizer: any, index: number) => {
 							const slug = organizer.company
@@ -151,7 +151,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 							);
 						})}
 					</div>
-				)} */}
+				)}
 			</div>
 			<div>
 				<p className="mt-4 text-xs text-gray-400">
