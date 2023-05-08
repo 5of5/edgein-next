@@ -95,6 +95,9 @@ const UserProvider: React.FC<Props> = (props) => {
           userHash: user.intercomUserHash, // HMAC using SHA-256
           customAttributes: {
             isClaimedProfile: !!user.person, // If a profile is claimed or not
+            profileUrl: user.person
+              ? `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/people/${user.person.slug}`
+              : null, // User profile url
           },
         })
       } catch(e) {
