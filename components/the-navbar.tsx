@@ -20,6 +20,7 @@ import { useUser } from "@/context/user-context";
 import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
+import OnboardingStep4 from "./onboarding/onboarding-step-4";
 
 export type Popups =
 	| "login"
@@ -54,6 +55,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const [selectedOption, setSelectedOption] = useState("companies");
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
+	const [message, setMessage] = useState<string>("");
 	const [linkedInError, setLinkedInError] = useState("");
 	const [inviteCode, setInviteCode] = useState(
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
@@ -302,8 +304,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								setOnboardingStep(0);
 							}}
 							onNext={(locationTags, industryTags) => {
-								//setOnboardingStep(3);
-								setOnboardingStep(0);
+								setOnboardingStep(3);
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
 							}}
@@ -314,6 +315,19 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							}}
 						/>
 					)}
+					{onboardingStep === 3 && (
+            <OnboardingStep4
+              selectedOption={selectedOption}
+              show={onboardingStep === 3 && !loading}
+              message={message}
+              onClose={() => setOnboardingStep(0)}
+              onBack={(m) => {
+                setMessage(m);
+								setOnboardingStep(2);
+              }}
+							onNext={() => setOnboardingStep(0)}
+            />
+          )}
 					{/* {onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
