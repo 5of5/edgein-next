@@ -185,8 +185,11 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 					{
 						icon: IconSettings,
 						name: "Account Settings",
-						href: "/account",
-						onClick: null,
+						//href: "/account",
+						onClick: () => {
+							router.push("/account");
+							setNavOpen(false);
+						},
 					},
 					{
 						icon: IconSignOut,
@@ -307,7 +310,6 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 									<div className="flex space-x-2">
 										<ElemButton
 											onClick={onClose}
-											href="/account"
 											btn="slate"
 											className="h-9 w-9 !px-0 !py-0 outline-none"
 										>
