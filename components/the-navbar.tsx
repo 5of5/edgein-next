@@ -324,12 +324,14 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 						/>
 					)} */}
 			</nav>
-			<MobileNav
-				className=""
-				setShowPopup={setShowPopup}
-				myListsUrl={myListsUrl}
-				myGroupsUrl={myGroupsUrl}
-			/>
+			{user && (
+				<MobileNav
+					className=""
+					setShowPopup={setShowPopup}
+					myListsUrl={myListsUrl}
+					myGroupsUrl={myGroupsUrl}
+				/>
+			)}
 		</header>
 	);
 };

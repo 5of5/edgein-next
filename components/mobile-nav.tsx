@@ -191,13 +191,6 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 							setNavOpen(false);
 						},
 					},
-					{
-						icon: IconSignOut,
-						name: "Sign out",
-						onClick: () => {
-							logout(), setNavOpen(false);
-						},
-					},
 			  ]
 			: []),
 		// { icon: IconUsers, name: "Team", href: "/team", onClick: null },
@@ -345,6 +338,18 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 										</li>
 									))}
 								</ul>
+								<div className="p-4">
+									<ElemButton
+										btn="slate"
+										roundedFull={false}
+										onClick={() => {
+											logout(), setNavOpen(false);
+										}}
+										className="w-full rounded-lg"
+									>
+										Sign out
+									</ElemButton>
+								</div>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>
