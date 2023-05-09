@@ -267,14 +267,12 @@ const Group: NextPage<Props> = (props: Props) => {
 					onOpenSettingDialog={onOpenSettingDialog}
 				/>
 
-				<div className="flex justify-center space-y-4 lg:justify-start">
-					<div className="w-full max-w-2xl lg:max-w-lg">
-						<ElemGroupAbout
-							className="mt-4"
-							isUserBelongToGroup={isUserBelongToGroup}
-							group={groupData}
-						/>
-					</div>
+				<div className="w-full mx-auto max-w-2xl lg:max-w-lg">
+					<ElemGroupAbout
+						className="mt-4"
+						isUserBelongToGroup={isUserBelongToGroup}
+						group={groupData}
+					/>
 				</div>
 			</DashboardLayout>
 		);

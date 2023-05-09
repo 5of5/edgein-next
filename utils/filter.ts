@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import isEmpty from "lodash/isEmpty";
 import {
 	DateCondition,
 	FilterOptionKeys,
@@ -10,7 +11,7 @@ import {
   Events_Bool_Exp,
   Vc_Firms_Bool_Exp,
 } from "@/graphql/types";
-import { DeepPartial } from "@/pages/companies";
+import { DeepPartial } from "@/types/common";
 import { eventTypeChoices, roundChoices, tags } from "@/utils/constants";
 import { convertToInternationalCurrencySystem } from "@/utils";
 
@@ -281,10 +282,11 @@ export const getFilterOptionMetadata = (
 
 export const processCompaniesFilters = (
 	filters: DeepPartial<Companies_Bool_Exp>,
-	selectedFilters: Filters | null
+	selectedFilters: Filters | null,
+	defaultFilters: DeepPartial<Companies_Bool_Exp[]>,
 ) => {
-	if (!selectedFilters) {
-		filters._and = [{ slug: { _neq: "" } }];
+	if (!selectedFilters || isEmpty(selectedFilters)) {
+		filters._and = defaultFilters;
 	}
 	if (selectedFilters?.country?.tags?.length) {
 		if (selectedFilters?.country?.condition === "any") {
@@ -517,10 +519,11 @@ export const processCompaniesFilters = (
 
 export const processInvestorsFilters = (
 	filters: DeepPartial<Vc_Firms_Bool_Exp>,
-	selectedFilters: Filters | null
+	selectedFilters: Filters | null,
+	defaultFilters: DeepPartial<Vc_Firms_Bool_Exp[]>,
 ) => {
-	if (!selectedFilters) {
-		filters._and = [{ slug: { _neq: "" } }];
+	if (!selectedFilters || isEmpty(selectedFilters)) {
+		filters._and = defaultFilters;
 	}
 	if (selectedFilters?.country?.tags?.length) {
 		if (selectedFilters?.country?.condition === "any") {
@@ -790,11 +793,12 @@ export const processInvestorsFilters = (
 export const processEventsFilters = (
   filters: DeepPartial<Events_Bool_Exp>,
   selectedFilters: Filters | null,
+	defaultFilters: DeepPartial<Vc_Firms_Bool_Exp[]>,
 	dateCondition: DateCondition = "past",
 ) => {
-  if (!selectedFilters) {
-    filters._and = [];
-  }
+	if (!selectedFilters || isEmpty(selectedFilters)) {
+		filters._and = defaultFilters;
+	}
   if (selectedFilters?.country?.tags?.length) {
     if (selectedFilters?.country?.condition === "any") {
       filters._and?.push({

@@ -130,7 +130,7 @@ const ElemMemberTab: React.FC<Props> = ({
 
 							<p className="font-bold capitalize">{member.user.display_name}</p>
 							{member.user.id === group.created_by_user_id && (
-								<span>(Manager)</span>
+								<span>(Admin)</span>
 							)}
 						</div>
 						{isGroupManager && member.user.id !== group.created_by_user_id && (

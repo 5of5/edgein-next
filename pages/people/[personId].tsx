@@ -230,7 +230,11 @@ const Person: NextPage<Props> = (props) => {
 							/>
 						)}
 						{props.sortNews.length > 0 && (
-							<ElemNewsList resourceNews={props.sortNews} className="mb-7" />
+							<ElemNewsList
+								resourceId={person.id}
+								resourceNews={props.sortNews}
+								className="mb-7"
+							/>
 						)}
 						{!person.investors || person.investors.length === 0 ? null : (
 							<ElemInvestorsList
@@ -282,13 +286,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		};
 	}
 
-	const getInvestments = people.people[0].investments.map((round) => {
-		if (typeof round.investment_round === "object") {
-			return round.investment_round;
-		} else {
-			return null;
-		}
-	});
+	const getInvestments = people.people[0].investments
+    .filter((item) => typeof item.investment_round === "object")
+    .map((item) => item.investment_round);
 
 	const sortByDateAscInvestments = getInvestments
 		.slice()
