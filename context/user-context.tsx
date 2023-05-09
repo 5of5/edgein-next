@@ -92,7 +92,13 @@ const UserProvider: React.FC<Props> = (props) => {
           email: user.email, // Email address
           // created_at: user._createdAt // Signup date as a Unix timestamp    
           userId: String(user.id), // User ID
-          userHash: user.intercomUserHash // HMAC using SHA-256
+          userHash: user.intercomUserHash, // HMAC using SHA-256
+          customAttributes: {
+            isClaimedProfile: !!user.person, // If a profile is claimed or not
+            profileUrl: user.person
+              ? `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/people/${user.person.slug}`
+              : null, // User profile url
+          },
         })
       } catch(e) {
          // intercom not loaded

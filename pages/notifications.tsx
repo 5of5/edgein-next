@@ -105,8 +105,8 @@ const Notifications: NextPage = () => {
 
 	return (
 		<div className="max-w-3xl mx-auto sm:mt-7 sm:px-6 lg:px-8">
-			<div className="bg-white shadow rounded-lg p-5 ring-2 ring-white">
-				<div className="flex items-center justify-between mb-2">
+			<div className="bg-white shadow rounded-lg ring-2 ring-white">
+				<div className="flex items-center justify-between mb-2 pt-4 px-4">
 					<h2 className="text-xl font-bold">Notifications</h2>
 					<button
 						className="flex items-center text-sm hover:text-primary-500"
@@ -117,7 +117,7 @@ const Notifications: NextPage = () => {
 					</button>
 				</div>
 
-				<div className="-mx-5 border-y border-slate-100 divide-y divide-slate-100">
+				<div className="relative z-10 mx-2">
 					{error ? (
 						<h4>Error loading notifications</h4>
 					) : isLoading && !initialLoad ? (
@@ -146,12 +146,6 @@ const Notifications: NextPage = () => {
 									? notification.company
 									: notification.vc_firm;
 
-								//let userTimezone = moment.tz.guess();
-
-								// const notificationCreatedAt = moment(notification.created_at)
-								// 	.tz(userTimezone)
-								// 	.format("MMM D");
-
 								const notificationFromNow = moment(
 									notification.created_at
 								).fromNow();
@@ -166,9 +160,9 @@ const Notifications: NextPage = () => {
 								const notificationPopover = (
 									<Popover
 										className="absolute right-1 group-hover:block transition-all sm:hidden sm:right-10"
-										style={{ zIndex: 9999 - index }}
+										style={{ zIndex: displayedNotifications.length - index }}
 									>
-										<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
+										<Popover.Button className="inline-flex items-center text-sm rounded-full aspect-square p-1 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
 											<IconEllipsisHorizontal
 												className="h-6 w-6 group-hover:text-primary-500"
 												title="Options"
@@ -218,10 +212,10 @@ const Notifications: NextPage = () => {
 								const component = (
 									<div
 										onClick={() => markAsRead(notification.id)}
-										className={`flex items-center justify-between px-2 sm:px-5 py-2 shrink-0 w-full group-hover:bg-slate-100 ${
+										className={`flex items-center justify-between px-2 sm:px-2 py-2 shrink-0 w-full overflow-hidden sm:rounded-md group-hover:bg-gray-50 ${
 											notification.read
 												? "bg-transparent opacity-60"
-												: "bg-slate-100"
+												: "bg-gray-50 lg:bg-transparent"
 										}`}
 									>
 										<div className="flex items-center space-x-2 sm:pr-20">
@@ -259,7 +253,13 @@ const Notifications: NextPage = () => {
 												</div>
 
 												<div className="text-left">
-													<span className="text-sm text-primary-500 font-medium">
+													<span
+														className={`text-sm  ${
+															notification.read
+																? ""
+																: "font-medium text-primary-500"
+														}`}
+													>
 														{notificationFromNow}
 													</span>
 												</div>
@@ -317,9 +317,7 @@ const Notifications: NextPage = () => {
 								} else {
 									return (
 										<div
-											className={`relative flex items-center group ${
-												notification.read ? "bg-transparent" : "bg-slate-100"
-											}`}
+											className={`relative flex items-center group`}
 											key={notification.id}
 										>
 											<Link href={getLink(notification)} passHref>
@@ -335,22 +333,26 @@ const Notifications: NextPage = () => {
 
 				{(notifications ? notifications.length : 0) >
 				(displayedNotifications ? displayedNotifications.length : 0) ? (
-					<ElemButton
-						btn="ol-primary"
-						onClick={onOpenUpgradeDialog}
-						className="mt-5 w-full"
-					>
-						Show more notifications
-					</ElemButton>
-				) : (
-					notificationsLimit < (notifications ? notifications.length : 0) && (
+					<div className="p-5">
 						<ElemButton
 							btn="ol-primary"
-							onClick={showMoreNotifications}
-							className="mt-5 w-full"
+							onClick={onOpenUpgradeDialog}
+							className="w-full"
 						>
 							Show more notifications
 						</ElemButton>
+					</div>
+				) : (
+					notificationsLimit < (notifications ? notifications.length : 0) && (
+						<div className="p-5">
+							<ElemButton
+								btn="ol-primary"
+								onClick={showMoreNotifications}
+								className="w-full"
+							>
+								Show more notifications
+							</ElemButton>
+						</div>
 					)
 				)}
 			</div>

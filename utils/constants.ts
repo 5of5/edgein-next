@@ -1901,3 +1901,5 @@ export const newsPersonTypes = [
 		name: "Subject",
 	},
 ];
+
+export const LOCAL_STORAGE_LIBRARY_KEY = "library";

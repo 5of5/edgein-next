@@ -4,7 +4,7 @@ const useDisclosureState = (key: string) => {
   const btnRef = useRef<HTMLButtonElement>(null);
 
   let isDefaultOpen = true;
-  if (typeof window !== undefined && localStorage.getItem(key)) {
+  if (typeof window !== 'undefined' && localStorage.getItem(key)) {
     isDefaultOpen = localStorage.getItem(key) === "true";
   }
 

@@ -11,12 +11,8 @@ import {
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/elem-reactions";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
-
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	className?: string;
@@ -29,6 +25,8 @@ export const ElemRecentCompanies: FC<Props> = ({
 	heading,
 	itemsLimit,
 }) => {
+	const { selectedLibrary } = useLibrary();
+
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -37,7 +35,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 			{
 				slug: { _neq: "" },
 				date_added: { _neq: new Date(0) },
-				library: { _contains: "Web3" },
+				library: { _contains: selectedLibrary },
 			},
 		],
 	};

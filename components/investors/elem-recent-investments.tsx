@@ -11,12 +11,8 @@ import { ElemReactions } from "@/components/elem-reactions";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
 import { useAuth } from "@/hooks/use-auth";
 import { formatDate } from "@/utils";
-
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	className?: string;
@@ -30,6 +26,9 @@ export const ElemRecentInvestments: FC<Props> = ({
 	itemsLimit,
 }) => {
 	const { user } = useAuth();
+
+	const { selectedLibrary } = useLibrary();
+
 	const limit = itemsLimit ? itemsLimit : 33;
 	const offset = null;
 
@@ -37,7 +36,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 		_and: [
 			{ slug: { _neq: "" } },
 			{ status: { _neq: "draft" } },
-			{ library: { _contains: "Web3" } },
+			{ library: { _contains: selectedLibrary } },
 		],
 	};
 
