@@ -163,3 +163,31 @@ query FindEventAttendee($event_id: Int!, $person_id: Int!) {
     id
   }
 }
+
+query GetSubEvents($parent_event_id: Int!) {
+  events(
+    where: { parent_event_id: { _eq: $parent_event_id } }
+    order_by: { start_date: desc }
+    limit: 50
+  ) {
+    id
+    name
+    slug
+    banner
+    overview
+    notes
+    location_json
+    venue_name
+    link
+    size
+    price
+    types
+    start_date
+    start_time
+    end_date
+    end_time
+    timezone
+    is_featured
+    created_at
+  }
+}

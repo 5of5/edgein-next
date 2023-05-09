@@ -14,6 +14,7 @@ import {
 	GetEventDocument,
 	GetEventQuery,
 	useGetEventQuery,
+	useGetSubEventsQuery,
 } from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
 import { formatDate, formatTime } from "@/utils";
@@ -29,6 +30,7 @@ import { newLineToP } from "@/utils/text";
 import { useUser } from "@/context/user-context";
 import { Popups } from "@/components/the-navbar";
 import { ElemRequiredProfileDialog } from "@/components/elem-required-profile-dialog";
+import { ElemSubEvents } from "@/components/event/elem-sub-events";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -55,6 +57,13 @@ const Event: NextPage<Props> = (props) => {
 	const { data: eventData, refetch } = useGetEventQuery({
 		slug: eventId as string,
 	});
+
+	const { data: subEvents } = useGetSubEventsQuery(
+    {
+      parent_event_id: event?.id,
+    },
+    { enabled: !!event.id }
+  );
 
 	useEffect(() => {
 		if (eventData) setEvent(eventData.events[0]);
@@ -378,6 +387,14 @@ const Event: NextPage<Props> = (props) => {
 						<ElemSponsorGrid organizations={sponsors} />
 					</div>
 				)}
+
+				{subEvents?.events && subEvents.events.length > 0 && (
+					<ElemSubEvents
+						className="mt-7"
+						subEvents={subEvents.events}
+					/>
+				)}
+
 				{event.types && (
 					<ElemSimilarEvents
 						className="mt-7"
