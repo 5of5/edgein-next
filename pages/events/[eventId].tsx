@@ -53,6 +53,7 @@ const Event: NextPage<Props> = (props) => {
 	const organizersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const speakersRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const sponsorsRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const subEventsRef = useRef() as MutableRefObject<HTMLDivElement>;
 
 	const { data: eventData, refetch } = useGetEventQuery({
 		slug: eventId as string,
@@ -143,6 +144,10 @@ const Event: NextPage<Props> = (props) => {
 	}
 	if (event.event_organization?.some((item) => item.type === "sponsor")) {
 		tabBarItems.push({ name: "Sponsors", ref: sponsorsRef });
+	}
+
+	if (subEvents) {
+		tabBarItems.push({ name: "Sub-events", ref: subEventsRef });
 	}
 
 	const speakers = event.event_person?.filter(
@@ -373,11 +378,13 @@ const Event: NextPage<Props> = (props) => {
 				)}
 
 				{subEvents?.events && subEvents.events.length > 0 && (
-					<ElemSubEvents
-						className="mt-7"
-						eventName={event.name}
-						subEvents={subEvents.events}
-					/>
+					<div ref={subEventsRef}>
+						<ElemSubEvents
+							className="mt-7"
+							eventName={event.name}
+							subEvents={subEvents.events}
+						/>
+					</div>
 				)}
 
 				{event.types && (
