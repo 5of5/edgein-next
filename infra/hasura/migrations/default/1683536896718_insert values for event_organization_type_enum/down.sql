@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."event_organization_type_enum"("value", "description") VALUES (E'sponsor', E'used for type field');
+-- INSERT INTO "public"."event_organization_type_enum"("value", "description") VALUES (E'organizer', E'used for classification field');

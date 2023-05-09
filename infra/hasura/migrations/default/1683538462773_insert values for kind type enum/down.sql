@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."kind_type_enum"("value", "description") VALUES (E'news', E'used for kind type field');
+-- INSERT INTO "public"."kind_type_enum"("value", "description") VALUES (E'media', E'used for kind type field');

@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."member_type_enum"("value", "description") VALUES (E'follow', E'used for member type field');
+-- INSERT INTO "public"."member_type_enum"("value", "description") VALUES (E'owner', E'used for member type field');

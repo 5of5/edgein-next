@@ -1,0 +1,4 @@
+table:
+  schema: public
+  name: status_type_enum_group_1
+is_enum: true

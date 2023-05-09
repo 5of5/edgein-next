@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."match_type_enum"("value", "description") VALUES (E'EMAIL', E'used for allowed_email table');
+-- INSERT INTO "public"."match_type_enum"("value", "description") VALUES (E'DOMAIN', E'used for allowed_email table');

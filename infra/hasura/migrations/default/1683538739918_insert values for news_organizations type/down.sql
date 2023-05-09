@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."news_organizations_type_enum"("value", "description") VALUES (E'publisher', E'used for news_organizations type field');
+-- INSERT INTO "public"."news_organizations_type_enum"("value", "description") VALUES (E'subject', E'used for news_organizations type field');

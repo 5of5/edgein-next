@@ -1,0 +1,1 @@
+CREATE TABLE "public"."event_organization_type_enum" ("value" text NOT NULL, "description" text NOT NULL, PRIMARY KEY ("value") );COMMENT ON TABLE "public"."event_organization_type_enum" IS E'event_organization_type enum';

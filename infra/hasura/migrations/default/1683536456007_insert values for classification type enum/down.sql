@@ -1,0 +1,5 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."classification_type_enum"("value", "description") VALUES (E'new', E'used for classification field');
+-- INSERT INTO "public"."classification_type_enum"("value", "description") VALUES (E'incorrect', E'used for classification fields');
+-- INSERT INTO "public"."classification_type_enum"("value", "description") VALUES (E'validated', E'used for classification fields');

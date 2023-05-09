@@ -1,0 +1,1 @@
+CREATE TABLE "public"."match_type_enum" ("value" text NOT NULL, "description" text NOT NULL, PRIMARY KEY ("value") );COMMENT ON TABLE "public"."match_type_enum" IS E'match_type enum is used for allowed_emails table';

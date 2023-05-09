@@ -1,0 +1,4 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- INSERT INTO "public"."status_type_enum_group_1"("value", "description") VALUES (E'inactive', E'used for status fields inactive/active');
+-- INSERT INTO "public"."status_type_enum_group_1"("value", "description") VALUES (E'active', E'used for status fields inactive/active');

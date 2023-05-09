@@ -1,0 +1,4 @@
+table:
+  schema: public
+  name: event_organization_type_enum
+is_enum: true

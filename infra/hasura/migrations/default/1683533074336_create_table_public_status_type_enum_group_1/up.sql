@@ -1,0 +1,1 @@
+CREATE TABLE "public"."status_type_enum_group_1" ("value" text NOT NULL, "description" text NOT NULL, PRIMARY KEY ("value") );COMMENT ON TABLE "public"."status_type_enum_group_1" IS E'status_type enum includes inactive/active';
