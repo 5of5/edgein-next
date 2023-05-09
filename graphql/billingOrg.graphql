@@ -25,9 +25,16 @@ query GetBillingOrgByCustomerId($customerId: String = "") {
   }
 }
 
-mutation UpdateBillingOrg($id: Int!, $status: String = "") {
+mutation UpdateBillingOrg($id: Int!, $status: String!) {
   update_billing_org_by_pk(pk_columns: { id: $id }, _set: { status: $status }) {
     id
     status
+  }
+}
+
+mutation UpdateBillingOrgCustomerId($id: Int!, $customerId: String!) {
+  update_billing_org_by_pk(pk_columns: { id: $id }, _set: { customer_id: $customerId }) {
+    id
+    customer_id
   }
 }

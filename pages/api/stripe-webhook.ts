@@ -67,10 +67,33 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				const billingOrg = await BillingService.getBillingOrgByCustomerId(
 					customerId
 				);
-				await BillingService.updateBillingOrg(
-					billingOrg.id,
-					subscription.status === "active" ? "active" : "inactive"
-				);
+				if (!billingOrg) {
+					const customer = await stripe.customers.retrieve(customerId);
+					const user = await UserService.findOneUserByEmail(customer.email);
+					if (!user) {
+						res.status(400).send({ error: `Webhook no user for customer id ${customerId} ${customer.email}` });
+						return;
+					}
+					if (!user.billing_org_id) {
+						// create billing org
+						const billingOrg = await BillingService.insertBillingOrg(
+							customerId,
+							subscription.status === "active" ? "active" : "inactive",
+							"basic",
+						);
+						// update user
+						UserService.updateBillingOrg(user.id, billingOrg?.id || 0);
+					} else {
+						// update billing org
+						await BillingService.updateBillingOrgCustomerId(user.id, customerId);
+					}
+					break;
+				} else {
+					await BillingService.updateBillingOrg(
+						billingOrg.id,
+						subscription.status === "active" ? "active" : "inactive"
+					);
+				}
 				break;
 			}
 			case "checkout.session.completed": {
