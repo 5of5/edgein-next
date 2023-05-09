@@ -10,12 +10,8 @@ import {
 	useGetEventsQuery,
 } from "@/graphql/types";
 import { ElemEventCard } from "../events/elem-event-card";
-
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	className?: string;
@@ -35,10 +31,13 @@ export const ElemSimilarEvents: FC<Props> = ({
 
 	const router = useRouter();
 
+	const { selectedLibrary } = useLibrary();
+
 	const filters: DeepPartial<Events_Bool_Exp> = {
 		_and: [
 			{
 				slug: { _neq: "" || currentSlug },
+				library: { _contains: selectedLibrary },
 				_or: [{ types: { _contains: tag1 } }, { types: { _contains: tag2 } }],
 			},
 		],

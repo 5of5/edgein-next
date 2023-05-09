@@ -94,7 +94,14 @@ query GetVCFirm($slug: String!) {
 				date
 				text
 				link
+				kind
 				status
+        organizations {
+					id
+					type
+					company_id
+					vc_firm_id
+				}
 			}
 		}	
 	}

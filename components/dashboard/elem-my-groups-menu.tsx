@@ -13,7 +13,7 @@ import { Disclosure } from "@headlessui/react";
 import { useUser } from "@/context/user-context";
 import { ElemUpgradeDialog } from "../elem-upgrade-dialog";
 import { ElemTooltip } from "../elem-tooltip";
-import useDisclosureState from "@/hooks/useDisclosureState";
+import useDisclosureState from "@/hooks/use-disclosure-state";
 import { MY_GROUPS_MENU_OPEN_KEY } from "@/utils/constants";
 import ElemCreateGroupDialog from "../group/elem-create-group-dialog";
 

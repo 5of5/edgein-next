@@ -24,7 +24,9 @@ import { onTrackView } from "@/utils/track";
 import { processCompaniesFilters } from "@/utils/filter";
 import { ElemFilter } from "@/components/elem-filter";
 import { useIntercom } from "react-use-intercom";
-import useFilterParams from "@/hooks/useFilterParams";
+import useFilterParams from "@/hooks/use-filter-params";
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -42,12 +44,6 @@ type Props = {
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
-
 const Companies: NextPage<Props> = ({
 	companiesCount,
 	initialCompanies,
@@ -57,6 +53,8 @@ const Companies: NextPage<Props> = ({
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
+
+	const { selectedLibrary } = useLibrary();
 
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
 
@@ -76,8 +74,13 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
+	const defaultFilters = [
+    { slug: { _neq: "" } },
+    { library: { _contains: selectedLibrary } },
+  ];
+
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+		_and: defaultFilters,
 	};
 
 	useEffect(() => {
@@ -153,7 +156,7 @@ const Companies: NextPage<Props> = ({
 	};
 
 	/** Handle selected filter params */
-	processCompaniesFilters(filters, selectedFilters);
+	processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
 	if (selectedStatusTag.value) {
 		filters._and?.push({
@@ -226,11 +229,11 @@ const Companies: NextPage<Props> = ({
 						resourceType="companies"
 						filterValues={selectedFilters}
 						onApply={(name, filterParams) => {
-							filters._and = [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
 						}}
 						onClearOption={(name) => {
-							filters._and = [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }];
+							filters._and = defaultFilters;
 							setSelectedFilters({ ...selectedFilters, [name]: undefined });
 						}}
 						onReset={() => setSelectedFilters(null)}

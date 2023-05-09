@@ -255,6 +255,7 @@ const VCFirm: NextPage<Props> = (props) => {
 						</div>
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
+								resourceId={vcfirm.id}
 								resourceType="vc_firms"
 								resourceInvestments={sortActivities}
 								resourceName={vcfirm.name}

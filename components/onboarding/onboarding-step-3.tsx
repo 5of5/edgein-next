@@ -1,6 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
-import { DeepPartial } from "@/components/company/elem-cohort";
 import { Dialog, Transition } from "@headlessui/react";
 import {
 	Companies_Bool_Exp,
@@ -9,6 +8,7 @@ import {
 	useGetRelevantVcFirmsQuery,
 } from "@/graphql/types";
 import { User } from "@/models/user";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	selectedOption: string;
