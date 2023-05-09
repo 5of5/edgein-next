@@ -17,7 +17,6 @@ import {
 	useGetSubEventsQuery,
 } from "@/graphql/types";
 import { orderBy, sortBy } from "lodash";
-import { formatDate, formatTime } from "@/utils";
 import { ElemSpeakerGrid } from "@/components/event/elem-speaker-grid";
 import { ElemSponsorGrid } from "@/components/event/elem-sponsor-grid";
 import { ElemOrganizers } from "@/components/event/elem-organizers";
@@ -31,6 +30,7 @@ import { useUser } from "@/context/user-context";
 import { Popups } from "@/components/the-navbar";
 import { ElemRequiredProfileDialog } from "@/components/elem-required-profile-dialog";
 import { ElemSubEvents } from "@/components/event/elem-sub-events";
+import moment from "moment-timezone";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -167,33 +167,16 @@ const Event: NextPage<Props> = (props) => {
 		["desc"]
 	);
 
-	const customDateFormat = (
-		date: string,
-		time?: string,
-		timezone?: string | null
-	) => {
-		const theDate = formatDate(date, {
-			month: "short",
-			day: "2-digit",
-			year: "numeric",
-			timeZone: timezone || undefined,
-			//timeZoneName: "short",
-		});
+	const formatDateShown = (date: Date) => {
+		let utcTime = date;
+		const local_date = moment
+			.utc(utcTime)
+			.local()
+			.format("YYYY-MM-DD HH:mm:ss");
 
-		if (!time) {
-			return theDate;
-		}
-
-		const newEventDateWithTime = new Date(`${date} ${time}`);
-
-		const theTime = formatTime(newEventDateWithTime, {
-			hour: "2-digit",
-			minute: "2-digit",
-			timeZone: timezone || undefined,
-		});
-
-		return `${theDate} at ${theTime}`;
+		return moment(local_date).format("LL");
 	};
+
 	return (
 		<>
 			<div className="w-full bg-gradient-to-b from-transparent to-white shadow pt-8">
@@ -227,19 +210,20 @@ const Event: NextPage<Props> = (props) => {
 					</div>
 
 					{event.start_date && (
-						<div className="w-full inline-flex py-1 font-medium uppercase text-lg text-slate-600">
-							{customDateFormat(
-								event.start_date,
-								event.start_time,
-								event.timezone
+						<div className="w-full inline py-1 font-medium uppercase text-lg text-slate-600">
+							{formatDateShown(event?.start_date)}
+							{event?.start_time && (
+								<span className="pl-1">
+									at {moment(event?.start_time, "HH:mm").format("hh:mmA")}
+								</span>
 							)}
-
-							{event.end_date &&
-								` – ${customDateFormat(
-									event.end_date,
-									event.end_time,
-									event.timezone
-								)}`}
+							{event.end_date && ` – ${formatDateShown(event?.end_date)}`}
+							{event?.end_time && (
+								<span className="pl-1">
+									at {moment(event?.end_time, "HH:mm").format("hh:mmA")}
+								</span>
+							)}
+							{/* event.timezone */}
 						</div>
 					)}
 
