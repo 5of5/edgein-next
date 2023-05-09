@@ -76,7 +76,7 @@ const AskEdgein: NextPage = () => {
                 </ElemButton>
               </div>
               <div className="group mb-2 sm:col-span-2">{queryRes}</div>
-              { queryRes && <div>
+              { queryRes && <div className="group mb-2 sm:col-span-2">
                 														<div onClick={() => setEnableExpand(true)}>
 															
 															<span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
@@ -84,7 +84,7 @@ const AskEdgein: NextPage = () => {
 															</span>
 															<IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
 														</div>
-                  { enableExpand && <div>{ JSON.stringify(queryResJson) }</div> }
+                  { enableExpand && <div><pre style={{whiteSpace:'break-spaces'}}>{ JSON.stringify(queryResJson, null, 2) }</pre></div> }
                 </div>}
             </form>
 					</div>
