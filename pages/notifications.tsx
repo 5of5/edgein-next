@@ -67,10 +67,9 @@ const Notifications: NextPage = () => {
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		notifications?.length
-		// user?.entitlements.listsCount
-		// 	? user?.entitlements.listsCount
-		// 	: notifications?.length
+		user?.entitlements.listsCount
+			? user?.entitlements.listsCount
+			: notifications?.length
 	);
 
 	const [notificationsLimit, setNotificationsLimit] = useState(5);
@@ -146,12 +145,6 @@ const Notifications: NextPage = () => {
 								const organization = notification.company
 									? notification.company
 									: notification.vc_firm;
-
-								//let userTimezone = moment.tz.guess();
-
-								// const notificationCreatedAt = moment(notification.created_at)
-								// 	.tz(userTimezone)
-								// 	.format("MMM D");
 
 								const notificationFromNow = moment(
 									notification.created_at
