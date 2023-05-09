@@ -20,7 +20,7 @@ import {
 	News_Bool_Exp,
 	Order_By,
 } from "@/graphql/types";
-import { DeepPartial } from "./companies";
+import { DeepPartial } from "@/types/common";
 
 type Props = {
 	newsCount: number;
@@ -82,7 +82,7 @@ const News: NextPage<Props> = ({
 				<div className="bg-white rounded-lg shadow p-5">
 					<h2 className="text-xl font-bold">Recent News</h2>
 
-					{news?.length === 0 && (
+					{/* {news?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
 							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
 								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
@@ -97,7 +97,7 @@ const News: NextPage<Props> = ({
 								</ElemButton>
 							</div>
 						</div>
-					)}
+					)} */}
 
 					<div className="mt-3 grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
 						{error ? (
@@ -110,11 +110,14 @@ const News: NextPage<Props> = ({
 							</>
 						) : (
 							news?.map((item: any) => (
+								// <>
+								// 	{console.log(item)}
 								<ElemNewsCard
 									key={item.id}
 									newsPost={item as News}
 									//tagOnClick={filterByTag}
 								/>
+								// </>
 							))
 						)}
 					</div>

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, Fragment } from "react";
 import { ElemPhoto } from "@/components/elem-photo";
 import { ElemReactions } from "@/components/elem-reactions";
 import { ElemSaveToList } from "@/components/elem-save-to-list";
@@ -126,8 +126,12 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 								? organizer.company
 								: organizer.vc_firm;
 
+							const organizationId = organizer.company
+								? organizer.company?.id
+								: organizer.vc_firm?.id;
+
 							return (
-								<>
+								<Fragment key={organizationId}>
 									<ElemTooltip
 										content={
 											<ElemPhoto
@@ -140,14 +144,14 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 										}
 										className="cursor-pointer"
 									>
-										<Link href={slug} key={organizer.id}>
+										<Link href={slug}>
 											<a className="break-words border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
 												{organization?.name}
 											</a>
 										</Link>
 									</ElemTooltip>
 									{organizations.length === index + 1 ? "" : ", "}
-								</>
+								</Fragment>
 							);
 						})}
 					</div>
