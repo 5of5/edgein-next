@@ -3,11 +3,14 @@ import type { NextPage, GetStaticProps } from "next";
 import { InputText } from "@/components/input-text";
 import { ElemButton } from "@/components/elem-button";
 import { FigureBlurredBg, FigurePerspectiveGrid } from "@/components/figures";
+import { IconChevronDownMini } from "@/components/icons";
 
 const AskEdgein: NextPage = () => {
 	const [query, setQuery] = useState("");
 	const [queryRes, setQueryRes] = useState("");
+	const [queryResJson, setQueryResJson] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [enableExpand, setEnableExpand] = useState(false);
 
 	const onSubmit = async (e: { preventDefault: () => void }) => {
 		if (e) e.preventDefault();
@@ -25,6 +28,7 @@ const AskEdgein: NextPage = () => {
       });
       const json = await queryRes.json()
       console.log(json)
+      setQueryResJson(json)
       if (!queryRes.ok) {
         setQueryRes("Error")  
       } else {
@@ -72,6 +76,16 @@ const AskEdgein: NextPage = () => {
                 </ElemButton>
               </div>
               <div className="group mb-2 sm:col-span-2">{queryRes}</div>
+              { queryRes && <div>
+                														<div onClick={() => setEnableExpand(true)}>
+															
+															<span className="leading-tight text-primary-500 hover:border-b hover:border-primary-500">
+																Details
+															</span>
+															<IconChevronDownMini className="inline h-5 aspect-square text-primary-500" />
+														</div>
+                  { enableExpand && <div>{ JSON.stringify(queryResJson) }</div> }
+                </div>}
             </form>
 					</div>
 				</div>
