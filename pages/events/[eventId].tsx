@@ -59,11 +59,11 @@ const Event: NextPage<Props> = (props) => {
 	});
 
 	const { data: subEvents } = useGetSubEventsQuery(
-    {
-      parent_event_id: event?.id,
-    },
-    { enabled: !!event.id }
-  );
+		{
+			parent_event_id: event?.id,
+		},
+		{ enabled: !!event.id }
+	);
 
 	useEffect(() => {
 		if (eventData) setEvent(eventData.events[0]);
@@ -391,6 +391,7 @@ const Event: NextPage<Props> = (props) => {
 				{subEvents?.events && subEvents.events.length > 0 && (
 					<ElemSubEvents
 						className="mt-7"
+						eventName={event.name}
 						subEvents={subEvents.events}
 					/>
 				)}

@@ -4,44 +4,71 @@ import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
 import { ElemCarouselCard } from "@/components/elem-carousel-card";
 import { GetSubEventsQuery } from "@/graphql/types";
 import { ElemEventCard } from "../events/elem-event-card";
+import { useIntercom } from "react-use-intercom";
+import { IconPlus } from "@/components/icons";
+import { ElemButton } from "@/components/elem-button";
 
 type Props = {
-  className?: string;
-  subEvents: GetSubEventsQuery["events"];
+	className?: string;
+	eventName?: string;
+	subEvents: GetSubEventsQuery["events"];
 };
 
-export const ElemSubEvents: FC<Props> = ({ className, subEvents }) => {
-  const router = useRouter();
+export const ElemSubEvents: FC<Props> = ({
+	className,
+	eventName,
+	subEvents,
+}) => {
+	const router = useRouter();
 
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
+	const { showNewMessages } = useIntercom();
 
-    router.push(
-      `/events/?filters=${encodeURIComponent(
-        `{"eventType":{"tags":["${type}"]}}`
-      )}`
-    );
-  };
+	const onClickType = (
+		event: React.MouseEvent<HTMLDivElement>,
+		type: string
+	) => {
+		event.stopPropagation();
+		event.preventDefault();
 
-  return (
-    <section className={`bg-white rounded-lg p-5 shadow ${className}`}>
-      <h2 className="text-xl font-bold">Sub-events</h2>
-      <ElemCarouselWrap>
-        {subEvents.map((event: any) => {
-          return (
-            <ElemCarouselCard
-              key={event.id}
-              className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
-            >
-              <ElemEventCard event={event} onClickType={onClickType} />
-            </ElemCarouselCard>
-          );
-        })}
-      </ElemCarouselWrap>
-    </section>
-  );
+		router.push(
+			`/events/?filters=${encodeURIComponent(
+				`{"eventType":{"tags":["${type}"]}}`
+			)}`
+		);
+	};
+
+	return (
+		<section className={`bg-white rounded-lg p-5 shadow ${className}`}>
+			<div className="flex flex-wrap items-center justify-between">
+				<h2 className="text-xl font-bold">
+					{eventName ? `Sub-events at ${eventName}` : "Sub-events"}
+				</h2>
+
+				<ElemButton
+					onClick={() =>
+						showNewMessages(
+							`Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`
+						)
+					}
+					btn="purple"
+					className="!pl-3"
+				>
+					<IconPlus className="w-5 h-5 mr-1" />
+					Add your event
+				</ElemButton>
+			</div>
+			<ElemCarouselWrap>
+				{subEvents.map((event: any) => {
+					return (
+						<ElemCarouselCard
+							key={event.id}
+							className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+						>
+							<ElemEventCard event={event} onClickType={onClickType} />
+						</ElemCarouselCard>
+					);
+				})}
+			</ElemCarouselWrap>
+		</section>
+	);
 };
