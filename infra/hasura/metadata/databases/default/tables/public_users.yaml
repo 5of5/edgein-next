@@ -60,6 +60,7 @@ select_permissions:
         - external_id
         - id
         - is_auth0_verified
+        - onboarding_information
         - person_id
         - reference_id
         - reference_user_id

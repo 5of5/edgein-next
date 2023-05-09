@@ -442,3 +442,24 @@ query GetUserByAdditionalEmail($email: jsonb) {
     active
   }
 }
+
+mutation UpdateUserOnboardingInformation($id: Int!, $onboarding_information: jsonb) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { onboarding_information: $onboarding_information }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      onboarding_information
+    }
+  }
+}

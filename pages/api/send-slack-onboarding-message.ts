@@ -15,6 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     "https://hooks.slack.com/services/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";
 
   // params:
+  const question: string = req.body.question;
   const message: string = req.body.message;
 
   try {
@@ -33,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               value: user.email,
             },
             {
-              title: "Where did you hear about us?",
+              title: question,
               value: message,
             },
           ],

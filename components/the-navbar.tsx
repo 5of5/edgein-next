@@ -50,11 +50,12 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
-	const [onboardingStep, setOnboardingStep] = useState(0);
+	const [onboardingStep, setOnboardingStep] = useState(1);
 
 	const [selectedOption, setSelectedOption] = useState("companies");
 	const [locationTags, setLocationTags] = useState<string[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
+	const [list, setList] = useState<any[]>([]);
 	const [message, setMessage] = useState<string>("");
 	const [linkedInError, setLinkedInError] = useState("");
 	const [inviteCode, setInviteCode] = useState(
@@ -315,35 +316,37 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							}}
 						/>
 					)}
+					
 					{onboardingStep === 3 && (
-            <OnboardingStep4
-              selectedOption={selectedOption}
-              show={onboardingStep === 3 && !loading}
-              message={message}
-              onClose={() => setOnboardingStep(0)}
-              onBack={(m) => {
-                setMessage(m);
-								setOnboardingStep(2);
-              }}
-							onNext={() => setOnboardingStep(0)}
-            />
-          )}
-					{/* {onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
 							show={onboardingStep === 3 && !loading}
-							onClose={() => {
-								setOnboardingStep(0);
-							}}
-							onNext={() => {
-								setOnboardingStep(0);
+							list={list}
+							onNext={(list) => {
+								setList(list);
+								setOnboardingStep(4);
 							}}
 							onBack={() => setOnboardingStep(2)}
 							user={user}
 						/>
-					)} */}
+					)}
+
+					{onboardingStep === 4 && (
+            <OnboardingStep4
+              selectedOption={selectedOption}
+              show={onboardingStep === 4 && !loading}
+              message={message}
+							list={list}
+              onClose={() => setOnboardingStep(0)}
+              onBack={(m) => {
+                setMessage(m);
+								setOnboardingStep(3);
+              }}
+							onNext={() => setOnboardingStep(0)}
+            />
+          )}
 				</nav>
 			</div>
 		</header>

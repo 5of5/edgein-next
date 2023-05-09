@@ -2,35 +2,80 @@ import React, { useState, Fragment } from "react";
 import { useRouter } from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
 import { ElemButton } from "@/components/elem-button";
+import { createListWithMultipleResources } from "@/utils/reaction";
+import { useUser } from "@/context/user-context";
 import { InputTextarea } from "../input-textarea";
 
 type Props = {
   selectedOption: string;
   message: string;
   show: boolean;
+  list: any[];
   onClose: () => void;
   onBack: (message: string) => void;
   onNext: () => void;
 };
 
+const QUESTION = "Where did you hear about us?";
+
 export default function OnboardingStep4(props: Props) {
   const router = useRouter();
 
+  const { refreshProfile } = useUser();
+
   const [message, setMessage] = useState(props.message);
 
-  const onNext = () => {
-    if (message.trim()) {
-      fetch("/api/send-slack-onboarding-message/", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message }),
-      });
-    }
+  const onCreateList = async () => {
+    const path =
+      props.selectedOption === "companies" ? "companies" : "investors";
+    const payload = {
+      sentiment: "My First List",
+      [props.selectedOption === "companies" ? "companies" : "vcfirms"]:
+        props.list.map((item) => ({
+          [props.selectedOption === "companies" ? "company" : "vcfirm"]:
+            item.id,
+          pathname: `/${path}/${item.slug}`,
+        })),
+    };
+    await createListWithMultipleResources(payload);
+    refreshProfile();
+  };
+
+  const onSave = async () => {
+    await fetch("/api/add-onboarding-information/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        question: QUESTION,
+        answer: message,
+      }),
+    });
+  };
+
+  const onSendSlackMessage = async () => {
+    await fetch("/api/send-slack-onboarding-message/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ question: QUESTION, message }),
+    });
+  };
+
+  const onNext = async () => {
     props.onNext();
     router.push(`/` + props.selectedOption);
+    if (props.list.length > 0) {
+      await onCreateList();
+    }
+    if (message.trim()) {
+      await onSave();
+      await onSendSlackMessage();
+    }
   };
 
   const onBack = () => {
@@ -64,10 +109,8 @@ export default function OnboardingStep4(props: Props) {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
-                <h3 className="text-2xl font-bold">
-                  Where did you hear about us?
-                </h3>
-                <p className="text-sm text-slate-500">Step 3 of 3</p>
+                <h3 className="text-2xl font-bold">{QUESTION}</h3>
+                <p className="text-sm text-slate-500">Step 4 of 4</p>
 
                 <div className="mt-8">
                   <InputTextarea

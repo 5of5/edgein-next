@@ -8,96 +8,83 @@ import {
 	useGetRelevantCompaniesQuery,
 	useGetRelevantVcFirmsQuery,
 } from "@/graphql/types";
-import { createListWithMultipleResources } from "@/utils/reaction";
+import { User } from "@/models/user";
 
 type Props = {
 	selectedOption: string;
 	locationTags: string[];
 	industryTags: string[];
 	show: boolean;
-	onClose: () => void;
-	onNext: () => void;
+	list: any[];
+	onNext: (list: any[]) => void;
 	onBack: () => void;
-	user: {
-		display_name?: string;
-		email?: string;
-		id: number;
-		role: string;
-	} | null;
+	user: User | null;
 };
 
 export default function OnboardingStep3(props: Props) {
-	const [list, setList] = useState<any[]>([]);
-	const [locationTags, setLocationTags] = useState<string[]>([]);
-	const [industryTags, setIndustryTags] = useState<string[]>([]);
+	const { locationTags, industryTags } = props;
 
-	const onClose = () => {
-		props.onClose();
+	const [list, setList] = useState<any[]>(props.list);
+
+	const isHasFilterTags = locationTags.length > 0 || industryTags.length > 0;
+
+	const onNext = () => {
+		props.onNext(list);
 	};
 
-	const handleCreateList = async () => {
-		const path =
-			props.selectedOption === "companies" ? "companies" : "investors";
-		const payload = {
-			sentiment: "My First List",
-			[props.selectedOption === "companies" ? "companies" : "vcfirms"]:
-				list.map((item) => ({
-					[props.selectedOption === "companies" ? "company" : "vcfirm"]:
-						item.id,
-					pathname: `/${path}/${item.slug}`,
-				})),
-		};
-		const newSentiment = await createListWithMultipleResources(payload);
-		props.onClose();
-	};
-
-	const onFinishSetup = () => {
-		// props.onClose();
-		handleCreateList();
-	};
-
-	const filtersCompanies: DeepPartial<Companies_Bool_Exp> = {
+	const filtersCompanies: DeepPartial<Companies_Bool_Exp> = isHasFilterTags ? {
 		_or: [
 			...locationTags.map((tag) => ({
-				location: { _ilike: tag },
+				location_json: {
+					_cast: {
+						String: { _ilike: `%"${tag}"%` },
+					},
+				},
 			})),
 			...industryTags.map((tag) => ({
 				tags: { _contains: tag },
 			})),
 		],
-	};
+	} : {};
 
-	const filterVCFirms: DeepPartial<Vc_Firms_Bool_Exp> = {
+	const filterVCFirms: DeepPartial<Vc_Firms_Bool_Exp> = isHasFilterTags ? {
 		_or: [
 			...locationTags.map((tag) => ({
-				location: { _ilike: tag },
+				location_json: {
+					_cast: {
+						String: { _ilike: `%"${tag}"%` },
+					},
+				},
 			})),
 			...industryTags.map((tag) => ({
 				tags: { _contains: tag },
 			})),
 		],
-	};
+	} : {};
 
 	const {
-		data: companiesData,
-		// error,
-		isLoading: loadingCompany,
-	} = useGetRelevantCompaniesQuery({
-		where: filtersCompanies as Companies_Bool_Exp,
-	});
+    data: companiesData,
+    // error,
+    isLoading: loadingCompany,
+  } = useGetRelevantCompaniesQuery(
+    {
+      where: filtersCompanies as Companies_Bool_Exp,
+      limit: 50,
+    },
+    { enabled: props.selectedOption === "companies" }
+  );
 
 	const {
-		data: vcFirmsData,
-		// error,
-		isLoading: loadingVCFirm,
-	} = useGetRelevantVcFirmsQuery({
-		where: filterVCFirms as Vc_Firms_Bool_Exp,
-	});
-
-	useEffect(() => {
-		setLocationTags(props.locationTags);
-		setIndustryTags(props.industryTags);
-	}, [props]);
+    data: vcFirmsData,
+    // error,
+    isLoading: loadingVCFirm,
+  } = useGetRelevantVcFirmsQuery(
+    {
+      where: filterVCFirms as Vc_Firms_Bool_Exp,
+      limit: 50,
+    },
+    { enabled: props.selectedOption === "investors" }
+  );
 
 	useEffect(() => {
 		if (props.selectedOption === "companies") {
@@ -137,7 +124,7 @@ export default function OnboardingStep3(props: Props) {
 								<h3 className="text-2xl font-bold">
 									We started your first list
 								</h3>
-								<p className="text-sm text-slate-500">Step 3 of 3</p>
+								<p className="text-sm text-slate-500">Step 3 of 4</p>
 								<div className="mt-4 text-slate-600">
 									{`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My First List".`}
 								</div>
@@ -169,8 +156,8 @@ export default function OnboardingStep3(props: Props) {
 									>
 										Back
 									</ElemButton>
-									<ElemButton onClick={onFinishSetup} btn="primary">
-										Finish Setup
+									<ElemButton onClick={onNext} btn="primary">
+										Next
 									</ElemButton>
 								</div>
 							</Dialog.Panel>

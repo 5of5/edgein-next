@@ -58,7 +58,7 @@ export default function OnboardingStep1(props: Props) {
 											: ""
 									}, How will you use EdgeIn?`}
 								</h3>
-								<p className="text-sm text-slate-500">Step 1 of 3</p>
+								<p className="text-sm text-slate-500">Step 1 of 4</p>
 								<div className="mt-4 text-slate-600">
 									We&rsquo;ll get you set so you can start exploring
 								</div>
