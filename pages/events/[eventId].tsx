@@ -172,12 +172,8 @@ const Event: NextPage<Props> = (props) => {
 		["desc"]
 	);
 
-	const formatDateShown = (date: Date) => {
-		let utcTime = date;
-		const local_date = moment
-			.utc(utcTime)
-			.local()
-			.format("YYYY-MM-DD HH:mm:ss");
+	const formatDateShown = (date: Date, timezone?: string) => {
+		const local_date = moment(date).local().format("YYYY-MM-DD");
 
 		return moment(local_date).format("LL");
 	};
@@ -217,6 +213,7 @@ const Event: NextPage<Props> = (props) => {
 					{event.start_date && (
 						<div className="w-full inline py-1 font-medium uppercase text-lg text-slate-600">
 							{formatDateShown(event?.start_date)}
+
 							{event?.start_time && (
 								<span className="pl-1">
 									at {moment(event?.start_time, "HH:mm").format("hh:mmA")}
@@ -274,17 +271,17 @@ const Event: NextPage<Props> = (props) => {
 					</div>
 
 					{event.parent_event && (
-            <div className="mt-4">
-              <div className="font-bold text-sm">Sub-event of:</div>
-              <Link href={`/events/${event.parent_event.slug}`} passHref>
-                <a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
-                  <h2 className="inline group-hover:underline">
-                    {event.parent_event.name}
-                  </h2>
-                </a>
-              </Link>
-            </div>
-          )}
+						<div className="mt-4">
+							<div className="font-bold text-sm">Sub-event of:</div>
+							<Link href={`/events/${event.parent_event.slug}`} passHref>
+								<a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
+									<h2 className="inline group-hover:underline">
+										{event.parent_event.name}
+									</h2>
+								</a>
+							</Link>
+						</div>
+					)}
 
 					<ElemTabBar
 						className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
