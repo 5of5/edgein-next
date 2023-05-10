@@ -1,2 +1,2 @@
-alter table "public"."companies" add column "trajectory" text
+alter table "public"."companies" add column "trajectory" float8
  null;
