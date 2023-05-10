@@ -278,7 +278,7 @@ const Event: NextPage<Props> = (props) => {
               <div className="font-bold text-sm">Sub-event of:</div>
               <Link href={`/events/${event.parent_event.slug}`} passHref>
                 <a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
-                  <h2 className="inline group-hover:font-bold">
+                  <h2 className="inline group-hover:underline">
                     {event.parent_event.name}
                   </h2>
                 </a>
