@@ -57,7 +57,8 @@ export const ElemSubEvents: FC<Props> = ({
 					Add your event
 				</ElemButton>
 			</div>
-			<ElemCarouselWrap>
+      {subEvents && subEvents.length > 0 ? (
+        <ElemCarouselWrap>
 				{subEvents.map((event: any) => {
 					return (
 						<ElemCarouselCard
@@ -69,6 +70,14 @@ export const ElemSubEvents: FC<Props> = ({
 					);
 				})}
 			</ElemCarouselWrap>
+      ) : (
+        <div className="flex flex-col items-center justify-center lg:p-5">
+          <div className="text-slate-600 lg:text-xl">
+            There is no sub-events.
+          </div>
+        </div>
+      )}
+			
 		</section>
 	);
 };

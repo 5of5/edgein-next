@@ -273,6 +273,19 @@ const Event: NextPage<Props> = (props) => {
 						)}
 					</div>
 
+					{event.parent_event && (
+            <div className="mt-4">
+              <div className="font-bold text-sm">Sub-event of:</div>
+              <Link href={`/events/${event.parent_event.slug}`} passHref>
+                <a className="mt-1 text-primary-500 group transition-all hover:-translate-y-0.5">
+                  <h2 className="inline group-hover:font-bold">
+                    {event.parent_event.name}
+                  </h2>
+                </a>
+              </Link>
+            </div>
+          )}
+
 					<ElemTabBar
 						className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
 						tabs={tabBarItems}
@@ -377,15 +390,13 @@ const Event: NextPage<Props> = (props) => {
 					</div>
 				)}
 
-				{subEvents?.events && subEvents.events.length > 0 && (
-					<div ref={subEventsRef}>
-						<ElemSubEvents
-							className="mt-7"
-							eventName={event.name}
-							subEvents={subEvents.events}
-						/>
-					</div>
-				)}
+				<div ref={subEventsRef}>
+					<ElemSubEvents
+						className="mt-7"
+						eventName={event.name}
+						subEvents={subEvents?.events || []}
+					/>
+				</div>
 
 				{event.types && (
 					<ElemSimilarEvents

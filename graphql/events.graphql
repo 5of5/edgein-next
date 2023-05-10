@@ -116,6 +116,11 @@ query GetEvent($slug: String!) {
 				logo
 			}
 		}
+		parent_event {
+			id
+			slug
+			name
+		}
 	}
 }
 
