@@ -91,7 +91,11 @@ export default function OnboardingStep1(props: Props) {
 									</button>
 								</div>
 								<div className="w-full flex justify-end mt-8">
-									<ElemButton onClick={onNext} btn="primary">
+									<ElemButton
+                    btn="primary"
+                    disabled={!selectedOption}
+                    onClick={onNext}
+                  >
 										Next
 									</ElemButton>
 								</div>

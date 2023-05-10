@@ -4,15 +4,16 @@ import { TagInputText } from "@/components/tag-input-text";
 import { TagInputSelect } from "@/components/tag-input-select";
 import { Dialog, Transition } from "@headlessui/react";
 import { tags } from "@/utils/constants";
+import ElemLocationTagInput from "../elem-location-tag-input";
 
 type Props = {
 	selectedOption: string;
-	locationTags: string[];
+	locationTags: any[];
 	industryTags: string[];
 	show: boolean;
 	onClose: () => void;
-	onNext: (locationTags: string[], industryTags: string[]) => void;
-	onBack: (locationTags: string[], industryTags: string[]) => void;
+	onNext: (locationTags: any[], industryTags: string[]) => void;
+	onBack: (locationTags: any[], industryTags: string[]) => void;
 };
 
 export default function OnboardingStep2(props: Props) {
@@ -105,18 +106,15 @@ export default function OnboardingStep2(props: Props) {
 									This will help you discover relevant companies and investors.
 								</div>
 
-								<TagInputText
-									defaultTags={locationTags}
-									className="mt-8"
-									label="Locations"
-									sublabel="Type and press enter"
-									value=""
-									name="Location"
-									placeholder="e.g. Germany, San Francisco"
-									onChange={(tags) => {
-										setLocationTags(tags);
-									}}
-								/>
+								<div className="mt-8">
+									<ElemLocationTagInput
+										label="Locations"
+										defaultTags={locationTags}
+										onChange={(tags) => {
+											setLocationTags(tags);
+										}}
+									/>
+								</div>
 
 								<TagInputSelect
 									defaultTags={industryTags}

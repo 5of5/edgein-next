@@ -50,10 +50,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
-	const [onboardingStep, setOnboardingStep] = useState(1);
+	const [onboardingStep, setOnboardingStep] = useState(0);
 
-	const [selectedOption, setSelectedOption] = useState("companies");
-	const [locationTags, setLocationTags] = useState<string[]>([]);
+	const [selectedOption, setSelectedOption] = useState("");
+	const [locationTags, setLocationTags] = useState<any[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [list, setList] = useState<any[]>([]);
 	const [message, setMessage] = useState<string>("");
@@ -336,6 +336,8 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					{onboardingStep === 4 && (
             <OnboardingStep4
               selectedOption={selectedOption}
+							locationTags={locationTags}
+							industryTags={industryTags}
               show={onboardingStep === 4 && !loading}
               message={message}
 							list={list}

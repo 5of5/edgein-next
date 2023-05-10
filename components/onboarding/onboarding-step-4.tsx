@@ -8,6 +8,8 @@ import { InputTextarea } from "../input-textarea";
 
 type Props = {
   selectedOption: string;
+  locationTags: any[];
+  industryTags: string[];
   message: string;
   show: boolean;
   list: any[];
@@ -49,20 +51,16 @@ export default function OnboardingStep4(props: Props) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        question: QUESTION,
-        answer: message,
+        selectedResourceType: props.selectedOption,
+        locationTags: props.locationTags.map((item) => item?.formattedAddress),
+        industryTags: props.industryTags,
+        questions: [
+          {
+            name: QUESTION,
+            answer: message,
+          },
+        ],
       }),
-    });
-  };
-
-  const onSendSlackMessage = async () => {
-    await fetch("/api/send-slack-onboarding-message/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ question: QUESTION, message }),
     });
   };
 
@@ -72,10 +70,7 @@ export default function OnboardingStep4(props: Props) {
     if (props.list.length > 0) {
       await onCreateList();
     }
-    if (message.trim()) {
-      await onSave();
-      await onSendSlackMessage();
-    }
+    await onSave();
   };
 
   const onBack = () => {

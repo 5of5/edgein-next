@@ -12,7 +12,7 @@ import { DeepPartial } from "@/types/common";
 
 type Props = {
 	selectedOption: string;
-	locationTags: string[];
+	locationTags: any[];
 	industryTags: string[];
 	show: boolean;
 	list: any[];
@@ -35,9 +35,10 @@ export default function OnboardingStep3(props: Props) {
 	const filtersCompanies: DeepPartial<Companies_Bool_Exp> = isHasFilterTags ? {
 		_or: [
 			...locationTags.map((tag) => ({
-				location_json: {
-					_cast: {
-						String: { _ilike: `%"${tag}"%` },
+				geopoint: {
+					_st_d_within: {
+						distance: 20 * 1609.344, // 20 miles to meters
+						from: tag.geometry,
 					},
 				},
 			})),
@@ -50,9 +51,10 @@ export default function OnboardingStep3(props: Props) {
 	const filterVCFirms: DeepPartial<Vc_Firms_Bool_Exp> = isHasFilterTags ? {
 		_or: [
 			...locationTags.map((tag) => ({
-				location_json: {
-					_cast: {
-						String: { _ilike: `%"${tag}"%` },
+				geopoint: {
+					_st_d_within: {
+						distance: 20 * 1609.344, // 20 miles to meters
+						from: tag.geometry,
 					},
 				},
 			})),
