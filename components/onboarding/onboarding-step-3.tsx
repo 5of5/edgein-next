@@ -122,7 +122,7 @@ export default function OnboardingStep3(props: Props) {
 							leaveFrom="opacity-100 translate-y-0 sm:scale-100"
 							leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
 						>
-							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
+							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white lg:p-12">
 								<h3 className="text-2xl font-bold">
 									We started your first list
 								</h3>
@@ -130,26 +130,33 @@ export default function OnboardingStep3(props: Props) {
 								<div className="mt-4 text-slate-600">
 									{`Based on your area of interest here is a list of organizations we think you might like. You can add or remove organizations by going to "My First List".`}
 								</div>
-								<div className="w-full my-5 grid grid-cols-2 gap-5 sm:grid-cols-3">
-									{list.length > 0 &&
-										list.map((item, index) => {
-											return (
-												<div
-													key={index}
-													className="flex items-center space-x-2"
-												>
-													<div className="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded shadow">
-														<img
-															className="object-contain max-w-full max-h-full"
-															src={item.logo ? item.logo.url : ""}
-															alt={item.name}
-														/>
-													</div>
-													<h1 className="font-bold truncate">{item.name}</h1>
-												</div>
-											);
-										})}
-								</div>
+								<div className="w-full my-5 grid grid-cols-2 gap-5 sm:grid-cols-3 max-h-[40vh] overflow-y-auto">
+                  {loadingCompany || loadingVCFirm
+                    ? Array.from({ length: 3 }, (_, i) => (
+                        <div key={i} className="flex items-center space-x-2">
+                          <div className="rounded-lg bg-slate-200 h-10 w-10"></div>
+                          <div className="rounded-lg h-4 w-12 bg-slate-200"></div>
+                        </div>
+                      ))
+                    : list.length > 0 &&
+                      list.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="flex items-center space-x-2"
+                          >
+                            <div className="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded shadow">
+                              <img
+                                className="object-contain max-w-full max-h-full"
+                                src={item.logo ? item.logo.url : ""}
+                                alt={item.name}
+                              />
+                            </div>
+                            <h1 className="font-bold truncate">{item.name}</h1>
+                          </div>
+                        );
+                      })}
+                </div>
 								<div className="w-full flex justify-end mt-8">
 									<ElemButton
 										onClick={props.onBack}

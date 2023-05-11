@@ -110,6 +110,7 @@ export default function OnboardingStep2(props: Props) {
 									<ElemLocationTagInput
 										label="Locations"
 										defaultTags={locationTags}
+										layers={["coarse"]}
 										onChange={(tags) => {
 											setLocationTags(tags);
 										}}

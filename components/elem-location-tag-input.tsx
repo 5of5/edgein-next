@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, useCallback } from "react";
 import { Combobox } from "@headlessui/react";
 import { useDebounce } from "@/hooks/use-debounce";
 import { IconX } from "./icons";
@@ -6,12 +6,14 @@ import { IconX } from "./icons";
 type Props = {
   label?: string;
   defaultTags?: string[];
+  layers?: string[];
   onChange: (data: any[]) => void;
 };
 
 const ElemLocationTagInput: FC<Props> = ({
   label,
   defaultTags = [],
+  layers = [],
   onChange,
 }) => {
   const [query, setQuery] = useState("");
@@ -25,7 +27,9 @@ const ElemLocationTagInput: FC<Props> = ({
     const response = await fetch(
       `${
         process.env.NEXT_PUBLIC_RADAR_URL
-      }/v1/search/autocomplete?query=${encodeURIComponent(keyword)}`,
+      }/v1/search/autocomplete?query=${encodeURIComponent(
+        keyword
+      )}&layers=${layers.join(",")}`,
       {
         method: "GET",
         headers: {
@@ -46,6 +50,7 @@ const ElemLocationTagInput: FC<Props> = ({
     }
 
     onSearchAddress(debouncedQuery);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedQuery, query]);
 
   const handleChange = (value: any) => {
