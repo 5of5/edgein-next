@@ -1,7 +1,10 @@
 import React, { FC, useState, useEffect } from "react";
 import { omit, cloneDeep } from "lodash";
 import moment from "moment-timezone";
-import { convertToInternationalCurrencySystem } from "@/utils";
+import {
+  convertCurrencyStringToIntNumber,
+  convertToInternationalCurrencySystem,
+} from "@/utils";
 import { getDefaultFilter, getFilterOptionMetadata } from "@/utils/filter";
 import { Filters, FilterOptionKeys, DateRangeOptions, DateCondition } from "@/models/Filter";
 import { ElemButton } from "./elem-button";
@@ -220,10 +223,13 @@ export const ElemFilter: FC<Props> = ({
 		const newAmount: any = {
 			...filters?.[key as keyof Filters],
 		};
+		const numberValue = convertCurrencyStringToIntNumber(value);
 		if (metric === "minVal") {
-			newAmount.formattedMinVal = convertToInternationalCurrencySystem(+value);
+			newAmount.formattedMinVal = convertToInternationalCurrencySystem(numberValue);
+			newAmount.minVal = numberValue;
 		} else {
-			newAmount.formattedMaxVal = convertToInternationalCurrencySystem(+value);
+			newAmount.formattedMaxVal = convertToInternationalCurrencySystem(numberValue);
+			newAmount.maxVal = numberValue;
 		}
 		setFilters((prev) => ({
 			...prev,
@@ -253,7 +259,7 @@ export const ElemFilter: FC<Props> = ({
     const [option, metric] = name.split(".");
     const newData: any = {
       ...filters?.[option as keyof Filters],
-      [metric]: value,
+      [metric]: convertCurrencyStringToIntNumber(value),
     };
     if (option === "fundingAmount" || option === "investmentAmountTotal" || option === "eventPrice") {
       if (metric === "minVal") {
