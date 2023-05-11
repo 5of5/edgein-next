@@ -44,40 +44,53 @@ export const ElemSubEvents: FC<Props> = ({
 					{eventName ? `Sub-events at ${eventName}` : "Sub-events"}
 				</h2>
 
-				<ElemButton
-					onClick={() =>
-						showNewMessages(
-							`Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`
-						)
-					}
-					btn="purple"
-					className="!pl-3"
-				>
-					<IconPlus className="w-5 h-5 mr-1" />
-					Add your event
-				</ElemButton>
+				{subEvents && subEvents.length > 0 && (
+					<ElemButton
+						onClick={() =>
+							showNewMessages(
+								`Hi EdgeIn, I'd like to add my sub-event to ${eventName}. Details:`
+							)
+						}
+						btn="purple"
+						className="!pl-3"
+					>
+						<IconPlus className="w-5 h-5 mr-1" />
+						Add sub-event
+					</ElemButton>
+				)}
 			</div>
-      {subEvents && subEvents.length > 0 ? (
-        <ElemCarouselWrap>
-				{subEvents.map((event: any) => {
-					return (
-						<ElemCarouselCard
-							key={event.id}
-							className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
-						>
-							<ElemEventCard event={event} onClickType={onClickType} />
-						</ElemCarouselCard>
-					);
-				})}
-			</ElemCarouselWrap>
-      ) : (
-        <div className="flex flex-col items-center justify-center lg:p-5">
-          <div className="text-slate-600 lg:text-xl">
-            There is no sub-events.
-          </div>
-        </div>
-      )}
-			
+			{subEvents && subEvents.length > 0 ? (
+				<ElemCarouselWrap>
+					{subEvents.map((event: any) => {
+						return (
+							<ElemCarouselCard
+								key={event.id}
+								className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
+							>
+								<ElemEventCard event={event} onClickType={onClickType} />
+							</ElemCarouselCard>
+						);
+					})}
+				</ElemCarouselWrap>
+			) : (
+				<div className="w-full p-12 text-center">
+					<div className="text-slate-600 lg:text-xl">
+						There are no sub-events.
+					</div>
+					<ElemButton
+						btn="slate"
+						onClick={() =>
+							showNewMessages(
+								`Hi EdgeIn, I'd like to add my event to ${eventName}. Details:`
+							)
+						}
+						className="mt-3 !pl-3"
+					>
+						<IconPlus className="w-5 h-5 mr-1" />
+						Add sub-event
+					</ElemButton>
+				</div>
+			)}
 		</section>
 	);
 };
