@@ -19,7 +19,9 @@ export default function OnboardingStep1(props: Props) {
 	const [selectedOption, setSelectedOption] = useState(props.selectedOption);
 
 	const onNext = () => {
-		props.onNext(selectedOption);
+		if (selectedOption) {
+			props.onNext(selectedOption);
+		}
 	};
 
 	return (
