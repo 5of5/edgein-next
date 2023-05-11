@@ -7,9 +7,6 @@ import {
 import CookieService from "../../utils/cookie";
 import SlackServices from "@/utils/slack";
 
-const EDGEIN_ONBOARDING_WEBHOOK_URL =
-  "https://hooks.slack.com/services/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";
-
 type QUESTION = {
   name: string;
   answer: string;
@@ -67,7 +64,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       };
 
       await SlackServices.sendMessage(
-        EDGEIN_ONBOARDING_WEBHOOK_URL,
+        process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
         messagePayload
       );
     }
