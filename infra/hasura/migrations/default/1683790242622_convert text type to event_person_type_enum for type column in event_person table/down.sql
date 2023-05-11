@@ -1,0 +1,7 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TYPE event_person_type_enum AS ENUM ('speaker', 'attendee', 'organizer');
+-- ALTER TABLE event_person
+--   ALTER COLUMN "type"
+--     SET DATA TYPE event_person_type_enum
+--     USING "type"::text::event_person_type_enum;

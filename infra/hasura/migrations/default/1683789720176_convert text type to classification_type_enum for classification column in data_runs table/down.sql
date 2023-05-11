@@ -1,0 +1,7 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TYPE classification_type_enum AS ENUM ('new', 'incorrect', 'validated');
+-- ALTER TABLE data_runs
+--   ALTER COLUMN classification
+--     SET DATA TYPE classification_type_enum
+--     USING classification::text::classification_type_enum;
