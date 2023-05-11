@@ -623,7 +623,7 @@ const ElemNoteCard: React.FC<Props> = ({
 						placeholderClass="text-slate-300"
 					/>
 
-					<div className="relative w-full">
+					<div className="relative flex w-full">
 						<InputTextarea
 							rows={1}
 							ref={commentInput}
@@ -633,15 +633,15 @@ const ElemNoteCard: React.FC<Props> = ({
 							onChange={onChangeCommentInput}
 							onKeyDown={onCommentInputKeyDown}
 							onClick={onCommentInputClick}
-							className="bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 h-8 overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
+							className="bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 min-h-[2rem] overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
 						/>
 
 						<button
 							onClick={onCommentSend}
-							className={`absolute z-10 right-3 flex items-center justify-center w-8 h-8 rounded-full  ${
+							className={`absolute z-10 right-3 bottom-0 flex items-center justify-center w-8 h-8 rounded-full  ${
 								commentContent.length > 0
-									? "bottom-1 cursor-pointer hover:bg-slate-200"
-									: "bottom-1 cursor-not-allowed"
+									? "cursor-pointer hover:bg-slate-200"
+									: "cursor-not-allowed"
 							}`}
 						>
 							{commentContent.length > 0 ? (
