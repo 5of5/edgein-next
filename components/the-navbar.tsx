@@ -73,6 +73,15 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					: false
 			);
 		}
+		if (!showPopup && router.asPath.includes("/signup/")) {
+			setShowPopup(
+				router.asPath.includes("/signup/")
+					? router.asPath.includes("?usage=true")
+						? "usage"
+						: "signup"
+					: false
+			);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [router.asPath]);
 
