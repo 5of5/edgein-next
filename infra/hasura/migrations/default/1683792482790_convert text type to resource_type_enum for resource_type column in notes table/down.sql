@@ -1,0 +1,6 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- ALTER TABLE notes
+--   ALTER COLUMN resource_type
+--     SET DATA TYPE resource_type_enum
+--     USING resource_type::text::resource_type_enum;

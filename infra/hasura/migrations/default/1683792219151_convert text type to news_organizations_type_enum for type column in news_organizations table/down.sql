@@ -1,0 +1,7 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- CREATE TYPE news_organizations_type_enum AS ENUM ('publisher', 'subject');
+-- ALTER TABLE news_organizations
+--   ALTER COLUMN "type"
+--     SET DATA TYPE news_organizations_type_enum
+--     USING "type"::text::news_organizations_type_enum;
