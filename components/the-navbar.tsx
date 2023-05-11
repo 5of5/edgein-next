@@ -84,8 +84,8 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		setShowPopup("search");
 	});
 
-	const showOnboarding = async () => {
-		const isAlreadyShown = await localStorage.getItem("onboardingShown");
+	const showOnboarding = () => {
+		const isAlreadyShown = localStorage.getItem("onboardingShown");
 		if (!isAlreadyShown) {
 			setOnboardingStep(1);
 			localStorage.setItem("onboardingShown", "true");
