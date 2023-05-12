@@ -185,7 +185,7 @@ const Companies: NextPage<Props> = ({
 	const { showNewMessages } = useIntercom();
 
 	return (
-		<div className="relative overflow-hidden">
+		<div className="relative">
 			<ElemHeading
 				title="Web3 Companies"
 				subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
