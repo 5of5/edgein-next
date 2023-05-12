@@ -1913,6 +1913,7 @@ export type Companies = {
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
+  search_count: Maybe<Scalars['Int']>;
   sentiment: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
   status: Scalars['String'];
@@ -1929,6 +1930,7 @@ export type Companies = {
   to_links_aggregate: Resource_Links_Aggregate;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
+  trajectory: Maybe<Scalars['float8']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Scalars['timestamptz'];
   velocity_linkedin: Maybe<Scalars['String']>;
@@ -2141,7 +2143,9 @@ export type Companies_Avg_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "companies". All fields are combined with a logical 'AND'. */
@@ -2186,6 +2190,7 @@ export type Companies_Bool_Exp = {
   notes: InputMaybe<String_Comparison_Exp>;
   overview: InputMaybe<String_Comparison_Exp>;
   reddit: InputMaybe<String_Comparison_Exp>;
+  search_count: InputMaybe<Int_Comparison_Exp>;
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
@@ -2196,6 +2201,7 @@ export type Companies_Bool_Exp = {
   to_links: InputMaybe<Resource_Links_Bool_Exp>;
   total_employees: InputMaybe<Numeric_Comparison_Exp>;
   total_valuation: InputMaybe<String_Comparison_Exp>;
+  trajectory: InputMaybe<Float8_Comparison_Exp>;
   twitter: InputMaybe<String_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   velocity_linkedin: InputMaybe<String_Comparison_Exp>;
@@ -2534,7 +2540,9 @@ export type Companies_Inc_Input = {
   coin_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
   investor_amount: InputMaybe<Scalars['bigint']>;
+  search_count: InputMaybe<Scalars['Int']>;
   total_employees: InputMaybe<Scalars['numeric']>;
+  trajectory: InputMaybe<Scalars['float8']>;
 };
 
 /** input type for inserting data into table "companies" */
@@ -2576,6 +2584,7 @@ export type Companies_Insert_Input = {
   notes: InputMaybe<Scalars['String']>;
   overview: InputMaybe<Scalars['String']>;
   reddit: InputMaybe<Scalars['String']>;
+  search_count: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
@@ -2586,6 +2595,7 @@ export type Companies_Insert_Input = {
   to_links: InputMaybe<Resource_Links_Arr_Rel_Insert_Input>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
+  trajectory: InputMaybe<Scalars['float8']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   velocity_linkedin: InputMaybe<Scalars['String']>;
@@ -2627,11 +2637,13 @@ export type Companies_Max_Fields = {
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
+  search_count: Maybe<Scalars['Int']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
+  trajectory: Maybe<Scalars['float8']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   velocity_linkedin: Maybe<Scalars['String']>;
@@ -2673,11 +2685,13 @@ export type Companies_Min_Fields = {
   notes: Maybe<Scalars['String']>;
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
+  search_count: Maybe<Scalars['Int']>;
   slug: Maybe<Scalars['String']>;
   status: Maybe<Scalars['String']>;
   telegram: Maybe<Scalars['String']>;
   total_employees: Maybe<Scalars['numeric']>;
   total_valuation: Maybe<Scalars['String']>;
+  trajectory: Maybe<Scalars['float8']>;
   twitter: Maybe<Scalars['String']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   velocity_linkedin: Maybe<Scalars['String']>;
@@ -2750,6 +2764,7 @@ export type Companies_Order_By = {
   notes: InputMaybe<Order_By>;
   overview: InputMaybe<Order_By>;
   reddit: InputMaybe<Order_By>;
+  search_count: InputMaybe<Order_By>;
   sentiment: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
@@ -2760,6 +2775,7 @@ export type Companies_Order_By = {
   to_links_aggregate: InputMaybe<Resource_Links_Aggregate_Order_By>;
   total_employees: InputMaybe<Order_By>;
   total_valuation: InputMaybe<Order_By>;
+  trajectory: InputMaybe<Order_By>;
   twitter: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   velocity_linkedin: InputMaybe<Order_By>;
@@ -2852,6 +2868,8 @@ export enum Companies_Select_Column {
   /** column name */
   Reddit = 'reddit',
   /** column name */
+  SearchCount = 'search_count',
+  /** column name */
   Sentiment = 'sentiment',
   /** column name */
   Slug = 'slug',
@@ -2867,6 +2885,8 @@ export enum Companies_Select_Column {
   TotalEmployees = 'total_employees',
   /** column name */
   TotalValuation = 'total_valuation',
+  /** column name */
+  Trajectory = 'trajectory',
   /** column name */
   Twitter = 'twitter',
   /** column name */
@@ -2919,6 +2939,7 @@ export type Companies_Set_Input = {
   notes: InputMaybe<Scalars['String']>;
   overview: InputMaybe<Scalars['String']>;
   reddit: InputMaybe<Scalars['String']>;
+  search_count: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
@@ -2927,6 +2948,7 @@ export type Companies_Set_Input = {
   telegram: InputMaybe<Scalars['String']>;
   total_employees: InputMaybe<Scalars['numeric']>;
   total_valuation: InputMaybe<Scalars['String']>;
+  trajectory: InputMaybe<Scalars['float8']>;
   twitter: InputMaybe<Scalars['String']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   velocity_linkedin: InputMaybe<Scalars['String']>;
@@ -2943,7 +2965,9 @@ export type Companies_Stddev_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
@@ -2952,7 +2976,9 @@ export type Companies_Stddev_Pop_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
@@ -2961,7 +2987,9 @@ export type Companies_Stddev_Samp_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
@@ -2970,7 +2998,9 @@ export type Companies_Sum_Fields = {
   coin_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
   investor_amount: Maybe<Scalars['bigint']>;
+  search_count: Maybe<Scalars['Int']>;
   total_employees: Maybe<Scalars['numeric']>;
+  trajectory: Maybe<Scalars['float8']>;
 };
 
 /** update columns of table "companies" */
@@ -3040,6 +3070,8 @@ export enum Companies_Update_Column {
   /** column name */
   Reddit = 'reddit',
   /** column name */
+  SearchCount = 'search_count',
+  /** column name */
   Sentiment = 'sentiment',
   /** column name */
   Slug = 'slug',
@@ -3055,6 +3087,8 @@ export enum Companies_Update_Column {
   TotalEmployees = 'total_employees',
   /** column name */
   TotalValuation = 'total_valuation',
+  /** column name */
+  Trajectory = 'trajectory',
   /** column name */
   Twitter = 'twitter',
   /** column name */
@@ -3079,7 +3113,9 @@ export type Companies_Var_Pop_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
@@ -3088,7 +3124,9 @@ export type Companies_Var_Samp_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
@@ -3097,7 +3135,9 @@ export type Companies_Variance_Fields = {
   coin_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
   investor_amount: Maybe<Scalars['Float']>;
+  search_count: Maybe<Scalars['Float']>;
   total_employees: Maybe<Scalars['Float']>;
+  trajectory: Maybe<Scalars['Float']>;
 };
 
 /** columns and relationships of "data_actions" */
@@ -23380,7 +23420,7 @@ export type GetVcFirmQueryVariables = Exact<{
 }>;
 
 
-export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, location_json: any | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, location_json: any | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: string | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null }> } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
 
 export type GetVcFirmsQueryVariables = Exact<{
   limit: InputMaybe<Scalars['Int']>;
@@ -27475,6 +27515,19 @@ export const GetVcFirmDocument = `
           name
           tags
           logo
+        }
+        investments {
+          id
+          vc_firm {
+            id
+            slug
+            name
+          }
+          person {
+            id
+            slug
+            name
+          }
         }
       }
     }
