@@ -154,3 +154,25 @@ export const getTimeString = (value: Date) => {
 	const mins = ("0" + new Date(value).getMinutes()).slice(-2);
 	return `${hour}:${mins}`;
 };
+
+export const convertCurrencyStringToIntNumber = (value: string) => {
+  return Number(
+    value
+      .toUpperCase()
+      .replace(/^(\d+(\.\d+)?)([K,M,B])?/, (_, n, __, suffix) => {
+        if (suffix === "K") {
+          return n * 10 ** 3;
+        }
+
+        if (suffix === "M") {
+          return n * 10 ** 6;
+        }
+
+        if (suffix === "B") {
+          return n * 10 ** 9;
+        }
+
+        return n;
+      })
+  );
+};
