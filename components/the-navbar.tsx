@@ -98,7 +98,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	});
 
 	const showOnboarding = () => {
-			setOnboardingStep(1);
+		setOnboardingStep(1);
 	};
 
 	useEffect(() => {

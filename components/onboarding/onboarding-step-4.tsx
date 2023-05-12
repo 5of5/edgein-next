@@ -5,6 +5,7 @@ import { ElemButton } from "@/components/elem-button";
 import { createListWithMultipleResources } from "@/utils/reaction";
 import { useUser } from "@/context/user-context";
 import { InputTextarea } from "../input-textarea";
+import { useMutation } from "react-query";
 
 type Props = {
   selectedOption: string;
@@ -43,34 +44,42 @@ export default function OnboardingStep4(props: Props) {
     refreshProfile();
   };
 
-  const onSave = async () => {
-    await fetch("/api/add-onboarding-information/", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+  const { mutate: onSave, isLoading: isSubmitting } = useMutation(
+    () => {
+      return fetch("/api/add-onboarding-information/", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          selectedResourceType: props.selectedOption,
+          locationTags: props.locationTags.map(
+            (item) => item?.formattedAddress
+          ),
+          industryTags: props.industryTags,
+          questions: [
+            {
+              name: QUESTION,
+              answer: message,
+            },
+          ],
+        }),
+      });
+    },
+    {
+      onSuccess: () => {
+        props.onNext();
+        router.push(`/` + props.selectedOption);
       },
-      body: JSON.stringify({
-        selectedResourceType: props.selectedOption,
-        locationTags: props.locationTags.map((item) => item?.formattedAddress),
-        industryTags: props.industryTags,
-        questions: [
-          {
-            name: QUESTION,
-            answer: message,
-          },
-        ],
-      }),
-    });
-  };
+    }
+  );
 
   const onNext = async () => {
     if (props.list.length > 0) {
       onCreateList();
     }
     onSave();
-    props.onNext();
-    router.push(`/` + props.selectedOption);
   };
 
   const onBack = () => {
@@ -125,7 +134,11 @@ export default function OnboardingStep4(props: Props) {
                   >
                     Back
                   </ElemButton>
-                  <ElemButton onClick={onNext} btn="primary">
+                  <ElemButton
+                    onClick={onNext}
+                    btn="primary"
+                    loading={isSubmitting}
+                  >
                     Finish Setup
                   </ElemButton>
                 </div>
