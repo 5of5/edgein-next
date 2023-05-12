@@ -91,29 +91,6 @@ export const ElemInvestments: React.FC<Props> = ({
 			{
 				Header: "Investors",
 				accessor: "investments" as const,
-				// accessor: (data: {
-				// 	investments: {
-				// 		[x: string]: any;
-				// 		investment_round: Object;
-				// 	};
-				// }) => {
-				// 	//console.log(data?.investments);
-				// 	const investmentId = data?.investments?.flatMap(
-				// 		(item: any) => item.id
-				// 	);
-
-				// 	console.log(investmentId);
-
-				// 	if (!investmentId) {
-				// 		return 0;
-				// 	}
-				// 	return investmentId;
-				// 	// const investmentsTotal = investmentRounds?.reduce(
-				// 	// 	(total: number, currentValue: any) =>
-				// 	// 		(total = total + (currentValue ? currentValue.amount : 0)),
-				// 	// 	0
-				// 	// );
-				// },
 				Cell: (props: any) => {
 					return (
 						<div>
@@ -198,8 +175,6 @@ export const ElemInvestments: React.FC<Props> = ({
 		useSortBy,
 		usePagination
 	);
-
-	//console.log(dataInvestments);
 
 	const generateSortingIndicator = (column: any) => {
 		return column.isSorted ? (
