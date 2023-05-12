@@ -65,12 +65,12 @@ export default function OnboardingStep4(props: Props) {
   };
 
   const onNext = async () => {
+    if (props.list.length > 0) {
+      onCreateList();
+    }
+    onSave();
     props.onNext();
     router.push(`/` + props.selectedOption);
-    if (props.list.length > 0) {
-      await onCreateList();
-    }
-    await onSave();
   };
 
   const onBack = () => {

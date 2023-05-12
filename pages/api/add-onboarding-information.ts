@@ -6,6 +6,7 @@ import {
 } from "@/graphql/types";
 import CookieService from "../../utils/cookie";
 import SlackServices from "@/utils/slack";
+import UserService from "@/utils/users";
 
 type QUESTION = {
   name: string;
@@ -38,6 +39,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         },
       },
     });
+
+    /** Update user token */
+    const userData = await UserService.findOneUserById(user.id);
+    const newUserToken = UserService.createToken(userData, false);
+    const token = await CookieService.createUserToken(newUserToken);
+    CookieService.setTokenCookie(res, token);
 
     if (questions.some((item: QUESTION) => item.answer.trim())) {
       const messagePayload = {

@@ -191,6 +191,7 @@ query GetUserByEmail($email: String) {
     }
     additional_emails
     active
+    onboarding_information
   }
 }
 
@@ -214,6 +215,7 @@ query GetUserById($id: Int) {
       picture
     }
     additional_emails
+    onboarding_information
   }
 }
 

@@ -85,15 +85,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	});
 
 	const showOnboarding = () => {
-		const isAlreadyShown = localStorage.getItem("onboardingShown");
-		if (!isAlreadyShown) {
 			setOnboardingStep(1);
-			localStorage.setItem("onboardingShown", "true");
-		}
 	};
 
 	useEffect(() => {
-		if (!loading && user && user.isFirstLogin) {
+		if (!loading && user && user.isFirstLogin && !user.onboarding_information) {
 			showOnboarding();
 		}
 	}, [loading, user]);
