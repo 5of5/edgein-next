@@ -181,7 +181,7 @@ const Investors: NextPage<Props> = ({
 	const { showNewMessages } = useIntercom();
 
 	return (
-		<div className="relative overflow-hidden">
+		<div className="relative">
 			<ElemHeading
 				title="Investors"
 				subtitle="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."
