@@ -246,7 +246,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       user: user.id,
     }  
     // create action
-    mutate<InsertActionMutation>({
+    await mutate<InsertActionMutation>({
       mutation: InsertActionDocument,
       variables: {
         object: action,
@@ -273,7 +273,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       user: user.id,
     }  
     // create action
-    mutate<InsertActionMutation>({
+    await mutate<InsertActionMutation>({
       mutation: InsertActionDocument,
       variables: {
         object: action,
