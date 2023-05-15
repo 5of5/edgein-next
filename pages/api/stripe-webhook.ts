@@ -71,10 +71,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					const customer = await stripe.customers.retrieve(customerId);
 					const user = await UserService.findOneUserByEmail(customer.email);
 					if (!user) {
+						// slack
 						res.status(400).send({ error: `Webhook no user for customer id ${customerId} ${customer.email}` });
 						return;
 					}
 					if (!user.billing_org_id) {
+						// slack
 						// create billing org
 						const billingOrg = await BillingService.insertBillingOrg(
 							customerId,
@@ -84,6 +86,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						// update user
 						UserService.updateBillingOrg(user.id, billingOrg?.id || 0);
 					} else {
+						// slack
 						// update billing org
 						await BillingService.updateBillingOrgCustomerId(user.id, customerId);
 					}
@@ -101,8 +104,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 				const metadata = session.metadata as any;
 				customerId = getCustomerId(session.customer || "");
 
-				const userId = metadata.userId;
+				const userId = metadata.userId || session.client_reference_id;
 				if (!userId) {
+					// slack
 					res.status(400).send({ error: `Webhook no user id` });
 				}
 				// lookup user
@@ -117,10 +121,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					);
 					// update user
 					UserService.updateBillingOrg(userId, billingOrg?.id || 0);
+				} else {
+					// slack
 				}
 				break;
 			}
 			default:
+				// slack
 				// Unexpected event type
 				console.info(`Stripe Webhook: Unhandled event type ${event.type}.`);
 		}
