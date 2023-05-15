@@ -79,7 +79,7 @@ const addOrganizationEditAccess = async (payload: any, accessToken: string) => {
 const addTeamMember = async (payload: any, accessToken: string) => {
   const resourceType = payload.resourceDetails.resourceType
   if (resourceType === 'companies') {
-    mutate<InsertTeamMemberMutation>({
+    await mutate<InsertTeamMemberMutation>({
       mutation: InsertTeamMemberDocument,
       variables: {
         personId: payload.resourceDetails.personId,
@@ -88,7 +88,7 @@ const addTeamMember = async (payload: any, accessToken: string) => {
     }, accessToken)
   }
   if (resourceType === 'vc_firms') {
-    mutate<InsertInvestorMutation>({
+    await mutate<InsertInvestorMutation>({
       mutation: InsertInvestorDocument,
       variables: {
         personId: payload.resourceDetails.personId,
