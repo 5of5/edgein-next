@@ -26,7 +26,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // upsertList
   const list = await upsertList(listname, user, token)
 
-  const reactions = await Promise.all(map(req.body.companies, async (resource) => {
+  const resourceData = resourceType === 'companies' ? req.body.companies : req.body.vcfirms;
+
+  const reactions = await Promise.all(map(resourceData, async (resource) => {
 
     const resourceId = resourceType === 'companies' ? resource.company : resource.vcfirm
 

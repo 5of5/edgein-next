@@ -33,6 +33,7 @@ export type User = {
   profileName?: string
   entitlements: Entitlements
   active: boolean
+  onboarding_information: Record<string, unknown> | null
 }
 
 export type UserToken = User & {

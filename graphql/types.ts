@@ -20907,6 +20907,7 @@ export type Users = {
   list_members: Array<List_Members>;
   /** An aggregate relationship */
   list_members_aggregate: List_Members_Aggregate;
+  onboarding_information: Maybe<Scalars['jsonb']>;
   /** An array relationship */
   organization_companies: Array<Companies_Edit_Access>;
   /** An aggregate relationship */
@@ -20947,6 +20948,12 @@ export type UsersList_Members_AggregateArgs = {
   offset: InputMaybe<Scalars['Int']>;
   order_by: InputMaybe<Array<List_Members_Order_By>>;
   where: InputMaybe<List_Members_Bool_Exp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersOnboarding_InformationArgs = {
+  path: InputMaybe<Scalars['String']>;
 };
 
 
@@ -21022,6 +21029,7 @@ export type Users_Aggregate_FieldsCountArgs = {
 /** append existing jsonb value of filtered columns with new jsonb value */
 export type Users_Append_Input = {
   additional_emails: InputMaybe<Scalars['jsonb']>;
+  onboarding_information: InputMaybe<Scalars['jsonb']>;
 };
 
 /** aggregate avg on columns */
@@ -21050,6 +21058,7 @@ export type Users_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   is_auth0_verified: InputMaybe<Boolean_Comparison_Exp>;
   list_members: InputMaybe<List_Members_Bool_Exp>;
+  onboarding_information: InputMaybe<Jsonb_Comparison_Exp>;
   organization_companies: InputMaybe<Companies_Edit_Access_Bool_Exp>;
   organization_vc_firms: InputMaybe<Vc_Firms_Edit_Access_Bool_Exp>;
   person: InputMaybe<People_Bool_Exp>;
@@ -21072,16 +21081,19 @@ export enum Users_Constraint {
 /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
 export type Users_Delete_At_Path_Input = {
   additional_emails: InputMaybe<Array<Scalars['String']>>;
+  onboarding_information: InputMaybe<Array<Scalars['String']>>;
 };
 
 /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
 export type Users_Delete_Elem_Input = {
   additional_emails: InputMaybe<Scalars['Int']>;
+  onboarding_information: InputMaybe<Scalars['Int']>;
 };
 
 /** delete key/value pair or string element. key/value pairs are matched based on their key value */
 export type Users_Delete_Key_Input = {
   additional_emails: InputMaybe<Scalars['String']>;
+  onboarding_information: InputMaybe<Scalars['String']>;
 };
 
 /** input type for incrementing numeric columns in table "users" */
@@ -21106,6 +21118,7 @@ export type Users_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
   list_members: InputMaybe<List_Members_Arr_Rel_Insert_Input>;
+  onboarding_information: InputMaybe<Scalars['jsonb']>;
   organization_companies: InputMaybe<Companies_Edit_Access_Arr_Rel_Insert_Input>;
   organization_vc_firms: InputMaybe<Vc_Firms_Edit_Access_Arr_Rel_Insert_Input>;
   person: InputMaybe<People_Obj_Rel_Insert_Input>;
@@ -21184,6 +21197,7 @@ export type Users_Order_By = {
   id: InputMaybe<Order_By>;
   is_auth0_verified: InputMaybe<Order_By>;
   list_members_aggregate: InputMaybe<List_Members_Aggregate_Order_By>;
+  onboarding_information: InputMaybe<Order_By>;
   organization_companies_aggregate: InputMaybe<Companies_Edit_Access_Aggregate_Order_By>;
   organization_vc_firms_aggregate: InputMaybe<Vc_Firms_Edit_Access_Aggregate_Order_By>;
   person: InputMaybe<People_Order_By>;
@@ -21201,6 +21215,7 @@ export type Users_Pk_Columns_Input = {
 /** prepend existing jsonb value of filtered columns with new jsonb value */
 export type Users_Prepend_Input = {
   additional_emails: InputMaybe<Scalars['jsonb']>;
+  onboarding_information: InputMaybe<Scalars['jsonb']>;
 };
 
 /** select columns of table "users" */
@@ -21226,6 +21241,8 @@ export enum Users_Select_Column {
   /** column name */
   IsAuth0Verified = 'is_auth0_verified',
   /** column name */
+  OnboardingInformation = 'onboarding_information',
+  /** column name */
   PersonId = 'person_id',
   /** column name */
   ReferenceId = 'reference_id',
@@ -21247,6 +21264,7 @@ export type Users_Set_Input = {
   external_id: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   is_auth0_verified: InputMaybe<Scalars['Boolean']>;
+  onboarding_information: InputMaybe<Scalars['jsonb']>;
   person_id: InputMaybe<Scalars['Int']>;
   reference_id: InputMaybe<Scalars['String']>;
   reference_user_id: InputMaybe<Scalars['Int']>;
@@ -21311,6 +21329,8 @@ export enum Users_Update_Column {
   Id = 'id',
   /** column name */
   IsAuth0Verified = 'is_auth0_verified',
+  /** column name */
+  OnboardingInformation = 'onboarding_information',
   /** column name */
   PersonId = 'person_id',
   /** column name */
@@ -22642,6 +22662,7 @@ export type GetCompaniesPathsQuery = { __typename?: 'query_root', companies: Arr
 
 export type GetRelevantCompaniesQueryVariables = Exact<{
   where: Companies_Bool_Exp;
+  limit: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -23339,14 +23360,14 @@ export type GetUserByEmailQueryVariables = Exact<{
 }>;
 
 
-export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
+export type GetUserByEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, onboarding_information: any | null, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
 export type GetUserByIdQueryVariables = Exact<{
   id: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
+export type GetUserByIdQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, onboarding_information: any | null, billing_org: { __typename?: 'billing_org', customer_id: string } | null, person: { __typename?: 'people', name: string | null, picture: any | null } | null }> };
 
 export type UpdateUserBillingOrgMutationVariables = Exact<{
   userId: Scalars['Int'];
@@ -23415,6 +23436,14 @@ export type GetUserByAdditionalEmailQueryVariables = Exact<{
 
 export type GetUserByAdditionalEmailQuery = { __typename?: 'query_root', users: Array<{ __typename?: 'users', id: number, email: string | null, role: string | null, external_id: string | null, is_auth0_verified: boolean | null, display_name: string | null, auth0_linkedin_id: string | null, auth0_user_pass_id: string | null, reference_id: string, billing_org_id: number | null, additional_emails: any, active: boolean, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> };
 
+export type UpdateUserOnboardingInformationMutationVariables = Exact<{
+  id: Scalars['Int'];
+  onboarding_information: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type UpdateUserOnboardingInformationMutation = { __typename?: 'mutation_root', update_users: { __typename?: 'users_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'users', id: number, email: string | null, display_name: string | null, onboarding_information: any | null, person: { __typename?: 'people', name: string | null, picture: any | null, slug: string, id: number } | null }> } | null };
+
 export type GetVcFirmQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
@@ -23447,6 +23476,7 @@ export type GetVcFirmsPathQuery = { __typename?: 'query_root', vc_firms: Array<{
 
 export type GetRelevantVcFirmsQueryVariables = Exact<{
   where: Vc_Firms_Bool_Exp;
+  limit: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -24030,8 +24060,8 @@ useGetCompaniesPathsQuery.getKey = (variables?: GetCompaniesPathsQueryVariables)
 
 useGetCompaniesPathsQuery.fetcher = (variables?: GetCompaniesPathsQueryVariables, options?: RequestInit['headers']) => fetcher<GetCompaniesPathsQuery, GetCompaniesPathsQueryVariables>(GetCompaniesPathsDocument, variables, options);
 export const GetRelevantCompaniesDocument = `
-    query GetRelevantCompanies($where: companies_bool_exp!) {
-  companies(where: $where) {
+    query GetRelevantCompanies($where: companies_bool_exp!, $limit: Int) {
+  companies(where: $where, limit: $limit) {
     id
     logo
     name
@@ -27100,6 +27130,7 @@ export const GetUserByEmailDocument = `
     }
     additional_emails
     active
+    onboarding_information
   }
 }
     `;
@@ -27143,6 +27174,7 @@ export const GetUserByIdDocument = `
       picture
     }
     additional_emails
+    onboarding_information
   }
 }
     `;
@@ -27470,6 +27502,38 @@ useGetUserByAdditionalEmailQuery.getKey = (variables?: GetUserByAdditionalEmailQ
 ;
 
 useGetUserByAdditionalEmailQuery.fetcher = (variables?: GetUserByAdditionalEmailQueryVariables, options?: RequestInit['headers']) => fetcher<GetUserByAdditionalEmailQuery, GetUserByAdditionalEmailQueryVariables>(GetUserByAdditionalEmailDocument, variables, options);
+export const UpdateUserOnboardingInformationDocument = `
+    mutation UpdateUserOnboardingInformation($id: Int!, $onboarding_information: jsonb) {
+  update_users(
+    where: {id: {_eq: $id}}
+    _set: {onboarding_information: $onboarding_information}
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+      onboarding_information
+    }
+  }
+}
+    `;
+export const useUpdateUserOnboardingInformationMutation = <
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<UpdateUserOnboardingInformationMutation, TError, UpdateUserOnboardingInformationMutationVariables, TContext>) =>
+    useMutation<UpdateUserOnboardingInformationMutation, TError, UpdateUserOnboardingInformationMutationVariables, TContext>(
+      ['UpdateUserOnboardingInformation'],
+      (variables?: UpdateUserOnboardingInformationMutationVariables) => fetcher<UpdateUserOnboardingInformationMutation, UpdateUserOnboardingInformationMutationVariables>(UpdateUserOnboardingInformationDocument, variables)(),
+      options
+    );
+useUpdateUserOnboardingInformationMutation.fetcher = (variables: UpdateUserOnboardingInformationMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateUserOnboardingInformationMutation, UpdateUserOnboardingInformationMutationVariables>(UpdateUserOnboardingInformationDocument, variables, options);
 export const GetVcFirmDocument = `
     query GetVCFirm($slug: String!) {
   vc_firms(where: {slug: {_eq: $slug}}) {
@@ -27724,8 +27788,8 @@ useGetVcFirmsPathQuery.getKey = (variables?: GetVcFirmsPathQueryVariables) => va
 
 useGetVcFirmsPathQuery.fetcher = (variables?: GetVcFirmsPathQueryVariables, options?: RequestInit['headers']) => fetcher<GetVcFirmsPathQuery, GetVcFirmsPathQueryVariables>(GetVcFirmsPathDocument, variables, options);
 export const GetRelevantVcFirmsDocument = `
-    query GetRelevantVCFirms($where: vc_firms_bool_exp!) {
-  vc_firms(where: $where) {
+    query GetRelevantVCFirms($where: vc_firms_bool_exp!, $limit: Int) {
+  vc_firms(where: $where, limit: $limit) {
     id
     logo
     name
