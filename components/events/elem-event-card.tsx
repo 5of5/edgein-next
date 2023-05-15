@@ -7,7 +7,7 @@ import {
 	randomImageOfCity,
 } from "@/utils/helpers";
 import { values, isEmpty } from "lodash";
-import { formatDate } from "@/utils";
+import moment from "moment-timezone";
 
 type Props = {
 	event: GetEventsQuery["events"][0];
@@ -23,6 +23,11 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 			: event.price?.toString() === "0"
 			? "Free"
 			: null;
+
+	const formatDateShown = (date: Date, timezone?: string) => {
+		const local_date = moment(date).local().format("YYYY-MM-DD");
+		return moment(local_date).format("LL");
+	};
 
 	return (
 		<Link key={event.id} href={`/events/${event.slug}`}>
@@ -54,23 +59,12 @@ export const ElemEventCard: FC<Props> = ({ event, onClickType }) => {
 
 				{event.start_date && (
 					<p className="font-medium uppercase text-sm px-5 ">
-						{event.start_date &&
-							formatDate(event.start_date, {
-								month: "short",
-								day: "2-digit",
-								year: "numeric",
-								timeZone: event.timezone || undefined,
-							})}
+						{formatDateShown(event?.start_date)}
 
 						{event.end_date && (
 							<>
 								&nbsp;&ndash;&nbsp;
-								{formatDate(event.end_date, {
-									month: "short",
-									day: "2-digit",
-									year: "numeric",
-									timeZone: event.timezone || undefined,
-								})}
+								{formatDateShown(event?.end_date)}
 							</>
 						)}
 					</p>

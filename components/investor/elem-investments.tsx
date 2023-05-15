@@ -88,6 +88,48 @@ export const ElemInvestments: React.FC<Props> = ({
 					</div>
 				),
 			},
+			{
+				Header: "Investors",
+				accessor: "investments" as const,
+				Cell: (props: any) => {
+					return (
+						<div>
+							{props.value ? (
+								<>
+									{props.value.map((item: any, index: number) => {
+										return (
+											<div key={index} className="inline">
+												{index !== 0 &&
+													(index === props.value.length - 1 ? ", and " : ", ")}
+												{item.vc_firm && (
+													<Link href={`/investors/${item.vc_firm?.slug}`}>
+														<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+															{item.vc_firm["name"]}
+														</a>
+													</Link>
+												)}
+												{item.vc_firm && item.person && <>/</>}
+												{item.person && (
+													<Link href={`/people/${item.person["slug"]}`}>
+														<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+															{item.person["name"]}
+														</a>
+													</Link>
+												)}
+											</div>
+										);
+									})}
+									.
+								</>
+							) : (
+								<>&mdash;</>
+							)}
+						</div>
+					);
+				},
+				width: 300,
+				disableSortBy: true,
+			},
 		],
 		[]
 	);

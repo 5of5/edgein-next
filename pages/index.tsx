@@ -29,7 +29,7 @@ const Home: NextPage<Props> = ({ setShowPopup }) => {
 		},
 		{
 			name: "25k",
-			description: "Validated Web3 builders",
+			description: "Validated builders",
 		},
 	];
 

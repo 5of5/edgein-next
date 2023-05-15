@@ -20,6 +20,8 @@ import {
 	IconLockClosed,
 	IconGlobe,
 	IconUsers,
+	IconPaperAirplane,
+	IconPaperAirplaneSolid,
 } from "@/components/icons";
 import { ElemTooltip } from "@/components/elem-tooltip";
 import { GetNotesQuery, People, useGetUserProfileQuery } from "@/graphql/types";
@@ -275,6 +277,13 @@ const ElemNoteCard: React.FC<Props> = ({
 		event: React.KeyboardEvent<HTMLTextAreaElement>
 	) => {
 		if (event.key === "Enter" && commentContent) {
+			onAddComment();
+			setCommentContent("");
+		}
+	};
+
+	const onCommentSend = () => {
+		if (commentContent) {
 			onAddComment();
 			setCommentContent("");
 		}
@@ -614,17 +623,40 @@ const ElemNoteCard: React.FC<Props> = ({
 						placeholderClass="text-slate-300"
 					/>
 
-					<InputTextarea
-						rows={1}
-						ref={commentInput}
-						name="comment"
-						placeholder="Write a comment..."
-						value={commentContent}
-						onChange={onChangeCommentInput}
-						onKeyDown={onCommentInputKeyDown}
-						onClick={onCommentInputClick}
-						className="cursor-pointer bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 h-8 overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
-					/>
+					<div className="relative flex w-full">
+						<InputTextarea
+							rows={1}
+							ref={commentInput}
+							name="comment"
+							placeholder="Write a comment..."
+							value={commentContent}
+							onChange={onChangeCommentInput}
+							onKeyDown={onCommentInputKeyDown}
+							onClick={onCommentInputClick}
+							className="bg-slate-100 ring-0 rounded-[18px] !mt-0 px-4 !py-1 min-h-[2rem] overflow-y-auto overscroll-y-none scrollbar-hide text-slate-600 transition-all hover:bg-slate-200"
+						/>
+
+						<button
+							onClick={onCommentSend}
+							className={`absolute z-10 right-3 bottom-0 flex items-center justify-center w-8 h-8 rounded-full  ${
+								commentContent.length > 0
+									? "cursor-pointer hover:bg-slate-200"
+									: "cursor-not-allowed"
+							}`}
+						>
+							{commentContent.length > 0 ? (
+								<IconPaperAirplaneSolid
+									className="w-5 h-5 text-primary-500"
+									title="Comment"
+								/>
+							) : (
+								<IconPaperAirplane
+									className="w-5 h-5 text-slate-600"
+									title="Comment"
+								/>
+							)}
+						</button>
+					</div>
 				</div>
 			</div>
 			<ElemRequiredProfileDialog

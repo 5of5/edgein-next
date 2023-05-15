@@ -190,7 +190,7 @@ const Events: NextPage<Props> = ({
 		: eventsData?.events_aggregate?.aggregate?.count || 0;
 
 	return (
-		<div className="relative overflow-hidden">
+		<div className="relative">
 			<ElemHeading
 				title="Events"
 				//subtitle={`Don't miss a beat. Here's your lineup for all of the industry's must attend events. Holding an event? Let us know.`}

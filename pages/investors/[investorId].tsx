@@ -153,25 +153,23 @@ const VCFirm: NextPage<Props> = (props) => {
 							{parentOrganization && (
 								<div className="mt-4">
 									<div className="font-bold text-sm">Sub-organization of:</div>
-									<Link href="#">
-										<a className="flex items-center gap-2 mt-1 group transition-all hover:-translate-y-0.5">
+									<Link
+										href={`/${
+											parentLinks?.from_company ? "companies" : "investors"
+										}/${parentOrganization?.slug}`}
+										passHref
+									>
+										<a className="flex items-center gap-2 mt-1 group">
 											<ElemPhoto
 												photo={parentOrganization?.logo}
-												wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow"
+												wrapClass="flex items-center justify-center w-10 aspect-square shrink-0 p-1 bg-white rounded-lg shadow group-hover:opacity-60"
 												imgClass="object-contain w-full h-full"
 												imgAlt={parentOrganization?.name}
 												placeholderClass="text-slate-300"
 											/>
-											<Link
-												href={`/${
-													parentLinks?.from_company ? "companies" : "investors"
-												}/${parentOrganization?.slug}`}
-												passHref
-											>
-												<h2 className="group-hover:text-primary-500">
-													{parentOrganization?.name}
-												</h2>
-											</Link>
+											<h2 className="inline leading-tight border-b border-primary-500 transition-all group-hover:border-b-2 group-hover:text-primary-500">
+												{parentOrganization?.name}
+											</h2>
 										</a>
 									</Link>
 								</div>
