@@ -1,5 +1,20 @@
 import { getClient } from '@/scripts/postgres-helpers'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { InsertActionDocument, InsertActionMutation } from '@/graphql/types'
+import CookieService from '../../../utils/cookie'
+import { mutate } from '@/graphql/hasuraAdmin'
+
+interface Action {
+  action: string
+  page: string,
+  properties: {
+    sqlquery: string,
+    query: string,
+    sqlresult: any,
+    answer?: string,
+  },
+  user: number,
+}
 
 const DEFAULT_PROMPT = `Given the postgres sql schema:
 CREATE TABLE public.vc_firms (
@@ -167,6 +182,10 @@ Answer:`
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== 'POST') return res.status(405).end()
 
+  const token = CookieService.getAuthToken(req.cookies);
+  const user = await CookieService.getUser(token);
+  if (!user) return res.status(403).end();
+
   const prompt = DEFAULT_PROMPT.replace('{{PROMPT}}', req.body.query);
   const payload = {
     model: "text-davinci-003",
@@ -179,7 +198,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     n: 1,
     prompt,
   };
-  console.log(payload)
   const result = await fetch("https://api.openai.com/v1/completions", {
     headers: {
       'Content-Type': 'application/json',
@@ -190,7 +208,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   });
   const json = await result.json()
   const sqlquery = json.choices?.[0]?.text
-  console.log(`"${sqlquery}"`)
   if (sqlquery.trim() === `I can't answer that.`) {
     return res.send({
         sqlquery,
@@ -208,7 +225,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .replace('{{PROMPT2}}', req.body.query)
       .replace('{{QUERY}}', sqlquery)
       .replace('{{RESULT}}', sqlresultstr);
-    console.log(payload)
     const answerresult = await fetch("https://api.openai.com/v1/completions", {
       headers: {
         'Content-Type': 'application/json',
@@ -218,7 +234,25 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       body: JSON.stringify(payload),
     });
     const answerjson = await answerresult.json()
-    console.log(answerjson)
+    const action: Action = {
+      action: `Asked AI`,
+      page: 'ask-edgein',
+      properties: {
+        sqlquery,
+        sqlresult,
+        query: req.body.query,
+        answer: answerjson.choices?.[0]?.text  
+      },
+      user: user.id,
+    }  
+    // create action
+    mutate<InsertActionMutation>({
+      mutation: InsertActionDocument,
+      variables: {
+        object: action,
+      },
+    });
+  
     res.send({
       sqlquery,
       sqlresult,
@@ -228,6 +262,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   } catch (e) {
     console.log(e);
     console.log((e as any).message)
+    const action: Action = {
+      action: `Asked AI With Error`,
+      page: 'ask-edgein',
+      properties: {
+        sqlquery,
+        query: req.body.query,
+        sqlresult: (e as any).message,
+      },
+      user: user.id,
+    }  
     return res.status(400).send({ message: (e as any).message, error: e, sqlquery })
   }
 }
