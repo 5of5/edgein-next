@@ -6,6 +6,8 @@ import {
   InsertBillingOrgMutation,
   UpdateBillingOrgDocument,
   UpdateBillingOrgMutation,
+  UpdateBillingOrgCustomerIdMutation,
+  UpdateBillingOrgCustomerIdDocument,
 } from "@/graphql/types";
 
 
@@ -45,5 +47,17 @@ try {
   }
 }
 
-const BillingService = { insertBillingOrg, updateBillingOrg, getBillingOrgByCustomerId }
+async function updateBillingOrgCustomerId(id: number, customerId: string) {
+  try {
+    const data = await mutate<UpdateBillingOrgCustomerIdMutation>({
+      mutation: UpdateBillingOrgCustomerIdDocument,
+      variables: { id, customerId }
+    });
+    return data.data.update_billing_org_by_pk
+    } catch (e) {
+      throw e
+    }
+  }
+  
+const BillingService = { insertBillingOrg, updateBillingOrg, updateBillingOrgCustomerId, getBillingOrgByCustomerId }
 export default BillingService

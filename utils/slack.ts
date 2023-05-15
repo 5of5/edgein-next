@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const sendMessage = async (webhookUrl: string, payload: unknown) => {
+  if (webhookUrl === "") return;
   const response = await axios.post(webhookUrl, JSON.stringify(payload), {
     withCredentials: false,
     transformRequest: [
