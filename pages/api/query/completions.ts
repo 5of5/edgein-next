@@ -272,6 +272,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       user: user.id,
     }  
+    // create action
+    mutate<InsertActionMutation>({
+      mutation: InsertActionDocument,
+      variables: {
+        object: action,
+      },
+    });
     return res.status(400).send({ message: (e as any).message, error: e, sqlquery })
   }
 }
