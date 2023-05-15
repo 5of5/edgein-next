@@ -211,10 +211,8 @@ query GetCompaniesPaths {
 	}
 }
 
-query GetRelevantCompanies(
-	$where: companies_bool_exp!
-) {
-	companies(where: $where) {
+query GetRelevantCompanies($where: companies_bool_exp!, $limit: Int) {
+	companies(where: $where, limit: $limit) {
 		id
 		logo
 		name

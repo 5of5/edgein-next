@@ -264,6 +264,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     reference_user_id: userData.reference_user_id,
     additional_emails: userData.additional_emails,
     active: userData.active,
+    onboarding_information: userData.onboarding_information,
     entitlements
   };
 };

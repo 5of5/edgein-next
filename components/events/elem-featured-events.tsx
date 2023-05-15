@@ -35,7 +35,7 @@ export const ElemFeaturedEvents: FC<Props> = ({
 				slug: { _neq: "" },
 				is_featured: { _eq: true },
 				library: { _contains: selectedLibrary },
-				//end_date: { _gte: moment().subtract(1, "days").format("YYYY-MM-DD") },
+				end_date: { _gte: moment().format("YYYY-MM-DD") },
 			},
 		],
 	};

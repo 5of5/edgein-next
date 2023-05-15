@@ -31,6 +31,8 @@
 - "!include public_news.yaml"
 - "!include public_news_organizations.yaml"
 - "!include public_news_person.yaml"
+- "!include public_news_related_organizations.yaml"
+- "!include public_news_related_person.yaml"
 - "!include public_notes.yaml"
 - "!include public_notification_actions.yaml"
 - "!include public_notifications.yaml"
