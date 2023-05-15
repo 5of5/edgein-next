@@ -8,6 +8,8 @@ import {
   UpdateBillingOrgMutation,
   UpdateBillingOrgCustomerIdMutation,
   UpdateBillingOrgCustomerIdDocument,
+  GetBillingOrgByIdDocument,
+  GetBillingOrgByIdQuery
 } from "@/graphql/types";
 
 
@@ -35,6 +37,18 @@ try {
   }
 }
 
+async function getBillingOrgById(id: number) {
+try {
+  const data = await query<GetBillingOrgByIdQuery>({
+    query: GetBillingOrgByIdDocument,
+    variables: { id }
+  });
+  return data.data.billing_org[0]
+  } catch (e) {
+    throw e
+  }
+}
+
 async function updateBillingOrg(id: number, status: string) {
 try {
   const data = await mutate<UpdateBillingOrgMutation>({
@@ -47,11 +61,11 @@ try {
   }
 }
 
-async function updateBillingOrgCustomerId(id: number, customerId: string) {
+async function updateBillingOrgCustomerId(id: number, customerId: string, status: string) {
   try {
     const data = await mutate<UpdateBillingOrgCustomerIdMutation>({
       mutation: UpdateBillingOrgCustomerIdDocument,
-      variables: { id, customerId }
+      variables: { id, customerId, status }
     });
     return data.data.update_billing_org_by_pk
     } catch (e) {
@@ -59,5 +73,5 @@ async function updateBillingOrgCustomerId(id: number, customerId: string) {
     }
   }
   
-const BillingService = { insertBillingOrg, updateBillingOrg, updateBillingOrgCustomerId, getBillingOrgByCustomerId }
+const BillingService = { insertBillingOrg, updateBillingOrg, updateBillingOrgCustomerId, getBillingOrgByCustomerId, getBillingOrgById }
 export default BillingService

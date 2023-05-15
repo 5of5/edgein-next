@@ -75,17 +75,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						// slack
 						await SlackServices.sendMessage(
 							process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-							`Subscription update to customer ${customerId} ${customer.email}, no user or billing org found, help needed!`
+							`1 Subscription update to customer ${customerId} ${customer.email}, no user or billing org found, help needed!`
 						);			
 						res.status(400).send({ error: `Webhook no user for customer id ${customerId} ${customer.email}` });
 						return;
 					}
 					if (!user.billing_org_id) {
-						// slack
-						await SlackServices.sendMessage(
-							process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-							`Subscription update to user ${user.id}, user has no billing org, no billing org found for stripe customer with email ${customer.email}, creating new billing org`
-						);			
 						// create billing org
 						const billingOrg = await BillingService.insertBillingOrg(
 							customerId,
@@ -94,14 +89,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 						);
 						// update user
 						UserService.updateBillingOrg(user.id, billingOrg?.id || 0);
-					} else {
 						// slack
 						await SlackServices.sendMessage(
 							process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-							`Subscription update to user ${user.id}, user has no billing org, yet stripe customer does with email ${customer.email}, updating user to point to that billing out`
+							`2 Subscription update to user ${user.id}, user has no billing org, no billing org found for stripe customer with email ${customer.email}, creating new billing org`
 						);			
+					} else {
+						// slack
+						const userBillingOrg = await BillingService.getBillingOrgById(
+							user.billing_org_id
+						);
 						// update billing org
-						await BillingService.updateBillingOrgCustomerId(user.id, customerId);
+						await BillingService.updateBillingOrgCustomerId(user.billing_org_id, customerId, subscription.status === "active" ? "active" : "inactive");
+						await SlackServices.sendMessage(
+							process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
+							`3 Subscription update to user ${user.id}, user has billing org (${user.billing_org_id}) attched to customer (${userBillingOrg.customer_id}), yet stripe customer does not ${customerId}, updating billing org to point to customer_id`
+						);			
 					}
 					break;
 				} else {
@@ -122,7 +125,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					// slack
 					await SlackServices.sendMessage(
 						process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-						`Checkout session completed with no user id for customer ${customerId}. Please help`
+						`4 Checkout session completed with no user id for customer ${customerId}. Please help`
 					);
 					res.status(400).send({ error: `Webhook no user id` });
 				}
@@ -142,7 +145,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 					// slack
 					await SlackServices.sendMessage(
 						process.env.EDGEIN_STRIPE_ERROR_WEBHOOK_URL || '',
-						`Checkout session completed with user ${user.id} use has a preexisting billing org, potentially double paying. Please help`
+						`5 Checkout session completed with user ${user.id} use has a preexisting billing org, potentially double paying. Please help`
 					);
 				}
 				break;

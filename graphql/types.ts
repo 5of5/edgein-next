@@ -10229,6 +10229,14 @@ export type Mutation_Root = {
   delete_news_person: Maybe<News_Person_Mutation_Response>;
   /** delete single row from the table: "news_person" */
   delete_news_person_by_pk: Maybe<News_Person>;
+  /** delete data from the table: "news_related_organizations" */
+  delete_news_related_organizations: Maybe<News_Related_Organizations_Mutation_Response>;
+  /** delete single row from the table: "news_related_organizations" */
+  delete_news_related_organizations_by_pk: Maybe<News_Related_Organizations>;
+  /** delete data from the table: "news_related_person" */
+  delete_news_related_person: Maybe<News_Related_Person_Mutation_Response>;
+  /** delete single row from the table: "news_related_person" */
+  delete_news_related_person_by_pk: Maybe<News_Related_Person>;
   /** delete data from the table: "notes" */
   delete_notes: Maybe<Notes_Mutation_Response>;
   /** delete single row from the table: "notes" */
@@ -10423,6 +10431,14 @@ export type Mutation_Root = {
   insert_news_person: Maybe<News_Person_Mutation_Response>;
   /** insert a single row into the table: "news_person" */
   insert_news_person_one: Maybe<News_Person>;
+  /** insert data into the table: "news_related_organizations" */
+  insert_news_related_organizations: Maybe<News_Related_Organizations_Mutation_Response>;
+  /** insert a single row into the table: "news_related_organizations" */
+  insert_news_related_organizations_one: Maybe<News_Related_Organizations>;
+  /** insert data into the table: "news_related_person" */
+  insert_news_related_person: Maybe<News_Related_Person_Mutation_Response>;
+  /** insert a single row into the table: "news_related_person" */
+  insert_news_related_person_one: Maybe<News_Related_Person>;
   /** insert data into the table: "notes" */
   insert_notes: Maybe<Notes_Mutation_Response>;
   /** insert a single row into the table: "notes" */
@@ -10611,6 +10627,14 @@ export type Mutation_Root = {
   update_news_person: Maybe<News_Person_Mutation_Response>;
   /** update single row of the table: "news_person" */
   update_news_person_by_pk: Maybe<News_Person>;
+  /** update data of the table: "news_related_organizations" */
+  update_news_related_organizations: Maybe<News_Related_Organizations_Mutation_Response>;
+  /** update single row of the table: "news_related_organizations" */
+  update_news_related_organizations_by_pk: Maybe<News_Related_Organizations>;
+  /** update data of the table: "news_related_person" */
+  update_news_related_person: Maybe<News_Related_Person_Mutation_Response>;
+  /** update single row of the table: "news_related_person" */
+  update_news_related_person_by_pk: Maybe<News_Related_Person>;
   /** update data of the table: "notes" */
   update_notes: Maybe<Notes_Mutation_Response>;
   /** update single row of the table: "notes" */
@@ -11044,6 +11068,30 @@ export type Mutation_RootDelete_News_PersonArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_News_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_News_Related_OrganizationsArgs = {
+  where: News_Related_Organizations_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_News_Related_Organizations_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_News_Related_PersonArgs = {
+  where: News_Related_Person_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_News_Related_Person_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -11685,6 +11733,34 @@ export type Mutation_RootInsert_News_PersonArgs = {
 export type Mutation_RootInsert_News_Person_OneArgs = {
   object: News_Person_Insert_Input;
   on_conflict: InputMaybe<News_Person_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_News_Related_OrganizationsArgs = {
+  objects: Array<News_Related_Organizations_Insert_Input>;
+  on_conflict: InputMaybe<News_Related_Organizations_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_News_Related_Organizations_OneArgs = {
+  object: News_Related_Organizations_Insert_Input;
+  on_conflict: InputMaybe<News_Related_Organizations_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_News_Related_PersonArgs = {
+  objects: Array<News_Related_Person_Insert_Input>;
+  on_conflict: InputMaybe<News_Related_Person_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_News_Related_Person_OneArgs = {
+  object: News_Related_Person_Insert_Input;
+  on_conflict: InputMaybe<News_Related_Person_On_Conflict>;
 };
 
 
@@ -12463,6 +12539,38 @@ export type Mutation_RootUpdate_News_Person_By_PkArgs = {
   _inc: InputMaybe<News_Person_Inc_Input>;
   _set: InputMaybe<News_Person_Set_Input>;
   pk_columns: News_Person_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Related_OrganizationsArgs = {
+  _inc: InputMaybe<News_Related_Organizations_Inc_Input>;
+  _set: InputMaybe<News_Related_Organizations_Set_Input>;
+  where: News_Related_Organizations_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Related_Organizations_By_PkArgs = {
+  _inc: InputMaybe<News_Related_Organizations_Inc_Input>;
+  _set: InputMaybe<News_Related_Organizations_Set_Input>;
+  pk_columns: News_Related_Organizations_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Related_PersonArgs = {
+  _inc: InputMaybe<News_Related_Person_Inc_Input>;
+  _set: InputMaybe<News_Related_Person_Set_Input>;
+  where: News_Related_Person_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_News_Related_Person_By_PkArgs = {
+  _inc: InputMaybe<News_Related_Person_Inc_Input>;
+  _set: InputMaybe<News_Related_Person_Set_Input>;
+  pk_columns: News_Related_Person_Pk_Columns_Input;
 };
 
 
@@ -13731,6 +13839,460 @@ export type News_Pk_Columns_Input = {
 export type News_Prepend_Input = {
   metadata: InputMaybe<Scalars['jsonb']>;
   source: InputMaybe<Scalars['jsonb']>;
+};
+
+/** columns and relationships of "news_related_organizations" */
+export type News_Related_Organizations = {
+  __typename?: 'news_related_organizations';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  name: Maybe<Scalars['String']>;
+  news_id: Scalars['Int'];
+  type: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "news_related_organizations" */
+export type News_Related_Organizations_Aggregate = {
+  __typename?: 'news_related_organizations_aggregate';
+  aggregate: Maybe<News_Related_Organizations_Aggregate_Fields>;
+  nodes: Array<News_Related_Organizations>;
+};
+
+/** aggregate fields of "news_related_organizations" */
+export type News_Related_Organizations_Aggregate_Fields = {
+  __typename?: 'news_related_organizations_aggregate_fields';
+  avg: Maybe<News_Related_Organizations_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<News_Related_Organizations_Max_Fields>;
+  min: Maybe<News_Related_Organizations_Min_Fields>;
+  stddev: Maybe<News_Related_Organizations_Stddev_Fields>;
+  stddev_pop: Maybe<News_Related_Organizations_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<News_Related_Organizations_Stddev_Samp_Fields>;
+  sum: Maybe<News_Related_Organizations_Sum_Fields>;
+  var_pop: Maybe<News_Related_Organizations_Var_Pop_Fields>;
+  var_samp: Maybe<News_Related_Organizations_Var_Samp_Fields>;
+  variance: Maybe<News_Related_Organizations_Variance_Fields>;
+};
+
+
+/** aggregate fields of "news_related_organizations" */
+export type News_Related_Organizations_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<News_Related_Organizations_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type News_Related_Organizations_Avg_Fields = {
+  __typename?: 'news_related_organizations_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "news_related_organizations". All fields are combined with a logical 'AND'. */
+export type News_Related_Organizations_Bool_Exp = {
+  _and: InputMaybe<Array<News_Related_Organizations_Bool_Exp>>;
+  _not: InputMaybe<News_Related_Organizations_Bool_Exp>;
+  _or: InputMaybe<Array<News_Related_Organizations_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  name: InputMaybe<String_Comparison_Exp>;
+  news_id: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "news_related_organizations" */
+export enum News_Related_Organizations_Constraint {
+  /** unique or primary key constraint */
+  NewsRelatedOrganizationsPkey = 'news_related_organizations_pkey'
+}
+
+/** input type for incrementing numeric columns in table "news_related_organizations" */
+export type News_Related_Organizations_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  news_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "news_related_organizations" */
+export type News_Related_Organizations_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type News_Related_Organizations_Max_Fields = {
+  __typename?: 'news_related_organizations_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  name: Maybe<Scalars['String']>;
+  news_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type News_Related_Organizations_Min_Fields = {
+  __typename?: 'news_related_organizations_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  name: Maybe<Scalars['String']>;
+  news_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "news_related_organizations" */
+export type News_Related_Organizations_Mutation_Response = {
+  __typename?: 'news_related_organizations_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<News_Related_Organizations>;
+};
+
+/** on_conflict condition type for table "news_related_organizations" */
+export type News_Related_Organizations_On_Conflict = {
+  constraint: News_Related_Organizations_Constraint;
+  update_columns: Array<News_Related_Organizations_Update_Column>;
+  where: InputMaybe<News_Related_Organizations_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "news_related_organizations". */
+export type News_Related_Organizations_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  name: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: news_related_organizations */
+export type News_Related_Organizations_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "news_related_organizations" */
+export enum News_Related_Organizations_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  NewsId = 'news_id',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "news_related_organizations" */
+export type News_Related_Organizations_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type News_Related_Organizations_Stddev_Fields = {
+  __typename?: 'news_related_organizations_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type News_Related_Organizations_Stddev_Pop_Fields = {
+  __typename?: 'news_related_organizations_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type News_Related_Organizations_Stddev_Samp_Fields = {
+  __typename?: 'news_related_organizations_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type News_Related_Organizations_Sum_Fields = {
+  __typename?: 'news_related_organizations_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  news_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "news_related_organizations" */
+export enum News_Related_Organizations_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  NewsId = 'news_id',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type News_Related_Organizations_Var_Pop_Fields = {
+  __typename?: 'news_related_organizations_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type News_Related_Organizations_Var_Samp_Fields = {
+  __typename?: 'news_related_organizations_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type News_Related_Organizations_Variance_Fields = {
+  __typename?: 'news_related_organizations_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** columns and relationships of "news_related_person" */
+export type News_Related_Person = {
+  __typename?: 'news_related_person';
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  name: Maybe<Scalars['String']>;
+  news_id: Scalars['Int'];
+  type: Maybe<Scalars['String']>;
+  updated_at: Scalars['timestamptz'];
+};
+
+/** aggregated selection of "news_related_person" */
+export type News_Related_Person_Aggregate = {
+  __typename?: 'news_related_person_aggregate';
+  aggregate: Maybe<News_Related_Person_Aggregate_Fields>;
+  nodes: Array<News_Related_Person>;
+};
+
+/** aggregate fields of "news_related_person" */
+export type News_Related_Person_Aggregate_Fields = {
+  __typename?: 'news_related_person_aggregate_fields';
+  avg: Maybe<News_Related_Person_Avg_Fields>;
+  count: Scalars['Int'];
+  max: Maybe<News_Related_Person_Max_Fields>;
+  min: Maybe<News_Related_Person_Min_Fields>;
+  stddev: Maybe<News_Related_Person_Stddev_Fields>;
+  stddev_pop: Maybe<News_Related_Person_Stddev_Pop_Fields>;
+  stddev_samp: Maybe<News_Related_Person_Stddev_Samp_Fields>;
+  sum: Maybe<News_Related_Person_Sum_Fields>;
+  var_pop: Maybe<News_Related_Person_Var_Pop_Fields>;
+  var_samp: Maybe<News_Related_Person_Var_Samp_Fields>;
+  variance: Maybe<News_Related_Person_Variance_Fields>;
+};
+
+
+/** aggregate fields of "news_related_person" */
+export type News_Related_Person_Aggregate_FieldsCountArgs = {
+  columns: InputMaybe<Array<News_Related_Person_Select_Column>>;
+  distinct: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type News_Related_Person_Avg_Fields = {
+  __typename?: 'news_related_person_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "news_related_person". All fields are combined with a logical 'AND'. */
+export type News_Related_Person_Bool_Exp = {
+  _and: InputMaybe<Array<News_Related_Person_Bool_Exp>>;
+  _not: InputMaybe<News_Related_Person_Bool_Exp>;
+  _or: InputMaybe<Array<News_Related_Person_Bool_Exp>>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  name: InputMaybe<String_Comparison_Exp>;
+  news_id: InputMaybe<Int_Comparison_Exp>;
+  type: InputMaybe<String_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "news_related_person" */
+export enum News_Related_Person_Constraint {
+  /** unique or primary key constraint */
+  NewsRelatedPersonPkey = 'news_related_person_pkey'
+}
+
+/** input type for incrementing numeric columns in table "news_related_person" */
+export type News_Related_Person_Inc_Input = {
+  id: InputMaybe<Scalars['Int']>;
+  news_id: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "news_related_person" */
+export type News_Related_Person_Insert_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate max on columns */
+export type News_Related_Person_Max_Fields = {
+  __typename?: 'news_related_person_max_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  name: Maybe<Scalars['String']>;
+  news_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** aggregate min on columns */
+export type News_Related_Person_Min_Fields = {
+  __typename?: 'news_related_person_min_fields';
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  name: Maybe<Scalars['String']>;
+  news_id: Maybe<Scalars['Int']>;
+  type: Maybe<Scalars['String']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+};
+
+/** response of any mutation on the table "news_related_person" */
+export type News_Related_Person_Mutation_Response = {
+  __typename?: 'news_related_person_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<News_Related_Person>;
+};
+
+/** on_conflict condition type for table "news_related_person" */
+export type News_Related_Person_On_Conflict = {
+  constraint: News_Related_Person_Constraint;
+  update_columns: Array<News_Related_Person_Update_Column>;
+  where: InputMaybe<News_Related_Person_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "news_related_person". */
+export type News_Related_Person_Order_By = {
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  name: InputMaybe<Order_By>;
+  news_id: InputMaybe<Order_By>;
+  type: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: news_related_person */
+export type News_Related_Person_Pk_Columns_Input = {
+  id: Scalars['Int'];
+};
+
+/** select columns of table "news_related_person" */
+export enum News_Related_Person_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  NewsId = 'news_id',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "news_related_person" */
+export type News_Related_Person_Set_Input = {
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  name: InputMaybe<Scalars['String']>;
+  news_id: InputMaybe<Scalars['Int']>;
+  type: InputMaybe<Scalars['String']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** aggregate stddev on columns */
+export type News_Related_Person_Stddev_Fields = {
+  __typename?: 'news_related_person_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type News_Related_Person_Stddev_Pop_Fields = {
+  __typename?: 'news_related_person_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type News_Related_Person_Stddev_Samp_Fields = {
+  __typename?: 'news_related_person_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type News_Related_Person_Sum_Fields = {
+  __typename?: 'news_related_person_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  news_id: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "news_related_person" */
+export enum News_Related_Person_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  NewsId = 'news_id',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** aggregate var_pop on columns */
+export type News_Related_Person_Var_Pop_Fields = {
+  __typename?: 'news_related_person_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type News_Related_Person_Var_Samp_Fields = {
+  __typename?: 'news_related_person_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type News_Related_Person_Variance_Fields = {
+  __typename?: 'news_related_person_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  news_id: Maybe<Scalars['Float']>;
 };
 
 /** select columns of table "news" */
@@ -15782,6 +16344,18 @@ export type Query_Root = {
   news_person_aggregate: News_Person_Aggregate;
   /** fetch data from the table: "news_person" using primary key columns */
   news_person_by_pk: Maybe<News_Person>;
+  /** fetch data from the table: "news_related_organizations" */
+  news_related_organizations: Array<News_Related_Organizations>;
+  /** fetch aggregated fields from the table: "news_related_organizations" */
+  news_related_organizations_aggregate: News_Related_Organizations_Aggregate;
+  /** fetch data from the table: "news_related_organizations" using primary key columns */
+  news_related_organizations_by_pk: Maybe<News_Related_Organizations>;
+  /** fetch data from the table: "news_related_person" */
+  news_related_person: Array<News_Related_Person>;
+  /** fetch aggregated fields from the table: "news_related_person" */
+  news_related_person_aggregate: News_Related_Person_Aggregate;
+  /** fetch data from the table: "news_related_person" using primary key columns */
+  news_related_person_by_pk: Maybe<News_Related_Person>;
   /** An array relationship */
   notes: Array<Notes>;
   /** An aggregate relationship */
@@ -16614,6 +17188,52 @@ export type Query_RootNews_Person_AggregateArgs = {
 
 
 export type Query_RootNews_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootNews_Related_OrganizationsArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Organizations_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Organizations_Order_By>>;
+  where: InputMaybe<News_Related_Organizations_Bool_Exp>;
+};
+
+
+export type Query_RootNews_Related_Organizations_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Organizations_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Organizations_Order_By>>;
+  where: InputMaybe<News_Related_Organizations_Bool_Exp>;
+};
+
+
+export type Query_RootNews_Related_Organizations_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Query_RootNews_Related_PersonArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Person_Order_By>>;
+  where: InputMaybe<News_Related_Person_Bool_Exp>;
+};
+
+
+export type Query_RootNews_Related_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Person_Order_By>>;
+  where: InputMaybe<News_Related_Person_Bool_Exp>;
+};
+
+
+export type Query_RootNews_Related_Person_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -18032,6 +18652,18 @@ export type Subscription_Root = {
   news_person_aggregate: News_Person_Aggregate;
   /** fetch data from the table: "news_person" using primary key columns */
   news_person_by_pk: Maybe<News_Person>;
+  /** fetch data from the table: "news_related_organizations" */
+  news_related_organizations: Array<News_Related_Organizations>;
+  /** fetch aggregated fields from the table: "news_related_organizations" */
+  news_related_organizations_aggregate: News_Related_Organizations_Aggregate;
+  /** fetch data from the table: "news_related_organizations" using primary key columns */
+  news_related_organizations_by_pk: Maybe<News_Related_Organizations>;
+  /** fetch data from the table: "news_related_person" */
+  news_related_person: Array<News_Related_Person>;
+  /** fetch aggregated fields from the table: "news_related_person" */
+  news_related_person_aggregate: News_Related_Person_Aggregate;
+  /** fetch data from the table: "news_related_person" using primary key columns */
+  news_related_person_by_pk: Maybe<News_Related_Person>;
   /** An array relationship */
   notes: Array<Notes>;
   /** An aggregate relationship */
@@ -18864,6 +19496,52 @@ export type Subscription_RootNews_Person_AggregateArgs = {
 
 
 export type Subscription_RootNews_Person_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNews_Related_OrganizationsArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Organizations_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Organizations_Order_By>>;
+  where: InputMaybe<News_Related_Organizations_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_Related_Organizations_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Organizations_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Organizations_Order_By>>;
+  where: InputMaybe<News_Related_Organizations_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_Related_Organizations_By_PkArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type Subscription_RootNews_Related_PersonArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Person_Order_By>>;
+  where: InputMaybe<News_Related_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_Related_Person_AggregateArgs = {
+  distinct_on: InputMaybe<Array<News_Related_Person_Select_Column>>;
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order_by: InputMaybe<Array<News_Related_Person_Order_By>>;
+  where: InputMaybe<News_Related_Person_Bool_Exp>;
+};
+
+
+export type Subscription_RootNews_Related_Person_By_PkArgs = {
   id: Scalars['Int'];
 };
 
@@ -22602,11 +23280,18 @@ export type InsertBillingOrgMutationVariables = Exact<{
 export type InsertBillingOrgMutation = { __typename?: 'mutation_root', insert_billing_org_one: { __typename?: 'billing_org', id: number } | null };
 
 export type GetBillingOrgByCustomerIdQueryVariables = Exact<{
-  customerId?: InputMaybe<Scalars['String']>;
+  customerId: Scalars['String'];
 }>;
 
 
 export type GetBillingOrgByCustomerIdQuery = { __typename?: 'query_root', billing_org: Array<{ __typename?: 'billing_org', customer_id: string, id: number, plan: string, status: string, user_limit: number }> };
+
+export type GetBillingOrgByIdQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GetBillingOrgByIdQuery = { __typename?: 'query_root', billing_org: Array<{ __typename?: 'billing_org', customer_id: string, id: number, plan: string, status: string, user_limit: number }> };
 
 export type UpdateBillingOrgMutationVariables = Exact<{
   id: Scalars['Int'];
@@ -22619,6 +23304,7 @@ export type UpdateBillingOrgMutation = { __typename?: 'mutation_root', update_bi
 export type UpdateBillingOrgCustomerIdMutationVariables = Exact<{
   id: Scalars['Int'];
   customerId: Scalars['String'];
+  status: Scalars['String'];
 }>;
 
 
@@ -22756,7 +23442,8 @@ export type GetEventQueryVariables = Exact<{
   slug: Scalars['String'];
 }>;
 
-export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }>, parent_event: { __typename?: 'events', id: number, slug: string, name: string } | null }> };
+
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
 
 export type GetEventsByDateQueryVariables = Exact<{
   date: InputMaybe<Scalars['timestamptz']>;
@@ -22786,7 +23473,7 @@ export type GetSubEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -23702,7 +24389,7 @@ export const useInsertBillingOrgMutation = <
     );
 useInsertBillingOrgMutation.fetcher = (variables?: InsertBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<InsertBillingOrgMutation, InsertBillingOrgMutationVariables>(InsertBillingOrgDocument, variables, options);
 export const GetBillingOrgByCustomerIdDocument = `
-    query GetBillingOrgByCustomerId($customerId: String = "") {
+    query GetBillingOrgByCustomerId($customerId: String!) {
   billing_org(where: {customer_id: {_eq: $customerId}}) {
     customer_id
     id
@@ -23716,21 +24403,51 @@ export const useGetBillingOrgByCustomerIdQuery = <
       TData = GetBillingOrgByCustomerIdQuery,
       TError = Error
     >(
-      variables?: GetBillingOrgByCustomerIdQueryVariables,
+      variables: GetBillingOrgByCustomerIdQueryVariables,
       options?: UseQueryOptions<GetBillingOrgByCustomerIdQuery, TError, TData>
     ) =>
     useQuery<GetBillingOrgByCustomerIdQuery, TError, TData>(
-      variables === undefined ? ['GetBillingOrgByCustomerId'] : ['GetBillingOrgByCustomerId', variables],
+      ['GetBillingOrgByCustomerId', variables],
       fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables),
       options
     );
 useGetBillingOrgByCustomerIdQuery.document = GetBillingOrgByCustomerIdDocument;
 
 
-useGetBillingOrgByCustomerIdQuery.getKey = (variables?: GetBillingOrgByCustomerIdQueryVariables) => variables === undefined ? ['GetBillingOrgByCustomerId'] : ['GetBillingOrgByCustomerId', variables];
+useGetBillingOrgByCustomerIdQuery.getKey = (variables: GetBillingOrgByCustomerIdQueryVariables) => ['GetBillingOrgByCustomerId', variables];
 ;
 
-useGetBillingOrgByCustomerIdQuery.fetcher = (variables?: GetBillingOrgByCustomerIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables, options);
+useGetBillingOrgByCustomerIdQuery.fetcher = (variables: GetBillingOrgByCustomerIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetBillingOrgByCustomerIdQuery, GetBillingOrgByCustomerIdQueryVariables>(GetBillingOrgByCustomerIdDocument, variables, options);
+export const GetBillingOrgByIdDocument = `
+    query GetBillingOrgById($id: Int!) {
+  billing_org(where: {id: {_eq: $id}}) {
+    customer_id
+    id
+    plan
+    status
+    user_limit
+  }
+}
+    `;
+export const useGetBillingOrgByIdQuery = <
+      TData = GetBillingOrgByIdQuery,
+      TError = Error
+    >(
+      variables: GetBillingOrgByIdQueryVariables,
+      options?: UseQueryOptions<GetBillingOrgByIdQuery, TError, TData>
+    ) =>
+    useQuery<GetBillingOrgByIdQuery, TError, TData>(
+      ['GetBillingOrgById', variables],
+      fetcher<GetBillingOrgByIdQuery, GetBillingOrgByIdQueryVariables>(GetBillingOrgByIdDocument, variables),
+      options
+    );
+useGetBillingOrgByIdQuery.document = GetBillingOrgByIdDocument;
+
+
+useGetBillingOrgByIdQuery.getKey = (variables: GetBillingOrgByIdQueryVariables) => ['GetBillingOrgById', variables];
+;
+
+useGetBillingOrgByIdQuery.fetcher = (variables: GetBillingOrgByIdQueryVariables, options?: RequestInit['headers']) => fetcher<GetBillingOrgByIdQuery, GetBillingOrgByIdQueryVariables>(GetBillingOrgByIdDocument, variables, options);
 export const UpdateBillingOrgDocument = `
     mutation UpdateBillingOrg($id: Int!, $status: String!) {
   update_billing_org_by_pk(pk_columns: {id: $id}, _set: {status: $status}) {
@@ -23750,10 +24467,10 @@ export const useUpdateBillingOrgMutation = <
     );
 useUpdateBillingOrgMutation.fetcher = (variables: UpdateBillingOrgMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateBillingOrgMutation, UpdateBillingOrgMutationVariables>(UpdateBillingOrgDocument, variables, options);
 export const UpdateBillingOrgCustomerIdDocument = `
-    mutation UpdateBillingOrgCustomerId($id: Int!, $customerId: String!) {
+    mutation UpdateBillingOrgCustomerId($id: Int!, $customerId: String!, $status: String!) {
   update_billing_org_by_pk(
     pk_columns: {id: $id}
-    _set: {customer_id: $customerId}
+    _set: {customer_id: $customerId, status: $status}
   ) {
     id
     customer_id
