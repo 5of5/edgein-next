@@ -102,7 +102,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	};
 
 	useEffect(() => {
-		if (!loading && user && user.isFirstLogin && !user.onboarding_information) {
+		if (!loading && user && !user.onboarding_information) {
 			showOnboarding();
 		}
 	}, [loading, user]);

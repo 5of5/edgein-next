@@ -52,13 +52,13 @@ export default function OnboardingStep1(props: Props) {
 						>
 							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
 								<h3 className="text-2xl font-bold">
-									{`Hi ${
+									Hi <span className="capitalize">{
 										props.user && props.user.display_name
 											? props.user.display_name
 											: props.user
 											? props.user.email
 											: ""
-									}, How will you use EdgeIn?`}
+									}</span>, How will you use EdgeIn?
 								</h3>
 								<p className="text-sm text-slate-500">Step 1 of 4</p>
 								<div className="mt-4 text-slate-600">

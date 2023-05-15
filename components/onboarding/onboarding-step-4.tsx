@@ -120,6 +120,7 @@ export default function OnboardingStep4(props: Props) {
                   <InputTextarea
                     name="message"
                     value={message}
+                    placeholder="Type your answer here..."
                     rows={4}
                     onChange={(e) => setMessage(e.target.value)}
                     className="ring-inset focus:ring-inset"
