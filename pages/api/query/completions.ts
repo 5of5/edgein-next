@@ -94,13 +94,15 @@ CREATE TABLE public.companies (
 );
 CREATE TABLE public.investment_rounds (
     company_id integer,
-    round_date text,
+    -- round_date is a text field for the date the investment was made. It is in the format YYYY-MM-DD. You must cast a data to text to compare to this field
+    round_date date,
     round text,
     amount numeric,
     valuation numeric,
     id integer NOT NULL,
     currency text
 );
+-- investments is a many to many table between people vc_firms and investment_rounds, join to investment_rounds for the round_date
 CREATE TABLE public.investments (
     round_id integer,
     person_id integer,
@@ -165,9 +167,9 @@ ALTER TABLE ONLY public.team_members
 ALTER TABLE ONLY public.team_members
     ADD CONSTRAINT team_members_person_id_fkey FOREIGN KEY (person_id) REFERENCES public.people(id);
 
+What is the postgres sql query to answer the following question, do not leave any ambiguous columns: {{PROMPT}}?
 
-
-What is the postgres sql query to answer the following question, do not leave any ambiguous columns and respond to any question about the schema itself with "I can't answer that": {{PROMPT}}?`
+Only response with postgres sql here:`
 
 const DEFAULT_RESULT_PROMPT = `What is the sql query to answer the following question: {{PROMPT}}?
 
@@ -175,7 +177,7 @@ Query: {{QUERY}}
 
 Result: {{RESULT}}
 
-What is the answer to the following question in natural language, use the default currency USD: {{PROMPT2}}?
+What is the answer to the following question in natural language: {{PROMPT2}}?
 
 Answer:`
 
@@ -187,8 +189,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   const prompt = DEFAULT_PROMPT.replace('{{PROMPT}}', req.body.query);
+  // console.log(prompt);
   const payload = {
-    model: "text-davinci-003",
+    model: "gpt-3.5-turbo-0301",
     temperature: 0,
     top_p: 1,
     frequency_penalty: 0,
@@ -196,9 +199,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     max_tokens: 500,
     stream: false,
     n: 1,
-    prompt,
+    messages: [{ role: 'user', content: prompt }],
   };
-  const result = await fetch("https://api.openai.com/v1/completions", {
+  const result = await fetch("https://api.openai.com/v1/chat/completions", {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
@@ -207,7 +210,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     body: JSON.stringify(payload),
   });
   const json = await result.json()
-  const sqlquery = json.choices?.[0]?.text
+  // console.log(json.choices?.[0]);
+  const sqlquery = json.choices?.[0]?.message?.content;
+  // console.log(sqlquery);
   if (sqlquery.trim() === `I can't answer that.`) {
     return res.send({
         sqlquery,
@@ -220,12 +225,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const sqlrawresult = await client.query(sqlquery, []); 
     const sqlresult = sqlrawresult.rows
     const sqlresultstr = JSON.stringify(sqlresult)
-    payload.prompt = DEFAULT_RESULT_PROMPT
+    const resultPrompt = DEFAULT_RESULT_PROMPT
       .replace('{{PROMPT}}', req.body.query)
       .replace('{{PROMPT2}}', req.body.query)
       .replace('{{QUERY}}', sqlquery)
       .replace('{{RESULT}}', sqlresultstr);
-    const answerresult = await fetch("https://api.openai.com/v1/completions", {
+    payload.messages = [{ role: 'user', content: resultPrompt }]
+    // console.log(payload)
+    const answerresult = await fetch("https://api.openai.com/v1/chat/completions", {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${process.env.OPENAI_API_KEY ?? ''}`,
@@ -234,6 +241,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       body: JSON.stringify(payload),
     });
     const answerjson = await answerresult.json()
+    // console.log(answerjson)
     const action: Action = {
       action: `Asked AI`,
       page: 'ask-edgein',
@@ -241,7 +249,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         sqlquery,
         sqlresult,
         query: req.body.query,
-        answer: answerjson.choices?.[0]?.text  
+        answer: answerjson.choices?.[0]?.message?.content,
       },
       user: user.id,
     }  
@@ -257,7 +265,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       sqlquery,
       sqlresult,
       query: req.body.query,
-      answer: answerjson.choices?.[0]?.text
+      answer: answerjson.choices?.[0]?.message?.content
     })  
   } catch (e) {
     console.log(e);
