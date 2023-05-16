@@ -175,8 +175,8 @@ query GetVCFirmsPath {
 	}
 }
 
-query GetRelevantVCFirms($where: vc_firms_bool_exp!) {
-	vc_firms(where: $where) {
+query GetRelevantVCFirms($where: vc_firms_bool_exp!, $limit: Int) {
+	vc_firms(where: $where, limit: $limit) {
 		id
 		logo
 		name

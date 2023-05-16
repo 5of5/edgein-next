@@ -19,7 +19,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   // create action
-  mutate<InsertActionMutation>({
+  await mutate<InsertActionMutation>({
     mutation: InsertActionDocument,
     variables: {
       object: {

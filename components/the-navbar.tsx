@@ -20,6 +20,7 @@ import { useUser } from "@/context/user-context";
 import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
+import OnboardingStep4 from "./onboarding/onboarding-step-4";
 
 export type Popups =
 	| "login"
@@ -51,9 +52,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
 	const [onboardingStep, setOnboardingStep] = useState(0);
 
-	const [selectedOption, setSelectedOption] = useState("companies");
-	const [locationTags, setLocationTags] = useState<string[]>([]);
+	const [selectedOption, setSelectedOption] = useState("");
+	const [locationTags, setLocationTags] = useState<any[]>([]);
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
+	const [list, setList] = useState<any[]>([]);
+	const [message, setMessage] = useState<string>("");
 	const [linkedInError, setLinkedInError] = useState("");
 	const [inviteCode, setInviteCode] = useState(
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
@@ -94,16 +97,12 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		setShowPopup("search");
 	});
 
-	const showOnboarding = async () => {
-		const isAlreadyShown = await localStorage.getItem("onboardingShown");
-		if (!isAlreadyShown) {
-			setOnboardingStep(1);
-			localStorage.setItem("onboardingShown", "true");
-		}
+	const showOnboarding = () => {
+		setOnboardingStep(1);
 	};
 
 	useEffect(() => {
-		if (!loading && user && user.isFirstLogin) {
+		if (!loading && user && !user.onboarding_information) {
 			showOnboarding();
 		}
 	}, [loading, user]);
@@ -315,8 +314,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								setOnboardingStep(0);
 							}}
 							onNext={(locationTags, industryTags) => {
-								//setOnboardingStep(3);
-								setOnboardingStep(0);
+								setOnboardingStep(3);
 								setLocationTags(locationTags);
 								setIndustryTags(industryTags);
 							}}
@@ -327,22 +325,39 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							}}
 						/>
 					)}
-					{/* {onboardingStep === 3 && (
+					
+					{onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
 							show={onboardingStep === 3 && !loading}
-							onClose={() => {
-								setOnboardingStep(0);
-							}}
-							onNext={() => {
-								setOnboardingStep(0);
+							list={list}
+							onNext={(list) => {
+								setList(list);
+								setOnboardingStep(4);
 							}}
 							onBack={() => setOnboardingStep(2)}
 							user={user}
 						/>
-					)} */}
+					)}
+
+					{onboardingStep === 4 && (
+            <OnboardingStep4
+              selectedOption={selectedOption}
+							locationTags={locationTags}
+							industryTags={industryTags}
+              show={onboardingStep === 4 && !loading}
+              message={message}
+							list={list}
+              onClose={() => setOnboardingStep(0)}
+              onBack={(m) => {
+                setMessage(m);
+								setOnboardingStep(3);
+              }}
+							onNext={() => setOnboardingStep(0)}
+            />
+          )}
 				</nav>
 			</div>
 		</header>

@@ -19,7 +19,9 @@ export default function OnboardingStep1(props: Props) {
 	const [selectedOption, setSelectedOption] = useState(props.selectedOption);
 
 	const onNext = () => {
-		props.onNext(selectedOption);
+		if (selectedOption) {
+			props.onNext(selectedOption);
+		}
 	};
 
 	return (
@@ -50,15 +52,15 @@ export default function OnboardingStep1(props: Props) {
 						>
 							<Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
 								<h3 className="text-2xl font-bold">
-									{`Hi ${
+									Hi <span className="capitalize">{
 										props.user && props.user.display_name
 											? props.user.display_name
 											: props.user
 											? props.user.email
 											: ""
-									}, How will you use EdgeIn?`}
+									}</span>, How will you use EdgeIn?
 								</h3>
-								<p className="text-sm text-slate-500">Step 1 of 2</p>
+								<p className="text-sm text-slate-500">Step 1 of 4</p>
 								<div className="mt-4 text-slate-600">
 									We&rsquo;ll get you set so you can start exploring
 								</div>
@@ -91,7 +93,11 @@ export default function OnboardingStep1(props: Props) {
 									</button>
 								</div>
 								<div className="w-full flex justify-end mt-8">
-									<ElemButton onClick={onNext} btn="primary">
+									<ElemButton
+                    btn="primary"
+                    disabled={!selectedOption}
+                    onClick={onNext}
+                  >
 										Next
 									</ElemButton>
 								</div>

@@ -73,7 +73,7 @@ export default function SignUpModal(props: Props) {
 			}
 			setEmailError("");
 		} else {
-			setEmailError("Please enter valid Web3 email.");
+			setEmailError("Please enter valid work email.");
 			return true;
 		}
 	};
@@ -287,7 +287,7 @@ export default function SignUpModal(props: Props) {
 
 													<label>
 														<span className="text-sm font-medium">
-															Web3 work email
+															Work email
 														</span>
 														<InputText
 															name="email"

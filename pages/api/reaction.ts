@@ -14,7 +14,6 @@ interface Action {
   resource_id: number,
   resource: string,
   user: number,
-
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -68,7 +67,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   // create action
-  mutate<InsertActionMutation>({
+  await mutate<InsertActionMutation>({
     mutation: InsertActionDocument,
     variables: {
       object: action,

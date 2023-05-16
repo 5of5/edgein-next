@@ -36,6 +36,7 @@ export async function middleware(req: NextRequest) {
 			`/api/submit-data/`,
 			`/api/batch-job/`,
 			`/api/data-runs/`,
+			`/api/query/completions/`,
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
