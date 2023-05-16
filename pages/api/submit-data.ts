@@ -448,7 +448,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           "companies",
           resourceType,
           actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions 
+          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions,
+          Array.isArray(insertResult) ? insertResult[0]?.id : insertResult?.id,
         );
       }
 

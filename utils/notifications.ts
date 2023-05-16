@@ -20,6 +20,10 @@ type NotificationParamType = {
 	company_id?: number | null;
 	vc_firm_id?: number | null;
 	action_ids: number[];
+	resource_team_member_id?: number | null;
+	resource_investment_round_id?: number | null;
+	resource_investment_id?: number | null;
+	resource_investor_id?: number | null;
 };
 
 export const insertNotification = async ({
@@ -31,6 +35,10 @@ export const insertNotification = async ({
 	company_id,
 	vc_firm_id,
 	action_ids,
+	resource_team_member_id,
+	resource_investment_round_id,
+	resource_investment_id,
+	resource_investor_id,
 }: NotificationParamType) => {
 	const {
 		data: { insert_notifications_one },
@@ -46,6 +54,10 @@ export const insertNotification = async ({
 				vc_firm_id,
 				message,
 				action_ids,
+				resource_team_member_id,
+				resource_investment_round_id,
+				resource_investment_id,
+				resource_investor_id,
 			},
 		},
 	});
@@ -107,7 +119,8 @@ export const processNotification = async (
 	followedResourceType: "companies" | "vc_firms",
 	notificationResourceType: ResourceTypes,
 	actionType: ActionType,
-	actionIds: number[]
+	actionIds: number[],
+	notificationResourceId?: number,
 ) => {
 	if (followResourceId && followedResourceType && actionType) {
 		const follows = await getFollowsByResource(
@@ -130,7 +143,23 @@ export const processNotification = async (
 						vc_firm_id:
 							followedResourceType === "vc_firms" ? followResourceId : null,
 						action_ids: actionIds,
-					});
+						resource_team_member_id:
+              notificationResourceType === "team_members"
+                ? notificationResourceId
+                : null,
+            resource_investment_round_id:
+              notificationResourceType === "investment_rounds"
+                ? notificationResourceId
+                : null,
+            resource_investment_id:
+              notificationResourceType === "investments"
+                ? notificationResourceId
+                : null,
+            resource_investor_id:
+              notificationResourceType === "investors"
+                ? notificationResourceId
+                : null,
+          });
 
 					await Promise.all(
 						actionIds.map(async (actionId) => {

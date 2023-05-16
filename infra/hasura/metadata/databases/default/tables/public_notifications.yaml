@@ -11,6 +11,42 @@ object_relationships:
         insertion_order: null
         column_mapping:
           company_id: id
+  - name: resource_investment
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: investments
+        insertion_order: null
+        column_mapping:
+          resource_investment_id: id
+  - name: resource_investment_round
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: investment_rounds
+        insertion_order: null
+        column_mapping:
+          resource_investment_round_id: id
+  - name: resource_investor
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: investors
+        insertion_order: null
+        column_mapping:
+          resource_investor_id: id
+  - name: resource_team_member
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: team_members
+        insertion_order: null
+        column_mapping:
+          resource_team_member_id: id
   - name: vc_firm
     using:
       manual_configuration:
