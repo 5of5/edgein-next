@@ -414,7 +414,7 @@ export const processCompaniesFilters = (
 
 	if (selectedFilters?.industry?.tags?.length) {
 		filters._and?.push({
-			_and: selectedFilters.industry.tags.map((item) => ({
+			_or: selectedFilters.industry.tags.map((item) => ({
 				tags: { _contains: item },
 			})),
 		});
@@ -423,7 +423,7 @@ export const processCompaniesFilters = (
 	if (selectedFilters?.fundingType?.tags?.length) {
 		filters._and?.push({
 			investment_rounds: {
-				_and: selectedFilters.fundingType.tags.map((item) => ({
+				_or: selectedFilters.fundingType.tags.map((item) => ({
 					round: { _eq: item },
 				})),
 			},
@@ -661,7 +661,7 @@ export const processInvestorsFilters = (
 		filters._and?.push({
 			investments: {
 				investment_round: {
-					_and: selectedFilters.investmentType.tags.map((item) => ({
+					_or: selectedFilters.investmentType.tags.map((item) => ({
 						round: { _eq: item },
 					})),
 				},
@@ -925,7 +925,7 @@ export const processEventsFilters = (
 
   if (selectedFilters?.eventType?.tags?.length) {
     filters._and?.push({
-      _and: selectedFilters.eventType.tags.map((item) => ({
+      _or: selectedFilters.eventType.tags.map((item) => ({
         types: { _contains: item },
       })),
     });
