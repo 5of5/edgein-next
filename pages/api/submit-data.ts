@@ -1,3 +1,5 @@
+import * as dotenv from "dotenv";
+dotenv.config({ path: "./.env" });
 import {
   processNotification,
   processNotificationOnDelete,
@@ -5,8 +7,10 @@ import {
 import {
   ActionType,
   ResourceTypes,
+  isResourceType,
   NODE_NAME
-} from "@/utils/constants"
+} from "@/utils/constants";
+import { User } from "@/models/user";
 import {
   partnerLookUp,
   resourceIdLookup,
@@ -21,6 +25,205 @@ import {
 import type { NextApiRequest, NextApiResponse } from "next";
 import CookieService from "../../utils/cookie";
 
+const sendNotification = async (
+  resourceId: number | undefined,
+  resourceType: ResourceTypes,
+  actionType: ActionType,
+  resourceObj: Record<string, any>,
+  insertResult: Record<string, any>,
+) => {
+  if (resourceId === undefined) {
+    if (
+      resourceType === "investment_rounds" ||
+      resourceType === "team_members"
+    ) {
+      await processNotification(
+        resourceObj?.company_id,
+        "companies",
+        resourceType,
+        actionType,
+        insertResult?.actions 
+      );
+    }
+
+    if (resourceType === "investors") {
+      await processNotification(
+        resourceObj?.vc_firm_id,
+        "vc_firms",
+        resourceType,
+        actionType,
+        insertResult?.actions
+      );
+    }
+
+    if (resourceType === "investments") {
+      if (resourceObj?.round_id) {
+        const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
+        await processNotification(
+          investmentRound?.company_id || 0,
+          "companies",
+          resourceType,
+          actionType,
+          insertResult?.actions
+        );
+      }
+
+      await processNotification(
+        resourceObj?.vc_firm_id,
+        "vc_firms",
+        resourceType,
+        actionType,
+        insertResult?.actions
+      );
+    }
+
+    if (resourceType === "event_organization") {
+      if (resourceObj?.company_id) {
+        await processNotification(
+          resourceObj.company_id,
+          "companies",
+          resourceType,
+          actionType,
+          insertResult?.actions
+        );
+      }
+      if (resourceObj?.vc_firm_id) {
+        await processNotification(
+          resourceObj.vc_firm_id,
+          "vc_firms",
+          resourceType,
+          actionType,
+          insertResult?.actions
+        );
+      }
+    }
+  } else {
+    // updated exists one
+    if (resourceType === "companies" || resourceType === "vc_firms") {
+      /** Insert notification */
+      await processNotification(
+        resourceId,
+        resourceType,
+        resourceType,
+        actionType,
+        insertResult?.actions
+      );
+    }
+  }
+}
+
+const addSpecialRelationships = async (
+  resourceType: ResourceTypes,
+  resourceObj: Record<string, any>,
+) => {
+  let specialRelationships: Array<Record<string, any>> = [];
+  if (resourceType === "news") {
+    const newsContent = resourceObj?.metadata?.description;
+    if (newsContent) {
+      let newsPeople: Array<Record<string, any>> = [];
+      let newscompanies: Array<Record<string, any>> = [];
+      const ret = await fetch(`${process.env.DANDLEION_API_URL}?text=${newsContent}&include=types&token=${process.env.DANDLEION_API_TOKEN}`);
+      const data = await ret.json();
+      if (data.annotations)
+        for (const entity of data.annotations) {
+          if (entity.types.includes('http://dbpedia.org/ontology/Person') && !newsPeople.map(item => item['people:name']).includes(entity.spot))
+            newsPeople.push({'people:name': entity.spot, 'news_id': '&'});
+          else if (!newscompanies.map(item => item['companies:name']).includes(entity.spot))
+            newscompanies.push({'companies:name': entity.spot, 'news_id': '&'});
+        }
+      
+      if (newsPeople.length > 0)
+        specialRelationships.push({'news_person': newsPeople});
+      if (newscompanies.length > 0)
+        specialRelationships.push({'news_organizations': newscompanies})
+    }
+  }
+  return specialRelationships;
+}
+
+const handleResource = async (
+  partnerId: number,
+  user: User | null,
+  resourceId: number | undefined,
+  resourceObj: Record<string, any>,
+  resourceType: ResourceTypes,
+  actionType: ActionType,
+  forceUpdate: Boolean
+) => {
+  const properties = {...resourceObj};
+
+  let resourceRelationships : Array<Record<string, any>> = [];
+
+  if (actionType === "Insert Data") {
+    resourceRelationships = [...await addSpecialRelationships(resourceType, resourceObj)];
+    for (let key in resourceObj) {
+      if (isResourceType(key) && key !== resourceType) {
+        resourceRelationships.push({[key]: resourceObj[key]});
+        delete resourceObj[key];
+      }
+    }
+  }
+
+  if (
+    actionType === "Insert Data" &&
+    ["companies", "vc_firms", "people"].includes(resourceType) &&
+    (!resourceObj?.library || resourceObj?.library?.length === 0)
+  ) {
+    properties.library = ["Web3"];
+  }
+
+  const insertResult = await mutateActionAndDataRaw(
+    partnerId,
+    user,
+    NODE_NAME[resourceType],
+    resourceId as number,
+    resourceObj,
+    resourceType,
+    actionType,
+    forceUpdate,
+  );
+
+  await sendNotification(
+    resourceId,
+    resourceType,
+    actionType,
+    resourceObj,
+    insertResult,
+  );
+
+  if (actionType === 'Insert Data') {
+    let results: Array<Record<string, any>> = [];
+    for (let resourceRelationship of resourceRelationships) {
+      const resourceRelationshipType = Object.keys(resourceRelationship)[0];
+      let resourceRelationshipObjs = Object.values(resourceRelationship)[0];
+      if (!Array.isArray(resourceRelationshipObjs))
+        resourceRelationshipObjs = [resourceRelationshipObjs];
+      
+      for (let resourceRelationshipObj of resourceRelationshipObjs) {
+        // Replace '&' with resourceId of main record
+        Object.keys(resourceRelationshipObj).map(item=>{
+          if (resourceRelationshipObj[item] === '&')
+          resourceRelationshipObj[item] = insertResult.id;
+        })
+        const ret = await handleResource(
+          partnerId,
+          user,
+          undefined,
+          resourceRelationshipObj,
+          resourceRelationshipType as ResourceTypes,
+          "Insert Data",
+          forceUpdate,
+        );
+        results.push(ret);
+      }
+    }
+
+    if (results.length > 0)
+      return [insertResult, results];
+  }
+
+  return insertResult;
+}
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!["POST", "PUT", "DELETE"].includes(req.method as string))
@@ -34,13 +237,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
   const resourceObj: Array<Record<string, any>> | Record<string, any> = req.body.resource;
   const forceUpdate: Boolean = req.body.force_update;
-  let insertResultTemp: Array<Record<string, any>> | Record<string, any> = [];
-  let hasRelationship: boolean = false;
-  let hasRelationshipArray: boolean = false;
-  let resourceTypeRelationship : ResourceTypes = resourceType;
-  let resourceRelationship : Record<string, any> = {};
-  let relationshipField : string ="";
-  let resourceIdDiscard : number = 0, partnerIdDiscard : number = 0;
+
+  let resourceId: number | undefined = undefined;
+  let partnerId: number = 0;
+  let actionType: ActionType = "Change Data";
+
   try {
     if (
       apiKey === undefined ||
@@ -50,27 +251,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     )
       return res.status(400).send({ message: "Bad Request" });
 
+    // Identify partner or admin
     const partner = await partnerLookUp(apiKey);
     if (partner?.id === undefined) {
       if (!(user?.role === "admin")) {
         return res.status(401).send({ message: "Unauthorized Partner" });
       }
+    } else {
+      partnerId = partner.id;
     }
 
-    for (let key in resourceObj) {
-      if (key !== resourceType && Object.keys(NODE_NAME).includes(key)) {
-        hasRelationship = true;
-        resourceTypeRelationship = key as ResourceTypes;
-        relationshipField = key;
-      }
-    }
-    
-    let identifierColumns: Array<string> = []
+    // Validate identifier fields (defined in data_fields)
     for (const item of resourceIdentifier) {
       if (!item.field)
         continue;
       let identifierColumn = item.field;
-      identifierColumns.push(identifierColumn);
       if (identifierColumn !== "id") {
         const lookupField = await fieldLookup(
           `${NODE_NAME[resourceType]}.${identifierColumn}`
@@ -85,14 +280,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       }
     }
 
-
-    const resourceId: number = await resourceIdLookup(resourceType, resourceIdentifier);
-    if (resourceId === undefined && JSON.stringify(identifierColumns) !== JSON.stringify(['id']))
-      return res.status(404).send({
-        message: `Not found ${JSON.stringify(resourceIdentifier)}`,
-      });
-    resourceIdDiscard = resourceId;
-    if (req.method === "DELETE") {
+    // Identify resource id
+    resourceId = await resourceIdLookup(resourceType, resourceIdentifier);
+    if (resourceId === undefined) {
+      // In 'Insert' case, identifier field is only 'id' without value
+      if (JSON.stringify(resourceIdentifier) === JSON.stringify([{'field': 'id'}])) {
+        actionType = "Insert Data";
+        if (Array.isArray(resourceObj)) {
+          // Insert list of records
+          let result: Array<Record<string, any>> = [];
+          await Promise.all(resourceObj.map( async (item) => {
+            const ret = await handleResource(
+              partnerId,
+              user,
+              resourceId,
+              item,
+              resourceType,
+              actionType,
+              forceUpdate,
+            );
+            result.push(ret);
+          }));
+          return res.send(result);
+        }
+      } else {
+        return res.status(404).send({
+          message: `Not found ${JSON.stringify(resourceIdentifier)}`,
+        });
+      }
+    } else if (req.method === "DELETE") {
+      // In 'Delete' case, request method is 'DELETE'
       await deleteMainTableRecord(resourceType, resourceId);
       const action = await insertActionDataChange(
         "Delete Data",
@@ -111,421 +328,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send(resourceObj);
     }
 
-    const partnerId: number = partner ? partner.id : 0;
-    partnerIdDiscard = partnerId;
-    let actionType: ActionType = "Change Data";
-
-    // create a new one
-    if (resourceId === undefined) {
-      actionType = "Insert Data";
-    }
-
-    let properties: Array<Record<string, any>> | Record<string, any> = [];
-    if(Array.isArray(resourceObj)){
-      resourceObj.forEach((item)=>{
-        for (let key in item) {
-          if (key !== resourceType && Object.keys(NODE_NAME).includes(key)) {
-            hasRelationship = true;
-          }
-        }
-        if(!hasRelationship){
-          properties.push({...item});
-        }else{
-          let objTemp: Record<string, any> = {};
-          for(let key in item){
-            if (key !== resourceType && Object.keys(NODE_NAME).includes(key)) {
-              objTemp[key] = {...item[key]};
-            }else{
-              objTemp[key] = item[key];
-            }
-          }
-          properties.push(objTemp);
-        }
-      })
-    }else{
-      properties = {...resourceObj};
-    }
-    if (
-      actionType === "Insert Data" &&
-      ["companies", "vc_firms", "people"].includes(resourceType) 
-    ) {
-      if(Array.isArray(resourceObj)){
-        resourceObj.forEach((item,idx)=>{
-          if((!item?.library || item?.library?.length === 0)){
-            (properties as Record<string, any>)[idx].library = ["Web3"];
-          }
-        })
-      }else{
-        if((!resourceObj?.library || resourceObj?.library?.length === 0)){
-          (properties as Record<string, any>).library = ["Web3"];
-        }
-      }
-    }
-    let insertResult: Array<Record<string, any>> | Record<string, any>;
-    if(Array.isArray(properties)){
-      for(let i=0;i<properties.length;i++){
-        // verify each element has relationship field in array 
-        for (let key in properties[i]) {
-          if (key !== resourceType && Object.keys(NODE_NAME).includes(key)) {
-            hasRelationship = true;
-            resourceRelationship = {...properties[i]};
-            delete resourceRelationship[key];
-            resourceTypeRelationship = key as ResourceTypes;
-            relationshipField = key;
-          }
-        }
-        if(hasRelationship){
-          // implement insert array relationship
-          let tempInsertResult = await mutateActionAndDataRaw(
-            partnerId,
-            user,
-            NODE_NAME[resourceType],
-            resourceId,
-            resourceRelationship,
-            resourceType,
-            actionType,
-            forceUpdate,
-          );
-          insertResultTemp.push({...tempInsertResult});
-          const resourceIdRelationShip: number = await resourceIdLookup(resourceTypeRelationship, resourceIdentifier);
-          const relatedField= resourceType === "people" ? "person_id" : `${resourceType}_id`;
-          properties[i][relationshipField][relatedField]= tempInsertResult.id;
-          if(resourceType === "people"){
-            if(Array.isArray(properties[i][relationshipField]["companies:name"])){
-              for(let j=0;j<properties[i][relationshipField]["companies:name"].length;j++){
-                let propertiesRelationship = {...properties[i][relationshipField]};
-                delete propertiesRelationship["companies:name"];
-                propertiesRelationship["companies:name"] = properties[i][relationshipField]["companies:name"][j];
-                tempInsertResult = await mutateActionAndDataRaw(
-                  partnerId,
-                  user,
-                  NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                  resourceIdRelationShip,
-                  propertiesRelationship,
-                  resourceTypeRelationship,
-                  actionType,
-                  forceUpdate,
-                );
-                insertResultTemp.push({...tempInsertResult});
-              }
-              hasRelationshipArray = true;
-            }else{
-              tempInsertResult = await mutateActionAndDataRaw(
-                partnerId,
-                user,
-                NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                resourceIdRelationShip,
-                properties[i][relationshipField],
-                resourceTypeRelationship,
-                actionType,
-                forceUpdate,
-              );
-              insertResultTemp.push({...tempInsertResult});
-            }
-          }else if(resourceType === "news"){
-            if(Array.isArray(properties[i][relationshipField]["companies:name"])){
-              for(let j=0;j<properties[i][relationshipField]["companies:name"].length;j++){
-                let propertiesRelationship = {...properties[i][relationshipField]};
-                delete propertiesRelationship["companies:name"];
-                delete propertiesRelationship["vc_firms:name"];
-                propertiesRelationship["companies:name"] = properties[i][relationshipField]["companies:name"][j];
-                tempInsertResult = await mutateActionAndDataRaw(
-                  partnerId,
-                  user,
-                  NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                  resourceIdRelationShip,
-                  propertiesRelationship,
-                  resourceTypeRelationship,
-                  actionType,
-                  forceUpdate,
-                );
-                insertResultTemp.push({...tempInsertResult});
-              }
-              hasRelationshipArray = true;
-            }else{
-              tempInsertResult = await mutateActionAndDataRaw(
-                partnerId,
-                user,
-                NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                resourceIdRelationShip,
-                properties[i][relationshipField],
-                resourceTypeRelationship,
-                actionType,
-                forceUpdate,
-              );
-              insertResultTemp.push({...tempInsertResult});
-            }
-            if(Array.isArray(properties[i][relationshipField]["vc_firms:name"])){
-              for(let j=0;j<properties[i][relationshipField]["vc_firms:name"].length;j++){
-                let propertiesRelationship = {...properties[i][relationshipField]};
-                delete propertiesRelationship["vc_firms:name"];
-                delete propertiesRelationship["companies:name"];
-                propertiesRelationship["vc_firms:name"] = properties[i][relationshipField]["vc_firms:name"][j];
-                tempInsertResult = await mutateActionAndDataRaw(
-                  partnerId,
-                  user,
-                  NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                  resourceIdRelationShip,
-                  propertiesRelationship,
-                  resourceTypeRelationship,
-                  actionType,
-                  forceUpdate,
-                );
-                insertResultTemp.push({...tempInsertResult});
-              }
-              hasRelationshipArray = true;
-            }else{
-              tempInsertResult = await mutateActionAndDataRaw(
-                partnerId,
-                user,
-                NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                resourceIdRelationShip,
-                properties[i][relationshipField],
-                resourceTypeRelationship,
-                actionType,
-                forceUpdate,
-              );
-              insertResultTemp.push({...tempInsertResult});
-            }
-
-          }
-          hasRelationship = false;
-        }else{
-          let tempInsertResult = await mutateActionAndDataRaw(
-            partnerId,
-            user,
-            NODE_NAME[resourceType],
-            resourceId,
-            properties[i],
-            resourceType,
-            actionType,
-            forceUpdate,
-          );
-          insertResultTemp.push({...tempInsertResult});
-        }
-      }
-      insertResult = insertResultTemp;
-    }else{
-      if(hasRelationship){
-        resourceRelationship = { ...properties };
-        delete resourceRelationship[relationshipField];
-        let tempInsertResult = await mutateActionAndDataRaw(
-          partnerId,
-          user,
-          NODE_NAME[resourceType],
-          resourceId,
-          resourceRelationship,
-          resourceType,
-          actionType,
-          forceUpdate,
-        );
-        insertResultTemp.push({...tempInsertResult});
-        const resourceIdRelationShip: number = await resourceIdLookup(resourceTypeRelationship, resourceIdentifier);
-        const relatedField= resourceType === "people" ? "person_id" : `${resourceType}_id`;
-        properties[relationshipField][relatedField]= tempInsertResult.id;
-        if(resourceType==="people"){
-          if(Array.isArray(properties[relationshipField]["companies:name"])){
-            for(let i=0;i<properties[relationshipField]["companies:name"].length;i++){
-              let propertiesRelationship = {...properties[relationshipField]};
-              delete propertiesRelationship["companies:name"];
-              propertiesRelationship["companies:name"] = properties[relationshipField]["companies:name"][i];
-              tempInsertResult = await mutateActionAndDataRaw(
-                partnerId,
-                user,
-                NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                resourceIdRelationShip,
-                propertiesRelationship,
-                resourceTypeRelationship,
-                actionType,
-                forceUpdate,
-              );
-              insertResultTemp.push({...tempInsertResult});
-            }
-            hasRelationshipArray = true;
-          }else{
-            tempInsertResult = await mutateActionAndDataRaw(
-              partnerId,
-              user,
-              NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-              resourceIdRelationShip,
-              properties[relationshipField],
-              resourceTypeRelationship,
-              actionType,
-              forceUpdate,
-            );
-            insertResultTemp.push({...tempInsertResult});
-          }
-        }else if(resourceType==="news"){
-          if(Array.isArray(properties[relationshipField]["companies:name"])){
-            for(let i=0;i<properties[relationshipField]["companies:name"].length;i++){
-              let propertiesRelationship = {...properties[relationshipField]};
-              delete propertiesRelationship["companies:name"];
-              delete propertiesRelationship["vc_firms:name"];
-              propertiesRelationship["companies:name"] = properties[relationshipField]["companies:name"][i];
-              tempInsertResult = await mutateActionAndDataRaw(
-                partnerId,
-                user,
-                NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                resourceIdRelationShip,
-                propertiesRelationship,
-                resourceTypeRelationship,
-                actionType,
-                forceUpdate,
-              );
-              insertResultTemp.push({...tempInsertResult});
-            }
-            hasRelationshipArray = true;
-          }else{
-            tempInsertResult = await mutateActionAndDataRaw(
-              partnerId,
-              user,
-              NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-              resourceIdRelationShip,
-              properties[relationshipField],
-              resourceTypeRelationship,
-              actionType,
-              forceUpdate,
-            );
-            insertResultTemp.push({...tempInsertResult});
-          }
-          if(Array.isArray(properties[relationshipField]["vc_firms:name"])){
-            for(let i=0;i<properties[relationshipField]["vc_firms:name"].length;i++){
-              let propertiesRelationship = {...properties[relationshipField]};
-              delete propertiesRelationship["vc_firms:name"];
-              delete propertiesRelationship["companies:name"];
-              propertiesRelationship["vc_firms:name"] = properties[relationshipField]["vc_firms:name"][i];
-              tempInsertResult = await mutateActionAndDataRaw(
-                partnerId,
-                user,
-                NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-                resourceIdRelationShip,
-                propertiesRelationship,
-                resourceTypeRelationship,
-                actionType,
-                forceUpdate,
-              );
-              insertResultTemp.push({...tempInsertResult});
-            }
-            hasRelationshipArray = true;
-          }else{
-            tempInsertResult = await mutateActionAndDataRaw(
-              partnerId,
-              user,
-              NODE_NAME[resourceTypeRelationship as keyof typeof NODE_NAME],
-              resourceIdRelationShip,
-              properties[relationshipField],
-              resourceTypeRelationship,
-              actionType,
-              forceUpdate,
-            );
-            insertResultTemp.push({...tempInsertResult});
-          }
-        }
-        insertResult = insertResultTemp;
-      }else{
-        insertResult = await mutateActionAndDataRaw(
-          partnerId,
-          user,
-          NODE_NAME[resourceType],
-          resourceId,
-          properties,
-          resourceType,
-          actionType,
-          forceUpdate,
-        );
-      }
-      
-    }
-    
-
-    if (resourceId === undefined) {
-      if (
-        resourceType === "investment_rounds" ||
-        resourceType === "team_members"
-      ) {
-        await processNotification(
-          (resourceObj as Record<string, any>)?.company_id,
-          "companies",
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions 
-        );
-      }
-
-      if (resourceType === "investors") {
-        await processNotification(
-          (resourceObj as Record<string, any>)?.vc_firm_id,
-          "vc_firms",
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-        );
-      }
-
-      if (resourceType === "investments") {
-        if ((resourceObj as Record<string, any>)?.round_id) {
-          const investmentRound = await getCompanyByRoundId((resourceObj as Record<string, any>).round_id);
-          await processNotification(
-            investmentRound?.company_id || 0,
-            "companies",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-
-        await processNotification(
-          (resourceObj as Record<string, any>)?.vc_firm_id,
-          "vc_firms",
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-        );
-      }
-
-      if (resourceType === "event_organization") {
-        if ((resourceObj as Record<string, any>)?.company_id) {
-          await processNotification(
-            (resourceObj as Record<string, any>).company_id,
-            "companies",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-        if ((resourceObj as Record<string, any>)?.vc_firm_id) {
-          await processNotification(
-            (resourceObj as Record<string, any>).vc_firm_id,
-            "vc_firms",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-      }
-    } else {
-      // updated exists one
-      if (resourceType === "companies" || resourceType === "vc_firms") {
-        /** Insert notification */
-        await processNotification(
-          resourceId,
-          resourceType,
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-        );
-      }
-    }
-    
-    if(Array.isArray(resourceObj)){
-      if(hasRelationship && !hasRelationshipArray){
-        insertResult.unshift({"successful-elements":insertResultTemp.length/2});
-      }else{
-        insertResult.unshift({"successful-elements":insertResultTemp.length});
-      }
-    }
-
-    return res.send(insertResult);
+    // Change record or insert only one record (resourceObj is not array)
+    const result = await handleResource(
+      partnerId,
+      user,
+      resourceId,
+      resourceObj,
+      resourceType,
+      actionType,
+      forceUpdate,
+    );
+    return res.send(result);
   } catch (error: any) {
     if (error[0].extensions.code === "validation-failed") {
       let field = "";
@@ -535,17 +348,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
           field = key;
         }
       }
-      const dataObject = [
-        {
-          resource: resourceType,
-          field,
-          value: (resourceObj as Record<string, any>)[field],
-          partner: partnerIdDiscard,
-          accuracy_weight: 1,
-          resource_id: resourceIdDiscard,
-        },
-      ];
-      const data = await insertDataDiscard(dataObject);
+      if (resourceId) {
+        const dataObject = [
+          {
+            resource: resourceType,
+            field,
+            value: (resourceObj as Record<string, any>)[field],
+            partner: partnerId,
+            accuracy_weight: 1,
+            resource_id: resourceId,
+          },
+        ];
+        await insertDataDiscard(dataObject);
+      }
     }
     if(error[0].extensions.code === "constraint-violation"){
       let message:string="";
@@ -562,15 +377,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       let message:string="";
       message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" not found in this table. Please check again`;
       error[0].message=message
-    }
-    if(Array.isArray(resourceObj)){
-      if(hasRelationship && !hasRelationshipArray){
-        error[0]["failed-element"] = resourceObj[insertResultTemp.length/2 === 0 ? 0 : insertResultTemp.length/2];
-        error[0]["successful-elements"] = insertResultTemp.length/2 === 0 ? 0 : insertResultTemp.length/2;
-      }else{
-        error[0]["failed-element"] = resourceObj[insertResultTemp.length === 0 ? 0 : insertResultTemp.length];
-        error[0]["successful-elements"] = insertResultTemp.length === 0 ? 0 : insertResultTemp.length;
-      }
     }
     return res.status(500).send(error[0] || error);
   }

@@ -295,6 +295,47 @@ const validateValue = (resourceType: ResourceTypes, field: string, value: any) =
   return isValidated;
 };
 
+const notFoundAction = async (
+  action: ActionType,
+  resourceType: ResourceTypes,
+  resourceObj: Record<string, any>,
+) => {
+  if (action === 'Insert Data') {
+    let relatedType: ResourceTypes;
+    let data: Record<string, any>;
+    if (resourceType === 'news_person') {
+      relatedType = 'news_related_person';
+      data = {
+        news_id: resourceObj.news_id,
+        name: resourceObj['people:name'],
+        type: 'subject',
+      }
+    } else if (resourceType === 'news_organizations') {
+      relatedType = 'news_related_organizations';
+      data = {
+        news_id: resourceObj.news_id,
+        name: resourceObj['companies:name'],
+        type: 'subject',
+      }
+    } else {
+      return;
+    }
+
+    await mutate({
+      mutation: `
+        mutation insert_${relatedType}($object: ${relatedType}_insert_input!) {
+          insert_${relatedType}_one(object: $object) {
+              id
+          }
+        }
+      `,
+      variables: {
+        object: data,
+      },
+    });
+  }
+}
+
 export const mutateActionAndDataRaw = async (
   partnerId: number,
   user: User | null,
@@ -327,6 +368,9 @@ export const mutateActionAndDataRaw = async (
         if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
           value = await resourceIdLookup(lookupResourceType, [{field: lookupField, value}]);
           field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+          if (!value) {
+            await notFoundAction(actionType, resourceType, resourceObj);
+          }
         } else {
           invalidData.push({
             resource: lookupResourceType,
@@ -370,7 +414,7 @@ export const mutateActionAndDataRaw = async (
               resource_id: resourceId,
             }
           ];
-          const data = await insertDataDiscard(dataObject);
+          await insertDataDiscard(dataObject);
           continue;
         }
 
