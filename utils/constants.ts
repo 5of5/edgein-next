@@ -864,7 +864,7 @@ export const companiesFilterOptions = [
 			{
 				label: "Last funding date",
 				value: "lastFundingDate",
-				isPremium: true,
+				// isPremium: true,
 			},
 			{
 				label: "Investors",

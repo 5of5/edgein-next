@@ -32,6 +32,40 @@ query GetNotificationsForUser($user: Int!) {
 				properties
 			}
 		}
+		resource_team_member {
+			id
+			person {
+				id
+				slug
+				name
+			}
+		}
+		resource_investor {
+			id
+			person {
+				id
+				slug
+				name
+			}
+		}
+		resource_investment_round {
+			id
+			round
+			company {
+				id
+				name
+				slug
+			}
+		}
+		resource_event_organization {
+			id
+			type
+			event {
+				id
+				slug
+				name
+			}
+		}
 	}
 }
 

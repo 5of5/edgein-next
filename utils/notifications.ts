@@ -1,6 +1,16 @@
-import { mutate } from "@/graphql/hasuraAdmin";
+import { mutate, query } from "@/graphql/hasuraAdmin";
 import {
+	GetEventOrganizationByIdDocument,
+	GetEventOrganizationByIdQuery,
+	GetInvestmentByIdDocument,
+	GetInvestmentByIdQuery,
+	GetInvestmentRoundByIdDocument,
+	GetInvestmentRoundByIdQuery,
+	GetInvestorByIdDocument,
+	GetInvestorByIdQuery,
 	GetNotificationsForUserQuery,
+	GetTeamMemberByIdDocument,
+	GetTeamMemberByIdQuery,
 	InsertNotificationActionsDocument,
 	InsertNotificationActionsMutation,
 	InsertNotificationsDocument,
@@ -22,8 +32,8 @@ type NotificationParamType = {
 	action_ids: number[];
 	resource_team_member_id?: number | null;
 	resource_investment_round_id?: number | null;
-	resource_investment_id?: number | null;
 	resource_investor_id?: number | null;
+	resource_event_organization_id?: number | null;
 };
 
 export const insertNotification = async ({
@@ -37,8 +47,8 @@ export const insertNotification = async ({
 	action_ids,
 	resource_team_member_id,
 	resource_investment_round_id,
-	resource_investment_id,
 	resource_investor_id,
+	resource_event_organization_id,
 }: NotificationParamType) => {
 	const {
 		data: { insert_notifications_one },
@@ -56,8 +66,8 @@ export const insertNotification = async ({
 				action_ids,
 				resource_team_member_id,
 				resource_investment_round_id,
-				resource_investment_id,
 				resource_investor_id,
+				resource_event_organization_id,
 			},
 		},
 	});
@@ -151,16 +161,15 @@ export const processNotification = async (
               notificationResourceType === "investment_rounds"
                 ? notificationResourceId
                 : null,
-            resource_investment_id:
-              notificationResourceType === "investments"
-                ? notificationResourceId
-                : null,
             resource_investor_id:
               notificationResourceType === "investors"
                 ? notificationResourceId
                 : null,
+						resource_event_organization_id:
+							notificationResourceType === "event_organization"
+                ? notificationResourceId
+                : null,
           });
-
 					await Promise.all(
 						actionIds.map(async (actionId) => {
 							if (notificationResponse?.id) {
@@ -173,64 +182,6 @@ export const processNotification = async (
 					);
 				}
 			})
-		);
-	}
-};
-
-export const processNotificationOnDelete = async (
-	resourceType: string,
-	resourceId: number,
-	actionId: number,
-	resourceObj: any
-) => {
-	if (resourceType === "investment_rounds" || resourceType === "team_members") {
-		await processNotification(
-			resourceObj?.company_id,
-			"companies",
-			resourceType,
-			"Delete Data",
-			[actionId]
-		);
-	}
-
-	if (resourceType === "investors") {
-		await processNotification(
-			resourceObj?.vc_firm_id,
-			"vc_firms",
-			resourceType,
-			"Delete Data",
-			[actionId]
-		);
-	}
-
-	if (resourceType === "investments") {
-		if (resourceObj?.round_id) {
-			const investmentRound = await getCompanyByRoundId(resourceObj.round_id);
-			await processNotification(
-				investmentRound?.company_id || 0,
-				"companies",
-				resourceType,
-				"Delete Data",
-				[actionId]
-			);
-		}
-
-		await processNotification(
-			resourceObj?.vc_firm_id,
-			"vc_firms",
-			resourceType,
-			"Delete Data",
-			[actionId]
-		);
-	}
-	if (resourceType === "companies" || resourceType === "vc_firms") {
-		/** Insert notification */
-		await processNotification(
-			resourceId,
-			resourceType,
-			resourceType,
-			"Delete Data",
-			[actionId]
 		);
 	}
 };
@@ -337,4 +288,200 @@ export const filterExcludeNotifications = (
 	});
 
 	return results;
+};
+
+export const getNotificationOrganizationLink = (
+  notification: GetNotificationsForUserQuery["notifications"][0]
+) =>
+  notification.company
+    ? `/${notification.follow_resource_type}/${notification.company?.slug}`
+    : `/investors/${notification.vc_firm?.slug}`;
+
+export const processNotificationOnSubmitData = async (
+  resourceType: ResourceTypes,
+  resourceObj: Record<string, any>,
+  actionType: ActionType,
+  actionIds: number[],
+  notificationResourceId?: number
+) => {
+  if (
+    actionType === "Change Data" &&
+    (resourceType === "companies" || resourceType === "vc_firms")
+  ) {
+    await processNotification(
+      notificationResourceId || 0,
+      resourceType,
+      resourceType,
+      actionType,
+      actionIds
+    );
+  }
+
+  if (resourceType === "investment_rounds") {
+    let companyId = resourceObj?.company_id;
+    if (actionType === "Change Data") {
+      const investmentRound = await getCompanyIdByInvestmentRoundId(
+        notificationResourceId || 0
+      );
+      companyId = investmentRound.company_id;
+    }
+    await processNotification(
+      companyId,
+      "companies",
+      resourceType,
+      actionType,
+      actionIds,
+      notificationResourceId
+    );
+  }
+
+  if (resourceType === "team_members") {
+    let companyId = resourceObj?.company_id;
+    if (actionType === "Change Data") {
+      const teamMember = await getCompanyIdByTeamMemberId(
+        notificationResourceId || 0
+      );
+      companyId = teamMember.company_id;
+    }
+    await processNotification(
+      companyId,
+      "companies",
+      resourceType,
+      actionType,
+      actionIds,
+      notificationResourceId
+    );
+  }
+
+  if (resourceType === "investors") {
+    let vcFirmId = resourceObj?.vc_firm_id;
+    if (actionType === "Change Data") {
+      const investor = await getVcFirmByInvestorId(notificationResourceId || 0);
+      vcFirmId = investor.vc_firm_id;
+    }
+    await processNotification(
+      vcFirmId,
+      "vc_firms",
+      resourceType,
+      actionType,
+      actionIds,
+      notificationResourceId
+    );
+  }
+
+  if (resourceType === "investments") {
+    let vcFirmId = resourceObj?.vc_firm_id;
+    let roundId = resourceObj?.round_id;
+    if (actionType === "Change Data") {
+      const investment = await getVcFirmIdByInvestmentId(
+        notificationResourceId || 0
+      );
+      vcFirmId = investment.vc_firm_id;
+      roundId = investment.round_id;
+    }
+
+    if (roundId) {
+      const investmentRound = await getCompanyByRoundId(roundId);
+      await processNotification(
+        investmentRound?.company_id || 0,
+        "companies",
+        resourceType,
+        actionType,
+        actionIds,
+        notificationResourceId
+      );
+    }
+
+    await processNotification(
+      vcFirmId,
+      "vc_firms",
+      resourceType,
+      actionType,
+      actionIds,
+      notificationResourceId
+    );
+  }
+
+  if (resourceType === "event_organization") {
+    let companyId = resourceObj?.company_id;
+    let vcFirmId = resourceObj?.vc_firm_id;
+    if (actionType === "Change Data") {
+      const eventOrganization = await getEventOrganizationById(
+        notificationResourceId || 0
+      );
+      companyId = eventOrganization.company_id;
+      vcFirmId = eventOrganization.vc_firm_id;
+    }
+
+    if (companyId) {
+      await processNotification(
+        companyId,
+        "companies",
+        resourceType,
+        actionType,
+        actionIds,
+        notificationResourceId
+      );
+    }
+    if (vcFirmId) {
+      await processNotification(
+        vcFirmId,
+        "vc_firms",
+        resourceType,
+        actionType,
+        actionIds,
+        notificationResourceId
+      );
+    }
+  }
+};
+
+const getVcFirmByInvestorId = async (investor_id: number) => {
+  const {
+    data: { investors },
+  } = await query<GetInvestorByIdQuery>({
+    query: GetInvestorByIdDocument,
+    variables: { id: investor_id },
+  });
+  return investors[0];
+};
+
+const getCompanyIdByInvestmentRoundId = async (investment_round_id: number) => {
+  const {
+    data: { investment_rounds },
+  } = await query<GetInvestmentRoundByIdQuery>({
+    query: GetInvestmentRoundByIdDocument,
+    variables: { id: investment_round_id },
+  });
+  return investment_rounds[0];
+};
+
+const getCompanyIdByTeamMemberId = async (team_member_id: number) => {
+  const {
+    data: { team_members },
+  } = await query<GetTeamMemberByIdQuery>({
+    query: GetTeamMemberByIdDocument,
+    variables: { id: team_member_id },
+  });
+  return team_members[0];
+};
+
+const getVcFirmIdByInvestmentId = async (investment_id: number) => {
+  const {
+    data: { investments },
+  } = await query<GetInvestmentByIdQuery>({
+    query: GetInvestmentByIdDocument,
+    variables: { id: investment_id },
+  });
+  return investments[0];
+};
+
+const getEventOrganizationById = async (id: number) => {
+  const {
+    data: { event_organization },
+  } = await query<GetEventOrganizationByIdQuery>({
+    query: GetEventOrganizationByIdDocument,
+    variables: { id },
+  });
+  return event_organization[0];
 };

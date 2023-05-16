@@ -1,7 +1,4 @@
-import {
-  processNotification,
-  processNotificationOnDelete,
-} from "@/utils/notifications";
+import { processNotificationOnSubmitData } from "@/utils/notifications";
 import {
   ActionType,
   ResourceTypes,
@@ -12,7 +9,6 @@ import {
   resourceIdLookup,
   fieldLookup,
   mutateActionAndDataRaw,
-  getCompanyByRoundId,
   deleteMainTableRecord,
   insertActionDataChange,
   markDataRawAsInactive,
@@ -102,12 +98,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         user?.id
       );
       await markDataRawAsInactive(resourceType, resourceId);
-      await processNotificationOnDelete(
-        resourceType,
-        resourceId,
-        action?.id || 0,
-        resourceObj
-      );
       return res.send(resourceObj);
     }
 
@@ -437,86 +427,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       
     }
     
-
-    if (resourceId === undefined) {
-      if (
-        resourceType === "investment_rounds" ||
-        resourceType === "team_members"
-      ) {
-        await processNotification(
-          (resourceObj as Record<string, any>)?.company_id,
-          "companies",
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions,
-          Array.isArray(insertResult) ? insertResult[0]?.id : insertResult?.id,
-        );
-      }
-
-      if (resourceType === "investors") {
-        await processNotification(
-          (resourceObj as Record<string, any>)?.vc_firm_id,
-          "vc_firms",
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-        );
-      }
-
-      if (resourceType === "investments") {
-        if ((resourceObj as Record<string, any>)?.round_id) {
-          const investmentRound = await getCompanyByRoundId((resourceObj as Record<string, any>).round_id);
-          await processNotification(
-            investmentRound?.company_id || 0,
-            "companies",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-
-        await processNotification(
-          (resourceObj as Record<string, any>)?.vc_firm_id,
-          "vc_firms",
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-        );
-      }
-
-      if (resourceType === "event_organization") {
-        if ((resourceObj as Record<string, any>)?.company_id) {
-          await processNotification(
-            (resourceObj as Record<string, any>).company_id,
-            "companies",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-        if ((resourceObj as Record<string, any>)?.vc_firm_id) {
-          await processNotification(
-            (resourceObj as Record<string, any>).vc_firm_id,
-            "vc_firms",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-      }
-    } else {
-      // updated exists one
-      if (resourceType === "companies" || resourceType === "vc_firms") {
-        /** Insert notification */
-        await processNotification(
-          resourceId,
-          resourceType,
-          resourceType,
-          actionType,
-          Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-        );
-      }
-    }
+    await processNotificationOnSubmitData(
+      resourceType,
+      resourceObj,
+      actionType,
+      Array.isArray(insertResult)
+        ? insertResult[0]?.actions
+        : insertResult?.actions,
+      resourceId ||
+        (Array.isArray(insertResult) ? insertResult[0]?.id : insertResult?.id)
+    );
     
     if(Array.isArray(resourceObj)){
       if(hasRelationship && !hasRelationshipArray){

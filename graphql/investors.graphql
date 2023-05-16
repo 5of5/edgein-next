@@ -9,3 +9,11 @@ mutation InsertInvestor($personId: Int, $vcFirmId: Int) {
     id
   }
 }
+
+query GetInvestorById($id: Int!) {
+  investors(where: { id: { _eq: $id } }, limit: 1) {
+    id
+    vc_firm_id
+    person_id
+  }
+}
