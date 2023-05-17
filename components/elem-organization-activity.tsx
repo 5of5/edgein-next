@@ -134,8 +134,10 @@ const renderNews = (
 							day: "2-digit",
 							year: "numeric",
 						})}
-						<span>{` • powered by CryptoPanic`}</span>
-					</p>
+						<span>{` • powered by ${
+              activity?.source?.poweredby || "CryptoPanic"
+            }`}</span>
+          </p>
 				</div>
 			</div>
 		</div>
