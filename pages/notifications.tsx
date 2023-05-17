@@ -51,7 +51,7 @@ const Notifications: NextPage = () => {
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		!user?.entitlements.listsCount
+		user?.entitlements.listsCount
 			? user?.entitlements.listsCount
 			: notifications?.length
 	);
