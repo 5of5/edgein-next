@@ -163,8 +163,7 @@ For example: when creating a new person in people table. Also providing team_mem
 "resource":{
   <people_obj>,
   "team_members":{
-     "companies:name": "TEST_NAME",
-     "person_id": "&"  // submit-data API will replace "&" with id of inserted person
+     "companies:name": "TEST_NAME"
   }
 }
 
@@ -174,12 +173,10 @@ Support for allowing to create relationships with relationship field can be a st
   "team_members":{
     [
      {
-      "companies:name": "TEST_NAME1",
-      "person_id": "&"
+      "companies:name": "TEST_NAME1"
      },
           {
-      "companies:name": "TEST_NAME2",
-      "person_id": "&"
+      "companies:name": "TEST_NAME2"
      }
     ]
   }
@@ -190,13 +187,13 @@ curl --location 'https://edgein.io/api/submit_data' \
 --header 'Content-Type: application/json' \
 --data '{
 "partner_api_key": "<api_key>",
-"resource_type": "<resource_type>",
+"resource_type": "news",
 "resource_identifier":[{"field": "id"}],
 "resource":[
     {
         "text": "test1",
         "metadata": {"description": "Li Ning bought 10 Bitcoin"},
-        "news_person": {"people:name": "Jacob Abraham", "news_id": "&"}
+        "news_person": {"people:name": "Jacob Abraham"}
     },
     {
         "text": "test2",

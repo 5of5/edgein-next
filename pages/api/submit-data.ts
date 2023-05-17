@@ -127,9 +127,9 @@ const addSpecialRelationships = async (
       if (data.annotations)
         for (const entity of data.annotations) {
           if (entity.types.includes('http://dbpedia.org/ontology/Person') && !newsPeople.map(item => item['people:name']).includes(entity.spot))
-            newsPeople.push({'people:name': entity.spot, 'news_id': '&'});
+            newsPeople.push({'people:name': entity.spot});
           else if (!newscompanies.map(item => item['companies:name']).includes(entity.spot))
-            newscompanies.push({'companies:name': entity.spot, 'news_id': '&'});
+            newscompanies.push({'companies:name': entity.spot});
         }
       
       if (newsPeople.length > 0)
@@ -200,11 +200,9 @@ const handleResource = async (
         resourceRelationshipObjs = [resourceRelationshipObjs];
       
       for (let resourceRelationshipObj of resourceRelationshipObjs) {
-        // Replace '&' with resourceId of main record
-        Object.keys(resourceRelationshipObj).map(item=>{
-          if (resourceRelationshipObj[item] === '&')
-          resourceRelationshipObj[item] = insertResult.id;
-        })
+        // Add relationship field for resourceId of main record
+        let relationshipField = resourceType === 'people' ? 'person_id' : `${NODE_NAME[resourceType]}_id`;
+        resourceRelationshipObj[relationshipField] = insertResult.id;
         const ret = await handleResource(
           partnerId,
           user,
