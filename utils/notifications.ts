@@ -116,8 +116,11 @@ export const processNotification = async (
 export const getNotificationChangedData = (
 	notification: GetNotificationsForUserQuery["notifications"][0]
 ) => {
-	if (notification.event_type === "Change Data") {
-		if (notification.notification_actions.length > 1) {
+	if (
+    notification.event_type === "Change Data" &&
+    ["companies", "vc_firms"].includes(notification.notification_resource_type)
+  ) {
+    		if (notification.notification_actions.length > 1) {
 			return {
 				message: `has been updated`,
 				extensions: notification.notification_actions.map((item) => ({
