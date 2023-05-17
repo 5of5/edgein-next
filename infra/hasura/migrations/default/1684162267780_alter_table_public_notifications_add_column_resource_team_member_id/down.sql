@@ -1,10 +1,5 @@
 -- Could not auto-generate a down migration.
 -- Please write an appropriate down migration for the SQL below:
--- alter table "public"."notifications" add column "resource_team_member_id" integer
+-- alter table "public"."notifications" add column "notification_resource_id" integer
 --  null;
--- alter table "public"."notifications" add column "resource_investment_round_id" integer
---  null;
--- alter table "public"."notifications" add column "resource_investor_id" integer
---  null;
--- alter table "public"."notifications" add column "resource_event_organization_id" integer
---  null;
+

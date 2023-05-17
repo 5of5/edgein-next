@@ -15,5 +15,10 @@ query GetInvestorById($id: Int!) {
     id
     vc_firm_id
     person_id
+    person {
+      id
+      name
+      slug
+    }
   }
 }

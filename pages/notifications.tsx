@@ -28,7 +28,7 @@ const Notifications: NextPage = () => {
 	}, []);
 
 	const excludeProperties = useMemo(() => {
-		return ["status_tags", "logo"];
+		return ["status_tags", "logo", "trajectory", "search_count"];
 	}, []);
 
 	const excludeResourceTypes = useMemo(() => {
@@ -51,7 +51,7 @@ const Notifications: NextPage = () => {
 
 	const displayedNotifications = notifications?.slice(
 		0,
-		user?.entitlements.listsCount
+		!user?.entitlements.listsCount
 			? user?.entitlements.listsCount
 			: notifications?.length
 	);

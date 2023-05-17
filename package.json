@@ -61,6 +61,7 @@
 		"react-hotjar": "^5.0.0",
 		"react-hotkeys-hook": "^3.4.7",
 		"react-instantsearch-hooks-web": "^6.31.1",
+		"react-markdown": "^8.0.7",
 		"react-microsoft-clarity": "^1.1.2",
 		"react-query": "^3.39.1",
 		"react-select": "^5.4.0",

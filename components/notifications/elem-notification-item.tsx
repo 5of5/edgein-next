@@ -1,8 +1,6 @@
 import React, { FC } from "react";
-import Link from "next/link";
 import moment from "moment-timezone";
 import { GetNotificationsForUserQuery } from "@/graphql/types";
-import { getNotificationOrganizationLink } from "@/utils/notifications";
 import { ElemPhoto } from "../elem-photo";
 import ElemNotificationMessage from "./elem-notification-message";
 import { IconChevronDownMini } from "../icons";
@@ -46,14 +44,6 @@ const ElemNotificationItem: FC<Props> = ({
         <div>
           <div className="inline text-sm leading-tight text-left lg:text-base">
             <div className="">
-              <Link
-                href={getNotificationOrganizationLink(notification)}
-                passHref
-              >
-                <a className="border-b border-primary-500 transition-all font-bold mr-1 hover:border-b-2 hover:text-primary-500">
-                  {organization?.name}
-                </a>
-              </Link>
               <ElemNotificationMessage
                 message={message}
                 notification={notification}

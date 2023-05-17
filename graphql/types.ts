@@ -5079,13 +5079,6 @@ export type Event_Organization_Mutation_Response = {
   returning: Array<Event_Organization>;
 };
 
-/** input type for inserting object relation for remote table "event_organization" */
-export type Event_Organization_Obj_Rel_Insert_Input = {
-  data: Event_Organization_Insert_Input;
-  /** upsert condition */
-  on_conflict: InputMaybe<Event_Organization_On_Conflict>;
-};
-
 /** on_conflict condition type for table "event_organization" */
 export type Event_Organization_On_Conflict = {
   constraint: Event_Organization_Constraint;
@@ -5642,7 +5635,7 @@ export type Events = {
   parent_event_id: Maybe<Scalars['Int']>;
   price: Maybe<Scalars['numeric']>;
   size: Maybe<Scalars['String']>;
-  slug: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
   start_date: Maybe<Scalars['date']>;
   start_time: Maybe<Scalars['time']>;
   status: Scalars['String'];
@@ -8539,13 +8532,6 @@ export type Investors_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Investors>;
-};
-
-/** input type for inserting object relation for remote table "investors" */
-export type Investors_Obj_Rel_Insert_Input = {
-  data: Investors_Insert_Input;
-  /** upsert condition */
-  on_conflict: InputMaybe<Investors_On_Conflict>;
 };
 
 /** on_conflict condition type for table "investors" */
@@ -15203,21 +15189,10 @@ export type Notifications = {
   notification_actions: Array<Notification_Actions>;
   /** An aggregate relationship */
   notification_actions_aggregate: Notification_Actions_Aggregate;
+  notification_resource_id: Maybe<Scalars['Int']>;
   notification_resource_type: Scalars['String'];
   read: Scalars['Boolean'];
   read_at: Maybe<Scalars['timestamptz']>;
-  /** An object relationship */
-  resource_event_organization: Maybe<Event_Organization>;
-  resource_event_organization_id: Maybe<Scalars['Int']>;
-  /** An object relationship */
-  resource_investment_round: Maybe<Investment_Rounds>;
-  resource_investment_round_id: Maybe<Scalars['Int']>;
-  /** An object relationship */
-  resource_investor: Maybe<Investors>;
-  resource_investor_id: Maybe<Scalars['Int']>;
-  /** An object relationship */
-  resource_team_member: Maybe<Team_Members>;
-  resource_team_member_id: Maybe<Scalars['Int']>;
   target_user_id: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
@@ -15291,10 +15266,7 @@ export type Notifications_Avg_Fields = {
   __typename?: 'notifications_avg_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15313,17 +15285,10 @@ export type Notifications_Bool_Exp = {
   id: InputMaybe<Int_Comparison_Exp>;
   message: InputMaybe<String_Comparison_Exp>;
   notification_actions: InputMaybe<Notification_Actions_Bool_Exp>;
+  notification_resource_id: InputMaybe<Int_Comparison_Exp>;
   notification_resource_type: InputMaybe<String_Comparison_Exp>;
   read: InputMaybe<Boolean_Comparison_Exp>;
   read_at: InputMaybe<Timestamptz_Comparison_Exp>;
-  resource_event_organization: InputMaybe<Event_Organization_Bool_Exp>;
-  resource_event_organization_id: InputMaybe<Int_Comparison_Exp>;
-  resource_investment_round: InputMaybe<Investment_Rounds_Bool_Exp>;
-  resource_investment_round_id: InputMaybe<Int_Comparison_Exp>;
-  resource_investor: InputMaybe<Investors_Bool_Exp>;
-  resource_investor_id: InputMaybe<Int_Comparison_Exp>;
-  resource_team_member: InputMaybe<Team_Members_Bool_Exp>;
-  resource_team_member_id: InputMaybe<Int_Comparison_Exp>;
   target_user_id: InputMaybe<Int_Comparison_Exp>;
   updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
   vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
@@ -15355,10 +15320,7 @@ export type Notifications_Delete_Key_Input = {
 export type Notifications_Inc_Input = {
   company_id: InputMaybe<Scalars['Int']>;
   id: InputMaybe<Scalars['Int']>;
-  resource_event_organization_id: InputMaybe<Scalars['Int']>;
-  resource_investment_round_id: InputMaybe<Scalars['Int']>;
-  resource_investor_id: InputMaybe<Scalars['Int']>;
-  resource_team_member_id: InputMaybe<Scalars['Int']>;
+  notification_resource_id: InputMaybe<Scalars['Int']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
 };
@@ -15374,17 +15336,10 @@ export type Notifications_Insert_Input = {
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
   notification_actions: InputMaybe<Notification_Actions_Arr_Rel_Insert_Input>;
+  notification_resource_id: InputMaybe<Scalars['Int']>;
   notification_resource_type: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
-  resource_event_organization: InputMaybe<Event_Organization_Obj_Rel_Insert_Input>;
-  resource_event_organization_id: InputMaybe<Scalars['Int']>;
-  resource_investment_round: InputMaybe<Investment_Rounds_Obj_Rel_Insert_Input>;
-  resource_investment_round_id: InputMaybe<Scalars['Int']>;
-  resource_investor: InputMaybe<Investors_Obj_Rel_Insert_Input>;
-  resource_investor_id: InputMaybe<Scalars['Int']>;
-  resource_team_member: InputMaybe<Team_Members_Obj_Rel_Insert_Input>;
-  resource_team_member_id: InputMaybe<Scalars['Int']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
@@ -15400,12 +15355,9 @@ export type Notifications_Max_Fields = {
   follow_resource_type: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
+  notification_resource_id: Maybe<Scalars['Int']>;
   notification_resource_type: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
-  resource_event_organization_id: Maybe<Scalars['Int']>;
-  resource_investment_round_id: Maybe<Scalars['Int']>;
-  resource_investor_id: Maybe<Scalars['Int']>;
-  resource_team_member_id: Maybe<Scalars['Int']>;
   target_user_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -15420,12 +15372,9 @@ export type Notifications_Min_Fields = {
   follow_resource_type: Maybe<Scalars['String']>;
   id: Maybe<Scalars['Int']>;
   message: Maybe<Scalars['String']>;
+  notification_resource_id: Maybe<Scalars['Int']>;
   notification_resource_type: Maybe<Scalars['String']>;
   read_at: Maybe<Scalars['timestamptz']>;
-  resource_event_organization_id: Maybe<Scalars['Int']>;
-  resource_investment_round_id: Maybe<Scalars['Int']>;
-  resource_investor_id: Maybe<Scalars['Int']>;
-  resource_team_member_id: Maybe<Scalars['Int']>;
   target_user_id: Maybe<Scalars['Int']>;
   updated_at: Maybe<Scalars['timestamptz']>;
   vc_firm_id: Maybe<Scalars['Int']>;
@@ -15465,17 +15414,10 @@ export type Notifications_Order_By = {
   id: InputMaybe<Order_By>;
   message: InputMaybe<Order_By>;
   notification_actions_aggregate: InputMaybe<Notification_Actions_Aggregate_Order_By>;
+  notification_resource_id: InputMaybe<Order_By>;
   notification_resource_type: InputMaybe<Order_By>;
   read: InputMaybe<Order_By>;
   read_at: InputMaybe<Order_By>;
-  resource_event_organization: InputMaybe<Event_Organization_Order_By>;
-  resource_event_organization_id: InputMaybe<Order_By>;
-  resource_investment_round: InputMaybe<Investment_Rounds_Order_By>;
-  resource_investment_round_id: InputMaybe<Order_By>;
-  resource_investor: InputMaybe<Investors_Order_By>;
-  resource_investor_id: InputMaybe<Order_By>;
-  resource_team_member: InputMaybe<Team_Members_Order_By>;
-  resource_team_member_id: InputMaybe<Order_By>;
   target_user_id: InputMaybe<Order_By>;
   updated_at: InputMaybe<Order_By>;
   vc_firm: InputMaybe<Vc_Firms_Order_By>;
@@ -15509,19 +15451,13 @@ export enum Notifications_Select_Column {
   /** column name */
   Message = 'message',
   /** column name */
+  NotificationResourceId = 'notification_resource_id',
+  /** column name */
   NotificationResourceType = 'notification_resource_type',
   /** column name */
   Read = 'read',
   /** column name */
   ReadAt = 'read_at',
-  /** column name */
-  ResourceEventOrganizationId = 'resource_event_organization_id',
-  /** column name */
-  ResourceInvestmentRoundId = 'resource_investment_round_id',
-  /** column name */
-  ResourceInvestorId = 'resource_investor_id',
-  /** column name */
-  ResourceTeamMemberId = 'resource_team_member_id',
   /** column name */
   TargetUserId = 'target_user_id',
   /** column name */
@@ -15539,13 +15475,10 @@ export type Notifications_Set_Input = {
   follow_resource_type: InputMaybe<Scalars['String']>;
   id: InputMaybe<Scalars['Int']>;
   message: InputMaybe<Scalars['String']>;
+  notification_resource_id: InputMaybe<Scalars['Int']>;
   notification_resource_type: InputMaybe<Scalars['String']>;
   read: InputMaybe<Scalars['Boolean']>;
   read_at: InputMaybe<Scalars['timestamptz']>;
-  resource_event_organization_id: InputMaybe<Scalars['Int']>;
-  resource_investment_round_id: InputMaybe<Scalars['Int']>;
-  resource_investor_id: InputMaybe<Scalars['Int']>;
-  resource_team_member_id: InputMaybe<Scalars['Int']>;
   target_user_id: InputMaybe<Scalars['Int']>;
   updated_at: InputMaybe<Scalars['timestamptz']>;
   vc_firm_id: InputMaybe<Scalars['Int']>;
@@ -15556,10 +15489,7 @@ export type Notifications_Stddev_Fields = {
   __typename?: 'notifications_stddev_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15569,10 +15499,7 @@ export type Notifications_Stddev_Pop_Fields = {
   __typename?: 'notifications_stddev_pop_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15582,10 +15509,7 @@ export type Notifications_Stddev_Samp_Fields = {
   __typename?: 'notifications_stddev_samp_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15595,10 +15519,7 @@ export type Notifications_Sum_Fields = {
   __typename?: 'notifications_sum_fields';
   company_id: Maybe<Scalars['Int']>;
   id: Maybe<Scalars['Int']>;
-  resource_event_organization_id: Maybe<Scalars['Int']>;
-  resource_investment_round_id: Maybe<Scalars['Int']>;
-  resource_investor_id: Maybe<Scalars['Int']>;
-  resource_team_member_id: Maybe<Scalars['Int']>;
+  notification_resource_id: Maybe<Scalars['Int']>;
   target_user_id: Maybe<Scalars['Int']>;
   vc_firm_id: Maybe<Scalars['Int']>;
 };
@@ -15620,19 +15541,13 @@ export enum Notifications_Update_Column {
   /** column name */
   Message = 'message',
   /** column name */
+  NotificationResourceId = 'notification_resource_id',
+  /** column name */
   NotificationResourceType = 'notification_resource_type',
   /** column name */
   Read = 'read',
   /** column name */
   ReadAt = 'read_at',
-  /** column name */
-  ResourceEventOrganizationId = 'resource_event_organization_id',
-  /** column name */
-  ResourceInvestmentRoundId = 'resource_investment_round_id',
-  /** column name */
-  ResourceInvestorId = 'resource_investor_id',
-  /** column name */
-  ResourceTeamMemberId = 'resource_team_member_id',
   /** column name */
   TargetUserId = 'target_user_id',
   /** column name */
@@ -15646,10 +15561,7 @@ export type Notifications_Var_Pop_Fields = {
   __typename?: 'notifications_var_pop_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15659,10 +15571,7 @@ export type Notifications_Var_Samp_Fields = {
   __typename?: 'notifications_var_samp_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -15672,10 +15581,7 @@ export type Notifications_Variance_Fields = {
   __typename?: 'notifications_variance_fields';
   company_id: Maybe<Scalars['Float']>;
   id: Maybe<Scalars['Float']>;
-  resource_event_organization_id: Maybe<Scalars['Float']>;
-  resource_investment_round_id: Maybe<Scalars['Float']>;
-  resource_investor_id: Maybe<Scalars['Float']>;
-  resource_team_member_id: Maybe<Scalars['Float']>;
+  notification_resource_id: Maybe<Scalars['Float']>;
   target_user_id: Maybe<Scalars['Float']>;
   vc_firm_id: Maybe<Scalars['Float']>;
 };
@@ -20223,13 +20129,6 @@ export type Team_Members_Mutation_Response = {
   returning: Array<Team_Members>;
 };
 
-/** input type for inserting object relation for remote table "team_members" */
-export type Team_Members_Obj_Rel_Insert_Input = {
-  data: Team_Members_Insert_Input;
-  /** upsert condition */
-  on_conflict: InputMaybe<Team_Members_On_Conflict>;
-};
-
 /** on_conflict condition type for table "team_members" */
 export type Team_Members_On_Conflict = {
   constraint: Team_Members_Constraint;
@@ -23601,7 +23500,7 @@ export type GetEventOrganizationByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null }> };
+export type GetEventOrganizationByIdQuery = { __typename?: 'query_root', event_organization: Array<{ __typename?: 'event_organization', id: number, company_id: number | null, vc_firm_id: number | null, type: string | null, event: { __typename?: 'events', id: number, name: string, slug: string } | null }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
   user_id: Scalars['Int'];
@@ -23818,7 +23717,7 @@ export type GetInvestmentRoundByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetInvestmentRoundByIdQuery = { __typename?: 'query_root', investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, company_id: number | null }> };
+export type GetInvestmentRoundByIdQuery = { __typename?: 'query_root', investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round: string | null, company_id: number | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string } | null }> };
 
 export type UpsertInvestmentsMutationVariables = Exact<{
   data: Array<Investments_Insert_Input> | Investments_Insert_Input;
@@ -23854,7 +23753,7 @@ export type GetInvestorByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetInvestorByIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null }> };
+export type GetInvestorByIdQuery = { __typename?: 'query_root', investors: Array<{ __typename?: 'investors', id: number, vc_firm_id: number | null, person_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null }> };
 
 export type GetListUserGroupsQueryVariables = Exact<{
   where: List_User_Groups_Bool_Exp;
@@ -24064,7 +23963,7 @@ export type GetNotificationsForUserQueryVariables = Exact<{
 }>;
 
 
-export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }>, resource_team_member: { __typename?: 'team_members', id: number, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, resource_investor: { __typename?: 'investors', id: number, person: { __typename?: 'people', id: number, slug: string, name: string | null } | null } | null, resource_investment_round: { __typename?: 'investment_rounds', id: number, round: string | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string } | null } | null, resource_event_organization: { __typename?: 'event_organization', id: number, type: string | null, event: { __typename?: 'events', id: number, slug: string, name: string } | null } | null }> };
+export type GetNotificationsForUserQuery = { __typename?: 'query_root', notifications: Array<{ __typename?: 'notifications', id: number, read: boolean, created_at: any, event_type: string, message: string | null, read_at: any | null, follow_resource_type: string, notification_resource_type: string, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null, notification_actions: Array<{ __typename?: 'notification_actions', id: number, action_id: number, action: { __typename?: 'actions', id: number, properties: any } | null }> }> };
 
 export type InsertNotificationsMutationVariables = Exact<{
   object: Notifications_Insert_Input;
@@ -24165,7 +24064,7 @@ export type GetTeamMemberByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetTeamMemberByIdQuery = { __typename?: 'query_root', team_members: Array<{ __typename?: 'team_members', id: number, company_id: number | null }> };
+export type GetTeamMemberByIdQuery = { __typename?: 'query_root', team_members: Array<{ __typename?: 'team_members', id: number, company_id: number | null, person: { __typename?: 'people', id: number, name: string | null, slug: string } | null }> };
 
 export type GetUserProfileQueryVariables = Exact<{
   id: Scalars['Int'];
@@ -25544,6 +25443,12 @@ export const GetEventOrganizationByIdDocument = `
     id
     company_id
     vc_firm_id
+    type
+    event {
+      id
+      name
+      slug
+    }
   }
 }
     `;
@@ -26482,7 +26387,13 @@ export const GetInvestmentRoundByIdDocument = `
     query GetInvestmentRoundById($id: Int!) {
   investment_rounds(where: {id: {_eq: $id}}, limit: 1) {
     id
+    round
     company_id
+    company {
+      id
+      name
+      slug
+    }
   }
 }
     `;
@@ -26602,6 +26513,11 @@ export const GetInvestorByIdDocument = `
     id
     vc_firm_id
     person_id
+    person {
+      id
+      name
+      slug
+    }
   }
 }
     `;
@@ -27367,7 +27283,7 @@ useFindCommentByIdQuery.fetcher = (variables: FindCommentByIdQueryVariables, opt
 export const GetNotificationsForUserDocument = `
     query GetNotificationsForUser($user: Int!) {
   notifications(
-    where: {target_user_id: {_eq: $user}}
+    where: {_and: [{target_user_id: {_eq: $user}}, {event_type: {_neq: "Delete Data"}}]}
     order_by: {created_at: desc}
     limit: 100
   ) {
@@ -27397,40 +27313,6 @@ export const GetNotificationsForUserDocument = `
       action {
         id
         properties
-      }
-    }
-    resource_team_member {
-      id
-      person {
-        id
-        slug
-        name
-      }
-    }
-    resource_investor {
-      id
-      person {
-        id
-        slug
-        name
-      }
-    }
-    resource_investment_round {
-      id
-      round
-      company {
-        id
-        name
-        slug
-      }
-    }
-    resource_event_organization {
-      id
-      type
-      event {
-        id
-        slug
-        name
       }
     }
   }
@@ -27907,6 +27789,11 @@ export const GetTeamMemberByIdDocument = `
   team_members(where: {id: {_eq: $id}}, limit: 1) {
     id
     company_id
+    person {
+      id
+      name
+      slug
+    }
   }
 }
     `;

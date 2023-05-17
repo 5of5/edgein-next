@@ -1,6 +1,11 @@
 query GetNotificationsForUser($user: Int!) {
 	notifications(
-		where: { target_user_id: { _eq: $user } }
+		where: {
+      _and: [
+        { target_user_id: { _eq: $user } }
+        { event_type: { _neq: "Delete Data" } }
+      ]
+    }
 		order_by: { created_at: desc }
 		limit: 100
 	) {
@@ -30,40 +35,6 @@ query GetNotificationsForUser($user: Int!) {
 			action {
 				id
 				properties
-			}
-		}
-		resource_team_member {
-			id
-			person {
-				id
-				slug
-				name
-			}
-		}
-		resource_investor {
-			id
-			person {
-				id
-				slug
-				name
-			}
-		}
-		resource_investment_round {
-			id
-			round
-			company {
-				id
-				name
-				slug
-			}
-		}
-		resource_event_organization {
-			id
-			type
-			event {
-				id
-				slug
-				name
 			}
 		}
 	}
