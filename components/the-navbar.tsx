@@ -11,7 +11,7 @@ import UsageModal from "@/components/usage-modal";
 import ForgotPasswordModal from "@/components/forgot-password-modal";
 import SignUpModal from "@/components/sign-up-modal";
 import { IconSearch } from "@/components/icons";
-import { MobileNav } from "@/components/mobile-nav";
+import { TheMobileNav } from "@/components/the-mobile-nav";
 import SearchModal from "@/components/search-modal";
 import OnboardingStep1 from "@/components/onboarding/onboarding-step-1";
 import OnboardingStep2 from "@/components/onboarding/onboarding-step-2";
@@ -325,7 +325,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					)} */}
 			</nav>
 			{user && (
-				<MobileNav
+				<TheMobileNav
 					className=""
 					setShowPopup={setShowPopup}
 					myListsUrl={myListsUrl}

@@ -1,7 +1,12 @@
-import { FC, PropsWithChildren, Fragment, useState, useEffect } from "react";
-import { find, kebabCase, first } from "lodash";
+import {
+	FC,
+	PropsWithChildren,
+	Fragment,
+	useState,
+	useEffect,
+	useMemo,
+} from "react";
 import Link from "next/link";
-import { getNameFromListName } from "@/utils/reaction";
 import { ElemButton } from "./elem-button";
 import {
 	IconX,
@@ -28,6 +33,8 @@ import { useUser } from "@/context/user-context";
 import { clearLocalStorage } from "@/utils/helpers";
 import { useRouter } from "next/router";
 import { Popups } from "@/components/the-navbar";
+import { useGetNotificationsForUserQuery } from "@/graphql/types";
+import { filterExcludeNotifications } from "@/utils/notifications";
 
 type Props = {
 	className?: string;
@@ -36,7 +43,7 @@ type Props = {
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
 
-export const MobileNav: FC<PropsWithChildren<Props>> = ({
+export const TheMobileNav: FC<PropsWithChildren<Props>> = ({
 	className = "",
 	myListsUrl,
 	myGroupsUrl,
@@ -44,6 +51,27 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 }) => {
 	const { user } = useUser();
 	const router = useRouter();
+
+	//Notifications
+	const { data } = useGetNotificationsForUserQuery({
+		user: user?.id || 0,
+	});
+
+	const excludeProperties = useMemo(() => {
+		return ["status_tags", "logo"];
+	}, []);
+
+	const excludeResourceTypes = useMemo(() => {
+		return ["event_organization", "companies"];
+	}, []);
+
+	const notifications = filterExcludeNotifications(
+		data?.notifications || [],
+		excludeResourceTypes,
+		excludeProperties
+	).filter((item) => !item?.read);
+
+	const notificationsCount = notifications ? notifications.length : 0;
 
 	const [navOpen, setNavOpen] = useState(false);
 
@@ -213,7 +241,7 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 	return (
 		<>
 			<div
-				className={`fixed z-50 w-full items-center shadow-up transition-all lg:hidden ${className} bottom-0`}
+				className={`fixed z-50 w-full items-center shadow-up transition-all lg:hidden bottom-0 ${className}`}
 			>
 				{/* {visible ? "bottom-0" : "-bottom-12"} */}
 
@@ -230,17 +258,20 @@ export const MobileNav: FC<PropsWithChildren<Props>> = ({
 							<Link href={item?.href ? item.href : ""}>
 								<a
 									onClick={item?.onClick ? item?.onClick : onClose}
-									className=" flex flex-col items-center h-full text-[11px]"
+									className="flex flex-col items-center h-full text-[11px]"
 								>
 									{item?.icon && (
-										<div className="flex items-center justify-center h-7 aspect-square">
+										<div className="relative flex items-center justify-center h-7 aspect-square">
+											{notificationsCount > 0 &&
+												item.name === "Notifications" && (
+													<div className="absolute -top-0.5 right-0 w-4 h-4 rounded-full from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r border-2 border-white"></div>
+												)}
 											<item.icon
 												title={item.name}
 												className="h-6 w-6 shrink-0 text-slate-600"
 											/>
 										</div>
 									)}
-
 									{item?.name}
 								</a>
 							</Link>
