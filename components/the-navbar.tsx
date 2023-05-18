@@ -17,6 +17,7 @@ import OnboardingStep1 from "@/components/onboarding/onboarding-step-1";
 import OnboardingStep2 from "@/components/onboarding/onboarding-step-2";
 import OnboardingStep3 from "@/components/onboarding/onboarding-step-3";
 import { useUser } from "@/context/user-context";
+import { useGetUserByIdQuery } from "@/graphql/types";
 import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
@@ -37,7 +38,7 @@ type Props = {
 
 export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const router = useRouter();
-	const { user, loading, listAndFollows, myGroups } = useUser();
+	const { user, listAndFollows, myGroups } = useUser();
 
 	const hotListId =
 		find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
@@ -61,6 +62,9 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const [inviteCode, setInviteCode] = useState(
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
 	);
+
+	const { data: userProfile, isFetching: isFetchingUserProfile } =
+    useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
 
 	useEffect(() => {
 		if (
@@ -102,10 +106,14 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	};
 
 	useEffect(() => {
-		if (!loading && user && !user.onboarding_information) {
-			showOnboarding();
-		}
-	}, [loading, user]);
+    if (
+      !isFetchingUserProfile &&
+      userProfile &&
+      !userProfile.users[0]?.onboarding_information
+    ) {
+      showOnboarding();
+    }
+  }, [isFetchingUserProfile, userProfile]);
 
 	let siteNav = [
 		{
@@ -295,7 +303,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					{onboardingStep === 1 && (
 						<OnboardingStep1
 							selectedOption={selectedOption}
-							show={onboardingStep === 1 && !loading}
+							show={onboardingStep === 1 && !isFetchingUserProfile}
 							onClose={() => setOnboardingStep(0)}
 							onNext={(selectedOption) => {
 								setSelectedOption(selectedOption);
@@ -309,7 +317,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onboardingStep === 2 && !loading}
+							show={onboardingStep === 2 && !isFetchingUserProfile}
 							onClose={() => {
 								setOnboardingStep(0);
 							}}
@@ -331,7 +339,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onboardingStep === 3 && !loading}
+							show={onboardingStep === 3 && !isFetchingUserProfile}
 							list={list}
 							onNext={(list) => {
 								setList(list);
@@ -347,7 +355,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
               selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-              show={onboardingStep === 4 && !loading}
+              show={onboardingStep === 4 && !isFetchingUserProfile}
               message={message}
 							list={list}
               onClose={() => setOnboardingStep(0)}
