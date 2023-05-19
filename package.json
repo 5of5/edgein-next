@@ -11,7 +11,8 @@
 		"docker-compose": "docker compose -f ./infra/docker-compose.yml --env-file ./infra/.dockerenv",
 		"docker:start": "npm run docker-compose -- up -d",
 		"hasura": "cd infra/hasura && hasura --skip-update-check",
-		"codegen": "graphql-codegen --config graphql/codegen.js"
+		"codegen": "graphql-codegen --config graphql/codegen.js",
+		"cypress:open": "cypress open"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.7",
@@ -96,6 +97,7 @@
 		"airtable": "^0.11.4",
 		"autoprefixer": "^10.4.5",
 		"csv-parser": "^3.0.0",
+		"cypress": "^12.12.0",
 		"eslint": "8.14.0",
 		"eslint-config-next": "12.1.5",
 		"eslint-plugin-unicorn": "^42.0.0",
