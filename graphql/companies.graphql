@@ -266,3 +266,68 @@ query GetSentimentByCompanyId($companyId: Int!) {
      id
    }
  }
+
+query GetNewsOrganization($slug: String!) {
+	companies(
+		where: {
+       _and: [
+         { slug: { _eq: $slug } }
+         { sector_tags: { _contains: "News Organization" } }
+       ]
+     }
+	) {
+		id
+		name
+		slug
+		logo
+		layer
+		overview
+		total_employees
+		year_founded
+		website
+		company_linkedin
+		careers_page
+		tags
+		date_added
+		twitter
+		location
+		location_json
+		discord
+		glassdoor
+		teamMembers {
+			id
+			person {
+				id
+				slug
+				name
+				picture
+				linkedin
+				personal_email
+				work_email
+			}
+			function
+			start_date
+			end_date
+			founder
+			title
+		}
+		news_links {
+			id
+			type
+			news {
+				id
+				date
+				text
+				link
+				kind
+				status
+				organizations {
+					id
+					type
+					company_id
+					vc_firm_id
+				}
+			}
+		}	
+	}
+}

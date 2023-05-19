@@ -18,7 +18,11 @@ import {
   SelectArrayInput,
 } from "react-admin";
 import { Chip } from '@mui/material';
-import { companyLayerChoices, tags } from "../../../utils/constants";
+import {
+  companyLayerChoices,
+  tags,
+  companySectorTagChoices,
+} from "../../../utils/constants";
 import ElemList from "../elem-list";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -172,6 +176,14 @@ export const CompanyList = () => {
       <FunctionField
         source="tags"
         render={(record: any) => (Array.isArray(record.tags) ? record.tags.join() : record.tags ?? "")}
+      />
+      <FunctionField
+        source="sector_tags"
+        render={(record: any) =>
+          Array.isArray(record.sector_tags)
+            ? record.sector_tags.join()
+            : record.sector_tags ?? ""
+        }
       />
       {/* <TextField source="counter" /> */}
     </ElemList>
