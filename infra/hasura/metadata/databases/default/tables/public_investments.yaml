@@ -23,6 +23,19 @@ insert_permissions:
         - external_id
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - amount
+        - id
+        - person_id
+        - round_id
+        - vc_firm_id
+      filter:
+        status:
+          _eq: published
+      limit: 50
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -32,3 +45,15 @@ select_permissions:
         - vc_firm_id
         - external_id
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - amount
+        - id
+        - person_id
+        - round_id
+        - vc_firm_id
+      filter:
+        status:
+          _eq: published
+      limit: 50

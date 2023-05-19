@@ -1,0 +1,13 @@
+query GetDataFieldByPath($path: String!) {
+  data_fields(where: { path: { _eq: $path } }) {
+    name
+    resource
+    weight
+    regex_transform
+    description
+    regex_test
+    is_valid_identifier
+    restricted_admin
+    data_type
+  }
+}

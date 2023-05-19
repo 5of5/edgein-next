@@ -1,0 +1,198 @@
+query GetEvents(
+	$limit: Int
+	$offset: Int
+	$order: order_by!
+	$where: events_bool_exp!
+) {
+	events(
+		where: $where
+		order_by: { start_date: $order }
+		limit: $limit
+		offset: $offset
+	) {
+		id
+		name
+		slug
+		banner
+		overview
+		notes
+		location_json
+		venue_name
+		link
+		size
+		price
+		types
+		start_date
+		start_time
+		end_date
+		end_time
+		timezone
+		is_featured
+		created_at
+	}
+	events_aggregate(where: $where) {
+		aggregate {
+			count
+		}
+	}
+}
+
+query GetEvent($slug: String!) {
+	events(where: { slug: { _eq: $slug } }) {
+		id
+		name
+		slug
+		banner
+		overview
+		notes
+		location_json
+		venue_name
+		link
+		size
+		price
+		types
+		start_date
+		start_time
+		end_date
+		end_time
+		timezone
+		twitter
+		facebook
+		instagram
+		discord
+		telegram
+		is_featured
+		attachments
+		created_at
+		event_person {
+			id
+			type
+			created_at
+			person {
+				id
+				slug
+				name
+				type
+				picture
+				linkedin
+				personal_email
+				work_email
+				investors {
+					id
+					title
+					vc_firm {
+						id
+						slug
+						name
+					}
+				}
+				team_members {
+					id
+					founder
+					title
+					company {
+						id
+						slug
+						name
+					}
+				}
+			}
+		}
+		event_organization {
+			id
+			type
+			sponsor_type
+			created_at
+			company {
+				id
+				name
+				slug
+				logo
+			}
+			vc_firm {
+				id
+				name
+				slug
+				logo
+			}
+		}
+		parent_event {
+			id
+			slug
+			name
+		}
+	}
+}
+
+query GetEventsByDate($date: timestamptz, $library: jsonb) {
+  events(
+    where: {
+     _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
+    }
+  ) {
+    id
+    name
+    slug
+    overview
+    banner
+    location_json
+    start_date
+    end_date
+  }
+}
+
+mutation InsertEventAttendee($object: event_person_insert_input!) {
+  insert_event_person_one(object: $object) {
+    id
+    event_id
+    person_id
+    type
+  }
+}
+
+query FindEventAttendee($event_id: Int!, $person_id: Int!) {
+  event_person(
+    where: {
+      _and: [
+        { event_id: { _eq: $event_id } }
+        { person_id: { _eq: $person_id } }
+        { type: { _eq: "attendee" } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+  }
+}
+
+query GetSubEvents($parent_event_id: Int!) {
+  events(
+    where: { parent_event_id: { _eq: $parent_event_id } }
+    order_by: { start_date: desc }
+    limit: 50
+  ) {
+    id
+    name
+    slug
+    banner
+    overview
+    notes
+    location_json
+    venue_name
+    link
+    size
+    price
+    types
+    start_date
+    start_time
+    end_date
+    end_time
+    timezone
+    is_featured
+    created_at
+  }
+}

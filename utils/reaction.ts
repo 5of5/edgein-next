@@ -1,12 +1,12 @@
 import { Follows_Companies, Follows_Vc_Firms, Lists } from "@/graphql/types";
-import { DeepPartial } from "@/pages/companies";
+import { DeepPartial } from "@/types/common";
 import { find, has } from "lodash";
 
 type ReactionType = SentimentReactionType | ListReactionType;
 
 type SentimentReactionType = {
 	resourceId: number;
-	resourceType: "companies" | "vc_firms";
+	resourceType: "companies" | "vc_firms" | "people";
 	sentiment: "hot" | "like" | "crap";
 	listName?: undefined;
 	pathname: string;
@@ -14,7 +14,7 @@ type SentimentReactionType = {
 
 type ListReactionType = {
 	resourceId: number;
-	resourceType: "companies" | "vc_firms";
+	resourceType: "companies" | "vc_firms" | "people";
 	sentiment?: undefined;
 	listName: string;
 	pathname: string;
@@ -89,8 +89,12 @@ export const isOnList = (
 		list?.follows_vcfirms,
 		(follow) => follow?.resource_id === resourceId
 	);
+	const personIsOnList = find(
+		list?.follows_people,
+		(follow) => follow?.resource_id === resourceId
+	);
 
-	return companyIsOnList || investorIsOnList ? true : false;
+	return companyIsOnList || investorIsOnList || personIsOnList ? true : false;
 };
 
 export const isFollowsExists = (
@@ -127,7 +131,7 @@ export const getNewTempSentiment = (
 export const createListWithMultipleResources = async (
 	payload: MultipleListResourceType
 ) => {
-	const resp = await fetch("/api/multiple_resources_to_list/", {
+	const resp = await fetch("/api/multiple-resources-to-list/", {
 		method: "POST",
 		headers: {
 			Accept: "application/json",

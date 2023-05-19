@@ -46,16 +46,24 @@ export const getDateToday = (): string => {
 	return date.toISOString().replace(/T.*/, "").split("-").join("-");
 };
 
-export const formatTime = (dateString: string | number): string => {
+export const formatTime = (
+	dateString: string | number | Date,
+	options?: Intl.DateTimeFormatOptions
+): string => {
 	if (!dateString) {
 		return "";
 	}
 	const date = new Date(dateString);
 
-	return date.toLocaleTimeString(navigator.language, {
-		hour: "2-digit",
-		minute: "2-digit",
-	});
+	if (!options) {
+		return date.toLocaleTimeString("en-us", {
+			hour: "2-digit",
+			minute: "2-digit",
+			timeZone: "America/Los_Angeles",
+		});
+	} else {
+		return date.toLocaleTimeString("en-us", options);
+	}
 };
 
 export const convertToDollars = (amount: number) => {
@@ -82,13 +90,13 @@ export const convertToInternationalCurrencySystem = (amount: number) => {
 
 	// Nine Zeroes for Billions
 	return Math.abs(Number(amount)) >= 1.0e9
-		? (Math.abs(Number(amount)) / 1.0e9).toFixed(2) + "B"
+		? (Math.abs(Number(amount)) / 1.0e9).toFixed(1).replace(/\.0+$/, "") + "B"
 		: // Six Zeroes for Millions
 		Math.abs(Number(amount)) >= 1.0e6
-		? (Math.abs(Number(amount)) / 1.0e6).toFixed(2) + "M"
+		? (Math.abs(Number(amount)) / 1.0e6).toFixed(2).replace(/\.0+$/, "") + "M"
 		: // Three Zeroes for Thousands
 		Math.abs(Number(amount)) >= 1.0e3
-		? (Math.abs(Number(amount)) / 1.0e3).toFixed(2) + "K"
+		? (Math.abs(Number(amount)) / 1.0e3).toFixed(2).replace(/\.0+$/, "") + "K"
 		: Math.abs(Number(amount)).toFixed(2);
 };
 
@@ -139,4 +147,32 @@ export const getTimeOfWork = (startDate: string, endDate: string) => {
 	return `${moment.duration(timeDiff).years()} yrs ${moment
 		.duration(timeDiff)
 		.months()} mo`;
+};
+
+export const getTimeString = (value: Date) => {
+	const hour = new Date(value).getHours();
+	const mins = ("0" + new Date(value).getMinutes()).slice(-2);
+	return `${hour}:${mins}`;
+};
+
+export const convertCurrencyStringToIntNumber = (value: string) => {
+  return Number(
+    value
+      .toUpperCase()
+      .replace(/^(\d+(\.\d+)?)([K,M,B])?/, (_, n, __, suffix) => {
+        if (suffix === "K") {
+          return n * 10 ** 3;
+        }
+
+        if (suffix === "M") {
+          return n * 10 ** 6;
+        }
+
+        if (suffix === "B") {
+          return n * 10 ** 9;
+        }
+
+        return n;
+      })
+  );
 };

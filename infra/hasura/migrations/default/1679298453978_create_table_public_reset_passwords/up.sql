@@ -1,0 +1,1 @@
+CREATE TABLE "public"."reset_passwords" ("id" serial NOT NULL, "user_id" integer NOT NULL, "generated_password" text NOT NULL, "created_by_user_id" integer not null, "created_at" timestamptz NOT NULL DEFAULT now(), PRIMARY KEY ("id") );

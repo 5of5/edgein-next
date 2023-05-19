@@ -3,27 +3,36 @@ import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
-  let headers: {Authorization: string} | {'x-hasura-admin-secret': string}
-  if (process.env.DEV_MODE) {
-    headers  = {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
-  } else {
+  let headers: {'x-hasura-role'?: string, 'x-hasura-user-id'?: string} & { Authorization: string } |
+  //let headers: {'x-hasura-role'?: string} & { Authorization: string } |
+    {'x-hasura-admin-secret': string }
     if (!user) {
       return res.status(401).end()
     }
-    headers  = user.email.endsWith('@5of5.vc') || user.role === "admin" || process.env.DEV_MODE ?
-    {'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "" }
-      : 
-    { Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}` }
-  }
-  const opts = {
+    if (user.role === "user" || req.headers['is-viewer'] === 'true') {
+      headers  = {
+        Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
+        'x-hasura-role': process.env.HASURA_VIEWER ?? "",
+      }  
+    } else {
+      headers  = {
+        'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+      }  
+    }
+    // temporay until everyone gets a new cookie
+    headers  = {
+      'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
+      'x-hasura-user-id': user?.id?.toString() ?? ''
+    }  
+    const opts = {
     method: "POST",
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
     headers      
   }
   const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? "", opts);
 
-  const json = await proxyRes.json();
 
+  const json = await proxyRes.json();
   res.send(json)
 }
 

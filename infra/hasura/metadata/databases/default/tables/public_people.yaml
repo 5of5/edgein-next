@@ -16,6 +16,15 @@ array_relationships:
         table:
           schema: public
           name: investors
+  - name: news_links
+    using:
+      manual_configuration:
+        remote_table:
+          schema: public
+          name: news_person
+        insertion_order: null
+        column_mapping:
+          id: person_id
   - name: team_members
     using:
       foreign_key_constraint_on:
@@ -50,6 +59,33 @@ insert_permissions:
         - email
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - about
+        - city
+        - country
+        - created_at
+        - email
+        - facebook_url
+        - github
+        - id
+        - library
+        - linkedin
+        - name
+        - personal_email
+        - picture
+        - slug
+        - twitter_url
+        - type
+        - updated_at
+        - website_url
+        - work_email
+      filter:
+        status:
+          _eq: published
+      limit: 50
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -67,10 +103,38 @@ select_permissions:
         - personal_email
         - picture
         - slug
+        - twitter_url
+        - type
+        - updated_at
+        - website_url
+        - work_email
+      filter:
+        status:
+          _eq: published
+  - role: viewer
+    permission:
+      columns:
+        - about
+        - city
+        - country
+        - created_at
+        - email
+        - facebook_url
+        - github
+        - id
+        - library
+        - linkedin
+        - name
+        - personal_email
+        - picture
+        - slug
         - status
         - twitter_url
         - type
         - updated_at
         - website_url
         - work_email
-      filter: {}
+      filter:
+        status:
+          _eq: published
+      limit: 50

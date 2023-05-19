@@ -1,3 +1,3 @@
-export * from "./InvestmentRoundList";
-export * from "./InvestmentRoundCreate";
-export * from "./InvestmentRoundEdit";
+export * from "./investment-round-list";
+export * from "./investment-round-create";
+export * from "./investment-round-edit";

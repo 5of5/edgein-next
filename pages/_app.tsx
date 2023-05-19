@@ -7,13 +7,14 @@ import type { AppProps } from "next/app";
 import Script from "next/script";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { LoaderPlasma } from "@/components/LoaderPlasma";
-import { Popups, TheNavbar } from "@/components/TheNavbar";
-import { ElemFeedback } from "@/components/ElemFeedback";
-import { TheFooter } from "@/components/TheFooter";
+import { LoaderPlasma } from "@/components/loader-plasma";
+import { Popups, TheNavbar } from "@/components/the-navbar";
+import { ElemFeedback } from "@/components/elem-feedback";
+import { TheFooter } from "@/components/the-footer";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { UserProvider } from "@/context/userContext";
+import { UserProvider } from "@/context/user-context";
 import { IntercomProvider } from "react-use-intercom";
+
 const INTERCOM_APP_ID = "jm3hf6lp";
 
 declare global {
@@ -30,7 +31,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 	const [pageLoading, setPageLoading] = React.useState<boolean>(false);
 
 	const [toggleFeedbackForm, setToggleFeedbackForm] = useState(false);
-	const [showPopup, setShowPopup] = useState<Popups>(router.asPath.includes("/login/") ? router.asPath.includes("?usage=true") ? 'usage' : 'login' : false);
+	const [showPopup, setShowPopup] = useState<Popups>(
+		router.asPath.includes("/login/")
+			? router.asPath.includes("?usage=true")
+				? "usage"
+				: "login"
+			: false
+	);
 
 	//google
 	React.useEffect(() => {
@@ -69,7 +76,29 @@ function MyApp({ Component, pageProps }: AppProps) {
 	let metaDescription = pageProps.metaDescription
 		? pageProps.metaDescription
 		: "Web3 focused data intelligence platform for reliable analysis, powerful insights, and tailored strategies for success.";
-	let metaImage = pageProps.metaImage ? pageProps.metaImage : `/social.jpg`;
+	let metaImage = pageProps.metaImage
+		? pageProps.metaImage
+		: `https://edgein.io/social.jpg`;
+
+	const [showFooter, setShowFooter] = useState(true);
+
+	React.useEffect(() => {
+		const pagesWithoutFooter = [
+			"/groups",
+			"/account",
+			"/profile",
+			"/lists",
+			"/notes",
+		];
+
+		if (
+			pagesWithoutFooter.some((pageUrl) => router.pathname.includes(pageUrl))
+		) {
+			setShowFooter(false);
+		} else {
+			setShowFooter(true);
+		}
+	}, [router.pathname]);
 
 	return (
 		<>
@@ -90,11 +119,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					content={metaDescription}
 					key="tw-description"
 				/>
-				<meta
-					name="twitter:image"
-					content={`https://edgein.io${metaImage}`}
-					key="tw-social"
-				/>
+				<meta name="twitter:image" content={`${metaImage}`} key="tw-social" />
 				<meta property="og:title" content={metaTitle} key="og-title" />
 				<meta
 					property="og:description"
@@ -103,17 +128,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 				/>
 				<meta property="og:url" content="https://edgein.io/" key="og-url" />
 				<meta property="og:type" content="website" key="og-type" />
-				<meta
-					property="og:image"
-					content={`https://edgein.io${metaImage}`}
-					key="og-image"
-				/>
+				<meta property="og:image" content={`${metaImage}`} key="og-image" />
 			</Head>
 			<Script
 				src="https://aggle.net/js?pid=J9GEZNSN8"
 				strategy="afterInteractive"
 			></Script>
-			<div className="flex flex-col min-h-screen">
+			<div className="flex flex-col min-h-[calc(100vh_-_1rem)]">
 				<QueryClientProvider client={queryClient}>
 					{pageProps.noLayout ? (
 						<Component {...pageProps} />
@@ -125,7 +146,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 										showPopup={showPopup}
 										setShowPopup={setShowPopup}
 									/>
-									<main className="grow selection:bg-primary-200">
+									<main className="mt-11 grow selection:bg-primary-200">
 										{pageLoading ? (
 											<LoaderPlasma />
 										) : (
@@ -139,13 +160,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 									</main>
 
 									{(router.asPath.includes("/companies/") ||
-										router.asPath.includes("/investors/")) && (
+										router.asPath.includes("/investors/") ||
+										router.asPath.includes("/events/")) && (
 										<ElemFeedback
 											toggleFeedbackForm={toggleFeedbackForm}
 											setToggleFeedbackForm={setToggleFeedbackForm}
 										/>
 									)}
-									<TheFooter />
+
+									{showFooter === true && <TheFooter />}
 								</>
 							</UserProvider>
 						</IntercomProvider>

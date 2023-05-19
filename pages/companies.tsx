@@ -1,26 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import { ElemHeading } from "@/components/ElemHeading";
-import { Popover, RadioGroup } from "@headlessui/react";
-import {
-	PlaceholderCompanyCard,
-	PlaceholderTable,
-} from "@/components/Placeholders";
-import { InputSelect } from "@/components/InputSelect";
-import { ElemRecentCompanies } from "@/components/Companies/ElemRecentCompanies";
-import { CompaniesTable } from "@/components/Companies/CompaniesTable";
-import { ElemButton } from "@/components/ElemButton";
-import { ElemTagsCarousel } from "@/components/ElemTagsCarousel";
-import { runGraphQl, numberWithCommas } from "@/utils";
-import {
-	IconSearch,
-	IconAnnotation,
-	IconX,
-	IconFilter,
-	IconGrid,
-	IconTable,
-} from "@/components/Icons";
+import moment from "moment-timezone";
+import { ElemHeading } from "@/components/elem-heading";
+import { PlaceholderCompanyCard } from "@/components/placeholders";
+import { ElemRecentCompanies } from "@/components/companies/elem-recent-companies";
+import { ElemButton } from "@/components/elem-button";
+import { runGraphQl } from "@/utils";
+import { IconSearch, IconAnnotation } from "@/components/icons";
 import {
 	Companies,
 	Companies_Bool_Exp,
@@ -28,12 +15,18 @@ import {
 	GetCompaniesQuery,
 	useGetCompaniesQuery,
 } from "@/graphql/types";
-import { Pagination } from "@/components/Pagination";
-import { ElemCompanyCard } from "@/components/Companies/ElemCompanyCard";
-import { companyChoices, companyLayerChoices } from "@/utils/constants";
+import { Pagination } from "@/components/pagination";
+import { ElemCompanyCard } from "@/components/companies/elem-company-card";
+import { companyChoices } from "@/utils/constants";
 import toast, { Toaster } from "react-hot-toast";
-import { useStateParams } from "@/hooks/useStateParams";
+import { useStateParams } from "@/hooks/use-state-params";
 import { onTrackView } from "@/utils/track";
+import { processCompaniesFilters } from "@/utils/filter";
+import { ElemFilter } from "@/components/elem-filter";
+import { useIntercom } from "react-use-intercom";
+import useFilterParams from "@/hooks/use-filter-params";
+import useLibrary from "@/hooks/use-library";
+import { DeepPartial } from "@/types/common";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -47,57 +40,28 @@ function useStateParamsFilter<T>(filters: T[], name: string) {
 type Props = {
 	companiesCount: number;
 	initialCompanies: GetCompaniesQuery["companies"];
-	companyFilters: TextFilter[];
-	companyLayers: TextFilter[];
-	amountRaised: NumericFilter[];
-	totalEmployees: NumericFilter[];
+	companyStatusTags: TextFilter[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-export type DeepPartial<T> = T extends object
-	? {
-			[P in keyof T]?: DeepPartial<T[P]>;
-	  }
-	: T;
 
 const Companies: NextPage<Props> = ({
 	companiesCount,
 	initialCompanies,
-	companyFilters,
-	companyLayers,
-	amountRaised,
-	totalEmployees,
+	companyStatusTags,
 	setToggleFeedbackForm,
 }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
 
-	// Company Filter
-	const [selectedCompanyFilters, setSelectedCompanyFilters] =
-		useStateParamsFilter(companyFilters, "filter");
+	const { selectedLibrary } = useLibrary();
 
-	// Company Layers Filter
-	const [selectedLayer, setSelectedLayer] = useStateParamsFilter(
-		companyLayers,
-		"layer"
-	);
+	const { selectedFilters, setSelectedFilters } = useFilterParams();
 
-	// Amount Raised Filter
-	const [selectedAmountRaised, setSelectedAmountRaised] = useStateParamsFilter(
-		amountRaised,
-		"amount"
-	);
-
-	// Total Employees Filter
-	const [selectedTotalEmployees, setSelectedTotalEmployees] =
-		useStateParamsFilter(totalEmployees, "totalEmp");
-
-	// Filters
-	const [toggleFilters, setToggleFilters] = useState(
-		selectedLayer !== companyLayers[0] ||
-			selectedAmountRaised !== amountRaised[0] ||
-			selectedTotalEmployees !== totalEmployees[0]
+	// Company status-tag filter
+	const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(
+		companyStatusTags,
+		"statusTag"
 	);
 
 	const [tableLayout, setTableLayout] = useState(true);
@@ -112,15 +76,13 @@ const Companies: NextPage<Props> = ({
 	const limit = 50;
 	const offset = limit * page;
 
-	const [selectedTags, setSelectedTags] = useStateParams<string[]>(
-		[],
-		"tags",
-		(tagArr) => tagArr.join(","),
-		(tag) => tag.split(",")
-	);
+	const defaultFilters = [
+    { slug: { _neq: "" } },
+    { library: { _contains: selectedLibrary } },
+  ];
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: [{ slug: { _neq: "" }, status: { _eq: "published" } }],
+		_and: defaultFilters,
 	};
 
 	useEffect(() => {
@@ -129,11 +91,7 @@ const Companies: NextPage<Props> = ({
 		}
 		if (
 			initialLoad &&
-			selectedTags.length !== 0 &&
-			selectedLayer.value !== "" &&
-			selectedCompanyFilters.value !== "" &&
-			selectedAmountRaised.rangeEnd !== 0 &&
-			selectedTotalEmployees.rangeEnd !== 0
+			selectedStatusTag.value !== ""
 		) {
 			setInitialLoad(false);
 		}
@@ -143,13 +101,7 @@ const Companies: NextPage<Props> = ({
 			pathname: router.pathname,
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		selectedTags,
-		selectedAmountRaised,
-		selectedLayer,
-		selectedTotalEmployees,
-		selectedCompanyFilters,
-	]);
+	}, [selectedStatusTag]);
 
 	const filterByTag = async (
 		event: React.MouseEvent<HTMLDivElement>,
@@ -158,12 +110,21 @@ const Companies: NextPage<Props> = ({
 		event.stopPropagation();
 		event.preventDefault();
 
-		const newTags = selectedTags.includes(tag)
-			? selectedTags.filter((t) => t !== tag)
-			: [tag, ...selectedTags];
-		setSelectedTags(newTags);
+		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
+		const newFilterOption = currentFilterOption.includes(tag)
+		? currentFilterOption.filter((t) => t !== tag)
+		: [tag, ...currentFilterOption]
 
-		selectedTags.includes(tag)
+		if (newFilterOption.length === 0) {
+			setSelectedFilters({ ...selectedFilters, industry: undefined });
+		} else {
+			setSelectedFilters({ ...selectedFilters, industry: {
+				...selectedFilters?.industry,
+				tags: newFilterOption,
+			}, });
+		}
+
+		currentFilterOption.includes(tag)
 			? toast.custom(
 					(t) => (
 						<div
@@ -196,59 +157,12 @@ const Companies: NextPage<Props> = ({
 			  );
 	};
 
-	const clearTagFilters = async () => {
-		setSelectedTags([]);
+	/** Handle selected filter params */
+	processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
-		toast.custom(
-			(t) => (
-				<div
-					className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-						t.visible ? "animate-fade-in-up" : "opacity-0"
-					}`}
-				>
-					Tag Filters Removed
-				</div>
-			),
-			{
-				duration: 3000,
-				position: "top-center",
-			}
-		);
-	};
-
-	if (selectedTags.length > 0) {
-		let allTags: any = [];
-		selectedTags.map((tag) => {
-			allTags.push({ tags: { _contains: tag } });
-		});
-
+	if (selectedStatusTag.value) {
 		filters._and?.push({
-			_and: allTags,
-		});
-	}
-
-	if (selectedLayer?.value) {
-		filters._and?.push({ layer: { _eq: selectedLayer.value } });
-	}
-	if (selectedCompanyFilters?.value) {
-		filters._and?.push({
-			status_tags: { _contains: selectedCompanyFilters.value },
-		});
-	}
-	if (selectedAmountRaised.rangeEnd !== 0) {
-		filters._and?.push({
-			_and: [
-				{ investor_amount: { _gt: selectedAmountRaised.rangeStart } },
-				{ investor_amount: { _lte: selectedAmountRaised.rangeEnd } },
-			],
-		});
-	}
-	if (selectedTotalEmployees.rangeEnd !== 0) {
-		filters._and?.push({
-			_and: [
-				{ total_employees: { _gt: selectedTotalEmployees.rangeStart } },
-				{ total_employees: { _lte: selectedTotalEmployees.rangeEnd } },
-			],
+			status_tags: { _contains: selectedStatusTag.value },
 		});
 	}
 
@@ -261,7 +175,6 @@ const Companies: NextPage<Props> = ({
 		limit,
 		where: filters as Companies_Bool_Exp,
 	});
-
 	if (!isLoading && initialLoad) {
 		setInitialLoad(false);
 	}
@@ -271,39 +184,13 @@ const Companies: NextPage<Props> = ({
 		? companiesCount
 		: companiesData?.companies_aggregate?.aggregate?.count || 0;
 
-	// New Filters UI data
-
-	const tagsMethods = [
-		{ id: "api", title: "API" },
-		{ id: "platform", title: "Platform" },
-		{ id: "dev-tools", title: "Dev Tools" },
-		{ id: "tag1", title: "Tag 1" },
-		{ id: "tag2", title: "Tag 2" },
-	];
-
-	const foundedDates = [
-		{ id: "any", name: "Any", founded_date: "" },
-		{ id: "past-30-days", name: "Past 30 Days", founded_date: "" },
-		{ id: "past-60-days", name: "Past 60 Days", founded_date: "" },
-		{ id: "past-90-days", name: "Past 90 Days", founded_date: "" },
-		{ id: "custom-range", name: "Custom Range", founded_date: "" },
-	];
-
-	const [selected, setSelected] = useState(foundedDates[0]);
-
-	const employeeCount = [
-		{ id: "any", name: "Any", founded_date: "" },
-		{ id: "past-30-days", name: "Past 30 Days", founded_date: "" },
-		{ id: "past-60-days", name: "Past 60 Days", founded_date: "" },
-		{ id: "past-90-days", name: "Past 90 Days", founded_date: "" },
-		{ id: "custom-range", name: "Custom Range", founded_date: "" },
-	];
+	const { showNewMessages } = useIntercom();
 
 	return (
-		<div className="relative overflow-hidden">
+		<div className="relative">
 			<ElemHeading
-				title="Web3 Companies"
-				subtitle="Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset."
+				title={`${selectedLibrary} Companies`}
+				subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
@@ -312,85 +199,47 @@ const Companies: NextPage<Props> = ({
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-					<div className="lg:flex items-baseline gap-2">
-						<h2 className="text-xl font-bold">
-							Filter Companies ({numberWithCommas(companies_aggregate)})
-						</h2>
-						{selectedTags.length > 0 && (
-							<div className="flex flex-wrap items-baseline">
-								{selectedTags?.map((item, index: number) => {
-									return (
-										<span key={index} className="pr-1">
-											{item}
-											{index != selectedTags.length - 1 && ","}
-										</span>
-									);
-								})}
-								<div
-									className="flex items-center text-sm cursor-pointer ml-1 text-primary-500 hover:text-dark-500"
-									onClick={clearTagFilters}
-								>
-									clear tags filter
-									<IconX className="ml-0.5 h-3" />
-								</div>
-							</div>
-						)}
+					<h2 className="text-xl font-bold">Companies</h2>
+
+					<div
+						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+						role="tablist"
+					>
+						<nav className="flex">
+							{companyStatusTags &&
+								companyStatusTags.map((tab: any, index: number) =>
+									tab.disabled === true ? (
+										<Fragment key={index}></Fragment>
+									) : (
+										<button
+											key={index}
+											onClick={() => setSelectedStatusTag(tab)}
+											className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+												selectedStatusTag.value === tab.value
+													? "text-primary-500 border-primary-500"
+													: "border-transparent  hover:bg-slate-200"
+											} ${tab.disabled ? "cursor-not-allowed" : ""}}`}
+										>
+											{tab.title}
+										</button>
+									)
+								)}
+						</nav>
 					</div>
 
-					{/* Filters */}
-					<section className="pt-2 pb-3 border-b border-slate-200 mb-6">
-						<div className="w-full flex flex-wrap justify-between lg:space-x-5 lg:flex-nowrap">
-							<InputSelect
-								className="md:shrink md:basis-0"
-								buttonClasses="w-auto"
-								dropdownClasses="w-60"
-								value={selectedCompanyFilters}
-								onChange={setSelectedCompanyFilters}
-								options={companyFilters}
-							/>
-
-							<div className="w-full overflow-hidden grow min-w-0 order-last lg:order-none">
-								<ElemTagsCarousel
-									onClick={filterByTag}
-									selectedTags={selectedTags}
-								/>
-							</div>
-
-							<div className="self-end sm:shrink sm:basis-0 sm:self-auto">
-								<ElemButton
-									onClick={() => setToggleFilters(!toggleFilters)}
-									btn="white"
-									roundedFull={false}
-									className="rounded-md font-normal focus:ring-1 focus:ring-slate-200"
-								>
-									<IconFilter className="w-5 h-5 mr-1" />
-									Filters
-								</ElemButton>
-							</div>
-						</div>
-						{toggleFilters && (
-							<div className="mt-3 grid gap-5 grid-cols-1 lg:grid-cols-3">
-								<InputSelect
-									className="w-full"
-									value={selectedLayer}
-									onChange={setSelectedLayer}
-									options={companyLayers}
-								/>
-								<InputSelect
-									className="w-full"
-									value={selectedAmountRaised}
-									onChange={setSelectedAmountRaised}
-									options={amountRaised}
-								/>
-								<InputSelect
-									className="w-full"
-									value={selectedTotalEmployees}
-									onChange={setSelectedTotalEmployees}
-									options={totalEmployees}
-								/>
-							</div>
-						)}
-					</section>
+					<ElemFilter
+						resourceType="companies"
+						filterValues={selectedFilters}
+						onApply={(name, filterParams) => {
+							filters._and = defaultFilters;
+							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
+						}}
+						onClearOption={(name) => {
+							filters._and = defaultFilters;
+							setSelectedFilters({ ...selectedFilters, [name]: undefined });
+						}}
+						onReset={() => setSelectedFilters(null)}
+					/>
 
 					{/* New Filters UI */}
 					<section className="w-full flex items-center justify-between mb-6 pb-3 border-b border-slate-200">
@@ -586,49 +435,31 @@ const Companies: NextPage<Props> = ({
 						</div>
 					)}
 
-					{error ? (
-						<h4>Error loading companies</h4>
-					) : isLoading && !initialLoad ? (
-						<>
-							{tableLayout ? (
-								<PlaceholderTable />
-							) : (
-								<>
-									{Array.from({ length: 9 }, (_, i) => (
-										<PlaceholderCompanyCard key={i} />
-									))}
-								</>
-							)}
-						</>
-					) : (
-						<>
-							{tableLayout ? (
-								<CompaniesTable
-									filterByTag={filterByTag}
-									companies={companies}
-									itemsPerPage={limit}
-								/>
-							) : (
-								<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-									{companies?.map((company) => {
-										return (
-											<ElemCompanyCard
-												key={company.id}
-												company={company as Companies}
-												tagOnClick={filterByTag}
-											/>
-										);
-									})}
-								</div>
-							)}
-						</>
-					)}
-
-					{/* <div
-						className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+					<div
+						className={`min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
 					>
 						{error ? (
-							<h4>Error loading companies</h4>
+							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+								<div className="max-w-xl mx-auto">
+									<h4 className="mt-5 text-3xl font-bold">
+										Error loading companies
+									</h4>
+									<div className="mt-1 text-lg text-slate-600">
+										Please check spelling, reset filters, or{" "}
+										<button
+											onClick={() =>
+												showNewMessages(
+													`Hi EdgeIn, I'd like to report an error on companies page`
+												)
+											}
+											className="inline underline decoration-primary-500 hover:text-primary-500"
+										>
+											<span>report error</span>
+										</button>
+										.
+									</div>
+								</div>
+							</div>
 						) : isLoading && !initialLoad ? (
 							<>
 								{Array.from({ length: 9 }, (_, i) => (
@@ -670,7 +501,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { slug: { _neq: "" }, status: { _eq: "published" } },
+			where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] }
 		}
 	);
 
@@ -679,12 +510,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 Companies - EdgeIn.io",
 			metaDescription:
 				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
-			companiesCount: companies?.companies_aggregate.aggregate?.count,
+			companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
 			initialCompanies: companies?.companies,
-			companyFilters: CompaniesFilters,
-			companyLayers: LayersFilters,
-			amountRaised: AmountRaisedFilters,
-			totalEmployees: EmployeesFilters,
+			companyStatusTags,
 		},
 	};
 };
@@ -705,119 +533,7 @@ export interface NumericFilter {
 	rangeEnd: number;
 }
 
-const layerFilterValues = companyLayerChoices.map((option) => {
-	return {
-		title: option.id,
-		value: option.id,
-		description: option.name,
-	};
-});
-
-const LayersFilters: TextFilter[] = [
-	{
-		title: "All Layers",
-		value: "",
-	},
-	...layerFilterValues,
-];
-// Amount Raised Filter
-const AmountRaisedFilters: NumericFilter[] = [
-	{
-		title: "All Funding Amounts",
-		rangeStart: 0,
-		rangeEnd: 0,
-	},
-	{
-		title: "Less than $1M",
-		rangeStart: 0,
-		rangeEnd: 10e5 - 1, //999999
-	},
-	{
-		title: "$1M",
-		rangeStart: 10e5,
-		rangeEnd: 10e5,
-	},
-	{
-		title: "$1M-$10M",
-		rangeStart: 10e5 + 1,
-		rangeEnd: 10e6,
-	},
-	{
-		title: "$11M-$20M",
-		rangeStart: 10e6 + 1,
-		rangeEnd: 20e6,
-	},
-	{
-		title: "$21M-$50M",
-		rangeStart: 20e6 + 1,
-		rangeEnd: 50e6,
-	},
-	{
-		title: "$51M-$100M",
-		rangeStart: 50e6 + 1,
-		rangeEnd: 10e7,
-	},
-	{
-		title: "$101M-$200M",
-		rangeStart: 10e7 + 1,
-		rangeEnd: 20e7,
-	},
-	{
-		title: "$200M+",
-		rangeStart: 20e7,
-		rangeEnd: 90e14,
-	},
-];
-// Total Employees Filter
-const EmployeesFilters: NumericFilter[] = [
-	{
-		title: "Number of Employees",
-		rangeStart: 0,
-		rangeEnd: 0,
-	},
-	{
-		title: "Less than 10 Employees",
-		rangeStart: 0,
-		rangeEnd: 9,
-	},
-	{
-		title: "10-15 Employees",
-		rangeStart: 10,
-		rangeEnd: 15,
-	},
-	{
-		title: "16-30 Employees",
-		rangeStart: 16,
-		rangeEnd: 30,
-	},
-	{
-		title: "31-100 Employees",
-		rangeStart: 31,
-		rangeEnd: 100,
-	},
-	{
-		title: "101-200 Employees",
-		rangeStart: 101,
-		rangeEnd: 200,
-	},
-	{
-		title: "201-500 Employees",
-		rangeStart: 201,
-		rangeEnd: 500,
-	},
-	{
-		title: "501-1000 Employees",
-		rangeStart: 501,
-		rangeEnd: 1000,
-	},
-	{
-		title: "1000+ Employees",
-		rangeStart: 1001,
-		rangeEnd: 1000000000,
-	},
-];
-
-const companyFilterValues = companyChoices.map((option) => {
+const companyStatusTagValues = companyChoices.map((option) => {
 	return {
 		title: option.name,
 		value: option.id,
@@ -826,10 +542,10 @@ const companyFilterValues = companyChoices.map((option) => {
 	};
 });
 
-const CompaniesFilters: TextFilter[] = [
+const companyStatusTags: TextFilter[] = [
 	{
 		title: "All Companies",
 		value: "",
 	},
-	...companyFilterValues,
+	...companyStatusTagValues,
 ];

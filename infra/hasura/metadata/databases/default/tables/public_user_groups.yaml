@@ -33,3 +33,19 @@ array_relationships:
         table:
           schema: public
           name: user_group_members
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - created_at
+        - created_by_user_id
+        - description
+        - discord
+        - id
+        - name
+        - public
+        - telegram
+        - twitter
+        - updated_at
+      filter: {}
+      limit: 50

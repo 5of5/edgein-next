@@ -1,0 +1,27 @@
+name: apply hasura and update data_fields
+on:
+  push:
+    branches: 
+      - main
+jobs:
+  apply-hasura-update-data_fields:
+    # Add self-hosted runner and setup edgein-next repo at /home/ubuntu/
+    runs-on: self-hosted
+    steps:
+      - name: git-pull
+        run:
+          cd /home/ubuntu/edgein-next/ && git pull
+      - name: apply-migration
+        env:
+          # Add HASURA_ADMIN_SECRET in repo setting
+          hasura_admin_secret: ${{ secrets.HASURA_ADMIN_SECRET }}
+        run: |
+          cd /home/ubuntu/edgein-next/infra/hasura/
+          git pull
+          npx hasura migrate apply --skip-update-check --endpoint https://graphql.edgein.dev --admin-secret $hasura_admin_secret --database-name default
+          npx hasura metadata clear --skip-update-check --endpoint https://graphql.edgein.dev --admin-secret $hasura_admin_secret
+          npx hasura metadata apply --skip-update-check --endpoint https://graphql.edgein.dev  --admin-secret $hasura_admin_secret
+      - name: update-data-fields
+        run: |
+          cd /home/ubuntu/edgein-next/scripts/
+          npx ts-node update_data_fields.ts

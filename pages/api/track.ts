@@ -1,6 +1,7 @@
 import { NextApiResponse, NextApiRequest } from "next";
 import { mutate } from "@/graphql/hasuraAdmin";
 import CookieService from "../../utils/cookie";
+import { InsertActionDocument, InsertActionMutation } from "@/graphql/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
@@ -18,16 +19,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) return res.status(403).end();
 
   // create action
-  mutate({
-    mutation: `
-      mutation InsertAction($object: actions_insert_input!) {
-        insert_actions_one(
-          object: $object
-        ) {
-          id
-        }
-      }
-    `,
+  await mutate<InsertActionMutation>({
+    mutation: InsertActionDocument,
     variables: {
       object: {
         action: "View",

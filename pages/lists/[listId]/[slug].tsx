@@ -1,47 +1,63 @@
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { CompaniesList } from "@/components/MyList/CompaniesList";
-import { InvestorsList } from "@/components/MyList/InvestorsList";
-
-import { ModalListDetails } from "@/components/MyList/ModalListDetails";
-import { EmojiHot, EmojiLike, EmojiCrap } from "@/components/Emojis";
-import { PlaceholderTable } from "@/components/Placeholders";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { CompaniesList } from "@/components/my-list/companies-list";
+import { InvestorsList } from "@/components/my-list/investors-list";
+import { ElemListInformation } from "@/components/my-list/elem-list-information";
+import { IconCustomList } from "@/components/icons";
+import { PlaceholderTable } from "@/components/placeholders";
 
 import {
 	Follows_Companies,
 	Follows_Vc_Firms,
+	Follows_People,
 	useGetVcFirmsByListIdQuery,
 	useGetCompaniesByListIdQuery,
 	useGetListUserGroupsQuery,
 	List_User_Groups_Bool_Exp,
+	useGetPeopleByListIdQuery,
+	Users,
+	List_Members_Bool_Exp,
+	useGetListMembersQuery,
 } from "@/graphql/types";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { find, startCase } from "lodash";
+import { find } from "lodash";
 import {
 	getNameFromListName,
 	getUserIdFromListCreator,
 } from "@/utils/reaction";
 import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/userContext";
+import { useUser } from "@/context/user-context";
+import { ElemButton } from "@/components/elem-button";
+import { PeopleList } from "@/components/my-list/people-list";
 
 type Props = {};
 
-const MyList: NextPage<Props> = ({}) => {
-	const { listAndFollows: lists, refreshProfile } = useUser();
+const MyList: NextPage<Props> = () => {
+	const { listAndFollows: lists, refreshProfile, user } = useUser();
 	const router = useRouter();
+
+	const { data, refetch } = useGetListMembersQuery(
+		{
+			where: {
+				user_id: { _eq: user?.id },
+			} as List_Members_Bool_Exp,
+		},
+		{
+			enabled: Boolean(user?.id),
+		}
+	);
+	const listMembers = data?.list_members || [];
 
 	const [selectedListName, setSelectedListName] = useState<null | string>(
 		router.query.slug as string
 	);
 
 	const [isCustomList, setIsCustomList] = useState(false);
-	const [isFollowing, setIsFollowing] = useState(true);
-
-	// const [listNameModal, setListNameModal] = useState(false);
 
 	const [companies, setCompanies] = useState<Follows_Companies[]>([]);
 	const [vcfirms, setVcfirms] = useState<Follows_Vc_Firms[]>([]);
+	const [people, setPeople] = useState<Follows_People[]>([]);
 
 	const { data: groups, refetch: refetchGroups } = useGetListUserGroupsQuery(
 		{
@@ -55,11 +71,11 @@ const MyList: NextPage<Props> = ({}) => {
 	);
 
 	const onSaveListName = async (name: string) => {
-		const updateNameRes = await fetch(`/api/update_list/`, {
+		const updateNameRes = await fetch(`/api/update-list/`, {
 			method: "PUT",
 			body: JSON.stringify({
 				id: parseInt(router.query.listId as string),
-				name,
+				payload: { name },
 			}),
 			headers: {
 				Accept: "application/json",
@@ -68,7 +84,6 @@ const MyList: NextPage<Props> = ({}) => {
 		});
 
 		if (updateNameRes.ok) {
-			//setListNameModal(false);
 			setSelectedListName(name);
 			refreshProfile();
 			toast.custom(
@@ -90,14 +105,16 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onDeleteList = async (id: number) => {
-		const deleteRes = await fetch(`/api/delete_list/?listId=${id}`, {
+		const deleteRes = await fetch(`/api/delete-list/?listId=${id}`, {
 			method: "DELETE",
 		});
 
 		if (deleteRes.ok) {
 			const hotId =
 				find(lists, (list) => "hot" === getNameFromListName(list))?.id || 0;
+
 			router.push(`/lists/${hotId}/hot`);
+			//router.reload();
 			refreshProfile();
 			toast.custom(
 				(t) => (
@@ -118,7 +135,7 @@ const MyList: NextPage<Props> = ({}) => {
 	};
 
 	const onAddGroups = async (groupIds: Array<number>) => {
-		const res = await fetch("/api/add_group_to_list/", {
+		const res = await fetch("/api/add-group-to-list/", {
 			method: "POST",
 			body: JSON.stringify({
 				listId: parseInt(router.query.listId as string),
@@ -132,6 +149,7 @@ const MyList: NextPage<Props> = ({}) => {
 
 		if (res.ok) {
 			refetchGroups();
+			refreshProfile();
 			toast.custom(
 				(t) => (
 					<div
@@ -150,9 +168,66 @@ const MyList: NextPage<Props> = ({}) => {
 		}
 	};
 
+	const onChangePublic = async (value: boolean) => {
+		const res = await fetch(`/api/update-list/`, {
+			method: "PUT",
+			body: JSON.stringify({
+				id: parseInt(router.query.listId as string),
+				payload: { public: value },
+			}),
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+		});
+
+		if (res.ok) {
+			setTheListPublic(value);
+			refreshProfile();
+			toast.custom(
+				(t) => (
+					<div
+						className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+							t.visible ? "animate-fade-in-up" : "opacity-0"
+						}`}
+					>
+						List updated
+					</div>
+				),
+				{
+					duration: 3000,
+					position: "top-center",
+				}
+			);
+		}
+	};
+
+	const onFollowList = async () => {
+		const response = await fetch("/api/toggle-follow-list", {
+			method: "POST",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				listId: theListId,
+				userId: user?.id,
+			}),
+		});
+
+		if (response.status === 200) {
+			refetch();
+			refreshProfile();
+		}
+	};
+
 	const [theListId, setTheListId] = useState(0);
 
 	const [theListCreatorId, setTheListCreatorId] = useState<any>();
+
+	const [theListPublic, setTheListPublic] = useState<boolean>(false);
+
+	const [theList, setTheList] = useState<any>();
 
 	useEffect(() => {
 		if (lists) {
@@ -161,9 +236,15 @@ const MyList: NextPage<Props> = ({}) => {
 			});
 
 			if (list) {
+				setTheList(() => {
+					return list ? list : null;
+				});
+
 				setSelectedListName(() => {
 					return list ? getNameFromListName(list) : "";
 				});
+
+				setTheListPublic(!!list?.public);
 
 				setTheListCreatorId(() => {
 					return list ? getUserIdFromListCreator(list) : "";
@@ -175,25 +256,24 @@ const MyList: NextPage<Props> = ({}) => {
 						: false;
 				});
 			} else {
-				setSelectedListName(startCase(router.query.slug as string));
-				setIsCustomList(true);
-				setIsFollowing(false);
+				setSelectedListName(router.query.slug as string);
+				setIsCustomList(
+					!["like", "hot", "sh**"].includes(router.query.slug as string)
+				);
 			}
 		}
 	}, [
 		lists,
 		router.query.listId,
 		router.query.slug,
+		setTheList,
 		setSelectedListName,
 		setTheListCreatorId,
 		setIsCustomList,
+		setTheListPublic,
 	]);
 
-	// const { data: users } = useGetUserProfileQuery({
-	// 	id: theListCreatorId | 0,
-	// });
-
-	// console.log(users?.users_by_pk?.person);
+	const isFollowing = listMembers.some((mem) => mem.list_id === theList?.id);
 
 	useEffect(() => {
 		if (router.isReady) {
@@ -217,87 +297,98 @@ const MyList: NextPage<Props> = ({}) => {
 		list_id: theListId,
 	});
 
+	const {
+		data: listPeople,
+		error: listPeopleError,
+		isLoading: listPeopleLoading,
+	} = useGetPeopleByListIdQuery({
+		list_id: theListId,
+	});
+
 	useEffect(() => {
 		if (companiesData)
 			setCompanies(companiesData?.follows_companies as Follows_Companies[]);
 		if (vcFirms) setVcfirms(vcFirms?.follows_vc_firms as Follows_Vc_Firms[]);
-	}, [companiesData, vcFirms]);
-
-	const listNameTitle = selectedListName === "crap" ? "sh**" : selectedListName;
+		if (listPeople) setPeople(listPeople?.follows_people as Follows_People[]);
+	}, [companiesData, vcFirms, listPeople]);
 
 	return (
 		<DashboardLayout>
-			<div className="w-full mb-2">
-				<div className="flex items-center">
-					{listNameTitle === "hot" && <EmojiHot className="w-6 h-6 mr-2" />}
-					{listNameTitle === "like" && <EmojiLike className="w-6 h-6 mr-2" />}
-					{listNameTitle === "sh**" && <EmojiCrap className="w-6 h-6 mr-2" />}
+			<ElemListInformation
+				list={theList}
+				groups={
+					groups?.list_user_groups?.map((group) => group.user_group) || []
+				}
+				onSaveListName={onSaveListName}
+				onDeleteList={onDeleteList}
+				onAddGroups={onAddGroups}
+				onChangePublic={onChangePublic}
+				isFollowing={isFollowing}
+				onFollowList={onFollowList}
+			/>
 
-					{isCustomList ? (
-						isFollowing ? (
-							<>
-								<ModalListDetails
-									theListName={selectedListName ? selectedListName : ""}
-									// theListDescription={`Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`}
-									// theListCreator={"Raymond Aleman"}
-									theListId={parseInt(router.query.listId as string)}
-									groups={
-										groups?.list_user_groups?.map(
-											(group) => group.user_group
-										) || []
-									}
-									onSaveListName={onSaveListName}
-									onDeleteList={onDeleteList}
-									onAddGroups={onAddGroups}
-								/>
-							</>
-						) : (
-							<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-								Previewing: {listNameTitle}
-							</h1>
-						)
+			{(!isCustomList || isFollowing || theListCreatorId === user?.id) && (
+				<>
+					{companiesError ? (
+						<h4>Error loading companies</h4>
+					) : companiesLoading ? (
+						<div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+							<PlaceholderTable />
+						</div>
 					) : (
-						<h1 className="h-6 mr-2 font-bold text-xl capitalize">
-							{listNameTitle}
-						</h1>
+						<CompaniesList
+							companies={companies}
+							selectedListName={selectedListName}
+							isCustomList={isCustomList}
+						/>
 					)}
-				</div>
-				{(listNameTitle === "hot" ||
-					listNameTitle === "like" ||
-					listNameTitle === "sh**") && (
-					<p className="mt-1 first-letter:uppercase text-slate-600">
-						{listNameTitle} lists are generated from your {listNameTitle}{" "}
-						reactions.
-					</p>
-				)}
-			</div>
 
-			{companiesError ? (
-				<h4>Error loading companies</h4>
-			) : companiesLoading ? (
-				<div className="rounded-lg p-5 bg-white shadow mb-8">
-					<PlaceholderTable />
-				</div>
-			) : (
-				<CompaniesList
-					companies={companies}
-					selectedListName={selectedListName}
-					isCustomList={isCustomList}
-				/>
+					{vcFirmsError ? (
+						<h4>Error loading Investors</h4>
+					) : vcFirmsLoading ? (
+						<div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+							<PlaceholderTable />
+						</div>
+					) : (
+						<InvestorsList
+							vcfirms={vcfirms}
+							selectedListName={selectedListName}
+							isCustomList={isCustomList}
+						/>
+					)}
+
+					{listPeopleError ? (
+						<h4>Error loading people</h4>
+					) : listPeopleLoading ? (
+						<div className="rounded-lg p-5 bg-white shadow mb-8 overflow-auto">
+							<PlaceholderTable />
+						</div>
+					) : (
+						<PeopleList people={people} selectedListName={selectedListName} />
+					)}
+				</>
 			)}
 
-			{vcFirmsError ? (
-				<h4>Error loading Investors</h4>
-			) : vcFirmsLoading ? (
-				<div className="rounded-lg p-5 bg-white shadow mb-8">
-					<PlaceholderTable />
+			{theListCreatorId != user?.id && !isFollowing && (
+				<div className="w-full">
+					<div className="bg-white shadow rounded-lg w-full p-12 text-center">
+						<IconCustomList
+							className="mx-auto h-12 w-12 text-slate-300"
+							title="Join group"
+						/>
+						<h3 className="mt-2 text-lg font-bold">
+							Follow this list to access and view updates.
+						</h3>
+						<ElemButton
+							btn="primary"
+							onClick={onFollowList}
+							className="mt-2 mb-12"
+						>
+							Follow
+						</ElemButton>
+						<PlaceholderTable />
+					</div>
 				</div>
-			) : (
-				<InvestorsList
-					vcfirms={vcfirms}
-					selectedListName={selectedListName}
-					isCustomList={isCustomList}
-				/>
 			)}
 
 			<Toaster />

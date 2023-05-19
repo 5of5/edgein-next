@@ -1,0 +1,14 @@
+query GetDisabledEmailByEmailOrDomain($email: String, $domain: String) {
+  disabled_emails(
+    where: {
+      _or: [
+        { email: { _eq: $email }, match_type: { _eq: "EMAIL" } }
+        { email: { _eq: $domain }, match_type: { _eq: "DOMAIN" } }
+      ]
+    }
+    limit: 1
+  ) {
+    id
+    email
+  }
+}

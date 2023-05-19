@@ -1,3 +1,5 @@
+type TResponse<T> = { data: T};
+
 async function hasuraQuery<TResult = any>(
   args: {query: string, variables: Record<string, any>},
   token?: string,
@@ -25,7 +27,7 @@ async function hasuraQuery<TResult = any>(
     throw json.errors
   }
 
-  return json as TResult
+  return json as TResponse<TResult>
 }
 
 export async function mutate<TResult = any>(args: {mutation: string, variables: Record<string, any>}, token?: string) {

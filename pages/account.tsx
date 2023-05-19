@@ -1,17 +1,25 @@
-import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/use-auth";
 import { useParams } from "react-router-dom";
-import { ElemButton } from "@/components/ElemButton";
-import { InputText } from "@/components/InputText";
-import { IconLinkedIn, IconSparkles } from "@/components/Icons";
-import { DashboardLayout } from "@/components/Dashboard/DashboardLayout";
-import { ElemShareMenu } from "@/components/ElemShareMenu";
-import { EditSection } from "@/components/Dashboard/EditSection";
+import { ElemButton } from "@/components/elem-button";
+import { InputText } from "@/components/input-text";
+import { IconLinkedIn, IconSparkles } from "@/components/icons";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { ElemInviteLinks } from "@/components/elem-invite-links";
+import { EditSection } from "@/components/dashboard/edit-section";
 import { useGetUserProfileQuery } from "@/graphql/types";
-import { ElemSubscribedDialog } from "@/components/ElemSubscribedDialog";
+import { ElemSubscribedDialog } from "@/components/elem-subscribed-dialog";
 import { loadStripe } from "@/utils/stripe";
+import { InputSelect } from "@/components/input-select";
+import { libraryChoices } from "@/utils/constants";
+import useLibrary from "@/hooks/use-library";
 
 const validator = require("validator");
+
+type Library = {
+	id: string;
+	title: string;
+}
 
 export default function Account() {
 	const { user } = useAuth();
@@ -31,6 +39,22 @@ export default function Account() {
 	const personSlug = userProfile?.users_by_pk?.person?.slug;
 
 	const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
+
+	const libraryOptions = libraryChoices.map((item) => ({
+    id: item.id,
+    title: item.name,
+  }));
+  const { selectedLibrary, onChangeLibrary } = useLibrary();
+  const [library, setLibrary] = useState<Library | undefined>();
+
+  useEffect(() => {
+    if (selectedLibrary && selectedLibrary !== library?.id) {
+      setLibrary(libraryOptions.find((item) => item.id === selectedLibrary));
+    }
+  }, [selectedLibrary, library, libraryOptions]);
+
+	const isDisplaySelectLibrary =
+    user?.email.endsWith("edgein.io") || user?.email.endsWith("techlist.com"); 
 
 	const onCloseSubscribedDialog = () => {
 		setIsOpenSubscribedDialog(false);
@@ -78,7 +102,7 @@ export default function Account() {
 
 	const callChangePassword = async () => {
 		try {
-			const response = await fetch("/api/set_password/", {
+			const response = await fetch("/api/set-password/", {
 				method: "POST",
 				headers: {
 					Accept: "application/json",
@@ -108,19 +132,32 @@ export default function Account() {
 		}
 	};
 
+	const handleSelectLibrary = (value: Library) => {
+		setLibrary(value);
+		onChangeLibrary(value?.id as "Web3" | "AI");
+	}
+
 	return (
 		<DashboardLayout>
 			<div className="bg-white shadow rounded-lg p-5">
-				<div className="sm:flex justify-between items-center mb-2">
-					<h2 className="font-bold text-xl">Invite Code</h2>
+				<div className="lg:flex justify-between items-start pb-2">
+					<div className="max-w-2xl">
+						<h2 className="font-bold text-xl">
+							Get Rewarded for Sharing EdgeIn.
+						</h2>
+						<p className="text-slate-600">
+							Share your code with friends and colleagues and you will be
+							considered a partial data contributor with every future data
+							contribution your invitees make to EdgeIn!
+						</p>
+					</div>
 
 					{user && user.reference_id && (
-						<div className="mt-2 sm:mt-0">
-							<ElemShareMenu user={user} personSlug={personSlug} />
+						<div className="mt-2 lg:mt-0">
+							<ElemInviteLinks user={user} personSlug={personSlug} />
 						</div>
 					)}
 				</div>
-				<p className="text-slate-600">{`Get rewarded for sharing EdgeIn with others. Share your code with friends and colleagues and you will be considered a partial data contributor with every future data contribution your invited network makes to EdgeIn!`}</p>
 			</div>
 
 			<div className="bg-white shadow rounded-lg mt-5 p-5">
@@ -129,7 +166,31 @@ export default function Account() {
 				</div>
 
 				<dl className="w-full divide-y divide-black/10 border-y border-black/10">
-					<EditSection heading="Social authentication">
+					<EditSection
+						heading="Social authentication"
+						right={
+							user && user.auth0_linkedin_id ? (
+								<ElemButton
+									onClick={() => {}}
+									btn="white"
+									className="space-x-1 cursor-default text-[#0077B5] hover:!text-[#0077B5] hover:bg-white"
+								>
+									<IconLinkedIn className="h-5 w-5" />
+									<span>Connected</span>
+								</ElemButton>
+							) : (
+								<>
+									<ElemButton
+										onClick={onLinkedInClick}
+										btn="white"
+										className="space-x-1 text-[#0077B5] hover:!text-[#0077B5]"
+									>
+										<IconLinkedIn className="h-5 w-5" /> <span>LinkedIn</span>
+									</ElemButton>
+								</>
+							)
+						}
+					>
 						<div>
 							<p className="text-slate-600">
 								Connect your LinkedIn account to validate your profile and
@@ -137,35 +198,6 @@ export default function Account() {
 								enable it for contribution (this may take up to one business
 								day).
 							</p>
-							{user && user.auth0_linkedin_id ? (
-								<div className="inline-flex mt-2 gap-x-2 items-center font-bold px-3.5 py-1.5 text-sm justify-center text-[#0077B5]">
-									<IconLinkedIn className="h-5 w-5" />
-									<span>Connected</span>
-								</div>
-							) : (
-								<>
-									<ElemButton
-										roundedFull={false}
-										onClick={onLinkedInClick}
-										btn="transparent"
-										className="w-full mt-5 gap-x-2 text-center rounded-md text-[#0077B5] ring-1 ring-inset ring-black/10 hover:ring-2 hover:ring-[#0077B5] hover:text-[#0077B5] hover:bg-slate-50"
-									>
-										<IconLinkedIn
-											title="LinkedIn"
-											className="h-6 w-6 text-[#0077B5]"
-										/>
-										Login with LinkedIn
-									</ElemButton>
-									<ElemButton
-										onClick={onLinkedInClick}
-										//disabled={user && user.auth0_linkedin_id}
-										className="mt-2 gap-x-2 rounded-md text-[#0077B5] ring-1 ring-slate-200  hover:bg-slate-200"
-									>
-										<IconLinkedIn className="h-5 w-5" />{" "}
-										<span>Connect LinkedIn</span>
-									</ElemButton>
-								</>
-							)}
 						</div>
 					</EditSection>
 
@@ -259,18 +291,18 @@ export default function Account() {
 								</div>
 							</div>
 						) : (
-							<div>
-								<h2 className="text-xl font-bold">
-									Try EdgeIn Contributor free for 7 days
+							<div className="p-5 bg-gradient-to-tr from-[#553BE5] to-[#8E7AFE] shadow rounded-lg">
+								<h2 className="text-xl font-bold text-white">
+									Try EdgeIn Contributor FREE for 7 days
 								</h2>
-								<p className="text-slate-600">
+								<p className="text-white opacity-80">
 									Get real-time updates on the companies, people, deals and
 									events you’re most interested in, giving you an unprecedented
 									edge in Web3.
 								</p>
 								<ElemButton
 									onClick={onBillingClick}
-									btn="primary"
+									btn="primary-light"
 									arrow
 									className="mt-4 text-primary-500"
 								>
@@ -279,6 +311,20 @@ export default function Account() {
 							</div>
 						)}
 					</EditSection>
+
+					{isDisplaySelectLibrary && !!library && (
+            <EditSection heading="Library">
+              <div>
+                <InputSelect
+                  options={libraryOptions}
+                  value={library}
+                  onChange={handleSelectLibrary}
+                  className="mt-0.5 text-slate-600 text-base w-32"
+                  buttonClasses="w-32"
+                />
+              </div>
+            </EditSection>
+          )}
 				</dl>
 				<ElemSubscribedDialog
 					isOpen={isOpenSubscribedDialog}

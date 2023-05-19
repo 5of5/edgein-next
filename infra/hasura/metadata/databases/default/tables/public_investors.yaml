@@ -24,6 +24,25 @@ insert_permissions:
         - external_id
       backend_only: false
 select_permissions:
+  - role: api_viewer
+    permission:
+      columns:
+        - created_at
+        - end_date
+        - function
+        - id
+        - person_id
+        - seniority
+        - start_date
+        - title
+        - updated_at
+        - vc_firm_id
+      filter:
+        person:
+          status:
+            _eq: published
+      limit: 50
+      allow_aggregations: true
   - role: user
     permission:
       columns:
@@ -37,3 +56,21 @@ select_permissions:
         - seniority
         - title
       filter: {}
+  - role: viewer
+    permission:
+      columns:
+        - created_at
+        - end_date
+        - function
+        - id
+        - person_id
+        - seniority
+        - start_date
+        - title
+        - updated_at
+        - vc_firm_id
+      filter:
+        person:
+          status:
+            _eq: published
+      limit: 50
