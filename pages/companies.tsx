@@ -7,7 +7,14 @@ import { PlaceholderCompanyCard } from "@/components/placeholders";
 import { ElemRecentCompanies } from "@/components/companies/elem-recent-companies";
 import { ElemButton } from "@/components/elem-button";
 import { runGraphQl } from "@/utils";
-import { IconSearch, IconAnnotation } from "@/components/icons";
+import {
+	IconSearch,
+	IconAnnotation,
+	IconGrid,
+	IconTable,
+} from "@/components/icons";
+import { CompaniesTable } from "@/components/companies/elem-companies-table";
+import { Popover } from "@headlessui/react";
 import {
 	Companies,
 	Companies_Bool_Exp,
@@ -77,9 +84,9 @@ const Companies: NextPage<Props> = ({
 	const offset = limit * page;
 
 	const defaultFilters = [
-    { slug: { _neq: "" } },
-    { library: { _contains: selectedLibrary } },
-  ];
+		{ slug: { _neq: "" } },
+		{ library: { _contains: selectedLibrary } },
+	];
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: defaultFilters,
@@ -89,10 +96,7 @@ const Companies: NextPage<Props> = ({
 		if (!initialLoad) {
 			setPage(0);
 		}
-		if (
-			initialLoad &&
-			selectedStatusTag.value !== ""
-		) {
+		if (initialLoad && selectedStatusTag.value !== "") {
 			setInitialLoad(false);
 		}
 
@@ -112,16 +116,19 @@ const Companies: NextPage<Props> = ({
 
 		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
 		const newFilterOption = currentFilterOption.includes(tag)
-		? currentFilterOption.filter((t) => t !== tag)
-		: [tag, ...currentFilterOption]
+			? currentFilterOption.filter((t) => t !== tag)
+			: [tag, ...currentFilterOption];
 
 		if (newFilterOption.length === 0) {
 			setSelectedFilters({ ...selectedFilters, industry: undefined });
 		} else {
-			setSelectedFilters({ ...selectedFilters, industry: {
-				...selectedFilters?.industry,
-				tags: newFilterOption,
-			}, });
+			setSelectedFilters({
+				...selectedFilters,
+				industry: {
+					...selectedFilters?.industry,
+					tags: newFilterOption,
+				},
+			});
 		}
 
 		currentFilterOption.includes(tag)
@@ -241,178 +248,31 @@ const Companies: NextPage<Props> = ({
 						onReset={() => setSelectedFilters(null)}
 					/>
 
+					<div>
+						<ElemButton
+							onClick={() => setTableLayout(false)}
+							btn="white"
+							roundedFull={false}
+							className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
+								!tableLayout && "bg-slate-200"
+							}`}
+						>
+							<IconGrid className="w-5 h-5" />
+						</ElemButton>
+						<ElemButton
+							onClick={() => setTableLayout(true)}
+							btn="white"
+							roundedFull={false}
+							className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
+								tableLayout && "bg-slate-200"
+							}`}
+						>
+							<IconTable className="w-5 h-5" />
+						</ElemButton>
+					</div>
+
 					{/* New Filters UI */}
-					<section className="w-full flex items-center justify-between mb-6 pb-3 border-b border-slate-200">
-						<div className="flex items-center space-x-3">
-							<div className="font-bold">Filters:</div>
-							<Popover>
-								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-									<div>Industry</div>
-								</Popover.Button>
-								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
-									<div className="font-bold text-sm px-3 py-2">
-										Filter by Industry
-									</div>
-									<ul className="grid grid-cols-2 overflow-y-auto no-scrollbar divide-y divide-slate-100">
-										{tagsMethods.map((tagMethod) => (
-											<li
-												key={tagMethod.id}
-												className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100"
-											>
-												<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
-													<input
-														id={tagMethod.id}
-														type="checkbox"
-														className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-													/>
-													<div>{tagMethod.title}</div>
-												</label>
-											</li>
-										))}
-									</ul>
-									<div className="px-3 py-2 border-t border-black/5">
-										<button className="text-primary-500">Clear</button>
-									</div>
-								</Popover.Panel>
-							</Popover>
-							<Popover>
-								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-									<div>Status</div>
-								</Popover.Button>
-								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
-									<div className="font-bold text-sm px-3 py-2">
-										Organization status
-									</div>
-									<ul className="overflow-y-auto no-scrollbar divide-y divide-slate-100">
-										<li className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100">
-											<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
-												<input
-													type="checkbox"
-													className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-												/>
-												<div>Trending</div>
-											</label>
-										</li>
-										<li className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100">
-											<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
-												<input
-													type="checkbox"
-													className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-												/>
-												<div>Acquired</div>
-											</label>
-										</li>
-										<li className="flex items-center w-full min-w-max text-sm text-left font-medium hover:text-primary-500 hover:bg-slate-100">
-											<label className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100">
-												<input
-													type="checkbox"
-													className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-												/>
-												<div>Dead</div>
-											</label>
-										</li>
-									</ul>
-									<div className="px-3 py-2 border-t border-black/5">
-										<button className="text-primary-500">Clear</button>
-									</div>
-								</Popover.Panel>
-							</Popover>
-
-							<Popover>
-								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-									<div>Founded</div>
-								</Popover.Button>
-								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
-									<div className="font-bold text-sm px-3 py-2">
-										Founded date
-									</div>
-									<fieldset>
-										<div className="overflow-y-auto no-scrollbar divide-y divide-slate-100">
-											{foundedDates.map((foundedDate) => (
-												<label
-													key={foundedDate.id}
-													className="relative flex items-center gap-2 cursor-pointer w-full px-3 py-2 hover:bg-slate-100"
-												>
-													<div className="flex h-5 items-center">
-														<input
-															id={foundedDate.id}
-															name="founded-date"
-															type="radio"
-															defaultChecked={foundedDate.id === "any"}
-															className="h-4 w-4 border-slate-200 text-primary-500 focus:ring-primary-500"
-														/>
-													</div>
-													<div className="text-sm font-medium">
-														{foundedDate.name}
-													</div>
-												</label>
-											))}
-										</div>
-									</fieldset>
-									<div className="px-3 py-2 border-t border-black/5">
-										<button className="text-primary-500">Clear</button>
-									</div>
-								</Popover.Panel>
-							</Popover>
-
-							<Popover>
-								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-									<div>Funding</div>
-								</Popover.Button>
-								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
-									<div className="font-bold text-sm px-3 py-2">
-										Funding Amount
-									</div>
-									<div className="font-medium px-3 py-2">
-										Min-Max Range Slider will go here
-									</div>
-									<div className="px-3 py-2 border-t border-black/5">
-										<button className="text-primary-500">Clear</button>
-									</div>
-								</Popover.Panel>
-							</Popover>
-
-							<Popover>
-								<Popover.Button className="relative inline-flex items-center font-normal text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-									<div>Employees</div>
-								</Popover.Button>
-								<Popover.Panel className="absolute z-10 bg-white shadow-lg border border-black/5 rounded-lg min-w-content">
-									<div className="font-bold text-sm px-3 py-2">
-										Employee Count
-									</div>
-									<div className="font-medium px-3 py-2">
-										Min-Max Range Slider will go here
-									</div>
-									<div className="px-3 py-2 border-t border-black/5">
-										<button className="text-primary-500">Clear</button>
-									</div>
-								</Popover.Panel>
-							</Popover>
-						</div>
-
-						<div>
-							<ElemButton
-								onClick={() => setTableLayout(false)}
-								btn="white"
-								roundedFull={false}
-								className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
-									!tableLayout && "bg-slate-200"
-								}`}
-							>
-								<IconGrid className="w-5 h-5" />
-							</ElemButton>
-							<ElemButton
-								onClick={() => setTableLayout(true)}
-								btn="white"
-								roundedFull={false}
-								className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
-									tableLayout && "bg-slate-200"
-								}`}
-							>
-								<IconTable className="w-5 h-5" />
-							</ElemButton>
-						</div>
-					</section>
+					<section className="w-full flex items-center justify-between mb-6 pb-3 border-b border-slate-200"></section>
 
 					{companies?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -435,9 +295,7 @@ const Companies: NextPage<Props> = ({
 						</div>
 					)}
 
-					<div
-						className={`min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}
-					>
+					<div className={`min-h-[42vh]`}>
 						{error ? (
 							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
 								<div className="max-w-xl mx-auto">
@@ -461,23 +319,31 @@ const Companies: NextPage<Props> = ({
 								</div>
 							</div>
 						) : isLoading && !initialLoad ? (
-							<>
+							<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 								{Array.from({ length: 9 }, (_, i) => (
 									<PlaceholderCompanyCard key={i} />
 								))}
-							</>
+							</div>
+						) : tableLayout ? (
+							<CompaniesTable
+								companies={companies}
+								itemsPerPage={limit}
+								filterByTag={filterByTag}
+							/>
 						) : (
-							companies?.map((company) => {
-								return (
-									<ElemCompanyCard
-										key={company.id}
-										company={company as Companies}
-										tagOnClick={filterByTag}
-									/>
-								);
-							})
+							<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+								{companies?.map((company) => {
+									return (
+										<ElemCompanyCard
+											key={company.id}
+											company={company as Companies}
+											tagOnClick={filterByTag}
+										/>
+									);
+								})}
+							</div>
 						)}
-					</div> */}
+					</div>
 					<Pagination
 						shownItems={companies?.length}
 						totalItems={companies_aggregate}
@@ -501,7 +367,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] }
+			where: {
+				_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+			},
 		}
 	);
 

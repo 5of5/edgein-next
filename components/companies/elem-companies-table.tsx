@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { ElemPhoto } from "@/components/ElemPhoto";
+import { ElemPhoto } from "@/components/elem-photo";
 import moment from "moment-timezone";
 import { orderBy, first } from "lodash";
 import {
@@ -7,10 +7,10 @@ import {
 	IconSortDown,
 	IconX,
 	IconChevronDown,
-} from "@/components/Icons";
+} from "@/components/icons";
 //import { Pagination } from "@/components/Pagination";
 // import { Companies_Bool_Exp, useGetCompaniesQuery } from "@/graphql/types";
-import { ElemReactions } from "@/components/ElemReactions";
+import { ElemReactions } from "@/components/elem-reactions";
 import { TableColumnsFilter } from "@/components/companies/elem-table-columns-filter";
 import { last } from "lodash";
 import { Menu } from "@headlessui/react";
@@ -42,7 +42,7 @@ export const CompaniesTable: FC<Props> = ({
 	filterByTag,
 	companies,
 }) => {
-	console.log(companies[8].location_json);
+	//console.log(companies[8].location_json);
 	const getLatestRound = (theRounds: any) => {
 		const latestRound: any = first(
 			theRounds

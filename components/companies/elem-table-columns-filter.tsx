@@ -1,6 +1,6 @@
 import { FC, Fragment, useState } from "react";
 import { Popover } from "@headlessui/react";
-import { IconColumns } from "../Icons";
+import { IconColumns } from "../icons";
 
 type Props = {
 	className?: string;
