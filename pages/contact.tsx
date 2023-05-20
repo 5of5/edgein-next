@@ -40,7 +40,7 @@ const Contact: NextPage = () => {
 
 	return (
 		<div className="relative -mb-24 overflow-hidden">
-			<FigureBlurredBg className="top-0 -bottom-10 left-0 right-0 -mt10 md:-mt-64 lg:-mt-32 -mb-32" />
+			<FigureBlurredBg className="top-0 -bottom-10 left-0 right-0 -mt-10 md:-mt-64 lg:-mt-32 -mb-32" />
 			<div className="max-w-2xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<h1 className="relative max-w-3xl text-4xl lg:text-6xl font-bold">
 					Contact

@@ -15,7 +15,7 @@ export const ElemHeading: React.FC<PropsWithChildren<Props>> = ({
 }) => {
 	return (
 		<section className={`${className} relative`}>
-			<FigureBlurredBg className="top-0 -bottom-10 left-0 right-0 -mt10 md:-mt-64 lg:-mt-32 -mb-32" />
+			<FigureBlurredBg className="top-0 -bottom-10 left-0 right-0 -mt-10 md:-mt-64 lg:-mt-32 -mb-32" />
 
 			<div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
 				<div>
