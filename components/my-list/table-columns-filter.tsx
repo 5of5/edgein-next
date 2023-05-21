@@ -9,13 +9,13 @@ type Props = {
 };
 
 export const TableColumnsFilter: FC<Props> = ({
-	className,
+	className = "",
 	columns,
 	resetColumns,
 }) => {
 	return (
 		<>
-			<Popover className="relative">
+			<Popover className={`${className} relative`}>
 				<Popover.Button className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
 					<IconColumns className="w-5 h-5 mr-1 shrink-0" />
 					<div className="text-left">Edit columns</div>
