@@ -327,7 +327,10 @@ const Companies: NextPage<Props> = ({
 						) : tableLayout ? (
 							<CompaniesTable
 								companies={companies}
+								pageNumber={page}
 								itemsPerPage={limit}
+								shownItems={companies?.length}
+								totalItems={companies_aggregate}
 								filterByTag={filterByTag}
 							/>
 						) : (

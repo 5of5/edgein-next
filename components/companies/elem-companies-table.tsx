@@ -31,18 +31,27 @@ export type DeepPartial<T> = T extends object
 
 type Props = {
 	className?: string;
+	pageNumber: number;
 	itemsPerPage: number;
+	shownItems?: number;
+	totalItems: number;
 	filterByTag: Function;
 	companies?: any;
 };
 
 export const CompaniesTable: FC<Props> = ({
 	className = "",
+	pageNumber,
 	itemsPerPage,
+	shownItems = 0,
+	totalItems,
 	filterByTag,
 	companies,
 }) => {
-	//console.log(companies[8].location_json);
+	const shownItemsStart = pageNumber === 0 ? 1 : pageNumber * itemsPerPage;
+	const shownItemsEnd =
+		shownItems < itemsPerPage ? totalItems : (pageNumber + 1) * itemsPerPage;
+
 	const getLatestRound = (theRounds: any) => {
 		const latestRound: any = first(
 			theRounds
@@ -393,7 +402,23 @@ export const CompaniesTable: FC<Props> = ({
 			<div className="flex items-center justify-between space-x-2">
 				<TableColumnsFilter columns={allColumns} />
 
-				<div>0-50 of 20,0000 companies </div>
+				{shownItems === 0 ? (
+					<></>
+				) : shownItems == totalItems ? (
+					<span>
+						Results: {shownItemsStart}
+						{" - "} {shownItemsEnd} of {totalItems} companies
+					</span>
+				) : (
+					<span>
+						Results: {numberWithCommas(shownItemsStart)}
+						{" - "}
+						{numberWithCommas(shownItemsEnd)} of {numberWithCommas(totalItems)}{" "}
+						companies
+					</span>
+				)}
+
+				{/* <div>0-50 of 20,0000 companies </div> */}
 			</div>
 
 			<div className="overflow-auto border border-black/10 rounded-lg mt-2">
