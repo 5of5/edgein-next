@@ -20,7 +20,7 @@ export const TableColumnsFilter: FC<Props> = ({
 					<IconColumns className="w-5 h-5 mr-1" />
 					<div>Edit columns</div>
 				</Popover.Button>
-				<Popover.Panel className="absolute z-10 bg-white shadow-lg p-5 border border-black/5 rounded-lg w-screen max-w-sm">
+				<Popover.Panel className="absolute z-10 bg-white shadow-lg p-3 border border-black/5 rounded-lg w-screen max-w-sm">
 					<div className="font-bold text-sm mb-1">Edit columns</div>
 					<ul className="grid grid-cols-2 gap-x-5 overflow-y-auto scrollbar-hide">
 						{columns?.map((column: any) => {
@@ -45,7 +45,7 @@ export const TableColumnsFilter: FC<Props> = ({
 					</ul>
 					<div className="flex items-center justify-between gap-x-4 mt-2 pt-2 border-t border-black/5">
 						<button onClick={resetColumns} className="text-primary-500">
-							Reset columns
+							Show all
 						</button>
 					</div>
 				</Popover.Panel>

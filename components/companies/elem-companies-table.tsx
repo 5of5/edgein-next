@@ -7,11 +7,12 @@ import {
 	IconSortDown,
 	IconX,
 	IconChevronDown,
+	IconChevronLeft,
+	IconChevronRight,
 } from "@/components/icons";
-//import { Pagination } from "@/components/Pagination";
-// import { Companies_Bool_Exp, useGetCompaniesQuery } from "@/graphql/types";
+import { ElemButton } from "@/components/elem-button";
 import { ElemReactions } from "@/components/elem-reactions";
-import { TableColumnsFilter } from "@/components/companies/elem-table-columns-filter";
+import { TableColumnsFilter } from "@/components/my-list/table-columns-filter";
 import { last } from "lodash";
 import { Menu } from "@headlessui/react";
 import { numberWithCommas } from "@/utils";
@@ -31,22 +32,26 @@ export type DeepPartial<T> = T extends object
 
 type Props = {
 	className?: string;
+	companies?: any;
 	pageNumber: number;
 	itemsPerPage: number;
 	shownItems?: number;
 	totalItems: number;
 	filterByTag: Function;
-	companies?: any;
+	onClickPrev?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 export const CompaniesTable: FC<Props> = ({
 	className = "",
+	companies,
 	pageNumber,
 	itemsPerPage,
 	shownItems = 0,
 	totalItems,
 	filterByTag,
-	companies,
+	onClickPrev,
+	onClickNext,
 }) => {
 	const shownItemsStart = pageNumber === 0 ? 1 : pageNumber * itemsPerPage;
 	const shownItemsEnd =
@@ -345,7 +350,6 @@ export const CompaniesTable: FC<Props> = ({
 
 	const getCompanies = React.useMemo(() => {
 		return companies ? companies : [{}];
-		//return companiesData?.companies ? companiesData?.companies : [{}];
 	}, [companies]);
 
 	const {
@@ -357,9 +361,10 @@ export const CompaniesTable: FC<Props> = ({
 		prepareRow,
 		setSortBy,
 		allColumns,
-		nextPage,
-		previousPage,
-		state: { pageIndex, pageSize, selectedRowIds },
+		// nextPage,
+		// previousPage,
+		toggleHideAllColumns,
+		// state: { pageIndex, pageSize, selectedRowIds },
 		//toggleAllRowsSelected,
 	} = useTable(
 		{
@@ -379,46 +384,58 @@ export const CompaniesTable: FC<Props> = ({
 		usePagination
 	);
 
-	const generateSortingIndicator = (column: any) => {
-		return (
-			<>
-				{column.isSorted ? (
-					column.isSortedDesc ? (
-						<IconSortDown className="ml-1 h-5 w-5 inline-block" />
-					) : (
-						<IconSortUp className="ml-1 h-5 w-5 inline-block" />
-					)
-				) : column.canSort ? (
-					<IconSortDown className="ml-1 h-5 w-5 inline-block text-slate-400 group-hover:text-primary-500" />
-				) : (
-					<></>
-				)}
-			</>
-		);
-	};
-
 	return (
 		<div className={`${className}`}>
 			<div className="flex items-center justify-between space-x-2">
-				<TableColumnsFilter columns={allColumns} />
+				<TableColumnsFilter
+					columns={allColumns}
+					resetColumns={() => toggleHideAllColumns(false)}
+				/>
 
-				{shownItems === 0 ? (
-					<></>
-				) : shownItems == totalItems ? (
-					<span>
-						Results: {shownItemsStart}
-						{" - "} {shownItemsEnd} of {totalItems} companies
-					</span>
-				) : (
-					<span>
-						Results: {numberWithCommas(shownItemsStart)}
-						{" - "}
-						{numberWithCommas(shownItemsEnd)} of {numberWithCommas(totalItems)}{" "}
-						companies
-					</span>
-				)}
+				<div className="flex">
+					{shownItems === 0 ? (
+						<></>
+					) : shownItems == totalItems ? (
+						<div>
+							Results: {shownItemsStart}
+							{" - "} {shownItemsEnd} of {totalItems} companies
+						</div>
+					) : (
+						<div>
+							Results: {numberWithCommas(shownItemsStart)}
+							{"-"}
+							{numberWithCommas(shownItemsEnd)} of{" "}
+							{numberWithCommas(totalItems)} companies
+						</div>
+					)}
+					<div className="flex space-x-1 ml-2">
+						<ElemButton
+							onClick={pageNumber * itemsPerPage > 0 ? onClickPrev : undefined}
+							btn="white"
+							roundedFull={true}
+							className={`px-1 aspect-square ${
+								pageNumber * itemsPerPage > 0
+									? ""
+									: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
+							}`}
+						>
+							<IconChevronLeft className="h-5 w-5" />
+						</ElemButton>
 
-				{/* <div>0-50 of 20,0000 companies </div> */}
+						<ElemButton
+							onClick={totalItems > shownItemsEnd ? onClickNext : undefined}
+							btn="white"
+							roundedFull={true}
+							className={`px-1 aspect-square ${
+								totalItems > shownItemsEnd
+									? ""
+									: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
+							}`}
+						>
+							<IconChevronRight className="h-5 w-5" />
+						</ElemButton>
+					</div>
+				</div>
 			</div>
 
 			<div className="overflow-auto border border-black/10 rounded-lg mt-2">
@@ -585,14 +602,6 @@ export const CompaniesTable: FC<Props> = ({
 					</tbody>
 				</table>
 			</div>
-			{/* <Pagination
-				shownItems={page?.length}
-				totalItems={companies?.length}
-				page={pageIndex}
-				itemsPerPage={pageSize}
-				onClickPrev={() => previousPage()}
-				onClickNext={() => nextPage()}
-			/> */}
 		</div>
 	);
 };

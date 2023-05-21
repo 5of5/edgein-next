@@ -207,10 +207,12 @@ const Companies: NextPage<Props> = ({
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
-					<h2 className="text-xl font-bold">Companies</h2>
+					{/* <div className="flex justify-between">
+						<h2 className="text-xl font-bold">Companies</h2>
+					</div> */}
 
 					<div
-						className="mt-2 -mr-5 pr-5 flex items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x lg:mr-0 lg:pr-0"
+						className="-mt-5 flex flex-wrap items-center justify-between border-b border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
 						role="tablist"
 					>
 						<nav className="flex">
@@ -233,6 +235,29 @@ const Companies: NextPage<Props> = ({
 									)
 								)}
 						</nav>
+
+						<div>
+							<ElemButton
+								onClick={() => setTableLayout(false)}
+								btn="white"
+								roundedFull={false}
+								className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
+									!tableLayout && "bg-slate-200 text-primary-500"
+								}`}
+							>
+								<IconGrid className="w-5 h-5" />
+							</ElemButton>
+							<ElemButton
+								onClick={() => setTableLayout(true)}
+								btn="white"
+								roundedFull={false}
+								className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
+									tableLayout && "bg-slate-200 text-primary-500"
+								}`}
+							>
+								<IconTable className="w-5 h-5" />
+							</ElemButton>
+						</div>
 					</div>
 
 					<ElemFilter
@@ -248,32 +273,6 @@ const Companies: NextPage<Props> = ({
 						}}
 						onReset={() => setSelectedFilters(null)}
 					/>
-
-					<div>
-						<ElemButton
-							onClick={() => setTableLayout(false)}
-							btn="white"
-							roundedFull={false}
-							className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
-								!tableLayout && "bg-slate-200"
-							}`}
-						>
-							<IconGrid className="w-5 h-5" />
-						</ElemButton>
-						<ElemButton
-							onClick={() => setTableLayout(true)}
-							btn="white"
-							roundedFull={false}
-							className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
-								tableLayout && "bg-slate-200"
-							}`}
-						>
-							<IconTable className="w-5 h-5" />
-						</ElemButton>
-					</div>
-
-					{/* New Filters UI */}
-					<section className="w-full flex items-center justify-between mb-6 pb-3 border-b border-slate-200"></section>
 
 					{companies?.length === 0 && (
 						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -296,7 +295,7 @@ const Companies: NextPage<Props> = ({
 						</div>
 					)}
 
-					<div className={`min-h-[42vh]`}>
+					<div className={``}>
 						{error ? (
 							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
 								<div className="max-w-xl mx-auto">
@@ -332,10 +331,12 @@ const Companies: NextPage<Props> = ({
 								itemsPerPage={limit}
 								shownItems={companies?.length}
 								totalItems={companies_aggregate}
+								onClickPrev={() => setPage(page - 1)}
+								onClickNext={() => setPage(page + 1)}
 								filterByTag={filterByTag}
 							/>
 						) : (
-							<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+							<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
 								{companies?.map((company) => {
 									return (
 										<ElemCompanyCard
