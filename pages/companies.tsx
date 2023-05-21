@@ -198,6 +198,7 @@ const Companies: NextPage<Props> = ({
 			<ElemHeading
 				title={`${selectedLibrary} Companies`}
 				subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
+				className=""
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">

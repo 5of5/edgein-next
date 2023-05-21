@@ -67,9 +67,9 @@ const Investors: NextPage<Props> = ({
 	const offset = limit * page;
 
 	const defaultFilters = [
-    { slug: { _neq: "" } },
-    { library: { _contains: selectedLibrary } },
-  ];
+		{ slug: { _neq: "" } },
+		{ library: { _contains: selectedLibrary } },
+	];
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
 		_and: defaultFilters,
@@ -317,7 +317,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] },
+			where: {
+				_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+			},
 		}
 	);
 
