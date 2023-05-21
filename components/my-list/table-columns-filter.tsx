@@ -17,8 +17,8 @@ export const TableColumnsFilter: FC<Props> = ({
 		<>
 			<Popover className="relative">
 				<Popover.Button className="relative inline-flex items-center text-sm rounded-md px-2 py-1.5 transition ease-in-out duration-150 group bg-white ring-inset ring-1 ring-slate-200 hover:text-primary-500 hover:bg-slate-200 focus:outline-none focus:ring-1">
-					<IconColumns className="w-5 h-5 mr-1" />
-					<div>Edit columns</div>
+					<IconColumns className="w-5 h-5 mr-1 shrink-0" />
+					<div className="text-left">Edit columns</div>
 				</Popover.Button>
 				<Popover.Panel className="absolute z-10 bg-white shadow-lg p-3 border border-black/5 rounded-lg w-screen max-w-sm">
 					<div className="font-bold text-sm mb-1">Edit columns</div>

@@ -386,7 +386,7 @@ export const CompaniesTable: FC<Props> = ({
 
 	return (
 		<div className={`${className}`}>
-			<div className="flex items-center justify-between space-x-2">
+			<div className="flex flex-wrap items-center justify-between space-x-2 p-2 rounded-t-lg border-t border-x border-black/10">
 				<TableColumnsFilter
 					columns={allColumns}
 					resetColumns={() => toggleHideAllColumns(false)}
@@ -438,7 +438,7 @@ export const CompaniesTable: FC<Props> = ({
 				</div>
 			</div>
 
-			<div className="overflow-auto border border-black/10 rounded-lg mt-2">
+			<div className="overflow-auto border border-black/10 overflow-y-hidden">
 				<table
 					{...getTableProps()}
 					className="table-auto min-w-full divide-y divide-black/10 overscroll-x-none"
