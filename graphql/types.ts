@@ -1905,6 +1905,7 @@ export type Companies = {
   overview: Maybe<Scalars['String']>;
   reddit: Maybe<Scalars['String']>;
   search_count: Maybe<Scalars['Int']>;
+  sector_tags: Maybe<Scalars['jsonb']>;
   sentiment: Maybe<Scalars['jsonb']>;
   slug: Scalars['String'];
   status: Scalars['String'];
@@ -2032,6 +2033,12 @@ export type CompaniesNews_Links_AggregateArgs = {
 
 
 /** columns and relationships of "companies" */
+export type CompaniesSector_TagsArgs = {
+  path: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "companies" */
 export type CompaniesSentimentArgs = {
   path: InputMaybe<Scalars['String']>;
 };
@@ -2123,6 +2130,7 @@ export type Companies_Append_Input = {
   library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  sector_tags: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
@@ -2182,6 +2190,7 @@ export type Companies_Bool_Exp = {
   overview: InputMaybe<String_Comparison_Exp>;
   reddit: InputMaybe<String_Comparison_Exp>;
   search_count: InputMaybe<Int_Comparison_Exp>;
+  sector_tags: InputMaybe<Jsonb_Comparison_Exp>;
   sentiment: InputMaybe<Jsonb_Comparison_Exp>;
   slug: InputMaybe<String_Comparison_Exp>;
   status: InputMaybe<String_Comparison_Exp>;
@@ -2220,6 +2229,7 @@ export type Companies_Delete_At_Path_Input = {
   library: InputMaybe<Array<Scalars['String']>>;
   location_json: InputMaybe<Array<Scalars['String']>>;
   logo: InputMaybe<Array<Scalars['String']>>;
+  sector_tags: InputMaybe<Array<Scalars['String']>>;
   sentiment: InputMaybe<Array<Scalars['String']>>;
   status_tags: InputMaybe<Array<Scalars['String']>>;
   tags: InputMaybe<Array<Scalars['String']>>;
@@ -2230,6 +2240,7 @@ export type Companies_Delete_Elem_Input = {
   library: InputMaybe<Scalars['Int']>;
   location_json: InputMaybe<Scalars['Int']>;
   logo: InputMaybe<Scalars['Int']>;
+  sector_tags: InputMaybe<Scalars['Int']>;
   sentiment: InputMaybe<Scalars['Int']>;
   status_tags: InputMaybe<Scalars['Int']>;
   tags: InputMaybe<Scalars['Int']>;
@@ -2240,6 +2251,7 @@ export type Companies_Delete_Key_Input = {
   library: InputMaybe<Scalars['String']>;
   location_json: InputMaybe<Scalars['String']>;
   logo: InputMaybe<Scalars['String']>;
+  sector_tags: InputMaybe<Scalars['String']>;
   sentiment: InputMaybe<Scalars['String']>;
   status_tags: InputMaybe<Scalars['String']>;
   tags: InputMaybe<Scalars['String']>;
@@ -2576,6 +2588,7 @@ export type Companies_Insert_Input = {
   overview: InputMaybe<Scalars['String']>;
   reddit: InputMaybe<Scalars['String']>;
   search_count: InputMaybe<Scalars['Int']>;
+  sector_tags: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
@@ -2756,6 +2769,7 @@ export type Companies_Order_By = {
   overview: InputMaybe<Order_By>;
   reddit: InputMaybe<Order_By>;
   search_count: InputMaybe<Order_By>;
+  sector_tags: InputMaybe<Order_By>;
   sentiment: InputMaybe<Order_By>;
   slug: InputMaybe<Order_By>;
   status: InputMaybe<Order_By>;
@@ -2787,6 +2801,7 @@ export type Companies_Prepend_Input = {
   library: InputMaybe<Scalars['jsonb']>;
   location_json: InputMaybe<Scalars['jsonb']>;
   logo: InputMaybe<Scalars['jsonb']>;
+  sector_tags: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   status_tags: InputMaybe<Scalars['jsonb']>;
   tags: InputMaybe<Scalars['jsonb']>;
@@ -2861,6 +2876,8 @@ export enum Companies_Select_Column {
   /** column name */
   SearchCount = 'search_count',
   /** column name */
+  SectorTags = 'sector_tags',
+  /** column name */
   Sentiment = 'sentiment',
   /** column name */
   Slug = 'slug',
@@ -2931,6 +2948,7 @@ export type Companies_Set_Input = {
   overview: InputMaybe<Scalars['String']>;
   reddit: InputMaybe<Scalars['String']>;
   search_count: InputMaybe<Scalars['Int']>;
+  sector_tags: InputMaybe<Scalars['jsonb']>;
   sentiment: InputMaybe<Scalars['jsonb']>;
   slug: InputMaybe<Scalars['String']>;
   status: InputMaybe<Scalars['String']>;
@@ -3062,6 +3080,8 @@ export enum Companies_Update_Column {
   Reddit = 'reddit',
   /** column name */
   SearchCount = 'search_count',
+  /** column name */
+  SectorTags = 'sector_tags',
   /** column name */
   Sentiment = 'sentiment',
   /** column name */
@@ -23382,7 +23402,15 @@ export type UpdateCompanyByPkMutationVariables = Exact<{
 }>;
 
 
+
 export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
+
+export type GetNewsOrganizationQueryVariables = Exact<{
+  slug: Scalars['String'];
+}>;
+
+
+export type GetNewsOrganizationQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, total_employees: any | null, year_founded: string | null, website: string | null, company_linkedin: string | null, careers_page: string | null, tags: any | null, date_added: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, type: string | null, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
 
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
@@ -24937,6 +24965,86 @@ export const useUpdateCompanyByPkMutation = <
       options
     );
 useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
+export const GetNewsOrganizationDocument = `
+    query GetNewsOrganization($slug: String!) {
+  companies(
+    where: {_and: [{slug: {_eq: $slug}}, {sector_tags: {_contains: "News Organization"}}]}
+  ) {
+    id
+    name
+    slug
+    logo
+    layer
+    overview
+    total_employees
+    year_founded
+    website
+    company_linkedin
+    careers_page
+    tags
+    date_added
+    twitter
+    location
+    location_json
+    discord
+    glassdoor
+    teamMembers {
+      id
+      person {
+        id
+        slug
+        name
+        picture
+        linkedin
+        personal_email
+        work_email
+      }
+      function
+      start_date
+      end_date
+      founder
+      title
+    }
+    news_links {
+      id
+      type
+      news {
+        id
+        date
+        text
+        link
+        kind
+        status
+        organizations {
+          id
+          type
+          company_id
+          vc_firm_id
+        }
+      }
+    }
+  }
+}
+    `;
+export const useGetNewsOrganizationQuery = <
+      TData = GetNewsOrganizationQuery,
+      TError = Error
+    >(
+      variables: GetNewsOrganizationQueryVariables,
+      options?: UseQueryOptions<GetNewsOrganizationQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsOrganizationQuery, TError, TData>(
+      ['GetNewsOrganization', variables],
+      fetcher<GetNewsOrganizationQuery, GetNewsOrganizationQueryVariables>(GetNewsOrganizationDocument, variables),
+      options
+    );
+useGetNewsOrganizationQuery.document = GetNewsOrganizationDocument;
+
+
+useGetNewsOrganizationQuery.getKey = (variables: GetNewsOrganizationQueryVariables) => ['GetNewsOrganization', variables];
+;
+
+useGetNewsOrganizationQuery.fetcher = (variables: GetNewsOrganizationQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsOrganizationQuery, GetNewsOrganizationQueryVariables>(GetNewsOrganizationDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {

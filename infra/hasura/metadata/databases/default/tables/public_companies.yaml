@@ -126,6 +126,7 @@ select_permissions:
         - overview
         - reddit
         - search_count
+        - sector_tags
         - sentiment
         - slug
         - status_tags
@@ -168,6 +169,7 @@ select_permissions:
         - name
         - notes
         - overview
+        - sector_tags
         - slug
         - tags
         - total_employees
@@ -215,6 +217,7 @@ select_permissions:
         - overview
         - reddit
         - search_count
+        - sector_tags
         - sentiment
         - slug
         - status_tags

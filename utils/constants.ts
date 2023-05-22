@@ -398,6 +398,10 @@ export const functionChoicesTM = [
 		id: "QA",
 		name: "QA",
 	},
+	{
+		id: "Journalist",
+		name: "Journalist",
+	},
 ];
 
 export const seniorityChoicesTM = [
@@ -607,6 +611,13 @@ export const investorSeniorityChoices = [
 	{
 		id: "Back Office",
 		name: "Back Office",
+	},
+];
+
+export const companySectorTagChoices = [
+	{
+		id: "News Organization",
+		name: "News Organization",
 	},
 ];
 
