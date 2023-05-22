@@ -21,6 +21,7 @@ import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import OnboardingStep4 from "./onboarding/onboarding-step-4";
+import ElemLibrarySelector from "./elem-library-selector";
 
 export type Popups =
 	| "login"
@@ -61,6 +62,9 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const [inviteCode, setInviteCode] = useState(
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
 	);
+
+	const isDisplaySelectLibrary =
+    user?.email.endsWith("edgein.io") || user?.email.endsWith("techlist.com"); 
 
 	useEffect(() => {
 		if (
@@ -208,6 +212,9 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								</a>
 							</Link>
 						</div>
+						{!isDisplaySelectLibrary && (
+							<ElemLibrarySelector />
+						)}
 					</div>
 					<ElemSearchBox
 						onClick={() => {

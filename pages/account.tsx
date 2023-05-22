@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useParams } from "react-router-dom";
 import { ElemButton } from "@/components/elem-button";
@@ -10,16 +10,8 @@ import { EditSection } from "@/components/dashboard/edit-section";
 import { useGetUserProfileQuery } from "@/graphql/types";
 import { ElemSubscribedDialog } from "@/components/elem-subscribed-dialog";
 import { loadStripe } from "@/utils/stripe";
-import { InputSelect } from "@/components/input-select";
-import { libraryChoices } from "@/utils/constants";
-import useLibrary from "@/hooks/use-library";
 
 const validator = require("validator");
-
-type Library = {
-	id: string;
-	title: string;
-}
 
 export default function Account() {
 	const { user } = useAuth();
@@ -39,22 +31,6 @@ export default function Account() {
 	const personSlug = userProfile?.users_by_pk?.person?.slug;
 
 	const [isOpenSubscribedDialog, setIsOpenSubscribedDialog] = useState(false);
-
-	const libraryOptions = libraryChoices.map((item) => ({
-    id: item.id,
-    title: item.name,
-  }));
-  const { selectedLibrary, onChangeLibrary } = useLibrary();
-  const [library, setLibrary] = useState<Library | undefined>();
-
-  useEffect(() => {
-    if (selectedLibrary && selectedLibrary !== library?.id) {
-      setLibrary(libraryOptions.find((item) => item.id === selectedLibrary));
-    }
-  }, [selectedLibrary, library, libraryOptions]);
-
-	const isDisplaySelectLibrary =
-    user?.email.endsWith("edgein.io") || user?.email.endsWith("techlist.com"); 
 
 	const onCloseSubscribedDialog = () => {
 		setIsOpenSubscribedDialog(false);
@@ -131,11 +107,6 @@ export default function Account() {
 			callChangePassword();
 		}
 	};
-
-	const handleSelectLibrary = (value: Library) => {
-		setLibrary(value);
-		onChangeLibrary(value?.id as "Web3" | "AI");
-	}
 
 	return (
 		<DashboardLayout>
@@ -311,20 +282,6 @@ export default function Account() {
 							</div>
 						)}
 					</EditSection>
-
-					{isDisplaySelectLibrary && !!library && (
-            <EditSection heading="Library">
-              <div>
-                <InputSelect
-                  options={libraryOptions}
-                  value={library}
-                  onChange={handleSelectLibrary}
-                  className="mt-0.5 text-slate-600 text-base w-32"
-                  buttonClasses="w-32"
-                />
-              </div>
-            </EditSection>
-          )}
 				</dl>
 				<ElemSubscribedDialog
 					isOpen={isOpenSubscribedDialog}
