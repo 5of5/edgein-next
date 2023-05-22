@@ -3,28 +3,25 @@ import { ElemButton } from "@/components/elem-button";
 import { TagInputText } from "@/components/tag-input-text";
 import { TagInputSelect } from "@/components/tag-input-select";
 import { Dialog, Transition } from "@headlessui/react";
-import { useRouter } from "next/router";
 import { tags } from "@/utils/constants";
+import ElemLocationTagInput from "../elem-location-tag-input";
 
 type Props = {
 	selectedOption: string;
-	locationTags: string[];
+	locationTags: any[];
 	industryTags: string[];
 	show: boolean;
 	onClose: () => void;
-	onNext: (locationTags: string[], industryTags: string[]) => void;
-	onBack: (locationTags: string[], industryTags: string[]) => void;
+	onNext: (locationTags: any[], industryTags: string[]) => void;
+	onBack: (locationTags: any[], industryTags: string[]) => void;
 };
 
 export default function OnboardingStep2(props: Props) {
 	const [locationTags, setLocationTags] = useState(props.locationTags);
 	const [industryTags, setIndustryTags] = useState(props.industryTags);
 
-	const router = useRouter();
-
 	const onNext = () => {
 		props.onNext(locationTags, industryTags);
-		router.push(`/` + props.selectedOption);
 	};
 
 	const onBack = () => {
@@ -104,23 +101,21 @@ export default function OnboardingStep2(props: Props) {
 								<h3 className="text-2xl font-bold">
 									Let&rsquo;s set up your areas of interest
 								</h3>
-								<p className="text-sm text-slate-500">Step 2 of 2</p>
+								<p className="text-sm text-slate-500">Step 2 of 4</p>
 								<div className="mt-4 text-slate-600">
 									This will help you discover relevant companies and investors.
 								</div>
 
-								<TagInputText
-									defaultTags={locationTags}
-									className="mt-8"
-									label="Locations"
-									sublabel="Type and press enter"
-									value=""
-									name="Location"
-									placeholder="e.g. Germany, San Francisco"
-									onChange={(tags) => {
-										setLocationTags(tags);
-									}}
-								/>
+								<div className="mt-8">
+									<ElemLocationTagInput
+										label="Locations"
+										defaultTags={locationTags}
+										layers={["coarse"]}
+										onChange={(tags) => {
+											setLocationTags(tags);
+										}}
+									/>
+								</div>
 
 								<TagInputSelect
 									defaultTags={industryTags}
@@ -144,7 +139,7 @@ export default function OnboardingStep2(props: Props) {
 										Back
 									</ElemButton>
 									<ElemButton onClick={onNext} btn="primary">
-										Finish Setup
+										Next
 									</ElemButton>
 								</div>
 							</Dialog.Panel>

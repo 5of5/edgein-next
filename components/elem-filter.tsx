@@ -1,9 +1,18 @@
 import React, { FC, useState, useEffect } from "react";
 import { omit, cloneDeep } from "lodash";
 import moment from "moment-timezone";
-import { convertToInternationalCurrencySystem } from "@/utils";
+import {
+  convertCurrencyStringToIntNumber,
+  convertToInternationalCurrencySystem,
+} from "@/utils";
 import { getDefaultFilter, getFilterOptionMetadata } from "@/utils/filter";
-import { Filters, FilterOptionKeys, DateRangeOptions, DateCondition } from "@/models/Filter";
+import {
+  Filters,
+  FilterOptionKeys,
+  DateRangeOptions,
+  DateCondition,
+  FilterOptionMetadata,
+} from "@/models/Filter";
 import { ElemButton } from "./elem-button";
 import { InputRadio } from "./input-radio";
 import { ElemTagsInput } from "./elem-tags-input";
@@ -15,6 +24,7 @@ import ElemAddressFilter from "./elem-address-filter";
 import { InputText } from "./input-text";
 import { InputSelect } from "./input-select";
 import { eventSizeChoices } from "@/utils/constants";
+import InputSwitch from "./input-switch";
 
 type Props = {
   resourceType: "companies" | "vc_firms" | "events";
@@ -214,16 +224,33 @@ export const ElemFilter: FC<Props> = ({
 		}));
 	};
 
+	const onToggleSelectAllTags = (
+    option: FilterOptionKeys,
+    checked: boolean,
+    choices: FilterOptionMetadata["choices"]
+  ) => {
+    setFilters((prev) => ({
+      ...prev,
+      [option]: {
+        ...prev?.[option],
+        tags: checked ? choices?.map((item) => item.name) : [],
+      },
+    }));
+  };
+
 	const onBlurAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
 		const [key, metric] = name.split(".");
 		const newAmount: any = {
 			...filters?.[key as keyof Filters],
 		};
+		const numberValue = convertCurrencyStringToIntNumber(value);
 		if (metric === "minVal") {
-			newAmount.formattedMinVal = convertToInternationalCurrencySystem(+value);
+			newAmount.formattedMinVal = convertToInternationalCurrencySystem(numberValue);
+			newAmount.minVal = numberValue;
 		} else {
-			newAmount.formattedMaxVal = convertToInternationalCurrencySystem(+value);
+			newAmount.formattedMaxVal = convertToInternationalCurrencySystem(numberValue);
+			newAmount.maxVal = numberValue;
 		}
 		setFilters((prev) => ({
 			...prev,
@@ -253,7 +280,7 @@ export const ElemFilter: FC<Props> = ({
     const [option, metric] = name.split(".");
     const newData: any = {
       ...filters?.[option as keyof Filters],
-      [metric]: value,
+      [metric]: convertCurrencyStringToIntNumber(value),
     };
     if (option === "fundingAmount" || option === "investmentAmountTotal" || option === "eventPrice") {
       if (metric === "minVal") {
@@ -472,6 +499,10 @@ export const ElemFilter: FC<Props> = ({
               option === "investmentType" ||
               option === "eventType"
             ) {
+							const isSelectedAll =
+                filters[option]?.tags?.length ===
+                optionMetadata.choices?.length;
+
               return (
                 <ElemFilterPopup
                   key={option}
@@ -486,8 +517,17 @@ export const ElemFilter: FC<Props> = ({
                   onApply={onApplyFilter}
                   popupClass="max-w-xl"
                 >
-                  <div className="font-bold text-sm mb-1">
-                    {optionMetadata.heading}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="font-bold text-sm mb-1">
+                      {optionMetadata.heading}
+                    </div>
+                    <InputSwitch
+                      label="Select All"
+                      checked={isSelectedAll}
+                      onChange={(v) =>
+                        onToggleSelectAllTags(option, v, optionMetadata.choices)
+                      }
+                    />
                   </div>
                   <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto scrollbar-hide lg:grid-cols-4">
                     {optionMetadata.choices?.map((choice) => (
@@ -763,6 +803,7 @@ export const ElemFilter: FC<Props> = ({
                       value={filters[option]?.value}
                       onChange={onChangeEventSize}
                       className="text-slate-600 text-base w-full"
+											buttonClasses="h-10"
                     />
                   </div>
                 </ElemFilterPopup>

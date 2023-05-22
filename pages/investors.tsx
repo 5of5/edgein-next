@@ -67,9 +67,9 @@ const Investors: NextPage<Props> = ({
 	const offset = limit * page;
 
 	const defaultFilters = [
-    { slug: { _neq: "" } },
-    { library: { _contains: selectedLibrary } },
-  ];
+		{ slug: { _neq: "" } },
+		{ library: { _contains: selectedLibrary } },
+	];
 
 	const filters: DeepPartial<Vc_Firms_Bool_Exp> = {
 		_and: defaultFilters,
@@ -181,10 +181,10 @@ const Investors: NextPage<Props> = ({
 	const { showNewMessages } = useIntercom();
 
 	return (
-		<div className="relative overflow-hidden">
+		<div className="relative">
 			<ElemHeading
 				title="Investors"
-				subtitle="We're tracking investments made in web3 companies and projects to provide you with an index of the most active and influential capital in the industry."
+				subtitle={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}
 			></ElemHeading>
 
 			<div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
@@ -317,7 +317,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] },
+			where: {
+				_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+			},
 		}
 	);
 

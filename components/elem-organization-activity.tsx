@@ -91,12 +91,16 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 	);
 };
 
-const renderNews = (activity: any, resourceType: "companies" | "vc_firms", resourceId?: number) => {
+const renderNews = (
+	activity: any,
+	resourceType: "companies" | "vc_firms",
+	resourceId?: number
+) => {
 	const newsOrganizationType = activity.organizations.find(
-    (item: any) =>
-      item[resourceType === "companies" ? "company_id" : "vc_firm_id"] ===
-      resourceId
-  )?.type;
+		(item: any) =>
+			item[resourceType === "companies" ? "company_id" : "vc_firm_id"] ===
+			resourceId
+	)?.type;
 
 	const isPublisher = newsOrganizationType === "publisher";
 
@@ -120,10 +124,10 @@ const renderNews = (activity: any, resourceType: "companies" | "vc_firms", resou
 				)}
 				<div className="flex items-center gap-x-2">
 					{isPublisher && (
-            <span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
-              Publisher
-            </span>
-          )}
+						<span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
+							Publisher
+						</span>
+					)}
 					<p className="text-sm">
 						{formatDate(activity.date as string, {
 							month: "short",
@@ -245,7 +249,32 @@ const renderActivity = (
 						{activity.round ? activity.round : "Investment round"} from{" "}
 					</>
 				)}
-				{resourceName ? resourceName : ""}
+				{activity.investments.map((item: any, index: number) => {
+					return (
+						<div key={index} className="inline">
+							{index !== 0 &&
+								(index === activity.investments.length - 1 ? ", and " : ", ")}
+
+							{item.vc_firm && (
+								<Link href={`/investors/${item.vc_firm?.slug}`}>
+									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+										{item.vc_firm["name"]}
+									</a>
+								</Link>
+							)}
+							{item.vc_firm && item.person && <>/</>}
+
+							{item.person && (
+								<Link href={`/people/${item.person["slug"]}`}>
+									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+										{item.person["name"]}
+									</a>
+								</Link>
+							)}
+						</div>
+					);
+				})}
+				.
 			</div>
 			<p className="text-sm text-slate-600">
 				{formatDate(activity.round_date as string, {

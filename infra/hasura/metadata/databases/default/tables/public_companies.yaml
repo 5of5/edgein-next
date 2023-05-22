@@ -125,6 +125,7 @@ select_permissions:
         - notes
         - overview
         - reddit
+        - search_count
         - sentiment
         - slug
         - status_tags
@@ -132,6 +133,7 @@ select_permissions:
         - telegram
         - total_employees
         - total_valuation
+        - trajectory
         - twitter
         - updated_at
         - velocity_linkedin
@@ -192,6 +194,7 @@ select_permissions:
         - date_added
         - discord
         - facebook
+        - geopoint
         - github
         - glassdoor
         - ico_end
@@ -211,6 +214,7 @@ select_permissions:
         - notes
         - overview
         - reddit
+        - search_count
         - sentiment
         - slug
         - status_tags
@@ -218,6 +222,7 @@ select_permissions:
         - telegram
         - total_employees
         - total_valuation
+        - trajectory
         - twitter
         - updated_at
         - velocity_linkedin

@@ -33,10 +33,19 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 			text: "Access unlimited people",
 		},
 		{
+			text: "Access unlimited events",
+		},
+		{
 			text: "Access unlimited search",
 		},
 		{
 			text: "Create custom lists",
+		},
+		{
+			text: "Create custom groups",
+		},
+		{
+			text: "Save notes on organizations",
 		},
 		{
 			text: "Express your sentiments towards organizations",

@@ -1,7 +1,7 @@
 import CookieService from "../utils/cookie";
 import { NextResponse, NextRequest } from "next/server";
 
-const USAGE_LIMIT = 5
+const USAGE_LIMIT = 5;
 
 export async function middleware(req: NextRequest) {
 	const url = req.nextUrl.clone();
@@ -13,6 +13,7 @@ export async function middleware(req: NextRequest) {
 		[
 			`/`,
 			`/login/`,
+			`/signup/`,
 			`/contact/`,
 			`/privacy/`,
 			`/terms/`,
@@ -34,13 +35,14 @@ export async function middleware(req: NextRequest) {
 			`/admin/admin/`,
 			`/api/submit-data/`,
 			`/api/batch-job/`,
-			`/api/data-runs/`
+			`/api/data-runs/`,
+			`/api/query/completions/`,
 		].includes(url.pathname) ||
 		url.pathname.endsWith(".png") ||
 		url.pathname.endsWith(".jpg") ||
-		url.pathname.endsWith(".ico") //||
+		url.pathname.endsWith(".ico") || //||
 		// process.env.DEV_MODE
-		|| req.method === 'HEAD'
+		req.method === "HEAD"
 	) {
 		return NextResponse.next();
 	}
@@ -49,12 +51,12 @@ export async function middleware(req: NextRequest) {
 		url.searchParams.get("revalidation_auth") ===
 		process.env.REVALIDATION_AUTH_TOKEN
 	) {
-		return NextResponse.next() ;
+		return NextResponse.next();
 	}
 	let user;
 	const redirectPath = url.pathname.startsWith("/api")
-    ? ""
-    : `redirect=${encodeURIComponent(url.pathname)}`;
+		? ""
+		: `redirect=${encodeURIComponent(url.pathname)}`;
 	try {
 		user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
 		if (!user) {
@@ -62,9 +64,9 @@ export async function middleware(req: NextRequest) {
 			// if (!usage || usage.pages < USAGE_LIMIT || (url.pathname.startsWith('/api/') && usage.pages === USAGE_LIMIT)) {
 			// 	return CookieService.setUsageCookie(NextResponse.next(), await CookieService.createUsageToken({pages: (usage?.pages || 0) + (url.pathname.startsWith('/api/') ? 0 : 1)}))
 			// } else {
-				return NextResponse.redirect(
-					new URL(`/login/?usage=true&${redirectPath}`, req.url)
-				);	
+			return NextResponse.redirect(
+				new URL(`/login/?usage=true&${redirectPath}`, req.url)
+			);
 			// }
 		}
 		// if (!user.email.endsWith("5of5.vc") && url.pathname.includes("/admin/")) {
@@ -74,10 +76,8 @@ export async function middleware(req: NextRequest) {
 		// }
 	} catch (error) {
 		console.log(error);
-		return NextResponse.redirect(
-			new URL(`/login/?${redirectPath}`, req.url)
-		);
+		return NextResponse.redirect(new URL(`/login/?${redirectPath}`, req.url));
 	}
 
-	return  NextResponse.next() ;
+	return NextResponse.next();
 }
