@@ -73,6 +73,7 @@ query GetPerson($slug: String!) {
 				text
 				link
         kind
+        source
 				status
 				people {
 					id
