@@ -155,7 +155,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 			metaTitle: "Web3 News - EdgeIn.io",
 			metaDescription:
 				"Get the latest news, guides, price and analysis on Web3",
-			eventsCount: news?.news_aggregate?.aggregate?.count || 0,
+			newsCount: news?.news_aggregate?.aggregate?.count || 0,
 			initialNews: news?.news || [],
 		},
 	};
