@@ -212,7 +212,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								</a>
 							</Link>
 						</div>
-						{!isDisplaySelectLibrary && (
+						{isDisplaySelectLibrary && (
 							<ElemLibrarySelector />
 						)}
 					</div>
