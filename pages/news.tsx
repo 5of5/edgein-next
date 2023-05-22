@@ -28,7 +28,7 @@ type Props = {
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const News: NextPage<Props> = ({
+const NewsPage: NextPage<Props> = ({
 	newsCount,
 	initialNews,
 	setToggleFeedbackForm,
@@ -109,12 +109,12 @@ const News: NextPage<Props> = ({
 								))}
 							</>
 						) : (
-							news?.map((item: any) => (
+							news?.map((item) => (
 								// <>
 								// 	{console.log(item)}
 								<ElemNewsCard
 									key={item.id}
-									newsPost={item as News}
+									newsPost={item}
 									//tagOnClick={filterByTag}
 								/>
 								// </>
@@ -161,4 +161,4 @@ export const getStaticProps: GetStaticProps = async (context) => {
 	};
 };
 
-export default News;
+export default NewsPage;

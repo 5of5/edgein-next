@@ -8,14 +8,14 @@ import {
 	IconNewspaper,
 	IconPlayCircle,
 } from "@/components/icons";
-import { News } from "@/graphql/types";
+import { GetNewsQuery } from "@/graphql/types";
 import Link from "next/link";
 import { formatDate } from "@/utils";
 import { getCleanWebsiteUrl } from "@/utils/text";
 import parse from "html-react-parser";
 
 type Props = {
-	newsPost: News;
+	newsPost: GetNewsQuery["news"][0];
 	tagOnClick?: any;
 };
 
@@ -38,6 +38,10 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		metadata,
 		organizations,
 	} = postData;
+
+	const newsPublisher = organizations?.find(
+    (item) => item.type === "publisher"
+  )?.company;
 
 	return (
 		<div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
@@ -157,14 +161,16 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 					</div>
 				)}
 			</div>
-			<div>
-				<p className="mt-4 text-xs text-gray-400">
-					Powered by{" "}
-					<Link href={`https://cryptopanic.com/`}>
-						<a target="_blank">CryptoPanic</a>
-					</Link>
-				</p>
-			</div>
+			{newsPublisher && (
+				<div>
+					<p className="mt-4 text-xs text-gray-400">
+						Powered by{" "}
+						<Link href={`/news/${newsPublisher.slug}`}>
+							<a target="_blank">{newsPublisher.name}</a>
+						</Link>
+					</p>
+				</div>
+			)}
 			{/* <div
 				className="flex items-center justify-between mt-4 gap-x-5"
 				onClick={(e) => e.stopPropagation()}

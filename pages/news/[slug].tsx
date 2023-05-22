@@ -15,8 +15,8 @@ import {
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { runGraphQl } from "@/utils";
-import ElemNewsArticles from "@/components/news-organization/elem-news-articles";
-import ElemSimilarNewsOrganizations from "@/components/news-organization/elem-similar-news-organizations";
+import ElemNewsArticles from "@/components/news/elem-news-articles";
+import ElemSimilarNewsOrganizations from "@/components/news/elem-similar-news-organizations";
 
 type Props = {
   newsOrganization: GetNewsOrganizationQuery["companies"][0];

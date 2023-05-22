@@ -20,6 +20,7 @@ query GetNews(
 		metadata
 		updated_at
 		organizations {
+			type
 			company {
 				id
 				name
