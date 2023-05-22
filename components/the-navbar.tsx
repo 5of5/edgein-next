@@ -120,11 +120,15 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			path: "/events",
 			name: "Events",
 		},
+		{
+			path: "/news",
+			name: "News",
+		},
 	];
 
-	if (user) {
-		siteNav.push({ path: myListsUrl, name: "My Lists" });
-	}
+	// if (user) {
+	// 	siteNav.push({ path: myListsUrl, name: "My Lists" });
+	// }
 
 	const getAccessTokenFromCode = async (code: string) => {
 		try {
@@ -325,7 +329,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							}}
 						/>
 					)}
-					
+
 					{onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
@@ -343,21 +347,21 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					)}
 
 					{onboardingStep === 4 && (
-            <OnboardingStep4
-              selectedOption={selectedOption}
+						<OnboardingStep4
+							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-              show={onboardingStep === 4 && !loading}
-              message={message}
+							show={onboardingStep === 4 && !loading}
+							message={message}
 							list={list}
-              onClose={() => setOnboardingStep(0)}
-              onBack={(m) => {
-                setMessage(m);
+							onClose={() => setOnboardingStep(0)}
+							onBack={(m) => {
+								setMessage(m);
 								setOnboardingStep(3);
-              }}
+							}}
 							onNext={() => setOnboardingStep(0)}
-            />
-          )}
+						/>
+					)}
 				</nav>
 			</div>
 		</header>
