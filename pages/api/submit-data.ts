@@ -151,16 +151,13 @@ const handleResource = async (
   forceUpdate: Boolean
 ) => {
   const properties = {...resourceObj};
-
   let resourceRelationships : Array<Record<string, any>> = [];
 
-  if (actionType === "Insert Data") {
-    resourceRelationships = [...await addSpecialRelationships(resourceType, resourceObj)];
-    for (let key in resourceObj) {
-      if (isResourceType(key) && key !== resourceType) {
-        resourceRelationships.push({[key]: resourceObj[key]});
-        delete resourceObj[key];
-      }
+  resourceRelationships = [...await addSpecialRelationships(resourceType, resourceObj)];
+  for (let key in resourceObj) {
+    if (isResourceType(key) && key !== resourceType) {
+      resourceRelationships.push({[key]: resourceObj[key]});
+      delete resourceObj[key];
     }
   }
 
@@ -172,7 +169,7 @@ const handleResource = async (
     properties.library = ["Web3"];
   }
 
-  const insertResult = await mutateActionAndDataRaw(
+  let mainResult: Record<string, any> = await mutateActionAndDataRaw(
     partnerId,
     user,
     NODE_NAME[resourceType],
@@ -188,39 +185,37 @@ const handleResource = async (
     resourceType,
     actionType,
     resourceObj,
-    insertResult,
+    mainResult,
   );
 
-  if (actionType === 'Insert Data') {
-    let results: Array<Record<string, any>> = [];
-    for (let resourceRelationship of resourceRelationships) {
-      const resourceRelationshipType = Object.keys(resourceRelationship)[0];
-      let resourceRelationshipObjs = Object.values(resourceRelationship)[0];
-      if (!Array.isArray(resourceRelationshipObjs))
-        resourceRelationshipObjs = [resourceRelationshipObjs];
-      
-      for (let resourceRelationshipObj of resourceRelationshipObjs) {
-        // Add relationship field for resourceId of main record
-        let relationshipField = resourceType === 'people' ? 'person_id' : `${NODE_NAME[resourceType]}_id`;
-        resourceRelationshipObj[relationshipField] = insertResult.id;
-        const ret = await handleResource(
-          partnerId,
-          user,
-          undefined,
-          resourceRelationshipObj,
-          resourceRelationshipType as ResourceTypes,
-          "Insert Data",
-          forceUpdate,
-        );
-        results.push(ret);
-      }
+  let relationshipResults: Array<Record<string, any>> = [];
+  for (let resourceRelationship of resourceRelationships) {
+    const resourceRelationshipType = Object.keys(resourceRelationship)[0];
+    let resourceRelationshipObjs = Object.values(resourceRelationship)[0];
+    if (!Array.isArray(resourceRelationshipObjs))
+      resourceRelationshipObjs = [resourceRelationshipObjs];
+    
+    for (let resourceRelationshipObj of resourceRelationshipObjs) {
+      // Add relationship field for resourceId of main record
+      let relationshipField = resourceType === 'people' ? 'person_id' : `${NODE_NAME[resourceType]}_id`;
+      resourceRelationshipObj[relationshipField] = mainResult.id;
+      const ret = await handleResource(
+        partnerId,
+        user,
+        undefined,
+        resourceRelationshipObj,
+        resourceRelationshipType as ResourceTypes,
+        "Insert Data",
+        forceUpdate,
+      );
+      relationshipResults.push(ret);
     }
-
-    if (results.length > 0)
-      return [insertResult, results];
   }
 
-  return insertResult;
+  if (relationshipResults.length > 0)
+    mainResult = {...mainResult, relationshipResults};
+
+  return mainResult;
 }
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -232,11 +227,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
-  const resourceIdentifier: Array<Record<string, any>> = req.body.resource_identifier;
+  const resourceIdentifier: Array<Array<Record<string, any>>> | Array<Record<string, any>> = req.body.resource_identifier;
   const resourceObj: Array<Record<string, any>> | Record<string, any> = req.body.resource;
   const forceUpdate: Boolean = req.body.force_update;
 
-  let resourceId: number | undefined = undefined;
+  let resourceIdentifiers: Array<Array<Record<string, any>>> = [];
+  let resourceIds: Array<number | undefined> = [];
+  let resourceObjs: Array<Record<string, any>> = [];
   let partnerId: number = 0;
   let actionType: ActionType = "Change Data";
 
@@ -259,124 +256,102 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       partnerId = partner.id;
     }
 
-    // Validate identifier fields (defined in data_fields)
-    for (const item of resourceIdentifier) {
-      if (!item.field)
-        continue;
-      let identifierColumn = item.field;
-      if (identifierColumn !== "id") {
-        const lookupField = await fieldLookup(
-          `${NODE_NAME[resourceType]}.${identifierColumn}`
-        );
-  
-        if (!lookupField?.is_valid_identifier) {
-          return res.status(400).send({
-            identifier: identifierColumn,
-            message: "Invalid identifier",
-          });
-        }
-      }
+    // Resource object can be an array (for one record) or an array of array (for list of records)
+    if (!Array.isArray(resourceObj)) {
+      resourceObjs.push(resourceObj);
+    } else {
+      resourceObjs = [...resourceObj as Array<Record<string, any>>];
     }
 
+    // Resource identifier can be an array (for one record) or an array of array (for list of records)
+    if (!Array.isArray(resourceIdentifier) || resourceIdentifier.length <= 0) {
+      return res.status(400).send({ message: "Invalid identifier" });
+    } else if (Array.isArray(resourceIdentifier[0]) && resourceObjs.length !== resourceIdentifier.length) {
+      return res.status(400).send({ message: "Resource identifier and resource must be same length" });
+    } else if (!Array.isArray(resourceIdentifier[0])) {
+      resourceIdentifiers.push(resourceIdentifier);
+    } else {
+      resourceIdentifiers = [...resourceIdentifier as Array<Array<Record<string, any>>>];
+    }
+
+    // Validate identifier fields (defined in data_fields)
+    for (const identifier of resourceIdentifiers)
+      for (const item of identifier) {
+        if (!item.field)
+          continue;
+        let identifierColumn = item.field;
+        if (identifierColumn !== "id") {
+          const lookupField = await fieldLookup(
+            `${NODE_NAME[resourceType]}.${identifierColumn}`
+          );
+    
+          if (!lookupField?.is_valid_identifier) {
+            return res.status(400).send({
+              identifier: identifierColumn,
+              message: "Invalid identifier",
+            });
+          }
+        }
+      }
+
     // Identify resource id
-    resourceId = await resourceIdLookup(resourceType, resourceIdentifier);
-    if (resourceId === undefined) {
-      // In 'Insert' case, identifier field is only 'id' without value
-      if (JSON.stringify(resourceIdentifier) === JSON.stringify([{'field': 'id'}])) {
-        actionType = "Insert Data";
-        if (Array.isArray(resourceObj)) {
-          // Insert list of records
-          let result: Array<Record<string, any>> = [];
-          await Promise.all(resourceObj.map( async (item) => {
-            const ret = await handleResource(
+    resourceIds = await Promise.all(resourceIdentifiers.map(
+        async (identifier) => { return resourceIdLookup(resourceType, identifier as Array<Record<string, any>>); }
+      )
+    );
+
+    let result: Array<any> = await Promise.all(resourceIds.map(
+      async (resourceId, index) => {
+        if (req.method === "DELETE") {
+          // In 'Delete' case, request method is 'DELETE'
+          if (!resourceId)
+            return {id: null, deleted: false};
+
+          try {
+            await deleteMainTableRecord(resourceType, resourceId);
+            const action = await insertActionDataChange(
+              "Delete Data",
+              resourceId,
+              resourceType,
+              {},
+              user?.id
+            );
+            await markDataRawAsInactive(resourceType, resourceId);
+            await processNotificationOnDelete(
+              resourceType,
+              resourceId,
+              action?.id || 0,
+              resourceObjs[index],
+            );
+            return {id: resourceId, deleted: true};
+          } catch (error: any) {
+            return {id: resourceId, deleted: false};
+          }
+        } else {
+        // Upsert record
+          try {
+            const res = await handleResource(
               partnerId,
               user,
               resourceId,
-              item,
+              resourceObjs[index],
               resourceType,
               actionType,
               forceUpdate,
             );
-            result.push(ret);
-          }));
-          return res.send(result);
+            return res;
+          } catch (error: any) {
+            return {
+              id: resourceId || null,
+              error,
+            };
+          }
         }
-      } else {
-        return res.status(404).send({
-          message: `Not found ${JSON.stringify(resourceIdentifier)}`,
-        });
-      }
-    } else if (req.method === "DELETE") {
-      // In 'Delete' case, request method is 'DELETE'
-      await deleteMainTableRecord(resourceType, resourceId);
-      const action = await insertActionDataChange(
-        "Delete Data",
-        resourceId,
-        resourceType,
-        {},
-        user?.id
-      );
-      await markDataRawAsInactive(resourceType, resourceId);
-      await processNotificationOnDelete(
-        resourceType,
-        resourceId,
-        action?.id || 0,
-        resourceObj
-      );
-      return res.send(resourceObj);
-    }
-
-    // Change record or insert only one record (resourceObj is not array)
-    const result = await handleResource(
-      partnerId,
-      user,
-      resourceId,
-      resourceObj,
-      resourceType,
-      actionType,
-      forceUpdate,
+      })
     );
     return res.send(result);
   } catch (error: any) {
-    if (error[0].extensions.code === "validation-failed") {
-      let field = "";
-      for (let key in resourceObj) {
-        const errMessage = error[0].message;
-        if (errMessage.includes(key)) {
-          field = key;
-        }
-      }
-      if (resourceId) {
-        const dataObject = [
-          {
-            resource: resourceType,
-            field,
-            value: (resourceObj as Record<string, any>)[field],
-            partner: partnerId,
-            accuracy_weight: 1,
-            resource_id: resourceId,
-          },
-        ];
-        await insertDataDiscard(dataObject);
-      }
-    }
-    if(error[0].extensions.code === "constraint-violation"){
-      let message:string="";
-      if(error[0].message.includes("Not-NULL")){
-        message="These fields require the value. However, They receive null values. Please check again"
-      }else if(error[0].message.includes("Uniqueness violation")){
-        message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" requires the unique value. However, It receives duplicate value. Please use another value`;
-      }
-      if(message.length>0){
-        error[0].message=message
-      }
-    }
-    if(error[0].extensions.code==="validation-failed"){
-      let message:string="";
-      message=`Field "${error[0].message.match(/(?<=").*(?=")/gim)}" not found in this table. Please check again`;
-      error[0].message=message
-    }
-    return res.status(500).send(error[0] || error);
+    return res.status(500);
   }
 };
 

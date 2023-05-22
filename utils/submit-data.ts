@@ -353,7 +353,7 @@ export const mutateActionAndDataRaw = async (
   const actions: number[] = [];
 
   let existedData;
-  if (actionType == 'Change Data') {
+  if (actionType == 'Change Data' && resourceId) {
     existedData = await mainTableLookup(resourceType, resourceId, Object.keys(resourceObj));
   }
 
@@ -446,9 +446,9 @@ export const mutateActionAndDataRaw = async (
     }
   }
 
-  if (actionType === "Change Data")
+  if (actionType === "Change Data" && resourceId)
     await updateMainTable(resourceType, resourceId, setMainTableValues);
-  else if (actionType === "Insert Data") {
+  else {
       const response = await insertResourceData(resourceType, setMainTableValues);
       resourceId = response?.id
       validData.forEach(data => data.resource_id = resourceId);
