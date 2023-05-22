@@ -287,8 +287,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 
 	const getInvestments = people.people[0].investments
-    .filter((item) => typeof item.investment_round === "object")
-    .map((item) => item.investment_round);
+		.filter((item) => typeof item.investment_round === "object")
+		.map((item) => item.investment_round);
 
 	const sortByDateAscInvestments = getInvestments
 		.slice()
@@ -313,8 +313,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 			})
 			.reverse() || [];
 
+	let metaTitle = null;
+	if (people.people[0].name) {
+		metaTitle = people.people[0].name + " Profile - EdgeIn.io";
+	}
+
 	return {
 		props: {
+			metaTitle,
 			person: people.people[0],
 			sortByDateAscInvestments,
 			sortNews,

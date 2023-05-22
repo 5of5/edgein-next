@@ -67,7 +67,7 @@ export const ElemInvestments: React.FC<Props> = ({
 						)}
 					</div>
 				),
-				width: 280,
+				width: 200,
 				disableSortBy: true,
 			},
 			{
@@ -92,42 +92,167 @@ export const ElemInvestments: React.FC<Props> = ({
 				Header: "Investors",
 				accessor: "investments" as const,
 				Cell: (props: any) => {
+					const vcsWithPartner = props.value?.filter(
+						(investment: any) => investment.person && investment.vc_firm
+					);
+					const vcs = props.value?.filter(
+						(investment: any) => !investment.person && investment.vc_firm
+					);
+					const angels = props.value?.filter(
+						(investment: any) => investment.person && !investment.vc_firm
+					);
+
 					return (
-						<div>
-							{props.value ? (
-								<>
-									{props.value.map((item: any, index: number) => {
-										return (
-											<div key={index} className="inline">
-												{index !== 0 &&
-													(index === props.value.length - 1 ? ", and " : ", ")}
-												{item.vc_firm && (
-													<Link href={`/investors/${item.vc_firm?.slug}`}>
-														<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-															{item.vc_firm["name"]}
-														</a>
-													</Link>
-												)}
-												{item.vc_firm && item.person && <>/</>}
-												{item.person && (
-													<Link href={`/people/${item.person["slug"]}`}>
-														<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-															{item.person["name"]}
-														</a>
-													</Link>
-												)}
-											</div>
-										);
-									})}
-									.
-								</>
-							) : (
-								<>&mdash;</>
-							)}
+						<div className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal">
+							{!props.value && <>&mdash;</>}
+
+							{vcsWithPartner.map((investment: any) => {
+								return (
+									<div
+										key={investment.id}
+										className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+									>
+										{investment.vc_firm && (
+											<Link
+												href={`/investors/${investment.vc_firm.slug}`}
+												key={investment.vc_firm.id}
+											>
+												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
+													<ElemPhoto
+														photo={investment.vc_firm.logo}
+														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={investment.vc_firm.name}
+														placeholderClass="text-slate-300"
+													/>
+													<span className="line-clamp-2 font-bold">
+														{investment.vc_firm.name}
+													</span>
+												</a>
+											</Link>
+										)}
+
+										{investment.person && (
+											<Link
+												href={`/people/${investment.person.slug}`}
+												key={investment.person.id}
+											>
+												<a className="investor flex items-center space-x-3 hover:opacity-70">
+													<ElemPhoto
+														photo={investment.person.picture}
+														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+														imgClass="object-cover w-12 h-12"
+														imgAlt={investment.person.name}
+														placeholder="user"
+														placeholderClass="text-slate-300"
+													/>
+													<span className="line-clamp-2 font-bold">
+														{investment.person.name}
+													</span>
+												</a>
+											</Link>
+										)}
+									</div>
+								);
+							})}
+
+							{vcs.map((investment: any) => {
+								return (
+									<div
+										key={investment.id}
+										className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+									>
+										{investment.vc_firm && (
+											<Link
+												href={`/investors/${investment.vc_firm.slug}`}
+												key={investment.vc_firm.id}
+											>
+												<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
+													<ElemPhoto
+														photo={investment.vc_firm.logo}
+														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
+														imgClass="object-fit max-w-full max-h-full"
+														imgAlt={investment.vc_firm.name}
+														placeholderClass="text-slate-300"
+													/>
+													<span className="line-clamp-2 font-bold">
+														{investment.vc_firm.name}
+													</span>
+												</a>
+											</Link>
+										)}
+									</div>
+								);
+							})}
+
+							{angels.map((investment: any) => {
+								return (
+									<div
+										key={investment.id}
+										className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+									>
+										{investment.person && (
+											<Link
+												href={`/people/${investment.person.slug}`}
+												key={investment.person.id}
+											>
+												<a className="investor flex items-center space-x-3 hover:opacity-70">
+													<ElemPhoto
+														photo={investment.person.picture}
+														wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+														imgClass="object-cover w-12 h-12"
+														imgAlt={investment.person.name}
+														placeholder="user"
+														placeholderClass="text-slate-300"
+													/>
+													<span className="line-clamp-2 font-bold">
+														{investment.person.name}
+													</span>
+												</a>
+											</Link>
+										)}
+									</div>
+								);
+							})}
 						</div>
 					);
+
+					// return (
+					// 	<div>
+					// 		{props.value ? (
+					// 			<>
+					// 				{props.value.map((item: any, index: number) => {
+					// 					return (
+					// 						<div key={index} className="inline">
+					// 							{index !== 0 &&
+					// 								(index === props.value.length - 1 ? ", and " : ", ")}
+					// 							{item.vc_firm && (
+					// 								<Link href={`/investors/${item.vc_firm?.slug}`}>
+					// 									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+					// 										{item.vc_firm["name"]}
+					// 									</a>
+					// 								</Link>
+					// 							)}
+					// 							{item.vc_firm && item.person && <>/</>}
+					// 							{item.person && (
+					// 								<Link href={`/people/${item.person["slug"]}`}>
+					// 									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
+					// 										{item.person["name"]}
+					// 									</a>
+					// 								</Link>
+					// 							)}
+					// 						</div>
+					// 					);
+					// 				})}
+					// 				.
+					// 			</>
+					// 		) : (
+					// 			<>&mdash;</>
+					// 		)}
+					// 	</div>
+					// );
 				},
-				width: 300,
+				width: 650,
 				disableSortBy: true,
 			},
 		],
@@ -270,7 +395,7 @@ export const ElemInvestments: React.FC<Props> = ({
 											<td
 												key={key}
 												{...restCellProps}
-												className="align-middle text-sm px-4 py-3"
+												className="align-top text-sm px-4 py-3"
 											>
 												{cell.render("Cell")}
 											</td>
