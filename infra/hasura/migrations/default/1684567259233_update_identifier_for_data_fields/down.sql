@@ -1,0 +1,5 @@
+-- Could not auto-generate a down migration.
+-- Please write an appropriate down migration for the SQL below:
+-- UPDATE public.data_fields
+-- 	SET is_valid_identifier=true
+-- 	WHERE "path" IN ('team_member.company_id', 'team_member.person_id', 'people.slug');
