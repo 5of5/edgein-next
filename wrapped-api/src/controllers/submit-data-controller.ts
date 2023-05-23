@@ -1,12 +1,12 @@
-import {
-    processNotification,
-    processNotificationOnDelete,
-  } from "../utils/notifications";
+// import {
+//     processNotification,
+//     processNotificationOnDelete,
+//   } from "../utils/notifications";
   import {
     ActionType,
     ResourceTypes,
     NODE_NAME
-  } from "../utils/constants"
+  } from "../../../utils/constants"
   import {
     partnerLookUp,
     resourceIdLookup,
@@ -92,12 +92,12 @@ import {
           {}
         );
         await markDataRawAsInactive(resourceType, resourceId);
-        await processNotificationOnDelete(
-          resourceType,
-          resourceId,
-          action?.id || 0,
-          resourceObj
-        );
+        // await processNotificationOnDelete(
+        //   resourceType,
+        //   resourceId,
+        //   action?.id || 0,
+        //   resourceObj
+        // );
         return res.send(resourceObj);
       }
   
@@ -412,84 +412,84 @@ import {
       }
       
   
-      if (resourceId === undefined) {
-        if (
-          resourceType === "investment_rounds" ||
-          resourceType === "team_members"
-        ) {
-          await processNotification(
-            (resourceObj as Record<string, any>)?.company_id,
-            "companies",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions 
-          );
-        }
+      // if (resourceId === undefined) {
+      //   if (
+      //     resourceType === "investment_rounds" ||
+      //     resourceType === "team_members"
+      //   ) {
+      //     await processNotification(
+      //       (resourceObj as Record<string, any>)?.company_id,
+      //       "companies",
+      //       resourceType,
+      //       actionType,
+      //       Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions 
+      //     );
+      //   }
   
-        if (resourceType === "investors") {
-          await processNotification(
-            (resourceObj as Record<string, any>)?.vc_firm_id,
-            "vc_firms",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
+      //   if (resourceType === "investors") {
+      //     await processNotification(
+      //       (resourceObj as Record<string, any>)?.vc_firm_id,
+      //       "vc_firms",
+      //       resourceType,
+      //       actionType,
+      //       Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
+      //     );
+      //   }
   
-        if (resourceType === "investments") {
-          if ((resourceObj as Record<string, any>)?.round_id) {
-            const investmentRound = await getCompanyByRoundId((resourceObj as Record<string, any>).round_id);
-            await processNotification(
-              investmentRound?.company_id || 0,
-              "companies",
-              resourceType,
-              actionType,
-              Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-            );
-          }
+      //   if (resourceType === "investments") {
+      //     if ((resourceObj as Record<string, any>)?.round_id) {
+      //       const investmentRound = await getCompanyByRoundId((resourceObj as Record<string, any>).round_id);
+      //       await processNotification(
+      //         investmentRound?.company_id || 0,
+      //         "companies",
+      //         resourceType,
+      //         actionType,
+      //         Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
+      //       );
+      //     }
   
-          await processNotification(
-            (resourceObj as Record<string, any>)?.vc_firm_id,
-            "vc_firms",
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
+      //     await processNotification(
+      //       (resourceObj as Record<string, any>)?.vc_firm_id,
+      //       "vc_firms",
+      //       resourceType,
+      //       actionType,
+      //       Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
+      //     );
+      //   }
   
-        if (resourceType === "event_organization") {
-          if ((resourceObj as Record<string, any>)?.company_id) {
-            await processNotification(
-              (resourceObj as Record<string, any>).company_id,
-              "companies",
-              resourceType,
-              actionType,
-              Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-            );
-          }
-          if ((resourceObj as Record<string, any>)?.vc_firm_id) {
-            await processNotification(
-              (resourceObj as Record<string, any>).vc_firm_id,
-              "vc_firms",
-              resourceType,
-              actionType,
-              Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-            );
-          }
-        }
-      } else {
-        // updated exists one
-        if (resourceType === "companies" || resourceType === "vc_firms") {
-          /** Insert notification */
-          await processNotification(
-            resourceId,
-            resourceType,
-            resourceType,
-            actionType,
-            Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
-          );
-        }
-      }
+      //   if (resourceType === "event_organization") {
+      //     if ((resourceObj as Record<string, any>)?.company_id) {
+      //       await processNotification(
+      //         (resourceObj as Record<string, any>).company_id,
+      //         "companies",
+      //         resourceType,
+      //         actionType,
+      //         Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
+      //       );
+      //     }
+      //     if ((resourceObj as Record<string, any>)?.vc_firm_id) {
+      //       await processNotification(
+      //         (resourceObj as Record<string, any>).vc_firm_id,
+      //         "vc_firms",
+      //         resourceType,
+      //         actionType,
+      //         Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
+      //       );
+      //     }
+      //   }
+      // } else {
+      //   // updated exists one
+      //   if (resourceType === "companies" || resourceType === "vc_firms") {
+      //     /** Insert notification */
+      //     await processNotification(
+      //       resourceId,
+      //       resourceType,
+      //       resourceType,
+      //       actionType,
+      //       Array.isArray(insertResult) ? insertResult[0]?.actions : insertResult?.actions
+      //     );
+      //   }
+      // }
       
       if(Array.isArray(resourceObj)){
         if(hasRelationship && !hasRelationshipArray){

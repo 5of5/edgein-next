@@ -15,8 +15,8 @@ import {
   InsertDataDiscardMutation,
   InsertDataDiscardDocument,
 } from "../../../graphql/types";
-import { HttpError } from "react-admin";
-import { getUpdatedDiff } from "./helpers";
+// import { HttpError } from "react-admin";
+// import { getUpdatedDiff } from "./helpers";
 import * as util from 'util';
 import {
   ActionType,
@@ -24,7 +24,7 @@ import {
   NODE_NAME,
   isResourceType,
   tags
-} from './constants';
+} from '../../../utils/constants';
 
 
 export const partnerLookUp = async (apiKey: string) => {
@@ -177,44 +177,44 @@ export const insertActionDataChange = async (
   return data.insert_actions_one;
 };
 
-export const onSubmitData = (
-  type: string,
-  transformInput: any,
-  method: "POST" | "PUT" | "DELETE",
-) => {
-  const resource =
-    method === "DELETE"
-      ? transformInput.previousData
-      : getUpdatedDiff(transformInput.previousData, transformInput.data);
-  return fetch("/api/submit-data/", {
-    method,
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
-      resource_type: type,
-      resource_identifier: [{ field: "id", value: transformInput.id }],
-      resource,
-      force_update: true
-    }),
-  })
-    .then((res) => {
-      if (!res.ok) {
-        return Promise.reject(res);
-      }
-      return res.json();
-    })
-    .then(({ id }) => {
-      return { data: { ...transformInput.data, id } };
-    })
-    .catch((err) => {
-      return err.json().then((body: any) => {
-        return Promise.reject(new HttpError(body.message, err.status, body));
-      });
-    });
-};
+// export const onSubmitData = (
+//   type: string,
+//   transformInput: any,
+//   method: "POST" | "PUT" | "DELETE",
+// ) => {
+//   const resource =
+//     method === "DELETE"
+//       ? transformInput.previousData
+//       : getUpdatedDiff(transformInput.previousData, transformInput.data);
+//   return fetch("/api/submit-data/", {
+//     method,
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify({
+//       partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
+//       resource_type: type,
+//       resource_identifier: [{ field: "id", value: transformInput.id }],
+//       resource,
+//       force_update: true
+//     }),
+//   })
+//     .then((res) => {
+//       if (!res.ok) {
+//         return Promise.reject(res);
+//       }
+//       return res.json();
+//     })
+//     .then(({ id }) => {
+//       return { data: { ...transformInput.data, id } };
+//     })
+//     .catch((err) => {
+//       return err.json().then((body: any) => {
+//         return Promise.reject(new HttpError(body.message, err.status, body));
+//       });
+//     });
+// };
 
 export const insertResourceData = async (
   resourceType: ResourceTypes,
