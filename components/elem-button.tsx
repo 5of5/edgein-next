@@ -86,7 +86,7 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
 
 	// button disabled
 	if (disabled) {
-		btnClass = btnClass + " opacity-40 cursor-not-allowed";
+		btnClass = btnClass + " opacity-40 pointer-events-none";
 	}
 
 	const componentClassName = `relative inline-flex items-center font-bold focus:outline-none focus:ring-0 transition ease-in-out duration-150 group
