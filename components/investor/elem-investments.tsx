@@ -2,8 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { ElemPhoto } from "@/components/elem-photo";
 import { Investment_Rounds } from "@/graphql/types";
-import { useTable, useSortBy, usePagination } from "react-table";
-
+import {
+	useTable,
+	useResizeColumns,
+	useSortBy,
+	usePagination,
+} from "react-table";
 import { numberWithCommas, formatDate } from "@/utils";
 import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/icons";
 import { Pagination } from "@/components/pagination";
@@ -21,6 +25,47 @@ export const ElemInvestments: React.FC<Props> = ({
 	investments,
 	showEdit,
 }) => {
+	const defaultColumn = React.useMemo(
+		() => ({
+			minWidth: 100,
+			width: 120,
+			//maxWidth: 300,
+			sortType: "alphanumericNullLast",
+		}),
+		[]
+	);
+
+	const emptyCell = React.useMemo(
+		() => <div className="text-slate-400">&mdash;</div>,
+		[]
+	);
+
+	const sortTypes = React.useMemo(
+		() => ({
+			alphanumericNullLast(rowA: any, rowB: any, columnId: string, desc: any) {
+				const a = rowA.values[columnId];
+				const b = rowB.values[columnId];
+
+				if (!a && !b) {
+					return 0;
+				}
+
+				if (!a) {
+					return desc ? -1 : 1;
+				}
+
+				if (!b) {
+					return desc ? 1 : -1;
+				}
+
+				return a
+					.toString()
+					.localeCompare(b.toString(), "en", { numeric: true });
+			},
+		}),
+		[]
+	);
+
 	const columns = React.useMemo(
 		() => [
 			{
@@ -37,7 +82,7 @@ export const ElemInvestments: React.FC<Props> = ({
 								})}
 							</>
 						) : (
-							<>&mdash;</>
+							emptyCell
 						)}
 					</div>
 				),
@@ -49,7 +94,7 @@ export const ElemInvestments: React.FC<Props> = ({
 				Cell: (props: any) => (
 					<div className="flex items-center shrink-0 w-full">
 						{!props.value ? (
-							<>&mdash;</>
+							emptyCell
 						) : (
 							<Link href={`/companies/${props.value.slug}`}>
 								<a className="company flex items-center space-x-3 hover:opacity-70">
@@ -75,7 +120,7 @@ export const ElemInvestments: React.FC<Props> = ({
 				accessor: "round" as const,
 				//width: 120,
 				Cell: (props: any) => (
-					<div>{props.value ? <>{props.value}</> : <>&mdash;</>}</div>
+					<div>{props.value ? <>{props.value}</> : emptyCell}</div>
 				),
 			},
 			{
@@ -84,27 +129,28 @@ export const ElemInvestments: React.FC<Props> = ({
 				//width: 120,
 				Cell: (props: any) => (
 					<div>
-						{props.value ? <>${numberWithCommas(props.value)}</> : <>&mdash;</>}
+						{props.value ? <>${numberWithCommas(props.value)}</> : emptyCell}
 					</div>
 				),
 			},
 			{
 				Header: "Investors",
-				accessor: "investments" as const,
+				accessor: "id" as const,
 				Cell: (props: any) => {
-					const vcsWithPartner = props.value?.filter(
+					const vcsWithPartner = props.row.original?.investments?.filter(
 						(investment: any) => investment.person && investment.vc_firm
 					);
-					const vcs = props.value?.filter(
+					const vcs = props.row.original?.investments?.filter(
 						(investment: any) => !investment.person && investment.vc_firm
 					);
-					const angels = props.value?.filter(
+					const angels = props.row.original?.investments?.filter(
 						(investment: any) => investment.person && !investment.vc_firm
 					);
 
 					return (
 						<div className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal">
-							{props.value ? (
+							{props.value ? props.value : "no"}
+							{props.row.original?.investments ? (
 								<>
 									{vcsWithPartner?.map((investment: any) => {
 										return (
@@ -216,7 +262,7 @@ export const ElemInvestments: React.FC<Props> = ({
 									})}
 								</>
 							) : (
-								<>&mdash;</>
+								emptyCell
 							)}
 						</div>
 					);
@@ -251,7 +297,7 @@ export const ElemInvestments: React.FC<Props> = ({
 					// 				.
 					// 			</>
 					// 		) : (
-					// 			<>&mdash;</>
+					// 			emptyCell
 					// 		)}
 					// 	</div>
 					// );
@@ -260,7 +306,7 @@ export const ElemInvestments: React.FC<Props> = ({
 				disableSortBy: true,
 			},
 		],
-		[]
+		[emptyCell]
 	);
 
 	const dataInvestments = React.useMemo(() => {
@@ -269,15 +315,15 @@ export const ElemInvestments: React.FC<Props> = ({
 
 	const investmentsCount = dataInvestments.length;
 
-	const sortees = React.useMemo(
-		() => [
-			{
-				id: "round_date",
-				desc: true,
-			},
-		],
-		[]
-	);
+	// const sortees = React.useMemo(
+	// 	() => [
+	// 		{
+	// 			id: "round_date",
+	// 			desc: true,
+	// 		},
+	// 	],
+	// 	[]
+	// );
 
 	const {
 		getTableProps,
@@ -296,13 +342,18 @@ export const ElemInvestments: React.FC<Props> = ({
 			//autoResetPage: true, true by default
 			disableSortRemove: true,
 			autoResetSortBy: false,
+			sortTypes,
 			initialState: {
-				sortBy: sortees,
+				//sortBy: sortees,
 				pageSize: 50,
 			},
+			defaultColumn,
+			autoResetHiddenColumns: false,
+			autoResetResize: false,
 		},
 		useSortBy,
-		usePagination
+		usePagination,
+		useResizeColumns
 	);
 
 	const generateSortingIndicator = (column: any) => {
