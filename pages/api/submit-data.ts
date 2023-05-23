@@ -191,18 +191,22 @@ const handleResource = async (
       resourceRelationshipObjs = [resourceRelationshipObjs];
     
     for (let resourceRelationshipObj of resourceRelationshipObjs) {
-      // Add relationship field for resourceId of main record
-      let relationshipField = resourceType === 'people' ? 'person_id' : `${NODE_NAME[resourceType]}_id`;
-      resourceRelationshipObj[relationshipField] = mainResult.id;
-      const ret = await handleResource(
-        partnerId,
-        user,
-        undefined,
-        resourceRelationshipObj,
-        resourceRelationshipType as ResourceTypes,
-        forceUpdate,
-      );
-      relationshipResults.push(ret);
+      try {
+        // Add relationship field for resourceId of main record
+        let relationshipField = resourceType === 'people' ? 'person_id' : `${NODE_NAME[resourceType]}_id`;
+        resourceRelationshipObj[relationshipField] = mainResult.id;
+        const ret = await handleResource(
+          partnerId,
+          user,
+          undefined,
+          resourceRelationshipObj,
+          resourceRelationshipType as ResourceTypes,
+          forceUpdate,
+        );
+        relationshipResults.push(ret);
+      } catch (error: any) {
+        continue;
+      }
     }
   }
 
