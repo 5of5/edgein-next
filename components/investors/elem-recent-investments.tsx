@@ -92,7 +92,7 @@ export const ElemRecentInvestments: FC<Props> = ({
 												placeholderClass="text-slate-300"
 											/>
 											<div className="flex items-center justify-center pl-2 md:overflow-hidden">
-												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
+												<h3 className="inline min-w-0 max-w-[16rem] text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
 													{investor.name}
 												</h3>
 											</div>
