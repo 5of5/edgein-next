@@ -287,8 +287,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	}
 
 	const getInvestments = people.people[0].investments
-		.filter((item) => typeof item.investment_round === "object")
-		.map((item) => item.investment_round);
+    .filter(
+      (item) =>
+        typeof item.investment_round === "object" &&
+        item.investment_round !== null
+    )
+    .map((item) => item.investment_round);
 
 	const sortByDateAscInvestments = getInvestments
 		.slice()
