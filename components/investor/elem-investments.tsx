@@ -149,7 +149,6 @@ export const ElemInvestments: React.FC<Props> = ({
 
 					return (
 						<div className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal">
-							{props.value ? props.value : "no"}
 							{props.row.original?.investments ? (
 								<>
 									{vcsWithPartner?.map((investment: any) => {
@@ -266,41 +265,6 @@ export const ElemInvestments: React.FC<Props> = ({
 							)}
 						</div>
 					);
-
-					// return (
-					// 	<div>
-					// 		{props.value ? (
-					// 			<>
-					// 				{props.value.map((item: any, index: number) => {
-					// 					return (
-					// 						<div key={index} className="inline">
-					// 							{index !== 0 &&
-					// 								(index === props.value.length - 1 ? ", and " : ", ")}
-					// 							{item.vc_firm && (
-					// 								<Link href={`/investors/${item.vc_firm?.slug}`}>
-					// 									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-					// 										{item.vc_firm["name"]}
-					// 									</a>
-					// 								</Link>
-					// 							)}
-					// 							{item.vc_firm && item.person && <>/</>}
-					// 							{item.person && (
-					// 								<Link href={`/people/${item.person["slug"]}`}>
-					// 									<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-					// 										{item.person["name"]}
-					// 									</a>
-					// 								</Link>
-					// 							)}
-					// 						</div>
-					// 					);
-					// 				})}
-					// 				.
-					// 			</>
-					// 		) : (
-					// 			emptyCell
-					// 		)}
-					// 	</div>
-					// );
 				},
 				width: 650,
 				disableSortBy: true,
