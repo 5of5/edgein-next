@@ -322,7 +322,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             );
             return {id: resourceId, deleted: true};
           } catch (error: any) {
-            return {id: resourceId, deleted: false};
+            return {id: resourceId, deleted: false, error};
           }
         } else {
         // Upsert record
