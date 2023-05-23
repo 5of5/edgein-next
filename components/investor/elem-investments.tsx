@@ -2,8 +2,12 @@ import React from "react";
 import Link from "next/link";
 import { ElemPhoto } from "@/components/elem-photo";
 import { Investment_Rounds } from "@/graphql/types";
-import { useTable, useSortBy, usePagination } from "react-table";
-
+import {
+	useTable,
+	useResizeColumns,
+	useSortBy,
+	usePagination,
+} from "react-table";
 import { numberWithCommas, formatDate } from "@/utils";
 import { IconEditPencil, IconSortUp, IconSortDown } from "@/components/icons";
 import { Pagination } from "@/components/pagination";
@@ -21,6 +25,47 @@ export const ElemInvestments: React.FC<Props> = ({
 	investments,
 	showEdit,
 }) => {
+	const defaultColumn = React.useMemo(
+		() => ({
+			minWidth: 100,
+			width: 120,
+			//maxWidth: 300,
+			sortType: "alphanumericNullLast",
+		}),
+		[]
+	);
+
+	const emptyCell = React.useMemo(
+		() => <div className="text-slate-400">&mdash;</div>,
+		[]
+	);
+
+	const sortTypes = React.useMemo(
+		() => ({
+			alphanumericNullLast(rowA: any, rowB: any, columnId: string, desc: any) {
+				const a = rowA.values[columnId];
+				const b = rowB.values[columnId];
+
+				if (!a && !b) {
+					return 0;
+				}
+
+				if (!a) {
+					return desc ? -1 : 1;
+				}
+
+				if (!b) {
+					return desc ? 1 : -1;
+				}
+
+				return a
+					.toString()
+					.localeCompare(b.toString(), "en", { numeric: true });
+			},
+		}),
+		[]
+	);
+
 	const columns = React.useMemo(
 		() => [
 			{
@@ -37,7 +82,7 @@ export const ElemInvestments: React.FC<Props> = ({
 								})}
 							</>
 						) : (
-							<>&mdash;</>
+							emptyCell
 						)}
 					</div>
 				),
@@ -49,7 +94,7 @@ export const ElemInvestments: React.FC<Props> = ({
 				Cell: (props: any) => (
 					<div className="flex items-center shrink-0 w-full">
 						{!props.value ? (
-							<>&mdash;</>
+							emptyCell
 						) : (
 							<Link href={`/companies/${props.value.slug}`}>
 								<a className="company flex items-center space-x-3 hover:opacity-70">
@@ -67,7 +112,7 @@ export const ElemInvestments: React.FC<Props> = ({
 						)}
 					</div>
 				),
-				width: 280,
+				width: 200,
 				disableSortBy: true,
 			},
 			{
@@ -75,7 +120,7 @@ export const ElemInvestments: React.FC<Props> = ({
 				accessor: "round" as const,
 				//width: 120,
 				Cell: (props: any) => (
-					<div>{props.value ? <>{props.value}</> : <>&mdash;</>}</div>
+					<div>{props.value ? <>{props.value}</> : emptyCell}</div>
 				),
 			},
 			{
@@ -84,54 +129,148 @@ export const ElemInvestments: React.FC<Props> = ({
 				//width: 120,
 				Cell: (props: any) => (
 					<div>
-						{props.value ? <>${numberWithCommas(props.value)}</> : <>&mdash;</>}
+						{props.value ? <>${numberWithCommas(props.value)}</> : emptyCell}
 					</div>
 				),
 			},
 			{
 				Header: "Investors",
-				accessor: "investments" as const,
+				accessor: "id" as const,
 				Cell: (props: any) => {
+					const vcsWithPartner = props.row.original?.investments?.filter(
+						(investment: any) => investment.person && investment.vc_firm
+					);
+					const vcs = props.row.original?.investments?.filter(
+						(investment: any) => !investment.person && investment.vc_firm
+					);
+					const angels = props.row.original?.investments?.filter(
+						(investment: any) => investment.person && !investment.vc_firm
+					);
+
 					return (
-						<div>
-							{props.value ? (
+						<div className="grid grid-cols-2 lg:grid-cols-3 gap-5 !whitespace-normal">
+							{props.row.original?.investments ? (
 								<>
-									{props.value.map((item: any, index: number) => {
+									{vcsWithPartner?.map((investment: any) => {
 										return (
-											<div key={index} className="inline">
-												{index !== 0 &&
-													(index === props.value.length - 1 ? ", and " : ", ")}
-												{item.vc_firm && (
-													<Link href={`/investors/${item.vc_firm?.slug}`}>
-														<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-															{item.vc_firm["name"]}
+											<div
+												key={investment.id}
+												className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+											>
+												{investment.vc_firm && (
+													<Link
+														href={`/investors/${investment.vc_firm.slug}`}
+														key={investment.vc_firm.id}
+													>
+														<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
+															<ElemPhoto
+																photo={investment.vc_firm.logo}
+																wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 rounded-lg overflow-hidden border border-slate-200"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={investment.vc_firm.name}
+																placeholderClass="text-slate-300"
+															/>
+															<span className="line-clamp-2 font-bold">
+																{investment.vc_firm.name}
+															</span>
 														</a>
 													</Link>
 												)}
-												{item.vc_firm && item.person && <>/</>}
-												{item.person && (
-													<Link href={`/people/${item.person["slug"]}`}>
-														<a className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-															{item.person["name"]}
+
+												{investment.person && (
+													<Link
+														href={`/people/${investment.person.slug}`}
+														key={investment.person.id}
+													>
+														<a className="investor flex items-center space-x-3 hover:opacity-70">
+															<ElemPhoto
+																photo={investment.person.picture}
+																wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+																imgClass="object-cover w-12 h-12"
+																imgAlt={investment.person.name}
+																placeholder="user"
+																placeholderClass="text-slate-300"
+															/>
+															<span className="line-clamp-2 font-bold">
+																{investment.person.name}
+															</span>
 														</a>
 													</Link>
 												)}
 											</div>
 										);
 									})}
-									.
+
+									{vcs?.map((investment: any) => {
+										return (
+											<div
+												key={investment.id}
+												className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+											>
+												{investment.vc_firm && (
+													<Link
+														href={`/investors/${investment.vc_firm.slug}`}
+														key={investment.vc_firm.id}
+													>
+														<a className="vcfirm flex items-center space-x-3 hover:opacity-70">
+															<ElemPhoto
+																photo={investment.vc_firm.logo}
+																wrapClass="flex items-center justify-center shrink-0 w-12 h-12 p-1 border border-black/10 rounded-lg overflow-hidden"
+																imgClass="object-fit max-w-full max-h-full"
+																imgAlt={investment.vc_firm.name}
+																placeholderClass="text-slate-300"
+															/>
+															<span className="line-clamp-2 font-bold">
+																{investment.vc_firm.name}
+															</span>
+														</a>
+													</Link>
+												)}
+											</div>
+										);
+									})}
+
+									{angels?.map((investment: any) => {
+										return (
+											<div
+												key={investment.id}
+												className="h-fit bg-white border border-black/10 space-y-2 rounded-lg p-2 transition-all hover:shadow hover:-translate-y-0.5"
+											>
+												{investment.person && (
+													<Link
+														href={`/people/${investment.person.slug}`}
+														key={investment.person.id}
+													>
+														<a className="investor flex items-center space-x-3 hover:opacity-70">
+															<ElemPhoto
+																photo={investment.person.picture}
+																wrapClass="flex items-center justify-center shrink-0 w-12 h-12 rounded-full overflow-hidden"
+																imgClass="object-cover w-12 h-12"
+																imgAlt={investment.person.name}
+																placeholder="user"
+																placeholderClass="text-slate-300"
+															/>
+															<span className="line-clamp-2 font-bold">
+																{investment.person.name}
+															</span>
+														</a>
+													</Link>
+												)}
+											</div>
+										);
+									})}
 								</>
 							) : (
-								<>&mdash;</>
+								emptyCell
 							)}
 						</div>
 					);
 				},
-				width: 300,
+				width: 650,
 				disableSortBy: true,
 			},
 		],
-		[]
+		[emptyCell]
 	);
 
 	const dataInvestments = React.useMemo(() => {
@@ -140,15 +279,15 @@ export const ElemInvestments: React.FC<Props> = ({
 
 	const investmentsCount = dataInvestments.length;
 
-	const sortees = React.useMemo(
-		() => [
-			{
-				id: "round_date",
-				desc: true,
-			},
-		],
-		[]
-	);
+	// const sortees = React.useMemo(
+	// 	() => [
+	// 		{
+	// 			id: "round_date",
+	// 			desc: true,
+	// 		},
+	// 	],
+	// 	[]
+	// );
 
 	const {
 		getTableProps,
@@ -167,13 +306,18 @@ export const ElemInvestments: React.FC<Props> = ({
 			//autoResetPage: true, true by default
 			disableSortRemove: true,
 			autoResetSortBy: false,
+			sortTypes,
 			initialState: {
-				sortBy: sortees,
+				//sortBy: sortees,
 				pageSize: 50,
 			},
+			defaultColumn,
+			autoResetHiddenColumns: false,
+			autoResetResize: false,
 		},
 		useSortBy,
-		usePagination
+		usePagination,
+		useResizeColumns
 	);
 
 	const generateSortingIndicator = (column: any) => {
@@ -270,7 +414,7 @@ export const ElemInvestments: React.FC<Props> = ({
 											<td
 												key={key}
 												{...restCellProps}
-												className="align-middle text-sm px-4 py-3"
+												className="align-top text-sm px-4 py-3"
 											>
 												{cell.render("Cell")}
 											</td>
