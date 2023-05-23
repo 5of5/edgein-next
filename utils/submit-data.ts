@@ -207,14 +207,13 @@ export const onSubmitData = (
       }
       return res.json();
     })
-    .then(({ id }) => {
-      return { data: { ...transformInput.data, id } };
+    .then((data) => {
+      const hasError = data.find((item: any) => item.error);
+      if (hasError) {
+        return Promise.reject(new HttpError(hasError.error[0]?.message, 400));
+      }
+      return { data: { ...transformInput.data, id: data[0]?.id } };
     })
-    .catch((err) => {
-      return err.json().then((body: any) => {
-        return Promise.reject(new HttpError(body.message, err.status, body));
-      });
-    });
 };
 
 export const insertResourceData = async (
