@@ -72,7 +72,7 @@ const NewsOrganizationProfile: NextPage<Props> = ({
                   {newsOrganization?.name}
                 </h1>
               </div>
-              {newsOrganization?.tags.length > 0 && (
+              {newsOrganization?.tags?.length > 0 && (
                 <ElemTags
                   className="mt-4"
                   resourceType={"companies"}

@@ -32,16 +32,13 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		date,
 		link,
 		text,
+		source,
 		// created_at,
 		// updated_at,
 		// status,
 		metadata,
 		organizations,
 	} = postData;
-
-	const newsPublisher = organizations?.find(
-		(item) => item.type === "publisher"
-	)?.company;
 
 	return (
 		<div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
@@ -165,16 +162,14 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 					</div>
 				)}
 			</div>
-			{newsPublisher && (
-				<div>
-					<p className="mt-4 text-xs text-gray-400">
-						Powered by{" "}
-						<Link href={`/news/${newsPublisher.slug}`}>
-							<a>{newsPublisher.name}</a>
-						</Link>
-					</p>
-				</div>
-			)}
+			<div>
+				<p className="mt-4 text-xs text-gray-400">
+					Powered by{" "}
+					<Link href={`/news/${source?.poweredby ? "techcrunch" : "cryptopanic"}`}>
+						<a>{source?.poweredby || "CryptoPanic"}</a>
+					</Link>
+				</p>
+			</div>
 			{/* <div
 				className="flex items-center justify-between mt-4 gap-x-5"
 				onClick={(e) => e.stopPropagation()}
