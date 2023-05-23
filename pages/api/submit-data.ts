@@ -28,10 +28,10 @@ import CookieService from "../../utils/cookie";
 const sendNotification = async (
   resourceId: number | undefined,
   resourceType: ResourceTypes,
-  actionType: ActionType,
   resourceObj: Record<string, any>,
   insertResult: Record<string, any>,
 ) => {
+  let actionType: ActionType = 'Insert Data';
   if (resourceId === undefined) {
     if (
       resourceType === "investment_rounds" ||
@@ -99,6 +99,7 @@ const sendNotification = async (
     }
   } else {
     // updated exists one
+    actionType = 'Change Data';
     if (resourceType === "companies" || resourceType === "vc_firms") {
       /** Insert notification */
       await processNotification(
@@ -147,26 +148,22 @@ const handleResource = async (
   resourceId: number | undefined,
   resourceObj: Record<string, any>,
   resourceType: ResourceTypes,
-  actionType: ActionType,
   forceUpdate: Boolean
 ) => {
-  const properties = {...resourceObj};
   let resourceRelationships : Array<Record<string, any>> = [];
 
   resourceRelationships = [...await addSpecialRelationships(resourceType, resourceObj)];
   for (let key in resourceObj) {
-    if (isResourceType(key) && key !== resourceType) {
+    if (isResourceType(key)) {
       resourceRelationships.push({[key]: resourceObj[key]});
       delete resourceObj[key];
     }
   }
 
-  if (
-    actionType === "Insert Data" &&
-    ["companies", "vc_firms", "people"].includes(resourceType) &&
-    (!resourceObj?.library || resourceObj?.library?.length === 0)
+  if (!resourceId && !resourceObj?.library &&
+    ["companies", "vc_firms", "people", "news"].includes(resourceType)
   ) {
-    properties.library = ["Web3"];
+    resourceObj.library = ["Web3"];
   }
 
   let mainResult: Record<string, any> = await mutateActionAndDataRaw(
@@ -176,14 +173,12 @@ const handleResource = async (
     resourceId as number,
     resourceObj,
     resourceType,
-    actionType,
     forceUpdate,
   );
 
   await sendNotification(
     resourceId,
     resourceType,
-    actionType,
     resourceObj,
     mainResult,
   );
@@ -205,7 +200,6 @@ const handleResource = async (
         undefined,
         resourceRelationshipObj,
         resourceRelationshipType as ResourceTypes,
-        "Insert Data",
         forceUpdate,
       );
       relationshipResults.push(ret);
@@ -235,7 +229,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let resourceIds: Array<number | undefined> = [];
   let resourceObjs: Array<Record<string, any>> = [];
   let partnerId: number = 0;
-  let actionType: ActionType = "Change Data";
 
   try {
     if (
@@ -336,7 +329,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               resourceId,
               resourceObjs[index],
               resourceType,
-              actionType,
               forceUpdate,
             );
             return res;

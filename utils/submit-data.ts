@@ -296,44 +296,41 @@ const validateValue = (resourceType: ResourceTypes, field: string, value: any) =
 };
 
 const notFoundAction = async (
-  action: ActionType,
   resourceType: ResourceTypes,
   resourceObj: Record<string, any>,
 ) => {
-  if (action === 'Insert Data') {
-    let relatedType: ResourceTypes;
-    let data: Record<string, any>;
-    if (resourceType === 'news_person') {
-      relatedType = 'news_related_person';
-      data = {
-        news_id: resourceObj.news_id,
-        name: resourceObj['people:name'],
-        type: 'subject',
-      }
-    } else if (resourceType === 'news_organizations') {
-      relatedType = 'news_related_organizations';
-      data = {
-        news_id: resourceObj.news_id,
-        name: resourceObj['companies:name'],
-        type: 'subject',
-      }
-    } else {
-      return;
+  let relatedType: ResourceTypes;
+  let data: Record<string, any>;
+  if (resourceType === 'news_person') {
+    relatedType = 'news_related_person';
+    data = {
+      news_id: resourceObj.news_id,
+      name: resourceObj['people:name'],
+      type: 'subject',
     }
-
-    await mutate({
-      mutation: `
-        mutation insert_${relatedType}($object: ${relatedType}_insert_input!) {
-          insert_${relatedType}_one(object: $object) {
-              id
-          }
-        }
-      `,
-      variables: {
-        object: data,
-      },
-    });
+  } else if (resourceType === 'news_organizations') {
+    relatedType = 'news_related_organizations';
+    data = {
+      news_id: resourceObj.news_id,
+      name: resourceObj['companies:name'],
+      type: 'subject',
+    }
+  } else {
+    return;
   }
+
+  await mutate({
+    mutation: `
+      mutation insert_${relatedType}($object: ${relatedType}_insert_input!) {
+        insert_${relatedType}_one(object: $object) {
+            id
+        }
+      }
+    `,
+    variables: {
+      object: data,
+    },
+  });
 }
 
 export const mutateActionAndDataRaw = async (
@@ -343,7 +340,6 @@ export const mutateActionAndDataRaw = async (
   resourceId: number,
   resourceObj: Record<string, any>,
   resourceType: ResourceTypes,
-  actionType: ActionType,
   forceUpdate: Boolean
 ) => {
   const currentTime = new Date();
@@ -353,7 +349,7 @@ export const mutateActionAndDataRaw = async (
   const actions: number[] = [];
 
   let existedData;
-  if (actionType == 'Change Data' && resourceId) {
+  if (resourceId) {
     existedData = await mainTableLookup(resourceType, resourceId, Object.keys(resourceObj));
   }
 
@@ -368,8 +364,9 @@ export const mutateActionAndDataRaw = async (
         if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
           value = await resourceIdLookup(lookupResourceType, [{field: lookupField, value}]);
           field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
-          if (!value) {
-            await notFoundAction(actionType, resourceType, resourceObj);
+          if (!value && !resourceId) {
+            // Insert new record but lookup value is not found
+            await notFoundAction(resourceType, resourceObj);
           }
         } else {
           invalidData.push({
@@ -389,7 +386,7 @@ export const mutateActionAndDataRaw = async (
       }
     }
 
-    if ((actionType === "Insert Data" && !notInsertValueType(value)) || actionType === "Change Data") {
+    if ((!resourceId && !notInsertValueType(value)) || resourceId) {
       let dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
       if (dataField === undefined || (dataField?.restricted_admin && user?.role !== "admin"))
         invalidData.push({
@@ -434,7 +431,7 @@ export const mutateActionAndDataRaw = async (
         });
 
         const actionResponse = await insertActionDataChange(
-          actionType,
+          resourceId ? 'Change Data' : 'Insert Data',
           resourceId,
           resourceType,
           { [field]: value },
@@ -446,7 +443,7 @@ export const mutateActionAndDataRaw = async (
     }
   }
 
-  if (actionType === "Change Data" && resourceId)
+  if (resourceId)
     await updateMainTable(resourceType, resourceId, setMainTableValues);
   else {
       const response = await insertResourceData(resourceType, setMainTableValues);
