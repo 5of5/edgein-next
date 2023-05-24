@@ -207,14 +207,13 @@ export const onSubmitData = (
       }
       return res.json();
     })
-    .then(({ id }) => {
-      return { data: { ...transformInput.data, id } };
+    .then((data) => {
+      const hasError = data.find((item: any) => item.error);
+      if (hasError) {
+        return Promise.reject(new HttpError(hasError.error[0]?.message, 400));
+      }
+      return { data: { ...transformInput.data, id: data[0]?.id } };
     })
-    .catch((err) => {
-      return err.json().then((body: any) => {
-        return Promise.reject(new HttpError(body.message, err.status, body));
-      });
-    });
 };
 
 export const insertResourceData = async (
@@ -295,6 +294,44 @@ const validateValue = (resourceType: ResourceTypes, field: string, value: any) =
   return isValidated;
 };
 
+const notFoundAction = async (
+  resourceType: ResourceTypes,
+  resourceObj: Record<string, any>,
+) => {
+  let relatedType: ResourceTypes;
+  let data: Record<string, any>;
+  if (resourceType === 'news_person') {
+    relatedType = 'news_related_person';
+    data = {
+      news_id: resourceObj.news_id,
+      name: resourceObj['people:name'],
+      type: 'subject',
+    }
+  } else if (resourceType === 'news_organizations') {
+    relatedType = 'news_related_organizations';
+    data = {
+      news_id: resourceObj.news_id,
+      name: resourceObj['companies:name'],
+      type: 'subject',
+    }
+  } else {
+    return;
+  }
+
+  await mutate({
+    mutation: `
+      mutation insert_${relatedType}($object: ${relatedType}_insert_input!) {
+        insert_${relatedType}_one(object: $object) {
+            id
+        }
+      }
+    `,
+    variables: {
+      object: data,
+    },
+  });
+}
+
 export const mutateActionAndDataRaw = async (
   partnerId: number,
   user: User | null,
@@ -302,7 +339,6 @@ export const mutateActionAndDataRaw = async (
   resourceId: number,
   resourceObj: Record<string, any>,
   resourceType: ResourceTypes,
-  actionType: ActionType,
   forceUpdate: Boolean
 ) => {
   const currentTime = new Date();
@@ -312,7 +348,7 @@ export const mutateActionAndDataRaw = async (
   const actions: number[] = [];
 
   let existedData;
-  if (actionType == 'Change Data') {
+  if (resourceId) {
     existedData = await mainTableLookup(resourceType, resourceId, Object.keys(resourceObj));
   }
 
@@ -327,6 +363,10 @@ export const mutateActionAndDataRaw = async (
         if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
           value = await resourceIdLookup(lookupResourceType, [{field: lookupField, value}]);
           field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+          if (!value && !resourceId) {
+            // Insert new record but lookup value is not found
+            await notFoundAction(resourceType, resourceObj);
+          }
         } else {
           invalidData.push({
             resource: lookupResourceType,
@@ -345,7 +385,7 @@ export const mutateActionAndDataRaw = async (
       }
     }
 
-    if ((actionType === "Insert Data" && !notInsertValueType(value)) || actionType === "Change Data") {
+    if ((!resourceId && !notInsertValueType(value)) || resourceId) {
       let dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
       if (dataField === undefined || (dataField?.restricted_admin && user?.role !== "admin"))
         invalidData.push({
@@ -370,7 +410,7 @@ export const mutateActionAndDataRaw = async (
               resource_id: resourceId,
             }
           ];
-          const data = await insertDataDiscard(dataObject);
+          await insertDataDiscard(dataObject);
           continue;
         }
 
@@ -390,7 +430,7 @@ export const mutateActionAndDataRaw = async (
         });
 
         const actionResponse = await insertActionDataChange(
-          actionType,
+          resourceId ? 'Change Data' : 'Insert Data',
           resourceId,
           resourceType,
           { [field]: value },
@@ -402,9 +442,9 @@ export const mutateActionAndDataRaw = async (
     }
   }
 
-  if (actionType === "Change Data")
+  if (resourceId)
     await updateMainTable(resourceType, resourceId, setMainTableValues);
-  else if (actionType === "Insert Data") {
+  else {
       const response = await insertResourceData(resourceType, setMainTableValues);
       resourceId = response?.id
       validData.forEach(data => data.resource_id = resourceId);
