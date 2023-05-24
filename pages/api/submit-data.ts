@@ -150,9 +150,7 @@ const handleResource = async (
   resourceType: ResourceTypes,
   forceUpdate: Boolean
 ) => {
-  let resourceRelationships : Array<Record<string, any>> = [];
-
-  resourceRelationships = [...await addSpecialRelationships(resourceType, resourceObj)];
+  let resourceRelationships : Array<Record<string, any>> = [...await addSpecialRelationships(resourceType, resourceObj)];
   for (let key in resourceObj) {
     if (isResourceType(key)) {
       resourceRelationships.push({[key]: resourceObj[key]});
