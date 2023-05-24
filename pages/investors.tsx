@@ -182,10 +182,12 @@ const Investors: NextPage<Props> = ({
 
 	return (
 		<div className="relative">
-			<ElemHeading
-				title="Investors"
-				subtitle={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}
-			></ElemHeading>
+			{!initialLoad && (
+				<ElemHeading
+					title="Investors"
+					subtitle={`We're tracking investments made in ${selectedLibrary} companies and projects to provide you with an index of the most active and influential capital in the industry.`}
+				></ElemHeading>
+			)}
 
 			<div className="max-w-7xl px-4 mx-auto relative z-10 sm:px-6 lg:px-8">
 				<ElemRecentInvestments heading="Recent Updates" />

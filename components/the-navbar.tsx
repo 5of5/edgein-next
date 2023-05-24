@@ -22,6 +22,7 @@ import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import OnboardingStep4 from "./onboarding/onboarding-step-4";
+import ElemLibrarySelector from "./elem-library-selector";
 
 export type Popups =
 	| "login"
@@ -63,8 +64,11 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
 	);
 
+	const isDisplaySelectLibrary =
+		user?.email.endsWith("edgein.io") || user?.email.endsWith("techlist.com");
+
 	const { data: userProfile, isFetching: isFetchingUserProfile } =
-    useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
+		useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
 
 	useEffect(() => {
 		if (
@@ -106,14 +110,14 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	};
 
 	useEffect(() => {
-    if (
-      !isFetchingUserProfile &&
-      userProfile &&
-      !userProfile.users[0]?.onboarding_information
-    ) {
-      showOnboarding();
-    }
-  }, [isFetchingUserProfile, userProfile]);
+		if (
+			!isFetchingUserProfile &&
+			userProfile &&
+			!userProfile.users[0]?.onboarding_information
+		) {
+			showOnboarding();
+		}
+	}, [isFetchingUserProfile, userProfile]);
 
 	let siteNav = [
 		{
@@ -206,7 +210,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					aria-label="Global"
 				>
 					<div className="flex items-center">
-						<div className="flex-none lg:mr-4">
+						<div className="flex-none lg:mr-2">
 							<Link href={user ? "/companies" : "/"} passHref>
 								<a>
 									<ElemLogo
@@ -216,6 +220,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								</a>
 							</Link>
 						</div>
+						{isDisplaySelectLibrary && <ElemLibrarySelector />}
 					</div>
 					<ElemSearchBox
 						onClick={() => {
@@ -333,7 +338,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							}}
 						/>
 					)}
-					
+
 					{onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
@@ -351,21 +356,21 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					)}
 
 					{onboardingStep === 4 && (
-            <OnboardingStep4
-              selectedOption={selectedOption}
+						<OnboardingStep4
+							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-              show={onboardingStep === 4 && !isFetchingUserProfile}
-              message={message}
+							show={onboardingStep === 4 && !isFetchingUserProfile}
+							message={message}
 							list={list}
-              onClose={() => setOnboardingStep(0)}
-              onBack={(m) => {
-                setMessage(m);
+							onClose={() => setOnboardingStep(0)}
+							onBack={(m) => {
+								setMessage(m);
 								setOnboardingStep(3);
-              }}
+							}}
 							onNext={() => setOnboardingStep(0)}
-            />
-          )}
+						/>
+					)}
 				</nav>
 			</div>
 		</header>
