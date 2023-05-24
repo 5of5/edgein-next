@@ -1,15 +1,15 @@
-import { mutate } from "@/graphql/hasuraAdmin";
+import { mutate } from "../graphql/hasuraAdmin";
 import {
 	GetNotificationsForUserQuery,
 	InsertNotificationActionsDocument,
 	InsertNotificationActionsMutation,
 	InsertNotificationsDocument,
 	InsertNotificationsMutation,
-} from "@/graphql/types";
+} from "../graphql/types";
 import { flatten, startCase, unionBy } from "lodash";
 import { getFollowsByResource } from "./lists";
 import { getCompanyByRoundId } from "./submit-data";
-import { ActionType, ResourceTypes } from "@/utils/constants";
+import { ActionType, ResourceTypes } from "../utils/constants";
 
 type NotificationParamType = {
 	target_user_id: number;

@@ -3,14 +3,14 @@ dotenv.config({ path: "./.env" });
 import {
   processNotification,
   processNotificationOnDelete,
-} from "@/utils/notifications";
+} from "../../utils/notifications";
 import {
   ActionType,
   ResourceTypes,
   isResourceType,
   NODE_NAME
-} from "@/utils/constants";
-import { User } from "@/models/user";
+} from "../../utils/constants";
+import { User } from "../../models/user";
 import {
   partnerLookUp,
   resourceIdLookup,
@@ -21,8 +21,9 @@ import {
   insertActionDataChange,
   markDataRawAsInactive,
   insertDataDiscard,
-} from "@/utils/submit-data";
+} from "../../utils/submit-data";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { Request, Response } from "express";
 import CookieService from "../../utils/cookie";
 
 const sendNotification = async (
@@ -174,12 +175,14 @@ const handleResource = async (
     forceUpdate,
   );
 
-  await sendNotification(
-    resourceId,
-    resourceType,
-    resourceObj,
-    mainResult,
-  );
+  if(process.env.ENV === "next"){
+    await sendNotification(
+      resourceId,
+      resourceType,
+      resourceObj,
+      mainResult,
+    );
+  }
 
   let relationshipResults: Array<Record<string, any>> = [];
   for (let resourceRelationship of resourceRelationships) {
@@ -214,13 +217,14 @@ const handleResource = async (
   return mainResult;
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest | Request, res: NextApiResponse | Response) => {
   if (!["POST", "PUT", "DELETE"].includes(req.method as string))
     return res.status(405).send({ message: "Method is not allowed" });
-
-  const token = CookieService.getAuthToken(req.cookies);
-  const user = await CookieService.getUser(token);
-
+  let user:(User & {_iat?: number}) | null = null;
+  if(process.env.ENV === "next"){
+    const token = CookieService.getAuthToken(req.cookies);
+    user = await CookieService.getUser(token);
+  }
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier: Array<Array<Record<string, any>>> | Array<Record<string, any>> = req.body.resource_identifier;
@@ -244,7 +248,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Identify partner or admin
     const partner = await partnerLookUp(apiKey);
     if (partner?.id === undefined) {
-      if (!(user?.role === "admin")) {
+      if (!(user?.role === "admin") && process.env.ENV === "next") {
         return res.status(401).send({ message: "Unauthorized Partner" });
       }
     } else {
@@ -312,12 +316,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               user?.id
             );
             await markDataRawAsInactive(resourceType, resourceId);
-            await processNotificationOnDelete(
-              resourceType,
-              resourceId,
-              action?.id || 0,
-              resourceObjs[index],
-            );
+            if(process.env.ENV === "next"){
+              await processNotificationOnDelete(
+                resourceType,
+                resourceId,
+                action?.id || 0,
+                resourceObjs[index],
+              );
+            }
             return {id: resourceId, deleted: true};
           } catch (error: any) {
             return {id: resourceId, deleted: false, error};

@@ -1,7 +1,7 @@
 import express from "express"
 import morgan from "morgan"
 import cors from "cors"
-import submitdataRouter from "./src/routes/submit-data-route"
+import submitdataRouter from "./src/routers/submit-data-route"
 
 const app = express();
 
