@@ -312,7 +312,7 @@ export const InvestorsTable: FC<Props> = ({
 			},
 			{
 				Header: "Reactions",
-				accessor: "company" as const,
+				accessor: "vc_firm" as const,
 				Cell: (props: any) => (
 					<div>
 						{props.row.original && (
