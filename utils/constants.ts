@@ -614,13 +614,6 @@ export const investorSeniorityChoices = [
 	},
 ];
 
-export const companySectorTagChoices = [
-	{
-		id: "News Organization",
-		name: "News Organization",
-	},
-];
-
 export const status = [
 	{
 		id: "draft",
@@ -705,6 +698,7 @@ export const tags = [
 	"Solana",
 	"Polkadot",
 	"Metaverse",
+	"News",
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;

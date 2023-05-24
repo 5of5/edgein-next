@@ -273,7 +273,7 @@ query GetNewsOrganization($slug: String!) {
 		where: {
        _and: [
          { slug: { _eq: $slug } }
-         { sector_tags: { _contains: "News Organization" } }
+         { tags: { _contains: "News" } }
        ]
      }
 	) {

@@ -25,7 +25,6 @@ import {
   tags,
   companyChoices,
   libraryChoices,
-  companySectorTagChoices,
 } from "../../../utils/constants";
 import ElemSlugInput from "../elem-slug-input";
 import ElemIconGroup from "../elem-icon-group";
@@ -298,12 +297,6 @@ const CompanyForm = ({
               display: "block !important",
             },
           }}
-        />
-        <AutocompleteArrayInput
-          className={inputClassName}
-          source="sector_tags"
-          choices={companySectorTagChoices}
-          style={{ padding: 0, border: "none" }}
         />
         <SelectArrayInput
           className={inputClassName}

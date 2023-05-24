@@ -39,7 +39,7 @@ const ElemSimilarNewsOrganizations: FC<Props> = ({
       },
       { tags: { _contains: tag1 } },
       { tags: { _contains: tag2 } },
-      { sector_tags: { _contains: "News Organization" } },
+      { tags: { _contains: "News" } },
     ],
   };
 
