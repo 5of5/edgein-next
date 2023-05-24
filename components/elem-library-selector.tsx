@@ -56,7 +56,6 @@ const ElemLibrarySelector = () => {
 					leaveTo="opacity-0 translate-y-1"
 				>
 					<Popover.Panel className="absolute z-10 left-0 w-28 block bg-white rounded-lg shadow-md p-1">
-						{/* {({ close }) => ( */}
 						{({ close }) => (
 							<div>
 								{libraryChoices.map((item) => (
@@ -75,13 +74,6 @@ const ElemLibrarySelector = () => {
 											close();
 										}}
 									>
-										{/* {
-											item?.id === library?.id && item?.id === "Web3"
-												? "text-primary-500"
-												: item?.id === library?.id && item?.id === "AI"
-												? "text-pink-500"
-												: ""
-										} */}
 										{item.name}
 										{item.id === library?.id && (
 											<IconCheck
@@ -93,27 +85,6 @@ const ElemLibrarySelector = () => {
 								))}
 							</div>
 						)}
-
-						{/* {({ close }) => (
-								<div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-									<div className="relative w-28 bg-white py-2">
-										{libraryChoices.map((item) => (
-											<div
-												key={item.id}
-												className="px-3 py-1.5 cursor-pointer hover:bg-slate-200"
-												onClick={() => {
-													handleSelectLibrary(item);
-													close();
-												}}
-											>
-												<p className="text-sm font-medium text-gray-900">
-													{item.name}
-												</p>
-											</div>
-										))}
-									</div>
-								</div>
-							)} */}
 					</Popover.Panel>
 				</Transition>
 			</Popover>
