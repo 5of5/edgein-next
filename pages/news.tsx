@@ -5,7 +5,6 @@ import { Pagination } from "@/components/pagination";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
 import { ElemNewsCard } from "@/components/news/elem-news-card";
-import { ElemButton } from "../components/elem-button";
 import { useIntercom } from "react-use-intercom";
 import { PlaceholderNewsCard } from "@/components/placeholders";
 import { runGraphQl } from "../utils";
@@ -25,14 +24,9 @@ import { DeepPartial } from "@/types/common";
 type Props = {
 	newsCount: number;
 	initialNews: GetNewsQuery["news"];
-	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const NewsPage: NextPage<Props> = ({
-	newsCount,
-	initialNews,
-	setToggleFeedbackForm,
-}) => {
+const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
 	const [initialLoad, setInitialLoad] = useState(true);
 	const router = useRouter();
 	const { show } = useIntercom();
@@ -110,14 +104,11 @@ const NewsPage: NextPage<Props> = ({
 							</>
 						) : (
 							news?.map((item) => (
-								// <>
-								// 	{console.log(item)}
 								<ElemNewsCard
 									key={item.id}
 									newsPost={item}
 									//tagOnClick={filterByTag}
 								/>
-								// </>
 							))
 						)}
 					</div>

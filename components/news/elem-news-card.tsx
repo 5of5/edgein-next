@@ -10,9 +10,9 @@ import {
 } from "@/components/icons";
 import { GetNewsQuery } from "@/graphql/types";
 import Link from "next/link";
-import { formatDate } from "@/utils";
 import { getCleanWebsiteUrl } from "@/utils/text";
 import parse from "html-react-parser";
+import moment from "moment-timezone";
 
 type Props = {
 	newsPost: GetNewsQuery["news"][0];
@@ -40,6 +40,11 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		organizations,
 	} = postData;
 
+	const formatDateShown = (date: Date, timezone?: string) => {
+		const local_date = moment(date).local().format("YYYY-MM-DD");
+		return moment(local_date).format("LL");
+	};
+
 	return (
 		<div className="flex flex-col mx-auto w-full p-5 border border-black/10 rounded-lg transition-all">
 			<div className="flex items-start">
@@ -58,27 +63,6 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 						</h3>
 
 						<div className="mt-2 flex flex-wrap items-center">
-							{link && (
-								<p className="font-bold text-sm text-slate-600">
-									{"By "}
-									<Link href={getCleanWebsiteUrl(link, true)}>
-										<a target="_blank" className="hover:text-primary-500">
-											{getCleanWebsiteUrl(link, false)}
-										</a>
-									</Link>
-									{" • "}
-								</p>
-							)}
-
-							<p className="font-bold text-sm text-slate-600">
-								{formatDate(date as string, {
-									month: "short",
-									day: "2-digit",
-									year: "numeric",
-								})}
-								{" • "}
-								{/* <span className="capitalize">{kind}</span> */}
-							</p>
 							{kind === "news" ? (
 								<IconNewspaper
 									className="w-6 h-6 mr-1 text-slate-400"
@@ -92,6 +76,21 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 							) : (
 								""
 							)}
+							{link && (
+								<p className="font-bold text-sm text-slate-600">
+									{"By "}
+									<Link href={getCleanWebsiteUrl(link, true)}>
+										<a target="_blank" className="hover:text-primary-500">
+											{getCleanWebsiteUrl(link, false)}
+										</a>
+									</Link>
+									{" • "}
+								</p>
+							)}
+
+							<p className="font-bold text-sm text-slate-600">
+								{formatDateShown(date)}
+							</p>
 						</div>
 					</div>
 				)}
@@ -165,7 +164,9 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 			<div>
 				<p className="mt-4 text-xs text-gray-400">
 					Powered by{" "}
-					<Link href={`/news/${source?.poweredby ? "techcrunch" : "cryptopanic"}`}>
+					<Link
+						href={`/news/${source?.poweredby ? "techcrunch" : "cryptopanic"}`}
+					>
 						<a>{source?.poweredby || "CryptoPanic"}</a>
 					</Link>
 				</p>
