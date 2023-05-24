@@ -14,7 +14,6 @@ import {
 	IconTable,
 } from "@/components/icons";
 import { CompaniesTable } from "@/components/companies/elem-companies-table";
-import { Popover } from "@headlessui/react";
 import {
 	Companies,
 	Companies_Bool_Exp,
@@ -236,27 +235,23 @@ const Companies: NextPage<Props> = ({
 								)}
 						</nav>
 
-						<div>
-							<ElemButton
+						<div className="bg-slate-200 rounded-full p-0.5">
+							<button
 								onClick={() => setTableLayout(false)}
-								btn="white"
-								roundedFull={false}
-								className={`font-normal rounded-l-md focus:ring-1 focus:ring-slate-200 ${
-									!tableLayout && "bg-slate-200 text-primary-500"
+								className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+									!tableLayout && "bg-white shadow-sm text-primary-500"
 								}`}
 							>
 								<IconGrid className="w-5 h-5" title="Grid layout" />
-							</ElemButton>
-							<ElemButton
+							</button>
+							<button
 								onClick={() => setTableLayout(true)}
-								btn="white"
-								roundedFull={false}
-								className={`font-normal rounded-r-md focus:ring-1 focus:ring-slate-200 ${
-									tableLayout && "bg-slate-200 text-primary-500"
+								className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+									tableLayout && "bg-white shadow-sm text-primary-500"
 								}`}
 							>
 								<IconTable className="w-5 h-5" title="Table layout" />
-							</ElemButton>
+							</button>
 						</div>
 					</div>
 
