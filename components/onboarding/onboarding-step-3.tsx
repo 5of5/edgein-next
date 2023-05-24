@@ -9,6 +9,7 @@ import {
 } from "@/graphql/types";
 import { User } from "@/models/user";
 import { DeepPartial } from "@/types/common";
+import ElemOrganizationItem from "./elem-organization-item";
 
 type Props = {
 	selectedOption: string;
@@ -139,23 +140,13 @@ export default function OnboardingStep3(props: Props) {
                         </div>
                       ))
                     : list.length > 0 &&
-                      list.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex items-center space-x-2"
-                          >
-                            <div className="flex items-center justify-center shrink-0 w-10 h-10 p-1 rounded shadow">
-                              <img
-                                className="object-contain max-w-full max-h-full"
-                                src={item.logo ? item.logo.url : ""}
-                                alt={item.name}
-                              />
-                            </div>
-                            <h1 className="font-bold truncate">{item.name}</h1>
-                          </div>
-                        );
-                      })}
+											list.map((item) => (
+												<ElemOrganizationItem
+													key={item.id}
+													selectedOption={props.selectedOption}
+													organization={item}
+												/>
+											))}
                 </div>
 								<div className="w-full flex justify-end mt-8">
 									<ElemButton

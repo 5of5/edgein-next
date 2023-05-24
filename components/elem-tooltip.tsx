@@ -60,7 +60,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 
 	return (
 		<div
-			className={`${className} Tooltip-Wrapper relative inline-block cursor-pointer`}
+			className={`Tooltip-Wrapper relative inline-block cursor-pointer ${className}`}
 			onMouseEnter={showTip}
 			onMouseLeave={hideTip}
 			onTouchStart={showTip}

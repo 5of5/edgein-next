@@ -100,7 +100,7 @@ export const ElemRecentCompanies: FC<Props> = ({
 											/>
 
 											<div className="pl-2 md:overflow-hidden">
-												<h3 className="inline min-w-0 text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
+												<h3 className="inline min-w-0 max-w-[16rem] text-2xl font-bold break-words align-middle line-clamp-2 sm:text-lg md:text-xl xl:text-2xl">
 													{company.name}
 												</h3>
 											</div>
