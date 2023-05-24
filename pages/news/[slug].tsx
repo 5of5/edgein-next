@@ -18,8 +18,9 @@ import {
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
 import { runGraphQl } from "@/utils";
-import ElemNewsArticles from "@/components/news/elem-news-articles";
+import ElemNewsArticles, { DEFAULT_LIMIT } from "@/components/news/elem-news-articles";
 import ElemSimilarNewsOrganizations from "@/components/news/elem-similar-news-organizations";
+import { getQueryBySource } from "@/utils/news";
 
 type Props = {
   newsOrganization: GetNewsOrganizationQuery["companies"][0];
@@ -137,7 +138,11 @@ const NewsOrganizationProfile: NextPage<Props> = ({
           </div>
           <div className="col-span-8">
             <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-              <ElemNewsArticles heading="News articles" news={newsArticles} />
+              <ElemNewsArticles
+                heading="News articles"
+                newsOrgSlug={newsOrganization.slug}
+                news={newsArticles}
+              />
             </div>
           </div>
         </div>
@@ -188,35 +193,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const newsOrganization = newsOrganizations?.companies[0];
 
-  const sourceQuery =
-    context.params?.slug === "techcrunch"
-      ? {
-          source: {
-            _cast: {
-              String: { _ilike: `%"poweredby": "techcrunch"%` },
-            },
-          },
-        }
-      : {
-          _or: [
-            {
-              source: {
-                _is_null: true,
-              },
-            },
-            {
-              source: {
-                _cast: {
-                  String: { _nilike: `%"poweredby"%` },
-                },
-              },
-            },
-          ],
-        };
+  const sourceQuery = getQueryBySource(context.params?.slug as string);
 
-  const { data: newsArticles, errors } = await runGraphQl<GetNewsArticlesQuery>(
+  const { data: newsArticles } = await runGraphQl<GetNewsArticlesQuery>(
     GetNewsArticlesDocument,
     {
+      offset: 0,
+		  limit: DEFAULT_LIMIT,
       order: Order_By.Desc,
       where: {
         _and: [{ status: { _eq: "published" } }, { ...sourceQuery }],
@@ -224,7 +207,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     context.req.cookies
   );
-console.log('@newsArticles', newsArticles, errors)
+
   let metaTitle = null;
   if (newsOrganization.name) {
     metaTitle =

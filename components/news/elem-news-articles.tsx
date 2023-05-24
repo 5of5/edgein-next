@@ -1,20 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useIntercom } from "react-use-intercom";
 import { formatDate } from "@/utils";
 import { IconExternalLink } from "@/components/icons";
 import { ElemButton } from "../elem-button";
-import { News } from "@/graphql/types";
+import {
+  News,
+  News_Bool_Exp,
+  Order_By,
+  useGetNewsArticlesQuery,
+} from "@/graphql/types";
+import { getQueryBySource } from "@/utils/news";
 
 type Props = {
   heading?: string;
+  newsOrgSlug: string;
   news: News[];
 };
 
-const ElemNewsArticles: React.FC<Props> = ({ heading, news }) => {
-  const [newsLimit, setNewsLimit] = useState(10);
+export const DEFAULT_LIMIT = 10;
+
+const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news }) => {
+  const [articles, setArticles] = useState<News[]>(news);
+
+  const [page, setPage] = useState(0);
+
+  const offset = DEFAULT_LIMIT * page;
+
+  const sourceQuery = getQueryBySource(newsOrgSlug);
+
+  const { data: newsArticles, isSuccess } = useGetNewsArticlesQuery({
+    offset,
+    limit: DEFAULT_LIMIT,
+    order: Order_By.Desc,
+    where: {
+      _and: [{ status: { _eq: "published" } }, { ...sourceQuery }],
+    } as News_Bool_Exp,
+  });
+
+  const totalArticles = newsArticles?.news_aggregate?.aggregate?.count || 0;
+
+  useEffect(() => {
+    if (isSuccess && page > 0) {
+      setArticles([...articles, ...(newsArticles.news as News[])]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess, page]);
+
   const showMoreNews = () => {
-    setNewsLimit(newsLimit + 10);
+    setPage(page + 1);
   };
   const { show } = useIntercom();
 
@@ -27,10 +61,10 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, news }) => {
       </div>
 
       <div className="py-4">
-        {news && news.length > 0 ? (
+        {articles && articles.length > 0 ? (
           <>
             <ul className="flex flex-col">
-              {news.slice(0, newsLimit).map((activity, index) => {
+              {articles.map((activity, index) => {
                 return (
                   <li
                     key={index}
@@ -74,7 +108,7 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, news }) => {
               })}
             </ul>
 
-            {newsLimit < news.length && (
+            {articles.length < totalArticles && (
               <div className="mt-6">
                 <ElemButton
                   btn="ol-primary"
