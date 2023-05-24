@@ -32,7 +32,7 @@ export type DeepPartial<T> = T extends object
 
 type Props = {
 	className?: string;
-	companies?: any;
+	investors?: any;
 	pageNumber: number;
 	itemsPerPage: number;
 	shownItems?: number;
@@ -42,9 +42,9 @@ type Props = {
 	onClickNext?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const CompaniesTable: FC<Props> = ({
+export const InvestorsTable: FC<Props> = ({
 	className = "",
-	companies,
+	investors,
 	pageNumber,
 	itemsPerPage,
 	shownItems = 0,
@@ -98,7 +98,7 @@ export const CompaniesTable: FC<Props> = ({
 				accessor: "name" as const,
 				Cell: (props: any) => (
 					<a
-						href={`/companies/` + props.row.original?.slug}
+						href={`/investors/` + props.row.original?.slug}
 						className="flex items-center space-x-3 shrink-0 group transition-all"
 					>
 						<ElemPhoto
@@ -115,14 +115,6 @@ export const CompaniesTable: FC<Props> = ({
 				),
 				width: 170,
 				minWidth: 200,
-			},
-			{
-				Header: "Token",
-				accessor: "coin.ticker" as const,
-				Cell: (props: any) => (
-					<>{props.value ? <div>{props.value}</div> : emptyCell}</>
-				),
-				width: 100,
 			},
 			{
 				Header: "Industries",
@@ -212,61 +204,71 @@ export const CompaniesTable: FC<Props> = ({
 				},
 				width: 120,
 			},
+			// {
+			// 	Header: "Employees",
+			// 	accessor: "total_employees" as const,
+			// 	Cell: (props: any) => {
+			// 		return (
+			// 			<>
+			// 				{props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
+			// 			</>
+			// 		);
+			// 	},
+			// 	width: 120,
+			// },
 			{
-				Header: "Employees",
-				accessor: "total_employees" as const,
-				Cell: (props: any) => {
-					return (
-						<>
-							{props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
-						</>
+				Header: "Investments Total",
+				accessor: (data: {
+					investments: {
+						[x: string]: any;
+						investment_round: Object;
+					};
+				}) => {
+					const investmentRounds = data?.investments?.flatMap(
+						(item: any) => item.investment_round
 					);
-				},
-				width: 120,
-			},
-			{
-				Header: "Total Funding",
-				accessor: (data: { investment_rounds: Array<any> }) => {
-					const totalFunding = data.investment_rounds?.reduce(
+
+					const investmentsTotal = investmentRounds?.reduce(
 						(total: number, currentValue: any) =>
-							(total = total + currentValue.amount),
+							(total = total + (currentValue ? currentValue.amount : 0)),
 						0
 					);
 
-					return totalFunding;
+					return investmentsTotal;
 				},
 				Cell: (props: any) => {
 					return (
 						<div>
-							{props.value > 0 ? (
-								<>${numberWithCommas(props.value)}</>
-							) : props.value === 0 &&
-							  props.row.original?.investment_rounds.length > 0 ? (
-								<>Undisclosed Capital</>
-							) : (
-								<>${props.value}</>
-							)}
+							{props.value ? <>${numberWithCommas(props.value)}</> : emptyCell}
 						</div>
 					);
 				},
 				width: 140,
 			},
 			{
-				Header: "# Funding Rounds",
-				accessor: "investment_rounds.length" as const,
+				Header: "# Investment Rounds",
+				accessor: "num_of_investments" as const,
 				Cell: (props: any) => {
-					const numberOfRounds = props.value;
-					return <>{numberOfRounds ? numberOfRounds : emptyCell}</>;
+					return <>{props.value ? props.value : emptyCell}</>;
 				},
-				width: 100,
+				width: 40,
 			},
 			{
-				Header: "Last Funding Date",
-				accessor: (data: { investment_rounds: Array<any> }) => {
-					if (!data.investment_rounds) {
+				Header: "Last Investment Date",
+				accessor: (data: {
+					investments: {
+						[x: string]: any;
+						investment_round: Object;
+					};
+				}) => {
+					const investmentRounds = data?.investments?.flatMap(
+						(item: any) => item.investment_round
+					);
+
+					if (!investmentRounds) {
 						return 0;
 					} else {
-						const latestRound = getLatestRound(data.investment_rounds);
+						const latestRound = getLatestRound(investmentRounds);
 
 						const out = latestRound?.round_date ? latestRound?.round_date : 0;
 
@@ -283,41 +285,21 @@ export const CompaniesTable: FC<Props> = ({
 				width: 120,
 			},
 			{
-				Header: "Last Funding Total",
-				accessor: (data: { investment_rounds: Array<any> }) => {
-					if (!data.investment_rounds) {
-						return 0;
-					} else {
-						const latestRound = getLatestRound(data.investment_rounds);
-
-						const out = latestRound?.amount ? latestRound?.amount : 0;
-
-						return out;
-					}
-				},
-				Cell: (props: any) => {
-					return (
-						<div>
-							{props.value > 0 ? (
-								<>${numberWithCommas(props.value)}</>
-							) : props.value === 0 &&
-							  props.row.original?.investment_rounds.length > 0 ? (
-								<>Undisclosed Capital</>
-							) : (
-								emptyCell
-							)}
-						</div>
+				Header: "Last Investment Type",
+				accessor: (data: {
+					investments: {
+						[x: string]: any;
+						investment_round: Object;
+					};
+				}) => {
+					const investmentRounds = data?.investments?.flatMap(
+						(item: any) => item.investment_round
 					);
-				},
-				width: 140,
-			},
-			{
-				Header: "Last Funding Type",
-				accessor: (data: { investment_rounds: Array<any> }) => {
-					if (!data.investment_rounds) {
+
+					if (!investmentRounds) {
 						return 0;
 					} else {
-						const latestRound = getLatestRound(data.investment_rounds);
+						const latestRound = getLatestRound(investmentRounds);
 
 						const out = latestRound?.round ? latestRound?.round : 0;
 
@@ -336,7 +318,7 @@ export const CompaniesTable: FC<Props> = ({
 						{props.row.original && (
 							<ElemReactions
 								resource={props.row.original}
-								resourceType={"companies"}
+								resourceType={"vc_firms"}
 								isInteractive={false}
 							/>
 						)}
@@ -348,9 +330,9 @@ export const CompaniesTable: FC<Props> = ({
 		[filterByTag, emptyCell]
 	);
 
-	const getCompanies = React.useMemo(() => {
-		return companies ? companies : [{}];
-	}, [companies]);
+	const getInvestors = React.useMemo(() => {
+		return investors ? investors : [{}];
+	}, [investors]);
 
 	const {
 		getTableProps,
@@ -369,7 +351,7 @@ export const CompaniesTable: FC<Props> = ({
 	} = useTable(
 		{
 			columns: columns,
-			data: getCompanies,
+			data: getInvestors,
 			disableSortRemove: true,
 			autoResetSortBy: false,
 			initialState: {
@@ -398,14 +380,14 @@ export const CompaniesTable: FC<Props> = ({
 					) : shownItems == totalItems ? (
 						<div>
 							{shownItemsStart}
-							{" - "} {shownItemsEnd} of {totalItems} companies
+							{" - "} {shownItemsEnd} of {totalItems} investors
 						</div>
 					) : (
 						<div>
 							{numberWithCommas(shownItemsStart)}
 							{"-"}
 							{numberWithCommas(shownItemsEnd)} of{" "}
-							{numberWithCommas(totalItems)} companies
+							{numberWithCommas(totalItems)} investors
 						</div>
 					)}
 					<div className="flex space-x-1 ml-2">

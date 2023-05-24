@@ -131,11 +131,41 @@ query GetVCFirms($limit: Int, $offset: Int, $where: vc_firms_bool_exp!) {
 		name
 		slug
 		logo
-		num_of_investments
-		sentiment
+		location_json
 		tags
 		overview
 		website
+		num_of_investments
+		year_founded
+		investments {
+			investment_round {
+				id
+				round_date
+				round
+				amount
+				company {
+					id
+					slug
+					name
+					tags
+					logo
+				}
+				investments {
+					id
+					vc_firm {
+						id
+						slug
+						name
+					}
+					person {
+						id
+						slug
+						name
+					}
+				}
+			}
+		}
+		sentiment
 	}
 	vc_firms_aggregate(where: $where) {
 		aggregate {

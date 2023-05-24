@@ -290,7 +290,7 @@ const Companies: NextPage<Props> = ({
 						</div>
 					)}
 
-					<div className={``}>
+					<div>
 						{error ? (
 							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
 								<div className="max-w-xl mx-auto">

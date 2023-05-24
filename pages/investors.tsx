@@ -7,7 +7,13 @@ import { ElemRecentInvestments } from "@/components/investors/elem-recent-invest
 import { ElemButton } from "@/components/elem-button";
 import { Pagination } from "@/components/pagination";
 import { ElemInvestorCard } from "@/components/investors/elem-investor-card";
-import { IconSearch, IconAnnotation } from "@/components/icons";
+import {
+	IconSearch,
+	IconAnnotation,
+	IconGrid,
+	IconTable,
+} from "@/components/icons";
+import { InvestorsTable } from "@/components/investors/elem-investors-table";
 import {
 	GetVcFirmsDocument,
 	GetVcFirmsQuery,
@@ -53,6 +59,8 @@ const Investors: NextPage<Props> = ({
 		(statusTag) => investorsStatusTags.indexOf(statusTag).toString(),
 		(index) => investorsStatusTags[Number(index)]
 	);
+
+	const [tableLayout, setTableLayout] = useState(true);
 
 	// Filters
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -218,6 +226,24 @@ const Investors: NextPage<Props> = ({
 									)
 								)}
 						</nav>
+						<div className="bg-slate-200 rounded-full p-0.5">
+							<button
+								onClick={() => setTableLayout(false)}
+								className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+									!tableLayout && "bg-white shadow-sm text-primary-500"
+								}`}
+							>
+								<IconGrid className="w-5 h-5" title="Grid layout" />
+							</button>
+							<button
+								onClick={() => setTableLayout(true)}
+								className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+									tableLayout && "bg-white shadow-sm text-primary-500"
+								}`}
+							>
+								<IconTable className="w-5 h-5" title="Table layout" />
+							</button>
+						</div>
 					</div>
 
 					<ElemFilter
@@ -255,7 +281,7 @@ const Investors: NextPage<Props> = ({
 						</div>
 					)}
 
-					<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+					<div>
 						{error ? (
 							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
 								<div className="max-w-xl mx-auto">
@@ -284,14 +310,27 @@ const Investors: NextPage<Props> = ({
 									<PlaceholderInvestorCard key={i} />
 								))}
 							</>
+						) : tableLayout ? (
+							<InvestorsTable
+								investors={vcFirms}
+								pageNumber={page}
+								itemsPerPage={limit}
+								shownItems={vcFirms?.length}
+								totalItems={vcfirms_aggregate}
+								onClickPrev={() => setPage(page - 1)}
+								onClickNext={() => setPage(page + 1)}
+								filterByTag={filterByTag}
+							/>
 						) : (
-							vcFirms?.map((vcfirm) => (
-								<ElemInvestorCard
-									key={vcfirm.id}
-									vcFirm={vcfirm as Vc_Firms}
-									tagOnClick={filterByTag}
-								/>
-							))
+							<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+								{vcFirms?.map((vcfirm) => (
+									<ElemInvestorCard
+										key={vcfirm.id}
+										vcFirm={vcfirm as Vc_Firms}
+										tagOnClick={filterByTag}
+									/>
+								))}
+							</div>
 						)}
 					</div>
 					<Pagination
