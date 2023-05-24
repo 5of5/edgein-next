@@ -11,6 +11,9 @@ import {
   GetNewsOrganizationQuery,
   Team_Members,
   News,
+  GetNewsArticlesQuery,
+  GetNewsArticlesDocument,
+  Order_By,
 } from "@/graphql/types";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
@@ -20,12 +23,12 @@ import ElemSimilarNewsOrganizations from "@/components/news/elem-similar-news-or
 
 type Props = {
   newsOrganization: GetNewsOrganizationQuery["companies"][0];
-  sortedNews: News[];
+  newsArticles: News[];
 };
 
 const NewsOrganizationProfile: NextPage<Props> = ({
   newsOrganization,
-  sortedNews,
+  newsArticles,
 }) => {
   const [overviewMore, setOverviewMore] = useState(false);
   const overviewDiv = useRef() as MutableRefObject<HTMLDivElement>;
@@ -134,7 +137,7 @@ const NewsOrganizationProfile: NextPage<Props> = ({
           </div>
           <div className="col-span-8">
             <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
-              <ElemNewsArticles heading="News articles" news={sortedNews} />
+              <ElemNewsArticles heading="News articles" news={newsArticles} />
             </div>
           </div>
         </div>
@@ -185,19 +188,42 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const newsOrganization = newsOrganizations?.companies[0];
 
-  const sortedNews =
-    newsOrganization.news_links
-      ?.slice()
-      ?.filter(
-        (item) => item.news?.status === "published" && item.type === "publisher"
-      )
-      ?.map((item) => ({ ...item.news, type: "news" }))
-      .sort((a, b) => {
-        return (
-          new Date(a?.date ?? "").getTime() - new Date(b?.date ?? "").getTime()
-        );
-      })
-      .reverse() || [];
+  const sourceQuery =
+    context.params?.slug === "techcrunch"
+      ? {
+          source: {
+            _cast: {
+              String: { _ilike: `%"poweredby": "techcrunch"%` },
+            },
+          },
+        }
+      : {
+          _or: [
+            {
+              source: {
+                _is_null: true,
+              },
+            },
+            {
+              source: {
+                _cast: {
+                  String: { _nilike: `%"poweredby"%` },
+                },
+              },
+            },
+          ],
+        };
+
+  const { data: newsArticles } = await runGraphQl<GetNewsArticlesQuery>(
+    GetNewsArticlesDocument,
+    {
+      order: Order_By.Desc,
+      where: {
+        _and: [{ status: { _eq: "published" } }, { ...sourceQuery }],
+      },
+    },
+    context.req.cookies
+  );
 
   let metaTitle = null;
   if (newsOrganization.name) {
@@ -215,7 +241,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       newsOrganization,
       metaTitle,
       metaDescription,
-      sortedNews,
+      newsArticles: newsArticles?.news,
     },
   };
 };

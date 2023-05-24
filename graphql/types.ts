@@ -23419,7 +23419,7 @@ export type GetNewsOrganizationQueryVariables = Exact<{
 }>;
 
 
-export type GetNewsOrganizationQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, total_employees: any | null, year_founded: string | null, website: string | null, company_linkedin: string | null, careers_page: string | null, tags: any | null, date_added: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, type: string | null, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
+export type GetNewsOrganizationQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, total_employees: any | null, year_founded: string | null, website: string | null, company_linkedin: string | null, careers_page: string | null, tags: any | null, date_added: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, type: string | null, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
 
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
@@ -23856,6 +23856,14 @@ export type GetNewsQueryVariables = Exact<{
 
 
 export type GetNewsQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, source: any | null, created_at: any, status: string | null, text: string, metadata: any | null, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', type: string | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }>, news_aggregate: { __typename?: 'news_aggregate', aggregate: { __typename?: 'news_aggregate_fields', count: number } | null } };
+
+export type GetNewsArticlesQueryVariables = Exact<{
+  order: Order_By;
+  where: News_Bool_Exp;
+}>;
+
+
+export type GetNewsArticlesQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, source: any | null, created_at: any, status: string | null, text: string, metadata: any | null, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', type: string | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }> };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -25022,6 +25030,7 @@ export const GetNewsOrganizationDocument = `
         text
         link
         kind
+        source
         status
         organizations {
           id
@@ -26904,6 +26913,56 @@ useGetNewsQuery.getKey = (variables: GetNewsQueryVariables) => ['GetNews', varia
 ;
 
 useGetNewsQuery.fetcher = (variables: GetNewsQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsQuery, GetNewsQueryVariables>(GetNewsDocument, variables, options);
+export const GetNewsArticlesDocument = `
+    query GetNewsArticles($order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: {date: $order}) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+}
+    `;
+export const useGetNewsArticlesQuery = <
+      TData = GetNewsArticlesQuery,
+      TError = Error
+    >(
+      variables: GetNewsArticlesQueryVariables,
+      options?: UseQueryOptions<GetNewsArticlesQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsArticlesQuery, TError, TData>(
+      ['GetNewsArticles', variables],
+      fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(GetNewsArticlesDocument, variables),
+      options
+    );
+useGetNewsArticlesQuery.document = GetNewsArticlesDocument;
+
+
+useGetNewsArticlesQuery.getKey = (variables: GetNewsArticlesQueryVariables) => ['GetNewsArticles', variables];
+;
+
+useGetNewsArticlesQuery.fetcher = (variables: GetNewsArticlesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(GetNewsArticlesDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {

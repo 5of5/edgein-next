@@ -42,3 +42,33 @@ query GetNews(
 		}
 	}
 }
+
+query GetNewsArticles($order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: { date: $order }) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+}
