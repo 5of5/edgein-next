@@ -4,7 +4,6 @@ import { ElemCarouselWrap } from "@/components/elem-carousel-wrap";
 import { ElemCarouselCard } from "@/components/elem-carousel-card";
 import { ElemPhoto } from "@/components/elem-photo";
 import { getLayerClass } from "@/utils/style";
-import { useRouter } from "next/router";
 import {
   Companies_Bool_Exp,
   Maybe,
@@ -30,8 +29,6 @@ const ElemSimilarNewsOrganizations: FC<Props> = ({
   const limit = 12;
   const offset = null;
 
-  const router = useRouter();
-
   const filters: DeepPartial<Companies_Bool_Exp> = {
     _and: [
       {
@@ -54,20 +51,6 @@ const ElemSimilarNewsOrganizations: FC<Props> = ({
   });
 
   const companies = companiesData?.companies;
-
-  const onClickType = (
-    event: React.MouseEvent<HTMLDivElement>,
-    type: string
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-
-    router.push(
-      `/companies/?filters=${encodeURIComponent(
-        `{"industry":{"tags":["${type}"]}}`
-      )}`
-    );
-  };
 
   if (companies && companies.length > 0) {
     return (
@@ -93,20 +76,13 @@ const ElemSimilarNewsOrganizations: FC<Props> = ({
           companies && (
             <ElemCarouselWrap>
               {companies.map((company: any, index: number) => {
-                // Add 'amount' from investment_rounds array
-                const fundingTotal = company.investment_rounds?.reduce(
-                  (total: number, currentValue: any) =>
-                    (total = total + currentValue.amount),
-                  0
-                );
-
                 return (
                   <ElemCarouselCard
                     key={index}
                     className={`p-3 basis-full sm:basis-1/2 lg:basis-1/3`}
                   >
                     <a
-                      href={`/companies/${company.slug}`}
+                      href={`/news/${company.slug}`}
                       className="z-0 flex flex-col box-border w-full h-full p-5 transition-all bg-white border border-black/10 rounded-lg  hover:scale-102 hover:shadow"
                     >
                       <div className="flex items-center">
@@ -141,12 +117,7 @@ const ElemSimilarNewsOrganizations: FC<Props> = ({
                             return (
                               <div
                                 key={index}
-                                className="shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full cursor-pointer hover:bg-slate-300"
-                                onClick={(e) => {
-                                  if (onClickType) {
-                                    onClickType(e, tag);
-                                  }
-                                }}
+                                className="shrink-0 bg-slate-200 text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full hover:bg-slate-300"
                               >
                                 {tag}
                               </div>

@@ -214,7 +214,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
           ],
         };
 
-  const { data: newsArticles } = await runGraphQl<GetNewsArticlesQuery>(
+  const { data: newsArticles, errors } = await runGraphQl<GetNewsArticlesQuery>(
     GetNewsArticlesDocument,
     {
       order: Order_By.Desc,
@@ -224,7 +224,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
     context.req.cookies
   );
-
+console.log('@newsArticles', newsArticles, errors)
   let metaTitle = null;
   if (newsOrganization.name) {
     metaTitle =
