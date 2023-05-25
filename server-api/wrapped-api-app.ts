@@ -9,6 +9,8 @@ const app = express();
 // apply middleware logger
 if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
+}else{
+    app.use(morgan('common'));
 }
 
 // applymiddleware cors
