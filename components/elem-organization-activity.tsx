@@ -134,9 +134,16 @@ const renderNews = (
 							day: "2-digit",
 							year: "numeric",
 						})}
-						<span>{` • powered by ${
-              activity?.source?.poweredby || "CryptoPanic"
-            }`}</span>
+						<span>{` • powered by `}</span>
+						<Link
+							href={`/companies/${
+								activity?.source?.poweredby?.toLowerCase() === "techcrunch"
+									? "techcrunch"
+									: "cryptopanic"
+							}`}
+						>
+							<a>{activity?.source?.poweredby || "CryptoPanic"}</a>
+						</Link>
           </p>
 				</div>
 			</div>
