@@ -2,7 +2,10 @@ import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { ElemHeading } from "@/components/elem-heading";
-import { PlaceholderInvestorCard } from "@/components/placeholders";
+import {
+	PlaceholderInvestorCard,
+	PlaceholderTable,
+} from "@/components/placeholders";
 import { ElemRecentInvestments } from "@/components/investors/elem-recent-investments";
 import { ElemButton } from "@/components/elem-button";
 import { Pagination } from "@/components/pagination";
@@ -306,9 +309,17 @@ const Investors: NextPage<Props> = ({
 							</div>
 						) : isLoading && !initialLoad ? (
 							<>
-								{Array.from({ length: 15 }, (_, i) => (
-									<PlaceholderInvestorCard key={i} />
-								))}
+								{tableLayout ? (
+									<div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+										<PlaceholderTable />
+									</div>
+								) : (
+									<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+										{Array.from({ length: 9 }, (_, i) => (
+											<PlaceholderInvestorCard key={i} />
+										))}
+									</div>
+								)}
 							</>
 						) : tableLayout ? (
 							<InvestorsTable

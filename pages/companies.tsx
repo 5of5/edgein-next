@@ -3,7 +3,10 @@ import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import moment from "moment-timezone";
 import { ElemHeading } from "@/components/elem-heading";
-import { PlaceholderCompanyCard } from "@/components/placeholders";
+import {
+	PlaceholderCompanyCard,
+	PlaceholderTable,
+} from "@/components/placeholders";
 import { ElemRecentCompanies } from "@/components/companies/elem-recent-companies";
 import { ElemButton } from "@/components/elem-button";
 import { runGraphQl } from "@/utils";
@@ -312,11 +315,19 @@ const Companies: NextPage<Props> = ({
 								</div>
 							</div>
 						) : isLoading && !initialLoad ? (
-							<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-								{Array.from({ length: 9 }, (_, i) => (
-									<PlaceholderCompanyCard key={i} />
-								))}
-							</div>
+							<>
+								{tableLayout ? (
+									<div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+										<PlaceholderTable />
+									</div>
+								) : (
+									<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+										{Array.from({ length: 9 }, (_, i) => (
+											<PlaceholderCompanyCard key={i} />
+										))}
+									</div>
+								)}
+							</>
 						) : tableLayout ? (
 							<CompaniesTable
 								companies={companies}
