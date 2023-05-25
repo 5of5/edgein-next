@@ -205,10 +205,8 @@ const Companies: NextPage<Props> = ({
 			</div>
 
 			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-				<div className="bg-white rounded-lg shadow pb-5 px-5">
-					{/* <div className="flex justify-between">
-						<h2 className="text-xl font-bold">Companies</h2>
-					</div> */}
+				<div className="bg-white rounded-lg shadow p-5">
+					<h2 className="text-xl font-bold">Companies</h2>
 
 					<div
 						className="flex flex-wrap items-center justify-between border-b border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
