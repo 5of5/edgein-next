@@ -23,7 +23,7 @@ import {
   insertDataDiscard,
 } from "../../utils/submit-data";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { Request, Response } from "express";
+import type {CommonRequest, CommonResponse} from "../../utils/constants"
 import CookieService from "../../utils/cookie";
 
 const sendNotification = async (
@@ -175,14 +175,12 @@ const handleResource = async (
     forceUpdate,
   );
 
-  if(process.env.ENV === "next"){
-    await sendNotification(
-      resourceId,
-      resourceType,
-      resourceObj,
-      mainResult,
-    );
-  }
+  await sendNotification(
+    resourceId,
+    resourceType,
+    resourceObj,
+    mainResult,
+  );
 
   let relationshipResults: Array<Record<string, any>> = [];
   for (let resourceRelationship of resourceRelationships) {
@@ -217,13 +215,23 @@ const handleResource = async (
   return mainResult;
 }
 
-const handler = async (req: NextApiRequest | Request, res: NextApiResponse | Response) => {
+const convertNextToCommonRequest = (req : NextApiRequest ) => {
+  return req as CommonRequest;
+}
+
+const convertNextToCommonResp = (res : NextApiResponse) => {
+  return res  as CommonResponse;
+}
+
+const commonHandler = async (req: CommonRequest, res: CommonResponse) => {
   if (!["POST", "PUT", "DELETE"].includes(req.method as string))
     return res.status(405).send({ message: "Method is not allowed" });
   let user:(User & {_iat?: number}) | null = null;
-  if(process.env.ENV === "next"){
+  try {
     const token = CookieService.getAuthToken(req.cookies);
     user = await CookieService.getUser(token);
+  } catch (error) {
+    user = null;
   }
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
@@ -316,14 +324,12 @@ const handler = async (req: NextApiRequest | Request, res: NextApiResponse | Res
               user?.id
             );
             await markDataRawAsInactive(resourceType, resourceId);
-            if(process.env.ENV === "next"){
-              await processNotificationOnDelete(
-                resourceType,
-                resourceId,
-                action?.id || 0,
-                resourceObjs[index],
-              );
-            }
+            await processNotificationOnDelete(
+              resourceType,
+              resourceId,
+              action?.id || 0,
+              resourceObjs[index],
+            );
             return {id: resourceId, deleted: true};
           } catch (error: any) {
             return {id: resourceId, deleted: false, error};
@@ -355,4 +361,10 @@ const handler = async (req: NextApiRequest | Request, res: NextApiResponse | Res
   }
 };
 
-export default handler;
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await commonHandler(convertNextToCommonRequest(req), convertNextToCommonResp(res));
+}
+
+
+export default commonHandler;
