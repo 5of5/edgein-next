@@ -9,8 +9,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     user = await CookieService.getUser(token)
 
     if (user?._iat && user?.email) {
-      if ((new Date()).getTime() > (user._iat * 1000 + (1000 * 60 * 15))) {
-        // is token older than an hour
+      if ((new Date()).getTime() > (user._iat * 1000 + (1000 * 60 * 5))) {
+        // is token older than 5 mins
 
         const dbUser = await UserService.findOneUserByEmail(user?.email);
         if (!dbUser || dbUser.active === false) {

@@ -17,10 +17,12 @@ import OnboardingStep1 from "@/components/onboarding/onboarding-step-1";
 import OnboardingStep2 from "@/components/onboarding/onboarding-step-2";
 import OnboardingStep3 from "@/components/onboarding/onboarding-step-3";
 import { useUser } from "@/context/user-context";
+import { useGetUserByIdQuery } from "@/graphql/types";
 import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import OnboardingStep4 from "./onboarding/onboarding-step-4";
+import ElemLibrarySelector from "./elem-library-selector";
 
 export type Popups =
 	| "login"
@@ -37,7 +39,7 @@ type Props = {
 
 export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const router = useRouter();
-	const { user, loading, listAndFollows, myGroups } = useUser();
+	const { user, listAndFollows, myGroups } = useUser();
 
 	const hotListId =
 		find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
@@ -61,6 +63,12 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const [inviteCode, setInviteCode] = useState(
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
 	);
+
+	const isDisplaySelectLibrary =
+		user?.email.endsWith("edgein.io") || user?.email.endsWith("techlist.com");
+
+	const { data: userProfile, isFetching: isFetchingUserProfile } =
+		useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
 
 	useEffect(() => {
 		if (
@@ -102,10 +110,14 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	};
 
 	useEffect(() => {
-		if (!loading && user && !user.onboarding_information) {
+		if (
+			!isFetchingUserProfile &&
+			userProfile &&
+			!userProfile.users[0]?.onboarding_information
+		) {
 			showOnboarding();
 		}
-	}, [loading, user]);
+	}, [isFetchingUserProfile, userProfile]);
 
 	let siteNav = [
 		{
@@ -198,7 +210,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					aria-label="Global"
 				>
 					<div className="flex items-center">
-						<div className="flex-none lg:mr-4">
+						<div className="flex-none lg:mr-2">
 							<Link href={user ? "/companies" : "/"} passHref>
 								<a>
 									<ElemLogo
@@ -208,6 +220,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								</a>
 							</Link>
 						</div>
+						{isDisplaySelectLibrary && <ElemLibrarySelector />}
 					</div>
 					<ElemSearchBox
 						onClick={() => {
@@ -295,7 +308,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					{onboardingStep === 1 && (
 						<OnboardingStep1
 							selectedOption={selectedOption}
-							show={onboardingStep === 1 && !loading}
+							show={onboardingStep === 1 && !isFetchingUserProfile}
 							onClose={() => setOnboardingStep(0)}
 							onNext={(selectedOption) => {
 								setSelectedOption(selectedOption);
@@ -309,7 +322,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onboardingStep === 2 && !loading}
+							show={onboardingStep === 2 && !isFetchingUserProfile}
 							onClose={() => {
 								setOnboardingStep(0);
 							}}
@@ -325,13 +338,13 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							}}
 						/>
 					)}
-					
+
 					{onboardingStep === 3 && (
 						<OnboardingStep3
 							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-							show={onboardingStep === 3 && !loading}
+							show={onboardingStep === 3 && !isFetchingUserProfile}
 							list={list}
 							onNext={(list) => {
 								setList(list);
@@ -343,21 +356,21 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					)}
 
 					{onboardingStep === 4 && (
-            <OnboardingStep4
-              selectedOption={selectedOption}
+						<OnboardingStep4
+							selectedOption={selectedOption}
 							locationTags={locationTags}
 							industryTags={industryTags}
-              show={onboardingStep === 4 && !loading}
-              message={message}
+							show={onboardingStep === 4 && !isFetchingUserProfile}
+							message={message}
 							list={list}
-              onClose={() => setOnboardingStep(0)}
-              onBack={(m) => {
-                setMessage(m);
+							onClose={() => setOnboardingStep(0)}
+							onBack={(m) => {
+								setMessage(m);
 								setOnboardingStep(3);
-              }}
+							}}
 							onNext={() => setOnboardingStep(0)}
-            />
-          )}
+						/>
+					)}
 				</nav>
 			</div>
 		</header>

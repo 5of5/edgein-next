@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
+import { ElemTooltip } from "@/components/elem-tooltip";
 import { IconFindCompanies, IconFindInvestors } from "@/components/icons";
 import { Dialog, Transition } from "@headlessui/react";
 
@@ -23,6 +24,12 @@ export default function OnboardingStep1(props: Props) {
 			props.onNext(selectedOption);
 		}
 	};
+
+	const submitButtonComponent = (
+    <ElemButton btn="primary" disabled={!selectedOption} onClick={onNext}>
+      Next
+    </ElemButton>
+  );
 
 	return (
 		<>
@@ -93,14 +100,17 @@ export default function OnboardingStep1(props: Props) {
 									</button>
 								</div>
 								<div className="w-full flex justify-end mt-8">
-									<ElemButton
-                    btn="primary"
-                    disabled={!selectedOption}
-                    onClick={onNext}
-                  >
-										Next
-									</ElemButton>
-								</div>
+                  {selectedOption ? (
+                    submitButtonComponent
+                  ) : (
+                    <ElemTooltip
+                      content="Please click one of the options"
+                      className="cursor-auto"
+                    >
+                      {submitButtonComponent}
+                    </ElemTooltip>
+                  )}
+                </div>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>

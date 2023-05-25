@@ -49,11 +49,13 @@ query GetVCFirm($slug: String!) {
 						id
 						slug
 						name
+						logo
 					}
 					person {
 						id
 						slug
 						name
+						picture
 					}
 				}
 			}
