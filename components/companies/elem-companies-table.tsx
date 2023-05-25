@@ -128,20 +128,18 @@ export const CompaniesTable: FC<Props> = ({
 				Header: "Industries",
 				accessor: "tags" as const,
 				Cell: (props: any) => (
-					<div className="whitespace-nowrap truncate">
+					<div className="flex flex-wrap">
 						{props.value ? (
 							<>
 								{props.value?.map((tag: string, index: number) => {
 									return (
-										<div key={index} className="inline">
-											<span
-												onClick={(e) => filterByTag(e, tag)}
-												className="cursor-pointer border-primary-500 hover:border-b hover:text-primary-500"
-											>
-												{tag}
-											</span>
-											{last(props.value) === tag ? "" : ","}{" "}
-										</div>
+										<button
+											key={index}
+											className="inline cursor-pointer shrink-0 bg-slate-200 text-xs leading-none mr-1 mb-1 px-2 py-1 rounded-full hover:bg-slate-300"
+											onClick={(e) => filterByTag(e, tag)}
+										>
+											{tag}
+										</button>
 									);
 								})}
 							</>
@@ -151,16 +149,9 @@ export const CompaniesTable: FC<Props> = ({
 					</div>
 				),
 				disableSortBy: true,
+				width: 300,
+				minWidth: 200,
 			},
-			// {
-			// 	Header: "Location",
-			// 	accessor: "location" as const,
-			// 	Cell: (props: any) => {
-			// 		return <div>{props.value ? props.value : emptyCell}</div>;
-			// 	},
-			// 	disableSortBy: true,
-			// 	minWidth: 180,
-			// },
 			{
 				Header: "Description",
 				accessor: "overview" as const,
@@ -176,6 +167,51 @@ export const CompaniesTable: FC<Props> = ({
 				disableSortBy: true,
 				width: 400,
 				minWidth: 300,
+			},
+			{
+				Header: "Employees",
+				accessor: "total_employees" as const,
+				Cell: (props: any) => {
+					return (
+						<>
+							{props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
+						</>
+					);
+				},
+				width: 120,
+			},
+			{
+				Header: "Team",
+				accessor: "teamMembers" as const,
+				Cell: (props: any) => {
+					return (
+						<div>
+							{props.value.length > 0 ? (
+								<>
+									{props.value?.map((item: any, index: number) => {
+										return (
+											<div key={item?.id} className="inline">
+												<a
+													key={item.person?.id}
+													href={`/people/${item.person?.slug}`}
+													className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500"
+												>
+													{item.person.name}
+												</a>
+												{last(props.value) === item ? "" : ","}{" "}
+											</div>
+										);
+									})}
+								</>
+							) : (
+								emptyCell
+							)}
+						</div>
+					);
+				},
+				disableSortBy: true,
+				width: 300,
+				minWidth: 200,
 			},
 			{
 				Header: "City",
@@ -209,18 +245,6 @@ export const CompaniesTable: FC<Props> = ({
 				accessor: "year_founded" as const,
 				Cell: (props: any) => {
 					return <>{props.value ? <p>{props.value}</p> : emptyCell}</>;
-				},
-				width: 120,
-			},
-			{
-				Header: "Employees",
-				accessor: "total_employees" as const,
-				Cell: (props: any) => {
-					return (
-						<>
-							{props.value ? <p>{numberWithCommas(props.value)}</p> : emptyCell}
-						</>
-					);
 				},
 				width: 120,
 			},

@@ -120,20 +120,18 @@ export const InvestorsTable: FC<Props> = ({
 				Header: "Industries",
 				accessor: "tags" as const,
 				Cell: (props: any) => (
-					<div className="whitespace-nowrap truncate">
+					<div className="flex flex-wrap">
 						{props.value ? (
 							<>
 								{props.value?.map((tag: string, index: number) => {
 									return (
-										<div key={index} className="inline">
-											<span
-												onClick={(e) => filterByTag(e, tag)}
-												className="cursor-pointer border-primary-500 hover:border-b hover:text-primary-500"
-											>
-												{tag}
-											</span>
-											{last(props.value) === tag ? "" : ","}{" "}
-										</div>
+										<button
+											key={index}
+											className="inline cursor-pointer shrink-0 bg-slate-200 text-xs leading-none mr-1 mb-1 px-2 py-1 rounded-full hover:bg-slate-300"
+											onClick={(e) => filterByTag(e, tag)}
+										>
+											{tag}
+										</button>
 									);
 								})}
 							</>
@@ -143,16 +141,9 @@ export const InvestorsTable: FC<Props> = ({
 					</div>
 				),
 				disableSortBy: true,
+				width: 300,
+				minWidth: 200,
 			},
-			// {
-			// 	Header: "Location",
-			// 	accessor: "location" as const,
-			// 	Cell: (props: any) => {
-			// 		return <div>{props.value ? props.value : emptyCell}</div>;
-			// 	},
-			// 	disableSortBy: true,
-			// 	minWidth: 180,
-			// },
 			{
 				Header: "Description",
 				accessor: "overview" as const,
@@ -215,6 +206,39 @@ export const InvestorsTable: FC<Props> = ({
 			// 		);
 			// 	},
 			// 	width: 120,
+			// },
+			// {
+			// 	Header: "Team",
+			// 	accessor: "investors" as const,
+			// 	Cell: (props: any) => {
+			// 		return (
+			// 			<div>
+			// 				{props.value.length > 0 ? (
+			// 					<>
+			// 						{props.value?.map((item: any, index: number) => {
+			// 							return (
+			// 								<div key={item?.id} className="inline">
+			// 									<a
+			// 										key={item.person?.id}
+			// 										href={`/people/${item.person?.slug}`}
+			// 										className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500"
+			// 									>
+			// 										{item.person?.name}
+			// 									</a>
+			// 									{last(props.value) === item ? "" : ","}{" "}
+			// 								</div>
+			// 							);
+			// 						})}
+			// 					</>
+			// 				) : (
+			// 					emptyCell
+			// 				)}
+			// 			</div>
+			// 		);
+			// 	},
+			// 	disableSortBy: true,
+			// 	width: 300,
+			// 	minWidth: 200,
 			// },
 			{
 				Header: "Investments Total",
@@ -308,6 +332,36 @@ export const InvestorsTable: FC<Props> = ({
 				},
 				Cell: (props: any) => {
 					return <div>{props.value ? props.value : emptyCell}</div>;
+				},
+			},
+			{
+				Header: "Last Investment Amount",
+				accessor: (data: {
+					investments: {
+						[x: string]: any;
+						investment_round: Object;
+					};
+				}) => {
+					const investmentRounds = data?.investments?.flatMap(
+						(item: any) => item.investment_round
+					);
+
+					if (!investmentRounds) {
+						return 0;
+					} else {
+						const latestRound = getLatestRound(investmentRounds);
+
+						const out = latestRound?.amount ? latestRound?.amount : 0;
+
+						return out;
+					}
+				},
+				Cell: (props: any) => {
+					return (
+						<div>
+							{props.value ? <>${numberWithCommas(props.value)}</> : emptyCell}
+						</div>
+					);
 				},
 			},
 			{

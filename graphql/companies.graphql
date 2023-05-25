@@ -173,6 +173,14 @@ query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
 		}
 		year_founded
 		total_employees
+		teamMembers {
+			id
+			person {
+				id
+				slug
+				name
+			}
+		}
 		logo
 		overview
 		github
