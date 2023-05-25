@@ -23414,13 +23414,6 @@ export type UpdateCompanyByPkMutationVariables = Exact<{
 
 export type UpdateCompanyByPkMutation = { __typename?: 'mutation_root', update_companies_by_pk: { __typename?: 'companies', id: number } | null };
 
-export type GetNewsOrganizationQueryVariables = Exact<{
-  slug: Scalars['String'];
-}>;
-
-
-export type GetNewsOrganizationQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, total_employees: any | null, year_founded: string | null, website: string | null, company_linkedin: string | null, careers_page: string | null, tags: any | null, date_added: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, type: string | null, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
-
 export type InsertDataDiscardMutationVariables = Exact<{
   input: Array<Data_Discard_Insert_Input> | Data_Discard_Insert_Input;
 }>;
@@ -24985,85 +24978,6 @@ export const useUpdateCompanyByPkMutation = <
       options
     );
 useUpdateCompanyByPkMutation.fetcher = (variables: UpdateCompanyByPkMutationVariables, options?: RequestInit['headers']) => fetcher<UpdateCompanyByPkMutation, UpdateCompanyByPkMutationVariables>(UpdateCompanyByPkDocument, variables, options);
-export const GetNewsOrganizationDocument = `
-    query GetNewsOrganization($slug: String!) {
-  companies(where: {_and: [{slug: {_eq: $slug}}, {tags: {_contains: "News"}}]}) {
-    id
-    name
-    slug
-    logo
-    layer
-    overview
-    total_employees
-    year_founded
-    website
-    company_linkedin
-    careers_page
-    tags
-    date_added
-    twitter
-    location
-    location_json
-    discord
-    glassdoor
-    teamMembers {
-      id
-      person {
-        id
-        slug
-        name
-        picture
-        linkedin
-        personal_email
-        work_email
-      }
-      function
-      start_date
-      end_date
-      founder
-      title
-    }
-    news_links {
-      id
-      type
-      news {
-        id
-        date
-        text
-        link
-        kind
-        source
-        status
-        organizations {
-          id
-          type
-          company_id
-          vc_firm_id
-        }
-      }
-    }
-  }
-}
-    `;
-export const useGetNewsOrganizationQuery = <
-      TData = GetNewsOrganizationQuery,
-      TError = Error
-    >(
-      variables: GetNewsOrganizationQueryVariables,
-      options?: UseQueryOptions<GetNewsOrganizationQuery, TError, TData>
-    ) =>
-    useQuery<GetNewsOrganizationQuery, TError, TData>(
-      ['GetNewsOrganization', variables],
-      fetcher<GetNewsOrganizationQuery, GetNewsOrganizationQueryVariables>(GetNewsOrganizationDocument, variables),
-      options
-    );
-useGetNewsOrganizationQuery.document = GetNewsOrganizationDocument;
-
-
-useGetNewsOrganizationQuery.getKey = (variables: GetNewsOrganizationQueryVariables) => ['GetNewsOrganization', variables];
-;
-
-useGetNewsOrganizationQuery.fetcher = (variables: GetNewsOrganizationQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsOrganizationQuery, GetNewsOrganizationQueryVariables>(GetNewsOrganizationDocument, variables, options);
 export const InsertDataDiscardDocument = `
     mutation InsertDataDiscard($input: [data_discard_insert_input!]!) {
   insert_data_discard(objects: $input) {

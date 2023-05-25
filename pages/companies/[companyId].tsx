@@ -24,6 +24,9 @@ import {
 	Investment_Rounds,
 	News,
 	useGetCompanyQuery,
+	GetNewsArticlesQuery,
+  GetNewsArticlesDocument,
+	Order_By,
 } from "@/graphql/types";
 import { ElemReactions } from "@/components/elem-reactions";
 import { useAuth } from "@/hooks/use-auth";
@@ -35,12 +38,15 @@ import { newLineToP } from "@/utils/text";
 import { onTrackView } from "@/utils/track";
 import ElemOrganizationNotes from "@/components/elem-organization-notes";
 import { Popups } from "@/components/the-navbar";
+import ElemNewsArticles, { DEFAULT_LIMIT } from "@/components/news/elem-news-articles";
+import { getQueryBySource } from "@/utils/news";
 
 type Props = {
 	company: Companies;
 	sortRounds: Investment_Rounds[];
 	sortNews: News[];
 	metrics: Metric[];
+	newsArticles?: News[];
 	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 	setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
@@ -401,6 +407,16 @@ const Company: NextPage<Props> = (props: Props) => {
 							</div>
 						)}
 
+						{props.newsArticles && props.newsArticles.length > 0 && (
+							<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+								<ElemNewsArticles
+									heading="News articles"
+									newsOrgSlug={company.slug}
+									news={props.newsArticles}
+								/>
+							</div>
+						)}
+
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
 								resourceId={company.id}
@@ -508,6 +524,35 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 	let metaDescription = null;
 	if (company.overview) {
 		metaDescription = company.overview;
+	}
+
+	if (company.tags?.includes("News")) {
+		const sourceQuery = getQueryBySource(context.params?.companyId as string);
+
+		const { data: newsArticles } = await runGraphQl<GetNewsArticlesQuery>(
+			GetNewsArticlesDocument,
+			{
+				offset: 0,
+				limit: DEFAULT_LIMIT,
+				order: Order_By.Desc,
+				where: {
+					_and: [{ status: { _eq: "published" } }, { ...sourceQuery }],
+				},
+			},
+			context.req.cookies
+		);
+
+		return {
+			props: {
+				metaTitle,
+				metaDescription,
+				company,
+				sortRounds,
+				sortNews,
+				metrics: tokenInfoMetrics,
+				newsArticles: newsArticles?.news,
+			},
+		};
 	}
 
 	return {

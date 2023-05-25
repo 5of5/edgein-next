@@ -79,9 +79,8 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news }) => {
                       <div className="inline leading-7 text-slate-600">
                         {activity?.link ? (
                           <>
-                            <div className="inline font-bold mr-1">News:</div>
                             <Link href={activity.link}>
-                              <a className="" target="_blank">
+                              <a className="font-semibold" target="_blank">
                                 <span className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
                                   {activity.text}
                                 </span>
@@ -90,7 +89,7 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news }) => {
                             </Link>
                           </>
                         ) : (
-                          <div className="inline">{activity.text}</div>
+                          <div className="inline font-semibold">{activity.text}</div>
                         )}
                         <div className="flex items-center gap-x-2">
                           <p className="text-sm">

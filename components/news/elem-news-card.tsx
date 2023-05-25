@@ -40,6 +40,10 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 		organizations,
 	} = postData;
 
+	const publisher = organizations.find(org => org.type === "publisher");
+
+	const otherOrganizations = organizations.filter((org) => org.type !== "publisher");
+
 	const formatDateShown = (date: Date, timezone?: string) => {
 		const local_date = moment(date).local().format("YYYY-MM-DD");
 		return moment(local_date).format("LL");
@@ -77,16 +81,33 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 								""
 							)}
 							{link && (
-								<p className="font-bold text-sm text-slate-600">
-									{"By "}
-									<Link href={getCleanWebsiteUrl(link, true)}>
-										<a target="_blank" className="hover:text-primary-500">
-											{getCleanWebsiteUrl(link, false)}
-										</a>
-									</Link>
-									{" • "}
-								</p>
-							)}
+                <p className="font-bold text-sm text-slate-600">
+                  {"By "}
+                  {publisher ? (
+                    <Link
+                      href={
+                        publisher.company
+                          ? `/companies/${publisher.company?.slug}`
+                          : publisher.vc_firm
+                          ? `/investors/${publisher.vc_firm?.slug}`
+                          : ""
+                      }
+                    >
+                      <a target="_blank" className="hover:text-primary-500">
+                        {publisher.company?.name || publisher.vc_firm?.name}
+                      </a>
+                    </Link>
+                  ) : (
+                    <Link href={getCleanWebsiteUrl(link, true)}>
+                      <a target="_blank" className="hover:text-primary-500">
+                        {getCleanWebsiteUrl(link, false)}
+                      </a>
+                    </Link>
+                  )}
+
+                  {" • "}
+                </p>
+              )}
 
 							<p className="font-bold text-sm text-slate-600">
 								{formatDateShown(date)}
@@ -117,10 +138,10 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 					</div>
 				)}
 
-				{organizations && (
+				{otherOrganizations && (
 					<div className="mt-4" onClick={(e) => e.stopPropagation()}>
-						{organizations?.map((organizer: any, index: number) => {
-							const slug = organizer.company
+						{otherOrganizations.map((organizer: any, index: number) => {
+              const slug = organizer.company
 								? `/companies/${organizer.company?.slug}`
 								: organizer.vc_firm
 								? `/investors/${organizer.vc_firm?.slug}`
@@ -154,7 +175,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 											</a>
 										</Link>
 									</ElemTooltip>
-									{organizations.length === index + 1 ? "" : ", "}
+									{otherOrganizations.length === index + 1 ? "" : ", "}
 								</Fragment>
 							);
 						})}
@@ -165,7 +186,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 				<p className="mt-4 text-xs text-gray-400">
 					Powered by{" "}
 					<Link
-						href={`/news/${source?.poweredby ? "techcrunch" : "cryptopanic"}`}
+						href={`/companies/${source?.poweredby ? "techcrunch" : "cryptopanic"}`}
 					>
 						<a>{source?.poweredby || "CryptoPanic"}</a>
 					</Link>
