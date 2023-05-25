@@ -1,8 +1,4 @@
-import React, {
-	MutableRefObject,
-	useState,
-	PropsWithChildren,
-} from "react";
+import React, { MutableRefObject, useState, PropsWithChildren } from "react";
 import {
 	IconEllipsisHorizontal,
 	IconExclamationTriangle,
@@ -18,6 +14,7 @@ type Tabs = {
 
 type Props = {
 	className?: string;
+	tabsClassName?: string;
 	tabs?: Array<Tabs>;
 	showDropdown?: boolean;
 	resourceName?: string | null;
@@ -25,6 +22,7 @@ type Props = {
 
 export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 	className,
+	tabsClassName,
 	tabs,
 	showDropdown = true,
 	resourceName = "",
@@ -45,7 +43,7 @@ export const ElemTabBar: React.FC<PropsWithChildren<Props>> = ({
 			className={`flex items-center justify-between border-y border-black/10 ${className}`}
 			role="tablist"
 		>
-			<nav className="flex">
+			<nav className={`flex overflow-x-scroll scrollbar-hide ${tabsClassName}`}>
 				{tabs &&
 					tabs.map((tab: any, index: number) => (
 						<button
