@@ -5,6 +5,7 @@ type Props = {};
 
 const TermsOfService: NextPage<Props> = (props) => {
 	const theName = "EdgeIn.io";
+	const theNameInc = "EdgeIn, Inc. ";
 
 	return (
 		<main className="min-h-[80vh]">
@@ -16,18 +17,18 @@ const TermsOfService: NextPage<Props> = (props) => {
 					<ol className="list-inside pl-0 space-y-8">
 						<li>
 							<span className="font-bold">License to {theName} Materials.</span>{" "}
-							Subject to all terms and conditions in the Agreement, {theName},
-							Inc. (“{theName}”) grants to Licensee a nonexclusive,
-							nontransferable, nonsublicensable, limited license to use{" "}
-							{theName}’s application programming interface, the {theName} data
-							described in your Order Form, and all other documentation and
-							materials provided by {theName} (collectively, the “{theName}{" "}
-							Materials”) solely as specifically set forth in your Order Form
-							and as further limited by these Data Access Terms and Conditions
-							(the “Agreement”). Licensee may not download or use the {theName}{" "}
-							Materials for any other purpose without {theName}’s prior written
-							consent. {theName} shall not be liable for any (i) modifications
-							to {theName} Materials other than by
+							Subject to all terms and conditions in the Agreement, {theNameInc}
+							(“{theName}”) grants to Licensee a nonexclusive, nontransferable,
+							nonsublicensable, limited license to use {theName}’s application
+							programming interface, the {theName} data described in your Order
+							Form, and all other documentation and materials provided by{" "}
+							{theName} (collectively, the “{theName} Materials”) solely as
+							specifically set forth in your Order Form and as further limited
+							by these Data Access Terms and Conditions (the “Agreement”).
+							Licensee may not download or use the {theName} Materials for any
+							other purpose without {theName}’s prior written consent. {theName}{" "}
+							shall not be liable for any (i) modifications to {theName}{" "}
+							Materials other than by
 							{theName}, (ii) combination of {theName} Materials with any other
 							data, information, or other materials, or (iii) use of {theName}{" "}
 							Materials in any manner not expressly permitted by {theName}{" "}

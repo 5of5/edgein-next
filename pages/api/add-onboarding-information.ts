@@ -46,35 +46,34 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const token = await CookieService.createUserToken(newUserToken);
     CookieService.setTokenCookie(res, token);
 
-    if (questions.some((item: QUESTION) => item.answer.trim())) {
-      const messagePayload = {
-        attachments: [
-          {
-            color: "#2EB886",
-            title: "You have a new submission",
-            fields: [
-              {
-                title: "Username",
-                value: user.display_name,
-              },
-              {
-                title: "Email",
-                value: user.email,
-              },
-              ...questions.map((item: QUESTION) => ({
-                title: item.name,
-                value: item.answer,
-              })),
-            ],
-          },
-        ],
-      };
+    const messagePayload = {
+      attachments: [
+        {
+          color: "#2EB886",
+          title: "You have a new submission",
+          fields: [
+            {
+              title: "Username",
+              value: user.display_name,
+            },
+            {
+              title: "Email",
+              value: user.email,
+            },
+            ...questions.map((item: QUESTION) => ({
+              title: item.name,
+              value: item.answer,
+            })),
+          ],
+        },
+      ],
+    };
 
-      await SlackServices.sendMessage(
-        process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
-        messagePayload
-      );
-    }
+    await SlackServices.sendMessage(
+      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || "",
+      messagePayload
+    );
+
     return res.status(200).send(response);
   } catch (error: any) {
     return res.status(500).send(error.message);

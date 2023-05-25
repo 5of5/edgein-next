@@ -75,9 +75,9 @@ const Companies: NextPage<Props> = ({
 	const offset = limit * page;
 
 	const defaultFilters = [
-    { slug: { _neq: "" } },
-    { library: { _contains: selectedLibrary } },
-  ];
+		{ slug: { _neq: "" } },
+		{ library: { _contains: selectedLibrary } },
+	];
 
 	const filters: DeepPartial<Companies_Bool_Exp> = {
 		_and: defaultFilters,
@@ -87,10 +87,7 @@ const Companies: NextPage<Props> = ({
 		if (!initialLoad) {
 			setPage(0);
 		}
-		if (
-			initialLoad &&
-			selectedStatusTag.value !== ""
-		) {
+		if (initialLoad && selectedStatusTag.value !== "") {
 			setInitialLoad(false);
 		}
 
@@ -110,16 +107,19 @@ const Companies: NextPage<Props> = ({
 
 		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
 		const newFilterOption = currentFilterOption.includes(tag)
-		? currentFilterOption.filter((t) => t !== tag)
-		: [tag, ...currentFilterOption]
+			? currentFilterOption.filter((t) => t !== tag)
+			: [tag, ...currentFilterOption];
 
 		if (newFilterOption.length === 0) {
 			setSelectedFilters({ ...selectedFilters, industry: undefined });
 		} else {
-			setSelectedFilters({ ...selectedFilters, industry: {
-				...selectedFilters?.industry,
-				tags: newFilterOption,
-			}, });
+			setSelectedFilters({
+				...selectedFilters,
+				industry: {
+					...selectedFilters?.industry,
+					tags: newFilterOption,
+				},
+			});
 		}
 
 		currentFilterOption.includes(tag)
@@ -186,10 +186,13 @@ const Companies: NextPage<Props> = ({
 
 	return (
 		<div className="relative">
-			<ElemHeading
-				title={`${selectedLibrary} Companies`}
-				subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
-			></ElemHeading>
+			{!initialLoad && (
+				<ElemHeading
+					title={`${selectedLibrary} Companies`}
+					subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
+					className=""
+				></ElemHeading>
+			)}
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
 				<ElemRecentCompanies className="shadow" heading="Recently Discovered" />
@@ -326,7 +329,9 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		{
 			offset: 0,
 			limit: 50,
-			where: { _and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }] }
+			where: {
+				_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
+			},
 		}
 	);
 

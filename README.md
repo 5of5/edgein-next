@@ -136,81 +136,52 @@ EC2 hosted in US-West-2
 ## API
 
 ### submit-data
-This API allows partners insert/update/delete edgein data.
-Partner need to be added in data_partners table, then using their api_key o request
+This API allows partners upsert/delete edgein data.
+Partner need to be added in data_partners table, then using their api_key to request
 
-#### Insert data
+#### Upsert data
 curl --location --request POST 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
     "partner_api_key": "<api_key>",
     "resource_type": "<resource_type>",
-    "resource_identifier":[{"field": "id"}],
+    "resource_identifier": <list_of_filters>,
     "resource": {<resource_obj>}
 }'
 
-<resource_obj> is a json {"< field >": < value >} or it can be an array of json [ {"< field >": < value >} , {"< field >": < value >} , ...]
-Support allowing a list input of resource field. The value in array should have the same resource type. If any object in array fails validation, The result will respond the failed object and remaining elements which locate after failed object still not yet validate and insert into database.
+Each filter of <list_of_filters> is a json: {"field": <column_name>, "value": <value_to_filter>, "method": "<graphql_filter_method>"}
+method is optional, default value is "_eq"
+
+<resource_obj> is a json {"< field >": < value >}
 
 Only support for < resource_type >.< field > that's available in data_fields table.
 The value can be transform if transform pattern is set in data_fields table for this field.
 If "< field >" is "< other_resource_type >:< other_field >" pattern, the "< field >" will be converted into "< other_resource_type >_id"
 and new < value > will be changed to id of other_resource_type record which contains input < value >
 For example: Before using resource data, {"companies:name": "TEST_NAME"} will be converted into {"company_id": "1"}
-where company 1 name is "TEST_NAME"
+where company#1 name is "TEST_NAME"
 
-Support for allowing to create relationships when submitting a news item user can specific tickers or other identifiers for people and companies and the api should automatically do the lookup and create the news_organisations record. Only support to create relationships for people and team_members , news and news_organizations.
+<list_of_filters> and <resource_obj> can be an array also (their lenghts must be equal), then each item is one record
 
-For example: when creating a new person in people table. Also providing team_members's values object. Api will automatically create new item record in team_members table. {<resource_obj>} looks like as below:
-"resource":{
-  <people_obj>,
-  "team_members":{
-     "companies:name": "TEST_NAME",
-  }
-}
-
-Support for allowing to create relationships with relationship field can be a string or an array of strings.
-"resource":{
-  <people_obj>,
-  "team_members":{
-     "companies:name": ["TEST_NAME", "TEST_NAME", ...],
-  }
-}
+Allow relationship in resource object, if <field> is other resource type. New record of other resource will be inserted with relation to main resource id
 
 For example: When input a list of resource field with relationship field for creating news that support creating relationship looks like as below:
 curl --location 'https://edgein.io/api/submit_data' \
 --header 'Content-Type: application/json' \
 --data '{
 "partner_api_key": "<api_key>",
-"resource_type": "<resource_type>",
-"resource_identifier":[{"field": "id"}],
-"resource":[{
-  "text": "<value>",
-  "link": "<value>",
-  "date": "<value>",
-  "status": "<value>",
-  "news_organizations":{
-  "companies:name": [ "<value>" , "<value>" , ... ], "vc_firms:name": [ "<value>" , "<value>" , ... ] }
-},
-{
-  "text": "<value>",
-  "link": "<value>",
-  "date": "<value>",
-  "status": "<value>",
-  "news_organizations":{
-  "companies:name": [ "<value>" , "<value>" , ... ], "vc_firms:name": [ "<value>" , "<value>" , ... ] }
-},...
-]
+"resource_type": "news",
+"resource_identifier":[[{"field": "id"}], [{"field": "id"}]],
+"resource":[
+    {
+        "text": "test1",
+        "metadata": {"description": "Li Ning bought 10 Bitcoin"},
+        "news_person": {"people:name": "Jacob Abraham"}
+    },
+    {
+        "text": "test2",
+        "metadata": {"description": "Peter Wuffli bouhgt 9 Bitcoin"}
+    }
+  ]
 }'
-
-#### Update data
-curl --location --request POST 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
-    "partner_api_key": "<api_key>",
-    "resource_type": "<resource_type>",
-    "resource_identifier":[<list_of_filters>],
-    "resource":{<resource_obj>}
-}'
-
-Each filter of <list_of_filters> is a json: {"field": <column_name>, "value": <value_to_filter>, "method": "<graphql_filter_method>"}
-method is optional, default value is "_eq"
 
 #### Delete data
 curl --location --request DELETE 'https://edgein.io/api/submit-data/' --header 'Content-Type: application/json' --data-raw '{
@@ -219,6 +190,7 @@ curl --location --request DELETE 'https://edgein.io/api/submit-data/' --header '
     "resource_identifier":[<list_of_filters>]
 }'
 
+<list_of_filters> can be an array also, then each item is one to be deleted record
 
 ## Scripts
 

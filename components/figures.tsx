@@ -4,7 +4,9 @@ export type FigureProps = {
 
 export const FigureBlurredBg: React.FC<FigureProps> = ({ className }) => {
 	return (
-		<figure className={`absolute -z-10 grid grid-cols-5 w-full ${className}`}>
+		<figure
+			className={`absolute -z-10 grid grid-cols-5 w-full overflow-hidden ${className}`}
+		>
 			<div className="opacity-15 filter mix-blend-multiply">
 				<div className="w-[150%] aspect-square -mx-[25%] bg-[#F8DA4B] rounded-full blur-3xl"></div>
 			</div>
