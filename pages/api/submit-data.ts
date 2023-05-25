@@ -216,11 +216,18 @@ const handleResource = async (
 }
 
 const convertNextToCommonRequest = (req : NextApiRequest ) => {
-  return req as CommonRequest;
+  const commonReq: CommonRequest = {
+    url: req.url,
+    cookies: req.cookies,
+    body: req.body,
+    method: req.method,
+  }
+  return commonReq;
 }
 
 const convertNextToCommonResp = (res : NextApiResponse) => {
-  return res  as CommonResponse;
+  const commonRes: CommonResponse = res;
+  return commonRes;
 }
 
 const commonHandler = async (req: CommonRequest, res: CommonResponse) => {

@@ -12,8 +12,8 @@
 		"docker:start": "npm run docker-compose -- up -d",
 		"hasura": "cd infra/hasura && hasura --skip-update-check",
 		"codegen": "graphql-codegen --config graphql/codegen.js",
-		"api-server:start": "cd server-api/ && npx ts-node wrapped-api-server.ts",
-		"api-server:dev": "cd server-api/ && set NODE_ENV=development && npx ts-node wrapped-api-server.ts"
+		"api-server:start": "cd server-api/ && nodemon --watch './**/*.ts' --exec 'ts-node' wrapped-api-server.ts",
+		"api-server:dev": "cd server-api/ && set NODE_ENV=development && nodemon --watch './**/*.ts' --exec 'ts-node' wrapped-api-server.ts"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.7",
@@ -108,10 +108,12 @@
 		"eslint-config-next": "12.1.5",
 		"eslint-plugin-unicorn": "^42.0.0",
 		"hasura-cli": "^2.7.0",
+		"nodemon": "^2.0.22",
 		"p-queue": "^7.2.0",
 		"postcss": "^8.4.13",
 		"slugify": "^1.6.5",
 		"tailwindcss": "^3.0.24",
+		"ts-node": "^10.9.1",
 		"typescript": "4.6.4"
 	}
 }

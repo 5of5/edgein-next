@@ -8,7 +8,7 @@ import {
 	regex,
 } from "react-admin";
 import type { NextApiRequest, NextApiResponse } from "next";
-import Express  from "express";
+import { Response } from "express";
 
 const urlPattern = new RegExp(
 	"^(https?:\\/\\/)?" + // protocol
@@ -19,8 +19,18 @@ const urlPattern = new RegExp(
 		"(\\#[-a-z\\d_]*)?$",
 	"i"
 ); // fragment locator
-export type CommonRequest = Express.Request | NextApiRequest | Record<string, any>;
-export type CommonResponse = Express.Response | NextApiResponse | Record<string, any>;
+
+export interface CommonRequest {
+	url: string | undefined;
+	cookies: {
+			[key: string]: string;
+	};
+	body: any;
+	method: string | undefined;
+}
+
+export declare type CommonResponse = NextApiResponse | Response;
+
 export const validateName = [required(), minLength(3)];
 export const validateSlug = [required(), minLength(3)];
 export const validateYearFounded = [number(), minValue(1900), maxValue(2099)];

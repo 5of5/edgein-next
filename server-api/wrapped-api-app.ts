@@ -1,4 +1,4 @@
-import express from "express"
+import express, {Request, Response } from "express"
 import morgan from "morgan"
 import cors from "cors"
 import commonHandler from "../pages/api/submit-data"
@@ -18,14 +18,21 @@ app.use(cors());
 
 app.use(express.json({ limit: '10kb' }));
 
-const convertExpressToCommonRequest = (req: Express.Request) =>{
-    return req as CommonRequest;
+const convertExpressToCommonRequest = (req: Request) =>{
+    const commonReq: CommonRequest = {
+        url: req.url,
+        cookies: req.cookies,
+        body: req.body,
+        method: req.method,
+    };
+    return commonReq;
 }
-const convertExpressToCommonResp = (res: Express.Response) =>{
-    return res as CommonResponse;
+const convertExpressToCommonResp = (res: Response) =>{
+    const commonRes: CommonResponse = res;
+    return commonRes;
 }
 // routing for app
-app.use('/api/v1/submit-data', (req: Express.Request, res: Express.Response) => {
+app.use('/api/v1/submit-data', (req: Request, res: Response) => {
     commonHandler(convertExpressToCommonRequest(req), convertExpressToCommonResp(res));
   });
 
