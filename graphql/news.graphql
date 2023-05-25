@@ -1,0 +1,17 @@
+query GetNewsByDate($date: timestamptz, $library: jsonb) {
+  news(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
+    }
+  ) {
+    id
+    date
+    link
+    text
+    source
+  }
+}
