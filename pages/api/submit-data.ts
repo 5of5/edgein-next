@@ -3,14 +3,14 @@ dotenv.config({ path: "./.env" });
 import {
   processNotification,
   processNotificationOnDelete,
-} from "../../utils/notifications";
+} from "@/utils/notifications";
 import {
   ActionType,
   ResourceTypes,
   isResourceType,
   NODE_NAME
-} from "../../utils/constants";
-import { User } from "../../models/user";
+} from "@/utils/constants";
+import { User } from "@/models/user";
 import {
   partnerLookUp,
   resourceIdLookup,
@@ -21,10 +21,10 @@ import {
   insertActionDataChange,
   markDataRawAsInactive,
   insertDataDiscard,
-} from "../../utils/submit-data";
+} from "@/utils/submit-data";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type {CommonRequest, CommonResponse} from "../../utils/constants"
-import CookieService from "../../utils/cookie";
+import type {CommonRequest, CommonResponse} from "@/utils/constants"
+import CookieService from "@/utils/cookie";
 
 const sendNotification = async (
   resourceId: number | undefined,

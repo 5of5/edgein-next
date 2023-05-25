@@ -1,8 +1,8 @@
 import express, {Request, Response } from "express"
 import morgan from "morgan"
 import cors from "cors"
-import commonHandler from "../pages/api/submit-data"
-import type {CommonRequest, CommonResponse} from "../utils/constants"
+import commonHandler from "@/pages/api/submit-data"
+import type {CommonRequest, CommonResponse} from "@/utils/constants"
 
 const app = express();
 
