@@ -1,4 +1,4 @@
-import { mutate, query } from "../graphql/hasuraAdmin";
+import { mutate, query } from "@/graphql/hasuraAdmin";
 import {
   InsertActionMutation,
   InsertActionDocument,
@@ -14,8 +14,8 @@ import {
   GetInvestmentRoundByRoundIdDocument,
   InsertDataDiscardMutation,
   InsertDataDiscardDocument,
-} from "../graphql/types";
-import { User } from "../models/user";
+} from "@/graphql/types";
+import { User } from "@/models/user";
 import { HttpError } from "react-admin";
 import { getUpdatedDiff } from "./helpers";
 import * as util from 'util';
