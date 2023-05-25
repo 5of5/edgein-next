@@ -22,6 +22,13 @@ export const getQueryBySource = (newsOrgSlug: string) => {
                 },
               },
             },
+            {
+              source: {
+                _cast: {
+                  String: { _ilike: `%"poweredby": "cryptopanic"%` },
+                },
+              },
+            }
           ],
         };
 

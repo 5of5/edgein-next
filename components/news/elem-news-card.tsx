@@ -183,15 +183,19 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
 				)}
 			</div>
 			<div>
-				<p className="mt-4 text-xs text-gray-400">
-					Powered by{" "}
-					<Link
-						href={`/companies/${source?.poweredby ? "techcrunch" : "cryptopanic"}`}
-					>
-						<a>{source?.poweredby || "CryptoPanic"}</a>
-					</Link>
-				</p>
-			</div>
+        <p className="mt-4 text-xs text-gray-400">
+          Powered by{" "}
+          <Link
+            href={`/companies/${
+              source?.poweredby?.toLowerCase() === "techcrunch"
+                ? "techcrunch"
+                : "cryptopanic"
+            }`}
+          >
+            <a>{source?.poweredby || "CryptoPanic"}</a>
+          </Link>
+        </p>
+      </div>
 			{/* <div
 				className="flex items-center justify-between mt-4 gap-x-5"
 				onClick={(e) => e.stopPropagation()}
