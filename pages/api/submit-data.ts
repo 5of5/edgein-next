@@ -256,7 +256,7 @@ const commonHandler = async (req: CommonRequest, res: CommonResponse) => {
     // Identify partner or admin
     const partner = await partnerLookUp(apiKey);
     if (partner?.id === undefined) {
-      if (!(user?.role === "admin") && process.env.ENV === "next") {
+      if (!(user?.role === "admin")) {
         return res.status(401).send({ message: "Unauthorized Partner" });
       }
     } else {
