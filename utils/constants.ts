@@ -20,17 +20,6 @@ const urlPattern = new RegExp(
 	"i"
 ); // fragment locator
 
-export interface CommonRequest {
-	url: string | undefined;
-	cookies: {
-			[key: string]: string;
-	};
-	body: any;
-	method: string | undefined;
-}
-
-export declare type CommonResponse = NextApiResponse | Response;
-
 export const validateName = [required(), minLength(3)];
 export const validateSlug = [required(), minLength(3)];
 export const validateYearFounded = [number(), minValue(1900), maxValue(2099)];

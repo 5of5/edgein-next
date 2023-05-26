@@ -23,8 +23,8 @@ import {
   insertDataDiscard,
 } from "@/utils/submit-data";
 import type { NextApiRequest, NextApiResponse } from "next";
-import type {CommonRequest, CommonResponse} from "@/utils/constants"
 import CookieService from "@/utils/cookie";
+import { convertNextToCommonRequest, convertNextToCommonResp, CommonRequest, CommonResponse } from "@/utils/api";
 
 const sendNotification = async (
   resourceId: number | undefined,
@@ -215,22 +215,8 @@ const handleResource = async (
   return mainResult;
 }
 
-const convertNextToCommonRequest = (req : NextApiRequest ) => {
-  const commonReq: CommonRequest = {
-    url: req.url,
-    cookies: req.cookies,
-    body: req.body,
-    method: req.method,
-  }
-  return commonReq;
-}
 
-const convertNextToCommonResp = (res : NextApiResponse) => {
-  const commonRes: CommonResponse = res;
-  return commonRes;
-}
-
-const commonHandler = async (req: CommonRequest, res: CommonResponse) => {
+export const commonHandler = async (req: CommonRequest, res: CommonResponse) => {
   if (!["POST", "PUT", "DELETE"].includes(req.method as string))
     return res.status(405).send({ message: "Method is not allowed" });
   let user:(User & {_iat?: number}) | null = null;
@@ -374,4 +360,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 }
 
 
-export default commonHandler;
+export default handler;
