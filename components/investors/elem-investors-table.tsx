@@ -700,10 +700,10 @@ export const InvestorsTable: FC<Props> = ({
 				</table>
 				{!isDisplayAllInvestors && (
 					<table className="relative table-auto min-w-full overscroll-x-none">
-						<tbody className="divide-y divide-black/10">
+						<tbody className="divide-y divide-black/10" role="rowgroup">
 							{Array.from({ length: 10 }, (_, i) => (
 								<tr key={i} className="min-w-full bg-white hover:bg-slate-100">
-									{Array.from({ length: 16 }, (_, ii) => {
+									{Array.from({ length: columns.length }, (_, ii) => {
 										return (
 											<td
 												key={ii}
@@ -725,19 +725,29 @@ export const InvestorsTable: FC<Props> = ({
 											View all {numberWithCommas(totalItems)} investors from
 											this search.
 										</h2>
-										<p className="text-white opacity-90">
-											Get real-time updates on the investors, companies, people,
-											deals and events you’re most interested. Try EdgeIn
-											Contributor FREE for 7 days.
+										<p className="text-lg text-white opacity-90">
+											Try EdgeIn Contributor FREE for 7 days or invite others
+											and get 3-months FREE when they verify their profile.
 										</p>
-										<ElemButton
-											onClick={onBillingClick}
-											btn="primary-light"
-											arrow
-											className="mt-4 text-primary-500"
-										>
-											Start your free trial
-										</ElemButton>
+										<div className="flex items-center space-x-2 mt-4">
+											<ElemButton
+												onClick={onBillingClick}
+												btn="primary-light"
+												arrow
+												className="text-primary-500"
+											>
+												Start your free trial
+											</ElemButton>
+											<div className="font-bold text-white">or</div>
+											<ElemButton
+												onClick={() => {}}
+												btn="ol-white"
+												arrow
+												className=" text-primary-500"
+											>
+												Invite team members
+											</ElemButton>
+										</div>
 									</div>
 								</td>
 							</tr>

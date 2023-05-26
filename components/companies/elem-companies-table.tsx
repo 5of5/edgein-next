@@ -724,19 +724,31 @@ export const CompaniesTable: FC<Props> = ({
 											View all {numberWithCommas(totalItems)} companies from
 											this search.
 										</h2>
-										<p className="text-white opacity-90">
-											Get real-time updates on the companies, people, deals and
-											events you’re most interested. Try EdgeIn Contributor FREE
-											for 7 days.
+										<p className="text-lg text-white opacity-90">
+											{/* Get real-time updates on the companies, people, deals and
+											events you’re most interested in.  */}
+											Try EdgeIn Contributor FREE for 7 days or invite others
+											and get 3-months FREE when they verify their profile.
 										</p>
-										<ElemButton
-											onClick={onBillingClick}
-											btn="primary-light"
-											arrow
-											className="mt-4 text-primary-500"
-										>
-											Start your free trial
-										</ElemButton>
+										<div className="flex items-center space-x-2 mt-4">
+											<ElemButton
+												onClick={onBillingClick}
+												btn="primary-light"
+												arrow
+												className="text-primary-500"
+											>
+												Start your free trial
+											</ElemButton>
+											<div className="font-bold text-white">or</div>
+											<ElemButton
+												onClick={() => {}}
+												btn="ol-white"
+												arrow
+												className=" text-primary-500"
+											>
+												Invite team members
+											</ElemButton>
+										</div>
 									</div>
 								</td>
 							</tr>
