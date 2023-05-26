@@ -286,6 +286,7 @@ const Event: NextPage<Props> = (props) => {
 					<ElemTabBar
 						className="flex-wrap gap-y-2 pb-2 mt-4 border-b-0 sm:flex-nowrap sm:gap-y-0 sm:pb-0"
 						tabs={tabBarItems}
+						tabsClassName="border-b border-black/10 lg:border-b-0"
 						resourceName={event.name}
 						showDropdown={false}
 					>

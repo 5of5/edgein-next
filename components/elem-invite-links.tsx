@@ -99,7 +99,7 @@ export const ElemInviteLinks = ({ user, personSlug }: Props) => {
 			>
 				<Menu.Items
 					as="nav"
-					className="z-10 absolute overflow-hidden right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+					className="z-10 absolute overflow-hidden left-0 lg:left-auto lg:right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
 				>
 					{list.map((link) => (
 						<Menu.Item key={link.text}>
