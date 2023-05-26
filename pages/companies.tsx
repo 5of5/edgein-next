@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import type { NextPage, GetStaticProps } from "next";
 import { useRouter } from "next/router";
-import moment from "moment-timezone";
 import { ElemHeading } from "@/components/elem-heading";
 import {
 	PlaceholderCompanyCard,
@@ -36,6 +35,7 @@ import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/use-filter-params";
 import useLibrary from "@/hooks/use-library";
 import { DeepPartial } from "@/types/common";
+import { useUser } from "@/context/user-context";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
 	return useStateParams(
@@ -59,6 +59,8 @@ const Companies: NextPage<Props> = ({
 	companyStatusTags,
 	setToggleFeedbackForm,
 }) => {
+	const { user } = useUser();
+
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
@@ -73,7 +75,7 @@ const Companies: NextPage<Props> = ({
 		"statusTag"
 	);
 
-	const [tableLayout, setTableLayout] = useState(true);
+	const [tableLayout, setTableLayout] = useState(false);
 
 	const [page, setPage] = useStateParams<number>(
 		0,
@@ -82,8 +84,18 @@ const Companies: NextPage<Props> = ({
 		(pageIndex) => Number(pageIndex) - 1
 	);
 
+	// limit shown companies on table layout for free users
 	const limit = 50;
-	const offset = limit * page;
+	// user?.entitlements.listsCount && tableLayout
+	// 	? user?.entitlements.listsCount
+	// 	: 50;
+	const tableLimit = user?.entitlements.listsCount
+		? user?.entitlements.listsCount
+		: 50;
+
+	// disable offset on table layout for free users
+	const offset =
+		user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
 	const defaultFilters = [
 		{ slug: { _neq: "" } },
@@ -330,11 +342,11 @@ const Companies: NextPage<Props> = ({
 									</div>
 								)}
 							</>
-						) : tableLayout ? (
+						) : tableLayout && companies?.length != 0 ? (
 							<CompaniesTable
 								companies={companies}
 								pageNumber={page}
-								itemsPerPage={limit}
+								itemsPerPage={tableLimit}
 								shownItems={companies?.length}
 								totalItems={companies_aggregate}
 								onClickPrev={() => setPage(page - 1)}
@@ -342,29 +354,33 @@ const Companies: NextPage<Props> = ({
 								filterByTag={filterByTag}
 							/>
 						) : (
-							<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-								{companies?.map((company) => {
-									return (
-										<ElemCompanyCard
-											key={company.id}
-											company={company as Companies}
-											tagOnClick={filterByTag}
-										/>
-									);
-								})}
-							</div>
+							<>
+								{companies?.length != 0 && (
+									<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+										{companies?.map((company) => {
+											return (
+												<ElemCompanyCard
+													key={company.id}
+													company={company as Companies}
+													tagOnClick={filterByTag}
+												/>
+											);
+										})}
+									</div>
+								)}
+								<Pagination
+									shownItems={companies?.length}
+									totalItems={companies_aggregate}
+									page={page}
+									itemsPerPage={limit}
+									numeric
+									onClickPrev={() => setPage(page - 1)}
+									onClickNext={() => setPage(page + 1)}
+									onClickToPage={(selectedPage) => setPage(selectedPage)}
+								/>
+							</>
 						)}
 					</div>
-					<Pagination
-						shownItems={companies?.length}
-						totalItems={companies_aggregate}
-						page={page}
-						itemsPerPage={limit}
-						numeric
-						onClickPrev={() => setPage(page - 1)}
-						onClickNext={() => setPage(page + 1)}
-						onClickToPage={(selectedPage) => setPage(selectedPage)}
-					/>
 				</div>
 			</div>
 			<Toaster />
