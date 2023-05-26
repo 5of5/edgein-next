@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
-import app from './wrapped-api-app';
+import app from './server-api-app';
 
 // start server
 const PORT = process.env.PORT || 8005;
