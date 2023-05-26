@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { useIntercom } from "react-use-intercom";
-import { formatDate } from "@/utils";
-import { IconExternalLink } from "@/components/icons";
 import { ElemButton } from "../elem-button";
 import {
   News,
@@ -11,16 +8,17 @@ import {
   useGetNewsArticlesQuery,
 } from "@/graphql/types";
 import { getQueryBySource } from "@/utils/news";
+import ElemNewsHeading from "./elem-news-heading";
 
 type Props = {
   heading?: string;
   newsOrgSlug: string;
-  news: News[];
+  news: News[] | undefined;
 };
 
 export const DEFAULT_LIMIT = 10;
 
-const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news }) => {
+const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news = [] }) => {
   const [articles, setArticles] = useState<News[]>(news);
 
   const [page, setPage] = useState(0);
@@ -64,44 +62,10 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news }) => {
         {articles && articles.length > 0 ? (
           <>
             <ul className="flex flex-col">
-              {articles.map((activity, index) => {
+              {articles.map((item) => {
                 return (
-                  <li
-                    key={index}
-                    className="relative pl-6 overflow-hidden group last:-mb-4"
-                  >
-                    <span className="absolute h-full top-0 bottom-0 left-0">
-                      <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
-                      <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
-                    </span>
-
-                    <div className="mb-4">
-                      <div className="inline leading-7 text-slate-600">
-                        {activity?.link ? (
-                          <>
-                            <Link href={activity.link}>
-                              <a className="font-semibold" target="_blank">
-                                <span className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-                                  {activity.text}
-                                </span>
-                                <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
-                              </a>
-                            </Link>
-                          </>
-                        ) : (
-                          <div className="inline font-semibold">{activity.text}</div>
-                        )}
-                        <div className="flex items-center gap-x-2">
-                          <p className="text-sm">
-                            {formatDate(activity.date as string, {
-                              month: "short",
-                              day: "2-digit",
-                              year: "numeric",
-                            })}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+                  <li key={item.id}>
+                    <ElemNewsHeading news={item} />
                   </li>
                 );
               })}

@@ -40,6 +40,7 @@ import ElemOrganizationNotes from "@/components/elem-organization-notes";
 import { Popups } from "@/components/the-navbar";
 import ElemNewsArticles, { DEFAULT_LIMIT } from "@/components/news/elem-news-articles";
 import { getQueryBySource } from "@/utils/news";
+import ElemNewsList from "@/components/news/elem-news-list";
 
 type Props = {
 	company: Companies;
@@ -133,16 +134,10 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	const sortedInvestmentRounds = props.sortRounds;
 
-	const sortActivities =
-		[...sortedInvestmentRounds, ...props.sortNews]
-			?.slice()
-			.sort((a: any, b: any) => {
-				return (
-					new Date(a?.date || a?.round_date || "").getTime() -
-					new Date(b?.date || b?.round_date || "").getTime()
-				);
-			})
-			.reverse() || [];
+	const isNewsOrganization =
+    props.newsArticles && props.newsArticles.length > 0;
+
+  const hasNewsTab = isNewsOrganization || props.sortNews.length > 0;
 
 	// Company tags
 	let companyTags: string[] = [];
@@ -161,7 +156,7 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
-	if (props.newsArticles && props.newsArticles.length > 0) {
+	if (hasNewsTab) {
 		tabBarItems.push({ name: "News", ref: newsRef });
 	}
 	if (company.teamMembers.length > 0) {
@@ -411,24 +406,36 @@ const Company: NextPage<Props> = (props: Props) => {
 							</div>
 						)}
 
-						{props.newsArticles && props.newsArticles.length > 0 && (
+						{hasNewsTab && (
 							<div
                 ref={newsRef}
                 className="w-full mt-7 p-5 bg-white shadow rounded-lg"
-              >								
-								<ElemNewsArticles
-									heading={`News articles from ${company.name} feeds`}
-									newsOrgSlug={company.slug}
-									news={props.newsArticles}
-								/>
+              >
+								{isNewsOrganization ? (
+									<ElemNewsArticles
+										heading={
+											isNewsOrganization
+												? `News articles from ${company.name} feeds`
+												: "News"
+										}
+										newsOrgSlug={company.slug}
+										news={props.newsArticles}
+									/>
+								) : (
+									<ElemNewsList
+										news={props.sortNews}
+										resourceType="companies"
+										resourceId={company.id}
+									/>
+								)}
+								
 							</div>
 						)}
 
 						<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
 							<ElemOrganizationActivity
-								resourceId={company.id}
 								resourceType="companies"
-								resourceInvestments={sortActivities}
+								resourceInvestments={sortedInvestmentRounds}
 							/>
 						</div>
 					</div>
