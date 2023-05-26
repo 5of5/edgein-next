@@ -18,7 +18,7 @@ const ElemNewsHeading: React.FC<Props> = ({
   showPoweredBy = false,
 }) => {
   return (
-    <div className="relative pl-6 overflow-hidden group last:-mb-4">
+    <div>
       <span className="absolute h-full top-0 bottom-0 left-0">
         <span className="absolute dashes top-2 left-2 -bottom-2 right-auto w-px h-auto border-y border-white bg-repeat-y"></span>
         <span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>

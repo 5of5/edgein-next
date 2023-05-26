@@ -49,7 +49,10 @@ const ElemNewsList: React.FC<Props> = ({
               }
 
               return (
-                <li key={item.id}>
+                <li
+                  key={item.id}
+                  className="relative pl-6 overflow-hidden group last:-mb-4"
+                >
                   <ElemNewsHeading
                     news={item}
                     isPublisher={isPublisher}

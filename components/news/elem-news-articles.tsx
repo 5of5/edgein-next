@@ -64,7 +64,10 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news = [] }) 
             <ul className="flex flex-col">
               {articles.map((item) => {
                 return (
-                  <li key={item.id}>
+                  <li
+                    key={item.id}
+                    className="relative pl-6 overflow-hidden group last:-mb-4"
+                  >
                     <ElemNewsHeading news={item} />
                   </li>
                 );
