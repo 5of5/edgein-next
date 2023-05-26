@@ -71,6 +71,7 @@ const Company: NextPage<Props> = (props: Props) => {
 	const [overviewDivHeight, setOverviewDivHeight] = useState(0);
 
 	const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+	const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
 	const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -160,6 +161,9 @@ const Company: NextPage<Props> = (props: Props) => {
 
 	// Tabs
 	const tabBarItems = [{ name: "Overview", ref: overviewRef }];
+	if (props.newsArticles && props.newsArticles.length > 0) {
+		tabBarItems.push({ name: "News", ref: newsRef });
+	}
 	if (company.teamMembers.length > 0) {
 		tabBarItems.push({ name: "Team", ref: teamRef });
 	}
@@ -408,9 +412,12 @@ const Company: NextPage<Props> = (props: Props) => {
 						)}
 
 						{props.newsArticles && props.newsArticles.length > 0 && (
-							<div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+							<div
+                ref={newsRef}
+                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
+              >								
 								<ElemNewsArticles
-									heading="News articles"
+									heading={`News articles from ${company.name} feeds`}
 									newsOrgSlug={company.slug}
 									news={props.newsArticles}
 								/>
