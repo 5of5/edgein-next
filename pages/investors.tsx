@@ -35,6 +35,7 @@ import { useIntercom } from "react-use-intercom";
 import useFilterParams from "@/hooks/use-filter-params";
 import useLibrary from "@/hooks/use-library";
 import { DeepPartial } from "@/types/common";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	vcFirmCount: number;
@@ -49,6 +50,8 @@ const Investors: NextPage<Props> = ({
 	investorsStatusTags,
 	setToggleFeedbackForm,
 }) => {
+	const { user } = useUser();
+
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
@@ -63,7 +66,7 @@ const Investors: NextPage<Props> = ({
 		(index) => investorsStatusTags[Number(index)]
 	);
 
-	const [tableLayout, setTableLayout] = useState(true);
+	const [tableLayout, setTableLayout] = useState(false);
 
 	// Filters
 	const { selectedFilters, setSelectedFilters } = useFilterParams();
@@ -74,8 +77,16 @@ const Investors: NextPage<Props> = ({
 		(pageIndex) => pageIndex + 1 + "",
 		(pageIndex) => Number(pageIndex) - 1
 	);
+
 	const limit = 50;
-	const offset = limit * page;
+	// limit shown companies on table layout for free users
+	const tableLimit =
+		user?.entitlements.listsCount && tableLayout
+			? user?.entitlements.listsCount
+			: 50;
+	// disable offset on table layout for free users
+	const offset =
+		user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
 	const defaultFilters = [
 		{ slug: { _neq: "" } },
@@ -323,11 +334,11 @@ const Investors: NextPage<Props> = ({
 									</div>
 								)}
 							</>
-						) : tableLayout ? (
+						) : tableLayout && vcFirms?.length != 0 ? (
 							<InvestorsTable
 								investors={vcFirms}
 								pageNumber={page}
-								itemsPerPage={limit}
+								itemsPerPage={tableLimit}
 								shownItems={vcFirms?.length}
 								totalItems={vcfirms_aggregate}
 								onClickPrev={() => setPage(page - 1)}
@@ -335,27 +346,31 @@ const Investors: NextPage<Props> = ({
 								filterByTag={filterByTag}
 							/>
 						) : (
-							<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-								{vcFirms?.map((vcfirm) => (
-									<ElemInvestorCard
-										key={vcfirm.id}
-										vcFirm={vcfirm as Vc_Firms}
-										tagOnClick={filterByTag}
-									/>
-								))}
-							</div>
+							<>
+								{vcFirms?.length != 0 && (
+									<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+										{vcFirms?.map((vcfirm) => (
+											<ElemInvestorCard
+												key={vcfirm.id}
+												vcFirm={vcfirm as Vc_Firms}
+												tagOnClick={filterByTag}
+											/>
+										))}
+									</div>
+								)}
+								<Pagination
+									shownItems={vcFirms?.length}
+									totalItems={vcfirms_aggregate}
+									page={page}
+									itemsPerPage={limit}
+									numeric
+									onClickPrev={() => setPage(page - 1)}
+									onClickNext={() => setPage(page + 1)}
+									onClickToPage={(selectedPage) => setPage(selectedPage)}
+								/>
+							</>
 						)}
 					</div>
-					<Pagination
-						shownItems={vcFirms?.length}
-						totalItems={vcfirms_aggregate}
-						page={page}
-						itemsPerPage={limit}
-						numeric
-						onClickPrev={() => setPage(page - 1)}
-						onClickNext={() => setPage(page + 1)}
-						onClickToPage={(selectedPage) => setPage(selectedPage)}
-					/>
 				</div>
 			</div>
 			<Toaster />

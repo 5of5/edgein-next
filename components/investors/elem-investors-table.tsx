@@ -16,6 +16,9 @@ import { TableColumnsFilter } from "@/components/my-list/table-columns-filter";
 import { last } from "lodash";
 import { Menu } from "@headlessui/react";
 import { numberWithCommas } from "@/utils";
+import { useUser } from "@/context/user-context";
+import { ElemUpgradeDialog } from "@/components/elem-upgrade-dialog";
+import { loadStripe } from "@/utils/stripe";
 
 import {
 	useTable,
@@ -53,6 +56,30 @@ export const InvestorsTable: FC<Props> = ({
 	onClickPrev,
 	onClickNext,
 }) => {
+	const { user } = useUser();
+
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	};
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
+
+	const onBillingClick = async () => {
+		loadStripe();
+	};
+
+	const isDisplayAllInvestors = user?.entitlements.viewEmails
+		? user?.entitlements.viewEmails
+		: false;
+
+	if (!isDisplayAllInvestors) {
+		itemsPerPage = 5;
+		pageNumber = 0;
+	}
+
 	const shownItemsStart = pageNumber === 0 ? 1 : pageNumber * itemsPerPage;
 	const shownItemsEnd =
 		shownItems < itemsPerPage ? totalItems : (pageNumber + 1) * itemsPerPage;
@@ -445,31 +472,65 @@ export const InvestorsTable: FC<Props> = ({
 						</div>
 					)}
 					<div className="flex space-x-1 ml-2">
-						<ElemButton
-							onClick={pageNumber * itemsPerPage > 0 ? onClickPrev : undefined}
-							btn="white"
-							roundedFull={true}
-							className={`px-1 aspect-square ${
-								pageNumber * itemsPerPage > 0
-									? ""
-									: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
-							}`}
-						>
-							<IconChevronLeft className="h-5 w-5" />
-						</ElemButton>
+						{!isDisplayAllInvestors ? (
+							<>
+								<ElemButton
+									onClick={onOpenUpgradeDialog}
+									btn="white"
+									roundedFull={true}
+									className={`px-1 aspect-square ${
+										pageNumber * itemsPerPage > 0
+											? ""
+											: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
+									}`}
+								>
+									<IconChevronLeft className="h-5 w-5" />
+								</ElemButton>
 
-						<ElemButton
-							onClick={totalItems > shownItemsEnd ? onClickNext : undefined}
-							btn="white"
-							roundedFull={true}
-							className={`px-1 aspect-square ${
-								totalItems > shownItemsEnd
-									? ""
-									: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
-							}`}
-						>
-							<IconChevronRight className="h-5 w-5" />
-						</ElemButton>
+								<ElemButton
+									onClick={onOpenUpgradeDialog}
+									btn="white"
+									roundedFull={true}
+									className={`px-1 aspect-square ${
+										totalItems > shownItemsEnd
+											? ""
+											: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
+									}`}
+								>
+									<IconChevronRight className="h-5 w-5" />
+								</ElemButton>
+							</>
+						) : (
+							<>
+								<ElemButton
+									onClick={
+										pageNumber * itemsPerPage > 0 ? onClickPrev : undefined
+									}
+									btn="white"
+									roundedFull={true}
+									className={`px-1 aspect-square ${
+										pageNumber * itemsPerPage > 0
+											? ""
+											: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
+									}`}
+								>
+									<IconChevronLeft className="h-5 w-5" />
+								</ElemButton>
+
+								<ElemButton
+									onClick={totalItems > shownItemsEnd ? onClickNext : undefined}
+									btn="white"
+									roundedFull={true}
+									className={`px-1 aspect-square ${
+										totalItems > shownItemsEnd
+											? ""
+											: "opacity-50 cursor-default hover:!bg-white hover:!text-current"
+									}`}
+								>
+									<IconChevronRight className="h-5 w-5" />
+								</ElemButton>
+							</>
+						)}
 					</div>
 				</div>
 			</div>
@@ -637,7 +698,57 @@ export const InvestorsTable: FC<Props> = ({
 						})}
 					</tbody>
 				</table>
+				{!isDisplayAllInvestors && (
+					<table className="relative table-auto min-w-full overscroll-x-none">
+						<tbody className="divide-y divide-black/10">
+							{Array.from({ length: 10 }, (_, i) => (
+								<tr key={i} className="min-w-full bg-white hover:bg-slate-100">
+									{Array.from({ length: 16 }, (_, ii) => {
+										return (
+											<td
+												key={ii}
+												className="min-w-[200px] align-middle text-sm p-2 blur-sm"
+												role="cell"
+											>
+												<div className="flex items-center h-10">
+													add figure here
+												</div>
+											</td>
+										);
+									})}
+								</tr>
+							))}
+							<tr className="absolute z-10 top-0 bottom-0 left-0 right-0 h-full w-full p-5 bg-primary-500/90 shadow">
+								<td>
+									<div className="max-w-2xl">
+										<h2 className="text-2xl font-bold text-white lg:text-3xl">
+											View all {numberWithCommas(totalItems)} investors from
+											this search.
+										</h2>
+										<p className="text-white opacity-90">
+											Get real-time updates on the investors, companies, people,
+											deals and events you’re most interested. Try EdgeIn
+											Contributor FREE for 7 days.
+										</p>
+										<ElemButton
+											onClick={onBillingClick}
+											btn="primary-light"
+											arrow
+											className="mt-4 text-primary-500"
+										>
+											Start your free trial
+										</ElemButton>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				)}
 			</div>
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 		</div>
 	);
 };

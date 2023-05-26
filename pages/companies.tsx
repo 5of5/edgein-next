@@ -84,14 +84,15 @@ const Companies: NextPage<Props> = ({
 		(pageIndex) => Number(pageIndex) - 1
 	);
 
-	// limit shown companies on table layout for free users
 	const limit = 50;
 	// user?.entitlements.listsCount && tableLayout
 	// 	? user?.entitlements.listsCount
 	// 	: 50;
-	const tableLimit = user?.entitlements.listsCount
-		? user?.entitlements.listsCount
-		: 50;
+	// limit shown companies on table layout for free users
+	const tableLimit =
+		user?.entitlements.listsCount && tableLayout
+			? user?.entitlements.listsCount
+			: 50;
 
 	// disable offset on table layout for free users
 	const offset =
