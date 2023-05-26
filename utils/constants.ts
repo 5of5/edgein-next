@@ -7,8 +7,6 @@ import {
 	maxValue,
 	regex,
 } from "react-admin";
-import type { NextApiResponse } from "next";
-import { Response } from "express";
 
 const urlPattern = new RegExp(
 	"^(https?:\\/\\/)?" + // protocol

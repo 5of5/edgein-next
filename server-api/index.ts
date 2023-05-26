@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 
-import express, {Request, Response } from "express"
+import express, { Request, Response } from "express"
 import morgan from "morgan"
 import cors from "cors"
 import { commonHandler as submitDataHandler } from "@/pages/api/submit-data"
