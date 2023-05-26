@@ -24091,6 +24091,13 @@ export type GetNewsArticlesQueryVariables = Exact<{
 
 
 export type GetNewsArticlesQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, source: any | null, created_at: any, status: string | null, text: string, metadata: any | null, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', type: string | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }>, news_aggregate: { __typename?: 'news_aggregate', aggregate: { __typename?: 'news_aggregate_fields', count: number } | null } };
+export type GetNewsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type GetNewsByDateQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, link: string | null, text: string, source: any | null }> };
 
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
@@ -24577,7 +24584,7 @@ useGetAllowedEmailByEmailOrDomainQuery.fetcher = (variables?: GetAllowedEmailByE
 export const GetLastSyncDocument = `
     query GetLastSync {
   application_meta(
-    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events"]}}
+    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_web3_news", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events", "sync_ai_news"]}}
   ) {
     id
     key
@@ -27116,6 +27123,38 @@ useGetNewsArticlesQuery.getKey = (variables: GetNewsArticlesQueryVariables) => [
 ;
 
 useGetNewsArticlesQuery.fetcher = (variables: GetNewsArticlesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(GetNewsArticlesDocument, variables, options);
+export const GetNewsByDateDocument = `
+    query GetNewsByDate($date: timestamptz, $library: jsonb) {
+  news(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
+  ) {
+    id
+    date
+    link
+    text
+    source
+  }
+}
+    `;
+export const useGetNewsByDateQuery = <
+      TData = GetNewsByDateQuery,
+      TError = Error
+    >(
+      variables?: GetNewsByDateQueryVariables,
+      options?: UseQueryOptions<GetNewsByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsByDateQuery, TError, TData>(
+      variables === undefined ? ['GetNewsByDate'] : ['GetNewsByDate', variables],
+      fetcher<GetNewsByDateQuery, GetNewsByDateQueryVariables>(GetNewsByDateDocument, variables),
+      options
+    );
+useGetNewsByDateQuery.document = GetNewsByDateDocument;
+
+
+useGetNewsByDateQuery.getKey = (variables?: GetNewsByDateQueryVariables) => variables === undefined ? ['GetNewsByDate'] : ['GetNewsByDate', variables];
+;
+
+useGetNewsByDateQuery.fetcher = (variables?: GetNewsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsByDateQuery, GetNewsByDateQueryVariables>(GetNewsByDateDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {
