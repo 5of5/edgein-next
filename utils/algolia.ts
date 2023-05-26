@@ -375,7 +375,7 @@ export const syncNews = async (params: SyncParams) => {
       );
 
       for (const news of newsList) {
-        news.poweredBy = news.source?.poweredBy || "CryptoPanic";
+        news.poweredBy = news.source?.poweredby || "CryptoPanic";
         news.objectID = news.id;
         delete news.id;
       }
