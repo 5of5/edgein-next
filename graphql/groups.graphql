@@ -1,275 +1,322 @@
 query GetGroupsOfUser($user_id: Int!) {
-  user_group_members(where: { user_id: { _eq: $user_id } }) {
-    id
-    user_id
-    user {
-      id
-      email
-      display_name
-    }
-    user_group_id
-    user_group {
-      id
-      name
-      description
-      telegram
-      twitter
-      discord
-      public
-      created_by {
-        id
-        display_name
-        email
-      }
-      created_at
-      updated_at
-    }
-  }
+	user_group_members(where: { user_id: { _eq: $user_id } }) {
+		id
+		user_id
+		user {
+			id
+			email
+			display_name
+		}
+		user_group_id
+		user_group {
+			id
+			name
+			description
+			telegram
+			twitter
+			discord
+			public
+			created_by {
+				id
+				display_name
+				email
+			}
+			created_at
+			updated_at
+		}
+	}
+}
+
+query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
+	user_groups(
+		where: $where
+		order_by: { created_at: desc }
+		limit: $limit
+		offset: $offset
+	) {
+		id
+		name
+		description
+		telegram
+		twitter
+		discord
+		public
+		created_by_user_id
+		created_by {
+			id
+			display_name
+			email
+		}
+		created_at
+		updated_at
+		user_group_members {
+			id
+			user {
+				id
+				display_name
+				email
+				person {
+					id
+					slug
+					picture
+				}
+			}
+		}
+		user_group_invites {
+			id
+			email
+			created_at
+			created_by_user_id
+		}
+	}
+	user_groups_aggregate(where: $where) {
+		aggregate {
+			count
+		}
+	}
 }
 
 query GetGroup($id: Int!) {
-  user_groups(where: { id: { _eq: $id } }) {
-    id
-    name
-    description
-    telegram
-    twitter
-    discord
-    public
-    created_by_user_id
-    created_by {
-      id
-      display_name
-      email
-    }
-    created_at
-    updated_at
-    user_group_members {
-      id
-      user {
-        id
-        display_name
-        email
-        person {
-          id
-          slug
-          picture
-        }
-      }
-    }
-    user_group_invites {
-      id
-      email
-      created_at
-      created_by_user_id
-    }
-  }
+	user_groups(where: { id: { _eq: $id } }) {
+		id
+		name
+		description
+		telegram
+		twitter
+		discord
+		public
+		created_by_user_id
+		created_by {
+			id
+			display_name
+			email
+		}
+		created_at
+		updated_at
+		user_group_members {
+			id
+			user {
+				id
+				display_name
+				email
+				person {
+					id
+					slug
+					picture
+				}
+			}
+		}
+		user_group_invites {
+			id
+			email
+			created_at
+			created_by_user_id
+		}
+	}
 }
 
 mutation InsertUserGroup($object: user_groups_insert_input!) {
-  insert_user_groups_one(object: $object) {
-    id
-    name
-    description
-    twitter
-    telegram
-    discord
-    created_at
-    updated_at
-    created_by_user_id
-  }
+	insert_user_groups_one(object: $object) {
+		id
+		name
+		description
+		twitter
+		telegram
+		discord
+		created_at
+		updated_at
+		created_by_user_id
+	}
 }
 
 mutation UpdateUserGroup($id: Int!, $changes: user_groups_set_input!) {
-  update_user_groups(where: { id: { _eq: $id } }, _set: $changes) {
-    affected_rows
-    returning {
-      id
-      name
-      description
-      twitter
-      telegram
-      discord
-      notes {
-        id
-        notes
-      }
-      created_at
-      updated_at
-      created_by_user_id
-      created_by {
-        id
-        display_name
-        email
-      }
-    }
-  }
+	update_user_groups(where: { id: { _eq: $id } }, _set: $changes) {
+		affected_rows
+		returning {
+			id
+			name
+			description
+			twitter
+			telegram
+			discord
+			notes {
+				id
+				notes
+			}
+			created_at
+			updated_at
+			created_by_user_id
+			created_by {
+				id
+				display_name
+				email
+			}
+		}
+	}
 }
 
 mutation DeleteUserGroup($id: Int!) {
-  delete_user_groups(where: { id: { _eq: $id } }) {
-    affected_rows
-    returning {
-      id
-    }
-  }
+	delete_user_groups(where: { id: { _eq: $id } }) {
+		affected_rows
+		returning {
+			id
+		}
+	}
 }
 
 mutation DeleteUserGroupInvitesByGroupId($groupId: Int!) {
-  delete_user_group_invites(where: { user_group_id: { _eq: $groupId } }) {
-    affected_rows
-    returning {
-      id
-    }
-  }
+	delete_user_group_invites(where: { user_group_id: { _eq: $groupId } }) {
+		affected_rows
+		returning {
+			id
+		}
+	}
 }
 
 mutation DeleteUserGroupMembersByGroupId($groupId: Int!) {
-  delete_user_group_members(where: { user_group_id: { _eq: $groupId } }) {
-    affected_rows
-    returning {
-      id
-    }
-  }
+	delete_user_group_members(where: { user_group_id: { _eq: $groupId } }) {
+		affected_rows
+		returning {
+			id
+		}
+	}
 }
 
 query GetUserGroupById($id: Int!) {
-  user_groups(where: { id: { _eq: $id } }, limit: 1) {
-    id
-    name
-    created_by_user_id
-    created_at
-  }
+	user_groups(where: { id: { _eq: $id } }, limit: 1) {
+		id
+		name
+		created_by_user_id
+		created_at
+	}
 }
 
 query GetUserGroupMemberById($id: Int!) {
-  user_group_members(where: { id: { _eq: $id } }, limit: 1) {
-    id
-    user_id
-    user_group_id
-  }
+	user_group_members(where: { id: { _eq: $id } }, limit: 1) {
+		id
+		user_id
+		user_group_id
+	}
 }
 
 query GetUserGroupMemberByGroupId($user_group_id: Int!) {
-  user_group_members(where: { user_group_id: { _eq: $user_group_id } }) {
-    id
-    user_group_id
-    user_group {
-      id
-      name
-      description
-    }
-    user_id
-    user {
-      id
-      display_name
-      email
-    }
-  }
+	user_group_members(where: { user_group_id: { _eq: $user_group_id } }) {
+		id
+		user_group_id
+		user_group {
+			id
+			name
+			description
+		}
+		user_id
+		user {
+			id
+			display_name
+			email
+		}
+	}
 }
 
 query GetUserGroupInviteById($id: Int!) {
-  user_group_invites(where: { id: { _eq: $id } }, limit: 1) {
-    id
-    email
-    user_group_id
-    created_by_user_id
-  }
+	user_group_invites(where: { id: { _eq: $id } }, limit: 1) {
+		id
+		email
+		user_group_id
+		created_by_user_id
+	}
 }
 
 mutation InsertUserGroupMembers($object: user_group_members_insert_input!) {
-  insert_user_group_members_one(object: $object) {
-    id
-    user_id
-    user {
-      id
-      display_name
-      email
-      person {
-        id
-        slug
-        picture
-      }
-    }
-    user_group_id
-    user_group {
-      id
-      name
-    }
-  }
+	insert_user_group_members_one(object: $object) {
+		id
+		user_id
+		user {
+			id
+			display_name
+			email
+			person {
+				id
+				slug
+				picture
+			}
+		}
+		user_group_id
+		user_group {
+			id
+			name
+		}
+	}
 }
 
 query GetUserGroupInvitesByEmail($email: String!) {
-  user_group_invites(where: { email: { _eq: $email } }) {
-    id
-    user_group_id
-  }
+	user_group_invites(where: { email: { _eq: $email } }) {
+		id
+		user_group_id
+	}
 }
 
 query GetUserGroupInvitesByEmailAndGroupId(
-  $email: String!
-  $user_group_id: Int!
+	$email: String!
+	$user_group_id: Int!
 ) {
-  user_group_invites(
-    where: {
-      _and: [
-        { email: { _eq: $email } }
-        { user_group_id: { _eq: $user_group_id } }
-      ]
-    }
-    limit: 1
-  ) {
-    id
-    email
-    user_group_id
-    created_by_user_id
-  }
+	user_group_invites(
+		where: {
+			_and: [
+				{ email: { _eq: $email } }
+				{ user_group_id: { _eq: $user_group_id } }
+			]
+		}
+		limit: 1
+	) {
+		id
+		email
+		user_group_id
+		created_by_user_id
+	}
 }
 
 query GetUserGroupMembersByUserIdAndGroupId(
-  $user_id: Int!
-  $user_group_id: Int!
+	$user_id: Int!
+	$user_group_id: Int!
 ) {
-  user_group_members(
-    where: {
-      _and: [
-        { user_id: { _eq: $user_id } }
-        { user_group_id: { _eq: $user_group_id } }
-      ]
-    }
-    limit: 1
-  ) {
-    id
-    user_id
-    user_group_id
-  }
+	user_group_members(
+		where: {
+			_and: [
+				{ user_id: { _eq: $user_id } }
+				{ user_group_id: { _eq: $user_group_id } }
+			]
+		}
+		limit: 1
+	) {
+		id
+		user_id
+		user_group_id
+	}
 }
 
 mutation DeleteUserGroupInviteById($id: Int!) {
-  delete_user_group_invites(where: { id: { _eq: $id } }) {
-    affected_rows
-    returning {
-      id
-    }
-  }
+	delete_user_group_invites(where: { id: { _eq: $id } }) {
+		affected_rows
+		returning {
+			id
+		}
+	}
 }
 
 mutation DeleteUserGroupMemberById($id: Int!) {
-  delete_user_group_members(where: { id: { _eq: $id } }) {
-    affected_rows
-    returning {
-      id
-    }
-  }
+	delete_user_group_members(where: { id: { _eq: $id } }) {
+		affected_rows
+		returning {
+			id
+		}
+	}
 }
 
 mutation InsertUserGroupInvites($object: user_group_invites_insert_input!) {
-  insert_user_group_invites_one(
-    object: $object
-  ) {
-    id
-    email
-    user_group_id
-    created_by_user_id
-  }
+	insert_user_group_invites_one(object: $object) {
+		id
+		email
+		user_group_id
+		created_by_user_id
+	}
 }

@@ -23810,6 +23810,15 @@ export type GetGroupsOfUserQueryVariables = Exact<{
 
 export type GetGroupsOfUserQuery = { __typename?: 'query_root', user_group_members: Array<{ __typename?: 'user_group_members', id: number, user_id: number, user_group_id: number, user: { __typename?: 'users', id: number, email: string | null, display_name: string | null }, user_group: { __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null } }> };
 
+export type GetGroupsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  where: User_Groups_Bool_Exp;
+}>;
+
+
+export type GetGroupsQuery = { __typename?: 'query_root', user_groups: Array<{ __typename?: 'user_groups', id: number, name: string, description: string | null, telegram: string | null, twitter: string | null, discord: string | null, public: boolean | null, created_by_user_id: number, created_at: any, updated_at: any | null, created_by: { __typename?: 'users', id: number, display_name: string | null, email: string | null } | null, user_group_members: Array<{ __typename?: 'user_group_members', id: number, user: { __typename?: 'users', id: number, display_name: string | null, email: string | null, person: { __typename?: 'people', id: number, slug: string, picture: any | null } | null } }>, user_group_invites: Array<{ __typename?: 'user_group_invites', id: number, email: string, created_at: any, created_by_user_id: number | null }> }>, user_groups_aggregate: { __typename?: 'user_groups_aggregate', aggregate: { __typename?: 'user_groups_aggregate_fields', count: number } | null } };
+
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -26015,6 +26024,75 @@ useGetGroupsOfUserQuery.getKey = (variables: GetGroupsOfUserQueryVariables) => [
 ;
 
 useGetGroupsOfUserQuery.fetcher = (variables: GetGroupsOfUserQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupsOfUserQuery, GetGroupsOfUserQueryVariables>(GetGroupsOfUserDocument, variables, options);
+export const GetGroupsDocument = `
+    query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
+  user_groups(
+    where: $where
+    order_by: {created_at: desc}
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    description
+    telegram
+    twitter
+    discord
+    public
+    created_by_user_id
+    created_by {
+      id
+      display_name
+      email
+    }
+    created_at
+    updated_at
+    user_group_members {
+      id
+      user {
+        id
+        display_name
+        email
+        person {
+          id
+          slug
+          picture
+        }
+      }
+    }
+    user_group_invites {
+      id
+      email
+      created_at
+      created_by_user_id
+    }
+  }
+  user_groups_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetGroupsQuery = <
+      TData = GetGroupsQuery,
+      TError = Error
+    >(
+      variables: GetGroupsQueryVariables,
+      options?: UseQueryOptions<GetGroupsQuery, TError, TData>
+    ) =>
+    useQuery<GetGroupsQuery, TError, TData>(
+      ['GetGroups', variables],
+      fetcher<GetGroupsQuery, GetGroupsQueryVariables>(GetGroupsDocument, variables),
+      options
+    );
+useGetGroupsQuery.document = GetGroupsDocument;
+
+
+useGetGroupsQuery.getKey = (variables: GetGroupsQueryVariables) => ['GetGroups', variables];
+;
+
+useGetGroupsQuery.fetcher = (variables: GetGroupsQueryVariables, options?: RequestInit['headers']) => fetcher<GetGroupsQuery, GetGroupsQueryVariables>(GetGroupsDocument, variables, options);
 export const GetGroupDocument = `
     query GetGroup($id: Int!) {
   user_groups(where: {id: {_eq: $id}}) {
