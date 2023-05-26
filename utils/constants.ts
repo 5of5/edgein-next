@@ -7,7 +7,7 @@ import {
 	maxValue,
 	regex,
 } from "react-admin";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiResponse } from "next";
 import { Response } from "express";
 
 const urlPattern = new RegExp(
