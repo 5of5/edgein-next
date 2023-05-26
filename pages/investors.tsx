@@ -78,12 +78,12 @@ const Investors: NextPage<Props> = ({
 		(pageIndex) => Number(pageIndex) - 1
 	);
 
-	const limit = 50;
-	// limit shown companies on table layout for free users
-	const tableLimit =
+	// limit shown investors on table layout for free users
+	const limit =
 		user?.entitlements.listsCount && tableLayout
 			? user?.entitlements.listsCount
 			: 50;
+
 	// disable offset on table layout for free users
 	const offset =
 		user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
@@ -338,7 +338,7 @@ const Investors: NextPage<Props> = ({
 							<InvestorsTable
 								investors={vcFirms}
 								pageNumber={page}
-								itemsPerPage={tableLimit}
+								itemsPerPage={limit}
 								shownItems={vcFirms?.length}
 								totalItems={vcfirms_aggregate}
 								onClickPrev={() => setPage(page - 1)}

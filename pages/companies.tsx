@@ -84,12 +84,8 @@ const Companies: NextPage<Props> = ({
 		(pageIndex) => Number(pageIndex) - 1
 	);
 
-	const limit = 50;
-	// user?.entitlements.listsCount && tableLayout
-	// 	? user?.entitlements.listsCount
-	// 	: 50;
 	// limit shown companies on table layout for free users
-	const tableLimit =
+	const limit =
 		user?.entitlements.listsCount && tableLayout
 			? user?.entitlements.listsCount
 			: 50;
@@ -347,7 +343,7 @@ const Companies: NextPage<Props> = ({
 							<CompaniesTable
 								companies={companies}
 								pageNumber={page}
-								itemsPerPage={tableLimit}
+								itemsPerPage={limit}
 								shownItems={companies?.length}
 								totalItems={companies_aggregate}
 								onClickPrev={() => setPage(page - 1)}
