@@ -12,9 +12,9 @@
 		"docker:start": "npm run docker-compose -- up -d",
 		"hasura": "cd infra/hasura && hasura --skip-update-check",
 		"codegen": "graphql-codegen --config graphql/codegen.js",
-		"api:build": "cd server-api/ && npx tsc",
-		"api:dev": "cd server-api/ && cp .env build/server-api/ && set NODE_ENV=development && nodemon -e ts,js --exec node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js",
-		"api:start": "cd server-api/ && cp .env build/server-api/ && nodemon -e ts,js --exec node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js"
+		"api:build": "cd server-api/ && rimraf build && npx tsc && cp .env build/server-api",
+		"api:dev": "cd server-api/ && set NODE_ENV=development && pm2 start --interpreter none 'node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js'",
+		"api:start": "cd server-api/ && pm2 start --interpreter none 'node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js'"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.7",
@@ -57,6 +57,7 @@
 		"nodemailer": "^6.7.8",
 		"path": "^0.12.7",
 		"pg": "^8.7.3",
+		"pm2": "^5.3.0",
 		"qs": "^6.11.0",
 		"ra-data-hasura": "^0.5.0",
 		"rate-limit-redis": "^3.0.1",
