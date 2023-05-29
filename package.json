@@ -12,8 +12,8 @@
 		"docker:start": "npm run docker-compose -- up -d",
 		"hasura": "cd infra/hasura && hasura --skip-update-check",
 		"codegen": "graphql-codegen --config graphql/codegen.js",
-		"api:start": "cd server-api/ && nodemon -e ts --exec ts-node -r tsconfig-paths/register index.ts",
-		"api:dev": "cd server-api/ && set NODE_ENV=development && nodemon -e ts --exec ts-node -r tsconfig-paths/register index.ts"
+		"api:dev": "cd server-api/ && cp .env build/server-api/ && set NODE_ENV=development && nodemon -e ts,js --exec node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js",
+		"api:start": "cd server-api/ && cp .env build/server-api/ && nodemon -e ts,js --exec node -r ts-node/register/transpile-only -r tsconfig-paths/register build/server-api/index.js"
 	},
 	"dependencies": {
 		"@apollo/client": "^3.6.7",
@@ -115,6 +115,6 @@
 		"tailwindcss": "^3.0.24",
 		"ts-node": "^10.9.1",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "4.6.4"
+		"typescript": "^4.6.4"
 	}
 }
