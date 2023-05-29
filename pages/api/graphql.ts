@@ -3,13 +3,14 @@ import CookieService from '../../utils/cookie'
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(CookieService.getAuthToken(req.cookies));
+  const isAdminHideDraftData = user?.role === "admin" && !user?.showDraftData;
   let headers: {'x-hasura-role'?: string, 'x-hasura-user-id'?: string} & { Authorization: string } |
   //let headers: {'x-hasura-role'?: string} & { Authorization: string } |
     {'x-hasura-admin-secret': string }
     if (!user) {
       return res.status(401).end()
     }
-    if (user.role === "user" || req.headers['is-viewer'] === 'true') {
+    if (user.role === "user" || req.headers['is-viewer'] === 'true' || isAdminHideDraftData) {
       headers  = {
         Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
         'x-hasura-role': process.env.HASURA_VIEWER ?? "",

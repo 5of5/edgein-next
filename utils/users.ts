@@ -265,6 +265,7 @@ const createToken = (userData: any, isFirstLogin: boolean): UserToken => {
     additional_emails: userData.additional_emails,
     active: userData.active,
     onboarding_information: userData.onboarding_information,
+    showDraftData: userData.showDraftData,
     entitlements
   };
 };
