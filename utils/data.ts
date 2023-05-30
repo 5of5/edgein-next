@@ -1,7 +1,10 @@
 import CookieService from './cookie';
 
 export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, cookies?: any):Promise<{ data?: QueryType, errors?: any }> => {
-	let headers: Record<string, string> = {};
+	let headers: Record<string, string> = {
+		"Content-Type": "application/json",
+		Accept: "application/json",
+	};
 	if (cookies) {
 		const authToken = CookieService.getAuthToken(cookies || {});
 		headers = {
@@ -17,13 +20,6 @@ export const runGraphQl = async <QueryType>(query: string, variables?: Record<st
 			'x-hasura-role':  process.env.HASURA_VIEWER ?? ""
 		}
 	}	
-	// temporay until everyone gets a new cookie
-	headers = {
-		"Content-Type": "application/json",
-		Accept: "application/json",
-		'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? "",
-		'x-hasura-role': process.env.HASURA_VIEWER ?? "",
-	}
 
 	if (cookies) {
 		const user = await CookieService.getUser(CookieService.getAuthToken(cookies));
