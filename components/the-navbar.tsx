@@ -23,6 +23,7 @@ import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import OnboardingStep4 from "./onboarding/onboarding-step-4";
 import ElemLibrarySelector from "./elem-library-selector";
+import OnboardingStep5 from "./onboarding/onboarding-step-5";
 
 export type Popups =
 	| "login"
@@ -357,17 +358,27 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 					{onboardingStep === 4 && (
 						<OnboardingStep4
-							selectedOption={selectedOption}
-							locationTags={locationTags}
-							industryTags={industryTags}
 							show={onboardingStep === 4 && !isFetchingUserProfile}
 							message={message}
-							list={list}
-							onClose={() => setOnboardingStep(0)}
 							onBack={(m) => {
 								setMessage(m);
 								setOnboardingStep(3);
 							}}
+							onNext={(m) => {
+								setMessage(m);
+								setOnboardingStep(5);
+							}}
+						/>
+					)}
+					{onboardingStep === 5 && (
+						<OnboardingStep5
+							selectedOption={selectedOption}
+							locationTags={locationTags}
+							industryTags={industryTags}
+							list={list}
+							message={message}
+							show={onboardingStep === 5 && !isFetchingUserProfile}
+							onBack={() => setOnboardingStep(4)}
 							onNext={() => setOnboardingStep(0)}
 						/>
 					)}

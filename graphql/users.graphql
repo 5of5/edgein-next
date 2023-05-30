@@ -465,3 +465,23 @@ mutation UpdateUserOnboardingInformation($id: Int!, $onboarding_information: jso
     }
   }
 }
+
+mutation UpdateUserPersonId($id: Int!, $person_id: Int!) {
+  update_users(
+    where: { id: { _eq: $id } }
+    _set: { person_id: $person_id }
+  ) {
+    affected_rows
+    returning {
+      id
+      email
+      display_name
+      person {
+        name
+        picture
+        slug
+        id
+      }
+    }
+  }
+}

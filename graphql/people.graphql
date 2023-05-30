@@ -213,3 +213,39 @@ mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
 		}
 	}
 }
+
+query FindPeopleByNameAndEmail($name: String, $email: String) {
+  people(
+    where: {
+      _or: [
+        { name: { _ilike: $name } }
+        { work_email: { _ilike: $email } }
+        { personal_email: { _ilike: $email } }
+      ]
+    }
+    limit: 50
+  ) {
+    id
+    name
+    picture
+    slug
+  }
+}
+
+query FindPeopleByLinkedinUrl($linkedin: String) {
+  people(where: { linkedin: { _eq: $linkedin } }, limit: 1) {
+    id
+    name
+    picture
+    slug
+  }
+}
+
+mutation InsertOnboardingClaimProfile($object: people_insert_input!) {
+  insert_people_one(object: $object) {
+    id
+    name
+    work_email
+    linkedin
+  }
+}
