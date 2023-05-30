@@ -154,7 +154,7 @@ export default function OnboardingStep5(props: Props) {
                   ) : peopleList && peopleList.length > 0 ? (
                     <Fragment>
                       <p className="font-bold">Are you any of these people?</p>
-                      <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mt-4 max-h-[40vh] overflow-y-auto">
+                      <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 py-4 max-h-[40vh] overflow-y-auto">
                         {peopleList.map((item) => (
                           <div
                             key={item.id}
