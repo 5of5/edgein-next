@@ -1,10 +1,7 @@
 import CookieService from './cookie';
 
 export const runGraphQl = async <QueryType>(query: string, variables?: Record<string, any>, cookies?: any):Promise<{ data?: QueryType, errors?: any }> => {
-	let headers: Record<string, string> = {
-		"Content-Type": "application/json",
-		Accept: "application/json",
-	};
+	let headers: Record<string, string> = {};
 	if (cookies) {
 		const authToken = CookieService.getAuthToken(cookies || {});
 		headers = {
