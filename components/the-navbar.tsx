@@ -53,7 +53,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 
 	const [emailFromLogin, setEmailFromLogin] = useState("");
 	const [passwordFromLogin, setPasswordFromLogin] = useState("");
-	const [onboardingStep, setOnboardingStep] = useState(0);
+	const [onboardingStep, setOnboardingStep] = useState(1);
 
 	const [selectedOption, setSelectedOption] = useState("");
 	const [locationTags, setLocationTags] = useState<any[]>([]);
@@ -68,7 +68,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const isDisplaySelectLibrary =
 		user?.email.endsWith("edgein.io") || user?.email.endsWith("techlist.com");
 
-	const { data: userProfile, isFetching: isFetchingUserProfile } =
+	const { data: userProfile, isLoading: isFetchingUserProfile } =
 		useGetUserByIdQuery({ id: user?.id || 0 }, { enabled: !!user?.id });
 
 	useEffect(() => {
