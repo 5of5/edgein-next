@@ -144,54 +144,52 @@ export default function OnboardingStep5(props: Props) {
                 <div className="mt-8">
                   {isLoadingPeople ? (
                     <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
-                      {Array.from({ length: 4 }, (_, i) => (
+                      {Array.from({ length: 3 }, (_, i) => (
                         <div
                           key={i}
                           className="rounded-lg bg-slate-200 w-full h-20 animate-pulse"
                         />
                       ))}
                     </div>
-                  ) : (
+                  ) : peopleList && peopleList.length > 0 ? (
                     <Fragment>
                       <p className="font-bold">Are you any of these people?</p>
-                      <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
-                        {peopleList &&
-                          peopleList.length > 0 &&
-                          peopleList?.map((item) => (
-                            <div
-                              key={item.id}
-                              className={`relative flex items-start p-1 rounded-lg transition-all hover:shadow hover:-translate-y-0.5 cursor-pointer
+                      <div className="grid grid-cols-2 xl:grid-cols-3 gap-4 mt-4 max-h-[40vh] overflow-y-auto">
+                        {peopleList.map((item) => (
+                          <div
+                            key={item.id}
+                            className={`relative flex items-start p-1 rounded-lg transition-all hover:shadow hover:-translate-y-0.5 cursor-pointer
                         ${
                           selectedPerson?.id === item.id
                             ? " border-primary-500 border-2"
                             : "border-black/10 border"
                         }`}
-                              onClick={() => setSelectedPerson(item)}
-                            >
-                              {selectedPerson?.id === item.id && (
-                                <IconCheck className="w-5 h-5 rounded-full text-white bg-primary-500 absolute top-1/2 right-2 -translate-y-1/2" />
-                              )}
-                              <ElemPhoto
-                                photo={item.picture}
-                                wrapClass="flex items-center justify-center shrink-0 w-16 h-16 rounded-lg overflow-hidden"
-                                imgClass="object-cover w-full h-full"
-                                imgAlt={item.name}
-                                placeholder="user"
-                                placeholderClass="text-slate-300"
-                              />
-                              <div className="overflow-hidden px-2">
-                                <h3
-                                  className="font-bold text-lg truncate"
-                                  title={item.name || ""}
-                                >
-                                  {item.name}
-                                </h3>
-                              </div>
+                            onClick={() => setSelectedPerson(item)}
+                          >
+                            {selectedPerson?.id === item.id && (
+                              <IconCheck className="w-5 h-5 rounded-full text-white bg-primary-500 absolute top-1/2 right-2 -translate-y-1/2" />
+                            )}
+                            <ElemPhoto
+                              photo={item.picture}
+                              wrapClass="flex items-center justify-center shrink-0 w-16 h-16 rounded-lg overflow-hidden"
+                              imgClass="object-cover w-full h-full"
+                              imgAlt={item.name}
+                              placeholder="user"
+                              placeholderClass="text-slate-300"
+                            />
+                            <div className="overflow-hidden px-2">
+                              <h3
+                                className="font-bold text-lg truncate"
+                                title={item.name || ""}
+                              >
+                                {item.name}
+                              </h3>
                             </div>
-                          ))}
+                          </div>
+                        ))}
                       </div>
                     </Fragment>
-                  )}
+                  ) : null}
 
                   {!isLoadingPeople && (
                     <Fragment>
