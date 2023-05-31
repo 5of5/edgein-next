@@ -50,7 +50,7 @@ export default function OnboardingStep4(props: Props) {
             >
               <Dialog.Panel className="max-w-2xl w-full p-6 mx-auto rounded-lg shadow-2xl bg-white overflow-x-hidden overflow-y-auto overscroll-y-none lg:p-12">
                 <h3 className="text-2xl font-bold">{ONBOARDING_QUESTION}</h3>
-                <p className="text-sm text-slate-500">Step 4 of 5</p>
+                <p className="text-sm text-slate-500">Step 3 of 4</p>
 
                 <div className="mt-8">
                   <InputTextarea
