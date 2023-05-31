@@ -65,7 +65,7 @@ export const ElemTeamGrid: React.FC<Props> = ({
 					)}
 				</div>
 			)}
-			<div className="lg:flex items-center justify-between">
+			<div className="lg:flex items-start justify-between">
 				{showTags && (
 					<ElemFilterTags
 						onClick={(tag, index) => setSelectedTag(tag)}
@@ -75,8 +75,11 @@ export const ElemTeamGrid: React.FC<Props> = ({
 					/>
 				)}
 				{allowToSaveTeam && (
-					<div className="mt-2 lg:mt-0">
-						<ElemBulkSavePeople text="Save team to list" personIds={personIds} />
+					<div className="mt-2 lg:mt-0 shrink-0">
+						<ElemBulkSavePeople
+							text="Save team to list"
+							personIds={personIds}
+						/>
 					</div>
 				)}
 			</div>

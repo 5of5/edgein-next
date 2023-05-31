@@ -23,6 +23,7 @@ import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
 import OnboardingStep4 from "./onboarding/onboarding-step-4";
 import ElemLibrarySelector from "./elem-library-selector";
+import { ElemUpgradeDialog } from "./elem-upgrade-dialog";
 
 export type Popups =
 	| "login"
@@ -206,6 +207,16 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 		setShowPopup("signup");
 	};
 
+	// Upgrade modal
+	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+
+	const onOpenUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(true);
+	};
+	const onCloseUpgradeDialog = () => {
+		setIsOpenUpgradeDialog(false);
+	};
+
 	return (
 		<header className="overflow-y-visible z-40 block fixed top-0 left-0 right-0">
 			<div className="px-1 py-1 sm:px-3 shadow bg-white/80 backdrop-blur">
@@ -240,7 +251,6 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 								</a>
 							</Link>
 						))}
-
 						{user ? (
 							<>
 								<ElemButton
@@ -251,7 +261,7 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 									<IconSearch className="h-5 w-5" />
 								</ElemButton>
 								<NotificationAlerts />
-								<UserMenu />
+								<UserMenu onShowUpgrade={onOpenUpgradeDialog} />
 							</>
 						) : (
 							<>
@@ -377,6 +387,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					)}
 				</nav>
 			</div>
+			<ElemUpgradeDialog
+				isOpen={isOpenUpgradeDialog}
+				onClose={onCloseUpgradeDialog}
+			/>
 		</header>
 	);
 };

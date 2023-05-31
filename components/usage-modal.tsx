@@ -1,7 +1,7 @@
 import { useEffect, Fragment } from "react";
 import { ElemButton } from "@/components/elem-button";
 import { ElemLogo } from "@/components/elem-logo";
-import { IconSparkles, IconBadgeCheck } from "@/components/icons";
+import { IconBadgeCheck, IconContributor } from "@/components/icons";
 import { Dialog, Transition } from "@headlessui/react";
 
 type Props = {
@@ -114,7 +114,7 @@ const UsageModal: React.FC<Props> = (props: Props) => {
 												btn="primary"
 												loading={false}
 											>
-												<IconSparkles
+												<IconContributor
 													className="w-5 h-5 mr-1"
 													title="Free Access"
 												/>

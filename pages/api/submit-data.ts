@@ -23,7 +23,8 @@ import {
   insertDataDiscard,
 } from "@/utils/submit-data";
 import type { NextApiRequest, NextApiResponse } from "next";
-import CookieService from "../../utils/cookie";
+import CookieService from "@/utils/cookie";
+import { convertNextToCommonRequest, convertNextToCommonResp, CommonRequest, CommonResponse } from "@/utils/api";
 
 const sendNotification = async (
   resourceId: number | undefined,
@@ -214,13 +215,17 @@ const handleResource = async (
   return mainResult;
 }
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+
+export const commonHandler = async (req: CommonRequest, res: CommonResponse) => {
   if (!["POST", "PUT", "DELETE"].includes(req.method as string))
     return res.status(405).send({ message: "Method is not allowed" });
-
-  const token = CookieService.getAuthToken(req.cookies);
-  const user = await CookieService.getUser(token);
-
+  let user:(User & {_iat?: number}) | null = null;
+  try {
+    const token = CookieService.getAuthToken(req.cookies);
+    user = await CookieService.getUser(token);
+  } catch (error) {
+    user = null;
+  }
   const apiKey: string = req.body.partner_api_key;
   const resourceType: ResourceTypes = req.body.resource_type;
   const resourceIdentifier: Array<Array<Record<string, any>>> | Array<Record<string, any>> = req.body.resource_identifier;
@@ -348,5 +353,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500);
   }
 };
+
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await commonHandler(convertNextToCommonRequest(req), convertNextToCommonResp(res));
+}
+
 
 export default handler;
