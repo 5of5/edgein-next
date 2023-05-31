@@ -8,6 +8,8 @@ import {
   GetEventsByDateQuery,
   GetLastSyncDocument,
   GetLastSyncQuery,
+  GetNewsByDateDocument,
+  GetNewsByDateQuery,
   GetPeopleByDateDocument,
   GetPeopleByDateQuery,
   GetVcFirmsByDateDocument,
@@ -84,6 +86,18 @@ const queryForEventList = async (date: any, library: LibraryTypes) => {
       variables: { date, library },
     });
     return data.data.events;
+  } catch (ex) {
+    throw ex;
+  }
+};
+
+const queryForNewsList = async (date: any, library: LibraryTypes) => {
+  try {
+    const data = await query<GetNewsByDateQuery>({
+      query: GetNewsByDateDocument,
+      variables: { date, library },
+    });
+    return data.data.news;
   } catch (ex) {
     throw ex;
   }
@@ -339,6 +353,54 @@ export const syncEvents = async (params: SyncParams) => {
     } catch (error) {
       // update the last_error
       output[`eventsError_${key}`] = error;
+      await mutateForError(key, prepareError(error));
+    }
+  }
+  return output;
+};
+
+export const syncNews = async (params: SyncParams) => {
+  const { client, lastSyncArray, key, library, index } = params;
+  const output: Record<string, any> = {};
+  const newsLastSync = lastSyncArray.find(
+    (lastSync: { key: string }) => lastSync.key === key
+  );
+  output[`newsLastSync_${key}`] = newsLastSync?.value;
+  if (newsLastSync) {
+    try {
+      // get all the news details
+      const newsList: any = await queryForNewsList(
+        newsLastSync.value,
+        library
+      );
+
+      for (const news of newsList) {
+        news.poweredBy = news.source?.poweredby || "CryptoPanic";
+        news.objectID = news.id;
+        delete news.id;
+      }
+      const newsIndex = client.initIndex(index);
+      await newsIndex.saveObjects(newsList, {
+        autoGenerateObjectIDIfNotExist: true,
+      });
+
+      /** Find deleted news in actions table and remove them in index */
+      const deletedNews = await queryForDeletedResources(
+        "news",
+        newsLastSync.value
+      );
+      newsIndex.deleteObjects(
+        deletedNews.map((item: any) => item.resource_id)
+      );
+
+      output[`newsList_${key}`] =
+        newsList.map((p: any) => `${p.id} ${p.name}`).length -
+        deletedNews.length;
+      // update the last_sync date to current date
+      await mutateForLastSync(key);
+    } catch (error) {
+      // update the last_error
+      output[`newsError_${key}`] = error;
       await mutateForError(key, prepareError(error));
     }
   }

@@ -1,0 +1,107 @@
+query GetNews(
+	$limit: Int
+	$offset: Int
+	$order: order_by!
+	$where: news_bool_exp!
+) {
+	news(
+		where: $where
+		order_by: { date: $order }
+		limit: $limit
+		offset: $offset
+	) {
+		id
+		date
+		kind
+		link
+		source
+		created_at
+		status
+		text
+		metadata
+		updated_at
+		organizations {
+			type
+			company {
+				id
+				name
+				slug
+				logo
+			}
+			vc_firm {
+				id
+				name
+				slug
+				logo
+			}
+		}
+	}
+	news_aggregate(where: $where) {
+		aggregate {
+			count
+		}
+	}
+}
+
+query GetNewsArticles(
+  $limit: Int
+  $offset: Int
+  $order: order_by!
+  $where: news_bool_exp!
+) {
+  news(
+    where: $where
+    order_by: { date: $order }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+	news_aggregate(where: $where) {
+		aggregate {
+			count
+		}
+	}
+}
+
+query GetNewsByDate($date: timestamptz, $library: jsonb) {
+  news(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
+    }
+  ) {
+    id
+    date
+    link
+    text
+    source
+  }
+}

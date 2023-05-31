@@ -2,7 +2,8 @@ import { ElemButton } from "./elem-button";
 import { ElemPhoto } from "@/components/elem-photo";
 import { Menu, Transition } from "@headlessui/react";
 import React, { Fragment, FC } from "react";
-import { first } from "lodash";
+import { find, first } from "lodash";
+import { getNameFromListName } from "@/utils/reaction";
 import {
 	IconChevronDownMini,
 	IconUserCircle,
@@ -10,6 +11,7 @@ import {
 	IconGroup,
 	IconSettings,
 	IconContributor,
+	IconCustomList,
 } from "./icons";
 import { useUser } from "@/context/user-context";
 import Link from "next/link";
@@ -21,9 +23,14 @@ type Props = {
 };
 
 export const UserMenu: FC<Props> = ({ className = "", onShowUpgrade }) => {
-	const { user, myGroups } = useUser();
+	const { listAndFollows, user, myGroups } = useUser();
 
 	const showUpgradeLink = user?.entitlements.viewEmails === false;
+
+	const hotListId =
+		find(listAndFollows, (list) => "hot" === getNameFromListName(list))?.id ||
+		0;
+	const myListsUrl = `/lists/${hotListId}/hot`;
 
 	const firstCustomGroup = first(myGroups ? myGroups : null);
 
@@ -49,6 +56,13 @@ export const UserMenu: FC<Props> = ({ className = "", onShowUpgrade }) => {
 
 	let navigation = [];
 
+	if (user) {
+		navigation.push({
+			name: "My Lists",
+			href: myListsUrl,
+			icon: IconCustomList,
+		});
+	}
 	if (myGroups.length > 0) {
 		navigation.push({
 			name: "My Groups",

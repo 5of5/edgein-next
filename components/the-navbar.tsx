@@ -133,11 +133,15 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 			path: "/events",
 			name: "Events",
 		},
+		{
+			path: "/news",
+			name: "News",
+		},
 	];
 
-	if (user) {
-		siteNav.push({ path: myListsUrl, name: "My Lists" });
-	}
+	// if (user) {
+	// 	siteNav.push({ path: myListsUrl, name: "My Lists" });
+	// }
 
 	const getAccessTokenFromCode = async (code: string) => {
 		try {
