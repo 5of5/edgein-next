@@ -18,6 +18,7 @@ import { Pagination } from "@/components/pagination";
 import { useStateParams } from "@/hooks/use-state-params";
 import { onTrackView } from "@/utils/track";
 import { useIntercom } from "react-use-intercom";
+import { useUser } from "@/context/user-context";
 
 type Props = {
 	groupsCount: number;
@@ -25,6 +26,7 @@ type Props = {
 };
 
 const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
+	const { user } = useUser();
 	const [initialLoad, setInitialLoad] = useState(true);
 
 	const router = useRouter();
@@ -36,7 +38,7 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
 		(pageIndex) => Number(pageIndex) - 1
 	);
 
-	const limit = 50;
+	const limit = 12;
 	const offset = limit * page;
 
 	useEffect(() => {
@@ -62,7 +64,13 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
 		limit,
 		offset,
 		where: {
-			public: { _eq: true },
+			_and: [
+				{
+					public: { _eq: true },
+					created_by_user_id: { _neq: user?.id || 0 },
+					user_group_members: { user: { id: { _neq: user?.id || 0 } } },
+				},
+			],
 		} as User_Groups_Bool_Exp,
 	});
 
@@ -81,7 +89,10 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
 		<DashboardLayout>
 			<div className="pb-20">
 				<div className="w-full mb-2">
-					<h1 className="h-6 mr-2 font-bold text-xl capitalize">Groups</h1>
+					<h1 className="h-6 mr-2 font-bold text-xl capitalize">
+						Discover Groups
+					</h1>
+					<p className="text-slate-600">Groups you might be interested in.</p>
 				</div>
 				{groups?.length === 0 && (
 					<div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -145,10 +156,7 @@ const Groups: NextPage<Props> = ({ groupsCount, initialGroups }) => {
 						})
 					)}
 				</div>
-				{/* <p>groups.length: {groups?.length}</p>
-				<p>groups_aggregate {groups_aggregate}</p>
-				<p>page {page}</p>
-				<p>limit {limit}</p> */}
+
 				<Pagination
 					shownItems={groups?.length}
 					totalItems={groups_aggregate}
@@ -170,6 +178,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		limit: 50,
 		where: {
 			public: { _eq: true },
+			//_and: [{ public: { _eq: true } }, { created_by_user_id: { _neq: user?.id || 0 } }],
 		},
 	});
 

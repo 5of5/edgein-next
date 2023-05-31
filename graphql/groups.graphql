@@ -47,6 +47,10 @@ query GetGroups($limit: Int, $offset: Int, $where: user_groups_bool_exp!) {
 			display_name
 			email
 		}
+		notes {
+			id
+			notes
+		}
 		created_at
 		updated_at
 		user_group_members {
