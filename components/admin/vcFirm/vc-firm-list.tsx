@@ -1,5 +1,5 @@
-import { useAuth } from "@/hooks/use-auth";
-import React from "react";
+import { useAuth } from '@/hooks/use-auth';
+import React from 'react';
 import {
   FunctionField,
   ImageField,
@@ -10,8 +10,8 @@ import {
   ReferenceArrayField,
   SingleFieldList,
   ChipField,
-} from "react-admin";
-import ElemList from "../elem-list";
+} from 'react-admin';
+import ElemList from '../elem-list';
 
 const filters = [
   <TextInput
@@ -29,7 +29,7 @@ export const VcFirmList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <TextField source="id" />
       <TextField source="name" />
       <TextField source="slug" />
@@ -84,11 +84,17 @@ export const VcFirmList = () => {
       <TextField source="location_json" />
       <FunctionField
         source="library"
-        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
+        render={(record: any) =>
+          Array.isArray(record.library)
+            ? record.library.join()
+            : record.library ?? ''
+        }
       />
       <FunctionField
         source="tags"
-        render={(record: any) => (Array.isArray(record.tags) ? record.tags.join() : record.tags ?? "")}
+        render={(record: any) =>
+          Array.isArray(record.tags) ? record.tags.join() : record.tags ?? ''
+        }
       />
       {/* <TextField source="counter" /> */}
     </ElemList>

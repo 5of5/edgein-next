@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   AutocompleteInput,
   Confirm,
@@ -19,24 +19,24 @@ import {
   useRefresh,
   SelectField,
   SelectInput,
-} from "react-admin";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import ContentEdit from "@mui/icons-material/Edit";
-import ContentSave from "@mui/icons-material/Save";
-import ContentDelete from "@mui/icons-material/Delete";
-import ContentCreate from "@mui/icons-material/Add";
-import FormControl from "@mui/material/FormControl";
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import { newsOrganizationTypes } from "@/utils/constants";
+} from 'react-admin';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import ContentEdit from '@mui/icons-material/Edit';
+import ContentSave from '@mui/icons-material/Save';
+import ContentDelete from '@mui/icons-material/Delete';
+import ContentCreate from '@mui/icons-material/Add';
+import FormControl from '@mui/material/FormControl';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import { newsOrganizationTypes } from '@/utils/constants';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -71,7 +71,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete("news_organizations", {
+  const [deleteOne] = useDelete('news_organizations', {
     id: record.id,
     previousData: record,
   });
@@ -86,7 +86,7 @@ const CustomDeleteButton = () => {
       <Button
         label="Delete"
         variant="text"
-        sx={{ color: "red" }}
+        sx={{ color: 'red' }}
         onClick={() => setOpen(true)}
         startIcon={<ContentDelete />}
       />
@@ -103,7 +103,7 @@ const CustomDeleteButton = () => {
 
 export const NewsOrganizations = () => {
   const { id: currentId } = useParams();
-  const { data: newsOrganizationList = [] } = useGetList("news_organizations", {
+  const { data: newsOrganizationList = [] } = useGetList('news_organizations', {
     filter: { news_id: parseInt(currentId!) },
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -119,9 +119,9 @@ export const NewsOrganizations = () => {
   }, [isCreateLoading, isUpdateLoading, refresh]);
 
   const [newsOrganizationData, setNewsOrganizationData] = useState<any>({
-    company_id: "",
-    vc_firm_id: "",
-    type: "",
+    company_id: '',
+    vc_firm_id: '',
+    type: '',
   });
 
   const handleEdit = (rec: any) => {
@@ -139,9 +139,9 @@ export const NewsOrganizations = () => {
     setIsOpen(false);
     setCurrRecord(null);
     setNewsOrganizationData({
-      company_id: "",
-      vc_firm_id: "",
-      type: "",
+      company_id: '',
+      vc_firm_id: '',
+      type: '',
     });
   };
 
@@ -167,24 +167,24 @@ export const NewsOrganizations = () => {
     const data = {
       news_id: parseInt(currentId!),
       company_id:
-        newsOrganizationData.company_id === ""
+        newsOrganizationData.company_id === ''
           ? null
           : newsOrganizationData.company_id,
       vc_firm_id:
-        newsOrganizationData.vc_firm_id === ""
+        newsOrganizationData.vc_firm_id === ''
           ? null
           : newsOrganizationData.vc_firm_id,
       type: newsOrganizationData.type,
     };
     if (!currRecord) {
       if (data.company_id) {
-        create("news_organizations", { data: { ...data, vc_firm_id: null } });
+        create('news_organizations', { data: { ...data, vc_firm_id: null } });
       }
       if (data.vc_firm_id) {
-        create("news_organizations", { data: { ...data, company_id: null } });
+        create('news_organizations', { data: { ...data, company_id: null } });
       }
     } else {
-      update("news_organizations", {
+      update('news_organizations', {
         id: currRecord.id,
         data,
         previousData: currRecord,
@@ -199,28 +199,28 @@ export const NewsOrganizations = () => {
         pagination={false}
         actions={<ListActions onCreate={() => setIsOpen(true)} />}
         sx={{
-          ".MuiToolbar-root": {
-            justifyContent: "start !important",
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
             paddingTop: 0,
-            marginBottom: "4px",
+            marginBottom: '4px',
           },
-          ".RaBulkActionsToolbar-toolbar": {
-            justifyContent: "start !important",
+          '.RaBulkActionsToolbar-toolbar': {
+            justifyContent: 'start !important',
           },
-          ".MuiToolbar-root .MuiButtonBase-root": {
+          '.MuiToolbar-root .MuiButtonBase-root': {
             paddingTop: 0,
             paddingBottom: 0,
-            margin: "4px",
+            margin: '4px',
           },
-          ".RaBulkActionsToolbar-topToolbar": {
+          '.RaBulkActionsToolbar-topToolbar': {
             paddingTop: 0,
             paddingBottom: 0,
             marginBottom: 0,
           },
-          ".MuiToolbar-root form": {
-            flex: "0 1 auto",
+          '.MuiToolbar-root form': {
+            flex: '0 1 auto',
           },
-          ".MuiToolbar-root form .MuiFormControl-root": {
+          '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
         }}
@@ -264,9 +264,9 @@ export const NewsOrganizations = () => {
                 <FormControl
                   variant="filled"
                   sx={{
-                    width: "100%",
-                    ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                      display: "none",
+                    width: '100%',
+                    '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                      display: 'none',
                     },
                   }}
                 >
@@ -278,8 +278,8 @@ export const NewsOrganizations = () => {
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
-                      filterToQuery={(search) => ({ name: search })}
-                      onChange={(company_id) => {
+                      filterToQuery={search => ({ name: search })}
+                      onChange={company_id => {
                         handleChange(0, company_id);
                       }}
                     />
@@ -291,9 +291,9 @@ export const NewsOrganizations = () => {
                 <FormControl
                   variant="filled"
                   sx={{
-                    width: "100%",
-                    ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                      display: "none",
+                    width: '100%',
+                    '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                      display: 'none',
                     },
                   }}
                 >
@@ -305,8 +305,8 @@ export const NewsOrganizations = () => {
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
-                      filterToQuery={(search) => ({ name: search })}
-                      onChange={(vc_firm_id) => {
+                      filterToQuery={search => ({ name: search })}
+                      onChange={vc_firm_id => {
                         handleChange(1, vc_firm_id);
                       }}
                     />
@@ -314,22 +314,22 @@ export const NewsOrganizations = () => {
                 </FormControl>
               )}
 
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <SelectInput
                   source="type"
                   choices={newsOrganizationTypes}
-                  onChange={(e) => handleChange(2, e.target.value)}
+                  onChange={e => handleChange(2, e.target.value)}
                 />
               </FormControl>
 
               <FormControl
                 variant="filled"
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  width: "100%",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
                   marginTop: 4,
                 }}
               >

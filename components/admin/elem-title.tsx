@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type Props = {
   category: string;
@@ -6,7 +6,7 @@ type Props = {
 };
 
 const ElemTitle = ({ category, record }: Props) => {
-  return <span>{`${category} ${record ? record.name : ""}`}</span>;
+  return <span>{`${category} ${record ? record.name : ''}`}</span>;
 };
 
 export default ElemTitle;

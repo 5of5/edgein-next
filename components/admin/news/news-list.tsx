@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -6,8 +6,8 @@ import {
   ReferenceArrayField,
   SingleFieldList,
   ChipField,
-} from "react-admin";
-import ElemList from "../elem-list";
+} from 'react-admin';
+import ElemList from '../elem-list';
 
 const filters = [
   <TextInput

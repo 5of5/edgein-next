@@ -1,16 +1,16 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import algoliasearch from "algoliasearch";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import algoliasearch from 'algoliasearch';
 import {
   queryForLastSync,
   syncCompanies,
   syncEvents,
   syncPeople,
   syncVcFirms,
-} from "@/utils/algolia";
+} from '@/utils/algolia';
 
 const client = algoliasearch(
   process.env.NEXT_PUBLIC_ALGOLIA_APPLICATION_ID!,
-  process.env.ALGOLIA_WRITE_API_KEY!
+  process.env.ALGOLIA_WRITE_API_KEY!,
 );
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -21,58 +21,58 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const syncWeb3CompaniesOutput = await syncCompanies({
     client,
     lastSyncArray,
-    key: "sync_web3_companies",
-    library: "Web3",
-    index: "companies",
+    key: 'sync_web3_companies',
+    library: 'Web3',
+    index: 'companies',
   });
   const syncAICompaniesOutput = await syncCompanies({
     client,
     lastSyncArray,
-    key: "sync_ai_companies",
-    library: "AI",
-    index: "ai_companies",
+    key: 'sync_ai_companies',
+    library: 'AI',
+    index: 'ai_companies',
   });
   const syncWeb3VcFirmsOutput = await syncVcFirms({
     client,
     lastSyncArray,
-    key: "sync_web3_vc_firms",
-    library: "Web3",
-    index: "vc_firms",
+    key: 'sync_web3_vc_firms',
+    library: 'Web3',
+    index: 'vc_firms',
   });
   const syncAIVcFirmsOutput = await syncVcFirms({
     client,
     lastSyncArray,
-    key: "sync_ai_vc_firms",
-    library: "AI",
-    index: "ai_vc_firms",
+    key: 'sync_ai_vc_firms',
+    library: 'AI',
+    index: 'ai_vc_firms',
   });
   const syncWeb3PeopleOutput = await syncPeople({
     client,
     lastSyncArray,
-    key: "sync_web3_people",
-    library: "Web3",
-    index: "people",
+    key: 'sync_web3_people',
+    library: 'Web3',
+    index: 'people',
   });
   const syncAIPeopleOutput = await syncPeople({
     client,
     lastSyncArray,
-    key: "sync_ai_people",
-    library: "AI",
-    index: "ai_people",
+    key: 'sync_ai_people',
+    library: 'AI',
+    index: 'ai_people',
   });
   const syncWeb3EventsOutput = await syncEvents({
     client,
     lastSyncArray,
-    key: "sync_web3_events",
-    library: "Web3",
-    index: "events",
+    key: 'sync_web3_events',
+    library: 'Web3',
+    index: 'events',
   });
   const syncAIEventsOutput = await syncEvents({
     client,
     lastSyncArray,
-    key: "sync_ai_events",
-    library: "AI",
-    index: "ai_events",
+    key: 'sync_ai_events',
+    library: 'AI',
+    index: 'ai_events',
   });
   const output: Record<string, any> = {
     ...syncWeb3CompaniesOutput,

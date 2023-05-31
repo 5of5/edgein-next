@@ -1,6 +1,6 @@
-import React from "react";
-import { TextField, EditButton, TextInput } from "react-admin";
-import ElemList from "../elem-list";
+import React from 'react';
+import { TextField, EditButton, TextInput } from 'react-admin';
+import ElemList from '../elem-list';
 
 const filters = [
   <TextInput

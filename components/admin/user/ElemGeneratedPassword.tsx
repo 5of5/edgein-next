@@ -1,6 +1,6 @@
-import { ElemTooltip } from "@/components/elem-tooltip";
-import { IconEye, IconHide } from "@/components/icons";
-import React, { FC, useState } from "react";
+import { ElemTooltip } from '@/components/elem-tooltip';
+import { IconEye, IconHide } from '@/components/icons';
+import React, { FC, useState } from 'react';
 
 type Props = {
   value: string;
@@ -34,7 +34,7 @@ const ElemGeneratedPassword: FC<Props> = ({ value }) => {
       )}
       <div>
         {show ? (
-          <ElemTooltip content={copied ? "Copied" : "Click to copy"}>
+          <ElemTooltip content={copied ? 'Copied' : 'Click to copy'}>
             <button
               className="bg-slate-200 p-2 rounded-md"
               onClick={onCopy}

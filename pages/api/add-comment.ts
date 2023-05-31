@@ -1,10 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import CookieService from "@/utils/cookie";
-import GroupService from "@/utils/groups";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import CookieService from '@/utils/cookie';
+import GroupService from '@/utils/groups';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);

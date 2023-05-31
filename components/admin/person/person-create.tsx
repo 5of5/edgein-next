@@ -1,10 +1,10 @@
-import React from "react";
-import { useCreate, useRedirect } from "react-admin";
-import useAdminTransform from "@/hooks/use-admin-transform";
-import ElemFormBase from "../elem-form-base";
-import ElemToolbar from "../elem-toolbar";
-import PersonForm from "./person-form";
-import { withImageTransformData, withoutImageTransformData } from "./services";
+import React from 'react';
+import { useCreate, useRedirect } from 'react-admin';
+import useAdminTransform from '@/hooks/use-admin-transform';
+import ElemFormBase from '../elem-form-base';
+import ElemToolbar from '../elem-toolbar';
+import PersonForm from './person-form';
+import { withImageTransformData, withoutImageTransformData } from './services';
 
 export const PersonCreate = () => {
   const [create] = useCreate();
@@ -17,9 +17,9 @@ export const PersonCreate = () => {
     });
 
   const handleSaveDraft = (data: any) => {
-    data.status = "draft";
-    create("people", { data });
-    redirect("/people");
+    data.status = 'draft';
+    create('people', { data });
+    redirect('/people');
   };
 
   return (

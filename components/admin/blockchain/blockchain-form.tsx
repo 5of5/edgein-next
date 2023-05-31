@@ -1,9 +1,9 @@
-import React, { ReactElement, useState, useEffect } from "react";
-import { SimpleForm, TextInput } from "react-admin";
-import ElemIconGroup from "../elem-icon-group";
+import React, { ReactElement, useState, useEffect } from 'react';
+import { SimpleForm, TextInput } from 'react-admin';
+import ElemIconGroup from '../elem-icon-group';
 
 type BlockchainFormProps = {
-  action: "create" | "edit";
+  action: 'create' | 'edit';
   toolbar?: ReactElement | false;
   currentData?: any;
 };
@@ -13,15 +13,15 @@ const BlockchainForm = ({
   toolbar,
   currentData,
 }: BlockchainFormProps) => {
-  const [isIcon, setIsIcon] = useState(action === "edit");
-  const [keyword, setKeyword] = useState("");
+  const [isIcon, setIsIcon] = useState(action === 'edit');
+  const [keyword, setKeyword] = useState('');
 
   useEffect(() => {
     if (currentData) setKeyword(currentData.name);
   }, [currentData]);
 
   const inputClassName =
-    "w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);
@@ -30,7 +30,7 @@ const BlockchainForm = ({
 
   return (
     <SimpleForm toolbar={toolbar}>
-      {action === "edit" && (
+      {action === 'edit' && (
         <TextInput className={inputClassName} disabled source="id" />
       )}
       <TextInput
@@ -38,8 +38,8 @@ const BlockchainForm = ({
         source="name"
         onChange={handleIcon}
         sx={{
-          ".MuiFormHelperText-root": {
-            display: "block !important",
+          '.MuiFormHelperText-root': {
+            display: 'block !important',
           },
         }}
       />

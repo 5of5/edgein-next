@@ -1,8 +1,8 @@
 const transformEventFormData = (event: any) => {
-  let data = { ...event };
+  const data = { ...event };
   const typesValue = data.types ? data.types : [];
   data.types =
-    typeof typesValue === "string" ? typesValue.split(",") : typesValue;
+    typeof typesValue === 'string' ? typesValue.split(',') : typesValue;
   if (
     (!data?.location_json?.address &&
       !data?.location_json?.city &&
@@ -13,7 +13,7 @@ const transformEventFormData = (event: any) => {
   ) {
     data.geopoint = null;
   }
-  return data.parent_event_id === ""
+  return data.parent_event_id === ''
     ? { ...data, parent_event_id: null }
     : data;
 };
@@ -30,8 +30,8 @@ const transformAttachments = (values: any, attachmentsResponse: any) => {
         label: item.label,
         url:
           attachmentsResponse.find(
-            (element: any) => element.fileName === item.file.title
-          )?.file?.url || "",
+            (element: any) => element.fileName === item.file.title,
+          )?.file?.url || '',
       };
     }),
   };
@@ -41,11 +41,11 @@ export const withImageTransformData = (
   data: any,
   imageResponse: any,
   finalValue: any,
-  attachmentsResponse?: any
+  attachmentsResponse?: any,
 ) => {
   const values = {
     ...transformEventFormData(data),
-    banner: imageResponse?.file?.url || "",
+    banner: imageResponse?.file?.url || '',
   };
   if (attachmentsResponse && attachmentsResponse.length > 0) {
     return transformAttachments(values, attachmentsResponse);
@@ -56,7 +56,7 @@ export const withImageTransformData = (
 export const withoutImageTransformData = (
   data: any,
   finalValue: any,
-  attachmentsResponse?: any
+  attachmentsResponse?: any,
 ) => {
   const values = {
     ...transformEventFormData(data),

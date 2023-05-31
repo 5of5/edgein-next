@@ -1,16 +1,16 @@
-import React, { useState, useRef, useEffect } from "react";
-import { required } from "react-admin";
-import useWindowDimensions from "@/hooks/use-window-dimensions";
-import useAdminTransform from "@/hooks/use-admin-transform";
-import ElemFormBase from "../elem-form-base";
-import ElemTitle from "../elem-title";
-import VcFirmForm from "./vc-firm-form";
+import React, { useState, useRef, useEffect } from 'react';
+import { required } from 'react-admin';
+import useWindowDimensions from '@/hooks/use-window-dimensions';
+import useAdminTransform from '@/hooks/use-admin-transform';
+import ElemFormBase from '../elem-form-base';
+import ElemTitle from '../elem-title';
+import VcFirmForm from './vc-firm-form';
 import {
   getMutationRootStyle,
   withImageTransformData,
   withoutImageTransformData,
-} from "./services";
-import ElemParentOrganizationEdit from "../elem-parent-organization-edit";
+} from './services';
+import ElemParentOrganizationEdit from '../elem-parent-organization-edit';
 
 export const VcFirmEdit = () => {
   const formRef = useRef<any>(null);
@@ -36,7 +36,7 @@ export const VcFirmEdit = () => {
   };
 
   return (
-    <div style={{ paddingBottom: "20px" }}>
+    <div style={{ paddingBottom: '20px' }}>
       <ElemFormBase
         title={<ElemTitle category="Vc Firm" />}
         action="edit"
