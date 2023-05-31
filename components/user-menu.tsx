@@ -7,11 +7,9 @@ import {
 	IconChevronDownMini,
 	IconUserCircle,
 	IconSignOut,
-	//IconDashboard,
-	IconCustomList,
 	IconGroup,
 	IconSettings,
-	//IconOrganization,
+	IconContributor,
 } from "./icons";
 import { useUser } from "@/context/user-context";
 import Link from "next/link";
@@ -19,10 +17,13 @@ import { clearLocalStorage } from "@/utils/helpers";
 
 type Props = {
 	className?: string;
+	onShowUpgrade: () => void;
 };
 
-export const UserMenu: FC<Props> = ({ className = "" }) => {
-	const { listAndFollows, user, myGroups } = useUser();
+export const UserMenu: FC<Props> = ({ className = "", onShowUpgrade }) => {
+	const { user, myGroups } = useUser();
+
+	const showUpgradeLink = user?.entitlements.viewEmails === false;
 
 	const firstCustomGroup = first(myGroups ? myGroups : null);
 
@@ -127,6 +128,19 @@ export const UserMenu: FC<Props> = ({ className = "" }) => {
 							)}
 						</Menu.Item>
 					))}
+					{showUpgradeLink && (
+						<Menu.Item>
+							<button
+								onClick={onShowUpgrade}
+								className="flex w-full items-center px-2 py-2 text-primary-500 hover:bg-gray-50"
+								// hover:bg-primary-200 hover:bg-opacity-50
+							>
+								<IconContributor className="mr-2 h-6 w-6" title="Upgrade" />
+								Upgrade
+							</button>
+						</Menu.Item>
+					)}
+
 					<Menu.Item>
 						{({ active }) => (
 							<button
