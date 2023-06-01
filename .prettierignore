@@ -1,2 +1,4 @@
 .next
 infra/db_data
+scripts/backup
+graphql/types.ts

@@ -2,3 +2,4 @@ node_modules
 infra/db_data
 dist
 .cache
+graphql/types.ts
