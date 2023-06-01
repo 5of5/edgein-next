@@ -20,6 +20,7 @@ import {
 	Order_By,
 } from "@/graphql/types";
 import { DeepPartial } from "@/types/common";
+import useLibrary from "@/hooks/use-library";
 
 type Props = {
 	newsCount: number;
@@ -31,6 +32,8 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
 	const router = useRouter();
 	const { show } = useIntercom();
 
+	const { selectedLibrary } = useLibrary();
+
 	const [page, setPage] = useStateParams<number>(
 		0,
 		"page",
@@ -41,7 +44,7 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
 	const offset = limit * page;
 
 	const filters: DeepPartial<News_Bool_Exp> = {
-		_and: [{ status: { _eq: "published" } }],
+		_and: [{ library: { _contains: selectedLibrary } }],
 	};
 
 	const {
@@ -66,11 +69,13 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
 
 	return (
 		<div className="relative overflow-hidden">
-			<ElemHeading
-				title="News"
-				subtitle="Get the latest news, guides, price and analysis on Web3."
-				className=""
-			></ElemHeading>
+			{!initialLoad && (
+        <ElemHeading
+          title="News"
+          subtitle={`Get the latest news, guides, price and analysis on ${selectedLibrary}.`}
+          className=""
+        ></ElemHeading>
+      )}
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
@@ -137,7 +142,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		limit: 50,
 		order: Order_By.Desc,
 		where: {
-			_and: [{ status: { _eq: "published" } }],
+			_and: [{ library: { _contains: "Web3" } }],
 		},
 	});
 

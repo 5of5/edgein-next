@@ -28,6 +28,7 @@ select_permissions:
         - date
         - id
         - kind
+        - library
         - link
         - metadata
         - source
