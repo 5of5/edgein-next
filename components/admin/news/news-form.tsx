@@ -1,6 +1,12 @@
 import React, { ReactElement } from "react";
-import { SimpleForm, TextInput, DateInput, SelectInput } from "react-admin";
-import { status } from "@/utils/constants";
+import {
+  SimpleForm,
+  TextInput,
+  DateInput,
+  SelectInput,
+  SelectArrayInput,
+} from "react-admin";
+import { libraryChoices, status } from "@/utils/constants";
 import { isValidJsonString } from "@/utils/helpers";
 
 type NewsFormProps = {
@@ -38,6 +44,12 @@ const NewsForm = ({ action, toolbar }: NewsFormProps) => {
       <DateInput className={inputClassName} source="date" />
       <TextInput className={inputClassName} source="source" multiline />
       <TextInput className={inputClassName} source="kind" />
+      <SelectArrayInput
+        className={inputClassName}
+        source="library"
+        choices={libraryChoices}
+        defaultValue={["Web3"]}
+      />
       <TextInput className={inputClassName} source="metadata" multiline />
       <SelectInput
         className={inputClassName}

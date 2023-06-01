@@ -7,10 +7,12 @@ query GetLastSync {
           "sync_web3_vc_firms"
           "sync_web3_people"
           "sync_web3_events"
+          "sync_web3_news"
           "sync_ai_companies"
           "sync_ai_vc_firms"
           "sync_ai_people"
           "sync_ai_events"
+          "sync_ai_news"
         ]
       }
     }

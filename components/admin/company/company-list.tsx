@@ -18,7 +18,10 @@ import {
   SelectArrayInput,
 } from "react-admin";
 import { Chip } from '@mui/material';
-import { companyLayerChoices, tags } from "../../../utils/constants";
+import {
+  companyLayerChoices,
+  tags,
+} from "../../../utils/constants";
 import ElemList from "../elem-list";
 import { useAuth } from "@/hooks/use-auth";
 

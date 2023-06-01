@@ -4,6 +4,7 @@ type Props = {
 	className?: string;
 	delay?: number;
 	direction?: "top" | "right" | "bottom" | "left";
+	mode?: "dark" | "light";
 	size?: "md" | "lg" | "";
 	content?: any;
 };
@@ -12,6 +13,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 	className = "",
 	delay,
 	direction = "top",
+	mode = "dark",
 	content,
 	size = "",
 	children,
@@ -36,18 +38,31 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 
 	if (direction === "top") {
 		directionClasses = "-top-2 -translate-y-full left-1/2 -translate-x-1/2";
-		triangleClasses = "top-full border-t-gray-900";
+		triangleClasses = `top-full ${
+			mode === "dark" ? "border-t-gray-900" : "border-t-white"
+		}`;
 	} else if (direction === "right") {
 		directionClasses = "left-full translate-x-2 top-1/2 -translate-y-1/2";
-		triangleClasses =
-			"top-1/2 -left-1.5 translate-x-0 -translate-y-1/2 border-r-gray-900";
+		triangleClasses = `top-1/2 -left-1.5 translate-x-0 -translate-y-1/2 ${
+			mode === "dark" ? "border-r-gray-900" : "border-r-white"
+		}`;
 	} else if (direction === "bottom") {
 		directionClasses = "-bottom-2 left-1/2 -translate-x-1/2 translate-y-full";
-		triangleClasses = "bottom-full border-b-gray-900";
+		triangleClasses = `bottom-full ${
+			mode === "dark" ? "border-b-gray-900" : "border-b-white"
+		}`;
 	} else if (direction === "left") {
 		directionClasses = "-left-2 -translate-x-full top-1/2 -translate-y-1/2";
-		triangleClasses =
-			"left-auto top-1/2 -right-3 translate-x-0 -translate-y-1/2 border-l-gray-900";
+		triangleClasses = `left-auto top-1/2 -right-3 translate-x-0 -translate-y-1/2 ${
+			mode === "dark" ? "border-l-gray-900" : "border-l-white"
+		}`;
+	}
+
+	let modeClasses = "";
+	if (mode === "dark") {
+		modeClasses = "bg-gray-900 text-gray-100";
+	} else {
+		modeClasses = "bg-white";
 	}
 
 	// Sizes
@@ -69,7 +84,7 @@ export const ElemTooltip: FC<PropsWithChildren<Props>> = ({
 			{children}
 			{active && (
 				<div
-					className={`absolute z-[100] w-max px-2 py-0.5 bg-gray-900 text-gray-100 rounded-md font-medium text-sm text-center break-words ${sizeClasses} ${directionClasses}`}
+					className={`absolute z-[100] w-max px-2 py-0.5 rounded-md font-medium text-sm text-center break-words shadow-lg ${sizeClasses} ${directionClasses} ${modeClasses}`}
 				>
 					<span
 						className={`triangle left-1/2 border-transparent h-0 w-0 absolute cursor-none border-[6px] -ml-1.5 ${triangleClasses}`}

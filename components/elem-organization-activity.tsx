@@ -3,22 +3,18 @@ import Link from "next/link";
 import { ElemButton } from "./elem-button";
 import { formatDate, convertToIntNum } from "@/utils";
 import { useIntercom } from "react-use-intercom";
-import { IconExternalLink } from "@/components/icons";
+import { Investment_Rounds } from "@/graphql/types";
 
 type Props = {
 	heading?: string;
 	resourceType: "companies" | "vc_firms";
-	resourceInvestments: Array<any>;
-	resourceName?: string | null;
-	resourceId?: number;
+	resourceInvestments: Array<Investment_Rounds>;
 };
 
 export const ElemOrganizationActivity: React.FC<Props> = ({
 	heading,
 	resourceType,
 	resourceInvestments,
-	resourceName,
-	resourceId,
 }) => {
 	const [activityLimit, setActivityLimit] = useState(10);
 	const showMoreActivity = () => {
@@ -51,14 +47,7 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 												<span className="block absolute top-2 left-1 w-2 h-2 rounded-full bg-gradient-to-r from-primary-300 to-primary-300 transition-all group-hover:from-[#1A22FF] group-hover:via-primary-500 group-hover:to-primary-400"></span>
 											</span>
 
-											{activity &&
-												(activity?.type === "news"
-													? renderNews(activity, resourceType, resourceId)
-													: renderActivity(
-															activity,
-															resourceType,
-															resourceName
-													  ))}
+											{renderActivity(activity, resourceType)}
 										</li>
 									);
 								})}
@@ -91,61 +80,9 @@ export const ElemOrganizationActivity: React.FC<Props> = ({
 	);
 };
 
-const renderNews = (
-	activity: any,
-	resourceType: "companies" | "vc_firms",
-	resourceId?: number
-) => {
-	const newsOrganizationType = activity.organizations.find(
-		(item: any) =>
-			item[resourceType === "companies" ? "company_id" : "vc_firm_id"] ===
-			resourceId
-	)?.type;
-
-	const isPublisher = newsOrganizationType === "publisher";
-
-	return (
-		<div className="mb-4">
-			<div className="inline leading-7 text-slate-600">
-				{activity?.link ? (
-					<>
-						<div className="inline font-bold mr-1">News:</div>
-						<Link href={activity.link}>
-							<a className="" target="_blank">
-								<span className="border-b border-primary-500 transition-all hover:border-b-2 hover:text-primary-500">
-									{activity.text}
-								</span>
-								<IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
-							</a>
-						</Link>
-					</>
-				) : (
-					<div className="inline">{activity.text}</div>
-				)}
-				<div className="flex items-center gap-x-2">
-					{isPublisher && (
-						<span className="bg-slate-200 self-start text-xs font-bold leading-sm uppercase px-3 py-1 rounded-full transition-all hover:bg-slate-300">
-							Publisher
-						</span>
-					)}
-					<p className="text-sm">
-						{formatDate(activity.date as string, {
-							month: "short",
-							day: "2-digit",
-							year: "numeric",
-						})}
-						<span>{` • powered by CryptoPanic`}</span>
-					</p>
-				</div>
-			</div>
-		</div>
-	);
-};
-
 const renderActivity = (
 	activity: any,
 	resourceType: "companies" | "vc_firms",
-	resourceName?: string | null
 ) => {
 	return resourceType === "companies" ? (
 		<div className="mb-4">
