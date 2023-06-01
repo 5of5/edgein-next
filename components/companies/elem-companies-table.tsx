@@ -697,6 +697,7 @@ export const CompaniesTable: FC<Props> = ({
 						})}
 					</tbody>
 				</table>
+
 				{!isDisplayAllCompanies && (
 					<table className="relative table-auto min-w-full overscroll-x-none">
 						<tbody className="divide-y divide-black/10">
@@ -727,8 +728,8 @@ export const CompaniesTable: FC<Props> = ({
 										<p className="text-lg text-white opacity-90">
 											{/* Get real-time updates on the companies, people, deals and
 											events you’re most interested in.  */}
-											Try EdgeIn Contributor FREE for 7 days or invite others
-											and get 3-months FREE when they verify their profile.
+											Try EdgeIn Contributor FREE for 7 days.
+											{/* or invite others and get 3-months FREE when they verify their profile. */}
 										</p>
 										<div className="flex items-center space-x-2 mt-4">
 											<ElemButton
@@ -739,7 +740,7 @@ export const CompaniesTable: FC<Props> = ({
 											>
 												Start your free trial
 											</ElemButton>
-											<div className="font-bold text-white">or</div>
+											{/* <div className="font-bold text-white">or</div>
 											<ElemButton
 												onClick={() => {}}
 												btn="ol-white"
@@ -747,7 +748,7 @@ export const CompaniesTable: FC<Props> = ({
 												className=" text-primary-500"
 											>
 												Invite team members
-											</ElemButton>
+											</ElemButton> */}
 										</div>
 									</div>
 								</td>

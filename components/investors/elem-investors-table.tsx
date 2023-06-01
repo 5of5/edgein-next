@@ -726,8 +726,8 @@ export const InvestorsTable: FC<Props> = ({
 											this search.
 										</h2>
 										<p className="text-lg text-white opacity-90">
-											Try EdgeIn Contributor FREE for 7 days or invite others
-											and get 3-months FREE when they verify their profile.
+											Try EdgeIn Contributor FREE for 7 days.
+											{/* or invite others and get 3-months FREE when they verify their profile. */}
 										</p>
 										<div className="flex items-center space-x-2 mt-4">
 											<ElemButton
@@ -738,7 +738,7 @@ export const InvestorsTable: FC<Props> = ({
 											>
 												Start your free trial
 											</ElemButton>
-											<div className="font-bold text-white">or</div>
+											{/* <div className="font-bold text-white">or</div>
 											<ElemButton
 												onClick={() => {}}
 												btn="ol-white"
@@ -746,7 +746,7 @@ export const InvestorsTable: FC<Props> = ({
 												className=" text-primary-500"
 											>
 												Invite team members
-											</ElemButton>
+											</ElemButton> */}
 										</div>
 									</div>
 								</td>

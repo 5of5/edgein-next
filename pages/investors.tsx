@@ -242,23 +242,29 @@ const Investors: NextPage<Props> = ({
 									)
 								)}
 						</nav>
-						<div className="bg-slate-200 rounded-full p-0.5">
-							<button
-								onClick={() => setTableLayout(false)}
-								className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-									!tableLayout && "bg-white shadow-sm text-primary-500"
-								}`}
-							>
-								<IconGrid className="w-5 h-5" title="Grid layout" />
-							</button>
-							<button
-								onClick={() => setTableLayout(true)}
-								className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-									tableLayout && "bg-white shadow-sm text-primary-500"
-								}`}
-							>
-								<IconTable className="w-5 h-5" title="Table layout" />
-							</button>
+
+						<div className="flex items-center">
+							<div className="text-xs font-bold leading-sm uppercase pr-1">
+								Layout:
+							</div>
+							<div className="bg-slate-200 rounded-full p-0.5">
+								<button
+									onClick={() => setTableLayout(false)}
+									className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+										!tableLayout && "bg-white shadow-sm text-primary-500"
+									}`}
+								>
+									<IconGrid className="w-5 h-5" title="Grid layout" />
+								</button>
+								<button
+									onClick={() => setTableLayout(true)}
+									className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+										tableLayout && "bg-white shadow-sm text-primary-500"
+									}`}
+								>
+									<IconTable className="w-5 h-5" title="Table layout" />
+								</button>
+							</div>
 						</div>
 					</div>
 
