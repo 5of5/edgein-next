@@ -22,7 +22,7 @@ import { ElemSponsorGrid } from "@/components/event/elem-sponsor-grid";
 import { ElemOrganizers } from "@/components/event/elem-organizers";
 import { ElemEventActivity } from "@/components/event/elem-event-activity";
 import { ElemSimilarEvents } from "@/components/event/elem-similar-events";
-import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
+import { getEventBanner, getFullAddress, randomImageOfCity } from "@/utils/helpers";
 import Link from "next/link";
 import parse from "html-react-parser";
 import { newLineToP } from "@/utils/text";
@@ -31,6 +31,7 @@ import { Popups } from "@/components/the-navbar";
 import { ElemRequiredProfileDialog } from "@/components/elem-required-profile-dialog";
 import { ElemSubEvents } from "@/components/event/elem-sub-events";
 import moment from "moment-timezone";
+import ElemAddToCalendarButton from "@/components/elem-add-to-calendar-button";
 
 type Props = {
 	event: GetEventQuery["events"][0];
@@ -291,6 +292,15 @@ const Event: NextPage<Props> = (props) => {
 						showDropdown={false}
 					>
 						<div className="flex items-center space-x-2">
+							<ElemAddToCalendarButton
+								event={{
+									name: event.name,
+									startDate: event.start_date,
+									endDate: event.end_date,
+									location: getFullAddress(event.location_json),
+									description: event.overview || '',
+								}}
+							/>
 							<ElemSocialShare
 								resourceName={event.name}
 								resourceTwitterUrl={event.twitter}
