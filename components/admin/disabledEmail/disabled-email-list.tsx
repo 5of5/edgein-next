@@ -1,7 +1,7 @@
-import React from "react";
-import { TextField, EditButton, SelectField } from "react-admin";
-import ElemList from "../elem-list";
-import { typeChoices } from "./services";
+import React from 'react';
+import { TextField, EditButton, SelectField } from 'react-admin';
+import ElemList from '../elem-list';
+import { typeChoices } from './services';
 
 export const DisabledEmailList = () => {
   return (

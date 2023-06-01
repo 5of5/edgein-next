@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -7,8 +7,8 @@ import {
   SingleFieldList,
   ChipField,
   FunctionField,
-} from "react-admin";
-import ElemList from "../elem-list";
+} from 'react-admin';
+import ElemList from '../elem-list';
 
 const filters = [
   <TextInput
@@ -52,7 +52,11 @@ export const NewsList = () => {
       <TextField source="metadata" />
       <FunctionField
         source="library"
-        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
+        render={(record: any) =>
+          Array.isArray(record.library)
+            ? record.library.join()
+            : record.library ?? ''
+        }
       />
       <TextField source="status" />
     </ElemList>

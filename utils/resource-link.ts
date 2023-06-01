@@ -1,19 +1,23 @@
 export const getParentSubOrganizations = (data: any) => {
-  const child_companies = data.from_links
-    ?.filter((item: any) => item.link_type === "child" && item.to_company)
-    ?.map((item: any) => item.to_company.id) || [];
+  const child_companies =
+    data.from_links
+      ?.filter((item: any) => item.link_type === 'child' && item.to_company)
+      ?.map((item: any) => item.to_company.id) || [];
 
-  const child_vc_firms = data.from_links
-    ?.filter((item: any) => item.link_type === "child" && item.to_vc_firm)
-    ?.map((item: any) => item.to_vc_firm.id) || [];
+  const child_vc_firms =
+    data.from_links
+      ?.filter((item: any) => item.link_type === 'child' && item.to_vc_firm)
+      ?.map((item: any) => item.to_vc_firm.id) || [];
 
-  const parent_company = data.to_links?.find(
-    (item: any) => item.link_type === "child" && item.from_company
-  )?.from_company?.id || null;
+  const parent_company =
+    data.to_links?.find(
+      (item: any) => item.link_type === 'child' && item.from_company,
+    )?.from_company?.id || null;
 
-  const parent_vc_firm = data.to_links?.find(
-    (item: any) => item.link_type === "child" && item.from_vc_firm
-  )?.from_vc_firm?.id || null;
+  const parent_vc_firm =
+    data.to_links?.find(
+      (item: any) => item.link_type === 'child' && item.from_vc_firm,
+    )?.from_vc_firm?.id || null;
 
   return {
     child_companies,
@@ -32,13 +36,13 @@ export const handleChangeParentOrganization = (
   create: any,
   update: any,
   deleteOne: any,
-  onCallbackSuccess: any
+  onCallbackSuccess: any,
 ) => {
-  const toId = type === "companies" ? "to_company_id" : "to_vc_firm_id";
+  const toId = type === 'companies' ? 'to_company_id' : 'to_vc_firm_id';
 
   if (!current.parent_company && previous.parent_company) {
     deleteOne(
-      "resource_links",
+      'resource_links',
       {
         id: linkId,
         previousData: {
@@ -48,13 +52,13 @@ export const handleChangeParentOrganization = (
       },
       {
         onSuccess: onCallbackSuccess,
-      }
+      },
     );
   }
 
   if (!current.parent_vc_firm && previous.parent_vc_firm) {
     deleteOne(
-      "resource_links",
+      'resource_links',
       {
         id: linkId,
         previousData: {
@@ -64,28 +68,28 @@ export const handleChangeParentOrganization = (
       },
       {
         onSuccess: onCallbackSuccess,
-      }
+      },
     );
   }
 
   if (current.parent_company) {
     if (!previous.parent_company) {
       create(
-        "resource_links",
+        'resource_links',
         {
           data: {
-            link_type: "child",
+            link_type: 'child',
             from_company_id: current.parent_company,
             [toId]: recordId,
           },
         },
         {
           onSuccess: onCallbackSuccess,
-        }
+        },
       );
     } else {
       update(
-        "resource_links",
+        'resource_links',
         {
           id: linkId,
           data: {
@@ -99,7 +103,7 @@ export const handleChangeParentOrganization = (
         },
         {
           onSuccess: onCallbackSuccess,
-        }
+        },
       );
     }
   }
@@ -107,21 +111,21 @@ export const handleChangeParentOrganization = (
   if (current.parent_vc_firm) {
     if (!previous.parent_vc_firm) {
       create(
-        "resource_links",
+        'resource_links',
         {
           data: {
-            link_type: "child",
+            link_type: 'child',
             from_vc_firm_id: current.parent_vc_firm,
             [toId]: recordId,
           },
         },
         {
           onSuccess: onCallbackSuccess,
-        }
+        },
       );
     } else {
       update(
-        "resource_links",
+        'resource_links',
         {
           id: linkId,
           data: {
@@ -135,7 +139,7 @@ export const handleChangeParentOrganization = (
         },
         {
           onSuccess: onCallbackSuccess,
-        }
+        },
       );
     }
   }

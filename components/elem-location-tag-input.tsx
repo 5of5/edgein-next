@@ -1,7 +1,7 @@
-import { FC,useState } from "react";
-import { Combobox } from "@headlessui/react";
-import useAddressAutocomplete from "@/hooks/use-address-autocomplete";
-import { IconX } from "./icons";
+import { FC, useState } from 'react';
+import { Combobox } from '@headlessui/react';
+import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
+import { IconX } from './icons';
 
 type Props = {
   label?: string;
@@ -53,7 +53,7 @@ const ElemLocationTagInput: FC<Props> = ({
               <Combobox.Option
                 className={({ active }) =>
                   `${
-                    active ? "text-primary-500 bg-primary-100" : "text-dark-500"
+                    active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
                   }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
                 }
                 key={item.formattedAddress}

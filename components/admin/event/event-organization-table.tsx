@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 
-import ContentEdit from "@mui/icons-material/Edit";
-import ContentSave from "@mui/icons-material/Save";
-import ContentDelete from "@mui/icons-material/Delete";
-import ContentCreate from "@mui/icons-material/Add";
+import ContentEdit from '@mui/icons-material/Edit';
+import ContentSave from '@mui/icons-material/Save';
+import ContentDelete from '@mui/icons-material/Delete';
+import ContentCreate from '@mui/icons-material/Add';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-import { InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
 import {
   AutocompleteInput,
@@ -32,17 +32,17 @@ import {
   useCreate,
   useUpdate,
   useRefresh,
-} from "react-admin";
+} from 'react-admin';
 
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
-import { eventOrganizationTypeChoices } from "@/utils/constants";
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+import { eventOrganizationTypeChoices } from '@/utils/constants';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -77,7 +77,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete("event_organization", {
+  const [deleteOne] = useDelete('event_organization', {
     id: record.id,
     previousData: record,
   });
@@ -92,7 +92,7 @@ const CustomDeleteButton = () => {
       <Button
         label="Delete"
         variant="text"
-        sx={{ color: "red" }}
+        sx={{ color: 'red' }}
         onClick={() => setOpen(true)}
         startIcon={<ContentDelete />}
       />
@@ -109,7 +109,7 @@ const CustomDeleteButton = () => {
 
 export const EventOrganizationTable = () => {
   const { id: currentId } = useParams();
-  const { data: eventOrganizationList } = useGetList("event_organization", {
+  const { data: eventOrganizationList } = useGetList('event_organization', {
     filter: { event_id: parseInt(currentId!) },
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -125,8 +125,8 @@ export const EventOrganizationTable = () => {
   }, [isCreateLoading, isUpdateLoading, refresh]);
 
   const [eventOrganizationData, setEventOrganizationData] = useState<any>({
-    company_id: "",
-    vc_firm_id: "",
+    company_id: '',
+    vc_firm_id: '',
   });
 
   const handleEdit = (rec: any) => {
@@ -145,8 +145,8 @@ export const EventOrganizationTable = () => {
     setIsOpen(false);
     setCurrRecord(null);
     setEventOrganizationData({
-      company_id: "",
-      vc_firm_id: "",
+      company_id: '',
+      vc_firm_id: '',
     });
   };
 
@@ -162,27 +162,27 @@ export const EventOrganizationTable = () => {
       event_id: parseInt(currentId!),
       type: eventOrganizationData.type,
       sponsor_type:
-        eventOrganizationData.type === "sponsor"
+        eventOrganizationData.type === 'sponsor'
           ? eventOrganizationData.sponsor_type
           : null,
       company_id:
-        eventOrganizationData.company_id === ""
+        eventOrganizationData.company_id === ''
           ? null
           : eventOrganizationData.company_id,
       vc_firm_id:
-        eventOrganizationData.vc_firm_id === ""
+        eventOrganizationData.vc_firm_id === ''
           ? null
           : eventOrganizationData.vc_firm_id,
     };
     if (!currRecord) {
       if (data.company_id) {
-        create("event_organization", { data: { ...data, vc_firm_id: null } });
+        create('event_organization', { data: { ...data, vc_firm_id: null } });
       }
       if (data.vc_firm_id) {
-        create("event_organization", { data: { ...data, company_id: null } });
+        create('event_organization', { data: { ...data, company_id: null } });
       }
     } else {
-      update("event_organization", {
+      update('event_organization', {
         id: currRecord.id,
         data,
         previousData: currRecord,
@@ -197,28 +197,28 @@ export const EventOrganizationTable = () => {
         pagination={false}
         actions={<ListActions onCreate={() => setIsOpen(true)} />}
         sx={{
-          ".MuiToolbar-root": {
-            justifyContent: "start !important",
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
             paddingTop: 0,
-            marginBottom: "4px",
+            marginBottom: '4px',
           },
-          ".RaBulkActionsToolbar-toolbar": {
-            justifyContent: "start !important",
+          '.RaBulkActionsToolbar-toolbar': {
+            justifyContent: 'start !important',
           },
-          ".MuiToolbar-root .MuiButtonBase-root": {
+          '.MuiToolbar-root .MuiButtonBase-root': {
             paddingTop: 0,
             paddingBottom: 0,
-            margin: "4px",
+            margin: '4px',
           },
-          ".RaBulkActionsToolbar-topToolbar": {
+          '.RaBulkActionsToolbar-topToolbar': {
             paddingTop: 0,
             paddingBottom: 0,
             marginBottom: 0,
           },
-          ".MuiToolbar-root form": {
-            flex: "0 1 auto",
+          '.MuiToolbar-root form': {
+            flex: '0 1 auto',
           },
-          ".MuiToolbar-root form .MuiFormControl-root": {
+          '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
         }}
@@ -267,9 +267,9 @@ export const EventOrganizationTable = () => {
                 <FormControl
                   variant="filled"
                   sx={{
-                    width: "100%",
-                    ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                      display: "none",
+                    width: '100%',
+                    '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                      display: 'none',
                     },
                   }}
                 >
@@ -281,9 +281,9 @@ export const EventOrganizationTable = () => {
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
-                      filterToQuery={(search) => ({ name: search })}
-                      onChange={(company_id) => {
-                        handleChange("company_id", company_id);
+                      filterToQuery={search => ({ name: search })}
+                      onChange={company_id => {
+                        handleChange('company_id', company_id);
                       }}
                     />
                   </ReferenceInput>
@@ -294,9 +294,9 @@ export const EventOrganizationTable = () => {
                 <FormControl
                   variant="filled"
                   sx={{
-                    width: "100%",
-                    ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                      display: "none",
+                    width: '100%',
+                    '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                      display: 'none',
                     },
                   }}
                 >
@@ -308,23 +308,23 @@ export const EventOrganizationTable = () => {
                     <AutocompleteInput
                       optionText="name"
                       optionValue="id"
-                      filterToQuery={(search) => ({ name: search })}
-                      onChange={(vc_firm_id) => {
-                        handleChange("vc_firm_id", vc_firm_id);
+                      filterToQuery={search => ({ name: search })}
+                      onChange={vc_firm_id => {
+                        handleChange('vc_firm_id', vc_firm_id);
                       }}
                     />
                   </ReferenceInput>
                 </FormControl>
               )}
 
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <InputLabel>Type</InputLabel>
                 <Select
                   defaultValue={currRecord?.type}
                   value={eventOrganizationData?.type}
-                  onChange={(e) => handleChange("type", e.target.value)}
+                  onChange={e => handleChange('type', e.target.value)}
                 >
-                  {eventOrganizationTypeChoices?.map((item) => (
+                  {eventOrganizationTypeChoices?.map(item => (
                     <MenuItem key={item.id} value={item.id}>
                       {item.name}
                     </MenuItem>
@@ -332,14 +332,12 @@ export const EventOrganizationTable = () => {
                 </Select>
               </FormControl>
 
-              {eventOrganizationData?.type === "sponsor" && (
-                <FormControl variant="filled" sx={{ width: "100%" }}>
+              {eventOrganizationData?.type === 'sponsor' && (
+                <FormControl variant="filled" sx={{ width: '100%' }}>
                   <TextInput
                     source="sponsor_type"
                     defaultValue={currRecord?.sponsor_type}
-                    onChange={(e) =>
-                      handleChange("sponsor_type", e.target.value)
-                    }
+                    onChange={e => handleChange('sponsor_type', e.target.value)}
                   />
                 </FormControl>
               )}
@@ -347,11 +345,11 @@ export const EventOrganizationTable = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  width: "100%",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
                   marginTop: 4,
                 }}
               >

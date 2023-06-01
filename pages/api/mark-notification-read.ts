@@ -1,10 +1,13 @@
-import { NextApiResponse, NextApiRequest } from "next";
-import CookieService from "../../utils/cookie";
-import { mutate } from "@/graphql/hasuraAdmin";
-import { MarkNotificationsAsReadDocument, MarkNotificationsAsReadMutation } from "@/graphql/types";
+import { NextApiResponse, NextApiRequest } from 'next';
+import CookieService from '../../utils/cookie';
+import { mutate } from '@/graphql/hasuraAdmin';
+import {
+  MarkNotificationsAsReadDocument,
+  MarkNotificationsAsReadMutation,
+} from '@/graphql/types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -24,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   if (!where) {
-    return res.status(400).send({ message: "Bad request" });
+    return res.status(400).send({ message: 'Bad request' });
   }
 
   try {
