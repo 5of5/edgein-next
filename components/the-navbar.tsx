@@ -16,14 +16,14 @@ import SearchModal from "@/components/search-modal";
 import OnboardingStep1 from "@/components/onboarding/onboarding-step-1";
 import OnboardingStep2 from "@/components/onboarding/onboarding-step-2";
 import OnboardingStep3 from "@/components/onboarding/onboarding-step-3";
+import OnboardingStep4 from "./onboarding/onboarding-step-4";
+import OnboardingStep5 from "./onboarding/onboarding-step-5";
 import { useUser } from "@/context/user-context";
-import { useGetUserByIdQuery } from "@/graphql/types";
+import { FindPeopleByNameAndEmailQuery, useGetUserByIdQuery } from "@/graphql/types";
 import ElemSearchBox from "./elem-search-box";
 import { find, kebabCase, first } from "lodash";
 import { getNameFromListName } from "@/utils/reaction";
-import OnboardingStep4 from "./onboarding/onboarding-step-4";
 import ElemLibrarySelector from "./elem-library-selector";
-import OnboardingStep5 from "./onboarding/onboarding-step-5";
 import { ElemUpgradeDialog } from "./elem-upgrade-dialog";
 
 export type Popups =
@@ -61,6 +61,10 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 	const [industryTags, setIndustryTags] = useState<string[]>([]);
 	const [list, setList] = useState<any[]>([]);
 	const [message, setMessage] = useState<string>("");
+	const [selectedPerson, setSelectedPerson] =
+    useState<FindPeopleByNameAndEmailQuery["people"][0]>();
+  const [linkedin, setLinkedin] = useState<string>("");
+
 	const [linkedInError, setLinkedInError] = useState("");
 	const [inviteCode, setInviteCode] = useState(
 		typeof window !== "undefined" ? localStorage.inviteCode ?? "" : ""
@@ -373,13 +377,16 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 					{onboardingStep === 4 && (
 						<OnboardingStep4
 							show={onboardingStep === 4 && !isFetchingUserProfile}
-							message={message}
-							onBack={(m) => {
-								setMessage(m);
+							selectedPerson={selectedPerson}
+							linkedin={linkedin}
+							onBack={(person, linkedinUrl) => {
+								setSelectedPerson(person);
+								setLinkedin(linkedinUrl);
 								setOnboardingStep(3);
 							}}
-							onNext={(m) => {
-								setMessage(m);
+							onNext={(person, linkedinUrl) => {
+								setSelectedPerson(person);
+								setLinkedin(linkedinUrl);
 								setOnboardingStep(5);
 							}}
 						/>
@@ -391,8 +398,13 @@ export const TheNavbar: FC<Props> = ({ showPopup, setShowPopup }) => {
 							industryTags={industryTags}
 							list={list}
 							message={message}
+							selectedPerson={selectedPerson}
+							linkedin={linkedin}
 							show={onboardingStep === 5 && !isFetchingUserProfile}
-							onBack={() => setOnboardingStep(4)}
+							onBack={(msg) => {
+								setMessage(msg);
+								setOnboardingStep(4);
+							}}
 							onNext={() => setOnboardingStep(0)}
 						/>
 					)}

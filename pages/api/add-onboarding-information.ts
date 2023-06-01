@@ -95,16 +95,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
               title: "Email",
               value: user.email,
             },
-            ...questions.map((item: QUESTION) => ({
-              title: item.name,
-              value: item.answer,
-            })),
             {
               title: "Claim Profile",
               value: selectedPerson
                 ? `Person: #${selectedPerson.id} | ${selectedPerson.name}`
                 : `Linkedin URL: ${linkedin}`,
             },
+            ...questions.map((item: QUESTION) => ({
+              title: item.name,
+              value: item.answer,
+            })),
           ],
         },
       ],
