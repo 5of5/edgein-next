@@ -297,6 +297,8 @@ const Event: NextPage<Props> = (props) => {
 									name: event.name,
 									startDate: event.start_date,
 									endDate: event.end_date,
+									startTime: event.start_time,
+									endTime: event.end_time,
 									location: getFullAddress(event.location_json),
 									description: event.overview || '',
 								}}

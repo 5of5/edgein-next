@@ -1,4 +1,4 @@
-export type CalendarType = "Apple" | "Google" | "Outlook.com" | "iCal File";
+export type CalendarType = "Apple" | "Google" | "Outlook" | "iCal File";
 
 export type CalendarEvent = {
   name: string;
@@ -6,7 +6,6 @@ export type CalendarEvent = {
   startTime?: string;
   endDate?: string;
   endTime?: string;
-  timeZone?: string;
   location?: string;
   description?: string;
 };
