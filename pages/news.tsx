@@ -70,12 +70,12 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
 	return (
 		<div className="relative overflow-hidden">
 			{!initialLoad && (
-        <ElemHeading
-          title="News"
-          subtitle={`Get the latest news, guides, price and analysis on ${selectedLibrary}.`}
-          className=""
-        ></ElemHeading>
-      )}
+				<ElemHeading
+					title="News"
+					subtitle={`Get the latest news, guides, price and analysis on ${selectedLibrary}.`}
+					className=""
+				></ElemHeading>
+			)}
 
 			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
 				<div className="bg-white rounded-lg shadow p-5">
@@ -142,7 +142,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
 		limit: 50,
 		order: Order_By.Desc,
 		where: {
-			_and: [{ library: { _contains: "Web3" } }],
+			_and: [
+				{ status: { _eq: "published" } },
+				{ library: { _contains: "Web3" } },
+			],
 		},
 	});
 
