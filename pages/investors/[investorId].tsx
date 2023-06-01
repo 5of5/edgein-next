@@ -33,6 +33,7 @@ import { ElemSubOrganizations } from '@/components/elem-sub-organizations';
 import { IconEditPencil, IconAnnotation } from '@/components/icons';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
+import ElemNewsList from '@/components/news/elem-news-list';
 
 type Props = {
   vcfirm: Vc_Firms;
@@ -55,6 +56,7 @@ const VCFirm: NextPage<Props> = props => {
   const [overviewDivHeight, setOverviewDivHeight] = useState(0);
 
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -93,19 +95,11 @@ const VCFirm: NextPage<Props> = props => {
 
   const sortedInvestmentRounds = props.sortByDateAscInvestments;
 
-  const sortActivities =
-    [...sortedInvestmentRounds, ...props.sortNews]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.date || a?.round_date || '').getTime() -
-          new Date(b?.date || b?.round_date || '').getTime()
-        );
-      })
-      .reverse() || [];
-
   //TabBar
   const tabBarItems = [{ name: 'Overview', ref: overviewRef }];
+  if (props.sortNews.length > 0) {
+    tabBarItems.push({ name: 'News', ref: newsRef });
+  }
   if (vcfirm.investors.length > 0) {
     tabBarItems.push({ name: 'Team', ref: teamRef });
   }
@@ -251,12 +245,22 @@ const VCFirm: NextPage<Props> = props => {
                 setShowPopup={props.setShowPopup}
               />
             </div>
+            {props.sortNews.length > 0 && (
+              <div
+                ref={newsRef}
+                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
+              >
+                <ElemNewsList
+                  resourceType="vc_firms"
+                  resourceId={vcfirm.id}
+                  news={props.sortNews}
+                />
+              </div>
+            )}
             <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
               <ElemOrganizationActivity
-                resourceId={vcfirm.id}
                 resourceType="vc_firms"
-                resourceInvestments={sortActivities}
-                resourceName={vcfirm.name}
+                resourceInvestments={sortedInvestmentRounds}
               />
             </div>
           </div>

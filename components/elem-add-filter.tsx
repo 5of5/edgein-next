@@ -6,7 +6,7 @@ import {
   eventsFilterOptions,
 } from '@/utils/constants';
 import { useUser } from '@/context/user-context';
-import { IconContributor } from '@/components/icons';
+import { IconContributorSolid } from '@/components/icons';
 import { ElemUpgradeDialog } from './elem-upgrade-dialog';
 
 type CategoryFilterOptionProps = {
@@ -139,7 +139,7 @@ const CategoryFilterOption: FC<CategoryFilterOptionProps> = ({
                       className="text-left underline decoration-primary-500 transition-all px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100"
                     >
                       {!userCanUseFilter && (
-                        <IconContributor className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
+                        <IconContributorSolid className="inline-block w-5 h-5 text-primary-500 shrink-0 mr-1" />
                       )}
 
                       {item.label}

@@ -24,6 +24,9 @@ import {
   Investment_Rounds,
   News,
   useGetCompanyQuery,
+  GetNewsArticlesQuery,
+  GetNewsArticlesDocument,
+  Order_By,
 } from '@/graphql/types';
 import { ElemReactions } from '@/components/elem-reactions';
 import { useAuth } from '@/hooks/use-auth';
@@ -35,12 +38,18 @@ import { newLineToP } from '@/utils/text';
 import { onTrackView } from '@/utils/track';
 import ElemOrganizationNotes from '@/components/elem-organization-notes';
 import { Popups } from '@/components/the-navbar';
+import ElemNewsArticles, {
+  DEFAULT_LIMIT,
+} from '@/components/news/elem-news-articles';
+import { getQueryBySource } from '@/utils/news';
+import ElemNewsList from '@/components/news/elem-news-list';
 
 type Props = {
   company: Companies;
   sortRounds: Investment_Rounds[];
   sortNews: News[];
   metrics: Metric[];
+  newsArticles?: News[];
   setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
   setShowPopup: React.Dispatch<React.SetStateAction<Popups>>;
 };
@@ -65,6 +74,7 @@ const Company: NextPage<Props> = (props: Props) => {
   const [overviewDivHeight, setOverviewDivHeight] = useState(0);
 
   const overviewRef = useRef() as MutableRefObject<HTMLDivElement>;
+  const newsRef = useRef() as MutableRefObject<HTMLDivElement>;
   const teamRef = useRef() as MutableRefObject<HTMLDivElement>;
   const investmentRef = useRef() as MutableRefObject<HTMLDivElement>;
 
@@ -126,16 +136,10 @@ const Company: NextPage<Props> = (props: Props) => {
 
   const sortedInvestmentRounds = props.sortRounds;
 
-  const sortActivities =
-    [...sortedInvestmentRounds, ...props.sortNews]
-      ?.slice()
-      .sort((a: any, b: any) => {
-        return (
-          new Date(a?.date || a?.round_date || '').getTime() -
-          new Date(b?.date || b?.round_date || '').getTime()
-        );
-      })
-      .reverse() || [];
+  const isNewsOrganization =
+    props.newsArticles && props.newsArticles.length > 0;
+
+  const hasNewsTab = isNewsOrganization || props.sortNews.length > 0;
 
   // Company tags
   const companyTags: string[] = [];
@@ -152,6 +156,9 @@ const Company: NextPage<Props> = (props: Props) => {
 
   // Tabs
   const tabBarItems = [{ name: 'Overview', ref: overviewRef }];
+  if (hasNewsTab) {
+    tabBarItems.push({ name: 'News', ref: newsRef });
+  }
   if (company.teamMembers.length > 0) {
     tabBarItems.push({ name: 'Team', ref: teamRef });
   }
@@ -399,11 +406,35 @@ const Company: NextPage<Props> = (props: Props) => {
               </div>
             )}
 
+            {hasNewsTab && (
+              <div
+                ref={newsRef}
+                className="w-full mt-7 p-5 bg-white shadow rounded-lg"
+              >
+                {isNewsOrganization ? (
+                  <ElemNewsArticles
+                    heading={
+                      isNewsOrganization
+                        ? `News articles from ${company.name} feeds`
+                        : 'News'
+                    }
+                    newsOrgSlug={company.slug}
+                    news={props.newsArticles}
+                  />
+                ) : (
+                  <ElemNewsList
+                    news={props.sortNews}
+                    resourceType="companies"
+                    resourceId={company.id}
+                  />
+                )}
+              </div>
+            )}
+
             <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
               <ElemOrganizationActivity
-                resourceId={company.id}
                 resourceType="companies"
-                resourceInvestments={sortActivities}
+                resourceInvestments={sortedInvestmentRounds}
               />
             </div>
           </div>
@@ -506,6 +537,35 @@ export const getServerSideProps: GetServerSideProps = async context => {
   let metaDescription = null;
   if (company.overview) {
     metaDescription = company.overview;
+  }
+
+  if (company.tags?.includes('News')) {
+    const sourceQuery = getQueryBySource(context.params?.companyId as string);
+
+    const { data: newsArticles } = await runGraphQl<GetNewsArticlesQuery>(
+      GetNewsArticlesDocument,
+      {
+        offset: 0,
+        limit: DEFAULT_LIMIT,
+        order: Order_By.Desc,
+        where: {
+          _and: [{ status: { _eq: 'published' } }, { ...sourceQuery }],
+        },
+      },
+      context.req.cookies,
+    );
+
+    return {
+      props: {
+        metaTitle,
+        metaDescription,
+        company,
+        sortRounds,
+        sortNews,
+        metrics: tokenInfoMetrics,
+        newsArticles: newsArticles?.news,
+      },
+    };
   }
 
   return {

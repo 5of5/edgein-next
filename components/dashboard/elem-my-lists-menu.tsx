@@ -9,7 +9,7 @@ import {
   IconListPlus,
   IconInformationCircle,
   IconPlus,
-  IconContributor,
+  IconContributorSolid,
   IconEllipsisHorizontal,
   IconCheck,
 } from '@/components/icons';
@@ -259,7 +259,7 @@ const ElemMyListsMenu: FC<Props> = ({ className = '' }) => {
                     onClick={onOpenUpgradeDialog}
                     className="w-full flex items-center justify-center space-x-1 py-1 px-2 rounded-md flex-1 transition-all text-primary-500 bg-primary-100 hover:bg-primary-200 hover:bg-opacity-50"
                   >
-                    <IconContributor
+                    <IconContributorSolid
                       className="inline-block w-6 h-6 p-0.5 text-primary-500 shrink-0"
                       title="Unlock lists"
                     />

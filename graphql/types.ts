@@ -23067,6 +23067,7 @@ export type GetCompanyQuery = {
         text: string;
         link: string | null;
         kind: string | null;
+        source: any | null;
         status: string | null;
         organizations: Array<{
           __typename?: 'news_organizations';
@@ -24429,6 +24430,114 @@ export type TriggerListUpdatedAtMutation = {
   } | null;
 };
 
+export type GetNewsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
+  where: News_Bool_Exp;
+}>;
+
+export type GetNewsQuery = {
+  __typename?: 'query_root';
+  news: Array<{
+    __typename?: 'news';
+    id: number;
+    date: any | null;
+    kind: string | null;
+    link: string | null;
+    source: any | null;
+    created_at: any;
+    status: string | null;
+    text: string;
+    metadata: any | null;
+    updated_at: any;
+    organizations: Array<{
+      __typename?: 'news_organizations';
+      type: string | null;
+      company: {
+        __typename?: 'companies';
+        id: number;
+        name: string | null;
+        slug: string;
+        logo: any | null;
+      } | null;
+      vc_firm: {
+        __typename?: 'vc_firms';
+        id: number;
+        name: string | null;
+        slug: string;
+        logo: any | null;
+      } | null;
+    }>;
+  }>;
+  news_aggregate: {
+    __typename?: 'news_aggregate';
+    aggregate: { __typename?: 'news_aggregate_fields'; count: number } | null;
+  };
+};
+
+export type GetNewsArticlesQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
+  where: News_Bool_Exp;
+}>;
+
+export type GetNewsArticlesQuery = {
+  __typename?: 'query_root';
+  news: Array<{
+    __typename?: 'news';
+    id: number;
+    date: any | null;
+    kind: string | null;
+    link: string | null;
+    source: any | null;
+    created_at: any;
+    status: string | null;
+    text: string;
+    metadata: any | null;
+    updated_at: any;
+    organizations: Array<{
+      __typename?: 'news_organizations';
+      type: string | null;
+      company: {
+        __typename?: 'companies';
+        id: number;
+        name: string | null;
+        slug: string;
+        logo: any | null;
+      } | null;
+      vc_firm: {
+        __typename?: 'vc_firms';
+        id: number;
+        name: string | null;
+        slug: string;
+        logo: any | null;
+      } | null;
+    }>;
+  }>;
+  news_aggregate: {
+    __typename?: 'news_aggregate';
+    aggregate: { __typename?: 'news_aggregate_fields'; count: number } | null;
+  };
+};
+export type GetNewsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
+}>;
+
+export type GetNewsByDateQuery = {
+  __typename?: 'query_root';
+  news: Array<{
+    __typename?: 'news';
+    id: number;
+    date: any | null;
+    link: string | null;
+    text: string;
+    source: any | null;
+  }>;
+};
+
 export type GetNotesQueryVariables = Exact<{
   where: Notes_Bool_Exp;
 }>;
@@ -24869,6 +24978,135 @@ export type GetPersonQuery = {
         text: string;
         link: string | null;
         kind: string | null;
+        status: string | null;
+        people: Array<{
+          __typename?: 'news_person';
+          id: number;
+          type: string | null;
+          person_id: number | null;
+        }>;
+      } | null;
+    }>;
+  }>;
+};
+
+export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetPersonsPathQuery = {
+  __typename?: 'query_root';
+  people: Array<{
+    __typename?: 'people';
+    id: number;
+    name: string | null;
+    slug: string;
+  }>;
+};
+
+export type GetPersonQuery = {
+  __typename?: 'query_root';
+  people: Array<{
+    __typename?: 'people';
+    id: number;
+    name: string | null;
+    personal_email: string | null;
+    picture: any | null;
+    slug: string;
+    status: string;
+    type: string | null;
+    work_email: string | null;
+    linkedin: string | null;
+    github: string | null;
+    city: string | null;
+    country: string | null;
+    facebook_url: string | null;
+    twitter_url: string | null;
+    website_url: string | null;
+    about: string | null;
+    email: any | null;
+    investors: Array<{
+      __typename?: 'investors';
+      id: number;
+      end_date: any | null;
+      start_date: any | null;
+      function: string | null;
+      title: string | null;
+      vc_firm: {
+        __typename?: 'vc_firms';
+        id: number;
+        slug: string;
+        name: string | null;
+        logo: any | null;
+        overview: string | null;
+        location: string | null;
+        tags: any | null;
+      } | null;
+    }>;
+    team_members: Array<{
+      __typename?: 'team_members';
+      id: number;
+      end_date: any | null;
+      start_date: any | null;
+      founder: boolean | null;
+      function: string | null;
+      title: string | null;
+      company: {
+        __typename?: 'companies';
+        id: number;
+        slug: string;
+        name: string | null;
+        logo: any | null;
+        overview: string | null;
+        location: string | null;
+        tags: any | null;
+      } | null;
+    }>;
+    investments: Array<{
+      __typename?: 'investments';
+      investment_round: {
+        __typename?: 'investment_rounds';
+        id: number;
+        round_date: any | null;
+        round: string | null;
+        amount: any | null;
+        company: {
+          __typename?: 'companies';
+          id: number;
+          slug: string;
+          name: string | null;
+          logo: any | null;
+          tags: any | null;
+        } | null;
+        investments: Array<{
+          __typename?: 'investments';
+          id: number;
+          vc_firm: {
+            __typename?: 'vc_firms';
+            id: number;
+            slug: string;
+            name: string | null;
+            logo: any | null;
+          } | null;
+          person: {
+            __typename?: 'people';
+            id: number;
+            slug: string;
+            name: string | null;
+            picture: any | null;
+          } | null;
+        }>;
+      } | null;
+    }>;
+    news_links: Array<{
+      __typename?: 'news_person';
+      id: number;
+      news: {
+        __typename?: 'news';
+        id: number;
+        date: any | null;
+        text: string;
+        link: string | null;
+        kind: string | null;
+        source: any | null;
         status: string | null;
         people: Array<{
           __typename?: 'news_person';
@@ -25746,6 +25984,7 @@ export type GetVcFirmQuery = {
         text: string;
         link: string | null;
         kind: string | null;
+        source: any | null;
         status: string | null;
         organizations: Array<{
           __typename?: 'news_organizations';
@@ -26068,7 +26307,7 @@ useGetAllowedEmailByEmailOrDomainQuery.fetcher = (
 export const GetLastSyncDocument = `
     query GetLastSync {
   application_meta(
-    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events"]}}
+    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_web3_news", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events", "sync_ai_news"]}}
   ) {
     id
     key
@@ -26557,6 +26796,7 @@ export const GetCompanyDocument = `
         text
         link
         kind
+        source
         status
         organizations {
           id
@@ -29714,6 +29954,173 @@ useTriggerListUpdatedAtMutation.fetcher = (
     variables,
     options,
   );
+export const GetNewsDocument = `
+    query GetNews($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+  news_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetNewsQuery = <TData = GetNewsQuery, TError = Error>(
+  variables: GetNewsQueryVariables,
+  options?: UseQueryOptions<GetNewsQuery, TError, TData>,
+) =>
+  useQuery<GetNewsQuery, TError, TData>(
+    ['GetNews', variables],
+    fetcher<GetNewsQuery, GetNewsQueryVariables>(GetNewsDocument, variables),
+    options,
+  );
+useGetNewsQuery.document = GetNewsDocument;
+
+useGetNewsQuery.getKey = (variables: GetNewsQueryVariables) => [
+  'GetNews',
+  variables,
+];
+useGetNewsQuery.fetcher = (
+  variables: GetNewsQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  fetcher<GetNewsQuery, GetNewsQueryVariables>(
+    GetNewsDocument,
+    variables,
+    options,
+  );
+export const GetNewsArticlesDocument = `
+    query GetNewsArticles($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+  news_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetNewsArticlesQuery = <
+  TData = GetNewsArticlesQuery,
+  TError = Error,
+>(
+  variables: GetNewsArticlesQueryVariables,
+  options?: UseQueryOptions<GetNewsArticlesQuery, TError, TData>,
+) =>
+  useQuery<GetNewsArticlesQuery, TError, TData>(
+    ['GetNewsArticles', variables],
+    fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(
+      GetNewsArticlesDocument,
+      variables,
+    ),
+    options,
+  );
+useGetNewsArticlesQuery.document = GetNewsArticlesDocument;
+
+useGetNewsArticlesQuery.getKey = (variables: GetNewsArticlesQueryVariables) => [
+  'GetNewsArticles',
+  variables,
+];
+useGetNewsArticlesQuery.fetcher = (
+  variables: GetNewsArticlesQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(
+    GetNewsArticlesDocument,
+    variables,
+    options,
+  );
+export const GetNewsByDateDocument = `
+    query GetNewsByDate($date: timestamptz, $library: jsonb) {
+  news(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
+  ) {
+    id
+    date
+    link
+    text
+    source
+  }
+}
+    `;
+export const useGetNewsByDateQuery = <
+  TData = GetNewsByDateQuery,
+  TError = Error,
+>(
+  variables?: GetNewsByDateQueryVariables,
+  options?: UseQueryOptions<GetNewsByDateQuery, TError, TData>,
+) =>
+  useQuery<GetNewsByDateQuery, TError, TData>(
+    variables === undefined ? ['GetNewsByDate'] : ['GetNewsByDate', variables],
+    fetcher<GetNewsByDateQuery, GetNewsByDateQueryVariables>(
+      GetNewsByDateDocument,
+      variables,
+    ),
+    options,
+  );
+useGetNewsByDateQuery.document = GetNewsByDateDocument;
+
+useGetNewsByDateQuery.getKey = (variables?: GetNewsByDateQueryVariables) =>
+  variables === undefined ? ['GetNewsByDate'] : ['GetNewsByDate', variables];
+useGetNewsByDateQuery.fetcher = (
+  variables?: GetNewsByDateQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  fetcher<GetNewsByDateQuery, GetNewsByDateQueryVariables>(
+    GetNewsByDateDocument,
+    variables,
+    options,
+  );
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {
@@ -30633,6 +31040,7 @@ export const GetPersonDocument = `
         text
         link
         kind
+        source
         status
         people {
           id
@@ -32134,6 +32542,7 @@ export const GetVcFirmDocument = `
         text
         link
         kind
+        source
         status
         organizations {
           id

@@ -133,6 +133,24 @@ query GetCompany($slug: String!) {
         }
       }
     }
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        kind
+        source
+        status
+        organizations {
+          id
+          type
+          company_id
+          vc_firm_id
+        }
+      }
+    }
   }
 }
 

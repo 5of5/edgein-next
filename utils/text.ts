@@ -156,3 +156,15 @@ export const removeDomainName = (url: string) => {
   if (!url) return '';
   return url.replace(/^.*\/\/[^\/]+/, '');
 };
+
+export const getCleanWebsiteUrl = (rawUrl: any, protocol?: boolean) => {
+  if (!rawUrl) {
+    return;
+  }
+
+  if (protocol) {
+    return rawUrl.split('/').slice(0, 3).join('/');
+  }
+
+  return rawUrl.split('//').pop().split('/')[0].replace('www.', '');
+};

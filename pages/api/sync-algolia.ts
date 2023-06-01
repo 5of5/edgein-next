@@ -4,6 +4,7 @@ import {
   queryForLastSync,
   syncCompanies,
   syncEvents,
+  syncNews,
   syncPeople,
   syncVcFirms,
 } from '@/utils/algolia';
@@ -74,6 +75,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     library: 'AI',
     index: 'ai_events',
   });
+  const syncWeb3NewsOutput = await syncNews({
+    client,
+    lastSyncArray,
+    key: 'sync_web3_news',
+    library: 'Web3',
+    index: 'news',
+  });
+  const syncAINewsOutput = await syncNews({
+    client,
+    lastSyncArray,
+    key: 'sync_ai_news',
+    library: 'AI',
+    index: 'ai_news',
+  });
   const output: Record<string, any> = {
     ...syncWeb3CompaniesOutput,
     ...syncAICompaniesOutput,
@@ -83,6 +98,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ...syncAIPeopleOutput,
     ...syncWeb3EventsOutput,
     ...syncAIEventsOutput,
+    ...syncWeb3NewsOutput,
+    ...syncAINewsOutput,
   };
 
   res.send({ success: true, ...output });

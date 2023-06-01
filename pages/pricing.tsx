@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import React from 'react';
 import { ElemButton } from '@/components/elem-button';
 import { FigureBlurredCircle } from '@/components/figures';
-import { IconCheck, IconSparkles } from '@/components/icons';
+import { IconCheck, IconContributor } from '@/components/icons';
 import Image from 'next/image';
 import { loadStripe } from '@/utils/stripe';
 import { useUser } from '@/context/user-context';
@@ -176,7 +176,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
                           size="lg"
                         >
                           {tier.mostPopular && (
-                            <IconSparkles className="w-5 h-5 mr-1" />
+                            <IconContributor className="w-5 h-5 mr-1" />
                           )}
                           {tier.cta}
                         </ElemButton>
@@ -206,7 +206,7 @@ const Pricing: NextPage<Props> = ({ setShowPopup }) => {
 											size="lg"
 										>
 											{tier.mostPopular && (
-												<IconSparkles className="w-5 h-5 mr-1" />
+												<IconContributor className="w-5 h-5 mr-1" />
 											)}
 											{tier.cta}
 										</ElemButton>

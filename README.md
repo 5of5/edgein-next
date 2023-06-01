@@ -58,6 +58,12 @@ npm run hasura migrate apply
 npm run hasura metadata apply
 ```
 
+### Load Hasura Console to check metadata status
+
+```
+npm run hasura console
+```
+
 ### Start Next App
 
 ```
@@ -67,17 +73,14 @@ npm run dev
 
 ### Creating a User
 
-- Open the Hasura admin panel and navigate to the "allowed_emails" table, then add a row with your email address.
-- Return to the local site and signup as normal
+- Open local site and signup as normal
 - Check your email and validate the email address with Auth0
+- Open hasura console and can role in the users table to admin
 - Open the local app admin at
 
 ```
-http://localhost:3000/admin/app
+http://localhost:3000/admin/app/
 ```
-
-- Find your user in the users table, click edit and change the role to admin
-- Login!!!
 
 NOTE: once an email is registed with Auth0 if you delete the user from the local database and try to use it again the signup will fail. You will need to use another address.
 

@@ -25,7 +25,7 @@ import { IconCheckBadgeSolid } from '@/components/icons';
 import { ElemTooltip } from '@/components/elem-tooltip';
 import { ElemTags } from '@/components/elem-tags';
 import { ElemSaveToList } from '@/components/elem-save-to-list';
-import { ElemNewsList } from '@/components/person/elem-news-list';
+import ElemNewsList from '@/components/news/elem-news-list';
 
 type Props = {
   person: People;
@@ -228,11 +228,13 @@ const Person: NextPage<Props> = props => {
               />
             )}
             {props.sortNews.length > 0 && (
-              <ElemNewsList
-                resourceId={person.id}
-                resourceNews={props.sortNews}
-                className="mb-7"
-              />
+              <div className="w-full mt-7 p-5 bg-white shadow rounded-lg">
+                <ElemNewsList
+                  resourceId={person.id}
+                  resourceType="people"
+                  news={props.sortNews}
+                />
+              </div>
             )}
             {!person.investors || person.investors.length === 0 ? null : (
               <ElemInvestorsList
