@@ -6,6 +6,7 @@ import {
   ReferenceArrayField,
   SingleFieldList,
   ChipField,
+  FunctionField,
 } from "react-admin";
 import ElemList from "../elem-list";
 
@@ -49,6 +50,10 @@ export const NewsList = () => {
       <TextField source="source" />
       <TextField source="kind" />
       <TextField source="metadata" />
+      <FunctionField
+        source="library"
+        render={(record: any) => (Array.isArray(record.library) ? record.library.join() : record.library ?? "")}
+      />
       <TextField source="status" />
     </ElemList>
   );
