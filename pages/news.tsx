@@ -44,7 +44,10 @@ const NewsPage: NextPage<Props> = ({ newsCount, initialNews }) => {
 	const offset = limit * page;
 
 	const filters: DeepPartial<News_Bool_Exp> = {
-		_and: [{ library: { _contains: selectedLibrary } }],
+		_and: [
+			{ status: { _eq: "published" } },
+			{ library: { _contains: selectedLibrary } },
+		],
 	};
 
 	const {
