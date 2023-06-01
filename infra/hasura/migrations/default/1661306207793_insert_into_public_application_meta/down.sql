@@ -1,1 +1,1 @@
-DELETE FROM "public"."application_meta" WHERE "id" = 3;
+DELETE FROM "public"."application_meta" WHERE "key" = 'sync_people';

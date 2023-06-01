@@ -18,7 +18,7 @@ export const ElemFilterTags: React.FC<Props> = ({
 	return (
 		<div className={className}>
 			{heading && <h2 className="text-xl font-bold">{heading}</h2>}
-			<ul className="flex flex-wrap gap-y-3 space-x-2 lg:gap-y-0">
+			<ul className="flex flex-wrap gap-y-3 gap-x-2 lg:gap-y-2">
 				{tags.map((tag, index: number) => {
 					return (
 						<li

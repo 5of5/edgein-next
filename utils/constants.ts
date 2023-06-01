@@ -398,6 +398,10 @@ export const functionChoicesTM = [
 		id: "QA",
 		name: "QA",
 	},
+	{
+		id: "Journalist",
+		name: "Journalist",
+	},
 ];
 
 export const seniorityChoicesTM = [
@@ -694,6 +698,7 @@ export const tags = [
 	"Solana",
 	"Polkadot",
 	"Metaverse",
+	"News",
 ].map((tag) => ({ id: tag, name: tag }));
 
 export const ADMIN_REFERENCE_INPUT_PER_PAGE = 250;

@@ -18,6 +18,7 @@ import {
 	IconChevronRight,
 	IconUser,
 	IconImage,
+	IconExternalLink,
 } from "@/components/icons";
 import Link from "next/link";
 import { getEventBanner, randomImageOfCity } from "@/utils/helpers";
@@ -70,6 +71,16 @@ type HitEventsProps = {
 		start_date: string;
 		end_date: string;
 		timezone: string;
+		empty: boolean;
+	}>;
+};
+
+type HitNewsProps = {
+	hit: AlgoliaHit<{
+		text: string;
+		link: string;
+		date: string;
+		poweredBy: string;
 		empty: boolean;
 	}>;
 };
@@ -330,6 +341,52 @@ const HitEvents = (onClose: () => void, isAdmin?: boolean, redirect?: any) =>
 		);
 	};
 
+const HitNews = () =>
+  function HitNews({ hit }: HitNewsProps) {
+    return (
+      <div className="px-6 py-2 group hover:bg-slate-100">
+        <div className="inline text-base font-bold text-slate-600">
+          {hit.link ? (
+            <>
+              <Link href={hit.link}>
+                <a className="border-b border-primary-500" target="_blank">
+                  <Highlight
+                    attribute="text"
+                    hit={hit}
+                    classNames={{
+                      highlighted:
+                        "text-primary-500 opacity-100 bg-transparent",
+                    }}
+                  />
+                  <IconExternalLink className="inline-block w-5 h-5 ml-1 text-primary-500" />
+                </a>
+              </Link>
+            </>
+          ) : (
+            <Highlight
+              attribute="text"
+              hit={hit}
+              classNames={{
+                highlighted:
+                  "text-primary-500 border-b-2 border-primary-500 opacity-100 bg-transparent",
+              }}
+            />
+          )}
+          <div className="flex items-center gap-x-2">
+            <p className="text-sm font-normal">
+              {formatDate(hit.date as string, {
+                month: "short",
+                day: "2-digit",
+                year: "numeric",
+              })}
+              <span>{` • powered by ${hit.poweredBy}`}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
 export default function SearchModal(props: any) {
 	const emptyView = React.useRef(true);
 
@@ -352,7 +409,7 @@ export default function SearchModal(props: any) {
 				<div className="px-6 py-1 mt-5 text-center">
 					<FigureSearch className="mx-auto h-36 lg:h-40" />
 					<div className="mt-3 text-xl font-bold">
-						Search for Companies, Investors, People &amp; Events
+						Search for Companies, Investors, People, Events &amp; News
 					</div>
 					<div style={{ display: "none" }}>{children}</div>
 				</div>
@@ -552,6 +609,27 @@ export default function SearchModal(props: any) {
 															props.isAdmin,
 															props.redirect
 														)}
+														showPrevious={false}
+														classNames={{
+															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
+															loadMore:
+																"w-[calc(100%-3rem)] font-bold h-9 mx-6 mb-4 px-3 text-primary-500 bg-transparent border border-primary-500 rounded-full hover:bg-primary-100 focus:ring-primary-50",
+															disabledLoadMore: "hidden",
+														}}
+													/>
+												</EmptyQueryBoundary>
+											</Index>
+
+											<Index
+                        indexName={
+                          selectedLibrary === "Web3" ? "news" : "ai_news"
+                        }
+                      >
+												<Configure hitsPerPage={4} />
+												<h3 className="font-bold mt-5 mx-6">News</h3>
+												<EmptyQueryBoundary>
+													<InfiniteHits
+														hitComponent={HitNews()}
 														showPrevious={false}
 														classNames={{
 															list: "my-2 border-y border-slate-100 divide-y divide-slate-100",
