@@ -30,6 +30,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
   }
 
+  // temporay until everyone gets a new cookie
+  headers = {
+    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
+    'x-hasura-user-id': user?.id?.toString() ?? '',
+  };
+
   const opts = {
     method: 'POST',
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
