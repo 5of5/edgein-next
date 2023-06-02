@@ -1,5 +1,5 @@
 export const transformFormData = (news: any) => {
-  let data = { ...news };
+  const data = { ...news };
   if (data.source) {
     data.source = JSON.parse(data.source);
   }

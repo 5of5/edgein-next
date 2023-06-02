@@ -1,173 +1,187 @@
 query GetCompany($slug: String!) {
-	companies(where: { slug: { _eq: $slug } }) {
-		id
-		name
-		coin {
-			id
-			ticker
-		}
-		slug
-		logo
-		layer
-		overview
-		investor_amount
-		white_paper
-		total_employees
-		year_founded
-		website
-		market_verified
-		company_linkedin
-		careers_page
-		github
-		velocity_linkedin
-		velocity_token
-		tags
-		date_added
-		ico_start
-		ico_end
-		audit_file
-		sentiment
-		twitter
-		location
-		location_json
-		discord
-		glassdoor
-		teamMembers {
-			id
-			person {
-				id
-				slug
-				name
-				picture
-				linkedin
-				personal_email
-				work_email
-			}
-			function
-			start_date
-			end_date
-			founder
-			title
-		}
-		investment_rounds {
-			id
-			round_date
-			round
-			amount
-			valuation
-			investments {
-				id
-				person {
-					id
-					slug
-					name
-					picture
-				}
-				vc_firm {
-					id
-					slug
-					name
-					logo
-				}
-				amount
-			}
-		}
+  companies(where: { slug: { _eq: $slug } }) {
+    id
+    name
+    coin {
+      id
+      ticker
+    }
+    slug
+    logo
+    layer
+    overview
+    investor_amount
+    white_paper
+    total_employees
+    year_founded
+    website
+    market_verified
+    company_linkedin
+    careers_page
+    github
+    velocity_linkedin
+    velocity_token
+    tags
+    date_added
+    ico_start
+    ico_end
+    audit_file
+    sentiment
+    twitter
+    location
+    location_json
+    discord
+    glassdoor
+    teamMembers {
+      id
+      person {
+        id
+        slug
+        name
+        picture
+        linkedin
+        personal_email
+        work_email
+      }
+      function
+      start_date
+      end_date
+      founder
+      title
+    }
+    investment_rounds {
+      id
+      round_date
+      round
+      amount
+      valuation
+      investments {
+        id
+        person {
+          id
+          slug
+          name
+          picture
+        }
+        vc_firm {
+          id
+          slug
+          name
+          logo
+        }
+        amount
+      }
+    }
     to_links {
-			id
-			link_type
+      id
+      link_type
       from_company {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
       }
       from_vc_firm {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
       }
     }
     from_links {
-			id
-			link_type
+      id
+      link_type
       to_company {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
       }
       to_vc_firm {
-				id
-				name
-				slug
-				tags
-				sentiment
-				overview
-				logo
+        id
+        name
+        slug
+        tags
+        sentiment
+        overview
+        logo
       }
     }
-		news_links {
-			id
-			news {
-				id
-				date
-				text
-				link
-				kind
-				status
-				organizations {
-					id
-					type
-					company_id
-					vc_firm_id
-				}
-			}
-		}	
-	}
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        kind
+        status
+        organizations {
+          id
+          type
+          company_id
+          vc_firm_id
+        }
+      }
+    }
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        kind
+        source
+        status
+        organizations {
+          id
+          type
+          company_id
+          vc_firm_id
+        }
+      }
+    }
+  }
 }
 
-query GetCompanies(
-	$limit: Int
-	$offset: Int
-	$where: companies_bool_exp!
-) {
-	companies(
-		where: $where
-		order_by: { slug: asc }
-		limit: $limit
-		offset: $offset
-	) {
-		id
-		name
-		slug
-		layer
-		tags
-		coin {
-			ticker
-		}
-		sentiment
-		investor_amount
-		total_employees
-		logo
-		overview
-		github
-		company_linkedin
-		market_verified
-		velocity_linkedin
-		velocity_token
-		website
-	}
-	companies_aggregate(where: $where) {
+query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
+  companies(
+    where: $where
+    order_by: { slug: asc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    layer
+    tags
+    coin {
+      ticker
+    }
+    sentiment
+    investor_amount
+    total_employees
+    logo
+    overview
+    github
+    company_linkedin
+    market_verified
+    velocity_linkedin
+    velocity_token
+    website
+  }
+  companies_aggregate(where: $where) {
     aggregate {
       count
     }
@@ -175,50 +189,50 @@ query GetCompanies(
 }
 
 query GetCompaniesRecent(
-	$limit: Int
-	$offset: Int
-	$where: companies_bool_exp!
+  $limit: Int
+  $offset: Int
+  $where: companies_bool_exp!
 ) {
-	companies(
-		where: $where
-		order_by: { date_added: desc }
-		limit: $limit
-		offset: $offset
-	) {
-		id
-		name
-		slug
-		layer
-		tags
-		logo
-		overview
-		total_employees
-		investor_amount
-		date_added
-		sentiment
-		investment_rounds {
-			id
-			amount
-		}
-	}
+  companies(
+    where: $where
+    order_by: { date_added: desc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    layer
+    tags
+    logo
+    overview
+    total_employees
+    investor_amount
+    date_added
+    sentiment
+    investment_rounds {
+      id
+      amount
+    }
+  }
 }
 
 query GetCompaniesPaths {
-	companies(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
-		id
-		name
-		slug
-	}
+  companies(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+    id
+    name
+    slug
+  }
 }
 
 query GetRelevantCompanies($where: companies_bool_exp!, $limit: Int) {
-	companies(where: $where, limit: $limit) {
-		id
-		logo
-		name
-		slug
-		sentiment
-	}
+  companies(where: $where, limit: $limit) {
+    id
+    logo
+    name
+    slug
+    sentiment
+  }
 }
 
 query GetSentimentByCompanyId($companyId: Int!) {
@@ -228,41 +242,41 @@ query GetSentimentByCompanyId($companyId: Int!) {
   }
 }
 
- mutation UpdateSentimentByCompanyId($companyId: Int!, $sentiment: jsonb!) {
-   update_companies_by_pk(
-     pk_columns: { id: $companyId }
-     _set: { sentiment: $sentiment }
-   ) {
-     sentiment
-   }
- }    
+mutation UpdateSentimentByCompanyId($companyId: Int!, $sentiment: jsonb!) {
+  update_companies_by_pk(
+    pk_columns: { id: $companyId }
+    _set: { sentiment: $sentiment }
+  ) {
+    sentiment
+  }
+}
 
- query GetCompaniesByDate($date: timestamptz, $library: jsonb) {
-   companies(
-     where: {
-       _and: [
-         { status: { _eq: "published" } }
-         { updated_at: { _gte: $date } }
-         { library: { _contains: $library } }
-       ]
-     }
-   ) {
-     id
-     name
-     overview
-     tags
-     logo
-     slug
-     aliases
-     coin {
-       ticker
-       name
-     }
-   }
- }
+query GetCompaniesByDate($date: timestamptz, $library: jsonb) {
+  companies(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
+    }
+  ) {
+    id
+    name
+    overview
+    tags
+    logo
+    slug
+    aliases
+    coin {
+      ticker
+      name
+    }
+  }
+}
 
- mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
-   update_companies_by_pk(pk_columns: { id: $companyId }, _set: $data) {
-     id
-   }
- }
+mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
+  update_companies_by_pk(pk_columns: { id: $companyId }, _set: $data) {
+    id
+  }
+}

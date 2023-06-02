@@ -1,44 +1,41 @@
-import { useEffect, useState } from "react";
-import { EditSection } from "../dashboard/edit-section";
-import { ElemButton } from "../elem-button";
-import { InputText } from "../input-text";
-import {
-	People,
-} from "@/graphql/types";
-import { useUser } from "@/context/user-context";
+import { useEffect, useState } from 'react';
+import { EditSection } from '../dashboard/edit-section';
+import { ElemButton } from '../elem-button';
+import { InputText } from '../input-text';
+import { People } from '@/graphql/types';
+import { useUser } from '@/context/user-context';
 
-type Props = {
-};
+type Props = {};
 
-export const ProfileEditName: React.FC<Props> = ({
-}) => {
+export const ProfileEditName: React.FC<Props> = ({}) => {
   const { user } = useUser();
   const editName = false;
-  const nameFragments = user?.display_name?.split(" ");
-  const firstName = nameFragments?.shift() || "";
-  const lastName = nameFragments?.join(" ") || "";
+  const nameFragments = user?.display_name?.split(' ');
+  const firstName = nameFragments?.shift() || '';
+  const lastName = nameFragments?.join(' ') || '';
 
-  return <EditSection
-heading="Full Name"
-right={
-  !editName ? (
-    // <button
-    //   onClick={() => setEditName(true)}
-    //   className="text-primary-500 hover:text-dark-500"
-    // >
-    //   Edit
-    // </button>
-    <></>
-  ) : (
-    <></>
-  )
-}
->
-{!editName ? (
-  <p className="text-slate-600">{user?.display_name}</p>
-) : (
-  <div className="max-w-sm">
-    {/* <div>
+  return (
+    <EditSection
+      heading="Full Name"
+      right={
+        !editName ? (
+          // <button
+          //   onClick={() => setEditName(true)}
+          //   className="text-primary-500 hover:text-dark-500"
+          // >
+          //   Edit
+          // </button>
+          <></>
+        ) : (
+          <></>
+        )
+      }
+    >
+      {!editName ? (
+        <p className="text-slate-600">{user?.display_name}</p>
+      ) : (
+        <div className="max-w-sm">
+          {/* <div>
       <InputText
         label="First Name"
         onChange={(e) => setFirstName(e.target.value)}
@@ -74,7 +71,8 @@ right={
         Cancel
       </ElemButton>
     </div> */}
-  </div>
-)}
-</EditSection>
-}
+        </div>
+      )}
+    </EditSection>
+  );
+};

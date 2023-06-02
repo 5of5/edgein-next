@@ -1,10 +1,10 @@
-import React from "react";
-import useAdminTransform from "@/hooks/use-admin-transform";
-import ElemFormBase from "../elem-form-base";
-import ElemTitle from "../elem-title";
-import PersonForm from "./person-form";
-import { withImageTransformData, withoutImageTransformData } from "./services";
-import { TeamMemberEdit } from "./team-member-edit";
+import React from 'react';
+import useAdminTransform from '@/hooks/use-admin-transform';
+import ElemFormBase from '../elem-form-base';
+import ElemTitle from '../elem-title';
+import PersonForm from './person-form';
+import { withImageTransformData, withoutImageTransformData } from './services';
+import { TeamMemberEdit } from './team-member-edit';
 
 export const PersonEdit = () => {
   const { isImageUpdated, logo, transform, onSelect, onDropRejected } =

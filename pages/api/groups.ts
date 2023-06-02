@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import GroupService from "@/utils/groups";
-import CookieService from "../../utils/cookie";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import GroupService from '@/utils/groups';
+import CookieService from '../../utils/cookie';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);
@@ -11,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const payload = req.body.payload;
 
   switch (req.method) {
-    case "POST": {
+    case 'POST': {
       const data = await GroupService.onInsertGroup({
         ...payload,
         created_by_user_id: user.id,
@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send(data);
     }
 
-    case "PUT": {
+    case 'PUT': {
       const isCreator = await GroupService.isUserCreatorOfGroup(id, user.id);
       if (!isCreator) {
         return res
@@ -35,7 +35,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send(updatedGroup);
     }
 
-    case "DELETE": {
+    case 'DELETE': {
       const isCreator = await GroupService.isUserCreatorOfGroup(id, user.id);
       if (!isCreator) {
         return res
@@ -58,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     default:
-      return res.status(405).json({ message: "Method not allowed" });
+      return res.status(405).json({ message: 'Method not allowed' });
   }
 };
 

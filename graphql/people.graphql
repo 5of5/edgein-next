@@ -1,215 +1,216 @@
 query GetPerson($slug: String!) {
-	people(where: { slug: { _eq: $slug } }) {
-		id
-		name
-		personal_email
-		picture
-		slug
-		status
-		type
-		work_email
-		linkedin
-		github
-		city
-		country
-		facebook_url
-		twitter_url
-		website_url
-		about
-		email
-		investors {
-			id
-			end_date
-			start_date
-			function
-			title
-			vc_firm {
-				id
-				slug
-				name
-				logo
-				overview
-				location
-				tags
-			}
-		}
-		team_members {
-			id
-			end_date
-			start_date
-			founder
-			function
-			title
-			company {
-				id
-				slug
-				name
-				logo
-				overview
-				location
-				tags
-			}
-		}
-		investments {
-			investment_round {
-				id
-				round_date
-				round
-				amount
-				company {
-					id
-					slug
-					name
-					logo
-					tags
-				}
-				investments {
-					id
-					vc_firm {
-						id
-						slug
-						name
-						logo
-					}
-					person {
-						id
-						slug
-						name
-						picture
-					}
-				}
-			}
-		}
-		news_links {
-			id
-			news {
-				id
-				date
-				text
-				link
-				kind
-				status
-				people {
-					id
-					type
-					person_id
-				}
-			}
-		}
-	}
+  people(where: { slug: { _eq: $slug } }) {
+    id
+    name
+    personal_email
+    picture
+    slug
+    status
+    type
+    work_email
+    linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    about
+    email
+    investors {
+      id
+      end_date
+      start_date
+      function
+      title
+      vc_firm {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+        tags
+      }
+    }
+    team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      title
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+        location
+        tags
+      }
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+          tags
+        }
+        investments {
+          id
+          vc_firm {
+            id
+            slug
+            name
+            logo
+          }
+          person {
+            id
+            slug
+            name
+            picture
+          }
+        }
+      }
+    }
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        kind
+        source
+        status
+        people {
+          id
+          type
+          person_id
+        }
+      }
+    }
+  }
 }
 
 query GetPersonsPath {
-	people(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
-		id
-		name
-		slug
-	}
+  people(where: { slug: { _neq: "" } }, order_by: { slug: asc }) {
+    id
+    name
+    slug
+  }
 }
 
 query GetAllPersons {
-	people {
-		id
-		name
-	}
+  people {
+    id
+    name
+  }
 }
 
 query SearchPeople($query: String, $searchText: jsonb) {
-	users(
-		where: {
-			_or: [
-				{ email: { _ilike: $query } }
-				{ additional_emails: { _contains: $searchText } }
-				{
-					person: {
-						_or: [
-							{ name: { _ilike: $query } }
-							{ work_email: { _ilike: $query } }
-							{ personal_email: { _ilike: $query } }
-						]
-					}
-				}
-			]
-		}
-		limit: 50
-	) {
-		id
-		display_name
-		email
-		person {
-			id
-			name
-			picture
-			slug
-		}
-	}
+  users(
+    where: {
+      _or: [
+        { email: { _ilike: $query } }
+        { additional_emails: { _contains: $searchText } }
+        {
+          person: {
+            _or: [
+              { name: { _ilike: $query } }
+              { work_email: { _ilike: $query } }
+              { personal_email: { _ilike: $query } }
+            ]
+          }
+        }
+      ]
+    }
+    limit: 50
+  ) {
+    id
+    display_name
+    email
+    person {
+      id
+      name
+      picture
+      slug
+    }
+  }
 }
 
 query GetPeopleByDate($date: timestamptz, $library: jsonb) {
-	people(
-		where: {
-			_and: [
-				{ status: { _eq: "published" } }
-				{ updated_at: { _gte: $date } }
-				{ library: { _contains: $library } }
-			]
-		}
-	) {
-		id
-		name
-		work_email
-		personal_email
-		picture
-		slug
-	}
+  people(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
+    }
+  ) {
+    id
+    name
+    work_email
+    personal_email
+    picture
+    slug
+  }
 }
 
 mutation UpdatePeopleByPk($set: people_set_input, $id: Int!) {
-	update_people_by_pk(_set: $set, pk_columns: { id: $id }) {
-		id
-		name
-		personal_email
-		picture
-		slug
-		status
-		type
-		work_email
-		linkedin
-		github
-		city
-		country
-		facebook_url
-		twitter_url
-		website_url
-		about
-		email
-		team_members {
-			id
-			end_date
-			start_date
-			founder
-			function
-			company {
-				id
-				slug
-				name
-				logo
-				overview
-			}
-		}
-		investments {
-			investment_round {
-				id
-				round_date
-				round
-				amount
-				company {
-					id
-					slug
-					name
-					logo
-				}
-			}
-		}
-	}
+  update_people_by_pk(_set: $set, pk_columns: { id: $id }) {
+    id
+    name
+    personal_email
+    picture
+    slug
+    status
+    type
+    work_email
+    linkedin
+    github
+    city
+    country
+    facebook_url
+    twitter_url
+    website_url
+    about
+    email
+    team_members {
+      id
+      end_date
+      start_date
+      founder
+      function
+      company {
+        id
+        slug
+        name
+        logo
+        overview
+      }
+    }
+    investments {
+      investment_round {
+        id
+        round_date
+        round
+        amount
+        company {
+          id
+          slug
+          name
+          logo
+        }
+      }
+    }
+  }
 }

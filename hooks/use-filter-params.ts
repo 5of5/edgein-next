@@ -1,24 +1,24 @@
-import moment from "moment-timezone";
-import { Filters } from "@/models/Filter";
-import { useStateParams } from "./use-state-params";
+import moment from 'moment-timezone';
+import { Filters } from '@/models/Filter';
+import { useStateParams } from './use-state-params';
 
 const formatDateString = (value: string | undefined) => {
   if (value) {
-    value = moment(value).format().split("T")[0];
+    value = moment(value).format().split('T')[0];
   }
 };
 
 const useFilterParams = () => {
   const [selectedFilters, setSelectedFilters] = useStateParams<Filters | null>(
     null,
-    "filters",
-    (filters) => {
+    'filters',
+    filters => {
       if (!filters) {
-        return "";
+        return '';
       }
       return JSON.stringify(filters);
     },
-    (filterString) => {
+    filterString => {
       if (filterString) {
         const filterJson: Filters = JSON.parse(filterString);
         formatDateString(filterJson?.lastInvestmentDate?.fromDate);
@@ -30,7 +30,7 @@ const useFilterParams = () => {
         return filterJson;
       }
       return null;
-    }
+    },
   );
 
   return {

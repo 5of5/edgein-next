@@ -1,6 +1,6 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import difference from "lodash/difference";
-import { query, mutate } from "@/graphql/hasuraAdmin";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import difference from 'lodash/difference';
+import { query, mutate } from '@/graphql/hasuraAdmin';
 import {
   DeleteListUserGroupsDocument,
   DeleteListUserGroupsMutation,
@@ -8,13 +8,13 @@ import {
   GetListUserGroupsByListIdQuery,
   InsertListUserGroupsDocument,
   InsertListUserGroupsMutation,
-} from "@/graphql/types";
-import CookieService from "../../utils/cookie";
-import { triggerListUpdatedAt } from "@/utils/lists";
+} from '@/graphql/types';
+import CookieService from '../../utils/cookie';
+import { triggerListUpdatedAt } from '@/utils/lists';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);
@@ -32,19 +32,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     variables: { listId },
   });
 
-  const currentGroupIds = list_user_groups.map(
-    (item) => item.user_group_id
-  );
+  const currentGroupIds = list_user_groups.map(item => item.user_group_id);
 
   const addGroupIds = difference(newGroupIds, currentGroupIds);
   const deleteGroupIds = difference(currentGroupIds, newGroupIds);
 
   const addedGroups = await Promise.all(
-    addGroupIds.map((id: number) => onAddListToGroup(listId, id))
+    addGroupIds.map((id: number) => onAddListToGroup(listId, id)),
   );
 
   const deletedGroups = await Promise.all(
-    deleteGroupIds.map((id: number) => onDeleteListGroup(listId, id))
+    deleteGroupIds.map((id: number) => onDeleteListGroup(listId, id)),
   );
 
   await triggerListUpdatedAt(listId);
@@ -77,7 +75,7 @@ const onDeleteListGroup = async (list_id: number, user_group_id: number) => {
       where: {
         list_id: { _eq: list_id },
         user_group_id: { _eq: user_group_id },
-      }
+      },
     },
   });
   return delete_list_user_groups?.returning[0];

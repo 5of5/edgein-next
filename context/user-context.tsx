@@ -5,7 +5,7 @@ import {
   GetFollowsByUserQuery,
   useGetGroupsOfUserQuery,
   GetGroupsOfUserQuery,
-} from "@/graphql/types";
+} from '@/graphql/types';
 import React from 'react';
 import { useQueryClient } from 'react-query';
 import { useIntercom } from 'react-use-intercom';
@@ -13,17 +13,17 @@ import { hotjar } from 'react-hotjar';
 import { clarity } from 'react-microsoft-clarity';
 import FullStory, { identify } from 'react-fullstory';
 import { startCase } from 'lodash';
-const FULLSTORY_ORG_ID = "o-1EYK7Q-na1";
-const CLARITY_ID = "epusnauses";
+const FULLSTORY_ORG_ID = 'o-1EYK7Q-na1';
+const CLARITY_ID = 'epusnauses';
 
 type UserValue = {
-  user: User | null
-  loading: boolean
-  listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][]
-  myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][]
-  refetchMyGroups: any
+  user: User | null;
+  loading: boolean;
+  listAndFollows: GetFollowsByUserQuery['list_members'][0]['list'][];
+  myGroups: GetGroupsOfUserQuery['user_group_members'][0]['user_group'][];
+  refetchMyGroups: any;
   refreshUser: () => void;
-}
+};
 
 const userContext = React.createContext<UserValue>({
   user: null,
@@ -34,63 +34,73 @@ const userContext = React.createContext<UserValue>({
   refreshUser: () => {},
 });
 const useUser = () => {
-  const queryClient = useQueryClient()
-  const contextValue = React.useContext(userContext)
+  const queryClient = useQueryClient();
+  const contextValue = React.useContext(userContext);
   const refreshProfile = () => {
-    queryClient.invalidateQueries(['GetFollowsByUser'])
-  }
-  return {...contextValue, refreshProfile };
-}
-
-type Props = {
-  children: JSX.Element,
+    queryClient.invalidateQueries(['GetFollowsByUser']);
+  };
+  return { ...contextValue, refreshProfile };
 };
 
-const UserProvider: React.FC<Props> = (props) => {
+type Props = {
+  children: JSX.Element;
+};
+
+const UserProvider: React.FC<Props> = props => {
   const { user, error: userError, loading, refreshUser } = useAuth();
   const { boot, shutdown } = useIntercom();
   const Provider = userContext.Provider;
 
   const {
-		data: listMemberships,
-		error: listAndFollowsError,
-		isLoading,
-	} = useGetFollowsByUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
+    data: listMemberships,
+    error: listAndFollowsError,
+    isLoading,
+  } = useGetFollowsByUserQuery(
+    { user_id: user?.id || 0 },
+    { enabled: Boolean(user) },
+  );
 
   const {
-		data: groups,
-		error: groupsError,
+    data: groups,
+    error: groupsError,
     refetch: refetchMyGroups,
-	} = useGetGroupsOfUserQuery({ user_id: user?.id || 0 }, { enabled: Boolean(user) })
+  } = useGetGroupsOfUserQuery(
+    { user_id: user?.id || 0 },
+    { enabled: Boolean(user) },
+  );
 
   React.useEffect(() => {
-		clarity.init(CLARITY_ID);
-	}, []);
+    clarity.init(CLARITY_ID);
+  }, []);
 
   React.useEffect(() => {
     if (user) {
-      try { 
+      try {
         if (hotjar.identify) {
-          hotjar.identify(String(user.id), { name: startCase(user.display_name || ""), email: user.email, role: user.role });
+          hotjar.identify(String(user.id), {
+            name: startCase(user.display_name || ''),
+            email: user.email,
+            role: user.role,
+          });
         }
-      } catch(e) {
-           // hotjar not loaded
-      }  
-      try { 
-        identify(String(user.id), { 
-          displayName: startCase(user.display_name || ""), 
+      } catch (e) {
+        // hotjar not loaded
+      }
+      try {
+        identify(String(user.id), {
+          displayName: startCase(user.display_name || ''),
           email: user.email,
-          role: user.role
-        });        
-      } catch(e) {
-           // fullstory not loaded
-      }  
-      try { 
-        shutdown()
+          role: user.role,
+        });
+      } catch (e) {
+        // fullstory not loaded
+      }
+      try {
+        shutdown();
         boot({
-          name: startCase(user.display_name || ""), // Full name
+          name: startCase(user.display_name || ''), // Full name
           email: user.email, // Email address
-          // created_at: user._createdAt // Signup date as a Unix timestamp    
+          // created_at: user._createdAt // Signup date as a Unix timestamp
           userId: String(user.id), // User ID
           userHash: user.intercomUserHash, // HMAC using SHA-256
           customAttributes: {
@@ -99,29 +109,29 @@ const UserProvider: React.FC<Props> = (props) => {
               ? `${process.env.NEXT_PUBLIC_AUTH0_REDIRECT_URL}/people/${user.person.slug}`
               : null, // User profile url
           },
-        })
-      } catch(e) {
-         // intercom not loaded
-      }  
+        });
+      } catch (e) {
+        // intercom not loaded
+      }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const [listAndFollows, setListAndFollows] = React.useState(
     listMemberships?.list_members.map(li => li.list) || [],
   );
   React.useEffect(() => {
-    setListAndFollows(listMemberships?.list_members.map(li => li.list) || [])
-  }, [listMemberships])
+    setListAndFollows(listMemberships?.list_members.map(li => li.list) || []);
+  }, [listMemberships]);
 
   const [myGroups, setMyGroups] = React.useState(
-    groups?.user_group_members?.map(group => group.user_group) || []
+    groups?.user_group_members?.map(group => group.user_group) || [],
   );
   React.useEffect(() => {
-    setMyGroups(groups?.user_group_members?.map(group => group.user_group) || []);
+    setMyGroups(
+      groups?.user_group_members?.map(group => group.user_group) || [],
+    );
   }, [groups]);
-    
 
   return (
     <Provider
@@ -134,11 +144,11 @@ const UserProvider: React.FC<Props> = (props) => {
         refreshUser,
       }}
     >
-      {user && !user.email.endsWith("@edgein.io") ? (
+      {user && !user.email.endsWith('@edgein.io') ? (
         <FullStory org={FULLSTORY_ORG_ID} />
       ) : null}
       {props.children}
     </Provider>
   );
-}
+};
 export { UserProvider, useUser };

@@ -1,16 +1,16 @@
-import React, { useRef } from "react";
-import useAdminTransform from "@/hooks/use-admin-transform";
-import ElemTitle from "../elem-title";
-import ElemFormBase from "../elem-form-base";
-import CompanyForm from "./company-form";
-import { TeamMemberEdit } from "./team-member-edit";
+import React, { useRef } from 'react';
+import useAdminTransform from '@/hooks/use-admin-transform';
+import ElemTitle from '../elem-title';
+import ElemFormBase from '../elem-form-base';
+import CompanyForm from './company-form';
+import { TeamMemberEdit } from './team-member-edit';
 import {
   withImageTransformData,
   withoutImageTransformData,
   getRootStyle,
-} from "./services";
-import InvestmentRoundTable from "./investment-round-table";
-import ElemParentOrganizationEdit from "../elem-parent-organization-edit";
+} from './services';
+import InvestmentRoundTable from './investment-round-table';
+import ElemParentOrganizationEdit from '../elem-parent-organization-edit';
 
 export const CompanyEdit = () => {
   const formRef = useRef<any>(null);
@@ -25,7 +25,7 @@ export const CompanyEdit = () => {
     });
 
   return (
-    <div style={{ paddingBottom: "20px" }}>
+    <div style={{ paddingBottom: '20px' }}>
       <ElemFormBase
         action="edit"
         title={<ElemTitle category="Company" />}

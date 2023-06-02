@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement, useState, useEffect } from 'react';
 import {
   AutocompleteArrayInput,
   AutocompleteInput,
@@ -16,8 +16,8 @@ import {
   required,
   SelectArrayInput,
   useGetOne,
-} from "react-admin";
-import { useParams } from "react-router-dom";
+} from 'react-admin';
+import { useParams } from 'react-router-dom';
 import {
   companyLayerChoices,
   validateNameAndSlugAndEmailAndDomain,
@@ -25,14 +25,14 @@ import {
   tags,
   companyChoices,
   libraryChoices,
-} from "../../../utils/constants";
-import ElemSlugInput from "../elem-slug-input";
-import ElemIconGroup from "../elem-icon-group";
-import useAdminHandleSlug from "@/hooks/use-admin-handle-slug";
-import ElemAddressInput from "../elem-address-input";
+} from '../../../utils/constants';
+import ElemSlugInput from '../elem-slug-input';
+import ElemIconGroup from '../elem-icon-group';
+import useAdminHandleSlug from '@/hooks/use-admin-handle-slug';
+import ElemAddressInput from '../elem-address-input';
 
 type CompanyFormProps = {
-  action: "create" | "edit";
+  action: 'create' | 'edit';
   formRef: any;
   toolbar?: ReactElement | false;
   isImageUpdated: boolean;
@@ -52,14 +52,14 @@ const CompanyForm = ({
 }: CompanyFormProps) => {
   const { id } = useParams();
   const { data: currentData } = useGetOne(
-    "companies",
+    'companies',
     { id },
-    { enabled: !!id }
+    { enabled: !!id },
   );
 
-  const { data: companies } = useGetList("companies", {});
-  const [isIcon, setIsIcon] = useState(action === "edit");
-  const [keyword, setKeyword] = useState("");
+  const { data: companies } = useGetList('companies', {});
+  const [isIcon, setIsIcon] = useState(action === 'edit');
+  const [keyword, setKeyword] = useState('');
 
   const { slug, onGenerateSlug } = useAdminHandleSlug(companies);
 
@@ -68,7 +68,7 @@ const CompanyForm = ({
   }, [currentData]);
 
   const inputClassName =
-    "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   const handleIcon = (e: any) => {
     setIsIcon(e.target.value.length > 0 ? true : false);
@@ -76,18 +76,18 @@ const CompanyForm = ({
   };
 
   return (
-    <div className="customForm" ref={formRef} style={{ position: "relative" }}>
+    <div className="customForm" ref={formRef} style={{ position: 'relative' }}>
       <SimpleForm
-        validate={(value) =>
+        validate={value =>
           validateNameAndSlugAndEmailAndDomain(
-            action !== "create",
+            action !== 'create',
             value,
-            companies
+            companies,
           )
         }
         toolbar={toolbar}
       >
-        {action === "edit" && (
+        {action === 'edit' && (
           <TextInput
             className="w-full px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
             disabled
@@ -99,11 +99,11 @@ const CompanyForm = ({
             <TextInput
               className={inputClassName}
               source="name"
-              onBlur={(e) => onGenerateSlug(e.target.value, formData)}
+              onBlur={e => onGenerateSlug(e.target.value, formData)}
               onChange={handleIcon}
               sx={{
-                ".MuiFormHelperText-root": {
-                  display: "block !important",
+                '.MuiFormHelperText-root': {
+                  display: 'block !important',
                 },
               }}
               {...rest}
@@ -112,10 +112,10 @@ const CompanyForm = ({
         </FormDataConsumer>
         {isIcon && (
           <>
-            {action === "edit" && (
-              <div style={{ position: "absolute", top: 135, left: 18 }}>
+            {action === 'edit' && (
+              <div style={{ position: 'absolute', top: 135, left: 18 }}>
                 <a
-                  target={"_blank"}
+                  target={'_blank'}
                   rel="noreferrer"
                   href={`https://edgein.io/companies/${
                     currentData && currentData.slug
@@ -145,7 +145,7 @@ const CompanyForm = ({
         >
           <ImageField source="src" title="title" />
         </FileInput>
-        {action === "edit" && !logo && !isImageUpdated && (
+        {action === 'edit' && !logo && !isImageUpdated && (
           <ImageField className="w-full" source="logo.url" title="Logo" />
         )}
         <SelectInput
@@ -157,9 +157,9 @@ const CompanyForm = ({
         <ReferenceInput label="Coin" source="coin_id" reference="coins">
           <AutocompleteInput
             className={inputClassName}
-            style={{ padding: 0, border: "none" }}
+            style={{ padding: 0, border: 'none' }}
             optionText="name"
-            filterToQuery={(search) => ({ name: search })}
+            filterToQuery={search => ({ name: search })}
           />
         </ReferenceInput>
         <NumberInput className={inputClassName} source="total_employees" />
@@ -173,7 +173,7 @@ const CompanyForm = ({
           source="date_added"
           placeholder="YYYY-MM-DD"
           label="Date Added YYYY-MM-DD"
-          validate={regex("[0-9]{4}-[0-9]{2}-[0-9]{2}", "")}
+          validate={regex('[0-9]{4}-[0-9]{2}-[0-9]{2}', '')}
         />
 
         <TextInput className={inputClassName} source="year_founded" />
@@ -215,10 +215,10 @@ const CompanyForm = ({
         <TextInput
           className={inputClassName}
           source="geopoint"
-          format={(value) =>
+          format={value =>
             value?.coordinates
               ? `{Latitude: ${value.coordinates[1]}, Longitude: ${value.coordinates[0]}}`
-              : ""
+              : ''
           }
           label="Geopoint"
           disabled
@@ -227,20 +227,20 @@ const CompanyForm = ({
           className={inputClassName}
           source="tags"
           choices={tags}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
         />
         <AutocompleteArrayInput
           className={inputClassName}
           source="status_tags"
           choices={companyChoices}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
         />
         <TextInput
           className={inputClassName}
           source="github"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -248,8 +248,8 @@ const CompanyForm = ({
           className={inputClassName}
           source="website"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -257,8 +257,8 @@ const CompanyForm = ({
           className={inputClassName}
           source="careers_page"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -266,8 +266,8 @@ const CompanyForm = ({
           className={inputClassName}
           source="company_linkedin"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -275,8 +275,8 @@ const CompanyForm = ({
           className={inputClassName}
           source="twitter"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -284,8 +284,8 @@ const CompanyForm = ({
           className={inputClassName}
           source="discord"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -293,8 +293,8 @@ const CompanyForm = ({
           className={inputClassName}
           source="glassdoor"
           sx={{
-            ".MuiFormHelperText-root": {
-              display: "block !important",
+            '.MuiFormHelperText-root': {
+              display: 'block !important',
             },
           }}
         />
@@ -302,7 +302,7 @@ const CompanyForm = ({
           className={inputClassName}
           source="library"
           choices={libraryChoices}
-          defaultValue={["Web3"]}
+          defaultValue={['Web3']}
         />
       </SimpleForm>
     </div>
