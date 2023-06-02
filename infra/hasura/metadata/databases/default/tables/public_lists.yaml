@@ -72,6 +72,7 @@ select_permissions:
         - name
         - public
         - type
+        - updated_at
       computed_fields:
         - total_no_of_resources
       filter:

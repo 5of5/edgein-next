@@ -37,6 +37,10 @@ for (const [route, handler] of Object.entries(routes)) {
   });
 }
 
+app.use('/healthcheck', (req: Request, res: Response) => {
+  res.status(200).json({ message: 'OK' });
+});
+
 // start server
 const PORT = process.env.PORT || 8005;
 app.listen(PORT, () => {

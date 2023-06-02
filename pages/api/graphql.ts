@@ -5,6 +5,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(
     CookieService.getAuthToken(req.cookies),
   );
+
+  // Set default showDraftData is true
+  const isAdminHideDraftData =
+    user?.role === 'admin' && user?.showDraftData === false;
+
   let headers:
     | ({ 'x-hasura-role'?: string; 'x-hasura-user-id'?: string } & {
         Authorization: string;
@@ -14,7 +19,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (!user) {
     return res.status(401).end();
   }
-  if (user.role === 'user' || req.headers['is-viewer'] === 'true') {
+  if (
+    user.role === 'user' ||
+    req.headers['is-viewer'] === 'true' ||
+    isAdminHideDraftData
+  ) {
     headers = {
       Authorization: `Bearer ${CookieService.getAuthToken(req.cookies)}`,
       'x-hasura-role': process.env.HASURA_VIEWER ?? '',
@@ -24,16 +33,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
     };
   }
-  // temporay until everyone gets a new cookie
-  headers = {
-    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
-    'x-hasura-user-id': user?.id?.toString() ?? '',
-  };
+
   const opts = {
     method: 'POST',
     body: typeof req.body === 'object' ? JSON.stringify(req.body) : req.body,
     headers,
   };
+
   const proxyRes = await fetch(process.env.GRAPHQL_ENDPOINT ?? '', opts);
 
   const json = await proxyRes.json();
