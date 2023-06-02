@@ -1,11 +1,11 @@
-import React, { useState, Fragment } from "react";
-import { useRouter } from "next/router";
-import { Dialog, Transition } from "@headlessui/react";
-import { ElemButton } from "@/components/elem-button";
-import { createListWithMultipleResources } from "@/utils/reaction";
-import { useUser } from "@/context/user-context";
-import { InputTextarea } from "../input-textarea";
-import { useMutation } from "react-query";
+import React, { useState, Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { Dialog, Transition } from '@headlessui/react';
+import { ElemButton } from '@/components/elem-button';
+import { createListWithMultipleResources } from '@/utils/reaction';
+import { useUser } from '@/context/user-context';
+import { InputTextarea } from '../input-textarea';
+import { useMutation } from 'react-query';
 
 type Props = {
   selectedOption: string;
@@ -19,7 +19,7 @@ type Props = {
   onNext: () => void;
 };
 
-const QUESTION = "Where did you hear about us?";
+const QUESTION = 'Where did you hear about us?';
 
 export default function OnboardingStep4(props: Props) {
   const router = useRouter();
@@ -30,12 +30,12 @@ export default function OnboardingStep4(props: Props) {
 
   const onCreateList = async () => {
     const path =
-      props.selectedOption === "companies" ? "companies" : "investors";
+      props.selectedOption === 'companies' ? 'companies' : 'investors';
     const payload = {
-      sentiment: "My First List",
-      [props.selectedOption === "companies" ? "companies" : "vcfirms"]:
-        props.list.map((item) => ({
-          [props.selectedOption === "companies" ? "company" : "vcfirm"]:
+      sentiment: 'My First List',
+      [props.selectedOption === 'companies' ? 'companies' : 'vcfirms']:
+        props.list.map(item => ({
+          [props.selectedOption === 'companies' ? 'company' : 'vcfirm']:
             item.id,
           pathname: `/${path}/${item.slug}`,
         })),
@@ -46,17 +46,15 @@ export default function OnboardingStep4(props: Props) {
 
   const { mutate: onSave, isLoading: isSubmitting } = useMutation(
     () => {
-      return fetch("/api/add-onboarding-information/", {
-        method: "POST",
+      return fetch('/api/add-onboarding-information/', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           selectedResourceType: props.selectedOption,
-          locationTags: props.locationTags.map(
-            (item) => item?.formattedAddress
-          ),
+          locationTags: props.locationTags.map(item => item?.formattedAddress),
           industryTags: props.industryTags,
           questions: [
             {
@@ -72,7 +70,7 @@ export default function OnboardingStep4(props: Props) {
         props.onNext();
         router.push(`/` + props.selectedOption);
       },
-    }
+    },
   );
 
   const onNext = async () => {
@@ -122,7 +120,7 @@ export default function OnboardingStep4(props: Props) {
                     value={message}
                     placeholder="Type your answer here..."
                     rows={4}
-                    onChange={(e) => setMessage(e.target.value)}
+                    onChange={e => setMessage(e.target.value)}
                     className="ring-inset focus:ring-inset"
                   />
                 </div>

@@ -1,7 +1,7 @@
-import React from "react";
-import ElemFormBase from "../elem-form-base";
-import ElemTitle from "../elem-title";
-import InvestorForm from "./investor-form";
+import React from 'react';
+import ElemFormBase from '../elem-form-base';
+import ElemTitle from '../elem-title';
+import InvestorForm from './investor-form';
 
 export const InvestorEdit = () => {
   return (

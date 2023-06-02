@@ -1,12 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { mutate } from "@/graphql/hasuraAdmin";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { mutate } from '@/graphql/hasuraAdmin';
 import {
   UpdateUserOnboardingInformationDocument,
   UpdateUserOnboardingInformationMutation,
-} from "@/graphql/types";
-import CookieService from "../../utils/cookie";
-import SlackServices from "@/utils/slack";
-import UserService from "@/utils/users";
+} from '@/graphql/types';
+import CookieService from '../../utils/cookie';
+import SlackServices from '@/utils/slack';
+import UserService from '@/utils/users';
 
 type QUESTION = {
   name: string;
@@ -14,7 +14,7 @@ type QUESTION = {
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") return res.status(405).end();
+  if (req.method !== 'POST') return res.status(405).end();
 
   const token = CookieService.getAuthToken(req.cookies);
   const user = await CookieService.getUser(token);
@@ -49,15 +49,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const messagePayload = {
       attachments: [
         {
-          color: "#2EB886",
-          title: "You have a new submission",
+          color: '#2EB886',
+          title: 'You have a new submission',
           fields: [
             {
-              title: "Username",
+              title: 'Username',
               value: user.display_name,
             },
             {
-              title: "Email",
+              title: 'Email',
               value: user.email,
             },
             ...questions.map((item: QUESTION) => ({
@@ -70,8 +70,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     };
 
     await SlackServices.sendMessage(
-      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || "",
-      messagePayload
+      process.env.EDGEIN_ONBOARDING_WEBHOOK_URL || '',
+      messagePayload,
     );
 
     return res.status(200).send(response);

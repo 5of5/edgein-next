@@ -1,17 +1,17 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { query, mutate } from "@/graphql/hasuraAdmin";
-import CookieService from "../../utils/cookie";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { query, mutate } from '@/graphql/hasuraAdmin';
+import CookieService from '../../utils/cookie';
 import {
   GetListUserGroupsByListIdAndGroupIdDocument,
   GetListUserGroupsByListIdAndGroupIdQuery,
   InsertListUserGroupsDocument,
   InsertListUserGroupsMutation,
-} from "@/graphql/types";
-import { triggerListUpdatedAt } from "@/utils/lists";
+} from '@/graphql/types';
+import { triggerListUpdatedAt } from '@/utils/lists';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);
@@ -31,7 +31,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         return addToGroupResponse;
       }
       return null;
-    })
+    }),
   );
 
   res.send(response);

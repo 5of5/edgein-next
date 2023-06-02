@@ -1,25 +1,25 @@
-import React, { FC, ReactElement } from "react";
-import { Create, Edit } from "react-admin";
+import React, { FC, ReactElement } from 'react';
+import { Create, Edit } from 'react-admin';
 
 type Props = {
   title: ReactElement | string;
-  action: "create" | "edit";
+  action: 'create' | 'edit';
   transform?: any;
   rootStyle?: any;
   children: ReactElement;
 };
 
 const defaultSx = {
-  ".MuiPaper-root": {
-    position: "relative",
+  '.MuiPaper-root': {
+    position: 'relative',
   },
-  ".MuiCardContent-root": {
-    "& > div": {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      flexWrap: "wrap",
-      flexDirection: "row !important",
+  '.MuiCardContent-root': {
+    '& > div': {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      flexDirection: 'row !important',
     },
   },
 };
@@ -33,7 +33,7 @@ const ElemFormBase: FC<Props> = ({
 }) => {
   const sx = rootStyle || defaultSx;
 
-  if (action === "create") {
+  if (action === 'create') {
     return (
       <Create title={title} transform={transform} sx={sx}>
         {children}
@@ -41,7 +41,7 @@ const ElemFormBase: FC<Props> = ({
     );
   }
 
-  if (action === "edit") {
+  if (action === 'edit') {
     return (
       <Edit title={title} transform={transform} sx={sx}>
         {children}

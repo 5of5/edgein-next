@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import {
   RenderCBIcon,
   RenderGitHubIcon,
   RenderGoogleIcon,
   RenderLinkedinIcon,
-} from "@/utils/other";
+} from '@/utils/other';
 
-type CategoryTypes = "blockchain" | "coin" | "company" | "person" | "vcFirm";
+type CategoryTypes = 'blockchain' | 'coin' | 'company' | 'person' | 'vcFirm';
 
 type ElemIconGroupProps = {
   category: CategoryTypes;
-  action: "create" | "edit";
+  action: 'create' | 'edit';
   keyword: string;
   topPos?: string;
 };
@@ -21,27 +21,27 @@ const ElemIconGroup = ({
   keyword,
   topPos,
 }: ElemIconGroupProps) => {
-  const topPosValue = action === "create" ? "75px" : topPos;
+  const topPosValue = action === 'create' ? '75px' : topPos;
   return (
     <>
       <RenderGoogleIcon
         topPos={topPosValue}
-        leftPos={["blockchain", "coin"].includes(category) ? "2%" : "36%"}
+        leftPos={['blockchain', 'coin'].includes(category) ? '2%' : '36%'}
         googleKeyWord={keyword}
       />
       <RenderLinkedinIcon
         topPos={topPosValue}
-        leftPos={["blockchain", "coin"].includes(category) ? "5%" : "39%"}
+        leftPos={['blockchain', 'coin'].includes(category) ? '5%' : '39%'}
         googleKeyWord={keyword}
       />
       <RenderGitHubIcon
         topPos={topPosValue}
-        leftPos={["blockchain", "coin"].includes(category) ? "8%" : "42%"}
+        leftPos={['blockchain', 'coin'].includes(category) ? '8%' : '42%'}
         googleKeyWord={keyword}
       />
       <RenderCBIcon
         topPos={topPosValue}
-        leftPos={["blockchain", "coin"].includes(category) ? "11%" : "45%"}
+        leftPos={['blockchain', 'coin'].includes(category) ? '11%' : '45%'}
         googleKeyWord={keyword}
       />
     </>

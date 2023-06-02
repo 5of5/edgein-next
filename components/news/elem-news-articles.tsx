@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useIntercom } from "react-use-intercom";
-import { ElemButton } from "../elem-button";
+import React, { useEffect, useState } from 'react';
+import { useIntercom } from 'react-use-intercom';
+import { ElemButton } from '../elem-button';
 import {
   News,
   News_Bool_Exp,
   Order_By,
   useGetNewsArticlesQuery,
-} from "@/graphql/types";
-import { getQueryBySource } from "@/utils/news";
-import ElemNewsHeading from "./elem-news-heading";
+} from '@/graphql/types';
+import { getQueryBySource } from '@/utils/news';
+import ElemNewsHeading from './elem-news-heading';
 
 type Props = {
   heading?: string;
@@ -18,7 +18,11 @@ type Props = {
 
 export const DEFAULT_LIMIT = 10;
 
-const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news = [] }) => {
+const ElemNewsArticles: React.FC<Props> = ({
+  heading,
+  newsOrgSlug,
+  news = [],
+}) => {
   const [articles, setArticles] = useState<News[]>(news);
 
   const [page, setPage] = useState(0);
@@ -32,7 +36,7 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news = [] }) 
     limit: DEFAULT_LIMIT,
     order: Order_By.Desc,
     where: {
-      _and: [{ status: { _eq: "published" } }, { ...sourceQuery }],
+      _and: [{ status: { _eq: 'published' } }, { ...sourceQuery }],
     } as News_Bool_Exp,
   });
 
@@ -54,7 +58,7 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news = [] }) 
     <div>
       <div className="flex items-center justify-between mb-2 border-b border-black/10">
         <h2 className="text-xl font-bold">
-          {heading ? heading : "Activity Timeline"}
+          {heading ? heading : 'Activity Timeline'}
         </h2>
       </div>
 
@@ -62,7 +66,7 @@ const ElemNewsArticles: React.FC<Props> = ({ heading, newsOrgSlug, news = [] }) 
         {articles && articles.length > 0 ? (
           <>
             <ul className="flex flex-col">
-              {articles.map((item) => {
+              {articles.map(item => {
                 return (
                   <li
                     key={item.id}

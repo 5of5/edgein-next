@@ -1,38 +1,38 @@
 query GetNotificationsForUser($user: Int!) {
-	notifications(
-		where: { target_user_id: { _eq: $user } }
-		order_by: { created_at: desc }
-		limit: 100
-	) {
-		id
-		read
-		created_at
-		event_type
-		message
-		read_at
-		follow_resource_type
-		notification_resource_type
-		company {
-			id
-			name
-			slug
-			logo
-		}
-		vc_firm {
-			id
-			name
-			slug
-			logo
-		}
-		notification_actions {
-			id
-			action_id
-			action {
-				id
-				properties
-			}
-		}
-	}
+  notifications(
+    where: { target_user_id: { _eq: $user } }
+    order_by: { created_at: desc }
+    limit: 100
+  ) {
+    id
+    read
+    created_at
+    event_type
+    message
+    read_at
+    follow_resource_type
+    notification_resource_type
+    company {
+      id
+      name
+      slug
+      logo
+    }
+    vc_firm {
+      id
+      name
+      slug
+      logo
+    }
+    notification_actions {
+      id
+      action_id
+      action {
+        id
+        properties
+      }
+    }
+  }
 }
 
 mutation InsertNotifications($object: notifications_insert_input!) {
@@ -61,7 +61,9 @@ mutation MarkNotificationsAsRead($where: notifications_bool_exp!) {
   }
 }
 
-mutation InsertNotificationActions($object: notification_actions_insert_input!) {
+mutation InsertNotificationActions(
+  $object: notification_actions_insert_input!
+) {
   insert_notification_actions_one(object: $object) {
     id
   }

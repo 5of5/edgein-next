@@ -1,10 +1,10 @@
-import { mutate, query } from "@/graphql/hasuraAdmin";
+import { mutate, query } from '@/graphql/hasuraAdmin';
 import {
   FindEventAttendeeDocument,
   FindEventAttendeeQuery,
   InsertEventAttendeeDocument,
   InsertEventAttendeeMutation,
-} from "@/graphql/types";
+} from '@/graphql/types';
 
 const addEventAttendee = async (event_id: number, person_id: number) => {
   const {
@@ -15,7 +15,7 @@ const addEventAttendee = async (event_id: number, person_id: number) => {
       object: {
         event_id,
         person_id,
-        type: "attendee",
+        type: 'attendee',
       },
     },
   });

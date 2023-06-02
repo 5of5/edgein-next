@@ -1,10 +1,10 @@
-import { NextApiResponse, NextApiRequest } from "next";
-import CookieService from "../../utils/cookie";
-import UserService from "../../utils/users";
+import { NextApiResponse, NextApiRequest } from 'next';
+import CookieService from '../../utils/cookie';
+import UserService from '../../utils/users';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);
@@ -16,11 +16,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const response = await UserService.updateAllowedEmailArray(
       user?.id,
-      additionalEmails
+      additionalEmails,
     );
 
     const userData = await UserService.findOneUserById(user.id);
-    
+
     const newUserToken = UserService.createToken(userData, false);
 
     const token = await CookieService.createUserToken(newUserToken);

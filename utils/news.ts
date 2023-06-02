@@ -1,6 +1,6 @@
 export const getQueryBySource = (newsOrgSlug: string) => {
   const sourceQuery =
-    newsOrgSlug === "techcrunch"
+    newsOrgSlug === 'techcrunch'
       ? {
           source: {
             _cast: {
@@ -28,7 +28,7 @@ export const getQueryBySource = (newsOrgSlug: string) => {
                   String: { _ilike: `%"poweredby": "cryptopanic"%` },
                 },
               },
-            }
+            },
           ],
         };
 

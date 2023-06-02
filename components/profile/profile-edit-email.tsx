@@ -1,18 +1,18 @@
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import validator from "validator";
-import { useUser } from "@/context/user-context";
-import { EditSection } from "../dashboard/edit-section";
-import { ElemButton } from "../elem-button";
-import { InputText } from "../input-text";
+import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
+import validator from 'validator';
+import { useUser } from '@/context/user-context';
+import { EditSection } from '../dashboard/edit-section';
+import { ElemButton } from '../elem-button';
+import { InputText } from '../input-text';
 
 type Props = {};
 
 export const ProfileEditEmail: React.FC<Props> = ({}) => {
   const { user, refreshUser } = useUser();
   const [editEmail, setEditEmail] = useState<boolean>(false);
-  const [newEmail, setNewEmail] = useState<string>("");
-  const [emailError, setEmailError] = useState<string>("");
+  const [newEmail, setNewEmail] = useState<string>('');
+  const [emailError, setEmailError] = useState<string>('');
 
   const onEdit = () => {
     setEditEmail(true);
@@ -20,22 +20,22 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
 
   const onCancel = () => {
     setEditEmail(false);
-    setNewEmail("");
-    setEmailError("");
+    setNewEmail('');
+    setEmailError('');
   };
 
   const onChangeNewEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setEmailError("");
+    setEmailError('');
     setNewEmail(value);
   };
 
   const onShowToast = (message: string) => {
     toast.custom(
-      (t) => (
+      t => (
         <div
           className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-            t.visible ? "animate-fade-in-up" : "opacity-0"
+            t.visible ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
           {message}
@@ -43,41 +43,43 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
       ),
       {
         duration: 5000,
-        position: "top-center",
-      }
+        position: 'top-center',
+      },
     );
   };
 
   const onSaveNewEmail = async () => {
     if (validator.isEmail(newEmail)) {
-      setEmailError("");
-      await fetch("/api/send-confirm-additional-email/", {
-        method: "POST",
+      setEmailError('');
+      await fetch('/api/send-confirm-additional-email/', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: newEmail,
         }),
       });
-      onShowToast(`A verify link has been sent to your email ${newEmail}. Please check your mailbox.`);
+      onShowToast(
+        `A verify link has been sent to your email ${newEmail}. Please check your mailbox.`,
+      );
       onCancel();
     } else {
-      setEmailError("Invalid email address");
+      setEmailError('Invalid email address');
     }
   };
 
   const onRemoveEmail = async (email: string) => {
-    await fetch("/api/update-additional-emails/", {
-      method: "POST",
+    await fetch('/api/update-additional-emails/', {
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         additionalEmails: [
-          ...(user?.additional_emails ?? []).filter((item) => item !== email),
+          ...(user?.additional_emails ?? []).filter(item => item !== email),
         ],
       }),
     });
@@ -107,7 +109,7 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
             {user?.email}
             {user?.email != null && (
               <span className="font-bold text-sm text-primary-500">
-                {" "}
+                {' '}
                 - Primary
               </span>
             )}
@@ -147,9 +149,9 @@ export const ProfileEditEmail: React.FC<Props> = ({}) => {
             name="new-email"
             placeholder="name@email.com"
             className={`${
-              emailError === ""
-                ? "ring-1 ring-slate-200"
-                : "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+              emailError === ''
+                ? 'ring-1 ring-slate-200'
+                : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
             }`}
           />
           {emailError && (

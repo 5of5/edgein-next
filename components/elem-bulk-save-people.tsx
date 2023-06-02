@@ -1,38 +1,38 @@
-import React, { FC, useEffect, useState, Fragment } from "react";
-import { useRouter } from "next/router";
-import { useMutation } from "react-query";
-import { GetFollowsByUserQuery } from "@/graphql/types";
-import { getNameFromListName } from "@/utils/reaction";
-import { ElemButton } from "@/components/elem-button";
-import { InputText } from "@/components/input-text";
-import { IconX, IconListPlus, IconSpinner } from "@/components/icons";
-import { Dialog, Transition } from "@headlessui/react";
-import { InputCheckbox } from "@/components/input-checkbox";
-import toast, { Toaster } from "react-hot-toast";
-import { useUser } from "@/context/user-context";
-import { find } from "lodash";
+import React, { FC, useEffect, useState, Fragment } from 'react';
+import { useRouter } from 'next/router';
+import { useMutation } from 'react-query';
+import { GetFollowsByUserQuery } from '@/graphql/types';
+import { getNameFromListName } from '@/utils/reaction';
+import { ElemButton } from '@/components/elem-button';
+import { InputText } from '@/components/input-text';
+import { IconX, IconListPlus, IconSpinner } from '@/components/icons';
+import { Dialog, Transition } from '@headlessui/react';
+import { InputCheckbox } from '@/components/input-checkbox';
+import toast, { Toaster } from 'react-hot-toast';
+import { useUser } from '@/context/user-context';
+import { find } from 'lodash';
 
 type Props = {
   text: string;
   personIds: number[];
 };
 
-type List = GetFollowsByUserQuery["list_members"][0]["list"];
+type List = GetFollowsByUserQuery['list_members'][0]['list'];
 
 export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   const router = useRouter();
 
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const { user, listAndFollows, refreshProfile } = useUser();
-  const [listName, setListName] = useState<string>("");
+  const [listName, setListName] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
 
   const listData = listAndFollows
-    .filter((item) => {
+    .filter(item => {
       const sentiment = getNameFromListName(item);
       return (
-        !["hot", "like", "crap"].includes(sentiment) &&
+        !['hot', 'like', 'crap'].includes(sentiment) &&
         item.created_by_id === user?.id
       );
     })
@@ -41,19 +41,19 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   useEffect(() => {
     setListName(listName);
     if (listName && listName.length < 3) {
-      setError("List name should have at least 3 characters.");
+      setError('List name should have at least 3 characters.');
     } else {
-      setError("");
+      setError('');
     }
   }, [listName]);
 
   const { mutate: handleSaveToList, isLoading } = useMutation(
-    ({ listName, action }: { listName: string; action: "add" | "remove" }) =>
-      fetch("/api/bulk-save-people/", {
-        method: "POST",
+    ({ listName, action }: { listName: string; action: 'add' | 'remove' }) =>
+      fetch('/api/bulk-save-people/', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           personIds,
@@ -66,27 +66,27 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
       onSuccess: (_, { listName, action }) => {
         refreshProfile();
         toast.custom(
-          (t) => (
+          t => (
             <div
               className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-                t.visible ? "animate-fade-in-up" : "opacity-0"
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
               }`}
             >
-              {action === "add" ? " Added " : " Removed "}
-              {action === "add" ? " to " : " from "}
+              {action === 'add' ? ' Added ' : ' Removed '}
+              {action === 'add' ? ' to ' : ' from '}
               &ldquo;{getNameFromListName({ name: listName })}&rdquo; list
             </div>
           ),
           {
             duration: 3000,
-            position: "top-center",
-          }
+            position: 'top-center',
+          },
         );
       },
-    }
+    },
   );
 
-  const toggleToList = async (listName: string, action: "add" | "remove") => {
+  const toggleToList = async (listName: string, action: 'add' | 'remove') => {
     if (listName && user) {
       handleSaveToList({ listName, action });
     }
@@ -96,19 +96,19 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
     if (error || !listName || !user) {
       return;
     } else {
-      await toggleToList(`${user.id}-${listName}`, "add");
+      await toggleToList(`${user.id}-${listName}`, 'add');
       // hide input
       setShowNew(false);
-      setListName("");
+      setListName('');
     }
   };
 
   const isSelected = (list: List) => {
     let selected = true;
-    personIds.every((personId) => {
+    personIds.every(personId => {
       const personIsOnList = find(
         list?.follows_people,
-        (follow) => follow?.resource_id === personId
+        follow => follow?.resource_id === personId,
       );
       if (!personIsOnList) {
         selected = false;
@@ -123,11 +123,11 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
   const onClickHandler = (
     event: React.MouseEvent<HTMLInputElement>,
     list: List,
-    isSelected: boolean
+    isSelected: boolean,
   ) => {
     event.preventDefault();
     event.stopPropagation();
-    toggleToList(list.name, isSelected ? "remove" : "add");
+    toggleToList(list.name, isSelected ? 'remove' : 'add');
   };
 
   const onSaveButton = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -204,7 +204,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                   </p>
                 )}
                 <ul className="max-h-96 overflow-y-auto scrollbar-hide divide-y divide-slate-100">
-                  {listData?.map((list) => {
+                  {listData?.map(list => {
                     const selected = isSelected(list);
 
                     return (
@@ -215,7 +215,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                           labelClass="grow py-3 pr-3"
                           label={getNameFromListName(list)}
                           checked={selected}
-                          onClick={(e) => onClickHandler(e, list, selected)}
+                          onClick={e => onClickHandler(e, list, selected)}
                         />
                       </li>
                     );
@@ -242,18 +242,18 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                       <InputText
                         label="Name"
                         type="text"
-                        onChange={(e) => setListName(e.target.value)}
+                        onChange={e => setListName(e.target.value)}
                         value={listName}
                         required={true}
                         name="name"
                         placeholder="Enter List Name..."
                         className={`${
-                          error === ""
-                            ? "ring-1 ring-slate-200"
-                            : "ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400"
+                          error === ''
+                            ? 'ring-1 ring-slate-200'
+                            : 'ring-2 ring-rose-400 focus:ring-rose-400 hover:ring-rose-400'
                         }`}
                       />
-                      {error === "" ? null : (
+                      {error === '' ? null : (
                         <div className="mt-2 font-bold text-sm text-rose-400">
                           {error}
                         </div>
@@ -263,7 +263,7 @@ export const ElemBulkSavePeople: FC<Props> = ({ text, personIds }) => {
                       <ElemButton
                         onClick={handleCreate}
                         className="mt-3 ml-auto"
-                        disabled={listName === "" || error ? true : false}
+                        disabled={listName === '' || error ? true : false}
                         roundedFull
                         btn="primary"
                       >
