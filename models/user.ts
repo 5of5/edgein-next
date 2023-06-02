@@ -33,6 +33,7 @@ export type User = {
   entitlements: Entitlements;
   active: boolean;
   onboarding_information: Record<string, unknown> | null;
+  showDraftData?: boolean;
 };
 
 export type UserToken = User & {

@@ -3,18 +3,19 @@ import { useAuth } from '@/hooks/use-auth';
 import { useParams } from 'react-router-dom';
 import { ElemButton } from '@/components/elem-button';
 import { InputText } from '@/components/input-text';
-import { IconLinkedIn, IconContributor } from '@/components/icons';
+import { IconLinkedIn, IconSparkles } from '@/components/icons';
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { ElemInviteLinks } from '@/components/elem-invite-links';
 import { EditSection } from '@/components/dashboard/edit-section';
 import { useGetUserProfileQuery } from '@/graphql/types';
 import { ElemSubscribedDialog } from '@/components/elem-subscribed-dialog';
+import InputSwitch from '@/components/input-switch';
 import { loadStripe } from '@/utils/stripe';
 
 const validator = require('validator');
 
 export default function Account() {
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const { success } = useParams();
 
   const { data: userProfile } = useGetUserProfileQuery({
@@ -106,6 +107,20 @@ export default function Account() {
       //call api
       callChangePassword();
     }
+  };
+
+  const handleSwitchShowDraftData = async (value: boolean) => {
+    await fetch('/api/toggle-show-draft-data/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        showDraftData: value,
+      }),
+    });
+    refreshUser();
   };
 
   return (
@@ -248,7 +263,7 @@ export default function Account() {
             {userProfile && userProfile.users_by_pk?.billing_org_id ? (
               <div>
                 <div className="flex items-center space-x-1">
-                  <IconContributor className="h-6 w-6 text-primary-500" />
+                  <IconSparkles className="h-6 w-6 text-primary-500" />
                   <p className="text-slate-600">EdgeIn Contributor</p>
                 </div>
                 <div className="flex items-center space-x-1">
@@ -288,6 +303,24 @@ export default function Account() {
           onClose={onCloseSubscribedDialog}
         />
       </div>
+
+      {user?.role === 'admin' && (
+        <div className="bg-white shadow rounded-lg mt-5 p-5">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="font-bold text-xl">Admin Settings</h2>
+          </div>
+
+          <dl className="w-full divide-y divide-black/10 border-y border-black/10">
+            <EditSection heading="Show draft data">
+              <InputSwitch
+                label=""
+                checked={user?.showDraftData || false}
+                onChange={handleSwitchShowDraftData}
+              />
+            </EditSection>
+          </dl>
+        </div>
+      )}
     </DashboardLayout>
   );
 }
