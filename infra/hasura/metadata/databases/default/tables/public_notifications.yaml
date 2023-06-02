@@ -30,3 +30,23 @@ array_relationships:
         insertion_order: null
         column_mapping:
           id: notification_id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - read
+        - company_id
+        - id
+        - notification_resource_id
+        - target_user_id
+        - vc_firm_id
+        - action_ids
+        - event_type
+        - follow_resource_type
+        - message
+        - notification_resource_type
+        - created_at
+        - read_at
+        - updated_at
+      filter: {}
+      allow_aggregations: true

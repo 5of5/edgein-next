@@ -217,6 +217,7 @@ select_permissions:
         - search_count
         - sentiment
         - slug
+        - status
         - status_tags
         - tags
         - telegram
