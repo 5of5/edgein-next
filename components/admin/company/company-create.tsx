@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
-import { useCreate, useRedirect } from "react-admin";
-import useAdminTransform from "@/hooks/use-admin-transform";
-import ElemToolbar from "../elem-toolbar";
-import ElemFormBase from "../elem-form-base";
-import CompanyForm from "./company-form";
+import React, { useRef } from 'react';
+import { useCreate, useRedirect } from 'react-admin';
+import useAdminTransform from '@/hooks/use-admin-transform';
+import ElemToolbar from '../elem-toolbar';
+import ElemFormBase from '../elem-form-base';
+import CompanyForm from './company-form';
 import {
   getRootStyle,
   withImageTransformData,
   withoutImageTransformData,
-} from "./services";
+} from './services';
 
 export const CompanyCreate = () => {
   const [create] = useCreate();
@@ -26,9 +26,9 @@ export const CompanyCreate = () => {
     });
 
   const handleSaveDraft = (data: any) => {
-    data.status = "draft";
-    create("companies", { data });
-    redirect("/companies");
+    data.status = 'draft';
+    create('companies', { data });
+    redirect('/companies');
   };
 
   return (

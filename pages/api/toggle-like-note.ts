@@ -1,10 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import CookieService from "@/utils/cookie";
-import GroupService from "@/utils/groups";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import CookieService from '@/utils/cookie';
+import GroupService from '@/utils/groups';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'POST') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);
@@ -15,10 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const noteId: number = req.body.noteId;
 
   // check like exists
-  const noteLikesOne = await GroupService.onCheckLikeExists(
-    noteId,
-    user.id
-  );
+  const noteLikesOne = await GroupService.onCheckLikeExists(noteId, user.id);
 
   if (noteLikesOne) {
     const response = await GroupService.onDeleteLike(noteLikesOne.id);

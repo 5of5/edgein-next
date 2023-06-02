@@ -1,6 +1,6 @@
-import { FC } from "react";
-import { Combobox } from "@headlessui/react";
-import useAddressAutocomplete from "@/hooks/use-address-autocomplete";
+import { FC } from 'react';
+import { Combobox } from '@headlessui/react';
+import useAddressAutocomplete from '@/hooks/use-address-autocomplete';
 
 type Props = {
   value: any;
@@ -27,7 +27,7 @@ const ElemAddressFilter: FC<Props> = ({ value, onChange }) => {
               <Combobox.Option
                 className={({ active }) =>
                   `${
-                    active ? "text-primary-500 bg-primary-100" : "text-dark-500"
+                    active ? 'text-primary-500 bg-primary-100' : 'text-dark-500'
                   }  select-none relative py-2 pl-3 pr-4 cursor-pointer`
                 }
                 key={item.formattedAddress}

@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
   ReferenceField,
   TextField,
   SelectField,
   DateField,
   NumberField,
-} from "react-admin";
-import { currencyChoices } from "@/utils/constants";
-import InvestmentRoundDialog from "./investment-round-dialog";
-import ElemTable from "../elem-table";
+} from 'react-admin';
+import { currencyChoices } from '@/utils/constants';
+import InvestmentRoundDialog from './investment-round-dialog';
+import ElemTable from '../elem-table';
 
 const InvestmentRoundTable = () => {
   return (
@@ -17,10 +17,10 @@ const InvestmentRoundTable = () => {
       deleteUri="investment_rounds"
       parentId="company_id"
       createButtonLabel="Add Investment Round"
-      confirmContent={(recordData) =>
+      confirmContent={recordData =>
         `Are you sure you want to delete ${recordData?.round}?`
       }
-      formDialogComponent={(props) => (
+      formDialogComponent={props => (
         <InvestmentRoundDialog
           selectedRecord={props.selectedRecord}
           onClose={props.onClose}

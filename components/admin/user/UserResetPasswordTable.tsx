@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   List,
   Datagrid,
@@ -9,9 +9,9 @@ import {
   FunctionField,
   Button,
   useGetList,
-} from "react-admin";
-import { useParams } from "react-router-dom";
-import ElemGeneratedPassword from "./ElemGeneratedPassword";
+} from 'react-admin';
+import { useParams } from 'react-router-dom';
+import ElemGeneratedPassword from './ElemGeneratedPassword';
 
 const ListActions = () => {
   return (
@@ -20,7 +20,7 @@ const ListActions = () => {
         label="Reset password history"
         variant="text"
         onClick={() => {}}
-        sx={{ cursor: "auto" }}
+        sx={{ cursor: 'auto' }}
       />
     </TopToolbar>
   );
@@ -29,7 +29,7 @@ const ListActions = () => {
 const UserResetPasswordTable = () => {
   const { id: currentId } = useParams();
 
-  const { data } = useGetList("reset_passwords", {
+  const { data } = useGetList('reset_passwords', {
     filter: { user_id: parseInt(currentId!) },
   });
 
@@ -39,28 +39,28 @@ const UserResetPasswordTable = () => {
         pagination={false}
         actions={<ListActions />}
         sx={{
-          ".MuiToolbar-root": {
-            justifyContent: "start !important",
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
             paddingTop: 0,
-            marginBottom: "4px",
+            marginBottom: '4px',
           },
-          ".RaBulkActionsToolbar-toolbar": {
-            justifyContent: "start !important",
+          '.RaBulkActionsToolbar-toolbar': {
+            justifyContent: 'start !important',
           },
-          ".MuiToolbar-root .MuiButtonBase-root": {
+          '.MuiToolbar-root .MuiButtonBase-root': {
             paddingTop: 0,
             paddingBottom: 0,
-            margin: "4px",
+            margin: '4px',
           },
-          ".RaBulkActionsToolbar-topToolbar": {
+          '.RaBulkActionsToolbar-topToolbar': {
             paddingTop: 0,
             paddingBottom: 0,
             marginBottom: 0,
           },
-          ".MuiToolbar-root form": {
-            flex: "0 1 auto",
+          '.MuiToolbar-root form': {
+            flex: '0 1 auto',
           },
-          ".MuiToolbar-root form .MuiFormControl-root": {
+          '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
         }}

@@ -1,19 +1,22 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
-import rateLimit from 'express-rate-limit'
-import slowDown from 'express-slow-down'
-import RedisStore from "rate-limit-redis"
-import { createClient } from "redis"
-const applyMiddleware = (middleware: any) => (request: NextApiRequest, response: NextApiResponse) =>
-  new Promise((resolve, reject) => {
-    middleware(request, response, (result: any) =>
-      result instanceof Error ? reject(result) : resolve(result)
-    )
-  })
+import type { NextApiRequest, NextApiResponse } from 'next';
+import rateLimit from 'express-rate-limit';
+import slowDown from 'express-slow-down';
+import RedisStore from 'rate-limit-redis';
+import { createClient } from 'redis';
+const applyMiddleware =
+  (middleware: any) => (request: NextApiRequest, response: NextApiResponse) =>
+    new Promise((resolve, reject) => {
+      middleware(request, response, (result: any) =>
+        result instanceof Error ? reject(result) : resolve(result),
+      );
+    });
 
 const getIP = (request: any) =>
-  String(request.headers['x-forwarded-for'] ||
-  request.headers['x-real-ip'] ||
-  request.connection.remoteAddress)
+  String(
+    request.headers['x-forwarded-for'] ||
+      request.headers['x-real-ip'] ||
+      request.connection.remoteAddress,
+  );
 
 export const getRateLimitMiddlewares = ({
   limit = Number(process.env.RATE_LIMIT),
@@ -21,12 +24,12 @@ export const getRateLimitMiddlewares = ({
   delayAfter = Number(process.env.DELAY_AFTER),
   delayMs = Number(process.env.DELAYMS),
 } = {}) => {
-  const url = `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`
+  const url = `redis://${process.env.REDIS_USER}:${process.env.REDIS_PASS}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
   const client = createClient({
     url: url,
   });
   (async () => {
-    await client.connect()
+    await client.connect();
   })();
   return [
     slowDown({ keyGenerator: getIP, windowMs, delayAfter, delayMs }),
@@ -41,16 +44,19 @@ export const getRateLimitMiddlewares = ({
       }),
     }),
   ];
-}
+};
 
-const middlewares = getRateLimitMiddlewares()
+const middlewares = getRateLimitMiddlewares();
 
-async function applyRateLimit(request: NextApiRequest, response: NextApiResponse) {
+async function applyRateLimit(
+  request: NextApiRequest,
+  response: NextApiResponse,
+) {
   await Promise.all(
     middlewares
       .map(applyMiddleware)
-      .map(middleware => middleware(request, response))
-  )
+      .map(middleware => middleware(request, response)),
+  );
 }
 
-export default applyRateLimit
+export default applyRateLimit;

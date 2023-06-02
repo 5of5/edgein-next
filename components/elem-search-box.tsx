@@ -1,5 +1,5 @@
-import React from "react";
-import { IconSearch } from "./icons";
+import React from 'react';
+import { IconSearch } from './icons';
 
 type Props = {
   onClick: () => void;
@@ -16,7 +16,7 @@ const ElemSearchBox = ({ onClick }: Props) => {
       <kbd className="hidden lg:block text-sm font-semibold">
         <abbr title="Command" className="no-underline text-slate-400">
           ⌘
-        </abbr>{" "}
+        </abbr>{' '}
         K
       </kbd>
     </button>

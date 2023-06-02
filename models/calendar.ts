@@ -1,4 +1,4 @@
-export type CalendarType = "Apple" | "Google" | "Outlook" | "iCal File";
+export type CalendarType = 'Apple' | 'Google' | 'Outlook' | 'iCal File';
 
 export type CalendarEvent = {
   name: string;

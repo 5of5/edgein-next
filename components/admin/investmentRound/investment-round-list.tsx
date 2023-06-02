@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   TextField,
   EditButton,
@@ -10,14 +10,14 @@ import {
   NumberField,
   AutocompleteInput,
   TextInput,
-} from "react-admin";
+} from 'react-admin';
 import {
   roundChoices,
   currencyChoices,
   ADMIN_REFERENCE_INPUT_PER_PAGE,
-} from "@/utils/constants";
-import ElemList from "../elem-list";
-import { useAuth } from "@/hooks/use-auth";
+} from '@/utils/constants';
+import ElemList from '../elem-list';
+import { useAuth } from '@/hooks/use-auth';
 
 const filters = [
   <TextInput
@@ -34,10 +34,10 @@ const filters = [
     perPage={ADMIN_REFERENCE_INPUT_PER_PAGE}
   >
     <AutocompleteInput
-      style={{ padding: 0, border: "none" }}
+      style={{ padding: 0, border: 'none' }}
       className="w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none"
       optionText="name"
-      filterToQuery={(search) => ({ name: search })}
+      filterToQuery={search => ({ name: search })}
     />
   </ReferenceInput>,
   <SelectInput
@@ -59,7 +59,7 @@ export const InvestmentRoundList = () => {
 
   return (
     <ElemList filters={filters}>
-      { user?.role !== "cms-readonly" && <EditButton /> }
+      {user?.role !== 'cms-readonly' && <EditButton />}
       <TextField source="id" />
       <ReferenceField label="Company" source="company_id" reference="companies">
         <TextField source="name" />
