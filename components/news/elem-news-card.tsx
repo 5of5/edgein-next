@@ -43,7 +43,7 @@ export const ElemNewsCard: FC<Props> = ({ newsPost, tagOnClick }) => {
   const publisher = organizations.find(org => org.type === 'publisher');
 
   const otherOrganizations = organizations.filter(
-    org => org.type !== 'publisher',
+    org => org.type !== 'publisher' && (org.company?.id || org.vc_firm?.id),
   );
 
   const formatDateShown = (date: Date, timezone?: string) => {
