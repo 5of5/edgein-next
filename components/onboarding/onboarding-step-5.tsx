@@ -139,6 +139,7 @@ export default function OnboardingStep5(props: Props) {
                   <ElemButton
                     onClick={onNext}
                     btn="primary"
+                    disabled={isSubmitting}
                     loading={isSubmitting}
                   >
                     Finish Setup
