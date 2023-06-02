@@ -93,8 +93,8 @@ export const CompaniesTable: FC<Props> = ({
 						b: { round_date: string | number | Date }
 					) => {
 						const distantPast = new Date("April 2, 1900 00:00:00");
-						let dateA = a?.round_date ? new Date(a.round_date) : distantPast;
-						let dateB = b?.round_date ? new Date(b.round_date) : distantPast;
+						const dateA = a?.round_date ? new Date(a.round_date) : distantPast;
+						const dateB = b?.round_date ? new Date(b.round_date) : distantPast;
 						return dateA.getTime() - dateB.getTime();
 					}
 				)
