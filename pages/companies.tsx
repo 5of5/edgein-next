@@ -38,42 +38,42 @@ import { DeepPartial } from "@/types/common";
 import { useUser } from "@/context/user-context";
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
-	return useStateParams(
-		filters[0],
-		name,
-		(companyLayer) => filters.indexOf(companyLayer).toString(),
-		(index) => filters[Number(index)]
-	);
+  return useStateParams(
+    filters[0],
+    name,
+    companyLayer => filters.indexOf(companyLayer).toString(),
+    index => filters[Number(index)],
+  );
 }
 
 type Props = {
-	companiesCount: number;
-	initialCompanies: GetCompaniesQuery["companies"];
-	companyStatusTags: TextFilter[];
-	setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
+  companiesCount: number;
+  initialCompanies: GetCompaniesQuery['companies'];
+  companyStatusTags: TextFilter[];
+  setToggleFeedbackForm: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Companies: NextPage<Props> = ({
-	companiesCount,
-	initialCompanies,
-	companyStatusTags,
-	setToggleFeedbackForm,
+  companiesCount,
+  initialCompanies,
+  companyStatusTags,
+  setToggleFeedbackForm,
 }) => {
 	const { user } = useUser();
 
 	const [initialLoad, setInitialLoad] = useState(true);
 
-	const router = useRouter();
+  const router = useRouter();
 
-	const { selectedLibrary } = useLibrary();
+  const { selectedLibrary } = useLibrary();
 
-	const { selectedFilters, setSelectedFilters } = useFilterParams();
+  const { selectedFilters, setSelectedFilters } = useFilterParams();
 
-	// Company status-tag filter
-	const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(
-		companyStatusTags,
-		"statusTag"
-	);
+  // Company status-tag filter
+  const [selectedStatusTag, setSelectedStatusTag] = useStateParamsFilter(
+    companyStatusTags,
+    'statusTag',
+  );
 
 	const [tableLayout, setTableLayout] = useState(false);
 
@@ -94,133 +94,133 @@ const Companies: NextPage<Props> = ({
 	const offset =
 		user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
-	const defaultFilters = [
-		{ slug: { _neq: "" } },
-		{ library: { _contains: selectedLibrary } },
-	];
+  const defaultFilters = [
+    { slug: { _neq: '' } },
+    { library: { _contains: selectedLibrary } },
+  ];
 
-	const filters: DeepPartial<Companies_Bool_Exp> = {
-		_and: defaultFilters,
-	};
+  const filters: DeepPartial<Companies_Bool_Exp> = {
+    _and: defaultFilters,
+  };
 
-	useEffect(() => {
-		if (!initialLoad) {
-			setPage(0);
-		}
-		if (initialLoad && selectedStatusTag.value !== "") {
-			setInitialLoad(false);
-		}
+  useEffect(() => {
+    if (!initialLoad) {
+      setPage(0);
+    }
+    if (initialLoad && selectedStatusTag.value !== '') {
+      setInitialLoad(false);
+    }
 
-		onTrackView({
-			properties: filters,
-			pathname: router.pathname,
-		});
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedStatusTag]);
+    onTrackView({
+      properties: filters,
+      pathname: router.pathname,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedStatusTag]);
 
-	const filterByTag = async (
-		event: React.MouseEvent<HTMLDivElement>,
-		tag: string
-	) => {
-		event.stopPropagation();
-		event.preventDefault();
+  const filterByTag = async (
+    event: React.MouseEvent<HTMLDivElement>,
+    tag: string,
+  ) => {
+    event.stopPropagation();
+    event.preventDefault();
 
-		const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
-		const newFilterOption = currentFilterOption.includes(tag)
-			? currentFilterOption.filter((t) => t !== tag)
-			: [tag, ...currentFilterOption];
+    const currentFilterOption = [...(selectedFilters?.industry?.tags || [])];
+    const newFilterOption = currentFilterOption.includes(tag)
+      ? currentFilterOption.filter(t => t !== tag)
+      : [tag, ...currentFilterOption];
 
-		if (newFilterOption.length === 0) {
-			setSelectedFilters({ ...selectedFilters, industry: undefined });
-		} else {
-			setSelectedFilters({
-				...selectedFilters,
-				industry: {
-					...selectedFilters?.industry,
-					tags: newFilterOption,
-				},
-			});
-		}
+    if (newFilterOption.length === 0) {
+      setSelectedFilters({ ...selectedFilters, industry: undefined });
+    } else {
+      setSelectedFilters({
+        ...selectedFilters,
+        industry: {
+          ...selectedFilters?.industry,
+          tags: newFilterOption,
+        },
+      });
+    }
 
-		currentFilterOption.includes(tag)
-			? toast.custom(
-					(t) => (
-						<div
-							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-								t.visible ? "animate-fade-in-up" : "opacity-0"
-							}`}
-						>
-							Removed &ldquo;{tag}&rdquo; Filter
-						</div>
-					),
-					{
-						duration: 3000,
-						position: "top-center",
-					}
-			  )
-			: toast.custom(
-					(t) => (
-						<div
-							className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
-								t.visible ? "animate-fade-in-up" : "opacity-0"
-							}`}
-						>
-							Added &ldquo;{tag}&rdquo; Filter
-						</div>
-					),
-					{
-						duration: 3000,
-						position: "top-center",
-					}
-			  );
-	};
+    currentFilterOption.includes(tag)
+      ? toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+            >
+              Removed &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        )
+      : toast.custom(
+          t => (
+            <div
+              className={`bg-slate-800 text-white py-2 px-4 rounded-lg transition-opacity ease-out duration-300 ${
+                t.visible ? 'animate-fade-in-up' : 'opacity-0'
+              }`}
+            >
+              Added &ldquo;{tag}&rdquo; Filter
+            </div>
+          ),
+          {
+            duration: 3000,
+            position: 'top-center',
+          },
+        );
+  };
 
-	/** Handle selected filter params */
-	processCompaniesFilters(filters, selectedFilters, defaultFilters);
+  /** Handle selected filter params */
+  processCompaniesFilters(filters, selectedFilters, defaultFilters);
 
-	if (selectedStatusTag.value) {
-		filters._and?.push({
-			status_tags: { _contains: selectedStatusTag.value },
-		});
-	}
+  if (selectedStatusTag.value) {
+    filters._and?.push({
+      status_tags: { _contains: selectedStatusTag.value },
+    });
+  }
 
-	const {
-		data: companiesData,
-		error,
-		isLoading,
-	} = useGetCompaniesQuery({
-		offset,
-		limit,
-		where: filters as Companies_Bool_Exp,
-	});
-	if (!isLoading && initialLoad) {
-		setInitialLoad(false);
-	}
+  const {
+    data: companiesData,
+    error,
+    isLoading,
+  } = useGetCompaniesQuery({
+    offset,
+    limit,
+    where: filters as Companies_Bool_Exp,
+  });
+  if (!isLoading && initialLoad) {
+    setInitialLoad(false);
+  }
 
-	const companies = initialLoad ? initialCompanies : companiesData?.companies;
-	const companies_aggregate = initialLoad
-		? companiesCount
-		: companiesData?.companies_aggregate?.aggregate?.count || 0;
+  const companies = initialLoad ? initialCompanies : companiesData?.companies;
+  const companies_aggregate = initialLoad
+    ? companiesCount
+    : companiesData?.companies_aggregate?.aggregate?.count || 0;
 
-	const { showNewMessages } = useIntercom();
+  const { showNewMessages } = useIntercom();
 
-	return (
-		<div className="relative">
-			{!initialLoad && (
-				<ElemHeading
-					title={`${selectedLibrary} Companies`}
-					subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
-					className=""
-				></ElemHeading>
-			)}
+  return (
+    <div className="relative">
+      {!initialLoad && (
+        <ElemHeading
+          title={`${selectedLibrary} Companies`}
+          subtitle={`Early-stage companies in this ${selectedLibrary} market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.`}
+          className=""
+        ></ElemHeading>
+      )}
 
-			<div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
-				<ElemRecentCompanies className="shadow" heading="Recently Discovered" />
-			</div>
+      <div className="max-w-7xl px-4 mx-auto sm:px-6 lg:px-8">
+        <ElemRecentCompanies className="shadow" heading="Recently Discovered" />
+      </div>
 
-			<div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
-				<div className="bg-white rounded-lg shadow p-5">
-					<h2 className="text-xl font-bold">Companies</h2>
+      <div className="max-w-7xl px-4 mx-auto mt-7 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-lg shadow p-5">
+          <h2 className="text-xl font-bold">Companies</h2>
 
 					<div
 						className="mt-2 flex flex-wrap items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
@@ -272,40 +272,40 @@ const Companies: NextPage<Props> = ({
 						</div>
 					</div>
 
-					<ElemFilter
-						resourceType="companies"
-						filterValues={selectedFilters}
-						onApply={(name, filterParams) => {
-							filters._and = defaultFilters;
-							setSelectedFilters({ ...selectedFilters, [name]: filterParams });
-						}}
-						onClearOption={(name) => {
-							filters._and = defaultFilters;
-							setSelectedFilters({ ...selectedFilters, [name]: undefined });
-						}}
-						onReset={() => setSelectedFilters(null)}
-					/>
+          <ElemFilter
+            resourceType="companies"
+            filterValues={selectedFilters}
+            onApply={(name, filterParams) => {
+              filters._and = defaultFilters;
+              setSelectedFilters({ ...selectedFilters, [name]: filterParams });
+            }}
+            onClearOption={name => {
+              filters._and = defaultFilters;
+              setSelectedFilters({ ...selectedFilters, [name]: undefined });
+            }}
+            onReset={() => setSelectedFilters(null)}
+          />
 
-					{companies?.length === 0 && (
-						<div className="flex items-center justify-center mx-auto min-h-[40vh]">
-							<div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
-								<IconSearch className="w-12 h-12 mx-auto text-slate-300" />
-								<h2 className="mt-5 text-3xl font-bold">No results found</h2>
-								<div className="mt-1 text-lg text-slate-600">
-									Please check spelling, try different filters, or tell us about
-									missing data.
-								</div>
-								<ElemButton
-									onClick={() => setToggleFeedbackForm(true)}
-									btn="white"
-									className="mt-3"
-								>
-									<IconAnnotation className="w-6 h-6 mr-1" />
-									Tell us about missing data
-								</ElemButton>
-							</div>
-						</div>
-					)}
+          {companies?.length === 0 && (
+            <div className="flex items-center justify-center mx-auto min-h-[40vh]">
+              <div className="w-full max-w-2xl my-8 p-8 text-center bg-white border rounded-2xl border-dark-500/10">
+                <IconSearch className="w-12 h-12 mx-auto text-slate-300" />
+                <h2 className="mt-5 text-3xl font-bold">No results found</h2>
+                <div className="mt-1 text-lg text-slate-600">
+                  Please check spelling, try different filters, or tell us about
+                  missing data.
+                </div>
+                <ElemButton
+                  onClick={() => setToggleFeedbackForm(true)}
+                  btn="white"
+                  className="mt-3"
+                >
+                  <IconAnnotation className="w-6 h-6 mr-1" />
+                  Tell us about missing data
+                </ElemButton>
+              </div>
+            </div>
+          )}
 
 					<div>
 						{error ? (
@@ -390,59 +390,59 @@ const Companies: NextPage<Props> = ({
 	);
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
-	const { data: companies } = await runGraphQl<GetCompaniesQuery>(
-		GetCompaniesDocument,
-		{
-			offset: 0,
-			limit: 50,
-			where: {
-				_and: [{ slug: { _neq: "" } }, { library: { _contains: "Web3" } }],
-			},
-		}
-	);
+export const getStaticProps: GetStaticProps = async context => {
+  const { data: companies } = await runGraphQl<GetCompaniesQuery>(
+    GetCompaniesDocument,
+    {
+      offset: 0,
+      limit: 50,
+      where: {
+        _and: [{ slug: { _neq: '' } }, { library: { _contains: 'Web3' } }],
+      },
+    },
+  );
 
-	return {
-		props: {
-			metaTitle: "Web3 Companies - EdgeIn.io",
-			metaDescription:
-				"Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.",
-			companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
-			initialCompanies: companies?.companies,
-			companyStatusTags,
-		},
-	};
+  return {
+    props: {
+      metaTitle: 'Web3 Companies - EdgeIn.io',
+      metaDescription:
+        'Early-stage companies in this Web3 market renaissance require actionable intelligence and hyper-speed. Consider this your greatest asset.',
+      companiesCount: companies?.companies_aggregate?.aggregate?.count || 0,
+      initialCompanies: companies?.companies,
+      companyStatusTags,
+    },
+  };
 };
 
 export default Companies;
 
 interface TextFilter {
-	title: string;
-	description?: string;
-	icon?: string;
-	value: string;
+  title: string;
+  description?: string;
+  icon?: string;
+  value: string;
 }
 
 export interface NumericFilter {
-	title: string;
-	description?: string;
-	rangeStart: number;
-	rangeEnd: number;
+  title: string;
+  description?: string;
+  rangeStart: number;
+  rangeEnd: number;
 }
 
-const companyStatusTagValues = companyChoices.map((option) => {
-	return {
-		title: option.name,
-		value: option.id,
-		icon: option.id,
-		disabled: option.disabled ? option.disabled : false,
-	};
+const companyStatusTagValues = companyChoices.map(option => {
+  return {
+    title: option.name,
+    value: option.id,
+    icon: option.id,
+    disabled: option.disabled ? option.disabled : false,
+  };
 });
 
 const companyStatusTags: TextFilter[] = [
-	{
-		title: "All Companies",
-		value: "",
-	},
-	...companyStatusTagValues,
+  {
+    title: 'All Companies',
+    value: '',
+  },
+  ...companyStatusTagValues,
 ];

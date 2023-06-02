@@ -1,6 +1,6 @@
-import React from "react";
-import ElemFormBase from "../elem-form-base";
-import TeamMemberForm from "./team-member-form";
+import React from 'react';
+import ElemFormBase from '../elem-form-base';
+import TeamMemberForm from './team-member-form';
 
 export const TeamMemberEdit = () => {
   return (

@@ -1,4 +1,4 @@
-import React, { FC, PropsWithChildren } from "react";
+import React, { FC, PropsWithChildren } from 'react';
 import {
   SimpleForm,
   Toolbar,
@@ -7,12 +7,12 @@ import {
   useCreate,
   useRefresh,
   useUpdate,
-} from "react-admin";
-import { useParams } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import ElemDialogTransition from "@/components/admin/elem-dialog-transition";
+} from 'react-admin';
+import { useParams } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import ElemDialogTransition from '@/components/admin/elem-dialog-transition';
 
 type Props = {
   title: string;
@@ -49,7 +49,7 @@ const ElemFormDialog: FC<PropsWithChildren<Props>> = ({
         { data },
         {
           onSuccess,
-        }
+        },
       );
     } else {
       update(
@@ -61,7 +61,7 @@ const ElemFormDialog: FC<PropsWithChildren<Props>> = ({
         },
         {
           onSuccess,
-        }
+        },
       );
     }
   };
@@ -74,13 +74,13 @@ const ElemFormDialog: FC<PropsWithChildren<Props>> = ({
       fullWidth
       maxWidth="xs"
       sx={{
-        ".MuiCardContent-root": {
+        '.MuiCardContent-root': {
           padding: 0,
         },
-        ".MuiToolbar-root": {
-          backgroundColor: "transparent",
-          display: "flex",
-          justifyContent: "space-evenly",
+        '.MuiToolbar-root': {
+          backgroundColor: 'transparent',
+          display: 'flex',
+          justifyContent: 'space-evenly',
         },
       }}
       onClose={onClose}

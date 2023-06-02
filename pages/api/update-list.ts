@@ -1,11 +1,16 @@
-import { NextApiResponse, NextApiRequest } from "next";
-import { query, mutate } from "@/graphql/hasuraAdmin";
-import CookieService from "../../utils/cookie";
-import { GetListByIdDocument, GetListByIdQuery, UpdateListByIdDocument, UpdateListByIdMutation } from "@/graphql/types";
+import { NextApiResponse, NextApiRequest } from 'next';
+import { query, mutate } from '@/graphql/hasuraAdmin';
+import CookieService from '../../utils/cookie';
+import {
+  GetListByIdDocument,
+  GetListByIdQuery,
+  UpdateListByIdDocument,
+  UpdateListByIdMutation,
+} from '@/graphql/types';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "PUT") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'PUT') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);

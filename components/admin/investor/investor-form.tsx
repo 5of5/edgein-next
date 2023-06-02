@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from 'react';
 import {
   SimpleForm,
   TextInput,
@@ -6,11 +6,11 @@ import {
   SelectInput,
   DateInput,
   AutocompleteInput,
-} from "react-admin";
+} from 'react-admin';
 import {
   investorFunctionChoices,
   investorSeniorityChoices,
-} from "@/utils/constants";
+} from '@/utils/constants';
 
 type InvestorFormProps = {
   toolbar?: ReactElement | false;
@@ -18,24 +18,24 @@ type InvestorFormProps = {
 
 const InvestorForm = ({ toolbar }: InvestorFormProps) => {
   const inputClassName =
-    "w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-[49%] px-3 py-1.5 text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   return (
     <SimpleForm toolbar={toolbar}>
       <ReferenceInput label="VC Firm" source="vc_firm_id" reference="vc_firms">
         <AutocompleteInput
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           className={inputClassName}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <ReferenceInput label="Person" source="person_id" reference="people">
         <AutocompleteInput
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           className={inputClassName}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
+          filterToQuery={search => ({ name: search })}
         />
       </ReferenceInput>
       <SelectInput

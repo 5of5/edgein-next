@@ -96,16 +96,16 @@ export type String_Comparison_Exp = {
 
 /** columns and relationships of "actions" */
 export type Actions = {
-	__typename?: "actions";
-	action: Scalars["String"];
-	created_at: Scalars["timestamptz"];
-	id: Scalars["Int"];
-	page: Scalars["String"];
-	partner: Maybe<Scalars["Int"]>;
-	properties: Scalars["jsonb"];
-	resource: Maybe<Scalars["String"]>;
-	resource_id: Maybe<Scalars["Int"]>;
-	user: Maybe<Scalars["Int"]>;
+  __typename?: 'actions';
+  action: Scalars['String'];
+  api_key: Maybe<Scalars['String']>;
+  created_at: Scalars['timestamptz'];
+  id: Scalars['Int'];
+  page: Scalars['String'];
+  properties: Scalars['jsonb'];
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** columns and relationships of "actions" */
@@ -149,27 +149,26 @@ export type Actions_Append_Input = {
 
 /** aggregate avg on columns */
 export type Actions_Avg_Fields = {
-	__typename?: "actions_avg_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_avg_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "actions". All fields are combined with a logical 'AND'. */
 export type Actions_Bool_Exp = {
-	_and: InputMaybe<Array<Actions_Bool_Exp>>;
-	_not: InputMaybe<Actions_Bool_Exp>;
-	_or: InputMaybe<Array<Actions_Bool_Exp>>;
-	action: InputMaybe<String_Comparison_Exp>;
-	created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-	id: InputMaybe<Int_Comparison_Exp>;
-	page: InputMaybe<String_Comparison_Exp>;
-	partner: InputMaybe<Int_Comparison_Exp>;
-	properties: InputMaybe<Jsonb_Comparison_Exp>;
-	resource: InputMaybe<String_Comparison_Exp>;
-	resource_id: InputMaybe<Int_Comparison_Exp>;
-	user: InputMaybe<Int_Comparison_Exp>;
+  _and: InputMaybe<Array<Actions_Bool_Exp>>;
+  _not: InputMaybe<Actions_Bool_Exp>;
+  _or: InputMaybe<Array<Actions_Bool_Exp>>;
+  action: InputMaybe<String_Comparison_Exp>;
+  api_key: InputMaybe<String_Comparison_Exp>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  page: InputMaybe<String_Comparison_Exp>;
+  properties: InputMaybe<Jsonb_Comparison_Exp>;
+  resource: InputMaybe<String_Comparison_Exp>;
+  resource_id: InputMaybe<Int_Comparison_Exp>;
+  user: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "actions" */
@@ -195,49 +194,48 @@ export type Actions_Delete_Key_Input = {
 
 /** input type for incrementing numeric columns in table "actions" */
 export type Actions_Inc_Input = {
-	id: InputMaybe<Scalars["Int"]>;
-	partner: InputMaybe<Scalars["Int"]>;
-	resource_id: InputMaybe<Scalars["Int"]>;
-	user: InputMaybe<Scalars["Int"]>;
+  id: InputMaybe<Scalars['Int']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "actions" */
 export type Actions_Insert_Input = {
-	action: InputMaybe<Scalars["String"]>;
-	created_at: InputMaybe<Scalars["timestamptz"]>;
-	id: InputMaybe<Scalars["Int"]>;
-	page: InputMaybe<Scalars["String"]>;
-	partner: InputMaybe<Scalars["Int"]>;
-	properties: InputMaybe<Scalars["jsonb"]>;
-	resource: InputMaybe<Scalars["String"]>;
-	resource_id: InputMaybe<Scalars["Int"]>;
-	user: InputMaybe<Scalars["Int"]>;
+  action: InputMaybe<Scalars['String']>;
+  api_key: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  page: InputMaybe<Scalars['String']>;
+  properties: InputMaybe<Scalars['jsonb']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type Actions_Max_Fields = {
-	__typename?: "actions_max_fields";
-	action: Maybe<Scalars["String"]>;
-	created_at: Maybe<Scalars["timestamptz"]>;
-	id: Maybe<Scalars["Int"]>;
-	page: Maybe<Scalars["String"]>;
-	partner: Maybe<Scalars["Int"]>;
-	resource: Maybe<Scalars["String"]>;
-	resource_id: Maybe<Scalars["Int"]>;
-	user: Maybe<Scalars["Int"]>;
+  __typename?: 'actions_max_fields';
+  action: Maybe<Scalars['String']>;
+  api_key: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  page: Maybe<Scalars['String']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
 export type Actions_Min_Fields = {
-	__typename?: "actions_min_fields";
-	action: Maybe<Scalars["String"]>;
-	created_at: Maybe<Scalars["timestamptz"]>;
-	id: Maybe<Scalars["Int"]>;
-	page: Maybe<Scalars["String"]>;
-	partner: Maybe<Scalars["Int"]>;
-	resource: Maybe<Scalars["String"]>;
-	resource_id: Maybe<Scalars["Int"]>;
-	user: Maybe<Scalars["Int"]>;
+  __typename?: 'actions_min_fields';
+  action: Maybe<Scalars['String']>;
+  api_key: Maybe<Scalars['String']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  id: Maybe<Scalars['Int']>;
+  page: Maybe<Scalars['String']>;
+  resource: Maybe<Scalars['String']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** response of any mutation on the table "actions" */
@@ -265,15 +263,15 @@ export type Actions_On_Conflict = {
 
 /** Ordering options when selecting data from "actions". */
 export type Actions_Order_By = {
-	action: InputMaybe<Order_By>;
-	created_at: InputMaybe<Order_By>;
-	id: InputMaybe<Order_By>;
-	page: InputMaybe<Order_By>;
-	partner: InputMaybe<Order_By>;
-	properties: InputMaybe<Order_By>;
-	resource: InputMaybe<Order_By>;
-	resource_id: InputMaybe<Order_By>;
-	user: InputMaybe<Order_By>;
+  action: InputMaybe<Order_By>;
+  api_key: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  page: InputMaybe<Order_By>;
+  properties: InputMaybe<Order_By>;
+  resource: InputMaybe<Order_By>;
+  resource_id: InputMaybe<Order_By>;
+  user: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: actions */
@@ -288,122 +286,115 @@ export type Actions_Prepend_Input = {
 
 /** select columns of table "actions" */
 export enum Actions_Select_Column {
-	/** column name */
-	Action = "action",
-	/** column name */
-	CreatedAt = "created_at",
-	/** column name */
-	Id = "id",
-	/** column name */
-	Page = "page",
-	/** column name */
-	Partner = "partner",
-	/** column name */
-	Properties = "properties",
-	/** column name */
-	Resource = "resource",
-	/** column name */
-	ResourceId = "resource_id",
-	/** column name */
-	User = "user",
+  /** column name */
+  Action = 'action',
+  /** column name */
+  ApiKey = 'api_key',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Page = 'page',
+  /** column name */
+  Properties = 'properties',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  User = 'user'
 }
 
 /** input type for updating data in table "actions" */
 export type Actions_Set_Input = {
-	action: InputMaybe<Scalars["String"]>;
-	created_at: InputMaybe<Scalars["timestamptz"]>;
-	id: InputMaybe<Scalars["Int"]>;
-	page: InputMaybe<Scalars["String"]>;
-	partner: InputMaybe<Scalars["Int"]>;
-	properties: InputMaybe<Scalars["jsonb"]>;
-	resource: InputMaybe<Scalars["String"]>;
-	resource_id: InputMaybe<Scalars["Int"]>;
-	user: InputMaybe<Scalars["Int"]>;
+  action: InputMaybe<Scalars['String']>;
+  api_key: InputMaybe<Scalars['String']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  id: InputMaybe<Scalars['Int']>;
+  page: InputMaybe<Scalars['String']>;
+  properties: InputMaybe<Scalars['jsonb']>;
+  resource: InputMaybe<Scalars['String']>;
+  resource_id: InputMaybe<Scalars['Int']>;
+  user: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
 export type Actions_Stddev_Fields = {
-	__typename?: "actions_stddev_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_stddev_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Actions_Stddev_Pop_Fields = {
-	__typename?: "actions_stddev_pop_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_stddev_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Actions_Stddev_Samp_Fields = {
-	__typename?: "actions_stddev_samp_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_stddev_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Actions_Sum_Fields = {
-	__typename?: "actions_sum_fields";
-	id: Maybe<Scalars["Int"]>;
-	partner: Maybe<Scalars["Int"]>;
-	resource_id: Maybe<Scalars["Int"]>;
-	user: Maybe<Scalars["Int"]>;
+  __typename?: 'actions_sum_fields';
+  id: Maybe<Scalars['Int']>;
+  resource_id: Maybe<Scalars['Int']>;
+  user: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "actions" */
 export enum Actions_Update_Column {
-	/** column name */
-	Action = "action",
-	/** column name */
-	CreatedAt = "created_at",
-	/** column name */
-	Id = "id",
-	/** column name */
-	Page = "page",
-	/** column name */
-	Partner = "partner",
-	/** column name */
-	Properties = "properties",
-	/** column name */
-	Resource = "resource",
-	/** column name */
-	ResourceId = "resource_id",
-	/** column name */
-	User = "user",
+  /** column name */
+  Action = 'action',
+  /** column name */
+  ApiKey = 'api_key',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Page = 'page',
+  /** column name */
+  Properties = 'properties',
+  /** column name */
+  Resource = 'resource',
+  /** column name */
+  ResourceId = 'resource_id',
+  /** column name */
+  User = 'user'
 }
 
 /** aggregate var_pop on columns */
 export type Actions_Var_Pop_Fields = {
-	__typename?: "actions_var_pop_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_var_pop_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Actions_Var_Samp_Fields = {
-	__typename?: "actions_var_samp_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_var_samp_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Actions_Variance_Fields = {
-	__typename?: "actions_variance_fields";
-	id: Maybe<Scalars["Float"]>;
-	partner: Maybe<Scalars["Float"]>;
-	resource_id: Maybe<Scalars["Float"]>;
-	user: Maybe<Scalars["Float"]>;
+  __typename?: 'actions_variance_fields';
+  id: Maybe<Scalars['Float']>;
+  resource_id: Maybe<Scalars['Float']>;
+  user: Maybe<Scalars['Float']>;
 };
 
 /** Allowed email Ids */
@@ -5673,47 +5664,47 @@ export type Event_Person_Variance_Order_By = {
 
 /** columns and relationships of "events" */
 export type Events = {
-	__typename?: "events";
-	attachments: Scalars["jsonb"];
-	banner: Maybe<Scalars["jsonb"]>;
-	created_at: Scalars["timestamptz"];
-	discord: Maybe<Scalars["String"]>;
-	end_date: Maybe<Scalars["date"]>;
-	end_time: Maybe<Scalars["time"]>;
-	/** An array relationship */
-	event_organization: Array<Event_Organization>;
-	/** An aggregate relationship */
-	event_organization_aggregate: Event_Organization_Aggregate;
-	/** An array relationship */
-	event_person: Array<Event_Person>;
-	/** An aggregate relationship */
-	event_person_aggregate: Event_Person_Aggregate;
-	facebook: Maybe<Scalars["String"]>;
-	geopoint: Maybe<Scalars["geography"]>;
-	id: Scalars["Int"];
-	instagram: Maybe<Scalars["String"]>;
-	is_featured: Maybe<Scalars["Boolean"]>;
-	library: Maybe<Scalars["jsonb"]>;
-	link: Maybe<Scalars["String"]>;
-	location_json: Maybe<Scalars["jsonb"]>;
-	name: Scalars["String"];
-	notes: Maybe<Scalars["String"]>;
-	overview: Maybe<Scalars["String"]>;
-	/** An object relationship */
-	parent_event: Maybe<Events>;
-	parent_event_id: Maybe<Scalars["Int"]>;
-	price: Maybe<Scalars["numeric"]>;
-	size: Maybe<Scalars["String"]>;
-	slug: Scalars["String"];
-	start_date: Maybe<Scalars["date"]>;
-	start_time: Maybe<Scalars["time"]>;
-	status: Scalars["String"];
-	telegram: Maybe<Scalars["String"]>;
-	timezone: Maybe<Scalars["String"]>;
-	twitter: Maybe<Scalars["String"]>;
-	types: Maybe<Scalars["jsonb"]>;
-	updated_at: Scalars["timestamptz"];
-	venue_name: Maybe<Scalars["String"]>;
+  __typename?: 'events';
+  attachments: Scalars['jsonb'];
+  banner: Maybe<Scalars['jsonb']>;
+  created_at: Scalars['timestamptz'];
+  discord: Maybe<Scalars['String']>;
+  end_date: Maybe<Scalars['date']>;
+  end_time: Maybe<Scalars['time']>;
+  /** An array relationship */
+  event_organization: Array<Event_Organization>;
+  /** An aggregate relationship */
+  event_organization_aggregate: Event_Organization_Aggregate;
+  /** An array relationship */
+  event_person: Array<Event_Person>;
+  /** An aggregate relationship */
+  event_person_aggregate: Event_Person_Aggregate;
+  facebook: Maybe<Scalars['String']>;
+  geopoint: Maybe<Scalars['geography']>;
+  id: Scalars['Int'];
+  instagram: Maybe<Scalars['String']>;
+  is_featured: Maybe<Scalars['Boolean']>;
+  library: Maybe<Scalars['jsonb']>;
+  link: Maybe<Scalars['String']>;
+  location_json: Maybe<Scalars['jsonb']>;
+  name: Scalars['String'];
+  notes: Maybe<Scalars['String']>;
+  overview: Maybe<Scalars['String']>;
+  /** An object relationship */
+  parent_event: Maybe<Events>;
+  parent_event_id: Maybe<Scalars['Int']>;
+  price: Maybe<Scalars['numeric']>;
+  size: Maybe<Scalars['String']>;
+  slug: Maybe<Scalars['String']>;
+  start_date: Maybe<Scalars['date']>;
+  start_time: Maybe<Scalars['time']>;
+  status: Scalars['String'];
+  telegram: Maybe<Scalars['String']>;
+  timezone: Maybe<Scalars['String']>;
+  twitter: Maybe<Scalars['String']>;
+  types: Maybe<Scalars['jsonb']>;
+  updated_at: Scalars['timestamptz'];
+  venue_name: Maybe<Scalars['String']>;
 };
 
 /** columns and relationships of "events" */
@@ -14980,29 +14971,28 @@ export type Notification_Actions_Variance_Order_By = {
 
 /** columns and relationships of "notifications" */
 export type Notifications = {
-	__typename?: "notifications";
-	action_ids: Maybe<Scalars["jsonb"]>;
-	/** An object relationship */
-	company: Maybe<Companies>;
-	company_id: Maybe<Scalars["Int"]>;
-	created_at: Scalars["timestamptz"];
-	event_type: Scalars["String"];
-	follow_resource_type: Scalars["String"];
-	id: Scalars["Int"];
-	message: Maybe<Scalars["String"]>;
-	/** An array relationship */
-	notification_actions: Array<Notification_Actions>;
-	/** An aggregate relationship */
-	notification_actions_aggregate: Notification_Actions_Aggregate;
-	notification_resource_id: Maybe<Scalars["Int"]>;
-	notification_resource_type: Scalars["String"];
-	read: Scalars["Boolean"];
-	read_at: Maybe<Scalars["timestamptz"]>;
-	target_user_id: Scalars["Int"];
-	updated_at: Scalars["timestamptz"];
-	/** An object relationship */
-	vc_firm: Maybe<Vc_Firms>;
-	vc_firm_id: Maybe<Scalars["Int"]>;
+  __typename?: 'notifications';
+  action_ids: Maybe<Scalars['jsonb']>;
+  /** An object relationship */
+  company: Maybe<Companies>;
+  company_id: Maybe<Scalars['Int']>;
+  created_at: Scalars['timestamptz'];
+  event_type: Scalars['String'];
+  follow_resource_type: Scalars['String'];
+  id: Scalars['Int'];
+  message: Maybe<Scalars['String']>;
+  /** An array relationship */
+  notification_actions: Array<Notification_Actions>;
+  /** An aggregate relationship */
+  notification_actions_aggregate: Notification_Actions_Aggregate;
+  notification_resource_type: Scalars['String'];
+  read: Scalars['Boolean'];
+  read_at: Maybe<Scalars['timestamptz']>;
+  target_user_id: Scalars['Int'];
+  updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  vc_firm: Maybe<Vc_Firms>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** columns and relationships of "notifications" */
@@ -15064,36 +15054,34 @@ export type Notifications_Append_Input = {
 
 /** aggregate avg on columns */
 export type Notifications_Avg_Fields = {
-	__typename?: "notifications_avg_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_avg_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to filter rows from the table "notifications". All fields are combined with a logical 'AND'. */
 export type Notifications_Bool_Exp = {
-	_and: InputMaybe<Array<Notifications_Bool_Exp>>;
-	_not: InputMaybe<Notifications_Bool_Exp>;
-	_or: InputMaybe<Array<Notifications_Bool_Exp>>;
-	action_ids: InputMaybe<Jsonb_Comparison_Exp>;
-	company: InputMaybe<Companies_Bool_Exp>;
-	company_id: InputMaybe<Int_Comparison_Exp>;
-	created_at: InputMaybe<Timestamptz_Comparison_Exp>;
-	event_type: InputMaybe<String_Comparison_Exp>;
-	follow_resource_type: InputMaybe<String_Comparison_Exp>;
-	id: InputMaybe<Int_Comparison_Exp>;
-	message: InputMaybe<String_Comparison_Exp>;
-	notification_actions: InputMaybe<Notification_Actions_Bool_Exp>;
-	notification_resource_id: InputMaybe<Int_Comparison_Exp>;
-	notification_resource_type: InputMaybe<String_Comparison_Exp>;
-	read: InputMaybe<Boolean_Comparison_Exp>;
-	read_at: InputMaybe<Timestamptz_Comparison_Exp>;
-	target_user_id: InputMaybe<Int_Comparison_Exp>;
-	updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
-	vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
-	vc_firm_id: InputMaybe<Int_Comparison_Exp>;
+  _and: InputMaybe<Array<Notifications_Bool_Exp>>;
+  _not: InputMaybe<Notifications_Bool_Exp>;
+  _or: InputMaybe<Array<Notifications_Bool_Exp>>;
+  action_ids: InputMaybe<Jsonb_Comparison_Exp>;
+  company: InputMaybe<Companies_Bool_Exp>;
+  company_id: InputMaybe<Int_Comparison_Exp>;
+  created_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  event_type: InputMaybe<String_Comparison_Exp>;
+  follow_resource_type: InputMaybe<String_Comparison_Exp>;
+  id: InputMaybe<Int_Comparison_Exp>;
+  message: InputMaybe<String_Comparison_Exp>;
+  notification_actions: InputMaybe<Notification_Actions_Bool_Exp>;
+  notification_resource_type: InputMaybe<String_Comparison_Exp>;
+  read: InputMaybe<Boolean_Comparison_Exp>;
+  read_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  target_user_id: InputMaybe<Int_Comparison_Exp>;
+  updated_at: InputMaybe<Timestamptz_Comparison_Exp>;
+  vc_firm: InputMaybe<Vc_Firms_Bool_Exp>;
+  vc_firm_id: InputMaybe<Int_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "notifications" */
@@ -15119,66 +15107,62 @@ export type Notifications_Delete_Key_Input = {
 
 /** input type for incrementing numeric columns in table "notifications" */
 export type Notifications_Inc_Input = {
-	company_id: InputMaybe<Scalars["Int"]>;
-	id: InputMaybe<Scalars["Int"]>;
-	notification_resource_id: InputMaybe<Scalars["Int"]>;
-	target_user_id: InputMaybe<Scalars["Int"]>;
-	vc_firm_id: InputMaybe<Scalars["Int"]>;
+  company_id: InputMaybe<Scalars['Int']>;
+  id: InputMaybe<Scalars['Int']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "notifications" */
 export type Notifications_Insert_Input = {
-	action_ids: InputMaybe<Scalars["jsonb"]>;
-	company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
-	company_id: InputMaybe<Scalars["Int"]>;
-	created_at: InputMaybe<Scalars["timestamptz"]>;
-	event_type: InputMaybe<Scalars["String"]>;
-	follow_resource_type: InputMaybe<Scalars["String"]>;
-	id: InputMaybe<Scalars["Int"]>;
-	message: InputMaybe<Scalars["String"]>;
-	notification_actions: InputMaybe<Notification_Actions_Arr_Rel_Insert_Input>;
-	notification_resource_id: InputMaybe<Scalars["Int"]>;
-	notification_resource_type: InputMaybe<Scalars["String"]>;
-	read: InputMaybe<Scalars["Boolean"]>;
-	read_at: InputMaybe<Scalars["timestamptz"]>;
-	target_user_id: InputMaybe<Scalars["Int"]>;
-	updated_at: InputMaybe<Scalars["timestamptz"]>;
-	vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
-	vc_firm_id: InputMaybe<Scalars["Int"]>;
+  action_ids: InputMaybe<Scalars['jsonb']>;
+  company: InputMaybe<Companies_Obj_Rel_Insert_Input>;
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_type: InputMaybe<Scalars['String']>;
+  follow_resource_type: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  message: InputMaybe<Scalars['String']>;
+  notification_actions: InputMaybe<Notification_Actions_Arr_Rel_Insert_Input>;
+  notification_resource_type: InputMaybe<Scalars['String']>;
+  read: InputMaybe<Scalars['Boolean']>;
+  read_at: InputMaybe<Scalars['timestamptz']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm: InputMaybe<Vc_Firms_Obj_Rel_Insert_Input>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate max on columns */
 export type Notifications_Max_Fields = {
-	__typename?: "notifications_max_fields";
-	company_id: Maybe<Scalars["Int"]>;
-	created_at: Maybe<Scalars["timestamptz"]>;
-	event_type: Maybe<Scalars["String"]>;
-	follow_resource_type: Maybe<Scalars["String"]>;
-	id: Maybe<Scalars["Int"]>;
-	message: Maybe<Scalars["String"]>;
-	notification_resource_id: Maybe<Scalars["Int"]>;
-	notification_resource_type: Maybe<Scalars["String"]>;
-	read_at: Maybe<Scalars["timestamptz"]>;
-	target_user_id: Maybe<Scalars["Int"]>;
-	updated_at: Maybe<Scalars["timestamptz"]>;
-	vc_firm_id: Maybe<Scalars["Int"]>;
+  __typename?: 'notifications_max_fields';
+  company_id: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_type: Maybe<Scalars['String']>;
+  follow_resource_type: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  message: Maybe<Scalars['String']>;
+  notification_resource_type: Maybe<Scalars['String']>;
+  read_at: Maybe<Scalars['timestamptz']>;
+  target_user_id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** aggregate min on columns */
 export type Notifications_Min_Fields = {
-	__typename?: "notifications_min_fields";
-	company_id: Maybe<Scalars["Int"]>;
-	created_at: Maybe<Scalars["timestamptz"]>;
-	event_type: Maybe<Scalars["String"]>;
-	follow_resource_type: Maybe<Scalars["String"]>;
-	id: Maybe<Scalars["Int"]>;
-	message: Maybe<Scalars["String"]>;
-	notification_resource_id: Maybe<Scalars["Int"]>;
-	notification_resource_type: Maybe<Scalars["String"]>;
-	read_at: Maybe<Scalars["timestamptz"]>;
-	target_user_id: Maybe<Scalars["Int"]>;
-	updated_at: Maybe<Scalars["timestamptz"]>;
-	vc_firm_id: Maybe<Scalars["Int"]>;
+  __typename?: 'notifications_min_fields';
+  company_id: Maybe<Scalars['Int']>;
+  created_at: Maybe<Scalars['timestamptz']>;
+  event_type: Maybe<Scalars['String']>;
+  follow_resource_type: Maybe<Scalars['String']>;
+  id: Maybe<Scalars['Int']>;
+  message: Maybe<Scalars['String']>;
+  notification_resource_type: Maybe<Scalars['String']>;
+  read_at: Maybe<Scalars['timestamptz']>;
+  target_user_id: Maybe<Scalars['Int']>;
+  updated_at: Maybe<Scalars['timestamptz']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** response of any mutation on the table "notifications" */
@@ -15206,23 +15190,22 @@ export type Notifications_On_Conflict = {
 
 /** Ordering options when selecting data from "notifications". */
 export type Notifications_Order_By = {
-	action_ids: InputMaybe<Order_By>;
-	company: InputMaybe<Companies_Order_By>;
-	company_id: InputMaybe<Order_By>;
-	created_at: InputMaybe<Order_By>;
-	event_type: InputMaybe<Order_By>;
-	follow_resource_type: InputMaybe<Order_By>;
-	id: InputMaybe<Order_By>;
-	message: InputMaybe<Order_By>;
-	notification_actions_aggregate: InputMaybe<Notification_Actions_Aggregate_Order_By>;
-	notification_resource_id: InputMaybe<Order_By>;
-	notification_resource_type: InputMaybe<Order_By>;
-	read: InputMaybe<Order_By>;
-	read_at: InputMaybe<Order_By>;
-	target_user_id: InputMaybe<Order_By>;
-	updated_at: InputMaybe<Order_By>;
-	vc_firm: InputMaybe<Vc_Firms_Order_By>;
-	vc_firm_id: InputMaybe<Order_By>;
+  action_ids: InputMaybe<Order_By>;
+  company: InputMaybe<Companies_Order_By>;
+  company_id: InputMaybe<Order_By>;
+  created_at: InputMaybe<Order_By>;
+  event_type: InputMaybe<Order_By>;
+  follow_resource_type: InputMaybe<Order_By>;
+  id: InputMaybe<Order_By>;
+  message: InputMaybe<Order_By>;
+  notification_actions_aggregate: InputMaybe<Notification_Actions_Aggregate_Order_By>;
+  notification_resource_type: InputMaybe<Order_By>;
+  read: InputMaybe<Order_By>;
+  read_at: InputMaybe<Order_By>;
+  target_user_id: InputMaybe<Order_By>;
+  updated_at: InputMaybe<Order_By>;
+  vc_firm: InputMaybe<Vc_Firms_Order_By>;
+  vc_firm_id: InputMaybe<Order_By>;
 };
 
 /** primary key columns input for table: notifications */
@@ -15237,154 +15220,142 @@ export type Notifications_Prepend_Input = {
 
 /** select columns of table "notifications" */
 export enum Notifications_Select_Column {
-	/** column name */
-	ActionIds = "action_ids",
-	/** column name */
-	CompanyId = "company_id",
-	/** column name */
-	CreatedAt = "created_at",
-	/** column name */
-	EventType = "event_type",
-	/** column name */
-	FollowResourceType = "follow_resource_type",
-	/** column name */
-	Id = "id",
-	/** column name */
-	Message = "message",
-	/** column name */
-	NotificationResourceId = "notification_resource_id",
-	/** column name */
-	NotificationResourceType = "notification_resource_type",
-	/** column name */
-	Read = "read",
-	/** column name */
-	ReadAt = "read_at",
-	/** column name */
-	TargetUserId = "target_user_id",
-	/** column name */
-	UpdatedAt = "updated_at",
-	/** column name */
-	VcFirmId = "vc_firm_id",
+  /** column name */
+  ActionIds = 'action_ids',
+  /** column name */
+  CompanyId = 'company_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventType = 'event_type',
+  /** column name */
+  FollowResourceType = 'follow_resource_type',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  NotificationResourceType = 'notification_resource_type',
+  /** column name */
+  Read = 'read',
+  /** column name */
+  ReadAt = 'read_at',
+  /** column name */
+  TargetUserId = 'target_user_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VcFirmId = 'vc_firm_id'
 }
 
 /** input type for updating data in table "notifications" */
 export type Notifications_Set_Input = {
-	action_ids: InputMaybe<Scalars["jsonb"]>;
-	company_id: InputMaybe<Scalars["Int"]>;
-	created_at: InputMaybe<Scalars["timestamptz"]>;
-	event_type: InputMaybe<Scalars["String"]>;
-	follow_resource_type: InputMaybe<Scalars["String"]>;
-	id: InputMaybe<Scalars["Int"]>;
-	message: InputMaybe<Scalars["String"]>;
-	notification_resource_id: InputMaybe<Scalars["Int"]>;
-	notification_resource_type: InputMaybe<Scalars["String"]>;
-	read: InputMaybe<Scalars["Boolean"]>;
-	read_at: InputMaybe<Scalars["timestamptz"]>;
-	target_user_id: InputMaybe<Scalars["Int"]>;
-	updated_at: InputMaybe<Scalars["timestamptz"]>;
-	vc_firm_id: InputMaybe<Scalars["Int"]>;
+  action_ids: InputMaybe<Scalars['jsonb']>;
+  company_id: InputMaybe<Scalars['Int']>;
+  created_at: InputMaybe<Scalars['timestamptz']>;
+  event_type: InputMaybe<Scalars['String']>;
+  follow_resource_type: InputMaybe<Scalars['String']>;
+  id: InputMaybe<Scalars['Int']>;
+  message: InputMaybe<Scalars['String']>;
+  notification_resource_type: InputMaybe<Scalars['String']>;
+  read: InputMaybe<Scalars['Boolean']>;
+  read_at: InputMaybe<Scalars['timestamptz']>;
+  target_user_id: InputMaybe<Scalars['Int']>;
+  updated_at: InputMaybe<Scalars['timestamptz']>;
+  vc_firm_id: InputMaybe<Scalars['Int']>;
 };
 
 /** aggregate stddev on columns */
 export type Notifications_Stddev_Fields = {
-	__typename?: "notifications_stddev_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_stddev_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_pop on columns */
 export type Notifications_Stddev_Pop_Fields = {
-	__typename?: "notifications_stddev_pop_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_stddev_pop_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate stddev_samp on columns */
 export type Notifications_Stddev_Samp_Fields = {
-	__typename?: "notifications_stddev_samp_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_stddev_samp_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate sum on columns */
 export type Notifications_Sum_Fields = {
-	__typename?: "notifications_sum_fields";
-	company_id: Maybe<Scalars["Int"]>;
-	id: Maybe<Scalars["Int"]>;
-	notification_resource_id: Maybe<Scalars["Int"]>;
-	target_user_id: Maybe<Scalars["Int"]>;
-	vc_firm_id: Maybe<Scalars["Int"]>;
+  __typename?: 'notifications_sum_fields';
+  company_id: Maybe<Scalars['Int']>;
+  id: Maybe<Scalars['Int']>;
+  target_user_id: Maybe<Scalars['Int']>;
+  vc_firm_id: Maybe<Scalars['Int']>;
 };
 
 /** update columns of table "notifications" */
 export enum Notifications_Update_Column {
-	/** column name */
-	ActionIds = "action_ids",
-	/** column name */
-	CompanyId = "company_id",
-	/** column name */
-	CreatedAt = "created_at",
-	/** column name */
-	EventType = "event_type",
-	/** column name */
-	FollowResourceType = "follow_resource_type",
-	/** column name */
-	Id = "id",
-	/** column name */
-	Message = "message",
-	/** column name */
-	NotificationResourceId = "notification_resource_id",
-	/** column name */
-	NotificationResourceType = "notification_resource_type",
-	/** column name */
-	Read = "read",
-	/** column name */
-	ReadAt = "read_at",
-	/** column name */
-	TargetUserId = "target_user_id",
-	/** column name */
-	UpdatedAt = "updated_at",
-	/** column name */
-	VcFirmId = "vc_firm_id",
+  /** column name */
+  ActionIds = 'action_ids',
+  /** column name */
+  CompanyId = 'company_id',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  EventType = 'event_type',
+  /** column name */
+  FollowResourceType = 'follow_resource_type',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Message = 'message',
+  /** column name */
+  NotificationResourceType = 'notification_resource_type',
+  /** column name */
+  Read = 'read',
+  /** column name */
+  ReadAt = 'read_at',
+  /** column name */
+  TargetUserId = 'target_user_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  VcFirmId = 'vc_firm_id'
 }
 
 /** aggregate var_pop on columns */
 export type Notifications_Var_Pop_Fields = {
-	__typename?: "notifications_var_pop_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_var_pop_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate var_samp on columns */
 export type Notifications_Var_Samp_Fields = {
-	__typename?: "notifications_var_samp_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_var_samp_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** aggregate variance on columns */
 export type Notifications_Variance_Fields = {
-	__typename?: "notifications_variance_fields";
-	company_id: Maybe<Scalars["Float"]>;
-	id: Maybe<Scalars["Float"]>;
-	notification_resource_id: Maybe<Scalars["Float"]>;
-	target_user_id: Maybe<Scalars["Float"]>;
-	vc_firm_id: Maybe<Scalars["Float"]>;
+  __typename?: 'notifications_variance_fields';
+  company_id: Maybe<Scalars['Float']>;
+  id: Maybe<Scalars['Float']>;
+  target_user_id: Maybe<Scalars['Float']>;
+  vc_firm_id: Maybe<Scalars['Float']>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -23080,6 +23051,8 @@ export type GetCompanyQuery = {
 	}>;
 };
 
+export type GetCompanyQuery = { __typename?: 'query_root', companies: Array<{ __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null, layer: string | null, overview: string | null, investor_amount: any | null, white_paper: string | null, total_employees: any | null, year_founded: string | null, website: string | null, market_verified: string | null, company_linkedin: string | null, careers_page: string | null, github: string | null, velocity_linkedin: string | null, velocity_token: string | null, tags: any | null, date_added: any | null, ico_start: any | null, ico_end: any | null, audit_file: string | null, sentiment: any | null, twitter: string | null, location: string | null, location_json: any | null, discord: string | null, glassdoor: string | null, coin: { __typename?: 'coins', id: number, ticker: string } | null, teamMembers: Array<{ __typename?: 'team_members', id: number, function: string | null, start_date: any | null, end_date: any | null, founder: boolean | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investment_rounds: Array<{ __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, valuation: any | null, investments: Array<{ __typename?: 'investments', id: number, amount: any | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null }> }>, to_links: Array<{ __typename?: 'resource_links', id: number, link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', id: number, link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, status: string | null, source: any | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
+
 export type GetCompaniesQueryVariables = Exact<{
 	limit: InputMaybe<Scalars["Int"]>;
 	offset: InputMaybe<Scalars["Int"]>;
@@ -23404,6 +23377,8 @@ export type GetEventsQuery = {
 	};
 };
 
+export type GetEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }>, events_aggregate: { __typename?: 'events_aggregate', aggregate: { __typename?: 'events_aggregate_fields', count: number } | null } };
+
 export type GetEventQueryVariables = Exact<{
 	slug: Scalars["String"];
 }>;
@@ -23507,6 +23482,8 @@ export type GetEventQuery = {
 	}>;
 };
 
+export type GetEventQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, twitter: string | null, facebook: string | null, instagram: string | null, discord: string | null, telegram: string | null, is_featured: boolean | null, attachments: any, created_at: any, event_person: Array<{ __typename?: 'event_person', id: number, type: string, created_at: any, person: { __typename?: 'people', id: number, slug: string, name: string | null, type: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null, investors: Array<{ __typename?: 'investors', id: number, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, founder: boolean | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null } | null }> } | null }>, event_organization: Array<{ __typename?: 'event_organization', id: number, type: string | null, sponsor_type: string | null, created_at: any, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }>, parent_event: { __typename?: 'events', id: number, slug: string | null, name: string } | null }> };
+
 export type GetEventsByDateQueryVariables = Exact<{
 	date: InputMaybe<Scalars["timestamptz"]>;
 	library: InputMaybe<Scalars["jsonb"]>;
@@ -23526,6 +23503,8 @@ export type GetEventsByDateQuery = {
 		end_date: any | null;
 	}>;
 };
+
+export type GetEventsByDateQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, overview: string | null, banner: any | null, location_json: any | null, start_date: any | null, end_date: any | null }> };
 
 export type InsertEventAttendeeMutationVariables = Exact<{
 	object: Event_Person_Insert_Input;
@@ -23581,6 +23560,8 @@ export type GetSubEventsQuery = {
 		created_at: any;
 	}>;
 };
+
+export type GetSubEventsQuery = { __typename?: 'query_root', events: Array<{ __typename?: 'events', id: number, name: string, slug: string | null, banner: any | null, overview: string | null, notes: string | null, location_json: any | null, venue_name: string | null, link: string | null, size: string | null, price: any | null, types: any | null, start_date: any | null, start_time: any | null, end_date: any | null, end_time: any | null, timezone: string | null, is_featured: boolean | null, created_at: any }> };
 
 export type GetFollowsByUserQueryVariables = Exact<{
 	user_id: Scalars["Int"];
@@ -24462,6 +24443,36 @@ export type TriggerListUpdatedAtMutation = {
 	} | null;
 };
 
+export type TriggerListUpdatedAtMutation = { __typename?: 'mutation_root', update_lists: { __typename?: 'lists_mutation_response', affected_rows: number, returning: Array<{ __typename?: 'lists', id: number }> } | null };
+
+export type GetNewsQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
+  where: News_Bool_Exp;
+}>;
+
+
+export type GetNewsQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, source: any | null, created_at: any, status: string | null, text: string, metadata: any | null, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', type: string | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }>, news_aggregate: { __typename?: 'news_aggregate', aggregate: { __typename?: 'news_aggregate_fields', count: number } | null } };
+
+export type GetNewsArticlesQueryVariables = Exact<{
+  limit: InputMaybe<Scalars['Int']>;
+  offset: InputMaybe<Scalars['Int']>;
+  order: Order_By;
+  where: News_Bool_Exp;
+}>;
+
+
+export type GetNewsArticlesQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, kind: string | null, link: string | null, source: any | null, created_at: any, status: string | null, text: string, metadata: any | null, updated_at: any, organizations: Array<{ __typename?: 'news_organizations', type: string | null, company: { __typename?: 'companies', id: number, name: string | null, slug: string, logo: any | null } | null, vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null } | null }> }>, news_aggregate: { __typename?: 'news_aggregate', aggregate: { __typename?: 'news_aggregate_fields', count: number } | null } };
+
+export type GetNewsByDateQueryVariables = Exact<{
+  date: InputMaybe<Scalars['timestamptz']>;
+  library: InputMaybe<Scalars['jsonb']>;
+}>;
+
+
+export type GetNewsByDateQuery = { __typename?: 'query_root', news: Array<{ __typename?: 'news', id: number, date: any | null, link: string | null, text: string, source: any | null }> };
+
 export type GetNotesQueryVariables = Exact<{
 	where: Notes_Bool_Exp;
 }>;
@@ -24914,7 +24925,7 @@ export type GetPersonQuery = {
 	}>;
 };
 
-export type GetPersonsPathQueryVariables = Exact<{ [key: string]: never }>;
+export type GetPersonQuery = { __typename?: 'query_root', people: Array<{ __typename?: 'people', id: number, name: string | null, personal_email: string | null, picture: any | null, slug: string, status: string, type: string | null, work_email: string | null, linkedin: string | null, github: string | null, city: string | null, country: string | null, facebook_url: string | null, twitter_url: string | null, website_url: string | null, about: string | null, email: any | null, investors: Array<{ __typename?: 'investors', id: number, end_date: any | null, start_date: any | null, function: string | null, title: string | null, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, team_members: Array<{ __typename?: 'team_members', id: number, end_date: any | null, start_date: any | null, founder: boolean | null, function: string | null, title: string | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, overview: string | null, location: string | null, tags: any | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, logo: any | null, tags: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, news_links: Array<{ __typename?: 'news_person', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, people: Array<{ __typename?: 'news_person', id: number, type: string | null, person_id: number | null }> } | null }> }> };
 
 export type GetPersonsPathQuery = {
 	__typename?: "query_root";
@@ -25792,6 +25803,8 @@ export type GetVcFirmQuery = {
 	}>;
 };
 
+export type GetVcFirmQuery = { __typename?: 'query_root', vc_firms: Array<{ __typename?: 'vc_firms', id: number, name: string | null, slug: string, logo: any | null, website: string | null, linkedin: string | null, sentiment: any | null, tags: any | null, overview: string | null, year_founded: string | null, location: string | null, location_json: any | null, twitter: string | null, investors: Array<{ __typename?: 'investors', id: number, function: string | null, start_date: any | null, end_date: any | null, seniority: string | null, title: string | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null, linkedin: string | null, personal_email: string | null, work_email: string | null } | null }>, investments: Array<{ __typename?: 'investments', investment_round: { __typename?: 'investment_rounds', id: number, round_date: any | null, round: string | null, amount: any | null, company: { __typename?: 'companies', id: number, slug: string, name: string | null, tags: any | null, logo: any | null } | null, investments: Array<{ __typename?: 'investments', id: number, vc_firm: { __typename?: 'vc_firms', id: number, slug: string, name: string | null, logo: any | null } | null, person: { __typename?: 'people', id: number, slug: string, name: string | null, picture: any | null } | null }> } | null }>, to_links: Array<{ __typename?: 'resource_links', link_type: string, from_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, from_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, from_links: Array<{ __typename?: 'resource_links', link_type: string, to_company: { __typename?: 'companies', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null, to_vc_firm: { __typename?: 'vc_firms', id: number, name: string | null, slug: string, tags: any | null, sentiment: any | null, overview: string | null, logo: any | null } | null }>, news_links: Array<{ __typename?: 'news_organizations', id: number, news: { __typename?: 'news', id: number, date: any | null, text: string, link: string | null, kind: string | null, source: any | null, status: string | null, organizations: Array<{ __typename?: 'news_organizations', id: number, type: string | null, company_id: number | null, vc_firm_id: number | null }> } | null }> }> };
+
 export type GetVcFirmsQueryVariables = Exact<{
 	limit: InputMaybe<Scalars["Int"]>;
 	offset: InputMaybe<Scalars["Int"]>;
@@ -26147,7 +26160,7 @@ useGetAllowedEmailByEmailOrDomainQuery.fetcher = (
 export const GetLastSyncDocument = `
     query GetLastSync {
   application_meta(
-    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events"]}}
+    where: {key: {_in: ["sync_web3_companies", "sync_web3_vc_firms", "sync_web3_people", "sync_web3_events", "sync_web3_news", "sync_ai_companies", "sync_ai_vc_firms", "sync_ai_people", "sync_ai_events", "sync_ai_news"]}}
   ) {
     id
     key
@@ -26636,6 +26649,24 @@ export const GetCompanyDocument = `
         text
         link
         kind
+        status
+        organizations {
+          id
+          type
+          company_id
+          vc_firm_id
+        }
+      }
+    }
+    news_links {
+      id
+      news {
+        id
+        date
+        text
+        link
+        kind
+        source
         status
         organizations {
           id
@@ -29783,39 +29814,157 @@ export const TriggerListUpdatedAtDocument = `
 }
     `;
 export const useTriggerListUpdatedAtMutation = <
-	TError = Error,
-	TContext = unknown
->(
-	options?: UseMutationOptions<
-		TriggerListUpdatedAtMutation,
-		TError,
-		TriggerListUpdatedAtMutationVariables,
-		TContext
-	>
-) =>
-	useMutation<
-		TriggerListUpdatedAtMutation,
-		TError,
-		TriggerListUpdatedAtMutationVariables,
-		TContext
-	>(
-		["TriggerListUpdatedAt"],
-		(variables?: TriggerListUpdatedAtMutationVariables) =>
-			fetcher<
-				TriggerListUpdatedAtMutation,
-				TriggerListUpdatedAtMutationVariables
-			>(TriggerListUpdatedAtDocument, variables)(),
-		options
-	);
-useTriggerListUpdatedAtMutation.fetcher = (
-	variables: TriggerListUpdatedAtMutationVariables,
-	options?: RequestInit["headers"]
-) =>
-	fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(
-		TriggerListUpdatedAtDocument,
-		variables,
-		options
-	);
+      TError = Error,
+      TContext = unknown
+    >(options?: UseMutationOptions<TriggerListUpdatedAtMutation, TError, TriggerListUpdatedAtMutationVariables, TContext>) =>
+    useMutation<TriggerListUpdatedAtMutation, TError, TriggerListUpdatedAtMutationVariables, TContext>(
+      ['TriggerListUpdatedAt'],
+      (variables?: TriggerListUpdatedAtMutationVariables) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables)(),
+      options
+    );
+useTriggerListUpdatedAtMutation.fetcher = (variables: TriggerListUpdatedAtMutationVariables, options?: RequestInit['headers']) => fetcher<TriggerListUpdatedAtMutation, TriggerListUpdatedAtMutationVariables>(TriggerListUpdatedAtDocument, variables, options);
+export const GetNewsDocument = `
+    query GetNews($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+  news_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetNewsQuery = <
+      TData = GetNewsQuery,
+      TError = Error
+    >(
+      variables: GetNewsQueryVariables,
+      options?: UseQueryOptions<GetNewsQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsQuery, TError, TData>(
+      ['GetNews', variables],
+      fetcher<GetNewsQuery, GetNewsQueryVariables>(GetNewsDocument, variables),
+      options
+    );
+useGetNewsQuery.document = GetNewsDocument;
+
+
+useGetNewsQuery.getKey = (variables: GetNewsQueryVariables) => ['GetNews', variables];
+;
+
+useGetNewsQuery.fetcher = (variables: GetNewsQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsQuery, GetNewsQueryVariables>(GetNewsDocument, variables, options);
+export const GetNewsArticlesDocument = `
+    query GetNewsArticles($limit: Int, $offset: Int, $order: order_by!, $where: news_bool_exp!) {
+  news(where: $where, order_by: {date: $order}, limit: $limit, offset: $offset) {
+    id
+    date
+    kind
+    link
+    source
+    created_at
+    status
+    text
+    metadata
+    updated_at
+    organizations {
+      type
+      company {
+        id
+        name
+        slug
+        logo
+      }
+      vc_firm {
+        id
+        name
+        slug
+        logo
+      }
+    }
+  }
+  news_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const useGetNewsArticlesQuery = <
+      TData = GetNewsArticlesQuery,
+      TError = Error
+    >(
+      variables: GetNewsArticlesQueryVariables,
+      options?: UseQueryOptions<GetNewsArticlesQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsArticlesQuery, TError, TData>(
+      ['GetNewsArticles', variables],
+      fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(GetNewsArticlesDocument, variables),
+      options
+    );
+useGetNewsArticlesQuery.document = GetNewsArticlesDocument;
+
+
+useGetNewsArticlesQuery.getKey = (variables: GetNewsArticlesQueryVariables) => ['GetNewsArticles', variables];
+;
+
+useGetNewsArticlesQuery.fetcher = (variables: GetNewsArticlesQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsArticlesQuery, GetNewsArticlesQueryVariables>(GetNewsArticlesDocument, variables, options);
+export const GetNewsByDateDocument = `
+    query GetNewsByDate($date: timestamptz, $library: jsonb) {
+  news(
+    where: {_and: [{status: {_eq: "published"}}, {updated_at: {_gte: $date}}, {library: {_contains: $library}}]}
+  ) {
+    id
+    date
+    link
+    text
+    source
+  }
+}
+    `;
+export const useGetNewsByDateQuery = <
+      TData = GetNewsByDateQuery,
+      TError = Error
+    >(
+      variables?: GetNewsByDateQueryVariables,
+      options?: UseQueryOptions<GetNewsByDateQuery, TError, TData>
+    ) =>
+    useQuery<GetNewsByDateQuery, TError, TData>(
+      variables === undefined ? ['GetNewsByDate'] : ['GetNewsByDate', variables],
+      fetcher<GetNewsByDateQuery, GetNewsByDateQueryVariables>(GetNewsByDateDocument, variables),
+      options
+    );
+useGetNewsByDateQuery.document = GetNewsByDateDocument;
+
+
+useGetNewsByDateQuery.getKey = (variables?: GetNewsByDateQueryVariables) => variables === undefined ? ['GetNewsByDate'] : ['GetNewsByDate', variables];
+;
+
+useGetNewsByDateQuery.fetcher = (variables?: GetNewsByDateQueryVariables, options?: RequestInit['headers']) => fetcher<GetNewsByDateQuery, GetNewsByDateQueryVariables>(GetNewsByDateDocument, variables, options);
 export const GetNotesDocument = `
     query GetNotes($where: notes_bool_exp!) {
   notes(where: $where, order_by: {created_at: asc}) {
@@ -30735,6 +30884,7 @@ export const GetPersonDocument = `
         text
         link
         kind
+        source
         status
         people {
           id
@@ -32236,6 +32386,7 @@ export const GetVcFirmDocument = `
         text
         link
         kind
+        source
         status
         organizations {
           id

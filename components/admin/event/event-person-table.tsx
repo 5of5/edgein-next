@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 
-import ContentEdit from "@mui/icons-material/Edit";
-import ContentSave from "@mui/icons-material/Save";
-import ContentDelete from "@mui/icons-material/Delete";
-import ContentCreate from "@mui/icons-material/Add";
+import ContentEdit from '@mui/icons-material/Edit';
+import ContentSave from '@mui/icons-material/Save';
+import ContentDelete from '@mui/icons-material/Delete';
+import ContentCreate from '@mui/icons-material/Add';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-import { InputLabel, MenuItem, FormControl, Select } from "@mui/material";
+import { InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 
 import {
   AutocompleteInput,
@@ -31,18 +31,18 @@ import {
   useCreate,
   useUpdate,
   useRefresh,
-} from "react-admin";
+} from 'react-admin';
 
-import { eventPersonTypeChoices } from "../../../utils/constants";
+import { eventPersonTypeChoices } from '../../../utils/constants';
 
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -77,7 +77,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete("event_person", {
+  const [deleteOne] = useDelete('event_person', {
     id: record.id,
     previousData: record,
   });
@@ -92,7 +92,7 @@ const CustomDeleteButton = () => {
       <Button
         label="Delete"
         variant="text"
-        sx={{ color: "red" }}
+        sx={{ color: 'red' }}
         onClick={() => setOpen(true)}
         startIcon={<ContentDelete />}
       />
@@ -109,7 +109,7 @@ const CustomDeleteButton = () => {
 
 export const EventPersonTable = () => {
   const { id: currentId } = useParams();
-  const { data: eventPersonList } = useGetList("event_person", {
+  const { data: eventPersonList } = useGetList('event_person', {
     filter: { event_id: parseInt(currentId!) },
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -125,8 +125,8 @@ export const EventPersonTable = () => {
   }, [isCreateLoading, isUpdateLoading, refresh]);
 
   const [eventPersonData, setEventPersonData] = useState<any>({
-    person_id: "",
-    type: "",
+    person_id: '',
+    type: '',
   });
 
   const handleEdit = (rec: any) => {
@@ -143,8 +143,8 @@ export const EventPersonTable = () => {
     setIsOpen(false);
     setCurrRecord(null);
     setEventPersonData({
-      person_id: "",
-      type: "",
+      person_id: '',
+      type: '',
     });
   };
 
@@ -161,9 +161,9 @@ export const EventPersonTable = () => {
       type: eventPersonData.type,
     };
     if (!currRecord) {
-      create("event_person", { data });
+      create('event_person', { data });
     } else {
-      update("event_person", {
+      update('event_person', {
         id: currRecord.id,
         data,
         previousData: currRecord,
@@ -178,28 +178,28 @@ export const EventPersonTable = () => {
         pagination={false}
         actions={<ListActions onCreate={() => setIsOpen(true)} />}
         sx={{
-          ".MuiToolbar-root": {
-            justifyContent: "start !important",
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
             paddingTop: 0,
-            marginBottom: "4px",
+            marginBottom: '4px',
           },
-          ".RaBulkActionsToolbar-toolbar": {
-            justifyContent: "start !important",
+          '.RaBulkActionsToolbar-toolbar': {
+            justifyContent: 'start !important',
           },
-          ".MuiToolbar-root .MuiButtonBase-root": {
+          '.MuiToolbar-root .MuiButtonBase-root': {
             paddingTop: 0,
             paddingBottom: 0,
-            margin: "4px",
+            margin: '4px',
           },
-          ".RaBulkActionsToolbar-topToolbar": {
+          '.RaBulkActionsToolbar-topToolbar': {
             paddingTop: 0,
             paddingBottom: 0,
             marginBottom: 0,
           },
-          ".MuiToolbar-root form": {
-            flex: "0 1 auto",
+          '.MuiToolbar-root form': {
+            flex: '0 1 auto',
           },
-          ".MuiToolbar-root form .MuiFormControl-root": {
+          '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
         }}
@@ -238,9 +238,9 @@ export const EventPersonTable = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  width: "100%",
-                  ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                    display: "none",
+                  width: '100%',
+                  '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                    display: 'none',
                   },
                 }}
               >
@@ -253,20 +253,20 @@ export const EventPersonTable = () => {
                     defaultValue={currRecord?.person_id}
                     optionText="name"
                     optionValue="id"
-                    filterToQuery={(search) => ({ name: search })}
-                    onChange={(person_id) => {
+                    filterToQuery={search => ({ name: search })}
+                    onChange={person_id => {
                       handleChange(0, person_id);
                     }}
                   />
                 </ReferenceInput>
               </FormControl>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <InputLabel>Type</InputLabel>
                 <Select
                   value={eventPersonData?.type}
-                  onChange={(e) => handleChange(1, e.target.value)}
+                  onChange={e => handleChange(1, e.target.value)}
                 >
-                  {eventPersonTypeChoices?.map((r) => (
+                  {eventPersonTypeChoices?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
                     </MenuItem>
@@ -276,11 +276,11 @@ export const EventPersonTable = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  width: "100%",
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
                   marginTop: 4,
                 }}
               >
