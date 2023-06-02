@@ -124,7 +124,7 @@ export const processNotification = async (
 };
 
 export const getNotificationChangedData = (
-	notification: GetNotificationsForUserQuery["notifications"][0]
+  notification: GetNotificationsForUserQuery['notifications'][0],
 ) => {
 	if (
     notification.event_type === "Change Data" &&
@@ -140,94 +140,94 @@ export const getNotificationChangedData = (
 			};
 		}
 
-		const changedData =
-			notification.notification_actions[0]?.action?.properties;
+    const changedData =
+      notification.notification_actions[0]?.action?.properties;
 
-		if (changedData) {
-			let field = Object.keys(changedData)[0];
-			const value = Object.values(changedData)[0];
+    if (changedData) {
+      let field = Object.keys(changedData)[0];
+      const value = Object.values(changedData)[0];
 
-			if (field === "location_json") {
-				field = "location";
-			} else if (field === "investor_amount") {
-				field = "total funding raised";
-			} else if (
-				field === "glassdoor" ||
-				field === "twitter" ||
-				field === "facebook" ||
-				field === "discord" ||
-				field === "instagram"
-			) {
-				field = startCase(field);
-			} else if (field === "company_linkedin") {
-				field = "LinkedIn";
-			} else if (field === "youtube") {
-				field = "YouTube";
-			} else if (field === "investment_rounds") {
-				field = "something";
-			} else if (field === "velocity_linkedin" || field === "velocity_token") {
-				field = "velocity";
-			}
-			return {
-				message: `updated ${field.replace(/_/g, " ")}`, // ${startCase(field)} to ${value}`,
-				extensions: [],
-			};
-		}
-	}
+      if (field === 'location_json') {
+        field = 'location';
+      } else if (field === 'investor_amount') {
+        field = 'total funding raised';
+      } else if (
+        field === 'glassdoor' ||
+        field === 'twitter' ||
+        field === 'facebook' ||
+        field === 'discord' ||
+        field === 'instagram'
+      ) {
+        field = startCase(field);
+      } else if (field === 'company_linkedin') {
+        field = 'LinkedIn';
+      } else if (field === 'youtube') {
+        field = 'YouTube';
+      } else if (field === 'investment_rounds') {
+        field = 'something';
+      } else if (field === 'velocity_linkedin' || field === 'velocity_token') {
+        field = 'velocity';
+      }
+      return {
+        message: `updated ${field.replace(/_/g, ' ')}`, // ${startCase(field)} to ${value}`,
+        extensions: [],
+      };
+    }
+  }
 
-	return {
-		message: notification.message,
-		extensions: [],
-	};
+  return {
+    message: notification.message,
+    extensions: [],
+  };
 };
 
 export const insertNotificationAction = async (
-	notificationId: number,
-	actionId: number
+  notificationId: number,
+  actionId: number,
 ) => {
-	const {
-		data: { insert_notification_actions_one },
-	} = await mutate<InsertNotificationActionsMutation>({
-		mutation: InsertNotificationActionsDocument,
-		variables: {
-			object: {
-				notification_id: notificationId,
-				action_id: actionId,
-			},
-		},
-	});
-	return insert_notification_actions_one;
+  const {
+    data: { insert_notification_actions_one },
+  } = await mutate<InsertNotificationActionsMutation>({
+    mutation: InsertNotificationActionsDocument,
+    variables: {
+      object: {
+        notification_id: notificationId,
+        action_id: actionId,
+      },
+    },
+  });
+  return insert_notification_actions_one;
 };
 
 export const filterExcludeNotifications = (
-	notifications: GetNotificationsForUserQuery["notifications"],
-	excludeResourceTypes: string[],
-	excludeProperties: string[]
+  notifications: GetNotificationsForUserQuery['notifications'],
+  excludeResourceTypes: string[],
+  excludeProperties: string[],
 ) => {
-	let results = notifications?.filter(
-		(item) =>
-			!excludeResourceTypes.includes(item.notification_resource_type) &&
-			(item.notification_actions.length > 1 ||
-				(item.notification_actions.length === 1 &&
-					!excludeProperties.includes(
-						Object.keys(
-							item.notification_actions[0]?.action?.properties || {}
-						)[0]
-					)))
-	);
+  const results = notifications?.filter(
+    item =>
+      !excludeResourceTypes.includes(item.notification_resource_type) &&
+      (item.notification_actions.length > 1 ||
+        (item.notification_actions.length === 1 &&
+          !excludeProperties.includes(
+            Object.keys(
+              item.notification_actions[0]?.action?.properties || {},
+            )[0],
+          ))),
+  );
 
-	results.forEach((item) => {
-		if (item.notification_actions.length > 1) {
-			item.notification_actions = item.notification_actions.filter(
-				(element) =>
-					!excludeProperties.includes(
-						Object.keys(element.action?.properties || {})[0]
-					)
-			);
-		}
-	});
+  results.forEach(item => {
+    if (item.notification_actions.length > 1) {
+      item.notification_actions = item.notification_actions.filter(
+        element =>
+          !excludeProperties.includes(
+            Object.keys(element.action?.properties || {})[0],
+          ),
+      );
+    }
+  });
 
-	return results;
+  return results;
 };
 
 export const getNotificationOrganizationLink = (

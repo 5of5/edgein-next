@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   SelectInput,
   ReferenceInput,
   AutocompleteInput,
   NumberInput,
-} from "react-admin";
-import { status } from "@/utils/constants";
-import ElemFormDialog from "../elem-form-dialog";
+} from 'react-admin';
+import { status } from '@/utils/constants';
+import ElemFormDialog from '../elem-form-dialog';
 
 type Props = {
   selectedRecord: any;
@@ -15,7 +15,7 @@ type Props = {
 
 const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
   const inputClassName =
-    "w-full text-lg text-dark-500 rounded-md border border-slate-300 outline-none";
+    'w-full text-lg text-dark-500 rounded-md border border-slate-300 outline-none';
 
   return (
     <ElemFormDialog
@@ -35,9 +35,9 @@ const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
       >
         <AutocompleteInput
           className={inputClassName}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
+          filterToQuery={search => ({ name: search })}
           emptyValue={null}
         />
       </ReferenceInput>
@@ -52,9 +52,9 @@ const InvestmentDialog = ({ selectedRecord, onClose }: Props) => {
       >
         <AutocompleteInput
           className={inputClassName}
-          style={{ padding: 0, border: "none" }}
+          style={{ padding: 0, border: 'none' }}
           optionText="name"
-          filterToQuery={(search) => ({ name: search })}
+          filterToQuery={search => ({ name: search })}
           emptyValue={null}
         />
       </ReferenceInput>

@@ -1,4 +1,4 @@
-import { mutate, query } from "@/graphql/hasuraAdmin";
+import { mutate, query } from '@/graphql/hasuraAdmin';
 import {
   InsertActionMutation,
   InsertActionDocument,
@@ -14,19 +14,18 @@ import {
   GetInvestmentRoundByRoundIdDocument,
   InsertDataDiscardMutation,
   InsertDataDiscardDocument,
-} from "@/graphql/types";
-import { User } from "@/models/user";
-import { HttpError } from "react-admin";
-import { getUpdatedDiff } from "./helpers";
+} from '@/graphql/types';
+import { User } from '@/models/user';
+import { HttpError } from 'react-admin';
+import { getUpdatedDiff } from './helpers';
 import * as util from 'util';
 import {
   ActionType,
   ResourceTypes,
   NODE_NAME,
   isResourceType,
-  tags
+  tags,
 } from './constants';
-
 
 export const partnerLookUp = async (apiKey: string) => {
   const {
@@ -49,24 +48,29 @@ export const resourceIdLookup = async (
   }
 
   try {
-    let argumentList: Array<string> = [];
-    let filterClauses: Array<string> = [];
-    let variables: Record<string, any> = {};
+    const argumentList: Array<string> = [];
+    const filterClauses: Array<string> = [];
+    const variables: Record<string, any> = {};
     for (const item of resourceIdentifier) {
-      if (!item.field || ! item.value)
-        continue;
+      if (!item.field || !item.value) continue;
 
       let identifierMethod = item.method;
-      if (!identifierMethod)
-        identifierMethod = '_eq';
+      if (!identifierMethod) identifierMethod = '_eq';
 
-      argumentList.push(`$${item.field}: ${typeof item.value === 'number' || item.field === 'id' ? 'Int!' : 'String!'}`);
-      filterClauses.push(`{${item.field}:{${identifierMethod}:$${item.field}}}`);
+      argumentList.push(
+        `$${item.field}: ${
+          typeof item.value === 'number' || item.field === 'id'
+            ? 'Int!'
+            : 'String!'
+        }`,
+      );
+      filterClauses.push(
+        `{${item.field}:{${identifierMethod}:$${item.field}}}`,
+      );
       variables[item.field] = item.value;
     }
 
-    if (argumentList.length == 0)
-      return;
+    if (argumentList.length == 0) return;
 
     const { data } = await query({
       query: `
@@ -112,7 +116,11 @@ export const insertDataDiscard = async (data: Array<Record<string, any>>) => {
   return response.data.insert_data_discard?.returning;
 };
 
-export const updateMainTable = async (resourceType: ResourceTypes, id: Number, setValues: Record<string, any>) => {
+export const updateMainTable = async (
+  resourceType: ResourceTypes,
+  id: Number,
+  setValues: Record<string, any>,
+) => {
   await mutate({
     mutation: `
     mutation update_main_table($id: Int!, $setValues: ${resourceType}_set_input!) {
@@ -125,7 +133,10 @@ export const updateMainTable = async (resourceType: ResourceTypes, id: Number, s
   });
 };
 
-export const deleteMainTableRecord = async (resourceType: ResourceTypes, id: Number) => {
+export const deleteMainTableRecord = async (
+  resourceType: ResourceTypes,
+  id: Number,
+) => {
   await mutate({
     mutation: `
       mutation delete_main_table_record($id: Int!) {
@@ -143,7 +154,10 @@ export const deleteMainTableRecord = async (resourceType: ResourceTypes, id: Num
   });
 };
 
-export const markDataRawAsInactive = async (resourceType: ResourceTypes, resourceId: Number) => {
+export const markDataRawAsInactive = async (
+  resourceType: ResourceTypes,
+  resourceId: Number,
+) => {
   await mutate<MarkDataRawAsInactiveMutation>({
     mutation: MarkDataRawAsInactiveDocument,
     variables: {
@@ -181,44 +195,44 @@ export const insertActionDataChange = async (
 export const onSubmitData = (
   type: string,
   transformInput: any,
-  method: "POST" | "PUT" | "DELETE",
+  method: 'POST' | 'PUT' | 'DELETE',
 ) => {
   const resource =
-    method === "DELETE"
+    method === 'DELETE'
       ? transformInput.previousData
       : getUpdatedDiff(transformInput.previousData, transformInput.data);
-  return fetch("/api/submit-data/", {
+  return fetch('/api/submit-data/', {
     method,
     headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       partner_api_key: process.env.NEXT_PUBLIC_PARTNER_API_KEY,
       resource_type: type,
-      resource_identifier: [{ field: "id", value: transformInput.id }],
+      resource_identifier: [{ field: 'id', value: transformInput.id }],
       resource,
-      force_update: true
+      force_update: true,
     }),
   })
-    .then((res) => {
+    .then(res => {
       if (!res.ok) {
         return Promise.reject(res);
       }
       return res.json();
     })
-    .then((data) => {
+    .then(data => {
       const hasError = data.find((item: any) => item.error);
       if (hasError) {
         return Promise.reject(new HttpError(hasError.error[0]?.message, 400));
       }
       return { data: { ...transformInput.data, id: data[0]?.id } };
-    })
+    });
 };
 
 export const insertResourceData = async (
   resourceType: ResourceTypes,
-  properties: Record<string, any>
+  properties: Record<string, any>,
 ) => {
   const { data } = await mutate({
     mutation: `
@@ -236,7 +250,8 @@ export const insertResourceData = async (
 };
 
 const notInsertValueType = (value: any) =>
-  value === undefined || value === "" ||
+  value === undefined ||
+  value === '' ||
   value === null ||
   (value &&
     Object.getPrototypeOf(value) === Object.prototype &&
@@ -246,7 +261,11 @@ const notInsertValueType = (value: any) =>
     Object.getPrototypeOf(value) === Object.prototype) ||
   (value && Array.isArray(value) && value.length === 0);
 
-const mainTableLookup = async (resourceType: ResourceTypes, id: any, returnFields: Array<string>) => {
+const mainTableLookup = async (
+  resourceType: ResourceTypes,
+  id: any,
+  returnFields: Array<string>,
+) => {
   const { data } = await query({
     query: `
     query lookup_${resourceType}($id: Int) {
@@ -278,15 +297,24 @@ const formatValue = (data: any, dataType: string) => {
         break;
     }
     return retValue;
-  } catch { return; }
+  } catch {
+    return;
+  }
 };
 
-const validateValue = (resourceType: ResourceTypes, field: string, value: any) => {
-  let isValidated = true
+const validateValue = (
+  resourceType: ResourceTypes,
+  field: string,
+  value: any,
+) => {
+  let isValidated = true;
   switch (resourceType) {
     case 'companies':
     case 'vc_firms':
-      if (field === 'tags' && !value.every((tag: string) => tags.map(item => item.id).includes(tag)) )
+      if (
+        field === 'tags' &&
+        !value.every((tag: string) => tags.map(item => item.id).includes(tag))
+      )
         isValidated = false;
       break;
   }
@@ -306,14 +334,14 @@ const notFoundAction = async (
       news_id: resourceObj.news_id,
       name: resourceObj['people:name'],
       type: 'subject',
-    }
+    };
   } else if (resourceType === 'news_organizations') {
     relatedType = 'news_related_organizations';
     data = {
       news_id: resourceObj.news_id,
       name: resourceObj['companies:name'],
       type: 'subject',
-    }
+    };
   } else {
     return;
   }
@@ -330,7 +358,7 @@ const notFoundAction = async (
       object: data,
     },
   });
-}
+};
 
 export const mutateActionAndDataRaw = async (
   partnerId: number,
@@ -339,17 +367,21 @@ export const mutateActionAndDataRaw = async (
   resourceId: number,
   resourceObj: Record<string, any>,
   resourceType: ResourceTypes,
-  forceUpdate: Boolean
+  forceUpdate: Boolean,
 ) => {
   const currentTime = new Date();
-  let validData: Array<Record<string, any>> = [];
-  let invalidData: Array<Record<string, any>> = [];
-  let setMainTableValues: Record<string, any> = {};
+  const validData: Array<Record<string, any>> = [];
+  const invalidData: Array<Record<string, any>> = [];
+  const setMainTableValues: Record<string, any> = {};
   const actions: number[] = [];
 
   let existedData;
   if (resourceId) {
-    existedData = await mainTableLookup(resourceType, resourceId, Object.keys(resourceObj));
+    existedData = await mainTableLookup(
+      resourceType,
+      resourceId,
+      Object.keys(resourceObj),
+    );
   }
 
   for (let field in resourceObj) {
@@ -357,21 +389,25 @@ export const mutateActionAndDataRaw = async (
     // If field is lookup pattern <resource_type>:<field>
     // we convert the field to <resource_type>_id and lookup for its value
     if (field.includes(':') && field.split(':').length == 2) {
-      let [lookupResourceType, lookupField] = field.split(':');
+      const [lookupResourceType, lookupField] = field.split(':');
       if (isResourceType(lookupResourceType)) {
-        let lookupResource: string = NODE_NAME[lookupResourceType]
+        const lookupResource: string = NODE_NAME[lookupResourceType];
         if (await fieldLookup(`${lookupResource}.${lookupField}`)) {
-          value = await resourceIdLookup(lookupResourceType, [{field: lookupField, value}]);
-          field = lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
+          value = await resourceIdLookup(lookupResourceType, [
+            { field: lookupField, value },
+          ]);
+          field =
+            lookupResource === 'people' ? 'person_id' : `${lookupResource}_id`;
           if (!value && !resourceId) {
             // Insert new record but lookup value is not found
             await notFoundAction(resourceType, resourceObj);
+            throw new Error(`Lookup value not found ${resourceType}`);
           }
         } else {
           invalidData.push({
             resource: lookupResourceType,
             lookupField,
-            message: "Invalid Field",
+            message: 'Invalid Field',
           });
           continue;
         }
@@ -379,27 +415,33 @@ export const mutateActionAndDataRaw = async (
         invalidData.push({
           resource: lookupResourceType,
           lookupField,
-          message: "Invalid Resource Type",
+          message: 'Invalid Resource Type',
         });
         continue;
       }
     }
 
     if ((!resourceId && !notInsertValueType(value)) || resourceId) {
-      let dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
-      if (dataField === undefined || (dataField?.restricted_admin && user?.role !== "admin"))
+      const dataField = await fieldLookup(`${fieldPathLookup}.${field}`);
+      if (
+        dataField === undefined ||
+        (dataField?.restricted_admin && user?.role !== 'admin')
+      )
         invalidData.push({
           resource: resourceType,
           field,
-          message: "Invalid Field",
+          message: 'Invalid Field',
         });
       else {
-        let transformedValue = value
+        let transformedValue = value;
         if (dataField.regex_transform)
-          transformedValue = util.format(dataField.regex_transform, transformedValue);
+          transformedValue = util.format(
+            dataField.regex_transform,
+            transformedValue,
+          );
         if (dataField.data_type)
           transformedValue = formatValue(transformedValue, dataField.data_type);
-        if (!validateValue(resourceType, field, transformedValue)){
+        if (!validateValue(resourceType, field, transformedValue)) {
           const dataObject = [
             {
               resource: resourceType,
@@ -408,14 +450,18 @@ export const mutateActionAndDataRaw = async (
               partner: partnerId,
               accuracy_weight: 1,
               resource_id: resourceId,
-            }
+            },
           ];
           await insertDataDiscard(dataObject);
           continue;
         }
 
-        if ((!existedData || notInsertValueType(existedData[field]) && !notInsertValueType(value)) 
-            || forceUpdate)
+        if (
+          !existedData ||
+          (notInsertValueType(existedData[field]) &&
+            !notInsertValueType(value)) ||
+          forceUpdate
+        )
           setMainTableValues[field] = transformedValue;
 
         validData.push({
@@ -425,7 +471,7 @@ export const mutateActionAndDataRaw = async (
           resource: resourceType,
           resource_id: resourceId,
           field,
-          value: transformedValue === null ? "" : transformedValue,
+          value: transformedValue === null ? '' : transformedValue,
           accuracy_weight: 1,
         });
 
@@ -435,7 +481,7 @@ export const mutateActionAndDataRaw = async (
           resourceType,
           { [field]: value },
           user?.id,
-          partnerId
+          partnerId,
         );
         actions.push(actionResponse?.id || 0);
       }
@@ -445,23 +491,26 @@ export const mutateActionAndDataRaw = async (
   if (resourceId)
     await updateMainTable(resourceType, resourceId, setMainTableValues);
   else {
-      const response = await insertResourceData(resourceType, setMainTableValues);
-      resourceId = response?.id
-      validData.forEach(data => data.resource_id = resourceId);
+    const response = await insertResourceData(resourceType, setMainTableValues);
+    resourceId = response?.id;
+    validData.forEach(data => (data.resource_id = resourceId));
   }
 
   const insertResult = await insertDataRaw(validData);
 
-  return { id: resourceId, actions, resources: invalidData.concat(insertResult || []) };
+  return {
+    id: resourceId,
+    actions,
+    resources: invalidData.concat(insertResult || []),
+  };
 };
-
 
 export const getCompanyByRoundId = async (round_id: number) => {
   const {
-    data: { investment_rounds }
+    data: { investment_rounds },
   } = await query<GetInvestmentRoundByRoundIdQuery>({
     query: GetInvestmentRoundByRoundIdDocument,
     variables: { round_id },
   });
   return investment_rounds[0];
-}
+};

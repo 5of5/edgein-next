@@ -170,12 +170,9 @@ mutation UpdateListById($listId: Int!, $changes: lists_set_input!) {
   }
 }
 
- mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
-  update_lists(
-    where: {id: {_eq: $id}},
-    _set: {updated_at: $updated_at}
-  ) {
-    affected_rows 
+mutation TriggerListUpdatedAt($id: Int!, $updated_at: timestamptz!) {
+  update_lists(where: { id: { _eq: $id } }, _set: { updated_at: $updated_at }) {
+    affected_rows
     returning {
       id
     }

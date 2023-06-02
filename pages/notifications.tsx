@@ -17,15 +17,15 @@ import ElemNotificationItem from "@/components/notifications/elem-notification-i
 import ElemNotificationPopover from "@/components/notifications/elem-notification-popover";
 
 const Notifications: NextPage = () => {
-	const { user } = useAuth();
-	const [initialLoad, setInitialLoad] = useState(true);
+  const { user } = useAuth();
+  const [initialLoad, setInitialLoad] = useState(true);
 
-	useEffect(() => {
-		if (initialLoad) {
-			setInitialLoad(false);
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  useEffect(() => {
+    if (initialLoad) {
+      setInitialLoad(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 	const excludeProperties = useMemo(() => {
 		return ["status_tags", "logo", "trajectory", "search_count"];
@@ -35,55 +35,55 @@ const Notifications: NextPage = () => {
 		return [];
 	}, []);
 
-	const { data, error, isLoading, refetch } = useGetNotificationsForUserQuery({
-		user: user?.id || 0,
-	});
+  const { data, error, isLoading, refetch } = useGetNotificationsForUserQuery({
+    user: user?.id || 0,
+  });
 
-	if (!isLoading && initialLoad) {
-		setInitialLoad(false);
-	}
+  if (!isLoading && initialLoad) {
+    setInitialLoad(false);
+  }
 
-	const notifications = filterExcludeNotifications(
-		data?.notifications || [],
-		excludeResourceTypes,
-		excludeProperties
-	);
+  const notifications = filterExcludeNotifications(
+    data?.notifications || [],
+    excludeResourceTypes,
+    excludeProperties,
+  );
 
-	const displayedNotifications = notifications?.slice(
-		0,
-		user?.entitlements.listsCount
-			? user?.entitlements.listsCount
-			: notifications?.length
-	);
+  const displayedNotifications = notifications?.slice(
+    0,
+    user?.entitlements.listsCount
+      ? user?.entitlements.listsCount
+      : notifications?.length,
+  );
 
-	const [notificationsLimit, setNotificationsLimit] = useState(5);
-	const showMoreNotifications = () => {
-		setNotificationsLimit(notificationsLimit + 10);
-	};
+  const [notificationsLimit, setNotificationsLimit] = useState(5);
+  const showMoreNotifications = () => {
+    setNotificationsLimit(notificationsLimit + 10);
+  };
 
-	const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
+  const [isOpenUpgradeDialog, setIsOpenUpgradeDialog] = useState(false);
 
-	const onOpenUpgradeDialog = () => {
-		setIsOpenUpgradeDialog(true);
-	};
-	const onCloseUpgradeDialog = () => {
-		setIsOpenUpgradeDialog(false);
-	};
+  const onOpenUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(true);
+  };
+  const onCloseUpgradeDialog = () => {
+    setIsOpenUpgradeDialog(false);
+  };
 
-	const markAsRead = async (id?: number, all?: boolean) => {
-		await fetch("/api/mark-notification-read/", {
-			method: "POST",
-			headers: {
-				Accept: "application/json",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				id,
-				all,
-			}),
-		});
-		refetch();
-	};
+  const markAsRead = async (id?: number, all?: boolean) => {
+    await fetch('/api/mark-notification-read/', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id,
+        all,
+      }),
+    });
+    refetch();
+  };
 
 	return (
 		<div className="max-w-3xl mx-auto sm:mt-7 sm:px-6 lg:px-8">
@@ -126,9 +126,9 @@ const Notifications: NextPage = () => {
 							.map((notification, index) => {
 								const { message, extensions } = getNotificationChangedData(notification);
 
-								const enableExpand =
-									notification.event_type === "Change Data" &&
-									notification.notification_actions.length > 1;
+                const enableExpand =
+                  notification.event_type === 'Change Data' &&
+                  notification.notification_actions.length > 1;
 
 								if (enableExpand) {
 									return (
@@ -205,46 +205,46 @@ const Notifications: NextPage = () => {
 					)}
 				</div>
 
-				{(notifications ? notifications.length : 0) >
-				(displayedNotifications ? displayedNotifications.length : 0) ? (
-					<div className="p-5">
-						<ElemButton
-							btn="ol-primary"
-							onClick={onOpenUpgradeDialog}
-							className="w-full"
-						>
-							Show more notifications
-						</ElemButton>
-					</div>
-				) : (
-					notificationsLimit < (notifications ? notifications.length : 0) && (
-						<div className="p-5">
-							<ElemButton
-								btn="ol-primary"
-								onClick={showMoreNotifications}
-								className="w-full"
-							>
-								Show more notifications
-							</ElemButton>
-						</div>
-					)
-				)}
-			</div>
+        {(notifications ? notifications.length : 0) >
+        (displayedNotifications ? displayedNotifications.length : 0) ? (
+          <div className="p-5">
+            <ElemButton
+              btn="ol-primary"
+              onClick={onOpenUpgradeDialog}
+              className="w-full"
+            >
+              Show more notifications
+            </ElemButton>
+          </div>
+        ) : (
+          notificationsLimit < (notifications ? notifications.length : 0) && (
+            <div className="p-5">
+              <ElemButton
+                btn="ol-primary"
+                onClick={showMoreNotifications}
+                className="w-full"
+              >
+                Show more notifications
+              </ElemButton>
+            </div>
+          )
+        )}
+      </div>
 
-			<ElemUpgradeDialog
-				isOpen={isOpenUpgradeDialog}
-				onClose={onCloseUpgradeDialog}
-			/>
-		</div>
-	);
+      <ElemUpgradeDialog
+        isOpen={isOpenUpgradeDialog}
+        onClose={onCloseUpgradeDialog}
+      />
+    </div>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-	return {
-		props: {
-			metaTitle: "Notifications - EdgeIn.io",
-		},
-	};
+  return {
+    props: {
+      metaTitle: 'Notifications - EdgeIn.io',
+    },
+  };
 };
 
 export default Notifications;

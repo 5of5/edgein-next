@@ -66,7 +66,9 @@ mutation MarkNotificationsAsRead($where: notifications_bool_exp!) {
   }
 }
 
-mutation InsertNotificationActions($object: notification_actions_insert_input!) {
+mutation InsertNotificationActions(
+  $object: notification_actions_insert_input!
+) {
   insert_notification_actions_one(object: $object) {
     id
   }
