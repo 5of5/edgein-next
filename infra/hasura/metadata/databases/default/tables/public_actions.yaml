@@ -1,3 +1,18 @@
 table:
   schema: public
   name: actions
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - id
+        - partner
+        - resource_id
+        - user
+        - properties
+        - action
+        - page
+        - resource
+        - created_at
+      filter: {}
+      limit: 50

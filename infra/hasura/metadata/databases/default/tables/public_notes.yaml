@@ -37,9 +37,5 @@ select_permissions:
         - resource_type
         - updated_at
         - user_group_id
-      filter:
-        user_group:
-          user_group_members:
-            user_id:
-              _eq: X-Hasura-User-Id
+      filter: {}
       limit: 50

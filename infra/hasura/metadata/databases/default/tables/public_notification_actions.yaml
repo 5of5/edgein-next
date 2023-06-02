@@ -29,4 +29,3 @@ select_permissions:
         - notification_id
         - created_at
       filter: {}
-      allow_aggregations: true
