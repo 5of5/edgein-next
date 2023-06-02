@@ -123,38 +123,42 @@ const addSpecialRelationships = async (
   resourceType: ResourceTypes,
   resourceObj: Record<string, any>,
 ) => {
-  const specialRelationships: Array<Record<string, any>> = [];
-  if (resourceType === 'news') {
-    const newsContent = resourceObj?.metadata?.description;
-    if (newsContent) {
-      const newsPeople: Array<Record<string, any>> = [];
-      const newscompanies: Array<Record<string, any>> = [];
-      const ret = await fetch(
-        `${process.env.DANDLEION_API_URL}?text=${newsContent}&include=types&token=${process.env.DANDLEION_API_TOKEN}`,
-      );
-      const data = await ret.json();
-      if (data.annotations)
-        for (const entity of data.annotations) {
-          if (
-            entity.types.includes('http://dbpedia.org/ontology/Person') &&
-            !newsPeople.map(item => item['people:name']).includes(entity.spot)
-          )
-            newsPeople.push({ 'people:name': entity.spot });
-          else if (
-            !newscompanies
-              .map(item => item['companies:name'])
-              .includes(entity.spot)
-          )
-            newscompanies.push({ 'companies:name': entity.spot });
-        }
+  try {
+    const specialRelationships: Array<Record<string, any>> = [];
+    if (resourceType === 'news') {
+      const newsContent = resourceObj?.metadata?.description;
+      if (newsContent) {
+        const newsPeople: Array<Record<string, any>> = [];
+        const newscompanies: Array<Record<string, any>> = [];
+        const ret = await fetch(
+          `${process.env.DANDLEION_API_URL}?text=${newsContent}&include=types&token=${process.env.DANDLEION_API_TOKEN}`,
+        );
+        const data = await ret.json();
+        if (data.annotations)
+          for (const entity of data.annotations) {
+            if (
+              entity.types.includes('http://dbpedia.org/ontology/Person') &&
+              !newsPeople.map(item => item['people:name']).includes(entity.spot)
+            )
+              newsPeople.push({ 'people:name': entity.spot });
+            else if (
+              !newscompanies
+                .map(item => item['companies:name'])
+                .includes(entity.spot)
+            )
+              newscompanies.push({ 'companies:name': entity.spot });
+          }
 
-      if (newsPeople.length > 0)
-        specialRelationships.push({ news_person: newsPeople });
-      if (newscompanies.length > 0)
-        specialRelationships.push({ news_organizations: newscompanies });
+        if (newsPeople.length > 0)
+          specialRelationships.push({ news_person: newsPeople });
+        if (newscompanies.length > 0)
+          specialRelationships.push({ news_organizations: newscompanies });
+      }
     }
+    return specialRelationships;
+  } catch (error: any) {
+    return [];
   }
-  return specialRelationships;
 };
 
 const handleResource = async (

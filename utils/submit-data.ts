@@ -401,6 +401,7 @@ export const mutateActionAndDataRaw = async (
           if (!value && !resourceId) {
             // Insert new record but lookup value is not found
             await notFoundAction(resourceType, resourceObj);
+            throw new Error(`Lookup value not found ${resourceType}`);
           }
         } else {
           invalidData.push({
