@@ -20,3 +20,13 @@ object_relationships:
         insertion_order: null
         column_mapping:
           notification_id: id
+select_permissions:
+  - role: viewer
+    permission:
+      columns:
+        - action_id
+        - id
+        - notification_id
+        - created_at
+      filter: {}
+      allow_aggregations: true
