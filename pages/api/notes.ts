@@ -1,4 +1,4 @@
-import { mutate } from "@/graphql/hasuraAdmin";
+import { mutate } from '@/graphql/hasuraAdmin';
 import {
   DeleteNoteByIdDocument,
   DeleteNoteByIdMutation,
@@ -6,10 +6,10 @@ import {
   InsertNoteMutation,
   UpdateNoteDocument,
   UpdateNoteMutation,
-} from "@/graphql/types";
-import GroupService from "@/utils/groups";
-import type { NextApiRequest, NextApiResponse } from "next";
-import CookieService from "../../utils/cookie";
+} from '@/graphql/types';
+import GroupService from '@/utils/groups';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import CookieService from '../../utils/cookie';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const token = CookieService.getAuthToken(req.cookies);
@@ -25,10 +25,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.body.id;
 
-
-  if (id && req.method !== "POST") {
+  if (id && req.method !== 'POST') {
     const note = await GroupService.onFindNoteById(id);
-  
+
     if (note?.created_by !== created_by) {
       return res
         .status(403)
@@ -37,8 +36,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   switch (req.method) {
-    case "POST": {
-      const isCustomAudience = typeof groupId === "string";
+    case 'POST': {
+      const isCustomAudience = typeof groupId === 'string';
 
       const user_group_id = isCustomAudience ? null : groupId;
       const audience = isCustomAudience ? groupId : null;
@@ -62,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send(insert_notes_one);
     }
 
-    case "PUT": {
+    case 'PUT': {
       const {
         data: { update_notes },
       } = await mutate<UpdateNoteMutation>({
@@ -75,7 +74,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.send(update_notes?.returning[0]);
     }
 
-    case "DELETE": {
+    case 'DELETE': {
       const note = await GroupService.onFindNoteById(id);
       const isNoteCreator = user.id === note?.created_by;
       if (!isNoteCreator) {
@@ -103,7 +102,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     default:
-      return res.status(405).json({ message: "Method not allowed" });
+      return res.status(405).json({ message: 'Method not allowed' });
   }
 };
 

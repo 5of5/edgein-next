@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 
-import ContentEdit from "@mui/icons-material/Edit";
-import ContentSave from "@mui/icons-material/Save";
-import ContentDelete from "@mui/icons-material/Delete";
-import ContentCreate from "@mui/icons-material/Add";
+import ContentEdit from '@mui/icons-material/Edit';
+import ContentSave from '@mui/icons-material/Save';
+import ContentDelete from '@mui/icons-material/Delete';
+import ContentCreate from '@mui/icons-material/Add';
 
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
 import {
   InputLabel,
@@ -19,9 +19,9 @@ import {
   FormControlLabel,
   Select,
   Switch,
-} from "@mui/material";
+} from '@mui/material';
 
-import MuiTextField from "@mui/material/TextField";
+import MuiTextField from '@mui/material/TextField';
 
 import {
   AutocompleteInput,
@@ -46,22 +46,22 @@ import {
   useGetOne,
   useRefresh,
   useEditContext,
-} from "react-admin";
+} from 'react-admin';
 
 import {
   functionChoicesTM,
   seniorityChoicesTM,
   ADMIN_REFERENCE_INPUT_PER_PAGE,
-} from "../../../utils/constants";
+} from '../../../utils/constants';
 
-import Slide from "@mui/material/Slide";
-import { TransitionProps } from "@mui/material/transitions";
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
     children: React.ReactElement<any, any>;
   },
-  ref: React.Ref<unknown>
+  ref: React.Ref<unknown>,
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -96,7 +96,7 @@ const CustomDeleteButton = () => {
   const record = useRecordContext();
   const [open, setOpen] = useState(false);
 
-  const [deleteOne] = useDelete("team_members", {
+  const [deleteOne] = useDelete('team_members', {
     id: record.id,
     previousData: record,
   });
@@ -111,7 +111,7 @@ const CustomDeleteButton = () => {
       <Button
         label="Delete"
         variant="text"
-        sx={{ color: "red" }}
+        sx={{ color: 'red' }}
         onClick={() => setOpen(true)}
         startIcon={<ContentDelete />}
       />
@@ -129,7 +129,7 @@ const CustomDeleteButton = () => {
 export const TeamMemberEdit = () => {
   const { record, isLoading } = useEditContext();
   const { id: currentId } = useParams();
-  const { data: member } = useGetList("team_members", {
+  const { data: member } = useGetList('team_members', {
     filter: { person_id: parseInt(currentId!) },
   });
   const [isOpen, setIsOpen] = useState(false);
@@ -147,13 +147,13 @@ export const TeamMemberEdit = () => {
 
   const [teamData, setTeamData] = useState<any>({
     team_id: -1,
-    company_id: "",
+    company_id: '',
     founder: false,
-    function: "",
-    seniority: "",
+    function: '',
+    seniority: '',
     start_date: null,
     end_date: null,
-    title: "",
+    title: '',
   });
 
   const handleEdit = (rec: any) => {
@@ -176,13 +176,13 @@ export const TeamMemberEdit = () => {
     setIsError(false);
     setCurrRecord(null);
     setTeamData({
-      company_id: "",
+      company_id: '',
       founder: false,
-      function: "",
-      seniority: "",
+      function: '',
+      seniority: '',
       start_date: null,
       end_date: null,
-      title: "",
+      title: '',
     });
   };
 
@@ -210,9 +210,9 @@ export const TeamMemberEdit = () => {
         founder: teamData.founder,
       };
       if (!currRecord) {
-        create("team_members", { data });
+        create('team_members', { data });
       } else {
-        update("team_members", {
+        update('team_members', {
           id: currRecord.id,
           data,
           previousData: currRecord,
@@ -228,28 +228,28 @@ export const TeamMemberEdit = () => {
         pagination={false}
         actions={<ListActions onCreate={() => setIsOpen(true)} />}
         sx={{
-          ".MuiToolbar-root": {
-            justifyContent: "start !important",
+          '.MuiToolbar-root': {
+            justifyContent: 'start !important',
             paddingTop: 0,
-            marginBottom: "4px",
+            marginBottom: '4px',
           },
-          ".RaBulkActionsToolbar-toolbar": {
-            justifyContent: "start !important",
+          '.RaBulkActionsToolbar-toolbar': {
+            justifyContent: 'start !important',
           },
-          ".MuiToolbar-root .MuiButtonBase-root": {
+          '.MuiToolbar-root .MuiButtonBase-root': {
             paddingTop: 0,
             paddingBottom: 0,
-            margin: "4px",
+            margin: '4px',
           },
-          ".RaBulkActionsToolbar-topToolbar": {
+          '.RaBulkActionsToolbar-topToolbar': {
             paddingTop: 0,
             paddingBottom: 0,
             marginBottom: 0,
           },
-          ".MuiToolbar-root form": {
-            flex: "0 1 auto",
+          '.MuiToolbar-root form': {
+            flex: '0 1 auto',
           },
-          ".MuiToolbar-root form .MuiFormControl-root": {
+          '.MuiToolbar-root form .MuiFormControl-root': {
             margin: 0,
           },
         }}
@@ -296,9 +296,9 @@ export const TeamMemberEdit = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  width: "100%",
-                  ".MuiAutocomplete-root .MuiFormHelperText-root": {
-                    display: "none",
+                  width: '100%',
+                  '.MuiAutocomplete-root .MuiFormHelperText-root': {
+                    display: 'none',
                   },
                 }}
               >
@@ -312,70 +312,70 @@ export const TeamMemberEdit = () => {
                     defaultValue={currRecord?.company_id}
                     optionText="name"
                     optionValue="id"
-                    filterToQuery={(search) => ({ name: search })}
-                    onChange={(company_id) => {
+                    filterToQuery={search => ({ name: search })}
+                    onChange={company_id => {
                       handleChange(0, company_id);
                     }}
-                    onCreate={(company_id) => {
+                    onCreate={company_id => {
                       handleChange(0, company_id);
                     }}
                   />
                 </ReferenceInput>
                 {isError && (
-                  <FormHelperText sx={{ color: "red" }}>
+                  <FormHelperText sx={{ color: 'red' }}>
                     Company is required
                   </FormHelperText>
                 )}
               </FormControl>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <InputLabel>Function</InputLabel>
                 <Select
                   value={teamData?.function}
-                  onChange={(e) => handleChange(1, e.target.value)}
+                  onChange={e => handleChange(1, e.target.value)}
                 >
-                  {functionChoicesTM?.map((r) => (
+                  {functionChoicesTM?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <InputLabel>Seniority</InputLabel>
                 <Select
                   value={teamData?.seniority}
-                  onChange={(e) => handleChange(2, e.target.value)}
+                  onChange={e => handleChange(2, e.target.value)}
                 >
-                  {seniorityChoicesTM?.map((r) => (
+                  {seniorityChoicesTM?.map(r => (
                     <MenuItem key={r.id} value={r.id}>
                       {r.name}
                     </MenuItem>
                   ))}
                 </Select>
               </FormControl>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <MuiTextField
                   label="Start date"
                   type="date"
                   value={teamData?.start_date}
-                  onChange={(e) => handleChange(3, e.target.value)}
+                  onChange={e => handleChange(3, e.target.value)}
                   InputLabelProps={{ shrink: true }}
                 />
               </FormControl>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <MuiTextField
                   label="End date"
                   type="date"
                   value={teamData?.end_date}
-                  onChange={(e) => handleChange(4, e.target.value)}
+                  onChange={e => handleChange(4, e.target.value)}
                   InputLabelProps={{ shrink: true }}
                 />
               </FormControl>
-              <FormControl variant="filled" sx={{ width: "100%" }}>
+              <FormControl variant="filled" sx={{ width: '100%' }}>
                 <MuiTextField
                   label="Title"
                   value={teamData?.title}
-                  onChange={(e) => handleChange(5, e.target.value)}
+                  onChange={e => handleChange(5, e.target.value)}
                   variant="filled"
                 />
               </FormControl>
@@ -384,7 +384,7 @@ export const TeamMemberEdit = () => {
                 control={
                   <Switch
                     checked={teamData?.founder}
-                    onChange={(e) => handleChange(6, e.target.checked)}
+                    onChange={e => handleChange(6, e.target.checked)}
                   />
                 }
                 label="Founder"
@@ -392,11 +392,11 @@ export const TeamMemberEdit = () => {
               <FormControl
                 variant="filled"
                 sx={{
-                  display: "flex",
-                  justifyContent: "space-evenly",
-                  alignItems: "center",
-                  flexDirection: "row",
-                  width: "100%",
+                  display: 'flex',
+                  justifyContent: 'space-evenly',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  width: '100%',
                 }}
               >
                 <Button label="Cancel" variant="text" onClick={handleClose} />

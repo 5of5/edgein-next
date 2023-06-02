@@ -1,13 +1,13 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement } from 'react';
 import {
   Confirm,
   Button,
   useRecordContext,
   useDelete,
   useRefresh,
-} from "react-admin";
-import ContentDelete from "@mui/icons-material/Delete";
-import useDialog from "@/hooks/use-dialog";
+} from 'react-admin';
+import ContentDelete from '@mui/icons-material/Delete';
+import useDialog from '@/hooks/use-dialog';
 
 type Props = {
   deleteUri: string;
@@ -37,7 +37,7 @@ const ElemDeleteButton = ({ deleteUri, content }: Props) => {
         onSuccess: () => {
           refresh();
         },
-      }
+      },
     );
     onCloseConfirmDeleteDialog;
   };
@@ -47,7 +47,7 @@ const ElemDeleteButton = ({ deleteUri, content }: Props) => {
       <Button
         label="Delete"
         variant="text"
-        sx={{ color: "red" }}
+        sx={{ color: 'red' }}
         onClick={onOpenConfirmDeleteDialog}
         startIcon={<ContentDelete />}
       />

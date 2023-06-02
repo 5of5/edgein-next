@@ -1,13 +1,16 @@
-import { mutate } from "@/graphql/hasuraAdmin";
-import { DeleteUserGroupInviteByIdDocument, DeleteUserGroupInviteByIdMutation } from "@/graphql/types";
-import GroupService from "@/utils/groups";
-import type { NextApiRequest, NextApiResponse } from "next";
-import CookieService from "../../utils/cookie";
+import { mutate } from '@/graphql/hasuraAdmin';
+import {
+  DeleteUserGroupInviteByIdDocument,
+  DeleteUserGroupInviteByIdMutation,
+} from '@/graphql/types';
+import GroupService from '@/utils/groups';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import CookieService from '../../utils/cookie';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   // Delete a group invite
-  if (req.method !== "DELETE") {
-    res.status(405).json({ message: "Method not allowed" });
+  if (req.method !== 'DELETE') {
+    res.status(405).json({ message: 'Method not allowed' });
   }
 
   const token = CookieService.getAuthToken(req.cookies);
@@ -16,7 +19,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const id = req.body.id;
   const userGroupInvite = await GroupService.onFindUserGroupInviteById(id);
-  const isMember = await GroupService.isUserMemberOfGroup(userGroupInvite.user_group_id, user.id);
+  const isMember = await GroupService.isUserMemberOfGroup(
+    userGroupInvite.user_group_id,
+    user.id,
+  );
   if (!isMember) {
     return res
       .status(403)

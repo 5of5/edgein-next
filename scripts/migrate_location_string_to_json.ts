@@ -1,37 +1,37 @@
-import axios from "axios";
-import * as dotenv from "dotenv";
-dotenv.config({ path: "./.env" });
-import { getClient } from "./postgres-helpers";
+import axios from 'axios';
+import * as dotenv from 'dotenv';
+dotenv.config({ path: './.env' });
+import { getClient } from './postgres-helpers';
 
 const onMigrateLocationJson = async (resourceType: string) => {
   const client = await getClient();
 
-  let successfullyLocations = [];
-  let notFoundLocations = [];
-  let lackInfoLocations = [];
-  let errorLocations = [];
+  const successfullyLocations = [];
+  const notFoundLocations = [];
+  const lackInfoLocations = [];
+  const errorLocations = [];
 
   const queryResults = await client.query(
-    `SELECT id, name, location FROM ${resourceType} WHERE location <> ''`
+    `SELECT id, name, location FROM ${resourceType} WHERE location <> ''`,
   );
 
   for (let i = 0; i < queryResults.rows.length; i += 1) {
     const record = queryResults.rows[i];
     if (record.location) {
       console.log(
-        `Migrate record record #${record.id} ${record.name} ${record.location}`
+        `Migrate record record #${record.id} ${record.name} ${record.location}`,
       );
 
       try {
         const response = await axios.get(
           `https://api.radar.io/v1/geocode/forward?query=${encodeURI(
-            record.location
+            record.location,
           )}`,
           {
             headers: {
-              Authorization: process.env.RADAR_API_KEY ?? "",
+              Authorization: process.env.RADAR_API_KEY ?? '',
             },
-          }
+          },
         );
 
         const addressDetail = response.data.addresses[0];
@@ -45,7 +45,7 @@ const onMigrateLocationJson = async (resourceType: string) => {
           } else {
             successfullyLocations.push(record.id);
             await client.query(
-              `UPDATE ${resourceType} SET location_json=\$\${"address":"${addressLabel}", "city":"${city}", "state":"${state}", "country":"${country}"}\$\$::jsonb, geopoint='POINT(${latitude} ${longitude})' WHERE id=${record.id};`
+              `UPDATE ${resourceType} SET location_json=\$\${"address":"${addressLabel}", "city":"${city}", "state":"${state}", "country":"${country}"}\$\$::jsonb, geopoint='POINT(${latitude} ${longitude})' WHERE id=${record.id};`,
             );
           }
         }
@@ -56,25 +56,25 @@ const onMigrateLocationJson = async (resourceType: string) => {
     }
   }
 
-  console.log("======================================");
+  console.log('======================================');
   console.log(
     `Migrate ${resourceType} successfully`,
-    successfullyLocations.length
+    successfullyLocations.length,
   );
   console.log(`${resourceType} Ids`, successfullyLocations);
 
-  console.log("======================================");
+  console.log('======================================');
   console.log(`Not found ${resourceType} locations`, notFoundLocations.length);
   console.log(`${resourceType} Ids`, notFoundLocations);
 
-  console.log("======================================");
+  console.log('======================================');
   console.log(
     `Lack ${resourceType} information locations`,
-    lackInfoLocations.length
+    lackInfoLocations.length,
   );
   console.log(`${resourceType} Ids`, lackInfoLocations);
 
-  console.log("======================================");
+  console.log('======================================');
   console.log(`Migrate ${resourceType} failed`, errorLocations.length);
   console.log(`${resourceType} Ids`, errorLocations);
 
@@ -82,7 +82,7 @@ const onMigrateLocationJson = async (resourceType: string) => {
 };
 
 const run = async () => {
-  await onMigrateLocationJson("vc_firms");
+  await onMigrateLocationJson('vc_firms');
 };
 
 run();

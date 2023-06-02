@@ -42,8 +42,15 @@ mutation UpdateBillingOrg($id: Int!, $status: String!) {
   }
 }
 
-mutation UpdateBillingOrgCustomerId($id: Int!, $customerId: String!, $status: String!) {
-  update_billing_org_by_pk(pk_columns: { id: $id }, _set: { customer_id: $customerId, status: $status }) {
+mutation UpdateBillingOrgCustomerId(
+  $id: Int!
+  $customerId: String!
+  $status: String!
+) {
+  update_billing_org_by_pk(
+    pk_columns: { id: $id }
+    _set: { customer_id: $customerId, status: $status }
+  ) {
     id
     customer_id
   }

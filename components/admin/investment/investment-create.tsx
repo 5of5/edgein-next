@@ -1,17 +1,17 @@
-import React from "react";
-import { useCreate, useRedirect } from "react-admin";
-import ElemFormBase from "../elem-form-base";
-import ElemToolbar from "../elem-toolbar";
-import InvestmentForm from "./investment-form";
+import React from 'react';
+import { useCreate, useRedirect } from 'react-admin';
+import ElemFormBase from '../elem-form-base';
+import ElemToolbar from '../elem-toolbar';
+import InvestmentForm from './investment-form';
 
 export const InvestmentCreate = () => {
   const [create] = useCreate();
   const redirect = useRedirect();
 
   const handleSaveDraft = (data: any) => {
-    data.status = "draft";
-    create("investments", { data });
-    redirect("/investments");
+    data.status = 'draft';
+    create('investments', { data });
+    redirect('/investments');
   };
 
   return (

@@ -1,8 +1,8 @@
-import React from "react";
-import Link from "next/link";
-import { formatDate } from "@/utils";
-import { IconExternalLink } from "@/components/icons";
-import { News } from "@/graphql/types";
+import React from 'react';
+import Link from 'next/link';
+import { formatDate } from '@/utils';
+import { IconExternalLink } from '@/components/icons';
+import { News } from '@/graphql/types';
 
 type Props = {
   news: News;
@@ -53,21 +53,21 @@ const ElemNewsHeading: React.FC<Props> = ({
             )}
             <p className="text-sm">
               {formatDate(news.date as string, {
-                month: "short",
-                day: "2-digit",
-                year: "numeric",
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
               })}
               {showPoweredBy && (
                 <>
-                  <span>{` • powered by `}</span>
+                  <span>{` • powered by `}</span>
                   <Link
                     href={`/companies/${
-                      news?.source?.poweredby?.toLowerCase() === "techcrunch"
-                        ? "techcrunch"
-                        : "cryptopanic"
+                      news?.source?.poweredby?.toLowerCase() === 'techcrunch'
+                        ? 'techcrunch'
+                        : 'cryptopanic'
                     }`}
                   >
-                    <a>{news?.source?.poweredby || "CryptoPanic"}</a>
+                    <a>{news?.source?.poweredby || 'CryptoPanic'}</a>
                   </Link>
                 </>
               )}
