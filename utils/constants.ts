@@ -8,7 +8,7 @@ import {
   regex,
 } from 'react-admin';
 
-const urlPattern = new RegExp(
+export const urlPattern = new RegExp(
   '^(https?:\\/\\/)?' + // protocol
     '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
     '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
@@ -1904,3 +1904,5 @@ export const newsPersonTypes = [
 ];
 
 export const LOCAL_STORAGE_LIBRARY_KEY = 'library';
+
+export const ONBOARDING_QUESTION = 'Where did you hear about us?';
