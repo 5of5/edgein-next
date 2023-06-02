@@ -314,7 +314,10 @@ export default function Account() {
             <EditSection heading="Show draft data">
               <InputSwitch
                 label=""
-                checked={user?.showDraftData || false}
+                // Set default showDraftData is true
+                checked={
+                  user?.showDraftData === undefined ? true : user?.showDraftData
+                }
                 onChange={handleSwitchShowDraftData}
               />
             </EditSection>

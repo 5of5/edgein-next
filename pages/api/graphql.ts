@@ -5,7 +5,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const user = await CookieService.getUser(
     CookieService.getAuthToken(req.cookies),
   );
-  const isAdminHideDraftData = user?.role === 'admin' && !user?.showDraftData;
+
+  // Set default showDraftData is true
+  const isAdminHideDraftData =
+    user?.role === 'admin' && user?.showDraftData === false;
+
   let headers:
     | ({ 'x-hasura-role'?: string; 'x-hasura-user-id'?: string } & {
         Authorization: string;
@@ -29,12 +33,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
     };
   }
-
-  // temporay until everyone gets a new cookie
-  headers = {
-    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
-    'x-hasura-user-id': user?.id?.toString() ?? '',
-  };
 
   const opts = {
     method: 'POST',

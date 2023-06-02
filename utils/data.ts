@@ -22,21 +22,17 @@ export const runGraphQl = async <QueryType>(
     };
   }
 
-  // temporay until everyone gets a new cookie
-  headers = {
-    'Content-Type': 'application/json',
-    Accept: 'application/json',
-    'x-hasura-admin-secret': process.env.HASURA_ADMIN_SECRET ?? '',
-    'x-hasura-role': process.env.HASURA_VIEWER ?? '',
-  };
-
   if (cookies) {
     const user = await CookieService.getUser(
       CookieService.getAuthToken(cookies),
     );
     headers['x-hasura-user-id'] = user?.id?.toString() ?? '';
     // Allow admin to access draft records
-    if (user?.role === 'admin' && user?.showDraftData)
+    // Set default showDraftData is true
+    if (
+      user?.role === 'admin' &&
+      (user?.showDraftData === undefined || user?.showDraftData)
+    )
       delete headers['x-hasura-role'];
   }
 
