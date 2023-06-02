@@ -1,41 +1,41 @@
-import React, { Fragment, useEffect, useState } from "react";
-import type { NextPage, GetStaticProps } from "next";
-import { useRouter } from "next/router";
-import { ElemHeading } from "@/components/elem-heading";
+import React, { Fragment, useEffect, useState } from 'react';
+import type { NextPage, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import { ElemHeading } from '@/components/elem-heading';
 import {
-	PlaceholderCompanyCard,
-	PlaceholderTable,
-} from "@/components/placeholders";
-import { ElemRecentCompanies } from "@/components/companies/elem-recent-companies";
-import { ElemButton } from "@/components/elem-button";
-import { runGraphQl } from "@/utils";
+  PlaceholderCompanyCard,
+  PlaceholderTable,
+} from '@/components/placeholders';
+import { ElemRecentCompanies } from '@/components/companies/elem-recent-companies';
+import { ElemButton } from '@/components/elem-button';
+import { runGraphQl } from '@/utils';
 import {
-	IconSearch,
-	IconAnnotation,
-	IconGrid,
-	IconTable,
-} from "@/components/icons";
-import { CompaniesTable } from "@/components/companies/elem-companies-table";
+  IconSearch,
+  IconAnnotation,
+  IconGrid,
+  IconTable,
+} from '@/components/icons';
+import { CompaniesTable } from '@/components/companies/elem-companies-table';
 import {
-	Companies,
-	Companies_Bool_Exp,
-	GetCompaniesDocument,
-	GetCompaniesQuery,
-	useGetCompaniesQuery,
-} from "@/graphql/types";
-import { Pagination } from "@/components/pagination";
-import { ElemCompanyCard } from "@/components/companies/elem-company-card";
-import { companyChoices } from "@/utils/constants";
-import toast, { Toaster } from "react-hot-toast";
-import { useStateParams } from "@/hooks/use-state-params";
-import { onTrackView } from "@/utils/track";
-import { processCompaniesFilters } from "@/utils/filter";
-import { ElemFilter } from "@/components/elem-filter";
-import { useIntercom } from "react-use-intercom";
-import useFilterParams from "@/hooks/use-filter-params";
-import useLibrary from "@/hooks/use-library";
-import { DeepPartial } from "@/types/common";
-import { useUser } from "@/context/user-context";
+  Companies,
+  Companies_Bool_Exp,
+  GetCompaniesDocument,
+  GetCompaniesQuery,
+  useGetCompaniesQuery,
+} from '@/graphql/types';
+import { Pagination } from '@/components/pagination';
+import { ElemCompanyCard } from '@/components/companies/elem-company-card';
+import { companyChoices } from '@/utils/constants';
+import toast, { Toaster } from 'react-hot-toast';
+import { useStateParams } from '@/hooks/use-state-params';
+import { onTrackView } from '@/utils/track';
+import { processCompaniesFilters } from '@/utils/filter';
+import { ElemFilter } from '@/components/elem-filter';
+import { useIntercom } from 'react-use-intercom';
+import useFilterParams from '@/hooks/use-filter-params';
+import useLibrary from '@/hooks/use-library';
+import { DeepPartial } from '@/types/common';
+import { useUser } from '@/context/user-context';
 
 function useStateParamsFilter<T>(filters: T[], name: string) {
   return useStateParams(
@@ -59,9 +59,9 @@ const Companies: NextPage<Props> = ({
   companyStatusTags,
   setToggleFeedbackForm,
 }) => {
-	const { user } = useUser();
+  const { user } = useUser();
 
-	const [initialLoad, setInitialLoad] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const router = useRouter();
 
@@ -75,24 +75,24 @@ const Companies: NextPage<Props> = ({
     'statusTag',
   );
 
-	const [tableLayout, setTableLayout] = useState(false);
+  const [tableLayout, setTableLayout] = useState(false);
 
-	const [page, setPage] = useStateParams<number>(
-		0,
-		"page",
-		(pageIndex) => pageIndex + 1 + "",
-		(pageIndex) => Number(pageIndex) - 1
-	);
+  const [page, setPage] = useStateParams<number>(
+    0,
+    'page',
+    pageIndex => pageIndex + 1 + '',
+    pageIndex => Number(pageIndex) - 1,
+  );
 
-	// limit shown companies on table layout for free users
-	const limit =
-		user?.entitlements.listsCount && tableLayout
-			? user?.entitlements.listsCount
-			: 50;
+  // limit shown companies on table layout for free users
+  const limit =
+    user?.entitlements.listsCount && tableLayout
+      ? user?.entitlements.listsCount
+      : 50;
 
-	// disable offset on table layout for free users
-	const offset =
-		user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
+  // disable offset on table layout for free users
+  const offset =
+    user?.entitlements.listsCount && tableLayout ? 0 : limit * page;
 
   const defaultFilters = [
     { slug: { _neq: '' } },
@@ -222,69 +222,55 @@ const Companies: NextPage<Props> = ({
         <div className="bg-white rounded-lg shadow p-5">
           <h2 className="text-xl font-bold">Companies</h2>
 
-					<div
-						className="mt-2 flex flex-wrap items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
-						role="tablist"
-					>
-						<nav className="flex">
-							{companyStatusTags &&
-								companyStatusTags.map((tab: any, index: number) =>
-									tab.disabled === true ? (
-										<Fragment key={index}></Fragment>
-									) : (
-										<button
-											key={index}
-											onClick={() => setSelectedStatusTag(tab)}
-											className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
-												selectedStatusTag.value === tab.value
-													? "text-primary-500 border-primary-500"
-													: "border-transparent  hover:bg-slate-200"
-											} ${tab.disabled ? "cursor-not-allowed" : ""}}`}
-										>
-											{tab.title}
-										</button>
-									)
-								)}
-						</nav>
+          <div
+            className="mt-2 mb-4 flex flex-wrap items-center justify-between border-y border-black/10 overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory touch-pan-x"
+            role="tablist"
+          >
+            <nav className="flex">
+              {companyStatusTags &&
+                companyStatusTags.map((tab: any, index: number) =>
+                  tab.disabled === true ? (
+                    <Fragment key={index}></Fragment>
+                  ) : (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedStatusTag(tab)}
+                      className={`whitespace-nowrap flex py-3 px-3 border-b-2 box-border font-bold transition-all ${
+                        selectedStatusTag.value === tab.value
+                          ? 'text-primary-500 border-primary-500'
+                          : 'border-transparent  hover:bg-slate-200'
+                      } ${tab.disabled ? 'cursor-not-allowed' : ''}}`}
+                    >
+                      {tab.title}
+                    </button>
+                  ),
+                )}
+            </nav>
 
-						<div className="flex items-center">
-							<div className="text-xs font-bold leading-sm uppercase pr-1">
-								Layout:
-							</div>
-							<div className="bg-slate-200 rounded-full p-0.5">
-								<button
-									onClick={() => setTableLayout(false)}
-									className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-										!tableLayout && "bg-white shadow-sm text-primary-500"
-									}`}
-								>
-									<IconGrid className="w-5 h-5" title="Grid layout" />
-								</button>
-								<button
-									onClick={() => setTableLayout(true)}
-									className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
-										tableLayout && "bg-white shadow-sm text-primary-500"
-									}`}
-								>
-									<IconTable className="w-5 h-5" title="Table layout" />
-								</button>
-							</div>
-						</div>
-					</div>
-
-          <ElemFilter
-            resourceType="companies"
-            filterValues={selectedFilters}
-            onApply={(name, filterParams) => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: filterParams });
-            }}
-            onClearOption={name => {
-              filters._and = defaultFilters;
-              setSelectedFilters({ ...selectedFilters, [name]: undefined });
-            }}
-            onReset={() => setSelectedFilters(null)}
-          />
+            <div className="flex items-center">
+              <div className="text-xs font-bold leading-sm uppercase pr-1">
+                Layout:
+              </div>
+              <div className="bg-slate-200 rounded-full p-0.5">
+                <button
+                  onClick={() => setTableLayout(false)}
+                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                    !tableLayout && 'bg-white shadow-sm text-primary-500'
+                  }`}
+                >
+                  <IconGrid className="w-5 h-5" title="Grid layout" />
+                </button>
+                <button
+                  onClick={() => setTableLayout(true)}
+                  className={`inline-flex items-center justify-center px-4 py-1.5 rounded-full transition-all focus:ring-1 focus:ring-slate-200 ${
+                    tableLayout && 'bg-white shadow-sm text-primary-500'
+                  }`}
+                >
+                  <IconTable className="w-5 h-5" title="Table layout" />
+                </button>
+              </div>
+            </div>
+          </div>
 
           {companies?.length === 0 && (
             <div className="flex items-center justify-center mx-auto min-h-[40vh]">
@@ -307,87 +293,120 @@ const Companies: NextPage<Props> = ({
             </div>
           )}
 
-					<div>
-						{error ? (
-							<div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
-								<div className="max-w-xl mx-auto">
-									<h4 className="mt-5 text-3xl font-bold">
-										Error loading companies
-									</h4>
-									<div className="mt-1 text-lg text-slate-600">
-										Please check spelling, reset filters, or{" "}
-										<button
-											onClick={() =>
-												showNewMessages(
-													`Hi EdgeIn, I'd like to report an error on companies page`
-												)
-											}
-											className="inline underline decoration-primary-500 hover:text-primary-500"
-										>
-											<span>report error</span>
-										</button>
-										.
-									</div>
-								</div>
-							</div>
-						) : isLoading && !initialLoad ? (
-							<>
-								{tableLayout ? (
-									<div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
-										<PlaceholderTable />
-									</div>
-								) : (
-									<div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-										{Array.from({ length: 9 }, (_, i) => (
-											<PlaceholderCompanyCard key={i} />
-										))}
-									</div>
-								)}
-							</>
-						) : tableLayout && companies?.length != 0 ? (
-							<CompaniesTable
-								companies={companies}
-								pageNumber={page}
-								itemsPerPage={limit}
-								shownItems={companies?.length}
-								totalItems={companies_aggregate}
-								onClickPrev={() => setPage(page - 1)}
-								onClickNext={() => setPage(page + 1)}
-								filterByTag={filterByTag}
-							/>
-						) : (
-							<>
-								{companies?.length != 0 && (
-									<div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-										{companies?.map((company) => {
-											return (
-												<ElemCompanyCard
-													key={company.id}
-													company={company as Companies}
-													tagOnClick={filterByTag}
-												/>
-											);
-										})}
-									</div>
-								)}
-								<Pagination
-									shownItems={companies?.length}
-									totalItems={companies_aggregate}
-									page={page}
-									itemsPerPage={limit}
-									numeric
-									onClickPrev={() => setPage(page - 1)}
-									onClickNext={() => setPage(page + 1)}
-									onClickToPage={(selectedPage) => setPage(selectedPage)}
-								/>
-							</>
-						)}
-					</div>
-				</div>
-			</div>
-			<Toaster />
-		</div>
-	);
+          <div>
+            {error ? (
+              <div className="flex items-center justify-center mx-auto min-h-[40vh] col-span-3">
+                <div className="max-w-xl mx-auto">
+                  <h4 className="mt-5 text-3xl font-bold">
+                    Error loading companies
+                  </h4>
+                  <div className="mt-1 text-lg text-slate-600">
+                    Please check spelling, reset filters, or{' '}
+                    <button
+                      onClick={() =>
+                        showNewMessages(
+                          `Hi EdgeIn, I'd like to report an error on companies page`,
+                        )
+                      }
+                      className="inline underline decoration-primary-500 hover:text-primary-500"
+                    >
+                      <span>report error</span>
+                    </button>
+                    .
+                  </div>
+                </div>
+              </div>
+            ) : isLoading && !initialLoad ? (
+              <>
+                {tableLayout ? (
+                  <div className="rounded-t-lg overflow-auto border-t border-x border-black/10">
+                    <PlaceholderTable />
+                  </div>
+                ) : (
+                  <div className="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {Array.from({ length: 9 }, (_, i) => (
+                      <PlaceholderCompanyCard key={i} />
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : tableLayout && companies?.length != 0 ? (
+              <CompaniesTable
+                companies={companies}
+                pageNumber={page}
+                itemsPerPage={limit}
+                shownItems={companies?.length}
+                totalItems={companies_aggregate}
+                onClickPrev={() => setPage(page - 1)}
+                onClickNext={() => setPage(page + 1)}
+                filterByTag={filterByTag}
+                filterValues={selectedFilters}
+                onApply={(name, filterParams) => {
+                  filters._and = defaultFilters;
+                  setSelectedFilters({
+                    ...selectedFilters,
+                    [name]: filterParams,
+                  });
+                }}
+                onClearOption={name => {
+                  filters._and = defaultFilters;
+                  setSelectedFilters({ ...selectedFilters, [name]: undefined });
+                }}
+                onReset={() => setSelectedFilters(null)}
+              />
+            ) : (
+              <>
+                <ElemFilter
+                  className="py-3"
+                  resourceType="companies"
+                  filterValues={selectedFilters}
+                  onApply={(name, filterParams) => {
+                    filters._and = defaultFilters;
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      [name]: filterParams,
+                    });
+                  }}
+                  onClearOption={name => {
+                    filters._and = defaultFilters;
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      [name]: undefined,
+                    });
+                  }}
+                  onReset={() => setSelectedFilters(null)}
+                />
+                {companies?.length != 0 && (
+                  <div className="min-h-[42vh] grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    {companies?.map(company => {
+                      return (
+                        <ElemCompanyCard
+                          key={company.id}
+                          company={company as Companies}
+                          tagOnClick={filterByTag}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+                <Pagination
+                  shownItems={companies?.length}
+                  totalItems={companies_aggregate}
+                  page={page}
+                  itemsPerPage={limit}
+                  numeric
+                  onClickPrev={() => setPage(page - 1)}
+                  onClickNext={() => setPage(page + 1)}
+                  onClickToPage={selectedPage => setPage(selectedPage)}
+                />
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+      <Toaster />
+    </div>
+  );
 };
 
 export const getStaticProps: GetStaticProps = async context => {

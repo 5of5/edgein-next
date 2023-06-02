@@ -2,40 +2,42 @@ import React, { FC, useState, useEffect } from 'react';
 import { omit, cloneDeep } from 'lodash';
 import moment from 'moment-timezone';
 import {
-	convertCurrencyStringToIntNumber,
-	convertToInternationalCurrencySystem,
-} from "@/utils";
-import { getDefaultFilter, getFilterOptionMetadata } from "@/utils/filter";
+  convertCurrencyStringToIntNumber,
+  convertToInternationalCurrencySystem,
+} from '@/utils';
+import { getDefaultFilter, getFilterOptionMetadata } from '@/utils/filter';
 import {
-	Filters,
-	FilterOptionKeys,
-	DateRangeOptions,
-	DateCondition,
-	FilterOptionMetadata,
-} from "@/models/Filter";
-import { ElemButton } from "./elem-button";
-import { InputRadio } from "./input-radio";
-import { ElemTagsInput } from "./elem-tags-input";
-import { ElemMultiRangeSlider } from "./elem-multi-range-slider";
-import { InputDate } from "./input-date";
-import { ElemFilterPopup } from "./elem-filter-popup";
-import { ElemAddFilter } from "./elem-add-filter";
-import ElemAddressFilter from "./elem-address-filter";
-import { InputText } from "./input-text";
-import { InputSelect } from "./input-select";
-import { eventSizeChoices } from "@/utils/constants";
-import InputSwitch from "./input-switch";
+  Filters,
+  FilterOptionKeys,
+  DateRangeOptions,
+  DateCondition,
+  FilterOptionMetadata,
+} from '@/models/Filter';
+import { ElemButton } from './elem-button';
+import { InputRadio } from './input-radio';
+import { ElemTagsInput } from './elem-tags-input';
+import { ElemMultiRangeSlider } from './elem-multi-range-slider';
+import { InputDate } from './input-date';
+import { ElemFilterPopup } from './elem-filter-popup';
+import { ElemAddFilter } from './elem-add-filter';
+import ElemAddressFilter from './elem-address-filter';
+import { InputText } from './input-text';
+import { InputSelect } from './input-select';
+import { eventSizeChoices } from '@/utils/constants';
+import InputSwitch from './input-switch';
 
 type Props = {
-	resourceType: "companies" | "vc_firms" | "events";
-	filterValues: Filters | null;
-	dateCondition?: DateCondition;
-	onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
-	onClearOption: (name: FilterOptionKeys) => void;
-	onReset: () => void;
+  className?: string;
+  resourceType: 'companies' | 'vc_firms' | 'events';
+  filterValues: Filters | null;
+  dateCondition?: DateCondition;
+  onApply: (name: FilterOptionKeys, filterParams: Filters) => void;
+  onClearOption: (name: FilterOptionKeys) => void;
+  onReset: () => void;
 };
 
 export const ElemFilter: FC<Props> = ({
+  className = '',
   resourceType,
   filterValues,
   dateCondition = 'past',
@@ -139,70 +141,70 @@ export const ElemFilter: FC<Props> = ({
     let fromDateString: string | undefined;
     let toDateString: string | undefined;
 
-		if (resourceType === "events") {
-			if (selectedCondition === "30-days") {
-				fromDateString =
-					dateCondition === "past"
-						? moment().subtract(30, "days").toISOString()
-						: moment().toISOString();
-				toDateString =
-					dateCondition === "past"
-						? moment().toISOString()
-						: moment().add(30, "days").toISOString();
-			} else if (selectedCondition === "60-days") {
-				fromDateString =
-					dateCondition === "past"
-						? moment().subtract(60, "days").toISOString()
-						: moment().toISOString();
-				toDateString =
-					dateCondition === "past"
-						? moment().toISOString()
-						: moment().add(60, "days").toISOString();
-			} else if (selectedCondition === "90-days") {
-				fromDateString =
-					dateCondition === "past"
-						? moment().subtract(90, "days").toISOString()
-						: moment().toISOString();
-				toDateString =
-					dateCondition === "past"
-						? moment().toISOString()
-						: moment().add(90, "days").toISOString();
-			} else if (selectedCondition === "year") {
-				fromDateString =
-					dateCondition === "past"
-						? moment().subtract(1, "years").toISOString()
-						: moment().toISOString();
-				toDateString =
-					dateCondition === "past"
-						? moment().toISOString()
-						: moment().add(1, "years").toISOString();
-			} else {
-				fromDateString = undefined;
-			}
-		} else {
-			if (selectedCondition === "30-days") {
-				fromDateString = moment().subtract(30, "days").toISOString();
-			} else if (selectedCondition === "60-days") {
-				fromDateString = moment().subtract(60, "days").toISOString();
-			} else if (selectedCondition === "90-days") {
-				fromDateString = moment().subtract(90, "days").toISOString();
-			} else if (selectedCondition === "year") {
-				fromDateString = moment().subtract(1, "years").toISOString();
-			} else {
-				fromDateString = undefined;
-			}
-		}
+    if (resourceType === 'events') {
+      if (selectedCondition === '30-days') {
+        fromDateString =
+          dateCondition === 'past'
+            ? moment().subtract(30, 'days').toISOString()
+            : moment().toISOString();
+        toDateString =
+          dateCondition === 'past'
+            ? moment().toISOString()
+            : moment().add(30, 'days').toISOString();
+      } else if (selectedCondition === '60-days') {
+        fromDateString =
+          dateCondition === 'past'
+            ? moment().subtract(60, 'days').toISOString()
+            : moment().toISOString();
+        toDateString =
+          dateCondition === 'past'
+            ? moment().toISOString()
+            : moment().add(60, 'days').toISOString();
+      } else if (selectedCondition === '90-days') {
+        fromDateString =
+          dateCondition === 'past'
+            ? moment().subtract(90, 'days').toISOString()
+            : moment().toISOString();
+        toDateString =
+          dateCondition === 'past'
+            ? moment().toISOString()
+            : moment().add(90, 'days').toISOString();
+      } else if (selectedCondition === 'year') {
+        fromDateString =
+          dateCondition === 'past'
+            ? moment().subtract(1, 'years').toISOString()
+            : moment().toISOString();
+        toDateString =
+          dateCondition === 'past'
+            ? moment().toISOString()
+            : moment().add(1, 'years').toISOString();
+      } else {
+        fromDateString = undefined;
+      }
+    } else {
+      if (selectedCondition === '30-days') {
+        fromDateString = moment().subtract(30, 'days').toISOString();
+      } else if (selectedCondition === '60-days') {
+        fromDateString = moment().subtract(60, 'days').toISOString();
+      } else if (selectedCondition === '90-days') {
+        fromDateString = moment().subtract(90, 'days').toISOString();
+      } else if (selectedCondition === 'year') {
+        fromDateString = moment().subtract(1, 'years').toISOString();
+      } else {
+        fromDateString = undefined;
+      }
+    }
 
-		setFilters((prev) => ({
-			...prev,
-			[optionKey]: {
-				...prev?.[optionKey as keyof Filters],
-				condition: selectedCondition,
-				fromDate: fromDateString,
-				toDate: toDateString,
-			},
-		}));
-	};
+    setFilters(prev => ({
+      ...prev,
+      [optionKey]: {
+        ...prev?.[optionKey as keyof Filters],
+        condition: selectedCondition,
+        fromDate: fromDateString,
+        toDate: toDateString,
+      },
+    }));
+  };
 
   const onChangeCheckbox = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -224,41 +226,41 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-	const onToggleSelectAllTags = (
-		option: FilterOptionKeys,
-		checked: boolean,
-		choices: FilterOptionMetadata["choices"]
-	) => {
-		setFilters((prev) => ({
-			...prev,
-			[option]: {
-				...prev?.[option],
-				tags: checked ? choices?.map((item) => item.name) : [],
-			},
-		}));
-	};
+  const onToggleSelectAllTags = (
+    option: FilterOptionKeys,
+    checked: boolean,
+    choices: FilterOptionMetadata['choices'],
+  ) => {
+    setFilters(prev => ({
+      ...prev,
+      [option]: {
+        ...prev?.[option],
+        tags: checked ? choices?.map(item => item.name) : [],
+      },
+    }));
+  };
 
-	const onBlurAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target;
-		const [key, metric] = name.split(".");
-		const newAmount: any = {
-			...filters?.[key as keyof Filters],
-		};
-		const numberValue = convertCurrencyStringToIntNumber(value);
-		if (metric === "minVal") {
-			newAmount.formattedMinVal =
-				convertToInternationalCurrencySystem(numberValue);
-			newAmount.minVal = numberValue;
-		} else {
-			newAmount.formattedMaxVal =
-				convertToInternationalCurrencySystem(numberValue);
-			newAmount.maxVal = numberValue;
-		}
-		setFilters((prev) => ({
-			...prev,
-			[key]: newAmount,
-		}));
-	};
+  const onBlurAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const [key, metric] = name.split('.');
+    const newAmount: any = {
+      ...filters?.[key as keyof Filters],
+    };
+    const numberValue = convertCurrencyStringToIntNumber(value);
+    if (metric === 'minVal') {
+      newAmount.formattedMinVal =
+        convertToInternationalCurrencySystem(numberValue);
+      newAmount.minVal = numberValue;
+    } else {
+      newAmount.formattedMaxVal =
+        convertToInternationalCurrencySystem(numberValue);
+      newAmount.maxVal = numberValue;
+    }
+    setFilters(prev => ({
+      ...prev,
+      [key]: newAmount,
+    }));
+  };
 
   const onFocusAmount = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = event.target;
@@ -277,54 +279,54 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-	const onChangeRangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = event.target;
-		const [option, metric] = name.split(".");
-		const newData: any = {
-			...filters?.[option as keyof Filters],
-			[metric]: convertCurrencyStringToIntNumber(value),
-		};
-		if (
-			option === "fundingAmount" ||
-			option === "investmentAmountTotal" ||
-			option === "eventPrice"
-		) {
-			if (metric === "minVal") {
-				newData.formattedMinVal = value;
-			}
-			if (metric === "maxVal") {
-				newData.formattedMaxVal = value;
-			}
-		}
-		setFilters((prev) => ({
-			...prev,
-			[option]: newData,
-		}));
-	};
+  const onChangeRangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    const [option, metric] = name.split('.');
+    const newData: any = {
+      ...filters?.[option as keyof Filters],
+      [metric]: convertCurrencyStringToIntNumber(value),
+    };
+    if (
+      option === 'fundingAmount' ||
+      option === 'investmentAmountTotal' ||
+      option === 'eventPrice'
+    ) {
+      if (metric === 'minVal') {
+        newData.formattedMinVal = value;
+      }
+      if (metric === 'maxVal') {
+        newData.formattedMaxVal = value;
+      }
+    }
+    setFilters(prev => ({
+      ...prev,
+      [option]: newData,
+    }));
+  };
 
-	const onChangeRangeSlider = (
-		name: FilterOptionKeys,
-		minVal: number,
-		maxVal: number
-	) => {
-		const newData: any = {
-			...filters?.[name],
-			minVal,
-			maxVal,
-		};
-		if (
-			name === "fundingAmount" ||
-			name === "investmentAmountTotal" ||
-			name === "eventPrice"
-		) {
-			newData.formattedMinVal = convertToInternationalCurrencySystem(minVal);
-			newData.formattedMaxVal = convertToInternationalCurrencySystem(maxVal);
-		}
-		setFilters((prev) => ({
-			...prev,
-			[name]: newData,
-		}));
-	};
+  const onChangeRangeSlider = (
+    name: FilterOptionKeys,
+    minVal: number,
+    maxVal: number,
+  ) => {
+    const newData: any = {
+      ...filters?.[name],
+      minVal,
+      maxVal,
+    };
+    if (
+      name === 'fundingAmount' ||
+      name === 'investmentAmountTotal' ||
+      name === 'eventPrice'
+    ) {
+      newData.formattedMinVal = convertToInternationalCurrencySystem(minVal);
+      newData.formattedMaxVal = convertToInternationalCurrencySystem(maxVal);
+    }
+    setFilters(prev => ({
+      ...prev,
+      [name]: newData,
+    }));
+  };
 
   const onChangeDateRange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -338,30 +340,30 @@ export const ElemFilter: FC<Props> = ({
     }));
   };
 
-	const onChangeEventSize = (value: Record<string, any>) => {
-		setFilters((prev) => ({
-			...prev,
-			eventSize: {
-				...prev?.eventSize,
-				value,
-			},
-		}));
-	};
+  const onChangeEventSize = (value: Record<string, any>) => {
+    setFilters(prev => ({
+      ...prev,
+      eventSize: {
+        ...prev?.eventSize,
+        value,
+      },
+    }));
+  };
 
-	const onFormatFilterParams = (name: FilterOptionKeys) => {
-		const filterParams: any = cloneDeep(filters?.[name]);
-		if (
-			(name === "lastFundingDate" ||
-				name === "lastInvestmentDate" ||
-				name === "eventDate") &&
-			filterParams?.condition === "custom"
-		) {
-			filterParams.fromDate = moment(filterParams.fromDate).toISOString();
-			filterParams.toDate = moment(filterParams.toDate).toISOString();
-		}
-		delete filterParams.open;
-		return filterParams;
-	};
+  const onFormatFilterParams = (name: FilterOptionKeys) => {
+    const filterParams: any = cloneDeep(filters?.[name]);
+    if (
+      (name === 'lastFundingDate' ||
+        name === 'lastInvestmentDate' ||
+        name === 'eventDate') &&
+      filterParams?.condition === 'custom'
+    ) {
+      filterParams.fromDate = moment(filterParams.fromDate).toISOString();
+      filterParams.toDate = moment(filterParams.toDate).toISOString();
+    }
+    delete filterParams.open;
+    return filterParams;
+  };
 
   const onApplyFilter = (name: FilterOptionKeys) => {
     onApply(name, onFormatFilterParams(name));
@@ -374,7 +376,9 @@ export const ElemFilter: FC<Props> = ({
   };
 
   return (
-    <section className="w-full flex items-center justify-between mb-1 py-3">
+    <section
+      className={`w-full flex items-center justify-between ${className}`}
+    >
       <div className="flex flex-col flex-wrap w-full gap-3 items-start lg:flex-row lg:items-center">
         <ElemAddFilter
           resourceType={resourceType}
@@ -384,44 +388,44 @@ export const ElemFilter: FC<Props> = ({
           onSelectFilterOption={onSelectFilterOption}
         />
 
-				{filters &&
-					(Object.keys(filters) as FilterOptionKeys[]).map((option) => {
-						const optionMetadata = getFilterOptionMetadata(
-							option,
-							dateCondition
-						);
-						if (
-							option === "country" ||
-							option === "state" ||
-							option === "city" ||
-							option === "fundingInvestors" ||
-							option === "fundedCompanies"
-						) {
-							return (
-								<ElemFilterPopup
-									key={option}
-									open={!!filters[option]?.open}
-									name={option}
-									title={`${optionMetadata.title} (${
-										filters?.[option]?.tags?.length || 0
-									})`}
-									onOpen={onOpenFilterPopup}
-									onClose={onCloseFilterPopup}
-									onClear={onClearFilterOption}
-									onApply={onApplyFilter}
-								>
-									<div className="font-bold text-sm">
-										{optionMetadata.heading}
-									</div>
-									<div className="flex flex-col gap-4 mt-2">
-										<div>
-											<InputRadio
-												name={option}
-												value="any"
-												checked={filters?.[option]?.condition === "any"}
-												label="is any of these"
-												onChange={(event) => onChangeCondition(event, option)}
-											/>
+        {filters &&
+          (Object.keys(filters) as FilterOptionKeys[]).map(option => {
+            const optionMetadata = getFilterOptionMetadata(
+              option,
+              dateCondition,
+            );
+            if (
+              option === 'country' ||
+              option === 'state' ||
+              option === 'city' ||
+              option === 'fundingInvestors' ||
+              option === 'fundedCompanies'
+            ) {
+              return (
+                <ElemFilterPopup
+                  key={option}
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={`${optionMetadata.title} (${
+                    filters?.[option]?.tags?.length || 0
+                  })`}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                >
+                  <div className="font-bold text-sm">
+                    {optionMetadata.heading}
+                  </div>
+                  <div className="flex flex-col gap-4 mt-2">
+                    <div>
+                      <InputRadio
+                        name={option}
+                        value="any"
+                        checked={filters?.[option]?.condition === 'any'}
+                        label="is any of these"
+                        onChange={event => onChangeCondition(event, option)}
+                      />
 
                       <ElemTagsInput
                         value={filters?.[option]?.tags || []}
@@ -508,232 +512,232 @@ export const ElemFilter: FC<Props> = ({
               );
             }
 
-						if (
-							option === "industry" ||
-							option === "fundingType" ||
-							option === "investmentType" ||
-							option === "eventType"
-						) {
-							const isSelectedAll =
-								filters[option]?.tags?.length ===
-								optionMetadata.choices?.length;
+            if (
+              option === 'industry' ||
+              option === 'fundingType' ||
+              option === 'investmentType' ||
+              option === 'eventType'
+            ) {
+              const isSelectedAll =
+                filters[option]?.tags?.length ===
+                optionMetadata.choices?.length;
 
-							return (
-								<ElemFilterPopup
-									key={option}
-									open={!!filters[option]?.open}
-									name={option}
-									title={`${optionMetadata.title} (${
-										filters?.[option]?.tags?.length || 0
-									})`}
-									onOpen={onOpenFilterPopup}
-									onClose={onCloseFilterPopup}
-									onClear={onClearFilterOption}
-									onApply={onApplyFilter}
-									popupClass="max-w-xl"
-								>
-									<div className="flex items-center justify-between mb-2">
-										<div className="font-bold text-sm mb-1">
-											{optionMetadata.heading}
-										</div>
-										<InputSwitch
-											label="Select All"
-											checked={isSelectedAll}
-											onChange={(v) =>
-												onToggleSelectAllTags(option, v, optionMetadata.choices)
-											}
-										/>
-									</div>
-									<ul className="grid grid-cols-2 gap-x-5 overflow-y-auto scrollbar-hide lg:grid-cols-4">
-										{optionMetadata.choices?.map((choice) => (
-											<li
-												key={choice.id}
-												className="flex items-center w-full min-w-max text-sm text-left font-medium"
-											>
-												<label className="relative flex items-center gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100">
-													<input
-														id={choice.id}
-														name={choice.id}
-														type="checkbox"
-														checked={filters?.[option]?.tags?.some(
-															(item) => item === choice.id
-														)}
-														onChange={(e) => onChangeCheckbox(e, option)}
-														className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
-													/>
-													<div>{choice.name}</div>
-												</label>
-											</li>
-										))}
-									</ul>
-								</ElemFilterPopup>
-							);
-						}
+              return (
+                <ElemFilterPopup
+                  key={option}
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={`${optionMetadata.title} (${
+                    filters?.[option]?.tags?.length || 0
+                  })`}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                  popupClass="max-w-xl"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="font-bold text-sm mb-1">
+                      {optionMetadata.heading}
+                    </div>
+                    <InputSwitch
+                      label="Select All"
+                      checked={isSelectedAll}
+                      onChange={v =>
+                        onToggleSelectAllTags(option, v, optionMetadata.choices)
+                      }
+                    />
+                  </div>
+                  <ul className="grid grid-cols-2 gap-x-5 overflow-y-auto scrollbar-hide lg:grid-cols-4">
+                    {optionMetadata.choices?.map(choice => (
+                      <li
+                        key={choice.id}
+                        className="flex items-center w-full min-w-max text-sm text-left font-medium"
+                      >
+                        <label className="relative flex items-center gap-2 cursor-pointer w-full px-2 py-1.5 rounded-md overflow-hidden hover:text-primary-500 hover:bg-slate-100">
+                          <input
+                            id={choice.id}
+                            name={choice.id}
+                            type="checkbox"
+                            checked={filters?.[option]?.tags?.some(
+                              item => item === choice.id,
+                            )}
+                            onChange={e => onChangeCheckbox(e, option)}
+                            className="appearance-none w-4 h-4 border rounded border-slate-300 hover:border-slate-400 checked:bg-primary-500 checked:border-primary-500 checked:hover:bg-primary-500 focus:ring-0 focus:ring-offset-0 focus:checked:bg-primary-500"
+                          />
+                          <div>{choice.name}</div>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </ElemFilterPopup>
+              );
+            }
 
-						if (
-							option === "fundingAmount" ||
-							option === "investmentAmountTotal" ||
-							option === "eventPrice"
-						) {
-							return (
-								<ElemFilterPopup
-									key={option}
-									open={!!filters[option]?.open}
-									name={option}
-									title={optionMetadata.title || ""}
-									onOpen={onOpenFilterPopup}
-									onClose={onCloseFilterPopup}
-									onClear={onClearFilterOption}
-									onApply={onApplyFilter}
-								>
-									<div className="font-bold text-sm">
-										{optionMetadata.heading}
-									</div>
-									<div className="flex items-center space-x-4">
-										<div className="grow">
-											<div className="text-sm text-slate-600">Min</div>
-											<input
-												name={`${option}.minVal`}
-												type="text"
-												value={filters?.[option]?.formattedMinVal}
-												onChange={onChangeRangeInput}
-												onBlur={onBlurAmount}
-												onFocus={onFocusAmount}
-												className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
-											/>
-										</div>
-										<div className="pt-4 flex-none">{"–"}</div>
-										<div className="grow">
-											<div className="text-sm text-slate-600">Max</div>
-											<input
-												name={`${option}.maxVal`}
-												type="text"
-												value={filters?.[option]?.formattedMaxVal}
-												onChange={onChangeRangeInput}
-												onBlur={onBlurAmount}
-												onFocus={onFocusAmount}
-												className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
-											/>
-										</div>
-									</div>
-									<div className="mt-2">
-										<ElemMultiRangeSlider
-											value={[
-												filters?.[option]?.minVal || 0,
-												filters?.[option]?.maxVal || 0,
-											]}
-											min={optionMetadata.min || 0}
-											max={optionMetadata.max || 1000000000}
-											step={optionMetadata.step || 1}
-											onChange={({ min, max }: { min: number; max: number }) =>
-												onChangeRangeSlider(option, min, max)
-											}
-										/>
-									</div>
-								</ElemFilterPopup>
-							);
-						}
+            if (
+              option === 'fundingAmount' ||
+              option === 'investmentAmountTotal' ||
+              option === 'eventPrice'
+            ) {
+              return (
+                <ElemFilterPopup
+                  key={option}
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={optionMetadata.title || ''}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                >
+                  <div className="font-bold text-sm">
+                    {optionMetadata.heading}
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <div className="grow">
+                      <div className="text-sm text-slate-600">Min</div>
+                      <input
+                        name={`${option}.minVal`}
+                        type="text"
+                        value={filters?.[option]?.formattedMinVal}
+                        onChange={onChangeRangeInput}
+                        onBlur={onBlurAmount}
+                        onFocus={onFocusAmount}
+                        className="appearance-none border-none w-full border border-slate-200 rounded-md px-1 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                      />
+                    </div>
+                    <div className="pt-4 flex-none">{'–'}</div>
+                    <div className="grow">
+                      <div className="text-sm text-slate-600">Max</div>
+                      <input
+                        name={`${option}.maxVal`}
+                        type="text"
+                        value={filters?.[option]?.formattedMaxVal}
+                        onChange={onChangeRangeInput}
+                        onBlur={onBlurAmount}
+                        onFocus={onFocusAmount}
+                        className="appearance-none border-none w-full border border-slate-200 rounded-md px-2 py-1 ring-1 ring-slate-200 focus:outline-none focus:ring-2 focus:text-primary-500"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <ElemMultiRangeSlider
+                      value={[
+                        filters?.[option]?.minVal || 0,
+                        filters?.[option]?.maxVal || 0,
+                      ]}
+                      min={optionMetadata.min || 0}
+                      max={optionMetadata.max || 1000000000}
+                      step={optionMetadata.step || 1}
+                      onChange={({ min, max }: { min: number; max: number }) =>
+                        onChangeRangeSlider(option, min, max)
+                      }
+                    />
+                  </div>
+                </ElemFilterPopup>
+              );
+            }
 
-						if (
-							option === "lastFundingDate" ||
-							option === "lastInvestmentDate" ||
-							option === "eventDate"
-						) {
-							return (
-								<ElemFilterPopup
-									key={option}
-									open={!!filters[option]?.open}
-									name={option}
-									title={optionMetadata.title || ""}
-									onOpen={onOpenFilterPopup}
-									onClose={onCloseFilterPopup}
-									onClear={onClearFilterOption}
-									onApply={onApplyFilter}
-								>
-									<div className="font-bold text-sm">
-										{optionMetadata.heading}
-									</div>
-									<div className="flex flex-col gap-2 mt-2">
-										<InputRadio
-											name={option}
-											value="30-days"
-											checked={filters?.[option]?.condition === "30-days"}
-											label={`${
-												dateCondition === "past" ? "Past" : "Next"
-											} 30 days`}
-											onChange={onChangeDateCondition}
-										/>
-										<InputRadio
-											name={option}
-											value="60-days"
-											checked={filters?.[option]?.condition === "60-days"}
-											label={`${
-												dateCondition === "past" ? "Past" : "Next"
-											} 60 days`}
-											onChange={onChangeDateCondition}
-										/>
-										<InputRadio
-											name={option}
-											value="90-days"
-											checked={filters?.[option]?.condition === "90-days"}
-											label={`${
-												dateCondition === "past" ? "Past" : "Next"
-											} 90 days`}
-											onChange={onChangeDateCondition}
-										/>
-										<InputRadio
-											name={option}
-											value="year"
-											checked={filters?.[option]?.condition === "year"}
-											label={`${
-												dateCondition === "past" ? "Past" : "Next"
-											} year`}
-											onChange={onChangeDateCondition}
-										/>
-										<InputRadio
-											name={option}
-											value="custom"
-											checked={filters?.[option]?.condition === "custom"}
-											label="Custom date range"
-											onChange={onChangeDateCondition}
-										/>
-									</div>
-									{filters?.[option]?.condition === "custom" && (
-										<div className="flex items-center gap-x-4 mt-2">
-											<InputDate
-												name={`${option}.fromDate`}
-												value={
-													filters?.[option]?.fromDate
-														? moment(filters?.[option]?.fromDate).format(
-																"YYYY-MM-DD"
-														  )
-														: ""
-												}
-												onChange={onChangeDateRange}
-												className="block max-w-sm placeholder-slate-500"
-												min={optionMetadata.minDate}
-												max={optionMetadata.maxDate}
-											/>
-											<div className="flex-none">{"–"}</div>
-											<InputDate
-												name={`${option}.toDate`}
-												value={
-													filters?.[option]?.toDate
-														? moment(filters?.[option]?.toDate).format(
-																"YYYY-MM-DD"
-														  )
-														: ""
-												}
-												onChange={onChangeDateRange}
-												className="block max-w-sm placeholder-slate-500"
-												min={optionMetadata.minDate}
-												max={optionMetadata.maxDate}
-											/>
-										</div>
-									)}
-								</ElemFilterPopup>
-							);
-						}
+            if (
+              option === 'lastFundingDate' ||
+              option === 'lastInvestmentDate' ||
+              option === 'eventDate'
+            ) {
+              return (
+                <ElemFilterPopup
+                  key={option}
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={optionMetadata.title || ''}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                >
+                  <div className="font-bold text-sm">
+                    {optionMetadata.heading}
+                  </div>
+                  <div className="flex flex-col gap-2 mt-2">
+                    <InputRadio
+                      name={option}
+                      value="30-days"
+                      checked={filters?.[option]?.condition === '30-days'}
+                      label={`${
+                        dateCondition === 'past' ? 'Past' : 'Next'
+                      } 30 days`}
+                      onChange={onChangeDateCondition}
+                    />
+                    <InputRadio
+                      name={option}
+                      value="60-days"
+                      checked={filters?.[option]?.condition === '60-days'}
+                      label={`${
+                        dateCondition === 'past' ? 'Past' : 'Next'
+                      } 60 days`}
+                      onChange={onChangeDateCondition}
+                    />
+                    <InputRadio
+                      name={option}
+                      value="90-days"
+                      checked={filters?.[option]?.condition === '90-days'}
+                      label={`${
+                        dateCondition === 'past' ? 'Past' : 'Next'
+                      } 90 days`}
+                      onChange={onChangeDateCondition}
+                    />
+                    <InputRadio
+                      name={option}
+                      value="year"
+                      checked={filters?.[option]?.condition === 'year'}
+                      label={`${
+                        dateCondition === 'past' ? 'Past' : 'Next'
+                      } year`}
+                      onChange={onChangeDateCondition}
+                    />
+                    <InputRadio
+                      name={option}
+                      value="custom"
+                      checked={filters?.[option]?.condition === 'custom'}
+                      label="Custom date range"
+                      onChange={onChangeDateCondition}
+                    />
+                  </div>
+                  {filters?.[option]?.condition === 'custom' && (
+                    <div className="flex items-center gap-x-4 mt-2">
+                      <InputDate
+                        name={`${option}.fromDate`}
+                        value={
+                          filters?.[option]?.fromDate
+                            ? moment(filters?.[option]?.fromDate).format(
+                                'YYYY-MM-DD',
+                              )
+                            : ''
+                        }
+                        onChange={onChangeDateRange}
+                        className="block max-w-sm placeholder-slate-500"
+                        min={optionMetadata.minDate}
+                        max={optionMetadata.maxDate}
+                      />
+                      <div className="flex-none">{'–'}</div>
+                      <InputDate
+                        name={`${option}.toDate`}
+                        value={
+                          filters?.[option]?.toDate
+                            ? moment(filters?.[option]?.toDate).format(
+                                'YYYY-MM-DD',
+                              )
+                            : ''
+                        }
+                        onChange={onChangeDateRange}
+                        className="block max-w-sm placeholder-slate-500"
+                        min={optionMetadata.minDate}
+                        max={optionMetadata.maxDate}
+                      />
+                    </div>
+                  )}
+                </ElemFilterPopup>
+              );
+            }
 
             if (
               option === 'teamSize' ||
@@ -797,39 +801,39 @@ export const ElemFilter: FC<Props> = ({
               );
             }
 
-						if (option === "eventSize") {
-							return (
-								<ElemFilterPopup
-									key={option}
-									open={!!filters[option]?.open}
-									name={option}
-									title={optionMetadata.title || ""}
-									onOpen={onOpenFilterPopup}
-									onClose={onCloseFilterPopup}
-									onClear={onClearFilterOption}
-									onApply={onApplyFilter}
-								>
-									<div className="font-bold text-sm">
-										{optionMetadata.heading}
-									</div>
-									<div className="py-2">
-										<InputSelect
-											options={eventSizeChoices.map((item) => ({
-												id: item.id,
-												title: item.name,
-											}))}
-											value={filters[option]?.value}
-											onChange={onChangeEventSize}
-											className="text-slate-600 text-base w-full"
-											buttonClasses="h-10"
-										/>
-									</div>
-								</ElemFilterPopup>
-							);
-						}
+            if (option === 'eventSize') {
+              return (
+                <ElemFilterPopup
+                  key={option}
+                  open={!!filters[option]?.open}
+                  name={option}
+                  title={optionMetadata.title || ''}
+                  onOpen={onOpenFilterPopup}
+                  onClose={onCloseFilterPopup}
+                  onClear={onClearFilterOption}
+                  onApply={onApplyFilter}
+                >
+                  <div className="font-bold text-sm">
+                    {optionMetadata.heading}
+                  </div>
+                  <div className="py-2">
+                    <InputSelect
+                      options={eventSizeChoices.map(item => ({
+                        id: item.id,
+                        title: item.name,
+                      }))}
+                      value={filters[option]?.value}
+                      onChange={onChangeEventSize}
+                      className="text-slate-600 text-base w-full"
+                      buttonClasses="h-10"
+                    />
+                  </div>
+                </ElemFilterPopup>
+              );
+            }
 
-						return null;
-					})}
+            return null;
+          })}
 
         {filters && Object.keys(filters).length > 0 && (
           <div>

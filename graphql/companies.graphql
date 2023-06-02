@@ -155,64 +155,64 @@ query GetCompany($slug: String!) {
 }
 
 query GetCompanies($limit: Int, $offset: Int, $where: companies_bool_exp!) {
-	companies(
-		where: $where
-		order_by: { slug: asc }
-		limit: $limit
-		offset: $offset
-	) {
-		id
-		name
-		slug
-		layer
-		location
-		location_json
-		tags
-		coin {
-			ticker
-		}
-		sentiment
-		investor_amount
-		investment_rounds {
-			round
-			round_date
-			amount
-			investments {
-				person {
-					slug
-					name
-				}
-				vc_firm {
-					slug
-					name
-				}
-				amount
-			}
-		}
-		year_founded
-		total_employees
-		teamMembers {
-			id
-			person {
-				id
-				slug
-				name
-			}
-		}
-		logo
-		overview
-		github
-		company_linkedin
-		market_verified
-		velocity_linkedin
-		velocity_token
-		website
-	}
-	companies_aggregate(where: $where) {
-		aggregate {
-			count
-		}
-	}
+  companies(
+    where: $where
+    order_by: { slug: asc }
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    name
+    slug
+    layer
+    location
+    location_json
+    tags
+    coin {
+      ticker
+    }
+    sentiment
+    investor_amount
+    investment_rounds {
+      round
+      round_date
+      amount
+      investments {
+        person {
+          slug
+          name
+        }
+        vc_firm {
+          slug
+          name
+        }
+        amount
+      }
+    }
+    year_founded
+    total_employees
+    teamMembers {
+      id
+      person {
+        id
+        slug
+        name
+      }
+    }
+    logo
+    overview
+    github
+    company_linkedin
+    market_verified
+    velocity_linkedin
+    velocity_token
+    website
+  }
+  companies_aggregate(where: $where) {
+    aggregate {
+      count
+    }
+  }
 }
 
 query GetCompaniesRecent(
@@ -263,47 +263,47 @@ query GetRelevantCompanies($where: companies_bool_exp!, $limit: Int) {
 }
 
 query GetSentimentByCompanyId($companyId: Int!) {
-	companies_by_pk(id: $companyId) {
-		sentiment
-		slug
-	}
+  companies_by_pk(id: $companyId) {
+    sentiment
+    slug
+  }
 }
 
 mutation UpdateSentimentByCompanyId($companyId: Int!, $sentiment: jsonb!) {
-	update_companies_by_pk(
-		pk_columns: { id: $companyId }
-		_set: { sentiment: $sentiment }
-	) {
-		sentiment
-	}
+  update_companies_by_pk(
+    pk_columns: { id: $companyId }
+    _set: { sentiment: $sentiment }
+  ) {
+    sentiment
+  }
 }
 
 query GetCompaniesByDate($date: timestamptz, $library: jsonb) {
-	companies(
-		where: {
-			_and: [
-				{ status: { _eq: "published" } }
-				{ updated_at: { _gte: $date } }
-				{ library: { _contains: $library } }
-			]
-		}
-	) {
-		id
-		name
-		overview
-		tags
-		logo
-		slug
-		aliases
-		coin {
-			ticker
-			name
-		}
-	}
+  companies(
+    where: {
+      _and: [
+        { status: { _eq: "published" } }
+        { updated_at: { _gte: $date } }
+        { library: { _contains: $library } }
+      ]
+    }
+  ) {
+    id
+    name
+    overview
+    tags
+    logo
+    slug
+    aliases
+    coin {
+      ticker
+      name
+    }
+  }
 }
 
 mutation UpdateCompanyByPk($companyId: Int!, $data: companies_set_input) {
-	update_companies_by_pk(pk_columns: { id: $companyId }, _set: $data) {
-		id
-	}
+  update_companies_by_pk(pk_columns: { id: $companyId }, _set: $data) {
+    id
+  }
 }

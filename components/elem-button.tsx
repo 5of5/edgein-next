@@ -43,36 +43,36 @@ export const ElemButton: FC<PropsWithChildren<Props>> = ({
   children,
   onClick,
 }) => {
-	let btnClass = "";
-	// button styles
-	if (btn === "primary") {
-		btnClass =
-			"text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-80";
-	} else if (btn === "purple") {
-		btnClass = "text-white bg-primary-500 hover:bg-primary-800";
-	} else if (btn === "primary-light") {
-		btnClass = "bg-primary-50 hover:bg-primary-100 text-primary-500";
-	} else if (btn === "ol-primary") {
-		btnClass =
-			"text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:ring-2 focus:!ring-2 active:ring-2";
-	} else if (btn === "ol-white") {
-		btnClass =
-			"text-white bg-transparent ring-inset ring-1 ring-white hover:ring-2 focus:!ring-2 active:ring-2";
-	} else if (btn === "transparent") {
-		btnClass = "text-primary-500 bg-transparent hover:text-dark-500";
-	} else if (btn === "white") {
-		btnClass =
-			"bg-white ring-inset ring-1 ring-slate-200 focus:ring-dark-500 focus:!ring-1 focus:!ring-slate-200 hover:text-primary-500 hover:bg-slate-200";
-	} else if (btn === "slate") {
-		btnClass =
-			"text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300";
-	} else if (btn === "dark") {
-		btnClass = "text-white bg-dark-700 hover:opacity-60";
-	} else if (btn === "danger") {
-		btnClass = "text-white bg-rose-500 hover:bg-rose-600";
-	} else {
-		btnClass = "";
-	}
+  let btnClass = '';
+  // button styles
+  if (btn === 'primary') {
+    btnClass =
+      'text-white from-blue-800 via-primary-500 to-primary-400 bg-gradient-to-r hover:opacity-80';
+  } else if (btn === 'purple') {
+    btnClass = 'text-white bg-primary-500 hover:bg-primary-800';
+  } else if (btn === 'primary-light') {
+    btnClass = 'bg-primary-50 hover:bg-primary-100 text-primary-500';
+  } else if (btn === 'ol-primary') {
+    btnClass =
+      'text-primary-500 bg-transparent ring-inset ring-1 ring-primary-500 hover:text-white hover:bg-primary-500 focus:outline-none focus:ring-1';
+  } else if (btn === 'ol-white') {
+    btnClass =
+      'text-white bg-transparent ring-inset ring-1 ring-white hover:ring-2 focus:!ring-2 active:ring-2';
+  } else if (btn === 'transparent') {
+    btnClass = 'text-primary-500 bg-transparent hover:text-dark-500';
+  } else if (btn === 'white') {
+    btnClass =
+      'bg-white ring-inset ring-1 ring-slate-200 focus:ring-dark-500 focus:!ring-1 focus:!ring-slate-200 hover:text-primary-500 hover:bg-slate-200';
+  } else if (btn === 'slate') {
+    btnClass =
+      'text-dark-500 bg-slate-200 hover:text-primary-500 hover:bg-slate-300';
+  } else if (btn === 'dark') {
+    btnClass = 'text-white bg-dark-700 hover:opacity-60';
+  } else if (btn === 'danger') {
+    btnClass = 'text-white bg-rose-500 hover:bg-rose-600';
+  } else {
+    btnClass = '';
+  }
 
   // button sizes
   let sizeClasses = '';
